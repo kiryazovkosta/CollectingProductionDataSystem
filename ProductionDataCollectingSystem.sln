@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductionDataCollectingSystem.Models", "ProductionDataCollectionSystem.Models\ProductionDataCollectingSystem.Models.csproj", "{46569141-AE41-4C8F-9E63-05A4EEA278C8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductionDataCollectingSystem.Models", "ProductionDataCollectingSystem.Models\ProductionDataCollectingSystem.Models.csproj", "{46569141-AE41-4C8F-9E63-05A4EEA278C8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductionDataCollectingSystem.Data", "ProductionDataCollectionSystem.Data\ProductionDataCollectingSystem.Data.csproj", "{B1DF8B20-384D-4355-AFC6-634936B0C647}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductionDataCollectingSystem.Data", "ProductionDataCollectingSystem.Data\ProductionDataCollectingSystem.Data.csproj", "{B1DF8B20-384D-4355-AFC6-634936B0C647}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -7,8 +7,8 @@
     <ProjectGuid>{B1DF8B20-384D-4355-AFC6-634936B0C647}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ProductionDataCollectionSystem.Data</RootNamespace>
-    <AssemblyName>ProductionDataCollectionSystem.Data</AssemblyName>
+    <RootNamespace>ProductionDataCollectingSystem.Data</RootNamespace>
+    <AssemblyName>ProductionDataCollectingSystem.Data</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
