@@ -10,7 +10,11 @@ namespace ProductionDataCollectingSystem.ConsoleTestClient
     {
         static void Main(string[] args)
         {
+<<<<<<< HEAD
             Console.WriteLine("Hello from user 1");
+=======
+            Console.WriteLine("Hello from user 2");
+>>>>>>> 986541ef7cc2fd13fba5fd83225f2ff8232ac44f
         }
     }
 }
