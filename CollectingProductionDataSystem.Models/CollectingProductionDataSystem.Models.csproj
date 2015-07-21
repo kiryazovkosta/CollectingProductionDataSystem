@@ -4,17 +4,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{0082EB77-D25F-49C6-A1E9-07C1AAFB5BAF}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <ProjectGuid>{63CC73A0-F2C2-453D-A915-1913095F22FD}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ProductionDataCollectingSystem.ConsoleTestClient</RootNamespace>
-    <AssemblyName>ProductionDataCollectingSystem.ConsoleTestClient</AssemblyName>
+    <RootNamespace>CollectingProductionDataSystem.Models</RootNamespace>
+    <AssemblyName>CollectingProductionDataSystem.Models</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -24,7 +22,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -33,7 +30,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -42,11 +43,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
+    <Compile Include="EntityBase.cs" />
+    <Compile Include="Inventory\Area.cs" />
+    <Compile Include="ExciseStore.cs" />
+    <Compile Include="Mec\DeviceType.cs" />
+    <Compile Include="Mec\Factory.cs" />
+    <Compile Include="Inventory\InventoryPark.cs" />
+    <Compile Include="Inventory\InventoryTank.cs" />
+    <Compile Include="Mec\Plant.cs" />
+    <Compile Include="Inventory\Product.cs" />
+    <Compile Include="Inventory\ProductType.cs" />
+    <Compile Include="Mec\ProcessUnit.cs" />
+    <Compile Include="Mec\Unit.cs" />
+    <Compile Include="Mec\UnitData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
