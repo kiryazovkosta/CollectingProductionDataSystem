@@ -1,6 +1,5 @@
 ﻿namespace CollectingProductionDataSystem.Models
 {
-    using CollectingProductionDataSystem.Models.Inventory;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 

@@ -1,21 +1,27 @@
-﻿
-
-namespace CollectingProductionDataSystem.Data
+﻿namespace CollectingProductionDataSystem.Data
 {
     using System.Data.Entity;
     using CollectingProductionDataSystem.Data.Migrations;
 
     using CollectingProductionDataSystem.Models;
-    using CollectingProductionDataSystem.Models.Inventory;
-using CollectingProductionDataSystem.Models.Mec;
 
     public class CollectingDataSystemDbContext : DbContext
     {
         public CollectingDataSystemDbContext()
-            : base("CollectingProductionDataSystemConnection")
+            : base("CollectingPrimaryDataSystemConnection")
         {
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<CollectingDataSystemDbContext, Configuration>());
         }
+
+        public virtual IDbSet<ExciseStore> ExciseStores { get; set; }
+        
+        public virtual IDbSet<Product> Products { get; set; }
+
+        public virtual IDbSet<ProductType> ProductTypes { get; set; }
+
+        public virtual IDbSet<MeasureUnit> MeasureUnits { get; set; }
+
+        public virtual IDbSet<Direction> Directions { get; set; }
 
         public virtual IDbSet<Area> Areas { get; set; }
 
@@ -23,11 +29,7 @@ using CollectingProductionDataSystem.Models.Mec;
 
         public virtual IDbSet<InventoryTank> InventoryTanks { get; set; }
 
-        public virtual IDbSet<ExciseStore> ExciseStores { get; set; }
-        
-        public virtual IDbSet<Product> Products { get; set; }
-
-        public virtual IDbSet<ProductType> ProductTypes { get; set; }
+        public virtual IDbSet<InventoryTanksData> InventoryTanksData { get; set; }
 
         public virtual IDbSet<Plant> Plants { get; set; }
 
@@ -37,6 +39,6 @@ using CollectingProductionDataSystem.Models.Mec;
 
         public virtual IDbSet<Unit> Units { get; set; }
 
-        public virtual IDbSet<UnitData> UnitData { get; set; }
+        public virtual IDbSet<MaterialType> MaterialTypes { get; set; }
     }
 }

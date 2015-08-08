@@ -30,8 +30,21 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EntityFramework">
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.1\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -43,20 +56,28 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApplicationUser.cs" />
+    <Compile Include="Direction.cs" />
     <Compile Include="EntityBase.cs" />
-    <Compile Include="Inventory\Area.cs" />
+    <Compile Include="Area.cs" />
     <Compile Include="ExciseStore.cs" />
-    <Compile Include="Mec\DeviceType.cs" />
-    <Compile Include="Mec\Factory.cs" />
-    <Compile Include="Inventory\InventoryPark.cs" />
-    <Compile Include="Inventory\InventoryTank.cs" />
-    <Compile Include="Mec\Plant.cs" />
-    <Compile Include="Inventory\Product.cs" />
-    <Compile Include="Inventory\ProductType.cs" />
-    <Compile Include="Mec\ProcessUnit.cs" />
-    <Compile Include="Mec\Unit.cs" />
-    <Compile Include="Mec\UnitData.cs" />
+    <Compile Include="InventoryTanksData.cs" />
+    <Compile Include="MeasureUnit.cs" />
+    <Compile Include="Factory.cs" />
+    <Compile Include="InventoryPark.cs" />
+    <Compile Include="InventoryTank.cs" />
+    <Compile Include="MaterialType.cs" />
+    <Compile Include="Plant.cs" />
+    <Compile Include="Product.cs" />
+    <Compile Include="ProductType.cs" />
+    <Compile Include="ProcessUnit.cs" />
+    <Compile Include="Unit.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UnitsData.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
