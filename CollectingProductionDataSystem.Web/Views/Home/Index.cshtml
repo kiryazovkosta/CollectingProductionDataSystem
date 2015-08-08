@@ -1,4 +1,4 @@
-﻿@model IEnumerable<CollectingProductionDataSystem.Models.InventoryTank>
+﻿@model IEnumerable<CollectingProductionDataSystem.Web.ViewModels.Home.IndexInventoryTanksViewModel>
 @{
     ViewBag.Title = "Home Page";
 }
@@ -6,6 +6,6 @@
 <div class="jumbotron">
     @foreach(var tank in Model)
     {
-        <p>@tank.ControlPoint</p>
+        <p>@tank.TankName</p>
     }
 </div>

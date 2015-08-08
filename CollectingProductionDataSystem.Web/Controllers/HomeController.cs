@@ -1,16 +1,12 @@
 ﻿namespace CollectingProductionDataSystem.Web.Controllers
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Data.Entity;
-    using System.Linq;
-    using System.Web;
     using System.Web.Mvc;
 
+    using AutoMapper.QueryableExtensions;
+
+    using CollectingProductionDataSystem.Web.ViewModels.Home;
     using CollectingProductionDataSystem.Common.Repositories;
-    using CollectingProductionDataSystem.Data.Repositories;
     using CollectingProductionDataSystem.Models;
-    using CollectingProductionDataSystem.Data;
 
     public class HomeController : Controller
     {
@@ -23,7 +19,7 @@
 
         public ActionResult Index()
         {
-            var tanks = this.tanks.All();
+            var tanks = this.tanks.All().Project().To<IndexInventoryTanksViewModel>();
             return View(tanks);
         }
     }
