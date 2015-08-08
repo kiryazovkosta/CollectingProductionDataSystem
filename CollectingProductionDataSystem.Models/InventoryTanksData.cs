@@ -4,6 +4,8 @@
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
+    using CollectingProductionDataSystem.Models;
+
     [Table("InventoryTanksData")]
     public class InventoryTanksData
     {

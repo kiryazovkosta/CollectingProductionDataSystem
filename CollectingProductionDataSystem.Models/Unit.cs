@@ -4,13 +4,18 @@
     using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
 
+    using CollectingProductionDataSystem.Models;
+
     public partial class Unit : EntityBase
     {
         private ICollection<UnitsData> unitsData;
 
+        private ICollection<UnitsInspectionData> inspectionPointData;
+
         public Unit()
         {
             this.unitsData = new HashSet<UnitsData>();
+            this.inspectionPointData = new HashSet<UnitsInspectionData>();
         }
 
         [Key]
@@ -40,17 +45,25 @@
         [MaxLength(1)]
         public string CollectingDataMechanism { get; set; }
 
+        public string AggregateGroup { get; set; }
+
+        [MaxLength(50)]
         public string CurrentShiftTag { get; set; }
-
+        
+        [MaxLength(50)]
         public string PreviousShiftTag { get; set; }
-
+        
+        [MaxLength(50)]
         public string CurrentDayTag { get; set; }
-
+        
+        [MaxLength(50)]
         public string PreviousDayTag { get; set; }
 
+        [MaxLength(50)]
         public string CurrentMonthTag { get; set; }
 
-        public string AggregateGroup { get; set; }
+        [MaxLength(50)]
+        public string CurrentInspectionDataTag { get; set; }
 
         [MaxLength(200)]
         public string Notes { get; set; }
@@ -70,6 +83,11 @@
             get { return this.unitsData; }
             set { this.unitsData = value; }
         }
+
+        public virtual ICollection<UnitsInspectionData> InspectionPointData
+        {
+            get { return this.inspectionPointData; }
+            set { this.inspectionPointData = value; }
+        }
     }
 }
-

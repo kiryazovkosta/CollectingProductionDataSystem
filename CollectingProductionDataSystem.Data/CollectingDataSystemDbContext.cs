@@ -2,13 +2,13 @@
 {
     using System.Data.Entity;
     using CollectingProductionDataSystem.Data.Migrations;
-
     using CollectingProductionDataSystem.Models;
-
-    public class CollectingDataSystemDbContext : DbContext
+    using Microsoft.AspNet.Identity.EntityFramework;
+    
+    public class CollectingDataSystemDbContext : IdentityDbContext<ApplicationUser>
     {
         public CollectingDataSystemDbContext()
-            : base("CollectingPrimaryDataSystemConnection")
+            : base("CollectingPrimaryDataSystemConnection", throwIfV1Schema: false)
         {
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<CollectingDataSystemDbContext, Configuration>());
         }
@@ -39,6 +39,15 @@
 
         public virtual IDbSet<Unit> Units { get; set; }
 
+        public virtual IDbSet<UnitsData> UnitsData { get; set; }
+
+        public virtual IDbSet<UnitsInspectionData> UnitsInspectionData { get; set; }
+
         public virtual IDbSet<MaterialType> MaterialTypes { get; set; }
+
+        public static CollectingDataSystemDbContext Create()
+        {
+            return new CollectingDataSystemDbContext();
+        }
     }
 }

@@ -3,6 +3,8 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
+    using CollectingProductionDataSystem.Models;
+
     public class InventoryPark : EntityBase
     {
         private ICollection<InventoryTank> inventoryTanks;

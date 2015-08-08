@@ -15,7 +15,6 @@
         [Key]
         public int Id { get; set; }
 
-
         public int InventoryParkId { get; set; }
 
         public string ControlPoint { get; set; }

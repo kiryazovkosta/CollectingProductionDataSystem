@@ -13,8 +13,6 @@ Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "CollectingProductionDataSys
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "CollectingProductionDataSystem.UniformanceDataAccess", "CollectingProductionDataSystem.UniformanceDataAccess\CollectingProductionDataSystem.UniformanceDataAccess.vbproj", "{879AE334-4365-4ADF-A551-C9EE1D9A3FF5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CollectingProductionDataSystem.Common", "CollectingProductionDataSystem.Common\CollectingProductionDataSystem.Common.csproj", "{20B6989D-CF84-4F63-B576-02B2D8793B01}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CollectingProductionDataSystem.Web", "CollectingProductionDataSystem.Web\CollectingProductionDataSystem.Web.csproj", "{02A87621-8FFF-4462-AAD5-FC326F867802}"
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "CollectingProductionDataSystem.Phd2SqlInventorySetup", "CollectingProductionDataSystem.Phd2SqlInventorySetup\CollectingProductionDataSystem.Phd2SqlInventorySetup.vdproj", "{BDB72C8C-19CE-424C-BB7A-BFC738539E2A}"
@@ -77,14 +75,6 @@ Global
 		{879AE334-4365-4ADF-A551-C9EE1D9A3FF5}.Release|x64.Build.0 = Release|x64
 		{879AE334-4365-4ADF-A551-C9EE1D9A3FF5}.Release|x86.ActiveCfg = Release|x86
 		{879AE334-4365-4ADF-A551-C9EE1D9A3FF5}.Release|x86.Build.0 = Release|x86
-		{20B6989D-CF84-4F63-B576-02B2D8793B01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{20B6989D-CF84-4F63-B576-02B2D8793B01}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{20B6989D-CF84-4F63-B576-02B2D8793B01}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{20B6989D-CF84-4F63-B576-02B2D8793B01}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{20B6989D-CF84-4F63-B576-02B2D8793B01}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{20B6989D-CF84-4F63-B576-02B2D8793B01}.Release|Any CPU.Build.0 = Release|Any CPU
-		{20B6989D-CF84-4F63-B576-02B2D8793B01}.Release|x64.ActiveCfg = Release|Any CPU
-		{20B6989D-CF84-4F63-B576-02B2D8793B01}.Release|x86.ActiveCfg = Release|Any CPU
 		{02A87621-8FFF-4462-AAD5-FC326F867802}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{02A87621-8FFF-4462-AAD5-FC326F867802}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{02A87621-8FFF-4462-AAD5-FC326F867802}.Debug|x64.ActiveCfg = Debug|Any CPU

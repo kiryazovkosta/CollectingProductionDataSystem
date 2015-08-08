@@ -74,6 +74,7 @@
     <Compile Include="Unit.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UnitsData.cs" />
+    <Compile Include="UnitsInspectionData.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
