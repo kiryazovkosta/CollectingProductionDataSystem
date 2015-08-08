@@ -8,9 +8,14 @@
     using CollectingProductionDataSystem.Common.Contracts;
     using System.ComponentModel;
     
-    public class ApplicationUser : IdentityUser, IActiveEntity
+    public class User : IdentityUser, IActiveEntity
     {
-        public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
+        public User()
+        {
+            this.IsActive = true;
+        }
+
+        public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<User> manager)
         {
             // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
             var userIdentity = await manager.CreateIdentityAsync(this, DefaultAuthenticationTypes.ApplicationCookie);

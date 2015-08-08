@@ -42,7 +42,7 @@
   <ItemGroup>
     <Compile Include="Contracts\IAccessRoles.cs" />
     <Compile Include="Contracts\IActiveEntity.cs" />
-    <Compile Include="Repositories\IDeletableEntityRepository.cs" />
+    <Compile Include="Repositories\ActiveEntityRepository.cs" />
     <Compile Include="Repositories\IRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

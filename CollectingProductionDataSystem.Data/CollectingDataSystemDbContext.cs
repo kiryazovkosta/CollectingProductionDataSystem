@@ -8,7 +8,7 @@
     using Microsoft.AspNet.Identity.EntityFramework;
     using CollectingProductionDataSystem.Common.Contracts;
     
-    public class CollectingDataSystemDbContext : IdentityDbContext<ApplicationUser>
+    public class CollectingDataSystemDbContext : IdentityDbContext<User>
     {
         public CollectingDataSystemDbContext()
             : base("CollectingPrimaryDataSystemConnection", throwIfV1Schema: false)
