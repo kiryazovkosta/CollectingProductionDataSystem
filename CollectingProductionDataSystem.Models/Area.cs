@@ -1,10 +1,12 @@
 ﻿namespace CollectingProductionDataSystem.Models
 {
+    using CollectingProductionDataSystem.Common.Contracts;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
-    public class Area : EntityBase
+    public class Area : IAccessRoles, IActiveEntity
     {
         private ICollection<InventoryPark> inventoryParks;
 
@@ -20,6 +22,16 @@
         [MaxLength(80)]
         [Index(IsUnique = true)]
         public string Name { get; set; }
+
+        [StringLength(50)]
+        public string FullAccessRole { get; set; }
+
+        [StringLength(50)]
+        public string ReadOnlyRole { get; set; }
+
+        [Index]
+        [DefaultValue(true)]
+        public bool IsActive { get; set; }
 
         public virtual ICollection<InventoryPark> InventoryParks
         {

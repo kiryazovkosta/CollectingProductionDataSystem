@@ -9,7 +9,6 @@
     [Table("InventoryTanksData")]
     public class InventoryTanksData
     {
-        [Key, Column(Order = 0)]
         public int TankId { get; set; }
 
         [Key, Column(Order = 1)]

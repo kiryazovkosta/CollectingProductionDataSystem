@@ -58,7 +58,6 @@
   <ItemGroup>
     <Compile Include="ApplicationUser.cs" />
     <Compile Include="Direction.cs" />
-    <Compile Include="EntityBase.cs" />
     <Compile Include="Area.cs" />
     <Compile Include="ExciseStore.cs" />
     <Compile Include="InventoryTanksData.cs" />
@@ -79,6 +78,12 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CollectingProductionDataSystem.Common\CollectingProductionDataSystem.Common.csproj">
+      <Project>{20b6989d-cf84-4f63-b576-02b2d8793b01}</Project>
+      <Name>CollectingProductionDataSystem.Common</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

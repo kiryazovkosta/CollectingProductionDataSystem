@@ -1,10 +1,12 @@
 ﻿namespace CollectingProductionDataSystem.Models
 {
+    using CollectingProductionDataSystem.Common.Contracts;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
-    public class Product
+    public class Product : IActiveEntity
     {
         private ICollection<Unit> units;
 
@@ -21,10 +23,11 @@
         [MaxLength(150)]
         public string Name { get; set; }
 
-        [Required]
-        public bool IsActive { get; set; }
-
         public int ProductTypeId { get; set; }
+
+        [Required]
+        [DefaultValue(true)]
+        public bool IsActive { get; set; }
 
         public virtual ProductType ProductType { get; set; }
 

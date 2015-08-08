@@ -1,9 +1,12 @@
 ﻿namespace CollectingProductionDataSystem.Models
 {
+    using CollectingProductionDataSystem.Common.Contracts;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
 
-    public class Factory : EntityBase
+    public class Factory : IAccessRoles, IActiveEntity
     {
         private ICollection<ProcessUnit> processUnits;
 
@@ -22,6 +25,16 @@
         [Required]
         [MaxLength(50)]
         public string FullName { get; set; }
+
+        [StringLength(50)]
+        public string FullAccessRole { get; set; }
+
+        [StringLength(50)]
+        public string ReadOnlyRole { get; set; }
+
+        [Index]
+        [DefaultValue(true)]
+        public bool IsActive { get; set; }
 
         public virtual ICollection<ProcessUnit> ProcessUnits
         {

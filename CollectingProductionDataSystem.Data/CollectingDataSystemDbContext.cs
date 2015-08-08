@@ -1,9 +1,12 @@
 ﻿namespace CollectingProductionDataSystem.Data
 {
+    using System;
     using System.Data.Entity;
+    using System.Linq;
     using CollectingProductionDataSystem.Data.Migrations;
     using CollectingProductionDataSystem.Models;
     using Microsoft.AspNet.Identity.EntityFramework;
+    using CollectingProductionDataSystem.Common.Contracts;
     
     public class CollectingDataSystemDbContext : IdentityDbContext<ApplicationUser>
     {
@@ -48,6 +51,27 @@
         public static CollectingDataSystemDbContext Create()
         {
             return new CollectingDataSystemDbContext();
+        }
+
+        public override string ToString()
+        {
+            this.ApplyActiveEntityRules();
+            return base.ToString();
+        }
+
+        private void ApplyActiveEntityRules()
+        {
+            // Approach via @julielerman: http://bit.ly/123661P
+            foreach (
+                var entry in
+                    this.ChangeTracker.Entries()
+                        .Where(e => e.Entity is IActiveEntity && (e.State == EntityState.Deleted)))
+            {
+                var entity = (IActiveEntity)entry.Entity;
+
+                entity.IsActive = false;
+                entry.State = EntityState.Modified;
+            }
         }
     }
 }

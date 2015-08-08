@@ -5,8 +5,10 @@
     using System.ComponentModel.DataAnnotations;
 
     using CollectingProductionDataSystem.Models;
+    using System.ComponentModel.DataAnnotations.Schema;
+using CollectingProductionDataSystem.Common.Contracts;
 
-    public partial class Unit : EntityBase
+    public class Unit : IActiveEntity
     {
         private ICollection<UnitsData> unitsData;
 
@@ -67,6 +69,10 @@
 
         [MaxLength(200)]
         public string Notes { get; set; }
+
+        [Index]
+        [DefaultValue(true)]
+        public bool IsActive { get; set; }
 
         public virtual ProcessUnit ProcessUnit { get; set; }
 

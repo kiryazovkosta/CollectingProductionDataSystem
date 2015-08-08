@@ -1,9 +1,12 @@
 ﻿namespace CollectingProductionDataSystem.Models
 {
+    using CollectingProductionDataSystem.Common.Contracts;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
 
-    public class Direction
+    public class Direction : IActiveEntity
     {
         private ICollection<Unit> units;
 
@@ -17,6 +20,10 @@
         [Required]
         [MaxLength(16)]
         public string Name { get; set; }
+
+        [Index]
+        [DefaultValue(true)]
+        public bool IsActive { get; set; }
 
         public virtual ICollection<Unit> Units
         {

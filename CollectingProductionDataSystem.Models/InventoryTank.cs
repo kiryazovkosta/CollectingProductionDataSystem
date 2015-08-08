@@ -1,9 +1,12 @@
 ﻿namespace CollectingProductionDataSystem.Models
 {
+    using CollectingProductionDataSystem.Common.Contracts;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
 
-    public class InventoryTank
+    public class InventoryTank : IActiveEntity
     {
         private ICollection<InventoryTanksData> inventoryTankData;
 
@@ -21,6 +24,8 @@
 
         public string TankName { get; set; }
 
+        [Index]
+        [DefaultValue(true)]
         public bool IsActive { get; set; }
 
         public string PhdTagProductId { get; set; }
