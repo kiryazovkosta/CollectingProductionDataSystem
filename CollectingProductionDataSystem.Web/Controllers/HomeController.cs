@@ -16,12 +16,6 @@
     {
         private IRepository<InventoryTank> tanks;
 
-        public HomeController()
-            : this(new GenericRepository<InventoryTank>(new CollectingDataSystemDbContext()))
-        {
-
-        }
-
         public HomeController(IRepository<InventoryTank> tanksParam)
         {
             this.tanks = tanksParam;

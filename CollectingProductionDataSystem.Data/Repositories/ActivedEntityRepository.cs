@@ -6,10 +6,10 @@
     using CollectingProductionDataSystem.Common.Contracts;
     using CollectingProductionDataSystem.Common.Repositories;
 
-    public class DeletableEntityRepository<T> : GenericRepository<T>, IActiveEntityRepository<T>
+    public class ActiveEntityRepository<T> : GenericRepository<T>, IActiveEntityRepository<T>
         where T : class, IActiveEntity
     {
-        public DeletableEntityRepository(DbContext context)
+        public ActiveEntityRepository(DbContext context)
             : base(context)
         {
         }
