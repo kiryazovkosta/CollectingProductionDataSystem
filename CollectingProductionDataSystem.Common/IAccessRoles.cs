@@ -1,4 +1,4 @@
-﻿namespace CollectingProductionDataSystem.Common.Contracts
+﻿namespace CollectingProductionDataSystem.Common
 {
     public interface IAccessRoles
     {

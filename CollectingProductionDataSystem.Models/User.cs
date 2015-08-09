@@ -5,7 +5,7 @@
     using System.Threading.Tasks;
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.EntityFramework;
-    using CollectingProductionDataSystem.Common.Contracts;
+    using CollectingProductionDataSystem.Common;
     using System.ComponentModel;
     
     public class User : IdentityUser, IActiveEntity

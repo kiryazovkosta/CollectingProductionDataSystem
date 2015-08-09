@@ -3,13 +3,12 @@
     using System.Data.Entity;
     using System.Linq;
 
-    using CollectingProductionDataSystem.Common.Contracts;
-    using CollectingProductionDataSystem.Common.Repositories;
+    using CollectingProductionDataSystem.Common;
 
     public class ActiveEntityRepository<T> : GenericRepository<T>, IActiveEntityRepository<T>
         where T : class, IActiveEntity
     {
-        public ActiveEntityRepository(DbContext context)
+        public ActiveEntityRepository(IDbContext context)
             : base(context)
         {
         }

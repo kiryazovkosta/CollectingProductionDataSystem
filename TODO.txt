@@ -1,0 +1,1 @@
+1. Move SetRegionalSetting to CollectingProductionDataSystem.Common project 

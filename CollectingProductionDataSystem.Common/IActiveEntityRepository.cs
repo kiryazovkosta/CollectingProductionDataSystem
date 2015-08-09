@@ -1,4 +1,4 @@
-﻿namespace CollectingProductionDataSystem.Common.Repositories
+﻿namespace CollectingProductionDataSystem.Common
 {
     using System.Linq;
 

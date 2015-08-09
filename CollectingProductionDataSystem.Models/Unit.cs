@@ -6,7 +6,7 @@
 
     using CollectingProductionDataSystem.Models;
     using System.ComponentModel.DataAnnotations.Schema;
-using CollectingProductionDataSystem.Common.Contracts;
+using CollectingProductionDataSystem.Common;
 
     public class Unit : IActiveEntity
     {

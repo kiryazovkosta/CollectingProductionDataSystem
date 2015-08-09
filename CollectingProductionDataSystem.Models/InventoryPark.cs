@@ -4,7 +4,7 @@
     using System.ComponentModel.DataAnnotations;
 
     using CollectingProductionDataSystem.Models;
-    using CollectingProductionDataSystem.Common.Contracts;
+    using CollectingProductionDataSystem.Common;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.ComponentModel;
 

@@ -12,7 +12,7 @@ namespace CollectingProductionDataSystem.Web.App_Start
     using Ninject.Web.Common;
     using System.Data.Entity;
     using CollectingProductionDataSystem.Data;
-    using CollectingProductionDataSystem.Common.Repositories;
+    using CollectingProductionDataSystem.Common;
     using CollectingProductionDataSystem.Data.Repositories;
 
     public static class NinjectWebCommon 

@@ -32,8 +32,8 @@
         '
         'Phd2SqlInventoryServiceInstaller
         '
-        Me.Phd2SqlInventoryServiceInstaller.Description = "Collecting Primary Data System: Reads inventory data from Uniformance PHD and wri" & _
-    "tes it to MS SQL database."
+        Me.Phd2SqlInventoryServiceInstaller.Description = "Collecting Production Data System: Reads inventory data from Uniformance PHD and " & _
+    "writes it to MS SQL database."
         Me.Phd2SqlInventoryServiceInstaller.DisplayName = "CPDS PHD 2 SQL Inventory Synchronization Service"
         Me.Phd2SqlInventoryServiceInstaller.ServiceName = "CPDS PHD 2 SQL Inventory Synchronization Service"
         Me.Phd2SqlInventoryServiceInstaller.StartType = System.ServiceProcess.ServiceStartMode.Automatic

@@ -1,6 +1,6 @@
 ﻿namespace CollectingProductionDataSystem.Models
 {
-    using CollectingProductionDataSystem.Common.Contracts;
+    using CollectingProductionDataSystem.Common;
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;

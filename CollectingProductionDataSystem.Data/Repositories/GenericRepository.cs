@@ -1,6 +1,6 @@
 ﻿namespace CollectingProductionDataSystem.Data.Repositories
 {
-    using CollectingProductionDataSystem.Common.Repositories;
+    using CollectingProductionDataSystem.Common;
     using System;
     using System.ComponentModel.DataAnnotations;
     using System.Data.Entity;
@@ -9,7 +9,7 @@
 
     public class GenericRepository<T> : IRepository<T> where T : class
     {
-        public GenericRepository(DbContext context)
+        public GenericRepository(IDbContext context)
         {
             if (context == null)
             {
@@ -22,14 +22,14 @@
 
         protected IDbSet<T> DbSet { get; set; }
 
-        protected DbContext Context { get; set; }
+        protected IDbContext Context { get; set; }
 
         public virtual IQueryable<T> All()
         {
             return this.DbSet.AsQueryable();
         }
 
-        public virtual T GetById(int id)
+        public virtual T GetById(object id)
         {
             return this.DbSet.Find(id);
         }
@@ -72,7 +72,7 @@
             }
         }
 
-        public virtual void Delete(int id)
+        public virtual void Delete(object id)
         {
             var entity = this.GetById(id);
 
