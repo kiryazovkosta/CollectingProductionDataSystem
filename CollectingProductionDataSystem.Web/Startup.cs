@@ -1,8 +1,10 @@
-﻿using Microsoft.Owin;
+﻿using System;
+using Microsoft.Owin;
 using Owin;
 
-[assembly: OwinStartupAttribute(typeof(CollectingProductionDataSystem.Web.Startup))]
-namespace CollectingProductionDataSystem.Web
+[assembly: OwinStartup(typeof(CollectingProductionDataSystem.Web.AppStart.Startup))]
+
+namespace CollectingProductionDataSystem.Web.AppStart
 {
     public partial class Startup
     {

@@ -1,13 +1,11 @@
 ﻿namespace CollectingProductionDataSystem.Web.ViewModels.Home
 {
-    using CollectingProductionDataSystem.Infrastructure.Mapping;
-    using CollectingProductionDataSystem.Models;
     using System;
-    using System.Collections.Generic;
     using System.Linq;
-    using System.Web;
+    using CollectingProductionDataSystem.Infrastructure.Mapping;
+    using CollectingProductionDataSystem.Models.Inventories;
 
-    public class IndexInventoryTanksViewModel : IMapFrom<InventoryTank>
+    public class IndexInventoryTanksViewModel : IMapFrom<TankConfig>
     {
         public string TankName { get; set; }
     }

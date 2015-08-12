@@ -104,9 +104,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CollectingProductionDataSystem.Common\CollectingProductionDataSystem.Common.csproj">
-      <Project>{20b6989d-cf84-4f63-b576-02b2d8793b01}</Project>
-      <Name>CollectingProductionDataSystem.Common</Name>
+    <ProjectReference Include="..\CollectingProductionDataSystem.Contracts\CollectingProductionDataSystem.Contracts.csproj">
+      <Project>{8dd67abb-5bfb-4a28-82df-7bfe8ca483a6}</Project>
+      <Name>CollectingProductionDataSystem.Contracts</Name>
     </ProjectReference>
     <ProjectReference Include="..\CollectingProductionDataSystem.Data\CollectingProductionDataSystem.Data.csproj">
       <Project>{59ca4923-fd5f-4087-a7ee-5623f1dd8ca9}</Project>
@@ -117,7 +117,6 @@
       <Name>CollectingProductionDataSystem.Models</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

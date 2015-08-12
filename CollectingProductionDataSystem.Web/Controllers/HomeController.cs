@@ -4,10 +4,6 @@
 
     using AutoMapper.QueryableExtensions;
 
-    using CollectingProductionDataSystem.Web.ViewModels.Home;
-    using CollectingProductionDataSystem.Common;
-    using CollectingProductionDataSystem.Models;
-
     public class HomeController : Controller
     {
         public ActionResult Index()
