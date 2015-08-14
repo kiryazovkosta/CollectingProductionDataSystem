@@ -13,7 +13,7 @@ namespace CollectingProductionDataSystem.Data.Mappings
 
             // Properties
             this.Property(t => t.Id)
-                .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
+                .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 
             this.Property(t => t.Name)
                 .IsRequired()

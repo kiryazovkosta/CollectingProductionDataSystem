@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using CollectingProductionDataSystem.Data;
 using CollectingProductionDataSystem.Models;
 using CollectingProductionDataSystem.Models.Inventories;
+using CollectingProductionDataSystem.Models.Nomenclatures;
 using CollectingProductionDataSystem.Web.AppStart;
 using Microsoft.AspNet.Identity.Owin;
 
@@ -27,10 +28,18 @@ namespace CollectingProductionDataSystem.Web.Controllers
         [Authorize]
         public ActionResult Test()
         {
-            this.data.Products.Delete(4);
+            // add product
+            var pr1 = new Product() { Name = "Added Product", ProductTypeId = 1};
+            this.data.Products.Add(pr1);
+
+            //modify product
             var pr = this.data.Products.GetById(5);
             pr.Name = "Modified Product Name";
             this.data.Products.Update(pr);
+
+            //delete product
+            this.data.Products.Delete(4);
+           
             this.data.SaveChanges(this.UserProfile.User.UserName);
             return View((object)"Success");
         }

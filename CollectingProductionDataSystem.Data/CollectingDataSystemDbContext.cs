@@ -1,7 +1,9 @@
 ﻿namespace CollectingProductionDataSystem.Data
 {
     using System;
+    using System.Collections.Generic;
     using System.Data.Entity;
+    using System.Data.Entity.Infrastructure;
     using System.Diagnostics;
     using System.Linq;
     using CollectingProductionDataSystem.Constants;
@@ -25,7 +27,7 @@
             : base(DbConnection.DefaultConnectionString, throwIfV1Schema: false)
         {
 #if DEBUG
-            this.Database.Log = (c) => { Debug.WriteLine(c); };  
+            this.Database.Log = (c) => { Debug.WriteLine(c); };
 #endif
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<CollectingDataSystemDbContext, Configuration>());
             this.persister = new AuditablePersister();
@@ -96,9 +98,16 @@
                 userName = "System Change";
             }
 
-            var changes = persister.PrepareSaveChanges(this, userName);
+            List<DbEntityEntry> addedRecords;
+
+            List<AuditLogRecord> changes = persister.PrepareSaveChanges(this, userName, out addedRecords);
 
             var returnValue = base.SaveChanges();
+
+            if (addedRecords != null && addedRecords.Count() > 0)
+            {
+                changes.AddRange(persister.GetAddedEntityes(addedRecords));
+            }
 
             if (changes.Count() > 0)
             {
