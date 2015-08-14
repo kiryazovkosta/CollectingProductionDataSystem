@@ -2,6 +2,7 @@
 {
     using System;
     using System.Data.Entity;
+    using System.Diagnostics;
     using System.Linq;
     using CollectingProductionDataSystem.Constants;
     using CollectingProductionDataSystem.Data.Concrete;
@@ -20,22 +21,17 @@
     {
         private readonly IPersister persister;
 
-        private string userName;
-
-        public string UserName 
-        {
-            get { return this.userName; }
-            set { this.userName = value; }
-        }
-
         public CollectingDataSystemDbContext()
             : base(DbConnection.DefaultConnectionString, throwIfV1Schema: false)
         {
+#if DEBUG
+            this.Database.Log = (c) => { Debug.WriteLine(c); };  
+#endif
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<CollectingDataSystemDbContext, Configuration>());
             this.persister = new AuditablePersister();
         }
 
-         public CollectingDataSystemDbContext(IPersister param)
+        public CollectingDataSystemDbContext(IPersister param)
             : base(DbConnection.DefaultConnectionString, throwIfV1Schema: false)
         {
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<CollectingDataSystemDbContext, Configuration>());
@@ -89,16 +85,27 @@
 
         public override int SaveChanges()
         {
-            // if (userName == null)
-            //{
-            //    throw new ArgumentNullException("UserName","You cannot save changes to database without provide UserName!!!");
-            //}
+            return SaveChanges(null);
+        }
 
-            if (this.persister != null)
+        public int SaveChanges(string userName)
+        {
+            if (userName == null)
             {
-                persister.PrepareSaveChanges(this, this.userName);
+                // performed only if some Miocrosoft API calls original SaveChanges
+                userName = "System Change";
             }
 
+            var changes = persister.PrepareSaveChanges(this, userName);
+            if (changes.Count() > 0)
+            {
+                foreach (var change in changes)
+                {
+                    this.AuditLogRecords.Attach(change);
+                    this.AuditLogRecords.Add(change);
+                }
+            }
+            // TODO: try to ger Added records 
             return base.SaveChanges();
         }
 
@@ -108,50 +115,6 @@
         public new IDbSet<T> Set<T>() where T : class
         {
             return base.Set<T>();
-        }
-
-        private void ApplyAuditInfoRules()
-        {
-            // Approach via @julielerman: http://bit.ly/123661P
-            foreach (var entry in
-                this.ChangeTracker.Entries()
-                    .Where(
-                        e =>
-                        ! (e.Entity is IDeletableEntity) && e.Entity is IAuditInfo && ((e.State == EntityState.Added) || (e.State == EntityState.Modified))))
-            {
-                var entity = (IAuditInfo)entry.Entity;
-
-                if (entry.State == EntityState.Added)
-                {
-                    if (!entity.PreserveCreatedOn)
-                    {
-                        entity.CreatedOn = DateTime.Now;
-                    }
-                }
-                else
-                {
-                    entity.ModifiedOn = DateTime.Now;
-                }
-
-                //this.AuditRecords.Add((AuditInfo)entry.Entity);
-            }
-        }
-
-        private void ApplyDeletableEntityRules()
-        {
-            // Approach via @julielerman: http://bit.ly/123661P
-            foreach (
-                var entry in
-                    this.ChangeTracker.Entries()
-                        .Where(e => e.Entity is IDeletableEntity && (e.State == EntityState.Modified)))
-            {
-                var entity = (IDeletableEntity)entry.Entity;
-
-                entity.DeletedOn = DateTime.Now;
-                entity.IsDeleted = true;
-                entry.State = EntityState.Modified;
-                //this.AuditRecords.Add((DeletableEntity)entry.Entity);
-            }
         }
     }
 

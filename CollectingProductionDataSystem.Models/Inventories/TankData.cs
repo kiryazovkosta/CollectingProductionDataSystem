@@ -8,28 +8,27 @@ namespace CollectingProductionDataSystem.Models.Inventories
     public partial class TankData: DeletableEntity, IEntity
     {
         public int Id { get; set; }
-        public System.DateTime RecordTimestamp { get; set; }
-        public string ExciseStoreId { get; set; }
+        public DateTime RecordTimestamp { get; set; }
         public int ParkId { get; set; }
-        public Nullable<int> ProductId { get; set; }
+        public int? ProductId { get; set; }
         public string ProductName { get; set; }
-        public Nullable<decimal> LiquidLevel { get; set; }
-        public Nullable<decimal> TotalObservableVolume { get; set; }
-        public Nullable<decimal> ProductLevel { get; set; }
-        public Nullable<decimal> GrossObservableVolume { get; set; }
-        public Nullable<decimal> ObservableDensity { get; set; }
-        public Nullable<decimal> GrossStandardVolume { get; set; }
-        public Nullable<decimal> AverageTemperature { get; set; }
-        public Nullable<decimal> NetStandardVolume { get; set; }
-        public Nullable<decimal> ReferenceDensity { get; set; }
-        public Nullable<decimal> WeightInAir { get; set; }
-        public Nullable<decimal> WeightInVacuum { get; set; }
-        public Nullable<decimal> FreeWaterLevel { get; set; }
-        public Nullable<decimal> FreeWaterVolume { get; set; }
-        public Nullable<decimal> MaxVolume { get; set; }
-        public Nullable<decimal> AvailableRoom { get; set; }
-        public Nullable<System.DateTime> LastUpdateTimestamp { get; set; }
-        public virtual TankConfig InventoryTank { get; set; }
+        public decimal? LiquidLevel { get; set; }
+        public decimal? TotalObservableVolume { get; set; }
+        public decimal? ProductLevel { get; set; }
+        public decimal? GrossObservableVolume { get; set; }
+        public decimal? ObservableDensity { get; set; }
+        public decimal? GrossStandardVolume { get; set; }
+        public decimal? AverageTemperature { get; set; }
+        public decimal? NetStandardVolume { get; set; }
+        public decimal? ReferenceDensity { get; set; }
+        public decimal? WeightInAir { get; set; }
+        public decimal? WeightInVacuum { get; set; }
+        public decimal? FreeWaterLevel { get; set; }
+        public decimal? FreeWaterVolume { get; set; }
+        public decimal? MaxVolume { get; set; }
+        public decimal? AvailableRoom { get; set; }
+        public decimal? UnusableResidueLevel { get; set; }
+        public virtual TankConfig TankConfig { get; set; }
         public virtual Product Product { get; set; }
     }
 }

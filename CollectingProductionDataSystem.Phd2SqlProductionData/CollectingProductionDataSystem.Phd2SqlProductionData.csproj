@@ -55,7 +55,7 @@
     </Reference>
     <Reference Include="phdapinet, Version=300.1.0.1, Culture=neutral, PublicKeyToken=5c915cbb2b8fbc32, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Program Files (x86)\Common Files\Honeywell\Uniformance\phdapinet.dll</HintPath>
+      <HintPath>..\ExtarnalLibraries\Uniformance\phdapinet.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -70,6 +70,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\InspectionPoint.cs" />
+    <Compile Include="Models\Tank.cs" />
     <Compile Include="Phd2SqlProductionDataService.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -89,6 +91,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="Utility.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -104,6 +107,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CollectingProductionDataSystem.Constants\CollectingProductionDataSystem.Constants.csproj">
+      <Project>{21b90cc4-73cc-4c1a-a2e3-fb6c7278beb9}</Project>
+      <Name>CollectingProductionDataSystem.Constants</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CollectingProductionDataSystem.Contracts\CollectingProductionDataSystem.Contracts.csproj">
       <Project>{8dd67abb-5bfb-4a28-82df-7bfe8ca483a6}</Project>
       <Name>CollectingProductionDataSystem.Contracts</Name>

@@ -9,11 +9,11 @@
 
     public interface IDbContext
     {
-        DbContext DbContext { get; set; }
+        //DbContext DbContext { get; set; }
 
-        string UserName { get; set; }
+        //string UserName { get; set; }
 
-        int SaveChanges();
+        int SaveChanges(string userName);
 
         void Dispose();
 

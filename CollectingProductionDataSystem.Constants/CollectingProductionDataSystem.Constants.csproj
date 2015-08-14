@@ -41,6 +41,7 @@
   <ItemGroup>
     <Compile Include="DbConnection.cs" />
     <Compile Include="Namespace.cs" />
+    <Compile Include="PhdConnection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

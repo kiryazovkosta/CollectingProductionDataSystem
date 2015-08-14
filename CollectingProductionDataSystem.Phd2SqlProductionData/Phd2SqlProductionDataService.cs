@@ -82,7 +82,7 @@ namespace CollectingProductionDataSystem.Phd2SqlProductionData
                 try
                 {
                     this.inspectionDataTimer.Change(Timeout.Infinite, Timeout.Infinite);
-                    Phd2SqlProductionDataMain.ProcessInformationLogsData();
+                    Phd2SqlProductionDataMain.ProcessInspectionPointsData();
                 }
                 catch (Exception ex)
                 {
@@ -123,6 +123,7 @@ namespace CollectingProductionDataSystem.Phd2SqlProductionData
             {
                 try
                 {
+                    Utility.SetRegionalSettings();
                     this.inventoryDataTimer.Change(Timeout.Infinite, Timeout.Infinite);
                     Phd2SqlProductionDataMain.ProcessInventoryTanksData();
                 }

@@ -8,13 +8,15 @@ namespace CollectingProductionDataSystem.Models.Inventories
 {
     public partial class TankConfig: DeletableEntity, IEntity
     {
+        private ICollection<TankData> tankDatas;
+
         public TankConfig()
         {
-            this.InventoryTanksDatas = new HashSet<TankData>();
+            this.tankDatas = new HashSet<TankData>();
         }
 
         public int Id { get; set; }
-        public int InventoryParkId { get; set; }
+        public int ParkId { get; set; }
         public string ControlPoint { get; set; }
         public string TankName { get; set; }
         public string PhdTagProductId { get; set; }
@@ -64,7 +66,12 @@ namespace CollectingProductionDataSystem.Models.Inventories
         public string PhdTagAvailableRoom { get; set; }
         public decimal AvailableRoomLowExtreme { get; set; }
         public decimal AvailableRoomHighExtreme { get; set; }
-        public virtual Park InventoryPark { get; set; }
-        public virtual ICollection<TankData> InventoryTanksDatas { get; set; }
+        public decimal UnusableResidueLevel { get; set; }
+        public virtual Park Park { get; set; }
+        public virtual ICollection<TankData> TankDatas 
+        {
+            get { return this.tankDatas; }
+            set { this.tankDatas = value; }
+        }
     }
 }

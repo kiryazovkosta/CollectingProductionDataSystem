@@ -4,12 +4,13 @@ using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CollectingProductionDataSystem.Models.UtilityEntities;
 
 namespace CollectingProductionDataSystem.Data.Contracts
 {
     public interface IPersister
     {
-        void PrepareSaveChanges(DbContext data, string userName);
+        IEnumerable<AuditLogRecord> PrepareSaveChanges(DbContext data, string userName);
         void PrepareSaveChanges(DbContext data);
     }
 }

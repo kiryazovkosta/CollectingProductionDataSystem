@@ -9,7 +9,7 @@ namespace CollectingProductionDataSystem.Data.Mappings
         public TankDataMap()
         {
             // Primary Key
-            this.HasKey(t => new { t.RecordTimestamp, t.Id });
+            this.HasKey(t => new { t.Id, t.RecordTimestamp });
 
             // Properties
             this.Property(t => t.Id)
@@ -19,11 +19,11 @@ namespace CollectingProductionDataSystem.Data.Mappings
             this.ToTable("TankDatas");
 
             // Relationships
-            this.HasRequired(t => t.InventoryTank)
-                .WithMany(t => t.InventoryTanksDatas)
+            this.HasRequired(t => t.TankConfig)
+                .WithMany(t => t.TankDatas)
                 .HasForeignKey(d => d.Id);
             this.HasOptional(t => t.Product)
-                .WithMany(t => t.InventoryTanksDatas)
+                .WithMany(t => t.TanksDatas)
                 .HasForeignKey(d => d.ProductId);
 
         }

@@ -9,17 +9,28 @@ namespace CollectingProductionDataSystem.Models.Nomenclatures
 {
     public partial class Product: DeletableEntity, IEntity
     {
+        private ICollection<TankData> tanksDatas;
+        private ICollection<UnitConfig> unitConfigs;
+
         public Product()
         {
-            this.InventoryTanksDatas = new HashSet<TankData>();
-            this.Units = new HashSet<UnitConfig>();
+            this.tanksDatas = new HashSet<TankData>();
+            this.unitConfigs = new HashSet<UnitConfig>();
         }
 
         public int Id { get; set; }
         public string Name { get; set; }
         public int ProductTypeId { get; set; }
-        public virtual ICollection<TankData> InventoryTanksDatas { get; set; }
+        public virtual ICollection<TankData> TanksDatas 
+        {
+            get { return this.tanksDatas; }
+            set { this.tanksDatas = value; }
+        }
         public virtual ProductType ProductType { get; set; }
-        public virtual ICollection<UnitConfig> Units { get; set; }
+        public virtual ICollection<UnitConfig> Units 
+        {
+            get { return this.unitConfigs; }
+            set { this.unitConfigs = value; }
+        }
     }
 }

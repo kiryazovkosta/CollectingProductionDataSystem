@@ -16,9 +16,9 @@ namespace CollectingProductionDataSystem.Data.Mappings
             this.ToTable("TankConfigs");
 
             // Relationships
-            this.HasRequired(t => t.InventoryPark)
-                .WithMany(t => t.InventoryTanks)
-                .HasForeignKey(d => d.InventoryParkId);
+            this.HasRequired(t => t.Park)
+                .WithMany(t => t.TankConfigs)
+                .HasForeignKey(d => d.ParkId);
 
         }
     }

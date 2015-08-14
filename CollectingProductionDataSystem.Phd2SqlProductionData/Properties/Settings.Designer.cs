@@ -52,7 +52,7 @@ namespace CollectingProductionDataSystem.Phd2SqlProductionData.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool SYNC_INSPECTION_POINTS {
             get {
                 return ((bool)(this["SYNC_INSPECTION_POINTS"]));
@@ -70,7 +70,7 @@ namespace CollectingProductionDataSystem.Phd2SqlProductionData.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool SYNC_PRIMARY {
             get {
                 return ((bool)(this["SYNC_PRIMARY"]));
@@ -92,6 +92,24 @@ namespace CollectingProductionDataSystem.Phd2SqlProductionData.Properties {
         public bool SYNC_INVENTORY {
             get {
                 return ((bool)(this["SYNC_INVENTORY"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool FORCE_REGIONAL_SETTINGS {
+            get {
+                return ((bool)(this["FORCE_REGIONAL_SETTINGS"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("bg-BG")]
+        public string CULTURE_INFO {
+            get {
+                return ((string)(this["CULTURE_INFO"]));
             }
         }
     }

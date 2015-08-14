@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CollectingProductionDataSystem.Models", "CollectingProductionDataSystem.Models\CollectingProductionDataSystem.Models.csproj", "{63CC73A0-F2C2-453D-A915-1913095F22FD}"
 EndProject
@@ -40,6 +40,15 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WidowsServices", "WidowsServices", "{43D6A01F-7526-42F9-A34E-D060EAB9CBDB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CollectingProductionDataSystem.Utility", "CollectingProductionDataSystem.Utility\CollectingProductionDataSystem.Utility.csproj", "{FCBFCFB0-4E3F-47C2-A1F7-40196F606E33}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ExtarnalLibraries", "ExtarnalLibraries", "{531AE365-A584-4724-94B8-926C7BA3189A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Uniformance", "Uniformance", "{9D1D8F40-FA10-4DB6-9D9A-FB1719F283B3}"
+	ProjectSection(SolutionItems) = preProject
+		ExtarnalLibraries\Uniformance\phdapinet.dll = ExtarnalLibraries\Uniformance\phdapinet.dll
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Telerik", "Telerik", "{4FDDB73E-113D-4F91-8F87-F8BB5FC92115}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -177,5 +186,7 @@ Global
 		{21B90CC4-73CC-4C1A-A2E3-FB6C7278BEB9} = {F7B47FB6-5A71-4C77-B1E0-EE1CD8005EFF}
 		{3A125DE9-28B9-4004-A1D9-BEBDE62AC786} = {3CC215AD-EE55-47C7-A43C-992B3F0C84A8}
 		{FCBFCFB0-4E3F-47C2-A1F7-40196F606E33} = {FB80A9DF-FEA9-4BF6-9B55-8FBF333CCA49}
+		{9D1D8F40-FA10-4DB6-9D9A-FB1719F283B3} = {531AE365-A584-4724-94B8-926C7BA3189A}
+		{4FDDB73E-113D-4F91-8F87-F8BB5FC92115} = {531AE365-A584-4724-94B8-926C7BA3189A}
 	EndGlobalSection
 EndGlobal

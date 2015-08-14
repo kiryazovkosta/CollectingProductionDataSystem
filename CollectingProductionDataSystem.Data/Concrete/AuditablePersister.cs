@@ -1,20 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Core.Objects.DataClasses;
+using System.Data.Entity.Infrastructure;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CollectingProductionDataSystem.Data.Contracts;
 using CollectingProductionDataSystem.Models.Contracts;
+using CollectingProductionDataSystem.Models.UtilityEntities;
 
 namespace CollectingProductionDataSystem.Data.Concrete
 {
-    public class AuditablePersister:IPersister
+    public class AuditablePersister : IPersister
     {
-        public void PrepareSaveChanges(DbContext data, string userName)
+        public IEnumerable<AuditLogRecord> PrepareSaveChanges(DbContext data, string userName)
         {
-            ApplyAuditInfoRules(data, userName);
+            var result = ApplyAuditInfoRules(data, userName);
             ApplyDeletableEntityRules(data, userName);
+
+            return result;
         }
 
         public void PrepareSaveChanges(DbContext data)
@@ -22,9 +28,11 @@ namespace CollectingProductionDataSystem.Data.Concrete
             PrepareSaveChanges(data, null);
         }
 
-        
-        private void ApplyAuditInfoRules(DbContext data, string userName)
+
+        private IEnumerable<AuditLogRecord> ApplyAuditInfoRules(DbContext data, string userName)
         {
+            List<AuditLogRecord> changes = new List<AuditLogRecord>();
+
             // Approach via @julielerman: http://bit.ly/123661P
             foreach (var entry in
                 data.ChangeTracker.Entries()
@@ -33,7 +41,6 @@ namespace CollectingProductionDataSystem.Data.Concrete
                         e.Entity is IAuditInfo && ((e.State == EntityState.Added) || (e.State == EntityState.Modified))))
             {
                 var entity = (IAuditInfo)entry.Entity;
-
                 if (entry.State == EntityState.Added)
                 {
                     if (!entity.PreserveCreatedOn)
@@ -44,11 +51,53 @@ namespace CollectingProductionDataSystem.Data.Concrete
                 }
                 else
                 {
+                    changes.AddRange(GetChangedProperties(entry, userName));
                     entity.ModifiedOn = DateTime.Now;
                     entity.ModifiedFrom = userName;
                 }
-
             }
+
+            return changes;
+        }
+
+        private IEnumerable<AuditLogRecord> GetChangedProperties(DbEntityEntry entry, string userName)
+        {
+            var entityName = entry.Entity.GetType().Name;
+            List<AuditLogRecord> auditRecords = new List<AuditLogRecord>();
+
+            var newValues = entry.CurrentValues.Clone();
+            var oldValues = entry.GetDatabaseValues();
+            foreach (string propertyName in entry.CurrentValues.PropertyNames)
+            {
+                var property = entry.Property(propertyName);
+                string newValue = (newValues.GetValue<object>(propertyName) ?? string.Empty).ToString();
+                string oldValue = (oldValues.GetValue<object>(propertyName) ?? string.Empty).ToString();
+
+                if (newValue !=  oldValue)
+                //{
+                //    Debug.WriteLine(propertyName);
+                //    Debug.WriteLine("------------------");
+                //    Debug.WriteLine("Oryginal value = {0}",  oldValue);
+                //    Debug.WriteLine("Current value = {0}", newValue);
+                //    Debug.WriteLine("");
+                //}
+                {
+                    auditRecords.Add(new AuditLogRecord()
+                    {
+                        TimeStamp = DateTime.Now,
+                        EntityName = entityName,
+                        EntityId = ((IEntity)entry.Entity).Id,
+                        FieldName = propertyName,
+                        OperationType = entry.State,
+                        OldValue = oldValue,
+                        NewValue = newValue,
+                        UserName = userName
+                    });
+                }
+            }
+
+            entry.CurrentValues.SetValues(newValues);
+            return auditRecords;
         }
 
         private void ApplyDeletableEntityRules(DbContext data, string userName)

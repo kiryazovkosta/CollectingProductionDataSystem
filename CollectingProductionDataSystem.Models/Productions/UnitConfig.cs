@@ -9,10 +9,12 @@ namespace CollectingProductionDataSystem.Models.Productions
 {
     public partial class UnitConfig: DeletableEntity, IEntity
     {
+        private ICollection<UnitsData> unitsDatas;
+        private ICollection<UnitsInspectionData> unitsInspectionDatas;
         public UnitConfig()
         {
-            this.UnitsDatas = new List<UnitsData>();
-            this.UnitsInspectionDatas = new List<UnitsInspectionData>();
+            this.unitsDatas = new HashSet<UnitsData>();
+            this.unitsInspectionDatas = new HashSet<UnitsInspectionData>();
         }
 
         public int Id { get; set; }
@@ -28,6 +30,8 @@ namespace CollectingProductionDataSystem.Models.Productions
         public bool IsInspectionPoint { get; set; }
         public string CollectingDataMechanism { get; set; }
         public string AggregateGroup { get; set; }
+        public bool IsCalculated { get; set; }
+        public int? FormulaId { get; set; }
         public string CurrentShiftTag { get; set; }
         public string PreviousShiftTag { get; set; }
         public string CurrentDayTag { get; set; }

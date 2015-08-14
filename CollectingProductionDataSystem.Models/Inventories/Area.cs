@@ -7,13 +7,18 @@ namespace CollectingProductionDataSystem.Models.Inventories
 {
     public partial class Area: DeletableEntity, IEntity
     {
+        private ICollection<Park> parks;
         public Area()
         {
-            this.InventoryParks = new HashSet<Park>();
+            this.parks = new HashSet<Park>();
         }
 
         public int Id { get; set; }
         public string Name { get; set; }
-        public virtual ICollection<Park> InventoryParks { get; set; }
+        public virtual ICollection<Park> Parks 
+        {
+            get { return this.parks; }
+            set { this.parks = value; }
+        }
     }
 }

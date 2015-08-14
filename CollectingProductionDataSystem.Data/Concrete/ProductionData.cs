@@ -145,8 +145,7 @@
 
         public int SaveChanges(string userName)
         {
-            this.context.UserName = userName;
-            return this.context.SaveChanges();
+            return this.context.SaveChanges(userName);
         }
 
         public void Dispose()

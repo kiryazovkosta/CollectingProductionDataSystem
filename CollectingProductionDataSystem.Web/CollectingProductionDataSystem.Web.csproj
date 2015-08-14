@@ -291,6 +291,7 @@
     <Content Include="Views\Shared\DisplayTemplates\ApplicationUser.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\ApplicationRole.cshtml" />
     <Content Include="Views\Tests\Test.cshtml" />
+    <Content Include="Views\Tests\TankChange.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

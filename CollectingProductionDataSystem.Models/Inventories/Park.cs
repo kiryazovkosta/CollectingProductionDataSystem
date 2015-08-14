@@ -9,9 +9,11 @@ namespace CollectingProductionDataSystem.Models.Inventories
 {
     public partial class Park : DeletableEntity, IEntity
     {
+        private ICollection<TankConfig> tankConfigs;
+
         public Park()
         {
-            this.InventoryTanks = new HashSet<TankConfig>();
+            this.tankConfigs = new HashSet<TankConfig>();
         }
 
         public int Id { get; set; }
@@ -20,6 +22,10 @@ namespace CollectingProductionDataSystem.Models.Inventories
         public int ExciseStoreId { get; set; }
         public virtual Area Area { get; set; }
         public virtual ExciseStore ExciseStore { get; set; }
-        public virtual ICollection<TankConfig> InventoryTanks { get; set; }
+        public virtual ICollection<TankConfig> TankConfigs 
+        {
+            get { return this.tankConfigs; }
+            set { this.tankConfigs = value; } 
+        }
     }
 }
