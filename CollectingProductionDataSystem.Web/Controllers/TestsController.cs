@@ -39,14 +39,7 @@ namespace CollectingProductionDataSystem.Web.Controllers
         [HttpGet]
         public ActionResult TankChange()
         {
-            var record = this.data.TanksData.All()
-                //.Include(x=>x.Product)
-                //.Include(x=>x.Product.ProductType)
-                //.Include(x=>x.TankConfig)
-                //.Include(x=>x.TankConfig.Park)
-                //.Include(x=>x.TankConfig.Park.Area)
-                //.Include(x=>x.TankConfig.Park.ExciseStore)
-                .FirstOrDefault(r => r.Id == 1);
+            var record = this.data.TanksData.All().FirstOrDefault(r => r.Id == 1);
             return View(record);
         }
 

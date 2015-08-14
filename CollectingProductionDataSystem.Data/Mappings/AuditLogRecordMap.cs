@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity.Infrastructure.Annotations;
 using System.Data.Entity.ModelConfiguration;
 using CollectingProductionDataSystem.Models.UtilityEntities;
 
@@ -9,18 +10,21 @@ namespace CollectingProductionDataSystem.Data.Mappings
         public AuditLogRecordMap()
         {
             // Primary Key
-            this.HasKey(t => new { t.Id, t.TimeStamp, t.EntityName, t.EntityId });
+            this.HasKey(t => t.Id);
 
             // Properties
-            this.Property(t => t.Id)
-                .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            this.Property(t => t.TimeStamp)
+                .HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("ix_audit_log", 1)))
+                .IsRequired();
 
             this.Property(t => t.EntityName)
+                .HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("ix_audit_log", 2)))
                 .IsRequired()
                 .HasMaxLength(250);
 
             this.Property(t => t.EntityId)
-                .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
+                .HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("ix_audit_log", 3)))
+                .IsRequired();
 
             this.Property(t => t.FieldName)
                 .IsRequired();
@@ -33,7 +37,6 @@ namespace CollectingProductionDataSystem.Data.Mappings
 
             // Table & Column Mappings
             this.ToTable("AuditLogRecords");
-
         }
     }
 }

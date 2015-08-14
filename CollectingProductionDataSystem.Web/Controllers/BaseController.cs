@@ -1,12 +1,15 @@
 ﻿namespace CollectingProductionDataSystem.Web.Controllers
 {
     using System;
+    using System.Data.Entity;
     using System.Linq;
     using System.Web;
     using System.Web.Mvc;
     using CollectingProductionDataSystem.Data;
     using CollectingProductionDataSystem.Models;
+    using CollectingProductionDataSystem.Models.Identity;
     using CollectingProductionDataSystem.Web.AppStart;
+    using Microsoft.AspNet.Identity.EntityFramework;
     using Microsoft.AspNet.Identity.Owin;
 
     public abstract class BaseController : Controller
@@ -30,8 +33,10 @@
         {
             if (requestContext.HttpContext.User.Identity.IsAuthenticated)
             {
-                var userManager = requestContext.HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
-                var user = userManager.FindByNameAsync(requestContext.HttpContext.User.Identity.Name).Result;
+
+                var user = ((IdentityDbContext<ApplicationUser>)this.data.DbContext)
+                    .Users.Include(x => x.UserRoles)
+                    .FirstOrDefault(x => x.UserName == requestContext.HttpContext.User.Identity.Name);
                 var roleIds = user.Roles.Select(x => x.RoleId).ToArray();
                 var roleManager = requestContext.HttpContext.GetOwinContext().GetUserManager<ApplicationRoleManager>();
                 var roles = roleManager.Roles.Where(x => roleIds.Any(y => y == x.Id));
@@ -41,7 +46,7 @@
                     Roles = roles
                 };
             }
-            else 
+            else
             {
                 this.UserProfile = null;
             }

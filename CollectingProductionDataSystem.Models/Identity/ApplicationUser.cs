@@ -13,6 +13,7 @@
 
         public ApplicationUser() 
         {
+            this.UserRoles = new HashSet<ApplicationRole>();
         }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
@@ -23,6 +24,8 @@
             // Add custom user claims here
             return userIdentity;
         }
+
+        public virtual ICollection<ApplicationRole> UserRoles { get; set; }
 
         public string NickName { get; set; }
     }

@@ -142,7 +142,6 @@
             }
         }
 
-
         public int SaveChanges(string userName)
         {
             return this.context.SaveChanges(userName);
@@ -184,6 +183,18 @@
             }
 
             return (IDeletableEntityRepository<T>)this.repositories[typeof(T)];
+        }
+
+        /// <summary>
+        /// Gets or sets the db context.
+        /// </summary>
+        /// <value>The db context.</value>
+        public IDbContext DbContext 
+        {
+            get 
+            {
+                return this.context; 
+            }
         }
     }
 }

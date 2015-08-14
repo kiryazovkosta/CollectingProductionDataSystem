@@ -92,25 +92,27 @@
         {
             if (userName == null)
             {
-                // performed only if some Miocrosoft API calls original SaveChanges
+                // performed only if some MicroSoft API calls original SaveChanges
                 userName = "System Change";
             }
 
             var changes = persister.PrepareSaveChanges(this, userName);
+
+            var returnValue = base.SaveChanges();
+
             if (changes.Count() > 0)
             {
                 foreach (var change in changes)
                 {
-                    this.AuditLogRecords.Attach(change);
                     this.AuditLogRecords.Add(change);
                 }
             }
-            // TODO: try to ger Added records 
-            return base.SaveChanges();
+
+            base.SaveChanges();
+            return returnValue;
         }
 
 
-        public DbContext DbContext { get; set; }
 
         public new IDbSet<T> Set<T>() where T : class
         {

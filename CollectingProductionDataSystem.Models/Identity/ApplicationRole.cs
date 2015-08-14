@@ -13,12 +13,16 @@ namespace CollectingProductionDataSystem.Models.Identity
         public ApplicationRole()
             :base()
         {
+            this.RoleUsers = new HashSet<ApplicationUser>(); 
         }
 
         public ApplicationRole(string name) : base(name) 
         {
+            this.RoleUsers = new HashSet<ApplicationUser>(); 
         }
 
         public string MyCustomField { get; set; }
+
+        public virtual ICollection<ApplicationUser> RoleUsers { get; set; }
     }
 }

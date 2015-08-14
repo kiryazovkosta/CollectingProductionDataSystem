@@ -40,6 +40,8 @@
 
         IDeletableEntityRepository<ProductType> ProductTypes { get; }
 
+        IDbContext DbContext { get; }
+
         int SaveChanges(string userName);
     }
 }
