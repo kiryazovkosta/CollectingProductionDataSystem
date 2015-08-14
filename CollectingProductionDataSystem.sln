@@ -41,7 +41,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WidowsServices", "WidowsSer
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CollectingProductionDataSystem.Utility", "CollectingProductionDataSystem.Utility\CollectingProductionDataSystem.Utility.csproj", "{FCBFCFB0-4E3F-47C2-A1F7-40196F606E33}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ExtarnalLibraries", "ExtarnalLibraries", "{531AE365-A584-4724-94B8-926C7BA3189A}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ExternalLibraries", "ExternalLibraries", "{531AE365-A584-4724-94B8-926C7BA3189A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Uniformance", "Uniformance", "{9D1D8F40-FA10-4DB6-9D9A-FB1719F283B3}"
 	ProjectSection(SolutionItems) = preProject
