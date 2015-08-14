@@ -32,7 +32,6 @@ namespace CollectingProductionDataSystem.Data.Concrete
         private List<AuditLogRecord> ApplyAuditInfoRules(DbContext data, string userName)
         {
             List<AuditLogRecord> changes = new List<AuditLogRecord>();
-
             // Approach via @julielerman: http://bit.ly/123661P
             foreach (var entry in
                 data.ChangeTracker.Entries()
@@ -89,14 +88,13 @@ namespace CollectingProductionDataSystem.Data.Concrete
                 }
             }
 
-            entry.CurrentValues.SetValues(newValues);
+           // entry.CurrentValues.SetValues(newValues);
             return auditRecords;
         }
 
         private IEnumerable<AuditLogRecord> ApplyDeletableEntityRules(DbContext data, string userName)
         {
             List<AuditLogRecord> changes = new List<AuditLogRecord>();
-            // Approach via @julielerman: http://bit.ly/123661P
             foreach (
                 var entry in
                     data.ChangeTracker.Entries()
