@@ -13,7 +13,7 @@
             // Properties
             this.Property(t => t.Name)
                 .IsRequired()
-                .HasMaxLength(50);
+                .HasMaxLength(80);
 
             // Table & Column Mappings
             this.ToTable("Ikunks");

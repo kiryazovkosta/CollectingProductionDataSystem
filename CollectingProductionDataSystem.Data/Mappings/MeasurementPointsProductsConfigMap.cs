@@ -26,7 +26,7 @@ namespace CollectingProductionDataSystem.Data.Mappings
             // Relationships
             this.HasRequired(t => t.Direction)
                 .WithMany(t => t.MeasurementPointsProductsConfigs)
-                .HasForeignKey(d => d.Direction);
+                .HasForeignKey(d => d.DirectionId);
             this.HasRequired(t => t.MeasurementPoint)
                 .WithMany(t => t.MeasurementPointsProductsConfigs)
                 .HasForeignKey(d => d.MeasurementPointId);

@@ -1,5 +1,6 @@
 ﻿namespace CollectingProductionDataSystem.Phd2SqlProductionData
 {
+    using System.Data.Entity.Validation;
     using System.Linq;
     using log4net;
     using System;
@@ -121,6 +122,16 @@
                     logger.Info("Sync inspection points finished!");
                 }
             }
+            catch(DbEntityValidationException validationException)
+            {
+                foreach (var validationErrors in validationException.EntityValidationErrors)
+                {
+                    foreach (var validationError in validationErrors.ValidationErrors)
+                    {
+                        logger.ErrorFormat("Property: {0} Error: {1}", validationError.PropertyName, validationError.ErrorMessage);
+                    }
+                }
+            }
             catch (Exception ex)
             {
                 logger.Error(ex);
@@ -200,6 +211,16 @@
                 }
 
                 logger.Info("Sync primary data finished!");
+            }
+            catch(DbEntityValidationException validationException)
+            {
+                foreach (var validationErrors in validationException.EntityValidationErrors)
+                {
+                    foreach (var validationError in validationErrors.ValidationErrors)
+                    {
+                        logger.ErrorFormat("Property: {0} Error: {1}", validationError.PropertyName, validationError.ErrorMessage);
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -339,6 +360,16 @@
                     }
 
                     logger.Info("Sync inventory tanks data finished!");
+                }
+            }
+            catch(DbEntityValidationException validationException)
+            {
+                foreach (var validationErrors in validationException.EntityValidationErrors)
+                {
+                    foreach (var validationError in validationErrors.ValidationErrors)
+                    {
+                        logger.ErrorFormat("Property: {0} Error: {1}", validationError.PropertyName, validationError.ErrorMessage);
+                    }
                 }
             }
             catch (Exception ex)

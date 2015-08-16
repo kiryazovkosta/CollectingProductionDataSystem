@@ -49,10 +49,10 @@ namespace CollectingProductionDataSystem.Data.Migrations
                 this.CreateInventoryTanks(context);
             }
 
-            if (!context.MeasurementPoints.Any())
-            {
-                this.CreateMeasurementPoints(context);
-            }
+            //if (!context.MeasurementPoints.Any())
+            //{
+            //    this.CreateMeasurementPoints(context);
+            //}
         }
 
         private void CreateProductTypesAndProducts(CollectingDataSystemDbContext context)
@@ -2496,7 +2496,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                             MaterialTypeId = 1,
                                             IsMaterial = true,
                                             IsEnergy = false,
-                                            IsInspectionPoint = true,
+                                            IsInspectionPoint = false,
                                             CollectingDataMechanism = "A",
                                             PreviousShiftTag = "AV1_01-FIQ-147.TOTS_L",
                                             CurrentInspectionDataTag = "AV1_01-FIQ-147.PV"
@@ -3240,15 +3240,6 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                             IsEnergy = false,
                                             CollectingDataMechanism = "M",
                                         },
-
-
-
-
-
-
-
-
-                                        
                                         new UnitConfig
                                         {
                                             Position = "01-FIQ-119",
@@ -16093,6 +16084,25 @@ namespace CollectingProductionDataSystem.Data.Migrations
 
         private void CreateMeasurementPoints(CollectingDataSystemDbContext context)
         {
+            context.TransportTypes.AddOrUpdate(
+                new TransportType 
+                { 
+                    Name = "Автоекспедиция" 
+                },
+                new TransportType 
+                { 
+                    Name = "Ж.П. експедиция" 
+                },
+                new TransportType 
+                { 
+                    Name = "Танкери",
+                },
+                new TransportType 
+                { 
+                    Name = "Тръбопроводи" 
+                });
+            context.SaveChanges();
+            
             context.Ikunks.AddOrUpdate(
                 new Ikunk
                 {
@@ -16100,13 +16110,14 @@ namespace CollectingProductionDataSystem.Data.Migrations
                     Zones = {
                         new Zone
                         {
-                            Name = "Остров 1",
-                            MeasurementPoints = {
+                            Name = "Остров 1", 
+                            MeasurementPoints = 
+                            {
                                 new MeasurementPoint
                                 {
                                     ControlPoint = "KT001001",
                                     Name = "BGNCA00005001001001", 
-                                    //TransportTypeId =,
+                                    TransportTypeId = 1,
                                     MeasurementPointsProductsConfigs = {
                                         new MeasurementPointsProductsConfig
                                         {
@@ -16120,7 +16131,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                 {
                                     ControlPoint = "KT001002",
                                     Name = "BGNCA00005001001002", 
-                                    //TransportTypeId =,
+                                    TransportTypeId = 1,
                                     MeasurementPointsProductsConfigs = {
                                         new MeasurementPointsProductsConfig
                                         {
@@ -16254,7 +16265,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                 {
                                     ControlPoint = "KT001003",
                                     Name = "BGNCA00005001001003", 
-                                    //TransportTypeId =,
+                                    TransportTypeId = 1,
                                     MeasurementPointsProductsConfigs = {
                                         new MeasurementPointsProductsConfig
                                         {
@@ -16382,7 +16393,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                 {
                                     ControlPoint = "KT001004",
                                     Name = "BGNCA00005001001004", 
-                                    //TransportTypeId =,
+                                    TransportTypeId = 1,
                                     MeasurementPointsProductsConfigs = {
                                         new MeasurementPointsProductsConfig
                                         {
@@ -16510,7 +16521,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                 {
                                     ControlPoint = "KT001005",
                                     Name = "BGNCA00005001001005", 
-                                    //TransportTypeId =,
+                                    TransportTypeId = 1,
                                     MeasurementPointsProductsConfigs = {
                                         new MeasurementPointsProductsConfig
                                         {
@@ -16632,7 +16643,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                 {
                                     ControlPoint = "KT001006",
                                     Name = "BGNCA00005001001006", 
-                                    //TransportTypeId =,
+                                    TransportTypeId = 1,
                                     MeasurementPointsProductsConfigs = {
                                         new MeasurementPointsProductsConfig
                                         {
@@ -16766,7 +16777,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                 {
                                     ControlPoint = "KT001007",
                                     Name = "BGNCA00005001001007", 
-                                    //TransportTypeId =,
+                                    TransportTypeId = 1,
                                     MeasurementPointsProductsConfigs = 
                                     {
                                         new MeasurementPointsProductsConfig { ProductId = 115, PhdTotalCounterTag = "TSN_KT0107_MT_GSV_P01.VT", DirectionId = 1},
@@ -16795,7 +16806,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                 {
                                     ControlPoint = "KT001008",
                                     Name = "BGNCA00005001001008", 
-                                    //TransportTypeId =,
+                                    TransportTypeId = 1,
                                     MeasurementPointsProductsConfigs = 
                                     {
                                         new MeasurementPointsProductsConfig { ProductId = 34, PhdTotalCounterTag = "TSN_KT0108_MT_GSV_P01.VT", DirectionId = 1},
@@ -16824,7 +16835,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                 {
                                     ControlPoint = "KT001009",
                                     Name = "BGNCA00005001001009", 
-                                    //TransportTypeId =,
+                                    TransportTypeId = 1,
                                     MeasurementPointsProductsConfigs = 
                                     {
                                         new MeasurementPointsProductsConfig { ProductId = 35, PhdTotalCounterTag = "TSN_KT0109_MT_GSV_P01.VT", DirectionId = 1},
@@ -16853,7 +16864,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                 {
                                     ControlPoint = "KT001010",
                                     Name = "BGNCA00005001001010", 
-                                    //TransportTypeId =,
+                                    TransportTypeId = 1,
                                     MeasurementPointsProductsConfigs = 
                                     {
                                         new MeasurementPointsProductsConfig { ProductId = 75, PhdTotalCounterTag = "TSN_KT0110_MT_GSV_P01.VT", DirectionId = 1},
@@ -16888,7 +16899,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                 {
                                     ControlPoint = "KT001011",
                                     Name = "BGNCA00005001001011", 
-                                    //TransportTypeId =,
+                                    TransportTypeId = 1,
                                     MeasurementPointsProductsConfigs = 
                                     {
                                         new MeasurementPointsProductsConfig { ProductId = 115, PhdTotalCounterTag = "TSN_KT0111_MT_GSV_P01.VT", DirectionId = 1},
@@ -16917,7 +16928,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                 {
                                     ControlPoint = "KT001012",
                                     Name = "BGNCA00005001001012", 
-                                    //TransportTypeId =,
+                                    TransportTypeId = 1,
                                     MeasurementPointsProductsConfigs = 
                                     {
                                         new MeasurementPointsProductsConfig { ProductId = 34, PhdTotalCounterTag = "TSN_KT0112_MT_GSV_P01.VT", DirectionId = 1},
@@ -16947,7 +16958,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                 {
                                     ControlPoint = "KT001013",
                                     Name = "BGNCA00005001001013", 
-                                    //TransportTypeId =,
+                                    TransportTypeId = 1,
                                     MeasurementPointsProductsConfigs = 
                                     {
                                         new MeasurementPointsProductsConfig { ProductId = 35, PhdTotalCounterTag = "TSN_KT0113_MT_GSV_P01.VT", DirectionId = 1},
@@ -16976,7 +16987,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                 {
                                     ControlPoint = "KT001014",
                                     Name = "BGNCA00005001001014", 
-                                    //TransportTypeId =,
+                                    TransportTypeId = 1,
                                     MeasurementPointsProductsConfigs = 
                                     {
                                         new MeasurementPointsProductsConfig { ProductId = 75, PhdTotalCounterTag = "TSN_KT0114_MT_GSV_P01.VT", DirectionId = 1},
@@ -17011,7 +17022,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                 {
                                     ControlPoint = "KT001019",
                                     Name = "BGNCA00005001001019", 
-                                    //TransportTypeId =,
+                                    TransportTypeId = 1,
                                     MeasurementPointsProductsConfigs = 
                                     {
                                         new MeasurementPointsProductsConfig { ProductId = 415, PhdTotalCounterTag = "TSN_KT0119_MT_GSV_P01.VT", DirectionId = 2},
@@ -17034,7 +17045,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                 {
                                     ControlPoint = "KT001020",
                                     Name = "BGNCA00005001001020", 
-                                    //TransportTypeId =,
+                                    TransportTypeId = 1,
                                     MeasurementPointsProductsConfigs = 
                                     {
                                         new MeasurementPointsProductsConfig { ProductId = 418, PhdTotalCounterTag = "TSN_KT0120_MT_GSV_P01.VT", DirectionId = 2},
@@ -17060,7 +17071,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                 {
                                     ControlPoint = "KT002001",
                                     Name = "BGNCA00005001002001", 
-                                    //TransportTypeId =,
+                                    TransportTypeId = 1,
                                     MeasurementPointsProductsConfigs = 
                                     {
                                     }
@@ -17069,7 +17080,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                 {
                                     ControlPoint = "KT002002",
                                     Name = "BGNCA00005001002002", 
-                                    //TransportTypeId =,
+                                    TransportTypeId = 1,
                                     MeasurementPointsProductsConfigs = {
                                     }
                                 },
@@ -17077,7 +17088,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                 {
                                     ControlPoint = "KT002003",
                                     Name = "BGNCA00005001002003", 
-                                    //TransportTypeId =,
+                                    TransportTypeId = 1,
                                     MeasurementPointsProductsConfigs = {
                                     }
                                 },
@@ -17091,7 +17102,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                 {
                                     ControlPoint = "KT002004",
                                     Name = "BGNCA00005001002004", 
-                                    //TransportTypeId =,
+                                    TransportTypeId = 1,
                                     MeasurementPointsProductsConfigs = 
                                     {
                                     }
@@ -17100,7 +17111,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                 {
                                     ControlPoint = "KT002005",
                                     Name = "BGNCA00005001002005", 
-                                    //TransportTypeId =,
+                                    TransportTypeId = 1,
                                     MeasurementPointsProductsConfigs = 
                                     {
                                     }
@@ -17121,7 +17132,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                 {
                                     ControlPoint = "KT003001",
                                     Name = "BGNCA00005001003001", 
-                                    //TransportTypeId =,
+                                    TransportTypeId = 1,
                                     MeasurementPointsProductsConfigs = {
                                     }
                                 }
@@ -17141,7 +17152,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                 {
                                     ControlPoint = "KT004001",
                                     Name = "BGNCA00005001004001", 
-                                    //TransportTypeId =,
+                                    TransportTypeId = 1,
                                     MeasurementPointsProductsConfigs = {
                                     }
                                 }
@@ -17161,7 +17172,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                 {
                                     ControlPoint = "KT051002",
                                     Name = "BGNCA00005001051002", 
-                                    //TransportTypeId =,
+                                    TransportTypeId = 1,
                                     MeasurementPointsProductsConfigs = {
                                     }
                                 },
@@ -17169,7 +17180,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                 {
                                     ControlPoint = "KT051005",
                                     Name = "BGNCA00005001051005", 
-                                    //TransportTypeId =,
+                                    TransportTypeId = 1,
                                     MeasurementPointsProductsConfigs = {
                                     }
                                 },
@@ -17177,7 +17188,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                 {
                                     ControlPoint = "KT051006",
                                     Name = "BGNCA00005001051006", 
-                                    //TransportTypeId =,
+                                    TransportTypeId = 1,
                                     MeasurementPointsProductsConfigs = {
                                     }
                                 },
@@ -17185,7 +17196,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                 {
                                     ControlPoint = "KT051007",
                                     Name = "BGNCA00005001051007", 
-                                    //TransportTypeId =,
+                                    TransportTypeId = 1,
                                     MeasurementPointsProductsConfigs = {
                                     }
                                 },
@@ -17199,7 +17210,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                 {
                                     ControlPoint = "KT051001",
                                     Name = "BGNCA00005001051001", 
-                                    //TransportTypeId =,
+                                    TransportTypeId = 1,
                                     MeasurementPointsProductsConfigs = {
                                     }
                                 },
@@ -17207,7 +17218,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                 {
                                     ControlPoint = "KT051003",
                                     Name = "BGNCA00005001051003", 
-                                    //TransportTypeId =,
+                                    TransportTypeId = 1,
                                     MeasurementPointsProductsConfigs = {
                                     }
                                 },
@@ -17215,7 +17226,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                 {
                                     ControlPoint = "KT051004",
                                     Name = "BGNCA00005001051004", 
-                                    //TransportTypeId =,
+                                    TransportTypeId = 1,
                                     MeasurementPointsProductsConfigs = {
                                     }
                                 },
@@ -17223,7 +17234,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                 {
                                     ControlPoint = "KT051008",
                                     Name = "BGNCA00005001051008", 
-                                    //TransportTypeId =,
+                                    TransportTypeId = 1,
                                     MeasurementPointsProductsConfigs = {
                                     }
                                 },
@@ -17231,7 +17242,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                 {
                                     ControlPoint = "KT051009",
                                     Name = "BGNCA00005001051009", 
-                                    //TransportTypeId =,
+                                    TransportTypeId = 1,
                                     MeasurementPointsProductsConfigs = {
                                     }
                                 }
@@ -17245,7 +17256,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                 {
                                     ControlPoint = "KT051010",
                                     Name = "BGNCA00005001051010", 
-                                    //TransportTypeId =,
+                                    TransportTypeId = 1,
                                     MeasurementPointsProductsConfigs = {
                                     }
                                 },
@@ -17259,7 +17270,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                 {
                                     ControlPoint = "KT051011",
                                     Name = "BGNCA00005001051011", 
-                                    //TransportTypeId =,
+                                    TransportTypeId = 1,
                                     MeasurementPointsProductsConfigs = {
                                     }
                                 },
@@ -17279,7 +17290,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                 {
                                     ControlPoint = "KT052012",
                                     Name = "BGNCA00005001052012", 
-                                    //TransportTypeId =,
+                                    TransportTypeId = 1,
                                     MeasurementPointsProductsConfigs = {
                                     }
                                 },
@@ -17299,7 +17310,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                 {
                                     ControlPoint = "KT006001",
                                     Name = "BGNCA00005001006001", 
-                                    //TransportTypeId =,
+                                    TransportTypeId = 1,
                                     MeasurementPointsProductsConfigs = {
                                     }
                                 },
@@ -17313,7 +17324,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                 {
                                     ControlPoint = "KT006002",
                                     Name = "BGNCA00005001006002", 
-                                    //TransportTypeId =,
+                                    TransportTypeId = 1,
                                     MeasurementPointsProductsConfigs = {
                                     }
                                 },
@@ -17321,7 +17332,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                 {
                                     ControlPoint = "KT006005",
                                     Name = "BGNCA00005001006005", 
-                                    //TransportTypeId =,
+                                    TransportTypeId = 1,
                                     MeasurementPointsProductsConfigs = {
                                     }
                                 },
@@ -17335,7 +17346,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                 {
                                     ControlPoint = "KT006003",
                                     Name = "BGNCA00005001006003", 
-                                    //TransportTypeId =,
+                                    TransportTypeId = 1,
                                     MeasurementPointsProductsConfigs = {
                                     }
                                 },
@@ -17343,7 +17354,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                 {
                                     ControlPoint = "KT006004",
                                     Name = "BGNCA00005001006004", 
-                                    //TransportTypeId =,
+                                    TransportTypeId = 1,
                                     MeasurementPointsProductsConfigs = {
                                     }
                                 },
@@ -17363,7 +17374,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                 {
                                     ControlPoint = "KT007001",
                                     Name = "BGNCA00005001007001", 
-                                    //TransportTypeId =,
+                                    TransportTypeId = 1,
                                     MeasurementPointsProductsConfigs = {
                                     }
                                 },
@@ -17371,7 +17382,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                 {
                                     ControlPoint = "KT007002",
                                     Name = "BGNCA00005001007002", 
-                                    //TransportTypeId =,
+                                    TransportTypeId = 1,
                                     MeasurementPointsProductsConfigs = {
                                     }
                                 },
@@ -17379,7 +17390,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                 {
                                     ControlPoint = "KT007003",
                                     Name = "BGNCA00005001007003", 
-                                    //TransportTypeId =,
+                                    TransportTypeId = 1,
                                     MeasurementPointsProductsConfigs = {
                                     }
                                 },
@@ -17387,7 +17398,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                 {
                                     ControlPoint = "KT007004",
                                     Name = "BGNCA00005001007004", 
-                                    //TransportTypeId =,
+                                    TransportTypeId = 1,
                                     MeasurementPointsProductsConfigs = {
                                     }
                                 },
@@ -17407,7 +17418,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                 {
                                     ControlPoint = "КТ008010",
                                     Name = "BGNCA00005001008010", 
-                                    //TransportTypeId =,
+                                    TransportTypeId = 1,
                                     MeasurementPointsProductsConfigs = {
                                     }
                                 },
@@ -17427,7 +17438,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                 {
                                     ControlPoint = "КТ009001",
                                     Name = "BGNCA00005001009001", 
-                                    //TransportTypeId =,
+                                    TransportTypeId = 1,
                                     MeasurementPointsProductsConfigs = {
                                     }
                                 },
@@ -17441,7 +17452,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                 {
                                     ControlPoint = "КТ009002",
                                     Name = "BGNCA00005001009002", 
-                                    //TransportTypeId =,
+                                    TransportTypeId = 1,
                                     MeasurementPointsProductsConfigs = {
                                     }
                                 },
@@ -17455,7 +17466,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                 {
                                     ControlPoint = "КТ009006",
                                     Name = "BGNCA00005001009006", 
-                                    //TransportTypeId =,
+                                    TransportTypeId = 1,
                                     MeasurementPointsProductsConfigs = {
                                     }
                                 },
@@ -17469,7 +17480,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                 {
                                     ControlPoint = "КТ009007",
                                     Name = "BGNCA00005001009007", 
-                                    //TransportTypeId =,
+                                    TransportTypeId = 1,
                                     MeasurementPointsProductsConfigs = {
                                     }
                                 },
@@ -17489,7 +17500,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                 {
                                     ControlPoint = "КТ021001",
                                     Name = "BGNCA00005001021001", 
-                                    //TransportTypeId =,
+                                    TransportTypeId = 1,
                                     MeasurementPointsProductsConfigs = {
                                     }
                                 },
@@ -17497,7 +17508,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                 {
                                     ControlPoint = "КТ021002",
                                     Name = "BGNCA00005001021002", 
-                                    //TransportTypeId =,
+                                    TransportTypeId = 1,
                                     MeasurementPointsProductsConfigs = {
                                     }
                                 },
@@ -17511,7 +17522,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                 {
                                     ControlPoint = "КТ021003",
                                     Name = "BGNCA00005001021003", 
-                                    //TransportTypeId =,
+                                    TransportTypeId = 1,
                                     MeasurementPointsProductsConfigs = {
                                     }
                                 },
@@ -17525,7 +17536,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                 {
                                     ControlPoint = "КТ021004",
                                     Name = "BGNCA00005001021004", 
-                                    //TransportTypeId =,
+                                    TransportTypeId = 1,
                                     MeasurementPointsProductsConfigs = {
                                     }
                                 },
@@ -17539,7 +17550,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                 {
                                     ControlPoint = "КТ021005",
                                     Name = "BGNCA00005001021005", 
-                                    //TransportTypeId =,
+                                    TransportTypeId = 1,
                                     MeasurementPointsProductsConfigs = {
                                     }
                                 },
@@ -17559,7 +17570,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                 {
                                     ControlPoint = "КТ022001",
                                     Name = "BGNCA00005001022001", 
-                                    //TransportTypeId =,
+                                    TransportTypeId = 1,
                                     MeasurementPointsProductsConfigs = {
                                     }
                                 },
@@ -17567,7 +17578,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                 {
                                     ControlPoint = "КТ022002",
                                     Name = "BGNCA00005001022002", 
-                                    //TransportTypeId =,
+                                    TransportTypeId = 1,
                                     MeasurementPointsProductsConfigs = {
                                     }
                                 },
@@ -17581,7 +17592,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                 {
                                     ControlPoint = "КТ022003",
                                     Name = "BGNCA00005001022003", 
-                                    //TransportTypeId =,
+                                    TransportTypeId = 1,
                                     MeasurementPointsProductsConfigs = {
                                     }
                                 },
@@ -17595,7 +17606,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                 {
                                     ControlPoint = "КТ022004",
                                     Name = "BGNCA00005001022004", 
-                                    //TransportTypeId =,
+                                    TransportTypeId = 1,
                                     MeasurementPointsProductsConfigs = {
                                     }
                                 },
@@ -17615,7 +17626,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                 {
                                     ControlPoint = "КТ023001",
                                     Name = "BGNCA00005001023001", 
-                                    //TransportTypeId =,
+                                    TransportTypeId = 1,
                                     MeasurementPointsProductsConfigs = {
                                     }
                                 },
@@ -17629,7 +17640,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                 {
                                     ControlPoint = "КТ023002",
                                     Name = "BGNCA00005001023002", 
-                                    //TransportTypeId =,
+                                    TransportTypeId = 1,
                                     MeasurementPointsProductsConfigs = {
                                     }
                                 },
@@ -17643,7 +17654,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                 {
                                     ControlPoint = "КТ023003",
                                     Name = "BGNCA00005001023003", 
-                                    //TransportTypeId =,
+                                    TransportTypeId = 1,
                                     MeasurementPointsProductsConfigs = {
                                     }
                                 },
@@ -17651,7 +17662,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                 {
                                     ControlPoint = "КТ023003",
                                     Name = "BGNCA00005001023004", 
-                                    //TransportTypeId =,
+                                    TransportTypeId = 1,
                                     MeasurementPointsProductsConfigs = {
                                     }
                                 },
@@ -17665,7 +17676,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                 {
                                     ControlPoint = "КТ023005",
                                     Name = "BGNCA00005001023005", 
-                                    //TransportTypeId =,
+                                    TransportTypeId = 1,
                                     MeasurementPointsProductsConfigs = {
                                     }
                                 },
@@ -17679,7 +17690,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                 {
                                     ControlPoint = "КТ023007",
                                     Name = "BGNCA00005001023007", 
-                                    //TransportTypeId =,
+                                    TransportTypeId = 1,
                                     MeasurementPointsProductsConfigs = {
                                     }
                                 },
@@ -17693,7 +17704,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                 {
                                     ControlPoint = "КТ023008",
                                     Name = "BGNCA00005001023008", 
-                                    //TransportTypeId =,
+                                    TransportTypeId = 1,
                                     MeasurementPointsProductsConfigs = {
                                     }
                                 },
@@ -17707,7 +17718,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                 {
                                     ControlPoint = "КТ023009",
                                     Name = "BGNCA00005001023009", 
-                                    //TransportTypeId =,
+                                    TransportTypeId = 1,
                                     MeasurementPointsProductsConfigs = {
                                     }
                                 },
@@ -17727,7 +17738,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                 {
                                     ControlPoint = "КТ024001",
                                     Name = "BGNCA00005001024001", 
-                                    //TransportTypeId =,
+                                    TransportTypeId = 1,
                                     MeasurementPointsProductsConfigs = {
                                     }
                                 },
@@ -17741,7 +17752,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                 {
                                     ControlPoint = "КТ024002",
                                     Name = "BGNCA00005001024002", 
-                                    //TransportTypeId =,
+                                    TransportTypeId = 1,
                                     MeasurementPointsProductsConfigs = {
                                     }
                                 },
@@ -17755,7 +17766,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                 {
                                     ControlPoint = "КТ009004",
                                     Name = "BGNCA00005001009004", 
-                                    //TransportTypeId =,
+                                    TransportTypeId = 1,
                                     MeasurementPointsProductsConfigs = {
                                     }
                                 },
@@ -17763,7 +17774,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                 {
                                     ControlPoint = "КТ009005",
                                     Name = "BGNCA00005001009005", 
-                                    //TransportTypeId =,
+                                    TransportTypeId = 1,
                                     MeasurementPointsProductsConfigs = {
                                     }
                                 },
@@ -17777,7 +17788,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                 {
                                     ControlPoint = "KT024003",
                                     Name = "BGNCA00005001024003", 
-                                    //TransportTypeId =,
+                                    TransportTypeId = 1,
                                     MeasurementPointsProductsConfigs = {
                                     }
                                 },
@@ -17787,7 +17798,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                 },
                 new Ikunk
                 {
-                    Name = " Магистрални тръбопроводи - ПТ Росенец  към ИКУНК 011",
+                    Name = " Магистрални тръбопроводи - ПТ Росенец към ИКУНК 011",
                     Zones = {
                         new Zone
                         {
@@ -17797,7 +17808,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                 {
                                     ControlPoint = "КТ011001",
                                     Name = "BGNCA00005002011001", 
-                                    //TransportTypeId =,
+                                    TransportTypeId = 1,
                                     MeasurementPointsProductsConfigs = {
                                     }
                                 },
@@ -17805,7 +17816,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                 {
                                     ControlPoint = "КТ011007",
                                     Name = "BGNCA00005002011007", 
-                                    //TransportTypeId =,
+                                    TransportTypeId = 1,
                                     MeasurementPointsProductsConfigs = {
                                     }
                                 },
@@ -17819,7 +17830,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                 {
                                     ControlPoint = "КТ011002",
                                     Name = "BGNCA00005002011002", 
-                                    //TransportTypeId =,
+                                    TransportTypeId = 1,
                                     MeasurementPointsProductsConfigs = {
                                     }
                                 },
@@ -17827,7 +17838,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                 {
                                     ControlPoint = "КТ011008",
                                     Name = "BGNCA00005002011008", 
-                                    //TransportTypeId =,
+                                    TransportTypeId = 1,
                                     MeasurementPointsProductsConfigs = {
                                     }
                                 },
@@ -17841,7 +17852,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                 {
                                     ControlPoint = "КТ011003",
                                     Name = "BGNCA00005002011003", 
-                                    //TransportTypeId =,
+                                    TransportTypeId = 1,
                                     MeasurementPointsProductsConfigs = {
                                     }
                                 },
@@ -17849,7 +17860,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                 {
                                     ControlPoint = "КТ011009",
                                     Name = "BGNCA00005002011009", 
-                                    //TransportTypeId =,
+                                    TransportTypeId = 1,
                                     MeasurementPointsProductsConfigs = {
                                     }
                                 },
@@ -17863,7 +17874,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                 {
                                     ControlPoint = "КТ011004",
                                     Name = "BGNCA00005002011004", 
-                                    //TransportTypeId =,
+                                    TransportTypeId = 1,
                                     MeasurementPointsProductsConfigs = {
                                     }
                                 },
@@ -17871,7 +17882,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                 {
                                     ControlPoint = "КТ011010",
                                     Name = "BGNCA00005002011010", 
-                                    //TransportTypeId =,
+                                    TransportTypeId = 1,
                                     MeasurementPointsProductsConfigs = {
                                     }
                                 },
@@ -17885,7 +17896,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                 {
                                     ControlPoint = "КТ011005",
                                     Name = "BGNCA00005002011005", 
-                                    //TransportTypeId =,
+                                    TransportTypeId = 1,
                                     MeasurementPointsProductsConfigs = {
                                     }
                                 },
@@ -17893,7 +17904,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                 {
                                     ControlPoint = "КТ011011",
                                     Name = "BGNCA00005002011011", 
-                                    //TransportTypeId =,
+                                    TransportTypeId = 1,
                                     MeasurementPointsProductsConfigs = {
                                     }
                                 },
@@ -17907,7 +17918,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                 {
                                     ControlPoint = "КТ011006",
                                     Name = "BGNCA00005002011006", 
-                                    //TransportTypeId =,
+                                    TransportTypeId = 1,
                                     MeasurementPointsProductsConfigs = {
                                     }
                                 },
@@ -17915,7 +17926,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                 {
                                     ControlPoint = "КТ011012",
                                     Name = "BGNCA00005002011012", 
-                                    //TransportTypeId =,
+                                    TransportTypeId = 1,
                                     MeasurementPointsProductsConfigs = {
                                     }
                                 },
