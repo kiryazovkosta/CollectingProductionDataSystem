@@ -15,19 +15,7 @@ namespace CollectingProductionDataSystem.Data.Mappings
             this.Property(t => t.CollectingDataMechanism)
                 .HasMaxLength(1);
 
-            this.Property(t => t.CurrentShiftTag)
-                .HasMaxLength(50);
-
             this.Property(t => t.PreviousShiftTag)
-                .HasMaxLength(50);
-
-            this.Property(t => t.CurrentDayTag)
-                .HasMaxLength(50);
-
-            this.Property(t => t.PreviousDayTag)
-                .HasMaxLength(50);
-
-            this.Property(t => t.CurrentMonthTag)
                 .HasMaxLength(50);
 
             this.Property(t => t.CurrentInspectionDataTag)

@@ -33,16 +33,11 @@ namespace CollectingProductionDataSystem.Models.Productions
         public string AggregateGroup { get; set; }
         public bool IsCalculated { get; set; }
         public int? FormulaId { get; set; }
-        public string CurrentShiftTag { get; set; }
         public string PreviousShiftTag { get; set; }
-        public string CurrentDayTag { get; set; }
-        public string PreviousDayTag { get; set; }
-        public string CurrentMonthTag { get; set; }
         public string CurrentInspectionDataTag { get; set; }
         public string Notes { get; set; }
         public Nullable<int> ProductTypeId { get; set; }
         public Nullable<int> ProductId { get; set; }
-        public string ModifiedFrom { get; set; }
         public virtual Direction Direction { get; set; }
         public virtual MaterialType MaterialType { get; set; }
         public virtual MeasureUnit MeasureUnit { get; set; }

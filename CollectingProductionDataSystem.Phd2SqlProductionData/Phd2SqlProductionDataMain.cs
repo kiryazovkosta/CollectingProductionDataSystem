@@ -1,14 +1,11 @@
 ﻿namespace CollectingProductionDataSystem.Phd2SqlProductionData
 {
-    using System.Collections;
     using System.Linq;
     using log4net;
     using System;
-    using System.Linq;
     using System.ServiceProcess;
     using Uniformance.PHD;
     using System.Data;
-    using System.Text;
     using CollectingProductionDataSystem.Phd2SqlProductionData.Models;
     using CollectingProductionDataSystem.Models.Inventories;
     using CollectingProductionDataSystem.Data;
