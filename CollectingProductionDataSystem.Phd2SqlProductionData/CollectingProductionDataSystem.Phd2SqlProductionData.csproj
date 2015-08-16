@@ -71,6 +71,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\InspectionPoint.cs" />
+    <Compile Include="Models\PreviousShift.cs" />
     <Compile Include="Models\Tank.cs" />
     <Compile Include="Phd2SqlProductionDataService.cs">
       <SubType>Component</SubType>

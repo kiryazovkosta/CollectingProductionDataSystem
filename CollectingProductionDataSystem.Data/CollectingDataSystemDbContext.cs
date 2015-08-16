@@ -18,6 +18,7 @@
     using CollectingProductionDataSystem.Models.Productions;
     using CollectingProductionDataSystem.Models.UtilityEntities;
     using Microsoft.AspNet.Identity.EntityFramework;
+    using CollectingProductionDataSystem.Models.Transactions;
 
     public class CollectingDataSystemDbContext : IdentityDbContext<ApplicationUser>, IDbContext
     {
@@ -26,9 +27,9 @@
         public CollectingDataSystemDbContext()
             : base(DbConnection.DefaultConnectionString, throwIfV1Schema: false)
         {
-#if DEBUG
-            this.Database.Log = (c) => { Debug.WriteLine(c); };
-#endif
+//#if DEBUG
+//            this.Database.Log = (c) => { Debug.WriteLine(c); };
+//#endif
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<CollectingDataSystemDbContext, Configuration>());
             this.persister = new AuditablePersister();
         }
@@ -39,8 +40,6 @@
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<CollectingDataSystemDbContext, Configuration>());
             this.persister = param;
         }
-
-        public IDbSet<ExciseStore> ExciseStores { get; set; }
 
         public IDbSet<Product> Products { get; set; }
 
@@ -73,6 +72,15 @@
         public IDbSet<MaterialType> MaterialTypes { get; set; }
 
         public IDbSet<AuditLogRecord> AuditLogRecords { get; set; }
+
+        public IDbSet<Ikunk> Ikunks { get; set; }
+
+        public IDbSet<MeasurementPoint> MeasurementPoints { get; set; }
+
+        public IDbSet<MeasurementPointsProductsConfig> MeasurementPointsProductConfigs { get; set; }
+
+        public IDbSet<TransportType> TransportTypes { get; set; }
+
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

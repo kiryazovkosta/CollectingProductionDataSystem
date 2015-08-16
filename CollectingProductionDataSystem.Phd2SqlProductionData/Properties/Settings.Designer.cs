@@ -43,7 +43,7 @@ namespace CollectingProductionDataSystem.Phd2SqlProductionData.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("00:05:00")]
+        [global::System.Configuration.DefaultSettingValueAttribute("00:15:00")]
         public global::System.TimeSpan IDLE_TIMER_INSPECTION_POINTS {
             get {
                 return ((global::System.TimeSpan)(this["IDLE_TIMER_INSPECTION_POINTS"]));
@@ -52,7 +52,7 @@ namespace CollectingProductionDataSystem.Phd2SqlProductionData.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool SYNC_INSPECTION_POINTS {
             get {
                 return ((bool)(this["SYNC_INSPECTION_POINTS"]));
@@ -61,7 +61,7 @@ namespace CollectingProductionDataSystem.Phd2SqlProductionData.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("01:00:00")]
+        [global::System.Configuration.DefaultSettingValueAttribute("00:30:00")]
         public global::System.TimeSpan IDLE_TIMER_PRIMARY {
             get {
                 return ((global::System.TimeSpan)(this["IDLE_TIMER_PRIMARY"]));
@@ -70,7 +70,7 @@ namespace CollectingProductionDataSystem.Phd2SqlProductionData.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool SYNC_PRIMARY {
             get {
                 return ((bool)(this["SYNC_PRIMARY"]));
@@ -110,6 +110,33 @@ namespace CollectingProductionDataSystem.Phd2SqlProductionData.Properties {
         public string CULTURE_INFO {
             get {
                 return ((string)(this["CULTURE_INFO"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("49")]
+        public int INSPECTION_DATA_MINIMUM_CONFIDENCE {
+            get {
+                return ((int)(this["INSPECTION_DATA_MINIMUM_CONFIDENCE"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public uint INSPECTION_DATA_MAX_ROWS {
+            get {
+                return ((uint)(this["INSPECTION_DATA_MAX_ROWS"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Snapshot")]
+        public global::Uniformance.PHD.SAMPLETYPE INSPECTION_DATA_SAMPLETYPE {
+            get {
+                return ((global::Uniformance.PHD.SAMPLETYPE)(this["INSPECTION_DATA_SAMPLETYPE"]));
             }
         }
     }

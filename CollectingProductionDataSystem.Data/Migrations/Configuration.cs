@@ -7,6 +7,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
     using CollectingProductionDataSystem.Models.Inventories;
     using CollectingProductionDataSystem.Models.Nomenclatures;
     using CollectingProductionDataSystem.Models.Productions;
+    using CollectingProductionDataSystem.Models.Transactions;
 
     internal sealed class Configuration : DbMigrationsConfiguration<CollectingDataSystemDbContext>
     {
@@ -18,11 +19,6 @@ namespace CollectingProductionDataSystem.Data.Migrations
 
         protected override void Seed(CollectingDataSystemDbContext context)
         {
-            if (!context.ExciseStores.Any())
-            {
-                this.CreateExciseStores(context);
-            }
-
             if (!context.Products.Any())
             {
                 this.CreateProductTypesAndProducts(context);
@@ -52,17 +48,11 @@ namespace CollectingProductionDataSystem.Data.Migrations
             {
                 this.CreateInventoryTanks(context);
             }
-        }
 
-        private void CreateExciseStores(CollectingDataSystemDbContext context)
-        {
-            context.ExciseStores.AddOrUpdate(
-                new ExciseStore
-                {
-                    Name = "BGNCA00005001",
-                });
-
-            context.SaveChanges("Initial System Loading");
+            if (!context.MeasurementPoints.Any())
+            {
+                this.CreateMeasurementPoints(context);
+            }
         }
 
         private void CreateProductTypesAndProducts(CollectingDataSystemDbContext context)
@@ -74,7 +64,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                     Products = {
                         new Product
                         {
-                            Id = -1,
+                            Code = "-1",
                             Name = "Недефиниран"
                         }
                     }
@@ -85,153 +75,148 @@ namespace CollectingProductionDataSystem.Data.Migrations
                     Products = {
                         new Product
                         {
-                            Id = 1,
+                            Code = "001",
                             Name = "Нефт"
                         },
                         new Product
                         {
-                            Id = 2,
+                            Code = "002",
                             Name = "Мазут за специфична преработка"
                         },
                         new Product
                         {
-                            Id = 3,
+                            Code = "003",
                             Name = "Природен газ***"
                         },
                         new Product
                         {
-                            Id = 4,
+                            Code = "004",
                             Name = "МТБЕ-внос"
                         },
                         new Product
                         {
-                            Id = 5,
+                            Code = "005",
                             Name = "Биокомпонент Б-100"
                         },
                         new Product
                         {
-                            Id = 6,
+                            Code = "006",
                             Name = "Биоетанол (денаториран)"
                         },
                         new Product
                         {
-                            Id = 7,
+                            Code = "007",
                             Name = "Биоетанол (неденаториран)"
                         },
                         new Product
                         {
-                            Id = 8,
+                            Code = "008",
                             Name = "Промишлен газьол (чужд, със съдържание на сяра над 0.2%)"
                         },
                         new Product
                         {
-                            Id = 9,
+                            Code = "009",
                             Name = "Промишлен газьол (чужд-син, със съдържание на сяра над 0.2%)"
                         },
                         new Product
                         {
-                            Id = 10,
+                            Code = "010",
                             Name = "Газьол (чужд,със съдържание на сяра до 0.05%)"
                         },
                         new Product
                         {
-                            Id = 11,
+                            Code = "011",
                             Name = "Газьол (чужд,със съдържание на сяра от 0.05% до 0.2%)"
                         },
                         new Product
                         {
-                            Id = 12,
+                            Code = "012",
                             Name = "Газьол (чужд-син,със съдържание на сяра до 0.05%)"
                         },
                         new Product
                         {
-                            Id = 13,
+                            Code = "013",
                             Name = "Газьол (чужд-син,със съдържание на сяра от 0.05% до 0.2%)"
                         },
                         new Product
                         {
-                            Id = 14,
+                            Code = "014",
                             Name = "Котелно гориво (чуждо-други смазочни масла и други масла)"
                         },
                         new Product
                         {
-                            Id = 15,
+                            Code = "015",
                             Name = "Котелно гориво (чуждо-тежки горива-сяра до 1.0%)"
                         },
                         new Product
                         {
-                            Id = 16,
+                            Code = "016",
                             Name = "Котелно гориво (чуждо-тежки горива-сяра от 1.0% до 2.0%)"
                         },
                         new Product
                         {
-                            Id = 17,
+                            Code = "017",
                             Name = "Котелно гориво (чуждо-тежки горива-сяра от 2.0% до 2.8%)"
                         },
                         new Product
                         {
-                            Id = 18,
+                            Code = "018",
                             Name = "Котелно гориво (чуждо-тежки горива-сяра над 2.8%)"
                         },
                         new Product
                         {
-                            Id = 19,
+                            Code = "019",
                             Name = "Промишлен газьол-внос"
                         },
                         new Product
                         {
-                            Id = 21,
+                            Code = "021",
                             Name = "Метанол"
                         },
                         new Product
                         {
-                            Id = 22,
+                            Code = "022",
                             Name = "Нормален хексан"
                         },
                         new Product
                         {
-                            Id = 23,
+                            Code = "023",
                             Name = "Амоняк"
                         },
                         new Product
                         {
-                            Id = 24,
+                            Code = "024",
                             Name = "ШМФ (внос)"
                         },
                         new Product
                         {
-                            Id = 25,
+                            Code = "025",
                             Name = "Дизелово гориво висока сяра (внос)"
                         },
                         new Product
                         {
-                            Id = 26,
+                            Code = "026",
                             Name = "Некондиционни продукти (вход)"
                         },
                         new Product
                         {
-                            Id = 27,
+                            Code = "027",
                             Name = "Газов кондензат"
                         },
                         new Product
                         {
-                            Id = 28,
+                            Code = "028",
                             Name = "Корабно остатъчно гориво"
                         },
                         new Product
                         {
-                            Id = 29,
+                            Code = "029",
                             Name = "Мазут за СП (AR)"
                         },
                         new Product
                         {
-                            Id = 30,
+                            Code = "030",
                             Name = "Мазут за СП (БМ)"
-                        },
-                        new Product
-                        {
-                            Id = 31,
-                            Name = "Резерв (НЕ СЕ ИЗПОЛЗВА)"
                         },
                     }
                 },
@@ -241,1047 +226,1047 @@ namespace CollectingProductionDataSystem.Data.Migrations
                     Products = {
                         new Product
                         {
-                            Id = 38,
+                            Code = "038",
                             Name = "Автомобилен бензин А 92Н"
                         },
                         new Product
                         {
-                            Id = 39,
+                            Code = "039",
                             Name = "Автомобилен бензин А 92Н-ЕВРО 5"
                         },
                         new Product
                         {
-                            Id = 40,
+                            Code = "040",
                             Name = "Автомобилен бензин А 95Н-ЕВРО5"
                         },
                         new Product
                         {
-                            Id = 41,
+                            Code = "041",
                             Name = "Автомобилен бензин А 98Н-ЕВРО5"
                         },
                         new Product
                         {
-                            Id = 42,
+                            Code = "042",
                             Name = "Автомобилен бензин А95Н (Био-етанол- 2%)"
                         },
                         new Product
                         {
-                            Id = 43,
+                            Code = "043",
                             Name = "Автомобилен бензин А95Н (Био-етанол- 3%)"
                         },
                         new Product
                         {
-                            Id = 44,
+                            Code = "044",
                             Name = "Автомобилен бензин А95Н (Био-етанол- 4%)"
                         },
                         new Product
                         {
-                            Id = 45,
+                            Code = "045",
                             Name = "Автомобилен бензин А95Н (Био-етанол- 5%)"
                         },
                         new Product
                         {
-                            Id = 46,
+                            Code = "046",
                             Name = "Автомобилен бензин А95Н (Био-етанол- 6%)"
                         },
                         new Product
                         {
-                            Id = 47,
+                            Code = "047",
                             Name = "Автомобилен бензин А95Н (Био-етанол- 7%)"
                         },
                         new Product
                         {
-                            Id = 48,
+                            Code = "048",
                             Name = "Автомобилен бензин А95Н (Био-етанол- 8%)"
                         },
                         new Product
                         {
-                            Id = 49,
+                            Code = "049",
                             Name = "Автомобилен бензин А95Н (Био-етанол- 9%)"
                         },
                         new Product
                         {
-                            Id = 50,
+                            Code = "050",
                             Name = "Автомобилен бензин А98Н (Био-етанол- 2%)"
                         },
                         new Product
                         {
-                            Id = 51,
+                            Code = "051",
                             Name = "Автомобилен бензин А98Н (Био-етанол- 3%)"
                         },
                         new Product
                         {
-                            Id = 52,
+                            Code = "052",
                             Name = "Автомобилен бензин А98Н (Био-етанол- 4%)"
                         },
                         new Product
                         {
-                            Id = 53,
+                            Code = "053",
                             Name = "Автомобилен бензин А98Н (Био-етанол- 5%)"
                         },
                         new Product
                         {
-                            Id = 54,
+                            Code = "054",
                             Name = "Автомобилен бензин А98Н (Био-етанол- 6%)"
                         },
                         new Product
                         {
-                            Id = 55,
+                            Code = "055",
                             Name = "Автомобилен бензин А98Н (Био-етанол- 7%)"
                         },
                         new Product
                         {
-                            Id = 56,
+                            Code = "056",
                             Name = "Автомобилен бензин А98Н (Био-етанол- 8%)"
                         },
                         new Product
                         {
-                            Id = 57,
+                            Code = "057",
                             Name = "Автомобилен бензин А98Н (Био-етанол- 9%)"
                         },
                         new Product
                         {
-                            Id = 58,
+                            Code = "058",
                             Name = "Автомобилен бензин А 95Н-ЕКТО"
                         },
                         new Product
                         {
-                            Id = 59,
+                            Code = "059",
                             Name = "Автомобилен бензин А 98Н-ЕКТО"
                         },
                         new Product
                         {
-                            Id = 60,
+                            Code = "060",
                             Name = "Автомобилен бензин А95Н (Био-етанол- 2%) ЕКТО"
                         },
                         new Product
                         {
-                            Id = 61,
+                            Code = "061",
                             Name = "Автомобилен бензин А95Н (Био-етанол- 3%) ЕКТО"
                         },
                         new Product
                         {
-                            Id = 62,
+                            Code = "062",
                             Name = "Автомобилен бензин А95Н (Био-етанол- 4%) ЕКТО"
                         },
                         new Product
                         {
-                            Id = 63,
+                            Code = "063",
                             Name = "Автомобилен бензин А95Н (Био-етанол- 5%) ЕКТО"
                         },
                         new Product
                         {
-                            Id = 64,
+                            Code = "064",
                             Name = "Автомобилен бензин А95Н (Био-етанол- 6%) ЕКТО"
                         },
                         new Product
                         {
-                            Id = 65,
+                            Code = "065",
                             Name = "Автомобилен бензин А95Н (Био-етанол- 7%) ЕКТО"
                         },
                         new Product
                         {
-                            Id = 66,
+                            Code = "066",
                             Name = "Автомобилен бензин А95Н (Био-етанол- 8%) ЕКТО"
                         },
                         new Product
                         {
-                            Id = 67,
+                            Code = "067",
                             Name = "Автомобилен бензин А95Н (Био-етанол- 9%) ЕКТО "
                         },
                         new Product
                         {
-                            Id = 68,
+                            Code = "068",
                             Name = "Автомобилен бензин А98Н (Био-етанол- 2%) ЕКТО"
                         },
                         new Product
                         {
-                            Id = 69,
+                            Code = "069",
                             Name = "Автомобилен бензин А98Н (Био-етанол- 3%) ЕКТО"
                         },
                         new Product
                         {
-                            Id = 70,
+                            Code = "070",
                             Name = "Автомобилен бензин А98Н (Био-етанол- 4%) ЕКТО"
                         },
                         new Product
                         {
-                            Id = 71,
+                            Code = "071",
                             Name = "Автомобилен бензин А98Н (Био-етанол- 5%) ЕКТО"
                         },
                         new Product
                         {
-                            Id = 72,
+                            Code = "072",
                             Name = "Автомобилен бензин А98Н (Био-етанол- 6%) ЕКТО"
                         },
                         new Product
                         {
-                            Id = 73,
+                            Code = "073",
                             Name = "Автомобилен бензин А98Н (Био-етанол- 7%) ЕКТО"
                         },
                         new Product
                         {
-                            Id = 74,
+                            Code = "074",
                             Name = "Автомобилен бензин А98Н (Био-етанол- 8%) ЕКТО"
                         },
                         new Product
                         {
-                            Id = 75,
+                            Code = "075",
                             Name = "Автомобилен бензин А98Н (Био-етанол- 9%) ЕКТО"
                         },
                         new Product
                         {
-                            Id = 76,
+                            Code = "076",
                             Name = "Автомобилен бензин А 93Н"
                         },
                         new Product
                         {
-                            Id = 77,
+                            Code = "077",
                             Name = "Реформат-стока"
                         },
                         new Product
                         {
-                            Id = 78,
+                            Code = "078",
                             Name = "Нискооктанов бензин (НОБ) - лек"
                         },
                         new Product
                         {
-                            Id = 79,
+                            Code = "079",
                             Name = "МТБЕ-стока"
                         },
                         new Product
                         {
-                            Id = 80,
+                            Code = "080",
                             Name = "Реактивно гориво ДЖЕТ-А1"
                         },
                         new Product
                         {
-                            Id = 81,
+                            Code = "081",
                             Name = "Дизелово гориво-0.001%S - ЕВРО 5 (лятно)"
                         },
                         new Product
                         {
-                            Id = 82,
+                            Code = "082",
                             Name = "Дизелово гориво-0.001%S - ЕВРО 5 (лятно,син)"
                         },
                         new Product
                         {
-                            Id = 83,
+                            Code = "083",
                             Name = "Дизелово гориво-0.001%S - ЕВРО 5 (лятно,червен)"
                         },
                         new Product
                         {
-                            Id = 84,
+                            Code = "084",
                             Name = "Дизелово гориво-0.001%S - ЕВРО 5 (зимно)"
                         },
                         new Product
                         {
-                            Id = 85,
+                            Code = "085",
                             Name = "Дизелово гориво-0.001%S - ЕВРО 5 (зимно,син)"
                         },
                         new Product
                         {
-                            Id = 86,
+                            Code = "086",
                             Name = "Дизелово гориво-0.001%S - ЕВРО 5 (зимно,червен)"
                         },
                         new Product
                         {
-                            Id = 87,
+                            Code = "087",
                             Name = "Дизелово гориво ( CFPP - 25)"
                         },
                         new Product
                         {
-                            Id = 88,
+                            Code = "088",
                             Name = "Дизелово гориво ( CP - 16)"
                         },
                         new Product
                         {
-                            Id = 89,
+                            Code = "089",
                             Name = "Газьол за извънпътна техника - 0,001%S"
                         },
                         new Product
                         {
-                            Id = 90,
+                            Code = "090",
                             Name = "Газьол за извънпътна техника - 0,001%S (син)"
                         },
                         new Product
                         {
-                            Id = 91,
+                            Code = "091",
                             Name = "Газьол за извънпътна техника - 0,001%S (червен)"
                         },
                         new Product
                         {
-                            Id = 92,
+                            Code = "092",
                             Name = "Газьол за извънпътна техника - 0,1%S"
                         },
                         new Product
                         {
-                            Id = 93,
+                            Code = "093",
                             Name = "Газьол за извънпътна техника - 0,1%S (син)"
                         },
                         new Product
                         {
-                            Id = 94,
+                            Code = "094",
                             Name = "Газьол за извънпътна техника - 0,1%S (червен)"
                         },
                         new Product
                         {
-                            Id = 95,
+                            Code = "095",
                             Name = "Гориво за дизелови двигатели B5 (лято)"
                         },
                         new Product
                         {
-                            Id = 96,
+                            Code = "096",
                             Name = "Гориво за дизелови двигатели B5 (лято;син)"
                         },
                         new Product
                         {
-                            Id = 97,
+                            Code = "097",
                             Name = "Гориво за дизелови двигатели B5 (лято;червен)"
                         },
                         new Product
                         {
-                            Id = 98,
+                            Code = "098",
                             Name = "Гориво за дизелови двигатели B5 (зима)"
                         },
                         new Product
                         {
-                            Id = 99,
+                            Code = "099",
                             Name = "Гориво за дизелови двигатели B5 (зима;син)"
                         },
                         new Product
                         {
-                            Id = 100,
+                            Code = "100",
                             Name = "Гориво за дизелови двигатели B5 (зима;червен)"
                         },
                         new Product
                         {
-                            Id = 101,
+                            Code = "101",
                             Name = "Гориво за дизелови двигатели B6 (лято)"
                         },
                         new Product
                         {
-                            Id = 102,
+                            Code = "102",
                             Name = "Гориво за дизелови двигатели B6 (лято;син)"
                         },
                         new Product
                         {
-                            Id = 103,
+                            Code = "103",
                             Name = "Гориво за дизелови двигатели B6 (лято;червен)"
                         },
                         new Product
                         {
-                            Id = 104,
+                            Code = "104",
                             Name = "Гориво за дизелови двигатели B6 (зима)"
                         },
                         new Product
                         {
-                            Id = 105,
+                            Code = "105",
                             Name = "Гориво за дизелови двигатели B6 (зима;син)"
                         },
                         new Product
                         {
-                            Id = 106,
+                            Code = "106",
                             Name = "Гориво за дизелови двигатели B6 (зима;червен)"
                         },
                         new Product
                         {
-                            Id = 107,
+                            Code = "107",
                             Name = "Дизелово гориво-0.001%S - ЕВРО 5 (лятно)-ЕКТО"
                         },
                         new Product
                         {
-                            Id = 108,
+                            Code = "108",
                             Name = "Дизелово гориво-0.001%S - ЕВРО 5 (лятно,син)-ЕКТО"
                         },
                         new Product
                         {
-                            Id = 109,
+                            Code = "109",
                             Name = "Дизелово гориво-0.001%S - ЕВРО 5 (лятно,червен)-ЕКТО"
                         },
                         new Product
                         {
-                            Id = 110,
+                            Code = "110",
                             Name = "Дизелово гориво-0.001%S - ЕВРО 5 (зимно)-ЕКТО"
                         },
                         new Product
                         {
-                            Id = 111,
+                            Code = "111",
                             Name = "Дизелово гориво-0.001%S - ЕВРО 5 (зимно,син)-ЕКТО"
                         },
                         new Product
                         {
-                            Id = 112,
+                            Code = "112",
                             Name = "Дизелово гориво-0.001%S - ЕВРО 5 (зимно,червен)-ЕКТО"
                         },
                         new Product
                         {
-                            Id = 113,
+                            Code = "113",
                             Name = "Дизелово гориво ( CFPP - 25)-ЕКТО"
                         },
                         new Product
                         {
-                            Id = 114,
+                            Code = "114",
                             Name = "Дизелово гориво ( CP - 16)-ЕКТО"
                         },
                         new Product
                         {
-                            Id = 115,
+                            Code = "115",
                             Name = "Гориво за дизелови двигатели B5 (лято)-ЕКТО"
                         },
                         new Product
                         {
-                            Id = 116,
+                            Code = "116",
                             Name = "Гориво за дизелови двигатели B5 (лято;син)-ЕКТО"
                         },
                         new Product
                         {
-                            Id = 117,
+                            Code = "117",
                             Name = "Гориво за дизелови двигатели B5 (лято;червен)-ЕКТО"
                         },
                         new Product
                         {
-                            Id = 118,
+                            Code = "118",
                             Name = "Гориво за дизелови двигатели B5 (зима)-ЕКТО "
                         },
                         new Product
                         {
-                            Id = 119,
+                            Code = "119",
                             Name = "Гориво за дизелови двигатели B5 (зима;син)-ЕКТО"
                         },
                         new Product
                         {
-                            Id = 120,
+                            Code = "120",
                             Name = "Гориво за дизелови двигатели B5 (зима;червен)-ЕКТО"
                         },
                         new Product
                         {
-                            Id = 121,
+                            Code = "121",
                             Name = "Гориво за дизелови двигатели B6 (лято)-ЕКТО "
                         },
                         new Product
                         {
-                            Id = 122,
+                            Code = "122",
                             Name = "Гориво за дизелови двигатели B6 (лято;син)-ЕКТО"
                         },
                         new Product
                         {
-                            Id = 123,
+                            Code = "123",
                             Name = "Гориво за дизелови двигатели B6 (лято;червен)-ЕКТО"
                         },
                         new Product
                         {
-                            Id = 124,
+                            Code = "124",
                             Name = "Гориво за дизелови двигатели B6 (зима)-ЕКТО"
                         },
                         new Product
                         {
-                            Id = 125,
+                            Code = "125",
                             Name = "Гориво за дизелови двигатели B6 (зима;син)-ЕКТО"
                         },
                         new Product
                         {
-                            Id = 126,
+                            Code = "126",
                             Name = "Гориво за дизелови двигатели B6 (зима;червен)-ЕКТО"
                         },
                         new Product
                         {
-                            Id = 127,
+                            Code = "127",
                             Name = "Дизелово гориво ДС"
                         },
                         new Product
                         {
-                            Id = 128,
+                            Code = "128",
                             Name = "Дизелово гориво ДСЗ"
                         },
                         new Product
                         {
-                            Id = 129,
+                            Code = "129",
                             Name = "Котелно гориво - 2.7%S"
                         },
                         new Product
                         {
-                            Id = 130,
+                            Code = "130",
                             Name = "Котелно гориво - 1.0 %S"
                         },
                         new Product
                         {
-                            Id = 131,
+                            Code = "131",
                             Name = "Котелно гориво бункер"
                         },
                         new Product
                         {
-                            Id = 132,
+                            Code = "132",
                             Name = "Мазут АО ( стока)"
                         },
                         new Product
                         {
-                            Id = 133,
+                            Code = "133",
                             Name = "Гудрон-стока"
                         },
                         new Product
                         {
-                            Id = 134,
+                            Code = "134",
                             Name = "Битум нефтен вискозен  БВ >120"
                         },
                         new Product
                         {
-                            Id = 135,
+                            Code = "135",
                             Name = "Битум за пътни настилки тип 50/70 ( БВ-60)"
                         },
                         new Product
                         {
-                            Id = 136,
+                            Code = "136",
                             Name = "Битум за пътни настилки тип 70/100 (БВ-90)"
                         },
                         new Product
                         {
-                            Id = 137,
+                            Code = "137",
                             Name = "ШМФ (износ)"
                         },
                         new Product
                         {
-                            Id = 138,
+                            Code = "138",
                             Name = "Пропан бутан ( СПБ)"
                         },
                         new Product
                         {
-                            Id = 139,
+                            Code = "139",
                             Name = "Пропан-бутан (лек)"
                         },
                         new Product
                         {
-                            Id = 140,
+                            Code = "140",
                             Name = "Пропан-бутан (тежък)"
                         },
                         new Product
                         {
-                            Id = 141,
+                            Code = "141",
                             Name = "Пропилен ( стока)"
                         },
                         new Product
                         {
-                            Id = 142,
+                            Code = "142",
                             Name = "Пропан-пропиленова фракция ( стока)"
                         },
                         new Product
                         {
-                            Id = 143,
+                            Code = "143",
                             Name = "Пропан-технически"
                         },
                         new Product
                         {
-                            Id = 144,
+                            Code = "144",
                             Name = "Пропан-бутан (чужд)"
                         },
                         new Product
                         {
-                            Id = 145,
+                            Code = "145",
                             Name = "Бутан (чужд)"
                         },
                         new Product
                         {
-                            Id = 146,
+                            Code = "146",
                             Name = "Пропан (чужд)"
                         },
                         new Product
                         {
-                            Id = 147,
+                            Code = "147",
                             Name = "Газова сяра (буци)"
                         },
                         new Product
                         {
-                            Id = 148,
+                            Code = "148",
                             Name = "Газова сяра ( гранули)"
                         },
                         new Product
                         {
-                            Id = 149,
+                            Code = "149",
                             Name = "Газова сяра (замърсена)"
                         },
                         new Product
                         {
-                            Id = 150,
+                            Code = "150",
                             Name = "Горивен газ (стока за ЛЕГБ)"
                         },
                         new Product
                         {
-                            Id = 151,
+                            Code = "151",
                             Name = "Полиетилен гликол"
                         },
                         new Product
                         {
-                            Id = 152,
+                            Code = "152",
                             Name = "Моноетилен гликол"
                         },
                         new Product
                         {
-                            Id = 153,
+                            Code = "153",
                             Name = "Диетилен гликол"
                         },
                         new Product
                         {
-                            Id = 154,
+                            Code = "154",
                             Name = "Триетилен гликол"
                         },
                         new Product
                         {
-                            Id = 155,
+                            Code = "155",
                             Name = "Тетраетилен гликол"
                         },
                         new Product
                         {
-                            Id = 156,
+                            Code = "156",
                             Name = "Моноетанол амин"
                         },
                         new Product
                         {
-                            Id = 157,
+                            Code = "157",
                             Name = "Диетанол амин"
                         },
                         new Product
                         {
-                            Id = 158,
+                            Code = "158",
                             Name = "Триетанол амин"
                         },
                         new Product
                         {
-                            Id = 159,
+                            Code = "159",
                             Name = "МАК-4"
                         },
                         new Product
                         {
-                            Id = 160,
+                            Code = "160",
                             Name = "ПАН-влакна"
                         },
                         new Product
                         {
-                            Id = 161,
+                            Code = "161",
                             Name = "НЕСТАНДАРТНО ВЛАКНО КАБЕЛ"
                         },
                         new Product
                         {
-                            Id = 162,
+                            Code = "162",
                             Name = "НЕСТАНДАРТНО ВЛАКНО СМЕС"
                         },
                         new Product
                         {
-                            Id = 163,
+                            Code = "163",
                             Name = "НЕСТАНДАРТНО ВЛАКНО ЛЕНТА"
                         },
                         new Product
                         {
-                            Id = 164,
+                            Code = "164",
                             Name = "НЕСТАНДАРТНО ВЛАКНО ЩАПЕЛ"
                         },
                         new Product
                         {
-                            Id = 165,
+                            Code = "165",
                             Name = "ПАН Л 3,4 М 125 СМЕС А"
                         },
                         new Product
                         {
-                            Id = 166,
+                            Code = "166",
                             Name = "ПАН ЩББ 3,4/102 А"
                         },
                         new Product
                         {
-                            Id = 167,
+                            Code = "167",
                             Name = "ПАН ШБМ 2,6/120 А"
                         },
                         new Product
                         {
-                            Id = 168,
+                            Code = "168",
                             Name = "ПАН ЩБМ 3,4/60 А"
                         },
                         new Product
                         {
-                            Id = 169,
+                            Code = "169",
                             Name = "ПАН ЩБМ 3,4/80 А"
                         },
                         new Product
                         {
-                            Id = 170,
+                            Code = "170",
                             Name = "ПАН ЩМ Т СИН 125 3,4/80 А"
                         },
                         new Product
                         {
-                            Id = 171,
+                            Code = "171",
                             Name = "ПАН ЩМ ЧЕРЕН 144 3,4/60 А"
                         },
                         new Product
                         {
-                            Id = 172,
+                            Code = "172",
                             Name = "ПАН ЩМ ЧЕРЕН 144 3,4/80 А"
                         },
                         new Product
                         {
-                            Id = 173,
+                            Code = "173",
                             Name = "ПОЛИПРОПИЛЕН (наличност)"
                         },
                         new Product
                         {
-                            Id = 174,
+                            Code = "174",
                             Name = "АТАКТЕН ПОЛИПРОПИЛЕН-ХОМОПОЛИМЕР"
                         },
                         new Product
                         {
-                            Id = 175,
+                            Code = "175",
                             Name = "ПОЛИПРОПИЛЕН - ПОЛИМЕРНИ ШУШУЛКИ"
                         },
                         new Product
                         {
-                            Id = 176,
+                            Code = "176",
                             Name = "ПОЛИПРОПИЛЕН - СМЕТЕНИ ГР.С МЕХ.ПРИМЕСИ"
                         },
                         new Product
                         {
-                            Id = 177,
+                            Code = "177",
                             Name = "ПОЛИПРОПИЛЕН - ОТПАДЪК ЧИСТИ ГР.ОТ ЕКСТР"
                         },
                         new Product
                         {
-                            Id = 178,
+                            Code = "178",
                             Name = "ПОЛИПРОПИЛЕН 6131 ПТ НЕОЦВ. 1К"
                         },
                         new Product
                         {
-                            Id = 179,
+                            Code = "179",
                             Name = "ПОЛИПРОПИЛЕН 6131 ПТ НЕОЦВ. 2К"
                         },
                         new Product
                         {
-                            Id = 180,
+                            Code = "180",
                             Name = "ПОЛИПРОПИЛЕН 6231 НЮАНС"
                         },
                         new Product
                         {
-                            Id = 181,
+                            Code = "181",
                             Name = "ПОЛИПРОПИЛЕН 6231ПТ НЕОЦВ. I К"
                         },
                         new Product
                         {
-                            Id = 182,
+                            Code = "182",
                             Name = "ПОЛИПРОПИЛЕН 6231ПТ НЕОЦВ. II К"
                         },
                         new Product
                         {
-                            Id = 183,
+                            Code = "183",
                             Name = "ПОЛИПРОПИЛЕН 6331 НЕОЦ.1К"
                         },
                         new Product
                         {
-                            Id = 184,
+                            Code = "184",
                             Name = "ПОЛИПРОПИЛЕН 6331 НЕОЦ.2К"
                         },
                         new Product
                         {
-                            Id = 185,
+                            Code = "185",
                             Name = "ПОЛИПРОПИЛЕН 6331 НЮАНС"
                         },
                         new Product
                         {
-                            Id = 186,
+                            Code = "186",
                             Name = "ПОЛИПРОПИЛЕН 6431 /М и DHT I K"
                         },
                         new Product
                         {
-                            Id = 187,
+                            Code = "187",
                             Name = "ПОЛИПРОПИЛЕН 6431 /М II K"
                         },
                         new Product
                         {
-                            Id = 188,
+                            Code = "188",
                             Name = "ПОЛИПРОПИЛЕН 6431 НЕОЦ.1К"
                         },
                         new Product
                         {
-                            Id = 189,
+                            Code = "189",
                             Name = "ПОЛИПРОПИЛЕН 6431 НЕОЦ.2К"
                         },
                         new Product
                         {
-                            Id = 190,
+                            Code = "190",
                             Name = "ПОЛИПРОПИЛЕН 6431 НЮАНС"
                         },
                         new Product
                         {
-                            Id = 191,
+                            Code = "191",
                             Name = "ПОЛИПРОПИЛЕН 6531 НЕОЦ.1К"
                         },
                         new Product
                         {
-                            Id = 192,
+                            Code = "192",
                             Name = "ПОЛИПРОПИЛЕН 6531 НЕОЦ.2К"
                         },
                         new Product
                         {
-                            Id = 193,
+                            Code = "193",
                             Name = "ПОЛИПРОПИЛЕН 6531 НЮАНС"
                         },
                         new Product
                         {
-                            Id = 194,
+                            Code = "194",
                             Name = "ПОЛИПРОПИЛЕН 6631 НЕОЦ.1К"
                         },
                         new Product
                         {
-                            Id = 195,
+                            Code = "195",
                             Name = "ПОЛИПРОПИЛЕН 6631 НЕОЦ.2К"
                         },
                         new Product
                         {
-                            Id = 196,
+                            Code = "196",
                             Name = "ПОЛИПРОПИЛЕН 6631 N"
                         },
                         new Product
                         {
-                            Id = 197,
+                            Code = "197",
                             Name = "ПОЛИПРОПИЛЕН 6631 НЮАНС"
                         },
                         new Product
                         {
-                            Id = 198,
+                            Code = "198",
                             Name = "ПОЛИПРОПИЛЕНОВИ АГЛОМЕРАТИ (ПИТИ)"
                         },
                         new Product
                         {
-                            Id = 199,
+                            Code = "199",
                             Name = "ПОЛИПРОПИЛЕН АТАКТЕН - ПИТИ (БУЦИ)"
                         },
                         new Product
                         {
-                            Id = 200,
+                            Code = "200",
                             Name = "ПОЛИПРОПИЛЕНОВ ПРАХ - С ПРИМЕСИ"
                         },
                         new Product
                         {
-                            Id = 201,
+                            Code = "201",
                             Name = "ПОЛИПРОПИЛЕНОВ ПРАХ - ЧИСТ"
                         },
                         new Product
                         {
-                            Id = 202,
+                            Code = "202",
                             Name = "ПОЛИПРОПИЛЕН АТАКТЕН-ЗАМЪРСЕН"
                         },
                         new Product
                         {
-                            Id = 203,
+                            Code = "203",
                             Name = "АТАКТЕН ПОЛИПРОПИЛЕН-ХОМО-К"
                         },
                         new Product
                         {
-                            Id = 204,
+                            Code = "204",
                             Name = "ПОЛИПРОПИЛЕН ПИТИ ЗАМЪРСЕНИ"
                         },
                         new Product
                         {
-                            Id = 205,
+                            Code = "205",
                             Name = "Полимерен отпадък"
                         },
                         new Product
                         {
-                            Id = 206,
+                            Code = "206",
                             Name = "Акрилнитрил"
                         },
                         new Product
                         {
-                            Id = 207,
+                            Code = "207",
                             Name = "Ацетонитрил"
                         },
                         new Product
                         {
-                            Id = 219,
+                            Code = "219",
                             Name = "Котелно гориво (AR) - 2.7%S"
                         },
                         new Product
                         {
-                            Id = 220,
+                            Code = "220",
                             Name = "Корабно остатъчно гориво ( AR)"
                         },
                         new Product
                         {
-                            Id = 221,
+                            Code = "221",
                             Name = " - Неидентифициран - "
                         },
                         new Product
                         {
-                            Id = 222,
+                            Code = "222",
                             Name = "ШМФ (износ) - (AR)"
                         },
                         new Product
                         {
-                            Id = 500,
+                            Code = "500",
                             Name = "Автомобилен бензин А95Н - 500"
                         },
                         new Product
                         {
-                            Id = 501,
+                            Code = "501",
                             Name = "Автомобилен бензин А95Н - 501"
                         },
                         new Product
                         {
-                            Id = 502,
+                            Code = "502",
                             Name = "Автомобилен бензин А95Н - 502"
                         },
                         new Product
                         {
-                            Id = 503,
+                            Code = "503",
                             Name = "Автомобилен бензин А95Н - 503"
                         },
                         new Product
                         {
-                            Id = 504,
+                            Code = "504",
                             Name = "Автомобилен бензин А95Н - 504"
                         },
                         new Product
                         {
-                            Id = 520,
+                            Code = "520",
                             Name = "Автомобилен бензин А98Н - 520"
                         },
                         new Product
                         {
-                            Id = 521,
+                            Code = "521",
                             Name = "Автомобилен бензин А98Н - 521"
                         },
                         new Product
                         {
-                            Id = 522,
+                            Code = "522",
                             Name = "Автомобилен бензин А98Н - 522"
                         },
                         new Product
                         {
-                            Id = 524,
+                            Code = "524",
                             Name = "Автомобилен бензин А98Н - 524"
                         },
                         new Product
                         {
-                            Id = 533,
+                            Code = "533",
                             Name = "Гориво за дизелови двигатели - 533"
                         },
                         new Product
                         {
-                            Id = 534,
+                            Code = "534",
                             Name = "Гориво за дизелови двигатели - 534"
                         },
                         new Product
                         {
-                            Id = 535,
+                            Code = "535",
                             Name = "Гориво за дизелови двигатели - 535"
                         },
                         new Product
                         {
-                            Id = 536,
+                            Code = "536",
                             Name = "Гориво за дизелови двигатели - 536"
                         },
                         new Product
                         {
-                            Id = 537,
+                            Code = "537",
                             Name = "Гориво за дизелови двигатели - 537"
                         },
                         new Product
                         {
-                            Id = 538,
+                            Code = "538",
                             Name = "Гориво за дизелови двигатели - 538"
                         },
                         new Product
                         {
-                            Id = 539,
+                            Code = "539",
                             Name = "Гориво за дизелови двигатели - 539"
                         },
                         new Product
                         {
-                            Id = 540,
+                            Code = "540",
                             Name = "Гориво за дизелови двигатели - 540"
                         },
                         new Product
                         {
-                            Id = 541,
+                            Code = "541",
                             Name = "Гориво за дизелови двигатели - 541"
                         },
                         new Product
                         {
-                            Id = 542,
+                            Code = "542",
                             Name = "Гориво за дизелови двигатели - 542"
                         },
                         new Product
                         {
-                            Id = 543,
+                            Code = "543",
                             Name = "Гориво за дизелови двигатели - 543"
                         },
                         new Product
                         {
-                            Id = 544,
+                            Code = "544",
                             Name = "Гориво за дизелови двигатели - 544"
                         },
                         new Product
                         {
-                            Id = 545,
+                            Code = "545",
                             Name = "Гориво за дизелови двигатели - 545"
                         },
                         new Product
                         {
-                            Id = 546,
+                            Code = "546",
                             Name = "Гориво за дизелови двигатели - 546"
                         },
                         new Product
                         {
-                            Id = 561,
+                            Code = "561",
                             Name = "Гориво за дизелови двигатели - B6(CP)"
                         },
                         new Product
                         {
-                            Id = 562,
+                            Code = "562",
                             Name = "Гориво за дизелови двигатели - B6(CP)-EKTO"
                         },
                         new Product
                         {
-                            Id = 579,
+                            Code = "579",
                             Name = "Нискооктанов бензин (НОБ) - тежък"
                         },
                         new Product
                         {
-                            Id = 585,
+                            Code = "585",
                             Name = "Автомобилен бензин А94Н"
                         },
                         new Product
                         {
-                            Id = 586,
+                            Code = "586",
                             Name = "Бензин алкилат (стока)"
                         },
                         new Product
                         {
-                            Id = 811,
+                            Code = "811",
                             Name = "Дизелово гориво-0.001%S - Евро 5 (Лятно) - Смесване"
                         },
                         new Product
                         {
-                            Id = 821,
+                            Code = "821",
                             Name = "Дизелово гориво-0.001%S - Евро 5 (Лятно, Син)  - Смесване"
                         },
                         new Product
                         {
-                            Id = 825,
+                            Code = "825",
                             Name = "Дизелово гориво Висока Сяра (Внос) - Смесване"
                         },
                         new Product
                         {
-                            Id = 827,
+                            Code = "827",
                             Name = "Дизелово гориво Висока Сяра (Внос, Син)  - Смесване"
                         },
                         new Product
                         {
-                            Id = 828,
+                            Code = "828",
                             Name = "Корабно Остатъчно Гориво (КОГ) - Смесване"
                         },
                         new Product
                         {
-                            Id = 841,
+                            Code = "841",
                             Name = "Дизелово гориво-0.001%S - Евро 5 (Зимно) - Смесване"
                         },
                         new Product
                         {
-                            Id = 851,
+                            Code = "851",
                             Name = "Дизелово гориво-0.001%S - Евро 5 (Зимно, Син) - Смесване"
                         },
                     }
@@ -1292,277 +1277,277 @@ namespace CollectingProductionDataSystem.Data.Migrations
                     Products = {
                         new Product
                         {
-                            Id = 231,
+                            Code = "231",
                             Name = "Водород (ВИ)"
                         },
                         new Product
                         {
-                            Id = 232,
+                            Code = "232",
                             Name = "Водород-съдържащ газ (ВСГ)"
                         },
                         new Product
                         {
-                            Id = 233,
+                            Code = "233",
                             Name = "Въглеводороден газ (ВВГ)"
                         },
                         new Product
                         {
-                            Id = 234,
+                            Code = "234",
                             Name = "Въглеводороди (леки)"
                         },
                         new Product
                         {
-                            Id = 235,
+                            Code = "235",
                             Name = "Сух газ"
                         },
                         new Product
                         {
-                            Id = 236,
+                            Code = "236",
                             Name = "Смесен горивен газ"
                         },
                         new Product
                         {
-                            Id = 237,
+                            Code = "237",
                             Name = "Пропан бутан (НПБ)"
                         },
                         new Product
                         {
-                            Id = 238,
+                            Code = "238",
                             Name = "Пропан бутанова фракция"
                         },
                         new Product
                         {
-                            Id = 239,
+                            Code = "239",
                             Name = "Пропан-пропиленова фракция"
                         },
                         new Product
                         {
-                            Id = 240,
+                            Code = "240",
                             Name = "Пропилен"
                         },
                         new Product
                         {
-                            Id = 241,
+                            Code = "241",
                             Name = "Изо-бутан"
                         },
                         new Product
                         {
-                            Id = 242,
+                            Code = "242",
                             Name = "Бутан-бутиленова фракция (ББФ)"
                         },
                         new Product
                         {
-                            Id = 243,
+                            Code = "243",
                             Name = "Изо-бутан-бутиленова фракция (изо-ББФ)"
                         },
                         new Product
                         {
-                            Id = 244,
+                            Code = "244",
                             Name = "Пропан"
                         },
                         new Product
                         {
-                            Id = 245,
+                            Code = "245",
                             Name = "Нормален бутан"
                         },
                         new Product
                         {
-                            Id = 246,
+                            Code = "246",
                             Name = "Рафинат II"
                         },
                         new Product
                         {
-                            Id = 247,
+                            Code = "247",
                             Name = "Рафинат III"
                         },
                         new Product
                         {
-                            Id = 248,
+                            Code = "248",
                             Name = "Етан-пропанова фракция"
                         },
                         new Product
                         {
-                            Id = 249,
+                            Code = "249",
                             Name = "Фракция С5"
                         },
                         new Product
                         {
-                            Id = 250,
+                            Code = "250",
                             Name = "Сяроводород"
                         },
                         new Product
                         {
-                            Id = 251,
+                            Code = "251",
                             Name = "Сярна киселина"
                         },
                         new Product
                         {
-                            Id = 252,
+                            Code = "252",
                             Name = "Отработена сярна киселина"
                         },
                         new Product
                         {
-                            Id = 253,
+                            Code = "253",
                             Name = "Азот (газообразен)"
                         },
                         new Product
                         {
-                            Id = 254,
+                            Code = "254",
                             Name = "Азот (течен)"
                         },
                         new Product
                         {
-                            Id = 255,
+                            Code = "255",
                             Name = "Кислород (газообразен)"
                         },
                         new Product
                         {
-                            Id = 256,
+                            Code = "256",
                             Name = "Кислород (течен)"
                         },
                         new Product
                         {
-                            Id = 257,
+                            Code = "257",
                             Name = "Бензинова фракция от АД (НК-100)"
                         },
                         new Product
                         {
-                            Id = 258,
+                            Code = "258",
                             Name = "Бензинова фракция от АД (100-180)"
                         },
                         new Product
                         {
-                            Id = 259,
+                            Code = "259",
                             Name = "Бензинова фракция от АД"
                         },
                         new Product
                         {
-                            Id = 260,
+                            Code = "260",
                             Name = "Бензин отгон"
                         },
                         new Product
                         {
-                            Id = 261,
+                            Code = "261",
                             Name = "Бензин реформат"
                         },
                         new Product
                         {
-                            Id = 262,
+                            Code = "262",
                             Name = "Бензин алкилат"
                         },
                         new Product
                         {
-                            Id = 263,
+                            Code = "263",
                             Name = "Крекин бензин"
                         },
                         new Product
                         {
-                            Id = 264,
+                            Code = "264",
                             Name = "МТБЕ"
                         },
                         new Product
                         {
-                            Id = 265,
+                            Code = "265",
                             Name = "Хидроочистен бензин (ХО- Ксилоли)"
                         },
                         new Product
                         {
-                            Id = 266,
+                            Code = "266",
                             Name = "Бензин хидрогенизат  (ХОБ-1)"
                         },
                         new Product
                         {
-                            Id = 267,
+                            Code = "267",
                             Name = "Пиробензин"
                         },
                         new Product
                         {
-                            Id = 268,
+                            Code = "268",
                             Name = "Керосинова фракция от АД"
                         },
                         new Product
                         {
-                            Id = 269,
+                            Code = "269",
                             Name = "Керосинова фракция хидрирана"
                         },
                         new Product
                         {
-                            Id = 270,
+                            Code = "270",
                             Name = "Дизелова фракция от АД"
                         },
                         new Product
                         {
-                            Id = 271,
+                            Code = "271",
                             Name = "Дизелова фракция от ВДМ"
                         },
                         new Product
                         {
-                            Id = 272,
+                            Code = "272",
                             Name = "Дизелова фракция от АВД-1"
                         },
                         new Product
                         {
-                            Id = 273,
+                            Code = "273",
                             Name = "Дизелова фракция от ТК"
                         },
                         new Product
                         {
-                            Id = 274,
+                            Code = "274",
                             Name = "Дизелова фракция от С-100"
                         },
                         new Product
                         {
-                            Id = 275,
+                            Code = "275",
                             Name = "Дизелова фракция"
                         },
                         new Product
                         {
-                            Id = 276,
+                            Code = "276",
                             Name = "Дизелова фракция хидрирана"
                         },
                         new Product
                         {
-                            Id = 277,
+                            Code = "277",
                             Name = "Атмосферен газьол"
                         },
                         new Product
                         {
-                            Id = 278,
+                            Code = "278",
                             Name = "Лек каталитичен газьол"
                         },
                         new Product
                         {
-                            Id = 279,
+                            Code = "279",
                             Name = "Тежък каталитичен газьол"
                         },
                         new Product
                         {
-                            Id = 280,
+                            Code = "280",
                             Name = "Мазут от първична дестилация"
                         },
                         new Product
                         {
-                            Id = 281,
+                            Code = "281",
                             Name = "Широка маслена фракция (ШМФ)"
                         },
                         new Product
                         {
-                            Id = 282,
+                            Code = "282",
                             Name = "Гудрон"
                         },
                         new Product
                         {
-                            Id = 283,
+                            Code = "283",
                             Name = "Тежка гудронова фракция за собствени нужди(ТГСН)"
                         },
                         new Product
                         {
-                            Id = 284,
+                            Code = "284",
                             Name = "Тежък гудрон"
                         },
                         new Product
                         {
-                            Id = 285,
+                            Code = "285",
                             Name = "Газова сяра-течна "
                         },
                     }
@@ -1573,77 +1558,77 @@ namespace CollectingProductionDataSystem.Data.Migrations
                     Products = {
                         new Product
                         {
-                            Id = 316,
+                            Code = "316",
                             Name = "Уловени нефтопродукти"
                         },
                         new Product
                         {
-                            Id = 317,
+                            Code = "317",
                             Name = "Нефтени утайки"
                         },
                         new Product
                         {
-                            Id = 318,
+                            Code = "318",
                             Name = "Отпадък (утайки)"
                         },
                         new Product
                         {
-                            Id = 319,
+                            Code = "319",
                             Name = "Шлам"
                         },
                         new Product
                         {
-                            Id = 320,
+                            Code = "320",
                             Name = "Некондиционни продукти"
                         },
                         new Product
                         {
-                            Id = 321,
+                            Code = "321",
                             Name = "Окислени масла"
                         },
                         new Product
                         {
-                            Id = 322,
+                            Code = "322",
                             Name = "Отработени масла***"
                         },
                         new Product
                         {
-                            Id = 323,
+                            Code = "323",
                             Name = "Кокс"
                         },
                         new Product
                         {
-                            Id = 324,
+                            Code = "324",
                             Name = "Незавършена продукция (в инсталациите)"
                         },
                         new Product
                         {
-                            Id = 325,
+                            Code = "325",
                             Name = "Регенерирано МДЕА"
                         },
                         new Product
                         {
-                            Id = 326,
+                            Code = "326",
                             Name = "Наситено МДЕА"
                         },
                         new Product
                         {
-                            Id = 327,
+                            Code = "327",
                             Name = "Свежо МДЕА"
                         },
                         new Product
                         {
-                            Id = 328,
+                            Code = "328",
                             Name = "Регенерирано МЕА"
                         },
                         new Product
                         {
-                            Id = 329,
+                            Code = "329",
                             Name = "Наситено МЕА"
                         },
                         new Product
                         {
-                            Id = 330,
+                            Code = "330",
                             Name = "Свежо МЕА"
                         },
                     }
@@ -1654,427 +1639,427 @@ namespace CollectingProductionDataSystem.Data.Migrations
                     Products = {
                         new Product
                         {
-                            Id = 345,
+                            Code = "345",
                             Name = "Масло Shell Tellus 68"
                         },
                         new Product
                         {
-                            Id = 346,
+                            Code = "346",
                             Name = "Масло Shell Tellus 68 /Tellus S2 M68/"
                         },
                         new Product
                         {
-                            Id = 347,
+                            Code = "347",
                             Name = "Масло Shell Remula oil X30Gr"
                         },
                         new Product
                         {
-                            Id = 348,
+                            Code = "348",
                             Name = "Масло АН46"
                         },
                         new Product
                         {
-                            Id = 349,
+                            Code = "349",
                             Name = "Масло АН68 (И40А)"
                         },
                         new Product
                         {
-                            Id = 350,
+                            Code = "350",
                             Name = "Масло МХЛ-32 (ИГП18)"
                         },
                         new Product
                         {
-                            Id = 351,
+                            Code = "351",
                             Name = "Масло МХЛ-68 (ИГП38)"
                         },
                         new Product
                         {
-                            Id = 352,
+                            Code = "352",
                             Name = "Масло МХЛ-46 (H46A)"
                         },
                         new Product
                         {
-                            Id = 353,
+                            Code = "353",
                             Name = "Масло МХЛ-150"
                         },
                         new Product
                         {
-                            Id = 354,
+                            Code = "354",
                             Name = "Масло МВК150 (К150)"
                         },
                         new Product
                         {
-                            Id = 355,
+                            Code = "355",
                             Name = "Масло МВК220 (К220)"
                         },
                         new Product
                         {
-                            Id = 356,
+                            Code = "356",
                             Name = "Масло М10Д ( М10Г2к)"
                         },
                         new Product
                         {
-                            Id = 357,
+                            Code = "357",
                             Name = "Масло РМ68 ( Ролон 68)"
                         },
                         new Product
                         {
-                            Id = 358,
+                            Code = "358",
                             Name = "Масло РМ68"
                         },
                         new Product
                         {
-                            Id = 359,
+                            Code = "359",
                             Name = "Масло РМ150"
                         },
                         new Product
                         {
-                            Id = 360,
+                            Code = "360",
                             Name = "Масло ТП32, (Тп22С и TbA32E)"
                         },
                         new Product
                         {
-                            Id = 361,
+                            Code = "361",
                             Name = "Масло ТП46 (TbA46E)"
                         },
                         new Product
                         {
-                            Id = 362,
+                            Code = "362",
                             Name = "Масло 90ЕР (Т90ЕР2)"
                         },
                         new Product
                         {
-                            Id = 363,
+                            Code = "363",
                             Name = "Масло трансформаторно"
                         },
                         new Product
                         {
-                            Id = 364,
+                            Code = "364",
                             Name = "Масло Shell Clavus G46"
                         },
                         new Product
                         {
-                            Id = 365,
+                            Code = "365",
                             Name = "Масло Shell Omala 220"
                         },
                         new Product
                         {
-                            Id = 366,
+                            Code = "366",
                             Name = "Масло Shell Donax TM"
                         },
                         new Product
                         {
-                            Id = 367,
+                            Code = "367",
                             Name = "Приста АН460 "
                         },
                         new Product
                         {
-                            Id = 368,
+                            Code = "368",
                             Name = "Shell Helix Ultra 5W40"
                         },
                         new Product
                         {
-                            Id = 369,
+                            Code = "369",
                             Name = "Mobil DTE oil LIGHT"
                         },
                         new Product
                         {
-                            Id = 370,
+                            Code = "370",
                             Name = "масло Shell Tellus S 46"
                         },
                         new Product
                         {
-                            Id = 371,
+                            Code = "371",
                             Name = "Shell Tellus 46 /Tellus S2 M 46/"
                         },
                         new Product
                         {
-                            Id = 372,
+                            Code = "372",
                             Name = "'Масло Турбо дизел 15W40/Rimula  15W40/Лукойл Авангард Ултра 15W40"
                         },
                         new Product
                         {
-                            Id = 373,
+                            Code = "373",
                             Name = "'Масло Shell Vitrea M 150"
                         },
                         new Product
                         {
-                            Id = 374,
+                            Code = "374",
                             Name = "'Shell Turbo T46"
                         },
                         new Product
                         {
-                            Id = 375,
+                            Code = "375",
                             Name = "'Масло Приста АН 15"
                         },
                         new Product
                         {
-                            Id = 376,
+                            Code = "376",
                             Name = "'Масло Shell Termia B /Heat transfer S2/"
                         },
                         new Product
                         {
-                            Id = 377,
+                            Code = "377",
                             Name = "'Масло Royco 782"
                         },
                         new Product
                         {
-                            Id = 378,
+                            Code = "378",
                             Name = "'Масло mobilube GX80W90"
                         },
                         new Product
                         {
-                            Id = 379,
+                            Code = "379",
                             Name = "'Масло редукторно РМ 320"
                         },
                         new Product
                         {
-                            Id = 380,
+                            Code = "380",
                             Name = "'Трансмисионо толина 90"
                         },
                         new Product
                         {
-                            Id = 381,
+                            Code = "381",
                             Name = "'Хидравлично МХЛ - 150"
                         },
                         new Product
                         {
-                            Id = 382,
+                            Code = "382",
                             Name = "'Емулсол 113 Е /Бориол/"
                         },
                         new Product
                         {
-                            Id = 383,
+                            Code = "383",
                             Name = "'ЛТ2Т / Двутактово масло/"
                         },
                         new Product
                         {
-                            Id = 384,
+                            Code = "384",
                             Name = "'adinol turbine oil 46"
                         },
                         new Product
                         {
-                            Id = 385,
+                            Code = "385",
                             Name = "'Енергол АС-С-460"
                         },
                         new Product
                         {
-                            Id = 386,
+                            Code = "386",
                             Name = "'Шел клавус G-32"
                         },
                         new Product
                         {
-                            Id = 387,
+                            Code = "387",
                             Name = "'Шел Клавус G - 68"
                         },
                         new Product
                         {
-                            Id = 388,
+                            Code = "388",
                             Name = "'Шел омала 320"
                         },
                         new Product
                         {
-                            Id = 389,
+                            Code = "389",
                             Name = "'Шел Корена D-68"
                         },
                         new Product
                         {
-                            Id = 390,
+                            Code = "390",
                             Name = "'Шел Турбо Т-32"
                         },
                         new Product
                         {
-                            Id = 391,
+                            Code = "391",
                             Name = "'Shell tellus  S-68"
                         },
                         new Product
                         {
-                            Id = 392,
+                            Code = "392",
                             Name = "'Мобилубе НD 80W90"
                         },
                         new Product
                         {
-                            Id = 393,
+                            Code = "393",
                             Name = "'Mobil DTE 11M"
                         },
                         new Product
                         {
-                            Id = 394,
+                            Code = "394",
                             Name = "'Mobil DTE 25"
                         },
                         new Product
                         {
-                            Id = 395,
+                            Code = "395",
                             Name = "'Масло MOBIL DTE 16 M"
                         },
                         new Product
                         {
-                            Id = 396,
+                            Code = "396",
                             Name = "'Масло MOBIL DTE oil Medium"
                         },
                         new Product
                         {
-                            Id = 397,
+                            Code = "397",
                             Name = "'Масло SHELL TELLUS 100"
                         },
                         new Product
                         {
-                            Id = 398,
+                            Code = "398",
                             Name = "'Масло ENERGOL RC 100"
                         },
                         new Product
                         {
-                            Id = 399,
+                            Code = "399",
                             Name = "'AGIP ACER SDE 15W40"
                         },
                         new Product
                         {
-                            Id = 400,
+                            Code = "400",
                             Name = "'AGIP SMO 20W50"
                         },
                         new Product
                         {
-                            Id = 401,
+                            Code = "401",
                             Name = "'AGIP BLASIA 150"
                         },
                         new Product
                         {
-                            Id = 402,
+                            Code = "402",
                             Name = "'AGIP BLASIA 100"
                         },
                         new Product
                         {
-                            Id = 403,
+                            Code = "403",
                             Name = "'AGIP BLASIA 220"
                         },
                         new Product
                         {
-                            Id = 404,
+                            Code = "404",
                             Name = "'AGIP BLASIA 680"
                         },
                         new Product
                         {
-                            Id = 405,
+                            Code = "405",
                             Name = "'AGIP  BLASIA  68"
                         },
                         new Product
                         {
-                            Id = 406,
+                            Code = "406",
                             Name = "'AGIP OTE 68"
                         },
                         new Product
                         {
-                            Id = 407,
+                            Code = "407",
                             Name = "'AGIP OSO 46"
                         },
                         new Product
                         {
-                            Id = 408,
+                            Code = "408",
                             Name = "'Масло хидравлично Н.Н.719.1025"
                         },
                         new Product
                         {
-                            Id = 409,
+                            Code = "409",
                             Name = "'Масло диелектрично Н.Н. 719.1026"
                         },
                         new Product
                         {
-                            Id = 410,
+                            Code = "410",
                             Name = "'Масло хидравлично Н.Н. 719.1028"
                         },
                         new Product
                         {
-                            Id = 411,
+                            Code = "411",
                             Name = "'Масло диелектрично Н.Н. 719.1029"
                         },
                         new Product
                         {
-                            Id = 412,
+                            Code = "412",
                             Name = "'AGIP OSO 68"
                         },
                         new Product
                         {
-                            Id = 413,
+                            Code = "413",
                             Name = "'AGIP VAS 460"
                         },
                         new Product
                         {
-                            Id = 414,
+                            Code = "414",
                             Name = "'Масло Бреокс 50А1000"
                         },
                         new Product
                         {
-                            Id = 415,
+                            Code = "415",
                             Name = "'Масло Бреокс 1400SP"
                         },
                         new Product
                         {
-                            Id = 416,
+                            Code = "416",
                             Name = "'TURMSILON U3000W"
                         },
                         new Product
                         {
-                            Id = 417,
+                            Code = "417",
                             Name = "'АЕРОШЕЛФЛУИД 4"
                         },
                         new Product
                         {
-                            Id = 418,
+                            Code = "418",
                             Name = "'Масло RARUS SHC 1025"
                         },
                         new Product
                         {
-                            Id = 419,
+                            Code = "419",
                             Name = "'Масло RARUS 426"
                         },
                         new Product
                         {
-                            Id = 420,
+                            Code = "420",
                             Name = "'Масло УНИВЕРСАЛ ЕНДЖИНЕ ОЙЛ 10W30"
                         },
                         new Product
                         {
-                            Id = 421,
+                            Code = "421",
                             Name = "'ШЕЛ ОМАЛА 220HD"
                         },
                         new Product
                         {
-                            Id = 422,
+                            Code = "422",
                             Name = "'Масло Shell Tivela S200"
                         },
                         new Product
                         {
-                            Id = 423,
+                            Code = "423",
                             Name = "SILTERM 800"
                         },
                         new Product
                         {
-                            Id = 424,
+                            Code = "424",
                             Name = "GEM-4-100 kluber syntetik"
                         },
                         new Product
                         {
-                            Id = 425,
+                            Code = "425",
                             Name = "Shell Omala 150"
                         },
                         new Product
                         {
-                            Id = 426,
+                            Code = "426",
                             Name = "Shell Tivella S220"
                         },
                         new Product
                         {
-                            Id = 427,
+                            Code = "427",
                             Name = "Масло Aral Vitam P3580"
                         },
                         new Product
                         {
-                            Id = 428,
+                            Code = "428",
                             Name = "Кофражно масло КМ15"
                         },
                         new Product
                         {
-                            Id = 429,
+                            Code = "429",
                             Name = "Масло ENERGOL CS 100"
                         },
                     }
@@ -2085,22 +2070,22 @@ namespace CollectingProductionDataSystem.Data.Migrations
                     Products = {
                         new Product
                         {
-                            Id = 441,
+                            Code = "441",
                             Name = "Масло процесно бяло минерално (Oндина 917 и WOP15)"
                         },
                         new Product
                         {
-                            Id = 442,
+                            Code = "442",
                             Name = "Процесно масло за ПЕВН Shell Ondina 934"
                         },
                         new Product
                         {
-                            Id = 443,
+                            Code = "443",
                             Name = "Процесно масло за каучук (Heavy Extract и RPO620N)*"
                         },
                         new Product
                         {
-                            Id = 444,
+                            Code = "444",
                             Name = "Процесно масло за каучук Shell Flavex 595"
                         },
                     }
@@ -2111,217 +2096,180 @@ namespace CollectingProductionDataSystem.Data.Migrations
                     Products = {
                         new Product
                         {
-                            Id = 457,
+                            Code = "457",
                             Name = "Смазващи присадки за дизелово гориво"
                         },
                         new Product
                         {
-                            Id = 458,
+                            Code = "458",
                             Name = "Добавки за реактивно и дизелово горива  Стадис 450"
                         },
                         new Product
                         {
-                            Id = 459,
+                            Code = "459",
                             Name = "Добавки за дизелово гориво  WASA"
                         },
                         new Product
                         {
-                            Id = 460,
+                            Code = "460",
                             Name = "Депресатори за дизелово гориво"
                         },
                         new Product
                         {
-                            Id = 461,
+                            Code = "461",
                             Name = "Полифункционална добавка за бензин  Керопур"
                         },
                         new Product
                         {
-                            Id = 462,
+                            Code = "462",
                             Name = "Биодизел Б100  "
                         },
                         new Product
                         {
-                            Id = 463,
+                            Code = "463",
                             Name = "Биоетанол (денатуриран)"
                         },
                         new Product
                         {
-                            Id = 464,
+                            Code = "464",
                             Name = "Биоетанол (неденатуриран)"
                         },
                         new Product
                         {
-                            Id = 465,
+                            Code = "465",
                             Name = "Нормален хексан"
                         },
                         new Product
                         {
-                            Id = 466,
+                            Code = "466",
                             Name = "Цетанова присадка за дизелово гориво"
                         },
                         new Product
                         {
-                            Id = 467,
+                            Code = "467",
                             Name = "АГИДОЛ-1"
                         },
                         new Product
                         {
-                            Id = 468,
+                            Code = "468",
                             Name = "Йонол 75 за JET A-1"
                         },
                         new Product
                         {
-                            Id = 469,
+                            Code = "469",
                             Name = "Dodigen 481"
                         },
                         new Product
                         {
-                            Id = 470,
+                            Code = "470",
                             Name = "Маркиращ разтвор(жълт 124+ син 79)-GOM BLUE BU10Y;  HFA72"
                         },
                         new Product
                         {
-                            Id = 471,
+                            Code = "471",
                             Name = "Маркиращ разтвор(жълт124+ червен19)- GOM RED BU10Y; HFA88"
                         },
                         new Product
                         {
-                            Id = 472,
+                            Code = "472",
                             Name = "БЕКТО-HITEC 6437 L (за авт. бензини)"
                         },
                         new Product
                         {
-                            Id = 473,
+                            Code = "473",
                             Name = "ДЕКТО-HITEC 4691 (за диз. горива)"
                         },
                         new Product
                         {
-                            Id = 474,
+                            Code = "474",
                             Name = "Химикал-редуциращ dP( FLOMX7C-260CAB)"
                         },
                         new Product
                         {
-                            Id = 481,
+                            Code = "481",
                             Name = "NEMO 6133 (ШЕЛ)"
                         },
                         new Product
                         {
-                            Id = 482,
+                            Code = "482",
                             Name = "NEMO 2041 (ШЕЛ)"
                         },
                         new Product
                         {
-                            Id = 483,
+                            Code = "483",
                             Name = "NEMO 2009 А (ШЕЛ)"
                         },
                         new Product
                         {
-                            Id = 484,
+                            Code = "484",
                             Name = "NEMO 2022 С (ШЕЛ)"
                         },
                         new Product
                         {
-                            Id = 485,
+                            Code = "485",
                             Name = "NEMO 4010 (ШЕЛ)"
                         },
                         new Product
                         {
-                            Id = 491,
+                            Code = "491",
                             Name = "Адитив -1"
                         },
                         new Product
                         {
-                            Id = 492,
+                            Code = "492",
                             Name = "Адитив -2"
                         },
                         new Product
                         {
-                            Id = 493,
+                            Code = "493",
                             Name = "Адитив -3"
                         },
                         new Product
                         {
-                            Id = 494,
+                            Code = "494",
                             Name = "Адитив -4"
                         },
                         new Product
                         {
-                            Id = 901,
+                            Code = "901",
                             Name = "ЕКО АС 700 (ДГ)"
                         },
                         new Product
                         {
-                            Id = 902,
+                            Code = "902",
                             Name = "ЕКО Р 996 (Бензин)"
                         },
                         new Product
                         {
-                            Id = 903,
+                            Code = "903",
                             Name = "ЕКО Адитив (ДГ)"
                         },
                         new Product
                         {
-                            Id = 904,
+                            Code = "904",
                             Name = "ЕКО Адитив (Бензин)"
                         },
                         new Product
                         {
-                            Id = 910,
+                            Code = "910",
                             Name = "ОМV DPP 14 ( ДГ)"
                         },
                         new Product
                         {
-                            Id = 911,
+                            Code = "911",
                             Name = "ОМV GPP 08 ( Бензин)"
                         },
                         new Product
                         {
-                            Id = 912,
+                            Code = "912",
                             Name = "OMV Адитив ( ДГ)"
                         },
                         new Product
                         {
-                            Id = 913,
+                            Code = "913",
                             Name = "OMV Адитив ( Бензин)"
                         },
-                        new Product
-                        {
-                            Id = 100001,
-                            Name = "Многофункционална присадка за бензини - ЕКТО"
-                        },
-                        new Product
-                        {
-                            Id = 100002,
-                            Name = "Многофункционална присадка за ДГ - ЕКТО"
-                        },
-                        new Product
-                        {
-                            Id = 100003,
-                            Name = "Бензинова добавка NEMO6115 - ШЕЛ"
-                        },
-                        new Product
-                        {
-                            Id = 100004,
-                            Name = "Дизелова добавка NEMO2022C - ЗИМА - ШЕЛ"
-                        },
-                        new Product
-                        {
-                            Id = 100005,
-                            Name = "Дизелова добавка NEMO2009А - ЛЯТО - ШЕЛ"
-                        },
                     }
-                },
-                                             //// Above products types are added for production production reporting by factory.
-                                             //// Later these need to be merged with exsisting productions types 
-                new ProductType
-                {
-                    Name = "Суровини",
-                    Products = { }
-                },
-                new ProductType
-                {
-                    Name = "Продукти",
-                    Products = { }
                 },
                 new ProductType
                 {
@@ -4467,7 +4415,6 @@ namespace CollectingProductionDataSystem.Data.Migrations
                         new Park
                         {
                             Name = "ОЗС",
-                            ExciseStoreId = 1,
                             TankConfigs = {
                                 new TankConfig
                                 {
@@ -5410,7 +5357,6 @@ namespace CollectingProductionDataSystem.Data.Migrations
                         new Park
                         {
                             Name = "8x5000",
-                            ExciseStoreId = 1,
                             TankConfigs = {
                                 new TankConfig
                                 {
@@ -6405,7 +6351,6 @@ namespace CollectingProductionDataSystem.Data.Migrations
                         new Park
                         {
                             Name = "Кат. Крекинг",
-                            ExciseStoreId = 1,
                             TankConfigs = {
                                 new TankConfig
                                 {
@@ -6828,7 +6773,6 @@ namespace CollectingProductionDataSystem.Data.Migrations
                         new Park
                         {
                             Name = "ПВГ",
-                            ExciseStoreId = 1,
                             TankConfigs = {
                                 new TankConfig
                                 {
@@ -8031,7 +7975,6 @@ namespace CollectingProductionDataSystem.Data.Migrations
                         new Park
                         {
                             Name = "РП 2/2",
-                            ExciseStoreId = 1,
                             TankConfigs = {
                                 new TankConfig
                                 {
@@ -8610,7 +8553,6 @@ namespace CollectingProductionDataSystem.Data.Migrations
                         new Park
                         {
                             Name = "Титул 1000",
-                            ExciseStoreId = 1,
                             TankConfigs = {
                                 new TankConfig
                                 {
@@ -9345,7 +9287,6 @@ namespace CollectingProductionDataSystem.Data.Migrations
                         new Park
                         {
                             Name = "Титул 1100",
-                            ExciseStoreId = 1,
                             TankConfigs = {
                                 new TankConfig
                                 {
@@ -9560,7 +9501,6 @@ namespace CollectingProductionDataSystem.Data.Migrations
                         new Park
                         {
                             Name = "Парк 506",
-                            ExciseStoreId = 1,
                             TankConfigs = {
                                 new TankConfig
                                 {
@@ -9723,7 +9663,6 @@ namespace CollectingProductionDataSystem.Data.Migrations
                         new Park
                         {
                             Name = "Парк 626",
-                            ExciseStoreId = 1,
                             TankConfigs = {
                                 new TankConfig
                                 {
@@ -9938,7 +9877,6 @@ namespace CollectingProductionDataSystem.Data.Migrations
                         new Park
                         {
                             Name = "Парк 750",
-                            ExciseStoreId = 1,
                             TankConfigs = {
                                 new TankConfig
                                 {
@@ -10101,7 +10039,6 @@ namespace CollectingProductionDataSystem.Data.Migrations
                         new Park
                         {
                             Name = "Парк 1613",
-                            ExciseStoreId = 1,
                             TankConfigs = {
                                 new TankConfig
                                 {
@@ -10368,7 +10305,6 @@ namespace CollectingProductionDataSystem.Data.Migrations
                         new Park
                         {
                             Name = "Парк 3х10000",
-                            ExciseStoreId = 1,
                             TankConfigs = {
                                 new TankConfig
                                 {
@@ -10531,7 +10467,6 @@ namespace CollectingProductionDataSystem.Data.Migrations
                         new Park
                         {
                             Name = "Парк АД-2 (т.27)",
-                            ExciseStoreId = 1,
                             TankConfigs = {
                                 new TankConfig
                                 {
@@ -10746,7 +10681,6 @@ namespace CollectingProductionDataSystem.Data.Migrations
                         new Park
                         {
                             Name = "Парк Битуми",
-                            ExciseStoreId = 1,
                             TankConfigs = {
                                 new TankConfig
                                 {
@@ -11481,7 +11415,6 @@ namespace CollectingProductionDataSystem.Data.Migrations
                         new Park
                         {
                             Name = "Парк ВДМ-1",
-                            ExciseStoreId = 1,
                             TankConfigs = {
                                 new TankConfig
                                 {
@@ -11592,7 +11525,6 @@ namespace CollectingProductionDataSystem.Data.Migrations
                         new Park
                         {
                             Name = @"Инсталация string.EmptyПолипропиленstring.Empty",
-                            ExciseStoreId = 1,
                             TankConfigs = {
                                 new TankConfig
                                 {
@@ -11963,7 +11895,6 @@ namespace CollectingProductionDataSystem.Data.Migrations
                         new Park
                         {
                             Name = "Титул 1026",
-                            ExciseStoreId = 1,
                             TankConfigs = {
                                 new TankConfig
                                 {
@@ -12178,7 +12109,6 @@ namespace CollectingProductionDataSystem.Data.Migrations
                         new Park
                         {
                             Name = "Титул 25/2",
-                            ExciseStoreId = 1,
                             TankConfigs = {
                                 new TankConfig
                                 {
@@ -12653,7 +12583,6 @@ namespace CollectingProductionDataSystem.Data.Migrations
                         new Park
                         {
                             Name = "Титул 31",
-                            ExciseStoreId = 1,
                             TankConfigs = {
                                 new TankConfig
                                 {
@@ -13440,7 +13369,6 @@ namespace CollectingProductionDataSystem.Data.Migrations
                         new Park
                         {
                             Name = "Парк ХО-2",
-                            ExciseStoreId = 1,
                             TankConfigs = {
                                 new TankConfig
                                 {
@@ -13551,7 +13479,6 @@ namespace CollectingProductionDataSystem.Data.Migrations
                         new Park
                         {
                             Name = "Парк ХО-4",
-                            ExciseStoreId = 1,
                             TankConfigs = {
                                 new TankConfig
                                 {
@@ -13766,7 +13693,6 @@ namespace CollectingProductionDataSystem.Data.Migrations
                         new Park
                         {
                             Name = @"База string.EmptyКаменоstring.Empty",
-                            ExciseStoreId = 1,
                             TankConfigs = {
                                 new TankConfig
                                 {
@@ -14189,7 +14115,6 @@ namespace CollectingProductionDataSystem.Data.Migrations
                         new Park
                         {
                             Name = "Маслено стопанство",
-                            ExciseStoreId = 1,
                             TankConfigs = {
                                 new TankConfig
                                 {
@@ -14297,7 +14222,6 @@ namespace CollectingProductionDataSystem.Data.Migrations
                         new Park
                         {
                             Name = "АЖПНЕ - 15 и 16 коловоз",
-                            ExciseStoreId = 1,
                             TankConfigs = {
                                 new TankConfig
                                 {
@@ -14357,14 +14281,12 @@ namespace CollectingProductionDataSystem.Data.Migrations
                         new Park
                         {
                             Name = "АНЕ",
-                            ExciseStoreId = 1,
                             TankConfigs = {
                             }
                         },
                         new Park
                         {
                             Name = "КПТО",
-                            ExciseStoreId = 1,
                             TankConfigs = {
                                 new TankConfig
                                 {
@@ -14585,7 +14507,6 @@ namespace CollectingProductionDataSystem.Data.Migrations
                         new Park
                         {
                             Name = "Химични продукти",
-                            ExciseStoreId = 1,
                             TankConfigs = {
                                 new TankConfig
                                 {
@@ -15580,7 +15501,6 @@ namespace CollectingProductionDataSystem.Data.Migrations
                         new Park
                         {
                             Name = "Суровинна база",
-                            ExciseStoreId = 1,
                             TankConfigs = {
                                 new TankConfig
                                 {
@@ -16419,7 +16339,6 @@ namespace CollectingProductionDataSystem.Data.Migrations
                         new Park
                         {
                             Name = "Дренажни емкости",
-                            ExciseStoreId = 1,
                             TankConfigs = {
                                 new TankConfig
                                 {
@@ -16576,6 +16495,1837 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                     PhdTagAvailableRoom = "NTR_V901.AVRM",
                                     AvailableRoomLowExtreme = 0.000m,
                                     AvailableRoomHighExtreme = 100000.000m
+                                },
+                            }
+                        }
+                    }
+                });
+        }
+
+        private void CreateMeasurementPoints(CollectingDataSystemDbContext context)
+        {
+            context.Ikunks.AddOrUpdate(
+                new Ikunk
+                {
+                    Name = "ИКУНК 001 - Нова и Стара АНЕ",
+                    Zones = {
+                        new Zone
+                        {
+                            Name = "Остров 1",
+                            MeasurementPoints = {
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "KT001001",
+                                    Name = "BGNCA00005001001001", 
+                                    //TransportTypeId =,
+                                    MeasurementPointsProductsConfigs = {
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 74,
+                                            PhdTotalCounterTag = "TSN_KT0101_MT_GSV_P01.VT",
+                                            DirectionId = 1
+                                        }
+                                    }
+                                },
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "KT001002",
+                                    Name = "BGNCA00005001001002", 
+                                    //TransportTypeId =,
+                                    MeasurementPointsProductsConfigs = {
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 83,
+                                            PhdTotalCounterTag = "TSN_KT0102_MT_GSV_P01.VT",
+                                            DirectionId = 1
+                                        },
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 84,
+                                            PhdTotalCounterTag = "TSN_KT0102_MT_GSV_P02.VT",
+                                            DirectionId = 1
+                                        },
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 85,
+                                            PhdTotalCounterTag = "TSN_KT0102_MT_GSV_P03.VT",
+                                            DirectionId = 1
+                                        },
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 75,
+                                            PhdTotalCounterTag = "TSN_KT0102_MT_GSV_P04.VT",
+                                            DirectionId = 1
+                                        },
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 76,
+                                            PhdTotalCounterTag = "TSN_KT0102_MT_GSV_P05.VT",
+                                            DirectionId = 1
+                                        },
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 77,
+                                            PhdTotalCounterTag = "TSN_KT0102_MT_GSV_P06.VT",
+                                            DirectionId = 1
+                                        },
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 78,
+                                            PhdTotalCounterTag = "TSN_KT0102_MT_GSV_P07.VT",
+                                            DirectionId = 1
+                                        },
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 79,
+                                            PhdTotalCounterTag = "TSN_KT0102_MT_GSV_P08.VT",
+                                            DirectionId = 1
+                                        },
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 80,
+                                            PhdTotalCounterTag = "TSN_KT0102_MT_GSV_P09.VT",
+                                            DirectionId = 1
+                                        },
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 74,
+                                            PhdTotalCounterTag = "TSN_KT0102_MT_GSV_P10.VT",
+                                            DirectionId = 1
+                                        },
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 101,
+                                            PhdTotalCounterTag = "TSN_KT0102_MT_GSV_P11.VT",
+                                            DirectionId = 1
+                                        },
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 102,
+                                            PhdTotalCounterTag = "TSN_KT0102_MT_GSV_P12.VT",
+                                            DirectionId = 1
+                                        },
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 103,
+                                            PhdTotalCounterTag = "TSN_KT0102_MT_GSV_P13.VT",
+                                            DirectionId = 1
+                                        },
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 104,
+                                            PhdTotalCounterTag = "TSN_KT0102_MT_GSV_P14.VT",
+                                            DirectionId = 1
+                                        },
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 105,
+                                            PhdTotalCounterTag = "TSN_KT0102_MT_GSV_P15.VT",
+                                            DirectionId = 1
+                                        },
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 106,
+                                            PhdTotalCounterTag = "TSN_KT0102_MT_GSV_P16.VT",
+                                            DirectionId = 1
+                                        },
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 107,
+                                            PhdTotalCounterTag = "TSN_KT0102_MT_GSV_P17.VT",
+                                            DirectionId = 1
+                                        },
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 108,
+                                            PhdTotalCounterTag = "TSN_KT0102_MT_GSV_P18.VT",
+                                            DirectionId = 1
+                                        },
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 81,
+                                            PhdTotalCounterTag = "TSN_KT0102_MT_GSV_P19.VT",
+                                            DirectionId = 1
+                                        },
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 82,
+                                            PhdTotalCounterTag = "TSN_KT0102_MT_GSV_P20.VT",
+                                            DirectionId = 1
+                                        }
+                                    }
+                                },
+                            }
+                        },
+                        new Zone
+                        {
+                            Name = "Остров 2",
+                            MeasurementPoints = {
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "KT001003",
+                                    Name = "BGNCA00005001001003", 
+                                    //TransportTypeId =,
+                                    MeasurementPointsProductsConfigs = {
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 115,
+                                            PhdTotalCounterTag = "TSN_KT0103_MT_GSV_P01.VT",
+                                            DirectionId = 1
+                                        },
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 116,
+                                            PhdTotalCounterTag = "TSN_KT0103_MT_GSV_P02.VT",
+                                            DirectionId = 1
+                                        },
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 117,
+                                            PhdTotalCounterTag = "TSN_KT0103_MT_GSV_P03.VT",
+                                            DirectionId = 1
+                                        },
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 118,
+                                            PhdTotalCounterTag = "TSN_KT0103_MT_GSV_P04.VT",
+                                            DirectionId = 1
+                                        },
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 119,
+                                            PhdTotalCounterTag = "TSN_KT0103_MT_GSV_P05.VT",
+                                            DirectionId = 1
+                                        },
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 120,
+                                            PhdTotalCounterTag = "TSN_KT0103_MT_GSV_P06.VT",
+                                            DirectionId = 1
+                                        },
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 95,
+                                            PhdTotalCounterTag = "TSN_KT0103_MT_GSV_P07.VT",
+                                            DirectionId = 1
+                                        },
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 96,
+                                            PhdTotalCounterTag = "TSN_KT0103_MT_GSV_P08.VT",
+                                            DirectionId = 1
+                                        },
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 97,
+                                            PhdTotalCounterTag = "TSN_KT0103_MT_GSV_P09.VT",
+                                            DirectionId = 1
+                                        },
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 98,
+                                            PhdTotalCounterTag = "TSN_KT0103_MT_GSV_P10.VT",
+                                            DirectionId = 1
+                                        },
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 99,
+                                            PhdTotalCounterTag = "TSN_KT0103_MT_GSV_P11.VT",
+                                            DirectionId = 1
+                                        },
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 100,
+                                            PhdTotalCounterTag = "TSN_KT0103_MT_GSV_P12.VT",
+                                            DirectionId = 1
+                                        },
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 215,
+                                            PhdTotalCounterTag = "TSN_KT0103_MT_GSV_P13.VT",
+                                            DirectionId = 1
+                                        },
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 216,
+                                            PhdTotalCounterTag = "TSN_KT0103_MT_GSV_P14.VT",
+                                            DirectionId = 1
+                                        },
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 217,
+                                            PhdTotalCounterTag = "TSN_KT0103_MT_GSV_P15.VT",
+                                            DirectionId = 1
+                                        },
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 218,
+                                            PhdTotalCounterTag = "TSN_KT0103_MT_GSV_P16.VT",
+                                            DirectionId = 1
+                                        },
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 219,
+                                            PhdTotalCounterTag = "TSN_KT0103_MT_GSV_P17.VT",
+                                            DirectionId = 1
+                                        },
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 220,
+                                            PhdTotalCounterTag = "TSN_KT0103_MT_GSV_P18.VT",
+                                            DirectionId = 1
+                                        },
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 221,
+                                            PhdTotalCounterTag = "TSN_KT0103_MT_GSV_P19.VT",
+                                            DirectionId = 1
+                                        },
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 22,
+                                            PhdTotalCounterTag = "TSN_KT0103_MT_GSV_P20.VT",
+                                            DirectionId = 1
+                                        },
+                                    }
+                                },
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "KT001004",
+                                    Name = "BGNCA00005001001004", 
+                                    //TransportTypeId =,
+                                    MeasurementPointsProductsConfigs = {
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 34,
+                                            PhdTotalCounterTag = "TSN_KT0104_MT_GSV_P01.VT",
+                                            DirectionId = 1
+                                        },
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 36,
+                                            PhdTotalCounterTag = "TSN_KT0104_MT_GSV_P02.VT",
+                                            DirectionId = 1
+                                        },
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 37,
+                                            PhdTotalCounterTag = "TSN_KT0104_MT_GSV_P03.VT",
+                                            DirectionId = 1
+                                        },
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 38,
+                                            PhdTotalCounterTag = "TSN_KT0104_MT_GSV_P04.VT",
+                                            DirectionId = 1
+                                        },
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 39,
+                                            PhdTotalCounterTag = "TSN_KT0104_MT_GSV_P05.VT",
+                                            DirectionId = 1
+                                        },
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 40,
+                                            PhdTotalCounterTag = "TSN_KT0104_MT_GSV_P06.VT",
+                                            DirectionId = 1
+                                        },
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 41,
+                                            PhdTotalCounterTag = "TSN_KT0104_MT_GSV_P07.VT",
+                                            DirectionId = 1
+                                        },
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 42,
+                                            PhdTotalCounterTag = "TSN_KT0104_MT_GSV_P08.VT",
+                                            DirectionId = 1
+                                        },
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 43,
+                                            PhdTotalCounterTag = "TSN_KT0104_MT_GSV_P09.VT",
+                                            DirectionId = 1
+                                        },
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 52,
+                                            PhdTotalCounterTag = "TSN_KT0104_MT_GSV_P10.VT",
+                                            DirectionId = 1
+                                        },
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 54,
+                                            PhdTotalCounterTag = "TSN_KT0104_MT_GSV_P11.VT",
+                                            DirectionId = 1
+                                        },
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 55,
+                                            PhdTotalCounterTag = "TSN_KT0104_MT_GSV_P12.VT",
+                                            DirectionId = 1
+                                        },
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 56,
+                                            PhdTotalCounterTag = "TSN_KT0104_MT_GSV_P13.VT",
+                                            DirectionId = 1
+                                        },
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 57,
+                                            PhdTotalCounterTag = "TSN_KT0104_MT_GSV_P14.VT",
+                                            DirectionId = 1
+                                        },
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 58,
+                                            PhdTotalCounterTag = "TSN_KT0104_MT_GSV_P15.VT",
+                                            DirectionId = 1
+                                        },
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 59,
+                                            PhdTotalCounterTag = "TSN_KT0104_MT_GSV_P16.VT",
+                                            DirectionId = 1
+                                        },
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 60,
+                                            PhdTotalCounterTag = "TSN_KT0104_MT_GSV_P17.VT",
+                                            DirectionId = 1
+                                        },
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 61,
+                                            PhdTotalCounterTag = "TSN_KT0104_MT_GSV_P18.VT",
+                                            DirectionId = 1
+                                        },
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 206,
+                                            PhdTotalCounterTag = "TSN_KT0104_MT_GSV_P19.VT",
+                                            DirectionId = 1
+                                        },
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 207,
+                                            PhdTotalCounterTag = "TSN_KT0104_MT_GSV_P20.VT",
+                                            DirectionId = 1
+                                        },
+                                    }
+                                },
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "KT001005",
+                                    Name = "BGNCA00005001001005", 
+                                    //TransportTypeId =,
+                                    MeasurementPointsProductsConfigs = {
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 35,
+                                            PhdTotalCounterTag = "TSN_KT0105_MT_GSV_P01.VT",
+                                            DirectionId = 1
+                                        },
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 44,
+                                            PhdTotalCounterTag = "TSN_KT0105_MT_GSV_P02.VT",
+                                            DirectionId = 1
+                                        },
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 45,
+                                            PhdTotalCounterTag = "TSN_KT0105_MT_GSV_P03.VT",
+                                            DirectionId = 1
+                                        },
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 46,
+                                            PhdTotalCounterTag = "TSN_KT0105_MT_GSV_P04.VT",
+                                            DirectionId = 1
+                                        },
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 47,
+                                            PhdTotalCounterTag = "TSN_KT0105_MT_GSV_P05.VT",
+                                            DirectionId = 1
+                                        },
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 48,
+                                            PhdTotalCounterTag = "TSN_KT0105_MT_GSV_P06.VT",
+                                            DirectionId = 1
+                                        },
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 49,
+                                            PhdTotalCounterTag = "TSN_KT0105_MT_GSV_P07.VT",
+                                            DirectionId = 1
+                                        },
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 50,
+                                            PhdTotalCounterTag = "TSN_KT0105_MT_GSV_P08.VT",
+                                            DirectionId = 1
+                                        },
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 51,
+                                            PhdTotalCounterTag = "TSN_KT0105_MT_GSV_P09.VT",
+                                            DirectionId = 1
+                                        },
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 53,
+                                            PhdTotalCounterTag = "TSN_KT0105_MT_GSV_P10.VT",
+                                            DirectionId = 1
+                                        },
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 62,
+                                            PhdTotalCounterTag = "TSN_KT0105_MT_GSV_P11.VT",
+                                            DirectionId = 1
+                                        },
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 63,
+                                            PhdTotalCounterTag = "TSN_KT0105_MT_GSV_P12.VT",
+                                            DirectionId = 1
+                                        },
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 64,
+                                            PhdTotalCounterTag = "TSN_KT0105_MT_GSV_P13.VT",
+                                            DirectionId = 1
+                                        },
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 65,
+                                            PhdTotalCounterTag = "TSN_KT0105_MT_GSV_P14.VT",
+                                            DirectionId = 1
+                                        },
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 66,
+                                            PhdTotalCounterTag = "TSN_KT0105_MT_GSV_P15.VT",
+                                            DirectionId = 1
+                                        },
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 67,
+                                            PhdTotalCounterTag = "TSN_KT0105_MT_GSV_P16.VT",
+                                            DirectionId = 1
+                                        },
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 68,
+                                            PhdTotalCounterTag = "TSN_KT0105_MT_GSV_P17.VT",
+                                            DirectionId = 1
+                                        },
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 69,
+                                            PhdTotalCounterTag = "TSN_KT0105_MT_GSV_P18.VT",
+                                            DirectionId = 1
+                                        },
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 211,
+                                            PhdTotalCounterTag = "TSN_KT0105_MT_GSV_P19.VT",
+                                            DirectionId = 1
+                                        },
+                                    }
+                                },
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "KT001006",
+                                    Name = "BGNCA00005001001006", 
+                                    //TransportTypeId =,
+                                    MeasurementPointsProductsConfigs = {
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 75,
+                                            PhdTotalCounterTag = "TSN_KT0106_MT_GSV_P01.VT",
+                                            DirectionId = 1
+                                        },
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 76,
+                                            PhdTotalCounterTag = "TSN_KT0106_MT_GSV_P02.VT",
+                                            DirectionId = 1
+                                        },
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 77,
+                                            PhdTotalCounterTag = "TSN_KT0106_MT_GSV_P03.VT",
+                                            DirectionId = 1
+                                        },
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 78,
+                                            PhdTotalCounterTag = "TSN_KT0106_MT_GSV_P04.VT",
+                                            DirectionId = 1
+                                        },
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 79,
+                                            PhdTotalCounterTag = "TSN_KT0106_MT_GSV_P05.VT",
+                                            DirectionId = 1
+                                        },
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 80,
+                                            PhdTotalCounterTag = "TSN_KT0106_MT_GSV_P06.VT",
+                                            DirectionId = 1
+                                        },
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 81,
+                                            PhdTotalCounterTag = "TSN_KT0106_MT_GSV_P07.VT",
+                                            DirectionId = 1
+                                        },
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 82,
+                                            PhdTotalCounterTag = "TSN_KT0106_MT_GSV_P08.VT",
+                                            DirectionId = 1
+                                        },
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 101,
+                                            PhdTotalCounterTag = "TSN_KT0106_MT_GSV_P09.VT",
+                                            DirectionId = 1
+                                        },
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 102,
+                                            PhdTotalCounterTag = "TSN_KT0106_MT_GSV_P10.VT",
+                                            DirectionId = 1
+                                        },
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 103,
+                                            PhdTotalCounterTag = "TSN_KT0106_MT_GSV_P11.VT",
+                                            DirectionId = 1
+                                        },
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 104,
+                                            PhdTotalCounterTag = "TSN_KT0106_MT_GSV_P12.VT",
+                                            DirectionId = 1
+                                        },
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 105,
+                                            PhdTotalCounterTag = "TSN_KT0106_MT_GSV_P13.VT",
+                                            DirectionId = 1
+                                        },
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 106,
+                                            PhdTotalCounterTag = "TSN_KT0106_MT_GSV_P14.VT",
+                                            DirectionId = 1
+                                        },
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 107,
+                                            PhdTotalCounterTag = "TSN_KT0106_MT_GSV_P15.VT",
+                                            DirectionId = 1
+                                        },
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 108,
+                                            PhdTotalCounterTag = "TSN_KT0106_MT_GSV_P16.VT",
+                                            DirectionId = 1
+                                        },
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 83,
+                                            PhdTotalCounterTag = "TSN_KT0106_MT_GSV_P17.VT",
+                                            DirectionId = 1
+                                        },
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 84,
+                                            PhdTotalCounterTag = "TSN_KT0106_MT_GSV_P18.VT",
+                                            DirectionId = 1
+                                        },
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 85,
+                                            PhdTotalCounterTag = "TSN_KT0106_MT_GSV_P19.VT",
+                                            DirectionId = 1
+                                        },
+                                        new MeasurementPointsProductsConfig
+                                        {
+                                            ProductId = 223,
+                                            PhdTotalCounterTag = "TSN_KT0106_MT_GSV_P20.VT",
+                                            DirectionId = 1
+                                        },
+                                    }
+                                },
+                            }
+                        },
+                        new Zone
+                        {
+                            Name = "Остров 3",
+                            MeasurementPoints = {
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "KT001007",
+                                    Name = "BGNCA00005001001007", 
+                                    //TransportTypeId =,
+                                    MeasurementPointsProductsConfigs = 
+                                    {
+                                        new MeasurementPointsProductsConfig { ProductId = 115, PhdTotalCounterTag = "TSN_KT0107_MT_GSV_P01.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 116, PhdTotalCounterTag = "TSN_KT0107_MT_GSV_P02.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 117, PhdTotalCounterTag = "TSN_KT0107_MT_GSV_P03.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 118, PhdTotalCounterTag = "TSN_KT0107_MT_GSV_P04.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 119, PhdTotalCounterTag = "TSN_KT0107_MT_GSV_P05.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 120, PhdTotalCounterTag = "TSN_KT0107_MT_GSV_P06.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 95, PhdTotalCounterTag = "TSN_KT0107_MT_GSV_P07.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 96, PhdTotalCounterTag = "TSN_KT0107_MT_GSV_P08.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 97, PhdTotalCounterTag = "TSN_KT0107_MT_GSV_P09.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 98, PhdTotalCounterTag = "TSN_KT0107_MT_GSV_P10.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 99, PhdTotalCounterTag = "TSN_KT0107_MT_GSV_P11.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 100, PhdTotalCounterTag = "TSN_KT0107_MT_GSV_P12.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 215, PhdTotalCounterTag = "TSN_KT0107_MT_GSV_P13.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 216, PhdTotalCounterTag = "TSN_KT0107_MT_GSV_P14.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 217, PhdTotalCounterTag = "TSN_KT0107_MT_GSV_P15.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 218, PhdTotalCounterTag = "TSN_KT0107_MT_GSV_P16.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 219, PhdTotalCounterTag = "TSN_KT0107_MT_GSV_P17.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 220, PhdTotalCounterTag = "TSN_KT0107_MT_GSV_P18.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 221, PhdTotalCounterTag = "TSN_KT0107_MT_GSV_P19.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 222, PhdTotalCounterTag = "TSN_KT0107_MT_GSV_P20.VT", DirectionId = 1},
+                                    }
+                                },
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "KT001008",
+                                    Name = "BGNCA00005001001008", 
+                                    //TransportTypeId =,
+                                    MeasurementPointsProductsConfigs = 
+                                    {
+                                        new MeasurementPointsProductsConfig { ProductId = 34, PhdTotalCounterTag = "TSN_KT0108_MT_GSV_P01.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 36, PhdTotalCounterTag = "TSN_KT0108_MT_GSV_P02.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 37, PhdTotalCounterTag = "TSN_KT0108_MT_GSV_P03.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 38, PhdTotalCounterTag = "TSN_KT0108_MT_GSV_P04.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 39, PhdTotalCounterTag = "TSN_KT0108_MT_GSV_P05.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 40, PhdTotalCounterTag = "TSN_KT0108_MT_GSV_P06.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 41, PhdTotalCounterTag = "TSN_KT0108_MT_GSV_P07.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 42, PhdTotalCounterTag = "TSN_KT0108_MT_GSV_P08.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 43, PhdTotalCounterTag = "TSN_KT0108_MT_GSV_P09.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 52, PhdTotalCounterTag = "TSN_KT0108_MT_GSV_P10.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 54, PhdTotalCounterTag = "TSN_KT0108_MT_GSV_P11.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 55, PhdTotalCounterTag = "TSN_KT0108_MT_GSV_P12.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 56, PhdTotalCounterTag = "TSN_KT0108_MT_GSV_P13.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 57, PhdTotalCounterTag = "TSN_KT0108_MT_GSV_P14.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 58, PhdTotalCounterTag = "TSN_KT0108_MT_GSV_P15.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 59, PhdTotalCounterTag = "TSN_KT0108_MT_GSV_P16.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 60, PhdTotalCounterTag = "TSN_KT0108_MT_GSV_P17.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 61, PhdTotalCounterTag = "TSN_KT0108_MT_GSV_P18.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 206, PhdTotalCounterTag = "TSN_KT0108_MT_GSV_P19.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 207, PhdTotalCounterTag = "TSN_KT0108_MT_GSV_P20.VT", DirectionId = 1},
+                                    }
+                                },
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "KT001009",
+                                    Name = "BGNCA00005001001009", 
+                                    //TransportTypeId =,
+                                    MeasurementPointsProductsConfigs = 
+                                    {
+                                        new MeasurementPointsProductsConfig { ProductId = 35, PhdTotalCounterTag = "TSN_KT0109_MT_GSV_P01.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 44, PhdTotalCounterTag = "TSN_KT0109_MT_GSV_P02.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 45, PhdTotalCounterTag = "TSN_KT0109_MT_GSV_P03.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 46, PhdTotalCounterTag = "TSN_KT0109_MT_GSV_P04.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 47, PhdTotalCounterTag = "TSN_KT0109_MT_GSV_P05.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 48, PhdTotalCounterTag = "TSN_KT0109_MT_GSV_P06.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 49, PhdTotalCounterTag = "TSN_KT0109_MT_GSV_P07.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 50, PhdTotalCounterTag = "TSN_KT0109_MT_GSV_P08.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 51, PhdTotalCounterTag = "TSN_KT0109_MT_GSV_P09.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 53, PhdTotalCounterTag = "TSN_KT0109_MT_GSV_P10.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 62, PhdTotalCounterTag = "TSN_KT0109_MT_GSV_P11.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 63, PhdTotalCounterTag = "TSN_KT0109_MT_GSV_P12.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 64, PhdTotalCounterTag = "TSN_KT0109_MT_GSV_P13.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 65, PhdTotalCounterTag = "TSN_KT0109_MT_GSV_P14.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 66, PhdTotalCounterTag = "TSN_KT0109_MT_GSV_P15.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 67, PhdTotalCounterTag = "TSN_KT0109_MT_GSV_P16.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 68, PhdTotalCounterTag = "TSN_KT0109_MT_GSV_P17.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 69, PhdTotalCounterTag = "TSN_KT0109_MT_GSV_P18.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 211, PhdTotalCounterTag = "TSN_KT0109_MT_GSV_P19.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 212, PhdTotalCounterTag = "TSN_KT0109_MT_GSV_P20.VT", DirectionId = 1},
+                                    }
+                                },
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "KT001010",
+                                    Name = "BGNCA00005001001010", 
+                                    //TransportTypeId =,
+                                    MeasurementPointsProductsConfigs = 
+                                    {
+                                        new MeasurementPointsProductsConfig { ProductId = 75, PhdTotalCounterTag = "TSN_KT0110_MT_GSV_P01.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 76, PhdTotalCounterTag = "TSN_KT0110_MT_GSV_P02.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 77, PhdTotalCounterTag = "TSN_KT0110_MT_GSV_P03.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 78, PhdTotalCounterTag = "TSN_KT0110_MT_GSV_P04.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 79, PhdTotalCounterTag = "TSN_KT0110_MT_GSV_P05.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 80, PhdTotalCounterTag = "TSN_KT0110_MT_GSV_P06.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 81, PhdTotalCounterTag = "TSN_KT0110_MT_GSV_P07.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 82, PhdTotalCounterTag = "TSN_KT0110_MT_GSV_P08.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 101, PhdTotalCounterTag = "TSN_KT0110_MT_GSV_P09.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 102, PhdTotalCounterTag = "TSN_KT0110_MT_GSV_P10.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 103, PhdTotalCounterTag = "TSN_KT0110_MT_GSV_P11.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 104, PhdTotalCounterTag = "TSN_KT0110_MT_GSV_P12.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 105, PhdTotalCounterTag = "TSN_KT0110_MT_GSV_P13.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 106, PhdTotalCounterTag = "TSN_KT0110_MT_GSV_P14.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 107, PhdTotalCounterTag = "TSN_KT0110_MT_GSV_P15.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 108, PhdTotalCounterTag = "TSN_KT0110_MT_GSV_P16.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 83, PhdTotalCounterTag = "TSN_KT0110_MT_GSV_P17.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 84, PhdTotalCounterTag = "TSN_KT0110_MT_GSV_P18.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 85, PhdTotalCounterTag = "TSN_KT0110_MT_GSV_P19.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 223, PhdTotalCounterTag = "TSN_KT0110_MT_GSV_P20.VT", DirectionId = 1},
+                                    }
+                                },
+                            }
+                        },
+                        new Zone
+                        {
+                            Name = "Остров 4",
+                            MeasurementPoints = {
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "KT001011",
+                                    Name = "BGNCA00005001001011", 
+                                    //TransportTypeId =,
+                                    MeasurementPointsProductsConfigs = 
+                                    {
+                                        new MeasurementPointsProductsConfig { ProductId = 115, PhdTotalCounterTag = "TSN_KT0111_MT_GSV_P01.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 116, PhdTotalCounterTag = "TSN_KT0111_MT_GSV_P02.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 117, PhdTotalCounterTag = "TSN_KT0111_MT_GSV_P03.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 118, PhdTotalCounterTag = "TSN_KT0111_MT_GSV_P04.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 119, PhdTotalCounterTag = "TSN_KT0111_MT_GSV_P05.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 120, PhdTotalCounterTag = "TSN_KT0111_MT_GSV_P06.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 95, PhdTotalCounterTag = "TSN_KT0111_MT_GSV_P07.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 96, PhdTotalCounterTag = "TSN_KT0111_MT_GSV_P08.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 97, PhdTotalCounterTag = "TSN_KT0111_MT_GSV_P09.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 98, PhdTotalCounterTag = "TSN_KT0111_MT_GSV_P10.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 99, PhdTotalCounterTag = "TSN_KT0111_MT_GSV_P11.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 100, PhdTotalCounterTag = "TSN_KT0111_MT_GSV_P12.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 215, PhdTotalCounterTag = "TSN_KT0111_MT_GSV_P13.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 216, PhdTotalCounterTag = "TSN_KT0111_MT_GSV_P14.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 217, PhdTotalCounterTag = "TSN_KT0111_MT_GSV_P15.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 218, PhdTotalCounterTag = "TSN_KT0111_MT_GSV_P16.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 219, PhdTotalCounterTag = "TSN_KT0111_MT_GSV_P17.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 220, PhdTotalCounterTag = "TSN_KT0111_MT_GSV_P18.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 221, PhdTotalCounterTag = "TSN_KT0111_MT_GSV_P19.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 222, PhdTotalCounterTag = "TSN_KT0111_MT_GSV_P20.VT", DirectionId = 1},
+                                    }
+                                },
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "KT001012",
+                                    Name = "BGNCA00005001001012", 
+                                    //TransportTypeId =,
+                                    MeasurementPointsProductsConfigs = 
+                                    {
+                                        new MeasurementPointsProductsConfig { ProductId = 34, PhdTotalCounterTag = "TSN_KT0112_MT_GSV_P01.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 36, PhdTotalCounterTag = "TSN_KT0112_MT_GSV_P02.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 37, PhdTotalCounterTag = "TSN_KT0112_MT_GSV_P03.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 38, PhdTotalCounterTag = "TSN_KT0112_MT_GSV_P04.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 39, PhdTotalCounterTag = "TSN_KT0112_MT_GSV_P05.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 40, PhdTotalCounterTag = "TSN_KT0112_MT_GSV_P06.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 41, PhdTotalCounterTag = "TSN_KT0112_MT_GSV_P07.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 42, PhdTotalCounterTag = "TSN_KT0112_MT_GSV_P08.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 43, PhdTotalCounterTag = "TSN_KT0112_MT_GSV_P09.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 52, PhdTotalCounterTag = "TSN_KT0112_MT_GSV_P10.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 54, PhdTotalCounterTag = "TSN_KT0112_MT_GSV_P11.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 55, PhdTotalCounterTag = "TSN_KT0112_MT_GSV_P12.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 56, PhdTotalCounterTag = "TSN_KT0112_MT_GSV_P13.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 57, PhdTotalCounterTag = "TSN_KT0112_MT_GSV_P14.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 58, PhdTotalCounterTag = "TSN_KT0112_MT_GSV_P15.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 59, PhdTotalCounterTag = "TSN_KT0112_MT_GSV_P16.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 60, PhdTotalCounterTag = "TSN_KT0112_MT_GSV_P17.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 61, PhdTotalCounterTag = "TSN_KT0112_MT_GSV_P18.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 206, PhdTotalCounterTag = "TSN_KT0112_MT_GSV_P19.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 207, PhdTotalCounterTag = "TSN_KT0112_MT_GSV_P20.VT", DirectionId = 1},
+
+                                    }
+                                },
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "KT001013",
+                                    Name = "BGNCA00005001001013", 
+                                    //TransportTypeId =,
+                                    MeasurementPointsProductsConfigs = 
+                                    {
+                                        new MeasurementPointsProductsConfig { ProductId = 35, PhdTotalCounterTag = "TSN_KT0113_MT_GSV_P01.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 44, PhdTotalCounterTag = "TSN_KT0113_MT_GSV_P02.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 45, PhdTotalCounterTag = "TSN_KT0113_MT_GSV_P03.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 46, PhdTotalCounterTag = "TSN_KT0113_MT_GSV_P04.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 47, PhdTotalCounterTag = "TSN_KT0113_MT_GSV_P05.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 48, PhdTotalCounterTag = "TSN_KT0113_MT_GSV_P06.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 49, PhdTotalCounterTag = "TSN_KT0113_MT_GSV_P07.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 50, PhdTotalCounterTag = "TSN_KT0113_MT_GSV_P08.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 51, PhdTotalCounterTag = "TSN_KT0113_MT_GSV_P09.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 53, PhdTotalCounterTag = "TSN_KT0113_MT_GSV_P10.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 62, PhdTotalCounterTag = "TSN_KT0113_MT_GSV_P11.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 63, PhdTotalCounterTag = "TSN_KT0113_MT_GSV_P12.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 64, PhdTotalCounterTag = "TSN_KT0113_MT_GSV_P13.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 65, PhdTotalCounterTag = "TSN_KT0113_MT_GSV_P14.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 66, PhdTotalCounterTag = "TSN_KT0113_MT_GSV_P15.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 67, PhdTotalCounterTag = "TSN_KT0113_MT_GSV_P16.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 68, PhdTotalCounterTag = "TSN_KT0113_MT_GSV_P17.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 69, PhdTotalCounterTag = "TSN_KT0113_MT_GSV_P18.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 211, PhdTotalCounterTag = "TSN_KT0113_MT_GSV_P19.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 212, PhdTotalCounterTag = "TSN_KT0113_MT_GSV_P20.VT", DirectionId = 1},
+                                    }
+                                },
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "KT001014",
+                                    Name = "BGNCA00005001001014", 
+                                    //TransportTypeId =,
+                                    MeasurementPointsProductsConfigs = 
+                                    {
+                                        new MeasurementPointsProductsConfig { ProductId = 75, PhdTotalCounterTag = "TSN_KT0114_MT_GSV_P01.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 76, PhdTotalCounterTag = "TSN_KT0114_MT_GSV_P02.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 77, PhdTotalCounterTag = "TSN_KT0114_MT_GSV_P03.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 78, PhdTotalCounterTag = "TSN_KT0114_MT_GSV_P04.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 79, PhdTotalCounterTag = "TSN_KT0114_MT_GSV_P05.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 80, PhdTotalCounterTag = "TSN_KT0114_MT_GSV_P06.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 81, PhdTotalCounterTag = "TSN_KT0114_MT_GSV_P07.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 82, PhdTotalCounterTag = "TSN_KT0114_MT_GSV_P08.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 101, PhdTotalCounterTag = "TSN_KT0114_MT_GSV_P09.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 102, PhdTotalCounterTag = "TSN_KT0114_MT_GSV_P10.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 103, PhdTotalCounterTag = "TSN_KT0114_MT_GSV_P11.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 104, PhdTotalCounterTag = "TSN_KT0114_MT_GSV_P12.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 105, PhdTotalCounterTag = "TSN_KT0114_MT_GSV_P13.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 106, PhdTotalCounterTag = "TSN_KT0114_MT_GSV_P14.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 107, PhdTotalCounterTag = "TSN_KT0114_MT_GSV_P15.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 108, PhdTotalCounterTag = "TSN_KT0114_MT_GSV_P16.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 83, PhdTotalCounterTag = "TSN_KT0114_MT_GSV_P17.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 84, PhdTotalCounterTag = "TSN_KT0114_MT_GSV_P18.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 85, PhdTotalCounterTag = "TSN_KT0114_MT_GSV_P19.VT", DirectionId = 1},
+                                        new MeasurementPointsProductsConfig { ProductId = 223, PhdTotalCounterTag = "TSN_KT0114_MT_GSV_P20.VT", DirectionId = 1},
+                                    }
+                                },
+                            }
+                        },
+                        new Zone
+                        {
+                            Name = "Остров 5",
+                            MeasurementPoints = {
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "KT001019",
+                                    Name = "BGNCA00005001001019", 
+                                    //TransportTypeId =,
+                                    MeasurementPointsProductsConfigs = 
+                                    {
+                                        new MeasurementPointsProductsConfig { ProductId = 415, PhdTotalCounterTag = "TSN_KT0119_MT_GSV_P01.VT", DirectionId = 2},
+                                        new MeasurementPointsProductsConfig { ProductId = 416, PhdTotalCounterTag = "TSN_KT0119_MT_GSV_P02.VT", DirectionId = 2},
+                                        new MeasurementPointsProductsConfig { ProductId = 423, PhdTotalCounterTag = "TSN_KT0119_MT_GSV_P03.VT", DirectionId = 2},
+                                        new MeasurementPointsProductsConfig { ProductId = 424, PhdTotalCounterTag = "TSN_KT0119_MT_GSV_P04.VT", DirectionId = 2},
+                                        new MeasurementPointsProductsConfig { ProductId = 425, PhdTotalCounterTag = "TSN_KT0119_MT_GSV_P05.VT", DirectionId = 2},
+                                        new MeasurementPointsProductsConfig { ProductId = 426, PhdTotalCounterTag = "TSN_KT0119_MT_GSV_P06.VT", DirectionId = 2},
+                                        new MeasurementPointsProductsConfig { ProductId = 427, PhdTotalCounterTag = "TSN_KT0119_MT_GSV_P07.VT", DirectionId = 2},
+                                        new MeasurementPointsProductsConfig { ProductId = 428, PhdTotalCounterTag = "TSN_KT0119_MT_GSV_P08.VT", DirectionId = 2},
+                                        new MeasurementPointsProductsConfig { ProductId = 429, PhdTotalCounterTag = "TSN_KT0119_MT_GSV_P09.VT", DirectionId = 2},
+                                        new MeasurementPointsProductsConfig { ProductId = 430, PhdTotalCounterTag = "TSN_KT0119_MT_GSV_P10.VT", DirectionId = 2},
+                                        new MeasurementPointsProductsConfig { ProductId = 431, PhdTotalCounterTag = "TSN_KT0119_MT_GSV_P11.VT", DirectionId = 2},
+                                        new MeasurementPointsProductsConfig { ProductId = 432, PhdTotalCounterTag = "TSN_KT0119_MT_GSV_P12.VT", DirectionId = 2},
+                                        new MeasurementPointsProductsConfig { ProductId = 433, PhdTotalCounterTag = "TSN_KT0119_MT_GSV_P13.VT", DirectionId = 2},
+                                        new MeasurementPointsProductsConfig { ProductId = 434, PhdTotalCounterTag = "TSN_KT0119_MT_GSV_P14.VT", DirectionId = 2},
+                                    }
+                                },
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "KT001020",
+                                    Name = "BGNCA00005001001020", 
+                                    //TransportTypeId =,
+                                    MeasurementPointsProductsConfigs = 
+                                    {
+                                        new MeasurementPointsProductsConfig { ProductId = 418, PhdTotalCounterTag = "TSN_KT0120_MT_GSV_P01.VT", DirectionId = 2},
+                                        new MeasurementPointsProductsConfig { ProductId = 419, PhdTotalCounterTag = "TSN_KT0120_MT_GSV_P02.VT", DirectionId = 2},
+                                        new MeasurementPointsProductsConfig { ProductId = 420, PhdTotalCounterTag = "TSN_KT0120_MT_GSV_P03.VT", DirectionId = 2},
+                                        new MeasurementPointsProductsConfig { ProductId = 421, PhdTotalCounterTag = "TSN_KT0120_MT_GSV_P04.VT", DirectionId = 2},
+                                        new MeasurementPointsProductsConfig { ProductId = 422, PhdTotalCounterTag = "TSN_KT0120_MT_GSV_P05.VT", DirectionId = 2},
+                                    }
+                                },
+                            }
+                        },
+                    }
+                },
+                new Ikunk
+                {
+                    Name = "ИКУНК 002 - Втечнен газ",
+                    Zones = {
+                        new Zone
+                        {
+                            Name = "РП \"Втечнени газове\"",
+                            MeasurementPoints = {
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "KT002001",
+                                    Name = "BGNCA00005001002001", 
+                                    //TransportTypeId =,
+                                    MeasurementPointsProductsConfigs = {
+                                    }
+                                },
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "KT002002",
+                                    Name = "BGNCA00005001002002", 
+                                    //TransportTypeId =,
+                                    MeasurementPointsProductsConfigs = {
+                                    }
+                                },
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "KT002003",
+                                    Name = "BGNCA00005001002003", 
+                                    //TransportTypeId =,
+                                    MeasurementPointsProductsConfigs = {
+                                    }
+                                },
+                            }
+                        },
+                        new Zone
+                        {
+                            Name = "Парк 8Х5000",
+                            MeasurementPoints = {
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "KT002004",
+                                    Name = "BGNCA00005001002004", 
+                                    //TransportTypeId =,
+                                    MeasurementPointsProductsConfigs = {
+                                    }
+                                },
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "KT002005",
+                                    Name = "BGNCA00005001002005", 
+                                    //TransportTypeId =,
+                                    MeasurementPointsProductsConfigs = {
+                                    }
+                                },
+                            }
+                        },
+                    }
+                },
+                new Ikunk
+                {
+                    Name = "ИКУНК 003 - База Камено",
+                    Zones = {
+                        new Zone
+                        {
+                            Name = "База Камено",
+                            MeasurementPoints = {
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "KT003001",
+                                    Name = "BGNCA00005001003001", 
+                                    //TransportTypeId =,
+                                    MeasurementPointsProductsConfigs = {
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                new Ikunk
+                {
+                    Name = "ИКУНК 004 - ТЕЦ",
+                    Zones = {
+                        new Zone
+                        {
+                            Name = "ТЕЦ",
+                            MeasurementPoints = {
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "KT004001",
+                                    Name = "BGNCA00005001004001", 
+                                    //TransportTypeId =,
+                                    MeasurementPointsProductsConfigs = {
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                new Ikunk
+                {
+                    Name = "ИКУНК  051 - ЖП естакади",
+                    Zones = {
+                        new Zone
+                        {
+                            Name = "15 коловоз",
+                            MeasurementPoints = {
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "KT051002",
+                                    Name = "BGNCA00005001051002", 
+                                    //TransportTypeId =,
+                                    MeasurementPointsProductsConfigs = {
+                                    }
+                                },
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "KT051005",
+                                    Name = "BGNCA00005001051005", 
+                                    //TransportTypeId =,
+                                    MeasurementPointsProductsConfigs = {
+                                    }
+                                },
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "KT051006",
+                                    Name = "BGNCA00005001051006", 
+                                    //TransportTypeId =,
+                                    MeasurementPointsProductsConfigs = {
+                                    }
+                                },
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "KT051007",
+                                    Name = "BGNCA00005001051007", 
+                                    //TransportTypeId =,
+                                    MeasurementPointsProductsConfigs = {
+                                    }
+                                },
+                            }
+                        },
+                        new Zone
+                        {
+                            Name = "16 коловоз",
+                            MeasurementPoints = {
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "KT051001",
+                                    Name = "BGNCA00005001051001", 
+                                    //TransportTypeId =,
+                                    MeasurementPointsProductsConfigs = {
+                                    }
+                                },
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "KT051003",
+                                    Name = "BGNCA00005001051003", 
+                                    //TransportTypeId =,
+                                    MeasurementPointsProductsConfigs = {
+                                    }
+                                },
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "KT051004",
+                                    Name = "BGNCA00005001051004", 
+                                    //TransportTypeId =,
+                                    MeasurementPointsProductsConfigs = {
+                                    }
+                                },
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "KT051008",
+                                    Name = "BGNCA00005001051008", 
+                                    //TransportTypeId =,
+                                    MeasurementPointsProductsConfigs = {
+                                    }
+                                },
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "KT051009",
+                                    Name = "BGNCA00005001051009", 
+                                    //TransportTypeId =,
+                                    MeasurementPointsProductsConfigs = {
+                                    }
+                                }
+                            }
+                        },
+                        new Zone
+                        {
+                            Name = "17 коловоз",
+                            MeasurementPoints = {
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "KT051010",
+                                    Name = "BGNCA00005001051010", 
+                                    //TransportTypeId =,
+                                    MeasurementPointsProductsConfigs = {
+                                    }
+                                },
+                            }
+                        },
+                        new Zone
+                        {
+                            Name = "18 коловоз",
+                            MeasurementPoints = {
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "KT051011",
+                                    Name = "BGNCA00005001051011", 
+                                    //TransportTypeId =,
+                                    MeasurementPointsProductsConfigs = {
+                                    }
+                                },
+                            }
+                        }
+                    }
+                },
+                new Ikunk
+                {
+                    Name = "ИКУНК 052 - Втори ходови коловоз",
+                    Zones = {
+                        new Zone
+                        {
+                            Name = "Втори ходови коловоз",
+                            MeasurementPoints = {
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "KT052012",
+                                    Name = "BGNCA00005001052012", 
+                                    //TransportTypeId =,
+                                    MeasurementPointsProductsConfigs = {
+                                    }
+                                },
+                            }
+                        }
+                    }
+                },
+                new Ikunk
+                {
+                    Name = "ИКУНК 006 - Битумна естакада",
+                    Zones = {
+                        new Zone
+                        {
+                            Name = "Парк Битуми",
+                            MeasurementPoints = {
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "KT006001",
+                                    Name = "BGNCA00005001006001", 
+                                    //TransportTypeId =,
+                                    MeasurementPointsProductsConfigs = {
+                                    }
+                                },
+                            }
+                        },
+                        new Zone
+                        {
+                            Name = "т. 25/2",
+                            MeasurementPoints = {
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "KT006002",
+                                    Name = "BGNCA00005001006002", 
+                                    //TransportTypeId =,
+                                    MeasurementPointsProductsConfigs = {
+                                    }
+                                },
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "KT006005",
+                                    Name = "BGNCA00005001006005", 
+                                    //TransportTypeId =,
+                                    MeasurementPointsProductsConfigs = {
+                                    }
+                                },
+                            }
+                        },
+                        new Zone
+                        {
+                            Name = "Маслено стопанство",
+                            MeasurementPoints = {
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "KT006003",
+                                    Name = "BGNCA00005001006003", 
+                                    //TransportTypeId =,
+                                    MeasurementPointsProductsConfigs = {
+                                    }
+                                },
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "KT006004",
+                                    Name = "BGNCA00005001006004", 
+                                    //TransportTypeId =,
+                                    MeasurementPointsProductsConfigs = {
+                                    }
+                                },
+                            }
+                        },
+                    }
+                },
+                new Ikunk
+                {
+                    Name = "ИКУНК 007 -Полипропилен",
+                    Zones = {
+                        new Zone
+                        {
+                            Name = "Полипропилен",
+                            MeasurementPoints = {
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "KT007001",
+                                    Name = "BGNCA00005001007001", 
+                                    //TransportTypeId =,
+                                    MeasurementPointsProductsConfigs = {
+                                    }
+                                },
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "KT007002",
+                                    Name = "BGNCA00005001007002", 
+                                    //TransportTypeId =,
+                                    MeasurementPointsProductsConfigs = {
+                                    }
+                                },
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "KT007003",
+                                    Name = "BGNCA00005001007003", 
+                                    //TransportTypeId =,
+                                    MeasurementPointsProductsConfigs = {
+                                    }
+                                },
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "KT007004",
+                                    Name = "BGNCA00005001007004", 
+                                    //TransportTypeId =,
+                                    MeasurementPointsProductsConfigs = {
+                                    }
+                                },
+                            }
+                        },
+                    }
+                },
+                new Ikunk
+                {
+                    Name = "ИКУНК 008 (ПИРС 2 - ПТ \"Росенец\")",
+                    Zones = {
+                        new Zone
+                        {
+                            Name = "Възел за отчет на нефт",
+                            MeasurementPoints = {
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "КТ008010",
+                                    Name = "BGNCA00005001008010", 
+                                    //TransportTypeId =,
+                                    MeasurementPointsProductsConfigs = {
+                                    }
+                                },
+                            }
+                        }
+                    }
+                },
+                new Ikunk
+                {
+                    Name = "ИКУНК 009 (ПИРС3 - ПТ \"Росенец\")",
+                    Zones = {
+                        new Zone
+                        {
+                            Name = "Възел за отчет на КГ за бункероване",
+                            MeasurementPoints = {
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "КТ009001",
+                                    Name = "BGNCA00005001009001", 
+                                    //TransportTypeId =,
+                                    MeasurementPointsProductsConfigs = {
+                                    }
+                                },
+                            }
+                        },
+                        new Zone
+                        {
+                            Name = "Възел за отчет на ДГ за бункероване",
+                            MeasurementPoints = {
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "КТ009002",
+                                    Name = "BGNCA00005001009002", 
+                                    //TransportTypeId =,
+                                    MeasurementPointsProductsConfigs = {
+                                    }
+                                },
+                            }
+                        },
+                        new Zone
+                        {
+                            Name = "Възел за КГ със сяра под 1%",
+                            MeasurementPoints = {
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "КТ009006",
+                                    Name = "BGNCA00005001009006", 
+                                    //TransportTypeId =,
+                                    MeasurementPointsProductsConfigs = {
+                                    }
+                                },
+                            }
+                        },
+                        new Zone
+                        {
+                            Name = "Възел за отчет на хексан",
+                            MeasurementPoints = {
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "КТ009007",
+                                    Name = "BGNCA00005001009007", 
+                                    //TransportTypeId =,
+                                    MeasurementPointsProductsConfigs = {
+                                    }
+                                },
+                            }
+                        },
+                    }
+                },
+                new Ikunk
+                {
+                    Name = "ИКУНК 021 (ПИРС 1 - ПТ \"Росенец\")",
+                    Zones = {
+                        new Zone
+                        {
+                            Name = "Възел за отчет на бензин",
+                            MeasurementPoints = {
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "КТ021001",
+                                    Name = "BGNCA00005001021001", 
+                                    //TransportTypeId =,
+                                    MeasurementPointsProductsConfigs = {
+                                    }
+                                },
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "КТ021002",
+                                    Name = "BGNCA00005001021002", 
+                                    //TransportTypeId =,
+                                    MeasurementPointsProductsConfigs = {
+                                    }
+                                },
+                            }
+                        },
+                        new Zone
+                        {
+                            Name = "Възел за отчет на НОБ",
+                            MeasurementPoints = {
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "КТ021003",
+                                    Name = "BGNCA00005001021003", 
+                                    //TransportTypeId =,
+                                    MeasurementPointsProductsConfigs = {
+                                    }
+                                },
+                            }
+                        },
+                        new Zone
+                        {
+                            Name = "Възел за отчет на ДГ",
+                            MeasurementPoints = {
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "КТ021004",
+                                    Name = "BGNCA00005001021004", 
+                                    //TransportTypeId =,
+                                    MeasurementPointsProductsConfigs = {
+                                    }
+                                },
+                            }
+                        },
+                        new Zone
+                        {
+                            Name = "Възел за отчет на КГ и мазут",
+                            MeasurementPoints = {
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "КТ021005",
+                                    Name = "BGNCA00005001021005", 
+                                    //TransportTypeId =,
+                                    MeasurementPointsProductsConfigs = {
+                                    }
+                                },
+                            }
+                        },
+                    }
+                },
+                new Ikunk
+                {
+                    Name = "ИКУНК 022 (ПИРС 2 - ПТ \"Росенец\")",
+                    Zones = {
+                        new Zone
+                        {
+                            Name = "Възел за отчет на бензин",
+                            MeasurementPoints = {
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "КТ022001",
+                                    Name = "BGNCA00005001022001", 
+                                    //TransportTypeId =,
+                                    MeasurementPointsProductsConfigs = {
+                                    }
+                                },
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "КТ022002",
+                                    Name = "BGNCA00005001022002", 
+                                    //TransportTypeId =,
+                                    MeasurementPointsProductsConfigs = {
+                                    }
+                                },
+                            }
+                        },
+                        new Zone
+                        {
+                            Name = "Възел за отчет на ДГ",
+                            MeasurementPoints = {
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "КТ022003",
+                                    Name = "BGNCA00005001022003", 
+                                    //TransportTypeId =,
+                                    MeasurementPointsProductsConfigs = {
+                                    }
+                                },
+                            }
+                        },
+                        new Zone
+                        {
+                            Name = "Възел за отчет на КГ и мазут",
+                            MeasurementPoints = {
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "КТ022004",
+                                    Name = "BGNCA00005001022004", 
+                                    //TransportTypeId =,
+                                    MeasurementPointsProductsConfigs = {
+                                    }
+                                },
+                            }
+                        },
+                    }
+                },
+                new Ikunk
+                {
+                    Name = "ИКУНК 023 (ПИРС3 - ПТ \"Росенец\")",
+                    Zones = {
+                        new Zone
+                        {
+                            Name = "Възел за отчет на ДГ",
+                            MeasurementPoints = {
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "КТ023001",
+                                    Name = "BGNCA00005001023001", 
+                                    //TransportTypeId =,
+                                    MeasurementPointsProductsConfigs = {
+                                    }
+                                },
+                            }
+                        },
+                        new Zone
+                        {
+                            Name = "Възел за отчет на НОБ",
+                            MeasurementPoints = {
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "КТ023002",
+                                    Name = "BGNCA00005001023002", 
+                                    //TransportTypeId =,
+                                    MeasurementPointsProductsConfigs = {
+                                    }
+                                },
+                            }
+                        },
+                        new Zone
+                        {
+                            Name = "Възел за отчет на бензин",
+                            MeasurementPoints = {
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "КТ023003",
+                                    Name = "BGNCA00005001023003", 
+                                    //TransportTypeId =,
+                                    MeasurementPointsProductsConfigs = {
+                                    }
+                                },
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "КТ023003",
+                                    Name = "BGNCA00005001023004", 
+                                    //TransportTypeId =,
+                                    MeasurementPointsProductsConfigs = {
+                                    }
+                                },
+                            }
+                        },
+                        new Zone
+                        {
+                            Name = "Възел за отчет на бензин А98/МТБЕ",
+                            MeasurementPoints = {
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "КТ023005",
+                                    Name = "BGNCA00005001023005", 
+                                    //TransportTypeId =,
+                                    MeasurementPointsProductsConfigs = {
+                                    }
+                                },
+                            }
+                        },
+                        new Zone
+                        {
+                            Name = "Възел за отчет на метанол",
+                            MeasurementPoints = {
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "КТ023007",
+                                    Name = "BGNCA00005001023007", 
+                                    //TransportTypeId =,
+                                    MeasurementPointsProductsConfigs = {
+                                    }
+                                },
+                            }
+                        },
+                        new Zone
+                        {
+                            Name = "Възел за отчет на нормален хексан",
+                            MeasurementPoints = {
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "КТ023008",
+                                    Name = "BGNCA00005001023008", 
+                                    //TransportTypeId =,
+                                    MeasurementPointsProductsConfigs = {
+                                    }
+                                },
+                            }
+                        },
+                        new Zone
+                        {
+                            Name = "Възел за отчет на КГ и мазут",
+                            MeasurementPoints = {
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "КТ023009",
+                                    Name = "BGNCA00005001023009", 
+                                    //TransportTypeId =,
+                                    MeasurementPointsProductsConfigs = {
+                                    }
+                                },
+                            }
+                        }
+                    }
+                },
+                new Ikunk
+                {
+                    Name = "ИКУНК 024 (ПИРС3 - ПТ \"Росенец\")",
+                    Zones = {
+                        new Zone
+                        {
+                            Name = "Възел за отчет на КОГ",
+                            MeasurementPoints = {
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "КТ024001",
+                                    Name = "BGNCA00005001024001", 
+                                    //TransportTypeId =,
+                                    MeasurementPointsProductsConfigs = {
+                                    }
+                                },
+                            }
+                        },
+                        new Zone
+                        {
+                            Name = "Възел за отчет на ДГ - маркирано",
+                            MeasurementPoints = {
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "КТ024002",
+                                    Name = "BGNCA00005001024002", 
+                                    //TransportTypeId =,
+                                    MeasurementPointsProductsConfigs = {
+                                    }
+                                },
+                            }
+                        },
+                        new Zone
+                        {
+                            Name = "Възел за котелно гориво със сяра под 1% към котела",
+                            MeasurementPoints = {
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "КТ009004",
+                                    Name = "BGNCA00005001009004", 
+                                    //TransportTypeId =,
+                                    MeasurementPointsProductsConfigs = {
+                                    }
+                                },
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "КТ009005",
+                                    Name = "BGNCA00005001009005", 
+                                    //TransportTypeId =,
+                                    MeasurementPointsProductsConfigs = {
+                                    }
+                                },
+                            }
+                        },
+                        new Zone
+                        {
+                            Name = "Възел за тъмни горива преди смесителя",
+                            MeasurementPoints = {
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "KT024003",
+                                    Name = "BGNCA00005001024003", 
+                                    //TransportTypeId =,
+                                    MeasurementPointsProductsConfigs = {
+                                    }
+                                },
+                            }
+                        },
+                    }
+                },
+                new Ikunk
+                {
+                    Name = " Магистрални тръбопроводи - ПТ Росенец  към ИКУНК 011",
+                    Zones = {
+                        new Zone
+                        {
+                            Name = "III Магистрален продуктопровод",
+                            MeasurementPoints = {
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "КТ011001",
+                                    Name = "BGNCA00005002011001", 
+                                    //TransportTypeId =,
+                                    MeasurementPointsProductsConfigs = {
+                                    }
+                                },
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "КТ011007",
+                                    Name = "BGNCA00005002011007", 
+                                    //TransportTypeId =,
+                                    MeasurementPointsProductsConfigs = {
+                                    }
+                                },
+                            }
+                        },
+                        new Zone
+                        {
+                            Name = "II Магистрален продуктопровод",
+                            MeasurementPoints = {
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "КТ011002",
+                                    Name = "BGNCA00005002011002", 
+                                    //TransportTypeId =,
+                                    MeasurementPointsProductsConfigs = {
+                                    }
+                                },
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "КТ011008",
+                                    Name = "BGNCA00005002011008", 
+                                    //TransportTypeId =,
+                                    MeasurementPointsProductsConfigs = {
+                                    }
+                                },
+                            }
+                        },
+                        new Zone
+                        {
+                            Name = "I Магистрален продуктопровод",
+                            MeasurementPoints = {
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "КТ011003",
+                                    Name = "BGNCA00005002011003", 
+                                    //TransportTypeId =,
+                                    MeasurementPointsProductsConfigs = {
+                                    }
+                                },
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "КТ011009",
+                                    Name = "BGNCA00005002011009", 
+                                    //TransportTypeId =,
+                                    MeasurementPointsProductsConfigs = {
+                                    }
+                                },
+                            }
+                        },
+                        new Zone
+                        {
+                            Name = "V Магистрален продуктопровод",
+                            MeasurementPoints = {
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "КТ011004",
+                                    Name = "BGNCA00005002011004", 
+                                    //TransportTypeId =,
+                                    MeasurementPointsProductsConfigs = {
+                                    }
+                                },
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "КТ011010",
+                                    Name = "BGNCA00005002011010", 
+                                    //TransportTypeId =,
+                                    MeasurementPointsProductsConfigs = {
+                                    }
+                                },
+                            }
+                        },
+                        new Zone
+                        {
+                            Name = "IV Магистрален продуктопровод",
+                            MeasurementPoints = {
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "КТ011005",
+                                    Name = "BGNCA00005002011005", 
+                                    //TransportTypeId =,
+                                    MeasurementPointsProductsConfigs = {
+                                    }
+                                },
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "КТ011011",
+                                    Name = "BGNCA00005002011011", 
+                                    //TransportTypeId =,
+                                    MeasurementPointsProductsConfigs = {
+                                    }
+                                },
+                            }
+                        },
+                        new Zone
+                        {
+                            Name = "VI Магистрален продуктопровод",
+                            MeasurementPoints = {
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "КТ011006",
+                                    Name = "BGNCA00005002011006", 
+                                    //TransportTypeId =,
+                                    MeasurementPointsProductsConfigs = {
+                                    }
+                                },
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "КТ011012",
+                                    Name = "BGNCA00005002011012", 
+                                    //TransportTypeId =,
+                                    MeasurementPointsProductsConfigs = {
+                                    }
                                 },
                             }
                         }

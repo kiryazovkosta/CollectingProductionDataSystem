@@ -9,12 +9,11 @@
     using CollectingProductionDataSystem.Models.Inventories;
     using CollectingProductionDataSystem.Models.Nomenclatures;
     using CollectingProductionDataSystem.Models.Productions;
+    using CollectingProductionDataSystem.Models.Transactions;
 
     public interface IProductionData : IDisposable
     {
         IDbContext Context { get; }
-
-        IDeletableEntityRepository<ExciseStore> ExciseStores { get; }
 
         IDeletableEntityRepository<Plant> Plants { get; }
 
@@ -24,9 +23,9 @@
 
         IDeletableEntityRepository<UnitConfig> Units { get; }
 
-        IDeletableEntityRepository<UnitsData> UnitsData { get; }
+        IImmutableEntityRepository<UnitsData> UnitsData { get; }
 
-        IDeletableEntityRepository<UnitsInspectionData> UnitsInspectionData { get; }
+        IImmutableEntityRepository<UnitsInspectionData> UnitsInspectionData { get; }
 
         IDeletableEntityRepository<Area> Areas { get; }
 
@@ -34,11 +33,22 @@
 
         IDeletableEntityRepository<TankConfig> Tanks { get; }
 
-        IDeletableEntityRepository<TankData> TanksData { get; }
+        IImmutableEntityRepository<TankData> TanksData { get; }
 
         IDeletableEntityRepository<Product> Products { get; }
 
         IDeletableEntityRepository<ProductType> ProductTypes { get; }
+
+        IDeletableEntityRepository<Ikunk> Ikunks { get; }
+
+        IDeletableEntityRepository<Zone> Zones { get; }
+
+        IDeletableEntityRepository<MeasurementPoint> MeasurementPoints { get; }
+
+        IDeletableEntityRepository<MeasurementPointsProductsConfig> MeasurementPointsProductConfigs { get; }
+
+        IDeletableEntityRepository<TransportType> TransportTypes { get; }
+
 
         IDbContext DbContext { get; }
 

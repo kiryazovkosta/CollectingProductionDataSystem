@@ -5,10 +5,11 @@ using CollectingProductionDataSystem.Models.Nomenclatures;
 
 namespace CollectingProductionDataSystem.Models.Inventories
 {
-    public partial class TankData: DeletableEntity, IEntity
+    public partial class TankData: AuditInfo, IEntity
     {
         public int Id { get; set; }
         public DateTime RecordTimestamp { get; set; }
+        public int TankConfigId { get; set; }
         public int ParkId { get; set; }
         public int? ProductId { get; set; }
         public string ProductName { get; set; }

@@ -81,6 +81,7 @@ namespace CollectingProductionDataSystem.Phd2SqlProductionData
             {
                 try
                 {
+                    Utility.SetRegionalSettings();
                     this.inspectionDataTimer.Change(Timeout.Infinite, Timeout.Infinite);
                     Phd2SqlProductionDataMain.ProcessInspectionPointsData();
                 }
@@ -102,6 +103,7 @@ namespace CollectingProductionDataSystem.Phd2SqlProductionData
             {
                 try
                 {
+                    Utility.SetRegionalSettings();
                     this.primaryDataTimer.Change(Timeout.Infinite, Timeout.Infinite);
                     Phd2SqlProductionDataMain.ProcessPrimaryProductionData();
                 }

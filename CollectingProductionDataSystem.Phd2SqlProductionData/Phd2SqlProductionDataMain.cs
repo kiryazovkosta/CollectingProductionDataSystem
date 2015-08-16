@@ -1,6 +1,7 @@
 ﻿namespace CollectingProductionDataSystem.Phd2SqlProductionData
 {
     using System.Collections;
+    using System.Linq;
     using log4net;
     using System;
     using System.Linq;
@@ -12,6 +13,8 @@
     using CollectingProductionDataSystem.Models.Inventories;
     using CollectingProductionDataSystem.Data;
     using CollectingProductionDataSystem.Data.Concrete;
+    using CollectingProductionDataSystem.Models.Productions;
+    using System.Globalization;
 
     static class Phd2SqlProductionDataMain
     {
@@ -26,8 +29,8 @@
         {
             ServiceBase[] servicesToRun;
             servicesToRun = new ServiceBase[] 
-            { 
-                new Phd2SqlProductionDataService(logger) 
+            {
+                new Phd2SqlProductionDataService(logger)
             };
             ServiceBase.Run(servicesToRun);
         }
@@ -41,25 +44,17 @@
                 using (var context = new ProductionData(new CollectingDataSystemDbContext(new AuditablePersister())))
                 {
                     var units = context.Units
-                        .All()
-                        .Where(u => u.IsInspectionPoint == true)
-                        .Select(u => new InspectionPoint()
-                            {
-                                Id = u.Id,
-                                InspectionPointTag = u.CurrentInspectionDataTag
-                            });
+                                       .All()
+                                       .Where(u => u.IsInspectionPoint == true)
+                                       .Select(u => new InspectionPoint()
+                                              {
+                                                  UnitId = u.Id,
+                                                  InspectionPointTag = u.CurrentInspectionDataTag
+                                              });
 
-                    Tags tags = new Tags();
-                    Hashtable ht = new Hashtable();
-                    foreach (var unit in units)
+                    if (units.Count() > 0)
                     {
-                        ht.Add(unit.InspectionPointTag, unit);
-                        tags.Add(new Tag(unit.InspectionPointTag));
-                    }
-
-                    if (tags.Count > 0)
-                    {
-                       using(PHDHistorian oPhd = new PHDHistorian())
+                        using (PHDHistorian oPhd = new PHDHistorian())
                         {
                             using (PHDServer defaultServer = new PHDServer(Properties.Settings.Default.PHD_HOST))
                             {
@@ -68,42 +63,66 @@
                                 oPhd.DefaultServer = defaultServer;
                                 oPhd.StartTime = "NOW - 2M";
                                 oPhd.EndTime = "NOW - 2M";
-                                oPhd.Sampletype = SAMPLETYPE.Raw;
-                                oPhd.MinimumConfidence = 100;
-                                oPhd.MaximumRows = 1;
+                                oPhd.Sampletype = Properties.Settings.Default.INSPECTION_DATA_SAMPLETYPE;
+                                oPhd.MinimumConfidence = Properties.Settings.Default.INSPECTION_DATA_MINIMUM_CONFIDENCE;
+                                oPhd.MaximumRows = Properties.Settings.Default.INSPECTION_DATA_MAX_ROWS;
 
-                                DataSet dsGrid = oPhd.FetchRowData(tags);
-                                foreach (DataRow row in dsGrid.Tables[0].Rows)
+                                // get all inspection data
+                                foreach (var item in units)
                                 {
-                                    var tagName = string.Empty;
-                                    var tagValue = 0m;
-
-                                    foreach (DataColumn dc in dsGrid.Tables[0].Columns)
+                                    var unitInspectionPointData = new UnitsInspectionData();
+                                    unitInspectionPointData.UnitConfigId = item.UnitId;
+                                    DataSet dsGrid = oPhd.FetchRowData(item.InspectionPointTag);
+                                    var confidence = 100;
+                                    foreach (DataRow row in dsGrid.Tables[0].Rows)
                                     {
-                                        if (dc.ColumnName.Equals("Tolerance") || dc.ColumnName.Equals("HostName") || dc.ColumnName.Equals("Units"))
+                                        foreach (DataColumn dc in dsGrid.Tables[0].Columns)
                                         {
-                                            continue;
-                                        }
-                                        else if (dc.ColumnName.Equals("Confidence") && !row[dc].ToString().Equals("100"))
-                                        {
-                                            continue;    
-                                        }
-                                        else if (dc.ColumnName.Equals("TagName"))
-                                        {
-                                            tagName = row[dc].ToString();
-                                        }
-                                        else if (dc.ColumnName.Equals("Value"))
-                                        {
-                                            tagValue = Convert.ToDecimal(row[dc]);
+                                            if (dc.ColumnName.Equals("Tolerance") || dc.ColumnName.Equals("HostName"))
+                                            {
+                                                continue;
+                                            }
+                                            else if (dc.ColumnName.Equals("Confidence"))
+                                            {
+                                                confidence = Convert.ToInt32(row[dc]);
+                                                break;
+                                            }
+                                            else if (dc.ColumnName.Equals("Value"))
+                                            {
+                                                unitInspectionPointData.Value = Convert.ToDecimal(row[dc]);
+                                            }
+                                            else if (dc.ColumnName.Equals("TimeStamp"))
+                                            {
+                                                var recordTimestamp = DateTime.ParseExact(row[dc].ToString(), "dd.MM.yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+                                                if (TimeZoneInfo.Local.IsDaylightSavingTime(recordTimestamp))
+                                                {
+                                                    recordTimestamp = recordTimestamp.AddHours(-1);
+                                                }
+                                                unitInspectionPointData.RecordTimestamp = recordTimestamp;
+                                            }
                                         }
                                     }
+                                    if (confidence > Properties.Settings.Default.INSPECTION_DATA_MINIMUM_CONFIDENCE)
+                                    {
+                                        //var udExists = context.UnitsInspectionData
+                                        //    .All()
+                                        //    .Where(u => u.RecordTimestamp.CompareTo(unitInspectionPointData.RecordTimestamp) == 0)
+                                        //    .Select(u => u.UnitConfigId == unitInspectionPointData.UnitConfigId)
+                                        //    .FirstOrDefault();
+                                        //if (!udExists)
+                                        //{
+                                            context.UnitsInspectionData.Add(unitInspectionPointData);                                            
+                                        //}
+                                    }
                                 }
-                            }
-                        } 
-                    }
-                }
 
-                logger.Info("Done!");
+                                context.SaveChanges("PHD2SQLInspectionData");
+                            }
+                        }
+                    }
+
+                    logger.Info("Sync inspection points finished!");
+                }
             }
             catch (Exception ex)
             {
@@ -119,23 +138,13 @@
 
                 using (var context = new ProductionData(new CollectingDataSystemDbContext(new AuditablePersister())))
                 {
-                    var units = context.Units.All().Select(u =>
-                        new
-                        {
-                            Id = u.Id,
-                            PreviousShiftTag = u.PreviousShiftTag
-                        });
-
-                    Tags tags = new Tags();
-                    foreach (var unit in units)
+                    var units = context.Units.All().Where(u => u.PreviousShiftTag != null).Select(u => new PreviousShift()
                     {
-                        if (! string.IsNullOrEmpty(unit.PreviousShiftTag))
-                        {
-                            tags.Add(new Tag(unit.PreviousShiftTag));
-                        }
-                    }
+                        UnitId = u.Id,
+                        PreviousShiftTag = u.PreviousShiftTag
+                    });
 
-                    using(PHDHistorian oPhd = new PHDHistorian())
+                    using (PHDHistorian oPhd = new PHDHistorian())
                     {
                         using (PHDServer defaultServer = new PHDServer(Properties.Settings.Default.PHD_HOST))
                         {
@@ -148,29 +157,52 @@
                             oPhd.MinimumConfidence = 100;
                             oPhd.MaximumRows = 1;
 
-                            DataSet dsGrid = oPhd.FetchRowData(tags);
-                            foreach (DataRow row in dsGrid.Tables[0].Rows)
+                            // get all inspection data
+                            foreach (var item in units)
                             {
-                                var sb = new StringBuilder();
-                                sb.Append("[PreviousShiftTag]");
-                                foreach (DataColumn dc in dsGrid.Tables[0].Columns)
+                                var unitData = new UnitsData();
+                                unitData.UnitConfigId = item.UnitId;
+                                DataSet dsGrid = oPhd.FetchRowData(item.PreviousShiftTag);
+                                var confidence = 100;
+                                foreach (DataRow row in dsGrid.Tables[0].Rows)
                                 {
-                                    if (dc.ColumnName.Equals("Tolerance") || dc.ColumnName.Equals("HostName"))
+                                    foreach (DataColumn dc in dsGrid.Tables[0].Columns)
                                     {
-                                        continue;
+                                        if (dc.ColumnName.Equals("Tolerance") || dc.ColumnName.Equals("HostName"))
+                                        {
+                                            continue;
+                                        }
+                                        else if (dc.ColumnName.Equals("Confidence") && !row[dc].ToString().Equals("100"))
+                                        {
+                                            confidence = 0;
+                                            break;    
+                                        }
+                                        else if (dc.ColumnName.Equals("Value"))
+                                        {
+                                            unitData.Value = Convert.ToDecimal(row[dc]);
+                                        }
+                                        else if (dc.ColumnName.Equals("TimeStamp"))
+                                        {
+                                            var recordTimestamp = DateTime.ParseExact(row[dc].ToString(), "dd.MM.yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+                                            if (TimeZoneInfo.Local.IsDaylightSavingTime(recordTimestamp))
+                                            {
+                                                recordTimestamp = recordTimestamp.AddHours(-1);    
+                                            }
+                                            unitData.RecordTimestamp = recordTimestamp; 
+                                        }
                                     }
-
-                                    var field1 = row[dc].ToString();
-                                   sb.Append(dc.ColumnName + ":" + field1 + "  ");
                                 }
-
-                                logger.Info(sb.ToString());
+                                if (confidence == 100)
+                                {
+                                    context.UnitsData.Add(unitData);   
+                                }
                             }
+                            context.SaveChanges("PHD2SQLPreviousShift");
                         }
                     }
                 }
 
-                logger.Info("Done!");
+                logger.Info("Sync primary data finished!");
             }
             catch (Exception ex)
             {
@@ -182,13 +214,7 @@
         {
             try
             {
-                var minimumMinutes = 5;
-                logger.Info("Sync inventory tanks data!");
-                if (DateTime.Now.Minute <= minimumMinutes)
-                {
-                    logger.InfoFormat("Minutes in the current time are less than {0}!", minimumMinutes);
-                    return;
-                }
+                logger.Info("Sync inventory tanks data started!");
 
                 using (var context = new ProductionData(new CollectingDataSystemDbContext(new AuditablePersister())))
                 {
@@ -199,25 +225,24 @@
                         return;
                     }
 
-                    var tanks = context.Tanks.All().Select(t =>
-                        new Tank() 
-                        {
-                            Id = t.Id,
-                            ParkId = t.ParkId,
-                            ControlPoint = t.ControlPoint,
-                            UnusableResidueLevel = 0.05m,
-                            PhdTagProductId = t.PhdTagProductId,
-                            PhdTagLiquidLevel = t.PhdTagLiquidLevel,
-                            PhdTagProductLevel = t.PhdTagProductLevel,
-                            PhdTagFreeWaterLevel = t.PhdTagFreeWaterLevel,
-                            PhdTagReferenceDensity = t.PhdTagReferenceDensity,
-                            PhdTagNetStandardVolume = t.PhdTagNetStandardVolume,
-                            PhdTagWeightInAir = t.PhdTagWeightInAir
-                        });
+                    var tanks = context.Tanks.All().Select(t => new Tank()
+                    {
+                        TankId = t.Id,
+                        ParkId = t.ParkId,
+                        ControlPoint = t.ControlPoint,
+                        UnusableResidueLevel = 0.05m,
+                        PhdTagProductId = t.PhdTagProductId,
+                        PhdTagLiquidLevel = t.PhdTagLiquidLevel,
+                        PhdTagProductLevel = t.PhdTagProductLevel,
+                        PhdTagFreeWaterLevel = t.PhdTagFreeWaterLevel,
+                        PhdTagReferenceDensity = t.PhdTagReferenceDensity,
+                        PhdTagNetStandardVolume = t.PhdTagNetStandardVolume,
+                        PhdTagWeightInAir = t.PhdTagWeightInAir
+                    });
 
                     if (tanks.Count() > 0)
                     {
-                        using(PHDHistorian oPhd = new PHDHistorian())
+                        using (PHDHistorian oPhd = new PHDHistorian())
                         {
                             using (PHDServer defaultServer = new PHDServer(Properties.Settings.Default.PHD_HOST))
                             {
@@ -234,7 +259,7 @@
                                 {
                                     var tankData = new TankData();
                                     tankData.RecordTimestamp = recordTime;
-                                    tankData.Id = t.Id;
+                                    tankData.TankConfigId = t.TankId;
                                     tankData.ParkId = t.ParkId;
                                     tankData.NetStandardVolume = t.UnusableResidueLevel;
 
@@ -282,39 +307,27 @@
                                             tankData.ProductId = 1;
                                             tankData.ProductName = tagValue.ToString();
                                         }
-                                        else if (tagName.Contains(".LL"))
-                                        {
-                                            tankData.LiquidLevel = tagValue;    
-                                        }
-                                        else if (tagName.Contains(".LEVEL_MM"))
+                                        else if (tagName.EndsWith(".LL") || tagName.EndsWith(".LEVEL_MM"))
                                         {
                                             tankData.LiquidLevel = tagValue;
                                         }
-                                        else if (tagName.Contains(".LL_FWL"))
-                                        {
-                                            tankData.ProductLevel = tagValue;
-                                        }      
-                                        else if (tagName.Contains(".LEVEL_FWL"))
+                                        else if (tagName.EndsWith(".LL_FWL") || tagName.EndsWith(".LEVEL_FWL"))
                                         {
                                             tankData.ProductLevel = tagValue;
                                         }
-                                        else if (tagName.Contains(".FWL"))
+                                        else if (tagName.EndsWith(".FWL"))
                                         {
                                             tankData.FreeWaterLevel = tagValue;  
                                         }
-                                        else if (tagName.Contains(".DREF"))
+                                        else if (tagName.EndsWith(".DREF") || tagName.EndsWith(".REF_DENS"))
                                         {
                                             tankData.ReferenceDensity = tagValue;
                                         }
-                                        else if (tagName.Contains(".REF_DENS"))
-                                        {
-                                            tankData.ReferenceDensity = tagValue;
-                                        }
-                                        else if (tagName.Contains(".NSV"))
+                                        else if (tagName.EndsWith(".NSV"))
                                         {
                                             tankData.NetStandardVolume = tagValue;
                                         }
-                                        else if (tagName.Contains(".WIA"))
+                                        else if (tagName.EndsWith(".WIA"))
                                         {
                                             tankData.WeightInAir = tagValue;
                                         }
@@ -325,9 +338,10 @@
 
                                 context.SaveChanges("PHD2SQLInventory");
                             }
-                        } 
+                        }
                     }
-                    logger.Info("Done!");
+
+                    logger.Info("Sync inventory tanks data finished!");
                 }
             }
             catch (Exception ex)

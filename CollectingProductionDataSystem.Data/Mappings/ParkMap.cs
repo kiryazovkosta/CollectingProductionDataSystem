@@ -23,9 +23,6 @@ namespace CollectingProductionDataSystem.Data.Mappings
             this.HasRequired(t => t.Area)
                 .WithMany(t => t.Parks)
                 .HasForeignKey(d => d.AreaId);
-            this.HasRequired(t => t.ExciseStore)
-                .WithMany(t => t.InventoryParks)
-                .HasForeignKey(d => d.ExciseStoreId);
 
         }
     }

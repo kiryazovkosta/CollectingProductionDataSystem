@@ -19,9 +19,7 @@ namespace CollectingProductionDataSystem.Models.Inventories
         public int Id { get; set; }
         public string Name { get; set; }
         public int AreaId { get; set; }
-        public int ExciseStoreId { get; set; }
         public virtual Area Area { get; set; }
-        public virtual ExciseStore ExciseStore { get; set; }
         public virtual ICollection<TankConfig> TankConfigs 
         {
             get { return this.tankConfigs; }

@@ -11,6 +11,7 @@ namespace CollectingProductionDataSystem.Models.Productions
     {
         private ICollection<UnitsData> unitsDatas;
         private ICollection<UnitsInspectionData> unitsInspectionDatas;
+
         public UnitConfig()
         {
             this.unitsDatas = new HashSet<UnitsData>();
@@ -48,7 +49,15 @@ namespace CollectingProductionDataSystem.Models.Productions
         public virtual ProcessUnit ProcessUnit { get; set; }
         public virtual Product Product { get; set; }
         public virtual ProductType ProductType { get; set; }
-        public virtual ICollection<UnitsData> UnitsDatas { get; set; }
-        public virtual ICollection<UnitsInspectionData> UnitsInspectionDatas { get; set; }
+        public virtual ICollection<UnitsData> UnitsDatas 
+        { 
+            get {return this.unitsDatas; } 
+            set {this.unitsDatas = value; }
+        }
+        public virtual ICollection<UnitsInspectionData> UnitsInspectionDatas 
+        {
+            get { return this.unitsInspectionDatas; }
+            set { this.unitsInspectionDatas = value; } 
+        }
     }
 }

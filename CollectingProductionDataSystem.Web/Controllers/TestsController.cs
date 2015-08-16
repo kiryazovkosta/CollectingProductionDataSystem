@@ -59,7 +59,7 @@ namespace CollectingProductionDataSystem.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                this.data.TanksData.Update(model);
+                //this.data.TanksData.Update(model);
                 this.data.SaveChanges(this.UserProfile.User.UserName);
                 return RedirectToAction("TankChange");
             }

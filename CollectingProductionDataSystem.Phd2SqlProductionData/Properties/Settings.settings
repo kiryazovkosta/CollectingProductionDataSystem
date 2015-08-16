@@ -9,16 +9,16 @@
       <Value Profile="(Default)">3150</Value>
     </Setting>
     <Setting Name="IDLE_TIMER_INSPECTION_POINTS" Type="System.TimeSpan" Scope="Application">
-      <Value Profile="(Default)">00:05:00</Value>
+      <Value Profile="(Default)">00:15:00</Value>
     </Setting>
     <Setting Name="SYNC_INSPECTION_POINTS" Type="System.Boolean" Scope="Application">
-      <Value Profile="(Default)">False</Value>
+      <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="IDLE_TIMER_PRIMARY" Type="System.TimeSpan" Scope="Application">
-      <Value Profile="(Default)">01:00:00</Value>
+      <Value Profile="(Default)">00:30:00</Value>
     </Setting>
     <Setting Name="SYNC_PRIMARY" Type="System.Boolean" Scope="Application">
-      <Value Profile="(Default)">False</Value>
+      <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="IDLE_TIMER_INVENTORY" Type="System.TimeSpan" Scope="Application">
       <Value Profile="(Default)">00:20:00</Value>
@@ -31,6 +31,15 @@
     </Setting>
     <Setting Name="CULTURE_INFO" Type="System.String" Scope="Application">
       <Value Profile="(Default)">bg-BG</Value>
+    </Setting>
+    <Setting Name="INSPECTION_DATA_MINIMUM_CONFIDENCE" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">49</Value>
+    </Setting>
+    <Setting Name="INSPECTION_DATA_MAX_ROWS" Type="System.UInt32" Scope="Application">
+      <Value Profile="(Default)">1</Value>
+    </Setting>
+    <Setting Name="INSPECTION_DATA_SAMPLETYPE" Type="Uniformance.PHD.SAMPLETYPE" Scope="Application">
+      <Value Profile="(Default)">Snapshot</Value>
     </Setting>
   </Settings>
 </SettingsFile>

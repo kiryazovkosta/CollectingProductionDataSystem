@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.ModelConfiguration;
 using CollectingProductionDataSystem.Models.Inventories;
+using System.Data.Entity.Infrastructure.Annotations;
 
 namespace CollectingProductionDataSystem.Data.Mappings
 {
@@ -9,11 +10,23 @@ namespace CollectingProductionDataSystem.Data.Mappings
         public TankDataMap()
         {
             // Primary Key
-            this.HasKey(t => new { t.Id, t.RecordTimestamp });
+            this.HasKey(t => t.Id);
 
             // Properties
             this.Property(t => t.Id)
-                .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
+                .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+
+            this.Property(t => t.RecordTimestamp)
+                .HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("ix_tankdata_log", 1)))
+                .IsRequired();
+
+            this.Property(t => t.TankConfigId)
+                .HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("ix_tankdata_log", 2)))
+                .IsRequired();
+
+            this.Property(t => t.ParkId)
+                .HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("ix_tankdata_log", 3)))
+                .IsRequired();
 
             // Table & Column Mappings
             this.ToTable("TankDatas");
@@ -21,7 +34,7 @@ namespace CollectingProductionDataSystem.Data.Mappings
             // Relationships
             this.HasRequired(t => t.TankConfig)
                 .WithMany(t => t.TankDatas)
-                .HasForeignKey(d => d.Id);
+                .HasForeignKey(t => t.TankConfigId);
             this.HasOptional(t => t.Product)
                 .WithMany(t => t.TanksDatas)
                 .HasForeignKey(d => d.ProductId);

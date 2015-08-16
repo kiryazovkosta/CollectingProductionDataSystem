@@ -5,7 +5,7 @@
         /// <summary>
         /// Резервоар
         /// </summary>
-        public int Id { get; set; }
+        public int TankId { get; set; }
         /// <summary>
         /// Търговско наименование на продукта
         /// </summary>

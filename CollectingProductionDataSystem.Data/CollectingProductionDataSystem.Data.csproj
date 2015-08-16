@@ -69,8 +69,10 @@
     <Compile Include="Concrete\DeletableEntityRepository.cs" />
     <Compile Include="Concrete\GenericRepository.cs" />
     <Compile Include="CollectingDataSystemDbContext.cs" />
+    <Compile Include="Concrete\ImmutableEntityRepository.cs" />
     <Compile Include="Contracts\IDataContext.cs" />
     <Compile Include="Contracts\IDeletableEntityRepository.cs" />
+    <Compile Include="Contracts\IImmutableEntityRepository.cs" />
     <Compile Include="Contracts\IOrderable.cs" />
     <Compile Include="Contracts\IPersister.cs" />
     <Compile Include="Contracts\IProductionData.cs" />
@@ -79,8 +81,10 @@
     <Compile Include="Mappings\AuditLogRecordMap.cs" />
     <Compile Include="Mappings\Configuration\ModelBingConfig.cs" />
     <Compile Include="Mappings\DirectionMap.cs" />
-    <Compile Include="Mappings\ExciseStoreMap.cs" />
     <Compile Include="Mappings\FactoryMap.cs" />
+    <Compile Include="Mappings\IkunkMap.cs" />
+    <Compile Include="Mappings\MeasurementPointMap.cs" />
+    <Compile Include="Mappings\MeasurementPointsProductsConfigMap.cs" />
     <Compile Include="Mappings\ParkMap.cs" />
     <Compile Include="Mappings\TankConfigMap.cs" />
     <Compile Include="Mappings\TankDataMap.cs" />
@@ -90,9 +94,11 @@
     <Compile Include="Mappings\ProcessUnitMap.cs" />
     <Compile Include="Mappings\ProductMap.cs" />
     <Compile Include="Mappings\ProductTypeMap.cs" />
+    <Compile Include="Mappings\TransportTypeMap.cs" />
     <Compile Include="Mappings\UnitConfigMap.cs" />
     <Compile Include="Mappings\UnitsDataMap.cs" />
     <Compile Include="Mappings\UnitsInspectionDataMap.cs" />
+    <Compile Include="Mappings\ZoneMap.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Concrete\ProductionData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

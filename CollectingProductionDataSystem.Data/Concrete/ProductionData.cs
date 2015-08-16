@@ -13,6 +13,7 @@
     using CollectingProductionDataSystem.Models.Inventories;
     using CollectingProductionDataSystem.Models.Nomenclatures;
     using CollectingProductionDataSystem.Models.Productions;
+using CollectingProductionDataSystem.Models.Transactions;
 
     public class ProductionData : IProductionData
     {
@@ -35,14 +36,6 @@
             get
             {
                 return this.context;
-            }
-        }
-
-        public IDeletableEntityRepository<ExciseStore> ExciseStores
-        {
-            get
-            {
-                return this.GetDeletableEntityRepository<ExciseStore>();
             }
         }
 
@@ -78,19 +71,19 @@
             }
         }
 
-        public IDeletableEntityRepository<UnitsData> UnitsData
+        public IImmutableEntityRepository<UnitsData> UnitsData
         {
             get
             {
-                return this.GetDeletableEntityRepository<UnitsData>();
+                return this.GetImmutableEntityRepository<UnitsData>();
             }
         }
 
-        public IDeletableEntityRepository<UnitsInspectionData> UnitsInspectionData
+        public IImmutableEntityRepository<UnitsInspectionData> UnitsInspectionData
         {
             get
             {
-                return this.GetDeletableEntityRepository<UnitsInspectionData>();
+                return this.GetImmutableEntityRepository<UnitsInspectionData>();
             }
         }
 
@@ -118,11 +111,11 @@
             }
         }
 
-        public IDeletableEntityRepository<TankData> TanksData
+        public IImmutableEntityRepository<TankData> TanksData
         {
             get
             {
-                return this.GetDeletableEntityRepository<TankData>();
+                return this.GetImmutableEntityRepository<TankData>();
             }
         }
 
@@ -139,6 +132,46 @@
             get
             {
                 return this.GetDeletableEntityRepository<ProductType>();
+            }
+        }
+
+        public IDeletableEntityRepository<Ikunk> Ikunks
+        {
+            get
+            {
+                return this.GetDeletableEntityRepository<Ikunk>();
+            }
+        }
+
+        public IDeletableEntityRepository<Zone> Zones
+        {
+            get
+            {
+                return this.GetDeletableEntityRepository<Zone>();
+            }
+        }
+
+        public IDeletableEntityRepository<MeasurementPoint> MeasurementPoints
+        {
+            get
+            {
+                return this.GetDeletableEntityRepository<MeasurementPoint>();
+            }
+        }
+
+        public IDeletableEntityRepository<MeasurementPointsProductsConfig> MeasurementPointsProductConfigs
+        {
+            get
+            {
+                return this.GetDeletableEntityRepository<MeasurementPointsProductsConfig>();
+            }
+        }
+
+        public IDeletableEntityRepository<TransportType> TransportTypes
+        {
+            get
+            {
+                return this.GetDeletableEntityRepository<TransportType>();
             }
         }
 
@@ -183,6 +216,17 @@
             }
 
             return (IDeletableEntityRepository<T>)this.repositories[typeof(T)];
+        }
+
+        private IImmutableEntityRepository<T> GetImmutableEntityRepository<T>() where T : class, IEntity, IAuditInfo
+        {
+            if (!this.repositories.ContainsKey(typeof(T)))
+            {
+                var type = typeof(ImmutableEntityRepository<T>);
+                this.repositories.Add(typeof(T), Activator.CreateInstance(type, this.context));
+            }
+
+            return (IImmutableEntityRepository<T>)this.repositories[typeof(T)];
         }
 
         /// <summary>
