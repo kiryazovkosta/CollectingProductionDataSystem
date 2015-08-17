@@ -34,9 +34,7 @@
             if (requestContext.HttpContext.User.Identity.IsAuthenticated)
             {
 
-                var user = ((IdentityDbContext<ApplicationUser>)this.data.DbContext)
-                    .Users.Include(x => x.UserRoles)
-                    .FirstOrDefault(x => x.UserName == requestContext.HttpContext.User.Identity.Name);
+                var user = ((IdentityDbContext<ApplicationUser, ApplicationRole, int,UserLoginIntPk, UserRoleIntPk, UserClaimIntPk>)this.data.DbContext).Users.FirstOrDefault(x => x.UserName == requestContext.HttpContext.User.Identity.Name);
                 var roleIds = user.Roles.Select(x => x.RoleId).ToArray();
                 var roleManager = requestContext.HttpContext.GetOwinContext().GetUserManager<ApplicationRoleManager>();
                 var roles = roleManager.Roles.Where(x => roleIds.Any(y => y == x.Id));

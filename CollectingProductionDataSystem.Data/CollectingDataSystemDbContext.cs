@@ -1,31 +1,29 @@
 ﻿namespace CollectingProductionDataSystem.Data
 {
-    using System;
     using System.Collections.Generic;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
-    using System.Diagnostics;
     using System.Linq;
-    using CollectingProductionDataSystem.Constants;
     using CollectingProductionDataSystem.Data.Concrete;
     using CollectingProductionDataSystem.Data.Contracts;
     using CollectingProductionDataSystem.Data.Mappings.Configuration;
     using CollectingProductionDataSystem.Data.Migrations;
-    using CollectingProductionDataSystem.Models.Contracts;
     using CollectingProductionDataSystem.Models.Identity;
     using CollectingProductionDataSystem.Models.Inventories;
     using CollectingProductionDataSystem.Models.Nomenclatures;
     using CollectingProductionDataSystem.Models.Productions;
+    using CollectingProductionDataSystem.Models.Transactions;
     using CollectingProductionDataSystem.Models.UtilityEntities;
     using Microsoft.AspNet.Identity.EntityFramework;
-    using CollectingProductionDataSystem.Models.Transactions;
 
-    public class CollectingDataSystemDbContext : IdentityDbContext<ApplicationUser>, IDbContext
+
+    public class CollectingDataSystemDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, int,
+        UserLoginIntPk, UserRoleIntPk, UserClaimIntPk>, IDbContext
     {
         private readonly IPersister persister;
 
         public CollectingDataSystemDbContext()
-            : base(DbConnection.DefaultConnectionString, throwIfV1Schema: false)
+            : base("CollectingPrimaryDataSystemConnection")
         {
 //#if DEBUG
 //            this.Database.Log = (c) => { Debug.WriteLine(c); };
@@ -35,7 +33,7 @@
         }
 
         public CollectingDataSystemDbContext(IPersister param)
-            : base(DbConnection.DefaultConnectionString, throwIfV1Schema: false)
+            : base("CollectingPrimaryDataSystemConnection")
         {
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<CollectingDataSystemDbContext, Configuration>());
             this.persister = param;

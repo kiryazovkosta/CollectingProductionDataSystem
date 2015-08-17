@@ -1,28 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CollectingProductionDataSystem.Models.Contracts;
-using Microsoft.AspNet.Identity.EntityFramework;
-
 namespace CollectingProductionDataSystem.Models.Identity
 {
-    public class ApplicationRole: IdentityRole  
+    using CollectingProductionDataSystem.Models.Contracts;
+    using Microsoft.AspNet.Identity.EntityFramework;
+
+    public class ApplicationRole : IdentityRole<int, UserRoleIntPk>, IEntity
     {
         public ApplicationRole()
-            :base()
         {
-            this.RoleUsers = new HashSet<ApplicationUser>(); 
         }
 
-        public ApplicationRole(string name) : base(name) 
+        public ApplicationRole(string name)
         {
-            this.RoleUsers = new HashSet<ApplicationUser>(); 
+            Name = name;
         }
 
-        public string MyCustomField { get; set; }
+        public ApplicationRole(string name, bool isAvailableForAdministrators) 
+            :this(name)
+        {
+            this.IsAvailableForAdministrators = isAvailableForAdministrators;
+        }
 
-        public virtual ICollection<ApplicationUser> RoleUsers { get; set; }
+         public bool IsAvailableForAdministrators { get; set; }
     }
 }
