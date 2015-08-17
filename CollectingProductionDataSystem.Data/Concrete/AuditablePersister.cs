@@ -35,7 +35,7 @@
         /// <returns></returns>
         private IEnumerable<AuditLogRecord> GetInfoForAdded(DbEntityEntry entry)
         {
-            var entityName = entry.Entity.GetType().Name;
+            var entityName = entry.Entity.GetType().Name.Split('_')[0];
             List<AuditLogRecord> auditRecords = new List<AuditLogRecord>();
 
             //var newValues = entry.CurrentValues.Clone();
@@ -51,7 +51,7 @@
                 EntityName = entityName,
                 EntityId = ((IEntity)entry.Entity).Id,
                 FieldName = string.Empty,//propertyName,
-                OperationType = entry.State,
+                OperationType = EntityState.Added,
                 OldValue = string.Empty,
                 NewValue = string.Empty,//newValue,
                 UserName = ((IAuditInfo)entry.Entity).CreatedFrom
@@ -102,7 +102,7 @@
 
         private List<AuditLogRecord> GetChangedProperties(DbEntityEntry entry, string userName)
         {
-            var entityName = entry.Entity.GetType().Name;
+            var entityName = entry.Entity.GetType().Name.Split('_')[0];
             List<AuditLogRecord> auditRecords = new List<AuditLogRecord>();
 
             var newValues = entry.CurrentValues.Clone();
@@ -143,7 +143,7 @@
                     .Where(e => e.Entity is IDeletableEntity && (e.State == EntityState.Deleted)))
             {
                 var entity = (IDeletableEntity)entry.Entity;
-                changes.AddRange(GetDeletedEntities(entry, userName));
+                changes.Add(GetDeletedEntities(entry, userName));
                 entity.DeletedOn = DateTime.Now;
                 entity.IsDeleted = true;
                 entity.DeletedFrom = userName;
@@ -159,23 +159,21 @@
         /// <param name="entry">The entry.</param>
         /// <param name="userName">Name of the user.</param>
         /// <returns></returns>
-        private IEnumerable<AuditLogRecord> GetDeletedEntities(DbEntityEntry entry, string userName)
+        private AuditLogRecord GetDeletedEntities(DbEntityEntry entry, string userName)
         {
-            var entityName = entry.Entity.GetType().Name;
-            List<AuditLogRecord> auditRecords = new List<AuditLogRecord>();
-            auditRecords.Add(new AuditLogRecord()
+            var entityName = entry.Entity.GetType().Name.Split('_')[0];
+
+           return new AuditLogRecord()
             {
                 TimeStamp = DateTime.Now,
                 EntityName = entityName,
                 EntityId = ((IEntity)entry.Entity).Id,
-                FieldName = string.Empty,
-                OperationType = entry.State,
+                FieldName = string.Empty,   
+                OperationType = EntityState.Deleted,
                 OldValue = string.Empty,
                 NewValue = string.Empty,
                 UserName = userName
-            });
-
-            return auditRecords;
+            };
         }
     }
 }
