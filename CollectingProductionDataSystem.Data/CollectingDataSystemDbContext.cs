@@ -25,9 +25,9 @@
         public CollectingDataSystemDbContext()
             : base("CollectingPrimaryDataSystemConnection")
         {
-//#if DEBUG
-//            this.Database.Log = (c) => { Debug.WriteLine(c); };
-//#endif
+            //#if DEBUG
+            //            this.Database.Log = (c) => { Debug.WriteLine(c); };
+            //#endif
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<CollectingDataSystemDbContext, Configuration>());
             this.persister = new AuditablePersister();
         }
