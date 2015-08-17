@@ -26,7 +26,6 @@ namespace CollectingProductionDataSystem.Data.Mappings
             this.HasRequired(t => t.Ikunk)
                 .WithMany(t => t.Zones)
                 .HasForeignKey(d => d.IkunkId);
-
         }
     }
 }

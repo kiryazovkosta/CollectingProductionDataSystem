@@ -109,7 +109,7 @@
                                         //    .FirstOrDefault();
                                         //if (!udExists)
                                         //{
-                                            context.UnitsInspectionData.Add(unitInspectionPointData);                                            
+                                        context.UnitsInspectionData.Add(unitInspectionPointData);                                            
                                         //}
                                     }
                                 }
@@ -122,13 +122,17 @@
                     logger.Info("Sync inspection points finished!");
                 }
             }
-            catch(DbEntityValidationException validationException)
+            catch (DataException validationException)
             {
-                foreach (var validationErrors in validationException.EntityValidationErrors)
+                var dbEntityException = validationException.InnerException as DbEntityValidationException;
+                if (dbEntityException != null)
                 {
-                    foreach (var validationError in validationErrors.ValidationErrors)
+                    foreach (var validationErrors in dbEntityException.EntityValidationErrors)
                     {
-                        logger.ErrorFormat("Property: {0} Error: {1}", validationError.PropertyName, validationError.ErrorMessage);
+                        foreach (var validationError in validationErrors.ValidationErrors)
+                        {
+                            logger.ErrorFormat("Property: {0} Error: {1}", validationError.PropertyName, validationError.ErrorMessage);
+                        }
                     }
                 }
             }
@@ -146,65 +150,43 @@
 
                 using (var context = new ProductionData(new CollectingDataSystemDbContext(new AuditablePersister())))
                 {
-                    var units = context.Units.All().Where(u => u.PreviousShiftTag != null).Select(u => new PreviousShift()
-                    {
-                        UnitId = u.Id,
-                        PreviousShiftTag = u.PreviousShiftTag
-                    });
-
                     using (PHDHistorian oPhd = new PHDHistorian())
                     {
                         using (PHDServer defaultServer = new PHDServer(Properties.Settings.Default.PHD_HOST))
                         {
-                            defaultServer.Port = Properties.Settings.Default.PHD_PORT;
-                            defaultServer.APIVersion = Uniformance.PHD.SERVERVERSION.RAPI200;
-                            oPhd.DefaultServer = defaultServer;
-                            oPhd.StartTime = "NOW - 2M";
-                            oPhd.EndTime = "NOW - 2M";
-                            oPhd.Sampletype = SAMPLETYPE.Raw;
-                            oPhd.MinimumConfidence = 100;
-                            oPhd.MaximumRows = 1;
+                            SetPhdConnectionSettings(oPhd, defaultServer);
 
-                            // get all inspection data
-                            foreach (var item in units)
+                            var unitsConfigsList = context.Units.All().ToList();
+                            foreach (var unitConfig in unitsConfigsList)
                             {
-                                var unitData = new UnitsData();
-                                unitData.UnitConfigId = item.UnitId;
-                                DataSet dsGrid = oPhd.FetchRowData(item.PreviousShiftTag);
-                                var confidence = 100;
-                                foreach (DataRow row in dsGrid.Tables[0].Rows)
+                                if (!string.IsNullOrEmpty(unitConfig.PreviousShiftTag))
                                 {
-                                    foreach (DataColumn dc in dsGrid.Tables[0].Columns)
+                                    int confidence;
+                                    var unitData = GetUnitData(unitConfig, oPhd, out confidence);
+                                    if (confidence == 100 && unitData.RecordTimestamp != null)
                                     {
-                                        if (dc.ColumnName.Equals("Tolerance") || dc.ColumnName.Equals("HostName"))
+                                        var u = context.UnitsData
+                                            .All()
+                                            .FirstOrDefault(x => x.UnitConfigId == unitData.UnitConfigId 
+                                                && x.RecordTimestamp.CompareTo(unitData.RecordTimestamp) == 0);
+                                        if (u == null)
                                         {
-                                            continue;
-                                        }
-                                        else if (dc.ColumnName.Equals("Confidence") && !row[dc].ToString().Equals("100"))
-                                        {
-                                            confidence = 0;
-                                            break;    
-                                        }
-                                        else if (dc.ColumnName.Equals("Value"))
-                                        {
-                                            unitData.Value = Convert.ToDecimal(row[dc]);
-                                        }
-                                        else if (dc.ColumnName.Equals("TimeStamp"))
-                                        {
-                                            var recordTimestamp = DateTime.ParseExact(row[dc].ToString(), "dd.MM.yyyy HH:mm:ss", CultureInfo.InvariantCulture);
-                                            if (TimeZoneInfo.Local.IsDaylightSavingTime(recordTimestamp))
-                                            {
-                                                recordTimestamp = recordTimestamp.AddHours(-1);    
-                                            }
-                                            unitData.RecordTimestamp = recordTimestamp; 
-                                        }
+                                            context.UnitsData.Add(unitData);   
+                                        }  
                                     }
                                 }
-                                if (confidence == 100)
+                                else 
                                 {
-                                    context.UnitsData.Add(unitData);   
+                                    context.UnitsData.Add(
+                                        new UnitsData
+                                        {
+                                            UnitConfigId = unitConfig.Id,
+                                            Value = null,
+                                            RecordTimestamp = DateTime.Now
+                                        });
                                 }
                             }
+
                             context.SaveChanges("PHD2SQLPreviousShift");
                         }
                     }
@@ -212,13 +194,17 @@
 
                 logger.Info("Sync primary data finished!");
             }
-            catch(DbEntityValidationException validationException)
+            catch (DataException validationException)
             {
-                foreach (var validationErrors in validationException.EntityValidationErrors)
+                var dbEntityException = validationException.InnerException as DbEntityValidationException;
+                if (dbEntityException != null)
                 {
-                    foreach (var validationError in validationErrors.ValidationErrors)
+                    foreach (var validationErrors in dbEntityException.EntityValidationErrors)
                     {
-                        logger.ErrorFormat("Property: {0} Error: {1}", validationError.PropertyName, validationError.ErrorMessage);
+                        foreach (var validationError in validationErrors.ValidationErrors)
+                        {
+                            logger.ErrorFormat("Property: {0} Error: {1}", validationError.PropertyName, validationError.ErrorMessage);
+                        }
                     }
                 }
             }
@@ -226,6 +212,60 @@
             {
                 logger.Error(ex);
             }
+        }
+
+        private static void SetPhdConnectionSettings(PHDHistorian oPhd, PHDServer defaultServer)
+        {
+            defaultServer.Port = Properties.Settings.Default.PHD_PORT;
+            defaultServer.APIVersion = Uniformance.PHD.SERVERVERSION.RAPI200;
+            oPhd.DefaultServer = defaultServer;
+            oPhd.StartTime = "NOW - 2M";
+            oPhd.EndTime = "NOW - 2M";
+            oPhd.Sampletype = SAMPLETYPE.Raw;
+            oPhd.MinimumConfidence = 100;
+            oPhd.MaximumRows = 1;
+        }
+ 
+        private static UnitsData GetUnitData(UnitConfig unitConfig, PHDHistorian oPhd, out int confidence)
+        {
+            var unitData = new UnitsData();
+            unitData.UnitConfigId = unitConfig.Id;
+            DataSet dsGrid = oPhd.FetchRowData(unitConfig.PreviousShiftTag);
+            confidence = 100;
+            foreach (DataRow row in dsGrid.Tables[0].Rows)
+            {
+                foreach (DataColumn dc in dsGrid.Tables[0].Columns)
+                {
+                    if (dc.ColumnName.Equals("Tolerance") || dc.ColumnName.Equals("HostName"))
+                    {
+                        continue;
+                    }
+                    else if (dc.ColumnName.Equals("Confidence") && !row[dc].ToString().Equals("100"))
+                    {
+                        confidence = 0;
+                        break;    
+                    }
+                    else if (dc.ColumnName.Equals("Value"))
+                    {
+                        unitData.Value = Convert.ToDecimal(row[dc]);
+                    }
+                    else if (dc.ColumnName.Equals("TimeStamp"))
+                    {
+                        if (!string.IsNullOrEmpty(row[dc].ToString()))
+                        {
+                            var recordTimestamp = DateTime.ParseExact(row[dc].ToString(), "dd.MM.yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+                            if (TimeZoneInfo.Local.IsDaylightSavingTime(recordTimestamp))
+                            {
+                                recordTimestamp = recordTimestamp.AddHours(-1);    
+                            }
+
+                            unitData.RecordTimestamp = recordTimestamp;  
+                        }
+                    }
+                }
+            }
+
+            return unitData;
         }
 
         internal static void ProcessInventoryTanksData()
@@ -362,13 +402,17 @@
                     logger.Info("Sync inventory tanks data finished!");
                 }
             }
-            catch(DbEntityValidationException validationException)
+            catch (DataException validationException)
             {
-                foreach (var validationErrors in validationException.EntityValidationErrors)
+                var dbEntityException = validationException.InnerException as DbEntityValidationException;
+                if (dbEntityException != null)
                 {
-                    foreach (var validationError in validationErrors.ValidationErrors)
+                    foreach (var validationErrors in dbEntityException.EntityValidationErrors)
                     {
-                        logger.ErrorFormat("Property: {0} Error: {1}", validationError.PropertyName, validationError.ErrorMessage);
+                        foreach (var validationError in validationErrors.ValidationErrors)
+                        {
+                            logger.ErrorFormat("Property: {0} Error: {1}", validationError.PropertyName, validationError.ErrorMessage);
+                        }
                     }
                 }
             }
@@ -384,6 +428,17 @@
             {
                 tags.Add(new Tag(tagName));    
             }
+        }
+
+        private static bool TimeBetween(DateTime datetime, TimeSpan start, TimeSpan end)
+        {
+            TimeSpan now = datetime.TimeOfDay;
+            if (start < end)
+            {
+                return start <= now && now <= end;
+            }
+
+            return !(end < now && now < start);
         }
     }
 }
