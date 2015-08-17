@@ -52,7 +52,7 @@ namespace CollectingProductionDataSystem.Phd2SqlProductionData.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool SYNC_INSPECTION_POINTS {
             get {
                 return ((bool)(this["SYNC_INSPECTION_POINTS"]));
@@ -61,7 +61,7 @@ namespace CollectingProductionDataSystem.Phd2SqlProductionData.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("00:30:00")]
+        [global::System.Configuration.DefaultSettingValueAttribute("00:10:00")]
         public global::System.TimeSpan IDLE_TIMER_PRIMARY {
             get {
                 return ((global::System.TimeSpan)(this["IDLE_TIMER_PRIMARY"]));
@@ -70,7 +70,7 @@ namespace CollectingProductionDataSystem.Phd2SqlProductionData.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool SYNC_PRIMARY {
             get {
                 return ((bool)(this["SYNC_PRIMARY"]));
@@ -88,7 +88,7 @@ namespace CollectingProductionDataSystem.Phd2SqlProductionData.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool SYNC_INVENTORY {
             get {
                 return ((bool)(this["SYNC_INVENTORY"]));
