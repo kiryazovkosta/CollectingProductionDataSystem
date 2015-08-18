@@ -8,6 +8,9 @@ namespace CollectingProductionDataSystem.Data.Migrations
     using CollectingProductionDataSystem.Models.Nomenclatures;
     using CollectingProductionDataSystem.Models.Productions;
     using CollectingProductionDataSystem.Models.Transactions;
+    using CollectingProductionDataSystem.Models.Identity;
+    using Microsoft.AspNet.Identity;
+    using CollectingProductionDataSystem.Data.Identity;
 
     internal sealed class Configuration : DbMigrationsConfiguration<CollectingDataSystemDbContext>
     {
@@ -53,6 +56,12 @@ namespace CollectingProductionDataSystem.Data.Migrations
             {
                 this.CreateMeasurementPoints(context);
             }
+
+            if (!context.Users.Any())
+            {
+                this.CreateSystemAdministrator(context);
+            }
+
         }
 
         private void CreateProductTypesAndProducts(CollectingDataSystemDbContext context)
@@ -16102,24 +16111,24 @@ namespace CollectingProductionDataSystem.Data.Migrations
         private void CreateMeasurementPoints(CollectingDataSystemDbContext context)
         {
             context.TransportTypes.AddOrUpdate(
-                new TransportType 
-                { 
-                    Name = "Автоекспедиция" 
+                new TransportType
+                {
+                    Name = "Автоекспедиция"
                 },
-                new TransportType 
-                { 
-                    Name = "Ж.П. експедиция" 
+                new TransportType
+                {
+                    Name = "Ж.П. експедиция"
                 },
-                new TransportType 
-                { 
+                new TransportType
+                {
                     Name = "Танкери",
                 },
-                new TransportType 
-                { 
-                    Name = "Тръбопроводи" 
+                new TransportType
+                {
+                    Name = "Тръбопроводи"
                 });
             context.SaveChanges();
-            
+
             context.Ikunks.AddOrUpdate(
                 new Ikunk
                 {
@@ -16280,5 +16289,27 @@ namespace CollectingProductionDataSystem.Data.Migrations
             context.SaveChanges();
         }
 
+        private void CreateSystemAdministrator(CollectingDataSystemDbContext context)
+        {
+            var role = context.Roles.FirstOrDefault(x => x.Name == "Administrator");
+
+            if (role == null)
+            {
+                role = new ApplicationRole() { Id = 1, Name = "Administrator" };
+                var roleManager = new RoleManager<ApplicationRole, int>(new RoleStoreIntPk(context));
+                roleManager.Create(role);
+            }
+
+
+            if (context.Users.Where(x => x.UserName == "Administrator").FirstOrDefault() == null)
+            {
+                var user = new ApplicationUser() { Email = "Nikolay.Kostadinov@bmsys.eu", UserName = "Administrator" };
+                user.Roles.Add(new UserRoleIntPk() { UserId = 1, RoleId = 1 });
+                var manager = new UserManager<ApplicationUser, int>(new UserStoreIntPk(context));
+                manager.Create(user, "12345678");
+            }
+
+            context.SaveChanges();
+        }
     }
 }

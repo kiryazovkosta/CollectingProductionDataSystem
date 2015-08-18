@@ -2,6 +2,7 @@
 {
     using System;
     using CollectingProductionDataSystem.Models.Identity;
+    using CollectingProductionDataSystem.Web.Infrastructure.IdentityInfrastructure;
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.Owin;
     using Microsoft.Owin;
