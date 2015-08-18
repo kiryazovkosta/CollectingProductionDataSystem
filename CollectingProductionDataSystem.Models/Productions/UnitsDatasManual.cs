@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CollectingProductionDataSystem.Models.Productions
+﻿namespace CollectingProductionDataSystem.Models.Productions
 {
-    class UnitsDatasManual
+    using System;
+    using System.Linq;
+    using CollectingProductionDataSystem.Models.Abstract;
+    using CollectingProductionDataSystem.Models.Contracts;
+
+    public partial class UnitsDatasManual : DeletableEntity
     {
+        public int Id { get; set; }
     }
 }
