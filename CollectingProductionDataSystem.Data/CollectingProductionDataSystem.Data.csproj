@@ -99,6 +99,7 @@
     <Compile Include="Mappings\TransportTypeMap.cs" />
     <Compile Include="Mappings\UnitConfigMap.cs" />
     <Compile Include="Mappings\UnitsDataMap.cs" />
+    <Compile Include="Mappings\UnitsDatasManualMap.cs" />
     <Compile Include="Mappings\UnitsInspectionDataMap.cs" />
     <Compile Include="Mappings\ZoneMap.cs" />
     <Compile Include="Migrations\Configuration.cs" />
