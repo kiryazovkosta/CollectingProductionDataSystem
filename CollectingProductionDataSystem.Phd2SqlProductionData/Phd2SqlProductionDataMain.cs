@@ -16,6 +16,12 @@
 
     static class Phd2SqlProductionDataMain
     {
+        private static readonly int ZERO = 0;
+        private static readonly int ONE = 1;
+        private static readonly int FIVE = 5;
+        private static readonly int THIRTEEN = 13;
+        private static readonly int TWENTY_ONE = 21;
+
         private static readonly ILog logger;
 
         static Phd2SqlProductionDataMain()
@@ -163,27 +169,127 @@
                                 {
                                     int confidence;
                                     var unitData = GetUnitData(unitConfig, oPhd, out confidence);
-                                    if (confidence == 100 && unitData.RecordTimestamp != null)
+                                    if (confidence > Properties.Settings.Default.INSPECTION_DATA_MINIMUM_CONFIDENCE && 
+                                        unitData.RecordTimestamp != null)
                                     {
                                         var u = context.UnitsData
                                             .All()
                                             .FirstOrDefault(x => x.UnitConfigId == unitData.UnitConfigId 
-                                                && x.RecordTimestamp.CompareTo(unitData.RecordTimestamp) == 0);
+                                                && x.RecordTimestamp.CompareTo(unitData.RecordTimestamp) == ZERO);
                                         if (u == null)
                                         {
-                                            context.UnitsData.Add(unitData);   
-                                        }  
+                                            var now = DateTime.Now;
+                                            //if (TimeZoneInfo.Local.IsDaylightSavingTime(now))
+                                            //{
+                                            //    now = now.AddHours(-1);
+                                            //}
+
+                                            if (now.Hour >= 5 && now.Hour < 13)
+                                            {
+                                                SetPrimaryDataInRange(now, context, unitData, FIVE, THIRTEEN);
+                                            }
+                                            else if (now.Hour >= 13 && now.Hour < 21)
+	                                        {
+                                                SetPrimaryDataInRange(now, context, unitData, THIRTEEN, TWENTY_ONE);
+	                                        }
+                                            else if (now.Hour >= 21)
+                                            {
+                                                var startDate = new DateTime(now.Year, now.Month, now.Day, 21, 1, ZERO);
+                                                var endDate = new DateTime(now.Year, now.Month, now.Day, 23, 59, 59);
+                                                var range = new DateRange(startDate, endDate);
+                                                var s = context.UnitsData
+                                                    .All()
+                                                    .ToList()
+                                                    .FirstOrDefault(x => x.UnitConfigId == unitData.UnitConfigId  
+                                                        && range.Includes(x.RecordTimestamp));
+                                                if (s == null)
+                                                {
+                                                    context.UnitsData.Add(unitData);   
+                                                }
+                                                else
+                                                {
+                                                    // by desing we cannnot modify automatically readed data
+                                                    logger.InfoFormat("[ProcessPrimaryProductionData][{0}][{1}][{2}]-[{3}][{4}][{5}] already exists", 
+                                                        s.RecordTimestamp, 
+                                                        s.UnitConfigId, 
+                                                        s.Value, 
+                                                        unitData.RecordTimestamp, 
+                                                        unitData.UnitConfigId, 
+                                                        unitData.Value);
+                                                }
+                                            }
+                                            else
+                                            {
+                                                var prevDay = now.AddDays(-1);
+                                                var startDate = new DateTime(prevDay.Year, prevDay.Month, prevDay.Day, 21, 1, ZERO);
+                                                var endDate = new DateTime(now.Year, now.Month, now.Day, 5, ZERO, ZERO);
+                                                var range = new DateRange(startDate, endDate);
+                                                var s = context.UnitsData
+                                                    .All()
+                                                    .ToList()
+                                                    .FirstOrDefault(x => x.UnitConfigId == unitData.UnitConfigId  
+                                                        && range.Includes(x.RecordTimestamp));
+                                                if (s == null)
+                                                {
+                                                    context.UnitsData.Add(unitData);   
+                                                }
+                                                else
+                                                {
+                                                    // by desing we cannnot modify automatically readed data
+                                                    logger.InfoFormat("[ProcessPrimaryProductionData][{0}][{1}][{2}]-[{3}][{4}][{5}] already exists", 
+                                                        s.RecordTimestamp, 
+                                                        s.UnitConfigId, 
+                                                        s.Value, 
+                                                        unitData.RecordTimestamp, 
+                                                        unitData.UnitConfigId, 
+                                                        unitData.Value);
+                                                }
+                                            }
+
+                                              
+                                        }
                                     }
                                 }
                                 else 
                                 {
-                                    context.UnitsData.Add(
-                                        new UnitsData
+                                    DateTime mData; 
+                                    var now = DateTime.Now;
+                                    //if (TimeZoneInfo.Local.IsDaylightSavingTime(now))
+                                    //{
+                                    //    now = now.AddHours(-1);
+                                    //}
+
+                                    if (now.Hour >= 5 && now.Hour < 13)
+                                    {
+                                        mData = new DateTime(now.Year, now.Month, now.Day, 5, 10, ZERO);  
+                                    }
+                                    else if (now.Hour >= 13 && now.Hour < 21)
+	                                {
+		                                mData = new DateTime(now.Year, now.Month, now.Day, 13, 10, ZERO);
+	                                }
+                                    else if (now.Hour >= 21)
+                                    {
+                                        mData = new DateTime(now.Year, now.Month, now.Day, 21, 10, ZERO);
+                                    }
+                                    else
+                                    {
+                                        mData = new DateTime(now.Year, now.Month, now.Day, 21, 10, ZERO).AddDays(-1);
+                                    }
+
+                                    var u = context.UnitsData
+                                            .All()
+                                            .FirstOrDefault(x => x.UnitConfigId == unitConfig.Id 
+                                                && x.RecordTimestamp.CompareTo(mData) == ZERO);
+                                        if (u == null)
                                         {
-                                            UnitConfigId = unitConfig.Id,
-                                            Value = null,
-                                            RecordTimestamp = DateTime.Now
-                                        });
+                                            context.UnitsData.Add(
+                                            new UnitsData
+                                            {
+                                                UnitConfigId = unitConfig.Id,
+                                                Value = null,
+                                                RecordTimestamp = mData
+                                            }); 
+                                        } 
                                 }
                             }
 
@@ -213,6 +319,33 @@
                 logger.Error(ex);
             }
         }
+ 
+        private static void SetPrimaryDataInRange(DateTime now, ProductionData context, UnitsData unitData, int startHour, int endHour)
+        {
+            var startDate = new DateTime(now.Year, now.Month, now.Day, startHour, ONE, ZERO);
+            var endDate = new DateTime(now.Year, now.Month, now.Day, endHour, ZERO, ZERO);
+            var range = new DateRange(startDate, endDate);
+            var s = context.UnitsData
+                           .All()
+                           .ToList()
+                           .FirstOrDefault(x => x.UnitConfigId == unitData.UnitConfigId &&
+                                                range.Includes(x.RecordTimestamp));
+            if (s == null)
+            {
+                context.UnitsData.Add(unitData);   
+            }
+            else
+            {
+                // by desing we cannnot modify automatically readed data
+                logger.InfoFormat("[ProcessPrimaryProductionData][{0}][{1}][{2}]-[{3}][{4}][{5}] already exists",
+                    s.RecordTimestamp,
+                    s.UnitConfigId,
+                    s.Value,
+                    unitData.RecordTimestamp,
+                    unitData.UnitConfigId,
+                    unitData.Value);
+            }
+        }
 
         private static void SetPhdConnectionSettings(PHDHistorian oPhd, PHDServer defaultServer)
         {
@@ -221,9 +354,9 @@
             oPhd.DefaultServer = defaultServer;
             oPhd.StartTime = "NOW - 2M";
             oPhd.EndTime = "NOW - 2M";
-            oPhd.Sampletype = SAMPLETYPE.Raw;
-            oPhd.MinimumConfidence = 100;
-            oPhd.MaximumRows = 1;
+            oPhd.Sampletype = Properties.Settings.Default.INSPECTION_DATA_SAMPLETYPE;
+            oPhd.MinimumConfidence = Properties.Settings.Default.INSPECTION_DATA_MINIMUM_CONFIDENCE;
+            oPhd.MaximumRows = Properties.Settings.Default.INSPECTION_DATA_MAX_ROWS;
         }
  
         private static UnitsData GetUnitData(UnitConfig unitConfig, PHDHistorian oPhd, out int confidence)
@@ -240,7 +373,7 @@
                     {
                         continue;
                     }
-                    else if (dc.ColumnName.Equals("Confidence") && !row[dc].ToString().Equals("100"))
+                    else if (dc.ColumnName.Equals("Confidence") && (Convert.ToUInt32(row[dc]) < Properties.Settings.Default.INSPECTION_DATA_MINIMUM_CONFIDENCE))
                     {
                         confidence = 0;
                         break;    
@@ -277,9 +410,21 @@
                 using (var context = new ProductionData(new CollectingDataSystemDbContext(new AuditablePersister())))
                 {
                     DateTime recordTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, 0, 0);
+                    
+                    // TODO: Mechanism to get all data for past period
+                    for (int hours = 1; hours < Properties.Settings.Default.UPDATE_INVENTORY_DATA_INTERVAL; hours++)
+                    {
+                        var checkedDateTime = recordTime.AddHours(-hours);
+                        if (!context.TanksData.All().Where(td => td.RecordTimestamp.CompareTo(checkedDateTime) == 0).Any())
+                        {
+                            logger.InfoFormat("The data for for {0:yyyy-MM-dd HH:ss:mm} does not exsits!", checkedDateTime);
+                        }    
+                    }
+
                     if (context.TanksData.All().Where(td => td.RecordTimestamp.CompareTo(recordTime) == 0).Any())
                     {
                         logger.InfoFormat("There are already a records for that time of the day: {0:yyyy-MM-dd HH:ss:mm}!", recordTime);
+                        logger.Info("Sync inventory tanks data finished!");
                         return;
                     }
 
@@ -358,10 +503,7 @@
 
                                         if (tagName.Contains(".PROD_ID"))
                                         {
-                                            // Todo: Need to convert productCode from Tank Master or need to choose a mehanism for product code comparation
-                                            // var productId = Convert.ToInt32(tagValue);   
-                                            // tankData.ProductId = Convert.ToInt32(productId);
-                                            // tankData.ProductName = context.Products.GetById(productId).Name;
+                                            // TODO: Need to convert productCode from Tank Master or need to choose a mehanism for product code comparation
                                             tankData.ProductId = 1;
                                             tankData.ProductName = tagValue.ToString();
                                         }
@@ -440,5 +582,37 @@
 
             return !(end < now && now < start);
         }
+
+        public interface IRange<T>
+        {
+            T Start { get; }
+            T End { get; }
+            bool Includes(T value);
+            bool Includes(IRange<T> range);
+        }
+
+        public class DateRange : IRange<DateTime>         
+        {
+            public DateRange(DateTime start, DateTime end)
+            {
+                Start = start;
+                End = end;
+            }
+
+            public DateTime Start { get; private set; }
+            public DateTime End { get; private set; }
+
+            public bool Includes(DateTime value)
+            {
+                return (Start <= value) && (value <= End);
+            }
+
+            public bool Includes(IRange<DateTime> range)
+            {
+                return (Start <= range.Start) && (range.End <= End);
+            }
+        }
+
+
     }
 }

@@ -2451,6 +2451,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                     Units = {
                                         new UnitConfig
                                         {
+                                            Code = "1A0100",
                                             Position = "01-FICQ-001",
                                             Name = "Нефт вход АВД-1",
                                             ProductTypetId = 1,
@@ -2467,6 +2468,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                         },
                                         new UnitConfig
                                         {
+                                            Code = "1A0200",
                                             Position = "01-FIQ-646А",
                                             Name = "Бензин отгони",
                                             ProductTypetId = 1,
@@ -2482,6 +2484,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                         },
                                         new UnitConfig
                                         {
+                                            Code = "1A0300",
                                             Position = "01-FIQ-014",
                                             Name = "Нефт - некондиция от Е-10",
                                             ProductTypetId = 1,
@@ -2497,6 +2500,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                         },
                                         new UnitConfig
                                         {
+                                            Code = "1A0400",
                                             Position = "01-FIQ-147",
                                             Name = "Некондиция от Р-1",
                                             ProductTypetId = 1,
@@ -2512,6 +2516,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                         },
                                         new UnitConfig
                                         {
+                                            Code = "1A0500",
                                             Position = "01-FIQ-134",
                                             Name = "Сух газ от Е-101",
                                             ProductTypetId = 2,
@@ -2527,6 +2532,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                         },
                                         new UnitConfig
                                         {
+                                            Code = "1A0600",
                                             Position = "01-FIQ-135",
                                             Name = "Сух газ от Е-104",
                                             ProductTypetId = 2,
@@ -2542,6 +2548,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                         },
                                         new UnitConfig
                                         {
+                                            Code = "1A0700",
                                             Position = "01-FICQ-048",
                                             Name = "Пропан-бутан към ЦГФИ",
                                             ProductTypetId = 2,
@@ -2557,6 +2564,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                         },
                                         new UnitConfig
                                         {
+                                            Code = "1A0701",
                                             Position = "01-FICQ-048",
                                             Name = "Пропан-бутан към парк Братово",
                                             ProductTypetId = 2,
@@ -2570,6 +2578,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
 
                                         new UnitConfig
                                         {
+                                            Code = "1A0800",
                                             Position = "01-FIQ-050",
                                             Name = "Бензин връх К105 н.к100 към ХО-1",
                                             ProductTypetId = 2,
@@ -2585,6 +2594,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                         },
                                         new UnitConfig
                                         {
+                                            Code = "1A0801",
                                             Position = "01-FIQ-050",
                                             Name = "Бензин връх К105 н.к100 към т.31",
                                             ProductTypetId = 2,
@@ -2597,6 +2607,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                         },
                                         new UnitConfig
                                         {
+                                            Code = "1A0802",
                                             Position = "01-FIQ-050",
                                             Name = "Бензин връх К105 н.к100 към Мерокс",
                                             ProductTypetId = 2,
@@ -2609,6 +2620,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                         },
                                         new UnitConfig
                                         {
+                                            Code = "1A0803",
                                             Position = "01-FIQ-050",
                                             Name = "Бензин връх К105 н.к100 към КПТО",
                                             ProductTypetId = 2,
@@ -2621,6 +2633,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                         },
                                         new UnitConfig
                                         {
+                                            Code = "1A0804",
                                             Position = "01-FIQ-050",
                                             Name = "Бензин връх К105 н.к100 към Некондиция",
                                             ProductTypetId = 2,
@@ -2633,6 +2646,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                         },
                                         new UnitConfig
                                         {
+                                            Code = "1A0900",
                                             Position = "01-FIQ-045",
                                             Name = "Бензин дъно К-105 фр.85-180 към КР-1",
                                             ProductTypetId = 2,
@@ -2648,6 +2662,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                         },
                                         new UnitConfig
                                         {
+                                            Code = "1A0901",
                                             Position = "01-FIQ-045",
                                             Name = "Бензин дъно К-105 фр.85-180 към т.31",
                                             ProductTypetId = 2,
@@ -2660,6 +2675,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                         },
                                         new UnitConfig
                                         {
+                                            Code = "1A0902",
                                             Position = "01-FIQ-045",
                                             Name = "Бензин дъно К-105 фр.85-180 към КПТО",
                                             ProductTypetId = 2,
@@ -2672,6 +2688,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                         },
                                         new UnitConfig
                                         {
+                                            Code = "1A0903",
                                             Position = "01-FIQ-045",
                                             Name = "Бензин дъно К-105 фр.85-180 към некондиция",
                                             ProductTypetId = 2,

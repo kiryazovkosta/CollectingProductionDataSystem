@@ -81,6 +81,7 @@
     <Compile Include="Nomenclatures\ProductType.cs" />
     <Compile Include="Productions\ProcessUnit.cs" />
     <Compile Include="Productions\UnitConfig.cs" />
+    <Compile Include="Productions\UnitsDatasManual.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Productions\UnitsData.cs" />
     <Compile Include="Productions\UnitsInspectionData.cs" />
