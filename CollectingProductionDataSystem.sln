@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CollectingProductionDataSystem.Models", "CollectingProductionDataSystem.Models\CollectingProductionDataSystem.Models.csproj", "{63CC73A0-F2C2-453D-A915-1913095F22FD}"
 EndProject
@@ -49,6 +49,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Uniformance", "Uniformance"
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Telerik", "Telerik", "{4FDDB73E-113D-4F91-8F87-F8BB5FC92115}"
+	ProjectSection(SolutionItems) = preProject
+		ExternalLibraries\Kendo\Kendo.Mvc.dll = ExternalLibraries\Kendo\Kendo.Mvc.dll
+		ExternalLibraries\Kendo\bg-BG\Kendo.Mvc.resources.dll = ExternalLibraries\Kendo\bg-BG\Kendo.Mvc.resources.dll
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CollectingProductionDataSystem.Data.Tests", "CollectingProductionDataSystem.Data.Tests\CollectingProductionDataSystem.Data.Tests.csproj", "{22A29AA7-68FB-4C1E-BB56-4F030133F008}"
 EndProject

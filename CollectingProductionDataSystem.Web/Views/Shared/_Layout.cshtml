@@ -7,7 +7,7 @@
     @Scripts.Render("~/bundles/jquery")
     @*@Scripts.Render("~/bundles/jqueryval")*@
     @Scripts.Render("~/bundles/modernizr")
-    @RenderSection("styles",required:false)
+    @RenderSection("styles", required: false)
     @Styles.Render("~/Content/css")
 
 </head>
@@ -24,9 +24,9 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    <li>@Html.ActionLink("Home", "Index", "Home", routeValues: new { area = string.Empty }, htmlAttributes: null)</li>
+                    <li>@Html.ActionLink("About", "About", "Home", routeValues: new { area = string.Empty }, htmlAttributes: null))</li>
+                    <li>@Html.ActionLink("Contact", "Contact", "Home", routeValues: new { area = string.Empty }, htmlAttributes: null))</li>
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>
