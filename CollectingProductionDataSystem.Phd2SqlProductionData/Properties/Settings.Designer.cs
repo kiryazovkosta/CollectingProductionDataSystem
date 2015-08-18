@@ -52,7 +52,7 @@ namespace CollectingProductionDataSystem.Phd2SqlProductionData.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool SYNC_INSPECTION_POINTS {
             get {
                 return ((bool)(this["SYNC_INSPECTION_POINTS"]));
@@ -88,7 +88,7 @@ namespace CollectingProductionDataSystem.Phd2SqlProductionData.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool SYNC_INVENTORY {
             get {
                 return ((bool)(this["SYNC_INVENTORY"]));
@@ -137,6 +137,15 @@ namespace CollectingProductionDataSystem.Phd2SqlProductionData.Properties {
         public global::Uniformance.PHD.SAMPLETYPE INSPECTION_DATA_SAMPLETYPE {
             get {
                 return ((global::Uniformance.PHD.SAMPLETYPE)(this["INSPECTION_DATA_SAMPLETYPE"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("8")]
+        public int UPDATE_INVENTORY_DATA_INTERVAL {
+            get {
+                return ((int)(this["UPDATE_INVENTORY_DATA_INTERVAL"]));
             }
         }
     }
