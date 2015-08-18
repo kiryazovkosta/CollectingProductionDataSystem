@@ -6,11 +6,10 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using CollectingProductionDataSystem.Models.Identity;
-using CollectingProductionDataSystem.Web.AppStart;
+using CollectingProductionDataSystem.Web.Infrastructure.IdentityInfrastructure;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
-using CollectingProductionDataSystem.Web.Models;
 
 namespace CollectingProductionDataSystem.Web.Controllers
 {
@@ -68,7 +67,7 @@ namespace CollectingProductionDataSystem.Web.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
+        public async Task<ActionResult> Login(CollectingProductionDataSystem.Web.ViewModels.Identity.LoginViewModel model, string returnUrl)
         {
             if (!ModelState.IsValid)
             {
@@ -77,7 +76,7 @@ namespace CollectingProductionDataSystem.Web.Controllers
 
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
-            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+            var result = await SignInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, shouldLockout: false);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -103,7 +102,12 @@ namespace CollectingProductionDataSystem.Web.Controllers
             {
                 return View("Error");
             }
-            return View(new VerifyCodeViewModel { Provider = provider, ReturnUrl = returnUrl, RememberMe = rememberMe });
+            return View(new CollectingProductionDataSystem.Web.ViewModels.Identity.VerifyCodeViewModel
+            {
+                Provider = provider,
+                ReturnUrl = returnUrl,
+                RememberMe = rememberMe
+            });
         }
 
         //
@@ -111,7 +115,7 @@ namespace CollectingProductionDataSystem.Web.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> VerifyCode(VerifyCodeViewModel model)
+        public async Task<ActionResult> VerifyCode(CollectingProductionDataSystem.Web.ViewModels.Identity.VerifyCodeViewModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -122,7 +126,7 @@ namespace CollectingProductionDataSystem.Web.Controllers
             // If a user enters incorrect codes for a specified amount of time then the user account 
             // will be locked out for a specified amount of time. 
             // You can configure the account lockout settings in IdentityConfig
-            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent:  model.RememberMe, rememberBrowser: model.RememberBrowser);
+            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent: model.RememberMe, rememberBrowser: model.RememberBrowser);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -149,11 +153,15 @@ namespace CollectingProductionDataSystem.Web.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Register(RegisterViewModel model)
+        public async Task<ActionResult> Register(CollectingProductionDataSystem.Web.ViewModels.Identity.RegisterViewModel model)
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser
+                {
+                    UserName = model.Email,
+                    Email = model.Email
+                };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -200,7 +208,7 @@ namespace CollectingProductionDataSystem.Web.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> ForgotPassword(ForgotPasswordViewModel model)
+        public async Task<ActionResult> ForgotPassword(CollectingProductionDataSystem.Web.ViewModels.Identity.ForgotPasswordViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -210,7 +218,6 @@ namespace CollectingProductionDataSystem.Web.Controllers
                     // Don't reveal that the user does not exist or is not confirmed
                     return View("ForgotPasswordConfirmation");
                 }
-
                 // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                 // Send an email with this link
                 // string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
@@ -244,13 +251,13 @@ namespace CollectingProductionDataSystem.Web.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> ResetPassword(ResetPasswordViewModel model)
+        public async Task<ActionResult> ResetPassword(CollectingProductionDataSystem.Web.ViewModels.Identity.ResetPasswordViewModel model)
         {
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
-            var user = await UserManager.FindByNameAsync(model.Email);
+            var user = await UserManager.FindByNameAsync(model.UserName);
             if (user == null)
             {
                 // Don't reveal that the user does not exist
@@ -295,8 +302,17 @@ namespace CollectingProductionDataSystem.Web.Controllers
                 return View("Error");
             }
             var userFactors = await UserManager.GetValidTwoFactorProvidersAsync(userId);
-            var factorOptions = userFactors.Select(purpose => new SelectListItem { Text = purpose, Value = purpose }).ToList();
-            return View(new SendCodeViewModel { Providers = factorOptions, ReturnUrl = returnUrl, RememberMe = rememberMe });
+            var factorOptions = userFactors.Select(purpose => new SelectListItem
+            {
+                Text = purpose,
+                Value = purpose
+            }).ToList();
+            return View(new CollectingProductionDataSystem.Web.ViewModels.Identity.SendCodeViewModel
+            {
+                Providers = factorOptions,
+                ReturnUrl = returnUrl,
+                RememberMe = rememberMe
+            });
         }
 
         //
@@ -304,7 +320,7 @@ namespace CollectingProductionDataSystem.Web.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> SendCode(SendCodeViewModel model)
+        public async Task<ActionResult> SendCode(CollectingProductionDataSystem.Web.ViewModels.Identity.SendCodeViewModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -345,7 +361,7 @@ namespace CollectingProductionDataSystem.Web.Controllers
                     // If the user does not have an account, then prompt the user to create an account
                     ViewBag.ReturnUrl = returnUrl;
                     ViewBag.LoginProvider = loginInfo.Login.LoginProvider;
-                    return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = loginInfo.Email });
+                    return View("ExternalLoginConfirmation", new CollectingProductionDataSystem.Web.ViewModels.Identity.ExternalLoginConfirmationViewModel { Email = loginInfo.Email });
             }
         }
 
@@ -354,7 +370,7 @@ namespace CollectingProductionDataSystem.Web.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> ExternalLoginConfirmation(ExternalLoginConfirmationViewModel model, string returnUrl)
+        public async Task<ActionResult> ExternalLoginConfirmation(CollectingProductionDataSystem.Web.ViewModels.Identity.ExternalLoginConfirmationViewModel model, string returnUrl)
         {
             if (User.Identity.IsAuthenticated)
             {

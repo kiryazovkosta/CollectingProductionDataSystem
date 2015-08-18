@@ -3,11 +3,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-using CollectingProductionDataSystem.Web.AppStart;
+using CollectingProductionDataSystem.Web.Infrastructure.IdentityInfrastructure;
+using CollectingProductionDataSystem.Web.ViewModels.Identity;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
-using CollectingProductionDataSystem.Web.Models;
 
 namespace CollectingProductionDataSystem.Web.Controllers
 {

@@ -9,6 +9,7 @@
     using CollectingProductionDataSystem.Models;
     using CollectingProductionDataSystem.Models.Identity;
     using CollectingProductionDataSystem.Web.AppStart;
+    using CollectingProductionDataSystem.Web.Infrastructure.IdentityInfrastructure;
     using Microsoft.AspNet.Identity.EntityFramework;
     using Microsoft.AspNet.Identity.Owin;
 
