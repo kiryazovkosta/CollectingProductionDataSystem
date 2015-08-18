@@ -67,11 +67,14 @@
     <Compile Include="Identity\UserClaimIntPk.cs" />
     <Compile Include="Identity\UserLoginIntPk.cs" />
     <Compile Include="Identity\UserRoleIntPk.cs" />
+    <Compile Include="Inventories\TanksManualData.cs" />
     <Compile Include="Nomenclatures\Direction.cs" />
     <Compile Include="Inventories\Area.cs" />
     <Compile Include="Inventories\TankData.cs" />
     <Compile Include="Nomenclatures\MeasureUnit.cs" />
     <Compile Include="Nomenclatures\TransportType.cs" />
+    <Compile Include="Productions\AggregationPriority.cs" />
+    <Compile Include="Productions\AggregationsFormula.cs" />
     <Compile Include="Productions\Factory.cs" />
     <Compile Include="Inventories\Park.cs" />
     <Compile Include="Inventories\TankConfig.cs" />
@@ -81,7 +84,8 @@
     <Compile Include="Nomenclatures\ProductType.cs" />
     <Compile Include="Productions\ProcessUnit.cs" />
     <Compile Include="Productions\UnitConfig.cs" />
-    <Compile Include="Productions\UnitsDatasManual.cs" />
+    <Compile Include="Productions\UnitsAggregateDailyConfig.cs" />
+    <Compile Include="Productions\UnitsManualData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Productions\UnitsData.cs" />
     <Compile Include="Productions\UnitsInspectionData.cs" />

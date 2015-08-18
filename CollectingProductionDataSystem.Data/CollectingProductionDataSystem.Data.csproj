@@ -79,6 +79,7 @@
     <Compile Include="Contracts\IRepository.cs" />
     <Compile Include="Identity\RoleStoreIntPk.cs" />
     <Compile Include="Identity\UserStoreIntPk.cs" />
+    <Compile Include="Mappings\AggregationsFormulaMap.cs" />
     <Compile Include="Mappings\AreaMap.cs" />
     <Compile Include="Mappings\AuditLogRecordMap.cs" />
     <Compile Include="Mappings\Configuration\ModelBingConfig.cs" />
@@ -96,12 +97,26 @@
     <Compile Include="Mappings\ProcessUnitMap.cs" />
     <Compile Include="Mappings\ProductMap.cs" />
     <Compile Include="Mappings\ProductTypeMap.cs" />
+    <Compile Include="Mappings\TanksManualDataMap.cs" />
     <Compile Include="Mappings\TransportTypeMap.cs" />
     <Compile Include="Mappings\UnitConfigMap.cs" />
+    <Compile Include="Mappings\UnitsAggregateDailyConfigMap.cs" />
     <Compile Include="Mappings\UnitsDataMap.cs" />
-    <Compile Include="Mappings\UnitsDatasManualMap.cs" />
+    <Compile Include="Mappings\UnitsManualDataMap.cs" />
     <Compile Include="Mappings\UnitsInspectionDataMap.cs" />
     <Compile Include="Mappings\ZoneMap.cs" />
+    <Compile Include="Migrations\201508181531067_UnitsManualData.cs" />
+    <Compile Include="Migrations\201508181531067_UnitsManualData.Designer.cs">
+      <DependentUpon>201508181531067_UnitsManualData.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201508182004352_UnitsManualData1.cs" />
+    <Compile Include="Migrations\201508182004352_UnitsManualData1.Designer.cs">
+      <DependentUpon>201508182004352_UnitsManualData1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201508182005363_UnitsManualData2.cs" />
+    <Compile Include="Migrations\201508182005363_UnitsManualData2.Designer.cs">
+      <DependentUpon>201508182005363_UnitsManualData2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Concrete\ProductionData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -124,6 +139,17 @@
       <Project>{63cc73a0-f2c2-453d-a915-1913095f22fd}</Project>
       <Name>CollectingProductionDataSystem.Models</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201508181531067_UnitsManualData.resx">
+      <DependentUpon>201508181531067_UnitsManualData.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201508182004352_UnitsManualData1.resx">
+      <DependentUpon>201508182004352_UnitsManualData1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201508182005363_UnitsManualData2.resx">
+      <DependentUpon>201508182005363_UnitsManualData2.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

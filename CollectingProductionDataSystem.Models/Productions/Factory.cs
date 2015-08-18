@@ -9,7 +9,7 @@ namespace CollectingProductionDataSystem.Models.Productions
     {
         public Factory()
         {
-            this.ProcessUnits = new List<ProcessUnit>();
+            this.ProcessUnits = new HashSet<ProcessUnit>();
         }
 
         public int Id { get; set; }

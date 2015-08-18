@@ -179,11 +179,6 @@
                                         if (u == null)
                                         {
                                             var now = DateTime.Now;
-                                            //if (TimeZoneInfo.Local.IsDaylightSavingTime(now))
-                                            //{
-                                            //    now = now.AddHours(-1);
-                                            //}
-
                                             if (now.Hour >= 5 && now.Hour < 13)
                                             {
                                                 SetPrimaryDataInRange(now, context, unitData, FIVE, THIRTEEN);
@@ -245,8 +240,6 @@
                                                         unitData.Value);
                                                 }
                                             }
-
-                                              
                                         }
                                     }
                                 }
@@ -254,11 +247,6 @@
                                 {
                                     DateTime mData; 
                                     var now = DateTime.Now;
-                                    //if (TimeZoneInfo.Local.IsDaylightSavingTime(now))
-                                    //{
-                                    //    now = now.AddHours(-1);
-                                    //}
-
                                     if (now.Hour >= 5 && now.Hour < 13)
                                     {
                                         mData = new DateTime(now.Year, now.Month, now.Day, 5, 10, ZERO);  

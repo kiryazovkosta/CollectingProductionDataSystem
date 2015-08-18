@@ -5,7 +5,7 @@
     using System.Linq;
     using System.Web;
     using System.Web.Mvc;
-    using CollectingProductionDataSystem.Data;
+    using CollectingProductionDataSystem.Data.Contracts;
     using CollectingProductionDataSystem.Models;
     using CollectingProductionDataSystem.Models.Identity;
     using CollectingProductionDataSystem.Web.AppStart;
