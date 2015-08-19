@@ -204,13 +204,7 @@
                                                 else
                                                 {
                                                     // by desing we cannnot modify automatically readed data
-                                                    logger.InfoFormat("[ProcessPrimaryProductionData][{0}][{1}][{2}]-[{3}][{4}][{5}] already exists", 
-                                                        s.RecordTimestamp, 
-                                                        s.UnitConfigId, 
-                                                        s.Value, 
-                                                        unitData.RecordTimestamp, 
-                                                        unitData.UnitConfigId, 
-                                                        unitData.Value);
+                                                    logger.InfoFormat("[ProcessPrimaryProductionData][{0}][{1}][{2}]-[{3}][{4}][{5}] already exists", s.RecordTimestamp, s.UnitConfigId, s.Value, unitData.RecordTimestamp, unitData.UnitConfigId, unitData.Value);
                                                 }
                                             }
                                             else
@@ -231,43 +225,18 @@
                                                 else
                                                 {
                                                     // by desing we cannnot modify automatically readed data
-                                                    logger.InfoFormat("[ProcessPrimaryProductionData][{0}][{1}][{2}]-[{3}][{4}][{5}] already exists", 
-                                                        s.RecordTimestamp, 
-                                                        s.UnitConfigId, 
-                                                        s.Value, 
-                                                        unitData.RecordTimestamp, 
-                                                        unitData.UnitConfigId, 
-                                                        unitData.Value);
+                                                    logger.InfoFormat("[ProcessPrimaryProductionData][{0}][{1}][{2}]-[{3}][{4}][{5}] already exists", s.RecordTimestamp, s.UnitConfigId, s.Value, unitData.RecordTimestamp, unitData.UnitConfigId, unitData.Value);
                                                 }
                                             }
                                         }
                                     }
-                                }
-                                else 
-                                {
-                                    DateTime mData; 
-                                    var now = DateTime.Now;
-                                    if (now.Hour >= 5 && now.Hour < 13)
-                                    {
-                                        mData = new DateTime(now.Year, now.Month, now.Day, 5, 10, ZERO);  
-                                    }
-                                    else if (now.Hour >= 13 && now.Hour < 21)
-	                                {
-		                                mData = new DateTime(now.Year, now.Month, now.Day, 13, 10, ZERO);
-	                                }
-                                    else if (now.Hour >= 21)
-                                    {
-                                        mData = new DateTime(now.Year, now.Month, now.Day, 21, 10, ZERO);
-                                    }
                                     else
                                     {
-                                        mData = new DateTime(now.Year, now.Month, now.Day, 21, 10, ZERO).AddDays(-1);
-                                    }
-
-                                    var u = context.UnitsData
+                                        var recordDataTime = GetRecordTimestamp();
+                                        var u = context.UnitsData
                                             .All()
-                                            .FirstOrDefault(x => x.UnitConfigId == unitConfig.Id 
-                                                && x.RecordTimestamp.CompareTo(mData) == ZERO);
+                                            .FirstOrDefault(x => x.UnitConfigId == unitConfig.Id
+                                                && x.RecordTimestamp.CompareTo(recordDataTime) == ZERO);
                                         if (u == null)
                                         {
                                             context.UnitsData.Add(
@@ -275,9 +244,29 @@
                                             {
                                                 UnitConfigId = unitConfig.Id,
                                                 Value = null,
-                                                RecordTimestamp = mData
+                                                RecordTimestamp = recordDataTime
+                                            });
+
+                                        }
+                                    }
+                                }
+                                else 
+                                {
+                                    var recordDataTime = GetRecordTimestamp();
+                                    var u = context.UnitsData
+                                            .All()
+                                            .FirstOrDefault(x => x.UnitConfigId == unitConfig.Id 
+                                                && x.RecordTimestamp.CompareTo(recordDataTime) == ZERO);
+                                        if (u == null)
+                                        {
+                                            context.UnitsData.Add(
+                                            new UnitsData
+                                            {
+                                                UnitConfigId = unitConfig.Id,
+                                                Value = null,
+                                                RecordTimestamp = recordDataTime
                                             }); 
-                                        } 
+                                        }
                                 }
                             }
 
@@ -307,6 +296,29 @@
                 logger.Error(ex);
             }
         }
+
+        private static DateTime GetRecordTimestamp()
+        {
+            DateTime recordDataTime;
+            var now = DateTime.Now;
+            if (now.Hour >= 5 && now.Hour < 13)
+            {
+                recordDataTime = new DateTime(now.Year, now.Month, now.Day, 5, 10, ZERO);
+            }
+            else if (now.Hour >= 13 && now.Hour < 21)
+            {
+                recordDataTime = new DateTime(now.Year, now.Month, now.Day, 13, 10, ZERO);
+            }
+            else if (now.Hour >= 21)
+            {
+                recordDataTime = new DateTime(now.Year, now.Month, now.Day, 21, 10, ZERO);
+            }
+            else
+            {
+                recordDataTime = new DateTime(now.Year, now.Month, now.Day, 21, 10, ZERO).AddDays(-1);
+            }
+            return recordDataTime;
+        }
  
         private static void SetPrimaryDataInRange(DateTime now, ProductionData context, UnitsData unitData, int startHour, int endHour)
         {
@@ -325,13 +337,7 @@
             else
             {
                 // by desing we cannnot modify automatically readed data
-                logger.InfoFormat("[ProcessPrimaryProductionData][{0}][{1}][{2}]-[{3}][{4}][{5}] already exists",
-                    s.RecordTimestamp,
-                    s.UnitConfigId,
-                    s.Value,
-                    unitData.RecordTimestamp,
-                    unitData.UnitConfigId,
-                    unitData.Value);
+                logger.InfoFormat("[ProcessPrimaryProductionData][{0}][{1}][{2}]-[{3}][{4}][{5}] already exists", s.RecordTimestamp, s.UnitConfigId, s.Value, unitData.RecordTimestamp, unitData.UnitConfigId, unitData.Value);
             }
         }
 
@@ -600,7 +606,6 @@
                 return (Start <= range.Start) && (range.End <= End);
             }
         }
-
 
     }
 }

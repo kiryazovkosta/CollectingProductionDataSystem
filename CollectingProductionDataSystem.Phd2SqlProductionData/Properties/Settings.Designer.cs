@@ -61,7 +61,7 @@ namespace CollectingProductionDataSystem.Phd2SqlProductionData.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("00:10:00")]
+        [global::System.Configuration.DefaultSettingValueAttribute("00:01:00")]
         public global::System.TimeSpan IDLE_TIMER_PRIMARY {
             get {
                 return ((global::System.TimeSpan)(this["IDLE_TIMER_PRIMARY"]));

@@ -3655,7 +3655,8 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                             MaterialTypeId = 1,
                                             IsMaterial = true,
                                             IsEnergy = false,
-                                            CollectingDataMechanism = "C"
+                                            CollectingDataMechanism = "C",
+                                            IsDeleted = true
                                         },
                                         new UnitConfig
                                         {
@@ -3667,7 +3668,8 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                             MaterialTypeId = 1,
                                             IsMaterial = true,
                                             IsEnergy = false,
-                                            CollectingDataMechanism = "C"
+                                            CollectingDataMechanism = "C",
+                                            IsDeleted = true
                                         },
                                         new UnitConfig
                                         {
@@ -3679,7 +3681,8 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                             MaterialTypeId = 1,
                                             IsMaterial = true,
                                             IsEnergy = false,
-                                            CollectingDataMechanism = "C"
+                                            CollectingDataMechanism = "C",
+                                            IsDeleted = true
                                         },
                                         new UnitConfig
                                         {
@@ -3691,7 +3694,8 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                             MaterialTypeId = 1,
                                             IsMaterial = true,
                                             IsEnergy = false,
-                                            CollectingDataMechanism = "C"
+                                            CollectingDataMechanism = "C",
+                                            IsDeleted = true
                                         },
                                         new UnitConfig
                                         {
@@ -3703,7 +3707,8 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                             MaterialTypeId = 1,
                                             IsMaterial = true,
                                             IsEnergy = false,
-                                            CollectingDataMechanism = "C"
+                                            CollectingDataMechanism = "C",
+                                            IsDeleted = true
                                         },
                                         new UnitConfig
                                         {
