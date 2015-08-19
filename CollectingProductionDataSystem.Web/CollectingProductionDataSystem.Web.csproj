@@ -1240,7 +1240,7 @@
     <Content Include="Views\Account\SendCode.cshtml" />
     <Content Include="Views\Account\VerifyCode.cshtml" />
     <Content Include="Views\Manage\AddPhoneNumber.cshtml" />
-    <Content Include="Views\Manage\ChangePassword.cshtml" />
+    <Content Include="Views\Account\ChangePassword.cshtml" />
     <Content Include="Views\Manage\Index.cshtml" />
     <Content Include="Views\Manage\ManageLogins.cshtml" />
     <Content Include="Views\Manage\SetPassword.cshtml" />
@@ -1389,6 +1389,10 @@
     <ProjectReference Include="..\CollectingProductionDataSystem.Data\CollectingProductionDataSystem.Data.csproj">
       <Project>{59ca4923-fd5f-4087-a7ee-5623f1dd8ca9}</Project>
       <Name>CollectingProductionDataSystem.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CollectingProductionDataSystem.Enumerations\CollectingProductionDataSystem.Enumerations.csproj">
+      <Project>{d39275e1-1997-41c3-99cc-ff1b7502e93f}</Project>
+      <Name>CollectingProductionDataSystem.Enumerations</Name>
     </ProjectReference>
     <ProjectReference Include="..\CollectingProductionDataSystem.Infrastructure\CollectingProductionDataSystem.Infrastructure.csproj">
       <Project>{69debde6-b1ba-4a55-9570-ae7e6abb5f98}</Project>

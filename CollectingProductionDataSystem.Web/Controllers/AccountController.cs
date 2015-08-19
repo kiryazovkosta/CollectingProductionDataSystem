@@ -7,9 +7,11 @@ using System.Web;
 using System.Web.Mvc;
 using CollectingProductionDataSystem.Models.Identity;
 using CollectingProductionDataSystem.Web.Infrastructure.IdentityInfrastructure;
+using CollectingProductionDataSystem.Web.ViewModels.Identity;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
+using CollectingProductionDataSystem.Enumerations;
 
 namespace CollectingProductionDataSystem.Web.Controllers
 {
@@ -142,44 +144,34 @@ namespace CollectingProductionDataSystem.Web.Controllers
         //}
 
         //
-        // GET: /Account/Register
-        [AllowAnonymous]
-        public ActionResult Register()
+        // GET: /Manage/ChangePassword
+        public ActionResult ChangePassword()
         {
+            ViewBag.Title = App_GlobalResources.Layout.ChangePassword;
             return View();
         }
 
         //
-        // POST: /Account/Register
+        // POST: /Manage/ChangePassword
         [HttpPost]
-        [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Register(CollectingProductionDataSystem.Web.ViewModels.Identity.RegisterViewModel model)
+        public async Task<ActionResult> ChangePassword(ChangePasswordViewModel model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                var user = new ApplicationUser
-                {
-                    UserName = model.Email,
-                    Email = model.Email
-                };
-                var result = await UserManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
+                return View(model);
+            }
+            var result = await UserManager.ChangePasswordAsync(int.Parse(User.Identity.GetUserId()), model.OldPassword, model.NewPassword);
+            if (result.Succeeded)
+            {
+                var user = await UserManager.FindByIdAsync(int.Parse(User.Identity.GetUserId()));
+                if (user != null)
                 {
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
-
-                    // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
-                    // Send an email with this link
-                    // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
-
-                    return RedirectToAction("Index", "Home");
                 }
-                AddErrors(result);
+                return RedirectToAction("Index","Home", new { Message = ManageMessageId.ChangePasswordSuccess });
             }
-
-            // If we got this far, something failed, redisplay form
+            AddErrors(result);
             return View(model);
         }
 

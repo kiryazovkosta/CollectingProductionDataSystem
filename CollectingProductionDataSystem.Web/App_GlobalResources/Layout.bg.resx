@@ -117,17 +117,38 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ChangePassword" xml:space="preserve">
+    <value>Промяна на парола</value>
+  </data>
+  <data name="ChangePasswordMessage" xml:space="preserve">
+    <value>Промяна на паролата на потребителя </value>
+  </data>
+  <data name="ChanhePasswordSuccess" xml:space="preserve">
+    <value>Вие сменихте успешно паролата си!</value>
+  </data>
   <data name="ConfirmPassword" xml:space="preserve">
     <value>Потв. на парола</value>
   </data>
   <data name="Email" xml:space="preserve">
     <value>Електронна поща</value>
   </data>
+  <data name="Error" xml:space="preserve">
+    <value>Възникна грешка</value>
+  </data>
+  <data name="GreetingMessage" xml:space="preserve">
+    <value>Здравейте {0}!</value>
+  </data>
   <data name="Login" xml:space="preserve">
     <value>Вход</value>
   </data>
   <data name="LoginMessage" xml:space="preserve">
-    <value>Използваите потребителското си име за вход в: &lt;br/&gt;&lt;h2&gt;"Система за автоматизиран сбор на данни"&lt;/h2&gt;</value>
+    <value>Използвайте потребителското си име за вход в: &lt;br/&gt;&lt;h2&gt;"Система за автоматизиран сбор на данни"&lt;/h2&gt;</value>
+  </data>
+  <data name="Logoff" xml:space="preserve">
+    <value>Изход</value>
+  </data>
+  <data name="NewPassword" xml:space="preserve">
+    <value>Нова парола</value>
   </data>
   <data name="Password" xml:space="preserve">
     <value>Парола</value>
