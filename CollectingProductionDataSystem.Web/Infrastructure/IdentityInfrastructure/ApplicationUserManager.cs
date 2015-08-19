@@ -34,7 +34,7 @@ namespace CollectingProductionDataSystem.Web.Infrastructure.IdentityInfrastructu
             }
             else
             {
-                return IdentityResult.Failed(new string[] { "Невалидна електронна поща" });
+                return IdentityResult.Failed(new string[] { App_GlobalResources.ErrorMessages.Email });
             }
         }
 

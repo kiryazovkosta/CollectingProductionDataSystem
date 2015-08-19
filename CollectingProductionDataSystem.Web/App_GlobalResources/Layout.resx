@@ -123,8 +123,17 @@
   <data name="Email" xml:space="preserve">
     <value>E-mail</value>
   </data>
+  <data name="Login" xml:space="preserve">
+    <value>LogIn</value>
+  </data>
+  <data name="LoginMessage" xml:space="preserve">
+    <value>Use a Collecting Production Data System account to log in.</value>
+  </data>
   <data name="Password" xml:space="preserve">
     <value>Password</value>
+  </data>
+  <data name="RememberMe" xml:space="preserve">
+    <value>Remember me?</value>
   </data>
   <data name="UserName" xml:space="preserve">
     <value>User Name</value>

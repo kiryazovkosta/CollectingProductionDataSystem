@@ -22,14 +22,14 @@ namespace CollectingProductionDataSystem.Web.App_GlobalResources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class Layout {
+    public class ErrorMessages {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Layout() {
+        internal ErrorMessages() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace CollectingProductionDataSystem.Web.App_GlobalResources {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("CollectingProductionDataSystem.Web.App_GlobalResources.Layout", typeof(Layout).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("CollectingProductionDataSystem.Web.App_GlobalResources.ErrorMessages", typeof(ErrorMessages).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,7 +61,7 @@ namespace CollectingProductionDataSystem.Web.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Confirm Password.
+        ///   Looks up a localized string similar to The password and confirmation password do not match..
         /// </summary>
         public static string ConfirmPassword {
             get {
@@ -70,7 +70,7 @@ namespace CollectingProductionDataSystem.Web.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to E-mail.
+        ///   Looks up a localized string similar to Invalid e-mail.
         /// </summary>
         public static string Email {
             get {
@@ -79,25 +79,7 @@ namespace CollectingProductionDataSystem.Web.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to LogIn.
-        /// </summary>
-        public static string Login {
-            get {
-                return ResourceManager.GetString("Login", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Use a Collecting Production Data System account to log in..
-        /// </summary>
-        public static string LoginMessage {
-            get {
-                return ResourceManager.GetString("LoginMessage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Password.
+        ///   Looks up a localized string similar to The {0} must be at least {2} characters long..
         /// </summary>
         public static string Password {
             get {
@@ -106,16 +88,7 @@ namespace CollectingProductionDataSystem.Web.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Remember me?.
-        /// </summary>
-        public static string RememberMe {
-            get {
-                return ResourceManager.GetString("RememberMe", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to User Name.
+        ///   Looks up a localized string similar to The {0} must be at least {2} characters long..
         /// </summary>
         public static string UserName {
             get {

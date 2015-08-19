@@ -209,6 +209,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppStart\BundleConfig.cs" />
+    <Compile Include="App_GlobalResources\ErrorMessages.bg.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ErrorMessages.bg.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\ErrorMessages.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ErrorMessages.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\Layout.bg.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -1390,10 +1400,18 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="App_GlobalResources\Layout.resx">
+    <EmbeddedResource Include="App_GlobalResources\ErrorMessages.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ErrorMessages.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\ErrorMessages.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ErrorMessages.bg.designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Layout.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Layout.Designer.cs</LastGenOutput>
-    </Resource>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="App_GlobalResources\Layout.bg.resx">

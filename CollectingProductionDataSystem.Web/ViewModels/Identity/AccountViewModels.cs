@@ -1,117 +1,69 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Web.Mvc;
 
 namespace CollectingProductionDataSystem.Web.ViewModels.Identity
 {
-    public class ExternalLoginConfirmationViewModel
-    {
-        [Required]
-        [Display(Name = "Email")]
-        public string Email { get; set; }
-    }
-
-    public class ExternalLoginListViewModel
-    {
-        public string ReturnUrl { get; set; }
-    }
-
-    public class SendCodeViewModel
-    {
-        public string SelectedProvider { get; set; }
-        public ICollection<System.Web.Mvc.SelectListItem> Providers { get; set; }
-        public string ReturnUrl { get; set; }
-        public bool RememberMe { get; set; }
-    }
-
-    public class VerifyCodeViewModel
-    {
-        [Required]
-        public string Provider { get; set; }
-
-        [Required]
-        [Display(Name = "Code")]
-        public string Code { get; set; }
-        public string ReturnUrl { get; set; }
-
-        [Display(Name = "Remember this browser?")]
-        public bool RememberBrowser { get; set; }
-
-        public bool RememberMe { get; set; }
-    }
-
-    public class ForgotViewModel
-    {
-        [Required]
-        [Display(Name = "Email")]
-        public string Email { get; set; }
-    }
-
     public class LoginViewModel
     {
         [Required]
-        [Display(Name = "User name")]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 4)]
-
+        [StringLength(100,ErrorMessageResourceName="UserName",ErrorMessageResourceType=typeof(App_GlobalResources.ErrorMessages), MinimumLength = 4)]
+        [Display(Name = "UserName", ResourceType = typeof(App_GlobalResources.Layout))]
         public string UserName { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
-        [Display(Name = "Password")]
+        [StringLength(100, ErrorMessageResourceName = "Password", ErrorMessageResourceType = typeof(App_GlobalResources.ErrorMessages), MinimumLength = 6)]
+        [Display(Name = "Password", ResourceType = typeof(App_GlobalResources.Layout))]
         public string Password { get; set; }
 
-        [Display(Name = "Remember me?")]
+        [Display(Name = "RememberMe", ResourceType = typeof(App_GlobalResources.Layout))]
         public bool RememberMe { get; set; }
     }
 
     public class RegisterViewModel
     {
         [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 4)]
-        [Display(Name="UserName", ResourceType = typeof(App_GlobalResources.Layout))]
+        [StringLength(100, ErrorMessageResourceName = "UserName", ErrorMessageResourceType = typeof(App_GlobalResources.ErrorMessages), MinimumLength = 4)]
+        [Display(Name = "UserName", ResourceType = typeof(App_GlobalResources.Layout))]
         public string UserName { get; set; }
 
         [Required]
-        [EmailAddress]
+        [EmailAddress(ErrorMessage=null,ErrorMessageResourceName="Email",ErrorMessageResourceType=typeof(App_GlobalResources.ErrorMessages))]
         [Display(Name = "Email", ResourceType = typeof(App_GlobalResources.Layout))]
         public string Email { get; set; }
 
         [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
         [DataType(DataType.Password)]
+        [StringLength(100, ErrorMessageResourceName = "Password", ErrorMessageResourceType = typeof(App_GlobalResources.ErrorMessages), MinimumLength = 6)]
         [Display(Name = "Password", ResourceType = typeof(App_GlobalResources.Layout))]
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
         [Display(Name = "ConfirmPassword", ResourceType = typeof(App_GlobalResources.Layout))]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        [System.ComponentModel.DataAnnotations.Compare("Password", ErrorMessageResourceName = "ConfirmPassword", ErrorMessageResourceType = typeof(App_GlobalResources.ErrorMessages))]
         public string ConfirmPassword { get; set; }
     }
 
     public class ResetPasswordViewModel
     {
         [Required]
-        [Display(Name = "User name")]
+        [StringLength(100, ErrorMessageResourceName = "UserName", ErrorMessageResourceType = typeof(App_GlobalResources.ErrorMessages), MinimumLength = 4)]
+        [Display(Name = "UserName", ResourceType = typeof(App_GlobalResources.Layout))]
+        [HiddenInput(DisplayValue=false)]
         public string UserName { get; set; }
 
         [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
         [DataType(DataType.Password)]
-        [Display(Name = "Password")]
+        [StringLength(100, ErrorMessageResourceName = "Password", ErrorMessageResourceType = typeof(App_GlobalResources.ErrorMessages), MinimumLength = 6)]
+        [Display(Name = "Password", ResourceType = typeof(App_GlobalResources.Layout))]
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
-        [Display(Name = "Confirm password")]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        [Display(Name = "ConfirmPassword", ResourceType = typeof(App_GlobalResources.Layout))]
+        [System.ComponentModel.DataAnnotations.Compare("Password", ErrorMessageResourceName = "ConfirmPassword", ErrorMessageResourceType = typeof(App_GlobalResources.ErrorMessages))]
         public string ConfirmPassword { get; set; }
 
         public string Code { get; set; }
-    }
-
-    public class ForgotPasswordViewModel
-    {
-        [Required]
-        [EmailAddress]
-        [Display(Name = "Email")]
-        public string Email { get; set; }
     }
 }

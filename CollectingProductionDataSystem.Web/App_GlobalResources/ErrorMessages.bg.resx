@@ -118,24 +118,15 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ConfirmPassword" xml:space="preserve">
-    <value>Потв. на парола</value>
+    <value>Паролите в двете полета не съвпадат.</value>
   </data>
   <data name="Email" xml:space="preserve">
-    <value>Електронна поща</value>
-  </data>
-  <data name="Login" xml:space="preserve">
-    <value>Вход</value>
-  </data>
-  <data name="LoginMessage" xml:space="preserve">
-    <value>Използваите потребителското си име за вход в: &lt;br/&gt;&lt;h2&gt;"Система за автоматизиран сбор на данни"&lt;/h2&gt;</value>
+    <value>Невалидна електронна поща</value>
   </data>
   <data name="Password" xml:space="preserve">
-    <value>Парола</value>
-  </data>
-  <data name="RememberMe" xml:space="preserve">
-    <value>Запомни ме</value>
+    <value>Паролата трябва да бъде дълга поне {2} синвола.</value>
   </data>
   <data name="UserName" xml:space="preserve">
-    <value>Портебител</value>
+    <value>Потребителското име трябва да бъде дълго поне {2} синвола.</value>
   </data>
 </root>
