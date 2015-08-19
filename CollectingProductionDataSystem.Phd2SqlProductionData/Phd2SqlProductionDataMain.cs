@@ -168,6 +168,42 @@
                                 if (!string.IsNullOrEmpty(unitConfig.PreviousShiftTag))
                                 {
                                     int confidence;
+                                    var now = DateTime.Now;
+                                    DateTime startDate;
+                                    DateTime endDate;
+                                    DateRange range;
+                                    if (now.Hour >= 5 && now.Hour < 13)
+                                    {
+                                        startDate = new DateTime(now.Year, now.Month, now.Day, 5, 1, 0);
+                                        endDate = new DateTime(now.Year, now.Month, now.Day, 13, 0, 0);
+                                        range = new DateRange(startDate, endDate);      
+                                    }
+                                    else if (now.Hour >= 13 && now.Hour < 21)
+	                                {
+                                        startDate = new DateTime(now.Year, now.Month, now.Day, 13, 1, 0);
+                                        endDate = new DateTime(now.Year, now.Month, now.Day, 21, 0, 0);
+                                        range = new DateRange(startDate, endDate);
+	                                }
+                                    else if (now.Hour >= 21)
+                                    {
+                                        startDate = new DateTime(now.Year, now.Month, now.Day, 21, 1, 0);
+                                        endDate = new DateTime(now.Year, now.Month, now.Day, 23, 59, 59);
+                                        range = new DateRange(startDate, endDate);
+                                    }
+                                    else
+                                    {
+                                        var prevDay = now.AddDays(-1);
+                                        startDate = new DateTime(prevDay.Year, prevDay.Month, prevDay.Day, 21, 1, 0);
+                                        endDate = new DateTime(now.Year, now.Month, now.Day, 5, ZERO, ZERO);
+                                        range = new DateRange(startDate, endDate);
+                                    }
+
+                                    var s = context.UnitsData.All().ToList().FirstOrDefault(x => x.UnitConfigId == unitConfig.Id  && range.Includes(x.RecordTimestamp));
+                                    if (s != null)
+                                    {
+                                        continue;
+                                    }
+
                                     var unitData = GetUnitData(unitConfig, oPhd, out confidence);
                                     if (confidence > Properties.Settings.Default.INSPECTION_DATA_MINIMUM_CONFIDENCE && 
                                         unitData.RecordTimestamp != null)
@@ -178,7 +214,6 @@
                                                 && x.RecordTimestamp.CompareTo(unitData.RecordTimestamp) == ZERO);
                                         if (u == null)
                                         {
-                                            var now = DateTime.Now;
                                             if (now.Hour >= 5 && now.Hour < 13)
                                             {
                                                 SetPrimaryDataInRange(now, context, unitData, FIVE, THIRTEEN);
@@ -189,15 +224,12 @@
 	                                        }
                                             else if (now.Hour >= 21)
                                             {
-                                                var startDate = new DateTime(now.Year, now.Month, now.Day, 21, 1, ZERO);
-                                                var endDate = new DateTime(now.Year, now.Month, now.Day, 23, 59, 59);
-                                                var range = new DateRange(startDate, endDate);
-                                                var s = context.UnitsData
+                                                var s1 = context.UnitsData
                                                     .All()
                                                     .ToList()
                                                     .FirstOrDefault(x => x.UnitConfigId == unitData.UnitConfigId  
                                                         && range.Includes(x.RecordTimestamp));
-                                                if (s == null)
+                                                if (s1 == null)
                                                 {
                                                     context.UnitsData.Add(unitData);   
                                                 }
@@ -209,16 +241,12 @@
                                             }
                                             else
                                             {
-                                                var prevDay = now.AddDays(-1);
-                                                var startDate = new DateTime(prevDay.Year, prevDay.Month, prevDay.Day, 21, 1, ZERO);
-                                                var endDate = new DateTime(now.Year, now.Month, now.Day, 5, ZERO, ZERO);
-                                                var range = new DateRange(startDate, endDate);
-                                                var s = context.UnitsData
+                                                var s2 = context.UnitsData
                                                     .All()
                                                     .ToList()
                                                     .FirstOrDefault(x => x.UnitConfigId == unitData.UnitConfigId  
                                                         && range.Includes(x.RecordTimestamp));
-                                                if (s == null)
+                                                if (s2 == null)
                                                 {
                                                     context.UnitsData.Add(unitData);   
                                                 }
@@ -257,16 +285,16 @@
                                             .All()
                                             .FirstOrDefault(x => x.UnitConfigId == unitConfig.Id 
                                                 && x.RecordTimestamp.CompareTo(recordDataTime) == ZERO);
-                                        if (u == null)
+                                    if (u == null)
+                                    {
+                                        context.UnitsData.Add(
+                                        new UnitsData
                                         {
-                                            context.UnitsData.Add(
-                                            new UnitsData
-                                            {
-                                                UnitConfigId = unitConfig.Id,
-                                                Value = null,
-                                                RecordTimestamp = recordDataTime
-                                            }); 
-                                        }
+                                            UnitConfigId = unitConfig.Id,
+                                            Value = null,
+                                            RecordTimestamp = recordDataTime
+                                        }); 
+                                    }
                                 }
                             }
 

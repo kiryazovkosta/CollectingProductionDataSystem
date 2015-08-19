@@ -18,7 +18,7 @@
 
         IDeletableEntityRepository<UnitConfig> Units { get; }
 
-        IImmutableEntityRepository<UnitsData> UnitsData { get; }
+        IApprovableEntityRepository<UnitsData> UnitsData { get; }
 
         IDeletableEntityRepository<UnitsManualData> UnitsManualData { get; }
 

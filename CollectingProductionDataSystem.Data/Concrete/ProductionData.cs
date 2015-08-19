@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Data.Entity;
     using System.Linq;
     using CollectingProductionDataSystem.Data;
     using CollectingProductionDataSystem.Data.Contracts;
@@ -68,11 +67,11 @@ using CollectingProductionDataSystem.Models.Transactions;
             }
         }
 
-        public IImmutableEntityRepository<UnitsData> UnitsData
+        public IApprovableEntityRepository<UnitsData> UnitsData
         {
             get
             {
-                return this.GetImmutableEntityRepository<UnitsData>();
+                return this.GetIApprovableEntityRepository<UnitsData>();
             }
         }
 
@@ -240,6 +239,16 @@ using CollectingProductionDataSystem.Models.Transactions;
             }
 
             return (IImmutableEntityRepository<T>)this.repositories[typeof(T)];
+        }
+        private IApprovableEntityRepository<T> GetIApprovableEntityRepository<T>() where T : class, IEntity, IApprovableEntity, IAuditInfo
+        {
+            if (!this.repositories.ContainsKey(typeof(T)))
+            {
+                var type = typeof(ApprovableEntityRepository<T>);
+                this.repositories.Add(typeof(T), Activator.CreateInstance(type, this.context));
+            }
+
+            return (IApprovableEntityRepository<T>)this.repositories[typeof(T)];
         }
 
         /// <summary>

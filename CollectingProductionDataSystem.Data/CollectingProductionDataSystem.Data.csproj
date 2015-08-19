@@ -65,11 +65,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Concrete\ApprovableEntityRepository.cs" />
     <Compile Include="Concrete\AuditablePersister.cs" />
     <Compile Include="Concrete\DeletableEntityRepository.cs" />
     <Compile Include="Concrete\GenericRepository.cs" />
     <Compile Include="CollectingDataSystemDbContext.cs" />
     <Compile Include="Concrete\ImmutableEntityRepository.cs" />
+    <Compile Include="Contracts\IApprovableEntityRepository.cs" />
     <Compile Include="Contracts\IDataContext.cs" />
     <Compile Include="Contracts\IDeletableEntityRepository.cs" />
     <Compile Include="Contracts\IImmutableEntityRepository.cs" />
