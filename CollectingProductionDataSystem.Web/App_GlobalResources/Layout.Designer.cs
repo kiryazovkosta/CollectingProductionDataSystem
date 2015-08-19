@@ -61,6 +61,33 @@ namespace CollectingProductionDataSystem.Web.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Change Password.
+        /// </summary>
+        public static string ChangePassword {
+            get {
+                return ResourceManager.GetString("ChangePassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Changing password of user.
+        /// </summary>
+        public static string ChangePasswordMessage {
+            get {
+                return ResourceManager.GetString("ChangePasswordMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You have change your password successfully!.
+        /// </summary>
+        public static string ChanhePasswordSuccess {
+            get {
+                return ResourceManager.GetString("ChanhePasswordSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Confirm Password.
         /// </summary>
         public static string ConfirmPassword {
@@ -79,6 +106,15 @@ namespace CollectingProductionDataSystem.Web.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Hello {0}!.
+        /// </summary>
+        public static string GreetingMessage {
+            get {
+                return ResourceManager.GetString("GreetingMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to LogIn.
         /// </summary>
         public static string Login {
@@ -93,6 +129,24 @@ namespace CollectingProductionDataSystem.Web.App_GlobalResources {
         public static string LoginMessage {
             get {
                 return ResourceManager.GetString("LoginMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Log off.
+        /// </summary>
+        public static string Logoff {
+            get {
+                return ResourceManager.GetString("Logoff", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New Password.
+        /// </summary>
+        public static string NewPassword {
+            get {
+                return ResourceManager.GetString("NewPassword", resourceCulture);
             }
         }
         

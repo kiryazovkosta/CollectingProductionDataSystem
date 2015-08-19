@@ -123,8 +123,11 @@
   <data name="Email" xml:space="preserve">
     <value>Невалидна електронна поща</value>
   </data>
+  <data name="Error" xml:space="preserve">
+    <value>An error has occurred.</value>
+  </data>
   <data name="Password" xml:space="preserve">
-    <value>Паролата трябва да бъде дълга поне {2} синвола.</value>
+    <value>Полето {0} трябва да бъде дълга поне {2} синвола.</value>
   </data>
   <data name="UserName" xml:space="preserve">
     <value>Потребителското име трябва да бъде дълго поне {2} синвола.</value>

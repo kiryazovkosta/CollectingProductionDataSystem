@@ -117,17 +117,35 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ChangePassword" xml:space="preserve">
+    <value>Change Password</value>
+  </data>
+  <data name="ChangePasswordMessage" xml:space="preserve">
+    <value>Changing password of user</value>
+  </data>
+  <data name="ChanhePasswordSuccess" xml:space="preserve">
+    <value>You have change your password successfully!</value>
+  </data>
   <data name="ConfirmPassword" xml:space="preserve">
     <value>Confirm Password</value>
   </data>
   <data name="Email" xml:space="preserve">
     <value>E-mail</value>
   </data>
+  <data name="GreetingMessage" xml:space="preserve">
+    <value>Hello {0}!</value>
+  </data>
   <data name="Login" xml:space="preserve">
     <value>LogIn</value>
   </data>
   <data name="LoginMessage" xml:space="preserve">
     <value>Use a Collecting Production Data System account to log in.</value>
+  </data>
+  <data name="Logoff" xml:space="preserve">
+    <value>Log off</value>
+  </data>
+  <data name="NewPassword" xml:space="preserve">
+    <value>New Password</value>
   </data>
   <data name="Password" xml:space="preserve">
     <value>Password</value>

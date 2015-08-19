@@ -66,4 +66,25 @@ namespace CollectingProductionDataSystem.Web.ViewModels.Identity
 
         public string Code { get; set; }
     }
+
+    public class ChangePasswordViewModel
+    {
+        [Required]
+        [DataType(DataType.Password)]
+        [StringLength(100, ErrorMessageResourceName = "Password", ErrorMessageResourceType = typeof(App_GlobalResources.ErrorMessages), MinimumLength = 6)]
+        [Display(Name = "Password", ResourceType = typeof(App_GlobalResources.Layout))]
+        public string OldPassword { get; set; }
+
+        [Required]
+        [DataType(DataType.Password)]
+        [StringLength(100, ErrorMessageResourceName = "Password", ErrorMessageResourceType = typeof(App_GlobalResources.ErrorMessages), MinimumLength = 6)]
+        [Display(Name = "NewPassword", ResourceType = typeof(App_GlobalResources.Layout))]
+        public string NewPassword { get; set; }
+
+
+        [DataType(DataType.Password)]
+        [Display(Name = "ConfirmPassword", ResourceType = typeof(App_GlobalResources.Layout))]
+        [System.ComponentModel.DataAnnotations.Compare("NewPassword", ErrorMessageResourceName = "ConfirmPassword", ErrorMessageResourceType = typeof(App_GlobalResources.ErrorMessages))]
+        public string ConfirmPassword { get; set; }
+    }
 }
