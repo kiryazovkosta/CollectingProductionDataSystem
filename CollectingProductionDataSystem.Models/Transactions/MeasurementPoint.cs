@@ -13,7 +13,7 @@
     {
         public MeasurementPoint()
         {
-            this.MeasurementPointsProductsConfigs = new List<MeasurementPointsProductsConfig>();
+            this.MeasurementPointsProductsConfigs = new HashSet<MeasurementPointsProductsConfig>();
         }
 
         public int Id { get; set; }

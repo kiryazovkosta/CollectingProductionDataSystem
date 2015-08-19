@@ -12,7 +12,7 @@
     {
         public Zone()
         {
-            this.MeasurementPoints = new List<MeasurementPoint>();
+            this.MeasurementPoints = new HashSet<MeasurementPoint>();
         }
 
         public int Id { get; set; }

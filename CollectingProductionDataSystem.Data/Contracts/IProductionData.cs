@@ -1,11 +1,6 @@
-﻿namespace CollectingProductionDataSystem.Data
+﻿namespace CollectingProductionDataSystem.Data.Contracts
 {
     using System;
-
-    using System.Data.Entity;
-    using CollectingProductionDataSystem.Data.Contracts;
-    using CollectingProductionDataSystem.Models;
-    using CollectingProductionDataSystem.Contracts;
     using CollectingProductionDataSystem.Models.Inventories;
     using CollectingProductionDataSystem.Models.Nomenclatures;
     using CollectingProductionDataSystem.Models.Productions;
@@ -25,6 +20,8 @@
 
         IImmutableEntityRepository<UnitsData> UnitsData { get; }
 
+        IDeletableEntityRepository<UnitsManualData> UnitsManualData { get; }
+
         IImmutableEntityRepository<UnitsInspectionData> UnitsInspectionData { get; }
 
         IDeletableEntityRepository<Area> Areas { get; }
@@ -34,6 +31,8 @@
         IDeletableEntityRepository<TankConfig> Tanks { get; }
 
         IImmutableEntityRepository<TankData> TanksData { get; }
+
+        IDeletableEntityRepository<TanksManualData> TanksManualData { get; }
 
         IDeletableEntityRepository<Product> Products { get; }
 

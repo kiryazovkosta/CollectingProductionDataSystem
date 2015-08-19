@@ -8,7 +8,7 @@
     {
         public Ikunk()
         {
-            this.Zones = new List<Zone>();
+            this.Zones = new HashSet<Zone>();
         }
 
         public int Id { get; set; }

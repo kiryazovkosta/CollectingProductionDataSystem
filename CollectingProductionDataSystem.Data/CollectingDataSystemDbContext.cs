@@ -22,20 +22,23 @@
     {
         private readonly IPersister persister;
 
+        static CollectingDataSystemDbContext() 
+        {
+            Database.SetInitializer(new MigrateDatabaseToLatestVersion<CollectingDataSystemDbContext, Configuration>());
+        }
+
         public CollectingDataSystemDbContext()
             : base("CollectingPrimaryDataSystemConnection")
         {
             //#if DEBUG
             //            this.Database.Log = (c) => { Debug.WriteLine(c); };
             //#endif
-            Database.SetInitializer(new MigrateDatabaseToLatestVersion<CollectingDataSystemDbContext, Configuration>());
             this.persister = new AuditablePersister();
         }
 
         public CollectingDataSystemDbContext(IPersister param)
             : base("CollectingPrimaryDataSystemConnection")
         {
-            Database.SetInitializer(new MigrateDatabaseToLatestVersion<CollectingDataSystemDbContext, Configuration>());
             this.persister = param;
         }
 
@@ -54,6 +57,8 @@
         public IDbSet<TankConfig> InventoryTanks { get; set; }
 
         public IDbSet<TankData> TanksData { get; set; }
+
+        public IDbSet<TanksManualData> TanksManualData { get; set; }
 
         public IDbSet<Plant> Plants { get; set; }
 
@@ -79,6 +84,9 @@
 
         public IDbSet<TransportType> TransportTypes { get; set; }
 
+        public DbSet<AggregationsFormula> AggregationsFormulas { get; set; }
+
+        public DbSet<UnitsAggregateDailyConfig> UnitsAggregateDailyConfigs { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

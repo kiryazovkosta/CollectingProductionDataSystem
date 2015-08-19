@@ -6,9 +6,6 @@
     using System.Linq;
     using CollectingProductionDataSystem.Data;
     using CollectingProductionDataSystem.Data.Contracts;
-    using CollectingProductionDataSystem.Models;
-    using CollectingProductionDataSystem.Data.Concrete;
-    using CollectingProductionDataSystem.Contracts;
     using CollectingProductionDataSystem.Models.Contracts;
     using CollectingProductionDataSystem.Models.Inventories;
     using CollectingProductionDataSystem.Models.Nomenclatures;
@@ -79,6 +76,14 @@ using CollectingProductionDataSystem.Models.Transactions;
             }
         }
 
+        public IDeletableEntityRepository<UnitsManualData> UnitsManualData
+        {
+            get
+            {
+                return this.GetDeletableEntityRepository<UnitsManualData>();
+            }
+        }
+
         public IImmutableEntityRepository<UnitsInspectionData> UnitsInspectionData
         {
             get
@@ -116,6 +121,14 @@ using CollectingProductionDataSystem.Models.Transactions;
             get
             {
                 return this.GetImmutableEntityRepository<TankData>();
+            }
+        }
+
+        public IDeletableEntityRepository<TanksManualData> TanksManualData
+        {
+            get
+            {
+                return this.GetDeletableEntityRepository<TanksManualData>();
             }
         }
 

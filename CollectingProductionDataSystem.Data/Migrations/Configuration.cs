@@ -2701,6 +2701,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                         },
                                         new UnitConfig
                                         {
+                                            Code = "1A1000",
                                             Position = "01-FIQ-047",
                                             Name = "Лека дизелова фракция към ХО-2",
                                             ProductTypetId = 2,
@@ -2716,6 +2717,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                         },
                                         new UnitConfig
                                         {
+                                            Code = "1A1001",
                                             Position = "01-FIQ-047",
                                             Name = "Лека дизелова фракция към ХО-3",
                                             ProductTypetId = 2,
@@ -2728,6 +2730,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                         },
                                         new UnitConfig
                                         {
+                                            Code = "1A1002",
                                             Position = "01-FIQ-047",
                                             Name = "Лека дизелова фракция към ХО-5",
                                             ProductTypetId = 2,
@@ -2740,6 +2743,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                         },
                                         new UnitConfig
                                         {
+                                            Code = "1A1003",
                                             Position = "01-FIQ-047",
                                             Name = "Лека дизелова фракция към ТСНП",
                                             ProductTypetId = 2,
@@ -2752,6 +2756,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                         },
                                         new UnitConfig
                                         {
+                                            Code = "1A1004",
                                             Position = "01-FIQ-047",
                                             Name = "Лека дизелова фракция към некондиция",
                                             ProductTypetId = 2,
@@ -2764,6 +2769,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                         },
                                         new UnitConfig
                                         {
+                                            Code = "1A1100",
                                             Position = "01-FIQ-046",
                                             Name = "Тежка дизелова фракция към ХО-2",
                                             ProductTypetId = 2,
@@ -2779,6 +2785,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                         },
                                         new UnitConfig
                                         {
+                                            Code = "1A1101",
                                             Position = "01-FIQ-046",
                                             Name = "Тежка дизелова фракция към ХО-3",
                                             ProductTypetId = 2,
@@ -2791,6 +2798,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                         },
                                         new UnitConfig
                                         {
+                                            Code = "1A1102",
                                             Position = "01-FIQ-046",
                                             Name = "Тежка дизелова фракция към ХО-5",
                                             ProductTypetId = 2,
@@ -2803,6 +2811,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                         },
                                         new UnitConfig
                                         {
+                                            Code = "1A1103",
                                             Position = "01-FIQ-046",
                                             Name = "Тежка дизелова фракция към ТСНП",
                                             ProductTypetId = 2,
@@ -2815,6 +2824,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                         },
                                         new UnitConfig
                                         {
+                                            Code = "1A1104",
                                             Position = "01-FIQ-046",
                                             Name = "Тежка дизелова фракция към некондиция",
                                             ProductTypetId = 2,
@@ -2827,6 +2837,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                         },
                                         new UnitConfig
                                         {
+                                            Code = "1A1105",
                                             Position = "01-FIQ-046",
                                             Name = "Тежка дизелова фракция към промивка БИ",
                                             ProductTypetId = 2,
@@ -2839,6 +2850,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                         },
                                         new UnitConfig
                                         {
+                                            Code = "1A1106",
                                             Position = "01-FIQ-046",
                                             Name = "Тежка дизелова фракция към КПТО",
                                             ProductTypetId = 2,
@@ -2851,6 +2863,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                         },
                                         new UnitConfig
                                         {
+                                            Code = "1A1200",
                                             Position = "01-FIQ-049",
                                             Name = "ААтмосферен Газьол към ХО-5",
                                             ProductTypetId = 2,
@@ -2866,6 +2879,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                         },
                                         new UnitConfig
                                         {
+                                            Code = "1A1201",
                                             Position = "01-FIQ-049",
                                             Name = "Атмосферен Газьол към ККр",
                                             ProductTypetId = 2,
@@ -2878,6 +2892,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                         },
                                         new UnitConfig
                                         {
+                                            Code = "1A1202",
                                             Position = "01-FIQ-049",
                                             Name = "Атмосферен Газьол към КПТО",
                                             ProductTypetId = 2,
@@ -2890,6 +2905,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                         },
                                         new UnitConfig
                                         {
+                                            Code = "1A1203",
                                             Position = "01-FIQ-049",
                                             Name = "Атмосферен Газьол към некондиция",
                                             ProductTypetId = 2,
@@ -2902,6 +2918,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                         },
                                         new UnitConfig
                                         {
+                                            Code = "1A1300",
                                             Position = "01-FIС-090",
                                             Name = "Мазут към П-1",
                                             ProductTypetId = 2,
@@ -2917,6 +2934,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                         },
                                         new UnitConfig
                                         {
+                                            Code = "1A1400",
                                             Position = "01-FIСQ-201",
                                             Name = "Мазут към ВД-2",
                                             ProductTypetId = 10,
@@ -2926,12 +2944,13 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                             IsMaterial = true,
                                             IsEnergy = false,
                                             //IsInspectionPoint = true,
-                                            //CollectingDataMechanism = "A",
+                                            CollectingDataMechanism = "A",
                                             //PreviousShiftTag = "AV1_01-FIСQ-201.TOTS_L",
                                             //CurrentInspectionDataTag = "AV1_01-FIСQ-201.PV"
                                         },
                                         new UnitConfig
                                         {
+                                            Code = "1A1401",
                                             Position = "01-FIСQ-201",
                                             Name = "Мазут към Р-2",
                                             ProductTypetId = 2,
@@ -2944,6 +2963,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                         },
                                         new UnitConfig
                                         {
+                                            Code = "1A1402",
                                             Position = "01-FIСQ-201",
                                             Name = "Мазут към Р-1",
                                             ProductTypetId = 2,
@@ -2956,6 +2976,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                         },
                                         new UnitConfig
                                         {
+                                            Code = "1A1500",
                                             Position = "01-FIQ-117",
                                             Name = "Нефопродукт от Е-3 към ХО-2",
                                             ProductTypetId = 2,
@@ -2971,6 +2992,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                         },
                                         new UnitConfig
                                         {
+                                            Code = "1A1501",
                                             Position = "01-FIQ-117",
                                             Name = "Нефопродукт от Е-3 към ХО-3",
                                             ProductTypetId = 2,
@@ -2983,6 +3005,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                         },
                                         new UnitConfig
                                         {
+                                            Code = "1A1502",
                                             Position = "01-FIQ-117",
                                             Name = "Нефопродукт от Е-3 към ХО-5",
                                             ProductTypetId = 2,
@@ -2995,6 +3018,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                         },
                                         new UnitConfig
                                         {
+                                            Code = "1A1503",
                                             Position = "01-FIQ-117",
                                             Name = "Нефопродукт от Е-3 към некондиция",
                                             ProductTypetId = 2,
@@ -3007,6 +3031,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                         },
                                         new UnitConfig
                                         {
+                                            Code = "1A1600",
                                             Position = "01-FIСQ-086",
                                             Name = "ШМФ към ККр",
                                             ProductTypetId = 2,
@@ -3022,6 +3047,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                         },
                                         new UnitConfig
                                         {
+                                            Code = "1A1601",
                                             Position = "01-FIСQ-086",
                                             Name = "ШМФ към КПТО",
                                             ProductTypetId = 2,
@@ -3034,6 +3060,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                         },
                                         new UnitConfig
                                         {
+                                            Code = "1A1602",
                                             Position = "01-FIСQ-086",
                                             Name = "ШМФ към промивка БИ",
                                             ProductTypetId = 2,
@@ -3046,6 +3073,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                         },
                                         new UnitConfig
                                         {
+                                            Code = "1A1700",
                                             Position = "01-FIQ-087",
                                             Name = "ШМФ към Р-2",
                                             ProductTypetId = 2,
@@ -3061,6 +3089,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                         },
                                         new UnitConfig
                                         {
+                                            Code = "1A1701",
                                             Position = "01-FIQ-087",
                                             Name = "ШМФ към Р-1",
                                             ProductTypetId = 2,
@@ -3073,6 +3102,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                         },
                                         new UnitConfig
                                         {
+                                            Code = "1A1800",
                                             Position = "01-FICQ-088",
                                             Name = "ТДФ от ВДМ1 към ХО-2",
                                             ProductTypetId = 2,
@@ -3088,6 +3118,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                         },
                                         new UnitConfig
                                         {
+                                            Code = "1A1801",
                                             Position = "01-FICQ-088",
                                             Name = "ТДФ от ВДМ1 към ХО-3",
                                             ProductTypetId = 2,
@@ -3100,6 +3131,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                         },
                                         new UnitConfig
                                         {
+                                            Code = "1A1802",
                                             Position = "01-FICQ-088",
                                             Name = "ТДФ от ВДМ1 към ХО-5",
                                             ProductTypetId = 2,
@@ -3112,6 +3144,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                         },
                                         new UnitConfig
                                         {
+                                            Code = "1A1803",
                                             Position = "01-FICQ-088",
                                             Name = "ТДФ от ВДМ1 към ТСНП",
                                             ProductTypetId = 2,
@@ -3124,6 +3157,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                         },
                                         new UnitConfig
                                         {
+                                            Code = "1A1804",
                                             Position = "01-FICQ-088",
                                             Name = "ТДФ от ВДМ1 към промивка БИ",
                                             ProductTypetId = 2,
@@ -3136,6 +3170,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                         },
                                         new UnitConfig
                                         {
+                                            Code = "1A1900",
                                             Position = "01-FICQ-085",
                                             Name = "Слоп",
                                             ProductTypetId = 2,
@@ -3151,6 +3186,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                         },
                                         new UnitConfig
                                         {
+                                            Code = "1A2000",
                                             Position = "01-FIQ-084",
                                             Name = "Гудрон към БИ",
                                             ProductTypetId = 10,
@@ -3166,6 +3202,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                         },
                                         new UnitConfig
                                         {
+                                            Code = "1A2001",
                                             Position = "01-FIQ-084",
                                             Name = "Гудрон към КПТО",
                                             ProductTypetId = 10,
@@ -3178,6 +3215,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                         },
                                         new UnitConfig
                                         {
+                                            Code = "1A2002",
                                             Position = "01-FIQ-084",
                                             Name = "Гудрон към ТК",
                                             ProductTypetId = 10,
@@ -3190,6 +3228,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                         },
                                         new UnitConfig
                                         {
+                                            Code = "1A2100",
                                             Position = "01-FIQ-083",
                                             Name = "Гудрон към БИ",
                                             ProductTypetId = 10,
@@ -3205,6 +3244,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                         },
                                         new UnitConfig
                                         {
+                                            Code = "1A2101",
                                             Position = "01-FIQ-083",
                                             Name = "Гудрон към КПТО",
                                             ProductTypetId = 10,
@@ -3217,6 +3257,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                         },
                                         new UnitConfig
                                         {
+                                            Code = "1A2102",
                                             Position = "01-FIQ-083",
                                             Name = "Гудрон към ТК",
                                             ProductTypetId = 10,
@@ -3229,6 +3270,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                         },
                                         new UnitConfig
                                         {
+                                            Code = "1A2200",
                                             Position = "01-FICQ-082",
                                             Name = "Гудрон към БИ",
                                             ProductTypetId = 10,
@@ -3244,6 +3286,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                         },
                                         new UnitConfig
                                         {
+                                            Code = "1A2201",
                                             Position = "01-FICQ-082",
                                             Name = "Гудрон към КПТО",
                                             ProductTypetId = 10,
@@ -3256,6 +3299,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                         },
                                         new UnitConfig
                                         {
+                                            Code = "1A2202",
                                             Position = "01-FICQ-082",
                                             Name = "Гудрон към ТК",
                                             ProductTypetId = 10,
@@ -3268,6 +3312,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                         },
                                         new UnitConfig
                                         {
+                                            Code = "1A2300",
                                             Position = "01-FIQ-119",
                                             Name = "Обор. вода към АД_1",
                                             ProductTypetId = 9,
@@ -3283,6 +3328,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                         },
                                         new UnitConfig
                                         {
+                                            Code = "1A2400",
                                             Position = "01-FIQ-120",
                                             Name = "Обор. вода към АД_2",
                                             ProductTypetId = 9,
@@ -3298,6 +3344,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                         },
                                         new UnitConfig
                                         {
+                                            Code = "1A2500",
                                             Position = "01-FIQ-121",
                                             Name = "Обор. вода към ВД_1",
                                             ProductTypetId = 9,
@@ -3313,6 +3360,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                         },
                                         new UnitConfig
                                         {
+                                            Code = "1A2600",
                                             Position = "01-FIQ-122",
                                             Name = "Обор. вода към ВД_2",
                                             ProductTypetId = 9,
@@ -3328,6 +3376,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                         },
                                         new UnitConfig
                                         {
+                                            Code = "1A2700",
                                             Position = "01-FIQ-139",
                                             Name = "Свежа вода",
                                             ProductTypetId = 9,
@@ -3343,6 +3392,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                         },
                                         new UnitConfig
                                         {
+                                            Code = "1A2800",
                                             Position = "01-FIQ-026",
                                             Name = "Деминерализирана вода",
                                             ProductTypetId = 9,
@@ -3358,6 +3408,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                         },
                                         new UnitConfig
                                         {
+                                            Code = "1A2900",
                                             Position = "01-FIQ-125",
                                             Name = "КИП въздух",
                                             ProductTypetId = 9,
@@ -3373,6 +3424,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                         },
                                         new UnitConfig
                                         {
+                                            Code = "1A3000",
                                             Position = "01-FIQ-133",
                                             Name = "Азот",
                                             ProductTypetId = 9,
@@ -3388,6 +3440,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                         },
                                         new UnitConfig
                                         {
+                                            Code = "1A3100",
                                             Position = "01-FIQ-126",
                                             Name = "ВГГ за АВД-1",
                                             ProductTypetId = 9,
@@ -3403,6 +3456,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                         },
                                         new UnitConfig
                                         {
+                                            Code = "1A3200",
                                             Position = "01-FIQ-089",
                                             Name = "Пара ВД",
                                             ProductTypetId = 10,
@@ -3418,6 +3472,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                         },
                                         new UnitConfig
                                         {
+                                            Code = "1A3201",
                                             Position = "01-FIQ-089",
                                             Name = "Температура",
                                             ProductTypetId = 10,
@@ -3433,6 +3488,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                         },
                                         new UnitConfig
                                         {
+                                            Code = "1A3202",
                                             Position = "01-FIQ-089",
                                             Name = "Налягане",
                                             ProductTypetId = 10,
@@ -3448,6 +3504,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                         },
                                         new UnitConfig
                                         {
+                                            Code = "1A3203",
                                             Position = "01-FIQ-089",
                                             Name = "Количество енергия",
                                             ProductTypetId = 10,
@@ -3457,12 +3514,15 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                             IsMaterial = true,
                                             IsEnergy = false,
                                             IsCalculated = true,
-                                            CollectingDataMechanism = "C",
+                                            CollectingDataMechanism = "A",
+                                            //PreviousShiftTag = "AV1_01-FIQ-089.TOTS_L",
+                                            //CurrentInspectionDataTag = "AV1_01-FIQ-089.PV"
                                         },
 
 
                                         new UnitConfig
                                         {
+                                            Code = "1A3300",
                                             Position = "01-FIQ-118",
                                             Name = "Пара АД",
                                             ProductTypetId = 10,
@@ -3478,6 +3538,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                         },
                                         new UnitConfig
                                         {
+                                            Code = "1A3301",
                                             Position = "01-FIQ-118",
                                             Name = "Температура",
                                             ProductTypetId = 10,
@@ -3493,6 +3554,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                         },
                                         new UnitConfig
                                         {
+                                            Code = "1A3302",
                                             Position = "01-FIQ-118",
                                             Name = "Налягане",
                                             ProductTypetId = 10,
@@ -3507,6 +3569,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                         },
                                         new UnitConfig
                                         {
+                                            Code = "1A3303",
                                             Position = "01-FIQ-118",
                                             Name = "Количество енергия",
                                             ProductTypetId = 10,
@@ -3515,17 +3578,13 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                             MaterialTypeId = 1,
                                             IsMaterial = true,
                                             IsEnergy = false,
-                                            CollectingDataMechanism = "C",
+                                            CollectingDataMechanism = "A",
+                                            //PreviousShiftTag = "AV1_01-FIQ-118.TOTS_L",
+                                            //CurrentInspectionDataTag = "AV1_01-FIQ-118.PV"
                                         },
-
-
-
-
-
-
-
                                         new UnitConfig
                                         {
+                                            Code = "1A3400",
                                             Position = "01-FIQ-452",
                                             Name = "Котел изход пара",
                                             ProductTypetId = 10,
@@ -3541,6 +3600,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                         },
                                         new UnitConfig
                                         {
+                                            Code = "1A3401",
                                             Position = "01-FIQ-452",
                                             Name = "Температура",
                                             ProductTypetId = 10,
@@ -3556,6 +3616,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                         },
                                         new UnitConfig
                                         {
+                                            Code = "1A3402",
                                             Position = "01-FIQ-452",
                                             Name = "Налягане",
                                             ProductTypetId = 10,
@@ -3571,11 +3632,26 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                         },
                                         new UnitConfig
                                         {
+                                            Code = "1A3403",
                                             Position = "01-FIQ-452",
-                                            Name = "Налягане",
+                                            Name = "Количество енергия",
                                             ProductTypetId = 10,
                                             DirectionId = 1,
                                             MeasureUnitId = 5,
+                                            MaterialTypeId = 1,
+                                            IsMaterial = true,
+                                            IsEnergy = false,
+                                            CollectingDataMechanism = "A",
+                                            //PreviousShiftTag = "AV1_01-FIQ-452.TOTS_L",
+                                            //CurrentInspectionDataTag = "AV1_01-FIQ-452.PV"
+                                        },
+                                        new UnitConfig
+                                        {
+                                            Position = null,
+                                            Name = "Деемулгатор",
+                                            ProductTypetId = 11,
+                                            DirectionId = 2,
+                                            MeasureUnitId = 4,
                                             MaterialTypeId = 1,
                                             IsMaterial = true,
                                             IsEnergy = false,
@@ -3584,35 +3660,26 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                         new UnitConfig
                                         {
                                             Position = null,
-                                            Name = "ЕС2472А",
+                                            Name = "Филмообразуващ инхибитор",
                                             ProductTypetId = 11,
                                             DirectionId = 2,
                                             MeasureUnitId = 4,
                                             MaterialTypeId = 1,
                                             IsMaterial = true,
-                                            IsEnergy = false
+                                            IsEnergy = false,
+                                            CollectingDataMechanism = "C"
                                         },
                                         new UnitConfig
                                         {
                                             Position = null,
-                                            Name = "ЕС 1010",
+                                            Name = "Неутрализатор",
                                             ProductTypetId = 11,
                                             DirectionId = 2,
                                             MeasureUnitId = 4,
                                             MaterialTypeId = 1,
                                             IsMaterial = true,
-                                            IsEnergy = false
-                                        },
-                                        new UnitConfig
-                                        {
-                                            Position = null,
-                                            Name = "ЕС 1005",
-                                            ProductTypetId = 11,
-                                            DirectionId = 2,
-                                            MeasureUnitId = 4,
-                                            MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false
+                                            IsEnergy = false,
+                                            CollectingDataMechanism = "C"
                                         },
                                         new UnitConfig
                                         {
@@ -3623,21 +3690,24 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                             MeasureUnitId = 4,
                                             MaterialTypeId = 1,
                                             IsMaterial = true,
-                                            IsEnergy = false
+                                            IsEnergy = false,
+                                            CollectingDataMechanism = "C"
                                         },
                                         new UnitConfig
                                         {
                                             Position = null,
-                                            Name = "ЕС1017B",
+                                            Name = "Поглътител на кислород",
                                             ProductTypetId = 11,
                                             DirectionId = 2,
                                             MeasureUnitId = 4,
                                             MaterialTypeId = 1,
                                             IsMaterial = true,
-                                            IsEnergy = false
+                                            IsEnergy = false,
+                                            CollectingDataMechanism = "C"
                                         },
                                         new UnitConfig
                                         {
+                                            Code = "1A3500",
                                             Position = "Електромер",
                                             Name = "Ел.енергия",
                                             ProductTypetId = 12,
