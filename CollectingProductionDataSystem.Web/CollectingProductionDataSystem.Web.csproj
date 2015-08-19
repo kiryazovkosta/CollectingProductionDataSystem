@@ -209,15 +209,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppStart\BundleConfig.cs" />
-    <Compile Include="Infrastructure\Helpers\IdentityHelpers.cs" />
-    <Compile Include="Infrastructure\IdentityInfrastructure\SmsService.cs" />
-    <Compile Include="Infrastructure\IdentityInfrastructure\EmailService.cs" />
-    <Compile Include="AppStart\FilterConfig.cs" />
-    <Compile Include="Infrastructure\IdentityInfrastructure\ApplicationSignInManager.cs" />
-    <Compile Include="AppStart\NinjectWebCommon.cs" />
-    <Compile Include="AppStart\RouteConfig.cs" />
-    <Compile Include="AppStart\Startup.Auth.cs" />
-    <Compile Include="AppStart\ViewEnginesConfig.cs" />
     <Compile Include="App_GlobalResources\Layout.bg.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -228,6 +219,15 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Layout.resx</DependentUpon>
     </Compile>
+    <Compile Include="Infrastructure\Helpers\IdentityHelpers.cs" />
+    <Compile Include="Infrastructure\IdentityInfrastructure\SmsService.cs" />
+    <Compile Include="Infrastructure\IdentityInfrastructure\EmailService.cs" />
+    <Compile Include="AppStart\FilterConfig.cs" />
+    <Compile Include="Infrastructure\IdentityInfrastructure\ApplicationSignInManager.cs" />
+    <Compile Include="AppStart\NinjectWebCommon.cs" />
+    <Compile Include="AppStart\RouteConfig.cs" />
+    <Compile Include="AppStart\Startup.Auth.cs" />
+    <Compile Include="AppStart\ViewEnginesConfig.cs" />
     <Compile Include="Areas\Administration\AdministrationAreaRegistration.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -1390,10 +1390,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="App_GlobalResources\Layout.resx">
+    <Resource Include="App_GlobalResources\Layout.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Layout.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
+    </Resource>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="App_GlobalResources\Layout.bg.resx">

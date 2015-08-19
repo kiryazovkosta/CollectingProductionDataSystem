@@ -117,10 +117,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ConfirmPassword" xml:space="preserve">
+    <value>Потв. на парола</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+    <value>Електронна поща</value>
+  </data>
   <data name="Password" xml:space="preserve">
     <value>Парола</value>
   </data>
   <data name="UserName" xml:space="preserve">
-    <value>Потребител</value>
+    <value>Портебител</value>
   </data>
 </root>
