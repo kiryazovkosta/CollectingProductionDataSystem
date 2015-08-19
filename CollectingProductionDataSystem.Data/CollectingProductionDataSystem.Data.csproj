@@ -109,14 +109,6 @@
     <Compile Include="Migrations\201508181531067_UnitsManualData.Designer.cs">
       <DependentUpon>201508181531067_UnitsManualData.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201508182004352_UnitsManualData1.cs" />
-    <Compile Include="Migrations\201508182004352_UnitsManualData1.Designer.cs">
-      <DependentUpon>201508182004352_UnitsManualData1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201508182005363_UnitsManualData2.cs" />
-    <Compile Include="Migrations\201508182005363_UnitsManualData2.Designer.cs">
-      <DependentUpon>201508182005363_UnitsManualData2.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Concrete\ProductionData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -143,12 +135,6 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201508181531067_UnitsManualData.resx">
       <DependentUpon>201508181531067_UnitsManualData.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201508182004352_UnitsManualData1.resx">
-      <DependentUpon>201508182004352_UnitsManualData1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201508182005363_UnitsManualData2.resx">
-      <DependentUpon>201508182005363_UnitsManualData2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

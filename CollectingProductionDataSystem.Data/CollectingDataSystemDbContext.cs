@@ -22,20 +22,23 @@
     {
         private readonly IPersister persister;
 
+        static CollectingDataSystemDbContext() 
+        {
+            Database.SetInitializer(new MigrateDatabaseToLatestVersion<CollectingDataSystemDbContext, Configuration>());
+        }
+
         public CollectingDataSystemDbContext()
             : base("CollectingPrimaryDataSystemConnection")
         {
             //#if DEBUG
             //            this.Database.Log = (c) => { Debug.WriteLine(c); };
             //#endif
-            Database.SetInitializer(new MigrateDatabaseToLatestVersion<CollectingDataSystemDbContext, Configuration>());
             this.persister = new AuditablePersister();
         }
 
         public CollectingDataSystemDbContext(IPersister param)
             : base("CollectingPrimaryDataSystemConnection")
         {
-            Database.SetInitializer(new MigrateDatabaseToLatestVersion<CollectingDataSystemDbContext, Configuration>());
             this.persister = param;
         }
 
