@@ -126,8 +126,11 @@
   <data name="Error" xml:space="preserve">
     <value>An error has occurred.</value>
   </data>
+  <data name="LengthError" xml:space="preserve">
+    <value>Полето {0} трябва да бъде дългo поне {2} синвола.</value>
+  </data>
   <data name="Password" xml:space="preserve">
-    <value>Полето {0} трябва да бъде дълга поне {2} синвола.</value>
+    <value>Полето {0} трябва да бъде дългo поне {2} синвола.</value>
   </data>
   <data name="UserName" xml:space="preserve">
     <value>Потребителското име трябва да бъде дълго поне {2} синвола.</value>

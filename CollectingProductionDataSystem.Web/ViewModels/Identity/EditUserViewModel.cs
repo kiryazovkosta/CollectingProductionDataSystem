@@ -1,13 +1,11 @@
 ﻿namespace CollectingProductionDataSystem.Web.ViewModels.Identity
 {
-    using System.Threading.Tasks;
     using System;
-    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
-    using System.Web;
     using CollectingProductionDataSystem.Infrastructure.Mapping;
     using CollectingProductionDataSystem.Models.Identity;
+    using Resources = App_GlobalResources.Resources;
 
     public class EditUserViewModel:IMapFrom<ApplicationUser>
     {
@@ -15,16 +13,42 @@
         [Display(Name = "Id")]
         public int Id { get; set; }
 
-        [Display(Name = "Потребителско име")]
+        [Display(Name = "UserName",ResourceType=typeof(Resources.Layout))]
         public string UserName { get; set; }
 
-        [Display(Name = "Електронна поща")]
+        [Display(Name = "Email",ResourceType=typeof(Resources.Layout))]
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
 
-        [Display(Name = "Нова парола")]
+        [Required]
+        [StringLength(50,ErrorMessageResourceName="LengthError",ErrorMessageResourceType=typeof(Resources.ErrorMessages), MinimumLength = 4)]
+        [Display(Name = "FirstName", ResourceType = typeof(Resources.Layout))]
+        public string FirstName { get; set; }
+
+        [Required]
+        [StringLength(50,ErrorMessageResourceName="LengthError",ErrorMessageResourceType=typeof(Resources.ErrorMessages), MinimumLength = 4)]
+        [Display(Name = "MiddleName", ResourceType = typeof(Resources.Layout))]
+        public string MiddleName { get; set; }
+
+        [Required]
+        [StringLength(50,ErrorMessageResourceName="LengthError",ErrorMessageResourceType=typeof(Resources.ErrorMessages), MinimumLength = 4)]
+        [Display(Name = "LastName", ResourceType = typeof(Resources.Layout))]
+        public string LastName { get; set; }
+
+        [Display(Name = "FullName", ResourceType = typeof(Resources.Layout))]
+        public string FullName { get; private set; }
+
+        [Required]
+        [StringLength(50, ErrorMessageResourceName = "LengthError", ErrorMessageResourceType = typeof(Resources.ErrorMessages), MinimumLength = 4)]
+        [Display(Name = "Occupation", ResourceType = typeof(Resources.Layout))]
+        public string Occupation { get; set; }
+
+
+
+        [Display(Name = "NewPassword",ResourceType=typeof(Resources.Layout))]
         [DataType(DataType.Password)]
         public string NewPassword { get; set; }
+
 
     }
 }

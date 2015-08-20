@@ -126,6 +126,9 @@
   <data name="Error" xml:space="preserve">
     <value>An error has occurred.</value>
   </data>
+  <data name="LengthError" xml:space="preserve">
+    <value>The {0} must be at least {2} characters long.</value>
+  </data>
   <data name="Password" xml:space="preserve">
     <value>The {0} must be at least {2} characters long.</value>
   </data>

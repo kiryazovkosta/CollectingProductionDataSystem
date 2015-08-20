@@ -1,8 +1,10 @@
 ﻿namespace CollectingProductionDataSystem.Data
 {
+
     using System.Collections.Generic;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Diagnostics;
     using System.Linq;
     using CollectingProductionDataSystem.Data.Concrete;
     using CollectingProductionDataSystem.Data.Contracts;
@@ -30,9 +32,9 @@
         public CollectingDataSystemDbContext()
             : base("CollectingPrimaryDataSystemConnection")
         {
-            //#if DEBUG
-            //            this.Database.Log = (c) => { Debug.WriteLine(c); };
-            //#endif
+            #if DEBUG
+                        this.Database.Log = (c) => { Debug.WriteLine(c); };
+            #endif
             this.persister = new AuditablePersister();
         }
 
@@ -140,6 +142,4 @@
             return base.Set<T>();
         }
     }
-
-
 }

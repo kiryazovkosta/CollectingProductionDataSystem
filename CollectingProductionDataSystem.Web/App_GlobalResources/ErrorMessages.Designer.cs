@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace CollectingProductionDataSystem.Web.App_GlobalResources {
+namespace App_GlobalResources.Resources {
     using System;
     
     
@@ -84,6 +84,15 @@ namespace CollectingProductionDataSystem.Web.App_GlobalResources {
         public static string Error {
             get {
                 return ResourceManager.GetString("Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The {0} must be at least {2} characters long..
+        /// </summary>
+        public static string LengthError {
+            get {
+                return ResourceManager.GetString("LengthError", resourceCulture);
             }
         }
         

@@ -14,6 +14,34 @@
         </div>
         <div class="form-group">
             <div class="row">
+                @Html.LabelFor(m => m.FirstName, new { @class = "col-xs-3 control-label control-label-horizontal" })
+                @Html.EditorFor(m => m.FirstName, new { htmlAttributes = new { @class = "form-control col-xs-9 k-editor" } })
+                @Html.ValidationMessageFor(m => m.FirstName, string.Empty, new { @class = "validation-summary-errors" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                @Html.LabelFor(m => m.MiddleName, new { @class = "col-xs-3 control-label control-label-horizontal" })
+                @Html.EditorFor(m => m.MiddleName, new { htmlAttributes = new { @class = "form-control col-xs-9 k-editor" } })
+                @Html.ValidationMessageFor(m => m.MiddleName, string.Empty, new { @class = "validation-summary-errors" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                @Html.LabelFor(m => m.LastName, new { @class = "col-xs-3 control-label control-label-horizontal" })
+                @Html.EditorFor(m => m.LastName, new { htmlAttributes = new { @class = "form-control col-xs-9 k-editor" } })
+                @Html.ValidationMessageFor(m => m.LastName, string.Empty, new { @class = "validation-summary-errors" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                @Html.LabelFor(m => m.Occupation, new { @class = "col-xs-3 control-label control-label-horizontal" })
+                @Html.EditorFor(m => m.Occupation, new { htmlAttributes = new { @class = "form-control col-xs-9 k-editor" } })
+                @Html.ValidationMessageFor(m => m.Occupation, string.Empty, new { @class = "validation-summary-errors" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
                 @Html.LabelFor(m => m.NewPassword, new { @class = "col-xs-3 control-label control-label-horizontal" })
                 @Html.EditorFor(m => m.NewPassword, new { htmlAttributes = new { @class = "form-control col-xs-9 k-editor" } })
                 @Html.ValidationMessageFor(m => m.NewPassword, string.Empty, new { @class = "validation-summary-errors" })

@@ -2,6 +2,7 @@
 {
     using System.Web.Mvc;
     using CollectingProductionDataSystem.Enumerations;
+    using Resources = App_GlobalResources.Resources;
 
     public class HomeController : Controller
     {
@@ -10,8 +11,8 @@
             if (message != null)
             {
                 ViewBag.StatusMessage =
-                    message == ManageMessageId.ChangePasswordSuccess ? App_GlobalResources.Layout.ChanhePasswordSuccess
-                    : message == ManageMessageId.Error ? App_GlobalResources.ErrorMessages.Error
+                    message == ManageMessageId.ChangePasswordSuccess ? Resources.Layout.ChanhePasswordSuccess
+                    : message == ManageMessageId.Error ? Resources.ErrorMessages.Error
                     : message == ManageMessageId.AddPhoneSuccess ? "Your phone number was added."
                     : message == ManageMessageId.RemovePhoneSuccess ? "Your phone number was removed."
                     : string.Empty;

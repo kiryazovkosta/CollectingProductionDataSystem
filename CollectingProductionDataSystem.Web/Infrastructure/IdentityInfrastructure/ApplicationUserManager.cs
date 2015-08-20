@@ -6,6 +6,7 @@ namespace CollectingProductionDataSystem.Web.Infrastructure.IdentityInfrastructu
     using CollectingProductionDataSystem.Data;
     using CollectingProductionDataSystem.Data.Identity;
     using CollectingProductionDataSystem.Models.Identity;
+    using Resources = App_GlobalResources.Resources;
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.Owin;
     using Microsoft.Owin;
@@ -34,7 +35,7 @@ namespace CollectingProductionDataSystem.Web.Infrastructure.IdentityInfrastructu
             }
             else
             {
-                return IdentityResult.Failed(new string[] { App_GlobalResources.ErrorMessages.Email });
+                return IdentityResult.Failed(new string[] { Resources.ErrorMessages.Email });
             }
         }
 

@@ -135,8 +135,17 @@
   <data name="Error" xml:space="preserve">
     <value>Възникна грешка</value>
   </data>
+  <data name="FirstName" xml:space="preserve">
+    <value>Име</value>
+  </data>
+  <data name="FullName" xml:space="preserve">
+    <value>Име, Презиме, Фамилия</value>
+  </data>
   <data name="GreetingMessage" xml:space="preserve">
     <value>Здравейте {0}!</value>
+  </data>
+  <data name="LastName" xml:space="preserve">
+    <value>Фамилия</value>
   </data>
   <data name="Login" xml:space="preserve">
     <value>Вход</value>
@@ -147,8 +156,14 @@
   <data name="Logoff" xml:space="preserve">
     <value>Изход</value>
   </data>
+  <data name="MiddleName" xml:space="preserve">
+    <value>Презиме</value>
+  </data>
   <data name="NewPassword" xml:space="preserve">
     <value>Нова парола</value>
+  </data>
+  <data name="Occupation" xml:space="preserve">
+    <value>Месторабота, длъжност</value>
   </data>
   <data name="Password" xml:space="preserve">
     <value>Парола</value>

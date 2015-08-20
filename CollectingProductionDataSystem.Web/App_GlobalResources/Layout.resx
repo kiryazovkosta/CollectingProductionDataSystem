@@ -132,8 +132,17 @@
   <data name="Email" xml:space="preserve">
     <value>E-mail</value>
   </data>
+  <data name="FirstName" xml:space="preserve">
+    <value>First Name</value>
+  </data>
+  <data name="FullName" xml:space="preserve">
+    <value>Full Name</value>
+  </data>
   <data name="GreetingMessage" xml:space="preserve">
     <value>Hello {0}!</value>
+  </data>
+  <data name="LastName" xml:space="preserve">
+    <value>Last Name</value>
   </data>
   <data name="Login" xml:space="preserve">
     <value>LogIn</value>
@@ -144,8 +153,14 @@
   <data name="Logoff" xml:space="preserve">
     <value>Log off</value>
   </data>
+  <data name="MiddleName" xml:space="preserve">
+    <value>Middle Name</value>
+  </data>
   <data name="NewPassword" xml:space="preserve">
     <value>New Password</value>
+  </data>
+  <data name="Occupation" xml:space="preserve">
+    <value>Occupation</value>
   </data>
   <data name="Password" xml:space="preserve">
     <value>Password</value>

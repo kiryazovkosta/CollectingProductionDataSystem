@@ -5,11 +5,15 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using AutoMapper;
 using CollectingProductionDataSystem.Data.Contracts;
 using CollectingProductionDataSystem.Models;
 using CollectingProductionDataSystem.Models.Inventories;
 using CollectingProductionDataSystem.Models.Nomenclatures;
 using CollectingProductionDataSystem.Web.AppStart;
+using CollectingProductionDataSystem.Web.ViewModels.Tank;
+using Kendo.Mvc.Extensions;
+using Kendo.Mvc.UI;
 using Microsoft.AspNet.Identity.Owin;
 
 namespace CollectingProductionDataSystem.Web.Controllers
@@ -29,7 +33,7 @@ namespace CollectingProductionDataSystem.Web.Controllers
         public ActionResult Test()
         {
             // add product
-            var pr1 = new Product() { Name = "Added Product", ProductTypeId = 1};
+            var pr1 = new Product() { Name = "Added Product", ProductTypeId = 1 };
             this.data.Products.Add(pr1);
 
             //modify product
@@ -39,7 +43,7 @@ namespace CollectingProductionDataSystem.Web.Controllers
 
             //delete product
             this.data.Products.Delete(4);
-           
+
             this.data.SaveChanges(this.UserProfile.User.UserName);
             return View((object)"Success");
         }
@@ -66,6 +70,21 @@ namespace CollectingProductionDataSystem.Web.Controllers
 
             return View(model);
 
+        }
+
+        [HttpGet]
+        public ActionResult TankData()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public JsonResult ReadTank([DataSourceRequest]DataSourceRequest request)
+        {
+            var dbResult = this.data.TanksData.All().Include(x=>x.TankConfig).ToDataSourceResult(request, ModelState);
+            dbResult.Data = Mapper.Map<IEnumerable<TankData>, IEnumerable<TankDataViewModel>>((IEnumerable<TankData>)dbResult.Data);
+            return Json(dbResult);
         }
     }
 

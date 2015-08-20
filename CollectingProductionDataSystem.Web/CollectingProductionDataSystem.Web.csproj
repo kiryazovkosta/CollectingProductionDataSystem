@@ -210,24 +210,24 @@
   <ItemGroup>
     <Compile Include="AppStart\BundleConfig.cs" />
     <Compile Include="App_GlobalResources\ErrorMessages.bg.designer.cs">
+      <DependentUpon>ErrorMessages.bg.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>ErrorMessages.bg.resx</DependentUpon>
     </Compile>
     <Compile Include="App_GlobalResources\ErrorMessages.Designer.cs">
+      <DependentUpon>ErrorMessages.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>ErrorMessages.resx</DependentUpon>
     </Compile>
     <Compile Include="App_GlobalResources\Layout.bg.designer.cs">
+      <DependentUpon>Layout.bg.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Layout.bg.resx</DependentUpon>
     </Compile>
     <Compile Include="App_GlobalResources\Layout.Designer.cs">
+      <DependentUpon>Layout.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Layout.resx</DependentUpon>
     </Compile>
     <Compile Include="Infrastructure\Helpers\IdentityHelpers.cs" />
     <Compile Include="Infrastructure\IdentityInfrastructure\SmsService.cs" />
@@ -272,6 +272,7 @@
     <Compile Include="ViewModels\Identity\RoleCreateViewModel.cs" />
     <Compile Include="ViewModels\Identity\RoleEditViewModel.cs" />
     <Compile Include="ViewModels\Identity\RoleModificationViewModel.cs" />
+    <Compile Include="ViewModels\Tank\TankDataViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Administration\Views\Role\Create.cshtml" />
@@ -1372,6 +1373,9 @@
     <Content Include="Scripts\kendo\kendo.web.min.js.map" />
     <Content Include="Scripts\kendo\kendo.window.min.js.map" />
     <Content Include="Views\Home\About.cshtml" />
+    <Content Include="Views\Account\GetGreetingMessage.cshtml" />
+    <Content Include="Views\Tests\TankData.cshtml" />
+    <Content Include="Views\Shared\EdditorTemplates\DateTime.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1382,6 +1386,10 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CollectingProductionDataSystem.Application\CollectingProductionDataSystem.Application.csproj">
+      <Project>{3A125DE9-28B9-4004-A1D9-BEBDE62AC786}</Project>
+      <Name>CollectingProductionDataSystem.Application</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CollectingProductionDataSystem.Contracts\CollectingProductionDataSystem.Contracts.csproj">
       <Project>{8dd67abb-5bfb-4a28-82df-7bfe8ca483a6}</Project>
       <Name>CollectingProductionDataSystem.Contracts</Name>
@@ -1404,23 +1412,25 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="App_GlobalResources\ErrorMessages.bg.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>ErrorMessages.bg.designer.cs</LastGenOutput>
+      <CustomToolNamespace>App_GlobalResources.Resources</CustomToolNamespace>
+    </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\ErrorMessages.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ErrorMessages.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>App_GlobalResources.Resources</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="App_GlobalResources\ErrorMessages.bg.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>ErrorMessages.bg.designer.cs</LastGenOutput>
+    <EmbeddedResource Include="App_GlobalResources\Layout.bg.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Layout.bg.designer.cs</LastGenOutput>
+      <CustomToolNamespace>App_GlobalResources.Resources</CustomToolNamespace>
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Layout.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Layout.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="App_GlobalResources\Layout.bg.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Layout.bg.designer.cs</LastGenOutput>
+      <CustomToolNamespace>App_GlobalResources.Resources</CustomToolNamespace>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

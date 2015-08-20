@@ -1,5 +1,6 @@
 namespace CollectingProductionDataSystem.Models.Identity
 {
+    using System.ComponentModel.DataAnnotations;
     using CollectingProductionDataSystem.Models.Contracts;
     using Microsoft.AspNet.Identity.EntityFramework;
 
@@ -21,5 +22,8 @@ namespace CollectingProductionDataSystem.Models.Identity
         }
 
          public bool IsAvailableForAdministrators { get; set; }
+
+         [StringLength(250)]
+         public string Description { get; set; }
     }
 }

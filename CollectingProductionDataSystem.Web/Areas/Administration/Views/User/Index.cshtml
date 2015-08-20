@@ -17,9 +17,11 @@
           .Columns(
                columns =>
                {
-                   columns.Bound(c => c.Id);
+                   columns.Bound(c => c.Id).Width(40);
                    columns.Bound(c => c.UserName);
                    columns.Bound(c => c.Email);
+                   columns.Bound(c => c.FullName);
+                   columns.Bound(c => c.Occupation);
                    columns.Command(c => { c.Edit(); c.Destroy(); });
                })
           .Editable(editable => editable.Mode(GridEditMode.PopUp).TemplateName("_EditAccount").Window(window => window.Width(650).Scrollable(false)))
