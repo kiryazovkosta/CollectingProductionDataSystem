@@ -1,11 +1,11 @@
-using System;
-using CollectingProductionDataSystem.Models.Abstract;
-using CollectingProductionDataSystem.Models.Contracts;
-using CollectingProductionDataSystem.Models.Nomenclatures;
-
 namespace CollectingProductionDataSystem.Models.Inventories
 {
-    public partial class TankData: AuditInfo, IEntity
+    using System;
+    using CollectingProductionDataSystem.Models.Abstract;
+    using CollectingProductionDataSystem.Models.Contracts;
+    using CollectingProductionDataSystem.Models.Nomenclatures;
+
+    public partial class TankData: AuditInfo, IApprovableEntity, IEntity
     {
         public int Id { get; set; }
         public DateTime RecordTimestamp { get; set; }
@@ -29,6 +29,7 @@ namespace CollectingProductionDataSystem.Models.Inventories
         public decimal? MaxVolume { get; set; }
         public decimal? AvailableRoom { get; set; }
         public decimal? UnusableResidueLevel { get; set; }
+        public bool IsApproved { get; set; }
         public virtual TankConfig TankConfig { get; set; }
         public virtual Product Product { get; set; }
         public virtual TanksManualData TanksManualData { get; set; }

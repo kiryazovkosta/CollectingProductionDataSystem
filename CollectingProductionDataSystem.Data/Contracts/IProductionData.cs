@@ -30,7 +30,7 @@
 
         IDeletableEntityRepository<TankConfig> Tanks { get; }
 
-        IImmutableEntityRepository<TankData> TanksData { get; }
+        IApprovableEntityRepository<TankData> TanksData { get; }
 
         IDeletableEntityRepository<TanksManualData> TanksManualData { get; }
 

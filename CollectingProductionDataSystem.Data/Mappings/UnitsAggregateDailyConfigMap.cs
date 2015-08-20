@@ -20,17 +20,17 @@ namespace CollectingProductionDataSystem.Data.Mappings
                 .IsRequired()
                 .HasMaxLength(20);
 
+            this.Property(t => t.AggregationFormula)
+                .IsRequired()
+                .HasMaxLength(512);
+
             // Table & Column Mappings
             this.ToTable("UnitsAggregateDailyConfigs");
 
             // Relationships
-            this.HasRequired(t => t.AggregationsFormula)
-                .WithMany(t => t.UnitsAggregateDailyDatas)
-                .HasForeignKey(d => d.AggregationFormulaId);
             this.HasRequired(t => t.ProcessUnit)
                 .WithMany(t => t.UnitsAggregateDailyConfigs)
                 .HasForeignKey(d => d.ProcessUnitId);
-
         }
     }
 }

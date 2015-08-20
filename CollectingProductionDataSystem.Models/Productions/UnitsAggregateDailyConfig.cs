@@ -12,9 +12,7 @@
         public int ProcessUnitId { get; set; }
         public int ProductTypeId { get; set; }
         public int MeasureUnitId { get; set; }
-        public int AggregationFormulaId { get; set; }
-        public AggregationPriority AggregationPriority { get; set; }
-        public virtual AggregationsFormula AggregationsFormula { get; set; }
+        public string AggregationFormula { get; set; }
         public virtual MeasureUnit MeasureUnit { get; set; }
         public virtual ProcessUnit ProcessUnit { get; set; }
         public virtual ProductType ProductType { get; set; }

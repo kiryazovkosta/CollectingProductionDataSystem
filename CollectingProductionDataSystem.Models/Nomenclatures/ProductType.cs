@@ -11,8 +11,8 @@ namespace CollectingProductionDataSystem.Models.Nomenclatures
     {
         public ProductType()
         {
-            this.Products = new List<Product>();
-            this.Units = new List<UnitConfig>();
+            this.Products = new HashSet<Product>();
+            this.Units = new HashSet<UnitConfig>();
         }
 
         public int Id { get; set; }

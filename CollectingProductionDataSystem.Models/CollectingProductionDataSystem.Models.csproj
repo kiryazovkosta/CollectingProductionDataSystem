@@ -73,8 +73,6 @@
     <Compile Include="Inventories\TankData.cs" />
     <Compile Include="Nomenclatures\MeasureUnit.cs" />
     <Compile Include="Nomenclatures\TransportType.cs" />
-    <Compile Include="Productions\AggregationPriority.cs" />
-    <Compile Include="Productions\AggregationsFormula.cs" />
     <Compile Include="Productions\Factory.cs" />
     <Compile Include="Inventories\Park.cs" />
     <Compile Include="Inventories\TankConfig.cs" />

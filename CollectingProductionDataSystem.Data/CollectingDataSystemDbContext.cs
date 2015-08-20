@@ -84,8 +84,6 @@
 
         public IDbSet<TransportType> TransportTypes { get; set; }
 
-        public DbSet<AggregationsFormula> AggregationsFormulas { get; set; }
-
         public DbSet<UnitsAggregateDailyConfig> UnitsAggregateDailyConfigs { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

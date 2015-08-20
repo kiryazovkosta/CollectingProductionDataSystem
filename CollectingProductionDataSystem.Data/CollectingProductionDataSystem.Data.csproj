@@ -81,7 +81,6 @@
     <Compile Include="Contracts\IRepository.cs" />
     <Compile Include="Identity\RoleStoreIntPk.cs" />
     <Compile Include="Identity\UserStoreIntPk.cs" />
-    <Compile Include="Mappings\AggregationsFormulaMap.cs" />
     <Compile Include="Mappings\AreaMap.cs" />
     <Compile Include="Mappings\AuditLogRecordMap.cs" />
     <Compile Include="Mappings\Configuration\ModelBingConfig.cs" />
@@ -107,12 +106,11 @@
     <Compile Include="Mappings\UnitsManualDataMap.cs" />
     <Compile Include="Mappings\UnitsInspectionDataMap.cs" />
     <Compile Include="Mappings\ZoneMap.cs" />
-    <Compile Include="Migrations\201508181531067_UnitsManualData.cs" />
-    <Compile Include="Migrations\201508181531067_UnitsManualData.Designer.cs">
-      <DependentUpon>201508181531067_UnitsManualData.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Concrete\ProductionData.cs" />
+    <Compile Include="Migrations\ProductionDataImporter.cs" />
+    <Compile Include="Migrations\TanksDataImporter.cs" />
+    <Compile Include="Migrations\ProductsDataImporter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Contracts\IDbContext.cs" />
   </ItemGroup>
@@ -133,11 +131,6 @@
       <Project>{63cc73a0-f2c2-453d-a915-1913095f22fd}</Project>
       <Name>CollectingProductionDataSystem.Models</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201508181531067_UnitsManualData.resx">
-      <DependentUpon>201508181531067_UnitsManualData.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

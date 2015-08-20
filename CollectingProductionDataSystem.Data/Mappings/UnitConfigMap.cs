@@ -25,7 +25,7 @@ namespace CollectingProductionDataSystem.Data.Mappings
                 .HasMaxLength(200);
 
             // Table & Column Mappings
-            this.ToTable("Units");
+            this.ToTable("UnitsConfigs");
 
             // Relationships
             this.HasRequired(t => t.Direction)
@@ -38,7 +38,7 @@ namespace CollectingProductionDataSystem.Data.Mappings
                 .WithMany(t => t.Units)
                 .HasForeignKey(d => d.MeasureUnitId);
             this.HasRequired(t => t.ProcessUnit)
-                .WithMany(t => t.Units)
+                .WithMany(t => t.UnitsConfigs)
                 .HasForeignKey(d => d.ProcessUnitId);
             this.HasOptional(t => t.Product)
                 .WithMany(t => t.Units)

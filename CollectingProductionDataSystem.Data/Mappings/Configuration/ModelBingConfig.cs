@@ -32,7 +32,6 @@
             modelBuilder.Configurations.Add(new ZoneMap());
             modelBuilder.Configurations.Add(new MeasurementPointsProductsConfigMap());
             modelBuilder.Configurations.Add(new TransportTypeMap());
-            modelBuilder.Configurations.Add(new AggregationsFormulaMap());
             modelBuilder.Configurations.Add(new UnitsAggregateDailyConfigMap());
         }
     }

@@ -12,6 +12,14 @@ namespace CollectingProductionDataSystem.Data.Mappings
             this.HasKey(t => t.Id);
 
             // Properties
+            this.Property(t => t.Name)
+                .IsRequired()
+                .HasMaxLength(50);
+
+            this.Property(t => t.Code)
+                .IsRequired()
+                .HasMaxLength(8);
+
             // Table & Column Mappings
             this.ToTable("MeasureUnits");
  

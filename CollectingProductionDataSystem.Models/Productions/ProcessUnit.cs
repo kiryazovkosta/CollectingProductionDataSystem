@@ -10,7 +10,7 @@ namespace CollectingProductionDataSystem.Models.Productions
     {
         public ProcessUnit()
         {
-            this.Units = new HashSet<UnitConfig>();
+            this.UnitsConfigs = new HashSet<UnitConfig>();
             this.UnitsAggregateDailyConfigs = new HashSet<UnitsAggregateDailyConfig>();
         }
 
@@ -19,7 +19,7 @@ namespace CollectingProductionDataSystem.Models.Productions
         public string FullName { get; set; }
         public int FactoryId { get; set; }
         public virtual Factory Factory { get; set; }
-        public virtual ICollection<UnitConfig> Units { get; set; }
+        public virtual ICollection<UnitConfig> UnitsConfigs { get; set; }
         public virtual ICollection<UnitsAggregateDailyConfig> UnitsAggregateDailyConfigs { get; set; }
     }
 }

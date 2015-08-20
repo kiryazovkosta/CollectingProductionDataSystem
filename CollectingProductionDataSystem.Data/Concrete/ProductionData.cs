@@ -71,7 +71,7 @@ using CollectingProductionDataSystem.Models.Transactions;
         {
             get
             {
-                return this.GetIApprovableEntityRepository<UnitsData>();
+                return this.GetApprovableEntityRepository<UnitsData>();
             }
         }
 
@@ -115,11 +115,11 @@ using CollectingProductionDataSystem.Models.Transactions;
             }
         }
 
-        public IImmutableEntityRepository<TankData> TanksData
+        public IApprovableEntityRepository<TankData> TanksData
         {
             get
             {
-                return this.GetImmutableEntityRepository<TankData>();
+                return this.GetApprovableEntityRepository<TankData>();
             }
         }
 
@@ -240,7 +240,7 @@ using CollectingProductionDataSystem.Models.Transactions;
 
             return (IImmutableEntityRepository<T>)this.repositories[typeof(T)];
         }
-        private IApprovableEntityRepository<T> GetIApprovableEntityRepository<T>() where T : class, IEntity, IApprovableEntity, IAuditInfo
+        private IApprovableEntityRepository<T> GetApprovableEntityRepository<T>() where T : class, IEntity, IApprovableEntity, IAuditInfo
         {
             if (!this.repositories.ContainsKey(typeof(T)))
             {

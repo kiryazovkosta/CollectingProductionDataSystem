@@ -22,6 +22,8 @@ namespace CollectingProductionDataSystem.Models.Productions
         public string Code { get; set; }
         public string Position { get; set; }
         public string Name { get; set; }
+        public int? ProductTypeId { get; set; }
+        public int? ProductId { get; set; }
         public int ProcessUnitId { get; set; }
         public int DirectionId { get; set; }
         public int MeasureUnitId { get; set; }
@@ -33,12 +35,9 @@ namespace CollectingProductionDataSystem.Models.Productions
         public string CollectingDataMechanism { get; set; }
         public string AggregateGroup { get; set; }
         public bool IsCalculated { get; set; }
-        public int? FormulaId { get; set; }
         public string PreviousShiftTag { get; set; }
         public string CurrentInspectionDataTag { get; set; }
         public string Notes { get; set; }
-        public Nullable<int> ProductTypeId { get; set; }
-        public Nullable<int> ProductId { get; set; }
         public virtual Direction Direction { get; set; }
         public virtual MaterialType MaterialType { get; set; }
         public virtual MeasureUnit MeasureUnit { get; set; }

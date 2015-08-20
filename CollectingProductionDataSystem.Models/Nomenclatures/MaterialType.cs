@@ -10,7 +10,7 @@ namespace CollectingProductionDataSystem.Models.Nomenclatures
     {
         public MaterialType()
         {
-            this.Units = new List<UnitConfig>();
+            this.Units = new HashSet<UnitConfig>();
         }
 
         public int Id { get; set; }
