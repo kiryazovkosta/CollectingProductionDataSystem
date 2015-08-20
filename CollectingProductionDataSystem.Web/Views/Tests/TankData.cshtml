@@ -9,39 +9,32 @@
 @Html.Kendo().DateTimePicker().Name("date").Culture("bg-BG")
 
 @Html.AntiForgeryToken()
-@(Html.Kendo().Grid<TankDataViewModel>()
-          .Name("taks")
-          .Columns(
-               columns =>   
-               {
-                   columns.Bound(c => c.Id).Width(40);
-                   columns.Bound(c => c.RecordTimestamp).Width(210).Format("{0:dd.MM.yyyy HH:mm:ss}");
-                   columns.Bound(c => c.TankName).Width(100);
-                   columns.Bound(c => c.ParkId);
-                   columns.Bound(c => c.LiquidLevel);
-                   columns.Bound(c => c.ProductLevel);
-                   columns.Bound(c => c.WeightInVacuum);
-                   columns.Bound(c => c.ReferenceDensity);
-                   //columns.Command(c => { c.Edit(); c.Destroy(); });
-               })
-          //.Editable(editable => editable.Mode(GridEditMode.PopUp).TemplateName("_EditAccount").Window(window => window.Width(650).Scrollable(false)))
-          .Pageable()
-          .Sortable()
-          .Scrollable(scr => scr.Height(430))
-          .Filterable()
-          .DataSource(dataSource => dataSource
-                .Ajax()
-                .PageSize(20)
-                .ServerOperation(true)
-                .Read(read => read.Action("ReadTank", "Tests", new { area = "" }).Data("sendAntiForgery"))
-                //.Events(events => events.Error("error_handler"))
-                //            .Model(model =>
-                //            {
-                //                model.Id(p => p.Id);
-                //            })
-            //            .Update(update => update.Action("Edit", "User", new { area = "Administration" }).Data("sendAntiForgery"))
-            //            .Destroy(update => update.Action("Delete", "User", new { area = "Administration" }).Data("sendAntiForgery"))
-            )            
+@(Html.Kendo()
+      .Grid<TankDataViewModel>()
+      .Name("taks")
+      .Columns(
+           columns =>
+           {
+               columns.Bound(c => c.Id).Width(40);
+               columns.Bound(c => c.RecordTimestamp).Width(210).Format("{0:dd.MM.yyyy HH:mm:ss}").Filterable(filterable => filterable.UI("recordTimeStampFilter"));
+               columns.Bound(c => c.TankName).Width(100);
+               columns.Bound(c => c.ParkId);
+               columns.Bound(c => c.LiquidLevel);
+               columns.Bound(c => c.ProductLevel);
+               columns.Bound(c => c.WeightInVacuum);
+               columns.Bound(c => c.ReferenceDensity);
+               //columns.Command(c => { c.Edit(); c.Destroy(); });
+           })
+        //.Editable(editable => editable.Mode(GridEditMode.PopUp).TemplateName("_EditAccount").Window(window => window.Width(650).Scrollable(false)))
+      .Pageable()
+      .Sortable()
+      .Scrollable(scr => scr.Height(430))
+      .Filterable()
+      .DataSource(dataSource => dataSource
+                                          .Ajax()
+                                          .PageSize(20)
+                                          .ServerOperation(true)
+                                          .Read(read => read.Action("ReadTank", "Tests", new { area = "" }).Data("sendAntiForgery")))
 )
 
 @section scripts{
@@ -66,5 +59,10 @@
                 alert(message);
             }
         }
+
+        function recordTimeStampFilter(element) {
+            element.kendoDateTimePicker(); // initialize a Kendo UI DateTimePicker
+        }
+
     </script>
 }
