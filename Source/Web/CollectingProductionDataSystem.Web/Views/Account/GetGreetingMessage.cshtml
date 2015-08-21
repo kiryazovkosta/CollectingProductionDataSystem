@@ -1,0 +1,3 @@
+﻿@using Resources = App_GlobalResources.Resources
+@model string
+@Html.ActionLink(string.Format(Resources.Layout.GreetingMessage,Model) , "ChangePassword", "Account", routeValues: null, htmlAttributes: new { title = "Manage" })

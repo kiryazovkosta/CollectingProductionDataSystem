@@ -1,0 +1,89 @@
+﻿@using CollectingProductionDataSystem.Web.ViewModels.Tank;
+@using Kendo.Mvc.UI;
+
+@{
+    ViewBag.Title = "TankData";
+    Layout = "~/Views/Shared/_KendoLayout.cshtml";
+}
+
+<div class="row">
+    <div class="col-lg-3">
+        @Html.Kendo().DateTimePicker().Name("date").Culture("bg-BG")
+    </div>
+    <div class="col-lg-3">
+        <button id="apply" type="button" class="btn btn-primary">Apply Filter</button>
+    </div>
+</div>
+
+@Html.AntiForgeryToken()
+@(Html.Kendo()
+      .Grid<TankDataViewModel>()
+      .Name("tanks")
+      .Columns(
+           columns =>
+           {
+               columns.Bound(c => c.Id).Width(40);
+               columns.Bound(c => c.RecordTimestamp).Width(210).Format("{0:dd.MM.yyyy HH:mm:ss}").Filterable(filterable => filterable.UI("recordTimeStampFilter"));
+               columns.Bound(c => c.TankName).Width(100);
+               columns.Bound(c => c.ParkId);
+               columns.Bound(c => c.LiquidLevel);
+               columns.Bound(c => c.ProductLevel);
+               columns.Bound(c => c.WeightInVacuum);
+               columns.Bound(c => c.ReferenceDensity);
+               //columns.Command(c => { c.Edit(); c.Destroy(); });
+           })
+        //.Editable(editable => editable.Mode(GridEditMode.PopUp).TemplateName("_EditAccount").Window(window => window.Width(650).Scrollable(false)))
+          .Pageable(pageable => pageable
+                .Refresh(true)
+                    .PageSizes(new[] { 10, 20, 50, 100 })
+                .ButtonCount(5))
+      .Sortable()
+      .Scrollable(scr => scr.Height(660))
+      .Filterable()
+      .DataSource(dataSource => dataSource
+                                          .Ajax()
+                                          .PageSize(20)
+                                          .ServerOperation(true)
+                                          .Read(read => read.Action("ReadTank", "Tests", new { area = "" })
+                                                  .Data("sendDate")))
+)
+
+@section scripts{
+    <script src="~/Scripts/custom/sendAntiForgery.js"></script>
+    <script>
+        kendo.culture("@System.Threading.Thread.CurrentThread.CurrentCulture.Name");
+
+        var sendDate = function () {
+            var result = { "date": $('input[name=date]').val() };
+            $.extend(result, sendAntiForgery());
+            return result;
+        }
+
+        function error_handler(e) {
+            if (e.errors) {
+                var message = "Errors:\n";
+                $.each(e.errors, function (key, value) {
+                    if ('errors' in value) {
+                        $.each(value.errors, function () {
+                            message += this + "\n";
+                        });
+                    }
+                });
+                alert(message);
+            }
+        }
+
+        function recordTimeStampFilter(element) {
+            element.kendoDateTimePicker(); // initialize a Kendo UI DateTimePicker
+        }
+
+        $(document).ready(function () {
+            $("#apply").click(function () {
+                var grid = $("#tanks").data("kendoGrid");
+                grid.dataSource.read();
+                grid.refresh();
+            });
+        });
+
+    </script>
+}

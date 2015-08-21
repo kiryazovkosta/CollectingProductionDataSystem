@@ -1,0 +1,718 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="ServiceDataSet" targetNamespace="http://tempuri.org/ServiceDataSet.xsd" xmlns:mstns="http://tempuri.org/ServiceDataSet.xsd" xmlns="http://tempuri.org/ServiceDataSet.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="2" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections>
+          <Connection AppSettingsObjectName="MySettings" AppSettingsPropertyName="ConnectionString" IsAppSettingsProperty="true" Modifier="Assembly" Name="ConnectionString (MySettings)" PropertyReference="ApplicationSettings.Phd2SqlInventory.My.MySettings.GlobalReference.Default.ConnectionString" Provider="System.Data.Odbc" />
+          <Connection AppSettingsObjectName="MySettings" AppSettingsPropertyName="AutomatedReportingSystemConnectionString" ConnectionStringObject="" IsAppSettingsProperty="true" Modifier="Assembly" Name="AutomatedReportingSystemConnectionString (MySettings)" ParameterPrefix="@" PropertyReference="ApplicationSettings.Phd2SqlInventory.My.MySettings.GlobalReference.Default.AutomatedReportingSystemConnectionString" Provider="System.Data.SqlClient" />
+          <Connection AppSettingsObjectName="MySettings" AppSettingsPropertyName="CollectingPrimaryDataSystemConnectionString" ConnectionStringObject="" IsAppSettingsProperty="true" Modifier="Assembly" Name="CollectingPrimaryDataSystemConnectionString (MySettings)" ParameterPrefix="@" PropertyReference="ApplicationSettings.CollectingProductionDataSystem.Phd2SqlInventory.My.MySettings.GlobalReference.Default.CollectingPrimaryDataSystemConnectionString" Provider="System.Data.SqlClient" />
+        </Connections>
+        <Tables>
+          <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="inventory_TanksTableAdapter" GeneratorDataComponentClassName="inventory_TanksTableAdapter" Name="inventory_Tanks" UserDataComponentName="inventory_TanksTableAdapter">
+            <MainSource>
+              <DbSource ConnectionRef="CollectingPrimaryDataSystemConnectionString (MySettings)" DbObjectType="Unknown" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="false" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="false" UserGetMethodName="GetData" UserSourceName="Fill">
+                <SelectCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="true">
+                    <CommandText>SELECT        InventoryTanks.Id AS TankId, InventoryTanks.InventoryParkId AS ParkId, InventoryTanks.ControlPoint, InventoryTanks.TankName, InventoryTanks.IsActive, 
+                         InventoryTanks.PhdTagProductId, InventoryTanks.PhdTagProductName, InventoryTanks.PhdTagLiquidLevel, InventoryTanks.LiquidLevelLowExtreme, 
+                         InventoryTanks.LiquidLevelHighExtreme, InventoryTanks.PhdTagProductLevel, InventoryTanks.ProductLevelLowExtreme, InventoryTanks.ProductLevelHighExtreme,
+                          InventoryTanks.PhdTagFreeWaterLevel, InventoryTanks.FreeWaterLevelLowExtreme, InventoryTanks.FreeWaterLevelHighExtreme, 
+                         InventoryTanks.PhdTagFreeWaterVolume, InventoryTanks.FreeWaterVolumeLowExtreme, InventoryTanks.FreeWaterVolumeHighExtreme, 
+                         InventoryTanks.PhdTagObservableDensity, InventoryTanks.ObservableDensityLowExtreme, InventoryTanks.ObservableDensityHighExtreme, 
+                         InventoryTanks.PhdTagReferenceDensity, InventoryTanks.ReferenceDensityLowExtreme, InventoryTanks.ReferenceDensityHighExtreme, 
+                         InventoryTanks.PhdTagGrossObservableVolume, InventoryTanks.GrossObservableVolumeLowExtreme, InventoryTanks.GrossObservableVolumeHighExtreme, 
+                         InventoryTanks.PhdTagGrossStandardVolume, InventoryTanks.GrossStandardVolumeLowExtreme, InventoryTanks.GrossStandardVolumeHighExtreme, 
+                         InventoryTanks.PhdTagNetStandardVolume, InventoryTanks.NetStandardVolumeLowExtreme, InventoryTanks.NetStandardVolumeHighExtreme, 
+                         InventoryTanks.PhdTagWeightInAir, InventoryTanks.WeightInAirLowExtreme, InventoryTanks.WeightInAirHighExtreme, InventoryTanks.PhdTagAverageTemperature, 
+                         InventoryTanks.AverageTemperatureLowExtreme, InventoryTanks.AverageTemperatureHighExtreme, InventoryTanks.PhdTagTotalObservableVolume, 
+                         InventoryTanks.TotalObservableVolumeLowExtreme, InventoryTanks.TotalObservableVolumeHighExtreme, ExciseStores.Name AS ExciseStoreId, 
+                         InventoryTanks.PhdTagWeightInVacuum, InventoryTanks.WeightInVacuumLowExtreme, InventoryTanks.WeightInVacuumHighExtreme, 
+                         InventoryTanks.PhdTagMaxVolume, InventoryTanks.MaxVolumeLowExtreme, InventoryTanks.MaxVolumeHighExtreme, InventoryTanks.PhdTagAvailableRoom, 
+                         InventoryTanks.AvailableRoomLowExtreme, InventoryTanks.AvailableRoomHighExtreme
+FROM            InventoryTanks INNER JOIN
+                         InventoryParks ON InventoryTanks.InventoryParkId = InventoryParks.Id INNER JOIN
+                         ExciseStores ON InventoryParks.ExciseStoreId = ExciseStores.Id
+WHERE        (InventoryTanks.IsActive = 1)</CommandText>
+                    <Parameters />
+                  </DbCommand>
+                </SelectCommand>
+              </DbSource>
+            </MainSource>
+            <Mappings>
+              <Mapping SourceColumn="TankId" DataSetColumn="TankId" />
+              <Mapping SourceColumn="ParkId" DataSetColumn="ParkId" />
+              <Mapping SourceColumn="ControlPoint" DataSetColumn="ControlPoint" />
+              <Mapping SourceColumn="TankName" DataSetColumn="TankName" />
+              <Mapping SourceColumn="IsActive" DataSetColumn="IsActive" />
+              <Mapping SourceColumn="PhdTagProductId" DataSetColumn="PhdTagProductId" />
+              <Mapping SourceColumn="PhdTagProductName" DataSetColumn="PhdTagProductName" />
+              <Mapping SourceColumn="PhdTagLiquidLevel" DataSetColumn="PhdTagLiquidLevel" />
+              <Mapping SourceColumn="LiquidLevelLowExtreme" DataSetColumn="LiquidLevelLowExtreme" />
+              <Mapping SourceColumn="LiquidLevelHighExtreme" DataSetColumn="LiquidLevelHighExtreme" />
+              <Mapping SourceColumn="PhdTagProductLevel" DataSetColumn="PhdTagProductLevel" />
+              <Mapping SourceColumn="ProductLevelLowExtreme" DataSetColumn="ProductLevelLowExtreme" />
+              <Mapping SourceColumn="ProductLevelHighExtreme" DataSetColumn="ProductLevelHighExtreme" />
+              <Mapping SourceColumn="PhdTagFreeWaterLevel" DataSetColumn="PhdTagFreeWaterLevel" />
+              <Mapping SourceColumn="FreeWaterLevelLowExtreme" DataSetColumn="FreeWaterLevelLowExtreme" />
+              <Mapping SourceColumn="FreeWaterLevelHighExtreme" DataSetColumn="FreeWaterLevelHighExtreme" />
+              <Mapping SourceColumn="PhdTagFreeWaterVolume" DataSetColumn="PhdTagFreeWaterVolume" />
+              <Mapping SourceColumn="FreeWaterVolumeLowExtreme" DataSetColumn="FreeWaterVolumeLowExtreme" />
+              <Mapping SourceColumn="FreeWaterVolumeHighExtreme" DataSetColumn="FreeWaterVolumeHighExtreme" />
+              <Mapping SourceColumn="PhdTagObservableDensity" DataSetColumn="PhdTagObservableDensity" />
+              <Mapping SourceColumn="ObservableDensityLowExtreme" DataSetColumn="ObservableDensityLowExtreme" />
+              <Mapping SourceColumn="ObservableDensityHighExtreme" DataSetColumn="ObservableDensityHighExtreme" />
+              <Mapping SourceColumn="PhdTagReferenceDensity" DataSetColumn="PhdTagReferenceDensity" />
+              <Mapping SourceColumn="ReferenceDensityLowExtreme" DataSetColumn="ReferenceDensityLowExtreme" />
+              <Mapping SourceColumn="ReferenceDensityHighExtreme" DataSetColumn="ReferenceDensityHighExtreme" />
+              <Mapping SourceColumn="PhdTagGrossObservableVolume" DataSetColumn="PhdTagGrossObservableVolume" />
+              <Mapping SourceColumn="GrossObservableVolumeLowExtreme" DataSetColumn="GrossObservableVolumeLowExtreme" />
+              <Mapping SourceColumn="GrossObservableVolumeHighExtreme" DataSetColumn="GrossObservableVolumeHighExtreme" />
+              <Mapping SourceColumn="PhdTagGrossStandardVolume" DataSetColumn="PhdTagGrossStandardVolume" />
+              <Mapping SourceColumn="GrossStandardVolumeLowExtreme" DataSetColumn="GrossStandardVolumeLowExtreme" />
+              <Mapping SourceColumn="GrossStandardVolumeHighExtreme" DataSetColumn="GrossStandardVolumeHighExtreme" />
+              <Mapping SourceColumn="PhdTagNetStandardVolume" DataSetColumn="PhdTagNetStandardVolume" />
+              <Mapping SourceColumn="NetStandardVolumeLowExtreme" DataSetColumn="NetStandardVolumeLowExtreme" />
+              <Mapping SourceColumn="NetStandardVolumeHighExtreme" DataSetColumn="NetStandardVolumeHighExtreme" />
+              <Mapping SourceColumn="PhdTagWeightInAir" DataSetColumn="PhdTagWeightInAir" />
+              <Mapping SourceColumn="WeightInAirLowExtreme" DataSetColumn="WeightInAirLowExtreme" />
+              <Mapping SourceColumn="WeightInAirHighExtreme" DataSetColumn="WeightInAirHighExtreme" />
+              <Mapping SourceColumn="PhdTagAverageTemperature" DataSetColumn="PhdTagAverageTemperature" />
+              <Mapping SourceColumn="AverageTemperatureLowExtreme" DataSetColumn="AverageTemperatureLowExtreme" />
+              <Mapping SourceColumn="AverageTemperatureHighExtreme" DataSetColumn="AverageTemperatureHighExtreme" />
+              <Mapping SourceColumn="PhdTagTotalObservableVolume" DataSetColumn="PhdTagTotalObservableVolume" />
+              <Mapping SourceColumn="TotalObservableVolumeLowExtreme" DataSetColumn="TotalObservableVolumeLowExtreme" />
+              <Mapping SourceColumn="TotalObservableVolumeHighExtreme" DataSetColumn="TotalObservableVolumeHighExtreme" />
+              <Mapping SourceColumn="ExciseStoreId" DataSetColumn="ExciseStoreId" />
+              <Mapping SourceColumn="PhdTagWeightInVacuum" DataSetColumn="PhdTagWeightInVacuum" />
+              <Mapping SourceColumn="WeightInVacuumLowExtreme" DataSetColumn="WeightInVacuumLowExtreme" />
+              <Mapping SourceColumn="WeightInVacuumHighExtreme" DataSetColumn="WeightInVacuumHighExtreme" />
+              <Mapping SourceColumn="PhdTagMaxVolume" DataSetColumn="PhdTagMaxVolume" />
+              <Mapping SourceColumn="MaxVolumeLowExtreme" DataSetColumn="MaxVolumeLowExtreme" />
+              <Mapping SourceColumn="MaxVolumeHighExtreme" DataSetColumn="MaxVolumeHighExtreme" />
+              <Mapping SourceColumn="PhdTagAvailableRoom" DataSetColumn="PhdTagAvailableRoom" />
+              <Mapping SourceColumn="AvailableRoomLowExtreme" DataSetColumn="AvailableRoomLowExtreme" />
+              <Mapping SourceColumn="AvailableRoomHighExtreme" DataSetColumn="AvailableRoomHighExtreme" />
+            </Mappings>
+            <Sources />
+          </TableAdapter>
+          <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="inventory_TanksDataMaxRecordTimestampTableAdapter" GeneratorDataComponentClassName="inventory_TanksDataMaxRecordTimestampTableAdapter" Name="inventory_TanksDataMaxRecordTimestamp" UserDataComponentName="inventory_TanksDataMaxRecordTimestampTableAdapter">
+            <MainSource>
+              <DbSource ConnectionRef="CollectingPrimaryDataSystemConnectionString (MySettings)" DbObjectName="CollectingPrimaryDataSystem.dbo.InventoryTanks" DbObjectType="Table" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="false" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="false" UserGetMethodName="GetData" UserSourceName="Fill">
+                <SelectCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="true">
+                    <CommandText>SELECT        InventoryTanks.Id AS TankId, MAX(InventoryTanksData.RecordTimestamp) AS MaxRecordTimestamp
+FROM            InventoryTanksData FULL OUTER JOIN
+                         InventoryTanks ON InventoryTanksData.TankId = InventoryTanks.Id
+GROUP BY InventoryTanks.Id, InventoryTanks.IsActive
+HAVING        (InventoryTanks.IsActive = 1)</CommandText>
+                    <Parameters />
+                  </DbCommand>
+                </SelectCommand>
+              </DbSource>
+            </MainSource>
+            <Mappings>
+              <Mapping SourceColumn="TankId" DataSetColumn="TankId" />
+              <Mapping SourceColumn="MaxRecordTimestamp" DataSetColumn="MaxRecordTimestamp" />
+            </Mappings>
+            <Sources />
+          </TableAdapter>
+          <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="inventory_TanksDataTableAdapter" GeneratorDataComponentClassName="inventory_TanksDataTableAdapter" Name="inventory_TanksData" UserDataComponentName="inventory_TanksDataTableAdapter">
+            <MainSource>
+              <DbSource ConnectionRef="CollectingPrimaryDataSystemConnectionString (MySettings)" DbObjectName="CollectingPrimaryDataSystem.dbo.InventoryTanksData" DbObjectType="Table" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="false" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="true" UserGetMethodName="GetData" UserSourceName="Fill">
+                <DeleteCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="false">
+                    <CommandText>DELETE FROM [InventoryTanksData] WHERE (([ParkId] = @Original_ParkId) AND ([TankId] = @Original_TankId) AND ([RecordTimestamp] = @Original_RecordTimestamp) AND ((@IsNull_ProductId = 1 AND [ProductId] IS NULL) OR ([ProductId] = @Original_ProductId)) AND ((@IsNull_LiquidLevel = 1 AND [LiquidLevel] IS NULL) OR ([LiquidLevel] = @Original_LiquidLevel)) AND ((@IsNull_TotalObservableVolume = 1 AND [TotalObservableVolume] IS NULL) OR ([TotalObservableVolume] = @Original_TotalObservableVolume)) AND ((@IsNull_ProductLevel = 1 AND [ProductLevel] IS NULL) OR ([ProductLevel] = @Original_ProductLevel)) AND ((@IsNull_GrossObservableVolume = 1 AND [GrossObservableVolume] IS NULL) OR ([GrossObservableVolume] = @Original_GrossObservableVolume)) AND ((@IsNull_ObservableDensity = 1 AND [ObservableDensity] IS NULL) OR ([ObservableDensity] = @Original_ObservableDensity)) AND ((@IsNull_GrossStandardVolume = 1 AND [GrossStandardVolume] IS NULL) OR ([GrossStandardVolume] = @Original_GrossStandardVolume)) AND ((@IsNull_AverageTemperature = 1 AND [AverageTemperature] IS NULL) OR ([AverageTemperature] = @Original_AverageTemperature)) AND ((@IsNull_NetStandardVolume = 1 AND [NetStandardVolume] IS NULL) OR ([NetStandardVolume] = @Original_NetStandardVolume)) AND ((@IsNull_ReferenceDensity = 1 AND [ReferenceDensity] IS NULL) OR ([ReferenceDensity] = @Original_ReferenceDensity)) AND ((@IsNull_WeightInAir = 1 AND [WeightInAir] IS NULL) OR ([WeightInAir] = @Original_WeightInAir)) AND ((@IsNull_FreeWaterLevel = 1 AND [FreeWaterLevel] IS NULL) OR ([FreeWaterLevel] = @Original_FreeWaterLevel)) AND ((@IsNull_FreeWaterVolume = 1 AND [FreeWaterVolume] IS NULL) OR ([FreeWaterVolume] = @Original_FreeWaterVolume)) AND ((@IsNull_LastUpdateTimestamp = 1 AND [LastUpdateTimestamp] IS NULL) OR ([LastUpdateTimestamp] = @Original_LastUpdateTimestamp)) AND ((@IsNull_WeightInVacuum = 1 AND [WeightInVacuum] IS NULL) OR ([WeightInVacuum] = @Original_WeightInVacuum)) AND ((@IsNull_MaxVolume = 1 AND [MaxVolume] IS NULL) OR ([MaxVolume] = @Original_MaxVolume)) AND ((@IsNull_AvailableRoom = 1 AND [AvailableRoom] IS NULL) OR ([AvailableRoom] = @Original_AvailableRoom)))</CommandText>
+                    <Parameters>
+                      <Parameter AllowDbNull="false" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@Original_ParkId" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="ParkId" SourceColumnNullMapping="false" SourceVersion="Original" />
+                      <Parameter AllowDbNull="false" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@Original_TankId" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="TankId" SourceColumnNullMapping="false" SourceVersion="Original" />
+                      <Parameter AllowDbNull="false" AutogeneratedName="" DataSourceName="" DbType="DateTime" Direction="Input" ParameterName="@Original_RecordTimestamp" Precision="0" ProviderType="DateTime" Scale="0" Size="0" SourceColumn="RecordTimestamp" SourceColumnNullMapping="false" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@IsNull_ProductId" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="ProductId" SourceColumnNullMapping="true" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@Original_ProductId" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="ProductId" SourceColumnNullMapping="false" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@IsNull_LiquidLevel" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="LiquidLevel" SourceColumnNullMapping="true" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Decimal" Direction="Input" ParameterName="@Original_LiquidLevel" Precision="18" ProviderType="Decimal" Scale="2" Size="0" SourceColumn="LiquidLevel" SourceColumnNullMapping="false" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@IsNull_TotalObservableVolume" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="TotalObservableVolume" SourceColumnNullMapping="true" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Decimal" Direction="Input" ParameterName="@Original_TotalObservableVolume" Precision="18" ProviderType="Decimal" Scale="2" Size="0" SourceColumn="TotalObservableVolume" SourceColumnNullMapping="false" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@IsNull_ProductLevel" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="ProductLevel" SourceColumnNullMapping="true" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Decimal" Direction="Input" ParameterName="@Original_ProductLevel" Precision="18" ProviderType="Decimal" Scale="2" Size="0" SourceColumn="ProductLevel" SourceColumnNullMapping="false" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@IsNull_GrossObservableVolume" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="GrossObservableVolume" SourceColumnNullMapping="true" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Decimal" Direction="Input" ParameterName="@Original_GrossObservableVolume" Precision="18" ProviderType="Decimal" Scale="2" Size="0" SourceColumn="GrossObservableVolume" SourceColumnNullMapping="false" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@IsNull_ObservableDensity" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="ObservableDensity" SourceColumnNullMapping="true" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Decimal" Direction="Input" ParameterName="@Original_ObservableDensity" Precision="18" ProviderType="Decimal" Scale="2" Size="0" SourceColumn="ObservableDensity" SourceColumnNullMapping="false" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@IsNull_GrossStandardVolume" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="GrossStandardVolume" SourceColumnNullMapping="true" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Decimal" Direction="Input" ParameterName="@Original_GrossStandardVolume" Precision="18" ProviderType="Decimal" Scale="2" Size="0" SourceColumn="GrossStandardVolume" SourceColumnNullMapping="false" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@IsNull_AverageTemperature" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="AverageTemperature" SourceColumnNullMapping="true" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Decimal" Direction="Input" ParameterName="@Original_AverageTemperature" Precision="18" ProviderType="Decimal" Scale="2" Size="0" SourceColumn="AverageTemperature" SourceColumnNullMapping="false" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@IsNull_NetStandardVolume" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="NetStandardVolume" SourceColumnNullMapping="true" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Decimal" Direction="Input" ParameterName="@Original_NetStandardVolume" Precision="18" ProviderType="Decimal" Scale="2" Size="0" SourceColumn="NetStandardVolume" SourceColumnNullMapping="false" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@IsNull_ReferenceDensity" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="ReferenceDensity" SourceColumnNullMapping="true" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Decimal" Direction="Input" ParameterName="@Original_ReferenceDensity" Precision="18" ProviderType="Decimal" Scale="2" Size="0" SourceColumn="ReferenceDensity" SourceColumnNullMapping="false" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@IsNull_WeightInAir" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="WeightInAir" SourceColumnNullMapping="true" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Decimal" Direction="Input" ParameterName="@Original_WeightInAir" Precision="18" ProviderType="Decimal" Scale="2" Size="0" SourceColumn="WeightInAir" SourceColumnNullMapping="false" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@IsNull_FreeWaterLevel" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="FreeWaterLevel" SourceColumnNullMapping="true" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Decimal" Direction="Input" ParameterName="@Original_FreeWaterLevel" Precision="18" ProviderType="Decimal" Scale="2" Size="0" SourceColumn="FreeWaterLevel" SourceColumnNullMapping="false" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@IsNull_FreeWaterVolume" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="FreeWaterVolume" SourceColumnNullMapping="true" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Decimal" Direction="Input" ParameterName="@Original_FreeWaterVolume" Precision="18" ProviderType="Decimal" Scale="2" Size="0" SourceColumn="FreeWaterVolume" SourceColumnNullMapping="false" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@IsNull_LastUpdateTimestamp" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="LastUpdateTimestamp" SourceColumnNullMapping="true" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="DateTime2" Direction="Input" ParameterName="@Original_LastUpdateTimestamp" Precision="0" ProviderType="DateTime2" Scale="0" Size="0" SourceColumn="LastUpdateTimestamp" SourceColumnNullMapping="false" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@IsNull_WeightInVacuum" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="WeightInVacuum" SourceColumnNullMapping="true" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Decimal" Direction="Input" ParameterName="@Original_WeightInVacuum" Precision="18" ProviderType="Decimal" Scale="2" Size="0" SourceColumn="WeightInVacuum" SourceColumnNullMapping="false" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@IsNull_MaxVolume" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="MaxVolume" SourceColumnNullMapping="true" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Decimal" Direction="Input" ParameterName="@Original_MaxVolume" Precision="18" ProviderType="Decimal" Scale="2" Size="0" SourceColumn="MaxVolume" SourceColumnNullMapping="false" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@IsNull_AvailableRoom" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="AvailableRoom" SourceColumnNullMapping="true" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Decimal" Direction="Input" ParameterName="@Original_AvailableRoom" Precision="18" ProviderType="Decimal" Scale="2" Size="0" SourceColumn="AvailableRoom" SourceColumnNullMapping="false" SourceVersion="Original" />
+                    </Parameters>
+                  </DbCommand>
+                </DeleteCommand>
+                <InsertCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="false">
+                    <CommandText>INSERT INTO [InventoryTanksData] ([ExciseStoreId], [ParkId], [TankId], [RecordTimestamp], [ProductId], [ProductName], [LiquidLevel], [TotalObservableVolume], [ProductLevel], [GrossObservableVolume], [ObservableDensity], [GrossStandardVolume], [AverageTemperature], [NetStandardVolume], [ReferenceDensity], [WeightInAir], [FreeWaterLevel], [FreeWaterVolume], [LastUpdateTimestamp], [WeightInVacuum], [MaxVolume], [AvailableRoom]) VALUES (@ExciseStoreId, @ParkId, @TankId, @RecordTimestamp, @ProductId, @ProductName, @LiquidLevel, @TotalObservableVolume, @ProductLevel, @GrossObservableVolume, @ObservableDensity, @GrossStandardVolume, @AverageTemperature, @NetStandardVolume, @ReferenceDensity, @WeightInAir, @FreeWaterLevel, @FreeWaterVolume, @LastUpdateTimestamp, @WeightInVacuum, @MaxVolume, @AvailableRoom);
+SELECT ExciseStoreId, ParkId, TankId, RecordTimestamp, ProductId, ProductName, LiquidLevel, TotalObservableVolume, ProductLevel, GrossObservableVolume, ObservableDensity, GrossStandardVolume, AverageTemperature, NetStandardVolume, ReferenceDensity, WeightInAir, FreeWaterLevel, FreeWaterVolume, LastUpdateTimestamp, WeightInVacuum, MaxVolume, AvailableRoom FROM InventoryTanksData WHERE (RecordTimestamp = @RecordTimestamp) AND (TankId = @TankId)</CommandText>
+                    <Parameters>
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="String" Direction="Input" ParameterName="@ExciseStoreId" Precision="0" ProviderType="NVarChar" Scale="0" Size="0" SourceColumn="ExciseStoreId" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="false" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@ParkId" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="ParkId" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="false" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@TankId" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="TankId" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="false" AutogeneratedName="" DataSourceName="" DbType="DateTime" Direction="Input" ParameterName="@RecordTimestamp" Precision="0" ProviderType="DateTime" Scale="0" Size="0" SourceColumn="RecordTimestamp" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@ProductId" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="ProductId" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="String" Direction="Input" ParameterName="@ProductName" Precision="0" ProviderType="NVarChar" Scale="0" Size="0" SourceColumn="ProductName" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Decimal" Direction="Input" ParameterName="@LiquidLevel" Precision="18" ProviderType="Decimal" Scale="2" Size="0" SourceColumn="LiquidLevel" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Decimal" Direction="Input" ParameterName="@TotalObservableVolume" Precision="18" ProviderType="Decimal" Scale="2" Size="0" SourceColumn="TotalObservableVolume" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Decimal" Direction="Input" ParameterName="@ProductLevel" Precision="18" ProviderType="Decimal" Scale="2" Size="0" SourceColumn="ProductLevel" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Decimal" Direction="Input" ParameterName="@GrossObservableVolume" Precision="18" ProviderType="Decimal" Scale="2" Size="0" SourceColumn="GrossObservableVolume" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Decimal" Direction="Input" ParameterName="@ObservableDensity" Precision="18" ProviderType="Decimal" Scale="2" Size="0" SourceColumn="ObservableDensity" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Decimal" Direction="Input" ParameterName="@GrossStandardVolume" Precision="18" ProviderType="Decimal" Scale="2" Size="0" SourceColumn="GrossStandardVolume" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Decimal" Direction="Input" ParameterName="@AverageTemperature" Precision="18" ProviderType="Decimal" Scale="2" Size="0" SourceColumn="AverageTemperature" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Decimal" Direction="Input" ParameterName="@NetStandardVolume" Precision="18" ProviderType="Decimal" Scale="2" Size="0" SourceColumn="NetStandardVolume" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Decimal" Direction="Input" ParameterName="@ReferenceDensity" Precision="18" ProviderType="Decimal" Scale="2" Size="0" SourceColumn="ReferenceDensity" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Decimal" Direction="Input" ParameterName="@WeightInAir" Precision="18" ProviderType="Decimal" Scale="2" Size="0" SourceColumn="WeightInAir" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Decimal" Direction="Input" ParameterName="@FreeWaterLevel" Precision="18" ProviderType="Decimal" Scale="2" Size="0" SourceColumn="FreeWaterLevel" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Decimal" Direction="Input" ParameterName="@FreeWaterVolume" Precision="18" ProviderType="Decimal" Scale="2" Size="0" SourceColumn="FreeWaterVolume" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="DateTime2" Direction="Input" ParameterName="@LastUpdateTimestamp" Precision="0" ProviderType="DateTime2" Scale="0" Size="0" SourceColumn="LastUpdateTimestamp" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Decimal" Direction="Input" ParameterName="@WeightInVacuum" Precision="18" ProviderType="Decimal" Scale="2" Size="0" SourceColumn="WeightInVacuum" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Decimal" Direction="Input" ParameterName="@MaxVolume" Precision="18" ProviderType="Decimal" Scale="2" Size="0" SourceColumn="MaxVolume" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Decimal" Direction="Input" ParameterName="@AvailableRoom" Precision="18" ProviderType="Decimal" Scale="2" Size="0" SourceColumn="AvailableRoom" SourceColumnNullMapping="false" SourceVersion="Current" />
+                    </Parameters>
+                  </DbCommand>
+                </InsertCommand>
+                <SelectCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="true">
+                    <CommandText>SELECT        ExciseStoreId, ParkId, TankId, RecordTimestamp, ProductId, ProductName, LiquidLevel, TotalObservableVolume, ProductLevel, GrossObservableVolume, 
+                         ObservableDensity, GrossStandardVolume, AverageTemperature, NetStandardVolume, ReferenceDensity, WeightInAir, FreeWaterLevel, FreeWaterVolume, 
+                         LastUpdateTimestamp, WeightInVacuum, MaxVolume, AvailableRoom
+FROM            InventoryTanksData
+WHERE        (RecordTimestamp &gt;= @RecordTimestamp)</CommandText>
+                    <Parameters>
+                      <Parameter AllowDbNull="false" AutogeneratedName="RecordTimestamp" ColumnName="RecordTimestamp" DataSourceName="CollectingPrimaryDataSystem.dbo.InventoryTanksData" DataTypeServer="datetime" DbType="DateTime" Direction="Input" ParameterName="@RecordTimestamp" Precision="0" ProviderType="DateTime" Scale="0" Size="8" SourceColumn="RecordTimestamp" SourceColumnNullMapping="false" SourceVersion="Current" />
+                    </Parameters>
+                  </DbCommand>
+                </SelectCommand>
+                <UpdateCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="false">
+                    <CommandText>UPDATE [InventoryTanksData] SET [ExciseStoreId] = @ExciseStoreId, [ParkId] = @ParkId, [TankId] = @TankId, [RecordTimestamp] = @RecordTimestamp, [ProductId] = @ProductId, [ProductName] = @ProductName, [LiquidLevel] = @LiquidLevel, [TotalObservableVolume] = @TotalObservableVolume, [ProductLevel] = @ProductLevel, [GrossObservableVolume] = @GrossObservableVolume, [ObservableDensity] = @ObservableDensity, [GrossStandardVolume] = @GrossStandardVolume, [AverageTemperature] = @AverageTemperature, [NetStandardVolume] = @NetStandardVolume, [ReferenceDensity] = @ReferenceDensity, [WeightInAir] = @WeightInAir, [FreeWaterLevel] = @FreeWaterLevel, [FreeWaterVolume] = @FreeWaterVolume, [LastUpdateTimestamp] = @LastUpdateTimestamp, [WeightInVacuum] = @WeightInVacuum, [MaxVolume] = @MaxVolume, [AvailableRoom] = @AvailableRoom WHERE (([ParkId] = @Original_ParkId) AND ([TankId] = @Original_TankId) AND ([RecordTimestamp] = @Original_RecordTimestamp) AND ((@IsNull_ProductId = 1 AND [ProductId] IS NULL) OR ([ProductId] = @Original_ProductId)) AND ((@IsNull_LiquidLevel = 1 AND [LiquidLevel] IS NULL) OR ([LiquidLevel] = @Original_LiquidLevel)) AND ((@IsNull_TotalObservableVolume = 1 AND [TotalObservableVolume] IS NULL) OR ([TotalObservableVolume] = @Original_TotalObservableVolume)) AND ((@IsNull_ProductLevel = 1 AND [ProductLevel] IS NULL) OR ([ProductLevel] = @Original_ProductLevel)) AND ((@IsNull_GrossObservableVolume = 1 AND [GrossObservableVolume] IS NULL) OR ([GrossObservableVolume] = @Original_GrossObservableVolume)) AND ((@IsNull_ObservableDensity = 1 AND [ObservableDensity] IS NULL) OR ([ObservableDensity] = @Original_ObservableDensity)) AND ((@IsNull_GrossStandardVolume = 1 AND [GrossStandardVolume] IS NULL) OR ([GrossStandardVolume] = @Original_GrossStandardVolume)) AND ((@IsNull_AverageTemperature = 1 AND [AverageTemperature] IS NULL) OR ([AverageTemperature] = @Original_AverageTemperature)) AND ((@IsNull_NetStandardVolume = 1 AND [NetStandardVolume] IS NULL) OR ([NetStandardVolume] = @Original_NetStandardVolume)) AND ((@IsNull_ReferenceDensity = 1 AND [ReferenceDensity] IS NULL) OR ([ReferenceDensity] = @Original_ReferenceDensity)) AND ((@IsNull_WeightInAir = 1 AND [WeightInAir] IS NULL) OR ([WeightInAir] = @Original_WeightInAir)) AND ((@IsNull_FreeWaterLevel = 1 AND [FreeWaterLevel] IS NULL) OR ([FreeWaterLevel] = @Original_FreeWaterLevel)) AND ((@IsNull_FreeWaterVolume = 1 AND [FreeWaterVolume] IS NULL) OR ([FreeWaterVolume] = @Original_FreeWaterVolume)) AND ((@IsNull_LastUpdateTimestamp = 1 AND [LastUpdateTimestamp] IS NULL) OR ([LastUpdateTimestamp] = @Original_LastUpdateTimestamp)) AND ((@IsNull_WeightInVacuum = 1 AND [WeightInVacuum] IS NULL) OR ([WeightInVacuum] = @Original_WeightInVacuum)) AND ((@IsNull_MaxVolume = 1 AND [MaxVolume] IS NULL) OR ([MaxVolume] = @Original_MaxVolume)) AND ((@IsNull_AvailableRoom = 1 AND [AvailableRoom] IS NULL) OR ([AvailableRoom] = @Original_AvailableRoom)));
+SELECT ExciseStoreId, ParkId, TankId, RecordTimestamp, ProductId, ProductName, LiquidLevel, TotalObservableVolume, ProductLevel, GrossObservableVolume, ObservableDensity, GrossStandardVolume, AverageTemperature, NetStandardVolume, ReferenceDensity, WeightInAir, FreeWaterLevel, FreeWaterVolume, LastUpdateTimestamp, WeightInVacuum, MaxVolume, AvailableRoom FROM InventoryTanksData WHERE (RecordTimestamp = @RecordTimestamp) AND (TankId = @TankId)</CommandText>
+                    <Parameters>
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="String" Direction="Input" ParameterName="@ExciseStoreId" Precision="0" ProviderType="NVarChar" Scale="0" Size="0" SourceColumn="ExciseStoreId" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="false" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@ParkId" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="ParkId" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="false" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@TankId" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="TankId" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="false" AutogeneratedName="" DataSourceName="" DbType="DateTime" Direction="Input" ParameterName="@RecordTimestamp" Precision="0" ProviderType="DateTime" Scale="0" Size="0" SourceColumn="RecordTimestamp" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@ProductId" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="ProductId" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="String" Direction="Input" ParameterName="@ProductName" Precision="0" ProviderType="NVarChar" Scale="0" Size="0" SourceColumn="ProductName" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Decimal" Direction="Input" ParameterName="@LiquidLevel" Precision="18" ProviderType="Decimal" Scale="2" Size="0" SourceColumn="LiquidLevel" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Decimal" Direction="Input" ParameterName="@TotalObservableVolume" Precision="18" ProviderType="Decimal" Scale="2" Size="0" SourceColumn="TotalObservableVolume" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Decimal" Direction="Input" ParameterName="@ProductLevel" Precision="18" ProviderType="Decimal" Scale="2" Size="0" SourceColumn="ProductLevel" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Decimal" Direction="Input" ParameterName="@GrossObservableVolume" Precision="18" ProviderType="Decimal" Scale="2" Size="0" SourceColumn="GrossObservableVolume" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Decimal" Direction="Input" ParameterName="@ObservableDensity" Precision="18" ProviderType="Decimal" Scale="2" Size="0" SourceColumn="ObservableDensity" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Decimal" Direction="Input" ParameterName="@GrossStandardVolume" Precision="18" ProviderType="Decimal" Scale="2" Size="0" SourceColumn="GrossStandardVolume" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Decimal" Direction="Input" ParameterName="@AverageTemperature" Precision="18" ProviderType="Decimal" Scale="2" Size="0" SourceColumn="AverageTemperature" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Decimal" Direction="Input" ParameterName="@NetStandardVolume" Precision="18" ProviderType="Decimal" Scale="2" Size="0" SourceColumn="NetStandardVolume" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Decimal" Direction="Input" ParameterName="@ReferenceDensity" Precision="18" ProviderType="Decimal" Scale="2" Size="0" SourceColumn="ReferenceDensity" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Decimal" Direction="Input" ParameterName="@WeightInAir" Precision="18" ProviderType="Decimal" Scale="2" Size="0" SourceColumn="WeightInAir" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Decimal" Direction="Input" ParameterName="@FreeWaterLevel" Precision="18" ProviderType="Decimal" Scale="2" Size="0" SourceColumn="FreeWaterLevel" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Decimal" Direction="Input" ParameterName="@FreeWaterVolume" Precision="18" ProviderType="Decimal" Scale="2" Size="0" SourceColumn="FreeWaterVolume" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="DateTime2" Direction="Input" ParameterName="@LastUpdateTimestamp" Precision="0" ProviderType="DateTime2" Scale="0" Size="0" SourceColumn="LastUpdateTimestamp" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Decimal" Direction="Input" ParameterName="@WeightInVacuum" Precision="18" ProviderType="Decimal" Scale="2" Size="0" SourceColumn="WeightInVacuum" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Decimal" Direction="Input" ParameterName="@MaxVolume" Precision="18" ProviderType="Decimal" Scale="2" Size="0" SourceColumn="MaxVolume" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Decimal" Direction="Input" ParameterName="@AvailableRoom" Precision="18" ProviderType="Decimal" Scale="2" Size="0" SourceColumn="AvailableRoom" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="false" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@Original_ParkId" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="ParkId" SourceColumnNullMapping="false" SourceVersion="Original" />
+                      <Parameter AllowDbNull="false" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@Original_TankId" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="TankId" SourceColumnNullMapping="false" SourceVersion="Original" />
+                      <Parameter AllowDbNull="false" AutogeneratedName="" DataSourceName="" DbType="DateTime" Direction="Input" ParameterName="@Original_RecordTimestamp" Precision="0" ProviderType="DateTime" Scale="0" Size="0" SourceColumn="RecordTimestamp" SourceColumnNullMapping="false" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@IsNull_ProductId" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="ProductId" SourceColumnNullMapping="true" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@Original_ProductId" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="ProductId" SourceColumnNullMapping="false" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@IsNull_LiquidLevel" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="LiquidLevel" SourceColumnNullMapping="true" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Decimal" Direction="Input" ParameterName="@Original_LiquidLevel" Precision="18" ProviderType="Decimal" Scale="2" Size="0" SourceColumn="LiquidLevel" SourceColumnNullMapping="false" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@IsNull_TotalObservableVolume" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="TotalObservableVolume" SourceColumnNullMapping="true" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Decimal" Direction="Input" ParameterName="@Original_TotalObservableVolume" Precision="18" ProviderType="Decimal" Scale="2" Size="0" SourceColumn="TotalObservableVolume" SourceColumnNullMapping="false" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@IsNull_ProductLevel" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="ProductLevel" SourceColumnNullMapping="true" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Decimal" Direction="Input" ParameterName="@Original_ProductLevel" Precision="18" ProviderType="Decimal" Scale="2" Size="0" SourceColumn="ProductLevel" SourceColumnNullMapping="false" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@IsNull_GrossObservableVolume" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="GrossObservableVolume" SourceColumnNullMapping="true" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Decimal" Direction="Input" ParameterName="@Original_GrossObservableVolume" Precision="18" ProviderType="Decimal" Scale="2" Size="0" SourceColumn="GrossObservableVolume" SourceColumnNullMapping="false" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@IsNull_ObservableDensity" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="ObservableDensity" SourceColumnNullMapping="true" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Decimal" Direction="Input" ParameterName="@Original_ObservableDensity" Precision="18" ProviderType="Decimal" Scale="2" Size="0" SourceColumn="ObservableDensity" SourceColumnNullMapping="false" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@IsNull_GrossStandardVolume" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="GrossStandardVolume" SourceColumnNullMapping="true" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Decimal" Direction="Input" ParameterName="@Original_GrossStandardVolume" Precision="18" ProviderType="Decimal" Scale="2" Size="0" SourceColumn="GrossStandardVolume" SourceColumnNullMapping="false" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@IsNull_AverageTemperature" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="AverageTemperature" SourceColumnNullMapping="true" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Decimal" Direction="Input" ParameterName="@Original_AverageTemperature" Precision="18" ProviderType="Decimal" Scale="2" Size="0" SourceColumn="AverageTemperature" SourceColumnNullMapping="false" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@IsNull_NetStandardVolume" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="NetStandardVolume" SourceColumnNullMapping="true" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Decimal" Direction="Input" ParameterName="@Original_NetStandardVolume" Precision="18" ProviderType="Decimal" Scale="2" Size="0" SourceColumn="NetStandardVolume" SourceColumnNullMapping="false" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@IsNull_ReferenceDensity" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="ReferenceDensity" SourceColumnNullMapping="true" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Decimal" Direction="Input" ParameterName="@Original_ReferenceDensity" Precision="18" ProviderType="Decimal" Scale="2" Size="0" SourceColumn="ReferenceDensity" SourceColumnNullMapping="false" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@IsNull_WeightInAir" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="WeightInAir" SourceColumnNullMapping="true" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Decimal" Direction="Input" ParameterName="@Original_WeightInAir" Precision="18" ProviderType="Decimal" Scale="2" Size="0" SourceColumn="WeightInAir" SourceColumnNullMapping="false" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@IsNull_FreeWaterLevel" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="FreeWaterLevel" SourceColumnNullMapping="true" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Decimal" Direction="Input" ParameterName="@Original_FreeWaterLevel" Precision="18" ProviderType="Decimal" Scale="2" Size="0" SourceColumn="FreeWaterLevel" SourceColumnNullMapping="false" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@IsNull_FreeWaterVolume" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="FreeWaterVolume" SourceColumnNullMapping="true" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Decimal" Direction="Input" ParameterName="@Original_FreeWaterVolume" Precision="18" ProviderType="Decimal" Scale="2" Size="0" SourceColumn="FreeWaterVolume" SourceColumnNullMapping="false" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@IsNull_LastUpdateTimestamp" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="LastUpdateTimestamp" SourceColumnNullMapping="true" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="DateTime2" Direction="Input" ParameterName="@Original_LastUpdateTimestamp" Precision="0" ProviderType="DateTime2" Scale="0" Size="0" SourceColumn="LastUpdateTimestamp" SourceColumnNullMapping="false" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@IsNull_WeightInVacuum" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="WeightInVacuum" SourceColumnNullMapping="true" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Decimal" Direction="Input" ParameterName="@Original_WeightInVacuum" Precision="18" ProviderType="Decimal" Scale="2" Size="0" SourceColumn="WeightInVacuum" SourceColumnNullMapping="false" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@IsNull_MaxVolume" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="MaxVolume" SourceColumnNullMapping="true" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Decimal" Direction="Input" ParameterName="@Original_MaxVolume" Precision="18" ProviderType="Decimal" Scale="2" Size="0" SourceColumn="MaxVolume" SourceColumnNullMapping="false" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@IsNull_AvailableRoom" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="AvailableRoom" SourceColumnNullMapping="true" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Decimal" Direction="Input" ParameterName="@Original_AvailableRoom" Precision="18" ProviderType="Decimal" Scale="2" Size="0" SourceColumn="AvailableRoom" SourceColumnNullMapping="false" SourceVersion="Original" />
+                    </Parameters>
+                  </DbCommand>
+                </UpdateCommand>
+              </DbSource>
+            </MainSource>
+            <Mappings>
+              <Mapping SourceColumn="ParkId" DataSetColumn="ParkId" />
+              <Mapping SourceColumn="TankId" DataSetColumn="TankId" />
+              <Mapping SourceColumn="RecordTimestamp" DataSetColumn="RecordTimestamp" />
+              <Mapping SourceColumn="ProductId" DataSetColumn="ProductId" />
+              <Mapping SourceColumn="ProductName" DataSetColumn="ProductName" />
+              <Mapping SourceColumn="LiquidLevel" DataSetColumn="LiquidLevel" />
+              <Mapping SourceColumn="TotalObservableVolume" DataSetColumn="TotalObservableVolume" />
+              <Mapping SourceColumn="ProductLevel" DataSetColumn="ProductLevel" />
+              <Mapping SourceColumn="GrossObservableVolume" DataSetColumn="GrossObservableVolume" />
+              <Mapping SourceColumn="ObservableDensity" DataSetColumn="ObservableDensity" />
+              <Mapping SourceColumn="GrossStandardVolume" DataSetColumn="GrossStandardVolume" />
+              <Mapping SourceColumn="AverageTemperature" DataSetColumn="AverageTemperature" />
+              <Mapping SourceColumn="NetStandardVolume" DataSetColumn="NetStandardVolume" />
+              <Mapping SourceColumn="ReferenceDensity" DataSetColumn="ReferenceDensity" />
+              <Mapping SourceColumn="WeightInAir" DataSetColumn="WeightInAir" />
+              <Mapping SourceColumn="FreeWaterLevel" DataSetColumn="FreeWaterLevel" />
+              <Mapping SourceColumn="FreeWaterVolume" DataSetColumn="FreeWaterVolume" />
+              <Mapping SourceColumn="LastUpdateTimestamp" DataSetColumn="LastUpdateTimestamp" />
+              <Mapping SourceColumn="WeightInVacuum" DataSetColumn="WeightInVacuum" />
+              <Mapping SourceColumn="MaxVolume" DataSetColumn="MaxVolume" />
+              <Mapping SourceColumn="AvailableRoom" DataSetColumn="AvailableRoom" />
+              <Mapping SourceColumn="ExciseStoreId" DataSetColumn="ExciseStoreId" />
+            </Mappings>
+            <Sources />
+          </TableAdapter>
+          <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="inventory_ManualTanksDataTableAdapter" GeneratorDataComponentClassName="inventory_ManualTanksDataTableAdapter" Name="inventory_ManualTanksData" UserDataComponentName="inventory_ManualTanksDataTableAdapter">
+            <MainSource>
+              <DbSource ConnectionRef="AutomatedReportingSystemConnectionString (MySettings)" DbObjectName="AutomatedReportingSystem.dbo.inventory_ManualTanksData" DbObjectType="Table" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="true" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="true" UserGetMethodName="GetData" UserSourceName="Fill">
+                <InsertCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="false">
+                    <CommandText>INSERT INTO inventory_ManualTanksData
+                         (ExciseStoreId, ParkId, TankId, RecordTimestamp, ProductId, ProductName, LiquidLevel, TotalObservableVolume, ProductLevel, GrossObservableVolume, 
+                         ObservableDensity, GrossStandardVolume, AverageTemperature, NetStandardVolume, ReferenceDensity, WeightInAir, FreeWaterLevel, FreeWaterVolume, 
+                         LastUpdateTimestamp, ManualSave, WeightInVacuum)
+VALUES        (@ExciseStoreId,@ParkId,@TankId,@RecordTimestamp,@ProductId,@ProductName,@LiquidLevel,@TotalObservableVolume,@ProductLevel,@GrossObservableVolume,@ObservableDensity,@GrossStandardVolume,@AverageTemperature,@NetStandardVolume,@ReferenceDensity,@WeightInAir,@FreeWaterLevel,@FreeWaterVolume,@LastUpdateTimestamp,@ManualSave,@WeightInVacuum);   
+SELECT ExciseStoreId, ParkId, TankId, RecordTimestamp, ProductId, ProductName, LiquidLevel, TotalObservableVolume, ProductLevel, GrossObservableVolume, ObservableDensity, GrossStandardVolume, AverageTemperature, NetStandardVolume, ReferenceDensity, WeightInAir, FreeWaterLevel, FreeWaterVolume, LastUpdateTimestamp, ManualSave FROM inventory_ManualTanksData WHERE (RecordTimestamp = @RecordTimestamp) AND (TankId = @TankId)</CommandText>
+                    <Parameters>
+                      <Parameter AllowDbNull="true" AutogeneratedName="ExciseStoreId" ColumnName="ExciseStoreId" DataSourceName="" DataTypeServer="nvarchar(50)" DbType="String" Direction="Input" ParameterName="@ExciseStoreId" Precision="0" ProviderType="NVarChar" Scale="0" Size="50" SourceColumn="ExciseStoreId" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="false" AutogeneratedName="ParkId" ColumnName="ParkId" DataSourceName="" DataTypeServer="int" DbType="Int32" Direction="Input" ParameterName="@ParkId" Precision="0" ProviderType="Int" Scale="0" Size="4" SourceColumn="ParkId" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="false" AutogeneratedName="TankId" ColumnName="TankId" DataSourceName="" DataTypeServer="int" DbType="Int32" Direction="Input" ParameterName="@TankId" Precision="0" ProviderType="Int" Scale="0" Size="4" SourceColumn="TankId" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="false" AutogeneratedName="RecordTimestamp" ColumnName="RecordTimestamp" DataSourceName="" DataTypeServer="datetime2" DbType="AnsiString" Direction="Input" ParameterName="@RecordTimestamp" Precision="0" ProviderType="DateTime2" Scale="0" Size="8" SourceColumn="RecordTimestamp" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="ProductId" ColumnName="ProductId" DataSourceName="" DataTypeServer="int" DbType="Int32" Direction="Input" ParameterName="@ProductId" Precision="0" ProviderType="Int" Scale="0" Size="4" SourceColumn="ProductId" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="ProductName" ColumnName="ProductName" DataSourceName="" DataTypeServer="nvarchar(150)" DbType="String" Direction="Input" ParameterName="@ProductName" Precision="0" ProviderType="NVarChar" Scale="0" Size="150" SourceColumn="ProductName" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="LiquidLevel" ColumnName="LiquidLevel" DataSourceName="" DataTypeServer="decimal(18, 3)" DbType="Decimal" Direction="Input" ParameterName="@LiquidLevel" Precision="18" ProviderType="Decimal" Scale="3" Size="9" SourceColumn="LiquidLevel" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="TotalObservableVolume" ColumnName="TotalObservableVolume" DataSourceName="" DataTypeServer="decimal(18, 3)" DbType="Decimal" Direction="Input" ParameterName="@TotalObservableVolume" Precision="18" ProviderType="Decimal" Scale="3" Size="9" SourceColumn="TotalObservableVolume" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="ProductLevel" ColumnName="ProductLevel" DataSourceName="" DataTypeServer="decimal(18, 3)" DbType="Decimal" Direction="Input" ParameterName="@ProductLevel" Precision="18" ProviderType="Decimal" Scale="3" Size="9" SourceColumn="ProductLevel" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="GrossObservableVolume" ColumnName="GrossObservableVolume" DataSourceName="" DataTypeServer="decimal(18, 3)" DbType="Decimal" Direction="Input" ParameterName="@GrossObservableVolume" Precision="18" ProviderType="Decimal" Scale="3" Size="9" SourceColumn="GrossObservableVolume" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="ObservableDensity" ColumnName="ObservableDensity" DataSourceName="" DataTypeServer="decimal(18, 3)" DbType="Decimal" Direction="Input" ParameterName="@ObservableDensity" Precision="18" ProviderType="Decimal" Scale="3" Size="9" SourceColumn="ObservableDensity" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="GrossStandardVolume" ColumnName="GrossStandardVolume" DataSourceName="" DataTypeServer="decimal(18, 3)" DbType="Decimal" Direction="Input" ParameterName="@GrossStandardVolume" Precision="18" ProviderType="Decimal" Scale="3" Size="9" SourceColumn="GrossStandardVolume" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="AverageTemperature" ColumnName="AverageTemperature" DataSourceName="" DataTypeServer="decimal(18, 3)" DbType="Decimal" Direction="Input" ParameterName="@AverageTemperature" Precision="18" ProviderType="Decimal" Scale="3" Size="9" SourceColumn="AverageTemperature" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="NetStandardVolume" ColumnName="NetStandardVolume" DataSourceName="" DataTypeServer="decimal(18, 3)" DbType="Decimal" Direction="Input" ParameterName="@NetStandardVolume" Precision="18" ProviderType="Decimal" Scale="3" Size="9" SourceColumn="NetStandardVolume" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="ReferenceDensity" ColumnName="ReferenceDensity" DataSourceName="" DataTypeServer="decimal(18, 3)" DbType="Decimal" Direction="Input" ParameterName="@ReferenceDensity" Precision="18" ProviderType="Decimal" Scale="3" Size="9" SourceColumn="ReferenceDensity" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="WeightInAir" ColumnName="WeightInAir" DataSourceName="" DataTypeServer="decimal(18, 3)" DbType="Decimal" Direction="Input" ParameterName="@WeightInAir" Precision="18" ProviderType="Decimal" Scale="3" Size="9" SourceColumn="WeightInAir" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="FreeWaterLevel" ColumnName="FreeWaterLevel" DataSourceName="" DataTypeServer="decimal(18, 3)" DbType="Decimal" Direction="Input" ParameterName="@FreeWaterLevel" Precision="18" ProviderType="Decimal" Scale="3" Size="9" SourceColumn="FreeWaterLevel" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="FreeWaterVolume" ColumnName="FreeWaterVolume" DataSourceName="" DataTypeServer="decimal(18, 3)" DbType="Decimal" Direction="Input" ParameterName="@FreeWaterVolume" Precision="18" ProviderType="Decimal" Scale="3" Size="9" SourceColumn="FreeWaterVolume" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="LastUpdateTimestamp" ColumnName="LastUpdateTimestamp" DataSourceName="" DataTypeServer="datetime2" DbType="AnsiString" Direction="Input" ParameterName="@LastUpdateTimestamp" Precision="0" ProviderType="DateTime2" Scale="0" Size="8" SourceColumn="LastUpdateTimestamp" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="ManualSave" ColumnName="ManualSave" DataSourceName="" DataTypeServer="bit" DbType="Boolean" Direction="Input" ParameterName="@ManualSave" Precision="0" ProviderType="Bit" Scale="0" Size="1" SourceColumn="ManualSave" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="WeightInVacuum" ColumnName="WeightInVacuum" DataSourceName="" DataTypeServer="decimal(18, 3)" DbType="Decimal" Direction="Input" ParameterName="@WeightInVacuum" Precision="18" ProviderType="Decimal" Scale="3" Size="9" SourceColumn="WeightInVacuum" SourceColumnNullMapping="false" SourceVersion="Current" />
+                    </Parameters>
+                  </DbCommand>
+                </InsertCommand>
+                <SelectCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="false">
+                    <CommandText>SELECT        ExciseStoreId, ParkId, TankId, RecordTimestamp, ProductId, ProductName, LiquidLevel, TotalObservableVolume, ProductLevel, GrossObservableVolume, 
+                         ObservableDensity, GrossStandardVolume, AverageTemperature, NetStandardVolume, ReferenceDensity, WeightInAir, FreeWaterLevel, FreeWaterVolume, 
+                         LastUpdateTimestamp, ManualSave, WeightInVacuum, MaxVolume, AvailableRoom
+FROM            inventory_ManualTanksData
+WHERE        (RecordTimestamp &gt;= @RecordTimestamp)</CommandText>
+                    <Parameters>
+                      <Parameter AllowDbNull="false" AutogeneratedName="RecordTimestamp" ColumnName="RecordTimestamp" DataSourceName="AutomatedReportingSystem.dbo.inventory_ManualTanksData" DataTypeServer="datetime2" DbType="AnsiString" Direction="Input" ParameterName="@RecordTimestamp" Precision="0" ProviderType="DateTime2" Scale="0" Size="8" SourceColumn="RecordTimestamp" SourceColumnNullMapping="false" SourceVersion="Current" />
+                    </Parameters>
+                  </DbCommand>
+                </SelectCommand>
+                <UpdateCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="true">
+                    <CommandText>UPDATE       inventory_ManualTanksData
+SET                ExciseStoreId = @ExciseStoreId, ParkId = @ParkId, TankId = @TankId, RecordTimestamp = @RecordTimestamp, ProductId = @ProductId, 
+                         ProductName = @ProductName, LiquidLevel = @LiquidLevel, TotalObservableVolume = @TotalObservableVolume, ProductLevel = @ProductLevel, 
+                         GrossObservableVolume = @GrossObservableVolume, ObservableDensity = @ObservableDensity, GrossStandardVolume = @GrossStandardVolume, 
+                         AverageTemperature = @AverageTemperature, NetStandardVolume = @NetStandardVolume, ReferenceDensity = @ReferenceDensity, WeightInAir = @WeightInAir, 
+                         FreeWaterLevel = @FreeWaterLevel, FreeWaterVolume = @FreeWaterVolume, LastUpdateTimestamp = @LastUpdateTimestamp, ManualSave = @ManualSave, 
+                         WeightInVacuum = @WeightInVacuum, MaxVolume = @MaxVolume, AvailableRoom = @AvailableRoom
+WHERE        (TankId = @Original_TankId) AND (RecordTimestamp = @Original_RecordTimestamp);   
+SELECT ExciseStoreId, ParkId, TankId, RecordTimestamp, ProductId, ProductName, LiquidLevel, TotalObservableVolume, ProductLevel, GrossObservableVolume, ObservableDensity, GrossStandardVolume, AverageTemperature, NetStandardVolume, ReferenceDensity, WeightInAir, FreeWaterLevel, FreeWaterVolume, LastUpdateTimestamp, ManualSave FROM inventory_ManualTanksData WHERE (RecordTimestamp = @RecordTimestamp) AND (TankId = @TankId)</CommandText>
+                    <Parameters>
+                      <Parameter AllowDbNull="true" AutogeneratedName="ExciseStoreId" ColumnName="ExciseStoreId" DataSourceName="AutomatedReportingSystem.dbo.inventory_ManualTanksData" DataTypeServer="nvarchar(50)" DbType="String" Direction="Input" ParameterName="@ExciseStoreId" Precision="0" ProviderType="NVarChar" Scale="0" Size="50" SourceColumn="ExciseStoreId" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="false" AutogeneratedName="ParkId" ColumnName="ParkId" DataSourceName="AutomatedReportingSystem.dbo.inventory_ManualTanksData" DataTypeServer="int" DbType="Int32" Direction="Input" ParameterName="@ParkId" Precision="0" ProviderType="Int" Scale="0" Size="4" SourceColumn="ParkId" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="false" AutogeneratedName="TankId" ColumnName="TankId" DataSourceName="AutomatedReportingSystem.dbo.inventory_ManualTanksData" DataTypeServer="int" DbType="Int32" Direction="Input" ParameterName="@TankId" Precision="0" ProviderType="Int" Scale="0" Size="4" SourceColumn="TankId" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="false" AutogeneratedName="RecordTimestamp" ColumnName="RecordTimestamp" DataSourceName="AutomatedReportingSystem.dbo.inventory_ManualTanksData" DataTypeServer="datetime2" DbType="AnsiString" Direction="Input" ParameterName="@RecordTimestamp" Precision="0" ProviderType="DateTime2" Scale="0" Size="8" SourceColumn="RecordTimestamp" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="ProductId" ColumnName="ProductId" DataSourceName="AutomatedReportingSystem.dbo.inventory_ManualTanksData" DataTypeServer="int" DbType="Int32" Direction="Input" ParameterName="@ProductId" Precision="0" ProviderType="Int" Scale="0" Size="4" SourceColumn="ProductId" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="ProductName" ColumnName="ProductName" DataSourceName="AutomatedReportingSystem.dbo.inventory_ManualTanksData" DataTypeServer="nvarchar(150)" DbType="String" Direction="Input" ParameterName="@ProductName" Precision="0" ProviderType="NVarChar" Scale="0" Size="150" SourceColumn="ProductName" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="LiquidLevel" ColumnName="LiquidLevel" DataSourceName="AutomatedReportingSystem.dbo.inventory_ManualTanksData" DataTypeServer="decimal(18, 3)" DbType="Decimal" Direction="Input" ParameterName="@LiquidLevel" Precision="18" ProviderType="Decimal" Scale="3" Size="9" SourceColumn="LiquidLevel" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="TotalObservableVolume" ColumnName="TotalObservableVolume" DataSourceName="AutomatedReportingSystem.dbo.inventory_ManualTanksData" DataTypeServer="decimal(18, 3)" DbType="Decimal" Direction="Input" ParameterName="@TotalObservableVolume" Precision="18" ProviderType="Decimal" Scale="3" Size="9" SourceColumn="TotalObservableVolume" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="ProductLevel" ColumnName="ProductLevel" DataSourceName="AutomatedReportingSystem.dbo.inventory_ManualTanksData" DataTypeServer="decimal(18, 3)" DbType="Decimal" Direction="Input" ParameterName="@ProductLevel" Precision="18" ProviderType="Decimal" Scale="3" Size="9" SourceColumn="ProductLevel" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="GrossObservableVolume" ColumnName="GrossObservableVolume" DataSourceName="AutomatedReportingSystem.dbo.inventory_ManualTanksData" DataTypeServer="decimal(18, 3)" DbType="Decimal" Direction="Input" ParameterName="@GrossObservableVolume" Precision="18" ProviderType="Decimal" Scale="3" Size="9" SourceColumn="GrossObservableVolume" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="ObservableDensity" ColumnName="ObservableDensity" DataSourceName="AutomatedReportingSystem.dbo.inventory_ManualTanksData" DataTypeServer="decimal(18, 3)" DbType="Decimal" Direction="Input" ParameterName="@ObservableDensity" Precision="18" ProviderType="Decimal" Scale="3" Size="9" SourceColumn="ObservableDensity" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="GrossStandardVolume" ColumnName="GrossStandardVolume" DataSourceName="AutomatedReportingSystem.dbo.inventory_ManualTanksData" DataTypeServer="decimal(18, 3)" DbType="Decimal" Direction="Input" ParameterName="@GrossStandardVolume" Precision="18" ProviderType="Decimal" Scale="3" Size="9" SourceColumn="GrossStandardVolume" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="AverageTemperature" ColumnName="AverageTemperature" DataSourceName="AutomatedReportingSystem.dbo.inventory_ManualTanksData" DataTypeServer="decimal(18, 3)" DbType="Decimal" Direction="Input" ParameterName="@AverageTemperature" Precision="18" ProviderType="Decimal" Scale="3" Size="9" SourceColumn="AverageTemperature" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="NetStandardVolume" ColumnName="NetStandardVolume" DataSourceName="AutomatedReportingSystem.dbo.inventory_ManualTanksData" DataTypeServer="decimal(18, 3)" DbType="Decimal" Direction="Input" ParameterName="@NetStandardVolume" Precision="18" ProviderType="Decimal" Scale="3" Size="9" SourceColumn="NetStandardVolume" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="ReferenceDensity" ColumnName="ReferenceDensity" DataSourceName="AutomatedReportingSystem.dbo.inventory_ManualTanksData" DataTypeServer="decimal(18, 3)" DbType="Decimal" Direction="Input" ParameterName="@ReferenceDensity" Precision="18" ProviderType="Decimal" Scale="3" Size="9" SourceColumn="ReferenceDensity" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="WeightInAir" ColumnName="WeightInAir" DataSourceName="AutomatedReportingSystem.dbo.inventory_ManualTanksData" DataTypeServer="decimal(18, 3)" DbType="Decimal" Direction="Input" ParameterName="@WeightInAir" Precision="18" ProviderType="Decimal" Scale="3" Size="9" SourceColumn="WeightInAir" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="FreeWaterLevel" ColumnName="FreeWaterLevel" DataSourceName="AutomatedReportingSystem.dbo.inventory_ManualTanksData" DataTypeServer="decimal(18, 3)" DbType="Decimal" Direction="Input" ParameterName="@FreeWaterLevel" Precision="18" ProviderType="Decimal" Scale="3" Size="9" SourceColumn="FreeWaterLevel" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="FreeWaterVolume" ColumnName="FreeWaterVolume" DataSourceName="AutomatedReportingSystem.dbo.inventory_ManualTanksData" DataTypeServer="decimal(18, 3)" DbType="Decimal" Direction="Input" ParameterName="@FreeWaterVolume" Precision="18" ProviderType="Decimal" Scale="3" Size="9" SourceColumn="FreeWaterVolume" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="LastUpdateTimestamp" ColumnName="LastUpdateTimestamp" DataSourceName="AutomatedReportingSystem.dbo.inventory_ManualTanksData" DataTypeServer="datetime2" DbType="AnsiString" Direction="Input" ParameterName="@LastUpdateTimestamp" Precision="0" ProviderType="DateTime2" Scale="0" Size="8" SourceColumn="LastUpdateTimestamp" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="ManualSave" ColumnName="ManualSave" DataSourceName="AutomatedReportingSystem.dbo.inventory_ManualTanksData" DataTypeServer="bit" DbType="Boolean" Direction="Input" ParameterName="@ManualSave" Precision="0" ProviderType="Bit" Scale="0" Size="1" SourceColumn="ManualSave" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="WeightInVacuum" ColumnName="WeightInVacuum" DataSourceName="AutomatedReportingSystem.dbo.inventory_ManualTanksData" DataTypeServer="decimal(18, 3)" DbType="Decimal" Direction="Input" ParameterName="@WeightInVacuum" Precision="18" ProviderType="Decimal" Scale="3" Size="9" SourceColumn="WeightInVacuum" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="MaxVolume" ColumnName="MaxVolume" DataSourceName="AutomatedReportingSystem.dbo.inventory_ManualTanksData" DataTypeServer="decimal(18, 3)" DbType="Decimal" Direction="Input" ParameterName="@MaxVolume" Precision="18" ProviderType="Decimal" Scale="3" Size="9" SourceColumn="MaxVolume" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="AvailableRoom" ColumnName="AvailableRoom" DataSourceName="AutomatedReportingSystem.dbo.inventory_ManualTanksData" DataTypeServer="decimal(18, 3)" DbType="Decimal" Direction="Input" ParameterName="@AvailableRoom" Precision="18" ProviderType="Decimal" Scale="3" Size="9" SourceColumn="AvailableRoom" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="false" AutogeneratedName="Original_TankId" ColumnName="TankId" DataSourceName="AutomatedReportingSystem.dbo.inventory_ManualTanksData" DataTypeServer="int" DbType="Int32" Direction="Input" ParameterName="@Original_TankId" Precision="0" ProviderType="Int" Scale="0" Size="4" SourceColumn="TankId" SourceColumnNullMapping="false" SourceVersion="Original" />
+                      <Parameter AllowDbNull="false" AutogeneratedName="Original_RecordTimestamp" ColumnName="RecordTimestamp" DataSourceName="AutomatedReportingSystem.dbo.inventory_ManualTanksData" DataTypeServer="datetime2" DbType="AnsiString" Direction="Input" ParameterName="@Original_RecordTimestamp" Precision="0" ProviderType="DateTime2" Scale="0" Size="8" SourceColumn="RecordTimestamp" SourceColumnNullMapping="false" SourceVersion="Original" />
+                    </Parameters>
+                  </DbCommand>
+                </UpdateCommand>
+              </DbSource>
+            </MainSource>
+            <Mappings>
+              <Mapping SourceColumn="ExciseStoreId" DataSetColumn="ExciseStoreId" />
+              <Mapping SourceColumn="ParkId" DataSetColumn="ParkId" />
+              <Mapping SourceColumn="TankId" DataSetColumn="TankId" />
+              <Mapping SourceColumn="RecordTimestamp" DataSetColumn="RecordTimestamp" />
+              <Mapping SourceColumn="ProductId" DataSetColumn="ProductId" />
+              <Mapping SourceColumn="ProductName" DataSetColumn="ProductName" />
+              <Mapping SourceColumn="LiquidLevel" DataSetColumn="LiquidLevel" />
+              <Mapping SourceColumn="TotalObservableVolume" DataSetColumn="TotalObservableVolume" />
+              <Mapping SourceColumn="ProductLevel" DataSetColumn="ProductLevel" />
+              <Mapping SourceColumn="GrossObservableVolume" DataSetColumn="GrossObservableVolume" />
+              <Mapping SourceColumn="ObservableDensity" DataSetColumn="ObservableDensity" />
+              <Mapping SourceColumn="GrossStandardVolume" DataSetColumn="GrossStandardVolume" />
+              <Mapping SourceColumn="AverageTemperature" DataSetColumn="AverageTemperature" />
+              <Mapping SourceColumn="NetStandardVolume" DataSetColumn="NetStandardVolume" />
+              <Mapping SourceColumn="ReferenceDensity" DataSetColumn="ReferenceDensity" />
+              <Mapping SourceColumn="WeightInAir" DataSetColumn="WeightInAir" />
+              <Mapping SourceColumn="FreeWaterLevel" DataSetColumn="FreeWaterLevel" />
+              <Mapping SourceColumn="FreeWaterVolume" DataSetColumn="FreeWaterVolume" />
+              <Mapping SourceColumn="LastUpdateTimestamp" DataSetColumn="LastUpdateTimestamp" />
+              <Mapping SourceColumn="ManualSave" DataSetColumn="ManualSave" />
+              <Mapping SourceColumn="WeightInVacuum" DataSetColumn="WeightInVacuum" />
+              <Mapping SourceColumn="MaxVolume" DataSetColumn="MaxVolume" />
+              <Mapping SourceColumn="AvailableRoom" DataSetColumn="AvailableRoom" />
+            </Mappings>
+            <Sources />
+          </TableAdapter>
+        </Tables>
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="ServiceDataSet" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="ServiceDataSet" msprop:Generator_UserDSName="ServiceDataSet">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="inventory_Tanks" msprop:Generator_TableClassName="inventory_TanksDataTable" msprop:Generator_TableVarName="tableinventory_Tanks" msprop:Generator_RowChangedName="inventory_TanksRowChanged" msprop:Generator_TablePropName="inventory_Tanks" msprop:Generator_RowDeletingName="inventory_TanksRowDeleting" msprop:Generator_RowChangingName="inventory_TanksRowChanging" msprop:Generator_RowEvHandlerName="inventory_TanksRowChangeEventHandler" msprop:Generator_RowDeletedName="inventory_TanksRowDeleted" msprop:Generator_RowClassName="inventory_TanksRow" msprop:Generator_UserTableName="inventory_Tanks" msprop:Generator_RowEvArgName="inventory_TanksRowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="TankId" msprop:Generator_ColumnVarNameInTable="columnTankId" msprop:Generator_ColumnPropNameInRow="TankId" msprop:Generator_ColumnPropNameInTable="TankIdColumn" msprop:Generator_UserColumnName="TankId" type="xs:int" />
+              <xs:element name="ParkId" msprop:Generator_ColumnVarNameInTable="columnParkId" msprop:Generator_ColumnPropNameInRow="ParkId" msprop:Generator_ColumnPropNameInTable="ParkIdColumn" msprop:Generator_UserColumnName="ParkId" type="xs:int" />
+              <xs:element name="ControlPoint" msprop:nullValue="_empty" msprop:Generator_ColumnPropNameInRow="ControlPoint" msprop:Generator_ColumnVarNameInTable="columnControlPoint" msprop:Generator_ColumnPropNameInTable="ControlPointColumn" msprop:Generator_UserColumnName="ControlPoint" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="50" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="TankName" msprop:nullValue="_empty" msprop:Generator_ColumnPropNameInRow="TankName" msprop:Generator_ColumnVarNameInTable="columnTankName" msprop:Generator_ColumnPropNameInTable="TankNameColumn" msprop:Generator_UserColumnName="TankName" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="80" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="IsActive" msprop:Generator_ColumnVarNameInTable="columnIsActive" msprop:Generator_ColumnPropNameInRow="IsActive" msprop:Generator_ColumnPropNameInTable="IsActiveColumn" msprop:Generator_UserColumnName="IsActive" type="xs:boolean" />
+              <xs:element name="PhdTagProductId" msprop:nullValue="_empty" msprop:Generator_ColumnPropNameInRow="PhdTagProductId" msprop:Generator_ColumnVarNameInTable="columnPhdTagProductId" msprop:Generator_ColumnPropNameInTable="PhdTagProductIdColumn" msprop:Generator_UserColumnName="PhdTagProductId" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="50" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="PhdTagProductName" msprop:nullValue="_empty" msprop:Generator_ColumnPropNameInRow="PhdTagProductName" msprop:Generator_ColumnVarNameInTable="columnPhdTagProductName" msprop:Generator_ColumnPropNameInTable="PhdTagProductNameColumn" msprop:Generator_UserColumnName="PhdTagProductName" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="50" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="PhdTagLiquidLevel" msprop:nullValue="_empty" msprop:Generator_ColumnPropNameInRow="PhdTagLiquidLevel" msprop:Generator_ColumnVarNameInTable="columnPhdTagLiquidLevel" msprop:Generator_ColumnPropNameInTable="PhdTagLiquidLevelColumn" msprop:Generator_UserColumnName="PhdTagLiquidLevel" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="50" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="LiquidLevelLowExtreme" msprop:Generator_ColumnVarNameInTable="columnLiquidLevelLowExtreme" msprop:Generator_ColumnPropNameInRow="LiquidLevelLowExtreme" msprop:Generator_ColumnPropNameInTable="LiquidLevelLowExtremeColumn" msprop:Generator_UserColumnName="LiquidLevelLowExtreme" type="xs:decimal" />
+              <xs:element name="LiquidLevelHighExtreme" msprop:Generator_ColumnVarNameInTable="columnLiquidLevelHighExtreme" msprop:Generator_ColumnPropNameInRow="LiquidLevelHighExtreme" msprop:Generator_ColumnPropNameInTable="LiquidLevelHighExtremeColumn" msprop:Generator_UserColumnName="LiquidLevelHighExtreme" type="xs:decimal" />
+              <xs:element name="PhdTagProductLevel" msprop:nullValue="_empty" msprop:Generator_ColumnPropNameInRow="PhdTagProductLevel" msprop:Generator_ColumnVarNameInTable="columnPhdTagProductLevel" msprop:Generator_ColumnPropNameInTable="PhdTagProductLevelColumn" msprop:Generator_UserColumnName="PhdTagProductLevel" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="50" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="ProductLevelLowExtreme" msprop:Generator_ColumnVarNameInTable="columnProductLevelLowExtreme" msprop:Generator_ColumnPropNameInRow="ProductLevelLowExtreme" msprop:Generator_ColumnPropNameInTable="ProductLevelLowExtremeColumn" msprop:Generator_UserColumnName="ProductLevelLowExtreme" type="xs:decimal" />
+              <xs:element name="ProductLevelHighExtreme" msprop:Generator_ColumnVarNameInTable="columnProductLevelHighExtreme" msprop:Generator_ColumnPropNameInRow="ProductLevelHighExtreme" msprop:Generator_ColumnPropNameInTable="ProductLevelHighExtremeColumn" msprop:Generator_UserColumnName="ProductLevelHighExtreme" type="xs:decimal" />
+              <xs:element name="PhdTagFreeWaterLevel" msprop:nullValue="_empty" msprop:Generator_ColumnPropNameInRow="PhdTagFreeWaterLevel" msprop:Generator_ColumnVarNameInTable="columnPhdTagFreeWaterLevel" msprop:Generator_ColumnPropNameInTable="PhdTagFreeWaterLevelColumn" msprop:Generator_UserColumnName="PhdTagFreeWaterLevel" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="50" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="FreeWaterLevelLowExtreme" msprop:Generator_ColumnVarNameInTable="columnFreeWaterLevelLowExtreme" msprop:Generator_ColumnPropNameInRow="FreeWaterLevelLowExtreme" msprop:Generator_ColumnPropNameInTable="FreeWaterLevelLowExtremeColumn" msprop:Generator_UserColumnName="FreeWaterLevelLowExtreme" type="xs:decimal" />
+              <xs:element name="FreeWaterLevelHighExtreme" msprop:Generator_ColumnVarNameInTable="columnFreeWaterLevelHighExtreme" msprop:Generator_ColumnPropNameInRow="FreeWaterLevelHighExtreme" msprop:Generator_ColumnPropNameInTable="FreeWaterLevelHighExtremeColumn" msprop:Generator_UserColumnName="FreeWaterLevelHighExtreme" type="xs:decimal" />
+              <xs:element name="PhdTagFreeWaterVolume" msprop:nullValue="_empty" msprop:Generator_ColumnPropNameInRow="PhdTagFreeWaterVolume" msprop:Generator_ColumnVarNameInTable="columnPhdTagFreeWaterVolume" msprop:Generator_ColumnPropNameInTable="PhdTagFreeWaterVolumeColumn" msprop:Generator_UserColumnName="PhdTagFreeWaterVolume" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="50" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="FreeWaterVolumeLowExtreme" msprop:Generator_ColumnVarNameInTable="columnFreeWaterVolumeLowExtreme" msprop:Generator_ColumnPropNameInRow="FreeWaterVolumeLowExtreme" msprop:Generator_ColumnPropNameInTable="FreeWaterVolumeLowExtremeColumn" msprop:Generator_UserColumnName="FreeWaterVolumeLowExtreme" type="xs:decimal" />
+              <xs:element name="FreeWaterVolumeHighExtreme" msprop:Generator_ColumnVarNameInTable="columnFreeWaterVolumeHighExtreme" msprop:Generator_ColumnPropNameInRow="FreeWaterVolumeHighExtreme" msprop:Generator_ColumnPropNameInTable="FreeWaterVolumeHighExtremeColumn" msprop:Generator_UserColumnName="FreeWaterVolumeHighExtreme" type="xs:decimal" />
+              <xs:element name="PhdTagObservableDensity" msprop:nullValue="_empty" msprop:Generator_ColumnPropNameInRow="PhdTagObservableDensity" msprop:Generator_ColumnVarNameInTable="columnPhdTagObservableDensity" msprop:Generator_ColumnPropNameInTable="PhdTagObservableDensityColumn" msprop:Generator_UserColumnName="PhdTagObservableDensity" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="50" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="ObservableDensityLowExtreme" msprop:Generator_ColumnVarNameInTable="columnObservableDensityLowExtreme" msprop:Generator_ColumnPropNameInRow="ObservableDensityLowExtreme" msprop:Generator_ColumnPropNameInTable="ObservableDensityLowExtremeColumn" msprop:Generator_UserColumnName="ObservableDensityLowExtreme" type="xs:decimal" />
+              <xs:element name="ObservableDensityHighExtreme" msprop:Generator_ColumnVarNameInTable="columnObservableDensityHighExtreme" msprop:Generator_ColumnPropNameInRow="ObservableDensityHighExtreme" msprop:Generator_ColumnPropNameInTable="ObservableDensityHighExtremeColumn" msprop:Generator_UserColumnName="ObservableDensityHighExtreme" type="xs:decimal" />
+              <xs:element name="PhdTagReferenceDensity" msprop:nullValue="_empty" msprop:Generator_ColumnPropNameInRow="PhdTagReferenceDensity" msprop:Generator_ColumnVarNameInTable="columnPhdTagReferenceDensity" msprop:Generator_ColumnPropNameInTable="PhdTagReferenceDensityColumn" msprop:Generator_UserColumnName="PhdTagReferenceDensity" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="50" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="ReferenceDensityLowExtreme" msprop:Generator_ColumnVarNameInTable="columnReferenceDensityLowExtreme" msprop:Generator_ColumnPropNameInRow="ReferenceDensityLowExtreme" msprop:Generator_ColumnPropNameInTable="ReferenceDensityLowExtremeColumn" msprop:Generator_UserColumnName="ReferenceDensityLowExtreme" type="xs:decimal" />
+              <xs:element name="ReferenceDensityHighExtreme" msprop:Generator_ColumnVarNameInTable="columnReferenceDensityHighExtreme" msprop:Generator_ColumnPropNameInRow="ReferenceDensityHighExtreme" msprop:Generator_ColumnPropNameInTable="ReferenceDensityHighExtremeColumn" msprop:Generator_UserColumnName="ReferenceDensityHighExtreme" type="xs:decimal" />
+              <xs:element name="PhdTagGrossObservableVolume" msprop:nullValue="_empty" msprop:Generator_ColumnPropNameInRow="PhdTagGrossObservableVolume" msprop:Generator_ColumnVarNameInTable="columnPhdTagGrossObservableVolume" msprop:Generator_ColumnPropNameInTable="PhdTagGrossObservableVolumeColumn" msprop:Generator_UserColumnName="PhdTagGrossObservableVolume" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="50" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="GrossObservableVolumeLowExtreme" msprop:Generator_ColumnVarNameInTable="columnGrossObservableVolumeLowExtreme" msprop:Generator_ColumnPropNameInRow="GrossObservableVolumeLowExtreme" msprop:Generator_ColumnPropNameInTable="GrossObservableVolumeLowExtremeColumn" msprop:Generator_UserColumnName="GrossObservableVolumeLowExtreme" type="xs:decimal" />
+              <xs:element name="GrossObservableVolumeHighExtreme" msprop:Generator_ColumnVarNameInTable="columnGrossObservableVolumeHighExtreme" msprop:Generator_ColumnPropNameInRow="GrossObservableVolumeHighExtreme" msprop:Generator_ColumnPropNameInTable="GrossObservableVolumeHighExtremeColumn" msprop:Generator_UserColumnName="GrossObservableVolumeHighExtreme" type="xs:decimal" />
+              <xs:element name="PhdTagGrossStandardVolume" msprop:nullValue="_empty" msprop:Generator_ColumnPropNameInRow="PhdTagGrossStandardVolume" msprop:Generator_ColumnVarNameInTable="columnPhdTagGrossStandardVolume" msprop:Generator_ColumnPropNameInTable="PhdTagGrossStandardVolumeColumn" msprop:Generator_UserColumnName="PhdTagGrossStandardVolume" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="50" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="GrossStandardVolumeLowExtreme" msprop:Generator_ColumnVarNameInTable="columnGrossStandardVolumeLowExtreme" msprop:Generator_ColumnPropNameInRow="GrossStandardVolumeLowExtreme" msprop:Generator_ColumnPropNameInTable="GrossStandardVolumeLowExtremeColumn" msprop:Generator_UserColumnName="GrossStandardVolumeLowExtreme" type="xs:decimal" />
+              <xs:element name="GrossStandardVolumeHighExtreme" msprop:Generator_ColumnVarNameInTable="columnGrossStandardVolumeHighExtreme" msprop:Generator_ColumnPropNameInRow="GrossStandardVolumeHighExtreme" msprop:Generator_ColumnPropNameInTable="GrossStandardVolumeHighExtremeColumn" msprop:Generator_UserColumnName="GrossStandardVolumeHighExtreme" type="xs:decimal" />
+              <xs:element name="PhdTagNetStandardVolume" msprop:nullValue="_empty" msprop:Generator_ColumnPropNameInRow="PhdTagNetStandardVolume" msprop:Generator_ColumnVarNameInTable="columnPhdTagNetStandardVolume" msprop:Generator_ColumnPropNameInTable="PhdTagNetStandardVolumeColumn" msprop:Generator_UserColumnName="PhdTagNetStandardVolume" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="50" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="NetStandardVolumeLowExtreme" msprop:Generator_ColumnVarNameInTable="columnNetStandardVolumeLowExtreme" msprop:Generator_ColumnPropNameInRow="NetStandardVolumeLowExtreme" msprop:Generator_ColumnPropNameInTable="NetStandardVolumeLowExtremeColumn" msprop:Generator_UserColumnName="NetStandardVolumeLowExtreme" type="xs:decimal" />
+              <xs:element name="NetStandardVolumeHighExtreme" msprop:Generator_ColumnVarNameInTable="columnNetStandardVolumeHighExtreme" msprop:Generator_ColumnPropNameInRow="NetStandardVolumeHighExtreme" msprop:Generator_ColumnPropNameInTable="NetStandardVolumeHighExtremeColumn" msprop:Generator_UserColumnName="NetStandardVolumeHighExtreme" type="xs:decimal" />
+              <xs:element name="PhdTagWeightInAir" msprop:nullValue="_empty" msprop:Generator_ColumnPropNameInRow="PhdTagWeightInAir" msprop:Generator_ColumnVarNameInTable="columnPhdTagWeightInAir" msprop:Generator_ColumnPropNameInTable="PhdTagWeightInAirColumn" msprop:Generator_UserColumnName="PhdTagWeightInAir" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="50" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="WeightInAirLowExtreme" msprop:Generator_ColumnVarNameInTable="columnWeightInAirLowExtreme" msprop:Generator_ColumnPropNameInRow="WeightInAirLowExtreme" msprop:Generator_ColumnPropNameInTable="WeightInAirLowExtremeColumn" msprop:Generator_UserColumnName="WeightInAirLowExtreme" type="xs:decimal" />
+              <xs:element name="WeightInAirHighExtreme" msprop:Generator_ColumnVarNameInTable="columnWeightInAirHighExtreme" msprop:Generator_ColumnPropNameInRow="WeightInAirHighExtreme" msprop:Generator_ColumnPropNameInTable="WeightInAirHighExtremeColumn" msprop:Generator_UserColumnName="WeightInAirHighExtreme" type="xs:decimal" />
+              <xs:element name="PhdTagAverageTemperature" msprop:nullValue="_empty" msprop:Generator_ColumnPropNameInRow="PhdTagAverageTemperature" msprop:Generator_ColumnVarNameInTable="columnPhdTagAverageTemperature" msprop:Generator_ColumnPropNameInTable="PhdTagAverageTemperatureColumn" msprop:Generator_UserColumnName="PhdTagAverageTemperature" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="50" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="AverageTemperatureLowExtreme" msprop:Generator_ColumnVarNameInTable="columnAverageTemperatureLowExtreme" msprop:Generator_ColumnPropNameInRow="AverageTemperatureLowExtreme" msprop:Generator_ColumnPropNameInTable="AverageTemperatureLowExtremeColumn" msprop:Generator_UserColumnName="AverageTemperatureLowExtreme" type="xs:decimal" />
+              <xs:element name="AverageTemperatureHighExtreme" msprop:Generator_ColumnVarNameInTable="columnAverageTemperatureHighExtreme" msprop:Generator_ColumnPropNameInRow="AverageTemperatureHighExtreme" msprop:Generator_ColumnPropNameInTable="AverageTemperatureHighExtremeColumn" msprop:Generator_UserColumnName="AverageTemperatureHighExtreme" type="xs:decimal" />
+              <xs:element name="PhdTagTotalObservableVolume" msprop:nullValue="_empty" msprop:Generator_ColumnPropNameInRow="PhdTagTotalObservableVolume" msprop:Generator_ColumnVarNameInTable="columnPhdTagTotalObservableVolume" msprop:Generator_ColumnPropNameInTable="PhdTagTotalObservableVolumeColumn" msprop:Generator_UserColumnName="PhdTagTotalObservableVolume" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="50" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="TotalObservableVolumeLowExtreme" msprop:Generator_ColumnVarNameInTable="columnTotalObservableVolumeLowExtreme" msprop:Generator_ColumnPropNameInRow="TotalObservableVolumeLowExtreme" msprop:Generator_ColumnPropNameInTable="TotalObservableVolumeLowExtremeColumn" msprop:Generator_UserColumnName="TotalObservableVolumeLowExtreme" type="xs:decimal" />
+              <xs:element name="TotalObservableVolumeHighExtreme" msprop:Generator_ColumnVarNameInTable="columnTotalObservableVolumeHighExtreme" msprop:Generator_ColumnPropNameInRow="TotalObservableVolumeHighExtreme" msprop:Generator_ColumnPropNameInTable="TotalObservableVolumeHighExtremeColumn" msprop:Generator_UserColumnName="TotalObservableVolumeHighExtreme" type="xs:decimal" />
+              <xs:element name="ExciseStoreId" msprop:Generator_ColumnVarNameInTable="columnExciseStoreId" msprop:Generator_ColumnPropNameInRow="ExciseStoreId" msprop:Generator_ColumnPropNameInTable="ExciseStoreIdColumn" msprop:Generator_UserColumnName="ExciseStoreId">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="50" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="PhdTagWeightInVacuum" msprop:Generator_ColumnVarNameInTable="columnPhdTagWeightInVacuum" msprop:Generator_ColumnPropNameInRow="PhdTagWeightInVacuum" msprop:Generator_ColumnPropNameInTable="PhdTagWeightInVacuumColumn" msprop:Generator_UserColumnName="PhdTagWeightInVacuum" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="50" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="WeightInVacuumLowExtreme" msprop:Generator_ColumnVarNameInTable="columnWeightInVacuumLowExtreme" msprop:Generator_ColumnPropNameInRow="WeightInVacuumLowExtreme" msprop:Generator_ColumnPropNameInTable="WeightInVacuumLowExtremeColumn" msprop:Generator_UserColumnName="WeightInVacuumLowExtreme" type="xs:decimal" />
+              <xs:element name="WeightInVacuumHighExtreme" msprop:Generator_ColumnVarNameInTable="columnWeightInVacuumHighExtreme" msprop:Generator_ColumnPropNameInRow="WeightInVacuumHighExtreme" msprop:Generator_ColumnPropNameInTable="WeightInVacuumHighExtremeColumn" msprop:Generator_UserColumnName="WeightInVacuumHighExtreme" type="xs:decimal" />
+              <xs:element name="PhdTagMaxVolume" msprop:Generator_ColumnVarNameInTable="columnPhdTagMaxVolume" msprop:Generator_ColumnPropNameInRow="PhdTagMaxVolume" msprop:Generator_ColumnPropNameInTable="PhdTagMaxVolumeColumn" msprop:Generator_UserColumnName="PhdTagMaxVolume" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="50" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="MaxVolumeLowExtreme" msprop:Generator_ColumnVarNameInTable="columnMaxVolumeLowExtreme" msprop:Generator_ColumnPropNameInRow="MaxVolumeLowExtreme" msprop:Generator_ColumnPropNameInTable="MaxVolumeLowExtremeColumn" msprop:Generator_UserColumnName="MaxVolumeLowExtreme" type="xs:decimal" />
+              <xs:element name="MaxVolumeHighExtreme" msprop:Generator_ColumnVarNameInTable="columnMaxVolumeHighExtreme" msprop:Generator_ColumnPropNameInRow="MaxVolumeHighExtreme" msprop:Generator_ColumnPropNameInTable="MaxVolumeHighExtremeColumn" msprop:Generator_UserColumnName="MaxVolumeHighExtreme" type="xs:decimal" />
+              <xs:element name="PhdTagAvailableRoom" msprop:Generator_ColumnVarNameInTable="columnPhdTagAvailableRoom" msprop:Generator_ColumnPropNameInRow="PhdTagAvailableRoom" msprop:Generator_ColumnPropNameInTable="PhdTagAvailableRoomColumn" msprop:Generator_UserColumnName="PhdTagAvailableRoom" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="50" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="AvailableRoomLowExtreme" msprop:Generator_ColumnVarNameInTable="columnAvailableRoomLowExtreme" msprop:Generator_ColumnPropNameInRow="AvailableRoomLowExtreme" msprop:Generator_ColumnPropNameInTable="AvailableRoomLowExtremeColumn" msprop:Generator_UserColumnName="AvailableRoomLowExtreme" type="xs:decimal" />
+              <xs:element name="AvailableRoomHighExtreme" msprop:Generator_ColumnVarNameInTable="columnAvailableRoomHighExtreme" msprop:Generator_ColumnPropNameInRow="AvailableRoomHighExtreme" msprop:Generator_ColumnPropNameInTable="AvailableRoomHighExtremeColumn" msprop:Generator_UserColumnName="AvailableRoomHighExtreme" type="xs:decimal" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="inventory_TanksDataMaxRecordTimestamp" msprop:Generator_TableClassName="inventory_TanksDataMaxRecordTimestampDataTable" msprop:Generator_TableVarName="tableinventory_TanksDataMaxRecordTimestamp" msprop:Generator_RowChangedName="inventory_TanksDataMaxRecordTimestampRowChanged" msprop:Generator_TablePropName="inventory_TanksDataMaxRecordTimestamp" msprop:Generator_RowDeletingName="inventory_TanksDataMaxRecordTimestampRowDeleting" msprop:Generator_RowChangingName="inventory_TanksDataMaxRecordTimestampRowChanging" msprop:Generator_RowEvHandlerName="inventory_TanksDataMaxRecordTimestampRowChangeEventHandler" msprop:Generator_RowDeletedName="inventory_TanksDataMaxRecordTimestampRowDeleted" msprop:Generator_RowClassName="inventory_TanksDataMaxRecordTimestampRow" msprop:Generator_UserTableName="inventory_TanksDataMaxRecordTimestamp" msprop:Generator_RowEvArgName="inventory_TanksDataMaxRecordTimestampRowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="TankId" msprop:Generator_ColumnVarNameInTable="columnTankId" msprop:Generator_ColumnPropNameInRow="TankId" msprop:Generator_ColumnPropNameInTable="TankIdColumn" msprop:Generator_UserColumnName="TankId" type="xs:int" minOccurs="0" />
+              <xs:element name="MaxRecordTimestamp" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnMaxRecordTimestamp" msprop:Generator_ColumnPropNameInRow="MaxRecordTimestamp" msprop:Generator_ColumnPropNameInTable="MaxRecordTimestampColumn" msprop:Generator_UserColumnName="MaxRecordTimestamp" type="xs:dateTime" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="inventory_TanksData" msprop:Generator_TableClassName="inventory_TanksDataDataTable" msprop:Generator_TableVarName="tableinventory_TanksData" msprop:Generator_RowChangedName="inventory_TanksDataRowChanged" msprop:Generator_TablePropName="inventory_TanksData" msprop:Generator_RowDeletingName="inventory_TanksDataRowDeleting" msprop:Generator_RowChangingName="inventory_TanksDataRowChanging" msprop:Generator_RowEvHandlerName="inventory_TanksDataRowChangeEventHandler" msprop:Generator_RowDeletedName="inventory_TanksDataRowDeleted" msprop:Generator_RowClassName="inventory_TanksDataRow" msprop:Generator_UserTableName="inventory_TanksData" msprop:Generator_RowEvArgName="inventory_TanksDataRowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="ParkId" msprop:Generator_ColumnVarNameInTable="columnParkId" msprop:Generator_ColumnPropNameInRow="ParkId" msprop:Generator_ColumnPropNameInTable="ParkIdColumn" msprop:Generator_UserColumnName="ParkId" type="xs:int" />
+              <xs:element name="TankId" msprop:Generator_ColumnVarNameInTable="columnTankId" msprop:Generator_ColumnPropNameInRow="TankId" msprop:Generator_ColumnPropNameInTable="TankIdColumn" msprop:Generator_UserColumnName="TankId" type="xs:int" />
+              <xs:element name="RecordTimestamp" msprop:Generator_ColumnVarNameInTable="columnRecordTimestamp" msprop:Generator_ColumnPropNameInRow="RecordTimestamp" msprop:Generator_ColumnPropNameInTable="RecordTimestampColumn" msprop:Generator_UserColumnName="RecordTimestamp" type="xs:dateTime" />
+              <xs:element name="ProductId" msprop:Generator_ColumnVarNameInTable="columnProductId" msprop:Generator_ColumnPropNameInRow="ProductId" msprop:Generator_ColumnPropNameInTable="ProductIdColumn" msprop:Generator_UserColumnName="ProductId" type="xs:int" minOccurs="0" />
+              <xs:element name="ProductName" msprop:Generator_ColumnVarNameInTable="columnProductName" msprop:Generator_ColumnPropNameInRow="ProductName" msprop:Generator_ColumnPropNameInTable="ProductNameColumn" msprop:Generator_UserColumnName="ProductName" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="80" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="LiquidLevel" msprop:Generator_ColumnVarNameInTable="columnLiquidLevel" msprop:Generator_ColumnPropNameInRow="LiquidLevel" msprop:Generator_ColumnPropNameInTable="LiquidLevelColumn" msprop:Generator_UserColumnName="LiquidLevel" type="xs:decimal" minOccurs="0" />
+              <xs:element name="TotalObservableVolume" msprop:Generator_ColumnVarNameInTable="columnTotalObservableVolume" msprop:Generator_ColumnPropNameInRow="TotalObservableVolume" msprop:Generator_ColumnPropNameInTable="TotalObservableVolumeColumn" msprop:Generator_UserColumnName="TotalObservableVolume" type="xs:decimal" minOccurs="0" />
+              <xs:element name="ProductLevel" msprop:Generator_ColumnVarNameInTable="columnProductLevel" msprop:Generator_ColumnPropNameInRow="ProductLevel" msprop:Generator_ColumnPropNameInTable="ProductLevelColumn" msprop:Generator_UserColumnName="ProductLevel" type="xs:decimal" minOccurs="0" />
+              <xs:element name="GrossObservableVolume" msprop:Generator_ColumnVarNameInTable="columnGrossObservableVolume" msprop:Generator_ColumnPropNameInRow="GrossObservableVolume" msprop:Generator_ColumnPropNameInTable="GrossObservableVolumeColumn" msprop:Generator_UserColumnName="GrossObservableVolume" type="xs:decimal" minOccurs="0" />
+              <xs:element name="ObservableDensity" msprop:Generator_ColumnVarNameInTable="columnObservableDensity" msprop:Generator_ColumnPropNameInRow="ObservableDensity" msprop:Generator_ColumnPropNameInTable="ObservableDensityColumn" msprop:Generator_UserColumnName="ObservableDensity" type="xs:decimal" minOccurs="0" />
+              <xs:element name="GrossStandardVolume" msprop:Generator_ColumnVarNameInTable="columnGrossStandardVolume" msprop:Generator_ColumnPropNameInRow="GrossStandardVolume" msprop:Generator_ColumnPropNameInTable="GrossStandardVolumeColumn" msprop:Generator_UserColumnName="GrossStandardVolume" type="xs:decimal" minOccurs="0" />
+              <xs:element name="AverageTemperature" msprop:Generator_ColumnVarNameInTable="columnAverageTemperature" msprop:Generator_ColumnPropNameInRow="AverageTemperature" msprop:Generator_ColumnPropNameInTable="AverageTemperatureColumn" msprop:Generator_UserColumnName="AverageTemperature" type="xs:decimal" minOccurs="0" />
+              <xs:element name="NetStandardVolume" msprop:Generator_ColumnVarNameInTable="columnNetStandardVolume" msprop:Generator_ColumnPropNameInRow="NetStandardVolume" msprop:Generator_ColumnPropNameInTable="NetStandardVolumeColumn" msprop:Generator_UserColumnName="NetStandardVolume" type="xs:decimal" minOccurs="0" />
+              <xs:element name="ReferenceDensity" msprop:Generator_ColumnVarNameInTable="columnReferenceDensity" msprop:Generator_ColumnPropNameInRow="ReferenceDensity" msprop:Generator_ColumnPropNameInTable="ReferenceDensityColumn" msprop:Generator_UserColumnName="ReferenceDensity" type="xs:decimal" minOccurs="0" />
+              <xs:element name="WeightInAir" msprop:Generator_ColumnVarNameInTable="columnWeightInAir" msprop:Generator_ColumnPropNameInRow="WeightInAir" msprop:Generator_ColumnPropNameInTable="WeightInAirColumn" msprop:Generator_UserColumnName="WeightInAir" type="xs:decimal" minOccurs="0" />
+              <xs:element name="FreeWaterLevel" msprop:Generator_ColumnVarNameInTable="columnFreeWaterLevel" msprop:Generator_ColumnPropNameInRow="FreeWaterLevel" msprop:Generator_ColumnPropNameInTable="FreeWaterLevelColumn" msprop:Generator_UserColumnName="FreeWaterLevel" type="xs:decimal" minOccurs="0" />
+              <xs:element name="FreeWaterVolume" msprop:Generator_ColumnVarNameInTable="columnFreeWaterVolume" msprop:Generator_ColumnPropNameInRow="FreeWaterVolume" msprop:Generator_ColumnPropNameInTable="FreeWaterVolumeColumn" msprop:Generator_UserColumnName="FreeWaterVolume" type="xs:decimal" minOccurs="0" />
+              <xs:element name="LastUpdateTimestamp" msprop:Generator_ColumnVarNameInTable="columnLastUpdateTimestamp" msprop:Generator_ColumnPropNameInRow="LastUpdateTimestamp" msprop:Generator_ColumnPropNameInTable="LastUpdateTimestampColumn" msprop:Generator_UserColumnName="LastUpdateTimestamp" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="WeightInVacuum" msprop:Generator_ColumnVarNameInTable="columnWeightInVacuum" msprop:Generator_ColumnPropNameInRow="WeightInVacuum" msprop:Generator_ColumnPropNameInTable="WeightInVacuumColumn" msprop:Generator_UserColumnName="WeightInVacuum" type="xs:decimal" minOccurs="0" />
+              <xs:element name="MaxVolume" msprop:Generator_ColumnVarNameInTable="columnMaxVolume" msprop:Generator_ColumnPropNameInRow="MaxVolume" msprop:Generator_ColumnPropNameInTable="MaxVolumeColumn" msprop:Generator_UserColumnName="MaxVolume" type="xs:decimal" minOccurs="0" />
+              <xs:element name="AvailableRoom" msprop:Generator_ColumnVarNameInTable="columnAvailableRoom" msprop:Generator_ColumnPropNameInRow="AvailableRoom" msprop:Generator_ColumnPropNameInTable="AvailableRoomColumn" msprop:Generator_UserColumnName="AvailableRoom" type="xs:decimal" minOccurs="0" />
+              <xs:element name="ExciseStoreId" msprop:Generator_ColumnVarNameInTable="columnExciseStoreId" msprop:Generator_ColumnPropNameInRow="ExciseStoreId" msprop:Generator_ColumnPropNameInTable="ExciseStoreIdColumn" msprop:Generator_UserColumnName="ExciseStoreId" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="2147483647" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="inventory_ManualTanksData" msprop:Generator_TableClassName="inventory_ManualTanksDataDataTable" msprop:Generator_TableVarName="tableinventory_ManualTanksData" msprop:Generator_RowChangedName="inventory_ManualTanksDataRowChanged" msprop:Generator_TablePropName="inventory_ManualTanksData" msprop:Generator_RowDeletingName="inventory_ManualTanksDataRowDeleting" msprop:Generator_RowChangingName="inventory_ManualTanksDataRowChanging" msprop:Generator_RowEvHandlerName="inventory_ManualTanksDataRowChangeEventHandler" msprop:Generator_RowDeletedName="inventory_ManualTanksDataRowDeleted" msprop:Generator_RowClassName="inventory_ManualTanksDataRow" msprop:Generator_UserTableName="inventory_ManualTanksData" msprop:Generator_RowEvArgName="inventory_ManualTanksDataRowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="ExciseStoreId" msprop:Generator_ColumnVarNameInTable="columnExciseStoreId" msprop:Generator_ColumnPropNameInRow="ExciseStoreId" msprop:Generator_ColumnPropNameInTable="ExciseStoreIdColumn" msprop:Generator_UserColumnName="ExciseStoreId" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="50" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="ParkId" msprop:Generator_ColumnVarNameInTable="columnParkId" msprop:Generator_ColumnPropNameInRow="ParkId" msprop:Generator_ColumnPropNameInTable="ParkIdColumn" msprop:Generator_UserColumnName="ParkId" type="xs:int" />
+              <xs:element name="TankId" msprop:Generator_ColumnVarNameInTable="columnTankId" msprop:Generator_ColumnPropNameInRow="TankId" msprop:Generator_ColumnPropNameInTable="TankIdColumn" msprop:Generator_UserColumnName="TankId" type="xs:int" />
+              <xs:element name="RecordTimestamp" msprop:Generator_ColumnVarNameInTable="columnRecordTimestamp" msprop:Generator_ColumnPropNameInRow="RecordTimestamp" msprop:Generator_ColumnPropNameInTable="RecordTimestampColumn" msprop:Generator_UserColumnName="RecordTimestamp" type="xs:dateTime" />
+              <xs:element name="ProductId" msprop:Generator_ColumnVarNameInTable="columnProductId" msprop:Generator_ColumnPropNameInRow="ProductId" msprop:Generator_ColumnPropNameInTable="ProductIdColumn" msprop:Generator_UserColumnName="ProductId" type="xs:int" minOccurs="0" />
+              <xs:element name="ProductName" msprop:Generator_ColumnVarNameInTable="columnProductName" msprop:Generator_ColumnPropNameInRow="ProductName" msprop:Generator_ColumnPropNameInTable="ProductNameColumn" msprop:Generator_UserColumnName="ProductName" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="80" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="LiquidLevel" msprop:Generator_ColumnVarNameInTable="columnLiquidLevel" msprop:Generator_ColumnPropNameInRow="LiquidLevel" msprop:Generator_ColumnPropNameInTable="LiquidLevelColumn" msprop:Generator_UserColumnName="LiquidLevel" type="xs:decimal" minOccurs="0" />
+              <xs:element name="TotalObservableVolume" msprop:Generator_ColumnVarNameInTable="columnTotalObservableVolume" msprop:Generator_ColumnPropNameInRow="TotalObservableVolume" msprop:Generator_ColumnPropNameInTable="TotalObservableVolumeColumn" msprop:Generator_UserColumnName="TotalObservableVolume" type="xs:decimal" minOccurs="0" />
+              <xs:element name="ProductLevel" msprop:Generator_ColumnVarNameInTable="columnProductLevel" msprop:Generator_ColumnPropNameInRow="ProductLevel" msprop:Generator_ColumnPropNameInTable="ProductLevelColumn" msprop:Generator_UserColumnName="ProductLevel" type="xs:decimal" minOccurs="0" />
+              <xs:element name="GrossObservableVolume" msprop:Generator_ColumnVarNameInTable="columnGrossObservableVolume" msprop:Generator_ColumnPropNameInRow="GrossObservableVolume" msprop:Generator_ColumnPropNameInTable="GrossObservableVolumeColumn" msprop:Generator_UserColumnName="GrossObservableVolume" type="xs:decimal" minOccurs="0" />
+              <xs:element name="ObservableDensity" msprop:Generator_ColumnVarNameInTable="columnObservableDensity" msprop:Generator_ColumnPropNameInRow="ObservableDensity" msprop:Generator_ColumnPropNameInTable="ObservableDensityColumn" msprop:Generator_UserColumnName="ObservableDensity" type="xs:decimal" minOccurs="0" />
+              <xs:element name="GrossStandardVolume" msprop:Generator_ColumnVarNameInTable="columnGrossStandardVolume" msprop:Generator_ColumnPropNameInRow="GrossStandardVolume" msprop:Generator_ColumnPropNameInTable="GrossStandardVolumeColumn" msprop:Generator_UserColumnName="GrossStandardVolume" type="xs:decimal" minOccurs="0" />
+              <xs:element name="AverageTemperature" msprop:Generator_ColumnVarNameInTable="columnAverageTemperature" msprop:Generator_ColumnPropNameInRow="AverageTemperature" msprop:Generator_ColumnPropNameInTable="AverageTemperatureColumn" msprop:Generator_UserColumnName="AverageTemperature" type="xs:decimal" minOccurs="0" />
+              <xs:element name="NetStandardVolume" msprop:Generator_ColumnVarNameInTable="columnNetStandardVolume" msprop:Generator_ColumnPropNameInRow="NetStandardVolume" msprop:Generator_ColumnPropNameInTable="NetStandardVolumeColumn" msprop:Generator_UserColumnName="NetStandardVolume" type="xs:decimal" minOccurs="0" />
+              <xs:element name="ReferenceDensity" msprop:Generator_ColumnVarNameInTable="columnReferenceDensity" msprop:Generator_ColumnPropNameInRow="ReferenceDensity" msprop:Generator_ColumnPropNameInTable="ReferenceDensityColumn" msprop:Generator_UserColumnName="ReferenceDensity" type="xs:decimal" minOccurs="0" />
+              <xs:element name="WeightInAir" msprop:Generator_ColumnVarNameInTable="columnWeightInAir" msprop:Generator_ColumnPropNameInRow="WeightInAir" msprop:Generator_ColumnPropNameInTable="WeightInAirColumn" msprop:Generator_UserColumnName="WeightInAir" type="xs:decimal" minOccurs="0" />
+              <xs:element name="FreeWaterLevel" msprop:Generator_ColumnVarNameInTable="columnFreeWaterLevel" msprop:Generator_ColumnPropNameInRow="FreeWaterLevel" msprop:Generator_ColumnPropNameInTable="FreeWaterLevelColumn" msprop:Generator_UserColumnName="FreeWaterLevel" type="xs:decimal" minOccurs="0" />
+              <xs:element name="FreeWaterVolume" msprop:Generator_ColumnVarNameInTable="columnFreeWaterVolume" msprop:Generator_ColumnPropNameInRow="FreeWaterVolume" msprop:Generator_ColumnPropNameInTable="FreeWaterVolumeColumn" msprop:Generator_UserColumnName="FreeWaterVolume" type="xs:decimal" minOccurs="0" />
+              <xs:element name="LastUpdateTimestamp" msprop:Generator_ColumnVarNameInTable="columnLastUpdateTimestamp" msprop:Generator_ColumnPropNameInRow="LastUpdateTimestamp" msprop:Generator_ColumnPropNameInTable="LastUpdateTimestampColumn" msprop:Generator_UserColumnName="LastUpdateTimestamp" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="ManualSave" msprop:Generator_ColumnVarNameInTable="columnManualSave" msprop:Generator_ColumnPropNameInRow="ManualSave" msprop:Generator_ColumnPropNameInTable="ManualSaveColumn" msprop:Generator_UserColumnName="ManualSave" type="xs:boolean" minOccurs="0" />
+              <xs:element name="WeightInVacuum" msprop:Generator_ColumnVarNameInTable="columnWeightInVacuum" msprop:Generator_ColumnPropNameInRow="WeightInVacuum" msprop:Generator_ColumnPropNameInTable="WeightInVacuumColumn" msprop:Generator_UserColumnName="WeightInVacuum" type="xs:decimal" minOccurs="0" />
+              <xs:element name="MaxVolume" msprop:Generator_ColumnVarNameInTable="columnMaxVolume" msprop:Generator_ColumnPropNameInRow="MaxVolume" msprop:Generator_ColumnPropNameInTable="MaxVolumeColumn" msprop:Generator_UserColumnName="MaxVolume" type="xs:decimal" minOccurs="0" />
+              <xs:element name="AvailableRoom" msprop:Generator_ColumnVarNameInTable="columnAvailableRoom" msprop:Generator_ColumnPropNameInRow="AvailableRoom" msprop:Generator_ColumnPropNameInTable="AvailableRoomColumn" msprop:Generator_UserColumnName="AvailableRoom" type="xs:decimal" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+    <xs:unique name="Constraint1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//mstns:inventory_Tanks" />
+      <xs:field xpath="mstns:TankId" />
+    </xs:unique>
+    <xs:unique name="inventory_TanksDataMaxRecordTimestamp_Constraint1" msdata:ConstraintName="Constraint1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//mstns:inventory_TanksDataMaxRecordTimestamp" />
+      <xs:field xpath="mstns:TankId" />
+    </xs:unique>
+    <xs:unique name="inventory_TanksData_Constraint1" msdata:ConstraintName="Constraint1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//mstns:inventory_TanksData" />
+      <xs:field xpath="mstns:TankId" />
+      <xs:field xpath="mstns:RecordTimestamp" />
+    </xs:unique>
+    <xs:unique name="inventory_ManualTanksData_Constraint1" msdata:ConstraintName="Constraint1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//mstns:inventory_ManualTanksData" />
+      <xs:field xpath="mstns:TankId" />
+      <xs:field xpath="mstns:RecordTimestamp" />
+    </xs:unique>
+  </xs:element>
+</xs:schema>
