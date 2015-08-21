@@ -5,7 +5,6 @@ namespace CollectingProductionDataSystem.Web.AppStart
 {
     using System;
     using System.Web;
-
     using CollectingProductionDataSystem.Application.TankDataServices;
     using CollectingProductionDataSystem.Data.Contracts;
     using Microsoft.Web.Infrastructure.DynamicModuleHelper;
@@ -13,7 +12,6 @@ namespace CollectingProductionDataSystem.Web.AppStart
     using Ninject.Web.Common;
     using System.Data.Entity;
     using CollectingProductionDataSystem.Data;
-    using CollectingProductionDataSystem.Contracts;
     using CollectingProductionDataSystem.Data.Concrete;
 
     public static class NinjectWebCommon 

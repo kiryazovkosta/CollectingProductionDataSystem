@@ -1,24 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Web;
-using System.Web.Mvc;
-using AutoMapper;
-using CollectingProductionDataSystem.Application.TankDataServices;
-using CollectingProductionDataSystem.Data.Contracts;
-using CollectingProductionDataSystem.Models;
-using CollectingProductionDataSystem.Models.Inventories;
-using CollectingProductionDataSystem.Models.Nomenclatures;
-using CollectingProductionDataSystem.Web.AppStart;
-using CollectingProductionDataSystem.Web.ViewModels.Tank;
-using Kendo.Mvc.Extensions;
-using Kendo.Mvc.UI;
-using Microsoft.AspNet.Identity.Owin;
-
-namespace CollectingProductionDataSystem.Web.Controllers
+﻿namespace CollectingProductionDataSystem.Web.Controllers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Web.Mvc;
+    using AutoMapper;
+    using CollectingProductionDataSystem.Application.TankDataServices;
+    using CollectingProductionDataSystem.Data.Contracts;
+    using CollectingProductionDataSystem.Models.Inventories;
+    using CollectingProductionDataSystem.Models.Nomenclatures;
+    using CollectingProductionDataSystem.Web.ViewModels.Tank;
+    using Kendo.Mvc.Extensions;
+    using Kendo.Mvc.UI;
+
     public class TestsController : BaseController
     {
         private readonly ITankDataKendoService tankData;
@@ -91,8 +85,8 @@ namespace CollectingProductionDataSystem.Web.Controllers
             kendoResult.Data = Mapper.Map<IEnumerable<TankData>, IEnumerable<TankDataViewModel>>((IEnumerable<TankData>)kendoResult.Data);
             return Json(kendoResult);
         }
- 
-       
+
+
     }
 }
-           
+

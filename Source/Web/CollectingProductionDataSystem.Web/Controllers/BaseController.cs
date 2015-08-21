@@ -1,14 +1,12 @@
 ﻿namespace CollectingProductionDataSystem.Web.Controllers
 {
     using System;
-    using System.Data.Entity;
     using System.Linq;
     using System.Web;
     using System.Web.Mvc;
     using CollectingProductionDataSystem.Data.Contracts;
     using CollectingProductionDataSystem.Models;
     using CollectingProductionDataSystem.Models.Identity;
-    using CollectingProductionDataSystem.Web.AppStart;
     using CollectingProductionDataSystem.Web.Infrastructure.IdentityInfrastructure;
     using Microsoft.AspNet.Identity.EntityFramework;
     using Microsoft.AspNet.Identity.Owin;
