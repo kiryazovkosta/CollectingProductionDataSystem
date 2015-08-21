@@ -6,12 +6,19 @@
     Layout = "~/Views/Shared/_KendoLayout.cshtml";
 }
 
-@Html.Kendo().DateTimePicker().Name("date").Culture("bg-BG")
+<div class="row">
+    <div class="col-lg-3">
+        @Html.Kendo().DateTimePicker().Name("date").Culture("bg-BG")
+    </div>
+    <div class="col-lg-3">
+        <button id="apply" type="button" class="btn btn-primary" onclick="ApplyClick()">Apply Filter</button>
+    </div>
+</div>
 
 @Html.AntiForgeryToken()
 @(Html.Kendo()
       .Grid<TankDataViewModel>()
-      .Name("taks")
+      .Name("tanks")
       .Columns(
            columns =>
            {
@@ -26,15 +33,19 @@
                //columns.Command(c => { c.Edit(); c.Destroy(); });
            })
         //.Editable(editable => editable.Mode(GridEditMode.PopUp).TemplateName("_EditAccount").Window(window => window.Width(650).Scrollable(false)))
-      .Pageable()
+          .Pageable(pageable => pageable
+                .Refresh(true)
+                    .PageSizes(new[] { 10,20,50,100})
+                .ButtonCount(5))
       .Sortable()
-      .Scrollable(scr => scr.Height(430))
+      .Scrollable(scr => scr.Height(660))
       .Filterable()
       .DataSource(dataSource => dataSource
                                           .Ajax()
                                           .PageSize(20)
                                           .ServerOperation(true)
-                                          .Read(read => read.Action("ReadTank", "Tests", new { area = "" }).Data("sendAntiForgery")))
+                                          .Read(read => read.Action("ReadTank", "Tests", new { area = "" })
+                                                  .Data("sendDate")))
 )
 
 @section scripts{
@@ -42,8 +53,10 @@
     <script>
         kendo.culture("@System.Threading.Thread.CurrentThread.CurrentCulture.Name");
 
-        var SendDate = function () {
-            return { "dateParam": $('input[name=date]').val() }
+        var sendDate = function () {
+            var result = { "date": $('input[name=date]').val() };
+            $.extend(result, sendAntiForgery());
+            return result;
         }
 
         function error_handler(e) {
@@ -63,6 +76,13 @@
         function recordTimeStampFilter(element) {
             element.kendoDateTimePicker(); // initialize a Kendo UI DateTimePicker
         }
+
+        function ApplyClick() {
+            var grid = $("#tanks").data("kendoGrid");
+            grid.dataSource.read();
+            grid.refresh();
+        }
+
 
     </script>
 }

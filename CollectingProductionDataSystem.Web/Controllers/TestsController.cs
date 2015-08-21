@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using AutoMapper;
+using CollectingProductionDataSystem.Application.TankDataServices;
 using CollectingProductionDataSystem.Data.Contracts;
 using CollectingProductionDataSystem.Models;
 using CollectingProductionDataSystem.Models.Inventories;
@@ -20,9 +21,12 @@ namespace CollectingProductionDataSystem.Web.Controllers
 {
     public class TestsController : BaseController
     {
-        public TestsController(IProductionData dataParam)
+        private readonly ITankDataKendoService tankData;
+        public TestsController(IProductionData dataParam, ITankDataKendoService tankDataParam)
             : base(dataParam)
-        { }
+        {
+            this.tankData = tankDataParam;
+        }
 
         public ActionResult Index()
         {
@@ -80,12 +84,15 @@ namespace CollectingProductionDataSystem.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public JsonResult ReadTank([DataSourceRequest]DataSourceRequest request)
+        public JsonResult ReadTank([DataSourceRequest]DataSourceRequest request, DateTime? date)
         {
-            var dbResult = this.data.TanksData.All().Include(x=>x.TankConfig).ToDataSourceResult(request, ModelState);
-            dbResult.Data = Mapper.Map<IEnumerable<TankData>, IEnumerable<TankDataViewModel>>((IEnumerable<TankData>)dbResult.Data);
-            return Json(dbResult);
+            var dbResult = this.tankData.GetTankDataForDateTime(date);
+            var kendoResult = dbResult.ToDataSourceResult(request, ModelState);
+            kendoResult.Data = Mapper.Map<IEnumerable<TankData>, IEnumerable<TankDataViewModel>>((IEnumerable<TankData>)kendoResult.Data);
+            return Json(kendoResult);
         }
+ 
+       
     }
-
 }
+           

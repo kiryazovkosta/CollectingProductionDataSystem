@@ -6,6 +6,7 @@ namespace CollectingProductionDataSystem.Web.AppStart
     using System;
     using System.Web;
 
+    using CollectingProductionDataSystem.Application.TankDataServices;
     using CollectingProductionDataSystem.Data.Contracts;
     using Microsoft.Web.Infrastructure.DynamicModuleHelper;
     using Ninject;
@@ -70,6 +71,7 @@ namespace CollectingProductionDataSystem.Web.AppStart
             kernel.Bind(typeof(IRepository<>)).To(typeof(GenericRepository<>));
             kernel.Bind<IProductionData>().To<ProductionData>();
             kernel.Bind<IPersister>().To<AuditablePersister>();
+            kernel.Bind<ITankDataKendoService>().To<TankDataKendoService>();
         }        
     }
 }
