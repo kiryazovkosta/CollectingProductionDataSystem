@@ -31,9 +31,13 @@
         /// </summary>
         public string PhdTagNetStandardVolume { get; set; }
         /// <summary>
-        /// Маса на продукта при 15°С.
+        /// Маса на продукта във въздух
         /// </summary>
         public string PhdTagWeightInAir { get; set; }
+        /// <summary>
+        /// Маса на продукта във вакуум
+        /// </summary>
+        public string PhdTagWeightInVaccum { get; set; }
         /// <summary>
         /// Резервоарен парк,
         /// </summary>

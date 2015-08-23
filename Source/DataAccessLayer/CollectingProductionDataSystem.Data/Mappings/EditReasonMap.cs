@@ -1,11 +1,11 @@
-namespace CollectingProductionDataSystem.Data.Mappings
+﻿namespace CollectingProductionDataSystem.Data.Mappings
 {
+    using CollectingProductionDataSystem.Models.Nomenclatures;
     using System.Data.Entity.ModelConfiguration;
-    using CollectingProductionDataSystem.Models.Inventories;
 
-    public class AreaMap : EntityTypeConfiguration<Area>
+    public class EditReasonMap : EntityTypeConfiguration<EditReason>
     {
-        public AreaMap()
+        public EditReasonMap()
         {
             // Primary Key
             this.HasKey(t => t.Id);
@@ -16,7 +16,7 @@ namespace CollectingProductionDataSystem.Data.Mappings
                 .HasMaxLength(80);
 
             // Table & Column Mappings
-            this.ToTable("Areas");
+            this.ToTable("EditReasons");
         }
     }
 }

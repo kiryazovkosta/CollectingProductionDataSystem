@@ -22,12 +22,11 @@ namespace CollectingProductionDataSystem.Models.Productions
         public string Code { get; set; }
         public string Position { get; set; }
         public string Name { get; set; }
-        public int? ProductTypeId { get; set; }
+        public int ProductTypeId { get; set; }
         public int? ProductId { get; set; }
         public int ProcessUnitId { get; set; }
         public int DirectionId { get; set; }
         public int MeasureUnitId { get; set; }
-        public int ProductTypetId { get; set; }
         public int MaterialTypeId { get; set; }
         public bool IsMaterial { get; set; }
         public bool IsEnergy { get; set; }

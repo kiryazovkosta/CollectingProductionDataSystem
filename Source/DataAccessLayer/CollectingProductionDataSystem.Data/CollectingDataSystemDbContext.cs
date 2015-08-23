@@ -86,7 +86,11 @@
 
         public IDbSet<TransportType> TransportTypes { get; set; }
 
-        public DbSet<UnitsAggregateDailyConfig> UnitsAggregateDailyConfigs { get; set; }
+        public IDbSet<EditReason> EditReasons { get; set; }
+
+        public IDbSet<UnitsAggregateDailyConfig> UnitsAggregateDailyConfigs { get; set; }
+
+        public IDbSet<TankMasterProduct> TankMasterProducts { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

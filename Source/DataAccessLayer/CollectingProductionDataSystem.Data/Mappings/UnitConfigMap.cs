@@ -43,7 +43,7 @@ namespace CollectingProductionDataSystem.Data.Mappings
             this.HasOptional(t => t.Product)
                 .WithMany(t => t.Units)
                 .HasForeignKey(d => d.ProductId);
-            this.HasOptional(t => t.ProductType)
+            this.HasRequired(t => t.ProductType)
                 .WithMany(t => t.Units)
                 .HasForeignKey(d => d.ProductTypeId);
 

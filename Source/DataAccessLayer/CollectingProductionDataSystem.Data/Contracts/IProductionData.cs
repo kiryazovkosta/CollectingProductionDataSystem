@@ -48,6 +48,10 @@
 
         IDeletableEntityRepository<TransportType> TransportTypes { get; }
 
+        IDeletableEntityRepository<EditReason> EditReasons { get; }
+
+        IDeletableEntityRepository<TankMasterProduct> TankMasterProducts { get; }
+
 
         IDbContext DbContext { get; }
 

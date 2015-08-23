@@ -1,5 +1,6 @@
 ﻿namespace CollectingProductionDataSystem.Phd2SqlProductionData
 {
+    using System.Data.Entity;
     using System.Data.Entity.Validation;
     using System.Linq;
     using log4net;
@@ -88,35 +89,44 @@
                                             }
                                             else if (dc.ColumnName.Equals("Confidence"))
                                             {
-                                                confidence = Convert.ToInt32(row[dc]);
-                                                break;
+                                                if (!string.IsNullOrWhiteSpace(row[dc].ToString()))
+                                                {
+                                                    confidence = Convert.ToInt32(row[dc]);
+                                                }
+                                                else
+                                                {
+                                                    confidence = 0;
+                                                    break;
+                                                }
+                                                
                                             }
                                             else if (dc.ColumnName.Equals("Value"))
                                             {
-                                                unitInspectionPointData.Value = Convert.ToDecimal(row[dc]);
+                                                if (!string.IsNullOrWhiteSpace(row[dc].ToString()))
+                                                {
+                                                    unitInspectionPointData.Value = Convert.ToDecimal(row[dc]);
+                                                }
                                             }
                                             else if (dc.ColumnName.Equals("TimeStamp"))
                                             {
-                                                var recordTimestamp = DateTime.ParseExact(row[dc].ToString(), "dd.MM.yyyy HH:mm:ss", CultureInfo.InvariantCulture);
-                                                if (TimeZoneInfo.Local.IsDaylightSavingTime(recordTimestamp))
+                                                var recordDt = row[dc].ToString();
+                                                if (!string.IsNullOrWhiteSpace(recordDt))
                                                 {
-                                                    recordTimestamp = recordTimestamp.AddHours(-1);
+                                                     var recordTimestamp = DateTime.ParseExact(recordDt, "dd.MM.yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+                                                    if (TimeZoneInfo.Local.IsDaylightSavingTime(recordTimestamp))
+                                                    {
+                                                        recordTimestamp = recordTimestamp.AddHours(-1);
+                                                    }
+                                                    unitInspectionPointData.RecordTimestamp = recordTimestamp;   
                                                 }
-                                                unitInspectionPointData.RecordTimestamp = recordTimestamp;
+                                               
                                             }
                                         }
                                     }
-                                    if (confidence > Properties.Settings.Default.INSPECTION_DATA_MINIMUM_CONFIDENCE)
+                                    if (confidence > Properties.Settings.Default.INSPECTION_DATA_MINIMUM_CONFIDENCE
+                                        && unitInspectionPointData.RecordTimestamp != null)
                                     {
-                                        //var udExists = context.UnitsInspectionData
-                                        //    .All()
-                                        //    .Where(u => u.RecordTimestamp.CompareTo(unitInspectionPointData.RecordTimestamp) == 0)
-                                        //    .Select(u => u.UnitConfigId == unitInspectionPointData.UnitConfigId)
-                                        //    .FirstOrDefault();
-                                        //if (!udExists)
-                                        //{
                                         context.UnitsInspectionData.Add(unitInspectionPointData);                                            
-                                        //}
                                     }
                                 }
 
@@ -395,14 +405,25 @@
                     {
                         continue;
                     }
-                    else if (dc.ColumnName.Equals("Confidence") && (Convert.ToUInt32(row[dc]) < Properties.Settings.Default.INSPECTION_DATA_MINIMUM_CONFIDENCE))
+                    else if (dc.ColumnName.Equals("Confidence"))
                     {
-                        confidence = 0;
-                        break;    
+                        if (!string.IsNullOrWhiteSpace(row[dc].ToString()))
+                        {
+                            confidence = Convert.ToInt32(row[dc]);
+                        }
+                        else
+                        {
+                            confidence = 0;
+                            break;
+                        }   
                     }
                     else if (dc.ColumnName.Equals("Value"))
                     {
-                        unitData.Value = Convert.ToDecimal(row[dc]);
+                        if (!string.IsNullOrWhiteSpace(row[dc].ToString()))
+                        {
+                           unitData.Value = Convert.ToDecimal(row[dc]); 
+                        }
+                        
                     }
                     else if (dc.ColumnName.Equals("TimeStamp"))
                     {
@@ -462,7 +483,8 @@
                         PhdTagFreeWaterLevel = t.PhdTagFreeWaterLevel,
                         PhdTagReferenceDensity = t.PhdTagReferenceDensity,
                         PhdTagNetStandardVolume = t.PhdTagNetStandardVolume,
-                        PhdTagWeightInAir = t.PhdTagWeightInAir
+                        PhdTagWeightInAir = t.PhdTagWeightInAir,
+                        PhdTagWeightInVaccum = t.PhdTagWeightInVacuum
                     });
 
                     if (tanks.Count() > 0)
@@ -495,7 +517,8 @@
                                     SetPhdTag(t.PhdTagFreeWaterLevel, tags);                              
                                     SetPhdTag(t.PhdTagReferenceDensity, tags);   
                                     SetPhdTag(t.PhdTagNetStandardVolume, tags);              
-                                    SetPhdTag(t.PhdTagWeightInAir, tags);                               
+                                    SetPhdTag(t.PhdTagWeightInAir, tags);
+                                    SetPhdTag(t.PhdTagWeightInVaccum, tags);
     
                                     DataSet dsGrid = oPhd.FetchRowData(tags);
                                     foreach (DataRow row in dsGrid.Tables[0].Rows)
@@ -525,9 +548,26 @@
 
                                         if (tagName.Contains(".PROD_ID"))
                                         {
-                                            // TODO: Need to convert productCode from Tank Master or need to choose a mehanism for product code comparation
-                                            tankData.ProductId = 1;
-                                            tankData.ProductName = tagValue.ToString();
+                                            var prId = Convert.ToInt32(tagValue);
+                                            var product = context.TankMasterProducts.All().Where(x => x.TankMasterProductId == prId).FirstOrDefault();
+                                            if (product != null)
+                                            {
+                                                tankData.ProductId = product.Id;
+                                                var pr = context.Products.All().Where(p => p.Code == product.ProductCode).FirstOrDefault();
+                                                if (pr != null)
+                                                {
+                                                    tankData.ProductName = pr.Name;  
+                                                }
+                                                else
+                                                {
+                                                    tankData.ProductName = "N/A";
+                                                }
+                                            }
+                                            else 
+                                            { 
+                                                tankData.ProductId = Convert.ToInt32(tagValue);
+                                                tankData.ProductName = "N/A";
+                                            }
                                         }
                                         else if (tagName.EndsWith(".LL") || tagName.EndsWith(".LEVEL_MM"))
                                         {
@@ -552,6 +592,10 @@
                                         else if (tagName.EndsWith(".WIA"))
                                         {
                                             tankData.WeightInAir = tagValue;
+                                        }
+                                        else if (tagName.EndsWith(".WIV"))
+                                        {
+                                            tankData.WeightInVacuum = tagValue;
                                         }
                                     }
 
@@ -578,6 +622,10 @@
                             logger.ErrorFormat("Property: {0} Error: {1}", validationError.PropertyName, validationError.ErrorMessage);
                         }
                     }
+                }
+                else
+                {
+                    logger.Error(validationException.ToString());
                 }
             }
             catch (Exception ex)
@@ -613,7 +661,7 @@
             bool Includes(IRange<T> range);
         }
 
-        public class DateRange : IRange<DateTime>         
+        public class DateRange : IRange<DateTime> 
         {
             public DateRange(DateTime start, DateTime end)
             {

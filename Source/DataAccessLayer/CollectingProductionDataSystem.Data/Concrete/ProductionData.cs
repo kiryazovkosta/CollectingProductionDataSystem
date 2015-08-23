@@ -187,6 +187,22 @@ using CollectingProductionDataSystem.Models.Transactions;
             }
         }
 
+        public IDeletableEntityRepository<EditReason> EditReasons
+        {
+            get
+            {
+                return this.GetDeletableEntityRepository<EditReason>();
+            }
+        }
+
+        public IDeletableEntityRepository<TankMasterProduct> TankMasterProducts
+        {
+            get
+            {
+                return this.GetDeletableEntityRepository<TankMasterProduct>();
+            }
+        }
+
         public int SaveChanges(string userName)
         {
             return this.context.SaveChanges(userName);

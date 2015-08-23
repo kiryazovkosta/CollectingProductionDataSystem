@@ -14,6 +14,7 @@
             modelBuilder.Configurations.Add(new AreaMap());
             modelBuilder.Configurations.Add(new AuditLogRecordMap());
             modelBuilder.Configurations.Add(new DirectionMap());
+            modelBuilder.Configurations.Add(new EditReasonMap());
             modelBuilder.Configurations.Add(new FactoryMap());
             modelBuilder.Configurations.Add(new ParkMap());
             modelBuilder.Configurations.Add(new TankConfigMap());
@@ -33,6 +34,7 @@
             modelBuilder.Configurations.Add(new MeasurementPointsProductsConfigMap());
             modelBuilder.Configurations.Add(new TransportTypeMap());
             modelBuilder.Configurations.Add(new UnitsAggregateDailyConfigMap());
+            modelBuilder.Configurations.Add(new TankMasterProductMap());
         }
     }
 }

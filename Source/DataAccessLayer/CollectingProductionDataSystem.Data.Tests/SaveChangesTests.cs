@@ -85,7 +85,7 @@ namespace CollectingProductionDataSystem.Data.Tests
         public void TestIfModifingARecordCouseAddingLogRecords()
         {
             //Arrange
-            var modifiedRecord = new Product { Name = "Test Product", ProductTypeId = 1, Code = "TestCode" };
+            var modifiedRecord = new Product { Name = "Test Product", ProductTypeId = 1, Code = 5000 };
             this.dbContext.Products.Add(modifiedRecord);
             this.dbContext.SaveChanges("AnotherTestUser");
             //remove Log record for create operation
@@ -97,7 +97,7 @@ namespace CollectingProductionDataSystem.Data.Tests
 
             //Act
             modifiedRecord.Name = "Modified";
-            modifiedRecord.Code = "5000";
+            modifiedRecord.Code = 5000;
             this.dbContext.SaveChanges("TestUser");
             var auditRecords = this.dbContext.AuditLogRecords.Where(x => x.EntityName == "Product" && x.EntityId == modifiedRecord.Id).ToList();
 
@@ -123,7 +123,7 @@ namespace CollectingProductionDataSystem.Data.Tests
         public void TestIfModifingAnPreviouseEnptyPropertyDoesNotCauseException()
         {
             //Arrange
-            var modifiedRecord = new Product { Name = "Test Product", ProductTypeId = 1, Code = null };
+            var modifiedRecord = new Product { Name = "Test Product", ProductTypeId = 1, Code = 0 };
             this.dbContext.Products.Add(modifiedRecord);
             this.dbContext.SaveChanges("AnotherTestUser");
             //remove Log record for create operation
@@ -134,7 +134,7 @@ namespace CollectingProductionDataSystem.Data.Tests
             var auditRecordsCount = this.dbContext.Set<AuditLogRecord>().CountAsync().Result;
 
             //Act
-            modifiedRecord.Code = "5000";
+            modifiedRecord.Code = 5000;
             this.dbContext.SaveChanges("TestUser");
             var auditRecords = this.dbContext.AuditLogRecords.FirstOrDefault(x => x.EntityName == "Product" && x.EntityId == modifiedRecord.Id);
 

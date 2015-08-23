@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.ModelConfiguration;
 using CollectingProductionDataSystem.Models.Nomenclatures;
+using System.Data.Entity.Infrastructure.Annotations;
 
 namespace CollectingProductionDataSystem.Data.Mappings
 {
@@ -14,6 +15,10 @@ namespace CollectingProductionDataSystem.Data.Mappings
             // Properties
             this.Property(t => t.Id)
                 .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+
+            this.Property(t => t.Code)
+                .HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("ix_product", 1)))
+                .IsRequired();
 
             this.Property(t => t.Name)
                 .IsRequired()

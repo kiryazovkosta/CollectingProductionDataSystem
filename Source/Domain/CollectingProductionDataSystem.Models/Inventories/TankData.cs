@@ -29,9 +29,11 @@ namespace CollectingProductionDataSystem.Models.Inventories
         public decimal? MaxVolume { get; set; }
         public decimal? AvailableRoom { get; set; }
         public decimal? UnusableResidueLevel { get; set; }
+        public int? EditReasonId { get; set; }
         public bool IsApproved { get; set; }
         public virtual TankConfig TankConfig { get; set; }
         public virtual Product Product { get; set; }
+        public virtual EditReason EditReason { get; set; }
         public virtual TanksManualData TanksManualData { get; set; }
     }
 }

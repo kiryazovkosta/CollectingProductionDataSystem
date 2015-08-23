@@ -72,6 +72,7 @@
     <Compile Include="Mappings\AuditLogRecordMap.cs" />
     <Compile Include="Mappings\Configuration\ModelBingConfig.cs" />
     <Compile Include="Mappings\DirectionMap.cs" />
+    <Compile Include="Mappings\EditReasonMap.cs" />
     <Compile Include="Mappings\FactoryMap.cs" />
     <Compile Include="Mappings\IkunkMap.cs" />
     <Compile Include="Mappings\MeasurementPointMap.cs" />
@@ -85,6 +86,7 @@
     <Compile Include="Mappings\ProcessUnitMap.cs" />
     <Compile Include="Mappings\ProductMap.cs" />
     <Compile Include="Mappings\ProductTypeMap.cs" />
+    <Compile Include="Mappings\TankMasterProductMap.cs" />
     <Compile Include="Mappings\TanksManualDataMap.cs" />
     <Compile Include="Mappings\TransportTypeMap.cs" />
     <Compile Include="Mappings\UnitConfigMap.cs" />

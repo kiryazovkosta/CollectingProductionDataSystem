@@ -38,6 +38,9 @@ namespace CollectingProductionDataSystem.Data.Mappings
             this.HasOptional(t => t.Product)
                 .WithMany(t => t.TanksDatas)
                 .HasForeignKey(d => d.ProductId);
+            this.HasOptional(t => t.EditReason)
+                .WithMany(t => t.TankDatas)
+                .HasForeignKey(d => d.EditReasonId);
             
             this.HasOptional(t => t.TanksManualData)
                 .WithRequired(t => t.TankData);
