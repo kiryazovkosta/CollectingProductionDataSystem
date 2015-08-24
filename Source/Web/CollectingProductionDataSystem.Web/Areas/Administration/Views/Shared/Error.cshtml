@@ -1,0 +1,26 @@
+﻿@model IEnumerable<string>
+@{
+    ViewBag.Title = "Грешка";
+}
+<h2 class="alert alert-danger">@ViewBag.Title</h2>
+<div class="alert alert-danger">
+    @switch (Model.Count())
+    {
+        case 0:
+            @: Възникна грешка. Моля опитайте повторно
+            break;
+        case 1:
+        @Model.First();
+                          break;
+        default:
+        @: Възникнаха следните грешки:
+        <ul>
+            @foreach (var errorMessage in Model)
+            {
+                <li>@errorMessage</li>
+            }
+        </ul>
+            break;
+    }
+</div>
+@Html.ActionLink("OK", "Index", null, new { @class="btn btn-default"})

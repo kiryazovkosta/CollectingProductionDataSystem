@@ -1,0 +1,107 @@
+﻿@using CollectingProductionDataSystem.Models.Identity;
+@using CollectingProductionDataSystem.Web.ViewModels.Identity;
+@model RoleEditViewModel
+@{
+    Layout = "~/Views/Shared/_KendoLayout.cshtml";
+    ViewBag.Title = "Редактиране на роля";
+}
+@Html.ValidationSummary(false)
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <input type="hidden" name="RoleName" value="@Model.Role.Name" />
+    <div class="panel panel-primary">
+        <div class="panel-heading">Добавяне към ролята "@Model.Role.Name"</div>
+        <table class="table">
+            @if (Model.NonMembers.Count() == 0)
+            {
+                <tr><td colspan="2">Всички потребители са присъединени</td></tr>
+            }
+            else
+            {
+                <tr>
+                    <th>Потребител</th>
+                    <th>Име, Презиме, Фамилия</th>
+                    <th>За добавяне към ролята</th>
+                </tr>
+                foreach (ApplicationUser user in Model.NonMembers)
+                {
+                    <tr>
+                        <td data-field="userName">@user.UserName</td>
+                        <td data-field="userFullName">@user.FullName</td>
+                        <td data-field="selector">
+                            <input type="checkbox" name="IdsToAdd" value="@user.Id" />
+                        <td>
+                    </tr>
+                }
+            }
+        </table>
+    </div>
+    <div class="panel panel-primary">
+        <div class="panel-heading">Премахване от ролята "@Model.Role.Name"</div>
+        <table class="table">
+            @if (Model.Members.Count() == 0)
+            {
+                <tr><th colspan="2">Няма присвоени потребители</th> </tr>
+            }
+            else
+            {
+                <tr>
+                    <th>Потребител</th>
+                    <th>Име, Презиме, Фамилия</th>
+                    <th>За премахване от ролята</th>
+                </tr>
+                foreach (ApplicationUser user in Model.Members)
+                {
+                    <tr>
+                        <td data-field="userName">@user.UserName</td>
+                        <td data-field="userFullName">@user.FullName</td>
+                        <td data-field="selector"><input type="checkbox" name="IdsToDelete" value="@user.Id" /></td>
+                    </tr>
+                }
+            }
+        </table>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.IsAvailableForAdministrators, new { @class = "control-label" })
+        @Html.EditorFor(m => m.IsAvailableForAdministrators)
+    </div>
+    <button type="submit" class="btn btn-primary">Запис</button>
+    @Html.ActionLink("Cancel", "Index", null, new { @class = "btn btn-default" })
+}
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            var tables = $("table");
+            var length = tables.length;
+            for (var i = 0; i < length; i++) {
+                $(tables[i]).kendoGrid({
+                    scrollable: true,
+                    sortable: true,
+                    pageable: true,
+                    filterable: true,
+                    columns: [
+                        {
+                            field: "userName",
+                            filterable: true,
+                            width: '300px'
+                        },
+                        {
+                            field: "userFullName",
+                            filterable: true,
+                        },
+                        {
+                            field: "selector",
+                            filterable: false,
+                            width:'150px'
+                        }
+                    ]
+                });
+
+                $(tables[i]).data("kendoGrid").dataSource.pageSize(10);
+            }
+            
+        });
+    </script>
+}
