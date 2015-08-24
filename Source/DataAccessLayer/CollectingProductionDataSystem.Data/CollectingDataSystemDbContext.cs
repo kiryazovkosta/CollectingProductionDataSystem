@@ -18,9 +18,8 @@
     using CollectingProductionDataSystem.Models.UtilityEntities;
     using Microsoft.AspNet.Identity.EntityFramework;
 
-
     public class CollectingDataSystemDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, int,
-        UserLoginIntPk, UserRoleIntPk, UserClaimIntPk>, IDbContext
+        UserLoginIntPk, UserRoleIntPk, UserClaimIntPk>, IAuditableDbContext
     {
         private readonly IPersister persister;
 
@@ -108,6 +107,18 @@
             return SaveChanges(null);
         }
 
+        /// <summary>
+        /// Gets or sets the db context.
+        /// </summary>
+        /// <value>The db context.</value>
+        public DbContext DbContext 
+        {
+            get
+            {
+                return this;
+            } 
+        }
+
         public int SaveChanges(string userName)
         {
             if (userName == null)
@@ -116,26 +127,16 @@
                 userName = "System Change";
             }
 
-            List<DbEntityEntry> addedRecords;
-
-            List<AuditLogRecord> changes = persister.PrepareSaveChanges(this, userName, out addedRecords);
-
+            var addedRecords= persister.PrepareSaveChanges(this, userName);
             var returnValue = base.SaveChanges();
 
+            //Append added records with their Ids into audit log
             if (addedRecords != null && addedRecords.Count() > 0)
             {
-                changes.AddRange(persister.GetAddedEntityes(addedRecords));
+                persister.GetAddedEntityes(addedRecords, this.AuditLogRecords);
+                base.SaveChanges();
             }
 
-            if (changes.Count() > 0)
-            {
-                foreach (var change in changes)
-                {
-                    this.AuditLogRecords.Add(change);
-                }
-            }
-
-            base.SaveChanges();
             return returnValue;
         }
 

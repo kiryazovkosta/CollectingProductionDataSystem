@@ -59,6 +59,7 @@
     <Compile Include="CollectingDataSystemDbContext.cs" />
     <Compile Include="Concrete\ImmutableEntityRepository.cs" />
     <Compile Include="Contracts\IApprovableEntityRepository.cs" />
+    <Compile Include="Contracts\IAuditableDbContext.cs" />
     <Compile Include="Contracts\IDataContext.cs" />
     <Compile Include="Contracts\IDeletableEntityRepository.cs" />
     <Compile Include="Contracts\IImmutableEntityRepository.cs" />
