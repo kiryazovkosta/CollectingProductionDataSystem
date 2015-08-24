@@ -16,13 +16,13 @@
         /// </summary>
         /// <param name="addedRecords">The added records.</param>
         /// <returns></returns>
-        public IEnumerable<AuditLogRecord> GetAddedEntityes(List<DbEntityEntry> addedRecords)
+        public IEnumerable<AuditLogRecord> GetAddedEntityes(IEnumerable<DbEntityEntry> addedRecords, IDbSet<AuditLogRecord> auditRecords)
         {
             List<AuditLogRecord> changes = new List<AuditLogRecord>();
 
             foreach (var entry in addedRecords)
             {
-                changes.AddRange(GetInfoForAdded(entry));
+                GetInfoForAdded(entry, auditRecords);
             }
 
             return changes;
@@ -33,17 +33,9 @@
         /// </summary>
         /// <param name="entry">The entry.</param>
         /// <returns></returns>
-        private IEnumerable<AuditLogRecord> GetInfoForAdded(DbEntityEntry entry)
+        private void GetInfoForAdded(DbEntityEntry entry, IDbSet<AuditLogRecord> auditRecords)
         {
             var entityName = entry.Entity.GetType().Name.Split('_')[0];
-            List<AuditLogRecord> auditRecords = new List<AuditLogRecord>();
-
-            //var newValues = entry.CurrentValues.Clone();
-            //var oldValues = entry.GetDatabaseValues();
-            //foreach (string propertyName in entry.CurrentValues.PropertyNames)
-            //{
-            //    var property = entry.Property(propertyName);
-            //    string newValue = (newValues.GetValue<object>(propertyName) ?? string.Empty).ToString();
 
             auditRecords.Add(new AuditLogRecord()
             {
@@ -56,24 +48,21 @@
                 NewValue = string.Empty,//newValue,
                 UserName = ((IAuditInfo)entry.Entity).CreatedFrom
             });
-            //}
-            return auditRecords;
         }
 
-        public List<AuditLogRecord> PrepareSaveChanges(DbContext data, string userName, out List<DbEntityEntry> addedRecords)
+        public IEnumerable<DbEntityEntry> PrepareSaveChanges(IAuditableDbContext data, string userName)
         {
-            var result = ApplyAuditInfoRules(data, userName, out addedRecords);
-            result.AddRange(ApplyDeletableEntityRules(data, userName));
-            return result;
+            var addedRecords = ApplyAuditInfoRules(data, userName);
+            ApplyDeletableEntityRules(data, userName);
+            return addedRecords;
         }
 
-        private List<AuditLogRecord> ApplyAuditInfoRules(DbContext data, string userName, out List<DbEntityEntry> addedRecords)
+        private IEnumerable<DbEntityEntry> ApplyAuditInfoRules(IAuditableDbContext data, string userName)
         {
-            List<AuditLogRecord> changes = new List<AuditLogRecord>();
-            addedRecords = new List<DbEntityEntry>();
+            var addedRecords = new List<DbEntityEntry>();
             // Approach via @julielerman: http://bit.ly/123661P
             foreach (var entry in
-                data.ChangeTracker
+                data.DbContext.ChangeTracker
                     .Entries()
                     .Where(
                          e =>
@@ -91,19 +80,19 @@
                 }
                 else
                 {
-                    changes.AddRange(GetChangedProperties(entry, userName));
+                    GetChangedProperties(entry, userName, data.AuditLogRecords);
                     entity.ModifiedOn = DateTime.Now;
                     entity.ModifiedFrom = userName;
                 }
             }
 
-            return changes;
+            return addedRecords;
         }
 
-        private List<AuditLogRecord> GetChangedProperties(DbEntityEntry entry, string userName)
+        private void GetChangedProperties(DbEntityEntry entry, string userName, IDbSet<AuditLogRecord> auditRecords)
         {
             var entityName = entry.Entity.GetType().Name.Split('_')[0];
-            List<AuditLogRecord> auditRecords = new List<AuditLogRecord>();
+            // List<AuditLogRecord> auditRecords = new List<AuditLogRecord>();
 
             var newValues = entry.CurrentValues.Clone();
             var oldValues = entry.GetDatabaseValues();
@@ -128,29 +117,23 @@
                     });
                 }
             }
-
-            // entry.CurrentValues.SetValues(newValues);
-            return auditRecords;
         }
 
-        private IEnumerable<AuditLogRecord> ApplyDeletableEntityRules(DbContext data, string userName)
+        private void ApplyDeletableEntityRules(IAuditableDbContext data, string userName)
         {
-            List<AuditLogRecord> changes = new List<AuditLogRecord>();
             foreach (
                 var entry in
-                data.ChangeTracker
+                data.DbContext.ChangeTracker
                     .Entries()
                     .Where(e => e.Entity is IDeletableEntity && (e.State == EntityState.Deleted)))
             {
                 var entity = (IDeletableEntity)entry.Entity;
-                changes.Add(GetDeletedEntities(entry, userName));
+                data.AuditLogRecords.Add(GetDeletedEntities(entry, userName));
                 entity.DeletedOn = DateTime.Now;
                 entity.IsDeleted = true;
                 entity.DeletedFrom = userName;
                 entry.State = EntityState.Modified;
             }
-
-            return changes;
         }
 
         /// <summary>
@@ -163,17 +146,17 @@
         {
             var entityName = entry.Entity.GetType().Name.Split('_')[0];
 
-           return new AuditLogRecord()
-            {
-                TimeStamp = DateTime.Now,
-                EntityName = entityName,
-                EntityId = ((IEntity)entry.Entity).Id,
-                FieldName = string.Empty,   
-                OperationType = EntityState.Deleted,
-                OldValue = string.Empty,
-                NewValue = string.Empty,
-                UserName = userName
-            };
+            return new AuditLogRecord()
+             {
+                 TimeStamp = DateTime.Now,
+                 EntityName = entityName,
+                 EntityId = ((IEntity)entry.Entity).Id,
+                 FieldName = string.Empty,
+                 OperationType = EntityState.Deleted,
+                 OldValue = string.Empty,
+                 NewValue = string.Empty,
+                 UserName = userName
+             };
         }
     }
 }

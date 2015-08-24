@@ -9,7 +9,7 @@
 
     public interface IDbContext
     {
-        //DbContext DbContext { get; set; }
+        DbContext DbContext { get; }
 
         //string UserName { get; set; }
 

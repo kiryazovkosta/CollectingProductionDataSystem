@@ -3,6 +3,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Transactions;
 using CollectingProductionDataSystem.Data;
+using CollectingProductionDataSystem.Models.Inventories;
 using CollectingProductionDataSystem.Models.Nomenclatures;
 using CollectingProductionDataSystem.Models.UtilityEntities;
 using Microsoft.AspNet.Identity;
@@ -85,7 +86,7 @@ namespace CollectingProductionDataSystem.Data.Tests
         public void TestIfModifingARecordCouseAddingLogRecords()
         {
             //Arrange
-            var modifiedRecord = new Product { Name = "Test Product", ProductTypeId = 1, Code = 5000 };
+            var modifiedRecord = new Product { Name = "Test Product", ProductTypeId = 1, Code = 0 };
             this.dbContext.Products.Add(modifiedRecord);
             this.dbContext.SaveChanges("AnotherTestUser");
             //remove Log record for create operation
@@ -115,28 +116,29 @@ namespace CollectingProductionDataSystem.Data.Tests
             var codeRecord = auditRecords.FirstOrDefault(x => x.FieldName == "Code");
             Assert.AreEqual("Test Product", nameResord.OldValue);
             Assert.AreEqual("Modified", nameResord.NewValue);
-            Assert.AreEqual("TestCode", codeRecord.OldValue);
+            Assert.AreEqual("0", codeRecord.OldValue);
             Assert.AreEqual("5000", codeRecord.NewValue);
         }
 
         [TestMethod]
         public void TestIfModifingAnPreviouseEnptyPropertyDoesNotCauseException()
         {
+            System.Threading.Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.InvariantCulture;
             //Arrange
-            var modifiedRecord = new Product { Name = "Test Product", ProductTypeId = 1, Code = 0 };
-            this.dbContext.Products.Add(modifiedRecord);
+            var modifiedRecord = new TankData { RecordTimestamp = DateTime.Now, ParkId = 1, ProductId = 1, TankConfigId = 1, LiquidLevel = null };
+            this.dbContext.TanksData.Add(modifiedRecord);
             this.dbContext.SaveChanges("AnotherTestUser");
             //remove Log record for create operation
-            var auditLogRecord = this.dbContext.AuditLogRecords.FirstOrDefault(x => x.EntityName == "Product" && x.EntityId == modifiedRecord.Id && x.OperationType == EntityState.Added);
+            var auditLogRecord = this.dbContext.AuditLogRecords.FirstOrDefault(x => x.EntityName == "TankData" && x.EntityId == modifiedRecord.Id && x.OperationType == EntityState.Added);
             this.dbContext.AuditLogRecords.Remove(auditLogRecord);
             this.dbContext.SaveChanges();
 
             var auditRecordsCount = this.dbContext.Set<AuditLogRecord>().CountAsync().Result;
 
             //Act
-            modifiedRecord.Code = 5000;
+            modifiedRecord.LiquidLevel = 1.2M;
             this.dbContext.SaveChanges("TestUser");
-            var auditRecords = this.dbContext.AuditLogRecords.FirstOrDefault(x => x.EntityName == "Product" && x.EntityId == modifiedRecord.Id);
+            var auditRecords = this.dbContext.AuditLogRecords.FirstOrDefault(x => x.EntityName == "TankData" && x.EntityId == modifiedRecord.Id);
 
             //Assert
             var actualRecordCount = this.dbContext.Set<AuditLogRecord>().CountAsync().Result;
@@ -148,7 +150,7 @@ namespace CollectingProductionDataSystem.Data.Tests
 
 
             Assert.AreEqual("", auditRecords.OldValue);
-            Assert.AreEqual("5000", auditRecords.NewValue);
+            Assert.AreEqual("1.2", auditRecords.NewValue);
         }
     }
 }

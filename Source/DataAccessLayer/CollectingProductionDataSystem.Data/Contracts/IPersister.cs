@@ -15,8 +15,8 @@ namespace CollectingProductionDataSystem.Data.Contracts
         /// Gets the added entityes.
         /// </summary>
         /// <param name="addedRecords">The added records.</param>
-        IEnumerable<AuditLogRecord> GetAddedEntityes(List<DbEntityEntry> addedRecords);
+        IEnumerable<AuditLogRecord> GetAddedEntityes(IEnumerable<DbEntityEntry> addedRecords, IDbSet<AuditLogRecord> auditRecords);
 
-        List<AuditLogRecord> PrepareSaveChanges(DbContext data, string userName, out List<DbEntityEntry> addedRecords);
+        IEnumerable<DbEntityEntry> PrepareSaveChanges(IAuditableDbContext data, string userName);
     }
 }
