@@ -32,7 +32,7 @@ namespace CollectingProductionDataSystem.Data.Mappings
                 .HasForeignKey(d => d.MeasurementPointId);
             this.HasRequired(t => t.Product)
                 .WithMany(t => t.MeasurementPointsProductsConfigs)
-                .HasForeignKey(d => d.ProductId);
+                .HasForeignKey(d => d.Code);
 
         }
     }

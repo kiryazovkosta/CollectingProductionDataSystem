@@ -338,32 +338,37 @@ namespace CollectingProductionDataSystem.Data.Migrations
             context.TransportTypes.AddOrUpdate(
                 new TransportType
                 {
-                    Name = "Автоекспедиция"
+                    Name = "Автотранспорт"
                 },
                 new TransportType
                 {
-                    Name = "Ж.П. експедиция"
+                    Name = "Ж.П. Транспорт"
                 },
                 new TransportType
                 {
-                    Name = "Танкери",
+                    Name = "Морски транспорт",
                 },
                 new TransportType
                 {
-                    Name = "Тръбопроводи"
+                    Name = "Тръбопровод"
+                },
+                new TransportType
+                {
+                    Name = "Доставка тръбопровод"
                 });
             context.SaveChanges();
 
             context.Ikunks.AddOrUpdate(
                 new Ikunk
                 {
-                    Name = "ИКУНК 001 - Нова и Стара АНЕ",
+                    Name = "ИКУНК 001 - Нова АНЕ",
                     Zones = 
                     {
                         new Zone
                         {
                             Name = "Остров 1",
-                            MeasurementPoints = {
+                            MeasurementPoints = 
+                            {
                                 new MeasurementPoint
                                 {
                                     ControlPoint = "KT001001",
@@ -373,9 +378,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                     {
                                         new MeasurementPointsProductsConfig
                                         {
-                                            ProductId = 74,
-                                            PhdTotalCounterTag = "TSN_KT0101_MT_GSV_P01.VT",
-                                            DirectionId = 1
+                                            Code = 80, PhdTotalCounterTag = "TSN_KT0101_MT_GSV_P01.VT", DirectionId = 1
                                         }
                                     }
                                 },
@@ -386,132 +389,615 @@ namespace CollectingProductionDataSystem.Data.Migrations
                                     TransportTypeId = 1,
                                     MeasurementPointsProductsConfigs = 
                                     {
-                                        new MeasurementPointsProductsConfig
-                                        {
-                                            ProductId = 83,
-                                            PhdTotalCounterTag = "TSN_KT0102_MT_GSV_P01.VT",
-                                            DirectionId = 1
-                                        },
-                                        new MeasurementPointsProductsConfig
-                                        {
-                                            ProductId = 84,
-                                            PhdTotalCounterTag = "TSN_KT0102_MT_GSV_P02.VT",
-                                            DirectionId = 1
-                                        },
-                                        new MeasurementPointsProductsConfig
-                                        {
-                                            ProductId = 85,
-                                            PhdTotalCounterTag = "TSN_KT0102_MT_GSV_P03.VT",
-                                            DirectionId = 1
-                                        },
-                                        new MeasurementPointsProductsConfig
-                                        {
-                                            ProductId = 75,
-                                            PhdTotalCounterTag = "TSN_KT0102_MT_GSV_P04.VT",
-                                            DirectionId = 1
-                                        },
-                                        new MeasurementPointsProductsConfig
-                                        {
-                                            ProductId = 76,
-                                            PhdTotalCounterTag = "TSN_KT0102_MT_GSV_P05.VT",
-                                            DirectionId = 1
-                                        },
-                                        new MeasurementPointsProductsConfig
-                                        {
-                                            ProductId = 77,
-                                            PhdTotalCounterTag = "TSN_KT0102_MT_GSV_P06.VT",
-                                            DirectionId = 1
-                                        },
-                                        new MeasurementPointsProductsConfig
-                                        {
-                                            ProductId = 78,
-                                            PhdTotalCounterTag = "TSN_KT0102_MT_GSV_P07.VT",
-                                            DirectionId = 1
-                                        },
-                                        new MeasurementPointsProductsConfig
-                                        {
-                                            ProductId = 79,
-                                            PhdTotalCounterTag = "TSN_KT0102_MT_GSV_P08.VT",
-                                            DirectionId = 1
-                                        },
-                                        new MeasurementPointsProductsConfig
-                                        {
-                                            ProductId = 80,
-                                            PhdTotalCounterTag = "TSN_KT0102_MT_GSV_P09.VT",
-                                            DirectionId = 1
-                                        },
-                                        new MeasurementPointsProductsConfig
-                                        {
-                                            ProductId = 74,
-                                            PhdTotalCounterTag = "TSN_KT0102_MT_GSV_P10.VT",
-                                            DirectionId = 1
-                                        },
-                                        new MeasurementPointsProductsConfig
-                                        {
-                                            ProductId = 101,
-                                            PhdTotalCounterTag = "TSN_KT0102_MT_GSV_P11.VT",
-                                            DirectionId = 1
-                                        },
-                                        new MeasurementPointsProductsConfig
-                                        {
-                                            ProductId = 102,
-                                            PhdTotalCounterTag = "TSN_KT0102_MT_GSV_P12.VT",
-                                            DirectionId = 1
-                                        },
-                                        new MeasurementPointsProductsConfig
-                                        {
-                                            ProductId = 103,
-                                            PhdTotalCounterTag = "TSN_KT0102_MT_GSV_P13.VT",
-                                            DirectionId = 1
-                                        },
-                                        new MeasurementPointsProductsConfig
-                                        {
-                                            ProductId = 104,
-                                            PhdTotalCounterTag = "TSN_KT0102_MT_GSV_P14.VT",
-                                            DirectionId = 1
-                                        },
-                                        new MeasurementPointsProductsConfig
-                                        {
-                                            ProductId = 105,
-                                            PhdTotalCounterTag = "TSN_KT0102_MT_GSV_P15.VT",
-                                            DirectionId = 1
-                                        },
-                                        new MeasurementPointsProductsConfig
-                                        {
-                                            ProductId = 106,
-                                            PhdTotalCounterTag = "TSN_KT0102_MT_GSV_P16.VT",
-                                            DirectionId = 1
-                                        },
-                                        new MeasurementPointsProductsConfig
-                                        {
-                                            ProductId = 107,
-                                            PhdTotalCounterTag = "TSN_KT0102_MT_GSV_P17.VT",
-                                            DirectionId = 1
-                                        },
-                                        new MeasurementPointsProductsConfig
-                                        {
-                                            ProductId = 108,
-                                            PhdTotalCounterTag = "TSN_KT0102_MT_GSV_P18.VT",
-                                            DirectionId = 1
-                                        },
-                                        new MeasurementPointsProductsConfig
-                                        {
-                                            ProductId = 81,
-                                            PhdTotalCounterTag = "TSN_KT0102_MT_GSV_P19.VT",
-                                            DirectionId = 1
-                                        },
-                                        new MeasurementPointsProductsConfig
-                                        {
-                                            ProductId = 82,
-                                            PhdTotalCounterTag = "TSN_KT0102_MT_GSV_P20.VT",
-                                            DirectionId = 1
-                                        }
+                                         new MeasurementPointsProductsConfig { Code = 89, PhdTotalCounterTag = "TSN_KT0102_MT_GSV_P01.VT", DirectionId = 1 }, 
+                                         new MeasurementPointsProductsConfig { Code = 90, PhdTotalCounterTag = "TSN_KT0102_MT_GSV_P02.VT", DirectionId = 1 },
+                                         new MeasurementPointsProductsConfig { Code = 91, PhdTotalCounterTag = "TSN_KT0102_MT_GSV_P03.VT", DirectionId = 1 },
+                                         new MeasurementPointsProductsConfig { Code = 81, PhdTotalCounterTag = "TSN_KT0102_MT_GSV_P04.VT", DirectionId = 1 },
+                                         new MeasurementPointsProductsConfig { Code = 82, PhdTotalCounterTag = "TSN_KT0102_MT_GSV_P05.VT", DirectionId = 1 },
+                                         new MeasurementPointsProductsConfig { Code = 83, PhdTotalCounterTag = "TSN_KT0102_MT_GSV_P06.VT", DirectionId = 1 },
+                                         new MeasurementPointsProductsConfig { Code = 84, PhdTotalCounterTag = "TSN_KT0102_MT_GSV_P07.VT", DirectionId = 1 },
+                                         new MeasurementPointsProductsConfig { Code = 85, PhdTotalCounterTag = "TSN_KT0102_MT_GSV_P08.VT", DirectionId = 1 },
+                                         new MeasurementPointsProductsConfig { Code = 86, PhdTotalCounterTag = "TSN_KT0102_MT_GSV_P09.VT", DirectionId = 1 },
+                                         new MeasurementPointsProductsConfig { Code = 80, PhdTotalCounterTag = "TSN_KT0102_MT_GSV_P10.VT", DirectionId = 1 },
+                                         new MeasurementPointsProductsConfig { Code = 107, PhdTotalCounterTag = "TSN_KT0102_MT_GSV_P11.VT", DirectionId = 1 },
+                                         new MeasurementPointsProductsConfig { Code = 108, PhdTotalCounterTag = "TSN_KT0102_MT_GSV_P12.VT", DirectionId = 1 },
+                                         new MeasurementPointsProductsConfig { Code = 109, PhdTotalCounterTag = "TSN_KT0102_MT_GSV_P13.VT", DirectionId = 1 },
+                                         new MeasurementPointsProductsConfig { Code = 110, PhdTotalCounterTag = "TSN_KT0102_MT_GSV_P14.VT", DirectionId = 1 },
+                                         new MeasurementPointsProductsConfig { Code = 111, PhdTotalCounterTag = "TSN_KT0102_MT_GSV_P15.VT", DirectionId = 1 },
+                                         new MeasurementPointsProductsConfig { Code = 112, PhdTotalCounterTag = "TSN_KT0102_MT_GSV_P16.VT", DirectionId = 1 },
+                                         new MeasurementPointsProductsConfig { Code = 113, PhdTotalCounterTag = "TSN_KT0102_MT_GSV_P17.VT", DirectionId = 1 },
+                                         new MeasurementPointsProductsConfig { Code = 114, PhdTotalCounterTag = "TSN_KT0102_MT_GSV_P18.VT", DirectionId = 1 },
+                                         new MeasurementPointsProductsConfig { Code = 87, PhdTotalCounterTag = "TSN_KT0102_MT_GSV_P19.VT", DirectionId = 1 },
+                                         new MeasurementPointsProductsConfig { Code = 88, PhdTotalCounterTag = "TSN_KT0102_MT_GSV_P20.VT", DirectionId = 1 },
                                     }
                                 },
                             }
+                        },
+                        new Zone 
+                        {
+                            Name = "Остров 2",
+                            MeasurementPoints =
+                            {
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "KT001003",
+                                    Name = "BGNCA00005001001003",
+                                    TransportTypeId = 1,
+                                    MeasurementPointsProductsConfigs = 
+                                    {
+                                        new MeasurementPointsProductsConfig { Code = 121, PhdTotalCounterTag = "TSN_KT0103_MT_GSV_P01.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 122, PhdTotalCounterTag = "TSN_KT0103_MT_GSV_P02.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 123, PhdTotalCounterTag = "TSN_KT0103_MT_GSV_P03.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 124, PhdTotalCounterTag = "TSN_KT0103_MT_GSV_P04.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 125, PhdTotalCounterTag = "TSN_KT0103_MT_GSV_P05.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 126, PhdTotalCounterTag = "TSN_KT0103_MT_GSV_P06.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 101, PhdTotalCounterTag = "TSN_KT0103_MT_GSV_P07.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 102, PhdTotalCounterTag = "TSN_KT0103_MT_GSV_P08.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 103, PhdTotalCounterTag = "TSN_KT0103_MT_GSV_P09.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 104, PhdTotalCounterTag = "TSN_KT0103_MT_GSV_P10.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 105, PhdTotalCounterTag = "TSN_KT0103_MT_GSV_P11.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 106, PhdTotalCounterTag = "TSN_KT0103_MT_GSV_P12.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 533, PhdTotalCounterTag = "TSN_KT0103_MT_GSV_P13.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 534, PhdTotalCounterTag = "TSN_KT0103_MT_GSV_P14.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 535, PhdTotalCounterTag = "TSN_KT0103_MT_GSV_P15.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 536, PhdTotalCounterTag = "TSN_KT0103_MT_GSV_P16.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 537, PhdTotalCounterTag = "TSN_KT0103_MT_GSV_P17.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 538, PhdTotalCounterTag = "TSN_KT0103_MT_GSV_P18.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 539, PhdTotalCounterTag = "TSN_KT0103_MT_GSV_P19.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 540, PhdTotalCounterTag = "TSN_KT0103_MT_GSV_P20.VT", DirectionId = 1 },
+                                    }
+                                },
+
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "KT001004",
+                                    Name = "BGNCA00005001001004",
+                                    TransportTypeId = 1,
+                                    MeasurementPointsProductsConfigs = 
+                                    {
+                                        new MeasurementPointsProductsConfig { Code = 40, PhdTotalCounterTag = "TSN_KT0104_MT_GSV_P01.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 42, PhdTotalCounterTag = "TSN_KT0104_MT_GSV_P02.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 43, PhdTotalCounterTag = "TSN_KT0104_MT_GSV_P03.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 44, PhdTotalCounterTag = "TSN_KT0104_MT_GSV_P04.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 45, PhdTotalCounterTag = "TSN_KT0104_MT_GSV_P05.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 46, PhdTotalCounterTag = "TSN_KT0104_MT_GSV_P06.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 47, PhdTotalCounterTag = "TSN_KT0104_MT_GSV_P07.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 48, PhdTotalCounterTag = "TSN_KT0104_MT_GSV_P08.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 49, PhdTotalCounterTag = "TSN_KT0104_MT_GSV_P09.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 58, PhdTotalCounterTag = "TSN_KT0104_MT_GSV_P10.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 60, PhdTotalCounterTag = "TSN_KT0104_MT_GSV_P11.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 61, PhdTotalCounterTag = "TSN_KT0104_MT_GSV_P12.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 62, PhdTotalCounterTag = "TSN_KT0104_MT_GSV_P13.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 63, PhdTotalCounterTag = "TSN_KT0104_MT_GSV_P14.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 64, PhdTotalCounterTag = "TSN_KT0104_MT_GSV_P15.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 65, PhdTotalCounterTag = "TSN_KT0104_MT_GSV_P16.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 66, PhdTotalCounterTag = "TSN_KT0104_MT_GSV_P17.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 67, PhdTotalCounterTag = "TSN_KT0104_MT_GSV_P18.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 500, PhdTotalCounterTag = "TSN_KT0104_MT_GSV_P19.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 501, PhdTotalCounterTag = "TSN_KT0104_MT_GSV_P20.VT", DirectionId = 1 },
+                                    }
+                                },
+
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "KT001005",
+                                    Name = "BGNCA00005001001005",
+                                    TransportTypeId = 1,
+                                    MeasurementPointsProductsConfigs = 
+                                    {
+                                        new MeasurementPointsProductsConfig { Code = 41, PhdTotalCounterTag = "TSN_KT0105_MT_GSV_P01.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 50, PhdTotalCounterTag = "TSN_KT0105_MT_GSV_P02.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 51, PhdTotalCounterTag = "TSN_KT0105_MT_GSV_P03.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 52, PhdTotalCounterTag = "TSN_KT0105_MT_GSV_P04.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 53, PhdTotalCounterTag = "TSN_KT0105_MT_GSV_P05.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 54, PhdTotalCounterTag = "TSN_KT0105_MT_GSV_P06.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 55, PhdTotalCounterTag = "TSN_KT0105_MT_GSV_P07.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 56, PhdTotalCounterTag = "TSN_KT0105_MT_GSV_P08.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 57, PhdTotalCounterTag = "TSN_KT0105_MT_GSV_P09.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 59, PhdTotalCounterTag = "TSN_KT0105_MT_GSV_P10.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 68, PhdTotalCounterTag = "TSN_KT0105_MT_GSV_P11.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 69, PhdTotalCounterTag = "TSN_KT0105_MT_GSV_P12.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 70, PhdTotalCounterTag = "TSN_KT0105_MT_GSV_P13.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 71, PhdTotalCounterTag = "TSN_KT0105_MT_GSV_P14.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 72, PhdTotalCounterTag = "TSN_KT0105_MT_GSV_P15.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 73, PhdTotalCounterTag = "TSN_KT0105_MT_GSV_P16.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 74, PhdTotalCounterTag = "TSN_KT0105_MT_GSV_P17.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 75, PhdTotalCounterTag = "TSN_KT0105_MT_GSV_P18.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 520, PhdTotalCounterTag = "TSN_KT0105_MT_GSV_P19.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 521, PhdTotalCounterTag = "TSN_KT0105_MT_GSV_P20.VT", DirectionId = 1 },
+                                    }
+                                },
+
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "KT001006",
+                                    Name = "BGNCA00005001001006",
+                                    TransportTypeId = 1,
+                                    MeasurementPointsProductsConfigs = 
+                                    {
+                                        new MeasurementPointsProductsConfig { Code = 81, PhdTotalCounterTag = "TSN_KT0106_MT_GSV_P01.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 82, PhdTotalCounterTag = "TSN_KT0106_MT_GSV_P02.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 83, PhdTotalCounterTag = "TSN_KT0106_MT_GSV_P03.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 84, PhdTotalCounterTag = "TSN_KT0106_MT_GSV_P04.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 85, PhdTotalCounterTag = "TSN_KT0106_MT_GSV_P05.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 86, PhdTotalCounterTag = "TSN_KT0106_MT_GSV_P06.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 87, PhdTotalCounterTag = "TSN_KT0106_MT_GSV_P07.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 88, PhdTotalCounterTag = "TSN_KT0106_MT_GSV_P08.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 107, PhdTotalCounterTag = "TSN_KT0106_MT_GSV_P09.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 108, PhdTotalCounterTag = "TSN_KT0106_MT_GSV_P10.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 109, PhdTotalCounterTag = "TSN_KT0106_MT_GSV_P11.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 110, PhdTotalCounterTag = "TSN_KT0106_MT_GSV_P12.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 111, PhdTotalCounterTag = "TSN_KT0106_MT_GSV_P13.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 112, PhdTotalCounterTag = "TSN_KT0106_MT_GSV_P14.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 113, PhdTotalCounterTag = "TSN_KT0106_MT_GSV_P15.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 114, PhdTotalCounterTag = "TSN_KT0106_MT_GSV_P16.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 89, PhdTotalCounterTag = "TSN_KT0106_MT_GSV_P17.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 90, PhdTotalCounterTag = "TSN_KT0106_MT_GSV_P18.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 91, PhdTotalCounterTag = "TSN_KT0106_MT_GSV_P19.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 541, PhdTotalCounterTag = "TSN_KT0106_MT_GSV_P20.VT", DirectionId = 1 },
+                                    }
+                                }
+                            }
+                        },
+                        new Zone 
+                        {
+                            Name = "Остров 3",
+                            MeasurementPoints =
+                            {
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "KT001007",
+                                    Name = "BGNCA00005001001007",
+                                    TransportTypeId = 1,
+                                    MeasurementPointsProductsConfigs = 
+                                    {
+                                        new MeasurementPointsProductsConfig { Code = 121, PhdTotalCounterTag = "TSN_KT0107_MT_GSV_P01.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 122, PhdTotalCounterTag = "TSN_KT0107_MT_GSV_P02.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 123, PhdTotalCounterTag = "TSN_KT0107_MT_GSV_P03.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 124, PhdTotalCounterTag = "TSN_KT0107_MT_GSV_P04.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 125, PhdTotalCounterTag = "TSN_KT0107_MT_GSV_P05.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 126, PhdTotalCounterTag = "TSN_KT0107_MT_GSV_P06.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 101, PhdTotalCounterTag = "TSN_KT0107_MT_GSV_P07.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 102, PhdTotalCounterTag = "TSN_KT0107_MT_GSV_P08.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 103, PhdTotalCounterTag = "TSN_KT0107_MT_GSV_P09.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 104, PhdTotalCounterTag = "TSN_KT0107_MT_GSV_P10.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 105, PhdTotalCounterTag = "TSN_KT0107_MT_GSV_P11.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 106, PhdTotalCounterTag = "TSN_KT0107_MT_GSV_P12.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 533, PhdTotalCounterTag = "TSN_KT0107_MT_GSV_P13.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 534, PhdTotalCounterTag = "TSN_KT0107_MT_GSV_P14.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 535, PhdTotalCounterTag = "TSN_KT0107_MT_GSV_P15.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 536, PhdTotalCounterTag = "TSN_KT0107_MT_GSV_P16.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 537, PhdTotalCounterTag = "TSN_KT0107_MT_GSV_P17.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 538, PhdTotalCounterTag = "TSN_KT0107_MT_GSV_P18.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 539, PhdTotalCounterTag = "TSN_KT0107_MT_GSV_P19.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 540, PhdTotalCounterTag = "TSN_KT0107_MT_GSV_P20.VT", DirectionId = 1 },
+                                    }
+                                },
+
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "KT001008",
+                                    Name = "BGNCA00005001001008",
+                                    TransportTypeId = 1,
+                                    MeasurementPointsProductsConfigs = 
+                                    {
+                                        new MeasurementPointsProductsConfig { Code = 40, PhdTotalCounterTag = "TSN_KT0108_MT_GSV_P01.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 42, PhdTotalCounterTag = "TSN_KT0108_MT_GSV_P02.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 43, PhdTotalCounterTag = "TSN_KT0108_MT_GSV_P03.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 44, PhdTotalCounterTag = "TSN_KT0108_MT_GSV_P04.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 45, PhdTotalCounterTag = "TSN_KT0108_MT_GSV_P05.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 46, PhdTotalCounterTag = "TSN_KT0108_MT_GSV_P06.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 47, PhdTotalCounterTag = "TSN_KT0108_MT_GSV_P07.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 48, PhdTotalCounterTag = "TSN_KT0108_MT_GSV_P08.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 49, PhdTotalCounterTag = "TSN_KT0108_MT_GSV_P09.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 58, PhdTotalCounterTag = "TSN_KT0108_MT_GSV_P10.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 60, PhdTotalCounterTag = "TSN_KT0108_MT_GSV_P11.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 61, PhdTotalCounterTag = "TSN_KT0108_MT_GSV_P12.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 62, PhdTotalCounterTag = "TSN_KT0108_MT_GSV_P13.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 63, PhdTotalCounterTag = "TSN_KT0108_MT_GSV_P14.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 64, PhdTotalCounterTag = "TSN_KT0108_MT_GSV_P15.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 65, PhdTotalCounterTag = "TSN_KT0108_MT_GSV_P16.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 66, PhdTotalCounterTag = "TSN_KT0108_MT_GSV_P17.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 67, PhdTotalCounterTag = "TSN_KT0108_MT_GSV_P18.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 500, PhdTotalCounterTag = "TSN_KT0108_MT_GSV_P19.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 501, PhdTotalCounterTag = "TSN_KT0108_MT_GSV_P20.VT", DirectionId = 1 },
+                                    }
+                                },
+
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "KT001009",
+                                    Name = "BGNCA00005001001009",
+                                    TransportTypeId = 1,
+                                    MeasurementPointsProductsConfigs = 
+                                    {
+                                        new MeasurementPointsProductsConfig { Code = 41, PhdTotalCounterTag = "TSN_KT0109_MT_GSV_P01.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 50, PhdTotalCounterTag = "TSN_KT0109_MT_GSV_P02.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 51, PhdTotalCounterTag = "TSN_KT0109_MT_GSV_P03.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 52, PhdTotalCounterTag = "TSN_KT0109_MT_GSV_P04.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 53, PhdTotalCounterTag = "TSN_KT0109_MT_GSV_P05.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 54, PhdTotalCounterTag = "TSN_KT0109_MT_GSV_P06.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 55, PhdTotalCounterTag = "TSN_KT0109_MT_GSV_P07.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 56, PhdTotalCounterTag = "TSN_KT0109_MT_GSV_P08.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 57, PhdTotalCounterTag = "TSN_KT0109_MT_GSV_P09.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 59, PhdTotalCounterTag = "TSN_KT0109_MT_GSV_P10.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 68, PhdTotalCounterTag = "TSN_KT0109_MT_GSV_P11.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 69, PhdTotalCounterTag = "TSN_KT0109_MT_GSV_P12.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 70, PhdTotalCounterTag = "TSN_KT0109_MT_GSV_P13.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 71, PhdTotalCounterTag = "TSN_KT0109_MT_GSV_P14.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 72, PhdTotalCounterTag = "TSN_KT0109_MT_GSV_P15.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 73, PhdTotalCounterTag = "TSN_KT0109_MT_GSV_P16.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 74, PhdTotalCounterTag = "TSN_KT0109_MT_GSV_P17.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 75, PhdTotalCounterTag = "TSN_KT0109_MT_GSV_P18.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 520, PhdTotalCounterTag = "TSN_KT0109_MT_GSV_P19.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 521, PhdTotalCounterTag = "TSN_KT0109_MT_GSV_P20.VT", DirectionId = 1 },
+                                    }
+                                },
+
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "KT001010",
+                                    Name = "BGNCA00005001001010",
+                                    TransportTypeId = 1,
+                                    MeasurementPointsProductsConfigs = 
+                                    {
+                                        new MeasurementPointsProductsConfig { Code = 81, PhdTotalCounterTag = "TSN_KT0110_MT_GSV_P01.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 82, PhdTotalCounterTag = "TSN_KT0110_MT_GSV_P02.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 83, PhdTotalCounterTag = "TSN_KT0110_MT_GSV_P03.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 84, PhdTotalCounterTag = "TSN_KT0110_MT_GSV_P04.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 85, PhdTotalCounterTag = "TSN_KT0110_MT_GSV_P05.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 86, PhdTotalCounterTag = "TSN_KT0110_MT_GSV_P06.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 87, PhdTotalCounterTag = "TSN_KT0110_MT_GSV_P07.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 88, PhdTotalCounterTag = "TSN_KT0110_MT_GSV_P08.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 107, PhdTotalCounterTag = "TSN_KT0110_MT_GSV_P09.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 108, PhdTotalCounterTag = "TSN_KT0110_MT_GSV_P10.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 109, PhdTotalCounterTag = "TSN_KT0110_MT_GSV_P11.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 110, PhdTotalCounterTag = "TSN_KT0110_MT_GSV_P12.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 111, PhdTotalCounterTag = "TSN_KT0110_MT_GSV_P13.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 112, PhdTotalCounterTag = "TSN_KT0110_MT_GSV_P14.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 113, PhdTotalCounterTag = "TSN_KT0110_MT_GSV_P15.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 114, PhdTotalCounterTag = "TSN_KT0110_MT_GSV_P16.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 89, PhdTotalCounterTag = "TSN_KT0110_MT_GSV_P17.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 90, PhdTotalCounterTag = "TSN_KT0110_MT_GSV_P18.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 91, PhdTotalCounterTag = "TSN_KT0110_MT_GSV_P19.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 541, PhdTotalCounterTag = "TSN_KT0110_MT_GSV_P20.VT", DirectionId = 1 },
+                                    }
+                                },
+                            }
+                        },
+                        new Zone 
+                        {
+                            Name = "Остров 4",
+                            MeasurementPoints =
+                            {
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "KT001011",
+                                    Name = "BGNCA00005001001011",
+                                    TransportTypeId = 1,
+                                    MeasurementPointsProductsConfigs = 
+                                    {
+                                        new MeasurementPointsProductsConfig { Code = 121, PhdTotalCounterTag = "TSN_KT0111_MT_GSV_P01.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 122, PhdTotalCounterTag = "TSN_KT0111_MT_GSV_P02.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 123, PhdTotalCounterTag = "TSN_KT0111_MT_GSV_P03.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 124, PhdTotalCounterTag = "TSN_KT0111_MT_GSV_P04.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 125, PhdTotalCounterTag = "TSN_KT0111_MT_GSV_P05.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 126, PhdTotalCounterTag = "TSN_KT0111_MT_GSV_P06.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 101, PhdTotalCounterTag = "TSN_KT0111_MT_GSV_P07.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 102, PhdTotalCounterTag = "TSN_KT0111_MT_GSV_P08.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 103, PhdTotalCounterTag = "TSN_KT0111_MT_GSV_P09.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 104, PhdTotalCounterTag = "TSN_KT0111_MT_GSV_P10.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 105, PhdTotalCounterTag = "TSN_KT0111_MT_GSV_P11.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 106, PhdTotalCounterTag = "TSN_KT0111_MT_GSV_P12.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 561, PhdTotalCounterTag = "TSN_KT0111_MT_GSV_P13.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 562, PhdTotalCounterTag = "TSN_KT0111_MT_GSV_P14.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 535, PhdTotalCounterTag = "TSN_KT0111_MT_GSV_P15.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 536, PhdTotalCounterTag = "TSN_KT0111_MT_GSV_P16.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 537, PhdTotalCounterTag = "TSN_KT0111_MT_GSV_P17.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 538, PhdTotalCounterTag = "TSN_KT0111_MT_GSV_P18.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 539, PhdTotalCounterTag = "TSN_KT0111_MT_GSV_P19.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 540, PhdTotalCounterTag = "TSN_KT0111_MT_GSV_P20.VT", DirectionId = 1 },
+                                    }
+                                },
+
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "KT001012",
+                                    Name = "BGNCA00005001001012",
+                                    TransportTypeId = 1,
+                                    MeasurementPointsProductsConfigs = 
+                                    {
+                                        new MeasurementPointsProductsConfig { Code = 040, PhdTotalCounterTag = "TSN_KT0112_MT_GSV_P01.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 042, PhdTotalCounterTag = "TSN_KT0112_MT_GSV_P02.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 043, PhdTotalCounterTag = "TSN_KT0112_MT_GSV_P03.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 044, PhdTotalCounterTag = "TSN_KT0112_MT_GSV_P04.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 045, PhdTotalCounterTag = "TSN_KT0112_MT_GSV_P05.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 046, PhdTotalCounterTag = "TSN_KT0112_MT_GSV_P06.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 047, PhdTotalCounterTag = "TSN_KT0112_MT_GSV_P07.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 048, PhdTotalCounterTag = "TSN_KT0112_MT_GSV_P08.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 049, PhdTotalCounterTag = "TSN_KT0112_MT_GSV_P09.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 058, PhdTotalCounterTag = "TSN_KT0112_MT_GSV_P10.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 060, PhdTotalCounterTag = "TSN_KT0112_MT_GSV_P11.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 061, PhdTotalCounterTag = "TSN_KT0112_MT_GSV_P12.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 062, PhdTotalCounterTag = "TSN_KT0112_MT_GSV_P13.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 063, PhdTotalCounterTag = "TSN_KT0112_MT_GSV_P14.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 064, PhdTotalCounterTag = "TSN_KT0112_MT_GSV_P15.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 065, PhdTotalCounterTag = "TSN_KT0112_MT_GSV_P16.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 066, PhdTotalCounterTag = "TSN_KT0112_MT_GSV_P17.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 067, PhdTotalCounterTag = "TSN_KT0112_MT_GSV_P18.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 500, PhdTotalCounterTag = "TSN_KT0112_MT_GSV_P19.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 501, PhdTotalCounterTag = "TSN_KT0112_MT_GSV_P20.VT", DirectionId = 1 },
+                                    }
+                                },
+
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "KT001013",
+                                    Name = "BGNCA00005001001013",
+                                    TransportTypeId = 1,
+                                    MeasurementPointsProductsConfigs = 
+                                    {
+                                        new MeasurementPointsProductsConfig { Code = 041, PhdTotalCounterTag = "TSN_KT0113_MT_GSV_P01.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 050, PhdTotalCounterTag = "TSN_KT0113_MT_GSV_P02.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 051, PhdTotalCounterTag = "TSN_KT0113_MT_GSV_P03.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 052, PhdTotalCounterTag = "TSN_KT0113_MT_GSV_P04.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 053, PhdTotalCounterTag = "TSN_KT0113_MT_GSV_P05.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 054, PhdTotalCounterTag = "TSN_KT0113_MT_GSV_P06.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 055, PhdTotalCounterTag = "TSN_KT0113_MT_GSV_P07.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 056, PhdTotalCounterTag = "TSN_KT0113_MT_GSV_P08.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 057, PhdTotalCounterTag = "TSN_KT0113_MT_GSV_P09.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 059, PhdTotalCounterTag = "TSN_KT0113_MT_GSV_P10.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 068, PhdTotalCounterTag = "TSN_KT0113_MT_GSV_P11.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 069, PhdTotalCounterTag = "TSN_KT0113_MT_GSV_P12.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 070, PhdTotalCounterTag = "TSN_KT0113_MT_GSV_P13.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 071, PhdTotalCounterTag = "TSN_KT0113_MT_GSV_P14.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 072, PhdTotalCounterTag = "TSN_KT0113_MT_GSV_P15.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 073, PhdTotalCounterTag = "TSN_KT0113_MT_GSV_P16.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 074, PhdTotalCounterTag = "TSN_KT0113_MT_GSV_P17.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 075, PhdTotalCounterTag = "TSN_KT0113_MT_GSV_P18.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 520, PhdTotalCounterTag = "TSN_KT0113_MT_GSV_P19.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 521, PhdTotalCounterTag = "TSN_KT0113_MT_GSV_P20.VT", DirectionId = 1 },
+                                    }
+                                },
+
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "KT001014",
+                                    Name = "BGNCA00005001001014",
+                                    TransportTypeId = 1,
+                                    MeasurementPointsProductsConfigs = 
+                                    {
+                                        new MeasurementPointsProductsConfig { Code = 081, PhdTotalCounterTag = "TSN_KT0114_MT_GSV_P01.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 082, PhdTotalCounterTag = "TSN_KT0114_MT_GSV_P02.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 083, PhdTotalCounterTag = "TSN_KT0114_MT_GSV_P03.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 084, PhdTotalCounterTag = "TSN_KT0114_MT_GSV_P04.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 085, PhdTotalCounterTag = "TSN_KT0114_MT_GSV_P05.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 086, PhdTotalCounterTag = "TSN_KT0114_MT_GSV_P06.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 087, PhdTotalCounterTag = "TSN_KT0114_MT_GSV_P07.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 088, PhdTotalCounterTag = "TSN_KT0114_MT_GSV_P08.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 107, PhdTotalCounterTag = "TSN_KT0114_MT_GSV_P09.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 108, PhdTotalCounterTag = "TSN_KT0114_MT_GSV_P10.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 109, PhdTotalCounterTag = "TSN_KT0114_MT_GSV_P11.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 110, PhdTotalCounterTag = "TSN_KT0114_MT_GSV_P12.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 111, PhdTotalCounterTag = "TSN_KT0114_MT_GSV_P13.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 112, PhdTotalCounterTag = "TSN_KT0114_MT_GSV_P14.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 113, PhdTotalCounterTag = "TSN_KT0114_MT_GSV_P15.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 114, PhdTotalCounterTag = "TSN_KT0114_MT_GSV_P16.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 089, PhdTotalCounterTag = "TSN_KT0114_MT_GSV_P17.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 090, PhdTotalCounterTag = "TSN_KT0114_MT_GSV_P18.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 091, PhdTotalCounterTag = "TSN_KT0114_MT_GSV_P19.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 541, PhdTotalCounterTag = "TSN_KT0114_MT_GSV_P20.VT", DirectionId = 1 },
+                                    }
+                                },
+                            }
+                        },
+
+                        new Zone 
+                        {
+                            Name = "Остров 5",
+                            MeasurementPoints =
+                            {
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "KT001019",
+                                    Name = "BGNCA00005001001019",
+                                    TransportTypeId = 1,
+                                    MeasurementPointsProductsConfigs = 
+                                    {
+                                        new MeasurementPointsProductsConfig { Code = 472, PhdTotalCounterTag = "TSN_KT0119_MT_GSV_P01.VT", DirectionId = 2 },
+                                        new MeasurementPointsProductsConfig { Code = 473, PhdTotalCounterTag = "TSN_KT0119_MT_GSV_P02.VT", DirectionId = 2 },
+                                        new MeasurementPointsProductsConfig { Code = 491, PhdTotalCounterTag = "TSN_KT0119_MT_GSV_P03.VT", DirectionId = 2 },
+                                        new MeasurementPointsProductsConfig { Code = 492, PhdTotalCounterTag = "TSN_KT0119_MT_GSV_P04.VT", DirectionId = 2 },
+                                        new MeasurementPointsProductsConfig { Code = 493, PhdTotalCounterTag = "TSN_KT0119_MT_GSV_P05.VT", DirectionId = 2 },
+                                        new MeasurementPointsProductsConfig { Code = 494, PhdTotalCounterTag = "TSN_KT0119_MT_GSV_P06.VT", DirectionId = 2 },
+                                        new MeasurementPointsProductsConfig { Code = 901, PhdTotalCounterTag = "TSN_KT0119_MT_GSV_P07.VT", DirectionId = 2 },
+                                        new MeasurementPointsProductsConfig { Code = 902, PhdTotalCounterTag = "TSN_KT0119_MT_GSV_P08.VT", DirectionId = 2 },
+                                        new MeasurementPointsProductsConfig { Code = 903, PhdTotalCounterTag = "TSN_KT0119_MT_GSV_P09.VT", DirectionId = 2 },
+                                        new MeasurementPointsProductsConfig { Code = 904, PhdTotalCounterTag = "TSN_KT0119_MT_GSV_P10.VT", DirectionId = 2 },
+                                        new MeasurementPointsProductsConfig { Code = 910, PhdTotalCounterTag = "TSN_KT0119_MT_GSV_P11.VT", DirectionId = 2 },
+                                        new MeasurementPointsProductsConfig { Code = 911, PhdTotalCounterTag = "TSN_KT0119_MT_GSV_P12.VT", DirectionId = 2 },
+                                        new MeasurementPointsProductsConfig { Code = 912, PhdTotalCounterTag = "TSN_KT0119_MT_GSV_P13.VT", DirectionId = 2 },
+                                        new MeasurementPointsProductsConfig { Code = 913, PhdTotalCounterTag = "TSN_KT0119_MT_GSV_P14.VT", DirectionId = 2 },
+                                    }
+                                },
+
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "KT001020",
+                                    Name = "BGNCA00005001001020",
+                                    TransportTypeId = 1,
+                                    MeasurementPointsProductsConfigs = 
+                                    {
+                                         new MeasurementPointsProductsConfig { Code = 481, PhdTotalCounterTag = "TSN_KT0120_MT_GSV_P01.VT", DirectionId = 2 },
+                                         new MeasurementPointsProductsConfig { Code = 482, PhdTotalCounterTag = "TSN_KT0120_MT_GSV_P02.VT", DirectionId = 2 },
+                                         new MeasurementPointsProductsConfig { Code = 483, PhdTotalCounterTag = "TSN_KT0120_MT_GSV_P03.VT", DirectionId = 2 },
+                                         new MeasurementPointsProductsConfig { Code = 484, PhdTotalCounterTag = "TSN_KT0120_MT_GSV_P04.VT", DirectionId = 2 },
+                                         new MeasurementPointsProductsConfig { Code = 485, PhdTotalCounterTag = "TSN_KT0120_MT_GSV_P05.VT", DirectionId = 2 },
+                                         new MeasurementPointsProductsConfig { Code = 486, PhdTotalCounterTag = "TSN_KT0120_MT_GSV_P06.VT", DirectionId = 2 },
+                                         new MeasurementPointsProductsConfig { Code = 487, PhdTotalCounterTag = "TSN_KT0120_MT_GSV_P07.VT", DirectionId = 2 },
+                                         new MeasurementPointsProductsConfig { Code = 488, PhdTotalCounterTag = "TSN_KT0120_MT_GSV_P08.VT", DirectionId = 2 },
+                                         new MeasurementPointsProductsConfig { Code = 489, PhdTotalCounterTag = "TSN_KT0120_MT_GSV_P09.VT", DirectionId = 2 },
+                                         new MeasurementPointsProductsConfig { Code = 490, PhdTotalCounterTag = "TSN_KT0120_MT_GSV_P10.VT", DirectionId = 2 },
+                                    }
+                                }
+                            }
                         }
                     }
-                });
+                },
+                new Ikunk
+                {
+                    Name = "ИКУНК 02 - Втечнен газ",
+                    Zones = 
+                    {
+                        new Zone
+                        {
+                            Name = "РП Втечнени газове",
+                            MeasurementPoints = 
+                            {
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "KT002001",
+                                    Name = "BGNCA00005001002001",
+                                    TransportTypeId = 1,
+                                    MeasurementPointsProductsConfigs = 
+                                    {
+                                        new MeasurementPointsProductsConfig { Code = 332, PhdTotalCounterTag = "KT0201_TT_OUT_09.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 141, PhdTotalCounterTag = "KT0201_TT_OUT_04.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 143, PhdTotalCounterTag = "KT0201_TT_OUT_06.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 142, PhdTotalCounterTag = "KT0201_TT_OUT_05.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 144, PhdTotalCounterTag = "KT0201_TT_OUT_07.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 140, PhdTotalCounterTag = "KT0201_TT_OUT_03.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 139, PhdTotalCounterTag = "KT0201_TT_OUT_02.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 138, PhdTotalCounterTag = "KT0201_TT_OUT_01.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 208, PhdTotalCounterTag = "KT0201_TT_OUT_08.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 210, PhdTotalCounterTag = "KT0201_TT_OUT_10.VT", DirectionId = 1 },
+
+                                        new MeasurementPointsProductsConfig { Code = 332, PhdTotalCounterTag = "KT0201_TT_IN_09.VT", DirectionId = 2 },
+                                        new MeasurementPointsProductsConfig { Code = 141, PhdTotalCounterTag = "KT0201_TT_IN_04.VT", DirectionId = 2 },
+                                        new MeasurementPointsProductsConfig { Code = 143, PhdTotalCounterTag = "KT0201_TT_IN_06.VT", DirectionId = 2 },
+                                        new MeasurementPointsProductsConfig { Code = 142, PhdTotalCounterTag = "KT0201_TT_IN_05.VT", DirectionId = 2 },
+                                        new MeasurementPointsProductsConfig { Code = 144, PhdTotalCounterTag = "KT0201_TT_IN_07.VT", DirectionId = 2 },
+                                        new MeasurementPointsProductsConfig { Code = 140, PhdTotalCounterTag = "KT0201_TT_IN_03.VT", DirectionId = 2 },
+                                        new MeasurementPointsProductsConfig { Code = 139, PhdTotalCounterTag = "KT0201_TT_IN_02.VT", DirectionId = 2 },
+                                        new MeasurementPointsProductsConfig { Code = 138, PhdTotalCounterTag = "KT0201_TT_IN_01.VT", DirectionId = 2 },
+                                        new MeasurementPointsProductsConfig { Code = 208, PhdTotalCounterTag = "KT0201_TT_IN_08.VT", DirectionId = 2 },
+                                        new MeasurementPointsProductsConfig { Code = 210, PhdTotalCounterTag = "KT0201_TT_IN_10.VT", DirectionId = 2 },
+                                    }
+                                },
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "KT002002",
+                                    Name = "BGNCA00005001002002",
+                                    TransportTypeId = 2,
+                                    MeasurementPointsProductsConfigs = 
+                                    {
+                                        new MeasurementPointsProductsConfig { Code = 141, PhdTotalCounterTag = "KT0202_TT_OUT_04.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 143, PhdTotalCounterTag = "KT0202_TT_OUT_06.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 142, PhdTotalCounterTag = "KT0202_TT_OUT_05.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 144, PhdTotalCounterTag = "KT0202_TT_OUT_07.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 140, PhdTotalCounterTag = "KT0202_TT_OUT_03.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 138, PhdTotalCounterTag = "KT0202_TT_OUT_01.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 139, PhdTotalCounterTag = "KT0202_TT_OUT_02.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 146, PhdTotalCounterTag = "KT0202_TT_OUT_10.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 208, PhdTotalCounterTag = "KT0202_TT_OUT_08.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 145, PhdTotalCounterTag = "KT0202_TT_OUT_09.VT", DirectionId = 1 },
+
+                                        new MeasurementPointsProductsConfig { Code = 141, PhdTotalCounterTag = "KT0202_TT_IN_04.VT", DirectionId = 2 },
+                                        new MeasurementPointsProductsConfig { Code = 143, PhdTotalCounterTag = "KT0202_TT_IN_06.VT", DirectionId = 2 },
+                                        new MeasurementPointsProductsConfig { Code = 142, PhdTotalCounterTag = "KT0202_TT_IN_05.VT", DirectionId = 2 },
+                                        new MeasurementPointsProductsConfig { Code = 144, PhdTotalCounterTag = "KT0202_TT_IN_07.VT", DirectionId = 2 },
+                                        new MeasurementPointsProductsConfig { Code = 140, PhdTotalCounterTag = "KT0202_TT_IN_03.VT", DirectionId = 2 },
+                                        new MeasurementPointsProductsConfig { Code = 139, PhdTotalCounterTag = "KT0202_TT_IN_02.VT", DirectionId = 2 },
+                                        new MeasurementPointsProductsConfig { Code = 138, PhdTotalCounterTag = "KT0202_TT_IN_01.VT", DirectionId = 2 },
+                                        new MeasurementPointsProductsConfig { Code = 146, PhdTotalCounterTag = "KT0202_TT_IN_10.VT", DirectionId = 2 },
+                                        new MeasurementPointsProductsConfig { Code = 208, PhdTotalCounterTag = "KT0202_TT_IN_08.VT", DirectionId = 2 },
+                                        new MeasurementPointsProductsConfig { Code = 145, PhdTotalCounterTag = "KT0202_TT_IN_09.VT", DirectionId = 2 },
+                                    }
+                                },
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "KT002003",
+                                    Name = "BGNCA00005001002003",
+                                    TransportTypeId = 2,
+                                    MeasurementPointsProductsConfigs = 
+                                    {
+                                        new MeasurementPointsProductsConfig { Code = 138, PhdTotalCounterTag = "KT0203_TT_IN_01.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 139, PhdTotalCounterTag = "KT0203_TT_IN_02.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 140, PhdTotalCounterTag = "KT0203_TT_IN_03.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 141, PhdTotalCounterTag = "KT0203_TT_IN_04.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 142, PhdTotalCounterTag = "KT0203_TT_IN_05.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 143, PhdTotalCounterTag = "KT0203_TT_IN_06.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 144, PhdTotalCounterTag = "KT0203_TT_IN_07.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 208, PhdTotalCounterTag = "KT0203_TT_IN_08.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 145, PhdTotalCounterTag = "KT0203_TT_IN_09.VT", DirectionId = 1 },
+                                        new MeasurementPointsProductsConfig { Code = 146, PhdTotalCounterTag = "KT0203_TT_IN_10.VT", DirectionId = 1 },
+
+                                        new MeasurementPointsProductsConfig { Code = 138, PhdTotalCounterTag = "KT0203_TT_OUT_01.VT", DirectionId = 2 },
+                                        new MeasurementPointsProductsConfig { Code = 139, PhdTotalCounterTag = "KT0203_TT_OUT_02.VT", DirectionId = 2 },
+                                        new MeasurementPointsProductsConfig { Code = 140, PhdTotalCounterTag = "KT0203_TT_OUT_03.VT", DirectionId = 2 },
+                                        new MeasurementPointsProductsConfig { Code = 141, PhdTotalCounterTag = "KT0203_TT_OUT_04.VT", DirectionId = 2 },
+                                        new MeasurementPointsProductsConfig { Code = 142, PhdTotalCounterTag = "KT0203_TT_OUT_05.VT", DirectionId = 2 },
+                                        new MeasurementPointsProductsConfig { Code = 143, PhdTotalCounterTag = "KT0203_TT_OUT_06.VT", DirectionId = 2 },
+                                        new MeasurementPointsProductsConfig { Code = 144, PhdTotalCounterTag = "KT0203_TT_OUT_07.VT", DirectionId = 2 },
+                                        new MeasurementPointsProductsConfig { Code = 208, PhdTotalCounterTag = "KT0203_TT_OUT_08.VT", DirectionId = 2 },
+                                        new MeasurementPointsProductsConfig { Code = 145, PhdTotalCounterTag = "KT0203_TT_OUT_09.VT", DirectionId = 2 },
+                                        new MeasurementPointsProductsConfig { Code = 146, PhdTotalCounterTag = "KT0203_TT_OUT_10.VT", DirectionId = 2 },
+                                    }
+                                }
+                            }
+                        },
+                        new Zone
+                        {
+                            Name = "Парк 8Х5000",
+                            MeasurementPoints = 
+                            {
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "KT002004",
+                                    Name = "BGNCA00005001002004",
+                                    TransportTypeId = 1,
+                                    MeasurementPointsProductsConfigs = 
+                                    {
+                                        new MeasurementPointsProductsConfig { Code = 457, PhdTotalCounterTag = "TSN_KT0204_MT_GSV_R1_V.VT", DirectionId = 2 },
+                                        new MeasurementPointsProductsConfig { Code = 498, PhdTotalCounterTag = "TSN_KT0204_MT_GSV_R2_V.VT", DirectionId = 2 },
+                                        new MeasurementPointsProductsConfig { Code = 459, PhdTotalCounterTag = "TSN_KT0204_MT_GSV_R3_V.VT", DirectionId = 2 },
+                                        new MeasurementPointsProductsConfig { Code = 460, PhdTotalCounterTag = "TSN_KT0204_MT_GSV_R4_V.VT", DirectionId = 2 },
+                                        new MeasurementPointsProductsConfig { Code = 466, PhdTotalCounterTag = "TSN_KT0204_MT_GSV_R5_V.VT", DirectionId = 2 },
+                                        new MeasurementPointsProductsConfig { Code = 480, PhdTotalCounterTag = "TSN_KT0204_MT_GSV_R6_V.VT", DirectionId = 2 },
+                                        new MeasurementPointsProductsConfig { Code = 475, PhdTotalCounterTag = "TSN_KT0204_MT_GSV_R7_V.VT", DirectionId = 2 },
+                                        new MeasurementPointsProductsConfig { Code = 476, PhdTotalCounterTag = "TSN_KT0204_MT_GSV_R8_V.VT", DirectionId = 2 },
+                                        new MeasurementPointsProductsConfig { Code = 477, PhdTotalCounterTag = "TSN_KT0204_MT_GSV_R9_V.VT", DirectionId = 2 },
+                                        new MeasurementPointsProductsConfig { Code = 478, PhdTotalCounterTag = "TSN_KT0204_MT_GSV_R10_V.VT", DirectionId = 2 },
+                                        new MeasurementPointsProductsConfig { Code = 479, PhdTotalCounterTag = "TSN_KT0204_MT_GSV_R11_V.VT", DirectionId = 2 },
+                                    }
+                                },
+                                new MeasurementPoint
+                                {
+                                    ControlPoint = "KT002005",
+                                    Name = "BGNCA00005001002005",
+                                    TransportTypeId = 1,
+                                    MeasurementPointsProductsConfigs = 
+                                    {
+                                        new MeasurementPointsProductsConfig { Code = 457, PhdTotalCounterTag = "TSN_KT0205_MT_GSV_R1_V.VT", DirectionId = 2 },
+                                        new MeasurementPointsProductsConfig { Code = 498, PhdTotalCounterTag = "TSN_KT0205_MT_GSV_R2_V.VT", DirectionId = 2 },
+                                        new MeasurementPointsProductsConfig { Code = 459, PhdTotalCounterTag = "TSN_KT0205_MT_GSV_R3_V.VT", DirectionId = 2 },
+                                        new MeasurementPointsProductsConfig { Code = 460, PhdTotalCounterTag = "TSN_KT0205_MT_GSV_R4_V.VT", DirectionId = 2 },
+                                        new MeasurementPointsProductsConfig { Code = 466, PhdTotalCounterTag = "TSN_KT0205_MT_GSV_R5_V.VT", DirectionId = 2 },
+                                        new MeasurementPointsProductsConfig { Code = 480, PhdTotalCounterTag = "TSN_KT0205_MT_GSV_R6_V.VT", DirectionId = 2 },
+                                        new MeasurementPointsProductsConfig { Code = 475, PhdTotalCounterTag = "TSN_KT0205_MT_GSV_R7_V.VT", DirectionId = 2 },
+                                        new MeasurementPointsProductsConfig { Code = 476, PhdTotalCounterTag = "TSN_KT0205_MT_GSV_R8_V.VT", DirectionId = 2 },
+                                        new MeasurementPointsProductsConfig { Code = 477, PhdTotalCounterTag = "TSN_KT0205_MT_GSV_R9_V.VT", DirectionId = 2 },
+                                        new MeasurementPointsProductsConfig { Code = 478, PhdTotalCounterTag = "TSN_KT0205_MT_GSV_R10_V.VT", DirectionId = 2 },
+                                        new MeasurementPointsProductsConfig { Code = 479, PhdTotalCounterTag = "TSN_KT0205_MT_GSV_R11_V.VT", DirectionId = 2 },
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+
+                );
             context.SaveChanges();
         }
 

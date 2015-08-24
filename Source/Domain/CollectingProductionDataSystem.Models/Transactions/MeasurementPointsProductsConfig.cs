@@ -8,7 +8,7 @@
     {
         public int Id { get; set; }
         public string PhdTotalCounterTag { get; set; }
-        public int ProductId { get; set; }
+        public int Code { get; set; }
         public int MeasurementPointId { get; set; }
         public int DirectionId { get; set; }
         public virtual Direction Direction { get; set; }
