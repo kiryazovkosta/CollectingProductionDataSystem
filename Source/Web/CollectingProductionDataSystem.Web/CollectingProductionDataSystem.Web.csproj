@@ -218,6 +218,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Controllers\TestsController.cs" />
+    <Compile Include="Controllers\UnitsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -240,6 +241,7 @@
     <Compile Include="ViewModels\Identity\RoleEditViewModel.cs" />
     <Compile Include="ViewModels\Identity\RoleModificationViewModel.cs" />
     <Compile Include="ViewModels\Tank\TankDataViewModel.cs" />
+    <Compile Include="ViewModels\Units\UnitDataViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
@@ -1208,6 +1210,11 @@
     <Content Include="Views\Shared\DisplayTemplates\ApplicationUser.cshtml" />
     <Content Include="Views\Shared\EdditorTemplates\DateTime.cshtml" />
     <Content Include="Views\Shared\_KendoLayout.cshtml" />
+    <Content Include="Views\Tests\Index.cshtml" />
+    <Content Include="Views\Tests\TankChange.cshtml" />
+    <Content Include="Views\Tests\TankData.cshtml" />
+    <Content Include="Views\Tests\Test.cshtml" />
+    <Content Include="Views\Units\UnitsData.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

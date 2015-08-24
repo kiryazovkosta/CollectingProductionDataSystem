@@ -59,6 +59,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TankDataServices\ITankDataKendoService.cs" />
     <Compile Include="TankDataServices\TankDataKendoService.cs" />
+    <Compile Include="UnitsDataServices\IUnitsDataService.cs" />
+    <Compile Include="UnitsDataServices\UnitsDataService.cs" />
     <Compile Include="ValidationService.cs" />
   </ItemGroup>
   <ItemGroup>

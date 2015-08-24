@@ -13,6 +13,7 @@ namespace CollectingProductionDataSystem.Web.AppStart
     using System.Data.Entity;
     using CollectingProductionDataSystem.Data;
     using CollectingProductionDataSystem.Data.Concrete;
+    using CollectingProductionDataSystem.Application.UnitsDataServices;
 
     public static class NinjectWebCommon 
     {
@@ -70,6 +71,7 @@ namespace CollectingProductionDataSystem.Web.AppStart
             kernel.Bind<IProductionData>().To<ProductionData>();
             kernel.Bind<IPersister>().To<AuditablePersister>();
             kernel.Bind<ITankDataKendoService>().To<TankDataKendoService>();
+            kernel.Bind<IUnitsDataService>().To<UnitsDataService>();
         }        
     }
 }

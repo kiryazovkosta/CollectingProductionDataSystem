@@ -261,7 +261,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                     Code = "m3",
                 });
 
-            context.SaveChanges("Initial System Loading");
+            context.SaveChanges();
         }
 
         private void CreateEditReasons(CollectingDataSystemDbContext context)
@@ -330,7 +330,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                     Name = "Ненормиран",
                 });
 
-            context.SaveChanges("Initial System Loading");
+            context.SaveChanges();
         }
 
         private void CreateMeasurementPoints(CollectingDataSystemDbContext context)

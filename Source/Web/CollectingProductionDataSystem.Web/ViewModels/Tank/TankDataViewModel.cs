@@ -15,15 +15,19 @@ namespace CollectingProductionDataSystem.Web.ViewModels.Tank
         [Display(Name="Id", ResourceType=typeof(Resources.Layout))]
         public int Id { get; set; }
 
-        [Display(Name = "RecordTimestamp", ResourceType = typeof(Resources.Layout))]
-        public DateTime RecordTimestamp { get; set; }
-        public int ParkId { get; set; }   
+        //[Display(Name = "RecordTimestamp", ResourceType = typeof(Resources.Layout))]
+        //public DateTime RecordTimestamp { get; set; }
+        //public int ParkId { get; set; }
+        public string ProductName { get; set; }
         public decimal? LiquidLevel { get; set; }
         public decimal? ProductLevel { get; set; }
+        public decimal? NetStandardVolume { get; set; }
         public decimal? ReferenceDensity { get; set; }
+        public decimal? WeightInAir { get; set; }
         public decimal? WeightInVacuum { get; set; }
+        public decimal? FreeWaterLevel { get; set; }
         public virtual string TankName { get; set; }
-        
+        public virtual string ParkName { get; set; }
 
         /// <summary>
         /// Creates the mappings.
@@ -33,6 +37,8 @@ namespace CollectingProductionDataSystem.Web.ViewModels.Tank
         {
             configuration.CreateMap<TankData, TankDataViewModel>()
                 .ForMember(p => p.TankName, opt => opt.MapFrom(p => p.TankConfig.TankName));
+            configuration.CreateMap<TankData, TankDataViewModel>()
+                .ForMember(p => p.ParkName, opt => opt.MapFrom(p => p.TankConfig.Park.Name));
         }
     }
 }

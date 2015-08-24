@@ -23,7 +23,10 @@ namespace CollectingProductionDataSystem.Application.TankDataServices
  
         public IQueryable<TankData> GetTankDataForDateTime(DateTime? date)
         {
-            IQueryable<TankData> dbResult = this.data.TanksData.All().Include(x => x.TankConfig);
+            IQueryable<TankData> dbResult = this.data.TanksData
+                .All()
+                .Include(x => x.TankConfig)
+                .Include(x => x.TankConfig.Park);
             if (date != null)
             {
                 dbResult = dbResult.Where(x => x.RecordTimestamp == date);

@@ -648,7 +648,7 @@
                     }
                 });
 
-            context.SaveChanges("Initial System Loading");
+            context.SaveChanges();
         }
     }
 }

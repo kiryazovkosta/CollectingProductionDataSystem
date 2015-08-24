@@ -22,14 +22,18 @@
       .Columns(
            columns =>
            {
-               columns.Bound(c => c.Id).Width(40);
-               columns.Bound(c => c.RecordTimestamp).Width(210).Format("{0:dd.MM.yyyy HH:mm:ss}").Filterable(filterable => filterable.UI("recordTimeStampFilter"));
+               //columns.Bound(c => c.Id).Width(40);
+               //columns.Bound(c => c.RecordTimestamp).Width(210).Format("{0:dd.MM.yyyy HH:mm:ss}").Filterable(filterable => filterable.UI("recordTimeStampFilter"));
+               columns.Bound(c => c.ParkName);
                columns.Bound(c => c.TankName).Width(100);
-               columns.Bound(c => c.ParkId);
+               columns.Bound(c => c.ProductName);
                columns.Bound(c => c.LiquidLevel);
                columns.Bound(c => c.ProductLevel);
-               columns.Bound(c => c.WeightInVacuum);
+               columns.Bound(c => c.NetStandardVolume);
                columns.Bound(c => c.ReferenceDensity);
+               columns.Bound(c => c.WeightInAir);
+               columns.Bound(c => c.WeightInVacuum);
+               columns.Bound(c => c.FreeWaterLevel);
                //columns.Command(c => { c.Edit(); c.Destroy(); });
            })
         //.Editable(editable => editable.Mode(GridEditMode.PopUp).TemplateName("_EditAccount").Window(window => window.Width(650).Scrollable(false)))
