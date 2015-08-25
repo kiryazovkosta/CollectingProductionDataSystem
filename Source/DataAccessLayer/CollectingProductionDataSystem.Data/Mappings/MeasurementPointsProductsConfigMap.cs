@@ -25,6 +25,9 @@ namespace CollectingProductionDataSystem.Data.Mappings
                 .IsRequired()
                 .HasMaxLength(50);
 
+            this.Property(t => t.Code)
+                .IsRequired();
+
             // Table & Column Mappings
             this.ToTable("MeasurementPointsProductsConfigs");
 
