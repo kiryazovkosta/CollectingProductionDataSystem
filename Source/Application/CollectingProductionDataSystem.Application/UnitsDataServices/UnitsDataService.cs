@@ -6,7 +6,7 @@
     using CollectingProductionDataSystem.Data.Contracts;
     using CollectingProductionDataSystem.Models.Productions;
 
-    public class UnitsDataService : IUnitsDataService
+    public class UnitsDataService : IUnitsDataService, IDisposable
     {
         private readonly IProductionData data;
         
@@ -33,6 +33,11 @@
             }
 
             return dbResult;
+        }
+
+        public void Dispose()
+        {
+            throw new NotImplementedException();
         }
     }
 }
