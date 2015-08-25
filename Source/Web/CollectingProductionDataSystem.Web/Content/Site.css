@@ -59,3 +59,24 @@ textarea {
 .validation-summary-valid {
     display: none;
 }
+
+.bg-ok {
+   /*// padding-left:3px;*/
+    background-image: url('Images/ok.png');
+    background-repeat:no-repeat;
+    background-size: 20px;
+    height:20px
+}
+
+.bg-warning {
+    padding-left:3px;
+    background: url('Images/warning.png');
+    background-repeat:no-repeat;
+    background-size: 20px;
+    height:20px
+}
+
+.no-horisontal-padding {
+    padding-left:0;
+    padding-right:0;
+}

@@ -13,10 +13,8 @@ namespace CollectingProductionDataSystem.Models.Productions
         public DateTime RecordTimestamp { get; set; }
         public int UnitConfigId { get; set; }
         public decimal? Value { get; set; }
-        public int? EditReasonId { get; set; }
         public bool IsApproved { get; set; }
         public virtual UnitConfig Unit { get; set; }
-        public virtual EditReason EditReason { get; set; }
         public virtual UnitsManualData UnitsManualData { get; set; }
     }
 }

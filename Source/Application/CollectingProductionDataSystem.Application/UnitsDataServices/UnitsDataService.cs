@@ -17,11 +17,13 @@
 
         public IQueryable<UnitsData> GetUnitsDataForDateTime(DateTime? date, int? processUnit)
         {
-            IQueryable<UnitsData> dbResult = this.data.UnitsData
+            var dbResult = this.data.UnitsData
                 .All()
                 .Include(x => x.Unit)
                 .Include(x => x.Unit.ProcessUnit)
-                .Include(x => x.Unit.MeasureUnit);
+                .Include(x => x.Unit.MeasureUnit)
+                .Include(x=>x.UnitsManualData)
+                .Include(x => x.UnitsManualData.EditReason);
             if (date != null)
             {
                 dbResult = dbResult.Where(x => x.RecordTimestamp == date);

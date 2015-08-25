@@ -17,6 +17,10 @@
             this.Property(t => t.Id)
                 .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
 
+            this.HasRequired(u => u.EditReason)
+                .WithMany()
+                .HasForeignKey(d => d.EditReasonId);
+
             // Table & Column Mappings
             this.ToTable("UnitsManualDatas");
         }

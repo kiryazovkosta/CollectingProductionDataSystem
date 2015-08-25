@@ -62,6 +62,11 @@ namespace CollectingProductionDataSystem.Data.Migrations
                 this.CreateMeasurementPoints(context);
             }
 
+            if (!context.EditReasons.Any())
+            {
+                this.CreateEditReasons(context);
+            }
+
             if (!context.Users.Any())
             {
                 this.CreateSystemAdministrator(context);
@@ -98,7 +103,6 @@ namespace CollectingProductionDataSystem.Data.Migrations
                 new TankMasterProduct { TankMasterProductId = 28, Name = "Korabno ostatachno gorivo", ProductCode = 28 },
                 new TankMasterProduct { TankMasterProductId = 29, Name = "Mazut SP(AR)", ProductCode = 29 },
                 new TankMasterProduct { TankMasterProductId = 30, Name = "Mazut SP(BM)", ProductCode = 30 },
-
                 new TankMasterProduct { TankMasterProductId = 38, Name = "Awtomobilen benzin A92H", ProductCode = 38 },
                 new TankMasterProduct { TankMasterProductId = 40, Name = "Avtomobilen benzin A95-EVRO5", ProductCode = 40 },
                 new TankMasterProduct { TankMasterProductId = 41, Name = "Avtomobilen benzin A98-EVRO5", ProductCode = 41 },
@@ -184,7 +188,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                 new TankMasterProduct { TankMasterProductId = 474, Name = "Himikal red. dp", ProductCode = 474 }
             );
 
-            context.SaveChanges();
+            //context.SaveChanges();
         }
 
         private void CreateMeasureUnits(CollectingDataSystemDbContext context)
@@ -261,7 +265,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                     Code = "m3",
                 });
 
-            context.SaveChanges();
+            //context.SaveChanges();
         }
 
         private void CreateEditReasons(CollectingDataSystemDbContext context)
@@ -271,22 +275,27 @@ namespace CollectingProductionDataSystem.Data.Migrations
                 new EditReason
                 {
                     Name = "Грешно показание",
+                    CreatedOn=DateTime.Now
                 },
                 new EditReason
                 {
                     Name = "Развален прибор",
+                    CreatedOn = DateTime.Now
                 },
                 new EditReason
                 {
                     Name = "Направление",
+                    CreatedOn = DateTime.Now
                 },
                 new EditReason
                 {
                     Name = "Ръчна стойност",
+                    CreatedOn = DateTime.Now
                 },
                 new EditReason
                 {
-                    Name = "Друга"
+                    Name = "Друга",
+                    CreatedOn = DateTime.Now
                 });
         }
 
@@ -330,7 +339,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                     Name = "Ненормиран",
                 });
 
-            context.SaveChanges();
+            //context.SaveChanges();
         }
 
         private void CreateMeasurementPoints(CollectingDataSystemDbContext context)
@@ -356,7 +365,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                 {
                     Name = "Доставка тръбопровод"
                 });
-            context.SaveChanges();
+            //context.SaveChanges();
 
             context.Ikunks.AddOrUpdate(
                 new Ikunk

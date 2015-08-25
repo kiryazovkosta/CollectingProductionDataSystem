@@ -31,9 +31,6 @@ namespace CollectingProductionDataSystem.Data.Mappings
             this.HasRequired(u => u.Unit)
                 .WithMany(u => u.UnitsDatas)
                 .HasForeignKey(d => d.UnitConfigId);
-            this.HasOptional(u => u.EditReason)
-                .WithMany(u => u.UnitsDatas)
-                .HasForeignKey(d => d.EditReasonId);
 
             this.HasOptional(t => t.UnitsManualData)
                 .WithRequired(t => t.UnitsData);
