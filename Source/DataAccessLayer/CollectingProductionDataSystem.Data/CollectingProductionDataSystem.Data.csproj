@@ -78,6 +78,7 @@
     <Compile Include="Mappings\IkunkMap.cs" />
     <Compile Include="Mappings\MeasurementPointMap.cs" />
     <Compile Include="Mappings\MeasurementPointsProductsConfigMap.cs" />
+    <Compile Include="Mappings\MeasurementPointsProductsDataMap.cs" />
     <Compile Include="Mappings\ParkMap.cs" />
     <Compile Include="Mappings\TankConfigMap.cs" />
     <Compile Include="Mappings\TankDataMap.cs" />

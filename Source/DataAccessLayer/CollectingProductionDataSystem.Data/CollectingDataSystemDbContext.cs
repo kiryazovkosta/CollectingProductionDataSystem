@@ -83,6 +83,8 @@
 
         public IDbSet<MeasurementPointsProductsConfig> MeasurementPointsProductConfigs { get; set; }
 
+        public IDbSet<MeasurementPointsProductsData> MeasurementPointsProductsDatas { get; set; }
+
         public IDbSet<TransportType> TransportTypes { get; set; }
 
         public IDbSet<EditReason> EditReasons { get; set; }

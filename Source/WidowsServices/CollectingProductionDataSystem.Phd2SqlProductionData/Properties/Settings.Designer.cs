@@ -148,5 +148,23 @@ namespace CollectingProductionDataSystem.Phd2SqlProductionData.Properties {
                 return ((int)(this["UPDATE_INVENTORY_DATA_INTERVAL"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool SYNC_MEASUREMENTS_POINTS {
+            get {
+                return ((bool)(this["SYNC_MEASUREMENTS_POINTS"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("01:00:00")]
+        public global::System.TimeSpan IDLE_TIMER_MEASUREMENTS_POINTS {
+            get {
+                return ((global::System.TimeSpan)(this["IDLE_TIMER_MEASUREMENTS_POINTS"]));
+            }
+        }
     }
 }

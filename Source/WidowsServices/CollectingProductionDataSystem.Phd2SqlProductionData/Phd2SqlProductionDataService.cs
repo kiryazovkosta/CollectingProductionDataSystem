@@ -15,11 +15,15 @@ namespace CollectingProductionDataSystem.Phd2SqlProductionData
 
         private Timer inventoryDataTimer = null;
 
+        private Timer measurementDataTimer = null;
+
         private static readonly object lockObjectInspectionPointsData = new object();
 
         private static readonly object lockObjectPrimaryData = new object();
 
         private static readonly object lockObjectInventoryData = new object();
+
+        private static readonly object lockObjectMeasurementData = new object();
 
         private readonly ILog logger;
 
@@ -47,6 +51,11 @@ namespace CollectingProductionDataSystem.Phd2SqlProductionData
                 if (Properties.Settings.Default.SYNC_INVENTORY)
                 {
                     this.inventoryDataTimer = new Timer(TimerHandlerInventory, null, 0, Timeout.Infinite);
+                }
+
+                if (Properties.Settings.Default.SYNC_MEASUREMENTS_POINTS)
+                {
+                    this.measurementDataTimer = new Timer(TimerHandlerMeasurement, null, 0, Timeout.Infinite); 
                 }
             }
             catch (Exception ex)
@@ -129,6 +138,28 @@ namespace CollectingProductionDataSystem.Phd2SqlProductionData
                 finally
                 {
                     this.inventoryDataTimer.Change(Convert.ToInt64(Properties.Settings.Default.IDLE_TIMER_INVENTORY.TotalMilliseconds), 
+                        System.Threading.Timeout.Infinite);
+                }
+            }
+        }
+
+        private void TimerHandlerMeasurement(object state)
+        {
+            lock (lockObjectInspectionPointsData)
+            {
+                try
+                {
+                    Utility.SetRegionalSettings();
+                    this.measurementDataTimer.Change(Timeout.Infinite, Timeout.Infinite);
+                    Phd2SqlProductionDataMain.ProcessMeasuringPointsData();
+                }
+                catch (Exception ex)
+                {
+                    logger.Error(ex.Message, ex);
+                }
+                finally
+                {
+                    this.measurementDataTimer.Change(Convert.ToInt64(Properties.Settings.Default.IDLE_TIMER_MEASUREMENTS_POINTS.TotalMilliseconds), 
                         System.Threading.Timeout.Infinite);
                 }
             }

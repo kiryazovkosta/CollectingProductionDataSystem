@@ -33,6 +33,8 @@
 
         IApprovableEntityRepository<TankData> TanksData { get; }
 
+        IApprovableEntityRepository<MeasurementPointsProductsData> MeasurementPointsProductsDatas { get; }
+
         IDeletableEntityRepository<TanksManualData> TanksManualData { get; }
 
         IDeletableEntityRepository<Product> Products { get; }
