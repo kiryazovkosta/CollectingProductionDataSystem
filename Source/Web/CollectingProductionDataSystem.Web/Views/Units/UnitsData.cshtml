@@ -23,6 +23,7 @@
                columns.Bound(c => c.CollectingDataMechanism).Width(80);
                columns.Bound(c => c.Value).Width(140);
                columns.Bound(c => c.Value).Width(140);
+               columns.Command(command => { command.Edit(); command.Destroy(); }).Width(172);
            })
       .Sortable()
       .Scrollable(scr => scr.Height(660))
