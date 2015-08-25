@@ -88,6 +88,7 @@
     <Compile Include="Transactions\Ikunk.cs" />
     <Compile Include="Transactions\MeasurementPoint.cs" />
     <Compile Include="Transactions\MeasurementPointsProductsConfig.cs" />
+    <Compile Include="Transactions\MeasurementPointsProductsData.cs" />
     <Compile Include="Transactions\Zone.cs" />
     <Compile Include="UtilityEntities\UserProfile.cs" />
     <Compile Include="UtilityEntities\AuditLogRecord.cs" />

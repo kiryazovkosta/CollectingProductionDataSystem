@@ -123,6 +123,14 @@ using CollectingProductionDataSystem.Models.Transactions;
             }
         }
 
+        public IApprovableEntityRepository<MeasurementPointsProductsData> MeasurementPointsProductsDatas
+        {
+            get
+            {
+                return this.GetApprovableEntityRepository<MeasurementPointsProductsData>();
+            }
+        }
+
         public IDeletableEntityRepository<TanksManualData> TanksManualData
         {
             get

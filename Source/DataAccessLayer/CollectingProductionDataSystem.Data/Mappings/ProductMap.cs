@@ -17,7 +17,7 @@ namespace CollectingProductionDataSystem.Data.Mappings
                 .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 
             this.Property(t => t.Code)
-                .HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("ix_product", 1)))
+                .HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("ix_product", 1) ) )
                 .IsRequired();
 
             this.Property(t => t.Name)

@@ -36,7 +36,6 @@
                                             Position = "01-FICQ-001",
                                             Name = "Нефт вход АВД-1",
                                             ProductTypeId = 1,
-                                            ProductId = 1,
                                             DirectionId = 2,
                                             MeasureUnitId = 11,
                                             MaterialTypeId = 1,

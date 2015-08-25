@@ -14,6 +14,7 @@
     using CollectingProductionDataSystem.Data.Concrete;
     using CollectingProductionDataSystem.Models.Productions;
     using System.Globalization;
+    using CollectingProductionDataSystem.Models.Transactions;
 
     static class Phd2SqlProductionDataMain
     {
@@ -631,6 +632,126 @@
             catch (Exception ex)
             {
                 logger.Error(ex.ToString());
+            }
+        }
+
+        internal static void ProcessMeasuringPointsData()
+        {
+            try
+            {
+                logger.Info("Sync measurements points data started!");
+                if (DateTime.Now.Hour < 5)
+                {
+                    logger.Info("Sync measurements points data : hours are before 5o'clock");
+                    return;
+                }
+
+                using (var context = new ProductionData(new CollectingDataSystemDbContext(new AuditablePersister())))
+                {
+                    var measuringPoints = context.MeasurementPointsProductConfigs.All();
+
+                    if (measuringPoints.Count() > 0)
+                    {
+                        using (PHDHistorian oPhd = new PHDHistorian())
+                        {
+                            using (PHDServer defaultServer = new PHDServer(Properties.Settings.Default.PHD_HOST))
+                            {
+                                defaultServer.Port = Properties.Settings.Default.PHD_PORT;
+                                defaultServer.APIVersion = Uniformance.PHD.SERVERVERSION.RAPI200;
+                                oPhd.DefaultServer = defaultServer;
+                                oPhd.StartTime = "NOW - 2M";
+                                oPhd.EndTime = "NOW - 2M";
+                                oPhd.Sampletype = Properties.Settings.Default.INSPECTION_DATA_SAMPLETYPE;
+                                oPhd.MinimumConfidence = Properties.Settings.Default.INSPECTION_DATA_MINIMUM_CONFIDENCE;
+                                oPhd.MaximumRows = Properties.Settings.Default.INSPECTION_DATA_MAX_ROWS;
+
+                                // get all inspection data
+                                foreach (var item in measuringPoints)
+                                {
+                                    var measurementPointData = new MeasurementPointsProductsData();
+                                    measurementPointData.MeasurementPointsProductsConfigId = item.Id;
+                                    DataSet dsGrid = oPhd.FetchRowData(item.PhdTotalCounterTag);
+                                    var confidence = 100;
+                                    foreach (DataRow row in dsGrid.Tables[0].Rows)
+                                    {
+                                        foreach (DataColumn dc in dsGrid.Tables[0].Columns)
+                                        {
+                                            if (dc.ColumnName.Equals("Tolerance") || dc.ColumnName.Equals("HostName"))
+                                            {
+                                                continue;
+                                            }
+                                            else if (dc.ColumnName.Equals("Confidence"))
+                                            {
+                                                if (!string.IsNullOrWhiteSpace(row[dc].ToString()))
+                                                {
+                                                    confidence = Convert.ToInt32(row[dc]);
+                                                }
+                                                else
+                                                {
+                                                    confidence = 0;
+                                                    break;
+                                                }
+                                                
+                                            }
+                                            else if (dc.ColumnName.Equals("Value"))
+                                            {
+                                                if (!string.IsNullOrWhiteSpace(row[dc].ToString()))
+                                                {
+                                                    measurementPointData.Value = Convert.ToDecimal(row[dc]);
+                                                }
+                                            }
+                                            else if (dc.ColumnName.Equals("TimeStamp"))
+                                            {
+                                                var recordDt = row[dc].ToString();
+                                                if (!string.IsNullOrWhiteSpace(recordDt))
+                                                {
+                                                     var recordTimestamp = DateTime.ParseExact(recordDt, "dd.MM.yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+                                                    if (TimeZoneInfo.Local.IsDaylightSavingTime(recordTimestamp))
+                                                    {
+                                                        recordTimestamp = recordTimestamp.AddHours(-1);
+                                                    }
+                                                    measurementPointData.RecordTimestamp = recordTimestamp;   
+                                                }
+                                               
+                                            }
+                                        }
+                                    }
+                                    if (confidence > Properties.Settings.Default.INSPECTION_DATA_MINIMUM_CONFIDENCE
+                                        && measurementPointData.RecordTimestamp != null)
+                                    {
+                                        context.MeasurementPointsProductsDatas.Add(measurementPointData);                                            
+                                    }
+                                }
+
+                                context.SaveChanges("x");
+                            }
+                        }
+                    }
+
+                    logger.Info("Sync measurements points data finished!");
+                }
+            }
+            catch (DataException validationException)
+            {
+                var dbEntityException = validationException.InnerException as DbEntityValidationException;
+                if (dbEntityException != null)
+                {
+                    foreach (var validationErrors in dbEntityException.EntityValidationErrors)
+                    {
+                        foreach (var validationError in validationErrors.ValidationErrors)
+                        {
+                            logger.ErrorFormat("Property: {0} Error: {1}", validationError.PropertyName, validationError.ErrorMessage);
+                        }
+                    }
+                }
+                else
+                {
+                    logger.Error(validationException.ToString());
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex);
             }
         }
  

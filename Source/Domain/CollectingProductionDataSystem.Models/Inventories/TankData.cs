@@ -5,7 +5,7 @@ namespace CollectingProductionDataSystem.Models.Inventories
     using CollectingProductionDataSystem.Models.Contracts;
     using CollectingProductionDataSystem.Models.Nomenclatures;
 
-    public partial class TankData: AuditInfo, IApprovableEntity, IEntity
+    public partial class TankData : AuditInfo, IApprovableEntity, IEntity
     {
         public int Id { get; set; }
         public DateTime RecordTimestamp { get; set; }

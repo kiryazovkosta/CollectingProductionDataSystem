@@ -1,6 +1,8 @@
 ﻿using CollectingProductionDataSystem.Models.Transactions;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity.Infrastructure.Annotations;
 using System.Data.Entity.ModelConfiguration;
 using System.Linq;
 using System.Text;
@@ -16,6 +18,9 @@ namespace CollectingProductionDataSystem.Data.Mappings
             this.HasKey(t => t.Id);
 
             // Properties
+            this.Property(t => t.Id)
+                .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+
             this.Property(t => t.PhdTotalCounterTag)
                 .IsRequired()
                 .HasMaxLength(50);
@@ -32,8 +37,7 @@ namespace CollectingProductionDataSystem.Data.Mappings
                 .HasForeignKey(d => d.MeasurementPointId);
             this.HasRequired(t => t.Product)
                 .WithMany(t => t.MeasurementPointsProductsConfigs)
-                .HasForeignKey(d => d.Code);
-
+                .HasForeignKey(d => d.ProductId);
         }
     }
 }
