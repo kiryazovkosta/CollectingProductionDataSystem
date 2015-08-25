@@ -1,13 +1,11 @@
 ﻿@using CollectingProductionDataSystem.Web.ViewModels.Units;
-@using Kendo.Mvc.UI;
-
+@model UnitDataViewModel
 @{
     ViewBag.Title = "UnitsData";
     Layout = "~/Views/Shared/_KendoLayout.cshtml";
 }
-
 <h2>UnitsData</h2>
-
+@Html.ValidationSummary()
 @Html.AntiForgeryToken()
 @(Html.Kendo()
     .Grid<UnitDataViewModel>()
@@ -15,15 +13,17 @@
       .Columns(
            columns =>
            {
-               columns.Bound(c => c.Code).Width(100);
+               columns.Bound(c => c.Code).Width(77);
                columns.Bound(c => c.ProcessUnitName).Width(100);
                columns.Bound(c => c.Name);
                columns.Bound(c => c.Position).Width(140);
                columns.Bound(c => c.MeasureUnit).Width(80);
-               columns.Bound(c => c.CollectingDataMechanism).Width(80);
-               columns.Bound(c => c.AutomaticValue).Width(140);
-               columns.Bound(c => c.ManualValue).Width(140);
-               columns.Bound(c => c.EditReason).Width(140).ClientTemplate("<div class=row><div class='col-xs-2 no-horisontal-padding'><div class='#:EditReason.Id == 0? 'bg-ok':'bg-warning'#'></div></div><div class='col-xs-5 no-horisontal-padding'>#:EditReason.Name#</div></div>");
+               columns.Bound(c => c.CollectingDataMechanism).Width(30).Title(string.Empty);
+               columns.Bound(c => c.AutomaticValue).Width(100);
+               columns.Bound(c => c.ManualValue).Width(100);
+               columns.Bound(c => c.EditReason).Width(200).ClientTemplate("#:EditReason.Name#")
+                   .ClientTemplate("<div class=row><div class='col-xs-2 no-horisontal-padding'><div class='#:EditReason.Id == 0? 'bg-ok':'bg-warning'#'></div></div><div class='col-xs-9 no-horisontal-padding reason'>#:EditReason.Name#</div></div>");
+               //.EditorTemplateName("EditReason");
                columns.Command(c => c.Edit());
            })
       .Sortable()
@@ -33,10 +33,10 @@
       .DataSource(dataSource => dataSource
         .Ajax()
         .ServerOperation(true)
-        .Read(read => read.Action("ReadUnitsData", "Units", new { area = "" })
-                .Data("sendDate"))
+            .Read(read => read.Action("ReadUnitsData", "Units", new { area = "" }).Data("sendDate"))
            .Update(update => update.Action("Edit", "Units", new { area = "" }).Data("sendAntiForgery"))
-           .Model(model => {
+           .Model(model =>
+           {
                model.Id(p => p.Id);
                model.Field(p => p.Code).Editable(false);
                model.Field(p => p.ProcessUnitName).Editable(false);
@@ -48,7 +48,8 @@
                model.Field(p => p.ManualValue).Editable(true);
                model.Field(p => p.EditReason).Editable(true);
            })
-           .Events(events=>{
+           .Events(events =>
+           {
                events.Error("error_handler");
            })
       )

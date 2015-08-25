@@ -62,21 +62,33 @@ textarea {
 
 .bg-ok {
    /*// padding-left:3px;*/
+    margin-left:10px;
     background-image: url('Images/ok.png');
     background-repeat:no-repeat;
     background-size: 20px;
-    height:20px
+    height:20px;
+    width:20px; 
 }
 
 .bg-warning {
-    padding-left:3px;
+    margin-left:10px;
     background: url('Images/warning.png');
     background-repeat:no-repeat;
     background-size: 20px;
-    height:20px
+    height:20px;
+    width:20px;
 }
 
 .no-horisontal-padding {
     padding-left:0;
     padding-right:0;
+}
+
+.reason {
+        margin-left: 10px;
+        font-size:11px;
+}
+
+a.k-button.k-button-icontext.k-grid-edit, a.k-button.k-button-icontext.k-grid-delete {
+    font-size:12px;
 }

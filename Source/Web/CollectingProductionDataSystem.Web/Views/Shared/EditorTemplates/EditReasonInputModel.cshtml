@@ -1,0 +1,15 @@
+﻿@model CollectingProductionDataSystem.Web.InputModels.EditReasonInputModel
+@(Html.Kendo()
+      .DropDownListFor(m => m)
+      .OptionLabel("Изберете причина...")
+      .HtmlAttributes(new { style = "width: 160px" })
+      .DataTextField("Name")
+      .DataValueField("Id")
+      .DataSource(source =>
+{
+    source.Read(read =>
+    {
+        read.Action("GetReasons", "Ajax");
+    });
+})
+)

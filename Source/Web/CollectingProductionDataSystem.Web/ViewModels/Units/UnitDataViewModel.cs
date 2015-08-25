@@ -6,6 +6,7 @@
     using CollectingProductionDataSystem.Infrastructure.Mapping;
     using CollectingProductionDataSystem.Models.Nomenclatures;
     using CollectingProductionDataSystem.Models.Productions;
+    using CollectingProductionDataSystem.Web.InputModels;
     using Resources = App_GlobalResources.Resources;
 
     public class UnitDataViewModel : IMapFrom<UnitsData>, IHaveCustomMappings
@@ -17,9 +18,9 @@
         public string Position { get; set; }
         public string MeasureUnit { get; set; }
         public string CollectingDataMechanism { get; set; }
-        public decimal? AutomaticValue { get; set; }
-        public decimal? ManualValue { get; set; }
-        public EditReason EditReason { get; set; }
+        public decimal AutomaticValue { get; set; }
+        public decimal ManualValue { get; set; }
+        public EditReasonInputModel EditReason { get; set; }
         public DateTime RecordTimestamp { get; set; }
         public void CreateMappings(IConfiguration configuration)
         {
