@@ -23,16 +23,19 @@
                columns.Bound(c => c.CollectingDataMechanism).Width(80);
                columns.Bound(c => c.Value).Width(140);
                columns.Bound(c => c.Value).Width(140);
-               columns.Command(command => { command.Edit(); command.Destroy(); }).Width(172);
+               columns.Command(c => c.Edit());
            })
       .Sortable()
       .Scrollable(scr => scr.Height(660))
       .Filterable()
+      .Editable(editable => editable.Mode(GridEditMode.PopUp).TemplateName("_EditUnit").Window(window => window.Width(650).Scrollable(false)))
       .DataSource(dataSource => dataSource
         .Ajax()
         .ServerOperation(true)
         .Read(read => read.Action("ReadUnitsData", "Units", new { area = "" })
-                .Data("sendDate")))
+                .Data("sendDate"))
+           .Update(update => update.Action("Edit", "Units", new { area = "" }).Data("sendAntiForgery"))
+      )
 )
 @section scripts{
     <script src="~/Scripts/custom/sendAntiForgery.js"></script>
