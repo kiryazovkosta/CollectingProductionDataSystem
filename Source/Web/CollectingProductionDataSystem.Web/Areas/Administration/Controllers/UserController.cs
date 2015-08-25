@@ -63,6 +63,12 @@
             {
                 var user = Mapper.Map<ApplicationUser>(model);
                 IdentityResult result = await UserManager.CreateAsync(user, model.Password);
+
+                if (result.Succeeded)
+                {
+                    result = await AddUserInRolesAsync(user, model.Roles);                    
+                }
+
                 if (result.Succeeded)
                 {
                     this.TempData["success"] = string.Format("Потребителя {0} беше създаден успешно.", model.UserName);
@@ -74,6 +80,39 @@
                 }
             }
             return View(model);
+        }
+
+        /// <summary>
+        /// Adds the user in roles.
+        /// </summary>
+        /// <param name="user">The user.</param>
+        /// <param name="roles">The roles.</param>
+        private async Task<IdentityResult> AddUserInRolesAsync(ApplicationUser user, IEnumerable<AsignRoleViewModel> roles)
+        {
+            foreach (var role in roles.Where(role => role.IsUserInRole))
+            {
+                IdentityResult result = await UserManager.AddToRoleAsync(user.Id, role.Name);
+                if (!result.Succeeded)
+                {
+                    AddErrorsFromResult(result);
+                    return result;
+                }
+            }
+
+            foreach (var role in roles.Where(role => !role.IsUserInRole))
+            {
+                if (await UserManager.IsInRoleAsync(user.Id, role.Name))
+                {
+                    IdentityResult result = await UserManager.RemoveFromRoleAsync(user.Id, role.Name);
+                    if (!result.Succeeded)
+                    {
+                        AddErrorsFromResult(result);
+                        return result;
+                    }
+                }
+            }
+
+            return IdentityResult.Success;
         }
 
         [HttpPost]

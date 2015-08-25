@@ -13,14 +13,13 @@ namespace CollectingProductionDataSystem.Web.ViewModels.Identity
     public class AsignRoleViewModel:IMapFrom<ApplicationRole>
     {
         [Required]
-        [HiddenInput(DisplayValue = false)]
+        [HiddenInput(DisplayValue = true)]
         public int Id { get; set; }
 
-        [Required]
         [Display(Name = "Име")]
         public string Name { get; set; }
 
-        [Required]
+
         [Display(Name = "Описание")]
         public string Description { get; set; }
 

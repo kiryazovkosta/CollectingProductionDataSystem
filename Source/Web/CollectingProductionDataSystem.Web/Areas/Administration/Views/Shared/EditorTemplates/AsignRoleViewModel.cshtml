@@ -1,5 +1,6 @@
 ﻿@using CollectingProductionDataSystem.Web.ViewModels.Identity;
 
 @model AsignRoleViewModel
-
-@Html.DisplayFor(m=>m.Id) @Html.DisplayFor(m=>m.Name) @Html.EditorFor(m=>m.IsUserInRole)
+<div>
+    @Html.HiddenFor(m => m.Id) @Html.HiddenFor(m => m.Name) @Html.EditorFor(m => m.IsUserInRole) <label>@Html.DisplayFor(m => m.Name)</label>
+</div>
