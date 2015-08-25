@@ -210,6 +210,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Layout.resx</DependentUpon>
     </Compile>
+    <Compile Include="Areas\Administration\AdministrationAreaRegistration.cs" />
+    <Compile Include="Areas\Administration\Controllers\BaseController.cs" />
+    <Compile Include="Areas\Administration\Controllers\RoleController.cs" />
+    <Compile Include="Areas\Administration\Controllers\UserController.cs" />
     <Compile Include="Controllers\AccountController.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -590,6 +594,15 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\custom\sendAntiForgery.js" />
+    <Content Include="Areas\Administration\Views\Role\Create.cshtml" />
+    <Content Include="Areas\Administration\Views\Role\Edit.cshtml" />
+    <Content Include="Areas\Administration\Views\Role\Index.cshtml" />
+    <Content Include="Areas\Administration\Views\Shared\EditorTemplates\_EditAccount.cshtml" />
+    <Content Include="Areas\Administration\Views\Shared\Error.cshtml" />
+    <Content Include="Areas\Administration\Views\User\Create.cshtml" />
+    <Content Include="Areas\Administration\Views\User\Index.cshtml" />
+    <Content Include="Areas\Administration\Views\web.config" />
+    <Content Include="Areas\Administration\Views\_ViewStart.cshtml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.4.js" />
     <Content Include="Scripts\jquery-2.1.4.min.js" />

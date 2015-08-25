@@ -1,0 +1,60 @@
+﻿@using CollectingProductionDataSystem.Models.Identity;
+@using CollectingProductionDataSystem.Web.Infrastructure.Helpers;
+
+@model IEnumerable<ApplicationRole>
+@{
+    ViewBag.Title = "Роли";
+}
+
+<div class="panel panel-primary">
+    <div class="panel-heading">@ViewBag.Title</div>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>@Html.LabelFor(m => m.First().Id)</th>
+                <th>@Html.LabelFor(m => m.First().Name)</th>
+                <th>@Html.LabelFor(m => m.First().Users)</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Count() == 0)
+            {
+                <tr><td colspan="4" class="text-center">Няма роли</td></tr>
+            }
+            else
+            {
+                foreach (ApplicationRole role in Model)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(m => role.Id)</td>
+                        <td>@Html.DisplayFor(m => role.Name)</td>
+                        <td>
+                            @if (role.Users == null || role.Users.Count == 0)
+                            {
+                                @:Няма потребители асоциирани с тази роля
+                            }
+                            else
+                            {
+                                <p>
+                                    @string.Join(", ", role.Users.Select(x =>
+                                  Html.GetUserName(x.UserId)))
+                                </p>
+                            }
+                        </td>
+                        <td>
+                            @using (Html.BeginForm("Delete", "RoleAdmin", new { id = role.Id }))
+                            {
+                                @Html.AntiForgeryToken()
+                                @Html.ActionLink("Edit", "Edit", new { id = role.Id },
+                                     new { @class = "btn btn-primary btn-xs" })
+                                <button type="submit" class="btn btn-danger btn-xs">Delete</button>
+                            }
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+@Html.ActionLink("Create", "Create", null, new { @class="btn btn-primary"})
