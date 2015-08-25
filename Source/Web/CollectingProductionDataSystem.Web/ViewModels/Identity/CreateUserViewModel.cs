@@ -1,6 +1,7 @@
 ﻿namespace CollectingProductionDataSystem.Web.ViewModels.Identity
 {
     using System;
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
     using CollectingProductionDataSystem.Infrastructure.Mapping;
@@ -28,5 +29,7 @@
         [DataType(DataType.Password)]
         [Compare("Password", ErrorMessage = "Въведените пароли трябва да съвпадат !!!")]
         public string ConfirmPassword { get; set; }
+
+        public IEnumerable<AsignRoleViewModel> Roles {get; set;}
     }
 }

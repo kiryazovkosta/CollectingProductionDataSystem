@@ -6,6 +6,7 @@
     using CollectingProductionDataSystem.Data;
     using CollectingProductionDataSystem.Data.Contracts;
     using CollectingProductionDataSystem.Models.Contracts;
+    using CollectingProductionDataSystem.Models.Identity;
     using CollectingProductionDataSystem.Models.Inventories;
     using CollectingProductionDataSystem.Models.Nomenclatures;
     using CollectingProductionDataSystem.Models.Productions;
@@ -200,6 +201,22 @@ using CollectingProductionDataSystem.Models.Transactions;
             get
             {
                 return this.GetDeletableEntityRepository<TankMasterProduct>();
+            }
+        }
+
+        public IRepository<ApplicationUser> Users
+        {
+            get
+            {
+                return this.GetRepository<ApplicationUser>();
+            }
+        }
+
+        public IRepository<ApplicationRole> Roles
+        {
+            get
+            {
+                return this.GetRepository<ApplicationRole>();
             }
         }
 

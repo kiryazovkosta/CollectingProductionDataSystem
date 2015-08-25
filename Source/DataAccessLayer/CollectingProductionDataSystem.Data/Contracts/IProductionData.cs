@@ -1,6 +1,7 @@
 ﻿namespace CollectingProductionDataSystem.Data.Contracts
 {
     using System;
+    using CollectingProductionDataSystem.Models.Identity;
     using CollectingProductionDataSystem.Models.Inventories;
     using CollectingProductionDataSystem.Models.Nomenclatures;
     using CollectingProductionDataSystem.Models.Productions;
@@ -51,6 +52,12 @@
         IDeletableEntityRepository<EditReason> EditReasons { get; }
 
         IDeletableEntityRepository<TankMasterProduct> TankMasterProducts { get; }
+
+        IRepository<ApplicationUser> Users{get;}
+
+
+        IRepository<ApplicationRole> Roles { get; }
+       
 
 
         IDbContext DbContext { get; }

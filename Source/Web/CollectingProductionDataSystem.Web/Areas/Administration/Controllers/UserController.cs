@@ -6,17 +6,25 @@
     using System.Web;
     using System.Web.Mvc;
     using AutoMapper;
+    using CollectingProductionDataSystem.Data.Contracts;
     using CollectingProductionDataSystem.Models.Identity;
     using CollectingProductionDataSystem.Web.Infrastructure.IdentityInfrastructure;
     using CollectingProductionDataSystem.Web.ViewModels.Identity;
     using Kendo.Mvc.UI;
     using Microsoft.AspNet.Identity;
+    using Microsoft.AspNet.Identity.EntityFramework;
     using Microsoft.AspNet.Identity.Owin;
     using Kendo.Mvc.Extensions;
     using System.Threading.Tasks;
 
     public class UserController : BaseController
     {
+        private readonly IProductionData data;
+
+        public UserController(IProductionData dataParam)
+        {
+            this.data = dataParam;
+        }
         // GET: Administration/User
         public ActionResult Index()
         {
@@ -27,10 +35,10 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public JsonResult Read([DataSourceRequest]DataSourceRequest request) 
+        public JsonResult Read([DataSourceRequest]DataSourceRequest request)
         {
-             var users = Mapper.Map<List<EditUserViewModel>>(UserManager.Users);
-             return Json(users.ToDataSourceResult(request, ModelState));
+            var users = Mapper.Map<List<EditUserViewModel>>(UserManager.Users);
+            return Json(users.ToDataSourceResult(request, ModelState));
         }
 
         private ApplicationUserManager UserManager
@@ -43,7 +51,8 @@
 
         public ActionResult Create()
         {
-            return View();
+            var model = new CreateUserViewModel() { Roles = Mapper.Map<IEnumerable<AsignRoleViewModel>>(data.Roles.All().ToList()) };
+            return View(model);
         }
 
         [HttpPost]
@@ -57,7 +66,7 @@
                 if (result.Succeeded)
                 {
                     this.TempData["success"] = string.Format("Потребителя {0} беше създаден успешно.", model.UserName);
-                    return RedirectToAction("Index", "User", new { aria="Administration"});
+                    return RedirectToAction("Index", "User", new { aria = "Administration" });
                 }
                 else
                 {
@@ -103,7 +112,7 @@
 
                 if (controlUser.UserName != user.UserName)
                 {
-                    validUserName = IdentityResult.Failed(new string[]{string.Format("Не е разрешено модифициране на потребителското име!!!")});
+                    validUserName = IdentityResult.Failed(new string[] { string.Format("Не е разрешено модифициране на потребителското име!!!") });
                     AddErrorsFromResult(validUserName);
                 }
                 else

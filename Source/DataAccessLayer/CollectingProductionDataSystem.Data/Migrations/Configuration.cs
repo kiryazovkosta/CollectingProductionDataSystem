@@ -57,10 +57,10 @@ namespace CollectingProductionDataSystem.Data.Migrations
                 TanksDataImporter.Insert(context);
             }
 
-            if (!context.MeasurementPoints.Any())
-            {
-                this.CreateMeasurementPoints(context);
-            }
+            //if (!context.MeasurementPoints.Any())
+            //{
+            //    this.CreateMeasurementPoints(context);
+            //}
 
             if (!context.Users.Any())
             {

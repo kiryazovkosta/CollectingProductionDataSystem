@@ -236,6 +236,7 @@
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\Home\IndexInventoryTanksViewModel.cs" />
     <Compile Include="ViewModels\Identity\AccountViewModels.cs" />
+    <Compile Include="ViewModels\Identity\AsignRoleViewModel.cs" />
     <Compile Include="ViewModels\Identity\CreateRoleViewModel.cs" />
     <Compile Include="ViewModels\Identity\CreateUserViewModel.cs" />
     <Compile Include="ViewModels\Identity\EditUserViewModel.cs" />
@@ -603,6 +604,7 @@
     <Content Include="Areas\Administration\Views\User\Index.cshtml" />
     <Content Include="Areas\Administration\Views\web.config" />
     <Content Include="Areas\Administration\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Administration\Views\Shared\EditorTemplates\AsignRoleViewModel.cshtml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.4.js" />
     <Content Include="Scripts\jquery-2.1.4.min.js" />

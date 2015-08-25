@@ -3,11 +3,19 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
+using CollectingProductionDataSystem.Infrastructure.Mapping;
+using CollectingProductionDataSystem.Models.Identity;
+using Newtonsoft.Json;
 
 namespace CollectingProductionDataSystem.Web.ViewModels.Identity
 {
-    public class CreateRoleViewModel
+    public class AsignRoleViewModel:IMapFrom<ApplicationRole>
     {
+        [Required]
+        [HiddenInput(DisplayValue = false)]
+        public int Id { get; set; }
+
         [Required]
         [Display(Name = "Име")]
         public string Name { get; set; }
@@ -17,7 +25,7 @@ namespace CollectingProductionDataSystem.Web.ViewModels.Identity
         public string Description { get; set; }
 
         [Required]
-        [Display(Name = "Достъпна за администратори")]
-        public bool IsAvailableForAdministrators { get; set; }
+        [Display]
+        public bool IsUserInRole { get; set; }
     }
 }
