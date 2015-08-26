@@ -59,7 +59,7 @@
       )
 )
 @* //Error window for kendo grid error event handler *@
-<div id="err-window" style="visibility:hidden;"></div>
+<div id="err-window" style="display:none">@Html.Partial("_KendoGridErrorWindow")</div>
 @section scripts{
     <script src="~/Scripts/custom/sendAntiForgery.js"></script>
     <script>
@@ -83,7 +83,6 @@
                     }
                 });
                 $('p#message').text(message);
-                prepareWindow();
                 $('div#err-window').data("kendoWindow").open();
             }
         }
@@ -102,14 +101,11 @@
                 grid.dataSource.read();
                 grid.refresh();
             });
+            prepareWindow();
         });
 
         function prepareWindow() {
-            var window = $('div#err-window');
-            if (!window.html()) {
-                window.append(_KendoGridErrorWindow);
-            }
-            window.css('visibility', 'visible');
+            var window = $('div#err-window')
             window.kendoWindow({
                 width: "650px",
                 title: "Възникна грешка в приложението",
@@ -123,17 +119,5 @@
                 maxHeight: 350
             });
         }
-
-        var _KendoGridErrorWindow = "    <div class='row row-err-window'>" +
-    "<div class='col-lg-1'>" +
-        "<div class='err_icon'></div>"+
-   "</div>" +
-        "<div class='col-lg-9 error-message-wrapper vcenter'>" +
-        "    <h2 class='text-danger'>Грешка!</h2>" +
-        "    <p id='message' class='text-info'></p>" +
-        "</div>" +
-        "</div>" +
-   "<hr />" +
-   "<button class='center-block btn btn-default' onclick='closeWindow()'>Затвори</button>";
     </script>
-}
+}   
