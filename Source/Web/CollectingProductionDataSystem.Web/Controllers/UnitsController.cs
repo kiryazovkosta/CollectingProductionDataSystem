@@ -1,7 +1,10 @@
 ﻿namespace CollectingProductionDataSystem.Web.Controllers
 {
     using System;
+    using System.ComponentModel.DataAnnotations;
+    using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Validation;
     using System.Linq;
     using System.Web.Mvc;
     using CollectingProductionDataSystem.Application.UnitsDataServices;
@@ -71,7 +74,21 @@
                 }
                 try
                 {
-                    this.data.SaveChanges(UserProfile.User.UserName);
+                    var validationErrors = ((DbContext)this.data.DbContext).GetValidationErrors();
+                    if (validationErrors.Count() == 0)
+                    {
+                        this.data.SaveChanges(UserProfile.User.UserName);
+                    }
+                    else 
+                    {
+                        foreach (DbEntityValidationResult validationResult in validationErrors)
+                        {
+                            foreach (DbValidationError error in validationResult.ValidationErrors)
+                            {
+                                this.ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
+                            }
+                        }
+                    }
                 }
                 catch (DbUpdateException ex)
                 {

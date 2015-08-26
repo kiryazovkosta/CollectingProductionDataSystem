@@ -40,7 +40,7 @@
         [Display(Name = "CollectingDataMechanism", ResourceType = typeof(Resources.Layout))]
         public string CollectingDataMechanism { get; set; }
 
-        [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
+        //[Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
         [Display(Name = "AutomaticValue", ResourceType = typeof(Resources.Layout))]
         public decimal? AutomaticValue { get; set; }
 

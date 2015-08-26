@@ -77,12 +77,13 @@
                 var message = "";
                 $.each(e.errors, function (key, value) {
                     if ('errors' in value) {
+                        message += key + " - ";
                         $.each(value.errors, function () {
                             message += this + "\n";
                         });
                     }
                 });
-                $('p#message').text(message);
+                $('pre#message').text(message);
                 $('div#err-window').data("kendoWindow").open();
             }
         }
