@@ -92,3 +92,11 @@ textarea {
 a.k-button.k-button-icontext.k-grid-edit, a.k-button.k-button-icontext.k-grid-delete {
     font-size:12px;
 }
+
+.k-grid  .k-grid-header  .k-header  .k-link {
+    height: auto;
+}
+  
+.k-grid  .k-grid-header  .k-header {
+    white-space: normal;
+}

@@ -19,8 +19,8 @@
                columns.Bound(c => c.Position).Width(140);
                columns.Bound(c => c.MeasureUnit).Width(80);
                columns.Bound(c => c.CollectingDataMechanism).Width(30).Title(string.Empty);
-               columns.Bound(c => c.AutomaticValue).Width(100);
-               columns.Bound(c => c.ManualValue).Width(100);
+               columns.Bound(c => c.AutomaticValue).Width(100).Format("{0:n2}");
+               columns.Bound(c => c.ManualValue).Width(100).Format("{0:n2}");
                columns.Bound(c => c.EditReason).Width(200).ClientTemplate("#:EditReason.Name#")
                    .ClientTemplate("<div class=row><div class='col-xs-2 no-horisontal-padding'><div class='#:EditReason.Id == 0? 'bg-ok':'bg-warning'#'></div></div><div class='col-xs-9 no-horisontal-padding reason'>#:EditReason.Name#</div></div>");
                //.EditorTemplateName("EditReason");

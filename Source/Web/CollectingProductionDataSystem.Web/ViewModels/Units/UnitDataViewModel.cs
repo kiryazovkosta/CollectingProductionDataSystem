@@ -18,7 +18,7 @@
         public string Position { get; set; }
         public string MeasureUnit { get; set; }
         public string CollectingDataMechanism { get; set; }
-        public decimal AutomaticValue { get; set; }
+        public decimal? AutomaticValue { get; set; }
         public decimal ManualValue { get; set; }
         public EditReasonInputModel EditReason { get; set; }
         public DateTime RecordTimestamp { get; set; }

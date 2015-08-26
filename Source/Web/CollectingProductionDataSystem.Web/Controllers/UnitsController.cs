@@ -41,7 +41,8 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(UnitDataViewModel model)
+        public ActionResult Edit([DataSourceRequest] DataSourceRequest request,
+            UnitDataViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -53,7 +54,10 @@
                 }
                 else
                 {
-                    this.data.UnitsManualData.Update(newManualRecord);
+                    existManualRecord.Value = model.ManualValue;
+                    existManualRecord.EditReasonId = model.EditReason.Id;
+
+                    this.data.UnitsManualData.Update(existManualRecord);
                 }
 
                 try
@@ -64,7 +68,7 @@
                 {
                 }
 
-                return View();
+                return Json(new[] { model }.ToDataSourceResult(request, ModelState));
             }
 
 
