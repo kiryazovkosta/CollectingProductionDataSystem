@@ -1,6 +1,7 @@
 ﻿namespace CollectingProductionDataSystem.Web.Controllers
 {
     using System;
+    using System.Data.Entity.Infrastructure;
     using System.Linq;
     using System.Web.Mvc;
     using CollectingProductionDataSystem.Application.UnitsDataServices;
@@ -54,25 +55,29 @@
                 }
                 else
                 {
-                    existManualRecord.Value = model.ManualValue;
-                    existManualRecord.EditReasonId = model.EditReason.Id;
-
-                    this.data.UnitsManualData.Update(existManualRecord);
+                    UpdateRecord(existManualRecord, model);
                 }
-
                 try
                 {
                     this.data.SaveChanges(UserProfile.User.UserName);
                 }
+                catch (DbUpdateException ex)
+                {
+                    this.ModelState.AddModelError("ManualValue", "Записът не можа да бъде осъществен. Моля опитайте на ново!");
+                }
                 finally
                 {
                 }
-
-                return Json(new[] { model }.ToDataSourceResult(request, ModelState));
             }
 
+            return Json(new[] { model }.ToDataSourceResult(request, ModelState)); 
+        }
 
-            return View(model);
+        private void UpdateRecord(UnitsManualData existManualRecord, UnitDataViewModel model)
+        {
+            existManualRecord.Value = model.ManualValue;
+            existManualRecord.EditReasonId = model.EditReason.Id;
+            this.data.UnitsManualData.Update(existManualRecord);
         }
     }
 }
