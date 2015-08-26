@@ -14,6 +14,7 @@
     using CollectingProductionDataSystem.Models.Productions;
     using CollectingProductionDataSystem.Web.ViewModels.Units;
 
+    [Authorize]
     public class UnitsController : BaseController
     {
         private readonly IUnitsDataService unitsData;
