@@ -120,6 +120,9 @@
   <data name="AutomaticData" xml:space="preserve">
     <value>Automatic Loaded</value>
   </data>
+  <data name="AutomaticValue" xml:space="preserve">
+    <value>Automatic Value</value>
+  </data>
   <data name="ChangePassword" xml:space="preserve">
     <value>Change Password</value>
   </data>
@@ -129,8 +132,17 @@
   <data name="ChanhePasswordSuccess" xml:space="preserve">
     <value>You have change your password successfully!</value>
   </data>
+  <data name="Code" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="CollectingDataMechanism" xml:space="preserve">
+    <value>Collecting Data Mechanism</value>
+  </data>
   <data name="ConfirmPassword" xml:space="preserve">
     <value>Confirm Password</value>
+  </data>
+  <data name="EditReason" xml:space="preserve">
+    <value>Reason For Edit</value>
   </data>
   <data name="Email" xml:space="preserve">
     <value>E-mail</value>
@@ -159,6 +171,12 @@
   <data name="Logoff" xml:space="preserve">
     <value>Log off</value>
   </data>
+  <data name="ManualValue" xml:space="preserve">
+    <value>Manual Value</value>
+  </data>
+  <data name="MeasureUnit" xml:space="preserve">
+    <value>Measure Unit</value>
+  </data>
   <data name="MiddleName" xml:space="preserve">
     <value>Middle Name</value>
   </data>
@@ -171,11 +189,23 @@
   <data name="Password" xml:space="preserve">
     <value>Password</value>
   </data>
+  <data name="Position" xml:space="preserve">
+    <value>Position</value>
+  </data>
+  <data name="ProcessUnitName" xml:space="preserve">
+    <value>Process Unit Name</value>
+  </data>
   <data name="RecordTimestamp" xml:space="preserve">
     <value>Record Timestamp</value>
   </data>
   <data name="RememberMe" xml:space="preserve">
     <value>Remember me?</value>
+  </data>
+  <data name="UnitName" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="UnitsData" xml:space="preserve">
+    <value>Units Data</value>
   </data>
   <data name="UserName" xml:space="preserve">
     <value>User Name</value>

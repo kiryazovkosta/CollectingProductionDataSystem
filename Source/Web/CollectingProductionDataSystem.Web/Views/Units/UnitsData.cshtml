@@ -1,10 +1,9 @@
 ﻿@using CollectingProductionDataSystem.Web.ViewModels.Units;
 @model UnitDataViewModel
 @{
-    ViewBag.Title = "UnitsData";
     Layout = "~/Views/Shared/_KendoLayout.cshtml";
 }
-<h2>UnitsData</h2>
+<h2>@Resources.Layout.UnitsData</h2>
 @Html.ValidationSummary()
 @Html.AntiForgeryToken()
 @(Html.Kendo()
@@ -26,12 +25,17 @@
                //.EditorTemplateName("EditReason");
                columns.Command(c => c.Edit());
            })
+               .Pageable(pageable => pageable
+                    .Refresh(true)
+                        .PageSizes(new[] { 10, 20, 50, 100 })
+                    .ButtonCount(5))
       .Sortable()
       .Scrollable(scr => scr.Height(660))
       .Filterable()
-      .Editable(editable => editable.Mode(GridEditMode.InLine))//.TemplateName("_EditUnit").Window(window => window.Width(650).Scrollable(false)))
+      .Editable(editable => editable.Mode(GridEditMode.InLine))
       .DataSource(dataSource => dataSource
         .Ajax()
+            .PageSize(20)
         .ServerOperation(true)
             .Read(read => read.Action("ReadUnitsData", "Units", new { area = "" }).Data("sendDate"))
            .Update(update => update.Action("Edit", "Units", new { area = "" }).Data("sendAntiForgery"))
@@ -54,10 +58,15 @@
            })
       )
 )
+
+@* //Error window for kendo grid error event handler *@
+@Html.Partial("_KendoGridErrorWindow")
+
 @section scripts{
     <script src="~/Scripts/custom/sendAntiForgery.js"></script>
     <script>
         kendo.culture("@System.Threading.Thread.CurrentThread.CurrentCulture.Name");
+
 
         var sendDate = function () {
             var result = { "date": $('input[name=date]').val() };
@@ -75,8 +84,14 @@
                         });
                     }
                 });
-                alert(message);
+                $('p#message').text(message);
+                prepareWindow();
+                $('div#err-window').data("kendoWindow").open();
             }
+        }
+
+        function closeWindow() {
+            $('div#err-window').data("kendoWindow").close();
         }
 
         function recordTimeStampFilter(element) {
@@ -91,5 +106,21 @@
             });
         });
 
+        function prepareWindow() {
+            var window = $('div#err-window');
+            window.css('visibility', 'visible');
+            window.kendoWindow({
+                width: "650px",
+                title: "Error",
+                actions: ["Close"],
+                modal: true,
+                position: {
+                    top: "30%", // or "100px"
+                    left: "30%"
+                },
+                minHeight: 100,
+                maxHeight: 350
+            });
+        }
     </script>
 }

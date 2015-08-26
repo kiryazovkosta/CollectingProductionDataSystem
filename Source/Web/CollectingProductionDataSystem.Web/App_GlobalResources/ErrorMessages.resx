@@ -132,6 +132,9 @@
   <data name="Password" xml:space="preserve">
     <value>The {0} must be at least {2} characters long.</value>
   </data>
+  <data name="Required" xml:space="preserve">
+    <value>The field {0} is required</value>
+  </data>
   <data name="UserName" xml:space="preserve">
     <value>The {0} must be at least {2} characters long.</value>
   </data>

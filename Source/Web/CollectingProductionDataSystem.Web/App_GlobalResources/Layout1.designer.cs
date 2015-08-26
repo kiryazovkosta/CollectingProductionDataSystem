@@ -70,6 +70,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Automatic Value.
+        /// </summary>
+        public static string AutomaticValue {
+            get {
+                return ResourceManager.GetString("AutomaticValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Change Password.
         /// </summary>
         public static string ChangePassword {
@@ -97,11 +106,38 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Code.
+        /// </summary>
+        public static string Code {
+            get {
+                return ResourceManager.GetString("Code", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Collecting Data Mechanism.
+        /// </summary>
+        public static string CollectingDataMechanism {
+            get {
+                return ResourceManager.GetString("CollectingDataMechanism", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Confirm Password.
         /// </summary>
         public static string ConfirmPassword {
             get {
                 return ResourceManager.GetString("ConfirmPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reason For Edit.
+        /// </summary>
+        public static string EditReason {
+            get {
+                return ResourceManager.GetString("EditReason", resourceCulture);
             }
         }
         
@@ -187,6 +223,24 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Manual Value.
+        /// </summary>
+        public static string ManualValue {
+            get {
+                return ResourceManager.GetString("ManualValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Measure Unit.
+        /// </summary>
+        public static string MeasureUnit {
+            get {
+                return ResourceManager.GetString("MeasureUnit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Middle Name.
         /// </summary>
         public static string MiddleName {
@@ -223,6 +277,24 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Position.
+        /// </summary>
+        public static string Position {
+            get {
+                return ResourceManager.GetString("Position", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Process Unit Name.
+        /// </summary>
+        public static string ProcessUnitName {
+            get {
+                return ResourceManager.GetString("ProcessUnitName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Record Timestamp.
         /// </summary>
         public static string RecordTimestamp {
@@ -237,6 +309,24 @@ namespace App_GlobalResources.Resources {
         public static string RememberMe {
             get {
                 return ResourceManager.GetString("RememberMe", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name.
+        /// </summary>
+        public static string UnitName {
+            get {
+                return ResourceManager.GetString("UnitName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Units Data.
+        /// </summary>
+        public static string UnitsData {
+            get {
+                return ResourceManager.GetString("UnitsData", resourceCulture);
             }
         }
         
