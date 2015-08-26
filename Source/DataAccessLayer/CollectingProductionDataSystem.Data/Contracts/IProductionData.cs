@@ -55,6 +55,8 @@
 
         IDeletableEntityRepository<TankMasterProduct> TankMasterProducts { get; }
 
+        IDeletableEntityRepository<ProductionShift> ProductionShifts { get; }
+
         IRepository<ApplicationUser> Users{get;}
 
 

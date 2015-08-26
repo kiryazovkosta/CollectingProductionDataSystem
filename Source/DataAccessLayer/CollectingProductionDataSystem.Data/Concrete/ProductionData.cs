@@ -212,6 +212,14 @@ using CollectingProductionDataSystem.Models.Transactions;
             }
         }
 
+        public IDeletableEntityRepository<ProductionShift> ProductionShifts
+        {
+            get
+            {
+                return this.GetDeletableEntityRepository<ProductionShift>();
+            }
+        }
+
         public IRepository<ApplicationUser> Users
         {
             get
