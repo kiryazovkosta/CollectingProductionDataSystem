@@ -46,6 +46,7 @@
 
         [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
         [Display(Name = "ManualValue", ResourceType = typeof(Resources.Layout))]
+        [Range(0,double.MaxValue,ErrorMessageResourceName="ManualValue",ErrorMessageResourceType=typeof(Resources.ErrorMessages))]
         public decimal ManualValue { get; set; }
 
         [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]

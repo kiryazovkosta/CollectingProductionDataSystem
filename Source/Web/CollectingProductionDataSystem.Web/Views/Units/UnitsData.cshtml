@@ -58,10 +58,8 @@
            })
       )
 )
-
 @* //Error window for kendo grid error event handler *@
-@Html.Partial("_KendoGridErrorWindow")
-
+<div id="err-window" style="visibility:hidden;"></div>
 @section scripts{
     <script src="~/Scripts/custom/sendAntiForgery.js"></script>
     <script>
@@ -76,7 +74,7 @@
 
         function error_handler(e) {
             if (e.errors) {
-                var message = "Errors:\n";
+                var message = "";
                 $.each(e.errors, function (key, value) {
                     if ('errors' in value) {
                         $.each(value.errors, function () {
@@ -108,10 +106,13 @@
 
         function prepareWindow() {
             var window = $('div#err-window');
+            if (!window.html()) {
+                window.append(_KendoGridErrorWindow);
+            }
             window.css('visibility', 'visible');
             window.kendoWindow({
                 width: "650px",
-                title: "Error",
+                title: "Възникна грешка в приложението",
                 actions: ["Close"],
                 modal: true,
                 position: {
@@ -122,5 +123,17 @@
                 maxHeight: 350
             });
         }
+
+        var _KendoGridErrorWindow = "    <div class='row row-err-window'>" +
+    "<div class='col-lg-1'>" +
+        "<div class='err_icon'></div>"+
+   "</div>" +
+        "<div class='col-lg-9 error-message-wrapper vcenter'>" +
+        "    <h2 class='text-danger'>Грешка!</h2>" +
+        "    <p id='message' class='text-info'></p>" +
+        "</div>" +
+        "</div>" +
+   "<hr />" +
+   "<button class='center-block btn btn-default' onclick='closeWindow()'>Затвори</button>";
     </script>
 }

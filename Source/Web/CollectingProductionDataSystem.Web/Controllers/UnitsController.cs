@@ -36,8 +36,19 @@
         public JsonResult ReadUnitsData([DataSourceRequest]DataSourceRequest request, DateTime? date, int? processUnit)
         {
             var dbResult = this.unitsData.GetUnitsDataForDateTime(date, processUnit);
-            var kendoResult = dbResult.ToDataSourceResult(request, ModelState);
-            kendoResult.Data = Mapper.Map<IEnumerable<UnitsData>, IEnumerable<UnitDataViewModel>>((IEnumerable<UnitsData>)kendoResult.Data);
+            var kendoResult = new DataSourceResult();
+            try
+            {
+                kendoResult = dbResult.ToDataSourceResult(request, ModelState);
+                kendoResult.Data = Mapper.Map<IEnumerable<UnitsData>, IEnumerable<UnitDataViewModel>>((IEnumerable<UnitsData>)kendoResult.Data);
+            }
+            catch (ArgumentException ex)
+            { 
+                // Dirty hack
+                kendoResult.Data = Mapper.Map<IEnumerable<UnitsData>, IEnumerable<UnitDataViewModel>>((IEnumerable<UnitsData>)dbResult);
+                kendoResult = kendoResult.Data.ToDataSourceResult(request, ModelState);
+            }
+            
             return Json(kendoResult);
         }
 

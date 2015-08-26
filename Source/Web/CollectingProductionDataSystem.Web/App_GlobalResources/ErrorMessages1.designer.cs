@@ -97,6 +97,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The value of the field {0} must be between {1} and {2}. .
+        /// </summary>
+        public static string ManualValue {
+            get {
+                return ResourceManager.GetString("ManualValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The {0} must be at least {2} characters long..
         /// </summary>
         public static string Password {

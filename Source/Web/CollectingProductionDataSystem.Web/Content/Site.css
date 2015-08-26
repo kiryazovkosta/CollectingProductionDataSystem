@@ -79,6 +79,14 @@ textarea {
     width:20px;
 }
 
+div.err-icon {
+    background: url('Images/danger.png');
+    background-repeat:no-repeat;
+    background-size: 64px;
+    height:64px;
+    width:64px;
+}
+
 .no-horisontal-padding {
     padding-left:0;
     padding-right:0;
