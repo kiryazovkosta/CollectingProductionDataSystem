@@ -79,6 +79,7 @@
     <Compile Include="Inventories\TankData.cs" />
     <Compile Include="Nomenclatures\EditReason.cs" />
     <Compile Include="Nomenclatures\MeasureUnit.cs" />
+    <Compile Include="Nomenclatures\ProductionShift.cs" />
     <Compile Include="Nomenclatures\TransportType.cs" />
     <Compile Include="Productions\Factory.cs" />
     <Compile Include="Inventories\Park.cs" />

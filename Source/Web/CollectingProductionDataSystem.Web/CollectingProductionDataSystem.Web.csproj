@@ -227,6 +227,7 @@
     <Compile Include="Controllers\HomeController.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Controllers\TanksController.cs" />
     <Compile Include="Controllers\TestsController.cs" />
     <Compile Include="Controllers\UnitsController.cs" />
     <Compile Include="Global.asax.cs">
@@ -1246,6 +1247,7 @@
     <Content Include="Views\Shared\DisplayTemplates\EditReason.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\EditReasonInputModel.cshtml" />
     <Content Include="Views\Shared\_KendoGridErrorWindow.cshtml" />
+    <Content Include="Views\Tanks\TanksData.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

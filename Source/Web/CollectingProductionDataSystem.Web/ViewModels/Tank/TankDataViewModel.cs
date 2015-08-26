@@ -1,16 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
-using AutoMapper;
-using CollectingProductionDataSystem.Infrastructure.Mapping;
-using CollectingProductionDataSystem.Models.Inventories;
-using Resources = App_GlobalResources.Resources;
-
-namespace CollectingProductionDataSystem.Web.ViewModels.Tank
+﻿namespace CollectingProductionDataSystem.Web.ViewModels.Tank
 {
-    public class TankDataViewModel:IMapFrom<TankData>, IHaveCustomMappings
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+    using System.Linq;
+    using System.Web;
+    using AutoMapper;
+    using CollectingProductionDataSystem.Infrastructure.Mapping;
+    using CollectingProductionDataSystem.Models.Inventories;
+    using Resources = App_GlobalResources.Resources;
+
+    public class TankDataViewModel:IMapFrom<TankData>
     {
         [Display(Name="Id", ResourceType=typeof(Resources.Layout))]
         public int Id { get; set; }
