@@ -120,6 +120,9 @@
   <data name="AutomaticData" xml:space="preserve">
     <value>Автоматично зареждане</value>
   </data>
+  <data name="AutomaticValue" xml:space="preserve">
+    <value>Автоматична стойност</value>
+  </data>
   <data name="ChangePassword" xml:space="preserve">
     <value>Промяна на парола</value>
   </data>
@@ -129,8 +132,17 @@
   <data name="ChanhePasswordSuccess" xml:space="preserve">
     <value>Вие сменихте успешно паролата си!</value>
   </data>
+  <data name="Code" xml:space="preserve">
+    <value>Код</value>
+  </data>
+  <data name="CollectingDataMechanism" xml:space="preserve">
+    <value>Произход на данни</value>
+  </data>
   <data name="ConfirmPassword" xml:space="preserve">
     <value>Потв. на парола</value>
+  </data>
+  <data name="EditReason" xml:space="preserve">
+    <value>Причина за корекция</value>
   </data>
   <data name="Email" xml:space="preserve">
     <value>Електронна поща</value>
@@ -162,6 +174,12 @@
   <data name="Logoff" xml:space="preserve">
     <value>Изход</value>
   </data>
+  <data name="ManualValue" xml:space="preserve">
+    <value>Ръчна Стойност</value>
+  </data>
+  <data name="MeasureUnit" xml:space="preserve">
+    <value>Мерна единица</value>
+  </data>
   <data name="MiddleName" xml:space="preserve">
     <value>Презиме</value>
   </data>
@@ -174,11 +192,23 @@
   <data name="Password" xml:space="preserve">
     <value>Парола</value>
   </data>
+  <data name="Position" xml:space="preserve">
+    <value>Позиция</value>
+  </data>
+  <data name="ProcessUnitName" xml:space="preserve">
+    <value>№ на позиция</value>
+  </data>
   <data name="RecordTimestamp" xml:space="preserve">
     <value>Време на запис</value>
   </data>
   <data name="RememberMe" xml:space="preserve">
     <value>Запомни ме</value>
+  </data>
+  <data name="UnitName" xml:space="preserve">
+    <value>Наименование на поток</value>
+  </data>
+  <data name="UnitsData" xml:space="preserve">
+    <value>Данни за измервателни позиции</value>
   </data>
   <data name="UserName" xml:space="preserve">
     <value>Портебител</value>

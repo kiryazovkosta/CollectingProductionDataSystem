@@ -1,6 +1,7 @@
 ﻿namespace CollectingProductionDataSystem.Web.ViewModels.Units
 {
     using System;
+    using System.ComponentModel.DataAnnotations;
     using System.Linq;
     using AutoMapper;
     using CollectingProductionDataSystem.Infrastructure.Mapping;
@@ -11,16 +12,48 @@
 
     public class UnitDataViewModel : IMapFrom<UnitsData>, IHaveCustomMappings
     {
+        [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
+        [Display(Name = "№")]
         public int Id { get; set; }
+
+        [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
+        [Display(Name = "Code", ResourceType = typeof(Resources.Layout))]
         public string Code { get; set; }
+
+        [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
+        [Display(Name = "ProcessUnitName", ResourceType = typeof(Resources.Layout))]
         public string ProcessUnitName { get; set; }
+
+        [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
+        [Display(Name = "UnitName", ResourceType = typeof(Resources.Layout))]
         public string Name { get; set; }
+
+        [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
+        [Display(Name = "Position", ResourceType = typeof(Resources.Layout))]
         public string Position { get; set; }
+
+        [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
+        [Display(Name = "MeasureUnit", ResourceType = typeof(Resources.Layout))]
         public string MeasureUnit { get; set; }
+
+        [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
+        [Display(Name = "CollectingDataMechanism", ResourceType = typeof(Resources.Layout))]
         public string CollectingDataMechanism { get; set; }
+
+        [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
+        [Display(Name = "AutomaticValue", ResourceType = typeof(Resources.Layout))]
         public decimal? AutomaticValue { get; set; }
+
+        [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
+        [Display(Name = "ManualValue", ResourceType = typeof(Resources.Layout))]
         public decimal ManualValue { get; set; }
+
+        [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
+        [Display(Name = "EditReason", ResourceType = typeof(Resources.Layout))]
         public EditReasonInputModel EditReason { get; set; }
+
+        [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
+        [Display(Name = "RecordTimestamp", ResourceType = typeof(Resources.Layout))]
         public DateTime RecordTimestamp { get; set; }
         public void CreateMappings(IConfiguration configuration)
         {

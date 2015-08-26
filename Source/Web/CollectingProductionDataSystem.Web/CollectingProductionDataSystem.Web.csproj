@@ -200,6 +200,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ErrorMessages.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\Layout.bg.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Layout.bg.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\Layout.bg1.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -257,6 +262,8 @@
     <Content Include="Content\bootstrap.cosmo.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Images\danger.png" />
+    <Content Include="Content\Images\error.png" />
     <Content Include="Content\Images\ok.png" />
     <Content Include="Content\Images\warning.png" />
     <Content Include="Content\kendo\Black\editor.png" />
@@ -1236,6 +1243,7 @@
     <Content Include="Views\Units\UnitsData.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\EditReason.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\EditReasonInputModel.cshtml" />
+    <Content Include="Views\Shared\_KendoGridErrorWindow.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1411,8 +1419,8 @@
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Layout.bg.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Layout.bg1.designer.cs</LastGenOutput>
       <CustomToolNamespace>App_GlobalResources.Resources</CustomToolNamespace>
+      <LastGenOutput>Layout.bg.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Layout.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

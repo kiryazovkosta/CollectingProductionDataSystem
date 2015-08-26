@@ -100,3 +100,15 @@ a.k-button.k-button-icontext.k-grid-edit, a.k-button.k-button-icontext.k-grid-de
 .k-grid  .k-grid-header  .k-header {
     white-space: normal;
 }
+
+.vcenter {
+    display: inline-block;
+    vertical-align: middle;
+    float: none;
+}   
+
+.row-err-window {
+    margin-left:auto;
+    margin-right:auto;
+    width:90%;
+}

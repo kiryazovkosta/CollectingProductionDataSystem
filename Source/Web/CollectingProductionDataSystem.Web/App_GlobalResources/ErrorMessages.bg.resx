@@ -132,6 +132,9 @@
   <data name="Password" xml:space="preserve">
     <value>Полето {0} трябва да бъде дългo поне {2} синвола.</value>
   </data>
+  <data name="Required" xml:space="preserve">
+    <value>Въвеждането в полето {0} е задължително.</value>
+  </data>
   <data name="UserName" xml:space="preserve">
     <value>Потребителското име трябва да бъде дълго поне {2} синвола.</value>
   </data>
