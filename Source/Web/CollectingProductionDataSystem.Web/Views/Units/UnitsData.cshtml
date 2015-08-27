@@ -1,12 +1,13 @@
 ﻿@using CollectingProductionDataSystem.Web.ViewModels.Units;
-@model UnitDataViewModel
-@{
+@using Resources = App_GlobalResources.Resources;
+    @model UnitDataViewModel
+    @{
     Layout = "~/Views/Shared/_KendoLayout.cshtml";
-}
-<h2>@Resources.Layout.UnitsData</h2>
-@Html.ValidationSummary()
-@Html.AntiForgeryToken()
-@(Html.Kendo()
+    }
+    <h2>@Resources.Layout.UnitsData</h2>
+    @Html.ValidationSummary()
+    @Html.AntiForgeryToken()
+    @(Html.Kendo()
     .Grid<UnitDataViewModel>()
     .Name("units")
       .Columns(
@@ -22,7 +23,6 @@
                columns.Bound(c => c.ManualValue).Width(100).Format("{0:n2}");
                columns.Bound(c => c.EditReason).Width(200).ClientTemplate("#:EditReason.Name#")
                    .ClientTemplate("<div class=row><div class='col-xs-2 no-horisontal-padding'><div class='#:EditReason.Id == 0? 'bg-ok':'bg-warning'#'></div></div><div class='col-xs-9 no-horisontal-padding reason'>#:EditReason.Name#</div></div>");
-               //.EditorTemplateName("EditReason");
                columns.Command(c => c.Edit());
            })
                .Pageable(pageable => pageable
@@ -57,68 +57,73 @@
                events.Error("error_handler");
            })
       )
-)
-@* //Error window for kendo grid error event handler *@
-<div id="err-window" style="display:none">@Html.Partial("_KendoGridErrorWindow")</div>
-@section scripts{
-    <script src="~/Scripts/custom/sendAntiForgery.js"></script>
-    <script>
-        kendo.culture("@System.Threading.Thread.CurrentThread.CurrentCulture.Name");
+    )
+    @* //Error window for kendo grid error event handler *@
+    <div id="err-window" style="display:none">@Html.Partial("_KendoGridErrorWindow")</div>
+    @section scripts{
+        <script src="~/Scripts/custom/sendAntiForgery.js"></script>
+        <script>
+            kendo.culture("@System.Threading.Thread.CurrentThread.CurrentCulture.Name");
 
 
-        var sendDate = function () {
-            var result = { "date": $('input[name=date]').val() };
-            $.extend(result, sendAntiForgery());
-            return result;
-        }
-
-        function error_handler(e) {
-            if (e.errors) {
-                var message = "";
-                $.each(e.errors, function (key, value) {
-                    if ('errors' in value) {
-                        message += key + " - ";
-                        $.each(value.errors, function () {
-                            message += this + "\n";
-                        });
-                    }
-                });
-                $('pre#message').text(message);
-                $('div#err-window').data("kendoWindow").open();
+            var sendDate = function () {
+                var result = { "date": $('input[name=date]').val() };
+                $.extend(result, sendAntiForgery());
+                return result;
             }
-        }
 
-        function closeWindow() {
-            $('div#err-window').data("kendoWindow").close();
-        }
+            function error_handler(e) {
+                if (e.errors) {
+                    var message = "";
+                    $.each(e.errors, function (key, value) {
+                        if ('errors' in value) {
+                            message += key + " - ";
+                            $.each(value.errors, function () {
+                                message += this + "\n";
+                            });
+                        }
+                    });
+                    $('pre#message').text(message);
+                    $('div#err-window').data("kendoWindow").open();
+                    var grid = $("#units").data("kendoGrid");
+                    if (grid) {
+                        grid.dataSource.read();
+                        grid.refresh();
+                    }
+                }
+            }
 
-        function recordTimeStampFilter(element) {
-            element.kendoDateTimePicker();
-        }
+            function closeWindow() {
+                $('div#err-window').data("kendoWindow").close();
+            }
 
-        $(document).ready(function () {
-            $("#apply").click(function () {
-                var grid = $("#tanks").data("kendoGrid");
-                grid.dataSource.read();
-                grid.refresh();
+            function recordTimeStampFilter(element) {
+                element.kendoDateTimePicker();
+            }
+
+            $(document).ready(function () {
+                $("#apply").click(function () {
+                    var grid = $("#tanks").data("kendoGrid");
+                    grid.dataSource.read();
+                    grid.refresh();
+                });
+                prepareWindow();
             });
-            prepareWindow();
-        });
 
-        function prepareWindow() {
-            var window = $('div#err-window')
-            window.kendoWindow({
-                width: "650px",
-                title: "Възникна грешка в приложението",
-                actions: ["Close"],
-                modal: true,
-                position: {
-                    top: "30%", // or "100px"
-                    left: "30%"
-                },
-                minHeight: 100,
-                maxHeight: 350
-            });
-        }
-    </script>
-}   
+            function prepareWindow() {
+                var window = $('div#err-window')
+                window.kendoWindow({
+                    width: "650px",
+                    title: "Възникна грешка в приложението",
+                    actions: ["Close"],
+                    modal: true,
+                    position: {
+                        top: "30%", // or "100px"
+                        left: "30%"
+                    },
+                    minHeight: 100,
+                    maxHeight: 350
+                });
+            }
+        </script>
+    }   

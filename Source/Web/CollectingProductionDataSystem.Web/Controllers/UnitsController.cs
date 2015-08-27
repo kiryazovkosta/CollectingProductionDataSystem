@@ -46,12 +46,12 @@
                 kendoResult.Data = Mapper.Map<IEnumerable<UnitsData>, IEnumerable<UnitDataViewModel>>((IEnumerable<UnitsData>)kendoResult.Data);
             }
             catch (ArgumentException ex)
-            { 
+            {
                 // Dirty hack
                 kendoResult.Data = Mapper.Map<IEnumerable<UnitsData>, IEnumerable<UnitDataViewModel>>((IEnumerable<UnitsData>)dbResult);
                 kendoResult = kendoResult.Data.ToDataSourceResult(request, ModelState);
             }
-            
+
             return Json(kendoResult);
         }
 
@@ -74,21 +74,20 @@
                 }
                 try
                 {
-                    var validationErrors = ((DbContext)this.data.DbContext).GetValidationErrors();
-                    if (validationErrors.Count() == 0)
+                    //var validationErrors = ((DbContext)this.data.DbContext).GetValidationErrors();
+                    //if (validationErrors.Count() == 0)
+                    //{
+                    var result = this.data.SaveChanges(UserProfile.User.UserName);
+                    //}
+                    if (!result.IsValid)
                     {
-                        this.data.SaveChanges(UserProfile.User.UserName);
-                    }
-                    else 
-                    {
-                        foreach (DbEntityValidationResult validationResult in validationErrors)
+                        foreach (ValidationResult error in result.EfErrors)
                         {
-                            foreach (DbValidationError error in validationResult.ValidationErrors)
-                            {
-                                this.ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
-                            }
+                            this.ModelState.AddModelError(error.MemberNames.ToList()[0], error.ErrorMessage);
                         }
                     }
+
+
                 }
                 catch (DbUpdateException ex)
                 {
@@ -99,7 +98,7 @@
                 }
             }
 
-            return Json(new[] { model }.ToDataSourceResult(request, ModelState)); 
+            return Json(new[] { model }.ToDataSourceResult(request, ModelState));
         }
 
         private void UpdateRecord(UnitsManualData existManualRecord, UnitDataViewModel model)

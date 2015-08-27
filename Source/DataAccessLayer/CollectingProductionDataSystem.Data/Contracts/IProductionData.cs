@@ -64,6 +64,6 @@
 
         IDbContext DbContext { get; }
 
-        int SaveChanges(string userName);
+        IEfStatus SaveChanges(string userName);
     }
 }

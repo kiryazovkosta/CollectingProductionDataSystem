@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using CollectingProductionDataSystem.Data;
+    using CollectingProductionDataSystem.Data.Common;
     using CollectingProductionDataSystem.Data.Contracts;
     using CollectingProductionDataSystem.Models.Contracts;
     using CollectingProductionDataSystem.Models.Identity;
@@ -228,9 +229,9 @@ using CollectingProductionDataSystem.Models.Transactions;
             }
         }
 
-        public int SaveChanges(string userName)
+        public IEfStatus SaveChanges(string userName)
         {
-            return this.context.SaveChanges(userName);
+            return this.context.SaveChangesWithValidation(userName);    
         }
 
         public void Dispose()
@@ -303,5 +304,6 @@ using CollectingProductionDataSystem.Models.Transactions;
                 return this.context; 
             }
         }
+
     }
 }

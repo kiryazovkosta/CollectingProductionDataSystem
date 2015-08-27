@@ -9,8 +9,8 @@
     using CollectingProductionDataSystem.Models.Nomenclatures;
     using CollectingProductionDataSystem.Models.Concrete;
 
-    public partial class UnitsManualData : DeletableEntity, IEntity, IValidateable, IValidatableObject
-    {
+    public partial class UnitsManualData : DeletableEntity, IEntity, IValidatableObject
+    {       
         public int Id { get; set; }
         public decimal Value { get; set; }
         public virtual UnitsData UnitsData { get; set; }
@@ -24,19 +24,20 @@
         /// <returns>A collection that holds failed-validation information.</returns>
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            yield return new ValidationResult("Не ме кефи Id-то", new string[] { "Id" });
+            if (this.Id == 0)
+            {
+                yield return new ValidationResult(Resources.ModelErrors.UnitsManualData_Id, new string[] { "Id" });
+            }
 
-            yield return new ValidationResult("Не ме кефи стойността", new string[] { "Value" });
-        }
+            if (this.Value <= 0 || this.Value > decimal.MaxValue) 
+            {
+                yield return new ValidationResult(string.Format(Resources.ModelErrors.UnitsManualData_Value_Range, 0.01M, decimal.MaxValue), new string[] { "ManualValue" });
+            }
 
-        public ValidationMessageCollection Validate()
-        {
-            var validationResult = new ValidationMessageCollection();
-  
-            // Validate Value
-
-            // Validate 
-            return validationResult;
-        }
+            if (this.EditReasonId < 1)
+            {
+                yield return new ValidationResult(Resources.ModelErrors.InvalidEditReason, new string[] { "EditReason" });
+            }
+        }    
     }
 }

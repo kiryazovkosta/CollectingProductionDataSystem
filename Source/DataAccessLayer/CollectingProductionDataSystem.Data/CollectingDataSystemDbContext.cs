@@ -2,10 +2,13 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Validation;
     using System.Diagnostics;
     using System.Linq;
+    using CollectingProductionDataSystem.Data.Common;
     using CollectingProductionDataSystem.Data.Concrete;
     using CollectingProductionDataSystem.Data.Contracts;
     using CollectingProductionDataSystem.Data.Mappings.Configuration;
@@ -140,6 +143,22 @@
             }
 
             return returnValue;
+        }
+
+        public IEfStatus SaveChangesWithValidation(string userName)
+        {
+            var result = new EfStatus();
+            try
+            {
+                result.ResultRecordsCount = SaveChanges(userName); //then update it
+            }
+            catch (DbEntityValidationException ex)
+            {
+                return result.SetErrors(ex.EntityValidationErrors);
+            }
+            //else it isn't an exception we understand so it throws in the normal way
+
+            return result;
         }
 
         public new IDbSet<T> Set<T>() where T : class

@@ -94,6 +94,16 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Productions\UnitsData.cs" />
     <Compile Include="Productions\UnitsInspectionData.cs" />
+    <Compile Include="Resources\ModelErrors.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ModelErrors.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\ModelErrors.bg.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ModelErrors.bg.resx</DependentUpon>
+    </Compile>
     <Compile Include="Transactions\Ikunk.cs" />
     <Compile Include="Transactions\MeasurementPoint.cs" />
     <Compile Include="Transactions\MeasurementPointsProductsConfig.cs" />
@@ -105,8 +115,18 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+    <EmbeddedResource Include="Resources\ModelErrors.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ModelErrors.bg.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\ModelErrors.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ModelErrors.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

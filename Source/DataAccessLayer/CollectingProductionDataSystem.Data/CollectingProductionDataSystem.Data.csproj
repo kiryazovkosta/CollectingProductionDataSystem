@@ -52,6 +52,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\EfStatus.cs" />
+    <Compile Include="Contracts\IEfStatus.cs" />
     <Compile Include="Concrete\ApprovableEntityRepository.cs" />
     <Compile Include="Concrete\AuditablePersister.cs" />
     <Compile Include="Concrete\DeletableEntityRepository.cs" />
