@@ -7,7 +7,6 @@
     using CollectingProductionDataSystem.Models.Abstract;
     using CollectingProductionDataSystem.Models.Contracts;
     using CollectingProductionDataSystem.Models.Nomenclatures;
-    using CollectingProductionDataSystem.Models.Concrete;
 
     public partial class UnitsManualData : DeletableEntity, IEntity, IValidatableObject
     {       

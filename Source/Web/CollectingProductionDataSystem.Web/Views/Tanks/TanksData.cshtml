@@ -1,0 +1,189 @@
+﻿@using CollectingProductionDataSystem.Web.ViewModels.Tank;
+@model TankDataViewModel
+
+@{
+    Layout = "~/Views/Shared/_KendoLayout.cshtml";
+}
+
+<h2>Tanks Data</h2>
+@Html.ValidationSummary()
+@Html.AntiForgeryToken()
+<div class="row">
+    <div class="col-lg-3">
+        @(Html.Kendo().ComboBox()
+            .Name("areas")
+            .Placeholder("Изберете област...")
+            .HtmlAttributes(new { style = "width:260px" })
+            .DataTextField("AreaName")
+            .DataValueField("AreaId")
+            .Filter(FilterType.Contains)
+            .DataSource(source =>
+            {
+                source.Read(read =>
+                {
+                    read.Action("GetAreas", "Tanks");
+                });
+            })
+        )
+    </div>
+    <div class="col-lg-3">
+        @(Html.Kendo().ComboBox()
+            .Name("parks")
+            .Placeholder("Изберете парк...")
+            .HtmlAttributes(new { style = "width:260px" })
+            .DataTextField("ParkName")
+            .DataValueField("ParkId")
+            .Filter(FilterType.Contains)
+            .DataSource(source =>
+            {
+                source.Read(read =>
+                {
+                    read.Action("GetParks", "Tanks").Data("filterParks");
+                })
+                .ServerFiltering(true);
+            })
+            .Enable(false)
+            .AutoBind(false)
+            .CascadeFrom("areas")
+        )
+        <script>
+            function filterParks() {
+                return {
+                    areaId: $("#areas").val(),
+                    parksFilter: $("#parks").data("kendoComboBox").input.val()
+                };
+            }
+        </script>
+    </div>
+    <div class="col-lg-3">
+        @Html.Kendo().DatePicker().Name("date").Culture("bg-BG")
+    </div>
+    <div class="col-lg-3">
+        @(Html.Kendo().ComboBox()
+            .Name("shifts")
+            .Placeholder("Изберете смяна...")
+            .HtmlAttributes(new { style = "width:260px" })
+            .DataTextField("Name")
+            .DataValueField("Id")
+            .Filter(FilterType.Contains)
+            .DataSource(source =>
+            {
+                source.Read(read =>
+                {
+                    read.Action("GetShifts", "Tanks");
+                });
+            })
+        )
+    </div>
+    <div class="col-lg-3">
+        <button id="apply" type="button" class="btn btn-primary">Apply Filter</button>
+    </div>
+</div>
+<div class="row">
+    @(Html.Kendo().Grid<TankDataViewModel>()
+        .Name("tanks")
+        .AutoBind(false)
+        .Columns(columns =>
+            {
+                columns.Bound(c => c.ParkName);
+                columns.Bound(c => c.TankName).Width(100);
+                columns.Bound(c => c.ProductName);
+                columns.Bound(c => c.LiquidLevel);
+                columns.Bound(c => c.ProductLevel);
+                columns.Bound(c => c.NetStandardVolume);
+                columns.Bound(c => c.ReferenceDensity);
+                columns.Bound(c => c.WeightInAir);
+                columns.Bound(c => c.WeightInVacuum);
+                columns.Bound(c => c.FreeWaterLevel);
+            })
+        .Pageable(pageable => pageable
+        .Refresh(true)
+        .PageSizes(new[] { 10, 20, 50, 100 })
+        .ButtonCount(5))
+        .Sortable()
+        .Scrollable(scr => scr.Height(660))
+        .Filterable()
+        .DataSource(dataSource => dataSource
+            .Ajax()
+            .PageSize(20)
+            .ServerOperation(true)
+            .Read(read => read.Action("ReadTanksData", "Tanks", new { area = "" })
+                .Data("sendDate")))
+    )
+</div>
+
+@section scripts{
+    <script src="~/Scripts/custom/sendAntiForgery.js"></script>
+    <script>
+        kendo.culture("@System.Threading.Thread.CurrentThread.CurrentCulture.Name");
+
+        var sendDate = function () {
+            var result = { "date": $('input[name=date]').val() };
+            $.extend(result, sendAntiForgery());
+            return result;
+        }
+
+        function error_handler(e) {
+            if (e.errors) {
+                var message = "";
+                $.each(e.errors, function (key, value) {
+                    if ('errors' in value) {
+                        message += key + " - ";
+                        $.each(value.errors, function () {
+                            message += this + "\n";
+                        });
+                    }
+                });
+                $('pre#message').text(message);
+                $('div#err-window').data("kendoWindow").open();
+            }
+        }
+
+        function closeWindow() {
+            $('div#err-window').data("kendoWindow").close();
+        }
+
+        function recordTimeStampFilter(element) {
+            element.kendoDateTimePicker();
+        }
+
+        $(document).ready(function () {
+            $("#apply").click(function () {
+                var grid = $("#tanks").data("kendoGrid");
+                grid.dataSource.read();
+                grid.refresh();
+            });
+            prepareWindow();
+        });
+
+        function prepareWindow() {
+            var window = $('div#err-window')
+            window.kendoWindow({
+                width: "650px",
+                title: "Възникна грешка в приложението",
+                actions: ["Close"],
+                modal: true,
+                position: {
+                    top: "30%", // or "100px"
+                    left: "30%"
+                },
+                minHeight: 100,
+                maxHeight: 350
+            });
+        }
+
+        $(document).ready(function () {
+            var areas = $("#areas").data("kendoComboBox"),
+                parks = $("#parks").data("kendoComboBox"),
+                shifts = $("#shifts").data("kendoComboBox");
+
+            $("#apply").click(function () {
+                var areaInfo = "\nArea: { id: " + areas.value() + ", name: " + areas.text() + " }",
+                    parkInfo = "\nPark: { id: " + parks.value() + ", name: " + parks.text() + " }";
+                shiftInfo = "\nShift: { id: " + shifts.value() + ", name: " + shifts.text() + " }";
+
+                alert("Details:\n" + areaInfo + parkInfo);
+            });
+        });
+    </script>
+}

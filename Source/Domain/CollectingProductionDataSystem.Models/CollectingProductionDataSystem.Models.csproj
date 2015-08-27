@@ -58,12 +58,7 @@
   <ItemGroup>
     <Compile Include="Abstract\AuditInfo.cs" />
     <Compile Include="Abstract\DeletableEntity.cs" />
-    <Compile Include="Concrete\MessageType.cs" />
-    <Compile Include="Concrete\ValidationMessage.cs" />
-    <Compile Include="Concrete\ValidationMessageCollection.cs" />
     <Compile Include="Contracts\IApprovableEntity.cs" />
-    <Compile Include="Contracts\IValidateable.cs" />
-    <Compile Include="Contracts\IValidationMessageCollection.cs" />
     <Compile Include="Identity\ApplicationRole.cs" />
     <Compile Include="Identity\ApplicationUser.cs" />
     <Compile Include="Contracts\IAuditInfo.cs" />
@@ -79,6 +74,7 @@
     <Compile Include="Inventories\TankData.cs" />
     <Compile Include="Nomenclatures\EditReason.cs" />
     <Compile Include="Nomenclatures\MeasureUnit.cs" />
+    <Compile Include="Nomenclatures\ProductionShift.cs" />
     <Compile Include="Nomenclatures\TransportType.cs" />
     <Compile Include="Productions\Factory.cs" />
     <Compile Include="Inventories\Park.cs" />

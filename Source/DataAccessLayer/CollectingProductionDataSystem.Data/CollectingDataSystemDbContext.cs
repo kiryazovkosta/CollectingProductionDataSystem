@@ -96,6 +96,8 @@
 
         public IDbSet<TankMasterProduct> TankMasterProducts { get; set; }
 
+        public IDbSet<ProductionShift> ProductionShifts { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             ModelBingConfig.RegisterMappings(modelBuilder);

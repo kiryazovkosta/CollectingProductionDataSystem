@@ -22,6 +22,10 @@ namespace CollectingProductionDataSystem.Data.Migrations
 
         protected override void Seed(CollectingDataSystemDbContext context)
         {
+            if (!context.ProductionShifts.Any())
+            {
+                this.CreateProductionShifts(context);
+            }
             if (!context.Products.Any())
             {
                 ProductsDataImporter.Insert(context);
@@ -71,6 +75,35 @@ namespace CollectingProductionDataSystem.Data.Migrations
             {
                 this.CreateSystemAdministrator(context);
             }
+        }
+
+        private void CreateProductionShifts(CollectingDataSystemDbContext context)
+        {
+            context.ProductionShifts.AddOrUpdate(
+                new ProductionShift
+                {
+                    Name = "Първа смяна",
+                    BeginTime = "05:01",
+                    EndTime = "13:00",
+                    BeginMinutes = 780,
+                    OffsetMinutes = 840
+                },
+                new ProductionShift
+                {
+                    Name = "Втора смяна",
+                    BeginTime = "13:01",
+                    EndTime = "21:00",
+                    BeginMinutes = 1260,
+                    OffsetMinutes = 1320
+                },
+                new ProductionShift
+                {
+                    Name = "Втора смяна",
+                    BeginTime = "21:01",
+                    EndTime = "05:00",
+                    BeginMinutes = 1740,
+                    OffsetMinutes = 1800
+                });
         }
 
         private void CreateTankMasterProducts(CollectingDataSystemDbContext context)

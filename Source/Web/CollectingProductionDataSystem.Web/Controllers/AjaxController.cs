@@ -24,5 +24,11 @@ namespace CollectingProductionDataSystem.Web.Controllers
             var reasonView = Mapper.Map<IEnumerable<EditReasonInputModel>>(reasons);
             return Json(reasonView, JsonRequestBehavior.AllowGet);
         }
+
+        public JsonResult GetZones()
+        {
+            var zones = this.data.Zones.All().ToList();
+            return Json(zones, JsonRequestBehavior.AllowGet);
+        }
     }
 }
