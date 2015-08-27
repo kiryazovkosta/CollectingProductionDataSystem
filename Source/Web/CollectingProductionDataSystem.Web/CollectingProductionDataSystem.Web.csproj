@@ -1197,6 +1197,9 @@
     <Content Include="Scripts\respond.matchmedia.addListener.min.js" />
     <Content Include="Scripts\respond.min.js" />
     <None Include="Scripts\_references.js" />
+    <Content Include="Views\Shared\EditorTemplates\DateTime.cshtml">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -1237,7 +1240,6 @@
     <Content Include="Views\Account\GetGreetingMessage.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\ApplicationRole.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\ApplicationUser.cshtml" />
-    <Content Include="Views\Shared\EditorTemplates\DateTime.cshtml" />
     <Content Include="Views\Shared\_KendoLayout.cshtml" />
     <Content Include="Views\Tests\Index.cshtml" />
     <Content Include="Views\Tests\TankChange.cshtml" />

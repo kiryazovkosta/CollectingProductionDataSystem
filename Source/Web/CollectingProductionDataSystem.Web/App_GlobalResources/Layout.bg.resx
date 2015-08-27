@@ -204,6 +204,12 @@
   <data name="RememberMe" xml:space="preserve">
     <value>Запомни ме</value>
   </data>
+  <data name="TanksDateSelector" xml:space="preserve">
+    <value>Дата на отчета</value>
+  </data>
+  <data name="TanksParkSelector" xml:space="preserve">
+    <value>Парк</value>
+  </data>
   <data name="UnitName" xml:space="preserve">
     <value>Наименование на поток</value>
   </data>

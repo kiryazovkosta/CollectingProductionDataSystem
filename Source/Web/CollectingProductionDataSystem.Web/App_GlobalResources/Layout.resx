@@ -201,6 +201,12 @@
   <data name="RememberMe" xml:space="preserve">
     <value>Remember me?</value>
   </data>
+  <data name="TanksDateSelector" xml:space="preserve">
+    <value>Report Date</value>
+  </data>
+  <data name="TanksParkSelector" xml:space="preserve">
+    <value>Report Park</value>
+  </data>
   <data name="UnitName" xml:space="preserve">
     <value>Name</value>
   </data>

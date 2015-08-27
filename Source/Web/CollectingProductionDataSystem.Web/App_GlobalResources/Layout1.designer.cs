@@ -313,6 +313,24 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Report Date.
+        /// </summary>
+        public static string TanksDateSelector {
+            get {
+                return ResourceManager.GetString("TanksDateSelector", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Report Park.
+        /// </summary>
+        public static string TanksParkSelector {
+            get {
+                return ResourceManager.GetString("TanksParkSelector", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Name.
         /// </summary>
         public static string UnitName {

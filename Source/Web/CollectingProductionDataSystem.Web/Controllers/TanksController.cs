@@ -1,11 +1,17 @@
-﻿using CollectingProductionDataSystem.Application.UnitsDataServices;
+﻿using System.Data.Entity;
+using AutoMapper;
+using CollectingProductionDataSystem.Application.UnitsDataServices;
 using CollectingProductionDataSystem.Data.Contracts;
+using CollectingProductionDataSystem.Models.Inventories;
+using CollectingProductionDataSystem.Web.ViewModels.Tank;
+using Kendo.Mvc.Extensions;
 using Kendo.Mvc.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Resources = App_GlobalResources.Resources;
 
 namespace CollectingProductionDataSystem.Web.Controllers
 {
@@ -47,12 +53,13 @@ namespace CollectingProductionDataSystem.Web.Controllers
 
         public JsonResult GetShifts()
         {
-            var shifts = this.data.ProductionShifts.All().Select(a => 
-                new { 
-                    Id = a.Id, 
-                    Name = a.Name, 
-                    Minutes = a.BeginMinutes, 
-                    Offset = a.OffsetMinutes 
+            var shifts = this.data.ProductionShifts.All().Select(a =>
+                new
+                {
+                    Id = a.Id,
+                    Name = a.Name,
+                    Minutes = a.BeginMinutes,
+                    Offset = a.OffsetMinutes
                 });
             return Json(shifts, JsonRequestBehavior.AllowGet);
         }
@@ -60,25 +67,37 @@ namespace CollectingProductionDataSystem.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public JsonResult ReadTanksData([DataSourceRequest]DataSourceRequest request, DateTime? date, int? parkId)
+        public ActionResult ReadTanksData([DataSourceRequest]DataSourceRequest request, DateTime? date, int? parkId, int? shiftMinutesOffset)
         {
-            var tanksData = this.data.TanksData.All().Where(t => t.ParkId == parkId && t.RecordTimestamp == date);
-            return Json(tanksData);
-            //var kendoResult = new DataSourceResult();
-            //try
-            //{
-            //    kendoResult = dbResult.ToDataSourceResult(request, ModelState);
-            //    kendoResult.Data = Mapper.Map<IEnumerable<UnitsData>, IEnumerable<UnitDataViewModel>>((IEnumerable<UnitsData>)kendoResult.Data);
-            //}
-            //catch (ArgumentException ex)
-            //{
-            //    // Dirty hack
-            //    kendoResult.Data = Mapper.Map<IEnumerable<UnitsData>, IEnumerable<UnitDataViewModel>>((IEnumerable<UnitsData>)dbResult);
-            //    kendoResult = kendoResult.Data.ToDataSourceResult(request, ModelState);
-            //}
+            if (date == null)
+            {
+                this.ModelState.AddModelError("date", string.Format(Resources.ErrorMessages.Required, Resources.Layout.TanksDateSelector));
+            }
+            if (parkId == null)
+            {
+                this.ModelState.AddModelError("parks", string.Format(Resources.ErrorMessages.Required, Resources.Layout.TanksParkSelector));
+            }
 
-            //return Json(kendoResult);
+            if (this.ModelState.IsValid)
+            {
+                date = date.Value.AddMinutes(shiftMinutesOffset.Value);
+
+                var dbResult = this.data.TanksData.All()
+                    .Include(t => t.TankConfig)
+                    .Include(t => t.TankConfig.Park)
+                    .Where(t => t.RecordTimestamp == date)
+                    .Where(t => t.ParkId == parkId);
+
+
+                var kendoResult = dbResult.ToDataSourceResult(request, ModelState);
+                kendoResult.Data = Mapper.Map<IEnumerable<TankData>, IEnumerable<TankDataViewModel>>((IEnumerable<TankData>)kendoResult.Data);
+                return Json(kendoResult);
+            }
+            else
+            {
+                var kendoResult = new List<TankDataViewModel>().ToDataSourceResult(request, ModelState);
+                return Json(kendoResult);
+            }
         }
-
     }
 }
