@@ -7,9 +7,8 @@
     using CollectingProductionDataSystem.Models.Abstract;
     using CollectingProductionDataSystem.Models.Contracts;
     using CollectingProductionDataSystem.Models.Nomenclatures;
-    using CollectingProductionDataSystem.Models.Concrete;
 
-    public partial class UnitsManualData : DeletableEntity, IEntity, IValidateable, IValidatableObject
+    public partial class UnitsManualData : DeletableEntity, IEntity, IValidatableObject
     {
         public int Id { get; set; }
         public decimal Value { get; set; }
@@ -24,19 +23,16 @@
         /// <returns>A collection that holds failed-validation information.</returns>
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            yield return new ValidationResult("Не ме кефи Id-то", new string[] { "Id" });
+            if (this.Value <= 0m)
+            {
+                 yield return new ValidationResult("Не ме кефи стойността", new string[] { "Value" });    
+            }
 
-            yield return new ValidationResult("Не ме кефи стойността", new string[] { "Value" });
-        }
-
-        public ValidationMessageCollection Validate()
-        {
-            var validationResult = new ValidationMessageCollection();
-  
-            // Validate Value
-
-            // Validate 
-            return validationResult;
+            if (this.EditReason == null)
+            {
+                yield return new ValidationResult("Не ме кефи стойността", new string[] { "Value" });   
+            }
+            
         }
     }
 }
