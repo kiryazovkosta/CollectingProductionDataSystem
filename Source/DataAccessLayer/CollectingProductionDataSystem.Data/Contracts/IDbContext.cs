@@ -20,5 +20,7 @@
         DbEntityEntry<TEntity> Entry<TEntity>(TEntity entity) where TEntity : class;
         
         IDbSet<T> Set<T>() where T : class;
+
+        IEfStatus SaveChangesWithValidation(string userName);
     }
 }

@@ -40,13 +40,12 @@
         [Display(Name = "CollectingDataMechanism", ResourceType = typeof(Resources.Layout))]
         public string CollectingDataMechanism { get; set; }
 
-        //[Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
         [Display(Name = "AutomaticValue", ResourceType = typeof(Resources.Layout))]
         public decimal? AutomaticValue { get; set; }
 
         [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
         [Display(Name = "ManualValue", ResourceType = typeof(Resources.Layout))]
-        [Range(0,double.MaxValue,ErrorMessageResourceName="ManualValue",ErrorMessageResourceType=typeof(Resources.ErrorMessages))]
+        [Range(0.01,double.MaxValue,ErrorMessageResourceName="ManualValue",ErrorMessageResourceType=typeof(Resources.ErrorMessages))]
         public decimal ManualValue { get; set; }
 
         [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]

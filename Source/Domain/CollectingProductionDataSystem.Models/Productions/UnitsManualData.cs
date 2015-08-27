@@ -9,7 +9,7 @@
     using CollectingProductionDataSystem.Models.Nomenclatures;
 
     public partial class UnitsManualData : DeletableEntity, IEntity, IValidatableObject
-    {
+    {       
         public int Id { get; set; }
         public decimal Value { get; set; }
         public virtual UnitsData UnitsData { get; set; }
@@ -23,16 +23,20 @@
         /// <returns>A collection that holds failed-validation information.</returns>
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            if (this.Value <= 0m)
+            if (this.Id == 0)
             {
-                 yield return new ValidationResult("Не ме кефи стойността", new string[] { "Value" });    
+                yield return new ValidationResult(Resources.ModelErrors.UnitsManualData_Id, new string[] { "Id" });
             }
 
-            if (this.EditReason == null)
+            if (this.Value <= 0 || this.Value > decimal.MaxValue) 
             {
-                yield return new ValidationResult("Не ме кефи стойността", new string[] { "Value" });   
+                yield return new ValidationResult(string.Format(Resources.ModelErrors.UnitsManualData_Value_Range, 0.01M, decimal.MaxValue), new string[] { "ManualValue" });
             }
-            
-        }
+
+            if (this.EditReasonId < 1)
+            {
+                yield return new ValidationResult(Resources.ModelErrors.InvalidEditReason, new string[] { "EditReason" });
+            }
+        }    
     }
 }
