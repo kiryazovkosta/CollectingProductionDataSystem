@@ -35,7 +35,7 @@
 
             if (this.EditReasonId < 1)
             {
-                yield return new ValidationResult(Resources.ModelErrors.InvalidEditReason, new string[] { "EditReason" });
+                yield return new ValidationResult(Resources.ModelErrors.UnitsManualData_InvalidEditReason, new string[] { "EditReason" });
             }
         }    
     }

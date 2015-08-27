@@ -198,6 +198,9 @@
   <data name="ProcessUnitName" xml:space="preserve">
     <value>№ на позиция</value>
   </data>
+  <data name="ProductType" xml:space="preserve">
+    <value>Тип продукт</value>
+  </data>
   <data name="RecordTimestamp" xml:space="preserve">
     <value>Време на запис</value>
   </data>

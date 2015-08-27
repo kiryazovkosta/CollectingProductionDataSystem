@@ -21,6 +21,10 @@
         public string Code { get; set; }
 
         [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
+        [Display(Name = "ProductType", ResourceType = typeof(Resources.Layout))]
+        public string ProductType { get; set; }
+
+        [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
         [Display(Name = "ProcessUnitName", ResourceType = typeof(Resources.Layout))]
         public string ProcessUnitName { get; set; }
 
@@ -59,6 +63,7 @@
         {
             configuration.CreateMap<UnitsData, UnitDataViewModel>()
                 .ForMember(p => p.Code, opt => opt.MapFrom(p => p.Unit.Code))
+                .ForMember(p => p.ProductType, opt => opt.MapFrom(p => p.Unit.ProductType.Name))
                 .ForMember(p => p.ProcessUnitName, opt => opt.MapFrom(p => p.Unit.ProcessUnit.ShortName))
                 .ForMember(p => p.Name, opt => opt.MapFrom(p => p.Unit.Name))
                 .ForMember(p => p.Position, opt => opt.MapFrom(p => p.Unit.Position))

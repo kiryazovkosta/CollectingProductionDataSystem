@@ -20,6 +20,7 @@
             var dbResult = this.data.UnitsData
                 .All()
                 .Include(x => x.Unit)
+                .Include(x => x.Unit.ProductType)
                 .Include(x => x.Unit.ProcessUnit)
                 .Include(x => x.Unit.MeasureUnit)
                 .Include(x=>x.UnitsManualData)

@@ -117,11 +117,11 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="InvalidEditReason" xml:space="preserve">
-    <value>Невалидна причина за корекция.</value>
-  </data>
   <data name="UnitsManualData_Id" xml:space="preserve">
     <value>Полето Id е задължително</value>
+  </data>
+  <data name="UnitsManualData_InvalidEditReason" xml:space="preserve">
+    <value>Невалидна причина за корекция.</value>
   </data>
   <data name="UnitsManualData_Value_Range" xml:space="preserve">
     <value>Стойноста трябва да бъде в диапазона от {0} до {1} .</value>

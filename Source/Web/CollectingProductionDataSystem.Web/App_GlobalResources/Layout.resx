@@ -195,6 +195,9 @@
   <data name="ProcessUnitName" xml:space="preserve">
     <value>Process Unit Name</value>
   </data>
+  <data name="ProductType" xml:space="preserve">
+    <value>Product Type</value>
+  </data>
   <data name="RecordTimestamp" xml:space="preserve">
     <value>Record Timestamp</value>
   </data>
