@@ -15,7 +15,7 @@
             this.data = dataParam;
         }
 
-        public IQueryable<UnitsData> GetUnitsDataForDateTime(DateTime? date, int? processUnit)
+        public IQueryable<UnitsData> GetUnitsDataForDateTime(DateTime? date, int? processUnit, int? offset)
         {
             var dbResult = this.data.UnitsData
                 .All()
@@ -25,9 +25,11 @@
                 .Include(x => x.Unit.MeasureUnit)
                 .Include(x=>x.UnitsManualData)
                 .Include(x => x.UnitsManualData.EditReason);
-            if (date != null)
+            if (date != null && offset != null)
             {
-                dbResult = dbResult.Where(x => x.RecordTimestamp == date);
+                var beginTimestamp = date.Value.AddMinutes(offset.Value);
+                var endTimestamp = beginTimestamp.AddMinutes(120);
+                dbResult = dbResult.Where(x => x.RecordTimestamp > beginTimestamp && x.RecordTimestamp <= endTimestamp);
             }
             if (processUnit != null)
             {

@@ -340,6 +340,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Production Shift.
+        /// </summary>
+        public static string TanksShiftMinutesOffsetSelector {
+            get {
+                return ResourceManager.GetString("TanksShiftMinutesOffsetSelector", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Name.
         /// </summary>
         public static string UnitName {

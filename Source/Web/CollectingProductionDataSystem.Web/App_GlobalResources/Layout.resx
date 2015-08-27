@@ -210,6 +210,9 @@
   <data name="TanksParkSelector" xml:space="preserve">
     <value>Report Park</value>
   </data>
+  <data name="TanksShiftMinutesOffsetSelector" xml:space="preserve">
+    <value>Production Shift</value>
+  </data>
   <data name="UnitName" xml:space="preserve">
     <value>Name</value>
   </data>

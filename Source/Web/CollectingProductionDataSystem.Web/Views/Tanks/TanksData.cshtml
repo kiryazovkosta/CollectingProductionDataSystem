@@ -118,11 +118,11 @@
     <script>
         kendo.culture("@System.Threading.Thread.CurrentThread.CurrentCulture.Name");
 
-        function getZoneId() {
+        function sendZoneId() {
             return { "parkId": $('input[name=parks]').val() }
         }
 
-        function getShiftsOffset() {
+        function sendShiftsOffset() {
             return { "shiftMinutesOffset": $('input[name=shifts]').val() }
         }
 
@@ -132,8 +132,8 @@
 
         var sendDate = function () {
             var result = { "date": $('input[name=date]').val() };
-            $.extend(result, getZoneId());
-            $.extend(result, getShiftsOffset());
+            $.extend(result, sendZoneId());
+            $.extend(result, sendShiftsOffset());
             $.extend(result, sendAntiForgery());
             return result;
         }

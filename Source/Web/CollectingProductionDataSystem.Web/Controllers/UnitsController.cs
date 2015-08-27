@@ -36,9 +36,9 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public JsonResult ReadUnitsData([DataSourceRequest]DataSourceRequest request, DateTime? date, int? processUnit)
+        public JsonResult ReadUnitsData([DataSourceRequest]DataSourceRequest request, DateTime? date, int? processUnitId, int? shiftOffset)
         {
-            var dbResult = this.unitsData.GetUnitsDataForDateTime(date, processUnit);
+            var dbResult = this.unitsData.GetUnitsDataForDateTime(date, processUnitId, shiftOffset);
             var kendoResult = new DataSourceResult();
             try
             {

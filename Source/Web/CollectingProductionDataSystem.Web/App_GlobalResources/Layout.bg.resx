@@ -213,6 +213,9 @@
   <data name="TanksParkSelector" xml:space="preserve">
     <value>Парк</value>
   </data>
+  <data name="TanksShiftMinutesOffsetSelector" xml:space="preserve">
+    <value>Смяна</value>
+  </data>
   <data name="UnitName" xml:space="preserve">
     <value>Наименование на поток</value>
   </data>

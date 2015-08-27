@@ -36,7 +36,7 @@ namespace CollectingProductionDataSystem.Web.Controllers
 
         public JsonResult GetParks(int? areaId, string parksFilter)
         {
-            var parks = this.data.Parks.All().AsQueryable();
+            var parks = this.data.Parks.All();
 
             if (areaId != null)
             {
@@ -76,6 +76,10 @@ namespace CollectingProductionDataSystem.Web.Controllers
             if (parkId == null)
             {
                 this.ModelState.AddModelError("parks", string.Format(Resources.ErrorMessages.Required, Resources.Layout.TanksParkSelector));
+            }
+            if (shiftMinutesOffset == null)
+            {
+                this.ModelState.AddModelError("shifts", string.Format(Resources.ErrorMessages.Required, Resources.Layout.TanksShiftMinutesOffsetSelector));
             }
 
             if (this.ModelState.IsValid)
