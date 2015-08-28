@@ -11,14 +11,13 @@
         @(Html.Kendo().DropDownList()
             .Name("areas")
             .OptionLabel("Изберете област...")
-            .HtmlAttributes(new { style = "width:260px" })
-            .DataTextField("AreaName")
-            .DataValueField("AreaId")
+            .DataTextField("Name")
+            .DataValueField("Id")
             .DataSource(source =>
             {
                 source.Read(read =>
                 {
-                    read.Action("GetAreas", "Tanks");
+                    read.Action("GetAreas", "Ajax");
                 });
             })
         )
@@ -27,14 +26,13 @@
         @(Html.Kendo().DropDownListFor(m => m.ParkId)
             .Name("parks")
             .OptionLabel("Изберете парк...")
-            .HtmlAttributes(new { style = "width:260px" })
-            .DataTextField("ParkName")
-            .DataValueField("ParkId")
+            .DataTextField("Name")
+            .DataValueField("Id")
             .DataSource(source =>
             {
                 source.Read(read =>
                 {
-                    read.Action("GetParks", "Tanks").Data("filterParks");
+                    read.Action("GetParks", "Ajax").Data("filterParks");
                 })
                 .ServerFiltering(true);
             })
@@ -57,14 +55,13 @@
         @(Html.Kendo().DropDownListFor(m => m.ShiftId)
             .Name("shifts")
             .OptionLabel("Изберете смяна...")
-            .HtmlAttributes(new { style = "width:260px" })
             .DataTextField("Name")
             .DataValueField("Minutes")
             .DataSource(source =>
             {
                 source.Read(read =>
                 {
-                    read.Action("GetShifts", "Tanks");
+                    read.Action("GetShifts", "Ajax");
                 });
             })
         )

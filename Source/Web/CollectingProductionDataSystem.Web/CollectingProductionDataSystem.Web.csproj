@@ -253,7 +253,12 @@
     <Compile Include="ViewModels\Identity\RoleCreateViewModel.cs" />
     <Compile Include="ViewModels\Identity\RoleEditViewModel.cs" />
     <Compile Include="ViewModels\Identity\RoleModificationViewModel.cs" />
+    <Compile Include="ViewModels\Nomenclatures\ProductionShiftViewModel.cs" />
+    <Compile Include="ViewModels\Tank\AreaViewModel.cs" />
+    <Compile Include="ViewModels\Tank\ParkViewModel.cs" />
     <Compile Include="ViewModels\Tank\TankDataViewModel.cs" />
+    <Compile Include="ViewModels\Units\FactoryViewModel.cs" />
+    <Compile Include="ViewModels\Units\ProcessUnitViewModel.cs" />
     <Compile Include="ViewModels\Units\UnitDataViewModel.cs" />
   </ItemGroup>
   <ItemGroup>

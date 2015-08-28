@@ -28,43 +28,6 @@ namespace CollectingProductionDataSystem.Web.Controllers
             return View();
         }
 
-        public JsonResult GetAreas()
-        {
-            var areas = this.data.Areas.All().Select(a => new { AreaId = a.Id, AreaName = a.Name });
-            return Json(areas, JsonRequestBehavior.AllowGet);
-        }
-
-        public JsonResult GetParks(int? areaId, string parksFilter)
-        {
-            var parks = this.data.Parks.All();
-
-            if (areaId != null)
-            {
-                parks = parks.Where(p => p.AreaId == areaId);
-            }
-
-            if (!string.IsNullOrEmpty(parksFilter))
-            {
-                parks = parks.Where(p => p.Name.Contains(parksFilter));
-            }
-
-            return Json(parks.Select(p => new { ParkId = p.Id, ParkName = p.Name }), JsonRequestBehavior.AllowGet);
-        }
-
-        public JsonResult GetShifts()
-        {
-            var shifts = this.data.ProductionShifts.All().Select(a =>
-                new
-                {
-                    Id = a.Id,
-                    Name = a.Name,
-                    Minutes = a.BeginMinutes,
-                    Offset = a.OffsetMinutes
-                });
-            return Json(shifts, JsonRequestBehavior.AllowGet);
-        }
-
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult ReadTanksData([DataSourceRequest]DataSourceRequest request, DateTime? date, int? parkId, int? shiftMinutesOffset)

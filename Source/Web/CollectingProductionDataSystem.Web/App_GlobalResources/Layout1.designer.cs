@@ -61,6 +61,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Apply.
+        /// </summary>
+        public static string Apply {
+            get {
+                return ResourceManager.GetString("Apply", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Automatic Loaded.
         /// </summary>
         public static string AutomaticData {
@@ -106,6 +115,33 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Choose factory....
+        /// </summary>
+        public static string ChooseFactory {
+            get {
+                return ResourceManager.GetString("ChooseFactory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Choose process unit....
+        /// </summary>
+        public static string ChooseProcessUnit {
+            get {
+                return ResourceManager.GetString("ChooseProcessUnit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Choose production shift....
+        /// </summary>
+        public static string ChooseProductionShift {
+            get {
+                return ResourceManager.GetString("ChooseProductionShift", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Code.
         /// </summary>
         public static string Code {
@@ -133,6 +169,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Date.
+        /// </summary>
+        public static string Date {
+            get {
+                return ResourceManager.GetString("Date", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Reason For Edit.
         /// </summary>
         public static string EditReason {
@@ -147,6 +192,15 @@ namespace App_GlobalResources.Resources {
         public static string Email {
             get {
                 return ResourceManager.GetString("Email", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Factory.
+        /// </summary>
+        public static string Factory {
+            get {
+                return ResourceManager.GetString("Factory", resourceCulture);
             }
         }
         
@@ -286,11 +340,29 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Process Unit.
+        /// </summary>
+        public static string ProcessUnit {
+            get {
+                return ResourceManager.GetString("ProcessUnit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Process Unit Name.
         /// </summary>
         public static string ProcessUnitName {
             get {
                 return ResourceManager.GetString("ProcessUnitName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Production Shift.
+        /// </summary>
+        public static string ProductionShift {
+            get {
+                return ResourceManager.GetString("ProductionShift", resourceCulture);
             }
         }
         
@@ -363,6 +435,33 @@ namespace App_GlobalResources.Resources {
         public static string UnitsData {
             get {
                 return ResourceManager.GetString("UnitsData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Report Date.
+        /// </summary>
+        public static string UnitsDateSelector {
+            get {
+                return ResourceManager.GetString("UnitsDateSelector", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Process Unit.
+        /// </summary>
+        public static string UnitsProcessUnitSelector {
+            get {
+                return ResourceManager.GetString("UnitsProcessUnitSelector", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Production Shift.
+        /// </summary>
+        public static string UnitsProcessUnitShiftSelector {
+            get {
+                return ResourceManager.GetString("UnitsProcessUnitShiftSelector", resourceCulture);
             }
         }
         
