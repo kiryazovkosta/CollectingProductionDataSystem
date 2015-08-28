@@ -39,27 +39,27 @@
       .Editable(editable => editable.Mode(GridEditMode.InLine))
       .DataSource(dataSource => dataSource
         .Ajax()
-            .PageSize(20)
+        .PageSize(50)
         .ServerOperation(true)
-            .Read(read => read.Action("ReadUnitsData", "Units", new { area = "" }).Data("sendDate"))
-           .Update(update => update.Action("Edit", "Units", new { area = "" }).Data("sendAntiForgery"))
-           .Model(model =>
-           {
-               model.Id(p => p.Id);
-               model.Field(p => p.Code).Editable(false);
-               model.Field(p => p.ProcessUnitName).Editable(false);
-               model.Field(p => p.Name).Editable(false);
-               model.Field(p => p.Position).Editable(false);
-               model.Field(p => p.MeasureUnit).Editable(false);
-               model.Field(p => p.CollectingDataMechanism).Editable(false);
-               model.Field(p => p.AutomaticValue).Editable(false);
-               model.Field(p => p.ManualValue).Editable(true);
-               model.Field(p => p.EditReason).Editable(true);
-           })
-           .Events(events =>
-           {
-               events.Error("error_handler");
-           })
+        .Read(read => read.Action("ReadUnitsData", "Units", new { area = "" }).Data("sendDate"))
+        .Update(update => update.Action("Edit", "Units", new { area = "" }).Data("sendAntiForgery"))
+        .Model(model =>
+        {
+            model.Id(p => p.Id);
+            model.Field(p => p.Code).Editable(false);
+            model.Field(p => p.ProcessUnitName).Editable(false);
+            model.Field(p => p.Name).Editable(false);
+            model.Field(p => p.Position).Editable(false);
+            model.Field(p => p.MeasureUnit).Editable(false);
+            model.Field(p => p.CollectingDataMechanism).Editable(false);
+            model.Field(p => p.AutomaticValue).Editable(false);
+            model.Field(p => p.ManualValue).Editable(true);
+            model.Field(p => p.EditReason).Editable(true);
+        })
+        .Events(events =>
+        {
+            events.Error("error_handler");
+        })
       )
 )
 @* //Error window for kendo grid error event handler *@
@@ -98,13 +98,7 @@
                     }
                 });
                 $('pre#message').text(message);
-                $('div#err-window').modal({ keyboard: false })
-                //$('div#err-window').data("kendoWindow").open();
-                var grid = $("#units").data("kendoGrid");
-                if (grid) {
-                    grid.dataSource.read();
-                    grid.refresh();
-                }
+                $('div#err-window').data("kendoWindow").open();
             }
         }
 
