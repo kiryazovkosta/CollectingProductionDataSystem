@@ -10,14 +10,11 @@
     using CollectingProductionDataSystem.Models.Inventories;
     using Resources = App_GlobalResources.Resources;
 
-    public class TankDataViewModel:IMapFrom<TankData>
+    public class TankDataViewModel:IMapFrom<TankData>, IHaveCustomMappings
     {
-        [Display(Name="Id", ResourceType=typeof(Resources.Layout))]
         public int Id { get; set; }
-
-        //[Display(Name = "RecordTimestamp", ResourceType = typeof(Resources.Layout))]
-        //public DateTime RecordTimestamp { get; set; }
-        //public int ParkId { get; set; }
+        public DateTime RecordTimestamp { get; set; }
+        public int ParkId { get; set; }
         public string ProductName { get; set; }
         public decimal? LiquidLevel { get; set; }
         public decimal? ProductLevel { get; set; }
@@ -26,8 +23,9 @@
         public decimal? WeightInAir { get; set; }
         public decimal? WeightInVacuum { get; set; }
         public decimal? FreeWaterLevel { get; set; }
-        public virtual string TankName { get; set; }
-        public virtual string ParkName { get; set; }
+        public int ShiftId { get; set; }
+        public string TankName { get; set; }
+        public string ParkName { get; set; }
 
         /// <summary>
         /// Creates the mappings.

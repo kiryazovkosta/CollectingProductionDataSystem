@@ -25,10 +25,26 @@ namespace CollectingProductionDataSystem.Web.Controllers
             return Json(reasonView, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult GetZones()
+        public JsonResult GetFactories()
         {
-            var zones = this.data.Zones.All().ToList();
-            return Json(zones, JsonRequestBehavior.AllowGet);
+            var factories = this.data.Factories.All().Select(f => new
+            {
+                Id = f.Id,
+                Name = f.ShortName
+            });
+            return Json(factories, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult GetProcessUnits(int? factoryId)
+        {
+            var processUnits = this.data.ProcessUnits.All();
+
+            if (factoryId != null)
+            {
+                processUnits = processUnits.Where(p => p.FactoryId == factoryId);
+            }
+
+            return Json(processUnits.Select(p => new { Id = p.Id, Name = p.ShortName }), JsonRequestBehavior.AllowGet);
         }
     }
 }

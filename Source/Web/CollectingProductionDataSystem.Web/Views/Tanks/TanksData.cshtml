@@ -1,22 +1,19 @@
 ﻿@using CollectingProductionDataSystem.Web.ViewModels.Tank;
 @model TankDataViewModel
-
 @{
     Layout = "~/Views/Shared/_KendoLayout.cshtml";
 }
-
 <h2>Tanks Data</h2>
 @Html.ValidationSummary()
 @Html.AntiForgeryToken()
 <div class="row">
     <div class="col-lg-3">
-        @(Html.Kendo().ComboBox()
+        @(Html.Kendo().DropDownList()
             .Name("areas")
-            .Placeholder("Изберете област...")
+            .OptionLabel("Изберете област...")
             .HtmlAttributes(new { style = "width:260px" })
             .DataTextField("AreaName")
             .DataValueField("AreaId")
-            .Filter(FilterType.Contains)
             .DataSource(source =>
             {
                 source.Read(read =>
@@ -27,13 +24,12 @@
         )
     </div>
     <div class="col-lg-3">
-        @(Html.Kendo().ComboBox()
+        @(Html.Kendo().DropDownListFor(m => m.ParkId)
             .Name("parks")
-            .Placeholder("Изберете парк...")
+            .OptionLabel("Изберете парк...")
             .HtmlAttributes(new { style = "width:260px" })
             .DataTextField("ParkName")
             .DataValueField("ParkId")
-            .Filter(FilterType.Contains)
             .DataSource(source =>
             {
                 source.Read(read =>
@@ -49,23 +45,21 @@
         <script>
             function filterParks() {
                 return {
-                    areaId: $("#areas").val(),
-                    parksFilter: $("#parks").data("kendoComboBox").input.val()
+                    areaId: $("#areas").val()
                 };
             }
         </script>
     </div>
-    <div class="col-lg-3">
+    <div class="col-lg-2">
         @Html.Kendo().DatePicker().Name("date").Culture("bg-BG")
     </div>
-    <div class="col-lg-3">
-        @(Html.Kendo().ComboBox()
+    <div class="col-lg-2">
+        @(Html.Kendo().DropDownListFor(m => m.ShiftId)
             .Name("shifts")
-            .Placeholder("Изберете смяна...")
+            .OptionLabel("Изберете смяна...")
             .HtmlAttributes(new { style = "width:260px" })
             .DataTextField("Name")
-            .DataValueField("Id")
-            .Filter(FilterType.Contains)
+            .DataValueField("Minutes")
             .DataSource(source =>
             {
                 source.Read(read =>
@@ -75,7 +69,7 @@
             })
         )
     </div>
-    <div class="col-lg-3">
+    <div class="col-lg-2">
         <button id="apply" type="button" class="btn btn-primary">Apply Filter</button>
     </div>
 </div>
@@ -85,8 +79,9 @@
         .AutoBind(false)
         .Columns(columns =>
             {
+                columns.Bound(c => c.RecordTimestamp).Format("{0:dd.MM.yyyy HH:mm}");
                 columns.Bound(c => c.ParkName);
-                columns.Bound(c => c.TankName).Width(100);
+                columns.Bound(c => c.TankName);
                 columns.Bound(c => c.ProductName);
                 columns.Bound(c => c.LiquidLevel);
                 columns.Bound(c => c.ProductLevel);
@@ -108,17 +103,37 @@
             .PageSize(20)
             .ServerOperation(true)
             .Read(read => read.Action("ReadTanksData", "Tanks", new { area = "" })
-                .Data("sendDate")))
+                .Data("sendDate"))
+                             .Events(events =>
+                           {
+                               events.Error("error_handler");
+                           }))
+
     )
 </div>
-
+@* //Error window for kendo grid error event handler *@
+<div id="err-window" style="display:none">@Html.Partial("_KendoGridErrorWindow")</div>
 @section scripts{
     <script src="~/Scripts/custom/sendAntiForgery.js"></script>
     <script>
         kendo.culture("@System.Threading.Thread.CurrentThread.CurrentCulture.Name");
 
+        function sendZoneId() {
+            return { "parkId": $('input[name=parks]').val() }
+        }
+
+        function sendShiftsOffset() {
+            return { "shiftMinutesOffset": $('input[name=shifts]').val() }
+        }
+
+        function sendAntiForgery() {
+            return { "__RequestVerificationToken": $('input[name=__RequestVerificationToken]').val() }
+        }
+
         var sendDate = function () {
             var result = { "date": $('input[name=date]').val() };
+            $.extend(result, sendZoneId());
+            $.extend(result, sendShiftsOffset());
             $.extend(result, sendAntiForgery());
             return result;
         }
@@ -148,6 +163,10 @@
         }
 
         $(document).ready(function () {
+            //var areas = $("#areas").data("kendoDropDownList"),
+            //    parks = $("#parks").data("kendoDropDownList"),
+            //    shifts = $("#shifts").data("kendoDropDownList");
+
             $("#apply").click(function () {
                 var grid = $("#tanks").data("kendoGrid");
                 grid.dataSource.read();
@@ -171,19 +190,5 @@
                 maxHeight: 350
             });
         }
-
-        $(document).ready(function () {
-            var areas = $("#areas").data("kendoComboBox"),
-                parks = $("#parks").data("kendoComboBox"),
-                shifts = $("#shifts").data("kendoComboBox");
-
-            $("#apply").click(function () {
-                var areaInfo = "\nArea: { id: " + areas.value() + ", name: " + areas.text() + " }",
-                    parkInfo = "\nPark: { id: " + parks.value() + ", name: " + parks.text() + " }";
-                shiftInfo = "\nShift: { id: " + shifts.value() + ", name: " + shifts.text() + " }";
-
-                alert("Details:\n" + areaInfo + parkInfo);
-            });
-        });
     </script>
 }

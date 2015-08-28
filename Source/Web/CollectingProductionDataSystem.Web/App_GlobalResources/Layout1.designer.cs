@@ -295,6 +295,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Product Type.
+        /// </summary>
+        public static string ProductType {
+            get {
+                return ResourceManager.GetString("ProductType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Record Timestamp.
         /// </summary>
         public static string RecordTimestamp {
@@ -309,6 +318,33 @@ namespace App_GlobalResources.Resources {
         public static string RememberMe {
             get {
                 return ResourceManager.GetString("RememberMe", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Report Date.
+        /// </summary>
+        public static string TanksDateSelector {
+            get {
+                return ResourceManager.GetString("TanksDateSelector", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Report Park.
+        /// </summary>
+        public static string TanksParkSelector {
+            get {
+                return ResourceManager.GetString("TanksParkSelector", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Production Shift.
+        /// </summary>
+        public static string TanksShiftMinutesOffsetSelector {
+            get {
+                return ResourceManager.GetString("TanksShiftMinutesOffsetSelector", resourceCulture);
             }
         }
         

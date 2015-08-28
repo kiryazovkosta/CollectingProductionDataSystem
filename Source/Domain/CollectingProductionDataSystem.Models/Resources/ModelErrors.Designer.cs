@@ -61,20 +61,20 @@ namespace CollectingProductionDataSystem.Models.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid Edit Reason.
-        /// </summary>
-        public static string InvalidEditReason {
-            get {
-                return ResourceManager.GetString("InvalidEditReason", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to The Field Id is Required.
         /// </summary>
         public static string UnitsManualData_Id {
             get {
                 return ResourceManager.GetString("UnitsManualData_Id", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid Edit Reason.
+        /// </summary>
+        public static string UnitsManualData_InvalidEditReason {
+            get {
+                return ResourceManager.GetString("UnitsManualData_InvalidEditReason", resourceCulture);
             }
         }
         

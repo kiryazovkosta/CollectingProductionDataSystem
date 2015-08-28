@@ -8,13 +8,84 @@
     <h2>@Resources.Layout.UnitsData</h2>
     @Html.ValidationSummary()
     @Html.AntiForgeryToken()
+
+<div class="row">
+    <div class="col-lg-3">
+        @(Html.Kendo().DropDownList()
+            .Name("factories")
+            .OptionLabel("Изберете производство...")
+            .HtmlAttributes(new { style = "width:260px" })
+            .DataTextField("Name")
+            .DataValueField("Id")
+            .DataSource(source =>
+            {
+                source.Read(read =>
+                {
+                    read.Action("GetFactories", "Ajax");
+                });
+            })
+        )
+    </div>
+    <div class="col-lg-3">
+        @(Html.Kendo().DropDownList()
+            .Name("processunits")
+            .OptionLabel("Изберете инсталация...")
+            .HtmlAttributes(new { style = "width:260px" })
+            .DataTextField("Name")
+            .DataValueField("Id")
+            .DataSource(source =>
+            {
+                source.Read(read =>
+                {
+                    read.Action("GetProcessUnits", "Ajax").Data("sendFactory");
+                })
+                .ServerFiltering(true);
+            })
+            .Enable(false)
+            .AutoBind(false)
+            .CascadeFrom("factories")
+        )
+        <script>
+            function sendFactory() {
+                return {
+                    factoryId: $("#factories").val()
+                };
+            }
+        </script>
+    </div>
+    <div class="col-lg-2">
+        @(Html.Kendo().DropDownList()
+            .Name("shifts")
+            .OptionLabel("Изберете смяна...")
+            .HtmlAttributes(new { style = "width:260px" })
+            .DataTextField("Name")
+            .DataValueField("Minutes")
+            .DataSource(source =>
+            {
+                source.Read(read =>
+                {
+                    read.Action("GetShifts", "Tanks");
+                });
+            })
+        )
+    </div>
+    <div class="col-lg-2">
+        @Html.Kendo().DatePicker().Name("date").Culture("bg-BG")
+    </div>
+    <div class="col-lg-2">
+        <button id="apply" type="button" class="btn btn-primary">Apply</button>
+    </div>
+</div>
+
     @(Html.Kendo()
     .Grid<UnitDataViewModel>()
     .Name("units")
+        .AutoBind(false)
       .Columns(
            columns =>
            {
                columns.Bound(c => c.Code).Width(77);
+               columns.Bound(c => c.ProductType);
                columns.Bound(c => c.ProcessUnitName).Width(100);
                columns.Bound(c => c.Name);
                columns.Bound(c => c.Position).Width(140);
@@ -66,9 +137,19 @@
         <script>
             kendo.culture("@System.Threading.Thread.CurrentThread.CurrentCulture.Name");
 
+            function sendProcessUnit() {
+                return { "processUnitId": $('input[name=processunits]').val() }
+            }
+
+            function sendShift() {
+                return { "shiftOffset": $('input[name=shifts]').val() }
+            }
+
 
             var sendDate = function () {
                 var result = { "date": $('input[name=date]').val() };
+                $.extend(result, sendProcessUnit());
+                $.extend(result, sendShift());
                 $.extend(result, sendAntiForgery());
                 return result;
             }
@@ -105,7 +186,7 @@
 
             $(document).ready(function () {
                 $("#apply").click(function () {
-                    var grid = $("#tanks").data("kendoGrid");
+                    var grid = $("#units").data("kendoGrid");
                     grid.dataSource.read();
                     grid.refresh();
                 });

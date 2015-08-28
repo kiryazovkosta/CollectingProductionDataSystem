@@ -195,11 +195,23 @@
   <data name="ProcessUnitName" xml:space="preserve">
     <value>Process Unit Name</value>
   </data>
+  <data name="ProductType" xml:space="preserve">
+    <value>Product Type</value>
+  </data>
   <data name="RecordTimestamp" xml:space="preserve">
     <value>Record Timestamp</value>
   </data>
   <data name="RememberMe" xml:space="preserve">
     <value>Remember me?</value>
+  </data>
+  <data name="TanksDateSelector" xml:space="preserve">
+    <value>Report Date</value>
+  </data>
+  <data name="TanksParkSelector" xml:space="preserve">
+    <value>Report Park</value>
+  </data>
+  <data name="TanksShiftMinutesOffsetSelector" xml:space="preserve">
+    <value>Production Shift</value>
   </data>
   <data name="UnitName" xml:space="preserve">
     <value>Name</value>

@@ -33,7 +33,7 @@ namespace CollectingProductionDataSystem.Validators.Concrete
 
             if (model.EditReasonId < 1)
             {
-                yield return new ValidationResult(Resources.ModelErrors.InvalidEditReason, new string[] { "Value" });
+                yield return new ValidationResult(Resources.ModelErrors.UnitsManualData_InvalidEditReason, new string[] { "Value" });
             }
         }
     }

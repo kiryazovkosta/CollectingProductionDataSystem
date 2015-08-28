@@ -117,11 +117,11 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="InvalidEditReason" xml:space="preserve">
-    <value>Invalid Edit Reason</value>
-  </data>
   <data name="UnitsManualData_Id" xml:space="preserve">
     <value>The Field Id is Required</value>
+  </data>
+  <data name="UnitsManualData_InvalidEditReason" xml:space="preserve">
+    <value>Invalid Edit Reason</value>
   </data>
   <data name="UnitsManualData_Value_Range" xml:space="preserve">
     <value>The value must be between {0} and {1} .</value>
