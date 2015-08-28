@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Apply" xml:space="preserve">
+    <value>Apply</value>
+  </data>
   <data name="AutomaticData" xml:space="preserve">
     <value>Automatic Loaded</value>
   </data>
@@ -132,6 +135,15 @@
   <data name="ChanhePasswordSuccess" xml:space="preserve">
     <value>You have change your password successfully!</value>
   </data>
+  <data name="ChooseFactory" xml:space="preserve">
+    <value>Choose factory...</value>
+  </data>
+  <data name="ChooseProcessUnit" xml:space="preserve">
+    <value>Choose process unit...</value>
+  </data>
+  <data name="ChooseProductionShift" xml:space="preserve">
+    <value>Choose production shift...</value>
+  </data>
   <data name="Code" xml:space="preserve">
     <value>Code</value>
   </data>
@@ -141,11 +153,17 @@
   <data name="ConfirmPassword" xml:space="preserve">
     <value>Confirm Password</value>
   </data>
+  <data name="Date" xml:space="preserve">
+    <value>Date</value>
+  </data>
   <data name="EditReason" xml:space="preserve">
     <value>Reason For Edit</value>
   </data>
   <data name="Email" xml:space="preserve">
     <value>E-mail</value>
+  </data>
+  <data name="Factory" xml:space="preserve">
+    <value>Factory</value>
   </data>
   <data name="FirstName" xml:space="preserve">
     <value>First Name</value>
@@ -192,8 +210,14 @@
   <data name="Position" xml:space="preserve">
     <value>Position</value>
   </data>
+  <data name="ProcessUnit" xml:space="preserve">
+    <value>Process Unit</value>
+  </data>
   <data name="ProcessUnitName" xml:space="preserve">
     <value>Process Unit Name</value>
+  </data>
+  <data name="ProductionShift" xml:space="preserve">
+    <value>Production Shift</value>
   </data>
   <data name="ProductType" xml:space="preserve">
     <value>Product Type</value>
@@ -218,6 +242,15 @@
   </data>
   <data name="UnitsData" xml:space="preserve">
     <value>Units Data</value>
+  </data>
+  <data name="UnitsDateSelector" xml:space="preserve">
+    <value>Report Date</value>
+  </data>
+  <data name="UnitsProcessUnitSelector" xml:space="preserve">
+    <value>Process Unit</value>
+  </data>
+  <data name="UnitsProcessUnitShiftSelector" xml:space="preserve">
+    <value>Production Shift</value>
   </data>
   <data name="UserName" xml:space="preserve">
     <value>User Name</value>
