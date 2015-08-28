@@ -12,21 +12,21 @@
 </head>
 <body>
     @Html.Partial("_MainNav")
-    @* --- Side bar --- *@
-    <div class="row">
+    <div class="row max-width-100">
         <div class="col-lg-2">
+            @* --- Side bar --- *@
             <div class="panel panel-default panel-collapse">
                 <div class="panel-heading">Parameters <a id="naw-collapse" class="pull-right text-muted" data-toggle="collapse" href="#nav-body" aria-expanded="true" aria-controls="nav-body"><span class="glyphicon glyphicon-chevron-up"></span></a></div>
                 <div id="nav-body" class="panel-body collapse in">
-                    <div class="container form-inline" role="form">
+                    @*<div class="container" role="form">*@
                         @RenderSection("sidebar", false)
-                    </div>
+                    @*</div>*@
                 </div>
             </div>
             @* --- End of Side Bar --- *@
         </div>
         <div class="col-lg-10">
-            <div class="container body-content">
+            <div class="container body-content grid-container">
                 @RenderBody()
                 <hr />
                 <footer>

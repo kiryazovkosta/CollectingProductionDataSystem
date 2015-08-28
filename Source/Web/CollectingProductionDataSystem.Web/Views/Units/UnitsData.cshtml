@@ -1,87 +1,19 @@
 ﻿@using CollectingProductionDataSystem.Web.ViewModels.Units;
 @using Resources = App_GlobalResources.Resources;
-    @model UnitDataViewModel
-    @{
-        Layout = "~/Views/Shared/_KendoLayoutWithSideBar.cshtml";
+@model UnitDataViewModel
+@{
+    Layout = "~/Views/Shared/_KendoLayoutWithSideBar.cshtml";
     //Layout = "~/Views/Shared/_KendoLayout.cshtml";
-    }
-    <h2>@Resources.Layout.UnitsData</h2>
-    @Html.ValidationSummary()
-    @Html.AntiForgeryToken()
+}
+<h2>@Resources.Layout.UnitsData</h2>
+@Html.ValidationSummary()
+@Html.AntiForgeryToken()
 
-<div class="row">
-    <div class="col-lg-3">
-        @(Html.Kendo().DropDownList()
-            .Name("factories")
-            .OptionLabel("Изберете производство...")
-            .HtmlAttributes(new { style = "width:260px" })
-            .DataTextField("Name")
-            .DataValueField("Id")
-            .DataSource(source =>
-            {
-                source.Read(read =>
-                {
-                    read.Action("GetFactories", "Ajax");
-                });
-            })
-        )
-    </div>
-    <div class="col-lg-3">
-        @(Html.Kendo().DropDownList()
-            .Name("processunits")
-            .OptionLabel("Изберете инсталация...")
-            .HtmlAttributes(new { style = "width:260px" })
-            .DataTextField("Name")
-            .DataValueField("Id")
-            .DataSource(source =>
-            {
-                source.Read(read =>
-                {
-                    read.Action("GetProcessUnits", "Ajax").Data("sendFactory");
-                })
-                .ServerFiltering(true);
-            })
-            .Enable(false)
-            .AutoBind(false)
-            .CascadeFrom("factories")
-        )
-        <script>
-            function sendFactory() {
-                return {
-                    factoryId: $("#factories").val()
-                };
-            }
-        </script>
-    </div>
-    <div class="col-lg-2">
-        @(Html.Kendo().DropDownList()
-            .Name("shifts")
-            .OptionLabel("Изберете смяна...")
-            .HtmlAttributes(new { style = "width:260px" })
-            .DataTextField("Name")
-            .DataValueField("Minutes")
-            .DataSource(source =>
-            {
-                source.Read(read =>
-                {
-                    read.Action("GetShifts", "Tanks");
-                });
-            })
-        )
-    </div>
-    <div class="col-lg-2">
-        @Html.Kendo().DatePicker().Name("date").Culture("bg-BG")
-    </div>
-    <div class="col-lg-2">
-        <button id="apply" type="button" class="btn btn-primary">Apply</button>
-    </div>
-</div>
-
-    @(Html.Kendo()
+@(Html.Kendo()
     .Grid<UnitDataViewModel>()
     .Name("units")
-        .AutoBind(false)
-      .Columns(
+    .AutoBind(false)
+    .Columns(
            columns =>
            {
                columns.Bound(c => c.Code).Width(77);
@@ -129,87 +61,87 @@
                events.Error("error_handler");
            })
       )
-    )
-    @* //Error window for kendo grid error event handler *@
-    <div id="err-window" style="display:none">@Html.Partial("_KendoGridErrorWindow")</div>
-    @section scripts{
-        <script src="~/Scripts/custom/sendAntiForgery.js"></script>
-        <script>
-            kendo.culture("@System.Threading.Thread.CurrentThread.CurrentCulture.Name");
+)
+@* //Error window for kendo grid error event handler *@
+<div id="err-window" style="display:none">@Html.Partial("_KendoGridErrorWindow")</div>
+@section scripts{
+    <script src="~/Scripts/custom/sendAntiForgery.js"></script>
+    <script>
+        kendo.culture("@System.Threading.Thread.CurrentThread.CurrentCulture.Name");
 
-            function sendProcessUnit() {
-                return { "processUnitId": $('input[name=processunits]').val() }
-            }
+        function sendProcessUnit() {
+            return { "processUnitId": $('input[name=processunits]').val() }
+        }
 
-            function sendShift() {
-                return { "shiftOffset": $('input[name=shifts]').val() }
-            }
+        function sendShift() {
+            return { "shiftOffset": $('input[name=shifts]').val() }
+        }
 
 
-            var sendDate = function () {
-                var result = { "date": $('input[name=date]').val() };
-                $.extend(result, sendProcessUnit());
-                $.extend(result, sendShift());
-                $.extend(result, sendAntiForgery());
-                return result;
-            }
+        var sendDate = function () {
+            var result = { "date": $('input[name=date]').val() };
+            $.extend(result, sendProcessUnit());
+            $.extend(result, sendShift());
+            $.extend(result, sendAntiForgery());
+            return result;
+        }
 
-            function error_handler(e) {
-                if (e.errors) {
-                    var message = "";
-                    $.each(e.errors, function (key, value) {
-                        if ('errors' in value) {
-                            message += key + " - ";
-                            $.each(value.errors, function () {
-                                message += this + "\n";
-                            });
-                        }
-                    });
-                    $('pre#message').text(message);
-                    $('div#err-window').modal({ keyboard: false })
-                    //$('div#err-window').data("kendoWindow").open();
-                    var grid = $("#units").data("kendoGrid");
-                    if (grid) {
-                        grid.dataSource.read();
-                        grid.refresh();
+        function error_handler(e) {
+            if (e.errors) {
+                var message = "";
+                $.each(e.errors, function (key, value) {
+                    if ('errors' in value) {
+                        message += key + " - ";
+                        $.each(value.errors, function () {
+                            message += this + "\n";
+                        });
                     }
-                }
-            }
-
-            function closeWindow() {
-                $('div#err-window').data("kendoWindow").close();
-            }
-
-            function recordTimeStampFilter(element) {
-                element.kendoDateTimePicker();
-            }
-
-            $(document).ready(function () {
-                $("#apply").click(function () {
-                    var grid = $("#units").data("kendoGrid");
+                });
+                $('pre#message').text(message);
+                $('div#err-window').modal({ keyboard: false })
+                //$('div#err-window').data("kendoWindow").open();
+                var grid = $("#units").data("kendoGrid");
+                if (grid) {
                     grid.dataSource.read();
                     grid.refresh();
-                });
-                prepareWindow();
-            });
-
-            function prepareWindow() {
-                var window = $('div#err-window')
-                window.kendoWindow({
-                    width: "650px",
-                    title: "Възникна грешка в приложението",
-                    actions: ["Close"],
-                    modal: true,
-                    position: {
-                        top: "30%", // or "100px"
-                        left: "30%"
-                    },
-                    minHeight: 100,
-                    maxHeight: 350
-                });
+                }
             }
-        </script>
-    }   
+        }
+
+        function closeWindow() {
+            $('div#err-window').data("kendoWindow").close();
+        }
+
+        function recordTimeStampFilter(element) {
+            element.kendoDateTimePicker();
+        }
+
+        $(document).ready(function () {
+            $("#apply").click(function () {
+                var grid = $("#units").data("kendoGrid");
+                grid.dataSource.read();
+                grid.refresh();
+            });
+            prepareWindow();
+        });
+
+        function prepareWindow() {
+            var window = $('div#err-window')
+            window.kendoWindow({
+                width: "650px",
+                title: "Възникна грешка в приложението",
+                actions: ["Close"],
+                modal: true,
+                position: {
+                    top: "30%", // or "100px"
+                    left: "30%"
+                },
+                minHeight: 100,
+                maxHeight: 350
+            });
+        }
+    </script>
+}
 @section sidebar{
-@Html.RenderPartial("_SampleSideBar")
+    @Html.Partial("_SampleSideBar")
 }
