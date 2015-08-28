@@ -12,30 +12,30 @@
 </head>
 <body>
     @Html.Partial("_MainNav")
-    <div class="row max-width-100">
-        <div id="aside" class="col-lg-2">
+    <div id="page-wrapper" class="container-fluid">
+        <div class="sidebar-wtapper">
             @* --- Side bar --- *@
             <div class="sidebar">
-                <div class="sidebar-content">
+                <div class="text-center"style="color:darkgray;font-size:16px;font-weight:bold;width:100%;height:40px;line-height:40px;overflow:hidden;">Параметри на отчета</div><hr style="margin-top:0"/>
+                <div class="container-fluid">
                     @RenderSection("sidebar", false)
                 </div>
             </div>
             <div class="sidebar-sidebaner">
-                <div class="sidebar-sidebaner-erapper">
+                <div class="sidebar-sidebaner-wrapper">
                     <a id="slide" href="#" class="pull-right" aria-expanded="true"><span class="glyphicon glyphicon-chevron-up"></span></a>
                     some text
                 </div>
             </div>
             @* --- End of Side Bar --- *@
         </div>
-        <div id="content"class="col-lg-10">
-            <div class="container body-content grid-container">
-                @RenderBody()
-                <hr />
-                <footer>
-                    <p>&copy; @DateTime.Now.Year - Бизнес Мениджмънт Системс ЕООД</p>
-                </footer>
-            </div>
+        <div id="content-wrapper" class="container-fluid">
+            @RenderBody()
+            <hr />
+            <footer>
+                <p>&copy; @DateTime.Now.Year - Бизнес Мениджмънт Системс ЕООД</p>
+            </footer>
+            @*</div>*@
         </div>
     </div>
     @Scripts.Render("~/bundles/bootstrap")

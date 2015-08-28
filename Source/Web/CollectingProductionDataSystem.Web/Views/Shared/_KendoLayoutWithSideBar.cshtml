@@ -4,6 +4,7 @@
 
 @section styles{
     @Styles.Render("~/Content/kendo")
+    @Styles.Render("~/Content/custom/slidebar")
     @RenderSection("styles", required: false)
 }
 
@@ -11,11 +12,11 @@
 
 @section scripts{
     @Scripts.Render("~/bundles/kendo")
+    @Scripts.Render("~/bundles/custom/sidebar");
     @RenderSection("scripts", required: false)
-    <script src="~/Scripts/custom/sidebar.js"></script>
 }
 
 @section sidebar{
-@RenderSection("sidebar",false)
+    @RenderSection("sidebar", false)
 }
 

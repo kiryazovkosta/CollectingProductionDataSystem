@@ -24,6 +24,8 @@ namespace CollectingProductionDataSystem.Web.AppStart
             bundles.Add(new StyleBundle("~/Content/kendo").Include(
                     "~/Content/kendo/kendo.common-bootstrap.min.css",
                     "~/Content/kendo/kendo.bootstrap.min.css"));
+            bundles.Add(new StyleBundle("~/Content/custom/slidebar").Include(
+                "~/Content/custom/slidebar.css"));
         }
 
         private static void ConfigureScriptBundles(BundleCollection bundles)
@@ -48,6 +50,9 @@ namespace CollectingProductionDataSystem.Web.AppStart
                 // "~/Scripts/kendo/kendo.timezones.min.js", // uncomment if using the Scheduler
             "~/Scripts/kendo/kendo.aspnetmvc.min.js",
             "~/Scripts/kendo/cultures/kendo.culture." + System.Threading.Thread.CurrentThread.CurrentCulture.Name + ".min.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/custom/sidebar").Include(
+                "~/Scripts/custom/sidebar.js"));
         }
     }
 }

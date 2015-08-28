@@ -1,9 +1,8 @@
 ﻿@using Resources = App_GlobalResources.Resources;
 
-<div class="sidebar-wrapper form-inline">
-    <div class="form-group">
-        <label for="factories">@Resources.Layout.Factory</label>
-            @(Html.Kendo().DropDownList()
+<div class="form-group">
+    <label for="factories">@Resources.Layout.Factory</label>
+    @(Html.Kendo().DropDownList()
             .Name("factories")
             .OptionLabel(Resources.Layout.ChooseFactory)
             .HtmlAttributes(new { style = "width:95%" })
@@ -16,11 +15,11 @@
                     read.Action("GetFactories", "Ajax");
                 });
             })
-            )
-    </div>
-    <div class="form-group">
-        <label for="processunits">@Resources.Layout.ProcessUnit</label>
-            @(Html.Kendo().DropDownList()
+    )
+</div>
+<div class="form-group">
+    <label for="processunits">@Resources.Layout.ProcessUnit</label>
+    @(Html.Kendo().DropDownList()
             .Name("processunits")
             .OptionLabel(Resources.Layout.ChooseProcessUnit)
             .HtmlAttributes(new { style = "width:95%" })
@@ -37,19 +36,19 @@
             .Enable(false)
             .AutoBind(false)
             .CascadeFrom("factories")
-            )
+    )
 
-    </div>
-    <script>
-        function sendFactory() {
-            return {
-                factoryId: $("#factories").val()
-            };
-        }
-    </script>
-    <div class="form-group">
-        <label for="shifts">@Resources.Layout.ProductionShift</label>
-        @(Html.Kendo().DropDownList()
+</div>
+<script>
+    function sendFactory() {
+        return {
+            factoryId: $("#factories").val()
+        };
+    }
+</script>
+<div class="form-group">
+    <label for="shifts">@Resources.Layout.ProductionShift</label>
+    @(Html.Kendo().DropDownList()
             .Name("shifts")
             .OptionLabel(Resources.Layout.ChooseProductionShift)
             .HtmlAttributes(new { style = "width:95%" })
@@ -62,14 +61,13 @@
                     read.Action("GetShifts", "Ajax");
                 });
             })
-        )
-    </div>
-    <div class="form-group">
-        <label for="date">@Resources.Layout.Date</label>
-        @Html.Kendo().DatePicker().Name("date").Culture("bg-BG").HtmlAttributes(new { style = "width:95%" })
-    </div>
-    <hr/>
-    <div class="form-group">
-        <button id="apply" type="button" class="btn btn-primary">@Resources.Layout.Apply</button>
-    </div>
+    )
+</div>
+<div class="form-group">
+    <label for="date">@Resources.Layout.Date</label>
+    @Html.Kendo().DatePicker().Name("date").Culture("bg-BG").HtmlAttributes(new { style = "width:95%" })
+</div>
+<hr />
+<div class="form-group">
+    <button id="apply" type="button" class="btn btn-primary">@Resources.Layout.Apply</button>
 </div>
