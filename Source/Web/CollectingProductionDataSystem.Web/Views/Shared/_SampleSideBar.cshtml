@@ -1,0 +1,35 @@
+﻿@model CollectingProductionDataSystem.Web.ViewModels.Identity.RegisterViewModel
+<div class="form-group">
+    @Html.LabelFor(m => m.Email, new { @class = " control-label" })
+    <div class="">
+        @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(m => m.Password, new { @class = "control-label" })
+    <div>
+        @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(m => m.ConfirmPassword, new { @class = "control-label" })
+    <div class="">
+        @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(m => m.Email, new { @class = " control-label" })
+    <div class="">
+        @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(m => m.Password, new { @class = "control-label" })
+    <div>
+        @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+    </div>
+</div>
+<hr />
+<div class="form-group">
+    <input type="submit" class="btn btn-default" value="Register" />
+</div>

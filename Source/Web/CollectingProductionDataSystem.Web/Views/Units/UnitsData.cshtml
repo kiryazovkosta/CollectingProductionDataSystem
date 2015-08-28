@@ -2,7 +2,8 @@
 @using Resources = App_GlobalResources.Resources;
     @model UnitDataViewModel
     @{
-    Layout = "~/Views/Shared/_KendoLayout.cshtml";
+        Layout = "~/Views/Shared/_KendoLayoutWithSideBar.cshtml";
+    //Layout = "~/Views/Shared/_KendoLayout.cshtml";
     }
     <h2>@Resources.Layout.UnitsData</h2>
     @Html.ValidationSummary()
@@ -84,7 +85,8 @@
                         }
                     });
                     $('pre#message').text(message);
-                    $('div#err-window').data("kendoWindow").open();
+                    $('div#err-window').modal({ keyboard: false })
+                    //$('div#err-window').data("kendoWindow").open();
                     var grid = $("#units").data("kendoGrid");
                     if (grid) {
                         grid.dataSource.read();
@@ -127,3 +129,6 @@
             }
         </script>
     }   
+@section sidebar{
+@Html.RenderPartial("_SampleSideBar")
+}

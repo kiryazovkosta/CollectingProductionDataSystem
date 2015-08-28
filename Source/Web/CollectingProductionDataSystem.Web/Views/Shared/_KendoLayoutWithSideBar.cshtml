@@ -1,0 +1,20 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutWithSideBar.cshtml";
+}
+
+@section styles{
+    @Styles.Render("~/Content/kendo")
+    @RenderSection("styles", required: false)
+}
+
+@RenderBody()
+
+@section scripts{
+    @Scripts.Render("~/bundles/kendo")
+    @RenderSection("scripts", required: false)
+}
+
+@section sidebar{
+@RenderSection("sidebar",false)
+}
+

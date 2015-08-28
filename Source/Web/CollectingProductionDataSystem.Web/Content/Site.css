@@ -120,3 +120,7 @@ a.k-button.k-button-icontext.k-grid-edit, a.k-button.k-button-icontext.k-grid-de
     margin-right:auto;
     width:90%;
 }
+
+.k-grid {
+    width: 95%;
+}

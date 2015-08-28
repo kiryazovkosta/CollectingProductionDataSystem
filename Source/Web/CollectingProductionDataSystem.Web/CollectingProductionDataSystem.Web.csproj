@@ -1248,6 +1248,10 @@
     <Content Include="Views\Shared\EditorTemplates\EditReasonInputModel.cshtml" />
     <Content Include="Views\Shared\_KendoGridErrorWindow.cshtml" />
     <Content Include="Views\Tanks\TanksData.cshtml" />
+    <Content Include="Views\Shared\_LayoutWithSideBar.cshtml" />
+    <Content Include="Views\Shared\_MainNav.cshtml" />
+    <Content Include="Views\Shared\_KendoLayoutWithSideBar.cshtml" />
+    <Content Include="Views\Shared\_SampleSideBar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
