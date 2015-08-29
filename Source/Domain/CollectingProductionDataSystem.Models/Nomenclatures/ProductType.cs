@@ -13,11 +13,13 @@ namespace CollectingProductionDataSystem.Models.Nomenclatures
         {
             this.Products = new HashSet<Product>();
             this.Units = new HashSet<UnitConfig>();
+            this.UnitsDailyConfigs = new HashSet<UnitsDailyConfig>();
         }
 
         public int Id { get; set; }
         public string Name { get; set; }
         public virtual ICollection<Product> Products { get; set; }
         public virtual ICollection<UnitConfig> Units { get; set; }
+        public virtual ICollection<UnitsDailyConfig> UnitsDailyConfigs { get; set; }
     }
 }

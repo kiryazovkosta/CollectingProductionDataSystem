@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@* Enables rendering suctom scripts caming from partial views *@
+@using CollectingProductionDataSystem.Web.Infrastructure.Helpers;
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -16,7 +18,7 @@
         <div class="sidebar-wtapper">
             @* --- Side bar --- *@
             <div class="sidebar">
-                <div class="text-center"style="color:darkgray;font-size:16px;font-weight:bold;width:100%;height:40px;line-height:40px;overflow:hidden;">Параметри на отчета</div><hr style="margin-top:0"/>
+                <div class="sidebar-heading text-center"><p>Параметри на отчета</p></div><hr style="margin-top:0"/>
                 <div class="container-fluid">
                     @RenderSection("sidebar", false)
                 </div>
@@ -24,7 +26,7 @@
             <div class="sidebar-sidebaner">
                 <div class="sidebar-sidebaner-wrapper">
                     <a id="slide" href="#" class="pull-right" aria-expanded="true"><span class="glyphicon glyphicon-chevron-up"></span></a>
-                    some text
+                    <div id="slide-text" class="pull-left"></div>
                 </div>
             </div>
             @* --- End of Side Bar --- *@
@@ -40,5 +42,7 @@
     </div>
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
+    @* Renders scripts came from the partial views *@
+    @Html.PageScripts()
 </body>
 </html>

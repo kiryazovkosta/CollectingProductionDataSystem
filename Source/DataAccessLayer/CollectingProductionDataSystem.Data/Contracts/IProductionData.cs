@@ -23,6 +23,10 @@
 
         IDeletableEntityRepository<UnitsManualData> UnitsManualData { get; }
 
+        IApprovableEntityRepository<UnitsDailyData> UnitsDailyDatas { get; }
+
+        IDeletableEntityRepository<UnitsManualDailyData> UnitsManualDailyDatas { get; }
+
         IImmutableEntityRepository<UnitsInspectionData> UnitsInspectionData { get; }
 
         IDeletableEntityRepository<Area> Areas { get; }
@@ -30,6 +34,8 @@
         IDeletableEntityRepository<Park> Parks { get; }
 
         IDeletableEntityRepository<TankConfig> Tanks { get; }
+
+        IDeletableEntityRepository<UnitsDailyConfig> UnitsDailyConfigs { get; }
 
         IApprovableEntityRepository<TankData> TanksData { get; }
 

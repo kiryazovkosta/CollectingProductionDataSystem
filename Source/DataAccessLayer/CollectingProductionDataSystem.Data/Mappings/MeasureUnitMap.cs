@@ -1,9 +1,9 @@
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Data.Entity.ModelConfiguration;
-using CollectingProductionDataSystem.Models.Nomenclatures;
-
 namespace CollectingProductionDataSystem.Data.Mappings
 {
+    using System.ComponentModel.DataAnnotations.Schema;
+    using System.Data.Entity.ModelConfiguration;
+    using CollectingProductionDataSystem.Models.Nomenclatures;
+
     public class MeasureUnitMap : EntityTypeConfiguration<MeasureUnit>
     {
         public MeasureUnitMap()

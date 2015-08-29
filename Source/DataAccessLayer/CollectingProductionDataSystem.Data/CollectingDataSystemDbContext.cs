@@ -92,7 +92,11 @@
 
         public IDbSet<EditReason> EditReasons { get; set; }
 
-        public IDbSet<UnitsAggregateDailyConfig> UnitsAggregateDailyConfigs { get; set; }
+        public IDbSet<UnitsDailyConfig> UnitsDailyConfigs { get; set; }
+
+        public IDbSet<UnitsDailyData> UnitsDailyDatas { get; set; }
+
+        public IDbSet<UnitsManualDailyData> UnitsManualDailyDatas { get; set; }
 
         public IDbSet<TankMasterProduct> TankMasterProducts { get; set; }
 

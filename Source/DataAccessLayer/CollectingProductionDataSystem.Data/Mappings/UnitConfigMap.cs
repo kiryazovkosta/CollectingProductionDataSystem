@@ -35,7 +35,7 @@ namespace CollectingProductionDataSystem.Data.Mappings
                 .WithMany(t => t.Units)
                 .HasForeignKey(d => d.MaterialTypeId);
             this.HasRequired(t => t.MeasureUnit)
-                .WithMany(t => t.Units)
+                .WithMany(t => t.UnitsConfigs)
                 .HasForeignKey(d => d.MeasureUnitId);
             this.HasRequired(t => t.ProcessUnit)
                 .WithMany(t => t.UnitsConfigs)

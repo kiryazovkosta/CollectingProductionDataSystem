@@ -65,8 +65,10 @@
 )
 @* //Error window for kendo grid error event handler *@
 <div id="err-window" style="display:none">@Html.Partial("_KendoGridErrorWindow")</div>
+
 @section scripts{
     <script src="~/Scripts/custom/sendAntiForgery.js"></script>
+    <script src="~/Scripts/custom/kendoGridErrorHandler.js"></script>
     <script>
         kendo.culture("@System.Threading.Thread.CurrentThread.CurrentCulture.Name");
 
@@ -85,7 +87,6 @@
             $.extend(result, sendAntiForgery());
             return result;
         }
-
         function error_handler(e) {
             if (e.errors) {
                 hideCommands();
@@ -188,9 +189,6 @@
                     hideCommands();
                 }
             });
-            
-
-
         }
 
     </script>

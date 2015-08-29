@@ -70,8 +70,12 @@ namespace CollectingProductionDataSystem.Web.Controllers
 
         public JsonResult GetProcessUnits(int? factoryId)
         {
-            var processUnits = this.data.ProcessUnits.All().ToList();
-            var processUnitView = Mapper.Map<IEnumerable<ProcessUnitViewModel>>(processUnits);
+            var processUnits = this.data.ProcessUnits.All();
+            if (factoryId.HasValue)
+            {
+                processUnits = processUnits.Where(p => p.FactoryId == factoryId);
+            }
+            var processUnitView = Mapper.Map<IEnumerable<ProcessUnitViewModel>>(processUnits.ToList());
             return Json(processUnitView, JsonRequestBehavior.AllowGet);
         }
     }

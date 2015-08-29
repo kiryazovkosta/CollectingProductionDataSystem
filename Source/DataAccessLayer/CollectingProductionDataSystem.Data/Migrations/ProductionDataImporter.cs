@@ -1302,8 +1302,8 @@
                                             IsDeleted = true
                                         },
                                     },
-                                UnitsAggregateDailyConfigs = {
-                                    new UnitsAggregateDailyConfig
+                                UnitsDailyConfigs = {
+                                    new UnitsDailyConfig
                                     {
                                         Code = "2А0100",
                                         MeasureUnitId = 11,
@@ -1311,7 +1311,7 @@
                                         ProductTypeId = 13,
                                         AggregationFormula = "1A0100-1А0804-1А0903-1А1004-1А1104-1А1105-1А1203-1А1402-1А1503-1А1804"
                                     },
-                                    new UnitsAggregateDailyConfig
+                                    new UnitsDailyConfig
                                     {
                                         Code = "2А0200",
                                         MeasureUnitId = 11,
@@ -1319,7 +1319,7 @@
                                         ProductTypeId = 13,
                                         AggregationFormula = "1А0804+1А0903+1А1004+1А1104+1А1105+1А1203+1А1402+1А1503+1А1804"
                                     },
-                                    new UnitsAggregateDailyConfig
+                                    new UnitsDailyConfig
                                     {
                                         Code = "2А0300",
                                         MeasureUnitId = 11,
@@ -1327,7 +1327,7 @@
                                         ProductTypeId = 13,
                                         AggregationFormula = "1А0300+1А0400"
                                     },
-                                    new UnitsAggregateDailyConfig
+                                    new UnitsDailyConfig
                                     {
                                         Code = "2А0400",
                                         MeasureUnitId = 11,
@@ -1335,7 +1335,7 @@
                                         ProductTypeId = 13,
                                         AggregationFormula = "1А0200"
                                     },
-                                    new UnitsAggregateDailyConfig
+                                    new UnitsDailyConfig
                                     {
                                         Code = "2А9900",
                                         MeasureUnitId = 11,
@@ -1343,7 +1343,7 @@
                                         ProductTypeId = 13,
                                         AggregationFormula = "2A1+2A2+2A3+2A4"
                                     },
-                                    new UnitsAggregateDailyConfig
+                                    new UnitsDailyConfig
                                     {
                                         Code = "2А0500",
                                         MeasureUnitId = 11,
@@ -1351,7 +1351,7 @@
                                         ProductTypeId = 14,
                                         AggregationFormula = "1A8+1A81+1A82+1A83+1A9+1A91+1A92"
                                     },
-                                    new UnitsAggregateDailyConfig
+                                    new UnitsDailyConfig
                                     {
                                         Code = "2А0600",
                                         MeasureUnitId = 11,
@@ -1359,7 +1359,7 @@
                                         ProductTypeId = 14,
                                         AggregationFormula = "1A10+1A101"
                                     },
-                                    new UnitsAggregateDailyConfig
+                                    new UnitsDailyConfig
                                     {
                                         Code = "2А0700",
                                         MeasureUnitId = 11,
@@ -1367,7 +1367,7 @@
                                         ProductTypeId = 14,
                                         AggregationFormula = "1A102+1A103+1A11+1A111+1A112+1A113+1A116"
                                     },
-                                    new UnitsAggregateDailyConfig
+                                    new UnitsDailyConfig
                                     {
                                         Code = "2А0800",
                                         MeasureUnitId = 11,
@@ -1375,7 +1375,7 @@
                                         ProductTypeId = 14,
                                         AggregationFormula = "1A183	"
                                     },
-                                    new UnitsAggregateDailyConfig
+                                    new UnitsDailyConfig
                                     {
                                         Code = "2А0801",
                                         MeasureUnitId = 11,
@@ -1383,7 +1383,7 @@
                                         ProductTypeId = 14,
                                         AggregationFormula = "1A15+1A151+1A18+1A181"
                                     },
-                                    new UnitsAggregateDailyConfig
+                                    new UnitsDailyConfig
                                     {
                                         Code = "2А0802",
                                         MeasureUnitId = 11,
@@ -1391,7 +1391,7 @@
                                         ProductTypeId = 14,
                                         AggregationFormula = "1A152++1A182"
                                     },
-                                    new UnitsAggregateDailyConfig
+                                    new UnitsDailyConfig
                                     {
                                         Code = "2А0900",
                                         MeasureUnitId = 11,
@@ -1399,7 +1399,7 @@
                                         ProductTypeId = 14,
                                         AggregationFormula = "1A121"
                                     },
-                                    new UnitsAggregateDailyConfig
+                                    new UnitsDailyConfig
                                     {
                                         Code = "2А0901",
                                         MeasureUnitId = 11,
@@ -1407,7 +1407,7 @@
                                         ProductTypeId = 14,
                                         AggregationFormula = "1A12"
                                     },
-                                    new UnitsAggregateDailyConfig
+                                    new UnitsDailyConfig
                                     {
                                         Code = "2А0902",
                                         MeasureUnitId = 11,
@@ -1415,7 +1415,7 @@
                                         ProductTypeId = 14,
                                         AggregationFormula = "1A122"
                                     },
-                                    new UnitsAggregateDailyConfig
+                                    new UnitsDailyConfig
                                     {
                                         Code = "2А1000",
                                         MeasureUnitId = 11,
@@ -1423,7 +1423,7 @@
                                         ProductTypeId = 14,
                                         AggregationFormula = "1A16+1A161+1A162+1A17+1A171"
                                     },
-                                    new UnitsAggregateDailyConfig
+                                    new UnitsDailyConfig
                                     {
                                         Code = "2А1100",
                                         MeasureUnitId = 11,
@@ -1431,7 +1431,7 @@
                                         ProductTypeId = 14,
                                         AggregationFormula = "1A14+1A141+1A142"
                                     },
-                                    new UnitsAggregateDailyConfig
+                                    new UnitsDailyConfig
                                     {
                                         Code = "2А1200",
                                         MeasureUnitId = 11,
@@ -1439,7 +1439,7 @@
                                         ProductTypeId = 14,
                                         AggregationFormula = "1A20+1A201+1A202+1A21+1A211+1A212+1A22+1A221+1A222"
                                     },
-                                    new UnitsAggregateDailyConfig
+                                    new UnitsDailyConfig
                                     {
                                         Code = "2А1300",
                                         MeasureUnitId = 11,
@@ -1447,7 +1447,7 @@
                                         ProductTypeId = 14,
                                         AggregationFormula = "1A7"
                                     },
-                                    new UnitsAggregateDailyConfig
+                                    new UnitsDailyConfig
                                     {
                                         Code = "2А1301",
                                         MeasureUnitId = 11,
@@ -1455,7 +1455,7 @@
                                         ProductTypeId = 14,
                                         AggregationFormula = "1A71"
                                     },
-                                    new UnitsAggregateDailyConfig
+                                    new UnitsDailyConfig
                                     {
                                         Code = "2А1400",
                                         MeasureUnitId = 11,
@@ -1463,7 +1463,7 @@
                                         ProductTypeId = 14,
                                         AggregationFormula = "1A5+1A6"
                                     },
-                                    new UnitsAggregateDailyConfig
+                                    new UnitsDailyConfig
                                     {
                                         Code = "2A9900",
                                         MeasureUnitId = 11,
@@ -1471,7 +1471,7 @@
                                         ProductTypeId = 14,
                                         AggregationFormula = "2A5+2A6+2A7+2A8+2A81+2A82+2A9+2A91+2A92+2A10+2A11+2A12+2A13+2A131+2A14"
                                     },
-                                    new UnitsAggregateDailyConfig
+                                    new UnitsDailyConfig
                                     {
                                         Code = "2A9901",
                                         MeasureUnitId = 11,
@@ -1479,7 +1479,7 @@
                                         ProductTypeId = 14,
                                         AggregationFormula = "2A0*0,002"
                                     },
-                                    new UnitsAggregateDailyConfig
+                                    new UnitsDailyConfig
                                     {
                                         Code = "2A9902",
                                         MeasureUnitId = 11,

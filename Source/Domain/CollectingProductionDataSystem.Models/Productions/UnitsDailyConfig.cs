@@ -3,9 +3,15 @@
     using CollectingProductionDataSystem.Models.Abstract;
     using CollectingProductionDataSystem.Models.Contracts;
     using CollectingProductionDataSystem.Models.Nomenclatures;
+    using System.Collections.Generic;
 
-    public partial class UnitsAggregateDailyConfig : DeletableEntity, IEntity
+    public partial class UnitsDailyConfig : DeletableEntity, IEntity
     {
+        public UnitsDailyConfig()
+        {
+            this.UnitsDailyDatas = new HashSet<UnitsDailyData>();
+        }
+
         public int Id { get; set; }
         public string Name { get; set; }
         public string Code { get; set; }
@@ -16,5 +22,6 @@
         public virtual MeasureUnit MeasureUnit { get; set; }
         public virtual ProcessUnit ProcessUnit { get; set; }
         public virtual ProductType ProductType { get; set; }
+        public virtual ICollection<UnitsDailyData> UnitsDailyDatas { get; set; }
     }
 }

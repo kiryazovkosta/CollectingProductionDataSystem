@@ -33,8 +33,10 @@
             modelBuilder.Configurations.Add(new ZoneMap());
             modelBuilder.Configurations.Add(new MeasurementPointsProductsConfigMap());
             modelBuilder.Configurations.Add(new TransportTypeMap());
-            modelBuilder.Configurations.Add(new UnitsAggregateDailyConfigMap());
+            modelBuilder.Configurations.Add(new UnitsDailyConfigMap());
             modelBuilder.Configurations.Add(new TankMasterProductMap());
+            modelBuilder.Configurations.Add(new UnitsDailyDataMap());
+            modelBuilder.Configurations.Add(new UnitsManualDailyDataMap());
         }
     }
 }

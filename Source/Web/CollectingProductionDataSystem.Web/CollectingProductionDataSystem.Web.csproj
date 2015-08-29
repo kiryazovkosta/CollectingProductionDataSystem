@@ -69,6 +69,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -234,6 +235,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Infrastructure\Helpers\IdentityHelpers.cs" />
+    <Compile Include="Infrastructure\Helpers\HtmlPartialViewHelpers.cs" />
     <Compile Include="Infrastructure\IdentityInfrastructure\ApplicationRoleManager.cs" />
     <Compile Include="Infrastructure\IdentityInfrastructure\ApplicationSignInManager.cs" />
     <Compile Include="Infrastructure\IdentityInfrastructure\ApplicationUserManager.cs" />
@@ -613,6 +615,7 @@
     <Content Include="Content\kendo\images\kendoui.woff" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\custom\kendoGridErrorHandler.js" />
     <Content Include="Scripts\custom\sendAntiForgery.js" />
     <Content Include="Areas\Administration\Views\Role\Create.cshtml" />
     <Content Include="Areas\Administration\Views\Role\Edit.cshtml" />
@@ -625,6 +628,7 @@
     <Content Include="Areas\Administration\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Administration\Views\Shared\EditorTemplates\AsignRoleViewModel.cshtml" />
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="fonts\bank-gotic.ttf" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\custom\sidebar.js" />
     <Content Include="Scripts\jquery-2.1.4.js" />

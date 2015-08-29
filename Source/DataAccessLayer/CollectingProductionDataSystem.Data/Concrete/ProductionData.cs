@@ -85,6 +85,22 @@ using CollectingProductionDataSystem.Models.Transactions;
             }
         }
 
+        public IApprovableEntityRepository<UnitsDailyData> UnitsDailyDatas
+        {
+            get
+            {
+                return this.GetApprovableEntityRepository<UnitsDailyData>();
+            }
+        }
+
+        public IDeletableEntityRepository<UnitsManualDailyData> UnitsManualDailyDatas
+        {
+            get
+            {
+                return this.GetDeletableEntityRepository<UnitsManualDailyData>();
+            }
+        }
+
         public IImmutableEntityRepository<UnitsInspectionData> UnitsInspectionData
         {
             get
@@ -114,6 +130,14 @@ using CollectingProductionDataSystem.Models.Transactions;
             get
             {
                 return this.GetDeletableEntityRepository<TankConfig>();
+            }
+        }
+
+        public IDeletableEntityRepository<UnitsDailyConfig> UnitsDailyConfigs
+        {
+            get
+            {
+                return this.GetDeletableEntityRepository<UnitsDailyConfig>();
             }
         }
 

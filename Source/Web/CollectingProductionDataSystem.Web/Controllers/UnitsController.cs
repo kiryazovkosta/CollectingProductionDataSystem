@@ -6,6 +6,7 @@
     using System.Data.Entity.Infrastructure;
     using System.Data.Entity.Validation;
     using System.Linq;
+    using System.Transactions;
     using System.Web.Mvc;
     using CollectingProductionDataSystem.Application.UnitsDataServices;
     using CollectingProductionDataSystem.Data.Contracts;
@@ -17,6 +18,7 @@
     using CollectingProductionDataSystem.Models.Productions;
     using CollectingProductionDataSystem.Web.ViewModels.Units;
     using Resources = App_GlobalResources.Resources;
+    using System.Collections;
 
     [Authorize]
     public class UnitsController : BaseController
@@ -39,26 +41,13 @@
         [ValidateAntiForgeryToken]
         public JsonResult ReadUnitsData([DataSourceRequest]DataSourceRequest request, DateTime? date, int? processUnitId, int? shiftId)
         {
-            if (date == null)
-            {
-                this.ModelState.AddModelError("date", string.Format(Resources.ErrorMessages.Required, Resources.Layout.UnitsDateSelector));
-            }
-            if (processUnitId == null)
-            {
-                this.ModelState.AddModelError("processunits", string.Format(Resources.ErrorMessages.Required, Resources.Layout.UnitsProcessUnitSelector));
-            }
-            if (shiftId == null)
-            {
-                this.ModelState.AddModelError("shifts", string.Format(Resources.ErrorMessages.Required, Resources.Layout.UnitsProcessUnitShiftSelector));
-            }
-
+            ValidateModelState(date, processUnitId, shiftId);
             if (this.ModelState.IsValid)
             {
                 var dbResult = this.unitsData.GetUnitsDataForDateTime(date, processUnitId, shiftId);
                 var kendoResult = dbResult.ToDataSourceResult(request, ModelState);
                 kendoResult.Data = Mapper.Map<IEnumerable<UnitsData>, IEnumerable<UnitDataViewModel>>((IEnumerable<UnitsData>)kendoResult.Data);
                 return Json(kendoResult);
-
             }
             else
             {
@@ -95,7 +84,7 @@
                         }
                     }
                 }
-                catch (DbUpdateException ex)
+                catch (DbUpdateException)
                 {
                     this.ModelState.AddModelError("ManualValue", "Записът не можа да бъде осъществен. Моля опитайте на ново!");
                 }
@@ -137,6 +126,95 @@
                     });
 
                     var result = data.SaveChanges(this.UserProfile.User.UserName);
+                    // TODO: need to refactoring code to get max shift not to hardcode this number
+                    if (shiftId == 3)
+                    {
+                        // last shift for the day. Need to calculate daily units data at level 2
+                        var shift = this.data.ProductionShifts.All().Where(s => s.Id == shiftId).FirstOrDefault();
+                        // It will be verry strang if there is not a shift with provided id but who knows
+                        if (shift != null)
+	                    {
+		                    var endRecordTimespan = date.Value.AddMinutes(shift.BeginMinutes + shift.OffsetMinutes);
+                            var ud = this.data.UnitsData.All().Include(u => u.Unit)
+                                .Where(u => u.RecordTimestamp > date && u.RecordTimestamp < endRecordTimespan && u.Unit.ProcessUnitId == processUnitId)
+                                .Select(u => new 
+                                { 
+                                    Id = u.Id,
+                                    UnitConfigId = u.UnitConfigId,
+                                    Code = u.Unit.Code,
+                                    Value = u.UnitsManualData.Value == null ? u.Value : u.UnitsManualData.Value
+                                });
+
+                            // Todo: Refactoring, refactoring, refactoring
+                            var ht = new Hashtable();
+                            try
+                            {
+                                foreach (var item in ud)
+                                {
+                                    if (ht.ContainsKey(item.Code))
+                                    {
+                                        decimal? newValue = item.Value.HasValue ? (decimal)ht[item.Code] + item.Value : (decimal)ht[item.Code] + default(decimal);
+                                        ht[item.Code] = newValue.Value;
+                                    }
+                                    else
+                                    {
+                                        if (item.Value.HasValue)
+                                        {
+                                            ht.Add(item.Code, item.Value); 
+                                        }
+                                        else
+                                        {
+                                            ht.Add(item.Code, default(decimal)); 
+                                        }
+                                    }
+                                }
+                            }
+
+                            catch (Exception)
+                            {
+                            }
+
+                            var unitsDailyData = this.data.UnitsDailyConfigs
+                                .All()
+                                .Include(u => u.ProcessUnit)
+                                .Where(u => u.ProcessUnitId == processUnitId)
+                                .Select(u => new 
+                                { 
+                                    Id = u.Id,
+                                    Formula = u.AggregationFormula
+                                });
+
+                            foreach (var item in unitsDailyData)
+                            {
+                                var value = 0m;
+                                var p2 = item.Formula.Split(new char[] {':'}, StringSplitOptions.RemoveEmptyEntries);
+                                var pPlus = p2[0].Split(new char[] {'+'}, StringSplitOptions.RemoveEmptyEntries);
+                                foreach (var plusValue in pPlus)
+                                {
+                                    value += ht[plusValue] == null ? default(decimal) : (decimal)ht[plusValue];   
+                                }
+                                if (p2.Count() == 2)
+                                {
+                                    var pMinus = p2[1].Split(new char[] {'-'}, StringSplitOptions.RemoveEmptyEntries);
+                                    foreach (var minusValue in pMinus)
+                                    {
+                                        value -= ht[minusValue] == null ? default(decimal) : (decimal)ht[minusValue];   
+                                    }
+                                }
+
+                                this.data.UnitsDailyDatas.Add(
+                                    new UnitsDailyData
+                                    {
+                                        RecordTimestamp = date.Value,
+                                        Value = value,
+                                        UnitsDailyConfigId = item.Id
+                                    });
+                            }
+
+                            this.data.SaveChanges(this.UserProfile.User.UserName);
+	                    }
+                        
+                    }
                     return Json(new { IsConfirmed = result.IsValid });
                 }
 
