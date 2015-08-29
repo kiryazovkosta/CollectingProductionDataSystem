@@ -88,6 +88,7 @@
 
         function error_handler(e) {
             if (e.errors) {
+                hideCommands();
                 var message = "";
                 $.each(e.errors, function (key, value) {
                     if ('errors' in value) {
@@ -115,9 +116,31 @@
                 var grid = $("#units").data("kendoGrid");
                 grid.dataSource.read();
                 grid.refresh();
+
+                checkConfirmedStatus();
             });
             prepareWindow();
-            closeCommands();
+            hideCommands();
+
+            $("#confirm").click(function () {
+                var date = sendDate();
+                $.ajax({
+                    url: 'Confirm',
+                    type: 'POST',
+                    data: date,
+                    success: function (data) {
+                        var confirmed = data.IsConfirmed;
+                        if (confirmed === true) {
+                            alert("Confirming is " + data.IsConfirmed);
+                            hideCommands();
+                        } else {
+                            showCommands();
+                        }
+                    },
+                    error: function () {
+                    }
+                });
+            });
         });
 
         function prepareWindow() {
@@ -136,13 +159,40 @@
             });
         }
 
-        function closeCommands() {
-            var button = $("#confirm");
-            button.hide();
-
-            var grid = $("#units").data("kendoGrid");
-            grid.hideColumn(10);
+        function hideCommands() {
+            $("#confirm").hide();
+            $("#units").data("kendoGrid").hideColumn(10);
         }
+
+        function showCommands() {
+            $("#confirm").show();
+            $("#units").data("kendoGrid").showColumn(10);
+        }
+
+        function checkConfirmedStatus() {
+            var date = sendDate();
+            $.ajax({
+                url: 'UnitsDataIsConfirmed',
+                type: 'POST',
+                data: date,
+                success: function (result) {
+                    var confirmed = result.IsConfirmed;
+                    if (confirmed === false) {
+                        showCommands();
+                    } else {
+                        hideCommands();
+                    }
+                },
+                error: function (result) {
+                    alert('error');
+                    hideCommands();
+                }
+            });
+            
+
+
+        }
+
     </script>
 }
 @section sidebar{

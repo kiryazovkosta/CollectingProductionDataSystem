@@ -118,6 +118,58 @@
         [ValidateAntiForgeryToken]
         public ActionResult Confirm([DataSourceRequest] DataSourceRequest request, DateTime? date, int? processUnitId, int? shiftId)
         {
+            ValidateModelState(date, processUnitId, shiftId);
+
+            if (this.ModelState.IsValid)
+            {
+                var approvedShift = this.data.UnitsApprovedDatas
+                    .All()
+                    .Where(u => u.RecordDate == date && u.ProcessUnitId == processUnitId && u.ShiftId == shiftId)
+                    .FirstOrDefault();
+                if (approvedShift == null)
+                {
+                    this.data.UnitsApprovedDatas.Add(new UnitsApprovedData
+                    {
+                        RecordDate = date.Value,
+                        ProcessUnitId = processUnitId.Value,
+                        ShiftId = shiftId.Value,
+                        Approved = true
+                    });
+
+                    var result = data.SaveChanges(this.UserProfile.User.UserName);
+                    return Json(new { IsConfirmed = result.IsValid });
+                }
+
+                var kendoResult = new List<UnitDataViewModel>().ToDataSourceResult(request, ModelState);
+                return Json(kendoResult);
+            }
+            else
+            {
+                var kendoResult = new List<UnitDataViewModel>().ToDataSourceResult(request, ModelState);
+                return Json(kendoResult);
+            }
+        }
+ 
+        private void ValidateModelState(DateTime? date, int? processUnitId, int? shiftId)
+        {
+            if (date == null)
+            {
+                this.ModelState.AddModelError("date", string.Format(Resources.ErrorMessages.Required, Resources.Layout.UnitsDateSelector));
+            }
+            if (processUnitId == null)
+            {
+                this.ModelState.AddModelError("processunits", string.Format(Resources.ErrorMessages.Required, Resources.Layout.UnitsProcessUnitSelector));
+            }
+            if (shiftId == null)
+            {
+                this.ModelState.AddModelError("shifts", string.Format(Resources.ErrorMessages.Required, Resources.Layout.UnitsProcessUnitShiftSelector));
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult UnitsDataIsConfirmed([DataSourceRequest] DataSourceRequest request, DateTime? date, int? processUnitId, int? shiftId)
+        {
             if (date == null)
             {
                 this.ModelState.AddModelError("date", string.Format(Resources.ErrorMessages.Required, Resources.Layout.UnitsDateSelector));
@@ -139,25 +191,13 @@
                     .FirstOrDefault();
                 if (approvedShift == null)
                 {
-                    this.data.UnitsApprovedDatas.Add(new UnitsApprovedData
-                    {
-                        RecordDate = date.Value,
-                        ProcessUnitId = processUnitId.Value,
-                        ShiftId = shiftId.Value,
-                        Approved = true
-                    });
-
-                    var result = data.SaveChanges(this.UserProfile.User.UserName);
-                    return Json(result.IsValid);
+                    return Json(new { IsConfirmed = false });
                 }
-
-                var kendoResult = new List<UnitDataViewModel>().ToDataSourceResult(request, ModelState);
-                return Json(kendoResult);
+                return Json(new { IsConfirmed = true });
             }
             else
             {
-                var kendoResult = new List<UnitDataViewModel>().ToDataSourceResult(request, ModelState);
-                return Json(kendoResult);
+                return Json(new { IsConfirmed = true });
             }
         }
     }
