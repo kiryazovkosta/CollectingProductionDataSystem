@@ -57,6 +57,8 @@
 
         IDeletableEntityRepository<ProductionShift> ProductionShifts { get; }
 
+        IDeletableEntityRepository<UnitsApprovedData> UnitsApprovedDatas { get; }
+
         IRepository<ApplicationUser> Users{get;}
 
 

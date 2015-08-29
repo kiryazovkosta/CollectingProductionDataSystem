@@ -37,7 +37,7 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public JsonResult ReadUnitsData([DataSourceRequest]DataSourceRequest request, DateTime? date, int? processUnitId, int? shiftOffset)
+        public JsonResult ReadUnitsData([DataSourceRequest]DataSourceRequest request, DateTime? date, int? processUnitId, int? shiftId)
         {
             if (date == null)
             {
@@ -47,17 +47,18 @@
             {
                 this.ModelState.AddModelError("processunits", string.Format(Resources.ErrorMessages.Required, Resources.Layout.UnitsProcessUnitSelector));
             }
-            if (shiftOffset == null)
+            if (shiftId == null)
             {
                 this.ModelState.AddModelError("shifts", string.Format(Resources.ErrorMessages.Required, Resources.Layout.UnitsProcessUnitShiftSelector));
             }
 
             if (this.ModelState.IsValid)
             {
-                var dbResult = this.unitsData.GetUnitsDataForDateTime(date, processUnitId, shiftOffset);
+                var dbResult = this.unitsData.GetUnitsDataForDateTime(date, processUnitId, shiftId);
                 var kendoResult = dbResult.ToDataSourceResult(request, ModelState);
                 kendoResult.Data = Mapper.Map<IEnumerable<UnitsData>, IEnumerable<UnitDataViewModel>>((IEnumerable<UnitsData>)kendoResult.Data);
                 return Json(kendoResult);
+
             }
             else
             {
@@ -111,6 +112,53 @@
             existManualRecord.Value = model.ManualValue;
             existManualRecord.EditReasonId = model.EditReason.Id;
             this.data.UnitsManualData.Update(existManualRecord);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Confirm([DataSourceRequest] DataSourceRequest request, DateTime? date, int? processUnitId, int? shiftId)
+        {
+            if (date == null)
+            {
+                this.ModelState.AddModelError("date", string.Format(Resources.ErrorMessages.Required, Resources.Layout.UnitsDateSelector));
+            }
+            if (processUnitId == null)
+            {
+                this.ModelState.AddModelError("processunits", string.Format(Resources.ErrorMessages.Required, Resources.Layout.UnitsProcessUnitSelector));
+            }
+            if (shiftId == null)
+            {
+                this.ModelState.AddModelError("shifts", string.Format(Resources.ErrorMessages.Required, Resources.Layout.UnitsProcessUnitShiftSelector));
+            }
+
+            if (this.ModelState.IsValid)
+            {
+                var approvedShift = this.data.UnitsApprovedDatas
+                    .All()
+                    .Where(u => u.RecordDate == date && u.ProcessUnitId == processUnitId && u.ShiftId == shiftId)
+                    .FirstOrDefault();
+                if (approvedShift == null)
+                {
+                    this.data.UnitsApprovedDatas.Add(new UnitsApprovedData
+                    {
+                        RecordDate = date.Value,
+                        ProcessUnitId = processUnitId.Value,
+                        ShiftId = shiftId.Value,
+                        Approved = true
+                    });
+
+                    var result = data.SaveChanges(this.UserProfile.User.UserName);
+                    return Json(result.IsValid);
+                }
+
+                var kendoResult = new List<UnitDataViewModel>().ToDataSourceResult(request, ModelState);
+                return Json(kendoResult);
+            }
+            else
+            {
+                var kendoResult = new List<UnitDataViewModel>().ToDataSourceResult(request, ModelState);
+                return Json(kendoResult);
+            }
         }
     }
 }

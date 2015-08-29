@@ -98,6 +98,8 @@
 
         public IDbSet<ProductionShift> ProductionShifts { get; set; }
 
+        public IDbSet<UnitsApprovedData> UnitsApprovedDatas { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             ModelBingConfig.RegisterMappings(modelBuilder);

@@ -54,7 +54,7 @@
             .OptionLabel(Resources.Layout.ChooseProductionShift)
             .HtmlAttributes(new { style = "width:95%" })
             .DataTextField("Name")
-            .DataValueField("Minutes")
+            .DataValueField("Id")
             .DataSource(source =>
             {
                 source.Read(read =>
@@ -70,6 +70,10 @@
     </div>
     <hr/>
     <div class="form-group">
-        <button id="apply" type="button" class="btn btn-primary">@Resources.Layout.Apply</button>
+        <button id="apply" type="button" class="btn btn-primary" style="width:95%">@Resources.Layout.Apply</button>
+    </div>
+    <hr />
+    <div class="form-group">
+        <button id="confirm" type="button" class="btn btn-danger" style="width:95%">@Resources.Layout.Confirm</button>
     </div>
 </div>

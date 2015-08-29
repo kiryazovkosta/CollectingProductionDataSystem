@@ -96,10 +96,19 @@
     <Compile Include="Mappings\TransportTypeMap.cs" />
     <Compile Include="Mappings\UnitConfigMap.cs" />
     <Compile Include="Mappings\UnitsAggregateDailyConfigMap.cs" />
+    <Compile Include="Mappings\UnitsApprovedDataMap.cs" />
     <Compile Include="Mappings\UnitsDataMap.cs" />
     <Compile Include="Mappings\UnitsManualDataMap.cs" />
     <Compile Include="Mappings\UnitsInspectionDataMap.cs" />
     <Compile Include="Mappings\ZoneMap.cs" />
+    <Compile Include="Migrations\201508281218509_UnitsApprovedDatas.cs" />
+    <Compile Include="Migrations\201508281218509_UnitsApprovedDatas.Designer.cs">
+      <DependentUpon>201508281218509_UnitsApprovedDatas.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201508281233564_UnitsApprovedDatas_Remove_FactoryId.cs" />
+    <Compile Include="Migrations\201508281233564_UnitsApprovedDatas_Remove_FactoryId.Designer.cs">
+      <DependentUpon>201508281233564_UnitsApprovedDatas_Remove_FactoryId.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Concrete\ProductionData.cs" />
     <Compile Include="Migrations\ProductionDataImporter.cs" />
@@ -121,6 +130,14 @@
       <Project>{63cc73a0-f2c2-453d-a915-1913095f22fd}</Project>
       <Name>CollectingProductionDataSystem.Models</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201508281218509_UnitsApprovedDatas.resx">
+      <DependentUpon>201508281218509_UnitsApprovedDatas.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201508281233564_UnitsApprovedDatas_Remove_FactoryId.resx">
+      <DependentUpon>201508281233564_UnitsApprovedDatas_Remove_FactoryId.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

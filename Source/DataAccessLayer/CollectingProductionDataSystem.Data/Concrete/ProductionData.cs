@@ -221,6 +221,14 @@ using CollectingProductionDataSystem.Models.Transactions;
             }
         }
 
+        public IDeletableEntityRepository<UnitsApprovedData> UnitsApprovedDatas
+        {
+            get
+            {
+                return this.GetDeletableEntityRepository<UnitsApprovedData>();
+            }
+        }
+
         public IRepository<ApplicationUser> Users
         {
             get

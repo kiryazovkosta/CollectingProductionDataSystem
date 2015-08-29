@@ -15,7 +15,7 @@
             this.data = dataParam;
         }
 
-        public IQueryable<UnitsData> GetUnitsDataForDateTime(DateTime? date, int? processUnit, int? offset)
+        public IQueryable<UnitsData> GetUnitsDataForDateTime(DateTime? date, int? processUnitId, int? shiftId)
         {
             var dbResult = this.data.UnitsData
                 .All()
@@ -25,16 +25,22 @@
                 .Include(x => x.Unit.MeasureUnit)
                 .Include(x=>x.UnitsManualData)
                 .Include(x => x.UnitsManualData.EditReason);
-            if (date != null && offset != null)
+            if (date != null && shiftId != null)
             {
-                var beginTimestamp = date.Value.AddMinutes(offset.Value);
-                var endTimestamp = beginTimestamp.AddMinutes(120);
-                dbResult = dbResult.Where(x => x.RecordTimestamp > beginTimestamp && x.RecordTimestamp <= endTimestamp);
+                var shiftData = this.data.ProductionShifts.All().Where(s => s.Id == shiftId).FirstOrDefault();
+
+                if (shiftData != null)
+                {
+                    var beginTimestamp = date.Value.AddMinutes(shiftData.BeginMinutes);
+                    var endTimestamp = beginTimestamp.AddMinutes(shiftData.OffsetMinutes);
+                    dbResult = dbResult.Where(x => x.RecordTimestamp > beginTimestamp && x.RecordTimestamp <= endTimestamp);
+                }
             }
-            if (processUnit != null)
+
+            if (processUnitId != null)
             {
                 dbResult = dbResult.Include(x => x.Unit.ProcessUnit)
-                    .Where(x => x.Unit.ProcessUnitId == processUnit);
+                    .Where(x => x.Unit.ProcessUnitId == processUnitId);
             }
 
             return dbResult;
