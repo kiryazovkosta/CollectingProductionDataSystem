@@ -1,4 +1,5 @@
 ﻿@using Resources = App_GlobalResources.Resources;
+@using CollectingProductionDataSystem.Web.Infrastructure.Helpers;
 
 <div class="form-group">
     <label for="factories">@Resources.Layout.Factory</label>
@@ -39,13 +40,10 @@
     )
 
 </div>
-<script>
-    function sendFactory() {
-        return {
-            factoryId: $("#factories").val()
-        };
-    }
-</script>
+<div class="form-group">
+    <label for="date">@Resources.Layout.Date</label>
+    @Html.Kendo().DatePicker().Name("date").Culture("bg-BG").HtmlAttributes(new { style = "width:95%" })
+</div>
 <div class="form-group">
     <label for="shifts">@Resources.Layout.ProductionShift</label>
     @(Html.Kendo().DropDownList()
@@ -63,11 +61,17 @@
             })
     )
 </div>
-<div class="form-group">
-    <label for="date">@Resources.Layout.Date</label>
-    @Html.Kendo().DatePicker().Name("date").Culture("bg-BG").HtmlAttributes(new { style = "width:95%" })
-</div>
 <hr />
 <div class="form-group">
     <button id="apply" type="button" class="btn btn-primary">@Resources.Layout.Apply</button>
 </div>
+
+@using (Html.BeginScripts()) { 
+    <script>
+        function sendFactory() {
+            return {
+                factoryId: $("#factories").val()
+            };
+        }
+    </script>
+}

@@ -64,8 +64,11 @@
 )
 @* //Error window for kendo grid error event handler *@
 <div id="err-window" style="display:none">@Html.Partial("_KendoGridErrorWindow")</div>
+
 @section scripts{
     <script src="~/Scripts/custom/sendAntiForgery.js"></script>
+    <script src="~/Scripts/custom/kendoGridErrorHandler.js"></script>
+
     <script>
         kendo.culture("@System.Threading.Thread.CurrentThread.CurrentCulture.Name");
 
@@ -86,21 +89,7 @@
             return result;
         }
 
-        function error_handler(e) {
-            if (e.errors) {
-                var message = "";
-                $.each(e.errors, function (key, value) {
-                    if ('errors' in value) {
-                        message += key + " - ";
-                        $.each(value.errors, function () {
-                            message += this + "\n";
-                        });
-                    }
-                });
-                $('pre#message').text(message);
-                $('div#err-window').data("kendoWindow").open();
-            }
-        }
+
 
         function closeWindow() {
             $('div#err-window').data("kendoWindow").close();

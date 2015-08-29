@@ -23,6 +23,13 @@
 
 a#slide {
     color: white;
+    /*margin-top:-10px;*/
+}
+
+div#slide-text {
+    height:20px;
+    width:460px;
+    overflow:hidden;
 }
 
 .sidebar-sidebaner-wrapper {
@@ -72,11 +79,11 @@ div#content-wrapper {
     height: 40px;
     line-height: 40px;
     overflow: hidden;
-    font-family:ba
 }
+
 .gothic {
-    font-family:'BankGothic RUSS Medium';
-    font-size:12px;
+    font-family: 'BankGothic RUSS Medium';
+    font-size: 12px;
 }
 
 @font-face {
