@@ -3,7 +3,6 @@
 @model UnitDataViewModel
 @{
     Layout = "~/Views/Shared/_KendoLayoutWithSideBar.cshtml";
-    //Layout = "~/Views/Shared/_KendoLayout.cshtml";
 }
 <h2>@Resources.Layout.UnitsData</h2>
 @Html.ValidationSummary()
@@ -14,30 +13,31 @@
     .Name("units")
     .AutoBind(false)
     .Columns(
-           columns =>
-           {
-               columns.Bound(c => c.Code).Width(77);
-               columns.Bound(c => c.ProductType);
-               columns.Bound(c => c.ProcessUnitName).Width(100);
-               columns.Bound(c => c.Name);
-               columns.Bound(c => c.Position).Width(140);
-               columns.Bound(c => c.MeasureUnit).Width(80);
-               columns.Bound(c => c.CollectingDataMechanism).Width(30).Title(string.Empty);
-               columns.Bound(c => c.AutomaticValue).Width(100).Format("{0:n2}");
-               columns.Bound(c => c.ManualValue).Width(100).Format("{0:n2}");
-               columns.Bound(c => c.EditReason).Width(200).ClientTemplate("#:EditReason.Name#")
-                   .ClientTemplate("<div class=row><div class='col-xs-2 no-horisontal-padding'><div class='#:EditReason.Id == 0? 'bg-ok':'bg-warning'#'></div></div><div class='col-xs-9 no-horisontal-padding reason'>#:EditReason.Name#</div></div>");
-               columns.Command(c => c.Edit());
-           })
-               .Pageable(pageable => pageable
-                    .Refresh(true)
-                        .PageSizes(new[] { 10, 20, 50, 100 })
-                    .ButtonCount(5))
-      .Sortable()
-      .Scrollable(scr => scr.Height(660))
-      .Filterable()
-      .Editable(editable => editable.Mode(GridEditMode.InLine))
-      .DataSource(dataSource => dataSource
+        columns =>
+        {
+            columns.Bound(c => c.Code).Width(77);
+            columns.Bound(c => c.ProductType);
+            columns.Bound(c => c.ProcessUnitName).Width(100);
+            columns.Bound(c => c.Name);
+            columns.Bound(c => c.Position).Width(140);
+            columns.Bound(c => c.MeasureUnit).Width(80);
+            columns.Bound(c => c.CollectingDataMechanism).Width(30).Title(string.Empty);
+            columns.Bound(c => c.AutomaticValue).Width(100).Format("{0:n2}");
+            columns.Bound(c => c.ManualValue).Width(100).Format("{0:n2}");
+            columns.Bound(c => c.EditReason).Width(200).ClientTemplate("#:EditReason.Name#")
+            .ClientTemplate("<div class=row><div class='col-xs-2 no-horisontal-padding'><div class='#:EditReason.Id == 0? 'bg-ok':'bg-warning'#'></div></div><div class='col-xs-9 no-horisontal-padding reason'>#:EditReason.Name#</div></div>");
+            columns.Command(c => c.Edit());
+        })
+    .Pageable(pageable => pageable
+        .Refresh(true)
+        .PageSizes(new[] { 10, 20, 50, 100 })
+        .ButtonCount(5)
+    )
+    .Sortable()
+    .Scrollable(scr => scr.Height(660))
+    .Filterable()
+    .Editable(editable => editable.Mode(GridEditMode.InLine))
+    .DataSource(dataSource => dataSource
         .Ajax()
         .PageSize(50)
         .ServerOperation(true)
@@ -47,6 +47,7 @@
         {
             model.Id(p => p.Id);
             model.Field(p => p.Code).Editable(false);
+            model.Field(p => p.ProductType).Editable(false);
             model.Field(p => p.ProcessUnitName).Editable(false);
             model.Field(p => p.Name).Editable(false);
             model.Field(p => p.Position).Editable(false);
@@ -60,7 +61,7 @@
         {
             events.Error("error_handler");
         })
-      )
+    )
 )
 @* //Error window for kendo grid error event handler *@
 <div id="err-window" style="display:none">@Html.Partial("_KendoGridErrorWindow")</div>
@@ -77,9 +78,8 @@
         }
 
         function sendShift() {
-            return { "shiftOffset": $('input[name=shifts]').val() }
+            return { "shiftId": $('input[name=shifts]').val() }
         }
-
 
         var sendDate = function () {
             var result = { "date": $('input[name=date]').val() };
@@ -106,6 +106,7 @@
                 grid.refresh();
             });
             prepareWindow();
+            closeCommands();
         });
 
         function prepareWindow() {
@@ -122,6 +123,14 @@
                 minHeight: 100,
                 maxHeight: 350
             });
+        }
+
+        function closeCommands() {
+            var button = $("#confirm");
+            button.hide();
+
+            var grid = $("#units").data("kendoGrid");
+            grid.hideColumn(10);
         }
     </script>
 }

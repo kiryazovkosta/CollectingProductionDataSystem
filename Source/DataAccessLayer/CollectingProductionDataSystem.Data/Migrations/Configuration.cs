@@ -86,7 +86,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                     BeginTime = "05:01",
                     EndTime = "13:00",
                     BeginMinutes = 780,
-                    OffsetMinutes = 840
+                    OffsetMinutes = 120
                 },
                 new ProductionShift
                 {
@@ -94,15 +94,15 @@ namespace CollectingProductionDataSystem.Data.Migrations
                     BeginTime = "13:01",
                     EndTime = "21:00",
                     BeginMinutes = 1260,
-                    OffsetMinutes = 1320
+                    OffsetMinutes = 120
                 },
                 new ProductionShift
                 {
-                    Name = "Втора смяна",
+                    Name = "Трета смяна",
                     BeginTime = "21:01",
                     EndTime = "05:00",
                     BeginMinutes = 1740,
-                    OffsetMinutes = 1800
+                    OffsetMinutes = 120
                 });
         }
 

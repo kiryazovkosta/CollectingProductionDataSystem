@@ -96,6 +96,7 @@
     <Compile Include="Mappings\TransportTypeMap.cs" />
     <Compile Include="Mappings\UnitConfigMap.cs" />
     <Compile Include="Mappings\UnitsAggregateDailyConfigMap.cs" />
+    <Compile Include="Mappings\UnitsApprovedDataMap.cs" />
     <Compile Include="Mappings\UnitsDataMap.cs" />
     <Compile Include="Mappings\UnitsManualDataMap.cs" />
     <Compile Include="Mappings\UnitsInspectionDataMap.cs" />

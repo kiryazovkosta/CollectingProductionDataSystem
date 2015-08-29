@@ -258,4 +258,7 @@
   <data name="UserName" xml:space="preserve">
     <value>Портебител</value>
   </data>
+  <data name="Confirm" xml:space="preserve">
+    <value>Потвърждавам</value>
+  </data>
 </root>

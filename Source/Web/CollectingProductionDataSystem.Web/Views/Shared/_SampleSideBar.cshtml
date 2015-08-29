@@ -4,39 +4,39 @@
 <div class="form-group">
     <label for="factories">@Resources.Layout.Factory</label>
     @(Html.Kendo().DropDownList()
-            .Name("factories")
-            .OptionLabel(Resources.Layout.ChooseFactory)
-            .HtmlAttributes(new { style = "width:95%" })
-            .DataTextField("Name")
-            .DataValueField("Id")
-            .DataSource(source =>
+        .Name("factories")
+        .OptionLabel(Resources.Layout.ChooseFactory)
+        .HtmlAttributes(new { style = "width:95%" })
+        .DataTextField("Name")
+        .DataValueField("Id")
+        .DataSource(source =>
+        {
+            source.Read(read =>
             {
-                source.Read(read =>
-                {
-                    read.Action("GetFactories", "Ajax");
-                });
-            })
+                read.Action("GetFactories", "Ajax");
+            });
+        })
     )
 </div>
 <div class="form-group">
     <label for="processunits">@Resources.Layout.ProcessUnit</label>
     @(Html.Kendo().DropDownList()
-            .Name("processunits")
-            .OptionLabel(Resources.Layout.ChooseProcessUnit)
-            .HtmlAttributes(new { style = "width:95%" })
-            .DataTextField("Name")
-            .DataValueField("Id")
-            .DataSource(source =>
+        .Name("processunits")
+        .OptionLabel(Resources.Layout.ChooseProcessUnit)
+        .HtmlAttributes(new { style = "width:95%" })
+        .DataTextField("Name")
+        .DataValueField("Id")
+        .DataSource(source =>
+        {
+            source.Read(read =>
             {
-                source.Read(read =>
-                {
-                    read.Action("GetProcessUnits", "Ajax").Data("sendFactory");
-                })
-                .ServerFiltering(true);
+                read.Action("GetProcessUnits", "Ajax").Data("sendFactory");
             })
-            .Enable(false)
-            .AutoBind(false)
-            .CascadeFrom("factories")
+            .ServerFiltering(true);
+        })
+        .Enable(false)
+        .AutoBind(false)
+        .CascadeFrom("factories")
     )
 
 </div>
@@ -47,23 +47,27 @@
 <div class="form-group">
     <label for="shifts">@Resources.Layout.ProductionShift</label>
     @(Html.Kendo().DropDownList()
-            .Name("shifts")
-            .OptionLabel(Resources.Layout.ChooseProductionShift)
-            .HtmlAttributes(new { style = "width:95%" })
-            .DataTextField("Name")
-            .DataValueField("Minutes")
-            .DataSource(source =>
+        .Name("shifts")
+        .OptionLabel(Resources.Layout.ChooseProductionShift)
+        .HtmlAttributes(new { style = "width:95%" })
+        .DataTextField("Name")
+        .DataValueField("Id")
+        .DataSource(source =>
+        {
+            source.Read(read =>
             {
-                source.Read(read =>
-                {
-                    read.Action("GetShifts", "Ajax");
-                });
-            })
+                read.Action("GetShifts", "Ajax");
+            });
+        })
     )
 </div>
 <hr />
 <div class="form-group">
-    <button id="apply" type="button" class="btn btn-primary">@Resources.Layout.Apply</button>
+    <button id="apply" type="button" class="btn btn-primary" style="width:95%">@Resources.Layout.Apply</button>
+</div>
+<hr />
+<div class="form-group">
+    <button id="confirm" type="button" class="btn btn-danger" style="width:95%">@Resources.Layout.Confirm</button>
 </div>
 
 @using (Html.BeginScripts()) { 
