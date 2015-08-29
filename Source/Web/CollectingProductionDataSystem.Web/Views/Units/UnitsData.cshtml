@@ -3,7 +3,6 @@
 @model UnitDataViewModel
 @{
     Layout = "~/Views/Shared/_KendoLayoutWithSideBar.cshtml";
-    //Layout = "~/Views/Shared/_KendoLayout.cshtml";
 }
 <h2>@Resources.Layout.UnitsData</h2>
 @Html.ValidationSummary()
@@ -118,27 +117,7 @@
                 grid.refresh();
             });
             prepareWindow();
-
-            $("#confirm").click(function submitForm() {
-
-                var jsonData = sendDate();
-                var js = $.toJSON(jsonData);
-                alert(js);
-
-                jQuery.ajax({
-                    type: 'POST',
-                    url: '/Units/Confirm',
-                    dataType: 'json',
-                    contentType: 'application/json; charset=utf-8',
-                    data: js,
-                    success: function (data) { 
-                        alert(data); 
-                    },
-                    failure: function (errMsg) {
-                        alert(errMsg);
-                    }
-                });
-            })
+            closeCommands();
         });
 
         function prepareWindow() {
@@ -155,6 +134,14 @@
                 minHeight: 100,
                 maxHeight: 350
             });
+        }
+
+        function closeCommands() {
+            var button = $("#confirm");
+            button.hide();
+
+            var grid = $("#units").data("kendoGrid");
+            grid.hideColumn(10);
         }
     </script>
 }

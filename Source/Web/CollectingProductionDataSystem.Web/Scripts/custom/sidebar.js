@@ -1,13 +1,16 @@
 ﻿$(document).ready(function () {
-    var sidebar = $("a#naw-collapse");
-    if (sidebar) {
-        sidebar.click(function () {
-            if ($(this).attr("aria-expanded") == "true") {
-                $(this).attr("aria-expanded", "false");
-                $("a#naw-collapse span").attr("class", "glyphicon glyphicon-chevron-down");
+    var sidebarContent = $('div.sidebar');
+    if (sidebarContent) {
+        $("a#slide").click(function () {
+            var slideButton = $(this);
+            sidebarContent.animate({ width: 'toggle' }
+            );
+            if (slideButton.attr("aria-expanded") == "true") {
+                slideButton.attr("aria-expanded", "false");
+                $("a#slide span").attr("class", "glyphicon glyphicon-chevron-down");
             } else {
-                $(this).attr("aria-expanded", "true");
-                $("a#naw-collapse span").attr("class", "glyphicon glyphicon-chevron-up");
+                slideButton.attr("aria-expanded", "true");
+                $("a#slide span").attr("class", "glyphicon glyphicon-chevron-up");
             }
         });
     }
