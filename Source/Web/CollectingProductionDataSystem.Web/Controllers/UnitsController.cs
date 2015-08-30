@@ -37,6 +37,36 @@
             return View();
         }
 
+        [HttpGet]
+        public ActionResult UnitsDailyData()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public JsonResult ReadUnitsDailyData([DataSourceRequest]DataSourceRequest request, DateTime? date, int? processUnitId)
+        {
+            if (this.ModelState.IsValid)
+            {
+                var dbResult = this.data.UnitsDailyDatas
+                    .All()
+                    .Include(u => u.UnitsDailyConfig)
+                    .Include(u => u.UnitsDailyConfig.MeasureUnit)
+                    .Include(u => u.UnitsDailyConfig.ProductType)
+                    .Where(u => u.RecordTimestamp == date && u.UnitsDailyConfig.ProcessUnitId == processUnitId)
+                    .ToList();
+                var kendoResult = dbResult.ToDataSourceResult(request, ModelState);
+                kendoResult.Data = Mapper.Map<IEnumerable<UnitsDailyData>, IEnumerable<UnitDailyDataViewModel>>((IEnumerable<UnitsDailyData>)kendoResult.Data);
+                return Json(kendoResult);
+            }
+            else
+            {
+                var kendoResult = new List<UnitDailyDataViewModel>().ToDataSourceResult(request, ModelState);
+                return Json(kendoResult);
+            }
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public JsonResult ReadUnitsData([DataSourceRequest]DataSourceRequest request, DateTime? date, int? processUnitId, int? shiftId)
@@ -59,7 +89,7 @@
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([DataSourceRequest] DataSourceRequest request,
-            UnitDataViewModel model)
+            UnitDailyDataViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -96,7 +126,7 @@
             return Json(new[] { model }.ToDataSourceResult(request, ModelState));
         }
 
-        private void UpdateRecord(UnitsManualData existManualRecord, UnitDataViewModel model)
+        private void UpdateRecord(UnitsManualData existManualRecord, UnitDailyDataViewModel model)
         {
             existManualRecord.Value = model.ManualValue;
             existManualRecord.EditReasonId = model.EditReason.Id;
@@ -218,12 +248,12 @@
                     return Json(new { IsConfirmed = result.IsValid });
                 }
 
-                var kendoResult = new List<UnitDataViewModel>().ToDataSourceResult(request, ModelState);
+                var kendoResult = new List<UnitDailyDataViewModel>().ToDataSourceResult(request, ModelState);
                 return Json(kendoResult);
             }
             else
             {
-                var kendoResult = new List<UnitDataViewModel>().ToDataSourceResult(request, ModelState);
+                var kendoResult = new List<UnitDailyDataViewModel>().ToDataSourceResult(request, ModelState);
                 return Json(kendoResult);
             }
         }

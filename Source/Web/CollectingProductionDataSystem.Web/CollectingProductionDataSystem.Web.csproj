@@ -261,6 +261,7 @@
     <Compile Include="ViewModels\Tank\TankDataViewModel.cs" />
     <Compile Include="ViewModels\Units\FactoryViewModel.cs" />
     <Compile Include="ViewModels\Units\ProcessUnitViewModel.cs" />
+    <Compile Include="ViewModels\Units\UnitDailyDataViewModel.cs" />
     <Compile Include="ViewModels\Units\UnitDataViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -1267,6 +1268,8 @@
     <Content Include="Views\Shared\_MainNav.cshtml" />
     <Content Include="Views\Shared\_KendoLayoutWithSideBar.cshtml" />
     <Content Include="Views\Shared\_SampleSideBar.cshtml" />
+    <Content Include="Views\Shared\_UnitsDailySideBar.cshtml" />
+    <Content Include="Views\Units\UnitsDailyData.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,0 +1,189 @@
+﻿@using CollectingProductionDataSystem.Web.ViewModels.Units;
+@using Resources = App_GlobalResources.Resources;
+@model UnitDailyDataViewModel
+@{
+    Layout = "~/Views/Shared/_KendoLayoutWithSideBar.cshtml";
+}
+<h2>Daily production data</h2>
+@Html.ValidationSummary()
+@Html.AntiForgeryToken()
+
+@(Html.Kendo()
+    .Grid<UnitDailyDataViewModel>()
+    .Name("units")
+    .AutoBind(false)
+    .Columns(
+        columns =>
+        {
+            columns.Bound(c => c.Code).Width(77);
+            columns.Bound(c => c.ProductType);
+            columns.Bound(c => c.ProcessUnitName).Width(100);
+            columns.Bound(c => c.Name);
+            columns.Bound(c => c.MeasureUnit).Width(80);
+            columns.Bound(c => c.AutomaticValue).Width(100).Format("{0:n2}");
+            columns.Bound(c => c.ManualValue).Width(100).Format("{0:n2}");
+            columns.Bound(c => c.EditReason).Width(200).ClientTemplate("#:EditReason.Name#")
+            .ClientTemplate("<div class=row><div class='col-xs-2 no-horisontal-padding'><div class='#:EditReason.Id == 0? 'bg-ok':'bg-warning'#'></div></div><div class='col-xs-9 no-horisontal-padding reason'>#:EditReason.Name#</div></div>");
+            //columns.Command(c => c.Edit());
+        })
+    .Pageable(pageable => pageable
+        .Refresh(true)
+        .PageSizes(new[] { 10, 20, 50, 100 })
+        .ButtonCount(5)
+    )
+    .Sortable()
+    .Scrollable(scr => scr.Height(660))
+    .Filterable()
+    //.Editable(editable => editable.Mode(GridEditMode.InLine))
+    .DataSource(dataSource => dataSource
+        .Ajax()
+        .PageSize(50)
+        .ServerOperation(true)
+        .Read(read => read.Action("ReadUnitsDailyData", "Units", new { area = "" }).Data("sendDate"))
+        //.Update(update => update.Action("Edit", "Units", new { area = "" }).Data("sendAntiForgery"))
+        .Model(model =>
+        {
+            model.Id(p => p.Id);
+            model.Field(p => p.Code).Editable(false);
+            model.Field(p => p.ProductType).Editable(false);
+            model.Field(p => p.ProcessUnitName).Editable(false);
+            model.Field(p => p.Name).Editable(false);
+            model.Field(p => p.MeasureUnit).Editable(false);
+            model.Field(p => p.AutomaticValue).Editable(false);
+            model.Field(p => p.ManualValue).Editable(true);
+            model.Field(p => p.EditReason).Editable(true);
+        })
+        .Events(events =>
+        {
+            events.Error("error_handler");
+        })
+    )
+)
+@* //Error window for kendo grid error event handler *@
+<div id="err-window" style="display:none">@Html.Partial("_KendoGridErrorWindow")</div>
+
+@section scripts{
+    <script src="~/Scripts/custom/sendAntiForgery.js"></script>
+    <script src="~/Scripts/custom/kendoGridErrorHandler.js"></script>
+    <script>
+        kendo.culture("@System.Threading.Thread.CurrentThread.CurrentCulture.Name");
+
+        function sendProcessUnit() {
+            return { "processUnitId": $('input[name=processunits]').val() }
+        }
+
+        var sendDate = function () {
+            var result = { "date": $('input[name=date]').val() };
+            $.extend(result, sendProcessUnit());
+            $.extend(result, sendAntiForgery());
+            return result;
+        }
+        function error_handler(e) {
+            if (e.errors) {
+                hideCommands();
+                var message = "";
+                $.each(e.errors, function (key, value) {
+                    if ('errors' in value) {
+                        message += key + " - ";
+                        $.each(value.errors, function () {
+                            message += this + "\n";
+                        });
+                    }
+                });
+                $('pre#message').text(message);
+                $('div#err-window').data("kendoWindow").open();
+            }
+        }
+
+        function closeWindow() {
+            $('div#err-window').data("kendoWindow").close();
+        }
+
+        function recordTimeStampFilter(element) {
+            element.kendoDateTimePicker();
+        }
+
+        $(document).ready(function () {
+            $("#apply").click(function () {
+                var grid = $("#units").data("kendoGrid");
+                grid.dataSource.read();
+                grid.refresh();
+
+                checkConfirmedStatus();
+            });
+            prepareWindow();
+            hideCommands();
+
+            $("#confirm").click(function () {
+                var date = sendDate();
+                $.ajax({
+                    url: 'Confirm',
+                    type: 'POST',
+                    data: date,
+                    success: function (data) {
+                        var confirmed = data.IsConfirmed;
+                        if (confirmed === true) {
+                            alert("Confirming is " + data.IsConfirmed);
+                            hideCommands();
+                        } else {
+                            showCommands();
+                        }
+                    },
+                    error: function () {
+                    }
+                });
+            });
+        });
+
+        function prepareWindow() {
+            var window = $('div#err-window')
+            window.kendoWindow({
+                width: "650px",
+                title: "Възникна грешка в приложението",
+                actions: ["Close"],
+                modal: true,
+                position: {
+                    top: "30%", // or "100px"
+                    left: "30%"
+                },
+                minHeight: 100,
+                maxHeight: 350
+            });
+        }
+
+        function hideCommands() {
+            $("#confirm").hide();
+            $("#units").data("kendoGrid").hideColumn(10);
+        }
+
+        function showCommands() {
+            $("#confirm").show();
+            $("#units").data("kendoGrid").showColumn(10);
+        }
+
+        function checkConfirmedStatus() {
+            var date = sendDate();
+            $.ajax({
+                url: 'UnitsDataIsConfirmed',
+                type: 'POST',
+                data: date,
+                success: function (result) {
+                    var confirmed = result.IsConfirmed;
+                    if (confirmed === false) {
+                        showCommands();
+                    } else {
+                        hideCommands();
+                    }
+                },
+                error: function (result) {
+                    alert('error');
+                    hideCommands();
+                }
+            });
+        }
+
+    </script>
+}
+@section sidebar{
+    @Html.Partial("_SampleSideBar")
+}
