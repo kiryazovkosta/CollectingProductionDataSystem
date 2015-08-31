@@ -1270,6 +1270,7 @@
     <Content Include="Views\Shared\_SampleSideBar.cshtml" />
     <Content Include="Views\Shared\_UnitsDailySideBar.cshtml" />
     <Content Include="Views\Units\UnitsDailyData.cshtml" />
+    <Content Include="Views\Shared\_SuccessWindow.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

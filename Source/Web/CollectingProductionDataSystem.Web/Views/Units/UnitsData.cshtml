@@ -68,6 +68,9 @@
 )
 @* //Error window for kendo grid error event handler *@
 <div id="err-window" style="display:none">@Html.Partial("_KendoGridErrorWindow")</div>
+@* //Error window for kendo grid error event handler *@
+<div id="success-window" style="display:none">@Html.Partial("_SuccessWindow")</div>
+
 
 @section scripts{
     <script src="~/Scripts/custom/sendAntiForgery.js"></script>
@@ -101,13 +104,13 @@
                         });
                     }
                 });
-                $('pre#message').text(message);
+                $('pre#err-message').text(message);
                 $('div#err-window').data("kendoWindow").open();
             }
         }
 
-        function closeWindow() {
-            $('div#err-window').data("kendoWindow").close();
+        function closeWindow(selector) {
+            $(selector).data("kendoWindow").close();
         }
 
         function recordTimeStampFilter(element) {
@@ -123,6 +126,7 @@
                 checkConfirmedStatus();
             });
             prepareWindow();
+            prepareSuccessWindow();
             hideCommands();
 //TODO: Add success screen!!!!
             $("#confirm").click(function () {
@@ -134,7 +138,9 @@
                     success: function (data) {
                         var confirmed = data.IsConfirmed;
                         if (confirmed === true) {
-                            alert("Confirming is " + data.IsConfirmed);
+                            var message = "Вие потвърдихте отчета успешно."
+                            $('pre#succ-message').text(message);
+                            $('div#success-window').data("kendoWindow").open();
                             hideCommands();
                         } else {
                             //TODO: Perse errors and show error screen
@@ -156,6 +162,22 @@
             window.kendoWindow({
                 width: "650px",
                 title: "Възникна грешка в приложението",
+                actions: ["Close"],
+                modal: true,
+                position: {
+                    top: "30%", // or "100px"
+                    left: "30%"
+                },
+                minHeight: 100,
+                maxHeight: 350
+            });
+        }
+
+        function prepareSuccessWindow() {
+            var window = $('div#success-window')
+            window.kendoWindow({
+                width: "650px",
+                title: "Успешна операция",
                 actions: ["Close"],
                 modal: true,
                 position: {
