@@ -295,7 +295,7 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Measure Unit.
+        ///   Looks up a localized string similar to Measure UnitConfig.
         /// </summary>
         public static string MeasureUnit {
             get {
@@ -349,7 +349,7 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Process Unit.
+        ///   Looks up a localized string similar to Process UnitConfig.
         /// </summary>
         public static string ProcessUnit {
             get {
@@ -358,7 +358,7 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Process Unit Name.
+        ///   Looks up a localized string similar to Process UnitConfig Name.
         /// </summary>
         public static string ProcessUnitName {
             get {
@@ -457,7 +457,7 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Process Unit.
+        ///   Looks up a localized string similar to Process UnitConfig.
         /// </summary>
         public static string UnitsProcessUnitSelector {
             get {

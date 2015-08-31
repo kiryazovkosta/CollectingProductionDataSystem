@@ -28,7 +28,7 @@ namespace CollectingProductionDataSystem.Data.Mappings
             this.ToTable("UnitsDatas");
 
             // Relationships
-            this.HasRequired(u => u.Unit)
+            this.HasRequired(u => u.UnitConfig)
                 .WithMany(u => u.UnitsDatas)
                 .HasForeignKey(d => d.UnitConfigId);
 

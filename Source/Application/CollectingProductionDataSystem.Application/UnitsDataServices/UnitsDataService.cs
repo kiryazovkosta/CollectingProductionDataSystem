@@ -19,10 +19,10 @@
         {
             var dbResult = this.data.UnitsData
                 .All()
-                .Include(x => x.Unit)
-                .Include(x => x.Unit.ProductType)
-                .Include(x => x.Unit.ProcessUnit)
-                .Include(x => x.Unit.MeasureUnit)
+                .Include(x => x.UnitConfig)
+                .Include(x => x.UnitConfig.ProductType)
+                .Include(x => x.UnitConfig.ProcessUnit)
+                .Include(x => x.UnitConfig.MeasureUnit)
                 .Include(x=>x.UnitsManualData)
                 .Include(x => x.UnitsManualData.EditReason);
             if (date != null && shiftId != null)
@@ -39,8 +39,8 @@
 
             if (processUnitId != null)
             {
-                dbResult = dbResult.Include(x => x.Unit.ProcessUnit)
-                    .Where(x => x.Unit.ProcessUnitId == processUnitId);
+                dbResult = dbResult.Include(x => x.UnitConfig.ProcessUnit)
+                    .Where(x => x.UnitConfig.ProcessUnitId == processUnitId);
             }
 
             return dbResult;

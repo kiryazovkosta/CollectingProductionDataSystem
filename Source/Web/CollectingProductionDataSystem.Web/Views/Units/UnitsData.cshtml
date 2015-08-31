@@ -34,6 +34,7 @@
         .ButtonCount(5)
     )
     .Sortable()
+    .Groupable()
     .Scrollable(scr => scr.Height(660))
     .Filterable()
     .Editable(editable => editable.Mode(GridEditMode.InLine))
@@ -41,6 +42,7 @@
         .Ajax()
         .PageSize(50)
         .ServerOperation(true)
+        .Group(group => group.Add(c => c.ProductType))
         .Read(read => read.Action("ReadUnitsData", "Units", new { area = "" }).Data("sendDate"))
         .Update(update => update.Action("Edit", "Units", new { area = "" }).Data("sendAntiForgery"))
         .Model(model =>

@@ -14,7 +14,7 @@ namespace CollectingProductionDataSystem.Models.Productions
         public int UnitConfigId { get; set; }
         public decimal? Value { get; set; }
         public bool IsApproved { get; set; }
-        public virtual UnitConfig Unit { get; set; }
+        public virtual UnitConfig UnitConfig { get; set; }
         public virtual UnitsManualData UnitsManualData { get; set; }
     }
 }

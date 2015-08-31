@@ -72,18 +72,36 @@
         public JsonResult ReadUnitsData([DataSourceRequest]DataSourceRequest request, DateTime? date, int? processUnitId, int? shiftId)
         {
             ValidateModelState(date, processUnitId, shiftId);
-            if (this.ModelState.IsValid)
+            var dbResult = this.unitsData.GetUnitsDataForDateTime(date, processUnitId, shiftId);
+            var kendoResult = new DataSourceResult();
+            try
             {
-                var dbResult = this.unitsData.GetUnitsDataForDateTime(date, processUnitId, shiftId);
-                var kendoResult = dbResult.ToDataSourceResult(request, ModelState);
+                kendoResult = dbResult.ToDataSourceResult(request, ModelState);
                 kendoResult.Data = Mapper.Map<IEnumerable<UnitsData>, IEnumerable<UnitDataViewModel>>((IEnumerable<UnitsData>)kendoResult.Data);
-                return Json(kendoResult);
             }
-            else
+            catch (ArgumentException ex)
             {
-                var kendoResult = new List<UnitDataViewModel>().ToDataSourceResult(request, ModelState);
-                return Json(kendoResult);
+                // Dirty hack
+                kendoResult.Data = Mapper.Map<IEnumerable<UnitsData>, IEnumerable<UnitDataViewModel>>((IEnumerable<UnitsData>)dbResult);
+                kendoResult = kendoResult.Data.ToDataSourceResult(request, ModelState);
             }
+
+            return Json(kendoResult);
+
+
+
+            //if (this.ModelState.IsValid)
+            //{
+            //    var dbResult = this.unitsData.GetUnitsDataForDateTime(date, processUnitId, shiftId);
+            //    var kendoResult = dbResult.ToDataSourceResult(request, ModelState);
+            //    kendoResult.Data = Mapper.Map<IEnumerable<UnitsData>, IEnumerable<UnitDataViewModel>>((IEnumerable<UnitsData>)kendoResult.Data);
+            //    return Json(kendoResult);
+            //}
+            //else
+            //{
+            //    var kendoResult = new List<UnitDataViewModel>().ToDataSourceResult(request, ModelState);
+            //    return Json(kendoResult);
+            //}
         }
 
         [HttpPost]
@@ -165,13 +183,13 @@
                         if (shift != null)
 	                    {
 		                    var endRecordTimespan = date.Value.AddMinutes(shift.BeginMinutes + shift.OffsetMinutes);
-                            var ud = this.data.UnitsData.All().Include(u => u.Unit)
-                                .Where(u => u.RecordTimestamp > date && u.RecordTimestamp < endRecordTimespan && u.Unit.ProcessUnitId == processUnitId)
+                            var ud = this.data.UnitsData.All().Include(u => u.UnitConfig)
+                                .Where(u => u.RecordTimestamp > date && u.RecordTimestamp < endRecordTimespan && u.UnitConfig.ProcessUnitId == processUnitId)
                                 .Select(u => new 
                                 { 
                                     Id = u.Id,
                                     UnitConfigId = u.UnitConfigId,
-                                    Code = u.Unit.Code,
+                                    Code = u.UnitConfig.Code,
                                     Value = u.UnitsManualData.Value == null ? u.Value : u.UnitsManualData.Value
                                 });
 

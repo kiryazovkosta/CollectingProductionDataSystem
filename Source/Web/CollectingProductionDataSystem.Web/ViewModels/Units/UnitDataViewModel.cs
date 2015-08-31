@@ -59,16 +59,20 @@
         [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
         [Display(Name = "RecordTimestamp", ResourceType = typeof(Resources.Layout))]
         public DateTime RecordTimestamp { get; set; }
+
+        [UIHint("Hidden")]
+        public int ProductTypeId { get; set; }
         public void CreateMappings(IConfiguration configuration)
         {
             configuration.CreateMap<UnitsData, UnitDataViewModel>()
-                .ForMember(p => p.Code, opt => opt.MapFrom(p => p.Unit.Code))
-                .ForMember(p => p.ProductType, opt => opt.MapFrom(p => p.Unit.ProductType.Name))
-                .ForMember(p => p.ProcessUnitName, opt => opt.MapFrom(p => p.Unit.ProcessUnit.ShortName))
-                .ForMember(p => p.Name, opt => opt.MapFrom(p => p.Unit.Name))
-                .ForMember(p => p.Position, opt => opt.MapFrom(p => p.Unit.Position))
-                .ForMember(p => p.MeasureUnit, opt => opt.MapFrom(p => p.Unit.MeasureUnit.Code))
-                .ForMember(p => p.CollectingDataMechanism, opt => opt.MapFrom(p => p.Unit.CollectingDataMechanism))
+                .ForMember(p => p.Code, opt => opt.MapFrom(p => p.UnitConfig.Code))
+                .ForMember(p => p.ProductType, opt => opt.MapFrom(p => p.UnitConfig.ProductType.Name))
+                .ForMember(p => p.ProductTypeId, opt => opt.MapFrom(p => p.UnitConfig.ProductTypeId))
+                .ForMember(p => p.ProcessUnitName, opt => opt.MapFrom(p => p.UnitConfig.ProcessUnit.ShortName))
+                .ForMember(p => p.Name, opt => opt.MapFrom(p => p.UnitConfig.Name))
+                .ForMember(p => p.Position, opt => opt.MapFrom(p => p.UnitConfig.Position))
+                .ForMember(p => p.MeasureUnit, opt => opt.MapFrom(p => p.UnitConfig.MeasureUnit.Code))
+                .ForMember(p => p.CollectingDataMechanism, opt => opt.MapFrom(p => p.UnitConfig.CollectingDataMechanism))
                 .ForMember(p => p.AutomaticValue, opt => opt.MapFrom(p => p.Value))
                 .ForMember(p => p.ManualValue, opt => opt.MapFrom(p => p.UnitsManualData== null ? p.Value : p.UnitsManualData.Value))
                 .ForMember(p => p.EditReason, opt => opt.MapFrom(p => p.UnitsManualData == null ? new EditReason(){Id = 0, Name = Resources.Layout.AutomaticData} : p.UnitsManualData.EditReason));
