@@ -5,6 +5,7 @@
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     using System.Data.Entity.Validation;
+    using System.Diagnostics;
     using System.Linq;
     using System.Transactions;
     using System.Web.Mvc;
@@ -73,17 +74,16 @@
         {
             ValidateModelState(date, processUnitId, shiftId);
             var dbResult = this.unitsData.GetUnitsDataForDateTime(date, processUnitId, shiftId);
+            var kendoPreparedResult = Mapper.Map<IEnumerable<UnitsData>, IEnumerable<UnitDataViewModel>>(dbResult);
             var kendoResult = new DataSourceResult();
             try
             {
-                kendoResult = dbResult.ToDataSourceResult(request, ModelState);
-                kendoResult.Data = Mapper.Map<IEnumerable<UnitsData>, IEnumerable<UnitDataViewModel>>((IEnumerable<UnitsData>)kendoResult.Data);
+                kendoResult = kendoPreparedResult.ToDataSourceResult(request, ModelState);
             }
-            catch (ArgumentException ex)
+
+            catch (Exception ex1)
             {
-                // Dirty hack
-                kendoResult.Data = Mapper.Map<IEnumerable<UnitsData>, IEnumerable<UnitDataViewModel>>((IEnumerable<UnitsData>)dbResult);
-                kendoResult = kendoResult.Data.ToDataSourceResult(request, ModelState);
+                Debug.WriteLine(ex1.Message + "\n" + ex1.InnerException);
             }
 
             return Json(kendoResult);
@@ -107,11 +107,11 @@
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([DataSourceRequest] DataSourceRequest request,
-            UnitDailyDataViewModel model)
+            UnitDataViewModel model)
         {
             if (ModelState.IsValid)
             {
-                var newManualRecord = new UnitsManualData { Id = model.Id, Value = model.ManualValue, EditReasonId = model.EditReason.Id };
+                var newManualRecord = new UnitsManualData { Id = model.Id, Value = model.UnitsManualData.Value, EditReasonId = model.UnitsManualData.EditReason.Id };
                 var existManualRecord = this.data.UnitsManualData.All().FirstOrDefault(x => x.Id == newManualRecord.Id);
                 if (existManualRecord == null)
                 {
@@ -144,10 +144,10 @@
             return Json(new[] { model }.ToDataSourceResult(request, ModelState));
         }
 
-        private void UpdateRecord(UnitsManualData existManualRecord, UnitDailyDataViewModel model)
+        private void UpdateRecord(UnitsManualData existManualRecord, UnitDataViewModel model)
         {
-            existManualRecord.Value = model.ManualValue;
-            existManualRecord.EditReasonId = model.EditReason.Id;
+            existManualRecord.Value = model.UnitsManualData.Value;
+            existManualRecord.EditReasonId = model.UnitsManualData.EditReason.Id;
             this.data.UnitsManualData.Update(existManualRecord);
         }
 

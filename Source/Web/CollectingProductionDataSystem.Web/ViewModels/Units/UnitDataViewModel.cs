@@ -16,17 +16,37 @@
         [Display(Name = "№")]
         public int Id { get; set; }
 
+        [Display(Name = "AutomaticValue", ResourceType = typeof(Resources.Layout))]
+        public decimal? Value { get; set; }
+
+        [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
+        [Display(Name = "RecordTimestamp", ResourceType = typeof(Resources.Layout))]
+        public DateTime RecordTimestamp { get; set; }
+
+        public int UnitConfigId { get; set; }
+
+        public UnitConfigDataViewModel UnitConfig { get; set; }
+
+        public UnitsManualDataViewModel UnitsManualData { get; set; }
+
+        public void CreateMappings(IConfiguration configuration)
+        {
+            configuration.CreateMap<UnitsData, UnitDataViewModel>()
+                .ForMember(p => p.UnitsManualData, opt => opt.MapFrom(p => p.UnitsManualData ?? new UnitsManualData() { Value = p.Value ?? 0M }));
+            //configuration.CreateMap<UnitsData, UnitDataViewModel>()
+            //    .AfterMap(p => p.UnitsManualData.Value, opt => opt.MapFrom(p => p.UnitsManualData== null ? p.Value : p.UnitsManualData.Value))
+            //    .ForMember(p => p.UnitsManualData.EditReason, opt => opt.MapFrom(p => p.UnitsManualData == null ? new EditReason(){Id = 0, Name = Resources.Layout.AutomaticData} : p.UnitsManualData.EditReason));
+        }
+    }
+
+    public class UnitConfigDataViewModel : IMapFrom<UnitConfig>
+    {
+        [Required]
+        public int Id { get; set; }
+
         [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
         [Display(Name = "Code", ResourceType = typeof(Resources.Layout))]
         public string Code { get; set; }
-
-        [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
-        [Display(Name = "ProductType", ResourceType = typeof(Resources.Layout))]
-        public string ProductType { get; set; }
-
-        [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
-        [Display(Name = "ProcessUnitName", ResourceType = typeof(Resources.Layout))]
-        public string ProcessUnitName { get; set; }
 
         [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
         [Display(Name = "UnitName", ResourceType = typeof(Resources.Layout))]
@@ -37,46 +57,85 @@
         public string Position { get; set; }
 
         [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
-        [Display(Name = "MeasureUnit", ResourceType = typeof(Resources.Layout))]
-        public string MeasureUnit { get; set; }
-
-        [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
         [Display(Name = "CollectingDataMechanism", ResourceType = typeof(Resources.Layout))]
         public string CollectingDataMechanism { get; set; }
 
-        [Display(Name = "AutomaticValue", ResourceType = typeof(Resources.Layout))]
-        public decimal? AutomaticValue { get; set; }
+        [UIHint("Hidden")]
+        public int ProductTypeId { get; set; }
+
+        public ProductTypeUnitDataViewModel ProductType { get; set; }
+
+        public int ProcessUnitId { get; set; }
+
+        public ProcessUnitUnitDataViewModel ProcessUnit { get; set; }
+
+        public int MeasureUnitId { get; set; }
+        public MeasureUnitUnitDataViewModel MeasureUnit { get; set; }
+
+    }
+
+    public class ProductTypeUnitDataViewModel : IMapFrom<ProductType>
+    {
+        [Required]
+        public int Id { get; set; }
+
+        [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
+        [Display(Name = "ProductType", ResourceType = typeof(Resources.Layout))]
+        public string Name { get; set; }
+
+
+        public string Sort
+        {
+            get
+            {
+                return this.Id.ToString().PadLeft(2,'0')+ " " + this.Name;
+            }
+        }
+
+    }
+
+    public class ProcessUnitUnitDataViewModel : IMapFrom<ProcessUnit>
+    {
+        [Required]
+        public int Id { get; set; }
+
+        [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
+        [Display(Name = "ProcessUnitName", ResourceType = typeof(Resources.Layout))]
+        public string ShortName { get; set; } 
+
+    }
+
+    public class MeasureUnitUnitDataViewModel : IMapFrom<MeasureUnit>
+    {
+        [Required]
+        public int Id { get; set; }
+
+        [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
+        [Display(Name = "MeasureUnit", ResourceType = typeof(Resources.Layout))]
+        public string Code { get; set; }
+    }
+
+    public class UnitsManualDataViewModel : IMapFrom<UnitsManualData>, IHaveCustomMappings
+    {
+        public int Id { get; set; }
 
         [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
         [Display(Name = "ManualValue", ResourceType = typeof(Resources.Layout))]
-        [Range(0.01,double.MaxValue,ErrorMessageResourceName="ManualValue",ErrorMessageResourceType=typeof(Resources.ErrorMessages))]
-        public decimal ManualValue { get; set; }
+        [Range(0, double.MaxValue, ErrorMessageResourceName = "ManualValue", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
+        public decimal Value { get; set; }
 
         [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
         [Display(Name = "EditReason", ResourceType = typeof(Resources.Layout))]
         public EditReasonInputModel EditReason { get; set; }
 
-        [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
-        [Display(Name = "RecordTimestamp", ResourceType = typeof(Resources.Layout))]
-        public DateTime RecordTimestamp { get; set; }
-
-        [UIHint("Hidden")]
-        public int ProductTypeId { get; set; }
+        /// <summary>
+        /// Creates the mappings.
+        /// </summary>
+        /// <param name="configuration">The configuration.</param>
         public void CreateMappings(IConfiguration configuration)
         {
-            configuration.CreateMap<UnitsData, UnitDataViewModel>()
-                .ForMember(p => p.Code, opt => opt.MapFrom(p => p.UnitConfig.Code))
-                .ForMember(p => p.ProductType, opt => opt.MapFrom(p => p.UnitConfig.ProductType.Name))
-                .ForMember(p => p.ProductTypeId, opt => opt.MapFrom(p => p.UnitConfig.ProductTypeId))
-                .ForMember(p => p.ProcessUnitName, opt => opt.MapFrom(p => p.UnitConfig.ProcessUnit.ShortName))
-                .ForMember(p => p.Name, opt => opt.MapFrom(p => p.UnitConfig.Name))
-                .ForMember(p => p.Position, opt => opt.MapFrom(p => p.UnitConfig.Position))
-                .ForMember(p => p.MeasureUnit, opt => opt.MapFrom(p => p.UnitConfig.MeasureUnit.Code))
-                .ForMember(p => p.CollectingDataMechanism, opt => opt.MapFrom(p => p.UnitConfig.CollectingDataMechanism))
-                .ForMember(p => p.AutomaticValue, opt => opt.MapFrom(p => p.Value))
-                .ForMember(p => p.ManualValue, opt => opt.MapFrom(p => p.UnitsManualData== null ? p.Value : p.UnitsManualData.Value))
-                .ForMember(p => p.EditReason, opt => opt.MapFrom(p => p.UnitsManualData == null ? new EditReason(){Id = 0, Name = Resources.Layout.AutomaticData} : p.UnitsManualData.EditReason));
-
+            configuration.CreateMap<UnitsManualData, UnitsManualDataViewModel>()
+                .ForMember(p => p.EditReason, opt => opt.MapFrom(p => p.EditReason ?? new EditReason() { Id = 0, Name = Resources.Layout.AutomaticData }));
         }
     }
 }
