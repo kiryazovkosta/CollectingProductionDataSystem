@@ -96,7 +96,6 @@
                 var message = "";
                 $.each(e.errors, function (key, value) {
                     if ('errors' in value) {
-                        message += key + " - ";
                         $.each(value.errors, function () {
                             message += this + "\n";
                         });
@@ -125,7 +124,7 @@
             });
             prepareWindow();
             hideCommands();
-
+//TODO: Add success screen!!!!
             $("#confirm").click(function () {
                 var date = sendDate();
                 $.ajax({
@@ -138,10 +137,15 @@
                             alert("Confirming is " + data.IsConfirmed);
                             hideCommands();
                         } else {
+                            //TODO: Perse errors and show error screen
+                            if (data.errors) {
+
+                            }
                             showCommands();
                         }
                     },
                     error: function () {
+
                     }
                 });
             });

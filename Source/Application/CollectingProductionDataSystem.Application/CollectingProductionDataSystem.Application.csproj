@@ -56,6 +56,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CalculateServices\ConditionFormulaCalcultor.cs" />
+    <Compile Include="CalculateServices\IConditionFormulaCalcultor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TankDataServices\ITankDataKendoService.cs" />
     <Compile Include="TankDataServices\TankDataKendoService.cs" />
