@@ -138,10 +138,11 @@
                     success: function (data) {
                         var confirmed = data.IsConfirmed;
                         if (confirmed === true) {
+                            hideCommands();
                             var message = "Вие потвърдихте отчета успешно."
                             $('pre#succ-message').text(message);
                             $('div#success-window').data("kendoWindow").open();
-                            hideCommands();
+                            
                         } else {
                             //TODO: Perse errors and show error screen
                             if (data.errors) {

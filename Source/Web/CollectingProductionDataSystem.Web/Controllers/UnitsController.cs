@@ -9,6 +9,7 @@
     using System.Linq;
     using System.Transactions;
     using System.Web.Mvc;
+    using CollectingProductionDataSystem.Application.CalculateServices;
     using CollectingProductionDataSystem.Application.UnitsDataServices;
     using CollectingProductionDataSystem.Data.Contracts;
     using CollectingProductionDataSystem.Models.Nomenclatures;
@@ -20,6 +21,7 @@
     using CollectingProductionDataSystem.Web.ViewModels.Units;
     using Resources = App_GlobalResources.Resources;
     using System.Collections;
+    using System.Text;
 
     [Authorize]
     public class UnitsController : BaseController
@@ -226,7 +228,7 @@
                                 .All()
                                 .Include(u => u.ProcessUnit)
                                 .Where(u => u.ProcessUnitId == processUnitId)
-                                .Select(u => new 
+                                .Select(u => new CalculatedField 
                                 { 
                                     Id = u.Id,
                                     Formula = u.AggregationFormula
@@ -234,22 +236,33 @@
 
                             foreach (var item in unitsDailyData)
                             {
-                                var value = 0m;
-                                var p2 = item.Formula.Split(new char[] {':'}, StringSplitOptions.RemoveEmptyEntries);
-                                var pPlus = p2[0].Split(new char[] {'+'}, StringSplitOptions.RemoveEmptyEntries);
-                                foreach (var plusValue in pPlus)
+                                //var value = 0m;
+                                //var p2 = item.Formula.Split(new char[] {':'}, StringSplitOptions.RemoveEmptyEntries);
+                                //var pPlus = p2[0].Split(new char[] {'+'}, StringSplitOptions.RemoveEmptyEntries);
+                                //foreach (var plusValue in pPlus)
+                                //{
+                                //    value += ht[plusValue] == null ? default(decimal) : (decimal)ht[plusValue];   
+                                //}
+                                //if (p2.Count() == 2)
+                                //{
+                                //    var pMinus = p2[1].Split(new char[] {'-'}, StringSplitOptions.RemoveEmptyEntries);
+                                //    foreach (var minusValue in pMinus)
+                                //    {
+                                //        value -= ht[minusValue] == null ? default(decimal) : (decimal)ht[minusValue];   
+                                //    }
+                                //}
+
+                                var formula = new StringBuilder(item.Formula);
+                                foreach (DictionaryEntry entry in ht)
                                 {
-                                    value += ht[plusValue] == null ? default(decimal) : (decimal)ht[plusValue];   
-                                }
-                                if (p2.Count() == 2)
-                                {
-                                    var pMinus = p2[1].Split(new char[] {'-'}, StringSplitOptions.RemoveEmptyEntries);
-                                    foreach (var minusValue in pMinus)
+                                    var key = entry.Key.ToString();
+                                    if (item.Formula.Contains(key))
                                     {
-                                        value -= ht[minusValue] == null ? default(decimal) : (decimal)ht[minusValue];   
+                                        formula = formula.Replace(key, entry.Value.ToString());   
                                     }
                                 }
-
+                                var value = new ConditionFormulaCalcultor().Calc(formula.ToString());
+                                    
                                 this.data.UnitsDailyDatas.Add(
                                     new UnitsDailyData
                                     {
@@ -326,5 +339,12 @@
                 return Json(new { IsConfirmed = true });
             }
         }
+    }
+
+    public class CalculatedField
+    {
+        public int Id { get; set; }
+
+        public string Formula { get; set; }
     }
 }
