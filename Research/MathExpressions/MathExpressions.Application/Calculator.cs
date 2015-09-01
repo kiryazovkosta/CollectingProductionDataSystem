@@ -9,7 +9,7 @@ namespace MathExpressions.Application
 {
     public class Calculator
     {
-        public decimal Calculate(string expression, string expressionArgumentName, int argumentsCount, Dictionary<string, decimal> arguments)
+        public double Calculate(string expression, string expressionArgumentName, int argumentsCount, Dictionary<string, double> arguments)
         {
             if (argumentsCount != arguments.Count)
 	        {
@@ -25,10 +25,8 @@ namespace MathExpressions.Application
             reg.RegisterType("Math", typeof(Math));
             reg.RegisterType("Convert", typeof(Convert));
             var p = new CompiledExpression(expression) { TypeRegistry = reg };
-            //p.Parse();
-            p.Compile();
-            //Console.WriteLine("Result: {0}", p.Eval());
-            return Convert.ToDecimal(p.Eval());
+            //p.Compile();
+            return (double)p.Eval();
         }
     }
 }

@@ -14,23 +14,28 @@ namespace MathExpressions.Tests
         public void TestMethod1()
         {
             //Arrange
-            decimal t = 455M;
-            decimal P = 20.4M;
-            decimal S = 1323M;
+            double t = 455;
+            double P = 20.4;
+            double S = 1323;
 
-                var inputParams = new Dictionary<string, decimal>();
-                inputParams.Add("t", t);
-                inputParams.Add("P", P);
-                double expected = ((0.758195-(7.97826/(Math.Pow((0.001*(Convert.ToDouble(t)+273.15)),2)))-((3.078455*0.001*(Convert.ToDouble(t)+273.15)-0.21549)/(Math.Pow((0.001*(Convert.ToDouble(t)+273.15)-0.21),3)))*0.01*Convert.ToDouble(P))
-                    + (0.0644126 - (0.268671 / (Math.Pow((0.001 * (Convert.ToDouble(t) + 273.15)), 8))) - (0.216661 / (Math.Pow((0.001 * (Convert.ToDouble(t) + 273.15)) , 14)) / 100)) * Math.Pow(((0.01 * Convert.ToDouble(P))), 2)
-+(503.43+(11.02849*Math.Log10(((Convert.ToDouble(t)+273.15)/647.6)))+(229.2569*((Convert.ToDouble(t)+273.15)/647.6))+(37.93129*(Math.Pow((((Convert.ToDouble(t)+273.15)/647.6)),2)))))*0.001;
+            var inputParams = new Dictionary<string, double>();
+            inputParams.Add("t", t);
+            inputParams.Add("P", P);
+            double expected = ((0.758195-(7.97826/Math.Pow((0.001*(t+273.15)),2))-((3.078455*0.001*(t+273.15)-0.21549)/Math.Pow((0.001*(t+273.15)-0.21),3))*0.01*P)
+                +(0.0644126-(0.268671/Math.Pow((0.001*(t+273.15)),8))-(0.216661/Math.Pow((0.001*(t+273.15)),14)/100))*Math.Pow((0.01*P),2)
+                +(503.43+(11.02849*Math.Log(((t+273.15)/647.6)))+(229.2569*((t+273.15)/647.6))+(37.93129*Math.Pow((((t+273.15)/647.6)),2))))*0.001;
 
-                string expr = "((0.758195-(7.97826/(Math.Pow((0.001*(Convert.ToDouble(par.t)+273.15)),2)))-((3.078455*0.001*(Convert.ToDouble(par.t)+273.15)-0.21549)/(Math.Pow((0.001*(Convert.ToDouble(par.t)+273.15)-0.21),3)))*0.01*Convert.ToDouble(par.P))+ (0.0644126 - (0.268671 / (Math.Pow((0.001 * (Convert.ToDouble(par.t) + 273.15)), 8))) - (0.216661 / (Math.Pow((0.001 * (Convert.ToDouble(par.t) + 273.15)) , 14)) / 100)) * Math.Pow(((0.01 * Convert.ToDouble(par.P))), 2)+(503.43+(11.02849*Math.Log10(((Convert.ToDouble(par.t)+273.15)/647.6)))+(229.2569*((Convert.ToDouble(par.t)+273.15)/647.6))+(37.93129*(Math.Pow((((Convert.ToDouble(par.t)+273.15)/647.6)),2)))))*0.001";
+
+
+
+                string expr = @"((0.758195-(7.97826/Math.Pow((0.001*(par.t+273.15)),2))-((3.078455*0.001*(par.t+273.15)-0.21549)/Math.Pow((0.001*(par.t+273.15)-0.21),3))*0.01*par.P)
+                +(0.0644126-(0.268671/Math.Pow((0.001*(par.t+273.15)),8))-(0.216661/Math.Pow((0.001*(par.t+273.15)),14)/100))*Math.Pow((0.01*par.P),2)
+                +(503.43+(11.02849*Math.Log(((par.t+273.15)/647.6)))+(229.2569*((par.t+273.15)/647.6))+(37.93129*Math.Pow((((par.t+273.15)/647.6)),2))))*0.001";
             //Act
-                decimal actual = calculator.Calculate(expr,"par",2,inputParams);
+                double actual = calculator.Calculate(expr,"par",2,inputParams);
             //Assert
-
-            Assert.AreEqual(Convert.ToDecimal(expected),actual);
+            //.8044167846552613
+            Assert.AreEqual(expected,actual);
         }
     }
 }
