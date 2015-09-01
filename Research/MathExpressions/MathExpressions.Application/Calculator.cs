@@ -22,11 +22,13 @@ namespace MathExpressions.Application
             var reg = new TypeRegistry();
             reg.RegisterType(expressionArgumentName+"s", inputObject.GetType());
             reg.RegisterSymbol(expressionArgumentName, inputObject);
+            reg.RegisterType("Math", typeof(Math));
+            reg.RegisterType("Convert", typeof(Convert));
             var p = new CompiledExpression(expression) { TypeRegistry = reg };
             //p.Parse();
             p.Compile();
             //Console.WriteLine("Result: {0}", p.Eval());
-            return (decimal)p.Eval() ;
+            return Convert.ToDecimal(p.Eval());
         }
     }
 }
