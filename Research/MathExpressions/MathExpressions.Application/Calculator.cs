@@ -20,7 +20,8 @@ namespace MathExpressions.Application
             var inputObject = ObjectBuilder.CreateObject(arguments);
 
             var reg = new TypeRegistry();
-            reg.RegisterType(expressionArgumentName, inputObject.GetType());
+            reg.RegisterType(expressionArgumentName+"s", inputObject.GetType());
+            reg.RegisterSymbol(expressionArgumentName, inputObject);
             var p = new CompiledExpression(expression) { TypeRegistry = reg };
             //p.Parse();
             p.Compile();
