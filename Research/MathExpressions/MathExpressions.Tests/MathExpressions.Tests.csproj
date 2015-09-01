@@ -67,6 +67,12 @@
   <ItemGroup>
     <Content Include="LICENSE.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MathExpressions.Application\MathExpressions.Application.csproj">
+      <Project>{34672323-163B-48F2-9425-B4B55B33D144}</Project>
+      <Name>MathExpressions.Application</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>
