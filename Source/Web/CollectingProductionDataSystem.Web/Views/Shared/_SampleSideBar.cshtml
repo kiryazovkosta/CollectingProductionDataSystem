@@ -12,7 +12,7 @@
         {
             source.Read(read =>
             {
-                read.Action("GetFactories", "Ajax");
+                read.Action("GetFactories", "Ajax", new { area=""});
             });
         })
     )
@@ -29,7 +29,7 @@
         {
             source.Read(read =>
             {
-                read.Action("GetProcessUnits", "Ajax").Data("sendFactory");
+                read.Action("GetProcessUnits", "Ajax", new { area = "" }).Data("sendFactory");
             })
             .ServerFiltering(true);
         })
@@ -54,7 +54,7 @@
         {
             source.Read(read =>
             {
-                read.Action("GetShifts", "Ajax");
+                read.Action("GetShifts", "Ajax", new { area = "" });
             });
         })
     )

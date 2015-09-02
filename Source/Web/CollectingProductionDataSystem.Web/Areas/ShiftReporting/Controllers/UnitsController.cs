@@ -1,4 +1,4 @@
-﻿namespace CollectingProductionDataSystem.Web.Controllers
+﻿namespace CollectingProductionDataSystem.Web.Areas.ShiftReporting.Controllers
 {
     using System;
     using System.ComponentModel.DataAnnotations;
@@ -13,6 +13,7 @@
     using CollectingProductionDataSystem.Application.UnitsDataServices;
     using CollectingProductionDataSystem.Data.Contracts;
     using CollectingProductionDataSystem.Models.Nomenclatures;
+    using CollectingProductionDataSystem.Web.Controllers;
     using Kendo.Mvc.Extensions;
     using Kendo.Mvc.UI;
     using AutoMapper;
@@ -24,12 +25,11 @@
     using System.Text;
 
     [Authorize]
-    public class UnitsController : BaseController
+    public class UnitsController : AreaBaseController
     {
         private readonly IUnitsDataService unitsData;
 
-        public UnitsController(IProductionData dataParam, IUnitsDataService unitsDataParam)
-            : base(dataParam)
+        public UnitsController(IProductionData dataParam, IUnitsDataService unitsDataParam) : base(dataParam)
         {
             this.unitsData = unitsDataParam;
         }
@@ -48,17 +48,18 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public JsonResult ReadUnitsDailyData([DataSourceRequest]DataSourceRequest request, DateTime? date, int? processUnitId)
+        public JsonResult ReadUnitsDailyData([DataSourceRequest]
+                                             DataSourceRequest request, DateTime? date, int? processUnitId)
         {
             if (this.ModelState.IsValid)
             {
                 var dbResult = this.data.UnitsDailyDatas
-                    .All()
-                    .Include(u => u.UnitsDailyConfig)
-                    .Include(u => u.UnitsDailyConfig.MeasureUnit)
-                    .Include(u => u.UnitsDailyConfig.ProductType)
-                    .Where(u => u.RecordTimestamp == date && u.UnitsDailyConfig.ProcessUnitId == processUnitId)
-                    .ToList();
+                                   .All()
+                                   .Include(u => u.UnitsDailyConfig)
+                                   .Include(u => u.UnitsDailyConfig.MeasureUnit)
+                                   .Include(u => u.UnitsDailyConfig.ProductType)
+                                   .Where(u => u.RecordTimestamp == date && u.UnitsDailyConfig.ProcessUnitId == processUnitId)
+                                   .ToList();
                 var kendoResult = dbResult.ToDataSourceResult(request, ModelState);
                 kendoResult.Data = Mapper.Map<IEnumerable<UnitsDailyData>, IEnumerable<UnitDailyDataViewModel>>((IEnumerable<UnitsDailyData>)kendoResult.Data);
                 return Json(kendoResult);
@@ -72,7 +73,8 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public JsonResult ReadUnitsData([DataSourceRequest]DataSourceRequest request, DateTime? date, int? processUnitId, int? shiftId)
+        public JsonResult ReadUnitsData([DataSourceRequest]
+                                        DataSourceRequest request, DateTime? date, int? processUnitId, int? shiftId)
         {
             ValidateModelState(date, processUnitId, shiftId);
             var dbResult = this.unitsData.GetUnitsDataForDateTime(date, processUnitId, shiftId);
@@ -82,16 +84,12 @@
             {
                 kendoResult = kendoPreparedResult.ToDataSourceResult(request, ModelState);
             }
-
             catch (Exception ex1)
             {
                 Debug.WriteLine(ex1.Message + "\n" + ex1.InnerException);
             }
 
             return Json(kendoResult);
-
-
-
             //if (this.ModelState.IsValid)
             //{
             //    var dbResult = this.unitsData.GetUnitsDataForDateTime(date, processUnitId, shiftId);
@@ -108,12 +106,18 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([DataSourceRequest] DataSourceRequest request,
+        public ActionResult Edit([DataSourceRequest]
+                                 DataSourceRequest request,
             UnitDataViewModel model)
         {
             if (ModelState.IsValid)
             {
-                var newManualRecord = new UnitsManualData { Id = model.Id, Value = model.UnitsManualData.Value, EditReasonId = model.UnitsManualData.EditReason.Id };
+                var newManualRecord = new UnitsManualData
+                {
+                    Id = model.Id,
+                    Value = model.UnitsManualData.Value,
+                    EditReasonId = model.UnitsManualData.EditReason.Id
+                };
                 var existManualRecord = this.data.UnitsManualData.All().FirstOrDefault(x => x.Id == newManualRecord.Id);
                 if (existManualRecord == null)
                 {
@@ -155,16 +159,17 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Confirm([DataSourceRequest] DataSourceRequest request, DateTime? date, int? processUnitId, int? shiftId)
+        public ActionResult Confirm([DataSourceRequest]
+                                    DataSourceRequest request, DateTime? date, int? processUnitId, int? shiftId)
         {
             ValidateModelState(date, processUnitId, shiftId);
 
             if (this.ModelState.IsValid)
             {
                 var approvedShift = this.data.UnitsApprovedDatas
-                    .All()
-                    .Where(u => u.RecordDate == date && u.ProcessUnitId == processUnitId && u.ShiftId == shiftId)
-                    .FirstOrDefault();
+                                        .All()
+                                        .Where(u => u.RecordDate == date && u.ProcessUnitId == processUnitId && u.ShiftId == shiftId)
+                                        .FirstOrDefault();
                 if (approvedShift == null)
                 {
                     this.data.UnitsApprovedDatas.Add(new UnitsApprovedData
@@ -183,17 +188,17 @@
                         var shift = this.data.ProductionShifts.All().Where(s => s.Id == shiftId).FirstOrDefault();
                         // It will be verry strang if there is not a shift with provided id but who knows
                         if (shift != null)
-	                    {
-		                    var endRecordTimespan = date.Value.AddMinutes(shift.BeginMinutes + shift.OffsetMinutes);
+                        {
+                            var endRecordTimespan = date.Value.AddMinutes(shift.BeginMinutes + shift.OffsetMinutes);
                             var ud = this.data.UnitsData.All().Include(u => u.UnitConfig)
-                                .Where(u => u.RecordTimestamp > date && u.RecordTimestamp < endRecordTimespan && u.UnitConfig.ProcessUnitId == processUnitId)
-                                .Select(u => new 
-                                { 
-                                    Id = u.Id,
-                                    UnitConfigId = u.UnitConfigId,
-                                    Code = u.UnitConfig.Code,
-                                    Value = u.UnitsManualData.Value == null ? u.Value : u.UnitsManualData.Value
-                                });
+                                         .Where(u => u.RecordTimestamp > date && u.RecordTimestamp < endRecordTimespan && u.UnitConfig.ProcessUnitId == processUnitId)
+                                         .Select(u => new
+                                         {
+                                             Id = u.Id,
+                                             UnitConfigId = u.UnitConfigId,
+                                             Code = u.UnitConfig.Code,
+                                             Value = u.UnitsManualData.Value == null ? u.Value : u.UnitsManualData.Value
+                                         });
 
                             // Todo: Refactoring, refactoring, refactoring
                             var ht = new Hashtable();
@@ -219,20 +224,19 @@
                                     }
                                 }
                             }
-
                             catch (Exception)
                             {
                             }
 
                             var unitsDailyData = this.data.UnitsDailyConfigs
-                                .All()
-                                .Include(u => u.ProcessUnit)
-                                .Where(u => u.ProcessUnitId == processUnitId)
-                            .Select(u => new CollectingProductionDataSystem.Web.Areas.ShiftReporting.Controllers.CalculatedField
-                                   {
-                                       Id = u.Id,
-                                       Formula = u.AggregationFormula
-                                   });
+                                                     .All()
+                                                     .Include(u => u.ProcessUnit)
+                                                     .Where(u => u.ProcessUnitId == processUnitId)
+                                                     .Select(u => new CalculatedField
+                                                            {
+                                                                Id = u.Id,
+                                                                Formula = u.AggregationFormula
+                                                            });
 
                             foreach (var item in unitsDailyData)
                             {
@@ -251,7 +255,6 @@
                                 //        value -= ht[minusValue] == null ? default(decimal) : (decimal)ht[minusValue];   
                                 //    }
                                 //}
-
                                 var formula = new StringBuilder(item.Formula);
                                 foreach (DictionaryEntry entry in ht)
                                 {
@@ -273,8 +276,7 @@
                             }
 
                             this.data.SaveChanges(this.UserProfile.User.UserName);
-	                    }
-                        
+                        }
                     }
                     return Json(new { IsConfirmed = result.IsValid });
                 }
@@ -307,7 +309,8 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult UnitsDataIsConfirmed([DataSourceRequest] DataSourceRequest request, DateTime? date, int? processUnitId, int? shiftId)
+        public ActionResult UnitsDataIsConfirmed([DataSourceRequest]
+                                                 DataSourceRequest request, DateTime? date, int? processUnitId, int? shiftId)
         {
             if (date == null)
             {
@@ -325,9 +328,9 @@
             if (this.ModelState.IsValid)
             {
                 var approvedShift = this.data.UnitsApprovedDatas
-                    .All()
-                    .Where(u => u.RecordDate == date && u.ProcessUnitId == processUnitId && u.ShiftId == shiftId)
-                    .FirstOrDefault();
+                                        .All()
+                                        .Where(u => u.RecordDate == date && u.ProcessUnitId == processUnitId && u.ShiftId == shiftId)
+                                        .FirstOrDefault();
                 if (approvedShift == null)
                 {
                     return Json(new { IsConfirmed = false });

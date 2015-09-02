@@ -7,6 +7,7 @@
     using System.Threading.Tasks;
     using System.Web;
     using System.Web.Mvc;
+    using CollectingProductionDataSystem.Data.Contracts;
     using CollectingProductionDataSystem.Models.Identity;
     using CollectingProductionDataSystem.Web.AppStart;
     using CollectingProductionDataSystem.Web.Infrastructure.IdentityInfrastructure;
@@ -14,8 +15,12 @@
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.Owin;
 
-    public class RoleController : BaseController
+    public class RoleController : AreaBaseController
     {
+        public RoleController(IProductionData dataParam) 
+        :base(dataParam)
+        {
+        }
         public ActionResult Index()
         {
             return View(RoleManager.Roles);

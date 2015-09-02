@@ -17,13 +17,11 @@
     using Kendo.Mvc.Extensions;
     using System.Threading.Tasks;
 
-    public class UserController : BaseController
+    public class UserController : AreaBaseController
     {
-        private readonly IProductionData data;
-
         public UserController(IProductionData dataParam)
+            :base(dataParam)
         {
-            this.data = dataParam;
         }
         // GET: Administration/User
         public ActionResult Index()
