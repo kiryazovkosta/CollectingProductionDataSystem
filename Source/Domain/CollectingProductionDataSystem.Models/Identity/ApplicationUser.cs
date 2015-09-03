@@ -1,18 +1,82 @@
 ﻿namespace CollectingProductionDataSystem.Models.Identity
 {
     using System;
+    using System.Collections;
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Security.Claims;
     using System.Text;
     using System.Threading.Tasks;
     using CollectingProductionDataSystem.Models.Contracts;
+    using CollectingProductionDataSystem.Models.Inventories;
+    using CollectingProductionDataSystem.Models.Productions;
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.EntityFramework;
 
     // You can add profile data for the user by adding more properties to your ApplicationUser class, please visit http://go.microsoft.com/fwlink/?LinkID=317594 to learn more.
-    public class ApplicationUser : IdentityUser<int, UserLoginIntPk, UserRoleIntPk, UserClaimIntPk>, IEntity
+    public class ApplicationUser : IdentityUser<int, UserLoginIntPk, UserRoleIntPk, UserClaimIntPk>, IAuditInfo, IDeletableEntity, IEntity
     {
+        private ICollection<ProcessUnit> processUnits;
+        private ICollection<Park> parks;
+        
+
+        #region IAuditInfo_IDeletableEntity
+        /// <summary>
+        /// Gets or sets the is deleted.
+        /// </summary>
+        /// <value>The is deleted.</value>
+        public bool IsDeleted { get; set; }
+
+        /// <summary>
+        /// Gets or sets the deleted on.
+        /// </summary>
+        /// <value>The deleted on.</value>
+        public DateTime? DeletedOn { get; set; }
+
+        /// <summary>
+        /// Gets or sets the deleted from.
+        /// </summary>
+        /// <value>The deleted from.</value>
+        public string DeletedFrom { get; set; }
+
+        /// <summary>
+        /// Gets or sets the created on.
+        /// </summary>
+        /// <value>The created on.</value>
+        public DateTime CreatedOn { get; set; }
+
+        /// <summary>
+        /// Gets or sets the preserve created on.
+        /// </summary>
+        /// <value>The preserve created on.</value>
+        public bool PreserveCreatedOn { get; set; }
+
+        /// <summary>
+        /// Gets or sets the modified on.
+        /// </summary>
+        /// <value>The modified on.</value>
+        public DateTime? ModifiedOn { get; set; }
+
+        /// <summary>
+        /// Gets or sets the created from.
+        /// </summary>
+        /// <value>The created from.</value>
+        public string CreatedFrom { get; set; }
+
+        /// <summary>
+        /// Gets or sets the modified from.
+        /// </summary>
+        /// <value>The modified from.</value>
+        public string ModifiedFrom { get; set; } 
+        #endregion
+
+        public ApplicationUser() 
+        {
+            this.processUnits = new HashSet<ProcessUnit>();
+            this.parks = new HashSet<Park>();
+            this.CreatedOn = DateTime.Now;
+        }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser, int> manager)
         {
@@ -33,8 +97,19 @@
 
         public bool IsChangePasswordRequired { get; set; }
 
-        public string Occupation { get; set; }
-        
+        public virtual ICollection<ProcessUnit> ProcessUnits
+        {
+            get { return this.processUnits; }
+            set { this.processUnits = value; }
+        }
+
+        public virtual ICollection<Park> Parks
+        {
+            get { return this.parks; }
+            set { this.parks = value; }
+        }
+
+
         [NotMapped]
         public string FullName
         {

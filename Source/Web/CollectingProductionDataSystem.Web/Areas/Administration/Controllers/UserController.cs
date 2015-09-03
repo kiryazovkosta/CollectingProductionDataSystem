@@ -8,6 +8,7 @@
     using AutoMapper;
     using CollectingProductionDataSystem.Data.Contracts;
     using CollectingProductionDataSystem.Models.Identity;
+    using CollectingProductionDataSystem.Web.Areas.Administration.ViewModels;
     using CollectingProductionDataSystem.Web.Infrastructure.IdentityInfrastructure;
     using CollectingProductionDataSystem.Web.ViewModels.Identity;
     using Kendo.Mvc.UI;
@@ -31,13 +32,7 @@
             return View();
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public JsonResult Read([DataSourceRequest]DataSourceRequest request)
-        {
-            var users = Mapper.Map<List<EditUserViewModel>>(UserManager.Users);
-            return Json(users.ToDataSourceResult(request, ModelState));
-        }
+        
 
         private ApplicationUserManager UserManager
         {
@@ -49,22 +44,25 @@
 
         public ActionResult Create()
         {
-            var model = new CreateUserViewModel() { Roles = Mapper.Map<IEnumerable<AsignRoleViewModel>>(data.Roles.All().ToList()) };
+            var model = new EditUserViewModel();//{ Roles = Mapper.Map<IEnumerable<AsignRoleViewModel>>(data.Roles.All().ToList()) };
             return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(CreateUserViewModel model)
+        public async Task<ActionResult> Create(CollectingProductionDataSystem.Web.Areas.Administration.ViewModels.EditUserViewModel model)
         {
             if (model != null && ModelState.IsValid)
             {
                 var user = Mapper.Map<ApplicationUser>(model);
-                IdentityResult result = await UserManager.CreateAsync(user, model.Password);
+                user.CreatedFrom = HttpContext.User.Identity.GetUserName();
+
+                IdentityResult result = await UserManager.CreateAsync(user, model.NewPassword);
 
                 if (result.Succeeded)
                 {
-                    result = await AddUserInRolesAsync(user, model.Roles);                    
+                    //TODO: Add user to selected roles
+                    //result = await AddUserInRolesAsync(user, model.Roles);                    
                 }
 
                 if (result.Succeeded)
@@ -138,7 +136,7 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit(EditUserViewModel user)
+        public async Task<ActionResult> Edit(CollectingProductionDataSystem.Web.Areas.Administration.ViewModels.EditUserViewModel user)
         {
             if (user != null && ModelState.IsValid)
             {
@@ -196,6 +194,7 @@
                     ModelState.AddModelError("", "Потребителя не е намерен");
                 }
             }
+            ViewBag.Mode = "Edit";
             return View(user);
         }
 

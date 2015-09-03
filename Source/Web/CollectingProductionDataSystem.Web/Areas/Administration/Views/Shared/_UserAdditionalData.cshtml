@@ -1,0 +1,26 @@
+﻿@using Resources = App_GlobalResources.Resources;
+
+@model CollectingProductionDataSystem.Web.Areas.Administration.ViewModels.EditUserViewModel
+<div class="form-group">
+    <div class=" row">
+        @Html.LabelFor(m => m.UserRoles, new { @class = "col-xs-4 control-label control-label-horizontal" })
+        <div class="col-xs-8 multiselect-host">
+            @(Html.Kendo()
+              .MultiSelectFor(m => m.UserRoles)
+              .HtmlAttributes(new { @class = "" })
+              .AutoClose(false)
+              .DataTextField("Name")
+              .DataValueField("Id")
+              .Placeholder(@Resources.Layout.SlectRoles)
+              .Value(Model.UserRoles)
+              .DataSource(source =>
+              {
+                  source.Read(read =>
+                  { read.Action("GetAllRoles", "Ajax", new { area = "Administration" }); })
+                  .ServerFiltering(true);
+              })
+            )
+        </div>
+    </div>
+</div>
+

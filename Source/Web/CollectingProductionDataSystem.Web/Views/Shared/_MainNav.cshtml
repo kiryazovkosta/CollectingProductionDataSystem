@@ -1,4 +1,5 @@
-﻿<div class="navbar navbar-default navbar-inverse navbar-fixed-top">
+﻿@using Resources = App_GlobalResources.Resources;
+<div class="navbar navbar-default navbar-inverse navbar-fixed-top">
     <div class="container-fluid">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -16,6 +17,16 @@
                 <li>@Html.ActionLink("Contact", "Contact", "Home", routeValues: new { area = string.Empty }, htmlAttributes: null)</li>
                 <li>@Html.ActionLink("UnitsData", "UnitsData", "Units", routeValues: new { area = string.Empty }, htmlAttributes: null)</li>
                 <li>@Html.ActionLink("Units Daily Data", "UnitsDailyData", "Units", routeValues: new { area = string.Empty }, htmlAttributes: null)</li>
+                @if (Html.ActionIsAccessibleToUser("Index", "User", "Administration"))
+                {
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">@Resources.Layout.Administration<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li>@Html.AuthorizedActionLink(@Resources.Layout.UsersAdministration, "Index", "User", new { area = "Administration" }, null)</li>
+                            <li>@Html.AuthorizedActionLink(@Resources.Layout.RolesAdministration, "Index", "Role", new { area = "Administration" }, null)</li>
+                        </ul>
+                    </li>
+                }
             </ul>
             @Html.Partial("_LoginPartial")
         </div>

@@ -65,10 +65,10 @@
 
         IDeletableEntityRepository<UnitsApprovedData> UnitsApprovedDatas { get; }
 
-        IRepository<ApplicationUser> Users{get;}
+        IDeletableEntityRepository<ApplicationUser> Users{get;}
 
 
-        IRepository<ApplicationRole> Roles { get; }
+        IDeletableEntityRepository<ApplicationRole> Roles { get; }
        
 
 

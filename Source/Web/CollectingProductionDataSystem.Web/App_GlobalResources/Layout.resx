@@ -258,4 +258,22 @@
   <data name="Confirm" xml:space="preserve">
     <value>Confirm</value>
   </data>
+  <data name="Administration" xml:space="preserve">
+    <value>Administration</value>
+  </data>
+  <data name="RolesAdministration" xml:space="preserve">
+    <value>Roles Administration</value>
+  </data>
+  <data name="UsersAdministration" xml:space="preserve">
+    <value>Users Administration</value>
+  </data>
+  <data name="CreateUser" xml:space="preserve">
+    <value>Create User Account</value>
+  </data>
+  <data name="Roles" xml:space="preserve">
+    <value>Roles</value>
+  </data>
+  <data name="SlectRoles" xml:space="preserve">
+    <value>Please Slect Roles...</value>
+  </data>
 </root>

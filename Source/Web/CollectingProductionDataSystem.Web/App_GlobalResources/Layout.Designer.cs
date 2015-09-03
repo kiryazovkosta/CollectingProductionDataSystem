@@ -61,6 +61,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Administration.
+        /// </summary>
+        public static string Administration {
+            get {
+                return ResourceManager.GetString("Administration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Apply.
         /// </summary>
         public static string Apply {
@@ -174,6 +183,15 @@ namespace App_GlobalResources.Resources {
         public static string ConfirmPassword {
             get {
                 return ResourceManager.GetString("ConfirmPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create User Account.
+        /// </summary>
+        public static string CreateUser {
+            get {
+                return ResourceManager.GetString("CreateUser", resourceCulture);
             }
         }
         
@@ -295,7 +313,7 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Measure UnitConfig.
+        ///   Looks up a localized string similar to Measure Unit.
         /// </summary>
         public static string MeasureUnit {
             get {
@@ -349,7 +367,7 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Process UnitConfig.
+        ///   Looks up a localized string similar to Process Unit.
         /// </summary>
         public static string ProcessUnit {
             get {
@@ -358,7 +376,7 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Process UnitConfig Name.
+        ///   Looks up a localized string similar to Process Unit Name.
         /// </summary>
         public static string ProcessUnitName {
             get {
@@ -399,6 +417,33 @@ namespace App_GlobalResources.Resources {
         public static string RememberMe {
             get {
                 return ResourceManager.GetString("RememberMe", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Roles.
+        /// </summary>
+        public static string Roles {
+            get {
+                return ResourceManager.GetString("Roles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Roles Administration.
+        /// </summary>
+        public static string RolesAdministration {
+            get {
+                return ResourceManager.GetString("RolesAdministration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please Slect Roles....
+        /// </summary>
+        public static string SlectRoles {
+            get {
+                return ResourceManager.GetString("SlectRoles", resourceCulture);
             }
         }
         
@@ -457,7 +502,7 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Process UnitConfig.
+        ///   Looks up a localized string similar to Process Unit.
         /// </summary>
         public static string UnitsProcessUnitSelector {
             get {
@@ -480,6 +525,15 @@ namespace App_GlobalResources.Resources {
         public static string UserName {
             get {
                 return ResourceManager.GetString("UserName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Users Administration.
+        /// </summary>
+        public static string UsersAdministration {
+            get {
+                return ResourceManager.GetString("UsersAdministration", resourceCulture);
             }
         }
     }

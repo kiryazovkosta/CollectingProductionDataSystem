@@ -253,19 +253,19 @@ using CollectingProductionDataSystem.Models.Transactions;
             }
         }
 
-        public IRepository<ApplicationUser> Users
+        public IDeletableEntityRepository<ApplicationUser> Users
         {
             get
             {
-                return this.GetRepository<ApplicationUser>();
+                return this.GetDeletableEntityRepository<ApplicationUser>();
             }
         }
 
-        public IRepository<ApplicationRole> Roles
+        public IDeletableEntityRepository<ApplicationRole> Roles
         {
             get
             {
-                return this.GetRepository<ApplicationRole>();
+                return this.GetDeletableEntityRepository<ApplicationRole>();
             }
         }
 

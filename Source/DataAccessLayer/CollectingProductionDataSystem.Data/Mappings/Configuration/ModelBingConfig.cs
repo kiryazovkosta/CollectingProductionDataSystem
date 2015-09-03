@@ -37,6 +37,7 @@
             modelBuilder.Configurations.Add(new TankMasterProductMap());
             modelBuilder.Configurations.Add(new UnitsDailyDataMap());
             modelBuilder.Configurations.Add(new UnitsManualDailyDataMap());
+            modelBuilder.Configurations.Add(new ApplicationUserMapping());
         }
     }
 }

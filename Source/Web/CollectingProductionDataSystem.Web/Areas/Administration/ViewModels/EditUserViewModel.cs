@@ -1,10 +1,15 @@
-﻿namespace CollectingProductionDataSystem.Web.ViewModels.Identity
+﻿namespace CollectingProductionDataSystem.Web.Areas.Administration.ViewModels
 {
     using System;
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
+    using AutoMapper;
     using CollectingProductionDataSystem.Infrastructure.Mapping;
     using CollectingProductionDataSystem.Models.Identity;
+    using CollectingProductionDataSystem.Web.ViewModels.Identity;
+    using CollectingProductionDataSystem.Web.ViewModels.Tank;
+    using CollectingProductionDataSystem.Web.ViewModels.Units;
     using Resources = App_GlobalResources.Resources;
 
     public class EditUserViewModel:IMapFrom<ApplicationUser>
@@ -43,12 +48,16 @@
         [Display(Name = "Occupation", ResourceType = typeof(Resources.Layout))]
         public string Occupation { get; set; }
 
+        [Display(Name = "Roles", ResourceType = typeof(Resources.Layout))]
+        public IEnumerable<AsignRoleViewModel> UserRoles { get; set; }
 
+        public IEnumerable<ProcessUnitViewModel> ProcessUnits { get; set; }
+
+        public IEnumerable<ParkViewModel> Parks { get; set; }
 
         [Display(Name = "NewPassword",ResourceType=typeof(Resources.Layout))]
         [DataType(DataType.Password)]
         public string NewPassword { get; set; }
-
 
     }
 }

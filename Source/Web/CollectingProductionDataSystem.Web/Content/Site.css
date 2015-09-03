@@ -1,5 +1,5 @@
 ﻿body {
-    padding-top: 50px;
+    padding-top: 60px;
     padding-bottom: 20px;
 }
 
@@ -125,12 +125,15 @@ a.k-button.k-button-icontext.k-grid-edit, a.k-button.k-button-icontext.k-grid-de
 }
 
 pre {
-    margin:0;
-    padding:0;
-    background:none;
-    border:none;
-    color:black;
-    font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-size:14px;
-    
+    margin: 0;
+    padding: 0;
+    background: none;
+    border: none;
+    color: black;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 14px;
+}
+
+.multiselect-host {
+    padding-top: 5px;
 }

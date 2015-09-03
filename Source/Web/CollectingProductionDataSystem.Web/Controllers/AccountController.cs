@@ -8,7 +8,6 @@
     using System.Web;
     using System.Web.Mvc;
     using CollectingProductionDataSystem.Web.Infrastructure.IdentityInfrastructure;
-    using CollectingProductionDataSystem.Web.ViewModels.Identity;
     using Resources = App_GlobalResources.Resources;
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.Owin;
@@ -70,7 +69,7 @@
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Login(CollectingProductionDataSystem.Web.ViewModels.Identity.LoginViewModel model, string returnUrl)
+        public async Task<ActionResult> Login(CollectingProductionDataSystem.Web.Areas.Administration.ViewModels.LoginViewModel model, string returnUrl)
         {
             if (!ModelState.IsValid)
             {
@@ -106,7 +105,7 @@
         // POST: /Account/ChangePassword
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> ChangePassword(ChangePasswordViewModel model)
+        public async Task<ActionResult> ChangePassword(CollectingProductionDataSystem.Web.Areas.Administration.ViewModels.ChangePasswordViewModel model)
         {
             if (!ModelState.IsValid)
             {

@@ -205,7 +205,7 @@
     <value>Нова парола</value>
   </data>
   <data name="Occupation" xml:space="preserve">
-    <value>Месторабота, длъжност</value>
+    <value>Месторабота</value>
   </data>
   <data name="Password" xml:space="preserve">
     <value>Парола</value>
@@ -260,5 +260,23 @@
   </data>
   <data name="Confirm" xml:space="preserve">
     <value>Потвърждавам</value>
+  </data>
+  <data name="Administration" xml:space="preserve">
+    <value>Администриране</value>
+  </data>
+  <data name="RolesAdministration" xml:space="preserve">
+    <value>Администриране на роли</value>
+  </data>
+  <data name="UsersAdministration" xml:space="preserve">
+    <value>Администриране на потребители</value>
+  </data>
+  <data name="CreateUser" xml:space="preserve">
+    <value>Създаване на потребител</value>
+  </data>
+  <data name="Roles" xml:space="preserve">
+    <value>Роли</value>
+  </data>
+  <data name="SlectRoles" xml:space="preserve">
+    <value>Изберете роли...</value>
   </data>
 </root>

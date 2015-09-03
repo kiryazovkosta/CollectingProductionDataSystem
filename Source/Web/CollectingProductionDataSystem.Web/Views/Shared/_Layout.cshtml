@@ -6,13 +6,13 @@
     <title>@ViewBag.Title - My ASP.NET Application</title>
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/modernizr")
-    @RenderSection("styles", required: false)
     @Styles.Render("~/Content/css")
+    @RenderSection("styles", required: false)
 
 </head>
 <body>
     @Html.Partial("_MainNav")
-    <div class="container body-content">
+    <div class="container-fluid body-content">
         @RenderBody()
         <hr />
         <footer>

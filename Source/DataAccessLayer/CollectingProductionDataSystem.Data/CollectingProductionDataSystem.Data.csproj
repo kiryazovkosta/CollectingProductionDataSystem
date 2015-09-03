@@ -71,6 +71,7 @@
     <Compile Include="Contracts\IRepository.cs" />
     <Compile Include="Identity\RoleStoreIntPk.cs" />
     <Compile Include="Identity\UserStoreIntPk.cs" />
+    <Compile Include="Mappings\ApplicationUserMapping.cs" />
     <Compile Include="Mappings\AreaMap.cs" />
     <Compile Include="Mappings\AuditLogRecordMap.cs" />
     <Compile Include="Mappings\Configuration\ModelBingConfig.cs" />

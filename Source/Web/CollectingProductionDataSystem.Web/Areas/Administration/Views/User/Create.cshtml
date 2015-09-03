@@ -1,50 +1,94 @@
-﻿@using CollectingProductionDataSystem.Web.ViewModels.Identity;
-@model CreateUserViewModel
+﻿@using Resources = App_GlobalResources.Resources;
+
+@model CollectingProductionDataSystem.Web.Areas.Administration.ViewModels.EditUserViewModel
 @{
-    ViewBag.Title = "Create new user";
+    Layout = "~/Views/Shared/_KendoLayout.cshtml";
+    ViewBag.Title = @Resources.Layout.CreateUser;
+    ViewBag.Mode = "Create";
 }
 <div class="container body-content">
-    <h2>@ViewBag.Title</h2>
+    <h2 class="text-center">@ViewBag.Title</h2>
+    <hr/>
     @Html.ValidationSummary(false, string.Empty, new { @class = "text-danger" })
     @using (Html.BeginForm())
     {
-        @Html.AntiForgeryToken()
         <div class="row">
-            <div class="col-lg-4">
+            <div class="col-lg-6">
+                @Html.AntiForgeryToken()
                 <div class="form-group">
-                    @Html.LabelFor(m => m.UserName, new { @class = "control-label" })
-                    @Html.EditorFor(m => m.UserName, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(m => m.UserName, string.Empty, new { @class = "text-danger" })
+                    <div class="row">
+                        @Html.LabelFor(m => m.UserName, new { @class = "col-xs-4 control-label control-label-horizontal" })
+                        @Html.EditorFor(m => m.UserName, new { htmlAttributes = new { @class = "form-control col-xs-8 k-editor" } })
+                        @Html.ValidationMessageFor(m => m.UserName, string.Empty, new { @class = "validation-summary-errors" })
+                    </div>
                 </div>
                 <div class="form-group">
-                    @Html.LabelFor(m => m.Email, new { @class = "control-label" })
-                    @Html.EditorFor(m => m.Email, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(m => m.Email, string.Empty, new { @class = "text-danger" })
+                    <div class="row">
+                        @Html.LabelFor(m => m.Email, new { @class = "col-xs-4 control-label control-label-horizontal" })
+                        @Html.EditorFor(m => m.Email, new { htmlAttributes = new { @class = "form-control col-xs-8 k-editor" } })
+                        @Html.ValidationMessageFor(m => m.Email, string.Empty, new { @class = "validation-summary-errors" })
+                    </div>
                 </div>
                 <div class="form-group">
-                    @Html.LabelFor(m => m.Password, new { @class = "control-label" })
-                    @Html.EditorFor(m => m.Password, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(m => m.Password, string.Empty, new { @class = "text-danger" })
+                    <div class="row">
+                        @Html.LabelFor(m => m.FirstName, new { @class = "col-xs-4 control-label control-label-horizontal" })
+                        @Html.EditorFor(m => m.FirstName, new { htmlAttributes = new { @class = "form-control col-xs-8 k-editor" } })
+                        @Html.ValidationMessageFor(m => m.FirstName, string.Empty, new { @class = "validation-summary-errors" })
+                    </div>
                 </div>
                 <div class="form-group">
-                    @Html.LabelFor(m => m.ConfirmPassword, new { @class = "control-label" })
-                    @Html.EditorFor(m => m.ConfirmPassword, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(m => m.ConfirmPassword, string.Empty, new { @class = "text-danger" })
+                    <div class="row">
+                        @Html.LabelFor(m => m.MiddleName, new { @class = "col-xs-4 control-label control-label-horizontal" })
+                        @Html.EditorFor(m => m.MiddleName, new { htmlAttributes = new { @class = "form-control col-xs-8 k-editor" } })
+                        @Html.ValidationMessageFor(m => m.MiddleName, string.Empty, new { @class = "validation-summary-errors" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        @Html.LabelFor(m => m.LastName, new { @class = "col-xs-4 control-label control-label-horizontal" })
+                        @Html.EditorFor(m => m.LastName, new { htmlAttributes = new { @class = "form-control col-xs-8 k-editor" } })
+                        @Html.ValidationMessageFor(m => m.LastName, string.Empty, new { @class = "validation-summary-errors" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        @Html.LabelFor(m => m.Occupation, new { @class = "col-xs-4 control-label control-label-horizontal" })
+                        @Html.EditorFor(m => m.Occupation, new { htmlAttributes = new { @class = "form-control col-xs-8 k-editor" } })
+                        @Html.ValidationMessageFor(m => m.Occupation, string.Empty, new { @class = "validation-summary-errors" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        @Html.LabelFor(m => m.NewPassword, new { @class = "col-xs-4 control-label control-label-horizontal" })
+                        @Html.EditorFor(m => m.NewPassword, new { htmlAttributes = new { @class = "form-control col-xs-8 k-editor" } })
+                        @Html.ValidationMessageFor(m => m.NewPassword, string.Empty, new { @class = "validation-summary-errors" })
+                    </div>
                 </div>
             </div>
-            <div class=" col-lg-4">
-                <div class="panel panel-primary">
-                    <div class="panel-heading">
-                        Роли
-                    </div>
-                    <div class="panel-body">      
-                            @Html.EditorFor(m => m.Roles)
-                    </div>
-                </div>
+            <div class="col-lg-6">
+                @Html.Partial("_UserAdditionalData",Model)
             </div>
         </div>
-        <button type="submit" class="btn btn-primary">Create</button>
-        @Html.ActionLink("Cancel", "Index", null, new { @class = "btn btn-default" })
-
+        <hr />
+        <div class="pull-right">
+            <button type="submit" class="btn btn-primary">Create</button>
+            @Html.ActionLink("Cancel", "Index", null, new { @class = "btn btn-default" })
+        </div>
     }
 </div>
+
+@section styles{
+    <style>
+        .col-xs-1, .col-sm-1, .col-md-1, .col-lg-1, .col-xs-2, .col-sm-2, 
+        .col-md-2, .col-lg-2, .col-xs-4, .col-sm-3, .col-md-3, .col-lg-3, 
+        .col-xs-4, .col-sm-4, .col-md-4, .col-lg-4, .col-xs-5, .col-sm-5, 
+        .col-md-5, .col-lg-5, .col-xs-6, .col-sm-6, .col-md-6, .col-lg-6, 
+        .col-xs-7, .col-sm-7, .col-md-7, .col-lg-7, .col-xs-8, .col-sm-8, 
+        .col-md-8, .col-lg-8, .col-xs-9, .col-sm-9, .col-md-9, .col-lg-9, 
+        .col-xs-10, .col-sm-10, .col-md-10, .col-lg-10, .col-xs-11, .col-sm-11, 
+        .col-md-11, .col-lg-11, .col-xs-12, .col-sm-12, .col-md-12, .col-lg-12 {
+            padding-left: 10px !important;
+            padding-right: 10px !important;
+        }
+    </style>
+}

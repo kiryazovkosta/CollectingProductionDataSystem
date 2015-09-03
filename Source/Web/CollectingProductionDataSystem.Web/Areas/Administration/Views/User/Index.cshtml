@@ -1,6 +1,4 @@
-﻿@using CollectingProductionDataSystem.Web.ViewModels.Identity;
-
-@model IEnumerable<EditUserViewModel>
+﻿@model IEnumerable<CollectingProductionDataSystem.Web.Areas.Administration.ViewModels.EditUserViewModel>
 
 @{
     Layout = "~/Views/Shared/_KendoLayout.cshtml";
@@ -24,7 +22,7 @@
                    columns.Bound(c => c.Occupation);
                    columns.Command(c => { c.Edit(); c.Destroy(); });
                })
-          .Editable(editable => editable.Mode(GridEditMode.PopUp).TemplateName("_EditAccount").Window(window => window.Width(650).Scrollable(false)))
+                  .Editable(editable => editable.Mode(GridEditMode.PopUp).TemplateName("EditUserViewModel").Window(window => window.Scrollable(false)))
           .Pageable()
           .Sortable()
           .Scrollable(scr => scr.Height(430))
@@ -33,7 +31,7 @@
                 .Ajax()
                 .PageSize(20)
                 .ServerOperation(true)
-                                .Read(read => read.Action("Read", "User", new { area = "Administration" }).Data("sendAntiForgery"))
+                .Read(read => read.Action("GetAllUsers", "Ajax", new { area = "Administration" }).Data("sendAntiForgery"))
                 .Events(events => events.Error("error_handler"))
                         .Model(model =>
                         {
@@ -88,6 +86,14 @@
         .k-edit-buttons {
             max-width: 650px;
             width: 632px;
+        }
+        .k-edit-form-container {
+            width:95%;
+            margin-left:auto;
+            margin-right:auto;
+        }
+        div.k-window-content {
+            width:685px;
         }
     </style>
 }
