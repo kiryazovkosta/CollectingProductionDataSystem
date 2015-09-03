@@ -1,7 +1,6 @@
 ﻿namespace CollectingProductionDataSystem.Models.Identity
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
@@ -19,7 +18,7 @@
     {
         private ICollection<ProcessUnit> processUnits;
         private ICollection<Park> parks;
-        
+        private IEnumerable<ApplicationRole> userRoles;
 
         #region IAuditInfo_IDeletableEntity
         /// <summary>
@@ -68,13 +67,14 @@
         /// Gets or sets the modified from.
         /// </summary>
         /// <value>The modified from.</value>
-        public string ModifiedFrom { get; set; } 
+        public string ModifiedFrom { get; set; }
         #endregion
 
-        public ApplicationUser() 
+        public ApplicationUser()
         {
             this.processUnits = new HashSet<ProcessUnit>();
             this.parks = new HashSet<Park>();
+            this.userRoles = new List<ApplicationRole>();
             this.CreatedOn = DateTime.Now;
         }
 
@@ -95,6 +95,9 @@
         [StringLength(50)]
         public string LastName { get; set; }
 
+        [StringLength(250)]
+        public string Occupation { get; set; }
+
         public bool IsChangePasswordRequired { get; set; }
 
         public virtual ICollection<ProcessUnit> ProcessUnits
@@ -109,6 +112,12 @@
             set { this.parks = value; }
         }
 
+        [NotMapped]
+        public IEnumerable<ApplicationRole> UserRoles
+        {
+            get { return this.userRoles; }
+            set { this.userRoles = value; }
+        }
 
         [NotMapped]
         public string FullName
@@ -131,7 +140,7 @@
                     userName.Append(this.LastName);
                 }
                 var resultName = userName.ToString().TrimEnd();
-                
+
                 if (string.IsNullOrEmpty(resultName))
                 {
                     return this.UserName;

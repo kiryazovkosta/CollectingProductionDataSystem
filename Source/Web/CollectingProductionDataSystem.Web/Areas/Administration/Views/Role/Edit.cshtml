@@ -72,36 +72,36 @@
 
 @section scripts{
     <script>
-        $(document).ready(function () {
-            var tables = $("table");
-            var length = tables.length;
-            for (var i = 0; i < length; i++) {
-                $(tables[i]).kendoGrid({
-                    scrollable: true,
-                    sortable: true,
-                    pageable: true,
-                    filterable: true,
-                    columns: [
-                        {
-                            field: "userName",
-                            filterable: true,
-                            width: '300px'
-                        },
-                        {
-                            field: "userFullName",
-                            filterable: true,
-                        },
-                        {
-                            field: "selector",
-                            filterable: false,
-                            width:'150px'
-                        }
-                    ]
-                });
+        //$(document).ready(function () {
+        //    var tables = $("table");
+        //    var length = tables.length;
+        //    for (var i = 0; i < length; i++) {
+        //        $(tables[i]).kendoGrid({
+        //            scrollable: true,
+        //            sortable: true,
+        //            pageable: true,
+        //            filterable: true,
+        //            columns: [
+        //                {
+        //                    field: "userName",
+        //                    filterable: true,
+        //                    width: '300px'
+        //                },
+        //                {
+        //                    field: "userFullName",
+        //                    filterable: true,
+        //                },
+        //                {
+        //                    field: "selector",
+        //                    filterable: false,
+        //                    width:'150px'
+        //                }
+        //            ]
+        //        });
 
-                $(tables[i]).data("kendoGrid").dataSource.pageSize(10);
-            }
+        //        $(tables[i]).data("kendoGrid").dataSource.pageSize(10);
+        //    }
             
-        });
+        //});
     </script>
 }

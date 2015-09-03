@@ -44,7 +44,7 @@
         public string FullName { get; private set; }
 
         [Required]
-        [StringLength(50, ErrorMessageResourceName = "LengthError", ErrorMessageResourceType = typeof(Resources.ErrorMessages), MinimumLength = 4)]
+        [StringLength(250, ErrorMessageResourceName = "LengthError", ErrorMessageResourceType = typeof(Resources.ErrorMessages), MinimumLength = 4)]
         [Display(Name = "Occupation", ResourceType = typeof(Resources.Layout))]
         public string Occupation { get; set; }
 

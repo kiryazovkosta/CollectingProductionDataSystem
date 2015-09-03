@@ -9,10 +9,9 @@ namespace CollectingProductionDataSystem.Models.Identity
 
     public class ApplicationRole : IdentityRole<int, UserRoleIntPk>,IAuditInfo,IDeletableEntity, IEntity
     {
-        private ICollection<ApplicationUser> roleUsers;
         public ApplicationRole()
         {
-            this.roleUsers = new HashSet<ApplicationUser>();
+            this.CreatedOn = DateTime.Now;
         }
 
         public ApplicationRole(string name)
@@ -28,12 +27,6 @@ namespace CollectingProductionDataSystem.Models.Identity
         }
 
          public bool IsAvailableForAdministrators { get; set; }
-
-         public virtual ICollection<ApplicationUser> RoleUsers 
-         {
-             get { return this.roleUsers; }
-             set { this.roleUsers = value; }
-         }
 
          #region IAuditInfo_IDeletableEntity
          [StringLength(250)]
