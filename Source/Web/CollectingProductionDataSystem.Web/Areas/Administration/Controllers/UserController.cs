@@ -9,10 +9,12 @@
     using System.Web;
     using System.Web.Mvc;
     using AutoMapper;
+    using CollectingProductionDataSystem.Constants;
     using CollectingProductionDataSystem.Data;
     using CollectingProductionDataSystem.Data.Contracts;
     using CollectingProductionDataSystem.Models.Identity;
     using CollectingProductionDataSystem.Models.Inventories;
+    using CollectingProductionDataSystem.Models.Productions;
     using CollectingProductionDataSystem.Web.Areas.Administration.ViewModels;
     using CollectingProductionDataSystem.Web.Infrastructure.IdentityInfrastructure;
     using CollectingProductionDataSystem.Web.ViewModels.Identity;
@@ -34,8 +36,6 @@
         // GET: Administration/User
         public ActionResult Index()
         {
-            //var users = Mapper.Map<List<EditUserViewModel>>(UserManager.Users);
-            //return View(users);
             return View();
         }
 
@@ -51,53 +51,50 @@
 
         public ActionResult Create()
         {
-            var model = new EditUserViewModel();//{ Roles = Mapper.Map<IEnumerable<AsignRoleViewModel>>(data.Roles.All().ToList()) };
+            var model = new EditUserViewModel();
             return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(EditUserViewModel model)
+        public ActionResult Create([Bind(Exclude = "UserRoles, Parks, ProcessUnits")]EditUserViewModel model,
+            [Bind(Prefix = "UserRoles")] int[] inUserRoles,
+            [Bind(Prefix = "ProcessUnits")] int[] inProcessUnits,
+            [Bind(Prefix = "Parks")] int[] inParks)
         {
             if (model != null && ModelState.IsValid)
             {
+                model.NewPassword = string.IsNullOrEmpty(model.NewPassword) ? CommonConstants.StandartPassword : model.NewPassword;
                 using (var transaction = new TransactionScope())
                 {
                     var user = Mapper.Map<ApplicationUser>(model);
-                    var rolesToAdd = model.UserRoles.Select( x=> new UserRoleIntPk(){UserId = user.Id, RoleId = x.Id}).ToList();
-                    user.Roles.AddRange(rolesToAdd);
                     user.IsChangePasswordRequired = true;
                     user.CreatedFrom = HttpContext.User.Identity.GetUserName();
-                    try
-                    {
-                        IdentityResult result = UserManager.Create(user, model.NewPassword);
-                    }
-                    catch ( System.Data.Entity.Validation.DbEntityValidationException ex) 
-                    {
-                        Debug.WriteLine(ex.Message);
-                    }
-                    //if (result.Succeeded)
-                    //{
-                    //   // SaveCustomDataToUser(inUserRoles, inParks, inProcessUnits, ref user, ref result);
-                    //}
 
-                    //if (result.Succeeded)
-                    //{
-                    //    this.TempData["success"] = string.Format(Resources.Layout.CreateUserSuccess, model.UserName);
-                    //    transaction.Complete();
-                    //    return RedirectToAction("Index", "User", new { aria = "Administration" });
-                    //}
-                    //else
-                    //{
-                    //    AddErrorsFromResult(result);
-                    //    transaction.Dispose();
-                    //}
+                    IdentityResult result = UserManager.Create(user, model.NewPassword);
+
+                    if (result.Succeeded)
+                    {
+                        result = SaveCustomDataToUser(user, inUserRoles, inParks, inProcessUnits);
+                    }
+
+                    if (result.Succeeded)
+                    {
+                        this.TempData["success"] = string.Format(Resources.Layout.CreateUserSuccess, model.UserName);
+                        transaction.Complete();
+                        return RedirectToAction("Index", "User", new { aria = "Administration" });
+                    }
+                    else
+                    {
+                        AddErrorsFromResult(result);
+                        transaction.Dispose();
+                    }
                 }
             }
             return View(model);
         }
 
-        private void SaveCustomDataToUser(IEnumerable<int> inUserRoles, IEnumerable<int> inParks, IEnumerable<int> inProcessUnits, ref ApplicationUser user, ref IdentityResult result)
+        private IdentityResult SaveCustomDataToUser(ApplicationUser user, IEnumerable<int> inUserRoles, IEnumerable<int> inParks, IEnumerable<int> inProcessUnits)
         {
             if (data.DbContext.Entry<ApplicationUser>(user).State == EntityState.Detached)
             {
@@ -106,7 +103,7 @@
             AddAditionalDataToUser(inUserRoles, inParks, inProcessUnits, user);
             data.Users.Update(user);
             var status = data.SaveChanges(HttpContext.User.Identity.GetUserName());
-            result = this.GetIdentityResult(status);
+            return this.GetIdentityResult(status);
         }
 
         private void AddAditionalDataToUser(IEnumerable<int> inUserRoles, IEnumerable<int> inParks, IEnumerable<int> inProcessUnits, ApplicationUser user)
@@ -132,39 +129,6 @@
                 var processUnitsToRenove = data.ProcessUnits.All().Where(x => !inProcessUnits.Any(p => x.Id == p)).ToList();
                 user.ProcessUnits.RemoveRange(processUnitsToRenove);
             }
-        }
-
-        /// <summary>
-        /// Adds the user in roles.
-        /// </summary>
-        /// <param name="user">The user.</param>
-        /// <param name="roles">The roles.</param>
-        private async Task<IdentityResult> AddUserInRolesAsync(ApplicationUser user, IEnumerable<AsignRoleViewModel> roles)
-        {
-            foreach (var role in roles.Where(role => role.IsUserInRole))
-            {
-                IdentityResult result = await UserManager.AddToRoleAsync(user.Id, role.Name);
-                if (!result.Succeeded)
-                {
-                    AddErrorsFromResult(result);
-                    return result;
-                }
-            }
-
-            foreach (var role in roles.Where(role => !role.IsUserInRole))
-            {
-                if (await UserManager.IsInRoleAsync(user.Id, role.Name))
-                {
-                    IdentityResult result = await UserManager.RemoveFromRoleAsync(user.Id, role.Name);
-                    if (!result.Succeeded)
-                    {
-                        AddErrorsFromResult(result);
-                        return result;
-                    }
-                }
-            }
-
-            return IdentityResult.Success;
         }
 
         [HttpPost]
@@ -224,7 +188,15 @@
                         (!string.IsNullOrWhiteSpace(user.NewPassword)))
                         ? UserManager.PasswordHasher.HashPassword(user.NewPassword)
                         : controlUser.PasswordHash;
-                    IdentityResult result = await UserManager.UpdateAsync(controlUser);
+                    controlUser.FirstName = user.FirstName;
+                    controlUser.MiddleName = user.MiddleName;
+                    controlUser.LastName = user.LastName;
+                    controlUser.Occupation = user.Occupation;
+                    //IdentityResult result = await UserManager.UpdateAsync(controlUser);
+                    var inRoles = user.UserRoles.Select(x => x.Id);
+                    var inProcessUnits = user.ProcessUnits.Select(x => x.Id);
+                    var inParks = user.Parks.Select(x => x.Id);
+                    IdentityResult result = SaveCustomDataToUser(controlUser, inRoles, inParks, inProcessUnits);
                     if (result.Succeeded)
                     {
                         this.TempData["success"] = string.Format("Потребителя {0} беше променен успешно.", controlUser.UserName);

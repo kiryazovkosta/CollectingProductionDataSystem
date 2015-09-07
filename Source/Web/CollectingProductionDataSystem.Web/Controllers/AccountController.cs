@@ -121,6 +121,7 @@
         }
 
         // POST: /Account/ChangePassword
+        // TODO: See what's wrong with the password change
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ChangePassword(ChangePasswordViewModel model)
@@ -129,11 +130,12 @@
             {
                 return View(model);
             }
-            var result = await UserManager.ChangePasswordAsync(int.Parse(User.Identity.GetUserId()), model.OldPassword, model.NewPassword);
+            var result = ClearIsChangePasswordRequired();
 
             if (result.Succeeded)
             {
-                result = ClearIsChangePasswordRequired();
+                result = await UserManager.ChangePasswordAsync(int.Parse(User.Identity.GetUserId()), model.OldPassword, model.NewPassword);
+
             }
 
             if (result.Succeeded)

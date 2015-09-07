@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CommonConstants.cs" />
     <Compile Include="DbConnection.cs" />
     <Compile Include="Namespace.cs" />
     <Compile Include="PhdConnection.cs" />

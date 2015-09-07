@@ -15,28 +15,30 @@
 
     public class EditUserViewModel : IMapFrom<ApplicationUser>, IHaveCustomMappings
     {
-        [Required]
+        [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
         [Display(Name = "Id")]
         public int Id { get; set; }
 
+        [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
         [Display(Name = "UserName", ResourceType = typeof(Resources.Layout))]
         public string UserName { get; set; }
 
+        [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
         [Display(Name = "Email", ResourceType = typeof(Resources.Layout))]
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
 
-        [Required]
+        [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
         [StringLength(50, ErrorMessageResourceName = "LengthError", ErrorMessageResourceType = typeof(Resources.ErrorMessages), MinimumLength = 4)]
         [Display(Name = "FirstName", ResourceType = typeof(Resources.Layout))]
         public string FirstName { get; set; }
 
-        [Required]
+        [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
         [StringLength(50, ErrorMessageResourceName = "LengthError", ErrorMessageResourceType = typeof(Resources.ErrorMessages), MinimumLength = 4)]
         [Display(Name = "MiddleName", ResourceType = typeof(Resources.Layout))]
         public string MiddleName { get; set; }
 
-        [Required]
+        [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
         [StringLength(50, ErrorMessageResourceName = "LengthError", ErrorMessageResourceType = typeof(Resources.ErrorMessages), MinimumLength = 4)]
         [Display(Name = "LastName", ResourceType = typeof(Resources.Layout))]
         public string LastName { get; set; }
@@ -48,7 +50,9 @@
         public void CreateMappings(IConfiguration configuration)
         {
             configuration.CreateMap<EditUserViewModel, ApplicationUser>()
-                .ForMember(p => p.UserRoles, opt => opt.Ignore());
+                .ForMember(p => p.UserRoles, opt => opt.Ignore())
+                .ForMember(p => p.Parks, opt => opt.Ignore())
+                .ForMember(p => p.ProcessUnits, opt => opt.Ignore());
         }
 
         [Display(Name = "FullName", ResourceType = typeof(Resources.Layout))]
@@ -83,7 +87,7 @@
             private set { }
         }
 
-        [Required]
+        [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
         [StringLength(250, ErrorMessageResourceName = "LengthError", ErrorMessageResourceType = typeof(Resources.ErrorMessages), MinimumLength = 4)]
         [Display(Name = "Occupation", ResourceType = typeof(Resources.Layout))]
         public string Occupation { get; set; }

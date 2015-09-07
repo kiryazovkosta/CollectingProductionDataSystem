@@ -8,8 +8,8 @@
 }
 <div class="container body-content">
     <h2 class="text-center">@ViewBag.Title</h2>
-    <hr/>
-    @Html.ValidationSummary(false, string.Empty, new { @class = "text-danger" })
+    <hr />
+    @Html.ValidationSummary(true, string.Empty, new { @class = "text-danger" })
     @using (Html.BeginForm())
     {
         <div class="row">
@@ -19,54 +19,54 @@
                     <div class="row">
                         @Html.LabelFor(m => m.UserName, new { @class = "col-xs-4 control-label control-label-horizontal" })
                         @Html.EditorFor(m => m.UserName, new { htmlAttributes = new { @class = "form-control col-xs-8 k-editor" } })
-                        @Html.ValidationMessageFor(m => m.UserName, string.Empty, new { @class = "validation-summary-errors" })
                     </div>
+                    @Html.ValidationMessageFor(m => m.UserName, string.Empty, new { @class = "validation-summary-errors" })
                 </div>
                 <div class="form-group">
                     <div class="row">
                         @Html.LabelFor(m => m.Email, new { @class = "col-xs-4 control-label control-label-horizontal" })
                         @Html.EditorFor(m => m.Email, new { htmlAttributes = new { @class = "form-control col-xs-8 k-editor" } })
-                        @Html.ValidationMessageFor(m => m.Email, string.Empty, new { @class = "validation-summary-errors" })
                     </div>
+                    @Html.ValidationMessageFor(m => m.Email, string.Empty, new { @class = "validation-summary-errors" })
                 </div>
                 <div class="form-group">
                     <div class="row">
                         @Html.LabelFor(m => m.FirstName, new { @class = "col-xs-4 control-label control-label-horizontal" })
                         @Html.EditorFor(m => m.FirstName, new { htmlAttributes = new { @class = "form-control col-xs-8 k-editor" } })
-                        @Html.ValidationMessageFor(m => m.FirstName, string.Empty, new { @class = "validation-summary-errors" })
                     </div>
+                    @Html.ValidationMessageFor(m => m.FirstName, string.Empty, new { @class = "validation-summary-errors" })
                 </div>
                 <div class="form-group">
                     <div class="row">
                         @Html.LabelFor(m => m.MiddleName, new { @class = "col-xs-4 control-label control-label-horizontal" })
                         @Html.EditorFor(m => m.MiddleName, new { htmlAttributes = new { @class = "form-control col-xs-8 k-editor" } })
-                        @Html.ValidationMessageFor(m => m.MiddleName, string.Empty, new { @class = "validation-summary-errors" })
                     </div>
+                    @Html.ValidationMessageFor(m => m.MiddleName, string.Empty, new { @class = "validation-summary-errors" })
                 </div>
                 <div class="form-group">
                     <div class="row">
                         @Html.LabelFor(m => m.LastName, new { @class = "col-xs-4 control-label control-label-horizontal" })
                         @Html.EditorFor(m => m.LastName, new { htmlAttributes = new { @class = "form-control col-xs-8 k-editor" } })
-                        @Html.ValidationMessageFor(m => m.LastName, string.Empty, new { @class = "validation-summary-errors" })
                     </div>
+                    @Html.ValidationMessageFor(m => m.LastName, string.Empty, new { @class = "validation-summary-errors" })
                 </div>
                 <div class="form-group">
                     <div class="row">
                         @Html.LabelFor(m => m.Occupation, new { @class = "col-xs-4 control-label control-label-horizontal" })
                         @Html.EditorFor(m => m.Occupation, new { htmlAttributes = new { @class = "form-control col-xs-8 k-editor" } })
-                        @Html.ValidationMessageFor(m => m.Occupation, string.Empty, new { @class = "validation-summary-errors" })
                     </div>
+                    @Html.ValidationMessageFor(m => m.Occupation, string.Empty, new { @class = "validation-summary-errors" })
                 </div>
                 <div class="form-group">
                     <div class="row">
                         @Html.LabelFor(m => m.NewPassword, new { @class = "col-xs-4 control-label control-label-horizontal" })
                         @Html.EditorFor(m => m.NewPassword, new { htmlAttributes = new { @class = "form-control col-xs-8 k-editor" } })
-                        @Html.ValidationMessageFor(m => m.NewPassword, string.Empty, new { @class = "validation-summary-errors" })
                     </div>
+                    @Html.ValidationMessageFor(m => m.NewPassword, string.Empty, new { @class = "validation-summary-errors" })
                 </div>
             </div>
             <div class="col-lg-6">
-                @Html.Partial("_UserAdditionalData",Model)
+                @Html.Partial("_UserAdditionalData", Model)
             </div>
         </div>
         <hr />
@@ -79,16 +79,20 @@
 
 @section styles{
     <style>
-        .col-xs-1, .col-sm-1, .col-md-1, .col-lg-1, .col-xs-2, .col-sm-2, 
-        .col-md-2, .col-lg-2, .col-xs-4, .col-sm-3, .col-md-3, .col-lg-3, 
-        .col-xs-4, .col-sm-4, .col-md-4, .col-lg-4, .col-xs-5, .col-sm-5, 
-        .col-md-5, .col-lg-5, .col-xs-6, .col-sm-6, .col-md-6, .col-lg-6, 
-        .col-xs-7, .col-sm-7, .col-md-7, .col-lg-7, .col-xs-8, .col-sm-8, 
-        .col-md-8, .col-lg-8, .col-xs-9, .col-sm-9, .col-md-9, .col-lg-9, 
-        .col-xs-10, .col-sm-10, .col-md-10, .col-lg-10, .col-xs-11, .col-sm-11, 
+        .col-xs-1, .col-sm-1, .col-md-1, .col-lg-1, .col-xs-2, .col-sm-2,
+        .col-md-2, .col-lg-2, .col-xs-4, .col-sm-3, .col-md-3, .col-lg-3,
+        .col-xs-4, .col-sm-4, .col-md-4, .col-lg-4, .col-xs-5, .col-sm-5,
+        .col-md-5, .col-lg-5, .col-xs-6, .col-sm-6, .col-md-6, .col-lg-6,
+        .col-xs-7, .col-sm-7, .col-md-7, .col-lg-7, .col-xs-8, .col-sm-8,
+        .col-md-8, .col-lg-8, .col-xs-9, .col-sm-9, .col-md-9, .col-lg-9,
+        .col-xs-10, .col-sm-10, .col-md-10, .col-lg-10, .col-xs-11, .col-sm-11,
         .col-md-11, .col-lg-11, .col-xs-12, .col-sm-12, .col-md-12, .col-lg-12 {
             padding-left: 10px !important;
             padding-right: 10px !important;
         }
     </style>
+}
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
 }

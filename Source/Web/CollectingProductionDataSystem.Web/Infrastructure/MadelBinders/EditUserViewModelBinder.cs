@@ -23,7 +23,7 @@
 
         private readonly IProductionData data;
 
-        public EditUserViewModelBinder(IProductionData dataParam) 
+        public EditUserViewModelBinder(IProductionData dataParam)
         {
             this.data = dataParam;
         }
@@ -54,27 +54,24 @@
                 }
             }
 
-            //IKernel kernel = controllerContext.HttpContext.GetService(typeof(IKernel)) as IKernel;
-            //var data = kernel.Get(typeof(IProductionData));
-            //var data = controllerContext.HttpContext.ApplicationInstance.Context.;
             ////add Roles to model 
             if (formKeys.Contains("UserRoles"))
             {
-                var rolesIds = form["UserRoles"].Split(',').Select(x => int.Parse(x));	
+                var rolesIds = form["UserRoles"].Split(',').Select(x => int.Parse(x));
 
-                user.UserRoles = Mapper.Map<IEnumerable<RoleViewModel>>(data.Roles.All().Where(x => rolesIds.Any(y => y == x.Id)));
+                user.UserRoles = rolesIds.Select(x => new RoleViewModel() { Id = x });
             }
 
             if (formKeys.Contains("ProcessUnits"))
             {
                 var processUnitIds = form["ProcessUnits"].Split(',').Select(x => int.Parse(x));
-                user.ProcessUnits = Mapper.Map<IEnumerable<ProcessUnitViewModel>>(data.ProcessUnits.All().Where(x => processUnitIds.Any(y => y == x.Id)));
+                user.ProcessUnits = processUnitIds.Select(x => new ProcessUnitViewModel() { Id = x });
             }
 
             if (formKeys.Contains("Parks"))
             {
                 var parksIds = form["Parks"].Split(',').Select(x => int.Parse(x));
-                user.Parks = Mapper.Map<IEnumerable<ParkViewModel>>(data.Parks.All().Where(x => parksIds.Any(y => y == x.Id)));
+                user.Parks = parksIds.Select(x => new ParkViewModel() { Id = x });
             }
 
             return user;
