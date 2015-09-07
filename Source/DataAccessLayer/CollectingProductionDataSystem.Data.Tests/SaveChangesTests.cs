@@ -2,11 +2,9 @@
 using System.Data.Entity;
 using System.Linq;
 using System.Transactions;
-using CollectingProductionDataSystem.Data;
 using CollectingProductionDataSystem.Models.Inventories;
 using CollectingProductionDataSystem.Models.Nomenclatures;
 using CollectingProductionDataSystem.Models.UtilityEntities;
-using Microsoft.AspNet.Identity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace CollectingProductionDataSystem.Data.Tests

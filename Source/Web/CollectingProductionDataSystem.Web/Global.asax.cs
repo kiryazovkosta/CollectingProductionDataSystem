@@ -6,6 +6,7 @@
     using System.Web.Routing;
     using CollectingProductionDataSystem.Infrastructure.Mapping;
     using CollectingProductionDataSystem.Web.AppStart;
+    using CollectingProductionDataSystem.Web.Areas.Administration.ViewModels;
 
     public class MvcApplication : HttpApplication
     {
@@ -16,7 +17,9 @@
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             AutoMapperConfig.RegisterMappings();
-            ViewEnginesConfig.RegisterViewEngines(ViewEngines.Engines);            
+            ViewEnginesConfig.RegisterViewEngines(ViewEngines.Engines);
+            ModelBindersConfig.RegisterModelBinders(ModelBinders.Binders, DependencyResolver.Current);
+            
         }
     }
 }

@@ -133,29 +133,11 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Choose Parks....
-        /// </summary>
-        public static string ChooseParks {
-            get {
-                return ResourceManager.GetString("ChooseParks", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Choose process unit....
         /// </summary>
         public static string ChooseProcessUnit {
             get {
                 return ResourceManager.GetString("ChooseProcessUnit", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Choose Process Units....
-        /// </summary>
-        public static string ChooseProcessUnits {
-            get {
-                return ResourceManager.GetString("ChooseProcessUnits", resourceCulture);
             }
         }
         
@@ -210,15 +192,6 @@ namespace App_GlobalResources.Resources {
         public static string CreateUser {
             get {
                 return ResourceManager.GetString("CreateUser", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The user {0} was created..
-        /// </summary>
-        public static string CreateUserSuccess {
-            get {
-                return ResourceManager.GetString("CreateUserSuccess", resourceCulture);
             }
         }
         
@@ -376,15 +349,6 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Parks.
-        /// </summary>
-        public static string Parks {
-            get {
-                return ResourceManager.GetString("Parks", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Password.
         /// </summary>
         public static string Password {
@@ -421,15 +385,6 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Process Units.
-        /// </summary>
-        public static string ProcessUnits {
-            get {
-                return ResourceManager.GetString("ProcessUnits", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Production Shift.
         /// </summary>
         public static string ProductionShift {
@@ -462,15 +417,6 @@ namespace App_GlobalResources.Resources {
         public static string RememberMe {
             get {
                 return ResourceManager.GetString("RememberMe", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Roles.
-        /// </summary>
-        public static string Roles {
-            get {
-                return ResourceManager.GetString("Roles", resourceCulture);
             }
         }
         

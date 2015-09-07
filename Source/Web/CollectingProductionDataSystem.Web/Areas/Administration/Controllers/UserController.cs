@@ -2,12 +2,17 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Data.Entity;
+    using System.Diagnostics;
     using System.Linq;
+    using System.Transactions;
     using System.Web;
     using System.Web.Mvc;
     using AutoMapper;
+    using CollectingProductionDataSystem.Data;
     using CollectingProductionDataSystem.Data.Contracts;
     using CollectingProductionDataSystem.Models.Identity;
+    using CollectingProductionDataSystem.Models.Inventories;
     using CollectingProductionDataSystem.Web.Areas.Administration.ViewModels;
     using CollectingProductionDataSystem.Web.Infrastructure.IdentityInfrastructure;
     using CollectingProductionDataSystem.Web.ViewModels.Identity;
@@ -17,11 +22,13 @@
     using Microsoft.AspNet.Identity.Owin;
     using Kendo.Mvc.Extensions;
     using System.Threading.Tasks;
+    using Resources = App_GlobalResources.Resources;
+    using CollectingProductionDataSystem.Contracts.Extensions;
 
     public class UserController : AreaBaseController
     {
         public UserController(IProductionData dataParam)
-            :base(dataParam)
+            : base(dataParam)
         {
         }
         // GET: Administration/User
@@ -32,7 +39,7 @@
             return View();
         }
 
-        
+
 
         private ApplicationUserManager UserManager
         {
@@ -50,32 +57,81 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(CollectingProductionDataSystem.Web.Areas.Administration.ViewModels.EditUserViewModel model)
+        public ActionResult Create(EditUserViewModel model)
         {
             if (model != null && ModelState.IsValid)
             {
-                var user = Mapper.Map<ApplicationUser>(model);
-                user.CreatedFrom = HttpContext.User.Identity.GetUserName();
-
-                IdentityResult result = await UserManager.CreateAsync(user, model.NewPassword);
-
-                if (result.Succeeded)
+                using (var transaction = new TransactionScope())
                 {
-                    //TODO: Add user to selected roles
-                    //result = await AddUserInRolesAsync(user, model.Roles);                    
-                }
+                    var user = Mapper.Map<ApplicationUser>(model);
+                    var rolesToAdd = model.UserRoles.Select( x=> new UserRoleIntPk(){UserId = user.Id, RoleId = x.Id}).ToList();
+                    user.Roles.AddRange(rolesToAdd);
+                    user.IsChangePasswordRequired = true;
+                    user.CreatedFrom = HttpContext.User.Identity.GetUserName();
+                    try
+                    {
+                        IdentityResult result = UserManager.Create(user, model.NewPassword);
+                    }
+                    catch ( System.Data.Entity.Validation.DbEntityValidationException ex) 
+                    {
+                        Debug.WriteLine(ex.Message);
+                    }
+                    //if (result.Succeeded)
+                    //{
+                    //   // SaveCustomDataToUser(inUserRoles, inParks, inProcessUnits, ref user, ref result);
+                    //}
 
-                if (result.Succeeded)
-                {
-                    this.TempData["success"] = string.Format("Потребителя {0} беше създаден успешно.", model.UserName);
-                    return RedirectToAction("Index", "User", new { aria = "Administration" });
-                }
-                else
-                {
-                    AddErrorsFromResult(result);
+                    //if (result.Succeeded)
+                    //{
+                    //    this.TempData["success"] = string.Format(Resources.Layout.CreateUserSuccess, model.UserName);
+                    //    transaction.Complete();
+                    //    return RedirectToAction("Index", "User", new { aria = "Administration" });
+                    //}
+                    //else
+                    //{
+                    //    AddErrorsFromResult(result);
+                    //    transaction.Dispose();
+                    //}
                 }
             }
             return View(model);
+        }
+
+        private void SaveCustomDataToUser(IEnumerable<int> inUserRoles, IEnumerable<int> inParks, IEnumerable<int> inProcessUnits, ref ApplicationUser user, ref IdentityResult result)
+        {
+            if (data.DbContext.Entry<ApplicationUser>(user).State == EntityState.Detached)
+            {
+                user = data.Users.GetById(user.Id);
+            }
+            AddAditionalDataToUser(inUserRoles, inParks, inProcessUnits, user);
+            data.Users.Update(user);
+            var status = data.SaveChanges(HttpContext.User.Identity.GetUserName());
+            result = this.GetIdentityResult(status);
+        }
+
+        private void AddAditionalDataToUser(IEnumerable<int> inUserRoles, IEnumerable<int> inParks, IEnumerable<int> inProcessUnits, ApplicationUser user)
+        {
+            if (inUserRoles != null)
+            {
+                var rolesToAdd = inUserRoles.AsQueryable().Select(x => new UserRoleIntPk() { UserId = user.Id, RoleId = x }).ToList();
+                user.Roles.AddRange(rolesToAdd);
+                var rolesToRemove = data.Roles.All().Where(x => !inUserRoles.Any(y => y == x.Id)).ToList().Select(role => new UserRoleIntPk() { UserId = user.Id, RoleId = role.Id });
+                user.Roles.RemoveRange(rolesToRemove);
+            }
+            if (inParks != null)
+            {
+                var parksToAdd = data.Parks.All().Where(x => inParks.Any(p => x.Id == p)).ToList();
+                user.Parks.AddRange(parksToAdd);
+                var parksToRemove = data.Parks.All().Where(x => !inParks.Any(p => x.Id == p)).ToList();
+                user.Parks.RemoveRange(parksToRemove);
+            }
+            if (inProcessUnits != null)
+            {
+                var processUnitsToAdd = data.ProcessUnits.All().Where(x => inProcessUnits.Any(p => x.Id == p)).ToList();
+                user.ProcessUnits.AddRange(processUnitsToAdd);
+                var processUnitsToRenove = data.ProcessUnits.All().Where(x => !inProcessUnits.Any(p => x.Id == p)).ToList();
+                user.ProcessUnits.RemoveRange(processUnitsToRenove);
+            }
         }
 
         /// <summary>
@@ -115,28 +171,21 @@
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Delete(int id)
         {
-            var user = await UserManager.FindByIdAsync(id);
-            if (user != null)
+            try
             {
-                IdentityResult result = await UserManager.DeleteAsync(user);
-                if (result.Succeeded)
-                {
-                    return RedirectToAction("Index");
-                }
-                else
-                {
-                    return View("Error", result.Errors);
-                }
+                data.Users.Delete(id);
+                data.SaveChanges(this.UserProfile.User.UserName);
+                return RedirectToAction("Index");
             }
-            else
+            catch (Exception ex)
             {
-                return View("Error", new string[] { "Потребителя не е намерен" });
+                return View("Error", ex.Message);
             }
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit(CollectingProductionDataSystem.Web.Areas.Administration.ViewModels.EditUserViewModel user)
+        public async Task<ActionResult> Edit(EditUserViewModel user)
         {
             if (user != null && ModelState.IsValid)
             {
@@ -219,6 +268,23 @@
             foreach (string error in result.Errors)
             {
                 this.ModelState.AddModelError("", error);
+            }
+        }
+
+        private IdentityResult GetIdentityResult(IEfStatus status)
+        {
+            if (status.EfErrors.Count > 0)
+            {
+                var errors = new List<string>();
+                foreach (var err in status.EfErrors)
+                {
+                    errors.Add(err.ErrorMessage);
+                }
+                return new IdentityResult(errors);
+            }
+            else
+            {
+                return IdentityResult.Success;
             }
         }
     }

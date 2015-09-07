@@ -279,4 +279,19 @@
   <data name="SlectRoles" xml:space="preserve">
     <value>Изберете роли...</value>
   </data>
+  <data name="ChooseParks" xml:space="preserve">
+    <value>Изберете паркове...</value>
+  </data>
+  <data name="ChooseProcessUnits" xml:space="preserve">
+    <value>Изберете инсталации...</value>
+  </data>
+  <data name="CreateUserSuccess" xml:space="preserve">
+    <value>Потребителя {0} беше създаден успешно.</value>
+  </data>
+  <data name="Parks" xml:space="preserve">
+    <value>Паркове</value>
+  </data>
+  <data name="ProcessUnits" xml:space="preserve">
+    <value>Инсталации</value>
+  </data>
 </root>

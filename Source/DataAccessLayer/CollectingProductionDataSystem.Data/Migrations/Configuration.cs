@@ -1,6 +1,7 @@
 namespace CollectingProductionDataSystem.Data.Migrations
 {
     using System;
+    using System.Collections.Generic;
     using System.Data.Entity.Migrations;
     using System.Linq;
     using CollectingProductionDataSystem.Models;
@@ -2442,17 +2443,42 @@ namespace CollectingProductionDataSystem.Data.Migrations
 
         private void CreateSystemAdministrator(CollectingDataSystemDbContext context)
         {
-            var role = context.Roles.FirstOrDefault(x => x.Name == "Administrator");
 
-            if (role == null)
-            {
-                role = new ApplicationRole()
+
+            if (!context.Roles.Any())
+            { 
+                var roles = new List<ApplicationRole>()
                 {
-                    Id = 1,
-                    Name = "Administrator"
+                    new ApplicationRole{
+                        Id = 1,
+                        Name = "Administrator"
+                    },
+                    new ApplicationRole
+                    {
+                        Id=2,
+                        Name = "ShiftReporter"
+                    },
+                    new ApplicationRole
+                    {
+                        Id=3,
+                        Name = "DailyReporter"
+                    },
+                    new ApplicationRole
+                    {
+                        Id=4,
+                        Name= "MonthlyReporter"
+                    },
+                     new ApplicationRole
+                    {
+                        Id=5,
+                        Name= "PowerUser"
+                    }
                 };
                 var roleManager = new RoleManager<ApplicationRole, int>(new RoleStoreIntPk(context));
-                roleManager.Create(role);
+                foreach (var role in roles)
+                {
+                    roleManager.Create(role);
+                }
             }
 
             if (context.Users.Where(x => x.UserName == "Administrator").FirstOrDefault() == null)

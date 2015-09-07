@@ -7,6 +7,7 @@ namespace CollectingProductionDataSystem.Web.AppStart
     using System.Web;
     using CollectingProductionDataSystem.Application.TankDataServices;
     using CollectingProductionDataSystem.Data.Contracts;
+    using CollectingProductionDataSystem.Web.Infrastructure.MadelBinders;
     using Microsoft.Web.Infrastructure.DynamicModuleHelper;
     using Ninject;
     using Ninject.Web.Common;
@@ -72,6 +73,7 @@ namespace CollectingProductionDataSystem.Web.AppStart
             kernel.Bind<IPersister>().To<AuditablePersister>();
             kernel.Bind<ITankDataKendoService>().To<TankDataKendoService>();
             kernel.Bind<IUnitsDataService>().To<UnitsDataService>();
+            kernel.Bind<EditUserViewModelBinder>().To<EditUserViewModelBinder>();
         }        
     }
 }

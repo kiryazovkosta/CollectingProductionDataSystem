@@ -12,5 +12,10 @@
                 action(item);
             }
         }
+
+        public static void RemoveRange<T>(this ICollection<T> collection, IEnumerable<T> collectionToRemove)
+        {
+            collectionToRemove.ForEach((item) => { collection.Remove(item); });
+        }
     }
 }

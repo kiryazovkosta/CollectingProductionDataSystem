@@ -9,6 +9,10 @@ namespace CollectingProductionDataSystem.Models.Identity
 
     public class ApplicationRole : IdentityRole<int, UserRoleIntPk>,IAuditInfo,IDeletableEntity, IEntity
     {
+
+        [StringLength(250)]
+        public string Description { get; set; }
+
         public ApplicationRole()
         {
             this.CreatedOn = DateTime.Now;
@@ -29,8 +33,7 @@ namespace CollectingProductionDataSystem.Models.Identity
          public bool IsAvailableForAdministrators { get; set; }
 
          #region IAuditInfo_IDeletableEntity
-         [StringLength(250)]
-         public string Description { get; set; }
+         
          /// <summary>
          /// Gets or sets the is deleted.
          /// </summary>

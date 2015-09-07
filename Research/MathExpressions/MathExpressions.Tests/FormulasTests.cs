@@ -16,7 +16,6 @@ namespace MathExpressions.Tests
             //Arrange
             double t = 455;
             double P = 20.4;
-            double s = 1;
 
             var inputParams = new Dictionary<string, double>();
             inputParams.Add("t", t);

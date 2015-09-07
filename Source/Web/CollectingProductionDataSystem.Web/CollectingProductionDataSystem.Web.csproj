@@ -54,6 +54,9 @@
     <Reference Include="Kendo.Mvc.resources">
       <HintPath>..\..\ExternalLibraries\Kendo\bg-BG\Kendo.Mvc.resources.dll</HintPath>
     </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.QualityTools.Testing.Fakes, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Ninject">
@@ -183,6 +186,7 @@
     <Compile Include="AppStart\FilterConfig.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="AppStart\ModelBindersConfig.cs" />
     <Compile Include="AppStart\NinjectWebCommon.cs" />
     <Compile Include="AppStart\RouteConfig.cs">
       <SubType>Code</SubType>
@@ -235,9 +239,10 @@
     <Compile Include="Areas\Administration\ViewModels\LoginViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\RegisterViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\ResetPasswordViewModel.cs" />
+    <Compile Include="Areas\Administration\ViewModels\RoleViewModel.cs" />
     <Compile Include="Areas\DailyReporting\Controllers\AreaBaseController.cs" />
     <Compile Include="Areas\DailyReporting\DailyReportingAreaRegistration.cs" />
-    <Compile Include="Areas\MonthlyReporting\AreaBaseController.cs" />
+    <Compile Include="Areas\MonthlyReporting\Controllers\AreaBaseController.cs" />
     <Compile Include="Areas\MonthlyReporting\MonthlyReportingAreaRegistration.cs" />
     <Compile Include="Areas\ShiftReporting\Controllers\AreaBaseController.cs" />
     <Compile Include="Areas\ShiftReporting\Controllers\UnitsController.cs" />
@@ -264,6 +269,7 @@
     <Compile Include="Infrastructure\IdentityInfrastructure\ApplicationUserManager.cs" />
     <Compile Include="Infrastructure\IdentityInfrastructure\EmailService.cs" />
     <Compile Include="Infrastructure\IdentityInfrastructure\SmsService.cs" />
+    <Compile Include="Infrastructure\MadelBinders\EditUserViewModelBinder.cs" />
     <Compile Include="InputModels\EditReasonInputModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -1306,7 +1312,6 @@
     <Folder Include="Areas\DailyReporting\Models\" />
     <Folder Include="Areas\DailyReporting\Views\AreaBase\" />
     <Folder Include="Areas\DailyReporting\Views\Shared\" />
-    <Folder Include="Areas\MonthlyReporting\Controllers\" />
     <Folder Include="Areas\MonthlyReporting\Models\" />
     <Folder Include="Areas\MonthlyReporting\Views\AreaBase\" />
     <Folder Include="Areas\MonthlyReporting\Views\Shared\" />

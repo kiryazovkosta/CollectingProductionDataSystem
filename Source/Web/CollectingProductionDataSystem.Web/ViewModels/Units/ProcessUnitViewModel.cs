@@ -17,6 +17,8 @@ namespace CollectingProductionDataSystem.Web.ViewModels.Units
         {
             configuration.CreateMap<ProcessUnit, ProcessUnitViewModel>()
                 .ForMember(p => p.Name, opt => opt.MapFrom(p => p.ShortName));
+            configuration.CreateMap<ProcessUnitViewModel, ProcessUnit>()
+                .ForMember(p => p.ShortName, opt => opt.MapFrom(p => p.Name));
         }
     }
 }

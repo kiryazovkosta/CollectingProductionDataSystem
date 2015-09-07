@@ -1,4 +1,4 @@
-﻿namespace CollectingProductionDataSystem.Web.Areas.MonthlyReporting
+﻿namespace CollectingProductionDataSystem.Web.Areas.MonthlyReporting.Controllers
 {
     using System;
     using System.Collections.Generic;

@@ -1,13 +1,17 @@
 ﻿namespace CollectingProductionDataSystem.Web.Controllers
 {
     using System;
+    using System.Collections.Generic;
     using System.Globalization;
     using System.Linq;
     using System.Security.Claims;
     using System.Threading.Tasks;
     using System.Web;
     using System.Web.Mvc;
+    using CollectingProductionDataSystem.Data.Contracts;
+    using CollectingProductionDataSystem.Web.Areas.Administration.ViewModels;
     using CollectingProductionDataSystem.Web.Infrastructure.IdentityInfrastructure;
+    using log4net.Core;
     using Resources = App_GlobalResources.Resources;
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.Owin;
@@ -15,16 +19,18 @@
     using CollectingProductionDataSystem.Enumerations;
 
     [Authorize]
-    public class AccountController : Controller
+    public class AccountController : BaseController
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
-        public AccountController()
+        public AccountController(IProductionData dataParam)
+            : base(dataParam)
         {
         }
 
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
+        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager, IProductionData dataParam)
+            : this(dataParam)
         {
             UserManager = userManager;
             SignInManager = signInManager;
@@ -69,7 +75,7 @@
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Login(CollectingProductionDataSystem.Web.Areas.Administration.ViewModels.LoginViewModel model, string returnUrl)
+        public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
         {
             if (!ModelState.IsValid)
             {
@@ -78,10 +84,22 @@
 
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
+
+            var userProfile = data.Users.All().FirstOrDefault(x => x.UserName == model.UserName);
+
+            if (null == userProfile)
+            {
+                ModelState.AddModelError("", Resources.ErrorMessages.InvalidLogin);
+                return View(model);
+            }
             var result = await SignInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, shouldLockout: false);
             switch (result)
             {
                 case SignInStatus.Success:
+                    if (userProfile.IsChangePasswordRequired)
+                    {
+                        return RedirectToAction("ChangePassword");
+                    }
                     return RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:
                     return View("Lockout");
@@ -89,12 +107,12 @@
                     return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
                 case SignInStatus.Failure:
                 default:
-                    ModelState.AddModelError("", "Invalid login attempt.");
+                    ModelState.AddModelError("", Resources.ErrorMessages.InvalidLogin);
                     return View(model);
             }
         }
 
-   
+
         // GET: /Account/ChangePassword
         public ActionResult ChangePassword()
         {
@@ -105,13 +123,19 @@
         // POST: /Account/ChangePassword
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> ChangePassword(CollectingProductionDataSystem.Web.Areas.Administration.ViewModels.ChangePasswordViewModel model)
+        public async Task<ActionResult> ChangePassword(ChangePasswordViewModel model)
         {
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
             var result = await UserManager.ChangePasswordAsync(int.Parse(User.Identity.GetUserId()), model.OldPassword, model.NewPassword);
+
+            if (result.Succeeded)
+            {
+                result = ClearIsChangePasswordRequired();
+            }
+
             if (result.Succeeded)
             {
                 var user = await UserManager.FindByIdAsync(int.Parse(User.Identity.GetUserId()));
@@ -119,7 +143,7 @@
                 {
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
                 }
-                return RedirectToAction("Index","Home", new { Message = ManageMessageId.ChangePasswordSuccess });
+                return RedirectToAction("Index", "Home", new { Message = ManageMessageId.ChangePasswordSuccess });
             }
             AddErrors(result);
             return View(model);
@@ -135,7 +159,7 @@
         }
 
         [ChildActionOnly]
-        public ActionResult GetGreetingMessage() 
+        public ActionResult GetGreetingMessage()
         {
             var user = UserManager.FindById(User.Identity.GetUserId<int>());
             return PartialView((object)user.FullName);
@@ -216,6 +240,41 @@
                     properties.Dictionary[XsrfKey] = UserId;
                 }
                 context.HttpContext.GetOwinContext().Authentication.Challenge(properties, LoginProvider);
+            }
+        }
+
+        /// <summary>
+        /// Clears the is change password required.
+        /// </summary>
+        /// <param name="model">The model.</param>
+        /// <returns></returns>
+        private IdentityResult ClearIsChangePasswordRequired()
+        {
+            try
+            {
+                var dbUser = data.Users.GetById(User.Identity.GetUserId<int>());
+                dbUser.IsChangePasswordRequired = false;
+                data.Users.Update(dbUser);
+                var result = data.SaveChanges(this.UserProfile.User.UserName);
+                if (result.EfErrors.Count > 0)
+                {
+                    var errors = new List<string>();
+                    foreach (var err in result.EfErrors)
+                    {
+                        errors.Add(err.ErrorMessage);
+                    }
+                    return new IdentityResult(errors);
+                }
+                else
+                {
+                    return IdentityResult.Success;
+                }
+            }
+            catch (Exception ex)
+            {
+                var logger = Resolver.GetService<ILogger>();
+                logger.Log(typeof(IdentityResult), Level.Error, ex.Message, ex);
+                return new IdentityResult(new string[] { Resources.ErrorMessages.InvalidChangePassword });
             }
         }
         #endregion

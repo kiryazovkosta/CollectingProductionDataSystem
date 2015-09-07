@@ -39,36 +39,38 @@ namespace CollectingProductionDataSystem.Web.Areas.Administration.Controllers
         [ValidateAntiForgeryToken]
         public async Task<JsonResult> GetAllUsers([DataSourceRequest]DataSourceRequest request)
         {
-            try
+            var db = (IdentityDbContext<ApplicationUser, ApplicationRole, int, UserLoginIntPk, UserRoleIntPk, UserClaimIntPk>)data.DbContext;
+            var rolsStore = data.Roles.All();
+            var users = await (data.Users.All().Select(u => new EditUserViewModel
             {
-                var db = (IdentityDbContext<ApplicationUser, ApplicationRole, int, UserLoginIntPk, UserRoleIntPk, UserClaimIntPk>)data.DbContext;
-                var timer = new Stopwatch();
-                timer.Start();
-                var users = await (from u in db.Users
-                                 select new EditUserViewModel
-                                 {
-                                     Id = u.Id,
-                                     UserName = u.UserName,
-                                     Email = u.Email,
-                                     FirstName = u.FirstName ?? string.Empty,
-                                     MiddleName = u.MiddleName ?? string.Empty,
-                                     LastName = u.LastName ?? string.Empty,
-                                     Occupation = u.Occupation ?? string.Empty,
-                                     UserRoles = db.Roles.Where(rol => rol.Users.Any(x => x.UserId == u.Id)).Select(x => new AsignRoleViewModel { Id = x.Id, Name = x.Name, Description = x.Description }),
-                                     ProcessUnits = u.ProcessUnits.Select(x => new ProcessUnitViewModel { Id = x.Id, Name = x.ShortName, FullName = x.FullName }),
-                                     Parks = u.Parks.Select(x => new ParkViewModel { Id = x.Id, Name = x.Name }),
-                                 }).ToListAsync();
-                timer.Stop();
-                Debug.WriteLine("Estimated time {0}", timer.Elapsed);
-                return Json(users.ToDataSourceResult(request, ModelState));
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex);
-            }
-            return Json(null);
+                Id = u.Id,
+                UserName = u.UserName,
+                Email = u.Email,
+                FirstName = u.FirstName,
+                MiddleName = u.MiddleName,
+                LastName = u.LastName,
+                Occupation = u.Occupation,
+                UserRoles = rolsStore.Where(rol => rol.Users.Any(x => x.UserId == u.Id)).Select(x => new RoleViewModel { Id = x.Id, Name = x.Name, Description = x.Description }),
+                ProcessUnits = u.ProcessUnits.Select(x => new ProcessUnitViewModel { Id = x.Id, Name = x.ShortName, FullName = x.FullName }),
+                Parks = u.Parks.Select(x => new ParkViewModel { Id = x.Id, Name = x.Name }),
+            })).ToListAsync();
+            return Json(users.ToDataSourceResult(request, ModelState));
 
         }
+
+
+        public async Task<JsonResult> GetAllProcessUnits()
+        {
+            var prosessUnits = Mapper.Map<IEnumerable<ProcessUnitViewModel>>(await data.ProcessUnits.All().ToListAsync());
+            return Json(prosessUnits, JsonRequestBehavior.AllowGet);
+        }
+
+        public async Task<JsonResult> GetAllParks()
+        {
+            var parks = Mapper.Map<IEnumerable<ParkViewModel>>(await data.Parks.All().ToListAsync());
+            return Json(parks, JsonRequestBehavior.AllowGet);
+        }
+
 
         //public JsonResult GetRolesByUser(int userId)
         //{
