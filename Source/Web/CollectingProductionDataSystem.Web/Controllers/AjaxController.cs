@@ -4,6 +4,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
 using AutoMapper;
+using CollectingProductionDataSystem.Constants;
 using CollectingProductionDataSystem.Data.Contracts;
 using CollectingProductionDataSystem.Models.Inventories;
 using CollectingProductionDataSystem.Models.Productions;
@@ -32,13 +33,13 @@ namespace CollectingProductionDataSystem.Web.Controllers
         public JsonResult GetAreas()
         {
             IEnumerable<Area> areas = new HashSet<Area>();
-            if (UserProfile.UserRoles.FirstOrDefault(x => x.Name == "Administrator") != null)
+            if (UserProfile.UserRoles.FirstOrDefault(x => CommonConstants.PowerUsers.Any(y=>y == x.Name)) != null)
             {
                 areas = this.data.Areas.All().ToList();
             }
             else
             {
-                areas = Mapper.Map<IEnumerable<Area>>(this.UserProfile.Parks.Select(x=>x.Area).Distinct());
+                areas = Mapper.Map<IEnumerable<Area>>(this.UserProfile.Parks.Select(x => x.Area).Distinct());
             }
             var areaView = Mapper.Map<IEnumerable<AreaViewModel>>(areas);
             return Json(areaView, JsonRequestBehavior.AllowGet);
@@ -47,7 +48,7 @@ namespace CollectingProductionDataSystem.Web.Controllers
         public JsonResult GetParks(int? areaId, string parksFilter)
         {
             IEnumerable<Park> parks = new HashSet<Park>();
-            if (UserProfile.UserRoles.FirstOrDefault(x => x.Name == "Administrator") != null)
+            if (UserProfile.UserRoles.FirstOrDefault(x => CommonConstants.PowerUsers.Any(y=>y == x.Name)) != null)
             {
                 parks = this.data.Parks.All();
             }
@@ -81,7 +82,7 @@ namespace CollectingProductionDataSystem.Web.Controllers
         public JsonResult GetFactories()
         {
             IEnumerable<Factory> factories = new HashSet<Factory>();
-            if (UserProfile.UserRoles.FirstOrDefault(x => x.Name == "Administrator") != null)
+            if (UserProfile.UserRoles.FirstOrDefault(x => CommonConstants.PowerUsers.Any(y=>y == x.Name)) != null)
             {
                 factories = this.data.Factories.All().ToList();
             }
@@ -96,7 +97,7 @@ namespace CollectingProductionDataSystem.Web.Controllers
         public JsonResult GetProcessUnits(int? factoryId)
         {
             IEnumerable<ProcessUnit> processUnits = new HashSet<ProcessUnit>();
-            if (UserProfile.UserRoles.FirstOrDefault(x => x.Name == "Administrator") != null)
+            if (UserProfile.UserRoles.FirstOrDefault(x => CommonConstants.PowerUsers.Any(y=>y == x.Name)) != null)
             {
                 processUnits = this.data.ProcessUnits.All();
             }
