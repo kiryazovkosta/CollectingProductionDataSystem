@@ -44,8 +44,8 @@
         .ServerOperation(true)
             .Group(group => group.Add(c =>c.UnitConfig.ProductType.Sort))
 
-        .Read(read => read.Action("ReadUnitsData", "Units", new { area = "" }).Data("sendDate"))
-        .Update(update => update.Action("Edit", "Units", new { area = "" }).Data("sendAntiForgery"))
+            .Read(read => read.Action("ReadUnitsData", "Units", new { area = "ShiftReporting" }).Data("sendDate"))
+            .Update(update => update.Action("Edit", "Units", new { area = "ShiftReporting" }).Data("sendAntiForgery"))
         .Model(model =>
         {
             model.Id(p => p.Id);

@@ -14,6 +14,7 @@
     using CollectingProductionDataSystem.Data.Contracts;
     using CollectingProductionDataSystem.Models.Nomenclatures;
     using CollectingProductionDataSystem.Web.Controllers;
+    using CollectingProductionDataSystem.Web.Infrastructure.Filters;
     using Kendo.Mvc.Extensions;
     using Kendo.Mvc.UI;
     using AutoMapper;
@@ -73,6 +74,7 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AuthorizeFactory]
         public JsonResult ReadUnitsData([DataSourceRequest]
                                         DataSourceRequest request, DateTime? date, int? processUnitId, int? shiftId)
         {

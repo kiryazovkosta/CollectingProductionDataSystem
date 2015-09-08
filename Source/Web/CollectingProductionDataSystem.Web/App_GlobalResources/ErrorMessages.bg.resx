@@ -124,7 +124,7 @@
     <value>Невалидна електронна поща</value>
   </data>
   <data name="Error" xml:space="preserve">
-    <value>An error has occurred.</value>
+    <value>Възникна грешка</value>
   </data>
   <data name="InvalidChangePassword" xml:space="preserve">
     <value>Неуспешен опит за смяна на паролата</value>
@@ -143,6 +143,9 @@
   </data>
   <data name="Required" xml:space="preserve">
     <value>Въвеждането в полето {0} е задължително.</value>
+  </data>
+  <data name="UnAuthorized" xml:space="preserve">
+    <value>Вие не сте оторизиран за изпълняваното действие.</value>
   </data>
   <data name="UserName" xml:space="preserve">
     <value>Потребителското име трябва да бъде дълго поне {2} синвола.</value>

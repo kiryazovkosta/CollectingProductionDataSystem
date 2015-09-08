@@ -33,7 +33,7 @@ namespace CollectingProductionDataSystem.Web.Controllers
         public JsonResult GetAreas()
         {
             IEnumerable<Area> areas = new HashSet<Area>();
-            if (UserProfile.UserRoles.FirstOrDefault(x => CommonConstants.PowerUsers.Any(y=>y == x.Name)) != null)
+            if (IsPowerUser())
             {
                 areas = this.data.Areas.All().ToList();
             }
@@ -45,10 +45,11 @@ namespace CollectingProductionDataSystem.Web.Controllers
             return Json(areaView, JsonRequestBehavior.AllowGet);
         }
 
+
         public JsonResult GetParks(int? areaId, string parksFilter)
         {
             IEnumerable<Park> parks = new HashSet<Park>();
-            if (UserProfile.UserRoles.FirstOrDefault(x => CommonConstants.PowerUsers.Any(y=>y == x.Name)) != null)
+            if (IsPowerUser())
             {
                 parks = this.data.Parks.All();
             }
@@ -82,7 +83,8 @@ namespace CollectingProductionDataSystem.Web.Controllers
         public JsonResult GetFactories()
         {
             IEnumerable<Factory> factories = new HashSet<Factory>();
-            if (UserProfile.UserRoles.FirstOrDefault(x => CommonConstants.PowerUsers.Any(y=>y == x.Name)) != null)
+            
+            if (IsPowerUser())
             {
                 factories = this.data.Factories.All().ToList();
             }
@@ -97,7 +99,7 @@ namespace CollectingProductionDataSystem.Web.Controllers
         public JsonResult GetProcessUnits(int? factoryId)
         {
             IEnumerable<ProcessUnit> processUnits = new HashSet<ProcessUnit>();
-            if (UserProfile.UserRoles.FirstOrDefault(x => CommonConstants.PowerUsers.Any(y=>y == x.Name)) != null)
+            if (IsPowerUser())
             {
                 processUnits = this.data.ProcessUnits.All();
             }
@@ -112,6 +114,12 @@ namespace CollectingProductionDataSystem.Web.Controllers
             }
             var processUnitView = Mapper.Map<IEnumerable<ProcessUnitViewModel>>(processUnits.ToList());
             return Json(processUnitView, JsonRequestBehavior.AllowGet);
+        }
+
+        
+        private bool IsPowerUser()
+        {
+            return UserProfile.UserRoles.Where(x => CommonConstants.PowerUsers.Any(y => y == x.Name)).Any();
         }
     }
 }

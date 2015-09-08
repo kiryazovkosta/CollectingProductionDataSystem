@@ -26,7 +26,7 @@
     {
         protected readonly IProductionData data;
 
-        protected UserProfile UserProfile { get; private set; }
+        public UserProfile UserProfile { get; private set; }
 
         public BaseController(IProductionData dataParam)
         {
