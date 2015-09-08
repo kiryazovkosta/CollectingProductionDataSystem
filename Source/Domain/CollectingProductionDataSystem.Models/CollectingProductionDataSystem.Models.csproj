@@ -126,6 +126,12 @@
       <LastGenOutput>ModelErrors.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\CollectingProductionDataSystem.Infrastructure\CollectingProductionDataSystem.Infrastructure.csproj">
+      <Project>{69DEBDE6-B1BA-4A55-9570-AE7E6ABB5F98}</Project>
+      <Name>CollectingProductionDataSystem.Infrastructure</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

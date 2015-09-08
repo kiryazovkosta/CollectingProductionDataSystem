@@ -60,13 +60,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extentions\ICollectionExtensions.cs" />
+    <Compile Include="Extentions\IEnumerableExtensions.cs" />
+    <Compile Include="Extentions\ObjectExtensions.cs" />
     <Compile Include="Mapping\AutoMapperConfig.cs" />
     <Compile Include="Mapping\IHaveCustomMappings.cs" />
     <Compile Include="Mapping\IMapFrom.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Extentions\" />
     <Folder Include="Filters\" />
   </ItemGroup>
   <ItemGroup>

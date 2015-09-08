@@ -42,7 +42,7 @@
             //delete product
             this.data.Products.Delete(4);
 
-            this.data.SaveChanges(this.UserProfile.User.UserName);
+            this.data.SaveChanges(this.UserProfile.UserName);
             return View((object)"Success");
         }
 
@@ -62,7 +62,7 @@
             if (ModelState.IsValid)
             {
                 //this.data.TanksData.Update(model);
-                this.data.SaveChanges(this.UserProfile.User.UserName);
+                this.data.SaveChanges(this.UserProfile.UserName);
                 return RedirectToAction("TankChange");
             }
 

@@ -125,7 +125,7 @@
                 }
                 try
                 {
-                    var result = this.data.SaveChanges(UserProfile.User.UserName);
+                    var result = this.data.SaveChanges(UserProfile.UserName);
                     if (!result.IsValid)
                     {
                         foreach (ValidationResult error in result.EfErrors)
@@ -175,7 +175,7 @@
                         Approved = true
                     });
 
-                    var result = data.SaveChanges(this.UserProfile.User.UserName);
+                    var result = data.SaveChanges(this.UserProfile.UserName);
                     // TODO: need to refactoring code to get max shift not to hardcode this number
                     if (shiftId == 3)
                     {
@@ -272,7 +272,7 @@
                                     });
                             }
 
-                            this.data.SaveChanges(this.UserProfile.User.UserName);
+                            this.data.SaveChanges(this.UserProfile.UserName);
 	                    }
                         
                     }

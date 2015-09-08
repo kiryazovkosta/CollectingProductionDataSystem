@@ -15,7 +15,7 @@
                 <li>@Html.ActionLink("Home", "Index", "Home", routeValues: new { area = string.Empty }, htmlAttributes: null)</li>
                 <li>@Html.ActionLink("About", "About", "Home", routeValues: new { area = string.Empty }, htmlAttributes: null)</li>
                 <li>@Html.ActionLink("Contact", "Contact", "Home", routeValues: new { area = string.Empty }, htmlAttributes: null)</li>
-                <li>@Html.ActionLink("UnitsData", "UnitsData", "Units", routeValues: new { area = string.Empty }, htmlAttributes: null)</li>
+                <li>@Html.AuthorizedActionLink(@Resources.Layout.UnitsData, "UnitsData", "Units", new { area = "ShiftReporting" }, null)</li>
                 <li>@Html.ActionLink("Units Daily Data", "UnitsDailyData", "Units", routeValues: new { area = string.Empty }, htmlAttributes: null)</li>
                 @if (Html.ActionIsAccessibleToUser("Index", "User", "Administration"))
                 {

@@ -121,6 +121,10 @@
       <Project>{8dd67abb-5bfb-4a28-82df-7bfe8ca483a6}</Project>
       <Name>CollectingProductionDataSystem.Contracts</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Common\CollectingProductionDataSystem.Infrastructure\CollectingProductionDataSystem.Infrastructure.csproj">
+      <Project>{69debde6-b1ba-4a55-9570-ae7e6abb5f98}</Project>
+      <Name>CollectingProductionDataSystem.Infrastructure</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Domain\CollectingProductionDataSystem.Models\CollectingProductionDataSystem.Models.csproj">
       <Project>{63cc73a0-f2c2-453d-a915-1913095f22fd}</Project>
       <Name>CollectingProductionDataSystem.Models</Name>

@@ -257,7 +257,7 @@
                 var dbUser = data.Users.GetById(User.Identity.GetUserId<int>());
                 dbUser.IsChangePasswordRequired = false;
                 data.Users.Update(dbUser);
-                var result = data.SaveChanges(this.UserProfile.User.UserName);
+                var result = data.SaveChanges(this.UserProfile.UserName);
                 if (result.EfErrors.Count > 0)
                 {
                     var errors = new List<string>();

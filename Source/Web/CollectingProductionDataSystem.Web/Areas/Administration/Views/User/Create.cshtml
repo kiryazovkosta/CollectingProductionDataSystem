@@ -71,7 +71,7 @@
         </div>
         <hr />
         <div class="pull-right">
-            <button type="submit" class="btn btn-primary">Create</button>
+            <button id="create" type="submit" class="btn btn-primary">Create</button>
             @Html.ActionLink("Cancel", "Index", null, new { @class = "btn btn-default" })
         </div>
     }
@@ -95,4 +95,83 @@
 
 @section scripts{
     @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        $(document).ready(function () {
+            $('#create').click(function () {
+                AddDataForUserRole();
+                AddDataForProcessUnits();
+                AddDataForParks();
+            })
+        });
+
+        function AddDataForUserRole() {
+            var selectedUserRoles = $("#UserRoles").data("kendoMultiSelect").dataItems();
+            $.each(selectedUserRoles, function (index, value) {
+                $('form').append($('<input>').attr({
+                    type: 'hidden',
+                    id: 'UserRoles_' + index + "_Id",
+                    name: 'UserRoles[' + index + '].Id',
+                    value: value.Id,
+                }));
+                $('form').append($('<input>').attr({
+                    type: 'hidden',
+                    id: 'UserRoles_' + index + "_Name",
+                    name: 'UserRoles[' + index + '].Name',
+                    value: value.Name,
+                }));
+                $('form').append($('<input>').attr({
+                    type: 'hidden',
+                    id: 'UserRoles_' + index + "_Description",
+                    name: 'UserRoles[' + index + '].Description',
+                    value: value.Description,
+                }));
+            })
+            $("#UserRoles").remove();
+        }
+
+        function AddDataForProcessUnits() {
+            var selectedProcessUnits = $("#ProcessUnits").data("kendoMultiSelect").dataItems();
+            $.each(selectedProcessUnits, function (index, value) {
+                $('form').append($('<input>').attr({
+                    type: 'hidden',
+                    id: 'ProcessUnits_' + index + "_Id",
+                    name: 'ProcessUnits[' + index + '].Id',
+                    value: value.Id,
+                }));
+                $('form').append($('<input>').attr({
+                    type: 'hidden',
+                    id: 'ProcessUnits_' + index + "_Name",
+                    name: 'ProcessUnits[' + index + '].Name',
+                    value: value.Name,
+                }));
+                $('form').append($('<input>').attr({
+                    type: 'hidden',
+                    id: 'ProcessUnits_' + index + "_FullName",
+                    name: 'ProcessUnits[' + index + '].FullName',
+                    value: value.Description,
+                }));
+            })
+            $("#ProcessUnits").remove();
+        }
+        function AddDataForParks() {
+            var selectedParks = $("#Parks").data("kendoMultiSelect").dataItems();
+            $.each(selectedParks, function (index, value) {
+                $('form').append($('<input>').attr({
+                    type: 'hidden',
+                    id: 'Parks_' + index + "_Id",
+                    name: 'Parks[' + index + '].Id',
+                    value: value.Id,
+                }));
+                $('form').append($('<input>').attr({
+                    type: 'hidden',
+                    id: 'Parks_' + index + "_Name",
+                    name: 'Parks[' + index + '].Name',
+                    value: value.Name,
+                }));
+            })
+            $("#Parks").remove();
+        }
+    </script>
+
 }

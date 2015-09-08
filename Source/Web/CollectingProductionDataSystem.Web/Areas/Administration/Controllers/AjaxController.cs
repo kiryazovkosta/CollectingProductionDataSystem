@@ -39,7 +39,6 @@ namespace CollectingProductionDataSystem.Web.Areas.Administration.Controllers
         [ValidateAntiForgeryToken]
         public async Task<JsonResult> GetAllUsers([DataSourceRequest]DataSourceRequest request)
         {
-            var db = (IdentityDbContext<ApplicationUser, ApplicationRole, int, UserLoginIntPk, UserRoleIntPk, UserClaimIntPk>)data.DbContext;
             var rolsStore = data.Roles.All();
             var users = await (data.Users.All().Select(u => new EditUserViewModel
             {

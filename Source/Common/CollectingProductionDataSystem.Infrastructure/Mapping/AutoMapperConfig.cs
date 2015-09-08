@@ -2,18 +2,23 @@
 {
     using System;
     using System.Collections.Generic;
+    
     using System.Linq;
     using System.Reflection;
-
     using AutoMapper;
     using CollectingProductionDataSystem.Constants;
+    using CollectingProductionDataSystem.Infrastructure.Extentions;
 
         public static class AutoMapperConfig
         {
             public static void RegisterMappings()
             {
                 var types = Assembly.GetExecutingAssembly().GetExportedTypes();
-                var viewModelTypes = Assembly.Load(Namespace.viewModels).GetExportedTypes();
+                ICollection<Type> viewModelTypes = new List<Type>();
+                foreach (var assemblyName in Namespace.viewModels)
+                {
+                    viewModelTypes.AddRange(Assembly.Load(assemblyName).GetExportedTypes());
+                }
 
                 LoadStandardMappings(types);
                 LoadStandardMappings(viewModelTypes);

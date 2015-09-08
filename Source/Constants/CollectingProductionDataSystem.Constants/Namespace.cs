@@ -8,9 +8,9 @@ namespace CollectingProductionDataSystem.Constants
 {
     public static class Namespace
     {
-        public static string viewModels = "CollectingProductionDataSystem.Web";
+        public static string[] viewModels = new string[]{"CollectingProductionDataSystem.Web", "CollectingProductionDataSystem.Models"};
 
-        public static string ViewModels
+        public static string[] ViewModels
         {
             get
             {

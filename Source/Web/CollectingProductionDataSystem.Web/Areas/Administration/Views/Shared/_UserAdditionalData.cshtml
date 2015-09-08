@@ -1,4 +1,5 @@
-﻿@using Resources = App_GlobalResources.Resources;
+﻿@using CollectingProductionDataSystem.Web.Areas.Administration.ViewModels;
+@using Resources = App_GlobalResources.Resources;
 
 @model CollectingProductionDataSystem.Web.Areas.Administration.ViewModels.EditUserViewModel
 <div class="form-group">
@@ -6,7 +7,8 @@
         @Html.LabelFor(m => m.UserRoles, new { @class = "col-xs-4 control-label control-label-horizontal" })
         <div class="col-xs-8 multiselect-host">
             @(Html.Kendo()
-              .MultiSelectFor(m=>m.UserRoles)
+              .MultiSelectFor(m => m.UserRoles)
+              .AutoBind(true)
               .AutoClose(false)
               .DataTextField("Name")
               .DataValueField("Id")
@@ -15,8 +17,9 @@
               .DataSource(source =>
               {
                   source.Read(read =>
-                  { read.Action("GetAllRoles", "Ajax", new { area = "Administration" }); })
+                  { read.Action("GetAllRoles", "Ajax", new { area = "Administration" });})
                   .ServerFiltering(true);
+                  
               })
             )
         </div>
@@ -27,7 +30,7 @@
         @Html.LabelFor(m => m.ProcessUnits, new { @class = "col-xs-4 control-label control-label-horizontal" })
         <div class="col-xs-8 multiselect-host">
             @(Html.Kendo()
-              .MultiSelectFor(m=>m.ProcessUnits)
+              .MultiSelectFor(m => m.ProcessUnits)
               .AutoClose(false)
               .DataTextField("Name")
               .DataValueField("Id")
@@ -48,17 +51,17 @@
         @Html.LabelFor(m => m.Parks, new { @class = "col-xs-4 control-label control-label-horizontal" })
         <div class="col-xs-8 multiselect-host">
             @(Html.Kendo()
-              .MultiSelectFor(m=>m.Parks)
-             // .Name("inParks")
+              .MultiSelectFor(m => m.Parks)
               .AutoClose(false)
               .DataTextField("Name")
               .DataValueField("Id")
               .Placeholder(@Resources.Layout.ChooseParks)
               .Value(Model.Parks)
+              .BindTo(Model.Parks)
               .DataSource(source =>
               {
                   source.Read(read =>
-                  { read.Action("GetAllParks", "Ajax", new { area = "Administration" });})
+                  { read.Action("GetAllParks", "Ajax", new { area = "Administration" }); })
                   .ServerFiltering(true);
               })
             )

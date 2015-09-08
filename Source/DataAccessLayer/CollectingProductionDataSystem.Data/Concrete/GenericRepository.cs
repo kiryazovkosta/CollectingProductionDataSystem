@@ -9,7 +9,7 @@
     using System.Linq.Expressions;
     using System.ComponentModel.DataAnnotations;
     using CollectingProductionDataSystem.Contracts;
-    using CollectingProductionDataSystem.Contracts.Extensions;
+    using CollectingProductionDataSystem.Infrastructure.Extentions;
     using CollectingProductionDataSystem.Data.Contracts;
     using CollectingProductionDataSystem.Models.Contracts;
 

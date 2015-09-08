@@ -1,4 +1,4 @@
-﻿namespace CollectingProductionDataSystem.Contracts.Extensions
+﻿namespace CollectingProductionDataSystem.Infrastructure.Extentions
 {
     using System;
     using System.Collections.Generic;
