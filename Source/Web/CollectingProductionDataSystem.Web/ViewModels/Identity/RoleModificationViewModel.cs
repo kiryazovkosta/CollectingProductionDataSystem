@@ -5,6 +5,7 @@
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
     using System.Web;
+    using Resources = App_GlobalResources.Resources;
 
     public class RoleModificationViewModel
     {
@@ -12,7 +13,12 @@
         public string RoleName { get; set; }
 
         [Required]
-        public bool IsAvailableForAdministrators { get; set; }
+        [Display(Name="RoleName",ResourceType=typeof(Resources.Layout))]
+        public string Name { get; set; }
+
+        [Required]
+        [Display(Name="Description",ResourceType=typeof(Resources.Layout))]
+        public string Description { get; set; }
 
         public int[] IdsToAdd { get; set; }
 

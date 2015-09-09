@@ -14,12 +14,13 @@
     @Html.Partial("_MainNav")
     <div class="container-fluid body-content">
         @RenderBody()
-        <hr />
-        <footer>
+    </div>
+    <div class="container-fluid">
+        <footer class="footer">
+            <hr />
             <p>&copy; @DateTime.Now.Year - Бизнес Мениджмънт Системс ЕООД</p>
         </footer>
     </div>
-
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
 </body>

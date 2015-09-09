@@ -69,11 +69,13 @@
                 @Html.Partial("_UserAdditionalData", Model)
             </div>
         </div>
-        <hr />
+
+    <div class="well clearfix">
         <div class="pull-right">
             <button id="create" type="submit" class="btn btn-primary">Create</button>
             @Html.ActionLink("Cancel", "Index", null, new { @class = "btn btn-default" })
         </div>
+    </div>
     }
 </div>
 

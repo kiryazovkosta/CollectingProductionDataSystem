@@ -7,9 +7,9 @@
     using System.Threading.Tasks;
     using System.Web;
     using System.Web.Mvc;
+    using AutoMapper;
     using CollectingProductionDataSystem.Data.Contracts;
     using CollectingProductionDataSystem.Models.Identity;
-    using CollectingProductionDataSystem.Web.AppStart;
     using CollectingProductionDataSystem.Web.Infrastructure.IdentityInfrastructure;
     using CollectingProductionDataSystem.Web.ViewModels.Identity;
     using Microsoft.AspNet.Identity;
@@ -92,11 +92,14 @@
             id = id ?? 0;
             ApplicationRole role = await RoleManager.FindByIdAsync((int)id);
             int[] memberIds = role.Users.Select(x => x.UserId).ToArray();
-            IEnumerable<ApplicationUser> members = UserManager.Users.Where(x => memberIds.Any(y => y == x.Id));
-            IEnumerable<ApplicationUser> nonMembes = UserManager.Users.Except(members);
+            var auMembers = UserManager.Users.Where(x => memberIds.Any(y => y == x.Id));
+            IEnumerable<ApplicationUserModel> members = Mapper.Map<IEnumerable<ApplicationUserModel>>(auMembers);
+            IEnumerable<ApplicationUserModel> nonMembes =  Mapper.Map<IEnumerable<ApplicationUserModel>>(UserManager.Users.Except(auMembers));
             return View(new RoleEditViewModel
             {
                 Role = role,
+                Name = role.Name,
+                Description = role.Description,
                 Members = members,
                 NonMembers = nonMembes
             });
@@ -112,7 +115,8 @@
                 var role = await RoleManager.FindByNameAsync(model.RoleName);
                 if (role != null)
                 {
-                    role.IsAvailableForAdministrators = model.IsAvailableForAdministrators;
+                    role.Name = model.Name;
+                    role.Description = model.Description;
                     result = await RoleManager.UpdateAsync(role);
                     if (!result.Succeeded)
                     {

@@ -41,6 +41,16 @@ textarea {
     color: #f00;
 }
 
+.well-roles {
+    padding-bottom: 0px;
+    padding-top: 10px;
+}
+
+.row-roles-well {
+    height: 35px;
+    margin-top: 0;
+}
+
 .field-validation-valid {
     display: none;
 }
@@ -136,4 +146,15 @@ pre {
 
 .multiselect-host {
     padding-top: 5px;
+}
+
+.carousel-wrapper {
+    height: 300px;
+}
+
+.footer {
+    position: absolute;
+    bottom: 10px;
+    width:98%;
+    height: 65px;   
 }

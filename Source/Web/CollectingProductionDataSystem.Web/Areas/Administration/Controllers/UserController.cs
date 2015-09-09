@@ -3,28 +3,19 @@
     using System;
     using System.Collections.Generic;
     using System.Data.Entity;
-    using System.Diagnostics;
     using System.Linq;
-    using System.Transactions;
+    using System.Threading.Tasks;
     using System.Web;
     using System.Web.Mvc;
     using AutoMapper;
     using CollectingProductionDataSystem.Constants;
-    using CollectingProductionDataSystem.Data;
     using CollectingProductionDataSystem.Data.Contracts;
     using CollectingProductionDataSystem.Models.Identity;
-    using CollectingProductionDataSystem.Models.Inventories;
-    using CollectingProductionDataSystem.Models.Productions;
     using CollectingProductionDataSystem.Web.Areas.Administration.ViewModels;
     using CollectingProductionDataSystem.Web.Infrastructure.IdentityInfrastructure;
-    using CollectingProductionDataSystem.Web.ViewModels.Identity;
-    using CollectingProductionDataSystem.Web.ViewModels.Tank;
-    using Kendo.Mvc.UI;
-    using Microsoft.AspNet.Identity;
-    using Microsoft.AspNet.Identity.EntityFramework;
-    using Microsoft.AspNet.Identity.Owin;
     using Kendo.Mvc.Extensions;
-    using System.Threading.Tasks;
+    using Microsoft.AspNet.Identity;
+    using Microsoft.AspNet.Identity.Owin;
     using Resources = App_GlobalResources.Resources;
 
     public class UserController : AreaBaseController

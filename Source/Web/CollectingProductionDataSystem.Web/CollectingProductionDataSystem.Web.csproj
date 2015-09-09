@@ -303,10 +303,13 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\custom\slidebar.css" />
+    <Content Include="Content\Images\center.png" />
     <Content Include="Content\Images\danger.png" />
     <Content Include="Content\Images\error.png" />
+    <Content Include="Content\Images\factory.png" />
     <Content Include="Content\Images\LUK.png" />
     <Content Include="Content\Images\ok.png" />
+    <Content Include="Content\Images\tanks.png" />
     <Content Include="Content\Images\warning.png" />
     <Content Include="Content\kendo\Black\editor.png" />
     <Content Include="Content\kendo\Black\imagebrowser.png" />

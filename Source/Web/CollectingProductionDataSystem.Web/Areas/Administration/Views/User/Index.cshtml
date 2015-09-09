@@ -22,8 +22,11 @@
                    columns.Bound(c => c.Occupation);
                    columns.Command(c => { c.Edit(); c.Destroy(); });
                })
-                  .Editable(editable => editable.Mode(GridEditMode.PopUp).TemplateName("EditUserViewModel").Window(window => window.Scrollable(false)))
-          .Pageable()
+          .Editable(editable => editable.Mode(GridEditMode.PopUp).TemplateName("EditUserViewModel").Window(window => window.Scrollable(false)))
+          .Pageable(pageable => pageable
+                .Refresh(true)
+                .PageSizes(new[] { 10, 20, 50, 100 })
+                .ButtonCount(5))
           .Sortable()
           .Scrollable(scr => scr.Height(430))
           .Filterable()
@@ -45,7 +48,9 @@
             )
     )
 </div>
-@Html.ActionLink("Create", "Create", null, new { @class = "btn btn-primary" })
+<div class="well well-sm">
+    @Html.ActionLink("Create", "Create", null, new { @class = "btn btn-primary" })
+</div>
 
 @if (TempData["success"] != null)
 {
@@ -87,13 +92,15 @@
             max-width: 650px;
             width: 632px;
         }
+
         .k-edit-form-container {
-            width:95%;
-            margin-left:auto;
-            margin-right:auto;
+            width: 95%;
+            margin-left: auto;
+            margin-right: auto;
         }
+
         div.k-window-content {
-            width:685px;
+            width: 685px;
         }
     </style>
 }

@@ -47,10 +47,25 @@ div#slide-text {
     background-color: #222;
     border-color: #080808;
     color: white;
+    -moz-transform-origin: 0 0;
+    -o-transform-origin: 0 0;
+    -webkit-transform-origin: 0 0;
+    -ms-transform-origin: 0 0;
     transform-origin: 0 0;
+    -moz-transform: rotate(-90deg);
+    -o-transform: rotate(-90deg);
+    -webkit-transform: rotate(-90deg);
+    -ms-transform: rotate(-90deg);
     transform: rotate(-90deg);
-    margin: 0px;
+    margin: 0;
     border-radius: 0 0 5px 5px;
+}
+
+@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+/* IE10+ CSS styles go here */
+    .sidebar {
+        margin-right:-5px;
+    }
 }
 
 .sidebar-wtapper {
