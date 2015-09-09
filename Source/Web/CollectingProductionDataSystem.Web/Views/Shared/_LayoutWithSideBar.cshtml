@@ -18,7 +18,7 @@
         <div class="sidebar-wtapper">
             @* --- Side bar --- *@
             <div class="sidebar">
-                <div class="sidebar-heading text-center"><p>Параметри на отчета</p></div><hr style="margin-top:0"/>
+                <div class="sidebar-heading text-center"><p>Параметри на отчета</p></div><hr style="margin-top:0" />
                 <div class="container-fluid">
                     @RenderSection("sidebar", false)
                 </div>
@@ -33,11 +33,12 @@
         </div>
         <div id="content-wrapper" class="container-fluid">
             @RenderBody()
-            <hr />
-            <footer>
+        </div>
+
+        <div class="nav navbar-fixed-bottom">
+            <div class="footer">
                 <p>&copy; @DateTime.Now.Year - Бизнес Мениджмънт Системс ЕООД</p>
-            </footer>
-            @*</div>*@
+            </div>
         </div>
     </div>
     @Scripts.Render("~/bundles/bootstrap")
