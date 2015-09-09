@@ -6,9 +6,9 @@
     {
         @Html.AntiForgeryToken()
         <ul class="nav navbar-nav navbar-right">
-            <li>
-                @Html.Action("GetGreetingMessage", "Account", new { area = string.Empty })
-                @*@Html.Action("GetGreetingMessage", "Account", new { area = string.Empty })*@
+            <li class="hidden-sm">
+                @Html.Action("GetGreetingMessage", "Account", new { area = string.Empty})
+
             </li>
             <li><a href="javascript:document.getElementById('logoutForm').submit()">@Resources.Layout.Logoff</a></li>
         </ul>
