@@ -9,7 +9,7 @@
 {
     source.Read(read =>
     {
-        read.Action("GetReasons", "Ajax");
+        read.Action("GetReasons", "Ajax", new { area=""});
     });
 })
 )

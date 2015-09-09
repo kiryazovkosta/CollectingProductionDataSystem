@@ -244,6 +244,7 @@
     <Compile Include="Areas\DailyReporting\DailyReportingAreaRegistration.cs" />
     <Compile Include="Areas\MonthlyReporting\Controllers\AreaBaseController.cs" />
     <Compile Include="Areas\MonthlyReporting\MonthlyReportingAreaRegistration.cs" />
+    <Compile Include="Areas\ShiftReporting\Controllers\AjaxController.cs" />
     <Compile Include="Areas\ShiftReporting\Controllers\AreaBaseController.cs" />
     <Compile Include="Areas\ShiftReporting\Controllers\UnitsController.cs" />
     <Compile Include="Areas\ShiftReporting\ShiftReportingAreaRegistration.cs" />
@@ -1301,6 +1302,7 @@
     <Folder Include="Areas\MonthlyReporting\Views\AreaBase\" />
     <Folder Include="Areas\MonthlyReporting\Views\Shared\" />
     <Folder Include="Areas\ShiftReporting\Models\" />
+    <Folder Include="Areas\ShiftReporting\Views\Ajax\" />
     <Folder Include="Areas\ShiftReporting\Views\AreaBase\" />
     <Folder Include="Areas\ShiftReporting\Views\Shared\" />
     <Folder Include="Views\Ajax\" />

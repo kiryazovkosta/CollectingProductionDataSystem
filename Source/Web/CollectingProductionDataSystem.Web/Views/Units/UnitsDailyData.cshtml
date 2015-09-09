@@ -39,6 +39,7 @@
         .Ajax()
         .PageSize(50)
         .ServerOperation(true)
+        //.Group(group => group.Add(c => c.ProductType))
         .Read(read => read.Action("ReadUnitsDailyData", "Units", new { area = "" }).Data("sendDate"))
         //.Update(update => update.Action("Edit", "Units", new { area = "" }).Data("sendAntiForgery"))
         .Model(model =>
