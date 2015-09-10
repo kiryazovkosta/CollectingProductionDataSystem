@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<CollectingProductionDataSystem.Web.Areas.Administration.ViewModels.EditUserViewModel>
 
 @{
-    Layout = "~/Views/Shared/_KendoLayout.cshtml";
+    Layout = "~/Areas/Administration/Views/Shared/_KendoAdminLayout.cshtml";
 }
 
 <div class="panel panel-primary">
@@ -15,12 +15,12 @@
           .Columns(
                columns =>
                {
-                   columns.Bound(c => c.Id).Width(40);
+                   columns.Bound(c => c.Id).Width(45);
                    columns.Bound(c => c.UserName);
                    columns.Bound(c => c.Email);
                    columns.Bound(c => c.FullName);
                    columns.Bound(c => c.Occupation);
-                   columns.Command(c => { c.Edit(); c.Destroy(); });
+                   columns.Command(c => { c.Edit(); c.Destroy(); }).Width(220);
                })
           .Editable(editable => editable.Mode(GridEditMode.PopUp).TemplateName("EditUserViewModel").Window(window => window.Scrollable(false)))
           .Pageable(pageable => pageable
@@ -35,7 +35,7 @@
                 .PageSize(20)
                 .ServerOperation(true)
                 .Read(read => read.Action("GetAllUsers", "Ajax", new { area = "Administration" }).Data("sendAntiForgery"))
-                .Events(events => events.Error("error_handler"))
+                                .Events(events => events.Error("error_handler").RequestEnd("restyle_grid"))
                         .Model(model =>
                         {
                             model.Id(p => p.Id);

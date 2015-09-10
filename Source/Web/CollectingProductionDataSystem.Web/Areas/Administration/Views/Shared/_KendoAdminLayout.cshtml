@@ -1,0 +1,25 @@
+﻿@{
+    Layout = "~/Views/Shared/_KendoLayout.cshtml";
+}
+@section styles{
+    @RenderSection("styles", required: false)
+}
+<div class="row">
+    <div class="col-sm-2 col-md-2">
+        <div class="well sidebar-nav"></div>
+    </div>
+    <div class="col-sm-10 col-md-10">
+        @RenderBody()
+    </div>
+</div>
+@section scripts{
+    @RenderSection("scripts", required: false)
+    <script>
+        function restyle_grid() {
+            $('a.k-button.k-button-icontext.k-grid-edit > span').removeClass().addClass('glyphicon glyphicon-edit');
+            $('a.k-button.k-button-icontext.k-grid-edit').removeClass('k-button k-button-icontext').addClass('btn btn-primary btn-xs btn-kendo');
+            $('a.k-button.k-button-icontext.k-grid-delete > span').removeClass().addClass('glyphicon glyphicon-trash')
+            $('a.k-button.k-button-icontext.k-grid-delete').removeClass('k-button k-button-icontext').addClass('btn btn-danger btn-xs btn-kendo');
+        }
+    </script>
+}
