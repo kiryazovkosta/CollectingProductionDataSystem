@@ -234,9 +234,10 @@ pre {
     border: 1px solid transparent !important;
     border-radius: 4px !important;
 }
-
+a.k-button.k-button-icontext.k-grid-cancel,
 a.k-button.k-button-icontext.k-grid-edit,
-a.k-button.k-button-icontext.k-grid-delete {
+a.k-button.k-button-icontext.k-grid-delete,
+a.k-button.k-button-icontext.k-primary.k-grid-update {
     padding: 1px 5px !important;
     font-size: 12px !important;
     line-height: 1.5 !important;
@@ -257,7 +258,8 @@ a.k-button.k-button-icontext {
 }
 
     a.k-button.k-button-icontext.k-grid-edit,
-    a.k-button.k-button-icontext.k-primary {
+    a.k-button.k-button-icontext.k-primary,
+    a.k-button.k-button-icontext.k-primary.k-grid-update {
         color: white !important;
         background-image: -webkit-linear-gradient(top, #337ab7 0%, #265a88 100%) !important;
         background-image: -o-linear-gradient(top, #337ab7 0%, #265a88 100%) !important;
@@ -270,13 +272,16 @@ a.k-button.k-button-icontext {
     }
 
         a.k-button.k-button-icontext.k-grid-edit:active,
-        a.k-button.k-button-icontext.k-grid-delete:active {
+        a.k-button.k-button-icontext.k-grid-delete:active,
+        a.k-button.k-button-icontext.k-primary.k-grid-update:active {
             -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
             box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
         }
 
         a.k-button.k-button-icontext.k-grid-edit:hover,
-        a.k-button.k-button-icontext.k-grid-edit:focus {
+        a.k-button.k-button-icontext.k-grid-edit:focus,
+        a.k-button.k-button-icontext.k-primary.k-grid-update:hover,
+        a.k-button.k-button-icontext.k-primary.k-grid-update:focus {
             background-color: #265a88;
             background-position: 0 -15px;
         }
@@ -299,8 +304,8 @@ a.k-button.k-button-icontext {
         border-color: #b92c28 !important;
     }
 
-span.k-icon.k-edit, span.k-icon.k-delete {
-    color: white !important;
+span.k-icon.k-edit, span.k-icon.k-delete, span.k-icon.k-update,span.k-icon.k-cancel {
+    color: white ;
     position: relative !important;
     top: 1px !important;
     display: inline-block !important;
@@ -322,4 +327,12 @@ span.k-icon.k-edit, span.k-icon.k-delete {
         content: "\e020" !important;
     }
 
+    span.k-icon.k-update:before {
+        content: "\e067" !important;
+    }
+    
+    span.k-icon.k-cancel:before {
+        color: black;
+        content: "\e066" !important;
+    }
 /* ---------- End Kendo buttons for grid ---------- */
