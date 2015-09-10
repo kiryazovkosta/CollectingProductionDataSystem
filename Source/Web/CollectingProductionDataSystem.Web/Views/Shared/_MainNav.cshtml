@@ -13,7 +13,7 @@
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
                 <li>@Html.AuthorizedActionLink(@Resources.Layout.UnitsData, "UnitsData", "Units", new { area = "ShiftReporting" }, null)</li>
-                <li>@Html.ActionLink("Units Daily Data", "UnitsDailyData", "Units", routeValues: new { area = string.Empty }, htmlAttributes: null)</li>
+                <li>@Html.AuthorizedActionLink(@Resources.Layout.UnitsDailyData, "UnitsDailyData", "UnitsDaily", new { area = "DailyReporting" }, null)</li>
                 @if (Html.ActionIsAccessibleToUser("Index", "User", "Administration"))
                 {
                     <li class="dropdown">
