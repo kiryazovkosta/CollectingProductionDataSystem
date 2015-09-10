@@ -244,7 +244,7 @@
     <value>Наименование на поток</value>
   </data>
   <data name="UnitsData" xml:space="preserve">
-    <value>Данни за измервателни позиции</value>
+    <value>Сменни данни за измервателни позиции</value>
   </data>
   <data name="UnitsDateSelector" xml:space="preserve">
     <value>Дата на отчета</value>
@@ -308,5 +308,8 @@
   </data>
   <data name="Edit" xml:space="preserve">
     <value>Редактиране</value>
+  </data>
+  <data name="UnitsDailyData" xml:space="preserve">
+    <value>Дневни данни за измервателни позиции</value>
   </data>
 </root>

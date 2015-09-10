@@ -112,7 +112,7 @@
                     flag = false;
                     return flag;
                 }
-                return true;
+                flag = true;
             }
             return flag;
         }

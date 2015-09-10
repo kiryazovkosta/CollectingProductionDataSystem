@@ -306,4 +306,7 @@
   <data name="Edit" xml:space="preserve">
     <value>Edit</value>
   </data>
+  <data name="UnitsDailyData" xml:space="preserve">
+    <value>Units Daily Data</value>
+  </data>
 </root>

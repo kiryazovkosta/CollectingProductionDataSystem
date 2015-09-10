@@ -24,6 +24,7 @@
     using Resources = App_GlobalResources.Resources;
     using System.Collections;
     using System.Text;
+    using MathExpressions.Application;
 
     [Authorize]
     public class UnitsController : AreaBaseController
@@ -186,6 +187,10 @@
                     // TODO: need to refactoring code to get max shift not to hardcode this number
                     if (shiftId == 3)
                     {
+                        var calculator = new Calculator();
+
+                        //Todo: check there are already first and second productions data for the day
+
                         // last shift for the day. Need to calculate daily units data at level 2
                         var shift = this.data.ProductionShifts.All().Where(s => s.Id == shiftId).FirstOrDefault();
                         // It will be verry strang if there is not a shift with provided id but who knows
@@ -236,38 +241,38 @@
                                                      .Where(u => u.ProcessUnitId == processUnitId)
                                                      .Select(u => new CalculatedField
                                                             {
-                                                                Id = u.Id,
-                                                                Formula = u.AggregationFormula
-                                                            });
+                                        Id = u.Id,
+                                        Members = u.AggregationMembers,
+                                        Formula = u.AggregationFormula
+                                    });;
 
                             foreach (var item in unitsDailyData)
                             {
-                                //var value = 0m;
-                                //var p2 = item.Formula.Split(new char[] {':'}, StringSplitOptions.RemoveEmptyEntries);
-                                //var pPlus = p2[0].Split(new char[] {'+'}, StringSplitOptions.RemoveEmptyEntries);
-                                //foreach (var plusValue in pPlus)
-                                //{
-                                //    value += ht[plusValue] == null ? default(decimal) : (decimal)ht[plusValue];   
-                                //}
-                                //if (p2.Count() == 2)
-                                //{
-                                //    var pMinus = p2[1].Split(new char[] {'-'}, StringSplitOptions.RemoveEmptyEntries);
-                                //    foreach (var minusValue in pMinus)
-                                //    {
-                                //        value -= ht[minusValue] == null ? default(decimal) : (decimal)ht[minusValue];   
-                                //    }
-                                //}
-                                var formula = new StringBuilder(item.Formula);
-                                foreach (DictionaryEntry entry in ht)
+                               var chars = new char[] { ';' };
+                                var tokens = item.Members.Split(chars, StringSplitOptions.RemoveEmptyEntries);
+                                var inputParamsValues = new List<decimal>();
+                                foreach (var token in tokens)
                                 {
-                                    var key = entry.Key.ToString();
-                                    if (item.Formula.Contains(key))
-                                    {
-                                        formula = formula.Replace(key, entry.Value.ToString());   
-                                    }
+                                    var v = ht[token] == null ? default(decimal) : (decimal)ht[token];
+                                    inputParamsValues.Add(v);
                                 }
-                                var value = new ConditionFormulaCalcultor().Calc(formula.ToString());
-                                    
+
+                                var inputParams = new Dictionary<string, decimal>();
+                                for (int i = 0; i < inputParamsValues.Count(); i++)
+                                {
+                                    inputParams.Add(string.Format("p{0}", i), inputParamsValues[i]);  
+                                }
+
+                                decimal value = calculator.Calculate(item.Formula, "p", inputParams.Count, inputParams);
+                                try
+                                {
+                                    value = calculator.Calculate(item.Formula, "p", inputParams.Count, inputParams);
+                                }
+                                catch (Exception ex)
+                                {
+                                    var kr = new List<UnitDailyDataViewModel>().ToDataSourceResult(request, ModelState);
+                                    return Json(kr);
+                                }
                                 this.data.UnitsDailyDatas.Add(
                                     new UnitsDailyData
                                     {
@@ -277,7 +282,7 @@
                                     });
                             }
 
-                            this.data.SaveChanges(this.UserProfile.UserName);
+                            result = this.data.SaveChanges(this.UserProfile.UserName);
                         }
                     }
                     return Json(new { IsConfirmed = result.IsValid });
@@ -349,7 +354,7 @@
     public class CalculatedField
     {
         public int Id { get; set; }
-
+        public string Members { get; set; }
         public string Formula { get; set; }
     }
 }

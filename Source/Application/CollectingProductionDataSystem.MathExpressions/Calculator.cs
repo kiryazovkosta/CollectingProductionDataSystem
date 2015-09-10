@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ExpressionEvaluator;
-
-namespace MathExpressions.Application
+﻿namespace MathExpressions.Application
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using ExpressionEvaluator;
+
     public class Calculator
     {
         public decimal Calculate(string expression, string expressionArgumentName, int argumentsCount, Dictionary<string, decimal> arguments)
