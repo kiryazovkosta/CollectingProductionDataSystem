@@ -244,7 +244,7 @@
     <value>Наименование на поток</value>
   </data>
   <data name="UnitsData" xml:space="preserve">
-    <value>Сменни данни за измервателни позиции</value>
+    <value>Данни за измервателни позиции</value>
   </data>
   <data name="UnitsDateSelector" xml:space="preserve">
     <value>Дата на отчета</value>
@@ -303,77 +303,10 @@
   <data name="Cancel" xml:space="preserve">
     <value>Отказ</value>
   </data>
-  </data>
-  <data name="UnitsDateSelector" xml:space="preserve">
-    <value>Дата на отчета</value>
-  </data>
-  <data name="UnitsProcessUnitSelector" xml:space="preserve">
-    <value>Инсталация</value>
-  </data>
-  <data name="UnitsProcessUnitShiftSelector" xml:space="preserve">
-    <value>Смяна</value>
-  </data>
-  <data name="UserName" xml:space="preserve">
-    <value>Потребител</value>
-  </data>
-  <data name="Confirm" xml:space="preserve">
-    <value>Потвърждавам</value>
-  </data>
-  <data name="Administration" xml:space="preserve">
-    <value>Администриране</value>
-  </data>
-  <data name="RolesAdministration" xml:space="preserve">
-    <value>Администриране на роли</value>
-  </data>
-  <data name="UsersAdministration" xml:space="preserve">
-    <value>Администриране на потребители</value>
-  </data>
-  <data name="CreateUser" xml:space="preserve">
-    <value>Създаване на потребител</value>
-  </data>
-  <data name="Roles" xml:space="preserve">
-    <value>Роли</value>
-  </data>
-  <data name="SlectRoles" xml:space="preserve">
-    <value>Изберете роли...</value>
-  </data>
-  <data name="ChooseParks" xml:space="preserve">
-    <value>Изберете паркове...</value>
-  </data>
-  <data name="ChooseProcessUnits" xml:space="preserve">
-    <value>Изберете инсталации...</value>
-  </data>
-  <data name="CreateUserSuccess" xml:space="preserve">
-    <value>Потребителя {0} беше създаден успешно.</value>
-  </data>
-  <data name="Parks" xml:space="preserve">
-    <value>Паркове</value>
-  </data>
-  <data name="ProcessUnits" xml:space="preserve">
-    <value>Инсталации</value>
-  </data>
-  <data name="Description" xml:space="preserve">
-    <value>Описание</value>
-  </data>
-  <data name="RoleName" xml:space="preserve">
-    <value>Роля</value>
-  </data>
-  <data name="Cancel" xml:space="preserve">
-    <value>Отказ</value>
-  </data>
-<<<<<<< .mine
-  <data name="UnitsDailyData" xml:space="preserve">
-    <value>Дневни данни за измервателни позиции</value>
-  </data>
-
-
-
-=======
   <data name="Delete" xml:space="preserve">
     <value>Изтриване</value>
   </data>
   <data name="Edit" xml:space="preserve">
     <value>Редактиране</value>
   </data>
->>>>>>> .theirs
 </root>
