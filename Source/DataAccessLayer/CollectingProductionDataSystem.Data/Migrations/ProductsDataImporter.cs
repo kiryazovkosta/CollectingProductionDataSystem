@@ -22,7 +22,7 @@
                 },
                 new ProductType
                 {
-                    Name = "Суровина",
+                    Name = "Входни потоци",
                     Products = 
                     {
                         new Product { Code = 1, Name = "Нефт" },
@@ -62,7 +62,7 @@
                 },
                 new ProductType
                 {
-                    Name = "Стоков продукт",
+                    Name = "Изходни потоци",
                     Products = 
                     {
                         new Product { Code = 38, Name = "Автомобилен бензин А 92Н" },

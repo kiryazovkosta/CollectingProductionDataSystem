@@ -300,4 +300,7 @@
   <data name="Cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
+  <data name="UnitsDailyData" xml:space="preserve">
+    <value>Units Daily Data</value>
+  </data>
 </root>
