@@ -19,7 +19,7 @@
             @* --- Side bar --- *@
             <div class="sidebar">
                 <div class="sidebar-heading text-center"><p>Параметри на отчета</p></div><hr style="margin-top:0" />
-                <div class="container-fluid">
+                <div class="container-fluid body-content">
                     @RenderSection("sidebar", false)
                 </div>
             </div>
@@ -36,8 +36,10 @@
         </div>
 
         <div class="nav navbar-fixed-bottom">
-            <div class="footer">
-                <p>&copy; @DateTime.Now.Year - Бизнес Мениджмънт Системс ЕООД</p>
+            <div class="clearfix">
+                <div class="footer clerfix">
+                    <p>&copy; @DateTime.Now.Year - Бизнес Мениджмънт Системс ЕООД</p>
+                </div>
             </div>
         </div>
     </div>

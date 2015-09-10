@@ -670,6 +670,7 @@
     <Content Include="Areas\ShiftReporting\Views\Units\UnitsData.cshtml" />
     <Content Include="Areas\Administration\Views\Shared\_UserAdditionalData.cshtml" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
+    <None Include="Properties\PublishProfiles\Home.pubxml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\custom\sidebar.js" />
     <Content Include="Scripts\jquery-2.1.4.js" />
