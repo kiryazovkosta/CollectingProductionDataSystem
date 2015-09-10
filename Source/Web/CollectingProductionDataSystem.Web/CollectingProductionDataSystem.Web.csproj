@@ -669,6 +669,7 @@
     <Content Include="Areas\MonthlyReporting\Views\web.config" />
     <Content Include="Areas\ShiftReporting\Views\Units\UnitsData.cshtml" />
     <Content Include="Areas\Administration\Views\Shared\_UserAdditionalData.cshtml" />
+    <Content Include="Areas\Administration\Views\Shared\_KendoAdminLayout.cshtml" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <None Include="Properties\PublishProfiles\Home.pubxml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />

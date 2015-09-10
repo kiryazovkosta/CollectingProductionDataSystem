@@ -303,4 +303,10 @@
   <data name="Cancel" xml:space="preserve">
     <value>Отказ</value>
   </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Изтриване</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Редактиране</value>
+  </data>
 </root>

@@ -1,9 +1,11 @@
 ﻿@using CollectingProductionDataSystem.Models.Identity;
 @using CollectingProductionDataSystem.Web.Infrastructure.Helpers;
+@using Resources = App_GlobalResources.Resources;
 
 @model IEnumerable<ApplicationRole>
 @{
     ViewBag.Title = "Роли";
+    Layout = "~/Areas/Administration/Views/Shared/_KendoAdminLayout.cshtml";
 }
 
 <div class="panel panel-primary">
@@ -15,7 +17,7 @@
                 <th>@Html.LabelFor(m => m.First().Name)</th>
                 <th>@Html.LabelFor(m => m.First().Description)</th>
                 <th>@Html.LabelFor(m => m.First().Users)</th>
-                <th></th>
+                <th style="min-width:180px"></th>
             </tr>
         </thead>
         <tbody>
@@ -48,9 +50,9 @@
                             @using (Html.BeginForm("Delete", "RoleAdmin", new { id = role.Id }))
                             {
                                 @Html.AntiForgeryToken()
-                                @Html.ActionLink("Edit", "Edit", new { id = role.Id },
+                                @Html.ActionLink(Resources.Layout.Edit, "Edit", new { id = role.Id },
                                      new { @class = "btn btn-primary btn-xs" })
-                                <button type="submit" class="btn btn-danger btn-xs">Delete</button>
+                                <button type="submit" class="btn btn-danger btn-xs">@Resources.Layout.Delete</button>
                             }
                         </td>
                     </tr>
