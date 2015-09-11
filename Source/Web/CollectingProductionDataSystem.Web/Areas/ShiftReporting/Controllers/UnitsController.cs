@@ -7,6 +7,8 @@
     using System.Data.Entity.Validation;
     using System.Diagnostics;
     using System.Linq;
+    using System.Net;
+    using System.Net.Mime;
     using System.Transactions;
     using System.Web.Mvc;
     using CollectingProductionDataSystem.Application.CalculateServices;
@@ -15,6 +17,7 @@
     using CollectingProductionDataSystem.Models.Nomenclatures;
     using CollectingProductionDataSystem.Web.Controllers;
     using CollectingProductionDataSystem.Web.Infrastructure.Filters;
+    using CollectingProductionDataSystem.Web.InputModels;
     using Kendo.Mvc.Extensions;
     using Kendo.Mvc.UI;
     using AutoMapper;
@@ -31,7 +34,8 @@
     {
         private readonly IUnitsDataService unitsData;
 
-        public UnitsController(IProductionData dataParam, IUnitsDataService unitsDataParam) : base(dataParam)
+        public UnitsController(IProductionData dataParam, IUnitsDataService unitsDataParam)
+            : base(dataParam)
         {
             this.unitsData = unitsDataParam;
         }
@@ -40,37 +44,6 @@
         public ActionResult UnitsData()
         {
             return View();
-        }
-
-        [HttpGet]
-        public ActionResult UnitsDailyData()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public JsonResult ReadUnitsDailyData([DataSourceRequest]
-                                             DataSourceRequest request, DateTime? date, int? processUnitId)
-        {
-            if (this.ModelState.IsValid)
-            {
-                var dbResult = this.data.UnitsDailyDatas
-                                   .All()
-                                   .Include(u => u.UnitsDailyConfig)
-                                   .Include(u => u.UnitsDailyConfig.MeasureUnit)
-                                   .Include(u => u.UnitsDailyConfig.ProductType)
-                                   .Where(u => u.RecordTimestamp == date && u.UnitsDailyConfig.ProcessUnitId == processUnitId)
-                                   .ToList();
-                var kendoResult = dbResult.ToDataSourceResult(request, ModelState);
-                kendoResult.Data = Mapper.Map<IEnumerable<UnitsDailyData>, IEnumerable<UnitDailyDataViewModel>>((IEnumerable<UnitsDailyData>)kendoResult.Data);
-                return Json(kendoResult);
-            }
-            else
-            {
-                var kendoResult = new List<UnitDailyDataViewModel>().ToDataSourceResult(request, ModelState);
-                return Json(kendoResult);
-            }
         }
 
         [HttpPost]
@@ -109,9 +82,7 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([DataSourceRequest]
-                                 DataSourceRequest request,
-            UnitDataViewModel model)
+        public ActionResult Edit([DataSourceRequest]DataSourceRequest request, UnitDataViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -162,50 +133,51 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Confirm([DataSourceRequest]
-                                    DataSourceRequest request, DateTime? date, int? processUnitId, int? shiftId)
+        public ActionResult Confirm(ProcessUnitConfirmShiftInputModel model)
         {
-            ValidateModelState(date, processUnitId, shiftId);
+            ValidateModelState(model.date, model.processUnitId, model.shiftId);
 
             if (this.ModelState.IsValid)
             {
                 var approvedShift = this.data.UnitsApprovedDatas
                                         .All()
-                                        .Where(u => u.RecordDate == date && u.ProcessUnitId == processUnitId && u.ShiftId == shiftId)
+                                        .Where(u => u.RecordDate == model.date && u.ProcessUnitId == model.processUnitId && u.ShiftId == model.shiftId)
                                         .FirstOrDefault();
                 if (approvedShift == null)
                 {
                     this.data.UnitsApprovedDatas.Add(new UnitsApprovedData
                     {
-                        RecordDate = date.Value,
-                        ProcessUnitId = processUnitId.Value,
-                        ShiftId = shiftId.Value,
+                        RecordDate = model.date.Value,
+                        ProcessUnitId = model.processUnitId.Value,
+                        ShiftId = model.shiftId.Value,
                         Approved = true
                     });
 
-                    var result = data.SaveChanges(this.UserProfile.UserName);
+                    data.SaveChanges(this.UserProfile.UserName);
                     // TODO: need to refactoring code to get max shift not to hardcode this number
-                    if (shiftId == 3)
+                    if (model.shiftId.Value == 3)
                     {
                         var calculator = new Calculator();
 
                         //Todo: check there are already first and second productions data for the day
 
                         // last shift for the day. Need to calculate daily units data at level 2
-                        var shift = this.data.ProductionShifts.All().Where(s => s.Id == shiftId).FirstOrDefault();
+                        var shift = this.data.ProductionShifts.All().Where(s => s.Id == model.shiftId.Value).FirstOrDefault();
                         // It will be verry strang if there is not a shift with provided id but who knows
                         if (shift != null)
                         {
-                            var endRecordTimespan = date.Value.AddMinutes(shift.BeginMinutes + shift.OffsetMinutes);
+                            var endRecordTimespan = model.date.Value.AddMinutes(shift.BeginMinutes + shift.OffsetMinutes);
                             var ud = this.data.UnitsData.All().Include(u => u.UnitConfig)
-                                         .Where(u => u.RecordTimestamp > date && u.RecordTimestamp < endRecordTimespan && u.UnitConfig.ProcessUnitId == processUnitId)
-                                         .Select(u => new
-                                         {
-                                             Id = u.Id,
-                                             UnitConfigId = u.UnitConfigId,
-                                             Code = u.UnitConfig.Code,
-                                             Value = u.UnitsManualData.Value == null ? u.Value : u.UnitsManualData.Value
-                                         });
+                                .Where(u => u.RecordTimestamp > model.date.Value && 
+                                    u.RecordTimestamp < endRecordTimespan && 
+                                    u.UnitConfig.ProcessUnitId == model.processUnitId.Value)
+                                .Select(u => new
+                                {
+                                    Id = u.Id,
+                                    UnitConfigId = u.UnitConfigId,
+                                    Code = u.UnitConfig.Code,
+                                    Value = u.UnitsManualData.Value == null ? u.Value : u.UnitsManualData.Value
+                                });
 
                             // Todo: Refactoring, refactoring, refactoring
                             var ht = new Hashtable();
@@ -236,15 +208,15 @@
                             }
 
                             var unitsDailyData = this.data.UnitsDailyConfigs
-                                                     .All()
-                                                     .Include(u => u.ProcessUnit)
-                                                     .Where(u => u.ProcessUnitId == processUnitId)
-                                                     .Select(u => new CalculatedField
-                                                            {
-                                        Id = u.Id,
-                                        Members = u.AggregationMembers,
-                                        Formula = u.AggregationFormula
-                                    });;
+                                .All()
+                                .Include(u => u.ProcessUnit)
+                                .Where(u => u.ProcessUnitId == model.processUnitId.Value)
+                                .Select(u => new CalculatedField
+                                {
+                                    Id = u.Id,
+                                    Members = u.AggregationMembers,
+                                    Formula = u.AggregationFormula
+                                });
 
                             foreach (var item in unitsDailyData)
                             {
@@ -270,34 +242,59 @@
                                 }
                                 catch (Exception ex)
                                 {
-                                    var kr = new List<UnitDailyDataViewModel>().ToDataSourceResult(request, ModelState);
-                                    return Json(kr);
+                                    ModelState.AddModelError("", "Възникна грешка при обработка на данните");
                                 }
-                                this.data.UnitsDailyDatas.Add(
-                                    new UnitsDailyData
-                                    {
-                                        RecordTimestamp = date.Value,
-                                        Value = value,
-                                        UnitsDailyConfigId = item.Id
-                                    });
-                            }
 
-                            result = this.data.SaveChanges(this.UserProfile.UserName);
+                                if (ModelState.IsValid)
+                                {
+                                    this.data.UnitsDailyDatas.Add(
+                                                                new UnitsDailyData
+                                                                {
+                                                                    RecordTimestamp = model.date.Value,
+                                                                    Value = value,
+                                                                    UnitsDailyConfigId = item.Id
+                                                                });
+
+                                }
+                            }
+                            if (ModelState.IsValid)
+                            {
+                                this.data.SaveChanges(this.UserProfile.UserName);        
+                            }
                         }
                     }
-                    return Json(new { IsConfirmed = result.IsValid });
+                    // не така
+                    // just for example
+                    // we want to throw some error
+                    //сеха го рънни така че да стигне до тук ако не стане  моля те вкарай ги в един инпут модел и долу вкарай модела - 
+                    //ModelState.AddModelError("", "Не ме кефиш!!!");
+                    //model.IsConfirmed = false;
+                    //return Json(new[] { model }.ToDataSourceResult(request, ModelState));
+                    //return this.Json(new DataSourceResult
+                    //{
+                    //    Errors = new { errors = new []{ "Не ме кафиш"}, },
+                    //});
+                    var resultContent = new List<UnitDataViewModel>() { null};
+                    var result = new { resultContent  };
+                    ModelState.AddModelError("", "Не ме кефиш!!!");
+                    ModelState.AddModelError("", "Ама много не ме кефиш!!!");
+                    Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                    var errors = GetErrorListFromModelState(ModelState);
+                    return Json(new { data = new { errors=errors} });
                 }
 
-                var kendoResult = new List<UnitDailyDataViewModel>().ToDataSourceResult(request, ModelState);
-                return Json(kendoResult);
+                
+                return new HttpStatusCodeResult(200,"Ok");
             }
             else
             {
-                var kendoResult = new List<UnitDailyDataViewModel>().ToDataSourceResult(request, ModelState);
-                return Json(kendoResult);
+               // var kendoResult = new List<UnitDataViewModel>().ToDataSourceResult(request, ModelState);
+               //tuka ok li e? какво трябва да върна. Тук модела не е валиден. Т.е. не е анаизбр
+                // после ще си го оправиш някъде имах метод дето обхождаше колекцията за грешки..Да
+                return Json(400,"Не ме кефиш!!!");
             }
         }
- 
+
         private void ValidateModelState(DateTime? date, int? processUnitId, int? shiftId)
         {
             if (date == null)
@@ -349,6 +346,17 @@
                 return Json(new { IsConfirmed = true });
             }
         }
+
+        private List<string> GetErrorListFromModelState
+                                            (ModelStateDictionary modelState)
+        {
+            var query = from state in modelState.Values
+                        from error in state.Errors
+                        select error.ErrorMessage;
+
+            var errorList = query.ToList();
+            return errorList;
+        }
     }
 
     public class CalculatedField
@@ -357,4 +365,6 @@
         public string Members { get; set; }
         public string Formula { get; set; }
     }
+
+
 }

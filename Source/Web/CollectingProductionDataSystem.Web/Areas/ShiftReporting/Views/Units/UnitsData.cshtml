@@ -95,7 +95,7 @@
         }
         function error_handler(e) {
             if (e.errors) {
-                hideCommands();
+                //hideCommands();
                 var message = "";
                 $.each(e.errors, function (key, value) {
                     if ('errors' in value) {
@@ -125,10 +125,13 @@
 
                 checkConfirmedStatus();
             });
+
             prepareWindow();
             prepareSuccessWindow();
             hideCommands();
-//TODO: Add success screen!!!!
+            //TODO: Add success screen!!!!
+
+
             $("#confirm").click(function () {
                 var date = sendDate();
                 $.ajax({
@@ -146,13 +149,28 @@
                         } else {
                             //TODO: Perse errors and show error screen
                             if (data.errors) {
-
+                                var errorMessage = "";
+                                $.each(data.errors, function (key, value) {
+                                    if ('errors' in value) {
+                                        $.each(value.errors, function () {
+                                            errorMessage += this + "\n";
+                                        });
+                                    }
+                                });
+                                $('pre#err-message').text(errorMessage);
+                                $('div#err-window').data("kendoWindow").open();
                             }
                             showCommands();
                         }
                     },
-                    error: function () {
-
+                    error: function (data) {
+                        var errorMessage = "";
+                        var response = JSON.parse(data.responseText).data;
+                        $.each(response.errors, function (key, value) {     
+                                    errorMessage += this + "\n";
+                        });
+                        $('pre#err-message').text(errorMessage);
+                        $('div#err-window').data("kendoWindow").open();
                     }
                 });
             });

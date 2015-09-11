@@ -274,6 +274,7 @@
     <Compile Include="Infrastructure\IdentityInfrastructure\SmsService.cs" />
     <Compile Include="Infrastructure\MadelBinders\EditUserViewModelBinder.cs" />
     <Compile Include="InputModels\EditReasonInputModel.cs" />
+    <Compile Include="InputModels\ProcessUnitConfirmShiftInputModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\Home\IndexInventoryTanksViewModel.cs" />
