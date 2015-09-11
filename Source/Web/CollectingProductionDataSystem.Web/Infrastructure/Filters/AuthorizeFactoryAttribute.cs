@@ -22,16 +22,24 @@
             if (controller != null)
             {
                 int requestProcessUnit;
-                int.TryParse(filterContext.ActionParameters["processUnitId"].ToString(), out requestProcessUnit);
+                if (filterContext.ActionParameters["processUnitId"] != null && filterContext.ActionParameters.Keys.Any(x => x == "processUnitId"))
+                {
+                    int.TryParse(filterContext.ActionParameters["processUnitId"].ToString(), out requestProcessUnit);
+                }
+                else
+                {
+                    return; // missing required property will be processed in action
+                }
                 if (controller.UserProfile.ProcessUnits.Any(x => x.Id == requestProcessUnit) || this.IsPowerUser(controller.UserProfile))
                 {
                     return;
                 }
+
             }
 
             if (filterContext.HttpContext.Request.IsAjaxRequest())
             {
-                ((BaseController)filterContext.Controller).ModelState.AddModelError(string.Empty,Resources.ErrorMessages.UnAuthorized);
+                ((BaseController)filterContext.Controller).ModelState.AddModelError(string.Empty, Resources.ErrorMessages.UnAuthorized);
             }
             else
             {
