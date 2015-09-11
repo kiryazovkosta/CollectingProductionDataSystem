@@ -6,11 +6,11 @@
     ViewBag.Title = "Редактиране на роля";
 }
 @Html.ValidationSummary(false)
-@using (Html.BeginForm())
-{
+@using (Html.BeginForm("Edit","Role",new{area="Administration"},FormMethod.Post,new{ @class="form-horizontal", role="form"}))
+{  
     @Html.AntiForgeryToken()
     <input type="hidden" name="RoleName" value="@Model.Role.Name" />
-    <div class="row">
+    <div class="row ">
         <div class="col-md-6">
             <div class="panel panel-primary">
                 <div class="panel-heading">Добавяне към ролята "@Model.Role.Name"</div>
@@ -43,7 +43,6 @@
                             })
     )
                 )
-
             </div>
         </div>
         <div class="col-md-6">
@@ -71,36 +70,36 @@
             .ServerOperation(false)
         )
                 )
-
             </div>
         </div>
     </div>
 
     <div class="well well-sm clearfix well-roles">
         <div class="row row-roles-well">
-            <div class="col-md-4">
-                <div class="form-group form-horizontal">
-                    <div class="row">
-                        @Html.LabelFor(m => m.Name, new { @class = "control-label col-md-3" })
-                        @Html.EditorFor(m => m.Name, new { htmlAttributes = new { @class = "form-control col-md-9" } })
+            <div class="col-lg-4 col-sm-12">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Name, new { @class = "control-label col-md-3 col-sm-3" })
+                    <div class="col-md-9 col-sm-9 ">
+                        @Html.EditorFor(m => m.Name, new { htmlAttributes = new { @class = "form-control " } })
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="form-group form-horizontal">
-                    <div class="row">
-                        @Html.LabelFor(m => m.Description, new { @class = "control-label col-md-3" })
-                        @Html.EditorFor(m => m.Description, new { htmlAttributes = new { @class = "form-control col-md-9" } })
+            <div class="col-lg-4 col-sm-12">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Description, new { @class = "control-label col-md-3 col-sm-3 " })
+                    <div class="col-md-9 col-sm-9 ">
+                        @Html.EditorFor(m => m.Description, new { htmlAttributes = new { @class = "form-control" } })
                     </div>
                 </div>
             </div>
-            <div class="col-md-3">
-                <div class="pull-right">
-                    <button type="submit" class="btn btn-primary">Запис</button>
-                    @Html.ActionLink("Cancel", "Index", null, new { @class = "btn btn-default" })
+            <div class="col-lg-4 col-lg-offset-0 col-md-offset-3 col-sm-offset-0 col-sm-offset-1 col-sm-5 col-xs-offset-1 col-xs-5">
+                <div class="form-group">
+                    <div class="pull-right">
+                        <button type="submit" class="btn btn-primary">Запис</button>
+                        @Html.ActionLink("Cancel", "Index", null, new { @class = "btn btn-default" })
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 }
-
