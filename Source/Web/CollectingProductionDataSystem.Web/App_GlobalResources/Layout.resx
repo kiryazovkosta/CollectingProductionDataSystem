@@ -309,4 +309,7 @@
   <data name="UnitsDailyData" xml:space="preserve">
     <value>Units Daily Data</value>
   </data>
+  <data name="LearnMore" xml:space="preserve">
+    <value>Learn More</value>
+  </data>
 </root>

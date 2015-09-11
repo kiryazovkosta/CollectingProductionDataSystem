@@ -312,4 +312,7 @@
   <data name="UnitsDailyData" xml:space="preserve">
     <value>Дневни данни за измервателни позиции</value>
   </data>
+  <data name="LearnMore" xml:space="preserve">
+    <value>Вижте повече</value>
+  </data>
 </root>
