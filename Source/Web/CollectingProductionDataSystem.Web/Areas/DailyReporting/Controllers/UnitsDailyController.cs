@@ -1,22 +1,24 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
-using System.Diagnostics;
-using AutoMapper;
-using CollectingProductionDataSystem.Application.UnitsDataServices;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using CollectingProductionDataSystem.Data.Contracts;
-using CollectingProductionDataSystem.Models.Productions;
-using CollectingProductionDataSystem.Web.ViewModels.Units;
-using Kendo.Mvc.Extensions;
-using Kendo.Mvc.UI;
-
-namespace CollectingProductionDataSystem.Web.Areas.DailyReporting.Controllers
+﻿namespace CollectingProductionDataSystem.Web.Areas.DailyReporting.Controllers
 {
+    using System.ComponentModel.DataAnnotations;
+    using System.Data.Entity;
+    using System.Data.Entity.Infrastructure;
+    using System.Diagnostics;
+    using AutoMapper;
+    using CollectingProductionDataSystem.Application.UnitsDataServices;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Web;
+    using System.Web.Mvc;
+    using CollectingProductionDataSystem.Data.Contracts;
+    using CollectingProductionDataSystem.Models.Productions;
+    using CollectingProductionDataSystem.Web.ViewModels.Units;
+    using Kendo.Mvc.Extensions;
+    using Kendo.Mvc.UI;
+    using CollectingProductionDataSystem.Web.Infrastructure.Filters;
+    using Resources = App_GlobalResources.Resources;
+
     [Authorize]
     public class UnitsDailyController : AreaBaseController
     {
@@ -35,10 +37,18 @@ namespace CollectingProductionDataSystem.Web.Areas.DailyReporting.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AuthorizeFactory]
         public JsonResult ReadDailyUnitsData([DataSourceRequest]DataSourceRequest request, DateTime? date, int? processUnitId)
         {
-            //if (this.ModelState.IsValid)
-            //{
+            if (date == null)
+            {
+                this.ModelState.AddModelError("date", string.Format(Resources.ErrorMessages.Required, Resources.Layout.UnitsDateSelector));
+            }
+            if (processUnitId == null)
+            {
+                this.ModelState.AddModelError("processunits", string.Format(Resources.ErrorMessages.Required, Resources.Layout.UnitsProcessUnitSelector));
+            }
+
             var dbResult = this.data.UnitsDailyDatas
                 .All()
                 .Include(u => u.UnitsDailyConfig)
@@ -57,7 +67,6 @@ namespace CollectingProductionDataSystem.Web.Areas.DailyReporting.Controllers
             }
 
             return Json(kendoResult);
-        //}
         }
 
         [HttpPost]

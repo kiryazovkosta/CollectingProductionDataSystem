@@ -172,14 +172,16 @@
                         data.SaveChanges(this.UserProfile.UserName);
 
                         // last shift for the day. Need to calculate daily units data at level 2
-                        var shift = this.data.ProductionShifts.All().Where(s => s.Id == model.shiftId.Value).FirstOrDefault();
+                        var lastShift = this.data.ProductionShifts.All().Where(s => s.Id == model.shiftId.Value).FirstOrDefault();
                         // It will be verry strang if there is not a shift with provided id but who knows
-                        if (shift != null)
+                        if (lastShift != null)
                         {
-                            var endRecordTimespan = model.date.Value.AddMinutes(shift.BeginMinutes + shift.OffsetMinutes);
+                            var firstShift = this.data.ProductionShifts.All().OrderBy(x => x.Id).First();
+                            var beginRecordTimespan = model.date.Value.AddMinutes(firstShift.BeginMinutes);
+                            var endRecordTimespan = model.date.Value.AddMinutes(lastShift.BeginMinutes + lastShift.OffsetMinutes);
                             var ud = this.data.UnitsData.All()
                                 .Include(u => u.UnitConfig)
-                                .Where(u => u.RecordTimestamp > model.date.Value && u.RecordTimestamp < endRecordTimespan && u.UnitConfig.ProcessUnitId == model.processUnitId.Value)
+                                .Where(u => u.RecordTimestamp > beginRecordTimespan && u.RecordTimestamp < endRecordTimespan && u.UnitConfig.ProcessUnitId == model.processUnitId.Value)
                                 .Select(u => new BaseUnitData
                                 {
                                     Id = u.Id,
@@ -188,7 +190,7 @@
                                     Value = u.UnitsManualData.Value == null ? u.Value : u.UnitsManualData.Value
                                 });
 
-                            var ht = Calculate(ud);
+                            var ht = CalculateDailyDataByCodes(ud);
                             var unitsDailyData = this.data.UnitsDailyConfigs
                                 .All()
                                 .Include(u => u.ProcessUnit)
@@ -220,16 +222,12 @@
                                 }
 
                                 var value = calculator.Calculate(item.Formula, "p", inputParams.Count, inputParams);
-
-                                if (ModelState.IsValid)
+                                this.data.UnitsDailyDatas.Add(new UnitsDailyData
                                 {
-                                    this.data.UnitsDailyDatas.Add(new UnitsDailyData
-                                    {
-                                        RecordTimestamp = model.date.Value,
-                                        Value = (decimal)value,
-                                        UnitsDailyConfigId = item.Id
-                                    });
-                                }
+                                    RecordTimestamp = model.date.Value,
+                                    Value = (decimal)value,
+                                    UnitsDailyConfigId = item.Id
+                                });
                             }
                             
                             this.data.SaveChanges(this.UserProfile.UserName);
@@ -252,7 +250,7 @@
             }
         }
  
-        private Hashtable Calculate(IQueryable<BaseUnitData> ud)
+        private Hashtable CalculateDailyDataByCodes(IQueryable<BaseUnitData> ud)
         {
             // Todo: Refactoring, refactoring, refactoring
             var ht = new Hashtable();
