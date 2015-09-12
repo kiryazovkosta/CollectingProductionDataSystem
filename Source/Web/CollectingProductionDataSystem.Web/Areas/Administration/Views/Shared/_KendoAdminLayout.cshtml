@@ -6,7 +6,28 @@
 }
 <div class="row">
     <div class="col-sm-2 col-md-2">
-        <div class="well sidebar-nav"></div>
+        <div class="container-fluid">
+
+            <div class="well sidebar-nav">
+                <ul class="nav nav-pills nav-stacked">
+                    <li class="nav-header"><span class="glyphicon glyphicon-wrench"></span> Administration</li>
+                    <li class='@(Request.RawUrl == @Url.Action("Index", "User", new { area = "Administration" }) ? "active" : string.Empty)'>
+                        <a href="@Url.Action("Index", "User", new { area="Administration"})">Users</a>
+                    </li>
+                    <li class='@(Request.RawUrl == @Url.Action("Index", "Role", new { area = "Administration" }) ? "active" : string.Empty)'>
+                        <a href="@Url.Action("Index", "Role", new { area="Administration"})">Roles</a>
+                    </li>
+                    <li class="nav-header"><span class="glyphicon glyphicon-signal"></span>  Statistics</li>
+                    <li><a href="#">General</a></li>
+                    <li><a href="#">Users</a></li>
+                    <li><a href="#">Visitors</a></li>
+                    <li class="nav-header"><span class="glyphicon glyphicon-user"></span> Profile</li>
+                    <li><a href="#">My profile</a></li>
+                    <li><a href="#">Settings</a></li>
+                    <li><a href="#">Logout</a></li>
+                </ul>
+            </div>
+        </div>
     </div>
     <div class="col-sm-10 col-md-10">
         @RenderBody()

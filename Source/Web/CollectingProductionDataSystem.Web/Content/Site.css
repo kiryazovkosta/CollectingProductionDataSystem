@@ -34,7 +34,7 @@ textarea {
 }
 
 .form-control {
-    max-width: 300px;
+    max-width: 300px;   
 }
 
 .control-label-horizontal {
@@ -48,13 +48,14 @@ textarea {
 }
 
 .well-roles {
-    padding-bottom: 0px;
+    padding-bottom: 0;
     padding-top: 10px;
+    padding-right:25px;
 }
 
-.row-roles-well {
-    height: 35px;
-    margin-top: 0;
+.row.row-roles-well {
+    /*margin-top: 0;*/
+    padding-bottom:0;
 }
 
 .field-validation-valid {
@@ -234,6 +235,7 @@ pre {
     border: 1px solid transparent !important;
     border-radius: 4px !important;
 }
+
 a.k-button.k-button-icontext.k-grid-cancel,
 a.k-button.k-button-icontext.k-grid-edit,
 a.k-button.k-button-icontext.k-grid-delete,
@@ -304,8 +306,8 @@ a.k-button.k-button-icontext {
         border-color: #b92c28 !important;
     }
 
-span.k-icon.k-edit, span.k-icon.k-delete, span.k-icon.k-update,span.k-icon.k-cancel {
-    color: white ;
+span.k-icon.k-edit, span.k-icon.k-delete, span.k-icon.k-update, span.k-icon.k-cancel {
+    color: white;
     position: relative !important;
     top: 1px !important;
     display: inline-block !important;
@@ -330,9 +332,42 @@ span.k-icon.k-edit, span.k-icon.k-delete, span.k-icon.k-update,span.k-icon.k-can
     span.k-icon.k-update:before {
         content: "\e067" !important;
     }
-    
+
     span.k-icon.k-cancel:before {
         color: black;
         content: "\e066" !important;
     }
 /* ---------- End Kendo buttons for grid ---------- */
+
+/*--------------Administration side bar -----------------*/
+.well.sidebar-nav {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.nav-header {
+    text-transform: uppercase;
+    font-size: 12px;
+    font-weight:bold;
+    color: darkgrey;
+    margin: 0 15px !important;
+}
+
+    .nav-header > span {
+        color:black;
+        margin-right:5px;
+    }
+
+.nav-pills > li > a {
+    border-radius: 0 !important;
+    line-height:14px;
+}
+
+.nav-pills > li {
+    margin-top:0 !important;
+}
+
+.nav-pills > li > a:hover {
+    background-color:#ddd;
+    color:black;
+}
