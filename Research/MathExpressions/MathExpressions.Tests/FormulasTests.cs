@@ -32,5 +32,39 @@ namespace MathExpressions.Tests
             Assert.AreEqual(Convert.ToDecimal(expected),Convert.ToDecimal(actual));
         }
 
+        [TestMethod]
+        public void CalculateTotally()
+        {
+            //Arrange
+            double p01 = 13000.20;
+            double p02 = 0.0;
+            double p03 = 0.0;
+            double p04 = 0.0;
+
+            double p05 = 300.0;
+            double p06 = 200.0;
+            double p07 = 100.0;
+
+            var inputParams = new Dictionary<string, double>();
+            inputParams.Add("p01", p01);
+            inputParams.Add("p02", p02);
+            inputParams.Add("p03", p03);
+            inputParams.Add("p04", p04);
+
+            inputParams.Add("p05", p05);
+            inputParams.Add("p06", p06);
+            inputParams.Add("p07", p07);
+
+            double expected = 626.0004;
+
+            string expr = @"((par.p01 + par.p02 + par.p03 + par.p04) * 0.002) + par.p05 + par.p06 + par.p07";
+            //Act
+            double actual = calculator.Calculate(expr,"par", 7,inputParams);
+            //Assert
+            //626.0004
+            Assert.AreEqual(Convert.ToDecimal(expected),Convert.ToDecimal(actual));
+        }
+
     }
 }
+
