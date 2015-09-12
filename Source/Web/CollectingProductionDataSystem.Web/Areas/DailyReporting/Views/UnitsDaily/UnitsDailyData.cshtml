@@ -15,15 +15,16 @@
     .Columns(
         columns =>
         {
-            columns.Bound(c => c.Code).Width(77);
-            columns.Bound(c => c.ProductType);
-            columns.Bound(c => c.ProcessUnitName).Width(100);
-            columns.Bound(c => c.Name);
-            columns.Bound(c => c.MeasureUnit).Width(80);
-            columns.Bound(c => c.AutomaticValue).Width(100).Format("{0:n2}");
-            columns.Bound(c => c.ManualValue).Width(100).Format("{0:n2}");
-            columns.Bound(c => c.EditReason).Width(200).ClientTemplate("#:EditReason.Name#")
-            .ClientTemplate("<div class=row><div class='col-xs-2 no-horisontal-padding'><div class='#:EditReason.Id == 0? 'bg-ok':'bg-warning'#'></div></div><div class='col-xs-9 no-horisontal-padding reason'>#:EditReason.Name#</div></div>");
+            columns.Bound(c => c.UnitsDailyConfig.Code).Width(77);
+            columns.Bound(c => c.UnitsDailyConfig.ProductType.Sort).Hidden(true).ClientGroupHeaderTemplate("#=value#");
+            columns.Bound(c => c.UnitsDailyConfig.ProcessUnit.ShortName).Width(100);
+            columns.Bound(c => c.UnitsDailyConfig.Name);
+            columns.Bound(c => c.UnitsDailyConfig.MeasureUnit.Code).Width(80);
+            columns.Bound(c => c.Value).Width(100).Format("{0:n2}");
+            columns.Bound(c => c.UnitsManualDailyData.Value).Width(100).Format("{0:n2}");
+            columns.Bound(c => c.UnitsManualDailyData.EditReason).Width(200).ClientTemplate("#:UnitsManualDailyData.EditReason.Name#")
+                .ClientTemplate("<div class=row><div class='col-xs-2 no-horisontal-padding'><div class='#:UnitsManualDailyData.EditReason.Id == 0? 'bg-ok':'bg-warning'#'></div></div><div class='col-xs-9 no-horisontal-padding reason'>#:UnitsManualDailyData.EditReason.Name#</div></div>");
+            columns.Command(c => c.Edit());
         })
     .Pageable(pageable => pageable
         .Refresh(true)
@@ -33,22 +34,25 @@
     .Sortable()
     .Scrollable(scr => scr.Height(660))
     .Filterable()
+    .Editable(editable => editable.Mode(GridEditMode.InLine))
     .DataSource(dataSource => dataSource
         .Ajax()
         .PageSize(50)
         .ServerOperation(true)
+            .Group(group => group.Add(c => c.UnitsDailyConfig.ProductType.Sort))
         .Read(read => read.Action("ReadDailyUnitsData", "UnitsDaily", new { area = "DailyReporting" }).Data("sendDate"))
+        .Update(update => update.Action("Edit", "UnitsDaily", new { area = "DailyReporting" }).Data("sendAntiForgery"))
         .Model(model =>
         {
             model.Id(p => p.Id);
-            model.Field(p => p.Code).Editable(false);
-            model.Field(p => p.ProductType).Editable(false);
-            model.Field(p => p.ProcessUnitName).Editable(false);
-            model.Field(p => p.Name).Editable(false);
-            model.Field(p => p.MeasureUnit).Editable(false);
-            model.Field(p => p.AutomaticValue).Editable(false);
-            model.Field(p => p.ManualValue).Editable(true);
-            model.Field(p => p.EditReason).Editable(true);
+            model.Field(p => p.UnitsDailyConfig.Code).Editable(false);
+            model.Field(p => p.UnitsDailyConfig.ProductType.Name).Editable(false);
+            model.Field(p => p.UnitsDailyConfig.ProcessUnit.ShortName).Editable(false);
+            model.Field(p => p.UnitsDailyConfig.Name).Editable(false);
+            model.Field(p => p.UnitsDailyConfig.MeasureUnit.Code).Editable(false);
+            model.Field(p => p.Value).Editable(false);
+            model.Field(p => p.UnitsManualDailyData.Value).Editable(true);
+            model.Field(p => p.UnitsManualDailyData.EditReason).Editable(true);
         })
         .Events(events =>
         {
@@ -58,6 +62,8 @@
 )
 @* //Error window for kendo grid error event handler *@
 <div id="err-window" style="display:none">@Html.Partial("_KendoGridErrorWindow")</div>
+@* //Error window for kendo grid error event handler *@
+<div id="success-window" style="display:none">@Html.Partial("_SuccessWindow")</div>
 
 @section scripts{
     <script src="~/Scripts/custom/sendAntiForgery.js"></script>
@@ -77,23 +83,21 @@
         }
         function error_handler(e) {
             if (e.errors) {
-                hideCommands();
                 var message = "";
                 $.each(e.errors, function (key, value) {
                     if ('errors' in value) {
-                        message += key + " - ";
                         $.each(value.errors, function () {
                             message += this + "\n";
                         });
                     }
                 });
-                $('pre#message').text(message);
+                $('pre#err-message').text(message);
                 $('div#err-window').data("kendoWindow").open();
             }
         }
 
-        function closeWindow() {
-            $('div#err-window').data("kendoWindow").close();
+        function closeWindow(selector) {
+            $(selector).data("kendoWindow").close();
         }
 
         function recordTimeStampFilter(element) {
@@ -126,9 +130,34 @@
             });
         }
 
+        function prepareSuccessWindow() {
+            var window = $('div#success-window')
+            window.kendoWindow({
+                width: "650px",
+                title: "Успешна операция",
+                actions: ["Close"],
+                modal: true,
+                position: {
+                    top: "30%", // or "100px"
+                    left: "30%"
+                },
+                minHeight: 100,
+                maxHeight: 350
+            });
+        }
+
         function hideShiftComboBox() {
-            var s = $("#shift-section");
-            s.hide();
+            $("#shift-section").hide();
+        }
+
+        function hideCommands() {
+            $("#confirm").hide();
+            $("#units").data("kendoGrid").hideColumn(10);
+        }
+
+        function showCommands() {
+            $("#confirm").show();
+            $("#units").data("kendoGrid").showColumn(10);
         }
 
     </script>

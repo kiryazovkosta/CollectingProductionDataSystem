@@ -40,12 +40,11 @@
     .Editable(editable => editable.Mode(GridEditMode.InLine))
     .DataSource(dataSource => dataSource
         .Ajax()
-        .PageSize(50)
+        .PageSize(100)
         .ServerOperation(true)
-            .Group(group => group.Add(c =>c.UnitConfig.ProductType.Sort))
-
-            .Read(read => read.Action("ReadUnitsData", "Units", new { area = "ShiftReporting" }).Data("sendDate"))
-            .Update(update => update.Action("Edit", "Units", new { area = "ShiftReporting" }).Data("sendAntiForgery"))
+        .Group(group => group.Add(c =>c.UnitConfig.ProductType.Sort))
+        .Read(read => read.Action("ReadUnitsData", "Units", new { area = "ShiftReporting" }).Data("sendDate"))
+        .Update(update => update.Action("Edit", "Units", new { area = "ShiftReporting" }).Data("sendAntiForgery"))
         .Model(model =>
         {
             model.Id(p => p.Id);

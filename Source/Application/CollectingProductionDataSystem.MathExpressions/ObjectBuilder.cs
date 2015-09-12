@@ -12,12 +12,12 @@ namespace MathExpressions.Application
     {
         private static Random rnd = new Random();
 
-        public static object CreateObject(Dictionary<string,decimal> values) 
+        public static object CreateObject(Dictionary<string,double> values) 
         {
             var builder = GetTypeBuilder(rnd.Next());
             foreach (var prop in values)
             {
-                 CreateProperty(builder, prop.Key, typeof(decimal));
+                 CreateProperty(builder, prop.Key, typeof(double));
             }
            
             var myType = builder.CreateType();

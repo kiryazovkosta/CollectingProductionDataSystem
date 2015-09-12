@@ -1,4 +1,7 @@
-﻿using System.Data.Entity;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
+using System.Diagnostics;
 using AutoMapper;
 using CollectingProductionDataSystem.Application.UnitsDataServices;
 using System;
@@ -34,24 +37,78 @@ namespace CollectingProductionDataSystem.Web.Areas.DailyReporting.Controllers
         [ValidateAntiForgeryToken]
         public JsonResult ReadDailyUnitsData([DataSourceRequest]DataSourceRequest request, DateTime? date, int? processUnitId)
         {
-            if (this.ModelState.IsValid)
+            //if (this.ModelState.IsValid)
+            //{
+            var dbResult = this.data.UnitsDailyDatas
+                .All()
+                .Include(u => u.UnitsDailyConfig)
+                .Include(u => u.UnitsDailyConfig.MeasureUnit)
+                .Include(u => u.UnitsDailyConfig.ProductType)
+                .Where(u => u.RecordTimestamp == date && u.UnitsDailyConfig.ProcessUnitId == processUnitId);
+            var kendoPreparedResult = Mapper.Map<IEnumerable<UnitsDailyData>, IEnumerable<UnitDailyDataViewModel>>(dbResult);
+            var kendoResult = new DataSourceResult();
+            try
             {
-                var dbResult = this.data.UnitsDailyDatas
-                    .All()
-                    .Include(u => u.UnitsDailyConfig)
-                    .Include(u => u.UnitsDailyConfig.MeasureUnit)
-                    .Include(u => u.UnitsDailyConfig.ProductType)
-                    .Where(u => u.RecordTimestamp == date && u.UnitsDailyConfig.ProcessUnitId == processUnitId)
-                    .ToList();
-                var kendoResult = dbResult.ToDataSourceResult(request, ModelState);
-                kendoResult.Data = Mapper.Map<IEnumerable<UnitsDailyData>, IEnumerable<UnitDailyDataViewModel>>((IEnumerable<UnitsDailyData>)kendoResult.Data);
-                return Json(kendoResult);
+                kendoResult = kendoPreparedResult.ToDataSourceResult(request, ModelState);
             }
-            else
+            catch (Exception ex1)
             {
-                var kendoResult = new List<UnitDailyDataViewModel>().ToDataSourceResult(request, ModelState);
-                return Json(kendoResult);
+                Debug.WriteLine(ex1.Message + "\n" + ex1.InnerException);
             }
+
+            return Json(kendoResult);
+        //}
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit([DataSourceRequest]DataSourceRequest request, UnitDailyDataViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var newManualRecord = new UnitsManualDailyData
+                {
+                    Id = model.Id,
+                    Value = model.UnitsManualDailyData.Value,
+                    EditReasonId = model.UnitsManualDailyData.EditReason.Id
+                };
+                var existManualRecord = this.data.UnitsManualDailyDatas.All().FirstOrDefault(x => x.Id == newManualRecord.Id);
+                if (existManualRecord == null)
+                {
+                    this.data.UnitsManualDailyDatas.Add(newManualRecord);
+                }
+                else
+                {
+                    UpdateRecord(existManualRecord, model);
+                }
+                try
+                {
+                    var result = this.data.SaveChanges(UserProfile.UserName);
+                    if (!result.IsValid)
+                    {
+                        foreach (ValidationResult error in result.EfErrors)
+                        {
+                            this.ModelState.AddModelError(error.MemberNames.ToList()[0], error.ErrorMessage);
+                        }
+                    }
+                }
+                catch (DbUpdateException)
+                {
+                    this.ModelState.AddModelError("ManualValue", "Записът не можа да бъде осъществен. Моля опитайте на ново!");
+                }
+                finally
+                {
+                }
+            }
+
+            return Json(new[] { model }.ToDataSourceResult(request, ModelState));
+        }
+
+        private void UpdateRecord(UnitsManualDailyData existManualRecord, UnitDailyDataViewModel model)
+        {
+            existManualRecord.Value = model.UnitsManualDailyData.Value;
+            existManualRecord.EditReasonId = model.UnitsManualDailyData.EditReason.Id;
+            this.data.UnitsManualDailyDatas.Update(existManualRecord);
         }
     }
 }

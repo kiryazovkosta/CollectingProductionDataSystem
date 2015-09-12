@@ -206,14 +206,14 @@
                             {
                                var chars = new char[] { ';' };
                                 var tokens = item.Members.Split(chars, StringSplitOptions.RemoveEmptyEntries);
-                                var inputParamsValues = new List<decimal>();
+                                var inputParamsValues = new List<double>();
                                 foreach (var token in tokens)
                                 {
-                                    var v = ht[token] == null ? default(decimal) : (decimal)ht[token];
+                                    var v = ht[token] == null ? default(double) : (double)ht[token];
                                     inputParamsValues.Add(v);
                                 }
 
-                                var inputParams = new Dictionary<string, decimal>();
+                                var inputParams = new Dictionary<string, double>();
                                 for (int i = 0; i < inputParamsValues.Count(); i++)
                                 {
                                     inputParams.Add(string.Format("p{0}", i), inputParamsValues[i]);  
@@ -226,7 +226,7 @@
                                     this.data.UnitsDailyDatas.Add(new UnitsDailyData
                                     {
                                         RecordTimestamp = model.date.Value,
-                                        Value = value,
+                                        Value = (decimal)value,
                                         UnitsDailyConfigId = item.Id
                                     });
                                 }
@@ -260,18 +260,18 @@
             {
                 if (ht.ContainsKey(item.Code))
                 {
-                    decimal? newValue = item.Value.HasValue ? (decimal)ht[item.Code] + item.Value : (decimal)ht[item.Code] + default(decimal);
+                    double? newValue = item.Value.HasValue ? (double)ht[item.Code] + (double)item.Value : (double)ht[item.Code] + default(double);
                     ht[item.Code] = newValue.Value;
                 }
                 else
                 {
                     if (item.Value.HasValue)
                     {
-                        ht.Add(item.Code, item.Value); 
+                        ht.Add(item.Code, (double)item.Value); 
                     }
                     else
                     {
-                        ht.Add(item.Code, default(decimal)); 
+                        ht.Add(item.Code, default(double)); 
                     }
                 }
             }

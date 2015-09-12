@@ -7,7 +7,7 @@
 
     public class Calculator
     {
-        public decimal Calculate(string expression, string expressionArgumentName, int argumentsCount, Dictionary<string, decimal> arguments)
+        public double Calculate(string expression, string expressionArgumentName, int argumentsCount, Dictionary<string, double> arguments)
         {
             if (argumentsCount != arguments.Count)
 	        {
@@ -23,7 +23,7 @@
             reg.RegisterType("Math", typeof(Math));
             reg.RegisterType("Convert", typeof(Convert));
             var p = new CompiledExpression(expression) { TypeRegistry = reg };
-            return (decimal)p.Eval();
+            return (double)p.Eval();
         }
     }
 }
