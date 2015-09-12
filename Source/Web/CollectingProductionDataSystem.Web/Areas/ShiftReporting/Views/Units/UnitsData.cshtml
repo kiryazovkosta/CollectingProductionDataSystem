@@ -95,7 +95,6 @@
         }
         function error_handler(e) {
             if (e.errors) {
-                //hideCommands();
                 var message = "";
                 $.each(e.errors, function (key, value) {
                     if ('errors' in value) {
@@ -167,7 +166,7 @@
                         var errorMessage = "";
                         var response = JSON.parse(data.responseText).data;
                         $.each(response.errors, function (key, value) {     
-                                    errorMessage += this + "\n";
+                            errorMessage += this + "\n";
                         });
                         $('pre#err-message').text(errorMessage);
                         $('div#err-window').data("kendoWindow").open();

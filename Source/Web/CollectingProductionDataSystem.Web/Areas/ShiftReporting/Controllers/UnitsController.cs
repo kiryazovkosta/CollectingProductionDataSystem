@@ -153,13 +153,23 @@
                         Approved = true
                     });
 
-                    data.SaveChanges(this.UserProfile.UserName);
-                    // TODO: need to refactoring code to get max shift not to hardcode this number
-                    if (model.shiftId.Value == 3)
+                    var lastShiftId = this.data.ProductionShifts.All().OrderByDescending(x => x.Id).First().Id;
+                    if (model.shiftId.Value == lastShiftId)
                     {
-                        var calculator = new Calculator();
+                        var confirmedShifts = this.data.UnitsApprovedDatas.All()
+                            .Where(x => x.RecordDate == model.date.Value)
+                            .Where(x => x.ProcessUnitId == model.processUnitId.Value)
+                            .Where( x => x.ShiftId == 1 || x.ShiftId == 2)
+                            .Count();
+                        if (confirmedShifts != lastShiftId - 1)
+                        {
+                            Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                            ModelState.AddModelError("shifts", "Не са потвърдени данните за предходните смени!!!");
+                            var errors = GetErrorListFromModelState(ModelState);
+                            return Json(new { data = new { errors=errors} });   
+                        }
 
-                        //Todo: check there are already first and second productions data for the day
+                        data.SaveChanges(this.UserProfile.UserName);
 
                         // last shift for the day. Need to calculate daily units data at level 2
                         var shift = this.data.ProductionShifts.All().Where(s => s.Id == model.shiftId.Value).FirstOrDefault();
@@ -167,11 +177,10 @@
                         if (shift != null)
                         {
                             var endRecordTimespan = model.date.Value.AddMinutes(shift.BeginMinutes + shift.OffsetMinutes);
-                            var ud = this.data.UnitsData.All().Include(u => u.UnitConfig)
-                                .Where(u => u.RecordTimestamp > model.date.Value && 
-                                    u.RecordTimestamp < endRecordTimespan && 
-                                    u.UnitConfig.ProcessUnitId == model.processUnitId.Value)
-                                .Select(u => new
+                            var ud = this.data.UnitsData.All()
+                                .Include(u => u.UnitConfig)
+                                .Where(u => u.RecordTimestamp > model.date.Value && u.RecordTimestamp < endRecordTimespan && u.UnitConfig.ProcessUnitId == model.processUnitId.Value)
+                                .Select(u => new BaseUnitData
                                 {
                                     Id = u.Id,
                                     UnitConfigId = u.UnitConfigId,
@@ -179,34 +188,7 @@
                                     Value = u.UnitsManualData.Value == null ? u.Value : u.UnitsManualData.Value
                                 });
 
-                            // Todo: Refactoring, refactoring, refactoring
-                            var ht = new Hashtable();
-                            try
-                            {
-                                foreach (var item in ud)
-                                {
-                                    if (ht.ContainsKey(item.Code))
-                                    {
-                                        decimal? newValue = item.Value.HasValue ? (decimal)ht[item.Code] + item.Value : (decimal)ht[item.Code] + default(decimal);
-                                        ht[item.Code] = newValue.Value;
-                                    }
-                                    else
-                                    {
-                                        if (item.Value.HasValue)
-                                        {
-                                            ht.Add(item.Code, item.Value); 
-                                        }
-                                        else
-                                        {
-                                            ht.Add(item.Code, default(decimal)); 
-                                        }
-                                    }
-                                }
-                            }
-                            catch (Exception)
-                            {
-                            }
-
+                            var ht = Calculate(ud);
                             var unitsDailyData = this.data.UnitsDailyConfigs
                                 .All()
                                 .Include(u => u.ProcessUnit)
@@ -217,6 +199,8 @@
                                     Members = u.AggregationMembers,
                                     Formula = u.AggregationFormula
                                 });
+
+                            var calculator = new Calculator();
 
                             foreach (var item in unitsDailyData)
                             {
@@ -235,64 +219,63 @@
                                     inputParams.Add(string.Format("p{0}", i), inputParamsValues[i]);  
                                 }
 
-                                decimal value = calculator.Calculate(item.Formula, "p", inputParams.Count, inputParams);
-                                try
-                                {
-                                    value = calculator.Calculate(item.Formula, "p", inputParams.Count, inputParams);
-                                }
-                                catch (Exception ex)
-                                {
-                                    ModelState.AddModelError("", "Възникна грешка при обработка на данните");
-                                }
+                                var value = calculator.Calculate(item.Formula, "p", inputParams.Count, inputParams);
 
                                 if (ModelState.IsValid)
                                 {
-                                    this.data.UnitsDailyDatas.Add(
-                                                                new UnitsDailyData
-                                                                {
-                                                                    RecordTimestamp = model.date.Value,
-                                                                    Value = value,
-                                                                    UnitsDailyConfigId = item.Id
-                                                                });
-
+                                    this.data.UnitsDailyDatas.Add(new UnitsDailyData
+                                    {
+                                        RecordTimestamp = model.date.Value,
+                                        Value = value,
+                                        UnitsDailyConfigId = item.Id
+                                    });
                                 }
                             }
-                            if (ModelState.IsValid)
-                            {
-                                this.data.SaveChanges(this.UserProfile.UserName);        
-                            }
+                            
+                            this.data.SaveChanges(this.UserProfile.UserName);
                         }
                     }
-                    // не така
-                    // just for example
-                    // we want to throw some error
-                    //сеха го рънни така че да стигне до тук ако не стане  моля те вкарай ги в един инпут модел и долу вкарай модела - 
-                    //ModelState.AddModelError("", "Не ме кефиш!!!");
-                    //model.IsConfirmed = false;
-                    //return Json(new[] { model }.ToDataSourceResult(request, ModelState));
-                    //return this.Json(new DataSourceResult
-                    //{
-                    //    Errors = new { errors = new []{ "Не ме кафиш"}, },
-                    //});
-                    var resultContent = new List<UnitDataViewModel>() { null};
-                    var result = new { resultContent  };
-                    ModelState.AddModelError("", "Не ме кефиш!!!");
-                    ModelState.AddModelError("", "Ама много не ме кефиш!!!");
-                    Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                    var errors = GetErrorListFromModelState(ModelState);
-                    return Json(new { data = new { errors=errors} });
-                }
+                    else 
+                    { 
+                        data.SaveChanges(this.UserProfile.UserName);
+                    }
 
-                
+                    return Json(new { IsConfirmed = true}, JsonRequestBehavior.AllowGet);
+                }
                 return new HttpStatusCodeResult(200,"Ok");
             }
             else
             {
-               // var kendoResult = new List<UnitDataViewModel>().ToDataSourceResult(request, ModelState);
-               //tuka ok li e? какво трябва да върна. Тук модела не е валиден. Т.е. не е анаизбр
-                // после ще си го оправиш някъде имах метод дето обхождаше колекцията за грешки..Да
-                return Json(400,"Не ме кефиш!!!");
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                var errors = GetErrorListFromModelState(ModelState);
+                return Json(new { data = new { errors=errors} });
             }
+        }
+ 
+        private Hashtable Calculate(IQueryable<BaseUnitData> ud)
+        {
+            // Todo: Refactoring, refactoring, refactoring
+            var ht = new Hashtable();
+            foreach (var item in ud)
+            {
+                if (ht.ContainsKey(item.Code))
+                {
+                    decimal? newValue = item.Value.HasValue ? (decimal)ht[item.Code] + item.Value : (decimal)ht[item.Code] + default(decimal);
+                    ht[item.Code] = newValue.Value;
+                }
+                else
+                {
+                    if (item.Value.HasValue)
+                    {
+                        ht.Add(item.Code, item.Value); 
+                    }
+                    else
+                    {
+                        ht.Add(item.Code, default(decimal)); 
+                    }
+                }
+            }
+            return ht;
         }
 
         private void ValidateModelState(DateTime? date, int? processUnitId, int? shiftId)
@@ -316,18 +299,7 @@
         public ActionResult UnitsDataIsConfirmed([DataSourceRequest]
                                                  DataSourceRequest request, DateTime? date, int? processUnitId, int? shiftId)
         {
-            if (date == null)
-            {
-                this.ModelState.AddModelError("date", string.Format(Resources.ErrorMessages.Required, Resources.Layout.UnitsDateSelector));
-            }
-            if (processUnitId == null)
-            {
-                this.ModelState.AddModelError("processunits", string.Format(Resources.ErrorMessages.Required, Resources.Layout.UnitsProcessUnitSelector));
-            }
-            if (shiftId == null)
-            {
-                this.ModelState.AddModelError("shifts", string.Format(Resources.ErrorMessages.Required, Resources.Layout.UnitsProcessUnitShiftSelector));
-            }
+            ValidateModelState(date, processUnitId, shiftId);
 
             if (this.ModelState.IsValid)
             {
@@ -364,6 +336,14 @@
         public int Id { get; set; }
         public string Members { get; set; }
         public string Formula { get; set; }
+    }
+
+    public class BaseUnitData
+    {
+        public int Id { get; set; }
+        public int UnitConfigId{get; set;}
+        public string Code { get; set; }
+        public decimal? Value { get; set; }
     }
 
 
