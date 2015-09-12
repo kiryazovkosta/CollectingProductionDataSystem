@@ -7,11 +7,13 @@
     using AutoMapper;
     using CollectingProductionDataSystem.Application.TankDataServices;
     using CollectingProductionDataSystem.Data.Contracts;
+    using CollectingProductionDataSystem.Models.Identity;
     using CollectingProductionDataSystem.Models.Inventories;
     using CollectingProductionDataSystem.Models.Nomenclatures;
     using CollectingProductionDataSystem.Web.ViewModels.Tank;
     using Kendo.Mvc.Extensions;
     using Kendo.Mvc.UI;
+    using Microsoft.AspNet.Identity;
 
     public class TestsController : BaseController
     {
@@ -86,6 +88,33 @@
             return Json(kendoResult);
         }
 
+        [HttpGet]
+
+        public ActionResult CreateUser()
+        {
+            var user = new ApplicationUser()
+            {
+                UserName="Manual",
+                Email = "manual@test.com",
+                FirstName="Manualy",
+                MiddleName = "Created",
+                LastName = "User",
+                SecurityStamp = Guid.NewGuid().ToString(),
+                PasswordHash = new PasswordHasher().HashPassword("12345678"),
+                IsChangePasswordRequired=true,
+            };
+
+            data.Users.Add(user);
+            var result = data.SaveChanges(UserProfile.UserName);
+            if (result.IsValid)
+            {
+                return Content(string.Format("User: {0} was created successfully",user.FullName));
+            }
+            else 
+            {
+                return Content(string.Join("\n", result.EfErrors.Select(x => x.ErrorMessage)));                
+            }
+        }
 
     }
 }
