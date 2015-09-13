@@ -18,6 +18,7 @@
     using Kendo.Mvc.UI;
     using CollectingProductionDataSystem.Web.Infrastructure.Filters;
     using Resources = App_GlobalResources.Resources;
+    using System.Net;
 
     [Authorize]
     public class UnitsDailyController : AreaBaseController
@@ -40,14 +41,15 @@
         [AuthorizeFactory]
         public JsonResult ReadDailyUnitsData([DataSourceRequest]DataSourceRequest request, DateTime? date, int? processUnitId)
         {
-            if (date == null)
-            {
-                this.ModelState.AddModelError("date", string.Format(Resources.ErrorMessages.Required, Resources.Layout.UnitsDateSelector));
-            }
-            if (processUnitId == null)
-            {
-                this.ModelState.AddModelError("processunits", string.Format(Resources.ErrorMessages.Required, Resources.Layout.UnitsProcessUnitSelector));
-            }
+            //if (date == null)
+            //{
+            //    this.ModelState.AddModelError("date", string.Format(Resources.ErrorMessages.Required, Resources.Layout.UnitsDateSelector));
+            //}
+            //if (processUnitId == null)
+            //{
+            //    this.ModelState.AddModelError("processunits", string.Format(Resources.ErrorMessages.Required, Resources.Layout.UnitsProcessUnitSelector));
+            //}
+            ValidateModelState(date, processUnitId);
 
             var dbResult = this.data.UnitsDailyDatas
                 .All()
@@ -118,6 +120,90 @@
             existManualRecord.Value = model.UnitsManualDailyData.Value;
             existManualRecord.EditReasonId = model.UnitsManualDailyData.EditReason.Id;
             this.data.UnitsManualDailyDatas.Update(existManualRecord);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult UnitsDailyDataIsConfirmed([DataSourceRequest]DataSourceRequest request, DateTime? date, int? processUnitId)
+        {
+            ValidateModelState(date, processUnitId);
+
+            if (this.ModelState.IsValid)
+            {
+                var approvedShift = this.data.UnitsApprovedDailyDatas
+                    .All()
+                    .Where(u => u.RecordDate == date && u.ProcessUnitId == processUnitId)
+                    .FirstOrDefault();
+                if (approvedShift == null)
+                {
+                    return Json(new { IsConfirmed = false });
+                }
+                return Json(new { IsConfirmed = true });
+            }
+            else
+            {
+                return Json(new { IsConfirmed = true });
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Confirm(DateTime? date, int? processUnitId)
+        {
+            ValidateModelState(date, processUnitId);
+            if (ModelState.IsValid)
+            {
+                 var approvedShift = this.data.UnitsApprovedDailyDatas
+                    .All()
+                    .Where(u => u.RecordDate == date && u.ProcessUnitId == processUnitId)
+                    .FirstOrDefault();
+                if (approvedShift == null)
+                {
+                    this.data.UnitsApprovedDailyDatas.Add(
+                        new UnitsApprovedDailyData { 
+                            RecordDate = date.Value, 
+                            ProcessUnitId = processUnitId.Value, 
+                            Approved = true 
+                        });
+                    var result = this.data.SaveChanges(this.UserProfile.UserName);
+                    return Json(new { IsConfirmed = result.IsValid}, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    ModelState.AddModelError("unitsapproveddata", "Дневните данни вече са потвърдени");
+                    Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                    var errors = GetErrorListFromModelState(ModelState);
+                    return Json(new { data = new { errors=errors} });
+                }
+            }
+            else
+            {
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                var errors = GetErrorListFromModelState(ModelState);
+                return Json(new { data = new { errors=errors} });
+            }
+        }
+
+        private void ValidateModelState(DateTime? date, int? processUnitId)
+        {
+            if (date == null)
+            {
+                this.ModelState.AddModelError("date", string.Format(Resources.ErrorMessages.Required, Resources.Layout.UnitsDateSelector));
+            }
+            if (processUnitId == null)
+            {
+                this.ModelState.AddModelError("processunits", string.Format(Resources.ErrorMessages.Required, Resources.Layout.UnitsProcessUnitSelector));
+            }
+        }
+
+        private List<string> GetErrorListFromModelState(ModelStateDictionary modelState)
+        {
+            var query = from state in modelState.Values
+                        from error in state.Errors
+                        select error.ErrorMessage;
+
+            var errorList = query.ToList();
+            return errorList;
         }
     }
 }

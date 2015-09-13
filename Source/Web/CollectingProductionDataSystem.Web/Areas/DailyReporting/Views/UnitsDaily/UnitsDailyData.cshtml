@@ -109,11 +109,60 @@
                 var grid = $("#units").data("kendoGrid");
                 grid.dataSource.read();
                 grid.refresh();
+                checkConfirmedStatus();
+                grid.dataSource.fetch(function () {
+                    var totalRows = grid.dataSource.total();
+                    if (totalRows === 0) {
+                        hideCommandButtons();
+                    }
+                });
             });
             prepareWindow();
             prepareSuccessWindow();
             hideCommandButtons();
             hideShiftComboBox();
+
+            $("#confirm").click(function () {
+                var date = sendDate();
+                $.ajax({
+                    url: 'Confirm',
+                    type: 'POST',
+                    data: date,
+                    success: function (data) {
+                        var confirmed = data.IsConfirmed;
+                        if (confirmed === true) {
+                            hideCommandButtons();
+                            var message = "Вие потвърдихте отчета успешно."
+                            $('pre#succ-message').text(message);
+                            $('div#success-window').data("kendoWindow").open();
+
+                        } else {
+                            if (data.errors) {
+                                var errorMessage = "";
+                                $.each(data.errors, function (key, value) {
+                                    if ('errors' in value) {
+                                        $.each(value.errors, function () {
+                                            errorMessage += this + "\n";
+                                        });
+                                    }
+                                });
+                                $('pre#err-message').text(errorMessage);
+                                $('div#err-window').data("kendoWindow").open();
+                            }
+                            showCommandButtons();
+                        }
+                    },
+                    error: function (data) {
+                        var errorMessage = "";
+                        var response = JSON.parse(data.responseText).data;
+                        $.each(response.errors, function (key, value) {
+                            errorMessage += this + "\n";
+                        });
+                        $('pre#err-message').text(errorMessage);
+                        $('div#err-window').data("kendoWindow").open();
+                    }
+                });
+            });
         });
 
         function prepareWindow() {
@@ -154,12 +203,32 @@
 
         function hideCommandButtons() {
             $("#confirm").hide();
-            $("#units").data("kendoGrid").hideColumn(10);
+            $("#units").data("kendoGrid").hideColumn(8);
         }
 
         function showCommandButtons() {
             $("#confirm").show();
-            $("#units").data("kendoGrid").showColumn(10);
+            $("#units").data("kendoGrid").showColumn(8);
+        }
+
+        function checkConfirmedStatus() {
+            var date = sendDate();
+            $.ajax({
+                url: 'UnitsDailyDataIsConfirmed',
+                type: 'POST',
+                data: date,
+                success: function (result) {
+                    var confirmed = result.IsConfirmed;
+                    if (confirmed === false) {
+                        showCommandButtons();
+                    } else {
+                        hideCommandButtons();
+                    }
+                },
+                error: function (result) {
+                    hideCommandButtons();
+                }
+            });
         }
 
     </script>

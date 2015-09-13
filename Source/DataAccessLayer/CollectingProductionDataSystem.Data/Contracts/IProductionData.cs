@@ -67,10 +67,9 @@
 
         IDeletableEntityRepository<ApplicationUser> Users{get;}
 
-
         IDeletableEntityRepository<ApplicationRole> Roles { get; }
-       
 
+        IDeletableEntityRepository<UnitsApprovedDailyData> UnitsApprovedDailyDatas { get; }
 
         IDbContext DbContext { get; }
 

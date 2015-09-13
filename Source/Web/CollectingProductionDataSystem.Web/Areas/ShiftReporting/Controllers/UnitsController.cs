@@ -317,8 +317,7 @@
             }
         }
 
-        private List<string> GetErrorListFromModelState
-                                            (ModelStateDictionary modelState)
+        private List<string> GetErrorListFromModelState(ModelStateDictionary modelState)
         {
             var query = from state in modelState.Values
                         from error in state.Errors

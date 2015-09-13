@@ -269,6 +269,14 @@ using CollectingProductionDataSystem.Models.Transactions;
             }
         }
 
+        public IDeletableEntityRepository<UnitsApprovedDailyData> UnitsApprovedDailyDatas
+        {
+            get
+            {
+                return this.GetDeletableEntityRepository<UnitsApprovedDailyData>();
+            }
+        }
+
         public IEfStatus SaveChanges(string userName)
         {
             return this.context.SaveChangesWithValidation(userName);    

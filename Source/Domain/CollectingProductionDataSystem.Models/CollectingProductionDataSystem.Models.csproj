@@ -85,6 +85,7 @@
     <Compile Include="Nomenclatures\ProductType.cs" />
     <Compile Include="Productions\ProcessUnit.cs" />
     <Compile Include="Productions\UnitConfig.cs" />
+    <Compile Include="Productions\UnitsApprovedDailyData.cs" />
     <Compile Include="Productions\UnitsDailyConfig.cs" />
     <Compile Include="Productions\UnitsDailyData.cs" />
     <Compile Include="Productions\UnitsApprovedData.cs" />

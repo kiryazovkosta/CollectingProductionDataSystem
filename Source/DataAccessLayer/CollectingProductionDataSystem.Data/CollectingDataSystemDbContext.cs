@@ -1,10 +1,7 @@
 ﻿namespace CollectingProductionDataSystem.Data
 {
     using System;
-    using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
     using System.Data.Entity;
-    using System.Data.Entity.Infrastructure;
     using System.Data.Entity.Validation;
     using System.Diagnostics;
     using System.Linq;
@@ -103,6 +100,8 @@
         public IDbSet<ProductionShift> ProductionShifts { get; set; }
 
         public IDbSet<UnitsApprovedData> UnitsApprovedDatas { get; set; }
+
+        public IDbSet<UnitsApprovedDailyData> UnitsApprovedDailyDatas { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

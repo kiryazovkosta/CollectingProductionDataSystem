@@ -38,6 +38,8 @@
             modelBuilder.Configurations.Add(new UnitsDailyDataMap());
             modelBuilder.Configurations.Add(new UnitsManualDailyDataMap());
             modelBuilder.Configurations.Add(new ApplicationUserMapping());
+            modelBuilder.Configurations.Add(new UnitsApprovedDataMap());
+            modelBuilder.Configurations.Add(new UnitsApprovedDailyDataMap());
         }
     }
 }
