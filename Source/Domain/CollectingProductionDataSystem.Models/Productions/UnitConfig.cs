@@ -33,10 +33,16 @@ namespace CollectingProductionDataSystem.Models.Productions
         public bool IsInspectionPoint { get; set; }
         public string CollectingDataMechanism { get; set; }
         public string AggregateGroup { get; set; }
+        public string AggregateParameter { get; set; }
         public bool IsCalculated { get; set; }
         public string PreviousShiftTag { get; set; }
         public string CurrentInspectionDataTag { get; set; }
         public string Notes { get; set; }
+        public decimal? MaximumCost { get; set; }
+        public decimal? EstimatedDensity { get; set; }
+        public decimal? EstimatedPressure { get; set; }
+        public decimal? EstimatedTemperature { get; set; }
+        public decimal? EstimatedCompressibilityFactor { get; set; }
         public virtual Direction Direction { get; set; }
         public virtual MaterialType MaterialType { get; set; }
         public virtual MeasureUnit MeasureUnit { get; set; }

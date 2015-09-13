@@ -41,22 +41,8 @@
         [AuthorizeFactory]
         public JsonResult ReadDailyUnitsData([DataSourceRequest]DataSourceRequest request, DateTime? date, int? processUnitId)
         {
-            //if (date == null)
-            //{
-            //    this.ModelState.AddModelError("date", string.Format(Resources.ErrorMessages.Required, Resources.Layout.UnitsDateSelector));
-            //}
-            //if (processUnitId == null)
-            //{
-            //    this.ModelState.AddModelError("processunits", string.Format(Resources.ErrorMessages.Required, Resources.Layout.UnitsProcessUnitSelector));
-            //}
             ValidateModelState(date, processUnitId);
-
-            var dbResult = this.data.UnitsDailyDatas
-                .All()
-                .Include(u => u.UnitsDailyConfig)
-                .Include(u => u.UnitsDailyConfig.MeasureUnit)
-                .Include(u => u.UnitsDailyConfig.ProductType)
-                .Where(u => u.RecordTimestamp == date && u.UnitsDailyConfig.ProcessUnitId == processUnitId);
+            var dbResult = unitsData.GetUnitsDailyDataForDateTime(date, processUnitId);
             var kendoPreparedResult = Mapper.Map<IEnumerable<UnitsDailyData>, IEnumerable<UnitDailyDataViewModel>>(dbResult);
             var kendoResult = new DataSourceResult();
             try

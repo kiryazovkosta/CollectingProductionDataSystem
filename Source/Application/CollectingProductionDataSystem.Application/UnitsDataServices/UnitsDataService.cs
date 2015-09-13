@@ -45,5 +45,26 @@
 
             return dbResult;
         }
+        public IQueryable<UnitsDailyData> GetUnitsDailyDataForDateTime(DateTime? date, int? processUnitId)
+        {
+            var dbResult = this.data.UnitsDailyDatas
+                .All()
+                .Include(u => u.UnitsDailyConfig)
+                .Include(u => u.UnitsDailyConfig.MeasureUnit)
+                .Include(u => u.UnitsDailyConfig.ProductType);
+
+            if (date.HasValue)
+	        {
+		        dbResult = dbResult.Where(u => u.RecordTimestamp == date.Value);
+	        }
+
+            if (processUnitId.HasValue)
+	        {
+		        dbResult = dbResult.Include(u => u.UnitsDailyConfig.ProcessUnit)
+                    .Where(u => u.UnitsDailyConfig.ProcessUnitId == processUnitId);
+	        }
+
+            return dbResult;
+        }
     }
 }

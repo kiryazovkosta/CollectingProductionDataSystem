@@ -140,9 +140,11 @@
             if (this.ModelState.IsValid)
             {
                 var approvedShift = this.data.UnitsApprovedDatas
-                                        .All()
-                                        .Where(u => u.RecordDate == model.date && u.ProcessUnitId == model.processUnitId && u.ShiftId == model.shiftId)
-                                        .FirstOrDefault();
+                    .All()
+                    .Where(u => u.RecordDate == model.date &&
+                        u.ProcessUnitId == model.processUnitId && 
+                        u.ShiftId == model.shiftId)
+                    .FirstOrDefault();
                 if (approvedShift == null)
                 {
                     this.data.UnitsApprovedDatas.Add(new UnitsApprovedData
@@ -156,6 +158,7 @@
                     var lastShiftId = this.data.ProductionShifts.All().OrderByDescending(x => x.Id).First().Id;
                     if (model.shiftId.Value == lastShiftId)
                     {
+
                         var confirmedShifts = this.data.UnitsApprovedDatas.All()
                             .Where(x => x.RecordDate == model.date.Value)
                             .Where(x => x.ProcessUnitId == model.processUnitId.Value)
@@ -169,68 +172,28 @@
                             return Json(new { data = new { errors=errors} });   
                         }
 
-                        data.SaveChanges(this.UserProfile.UserName);
+                        
 
-                        // last shift for the day. Need to calculate daily units data at level 2
                         var lastShift = this.data.ProductionShifts.All().Where(s => s.Id == model.shiftId.Value).FirstOrDefault();
-                        // It will be verry strang if there is not a shift with provided id but who knows
                         if (lastShift != null)
                         {
-                            var firstShift = this.data.ProductionShifts.All().OrderBy(x => x.Id).First();
-                            var beginRecordTimespan = model.date.Value.AddMinutes(firstShift.BeginMinutes);
-                            var endRecordTimespan = model.date.Value.AddMinutes(lastShift.BeginMinutes + lastShift.OffsetMinutes);
-                            var ud = this.data.UnitsData.All()
-                                .Include(u => u.UnitConfig)
-                                .Where(u => u.RecordTimestamp > beginRecordTimespan && u.RecordTimestamp < endRecordTimespan && u.UnitConfig.ProcessUnitId == model.processUnitId.Value)
-                                .Select(u => new BaseUnitData
-                                {
-                                    Id = u.Id,
-                                    UnitConfigId = u.UnitConfigId,
-                                    Code = u.UnitConfig.Code,
-                                    Value = u.UnitsManualData.Value == null ? u.Value : u.UnitsManualData.Value
-                                });
-
-                            var ht = CalculateDailyDataByCodes(ud);
-                            var unitsDailyData = this.data.UnitsDailyConfigs
-                                .All()
-                                .Include(u => u.ProcessUnit)
-                                .Where(u => u.ProcessUnitId == model.processUnitId.Value)
-                                .Select(u => new CalculatedField
-                                {
-                                    Id = u.Id,
-                                    Members = u.AggregationMembers,
-                                    Formula = u.AggregationFormula
-                                });
-
-                            var calculator = new Calculator();
-
-                            foreach (var item in unitsDailyData)
+                            using (TransactionScope transaction = new TransactionScope())
                             {
-                               var chars = new char[] { ';' };
-                                var tokens = item.Members.Split(chars, StringSplitOptions.RemoveEmptyEntries);
-                                var inputParamsValues = new List<double>();
-                                foreach (var token in tokens)
-                                {
-                                    var v = ht[token] == null ? default(double) : (double)ht[token];
-                                    inputParamsValues.Add(v);
-                                }
-
-                                var inputParams = new Dictionary<string, double>();
-                                for (int i = 0; i < inputParamsValues.Count(); i++)
-                                {
-                                    inputParams.Add(string.Format("p{0}", i), inputParamsValues[i]);  
-                                }
-
-                                var value = calculator.Calculate(item.Formula, "p", inputParams.Count, inputParams);
-                                this.data.UnitsDailyDatas.Add(new UnitsDailyData
-                                {
-                                    RecordTimestamp = model.date.Value,
-                                    Value = (decimal)value,
-                                    UnitsDailyConfigId = item.Id
-                                });
+                                data.SaveChanges(this.UserProfile.UserName);
+                                var ud = GetUnitsDataForDay(model, lastShift);
+                                var ht = CalculateDailyDataByCodes(ud);
+                                var unitsDailyData = GetUnitsDailyDataConfig(model);
+                                CalculateUnitsDailyData(unitsDailyData, ht, model);
+                                this.data.SaveChanges(this.UserProfile.UserName);
+                                transaction.Complete();
                             }
-                            
-                            this.data.SaveChanges(this.UserProfile.UserName);
+                        }
+                        else
+                        {
+                            Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                            ModelState.AddModelError("shiftdata", "Данните за смяната вече са потвърдени!!!");
+                            var errors = GetErrorListFromModelState(ModelState);
+                            return Json(new { data = new { errors=errors} });
                         }
                     }
                     else 
@@ -248,6 +211,69 @@
                 var errors = GetErrorListFromModelState(ModelState);
                 return Json(new { data = new { errors=errors} });
             }
+        }
+ 
+        private void CalculateUnitsDailyData(IQueryable<CalculatedField> unitsDailyData, Hashtable ht, ProcessUnitConfirmShiftInputModel model)
+        {
+            var calculator = new Calculator();
+            var splitter = new char[] { ';' };
+            foreach (var item in unitsDailyData)
+            {
+                var tokens = item.Members.Split(splitter, StringSplitOptions.RemoveEmptyEntries);
+                var inputParamsValues = new List<double>();
+                foreach (var token in tokens)
+                {
+                    var v = ht[token] == null ? default(double) : (double)ht[token];
+                    inputParamsValues.Add(v);
+                }
+
+                var inputParams = new Dictionary<string, double>();
+                for (int i = 0; i < inputParamsValues.Count(); i++)
+                {
+                    inputParams.Add(string.Format("p{0}", i), inputParamsValues[i]);  
+                }
+
+                var value = calculator.Calculate(item.Formula, "p", inputParams.Count, inputParams);
+                this.data.UnitsDailyDatas.Add(new UnitsDailyData
+                {
+                    RecordTimestamp = model.date.Value,
+                    Value = (decimal)value,
+                    UnitsDailyConfigId = item.Id
+                });
+            }
+        }
+ 
+        private IQueryable<CalculatedField> GetUnitsDailyDataConfig(ProcessUnitConfirmShiftInputModel model)
+        {
+            var unitsDailyData = this.data.UnitsDailyConfigs
+                                     .All()
+                                     .Include(u => u.ProcessUnit)
+                                     .Where(u => u.ProcessUnitId == model.processUnitId.Value)
+                                     .Select(u => new CalculatedField
+                                            {
+                                                Id = u.Id,
+                                                Members = u.AggregationMembers,
+                                                Formula = u.AggregationFormula
+                                            });
+            return unitsDailyData;
+        }
+ 
+        private IQueryable<BaseUnitData> GetUnitsDataForDay(ProcessUnitConfirmShiftInputModel model, ProductionShift lastShift)
+        {
+            var firstShift = this.data.ProductionShifts.All().OrderBy(x => x.Id).First();
+            var beginRecordTimespan = model.date.Value.AddMinutes(firstShift.BeginMinutes);
+            var endRecordTimespan = model.date.Value.AddMinutes(lastShift.BeginMinutes + lastShift.OffsetMinutes);
+            var ud = this.data.UnitsData.All()
+                         .Include(u => u.UnitConfig)
+                         .Where(u => u.RecordTimestamp > beginRecordTimespan && u.RecordTimestamp < endRecordTimespan && u.UnitConfig.ProcessUnitId == model.processUnitId.Value)
+                         .Select(u => new BaseUnitData
+                                {
+                                    Id = u.Id,
+                                    UnitConfigId = u.UnitConfigId,
+                                    Code = u.UnitConfig.Code,
+                                    Value = u.UnitsManualData.Value == null ? u.Value : u.UnitsManualData.Value
+                                });
+            return ud;
         }
  
         private Hashtable CalculateDailyDataByCodes(IQueryable<BaseUnitData> ud)

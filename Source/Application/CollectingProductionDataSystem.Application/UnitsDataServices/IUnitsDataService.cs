@@ -8,5 +8,7 @@ namespace CollectingProductionDataSystem.Application.UnitsDataServices
     public interface IUnitsDataService
     {
         IQueryable<UnitsData> GetUnitsDataForDateTime(DateTime? date, int? processUnitId, int? shiftId);
+
+        IQueryable<UnitsDailyData> GetUnitsDailyDataForDateTime(DateTime? date, int? processUnitId);
     }
 }
