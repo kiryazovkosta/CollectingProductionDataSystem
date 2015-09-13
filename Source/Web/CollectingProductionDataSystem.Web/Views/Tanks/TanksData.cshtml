@@ -1,76 +1,12 @@
 ﻿@using CollectingProductionDataSystem.Web.ViewModels.Tank;
 @model TankDataViewModel
 @{
-    Layout = "~/Views/Shared/_KendoLayout.cshtml";
+    Layout = "~/Views/Shared/_KendoLayoutWithSideBar.cshtml";
 }
 <h2>Tanks Data</h2>
 @Html.ValidationSummary()
 @Html.AntiForgeryToken()
-<div class="row">
-    <div class="col-lg-3">
-        @(Html.Kendo().DropDownList()
-            .Name("areas")
-            .OptionLabel("Изберете област...")
-            .DataTextField("Name")
-            .DataValueField("Id")
-            .DataSource(source =>
-            {
-                source.Read(read =>
-                {
-                    read.Action("GetAreas", "Ajax");
-                });
-            })
-        )
-    </div>
-    <div class="col-lg-3">
-        @(Html.Kendo().DropDownListFor(m => m.ParkId)
-            .Name("parks")
-            .OptionLabel("Изберете парк...")
-            .DataTextField("Name")
-            .DataValueField("Id")
-            .DataSource(source =>
-            {
-                source.Read(read =>
-                {
-                    read.Action("GetParks", "Ajax").Data("filterParks");
-                })
-                .ServerFiltering(true);
-            })
-            .Enable(false)
-            .AutoBind(false)
-            .CascadeFrom("areas")
-        )
-        <script>
-            function filterParks() {
-                return {
-                    areaId: $("#areas").val()
-                };
-            }
-        </script>
-    </div>
-    <div class="col-lg-2">
-        @Html.Kendo().DatePicker().Name("date").Culture("bg-BG")
-    </div>
-    <div class="col-lg-2">
-        @(Html.Kendo().DropDownListFor(m => m.ShiftId)
-            .Name("shifts")
-            .OptionLabel("Изберете смяна...")
-            .DataTextField("Name")
-            .DataValueField("Minutes")
-            .DataSource(source =>
-            {
-                source.Read(read =>
-                {
-                    read.Action("GetShifts", "Ajax");
-                });
-            })
-        )
-    </div>
-    <div class="col-lg-2">
-        <button id="apply" type="button" class="btn btn-primary">Apply Filter</button>
-    </div>
-</div>
-<div class="row">
+
     @(Html.Kendo().Grid<TankDataViewModel>()
         .Name("tanks")
         .AutoBind(false)
@@ -107,7 +43,7 @@
                            }))
 
     )
-</div>
+
 @* //Error window for kendo grid error event handler *@
 <div id="err-window" style="display:none">@Html.Partial("_KendoGridErrorWindow")</div>
 @section scripts{
@@ -160,15 +96,12 @@
         }
 
         $(document).ready(function () {
-            //var areas = $("#areas").data("kendoDropDownList"),
-            //    parks = $("#parks").data("kendoDropDownList"),
-            //    shifts = $("#shifts").data("kendoDropDownList");
-
             $("#apply").click(function () {
                 var grid = $("#tanks").data("kendoGrid");
                 grid.dataSource.read();
                 grid.refresh();
             });
+
             prepareWindow();
         });
 
@@ -188,4 +121,7 @@
             });
         }
     </script>
+}
+@section sidebar{
+    @Html.Partial("_TanksSideBar")
 }

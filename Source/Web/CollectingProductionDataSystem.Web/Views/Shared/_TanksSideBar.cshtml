@@ -1,0 +1,77 @@
+﻿@using Resources = App_GlobalResources.Resources;
+@using CollectingProductionDataSystem.Web.Infrastructure.Helpers;
+<div class="form-group">
+    <label for="areas">@Resources.Layout.Parks</label>
+    @(Html.Kendo().DropDownList()
+        .Name("areas")
+        .OptionLabel("Изберете област...")
+        .DataTextField("Name")
+        .DataValueField("Id")
+        .DataSource(source =>
+        {
+            source.Read(read =>
+            {
+                read.Action("GetAreas", "Ajax");
+            });
+        })
+    )
+</div>
+<div class="form-group">
+    <label for="parks">@Resources.Layout.Parks</label>
+    @(Html.Kendo().DropDownList()
+        .Name("parks")
+        .OptionLabel(Resources.Layout.ChooseParks)
+        .DataTextField("Name")
+        .DataValueField("Id")
+        .DataSource(source =>
+        {
+            source.Read(read =>
+            {
+                read.Action("GetParks", "Ajax").Data("filterParks");
+            })
+            .ServerFiltering(true);
+        })
+        .Enable(false)
+        .AutoBind(false)
+        .CascadeFrom("areas")
+    )
+
+</div>
+<div class="form-group">
+    <label for="date">@Resources.Layout.Date</label>
+    @Html.Kendo().DatePicker().Name("date").Culture("bg-BG").HtmlAttributes(new { style = "width:95%" })
+</div>
+<div class="form-group" id="shift-section">
+    <label for="shifts">@Resources.Layout.ProductionShift</label>
+    @(Html.Kendo().DropDownList()
+        .Name("shifts")
+        .OptionLabel(Resources.Layout.ChooseProductionShift)
+        .DataTextField("Name")
+        .DataValueField("Minutes")
+        .DataSource(source =>
+        {
+            source.Read(read =>
+            {
+                read.Action("GetShifts", "Ajax");
+            });
+        })
+    )
+</div>
+<hr />
+<div class="form-group">
+    <button id="apply" type="button" class="btn btn-primary" style="width:95%">@Resources.Layout.Apply</button>
+</div>
+<hr />
+<div class="form-group">
+    <button id="confirm" type="button" class="btn btn-danger" style="width:95%">@Resources.Layout.Confirm</button>
+</div>
+
+@using (Html.BeginScripts()) { 
+    <script>
+        function filterParks() {
+            return {
+                areaId: $("#areas").val()
+            };
+        }
+    </script>
+}
