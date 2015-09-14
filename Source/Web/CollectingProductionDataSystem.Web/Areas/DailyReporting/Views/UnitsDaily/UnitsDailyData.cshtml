@@ -4,7 +4,15 @@
 @{
     Layout = "~/Views/Shared/_KendoLayoutWithSideBar.cshtml";
 }
-<h2>@Resources.Layout.UnitsDailyData</h2>
+
+<div class="row">
+    <div class="col-md-10">
+        <h2>@Resources.Layout.UnitsDailyData</h2>
+    </div>
+    <div class="col-md-2">
+        <button id="excel-export" class="k-button k-button-icontext k-grid-excel pull-right head-button"><span class="k-icon k-i-excel"></span>Експорт в Excel</button>
+    </div>
+</div>
 @Html.ValidationSummary()
 @Html.AntiForgeryToken()
 
@@ -32,7 +40,12 @@
         .ButtonCount(5)
     )
     .Sortable()
-    .Scrollable(scr => scr.Height(660))
+     .Excel(excel => excel
+        .FileName(@Resources.Layout.UnitsDailyData + "_" + DateTime.Now + ".xlsx")
+        .Filterable(true)
+        .ProxyURL(Url.Action("Excel_Export_Save", "Tests", new { area = "" }))
+        .AllPages(true))
+    .Scrollable(scr => scr.Height(640))
     .Filterable()
     .DataSource(dataSource => dataSource
         .Ajax()
@@ -121,6 +134,7 @@
             prepareSuccessWindow();
             hideCommandButtons();
             hideShiftComboBox();
+            AttachEventToExportBtn("#excel-export", "#units");
 
             $("#confirm").click(function () {
                 var date = sendDate();
@@ -230,7 +244,11 @@
                 }
             });
         }
-
+        function AttachEventToExportBtn(buttonSelector, targetSelector) {
+            $(buttonSelector).click(function () {
+                $(targetSelector).data("kendoGrid").saveAsExcel();
+            });
+        }
     </script>
 }
 @section sidebar{
