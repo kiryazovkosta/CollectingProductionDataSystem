@@ -524,8 +524,8 @@
                                             IsEnergy = false,
                                             IsInspectionPoint = true,
                                             CollectingDataMechanism = "A",
-                                            PreviousShiftTag = "AV1_01-FIСQ-201.TOTS_L",
-                                            CurrentInspectionDataTag = "AV1_01-FIСQ-201.PV"
+                                            PreviousShiftTag = "AV1_01-FICQ-201.TOTS_L",
+                                            CurrentInspectionDataTag = "AV1_01-FICQ-201.PV"
                                         },
                                         new UnitConfig
                                         {
@@ -896,7 +896,7 @@
                                             Name = "Обор. вода към АД_1",
                                             ProductTypeId = 9,
                                             DirectionId = 2,
-                                            MeasureUnitId = 13,
+                                            MeasureUnitId = 14,
                                             MaterialTypeId = 1,
                                             IsMaterial = true,
                                             IsEnergy = false,
@@ -912,7 +912,7 @@
                                             Name = "Обор. вода към АД_2",
                                             ProductTypeId = 9,
                                             DirectionId = 2,
-                                            MeasureUnitId = 13,
+                                            MeasureUnitId = 14,
                                             MaterialTypeId = 1,
                                             IsMaterial = true,
                                             IsEnergy = false,
@@ -928,7 +928,7 @@
                                             Name = "Обор. вода към ВД_1",
                                             ProductTypeId = 9,
                                             DirectionId = 2,
-                                            MeasureUnitId = 13,
+                                            MeasureUnitId = 14,
                                             MaterialTypeId = 1,
                                             IsMaterial = true,
                                             IsEnergy = false,
@@ -944,7 +944,7 @@
                                             Name = "Обор. вода към ВД_2",
                                             ProductTypeId = 9,
                                             DirectionId = 2,
-                                            MeasureUnitId = 13,
+                                            MeasureUnitId = 14,
                                             MaterialTypeId = 1,
                                             IsMaterial = true,
                                             IsEnergy = false,
@@ -960,7 +960,7 @@
                                             Name = "Свежа вода",
                                             ProductTypeId = 9,
                                             DirectionId = 2,
-                                            MeasureUnitId = 13,
+                                            MeasureUnitId = 14,
                                             MaterialTypeId = 1,
                                             IsMaterial = true,
                                             IsEnergy = false,
@@ -976,7 +976,7 @@
                                             Name = "Деминерализирана вода",
                                             ProductTypeId = 9,
                                             DirectionId = 2,
-                                            MeasureUnitId = 13,
+                                            MeasureUnitId = 14,
                                             MaterialTypeId = 1,
                                             IsMaterial = true,
                                             IsEnergy = false,
@@ -992,7 +992,7 @@
                                             Name = "КИП въздух",
                                             ProductTypeId = 9,
                                             DirectionId = 2,
-                                            MeasureUnitId = 11,
+                                            MeasureUnitId = 15,
                                             MaterialTypeId = 1,
                                             IsMaterial = true,
                                             IsEnergy = false,
@@ -1008,7 +1008,7 @@
                                             Name = "Азот",
                                             ProductTypeId = 9,
                                             DirectionId = 2,
-                                            MeasureUnitId = 11,
+                                            MeasureUnitId = 15,
                                             MaterialTypeId = 1,
                                             IsMaterial = true,
                                             IsEnergy = false,
@@ -1033,6 +1033,8 @@
                                             PreviousShiftTag = "AV1_01-FIQ-126.TOTS_L",
                                             CurrentInspectionDataTag = "AV1_01-FIQ-126.PV"
                                         },
+
+
                                         new UnitConfig
                                         {
                                             Code = "1A3200",
@@ -1052,7 +1054,7 @@
                                         new UnitConfig
                                         {
                                             Code = "1A3201",
-                                            Position = "01-FIQ-089",
+                                            Position = "01-TIQ-257",
                                             Name = "Температура",
                                             ProductTypeId = 10,
                                             DirectionId = 2,
@@ -1062,13 +1064,13 @@
                                             IsEnergy = false,
                                             IsInspectionPoint = true,
                                             CollectingDataMechanism = "A",
-                                            PreviousShiftTag = null,
+                                            PreviousShiftTag = "AV1_01-TIQ-257.TOTS_L",
                                             CurrentInspectionDataTag = "AV1_01-TI-257.PV"
                                         },
                                         new UnitConfig
                                         {
                                             Code = "1A3202",
-                                            Position = "01-FIQ-089",
+                                            Position = "01-PIQ-064",
                                             Name = "Налягане",
                                             ProductTypeId = 10,
                                             DirectionId = 2,
@@ -1078,7 +1080,7 @@
                                             IsEnergy = false,
                                             IsInspectionPoint = true,
                                             CollectingDataMechanism = "A",
-                                            PreviousShiftTag = null,
+                                            PreviousShiftTag = "AV1_01-PIQ-064.TOTS_L",
                                             CurrentInspectionDataTag = "AV1_01-PIC-064.PV"
                                         },
                                         new UnitConfig
@@ -1116,7 +1118,7 @@
                                         new UnitConfig
                                         {
                                             Code = "1A3301",
-                                            Position = "01-FIQ-118",
+                                            Position = "01-TIQ-318",
                                             Name = "Температура",
                                             ProductTypeId = 10,
                                             DirectionId = 2,
@@ -1126,13 +1128,13 @@
                                             IsEnergy = false,
                                             IsInspectionPoint = true,
                                             CollectingDataMechanism = "A",
-                                            PreviousShiftTag = "",
+                                            PreviousShiftTag = "AV1_01-TIQ-318.TOTS_L",
                                             CurrentInspectionDataTag = "AV1_01-TI-318.PV"
                                         },
                                         new UnitConfig
                                         {
                                             Code = "1A3302",
-                                            Position = "01-FIQ-118",
+                                            Position = "01-PIQ-096",
                                             Name = "Налягане",
                                             ProductTypeId = 10,
                                             DirectionId = 2,
@@ -1141,7 +1143,7 @@
                                             IsMaterial = true,
                                             IsEnergy = false,
                                             CollectingDataMechanism = "A",
-                                            PreviousShiftTag = "",
+                                            PreviousShiftTag = "AV1_01-PIQ-096.TOTS_L",
                                             CurrentInspectionDataTag = "AV1_01-PIC-096.PV"
                                         },
                                         new UnitConfig
@@ -1188,7 +1190,7 @@
                                             IsEnergy = false,
                                             IsInspectionPoint = true,
                                             CollectingDataMechanism = "A",
-                                            PreviousShiftTag = "",
+                                            PreviousShiftTag = "AV1_01-TIQ-452.TOTS_L",
                                             CurrentInspectionDataTag = "AV1_01-TICA-452.PV"
                                         },
                                         new UnitConfig
@@ -1204,7 +1206,7 @@
                                             IsEnergy = false,
                                             IsInspectionPoint = true,
                                             CollectingDataMechanism = "A",
-                                            PreviousShiftTag = "",
+                                            PreviousShiftTag = "AV1_01-PIQ-452.TOTS_L",
                                             CurrentInspectionDataTag = "AV1_01-PICA-452.PV"
                                         },
                                         new UnitConfig

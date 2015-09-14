@@ -1,321 +1,389 @@
 ﻿body {
-  padding-top: 60px;
-  padding-bottom: 70px;
+    padding-top: 60px;
+    padding-bottom: 70px;
 }
 /* Set padding to keep content from hitting the edges */
 .body-content {
-  padding-left: 15px;
-  padding-right: 15px;
-  /*padding-bottom:70px;*/
+    padding-left: 15px;
+    padding-right: 15px;
+    /*padding-bottom:70px;*/
 }
+
 .nav.navbar-fixed-bottom > div {
-  height: 60px;
-  width: 100%;
-  background-color: white;
+    height: 60px;
+    width: 100%;
+    background-color: white;
 }
 /* Override the default bootstrap behavior where horizontal description lists 
    will truncate terms that are too long to fit in the left column 
 */
 .dl-horizontal dt {
-  white-space: normal;
+    white-space: normal;
 }
 /* Set width on the form input elements since they're 100% wide by default */
 input,
 select,
 textarea {
-  max-width: 280px;
+    max-width: 280px;
 }
+
 .container-modal {
-  max-width: 620px;
+    max-width: 620px;
 }
+
 .form-control {
-  max-width: 300px;
+    max-width: 300px;
 }
+
 .control-label-horizontal {
-  height: 34px;
-  line-height: 50px;
+    height: 34px;
+    line-height: 50px;
 }
+
 .field-validation-error {
-  color: #f00;
+    color: #f00;
 }
+
 .well-roles {
-  padding-bottom: 0;
-  padding-top: 10px;
-  padding-right: 25px;
+    padding-bottom: 0;
+    padding-top: 10px;
+    padding-right: 25px;
 }
+
 .row.row-roles-well {
-  /*margin-top: 0;*/
-  padding-bottom: 0;
+    /*margin-top: 0;*/
+    padding-bottom: 0;
 }
+
 .field-validation-valid {
-  display: none;
+    display: none;
 }
+
 .input-validation-error {
-  border: 1px solid #f00;
-  background-color: #fee;
-  box-shadow: rgba(255, 0, 0, 0.3) 0px 0px 10px;
+    border: 1px solid #f00;
+    background-color: #fee;
+    box-shadow: rgba(255, 0, 0, 0.3) 0px 0px 10px;
 }
+
 .validation-summary-errors {
-  font-weight: bold;
-  color: #f00;
+    font-weight: bold;
+    color: #f00;
 }
+
 .validation-summary-valid {
-  display: none;
+    display: none;
 }
+
 .bg-ok {
-  margin-left: 10px;
-  background-image: url('Images/ok.png');
-  background-repeat: no-repeat;
-  background-size: 20px;
-  height: 20px;
-  width: 20px;
+    margin-left: 10px;
+    background-image: url('Images/ok.png');
+    background-repeat: no-repeat;
+    background-size: 20px;
+    height: 20px;
+    width: 20px;
 }
+
 .bg-warning {
-  margin-left: 10px;
-  background: url('Images/warning.png');
-  background-repeat: no-repeat;
-  background-size: 20px;
-  height: 20px;
-  width: 20px;
+    margin-left: 10px;
+    background: url('Images/warning.png');
+    background-repeat: no-repeat;
+    background-size: 20px;
+    height: 20px;
+    width: 20px;
 }
+
 div.err-icon {
-  background: url('Images/danger.png');
-  background-repeat: no-repeat;
-  background-size: 64px;
-  height: 64px;
-  width: 64px;
+    background: url('Images/danger.png');
+    background-repeat: no-repeat;
+    background-size: 64px;
+    height: 64px;
+    width: 64px;
 }
+
 .no-horisontal-padding {
-  padding-left: 0;
-  padding-right: 0;
+    padding-left: 0;
+    padding-right: 0;
 }
+
 .reason {
-  margin-left: 10px;
-  font-size: 11px;
+    margin-left: 10px;
+    font-size: 11px;
 }
+
 a.k-button.k-button-icontext.k-grid-edit,
 a.k-button.k-button-icontext.k-grid-delete {
-  font-size: 12px;
+    font-size: 12px;
 }
+
 .k-grid .k-grid-header .k-header .k-link {
-  height: auto;
+    height: auto;
 }
+
 .k-grid .k-grid-header .k-header {
-  white-space: normal;
+    white-space: normal;
 }
+
 .vcenter {
-  display: inline-block;
-  vertical-align: middle;
-  float: none;
+    display: inline-block;
+    vertical-align: middle;
+    float: none;
 }
+
 .row-err-window {
-  margin-left: auto;
-  margin-right: auto;
-  width: 98%;
+    margin-left: auto;
+    margin-right: auto;
+    width: 98%;
 }
+
 .navbar-brand {
-  padding-top: 5px;
+    padding-top: 5px;
 }
+
 pre {
-  margin: 0;
-  padding: 0;
-  background: none;
-  border: none;
-  color: black;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 14px;
+    margin: 0;
+    padding: 0;
+    background: none;
+    border: none;
+    color: black;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 14px;
 }
+
 .multiselect-host {
-  padding-top: 5px;
+    padding-top: 5px;
 }
+
 .carousel-wrapper {
-  height: 300px;
-}
-.footer {
-  position: absolute;
-  bottom: 0px;
-  width: 98%;
-  height: 60px;
-  margin-left: 15px;
-  margin-right: 15px;
-  border-top: 1px solid #eee;
-  z-index: 50000;
-}
-.footer p {
-  line-height: 60px;
-}
-@media (max-device-width: 480px) {
-  .carousel-inner > .item > img {
-    height: 250px;
-    width: 100%;
-  }
-}
-@media (min-width: 768px) {
-  .carousel-inner > .item > img {
     height: 300px;
-    width: 100%;
-  }
 }
+
+.footer {
+    position: absolute;
+    bottom: 0px;
+    width: 98%;
+    height: 60px;
+    margin-left: 15px;
+    margin-right: 15px;
+    border-top: 1px solid #eee;
+    z-index: 50000;
+}
+
+    .footer p {
+        line-height: 60px;
+    }
+
+@media (max-device-width: 480px) {
+    .carousel-inner > .item > img {
+        height: 250px;
+        width: 100%;
+    }
+}
+
+@media (min-width: 768px) {
+    .carousel-inner > .item > img {
+        height: 300px;
+        width: 100%;
+    }
+}
+
 @media (min-width: 992px) {
-  .carousel-inner > .item > img {
-    height: 400px;
-    width: 100%;
-  }
+    .carousel-inner > .item > img {
+        height: 400px;
+        width: 100%;
+    }
 }
+
 @media (min-width: 1200px) {
-  .carousel-inner > .item > img {
-    height: 500px;
-    width: 100%;
-  }
+    .carousel-inner > .item > img {
+        height: 500px;
+        width: 100%;
+    }
 }
 /* ---------- Begin Kendo buttons for grid ---------- */
 .btn-kendo {
-  margin-left: 10px;
+    margin-left: 10px;
 }
-.btn-kendo > span {
-  color: white;
-  margin-right: 3px;
-}
+
+    .btn-kendo > span {
+        color: white;
+        margin-right: 3px;
+    }
+
 .k-button {
-  display: inline-block !important;
-  padding: 6px 12px !important;
-  margin-bottom: 0 !important;
-  font-size: 14px !important;
-  font-weight: normal !important;
-  line-height: 1.42857143 !important;
-  text-align: center !important;
-  white-space: nowrap !important;
-  vertical-align: middle !important;
-  -ms-touch-action: manipulation !important;
-  touch-action: manipulation !important;
-  cursor: pointer !important;
-  -webkit-user-select: none !important;
-  -moz-user-select: none !important;
-  -ms-user-select: none !important;
-  user-select: none !important;
-  background-image: none !important;
-  border: 1px solid transparent !important;
-  border-radius: 4px !important;
+    display: inline-block !important;
+    padding: 6px 12px !important;
+    margin-bottom: 0 !important;
+    font-size: 14px !important;
+    font-weight: normal !important;
+    line-height: 1.42857143 !important;
+    text-align: center !important;
+    white-space: nowrap !important;
+    vertical-align: middle !important;
+    -ms-touch-action: manipulation !important;
+    touch-action: manipulation !important;
+    cursor: pointer !important;
+    -webkit-user-select: none !important;
+    -moz-user-select: none !important;
+    -ms-user-select: none !important;
+    user-select: none !important;
+    background-image: none !important;
+    border: 1px solid transparent !important;
+    border-radius: 4px !important;
 }
+
 a.k-button.k-button-icontext.k-grid-cancel,
 a.k-button.k-button-icontext.k-grid-edit,
 a.k-button.k-button-icontext.k-grid-delete,
 a.k-button.k-button-icontext.k-primary.k-grid-update {
-  padding: 1px 5px !important;
-  font-size: 12px !important;
-  line-height: 1.5 !important;
-  border-radius: 3px !important;
+    padding: 1px 5px !important;
+    font-size: 12px !important;
+    line-height: 1.5 !important;
+    border-radius: 3px !important;
 }
-a.k-button.k-button-icontext {
-  color: black !important;
-  background-image: -webkit-linear-gradient(top, #ffffff 0%, #e0e0e0 100%) !important;
-  background-image: -o-linear-gradient(top, #ffffff 0%, #e0e0e0 100%) !important;
-  background-image: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#e0e0e0)) !important;
-  background-image: linear-gradient(to bottom, #ffffff 0%, #e0e0e0 100%) !important;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff', endColorstr='#ffe0e0e0', GradientType=0) !important;
-  filter: progid:DXImageTransform.Microsoft.gradient(enabled=false) !important;
-  background-repeat: repeat-x !important;
-  border-color: #dbdbdb !important;
-  border-color: #ccc !important;
+
+a.k-button.k-button-icontext,
+button.k-button.k-button-icontext {
+    color: black !important;
+    background-image: -webkit-linear-gradient(top, #ffffff 0%, #e0e0e0 100%) !important;
+    background-image: -o-linear-gradient(top, #ffffff 0%, #e0e0e0 100%) !important;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#e0e0e0)) !important;
+    background-image: linear-gradient(to bottom, #ffffff 0%, #e0e0e0 100%) !important;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff', endColorstr='#ffe0e0e0', GradientType=0) !important;
+    filter: progid:DXImageTransform.Microsoft.gradient(enabled=false) !important;
+    background-repeat: repeat-x !important;
+    border-color: #dbdbdb !important;
+    border-color: #ccc !important;
 }
-a.k-button.k-button-icontext.k-grid-edit,
-a.k-button.k-button-icontext.k-primary,
-a.k-button.k-button-icontext.k-primary.k-grid-update {
-  color: white !important;
-  background-image: -webkit-linear-gradient(top, #337ab7 0%, #265a88 100%) !important;
-  background-image: -o-linear-gradient(top, #337ab7 0%, #265a88 100%) !important;
-  background-image: -webkit-gradient(linear, left top, left bottom, from(#337ab7), to(#265a88)) !important;
-  background-image: linear-gradient(to bottom, #337ab7 0%, #265a88 100%) !important;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff337ab7', endColorstr='#ff265a88', GradientType=0) !important;
-  filter: progid:DXImageTransform.Microsoft.gradient(enabled=false) !important;
-  background-repeat: repeat-x !important;
-  border-color: #245580 !important;
-}
-a.k-button.k-button-icontext.k-grid-edit:active,
-a.k-button.k-button-icontext.k-grid-delete:active,
-a.k-button.k-button-icontext.k-primary.k-grid-update:active {
-  -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
-  box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
-}
-a.k-button.k-button-icontext.k-grid-edit:hover,
-a.k-button.k-button-icontext.k-grid-edit:focus,
-a.k-button.k-button-icontext.k-primary.k-grid-update:hover,
-a.k-button.k-button-icontext.k-primary.k-grid-update:focus {
-  background-color: #265a88;
-  background-position: 0 -15px;
-}
-a.k-button.k-button-icontext.k-grid-delete:hover,
-a.k-button.k-button-icontext.k-grid-delete:focus {
-  background-color: #c12e2a;
-  background-position: 0 -15px;
-}
-a.k-button.k-button-icontext.k-grid-delete {
-  color: white !important;
-  background-image: -webkit-linear-gradient(top, #d9534f 0%, #c12e2a 100%) !important;
-  background-image: -o-linear-gradient(top, #d9534f 0%, #c12e2a 100%) !important;
-  background-image: -webkit-gradient(linear, left top, left bottom, from(#d9534f), to(#c12e2a)) !important;
-  background-image: linear-gradient(to bottom, #d9534f 0%, #c12e2a 100%) !important;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffd9534f', endColorstr='#ffc12e2a', GradientType=0) !important;
-  filter: progid:DXImageTransform.Microsoft.gradient(enabled=false) !important;
-  background-repeat: repeat-x !important;
-  border-color: #b92c28 !important;
-}
+
+    a.k-button.k-button-icontext:hover,
+    button.k-button.k-button-icontext:hover {
+        background-color: #aaa;
+        background-position: 0 -34px;
+    }
+
+    a.k-button.k-button-icontext.k-grid-edit,
+    a.k-button.k-button-icontext.k-primary,
+    a.k-button.k-button-icontext.k-primary.k-grid-update {
+        color: white !important;
+        background-image: -webkit-linear-gradient(top, #337ab7 0%, #265a88 100%) !important;
+        background-image: -o-linear-gradient(top, #337ab7 0%, #265a88 100%) !important;
+        background-image: -webkit-gradient(linear, left top, left bottom, from(#337ab7), to(#265a88)) !important;
+        background-image: linear-gradient(to bottom, #337ab7 0%, #265a88 100%) !important;
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff337ab7', endColorstr='#ff265a88', GradientType=0) !important;
+        filter: progid:DXImageTransform.Microsoft.gradient(enabled=false) !important;
+        background-repeat: repeat-x !important;
+        border-color: #245580 !important;
+    }
+
+        a.k-button.k-button-icontext.k-grid-edit:active,
+        a.k-button.k-button-icontext.k-grid-delete:active,
+        a.k-button.k-button-icontext.k-primary.k-grid-update:active {
+            -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+            box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+        }
+
+        a.k-button.k-button-icontext.k-grid-edit:hover,
+        a.k-button.k-button-icontext.k-grid-edit:focus,
+        a.k-button.k-button-icontext.k-primary.k-grid-update:hover,
+        a.k-button.k-button-icontext.k-primary.k-grid-update:focus {
+            background-color: #265a88;
+            background-position: 0 -15px;
+        }
+
+    a.k-button.k-button-icontext.k-grid-delete:hover,
+    a.k-button.k-button-icontext.k-grid-delete:focus {
+        background-color: #c12e2a;
+        background-position: 0 -15px;
+    }
+
+    a.k-button.k-button-icontext.k-grid-delete {
+        color: white !important;
+        background-image: -webkit-linear-gradient(top, #d9534f 0%, #c12e2a 100%) !important;
+        background-image: -o-linear-gradient(top, #d9534f 0%, #c12e2a 100%) !important;
+        background-image: -webkit-gradient(linear, left top, left bottom, from(#d9534f), to(#c12e2a)) !important;
+        background-image: linear-gradient(to bottom, #d9534f 0%, #c12e2a 100%) !important;
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffd9534f', endColorstr='#ffc12e2a', GradientType=0) !important;
+        filter: progid:DXImageTransform.Microsoft.gradient(enabled=false) !important;
+        background-repeat: repeat-x !important;
+        border-color: #b92c28 !important;
+    }
+
 span.k-icon.k-edit,
 span.k-icon.k-delete,
 span.k-icon.k-update,
 span.k-icon.k-cancel {
-  color: white;
-  position: relative !important;
-  top: 1px !important;
-  display: inline-block !important;
-  font-family: 'Glyphicons Halflings' !important;
-  font-style: normal !important;
-  font-weight: normal !important;
-  font-size: 12px;
-  line-height: 1 !important;
-  -webkit-font-smoothing: antialiased !important;
-  -moz-osx-font-smoothing: grayscale !important;
-  background-image: none !important;
+    color: white;
+    position: relative !important;
+    top: 1px !important;
+    display: inline-block !important;
+    font-family: 'Glyphicons Halflings' !important;
+    font-style: normal !important;
+    font-weight: normal !important;
+    font-size: 12px;
+    line-height: 1 !important;
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale !important;
+    background-image: none !important;
 }
-span.k-icon.k-edit:before {
-  content: "\e065" !important;
-}
-span.k-icon.k-delete:before {
-  content: "\e020" !important;
-}
-span.k-icon.k-update:before {
-  content: "\e067" !important;
-}
-span.k-icon.k-cancel:before {
-  color: black;
-  content: "\e066" !important;
+
+    span.k-icon.k-edit:before {
+        content: "\e065" !important;
+    }
+
+    span.k-icon.k-delete:before {
+        content: "\e020" !important;
+    }
+
+    span.k-icon.k-update:before {
+        content: "\e067" !important;
+    }
+
+    span.k-icon.k-cancel:before {
+        color: black;
+        content: "\e066" !important;
+    }
+
+span.k-icon.k-i-excel {
+    background-image: url("Images/Excel-icon.png");
+    background-repeat: no-repeat;
+    background-size: 18px;
+    background-position: 0 !important;
 }
 /* ---------- End Kendo buttons for grid ---------- */
 /*--------------Administration side bar -----------------*/
 .well.sidebar-nav {
-  padding-left: 0;
-  padding-right: 0;
+    padding-left: 0;
+    padding-right: 0;
 }
+
 .nav-header {
-  text-transform: uppercase;
-  font-size: 12px;
-  font-weight: bold;
-  color: darkgrey;
-  margin: 0 15px !important;
+    text-transform: uppercase;
+    font-size: 12px;
+    font-weight: bold;
+    color: darkgrey;
+    margin: 0 15px !important;
 }
-.nav-header > span {
-  color: black;
-  margin-right: 5px;
-}
+
+    .nav-header > span {
+        color: black;
+        margin-right: 5px;
+    }
+
 .nav-pills > li > a {
-  border-radius: 0 !important;
-  line-height: 14px;
+    border-radius: 0 !important;
+    line-height: 14px;
 }
+
 .nav-pills > li {
-  margin-top: 0 !important;
+    margin-top: 0 !important;
 }
-.nav-pills > li > a:hover {
-  background-color: #ddd;
-  color: black;
-}
+
+    .nav-pills > li > a:hover {
+        background-color: #ddd;
+        color: black;
+    }
 /*# sourceMappingURL=Site.css.map */
+
+.head-button {
+    margin-top: 15px;
+}

@@ -1,33 +1,28 @@
 ﻿namespace CollectingProductionDataSystem.Web.Areas.ShiftReporting.Controllers
 {
     using System;
+    using System.Collections;
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
-    using System.Data.Entity.Validation;
     using System.Diagnostics;
     using System.Linq;
     using System.Net;
-    using System.Net.Mime;
     using System.Transactions;
     using System.Web.Mvc;
-    using CollectingProductionDataSystem.Application.CalculateServices;
+    using AutoMapper;
     using CollectingProductionDataSystem.Application.UnitsDataServices;
     using CollectingProductionDataSystem.Data.Contracts;
     using CollectingProductionDataSystem.Models.Nomenclatures;
-    using CollectingProductionDataSystem.Web.Controllers;
+    using CollectingProductionDataSystem.Models.Productions;
     using CollectingProductionDataSystem.Web.Infrastructure.Filters;
     using CollectingProductionDataSystem.Web.InputModels;
+    using CollectingProductionDataSystem.Web.ViewModels.Units;
     using Kendo.Mvc.Extensions;
     using Kendo.Mvc.UI;
-    using AutoMapper;
-    using System.Collections.Generic;
-    using CollectingProductionDataSystem.Models.Productions;
-    using CollectingProductionDataSystem.Web.ViewModels.Units;
-    using Resources = App_GlobalResources.Resources;
-    using System.Collections;
-    using System.Text;
     using MathExpressions.Application;
+    using Resources = App_GlobalResources.Resources;
 
     [Authorize]
     public class UnitsController : AreaBaseController
@@ -66,18 +61,6 @@
             }
 
             return Json(kendoResult);
-            //if (this.ModelState.IsValid)
-            //{
-            //    var dbResult = this.unitsData.GetUnitsDataForDateTime(date, processUnitId, shiftId);
-            //    var kendoResult = dbResult.ToDataSourceResult(request, ModelState);
-            //    kendoResult.Data = Mapper.Map<IEnumerable<UnitsData>, IEnumerable<UnitDataViewModel>>((IEnumerable<UnitsData>)kendoResult.Data);
-            //    return Json(kendoResult);
-            //}
-            //else
-            //{
-            //    var kendoResult = new List<UnitDataViewModel>().ToDataSourceResult(request, ModelState);
-            //    return Json(kendoResult);
-            //}
         }
 
         [HttpPost]

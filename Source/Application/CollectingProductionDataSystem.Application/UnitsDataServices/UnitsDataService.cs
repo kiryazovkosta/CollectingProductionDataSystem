@@ -43,6 +43,7 @@
                     .Where(x => x.UnitConfig.ProcessUnitId == processUnitId);
             }
 
+            dbResult = dbResult.OrderBy(x => x.UnitConfig.Code);
             return dbResult;
         }
         public IQueryable<UnitsDailyData> GetUnitsDailyDataForDateTime(DateTime? date, int? processUnitId)

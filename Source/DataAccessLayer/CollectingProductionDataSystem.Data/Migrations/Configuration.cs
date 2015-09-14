@@ -250,8 +250,8 @@ namespace CollectingProductionDataSystem.Data.Migrations
                 },
                 new MeasureUnit
                 {
-                    Name = "Физична атмосфера",
-                    Code = "атм",
+                    Name = "Налягане",
+                    Code = "Бар",
                 },
                 new MeasureUnit
                 {
@@ -297,6 +297,11 @@ namespace CollectingProductionDataSystem.Data.Migrations
                 {
                     Name = "Кубичен метър",
                     Code = "m3",
+                },
+                new MeasureUnit
+                {
+                    Name = "Нормален кубичен метър",
+                    Code = "Hm3",
                 });
 
             //context.SaveChanges();

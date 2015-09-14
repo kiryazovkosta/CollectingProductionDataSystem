@@ -66,6 +66,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CollectingProductionDataSys
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CollectingProductionDataSystem.MathExpressions", "Application\CollectingProductionDataSystem.MathExpressions\CollectingProductionDataSystem.MathExpressions.csproj", "{34672323-163B-48F2-9425-B4B55B33D144}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CollectingProductionDataSystem.ConsoleClient", "CollectingProductionDataSystem.ConsoleClient\CollectingProductionDataSystem.ConsoleClient.csproj", "{A3FAF9D3-62E5-4BA1-8125-74FD8259BDA9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -236,6 +238,14 @@ Global
 		{34672323-163B-48F2-9425-B4B55B33D144}.Release|Any CPU.Build.0 = Release|Any CPU
 		{34672323-163B-48F2-9425-B4B55B33D144}.Release|x64.ActiveCfg = Release|Any CPU
 		{34672323-163B-48F2-9425-B4B55B33D144}.Release|x86.ActiveCfg = Release|Any CPU
+		{A3FAF9D3-62E5-4BA1-8125-74FD8259BDA9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3FAF9D3-62E5-4BA1-8125-74FD8259BDA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3FAF9D3-62E5-4BA1-8125-74FD8259BDA9}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{A3FAF9D3-62E5-4BA1-8125-74FD8259BDA9}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{A3FAF9D3-62E5-4BA1-8125-74FD8259BDA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3FAF9D3-62E5-4BA1-8125-74FD8259BDA9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A3FAF9D3-62E5-4BA1-8125-74FD8259BDA9}.Release|x64.ActiveCfg = Release|Any CPU
+		{A3FAF9D3-62E5-4BA1-8125-74FD8259BDA9}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -261,5 +271,6 @@ Global
 		{F49ABBD3-6F28-48C6-BF11-2852E4E5E9A2} = {3CC215AD-EE55-47C7-A43C-992B3F0C84A8}
 		{22CAF7D1-AD04-4204-B7B9-5D7719ED7AF7} = {14C4B4E0-9FEB-41DA-A347-43D99AB407BD}
 		{34672323-163B-48F2-9425-B4B55B33D144} = {1BA91924-D5E6-467D-8DB6-584D54F00F4F}
+		{A3FAF9D3-62E5-4BA1-8125-74FD8259BDA9} = {1BA91924-D5E6-467D-8DB6-584D54F00F4F}
 	EndGlobalSection
 EndGlobal
