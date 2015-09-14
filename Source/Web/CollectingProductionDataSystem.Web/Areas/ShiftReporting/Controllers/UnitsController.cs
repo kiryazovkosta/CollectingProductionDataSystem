@@ -172,8 +172,6 @@
                             return Json(new { data = new { errors=errors} });   
                         }
 
-                        
-
                         var lastShift = this.data.ProductionShifts.All().Where(s => s.Id == model.shiftId.Value).FirstOrDefault();
                         if (lastShift != null)
                         {
@@ -217,6 +215,7 @@
         {
             var calculator = new Calculator();
             var splitter = new char[] { ';' };
+
             foreach (var item in unitsDailyData)
             {
                 var tokens = item.Members.Split(splitter, StringSplitOptions.RemoveEmptyEntries);

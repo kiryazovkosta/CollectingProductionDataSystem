@@ -84,6 +84,10 @@
     <Compile Include="Nomenclatures\Product.cs" />
     <Compile Include="Nomenclatures\ProductType.cs" />
     <Compile Include="Productions\ProcessUnit.cs" />
+    <Compile Include="Productions\Qpt\Density2FactorAlpha.cs" />
+    <Compile Include="Productions\Qpt\PressureAndTemperature2CompressibilityFactor.cs" />
+    <Compile Include="Productions\Qpt\PressureAndTemperature2EtilenDensity.cs" />
+    <Compile Include="Productions\Qpt\PressureAndTemperature2WaterDensity.cs" />
     <Compile Include="Productions\UnitConfig.cs" />
     <Compile Include="Productions\UnitsApprovedDailyData.cs" />
     <Compile Include="Productions\UnitsDailyConfig.cs" />
@@ -133,6 +137,7 @@
       <Name>CollectingProductionDataSystem.Infrastructure</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
