@@ -206,7 +206,8 @@ a.k-button.k-button-icontext.k-primary.k-grid-update {
   line-height: 1.5 !important;
   border-radius: 3px !important;
 }
-a.k-button.k-button-icontext {
+a.k-button.k-button-icontext,
+button.k-button.k-button-icontext{
   color: black !important;
   background-image: -webkit-linear-gradient(top, #ffffff 0%, #e0e0e0 100%) !important;
   background-image: -o-linear-gradient(top, #ffffff 0%, #e0e0e0 100%) !important;
@@ -218,6 +219,13 @@ a.k-button.k-button-icontext {
   border-color: #dbdbdb !important;
   border-color: #ccc !important;
 }
+
+a.k-button.k-button-icontext:hover,
+button.k-button.k-button-icontext:hover {
+    background-color: #aaa;
+    background-position:0 -34px;
+}
+
 a.k-button.k-button-icontext.k-grid-edit,
 a.k-button.k-button-icontext.k-primary,
 a.k-button.k-button-icontext.k-primary.k-grid-update {
@@ -290,6 +298,13 @@ span.k-icon.k-cancel:before {
   color: black;
   content: "\e066" !important;
 }
+
+span.k-icon.k-i-excel{
+    background-image: url("Images/Excel-icon.png"); 
+    background-repeat:no-repeat;
+    background-size: 18px;
+    background-position: 0 !important;
+}
 /* ---------- End Kendo buttons for grid ---------- */
 /*--------------Administration side bar -----------------*/
 .well.sidebar-nav {
@@ -317,5 +332,12 @@ span.k-icon.k-cancel:before {
 .nav-pills > li > a:hover {
   background-color: #ddd;
   color: black;
+}
+
+.kendo-grid-header {
+    margin-top: 5px;
+    margin-bottom:5px;
+    font-size:28px;
+    font-weight:bold;
 }
 /*# sourceMappingURL=Site.css.map */

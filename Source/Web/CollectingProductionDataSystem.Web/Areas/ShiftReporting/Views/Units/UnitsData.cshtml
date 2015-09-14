@@ -4,7 +4,7 @@
 @{
     Layout = "~/Views/Shared/_KendoLayoutWithSideBar.cshtml";
 }
-<h2>@Resources.Layout.UnitsData</h2>
+@*<h2>@Resources.Layout.UnitsData</h2>*@
 @Html.ValidationSummary()
 @Html.AntiForgeryToken()
 
@@ -34,7 +34,31 @@
         .ButtonCount(5)
     )
     .Sortable()
-        //.Groupable()
+        .ToolBar(tools =>
+        {
+            tools.Excel();
+            tools.Template(@<text>
+                <div class="toolbar">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-9">
+                                <h4 class="kendo-grid-header">@Resources.Layout.UnitsData</h4>
+                            </div>
+                            <div class="col-md-2">
+                                <button class="k-button k-button-icontext k-grid-excel pull-right"><span class="k-icon k-i-excel"></span>Експорт в Excel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </text>);
+        })
+    .Excel(excel => excel
+            .FileName(@Resources.Layout.UnitsData + DateTime.Now + ".xlsx")
+        .Filterable(true)
+        .ProxyURL(Url.Action("Excel_Export_Save", "Tests", new { area = "" }))
+        .AllPages(true)
+    )
+    .Editable(editable => editable.Mode(GridEditMode.InLine))
     .Scrollable(scr => scr.Height(660))
     .Filterable()
     .Editable(editable => editable.Mode(GridEditMode.InLine))
@@ -42,7 +66,7 @@
         .Ajax()
         .PageSize(100)
         .ServerOperation(true)
-        .Group(group => group.Add(c =>c.UnitConfig.ProductType.Sort))
+        .Group(group => group.Add(c => c.UnitConfig.ProductType.Sort))
         .Read(read => read.Action("ReadUnitsData", "Units", new { area = "ShiftReporting" }).Data("sendDate"))
         .Update(update => update.Action("Edit", "Units", new { area = "ShiftReporting" }).Data("sendAntiForgery"))
         .Model(model =>
@@ -142,7 +166,7 @@
                             var message = "Вие потвърдихте отчета успешно."
                             $('pre#succ-message').text(message);
                             $('div#success-window').data("kendoWindow").open();
-                            
+
                         } else {
                             //TODO: Perse errors and show error screen
                             if (data.errors) {
@@ -163,7 +187,7 @@
                     error: function (data) {
                         var errorMessage = "";
                         var response = JSON.parse(data.responseText).data;
-                        $.each(response.errors, function (key, value) {     
+                        $.each(response.errors, function (key, value) {
                             errorMessage += this + "\n";
                         });
                         $('pre#err-message').text(errorMessage);

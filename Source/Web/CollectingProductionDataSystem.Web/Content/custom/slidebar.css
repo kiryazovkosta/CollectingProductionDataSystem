@@ -39,7 +39,7 @@ div#slide-text {
 
 .sidebar-sidebaner {
     /*z-index: 5000;*/
-    top: 585px;
+    top: 560px;
     position: absolute;
     display: inline-block;
     height: 20px;
@@ -71,7 +71,7 @@ div#slide-text {
 .sidebar-wtapper {
     display: inline-block;
     max-width: 17%;
-    margin-top: 25px;
+    /*margin-top: 25px;*/
 }
 
 div#page-wrapper {

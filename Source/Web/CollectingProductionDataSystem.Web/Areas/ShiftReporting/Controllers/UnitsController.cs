@@ -1,33 +1,28 @@
 ﻿namespace CollectingProductionDataSystem.Web.Areas.ShiftReporting.Controllers
 {
     using System;
+    using System.Collections;
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
-    using System.Data.Entity.Validation;
     using System.Diagnostics;
     using System.Linq;
     using System.Net;
-    using System.Net.Mime;
     using System.Transactions;
     using System.Web.Mvc;
-    using CollectingProductionDataSystem.Application.CalculateServices;
+    using AutoMapper;
     using CollectingProductionDataSystem.Application.UnitsDataServices;
     using CollectingProductionDataSystem.Data.Contracts;
     using CollectingProductionDataSystem.Models.Nomenclatures;
-    using CollectingProductionDataSystem.Web.Controllers;
+    using CollectingProductionDataSystem.Models.Productions;
     using CollectingProductionDataSystem.Web.Infrastructure.Filters;
     using CollectingProductionDataSystem.Web.InputModels;
+    using CollectingProductionDataSystem.Web.ViewModels.Units;
     using Kendo.Mvc.Extensions;
     using Kendo.Mvc.UI;
-    using AutoMapper;
-    using System.Collections.Generic;
-    using CollectingProductionDataSystem.Models.Productions;
-    using CollectingProductionDataSystem.Web.ViewModels.Units;
-    using Resources = App_GlobalResources.Resources;
-    using System.Collections;
-    using System.Text;
     using MathExpressions.Application;
+    using Resources = App_GlobalResources.Resources;
 
     [Authorize]
     public class UnitsController : AreaBaseController
@@ -66,18 +61,6 @@
             }
 
             return Json(kendoResult);
-            //if (this.ModelState.IsValid)
-            //{
-            //    var dbResult = this.unitsData.GetUnitsDataForDateTime(date, processUnitId, shiftId);
-            //    var kendoResult = dbResult.ToDataSourceResult(request, ModelState);
-            //    kendoResult.Data = Mapper.Map<IEnumerable<UnitsData>, IEnumerable<UnitDataViewModel>>((IEnumerable<UnitsData>)kendoResult.Data);
-            //    return Json(kendoResult);
-            //}
-            //else
-            //{
-            //    var kendoResult = new List<UnitDataViewModel>().ToDataSourceResult(request, ModelState);
-            //    return Json(kendoResult);
-            //}
         }
 
         [HttpPost]
@@ -142,7 +125,7 @@
                 var approvedShift = this.data.UnitsApprovedDatas
                     .All()
                     .Where(u => u.RecordDate == model.date &&
-                        u.ProcessUnitId == model.processUnitId && 
+                        u.ProcessUnitId == model.processUnitId &&
                         u.ShiftId == model.shiftId)
                     .FirstOrDefault();
                 if (approvedShift == null)
@@ -162,17 +145,17 @@
                         var confirmedShifts = this.data.UnitsApprovedDatas.All()
                             .Where(x => x.RecordDate == model.date.Value)
                             .Where(x => x.ProcessUnitId == model.processUnitId.Value)
-                            .Where( x => x.ShiftId == 1 || x.ShiftId == 2)
+                            .Where(x => x.ShiftId == 1 || x.ShiftId == 2)
                             .Count();
                         if (confirmedShifts != lastShiftId - 1)
                         {
                             Response.StatusCode = (int)HttpStatusCode.BadRequest;
                             ModelState.AddModelError("shifts", "Не са потвърдени данните за предходните смени!!!");
                             var errors = GetErrorListFromModelState(ModelState);
-                            return Json(new { data = new { errors=errors} });   
+                            return Json(new { data = new { errors = errors } });
                         }
 
-                        
+
 
                         var lastShift = this.data.ProductionShifts.All().Where(s => s.Id == model.shiftId.Value).FirstOrDefault();
                         if (lastShift != null)
@@ -193,26 +176,26 @@
                             Response.StatusCode = (int)HttpStatusCode.BadRequest;
                             ModelState.AddModelError("shiftdata", "Данните за смяната вече са потвърдени!!!");
                             var errors = GetErrorListFromModelState(ModelState);
-                            return Json(new { data = new { errors=errors} });
+                            return Json(new { data = new { errors = errors } });
                         }
                     }
-                    else 
-                    { 
+                    else
+                    {
                         data.SaveChanges(this.UserProfile.UserName);
                     }
 
-                    return Json(new { IsConfirmed = true}, JsonRequestBehavior.AllowGet);
+                    return Json(new { IsConfirmed = true }, JsonRequestBehavior.AllowGet);
                 }
-                return new HttpStatusCodeResult(200,"Ok");
+                return new HttpStatusCodeResult(200, "Ok");
             }
             else
             {
                 Response.StatusCode = (int)HttpStatusCode.BadRequest;
                 var errors = GetErrorListFromModelState(ModelState);
-                return Json(new { data = new { errors=errors} });
+                return Json(new { data = new { errors = errors } });
             }
         }
- 
+
         private void CalculateUnitsDailyData(IQueryable<CalculatedField> unitsDailyData, Hashtable ht, ProcessUnitConfirmShiftInputModel model)
         {
             var calculator = new Calculator();
@@ -230,7 +213,7 @@
                 var inputParams = new Dictionary<string, double>();
                 for (int i = 0; i < inputParamsValues.Count(); i++)
                 {
-                    inputParams.Add(string.Format("p{0}", i), inputParamsValues[i]);  
+                    inputParams.Add(string.Format("p{0}", i), inputParamsValues[i]);
                 }
 
                 var value = calculator.Calculate(item.Formula, "p", inputParams.Count, inputParams);
@@ -242,7 +225,7 @@
                 });
             }
         }
- 
+
         private IQueryable<CalculatedField> GetUnitsDailyDataConfig(ProcessUnitConfirmShiftInputModel model)
         {
             var unitsDailyData = this.data.UnitsDailyConfigs
@@ -257,7 +240,7 @@
                                             });
             return unitsDailyData;
         }
- 
+
         private IQueryable<BaseUnitData> GetUnitsDataForDay(ProcessUnitConfirmShiftInputModel model, ProductionShift lastShift)
         {
             var firstShift = this.data.ProductionShifts.All().OrderBy(x => x.Id).First();
@@ -275,7 +258,7 @@
                                 });
             return ud;
         }
- 
+
         private Hashtable CalculateDailyDataByCodes(IQueryable<BaseUnitData> ud)
         {
             // Todo: Refactoring, refactoring, refactoring
@@ -291,11 +274,11 @@
                 {
                     if (item.Value.HasValue)
                     {
-                        ht.Add(item.Code, (double)item.Value); 
+                        ht.Add(item.Code, (double)item.Value);
                     }
                     else
                     {
-                        ht.Add(item.Code, default(double)); 
+                        ht.Add(item.Code, default(double));
                     }
                 }
             }
@@ -364,7 +347,7 @@
     public class BaseUnitData
     {
         public int Id { get; set; }
-        public int UnitConfigId{get; set;}
+        public int UnitConfigId { get; set; }
         public string Code { get; set; }
         public decimal? Value { get; set; }
     }

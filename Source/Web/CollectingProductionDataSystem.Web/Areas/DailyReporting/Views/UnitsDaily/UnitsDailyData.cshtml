@@ -34,7 +34,6 @@
     .Sortable()
     .Scrollable(scr => scr.Height(660))
     .Filterable()
-    .Editable(editable => editable.Mode(GridEditMode.InLine))
     .DataSource(dataSource => dataSource
         .Ajax()
         .PageSize(50)
@@ -60,6 +59,7 @@
         })
     )
 )
+
 @* //Error window for kendo grid error event handler *@
 <div id="err-window" style="display:none">@Html.Partial("_KendoGridErrorWindow")</div>
 @* //Error window for kendo grid error event handler *@

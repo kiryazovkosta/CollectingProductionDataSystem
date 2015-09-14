@@ -308,6 +308,7 @@
     <Content Include="Content\Images\center.png" />
     <Content Include="Content\Images\danger.png" />
     <Content Include="Content\Images\error.png" />
+    <Content Include="Content\Images\Excel-icon.png" />
     <Content Include="Content\Images\factory.png" />
     <Content Include="Content\Images\LUK.png" />
     <Content Include="Content\Images\ok.png" />
