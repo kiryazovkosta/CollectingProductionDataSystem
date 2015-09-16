@@ -10,10 +10,13 @@ namespace CollectingProductionDataSystem.Models.Productions
         public int Id { get; set; }
         public DateTime RecordTimestamp { get; set; }
         public int UnitConfigId { get; set; }
+        public ShiftType ShiftId { get; set; }
         public decimal? Value { get; set; }
         public bool IsApproved { get; set; }
+        public int? UnitsDailyDataId { get; set; }
         public virtual UnitConfig UnitConfig { get; set; }
         public virtual UnitsManualData UnitsManualData { get; set; }
+        public virtual UnitsDailyData UnitsDailyData { get; set; } 
 
         public override string ToString()
         {

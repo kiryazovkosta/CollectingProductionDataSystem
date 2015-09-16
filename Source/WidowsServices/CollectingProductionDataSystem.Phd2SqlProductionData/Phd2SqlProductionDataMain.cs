@@ -176,7 +176,7 @@
                             var unitsConfigsList = context.Units.All().ToList();
                             foreach (var unitConfig in unitsConfigsList)
                             {
-                                if (!string.IsNullOrEmpty(unitConfig.PreviousShiftTag))
+                                if (unitConfig.CollectingDataMechanism == "A")
                                 {
                                     int confidence;
                                     var now = DateTime.Now;
@@ -216,54 +216,48 @@
                                     }
 
                                     var unitData = GetUnitData(unitConfig, oPhd, out confidence);
-                                    if (confidence > Properties.Settings.Default.INSPECTION_DATA_MINIMUM_CONFIDENCE && 
-                                        unitData.RecordTimestamp != null)
+                                    if (confidence > Properties.Settings.Default.INSPECTION_DATA_MINIMUM_CONFIDENCE && unitData.RecordTimestamp != null)
                                     {
-                                        var u = context.UnitsData
-                                            .All()
-                                            .FirstOrDefault(x => x.UnitConfigId == unitData.UnitConfigId 
-                                                && x.RecordTimestamp.CompareTo(unitData.RecordTimestamp) == ZERO);
+                                        var u = context.UnitsData.All().FirstOrDefault(x => x.UnitConfigId == unitData.UnitConfigId && x.RecordTimestamp.CompareTo(unitData.RecordTimestamp) == ZERO);
                                         if (u == null)
                                         {
                                             if (now.Hour >= 5 && now.Hour < 13)
                                             {
-                                                SetPrimaryDataInRange(now, context, unitData, FIVE, THIRTEEN);
+                                                var prevDay = unitData.RecordTimestamp.AddDays(-1);
+                                                unitData.RecordTimestamp = new DateTime(prevDay.Year, prevDay.Month, prevDay.Day, 0, 0, 0);
+                                                SetPrimaryDataInRange(now, context, unitData, ShiftType.Third, FIVE, THIRTEEN);
                                             }
                                             else if (now.Hour >= 13 && now.Hour < 21)
 	                                        {
-                                                SetPrimaryDataInRange(now, context, unitData, THIRTEEN, TWENTY_ONE);
+                                                unitData.RecordTimestamp = new DateTime(unitData.RecordTimestamp.Year, unitData.RecordTimestamp.Month, unitData.RecordTimestamp.Day, 0, 0, 0);
+                                                SetPrimaryDataInRange(now, context, unitData, ShiftType.First, THIRTEEN, TWENTY_ONE);
 	                                        }
                                             else if (now.Hour >= 21)
                                             {
-                                                var s1 = context.UnitsData
-                                                    .All()
-                                                    .ToList()
-                                                    .FirstOrDefault(x => x.UnitConfigId == unitData.UnitConfigId  
-                                                        && range.Includes(x.RecordTimestamp));
+                                                var s1 = context.UnitsData.All().ToList().FirstOrDefault(x => x.UnitConfigId == unitData.UnitConfigId  && range.Includes(x.RecordTimestamp));
                                                 if (s1 == null)
                                                 {
+                                                    unitData.ShiftId = ShiftType.Second;
+                                                    unitData.RecordTimestamp = new DateTime(unitData.RecordTimestamp.Year, unitData.RecordTimestamp.Month, unitData.RecordTimestamp.Day, 0, 0, 0);
                                                     context.UnitsData.Add(unitData);   
                                                 }
                                                 else
                                                 {
-                                                    // by desing we cannnot modify automatically readed data
                                                     logger.InfoFormat("[ProcessPrimaryProductionData][{0}][{1}][{2}]-[{3}][{4}][{5}] already exists", s.RecordTimestamp, s.UnitConfigId, s.Value, unitData.RecordTimestamp, unitData.UnitConfigId, unitData.Value);
                                                 }
                                             }
                                             else
                                             {
-                                                var s2 = context.UnitsData
-                                                    .All()
-                                                    .ToList()
-                                                    .FirstOrDefault(x => x.UnitConfigId == unitData.UnitConfigId  
-                                                        && range.Includes(x.RecordTimestamp));
+                                                var s2 = context.UnitsData.All().ToList().FirstOrDefault(x => x.UnitConfigId == unitData.UnitConfigId && range.Includes(x.RecordTimestamp));
                                                 if (s2 == null)
                                                 {
+                                                    var prevDay = unitData.RecordTimestamp.AddDays(-1);
+                                                    unitData.RecordTimestamp = new DateTime(prevDay.Year, prevDay.Month, prevDay.Day, 0, 0, 0);
+                                                    unitData.ShiftId = ShiftType.Second;
                                                     context.UnitsData.Add(unitData);   
                                                 }
                                                 else
                                                 {
-                                                    // by desing we cannnot modify automatically readed data
                                                     logger.InfoFormat("[ProcessPrimaryProductionData][{0}][{1}][{2}]-[{3}][{4}][{5}] already exists", s.RecordTimestamp, s.UnitConfigId, s.Value, unitData.RecordTimestamp, unitData.UnitConfigId, unitData.Value);
                                                 }
                                             }
@@ -271,7 +265,8 @@
                                     }
                                     else
                                     {
-                                        var recordDataTime = GetRecordTimestamp();
+                                        var recordDataTime = GetRecordTimestamp(now);
+                                        var shift = GetShift(now);
                                         var u = context.UnitsData
                                             .All()
                                             .FirstOrDefault(x => x.UnitConfigId == unitConfig.Id
@@ -283,19 +278,18 @@
                                             {
                                                 UnitConfigId = unitConfig.Id,
                                                 Value = null,
-                                                RecordTimestamp = recordDataTime
+                                                RecordTimestamp = recordDataTime,
+                                                ShiftId = shift
                                             });
-
                                         }
                                     }
                                 }
                                 else 
                                 {
-                                    var recordDataTime = GetRecordTimestamp();
-                                    var u = context.UnitsData
-                                            .All()
-                                            .FirstOrDefault(x => x.UnitConfigId == unitConfig.Id 
-                                                && x.RecordTimestamp.CompareTo(recordDataTime) == ZERO);
+                                    var now = DateTime.Now;
+                                    var recordDataTime = GetRecordTimestamp(now);
+                                    var shift = GetShift(now);
+                                    var u = context.UnitsData.All().FirstOrDefault(x => x.UnitConfigId == unitConfig.Id && x.RecordTimestamp.CompareTo(recordDataTime) == ZERO);
                                     if (u == null)
                                     {
                                         context.UnitsData.Add(
@@ -303,7 +297,8 @@
                                         {
                                             UnitConfigId = unitConfig.Id,
                                             Value = null,
-                                            RecordTimestamp = recordDataTime
+                                            RecordTimestamp = recordDataTime,
+                                            ShiftId = shift
                                         }); 
                                     }
                                 }
@@ -336,30 +331,35 @@
             }
         }
 
-        private static DateTime GetRecordTimestamp()
+        private static DateTime GetRecordTimestamp(DateTime recordDateTime)
         {
-            DateTime recordDataTime;
-            var now = DateTime.Now;
-            if (now.Hour >= 5 && now.Hour < 13)
+            var result = new DateTime(recordDateTime.Year, recordDateTime.Month, recordDateTime.Day, 0, 0, 0);
+
+            if (recordDateTime.Hour >= 5 && recordDateTime.Hour < 13)
             {
-                recordDataTime = new DateTime(now.Year, now.Month, now.Day, 5, 10, ZERO);
+                result = result.AddDays(-1);
             }
-            else if (now.Hour >= 13 && now.Hour < 21)
+
+            return result;
+        }
+
+        private static ShiftType GetShift(DateTime recordDateTime)
+        {
+            if (recordDateTime.Hour >= 5 && recordDateTime.Hour < 13)
             {
-                recordDataTime = new DateTime(now.Year, now.Month, now.Day, 13, 10, ZERO);
+                return ShiftType.Third;
             }
-            else if (now.Hour >= 21)
+            else if (recordDateTime.Hour >= 13 && recordDateTime.Hour < 21)
             {
-                recordDataTime = new DateTime(now.Year, now.Month, now.Day, 21, 10, ZERO);
+                return ShiftType.First;
             }
             else
             {
-                recordDataTime = new DateTime(now.Year, now.Month, now.Day, 21, 10, ZERO).AddDays(-1);
+                return ShiftType.Second;
             }
-            return recordDataTime;
         }
  
-        private static void SetPrimaryDataInRange(DateTime now, ProductionData context, UnitsData unitData, int startHour, int endHour)
+        private static void SetPrimaryDataInRange(DateTime now, ProductionData context, UnitsData unitData, ShiftType shiftType, int startHour, int endHour)
         {
             var startDate = new DateTime(now.Year, now.Month, now.Day, startHour, ONE, ZERO);
             var endDate = new DateTime(now.Year, now.Month, now.Day, endHour, ZERO, ZERO);
@@ -371,11 +371,11 @@
                                                 range.Includes(x.RecordTimestamp));
             if (s == null)
             {
+                unitData.ShiftId = shiftType;
                 context.UnitsData.Add(unitData);   
             }
             else
             {
-                // by desing we cannnot modify automatically readed data
                 logger.InfoFormat("[ProcessPrimaryProductionData][{0}][{1}][{2}]-[{3}][{4}][{5}] already exists", s.RecordTimestamp, s.UnitConfigId, s.Value, unitData.RecordTimestamp, unitData.UnitConfigId, unitData.Value);
             }
         }
