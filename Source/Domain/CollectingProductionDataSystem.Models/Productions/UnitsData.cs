@@ -1,5 +1,3 @@
-
-
 namespace CollectingProductionDataSystem.Models.Productions
 {
     using System;
@@ -16,5 +14,22 @@ namespace CollectingProductionDataSystem.Models.Productions
         public bool IsApproved { get; set; }
         public virtual UnitConfig UnitConfig { get; set; }
         public virtual UnitsManualData UnitsManualData { get; set; }
+
+        public override string ToString()
+        {
+            if(this.UnitsManualData != null)
+            {
+                return this.UnitsManualData.Value.ToString();
+            }
+
+            if (this.Value.HasValue)
+            {
+               return this.Value.Value.ToString(); 
+            }
+            else
+            {
+                return string.Empty;
+            }
+        }
     }
 }
