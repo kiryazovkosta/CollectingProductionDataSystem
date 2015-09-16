@@ -259,7 +259,6 @@
     </Compile>
     <Compile Include="Controllers\TanksController.cs" />
     <Compile Include="Controllers\TestsController.cs" />
-    <Compile Include="Controllers\UnitsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -1288,7 +1287,6 @@
     <Content Include="Views\Tests\TankChange.cshtml" />
     <Content Include="Views\Tests\TankData.cshtml" />
     <Content Include="Views\Tests\Test.cshtml" />
-    <Content Include="Views\Units\UnitsData.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\EditReason.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\EditReasonInputModel.cshtml" />
     <Content Include="Views\Shared\_KendoGridErrorWindow.cshtml" />
@@ -1298,7 +1296,6 @@
     <Content Include="Views\Shared\_KendoLayoutWithSideBar.cshtml" />
     <Content Include="Views\Shared\_SampleSideBar.cshtml" />
     <Content Include="Views\Shared\_UnitsDailySideBar.cshtml" />
-    <Content Include="Views\Units\UnitsDailyData.cshtml" />
     <Content Include="Views\Shared\_SuccessWindow.cshtml" />
     <Content Include="Views\Shared\_TanksSideBar.cshtml" />
   </ItemGroup>
