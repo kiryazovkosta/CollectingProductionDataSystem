@@ -1,5 +1,7 @@
-﻿@using CollectingProductionDataSystem.Web.ViewModels.Units;
+﻿@using System.Web.Optimization;
+@using CollectingProductionDataSystem.Web.ViewModels.Units;
 @using Resources = App_GlobalResources.Resources;
+
 @model UnitDataViewModel
 @{
     Layout = "~/Views/Shared/_KendoLayoutWithSideBar.cshtml";
@@ -85,9 +87,10 @@
 
 
 @section scripts{
-    <script src="~/Scripts/custom/sendAntiForgery.js"></script>
-    <script src="~/Scripts/custom/kendoGridErrorHandler.js"></script>
-    <script>
+    @Scripts.Render("~/bundles/custom/unitGrids")
+
+
+    @*<script>
         kendo.culture("@System.Threading.Thread.CurrentThread.CurrentCulture.Name");
 
         function sendProcessUnit() {
@@ -256,8 +259,8 @@
             });
         }
 
-        
-    </script>
+
+    </script>*@
 }
 @section sidebar{
     @Html.Partial("_SampleSideBar")

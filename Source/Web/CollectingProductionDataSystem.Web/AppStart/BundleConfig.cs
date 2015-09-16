@@ -8,11 +8,13 @@ namespace CollectingProductionDataSystem.Web.AppStart
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.IgnoreList.Clear();
+            //AddDefaultIgnorePatterns(bundles.IgnoreList);
 
             ConfigureStyleBundles(bundles);
             ConfigureScriptBundles(bundles);
 
-            BundleTable.EnableOptimizations = false;
+            BundleTable.EnableOptimizations = true;
+
         }
 
         private static void ConfigureStyleBundles(BundleCollection bundles)
@@ -22,7 +24,7 @@ namespace CollectingProductionDataSystem.Web.AppStart
                       "~/Content/bootstrap-theme.min.css",
                       "~/Content/Site.css"));
 
-            bundles.Add(new StyleBundle("~/Content/kendo").Include(
+            bundles.Add(new StyleBundle("~/Content/kendo/kendo-stiles").Include(
                     "~/Content/kendo/kendo.common-bootstrap.min.css",
                     "~/Content/kendo/kendo.bootstrap.min.css"));
             bundles.Add(new StyleBundle("~/Content/custom/slidebar").Include(
@@ -55,6 +57,16 @@ namespace CollectingProductionDataSystem.Web.AppStart
 
             bundles.Add(new ScriptBundle("~/bundles/custom/sidebar").Include(
                 "~/Scripts/custom/sidebar.js"));
+            bundles.Add(new ScriptBundle("~/bundles/custom/unitGrids").Include(
+                "~/Scripts/custom/sendAntiForgery.js",                
+                "~/Scripts/custom/unitGridsData.js"
+                ));
+        }
+
+        public static void AddDefaultIgnorePatterns(IgnoreList ignoreList)
+        {
+            ignoreList.Ignore("*.min.js", OptimizationMode.WhenDisabled);
+            ignoreList.Ignore("*.min.css", OptimizationMode.WhenDisabled);
         }
     }
 }

@@ -1,5 +1,7 @@
-﻿@using CollectingProductionDataSystem.Web.ViewModels.Units;
+﻿@using System.Web.Optimization;
+@using CollectingProductionDataSystem.Web.ViewModels.Units;
 @using Resources = App_GlobalResources.Resources;
+
 @model UnitDailyDataViewModel
 @{
     Layout = "~/Views/Shared/_KendoLayoutWithSideBar.cshtml";
@@ -15,8 +17,9 @@
 </div>
 @Html.ValidationSummary()
 @Html.AntiForgeryToken()
-
-@(Html.Kendo()
+<div class="row">
+    <div class="col-md-9">
+        @(Html.Kendo()
     .Grid<UnitDailyDataViewModel>()
     .Name("units")
     .AutoBind(false)
@@ -70,10 +73,60 @@
         .Events(events =>
         {
             events.Error("error_handler");
-            events.Change("dataChanged");
         })
     )
-)
+        )
+    </div>
+
+    <div class="col-md-3">
+        @(Html.Kendo()
+    .Grid<UnitDailyDataViewModel>()
+    .Name("productionPlan")
+    .AutoBind(false)
+    .Columns(
+        columns =>
+        {
+            columns.Bound("Id").Title("Продукт");
+            columns.Bound("Id").Title("%").Width(30);            
+            columns.Bound("Id").Title("Количество (план T)");
+            columns.Bound("Id").Title("Количество (факт T)");
+
+        })
+    .Sortable()
+     .Excel(excel => excel
+        .FileName(@Resources.Layout.UnitsDailyData + "_" + DateTime.Now + ".xlsx")
+        .Filterable(true)
+        .ProxyURL(Url.Action("Excel_Export_Save", "Tests", new { area = "" }))
+        .AllPages(true))
+    .Events(ev => ev.DataBound("dataBound"))
+    .Scrollable(scr => scr.Height(200))
+    .DataSource(dataSource => dataSource
+        .Ajax()
+        .ServerOperation(true)
+            .Group(group => group.Add(c => c.UnitsDailyConfig.ProductType.Sort))
+        .Read(read => read.Action("ReadDailyUnitsData", "UnitsDaily", new { area = "DailyReporting" }).Data("sendDate"))
+        .Update(update => update.Action("Edit", "UnitsDaily", new { area = "DailyReporting" }).Data("sendAntiForgery"))
+        .Model(model =>
+        {
+            model.Id(p => p.Id);
+            model.Field(p => p.UnitsDailyConfig.Code).Editable(false);
+            model.Field(p => p.UnitsDailyConfig.ProductType.Name).Editable(false);
+            model.Field(p => p.UnitsDailyConfig.ProcessUnit.ShortName).Editable(false);
+            model.Field(p => p.UnitsDailyConfig.Name).Editable(false);
+            model.Field(p => p.UnitsDailyConfig.MeasureUnit.Code).Editable(false);
+            model.Field(p => p.Value).Editable(false);
+            model.Field(p => p.UnitsManualDailyData.Value).Editable(true);
+            model.Field(p => p.UnitsManualDailyData.EditReason).Editable(true);
+        })
+        .Events(events =>
+        {
+            events.Error("error_handler");
+        })
+    )
+        )
+    </div>
+</div>
+
 
 @* //Error window for kendo grid error event handler *@
 <div id="err-window" style="display:none">@Html.Partial("_KendoGridErrorWindow")</div>
@@ -81,197 +134,196 @@
 <div id="success-window" style="display:none">@Html.Partial("_SuccessWindow")</div>
 
 @section scripts{
-    <script src="~/Scripts/custom/sendAntiForgery.js"></script>
-    <script src="~/Scripts/custom/kendoGridErrorHandler.js"></script>
-    <script>
-        kendo.culture("@System.Threading.Thread.CurrentThread.CurrentCulture.Name");
+    @Scripts.Render("~/bundles/custom/unitGrids")
+    @*<script>
+            kendo.culture("@System.Threading.Thread.CurrentThread.CurrentCulture.Name");
 
-        function sendProcessUnit() {
-            return { "processUnitId": $('input[name=processunits]').val() }
-        }
-
-        var sendDate = function () {
-            var result = { "date": $('input[name=date]').val() };
-            $.extend(result, sendProcessUnit());
-            $.extend(result, sendAntiForgery());
-            return result;
-        }
-        function error_handler(e) {
-            if (e.errors) {
-                var message = "";
-                $.each(e.errors, function (key, value) {
-                    if ('errors' in value) {
-                        $.each(value.errors, function () {
-                            message += this + "\n";
-                        });
-                    }
-                });
-                $('pre#err-message').text(message);
-                $('div#err-window').data("kendoWindow").open();
+            function sendProcessUnit() {
+                return { "processUnitId": $('input[name=processunits]').val() }
             }
-        }
 
-        function closeWindow(selector) {
-            $(selector).data("kendoWindow").close();
-        }
+            var sendDate = function () {
+                var result = { "date": $('input[name=date]').val() };
+                $.extend(result, sendProcessUnit());
+                $.extend(result, sendAntiForgery());
+                return result;
+            }
+            function error_handler(e) {
+                if (e.errors) {
+                    var message = "";
+                    $.each(e.errors, function (key, value) {
+                        if ('errors' in value) {
+                            $.each(value.errors, function () {
+                                message += this + "\n";
+                            });
+                        }
+                    });
+                    $('pre#err-message').text(message);
+                    $('div#err-window').data("kendoWindow").open();
+                }
+            }
 
-        function recordTimeStampFilter(element) {
-            element.kendoDateTimePicker();
-        }
+            function closeWindow(selector) {
+                $(selector).data("kendoWindow").close();
+            }
 
-        $(document).ready(function () {
-            $("#apply").click(function () {
-                var grid = $("#units").data("kendoGrid");
-                grid.dataSource.read();
-                grid.refresh();
-                checkConfirmedStatus();
-                grid.dataSource.fetch(function () {
-                    var totalRows = grid.dataSource.total();
-                    if (totalRows === 0) {
-                        hideCommandButtons();
-                    }
+            function recordTimeStampFilter(element) {
+                element.kendoDateTimePicker();
+            }
+
+            $(document).ready(function () {
+                $("#apply").click(function () {
+                    var grid = $("#units").data("kendoGrid");
+                    grid.dataSource.read();
+                    grid.refresh();
+                    checkConfirmedStatus();
+                    grid.dataSource.fetch(function () {
+                        var totalRows = grid.dataSource.total();
+                        if (totalRows === 0) {
+                            hideCommandButtons();
+                        }
+                    });
+                });
+                prepareWindow();
+                prepareSuccessWindow();
+                hideCommandButtons();
+                hideShiftComboBox();
+                AttachEventToExportBtn("#excel-export", "#units");
+
+                $("#confirm").click(function () {
+                    var date = sendDate();
+                    $.ajax({
+                        url: 'Confirm',
+                        type: 'POST',
+                        data: date,
+                        success: function (data) {
+                            var confirmed = data.IsConfirmed;
+                            if (confirmed === true) {
+                                hideCommandButtons();
+                                var message = "Вие потвърдихте отчета успешно."
+                                $('pre#succ-message').text(message);
+                                $('div#success-window').data("kendoWindow").open();
+
+                            } else {
+                                if (data.errors) {
+                                    var errorMessage = "";
+                                    $.each(data.errors, function (key, value) {
+                                        if ('errors' in value) {
+                                            $.each(value.errors, function () {
+                                                errorMessage += this + "\n";
+                                            });
+                                        }
+                                    });
+                                    $('pre#err-message').text(errorMessage);
+                                    $('div#err-window').data("kendoWindow").open();
+                                }
+                                showCommandButtons();
+                            }
+                        },
+                        error: function (data) {
+                            var errorMessage = "";
+                            var response = JSON.parse(data.responseText).data;
+                            $.each(response.errors, function (key, value) {
+                                errorMessage += this + "\n";
+                            });
+                            $('pre#err-message').text(errorMessage);
+                            $('div#err-window').data("kendoWindow").open();
+                        }
+                    });
                 });
             });
-            prepareWindow();
-            prepareSuccessWindow();
-            hideCommandButtons();
-            hideShiftComboBox();
-            AttachEventToExportBtn("#excel-export", "#units");
 
-            $("#confirm").click(function () {
+            function prepareWindow() {
+                var window = $('div#err-window')
+                window.kendoWindow({
+                    width: "650px",
+                    title: "Възникна грешка в приложението",
+                    actions: ["Close"],
+                    modal: true,
+                    position: {
+                        top: "30%", // or "100px"
+                        left: "30%"
+                    },
+                    minHeight: 100,
+                    maxHeight: 350
+                });
+            }
+
+            function prepareSuccessWindow() {
+                var window = $('div#success-window')
+                window.kendoWindow({
+                    width: "650px",
+                    title: "Успешна операция",
+                    actions: ["Close"],
+                    modal: true,
+                    position: {
+                        top: "30%", // or "100px"
+                        left: "30%"
+                    },
+                    minHeight: 100,
+                    maxHeight: 350
+                });
+            }
+
+            function hideShiftComboBox() {
+                $("#shift-section").hide();
+            }
+
+            function hideCommandButtons() {
+                $("#confirm").hide();
+                $("#units").data("kendoGrid").hideColumn(8);
+            }
+
+            function showCommandButtons() {
+                $("#confirm").show();
+                $("#units").data("kendoGrid").showColumn(8);
+            }
+
+            function checkConfirmedStatus() {
                 var date = sendDate();
                 $.ajax({
-                    url: 'Confirm',
+                    url: 'UnitsDailyDataIsConfirmed',
                     type: 'POST',
                     data: date,
-                    success: function (data) {
-                        var confirmed = data.IsConfirmed;
-                        if (confirmed === true) {
-                            hideCommandButtons();
-                            var message = "Вие потвърдихте отчета успешно."
-                            $('pre#succ-message').text(message);
-                            $('div#success-window').data("kendoWindow").open();
-
-                        } else {
-                            if (data.errors) {
-                                var errorMessage = "";
-                                $.each(data.errors, function (key, value) {
-                                    if ('errors' in value) {
-                                        $.each(value.errors, function () {
-                                            errorMessage += this + "\n";
-                                        });
-                                    }
-                                });
-                                $('pre#err-message').text(errorMessage);
-                                $('div#err-window').data("kendoWindow").open();
-                            }
+                    success: function (result) {
+                        var confirmed = result.IsConfirmed;
+                        if (confirmed === false) {
                             showCommandButtons();
+                        } else {
+                            hideCommandButtons();
                         }
                     },
-                    error: function (data) {
-                        var errorMessage = "";
-                        var response = JSON.parse(data.responseText).data;
-                        $.each(response.errors, function (key, value) {
-                            errorMessage += this + "\n";
-                        });
-                        $('pre#err-message').text(errorMessage);
-                        $('div#err-window').data("kendoWindow").open();
-                    }
-                });
-            });
-        });
-
-        function prepareWindow() {
-            var window = $('div#err-window')
-            window.kendoWindow({
-                width: "650px",
-                title: "Възникна грешка в приложението",
-                actions: ["Close"],
-                modal: true,
-                position: {
-                    top: "30%", // or "100px"
-                    left: "30%"
-                },
-                minHeight: 100,
-                maxHeight: 350
-            });
-        }
-
-        function prepareSuccessWindow() {
-            var window = $('div#success-window')
-            window.kendoWindow({
-                width: "650px",
-                title: "Успешна операция",
-                actions: ["Close"],
-                modal: true,
-                position: {
-                    top: "30%", // or "100px"
-                    left: "30%"
-                },
-                minHeight: 100,
-                maxHeight: 350
-            });
-        }
-
-        function hideShiftComboBox() {
-            $("#shift-section").hide();
-        }
-
-        function hideCommandButtons() {
-            $("#confirm").hide();
-            $("#units").data("kendoGrid").hideColumn(8);
-        }
-
-        function showCommandButtons() {
-            $("#confirm").show();
-            $("#units").data("kendoGrid").showColumn(8);
-        }
-
-        function checkConfirmedStatus() {
-            var date = sendDate();
-            $.ajax({
-                url: 'UnitsDailyDataIsConfirmed',
-                type: 'POST',
-                data: date,
-                success: function (result) {
-                    var confirmed = result.IsConfirmed;
-                    if (confirmed === false) {
-                        showCommandButtons();
-                    } else {
+                    error: function (result) {
                         hideCommandButtons();
                     }
-                },
-                error: function (result) {
-                    hideCommandButtons();
-                }
-            });
-        }
-        function AttachEventToExportBtn(buttonSelector, targetSelector) {
-            $(buttonSelector).click(function () {
-                $(targetSelector).data("kendoGrid").saveAsExcel();
-            });
-        }
-
-        var dataChanged = function (ev) {
-            if (this.dataSource) {
-
+                });
             }
-        }
+            function AttachEventToExportBtn(buttonSelector, targetSelector) {
+                $(buttonSelector).click(function () {
+                    $(targetSelector).data("kendoGrid").saveAsExcel();
+                });
+            }
 
-        var dataBound = function () {
-            dataView = this.dataSource.view();
-            for (var i = 0; i < dataView.length; i++) {
-                for (var j = 0; j < dataView[i].items.length; j++) {
+            var dataChanged = function (ev) {
+                if (this.dataSource) {
 
-                    if (dataView[i].items[j].HasManualData === true) {
-                        var uid = dataView[i].items[j].uid;
-                        $("#" + $(this.element).attr('id') + " tbody").find("tr[data-uid=" + uid + "]").addClass("bg-danger");
+                }
+            }
+
+            var dataBound = function () {
+                dataView = this.dataSource.view();
+                for (var i = 0; i < dataView.length; i++) {
+                    for (var j = 0; j < dataView[i].items.length; j++) {
+
+                        if (dataView[i].items[j].HasManualData === true) {
+                            var uid = dataView[i].items[j].uid;
+                            $("#" + $(this.element).attr('id') + " tbody").find("tr[data-uid=" + uid + "]").addClass("bg-danger");
+                        }
                     }
                 }
             }
-        }
 
-    </script>
+        </script>*@
 }
 @section sidebar{
     @Html.Partial("_UnitsDailySideBar")

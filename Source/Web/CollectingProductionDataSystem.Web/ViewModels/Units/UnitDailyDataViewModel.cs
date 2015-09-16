@@ -36,7 +36,7 @@
                 .ForMember(p => p.UnitsManualDailyData, opt => opt.MapFrom(p => p.UnitsManualDailyData ?? new UnitsManualDailyData() { Value = p.Value }));
         }
 
-        public bool HasManualData { get; set; }
+        public bool HasManualData { get { return rnd.Next(10) > 6; } set { } }
     }
 
     public class UnitsDailyConfigDataViewModel : IMapFrom<UnitsDailyConfig>

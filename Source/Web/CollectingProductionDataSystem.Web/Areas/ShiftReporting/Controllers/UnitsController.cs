@@ -302,7 +302,7 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult UnitsDataIsConfirmed([DataSourceRequest]
+        public ActionResult IsConfirmed([DataSourceRequest]
                                                  DataSourceRequest request, DateTime? date, int? processUnitId, int? shiftId)
         {
             ValidateModelState(date, processUnitId, shiftId);

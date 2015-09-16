@@ -1,5 +1,6 @@
 ﻿@using Resources = App_GlobalResources.Resources;
 @using CollectingProductionDataSystem.Web.Infrastructure.Helpers;
+@using Resources = App_GlobalResources.Resources;
 
 <div class="form-group">
     <label for="factories">@Resources.Layout.Factory</label>
@@ -53,12 +54,7 @@
     <button id="confirm" type="button" class="btn btn-danger" style="width:95%">@Resources.Layout.Confirm</button>
 </div>
 
-@using (Html.BeginScripts()) { 
-    <script>
-        function sendFactory() {
-            return {
-                factoryId: $("#factories").val()
-            };
-        }
-    </script>
+@using (Html.BeginScripts())
+{
+    <script src="~/Scripts/custom/sendFactory.min.js"></script>
 }
