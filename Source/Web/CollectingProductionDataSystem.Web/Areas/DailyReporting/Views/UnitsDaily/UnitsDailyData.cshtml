@@ -45,6 +45,7 @@
         .Filterable(true)
         .ProxyURL(Url.Action("Excel_Export_Save", "Tests", new { area = "" }))
         .AllPages(true))
+    .Events(ev => ev.DataBound("dataBound"))
     .Scrollable(scr => scr.Height(640))
     .Filterable()
     .DataSource(dataSource => dataSource
@@ -69,6 +70,7 @@
         .Events(events =>
         {
             events.Error("error_handler");
+            events.Change("dataChanged");
         })
     )
 )
@@ -249,6 +251,26 @@
                 $(targetSelector).data("kendoGrid").saveAsExcel();
             });
         }
+
+        var dataChanged = function (ev) {
+            if (this.dataSource) {
+
+            }
+        }
+
+        var dataBound = function () {
+            dataView = this.dataSource.view();
+            for (var i = 0; i < dataView.length; i++) {
+                for (var j = 0; j < dataView[i].items.length; j++) {
+
+                    if (dataView[i].items[j].HasManualData === true) {
+                        var uid = dataView[i].items[j].uid;
+                        $("#" + $(this.element).attr('id') + " tbody").find("tr[data-uid=" + uid + "]").addClass("bg-danger");
+                    }
+                }
+            }
+        }
+
     </script>
 }
 @section sidebar{
