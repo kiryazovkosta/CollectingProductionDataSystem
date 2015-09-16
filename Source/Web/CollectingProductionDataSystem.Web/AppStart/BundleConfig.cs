@@ -8,13 +8,14 @@ namespace CollectingProductionDataSystem.Web.AppStart
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.IgnoreList.Clear();
-            //AddDefaultIgnorePatterns(bundles.IgnoreList);
 
             ConfigureStyleBundles(bundles);
             ConfigureScriptBundles(bundles);
-
+#if DEBUG
+            BundleTable.EnableOptimizations = false;
+#else
             BundleTable.EnableOptimizations = true;
-
+#endif
         }
 
         private static void ConfigureStyleBundles(BundleCollection bundles)
