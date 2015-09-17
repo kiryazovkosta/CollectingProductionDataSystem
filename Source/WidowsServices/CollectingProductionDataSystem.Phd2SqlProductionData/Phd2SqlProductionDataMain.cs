@@ -51,13 +51,13 @@
                 using (var context = new ProductionData(new CollectingDataSystemDbContext(new AuditablePersister())))
                 {
                     var units = context.Units
-                                       .All()
-                                       .Where(u => u.IsInspectionPoint == true)
-                                       .Select(u => new InspectionPoint()
-                                              {
-                                                  UnitId = u.Id,
-                                                  InspectionPointTag = u.CurrentInspectionDataTag
-                                              });
+                        .All()
+                        .Where(u => u.IsInspectionPoint == true)
+                        .Select(u => new InspectionPoint()
+                        {
+                            UnitId = u.Id,
+                            InspectionPointTag = u.CurrentInspectionDataTag
+                        });
 
                     if (units.Count() > 0)
                     {
@@ -185,7 +185,7 @@
                             {
                                 if (unitConfig.CollectingDataMechanism == "A")
                                 {
-                                    int confidence;
+                                    var confidence = 0;
 
                                     var s = unitsData.Where(x => x.UnitConfigId == unitConfig.Id).FirstOrDefault();
                                     if (s != null)
@@ -197,15 +197,18 @@
                                     var unitData = GetUnitData(unitConfig, oPhd, out confidence);
                                     if (confidence > Properties.Settings.Default.INSPECTION_DATA_MINIMUM_CONFIDENCE && unitData.RecordTimestamp != null)
                                     {
-                                        if (now.Hour >= 5 && now.Hour < 13)
+                                        if (/*now.Hour >= 5 && */now.Hour < 13)
                                         {
                                             var prevDay = unitData.RecordTimestamp.AddDays(-1).Date;
                                             unitData.RecordTimestamp = prevDay;
                                         }
 
-                                        unitData.ShiftId = shift;
-                                        unitData.RecordTimestamp = unitData.RecordTimestamp.Date;
-                                        context.UnitsData.Add(unitData);
+                                        if (unitsData.Where(x => x.RecordTimestamp == unitData.RecordTimestamp && x.ShiftId == shift).FirstOrDefault() == null)
+                                        {
+                                            unitData.ShiftId = shift;
+                                            unitData.RecordTimestamp = unitData.RecordTimestamp.Date;
+                                            context.UnitsData.Add(unitData); 
+                                        }
                                     }
                                     else
                                     {
@@ -265,7 +268,7 @@
         {
             var result = new DateTime(recordDateTime.Year, recordDateTime.Month, recordDateTime.Day, 0, 0, 0);
 
-            if (recordDateTime.Hour >= 5 && recordDateTime.Hour < 13)
+            if (/*recordDateTime.Hour >= 5 && */recordDateTime.Hour < 13)
             {
                 result = result.AddDays(-1);
             }
