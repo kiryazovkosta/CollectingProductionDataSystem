@@ -15,7 +15,7 @@
             this.data = dataParam;
         }
 
-        public IQueryable<UnitsData> GetUnitsDataForDateTime(DateTime? date, int? processUnitId, int? shiftId)
+        public IQueryable<UnitsData> GetUnitsDataForDateTime(DateTime? dateParam, int? processUnitIdParam, int? shiftIdParam)
         {
             var dbResult = this.data.UnitsData
                 .All()
@@ -25,27 +25,26 @@
                 .Include(x => x.UnitConfig.MeasureUnit)
                 .Include(x=>x.UnitsManualData)
                 .Include(x => x.UnitsManualData.EditReason);
-            if (date != null && shiftId != null)
-            {
-                var shiftData = this.data.ProductionShifts.All().Where(s => s.Id == shiftId).FirstOrDefault();
 
-                if (shiftData != null)
-                {
-                    var beginTimestamp = date.Value.AddMinutes(shiftData.BeginMinutes);
-                    var endTimestamp = beginTimestamp.AddMinutes(shiftData.OffsetMinutes);
-                    dbResult = dbResult.Where(x => x.RecordTimestamp > beginTimestamp && x.RecordTimestamp <= endTimestamp);
-                }
+            if (dateParam != null)
+            {
+                dbResult = dbResult.Where(u => u.RecordTimestamp == dateParam.Value);
             }
 
-            if (processUnitId != null)
+            if (shiftIdParam != null)
             {
-                dbResult = dbResult.Include(x => x.UnitConfig.ProcessUnit)
-                    .Where(x => x.UnitConfig.ProcessUnitId == processUnitId);
+                dbResult = dbResult.Where(u => u.ShiftId == (ShiftType)shiftIdParam.Value);
+            }
+
+            if (processUnitIdParam != null)
+            {
+                dbResult = dbResult.Where(x => x.UnitConfig.ProcessUnitId == processUnitIdParam.Value);
             }
 
             dbResult = dbResult.OrderBy(x => x.UnitConfig.Code);
             return dbResult;
         }
+
         public IQueryable<UnitsDailyData> GetUnitsDailyDataForDateTime(DateTime? date, int? processUnitId)
         {
             var dbResult = this.data.UnitsDailyDatas
@@ -61,10 +60,10 @@
 
             if (processUnitId.HasValue)
 	        {
-		        dbResult = dbResult.Include(u => u.UnitsDailyConfig.ProcessUnit)
-                    .Where(u => u.UnitsDailyConfig.ProcessUnitId == processUnitId);
+		        dbResult = dbResult.Where(u => u.UnitsDailyConfig.ProcessUnitId == processUnitId);
 	        }
 
+            dbResult = dbResult.OrderBy(x => x.UnitsDailyConfig.Code);
             return dbResult;
         }
     }

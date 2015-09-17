@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CollectingProductionDataSystem.Infrastructure.Extentions;
 
 namespace CollectingProductionDataSystem.ConsoleClient
 {
@@ -16,6 +17,74 @@ namespace CollectingProductionDataSystem.ConsoleClient
         static void Main(string[] args)
         {
             var uow = new ProductionData(new CollectingDataSystemDbContext());
+            //TreeShiftsReports(uow);
+            SeedShiftsToDatabase(uow);
+        }
+
+        private static void SeedShiftsToDatabase(ProductionData uow)
+        {
+            var shifts = uow.ProductionShifts.All().ToArray();
+
+            var timer = new Stopwatch();
+
+            timer.Start();
+
+            // need to use some kind of structure to store shifts begin and end timestamps
+            // TODO: Remove AddDays(-1)
+            var shift1BeginTimestamp = DateTime.Today.AddMinutes(shifts[0].BeginMinutes);
+            var shift1EndTimestamp = DateTime.Today.AddMinutes(shifts[0].BeginMinutes + shifts[0].OffsetMinutes);
+
+            var shift2BeginTimestamp = DateTime.Today.AddMinutes(shifts[1].BeginMinutes);
+            var shift2EndTimestamp = DateTime.Today.AddMinutes(shifts[1].BeginMinutes + shifts[1].OffsetMinutes);
+
+            var shift3BeginTimestamp = DateTime.Today.AddMinutes(shifts[2].BeginMinutes);
+            var shift3EndTimestamp = DateTime.Today.AddMinutes(shifts[2].BeginMinutes + shifts[2].OffsetMinutes);
+
+            uow.DbContext.DbContext.Configuration.AutoDetectChangesEnabled = false;
+            var unitDatas = uow.UnitsData.All().Where(x=>x.RecordTimestamp < new DateTime(2015,9,15,5,2,0)).ToList();
+            Console.WriteLine(DateTime.Now.Date);
+            var result = unitDatas.Where(x => x.RecordTimestamp.Between(shift1BeginTimestamp, shift1EndTimestamp))
+                .ForEach(x => { x.ShiftId = ShiftType.First; x.RecordTimestamp = DbFunctions.TruncateTime(x.RecordTimestamp).Value; });
+
+            unitDatas.Where(x => x.RecordTimestamp.Between(shift1BeginTimestamp, shift1EndTimestamp))
+                .ForEach(x => { x.ShiftId = ShiftType.First; x.RecordTimestamp = DbFunctions.TruncateTime(x.RecordTimestamp).Value;})
+                .ForEach(x => { 
+                    var ent = uow.DbContext.Entry<UnitsData>(x);
+                    if (ent.State==EntityState.Detached)
+                    {
+                        uow.DbContext.DbContext.Set<UnitsData>().Attach(x); 
+                    }
+                    ent.State = EntityState.Modified; 
+                });
+
+            unitDatas.Where(x => x.RecordTimestamp.Between(shift2BeginTimestamp, shift2EndTimestamp))
+                .ForEach(x => { x.ShiftId = ShiftType.Second; /*x.RecordTimestamp = x.RecordTimestamp.Date; */})
+                 .ForEach(x => { 
+                    var ent = uow.DbContext.Entry<UnitsData>(x);
+                    if (ent.State==EntityState.Detached)
+                    {
+                        uow.DbContext.DbContext.Set<UnitsData>().Attach(x); 
+                    }
+                    ent.State = EntityState.Modified; 
+                });
+
+            unitDatas.Where(x => x.RecordTimestamp.Between(shift3BeginTimestamp, shift3EndTimestamp))
+                .ForEach(x => { x.ShiftId = ShiftType.Third; /*x.RecordTimestamp = x.RecordTimestamp.AddDays(-1).Date; */})
+                 .ForEach(x => { 
+                    var ent = uow.DbContext.Entry<UnitsData>(x);
+                    if (ent.State==EntityState.Detached)
+                    {
+                        uow.DbContext.DbContext.Set<UnitsData>().Attach(x); 
+                    }
+                    ent.State = EntityState.Modified; 
+                });
+            uow.DbContext.DbContext.Configuration.AutoDetectChangesEnabled = false;
+            uow.SaveChanges("Initial Loading");
+
+        }
+
+        private static void TreeShiftsReports(ProductionData uow)
+        {
             var shifts = uow.ProductionShifts.All().ToArray();
 
             var timer = new Stopwatch();
@@ -39,7 +108,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
                     x.RecordTimestamp > shift1BeginTimestamp &&
                     x.RecordTimestamp < shift3EndTimestamp)
                 .ToList();
-            
+
             var result = data.Select(x => new MultiShift
             {
                 TimeStamp = x.RecordTimestamp,

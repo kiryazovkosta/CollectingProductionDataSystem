@@ -16,13 +16,17 @@ namespace CollectingProductionDataSystem.Data.Mappings
             this.Property(u => u.Id)
                 .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 
-            this.Property(u => u.RecordTimestamp)
-                .HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("ix_unitdata_log", 1)))
-                .IsRequired();
+            //this.Property(u => u.RecordTimestamp)
+            //    .HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("ix_unitdata_log", 1)))
+            //    .IsRequired();
 
-            this.Property(u => u.UnitConfigId)
-                .HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("ix_unitdata_log", 2)))
-                .IsRequired();
+            //this.Property(u => u.UnitConfigId)
+            //    .HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("ix_unitdata_log", 2)))
+            //    .IsRequired();
+
+            //this.Property(u => u.ShiftId)
+            //    .HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("ix_unitdata_log", 3)))
+            //    .IsRequired();
 
             // Table & Column Mappings
             this.ToTable("UnitsDatas");
@@ -30,15 +34,10 @@ namespace CollectingProductionDataSystem.Data.Mappings
             // Relationships
             this.HasRequired(u => u.UnitConfig)
                 .WithMany(u => u.UnitsDatas)
-                .HasForeignKey(d => d.UnitConfigId);
+                .HasForeignKey(d => d.UnitConfigId).WillCascadeOnDelete(false);
 
             this.HasOptional(t => t.UnitsManualData)
-                .WithRequired(t => t.UnitsData);
-
-            this.HasOptional(t => t.UnitsDailyData)
-                .WithMany(t => t.UnitsDatas)
-                .HasForeignKey(d => d.UnitsDailyDataId);
-
+                .WithRequired(t => t.UnitsData).WillCascadeOnDelete(false);
         }
     }
 }

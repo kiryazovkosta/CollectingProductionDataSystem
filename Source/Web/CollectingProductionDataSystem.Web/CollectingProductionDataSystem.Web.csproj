@@ -675,13 +675,13 @@
     <Content Include="Areas\DailyReporting\Views\UnitsDaily\UnitsDailyData.cshtml" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <None Include="Properties\PublishProfiles\Home.pubxml" />
-    <Content Include="Scripts\custom\senFactory.min.js.map">
-      <DependentUpon>senFactory.min.js</DependentUpon>
+    <Content Include="Scripts\custom\sendFactory.js" />
+    <Content Include="Scripts\custom\sendFactory.min.js.map">
+      <DependentUpon>sendFactory.min.js</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
-    <Content Include="Scripts\custom\senFactory.js" />
-    <Content Include="Scripts\custom\senFactory.min.js">
-      <DependentUpon>senFactory.js</DependentUpon>
+    <Content Include="Scripts\custom\sendFactory.min.js">
+      <DependentUpon>sendFactory.js</DependentUpon>
     </Content>
     <Content Include="Scripts\custom\sidebar.js" />
     <Content Include="Scripts\custom\unitGridsData.js" />

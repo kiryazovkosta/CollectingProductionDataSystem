@@ -7,9 +7,10 @@
 
     public partial class UnitsDailyData : AuditInfo, IApprovableEntity, IEntity
     {
+        private ICollection<UnitsData> unitsDatas;
         public UnitsDailyData()
         {
-            this.UnitsDatas = new HashSet<UnitsData>();
+            this.unitsDatas = new HashSet<UnitsData>();
         }
 
         public int Id { get; set; }
@@ -20,6 +21,10 @@
         public bool HasManualData { get; set; }
         public virtual UnitsDailyConfig UnitsDailyConfig { get; set; }
         public virtual UnitsManualDailyData UnitsManualDailyData { get; set; }
-        public virtual ICollection<UnitsData> UnitsDatas { get; set; }
+        public virtual ICollection<UnitsData> UnitsDatas 
+        { 
+            get { return this.unitsDatas; }
+            set { this.unitsDatas = value;}
+        }
     }
 }
