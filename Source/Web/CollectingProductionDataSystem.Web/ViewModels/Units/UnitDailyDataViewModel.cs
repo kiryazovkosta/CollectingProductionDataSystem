@@ -12,7 +12,6 @@
 
     public class UnitDailyDataViewModel : IMapFrom<UnitsDailyData>, IHaveCustomMappings
     {
-        private static Random rnd = new Random(); 
         [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
         [Display(Name = "№")]
         public int Id { get; set; }
@@ -36,7 +35,7 @@
                 .ForMember(p => p.UnitsManualDailyData, opt => opt.MapFrom(p => p.UnitsManualDailyData ?? new UnitsManualDailyData() { Value = p.Value }));
         }
 
-        public bool HasManualData { get { return rnd.Next(10) > 6; } set { } }
+        public bool HasManualData { get; set; }
     }
 
     public class UnitsDailyConfigDataViewModel : IMapFrom<UnitsDailyConfig>

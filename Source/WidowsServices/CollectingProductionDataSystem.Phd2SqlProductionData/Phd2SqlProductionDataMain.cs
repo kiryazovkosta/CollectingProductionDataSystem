@@ -15,6 +15,7 @@
     using CollectingProductionDataSystem.Models.Productions;
     using System.Globalization;
     using CollectingProductionDataSystem.Models.Transactions;
+    using System.Collections.Generic;
 
     static class Phd2SqlProductionDataMain
     {
@@ -173,114 +174,47 @@
                         {
                             SetPhdConnectionSettings(oPhd, defaultServer);
 
+                            var now = DateTime.Now;
+                            var recordDataTime = GetRecordTimestamp(now);
+                            var shift = GetShift(now);
+
                             var unitsConfigsList = context.Units.All().ToList();
+                            var unitsData = context.UnitsData.All().Where(x => x.RecordTimestamp == recordDataTime && x.ShiftId == shift).ToList();
+
                             foreach (var unitConfig in unitsConfigsList)
                             {
                                 if (unitConfig.CollectingDataMechanism == "A")
                                 {
                                     int confidence;
-                                    var now = DateTime.Now;
-                                    var recordDataTime = GetRecordTimestamp(now);
-                                    var shift = GetShift(now);
 
-                                    var s = context.UnitsData.All().Where(x => x.UnitConfigId == unitConfig.Id  && x.RecordTimestamp == recordDataTime && x.ShiftId == shift).FirstOrDefault();
+                                    var s = unitsData.Where(x => x.UnitConfigId == unitConfig.Id).FirstOrDefault();
                                     if (s != null)
                                     {
+                                        logger.InfoFormat("[ProcessPrimaryProductionData][{0}][{1}][{2}] already exists", s.RecordTimestamp, s.UnitConfigId, s.Value);
                                         continue;
                                     }
 
                                     var unitData = GetUnitData(unitConfig, oPhd, out confidence);
                                     if (confidence > Properties.Settings.Default.INSPECTION_DATA_MINIMUM_CONFIDENCE && unitData.RecordTimestamp != null)
                                     {
-                                        var u = context.UnitsData.All().FirstOrDefault(x => x.UnitConfigId == unitData.UnitConfigId && x.RecordTimestamp.CompareTo(unitData.RecordTimestamp) == ZERO);
-                                        if (u == null)
+                                        if (now.Hour >= 5 && now.Hour < 13)
                                         {
-                                            if (now.Hour >= 5 && now.Hour < 13)
-                                            {
-                                                var prevDay = unitData.RecordTimestamp.AddDays(-1);
-                                                var ppD = new DateTime(prevDay.Year, prevDay.Month, prevDay.Day, 0, 0, 0);
-                                                unitData.RecordTimestamp = ppD;
-                                                //SetPrimaryDataInRange(now, context, unitData, ShiftType.Third, FIVE, THIRTEEN);
-
-                                                //var startDate = new DateTime(now.Year, now.Month, now.Day, startHour, ONE, ZERO);
-                                                //var endDate = new DateTime(now.Year, now.Month, now.Day, endHour, ZERO, ZERO);
-                                                //var range = new DateRange(startDate, endDate);
-                                                var ss = context.UnitsData.All().Where(x => x.UnitConfigId == unitData.UnitConfigId && x.RecordTimestamp == ppD && x.ShiftId == shift).FirstOrDefault();
-                                                if (ss == null)
-                                                {
-                                                    unitData.ShiftId = shift;
-                                                    context.UnitsData.Add(unitData);   
-                                                }
-                                                else
-                                                {
-                                                    logger.InfoFormat("[ProcessPrimaryProductionData][{0}][{1}][{2}]-[{3}][{4}][{5}] already exists", s.RecordTimestamp, s.UnitConfigId, s.Value, unitData.RecordTimestamp, unitData.UnitConfigId, unitData.Value);
-                                                }
-
-
-                                            }
-                                            //else if (now.Hour >= 13 && now.Hour < 21)
-                                            //{
-                                            //    unitData.RecordTimestamp = new DateTime(unitData.RecordTimestamp.Year, unitData.RecordTimestamp.Month, unitData.RecordTimestamp.Day, 0, 0, 0);
-                                            //    SetPrimaryDataInRange(now, context, unitData, ShiftType.First, THIRTEEN, TWENTY_ONE);
-                                            //}
-                                            //else if (now.Hour >= 21)
-                                            //{
-                                            //    var s1 = context.UnitsData.All().ToList().FirstOrDefault(x => x.UnitConfigId == unitData.UnitConfigId  && range.Includes(x.RecordTimestamp));
-                                            //    if (s1 == null)
-                                            //    {
-                                            //        unitData.ShiftId = ShiftType.Second;
-                                            //        unitData.RecordTimestamp = new DateTime(unitData.RecordTimestamp.Year, unitData.RecordTimestamp.Month, unitData.RecordTimestamp.Day, 0, 0, 0);
-                                            //        context.UnitsData.Add(unitData);   
-                                            //    }
-                                            //    else
-                                            //    {
-                                            //        logger.InfoFormat("[ProcessPrimaryProductionData][{0}][{1}][{2}]-[{3}][{4}][{5}] already exists", s.RecordTimestamp, s.UnitConfigId, s.Value, unitData.RecordTimestamp, unitData.UnitConfigId, unitData.Value);
-                                            //    }
-                                            //}
-                                            //else
-                                            //{
-                                            //    var s2 = context.UnitsData.All().ToList().FirstOrDefault(x => x.UnitConfigId == unitData.UnitConfigId && range.Includes(x.RecordTimestamp));
-                                            //    if (s2 == null)
-                                            //    {
-                                            //        var prevDay = unitData.RecordTimestamp.AddDays(-1);
-                                            //        unitData.RecordTimestamp = new DateTime(prevDay.Year, prevDay.Month, prevDay.Day, 0, 0, 0);
-                                            //        unitData.ShiftId = ShiftType.Second;
-                                            //        context.UnitsData.Add(unitData);   
-                                            //    }
-                                            //    else
-                                            //    {
-                                            //        logger.InfoFormat("[ProcessPrimaryProductionData][{0}][{1}][{2}]-[{3}][{4}][{5}] already exists", s.RecordTimestamp, s.UnitConfigId, s.Value, unitData.RecordTimestamp, unitData.UnitConfigId, unitData.Value);
-                                            //    }
-                                            //}
+                                            var prevDay = unitData.RecordTimestamp.AddDays(-1).Date;
+                                            unitData.RecordTimestamp = prevDay;
                                         }
+
+                                        unitData.ShiftId = shift;
+                                        unitData.RecordTimestamp = unitData.RecordTimestamp.Date;
+                                        context.UnitsData.Add(unitData);
                                     }
                                     else
                                     {
-                                        var u = context.UnitsData.All().Where(x => x.UnitConfigId == unitConfig.Id && x.RecordTimestamp.CompareTo(recordDataTime) == ZERO).FirstOrDefault();
-                                        if (u == null)
-                                        {
-                                            context.UnitsData.Add(
-                                            new UnitsData
-                                            {
-                                                UnitConfigId = unitConfig.Id, Value = null, RecordTimestamp = recordDataTime, ShiftId = shift
-                                            });
-                                        }
+                                        SetDefaultValue(context, recordDataTime, shift, unitsData, unitConfig);
                                     }
                                 }
                                 else 
                                 {
-                                    var now = DateTime.Now;
-                                    var recordDataTime = GetRecordTimestamp(now);
-                                    var shift = GetShift(now);
-                                    var u = context.UnitsData.All().Where(x => x.UnitConfigId == unitConfig.Id && x.RecordTimestamp.CompareTo(recordDataTime) == ZERO).FirstOrDefault();
-                                    if (u == null)
-                                    {
-                                        context.UnitsData.Add(
-                                        new UnitsData
-                                        {
-                                            UnitConfigId = unitConfig.Id, Value = null, RecordTimestamp = recordDataTime, ShiftId = shift
-                                        }); 
-                                    }
+                                    SetDefaultValue(context, recordDataTime, shift, unitsData, unitConfig);
                                 }
                             }
 
@@ -308,6 +242,22 @@
             catch (Exception ex)
             {
                 logger.Error(ex);
+            }
+        }
+
+        private static void SetDefaultValue(ProductionData context, DateTime recordDataTime, ShiftType shift, List<UnitsData> unitsData, UnitConfig unitConfig)
+        {
+            var u = unitsData.Where(x => x.UnitConfigId == unitConfig.Id).FirstOrDefault();
+            if (u == null)
+            {
+                context.UnitsData.Add(
+                new UnitsData
+                {
+                    UnitConfigId = unitConfig.Id,
+                    Value = null,
+                    RecordTimestamp = recordDataTime,
+                    ShiftId = shift
+                });
             }
         }
 
@@ -404,7 +354,6 @@
                         {
                            unitData.Value = Convert.ToDecimal(row[dc]); 
                         }
-                        
                     }
                     else if (dc.ColumnName.Equals("TimeStamp"))
                     {

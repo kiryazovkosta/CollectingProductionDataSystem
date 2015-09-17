@@ -5,6 +5,7 @@ namespace CollectingProductionDataSystem.Models.Productions
     using CollectingProductionDataSystem.Models.Abstract;
     using CollectingProductionDataSystem.Models.Contracts;
     using CollectingProductionDataSystem.Models.Nomenclatures;
+    using System.ComponentModel.DataAnnotations.Schema;
 
     public partial class UnitsData : AuditInfo, IApprovableEntity, IEntity
     {
@@ -25,7 +26,39 @@ namespace CollectingProductionDataSystem.Models.Productions
         { 
             get { return this.unitsDailyData; }
             set { this.unitsDailyData = value; }
-        } 
+        }
+
+        [NotMapped]
+        public bool IsManual 
+        { 
+            get
+            {
+                return this.UnitsManualData != null;
+            }
+        }
+
+        [NotMapped]
+        public double RealValue 
+        { 
+            get
+            {
+                if (this.UnitsManualData != null)
+                {
+                    return (double)this.UnitsManualData.Value;
+                }
+                else
+                {
+                    if (this.Value.HasValue)
+                    {
+                        return (double)this.Value.Value;
+                    }
+                    else
+                    {
+                        return default(double);
+                    }
+                }
+            }
+        }
 
         public override string ToString()
         {
