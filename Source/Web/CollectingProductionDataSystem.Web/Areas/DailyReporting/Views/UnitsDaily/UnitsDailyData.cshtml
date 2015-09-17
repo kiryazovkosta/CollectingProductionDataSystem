@@ -26,6 +26,7 @@
     .Columns(
         columns =>
         {
+            columns.Bound(c => c.Id);
             columns.Bound(c => c.UnitsDailyConfig.Code).Width(77);
             columns.Bound(c => c.UnitsDailyConfig.ProductType.Sort).Hidden(true).ClientGroupHeaderTemplate("#=value#");
             columns.Bound(c => c.UnitsDailyConfig.ProcessUnit.ShortName).Width(100);
@@ -51,6 +52,7 @@
     .Events(ev => ev.DataBound("dataBound"))
     .Scrollable(scr => scr.Height(640))
     .Filterable()
+    .ClientDetailTemplateId("template")
     .DataSource(dataSource => dataSource
         .Ajax()
         .PageSize(50)
@@ -87,28 +89,19 @@
         columns =>
         {
             columns.Bound("Id").Title("Продукт");
-            columns.Bound("Id").Title("%").Width(30);            
+            columns.Bound("Id").Title("%").Width(30);
             columns.Bound("Id").Title("Количество (план T)");
             columns.Bound("Id").Title("Количество (факт T)");
 
         })
-    .Sortable()
-     .Excel(excel => excel
-        .FileName(@Resources.Layout.UnitsDailyData + "_" + DateTime.Now + ".xlsx")
-        .Filterable(true)
-        .ProxyURL(Url.Action("Excel_Export_Save", "Tests", new { area = "" }))
-        .AllPages(true))
-    .Events(ev => ev.DataBound("dataBound"))
     .Scrollable(scr => scr.Height(200))
     .DataSource(dataSource => dataSource
         .Ajax()
-        .ServerOperation(true)
-            .Group(group => group.Add(c => c.UnitsDailyConfig.ProductType.Sort))
-        .Read(read => read.Action("ReadDailyUnitsData", "UnitsDaily", new { area = "DailyReporting" }).Data("sendDate"))
-        .Update(update => update.Action("Edit", "UnitsDaily", new { area = "DailyReporting" }).Data("sendAntiForgery"))
+        //.ServerOperation(true)
+        //    .Group(group => group.Add(c => c.UnitsDailyConfig.ProductType.Sort))
+        ////.Read(read => read.Action("ReadDailyUnitsData", "UnitsDaily", new { area = "DailyReporting" }).Data("sendDate"))
         .Model(model =>
         {
-            model.Id(p => p.Id);
             model.Field(p => p.UnitsDailyConfig.Code).Editable(false);
             model.Field(p => p.UnitsDailyConfig.ProductType.Name).Editable(false);
             model.Field(p => p.UnitsDailyConfig.ProcessUnit.ShortName).Editable(false);
@@ -128,202 +121,44 @@
 </div>
 
 
+
 @* //Error window for kendo grid error event handler *@
 <div id="err-window" style="display:none">@Html.Partial("_KendoGridErrorWindow")</div>
 @* //Error window for kendo grid error event handler *@
 <div id="success-window" style="display:none">@Html.Partial("_SuccessWindow")</div>
 
+<script id="template" type="text/kendo-tmpl">
+    @(Html.Kendo().Grid<UnitDataViewModel>()
+            .Name("details_#=Id#") // template expression, to be evaluated in the master context
+            .AutoBind(false)
+            .Columns(
+                columns =>
+                {
+                    columns.Bound(c => c.UnitConfig.Code).Width(77);
+                    columns.Bound(c => c.UnitConfig.ProductType.Sort).Hidden(true).ClientGroupHeaderTemplate("#=value#");
+                    columns.Bound(c => c.UnitConfig.ProcessUnit.ShortName).Width(100);
+                    columns.Bound(c => c.UnitConfig.Name);
+                    columns.Bound(c => c.UnitConfig.Position).Width(140);
+                    columns.Bound(c => c.UnitConfig.MeasureUnit.Code).Width(80);
+                    columns.Bound(c => c.UnitConfig.CollectingDataMechanism).Width(30).Title(string.Empty);
+                    columns.Bound(c => c.Value).Width(100).Format("{0:n2}");
+                    columns.Bound(c => c.UnitsManualData.Value).Width(100).Format("{0:n2}");
+                    columns.Bound(c => c.UnitsManualData.EditReason).Width(200).ClientTemplate("#:UnitsManualData.EditReason.Name#");
+                    //.ClientTemplate("<div class=row><div class='col-xs-2 no-horisontal-padding'><div class='#:UnitsManualData.EditReason.Id == 0? 'bg-ok':'bg-warning'#'></div></div><div class='col-xs-9 no-horisontal-padding reason'>#:UnitsManualData.EditReason.Name#</div></div>");
+                })
+                .DataSource(dataSource => dataSource
+                    .Ajax()
+                    .PageSize(100)
+                    .ServerOperation(true)
+                    .Group(group => group.Add(c => c.UnitConfig.ProductType.Sort))
+                    .Read(read => read.Action("ReadUnitsData", "Units", new { area = "ShiftReporting" }).Data("sendDate"))
+                )
+                .ToClientTemplate()
+    )
+</script>
+
 @section scripts{
     @Scripts.Render("~/bundles/custom/unitGrids")
-    @*<script>
-            kendo.culture("@System.Threading.Thread.CurrentThread.CurrentCulture.Name");
-
-            function sendProcessUnit() {
-                return { "processUnitId": $('input[name=processunits]').val() }
-            }
-
-            var sendDate = function () {
-                var result = { "date": $('input[name=date]').val() };
-                $.extend(result, sendProcessUnit());
-                $.extend(result, sendAntiForgery());
-                return result;
-            }
-            function error_handler(e) {
-                if (e.errors) {
-                    var message = "";
-                    $.each(e.errors, function (key, value) {
-                        if ('errors' in value) {
-                            $.each(value.errors, function () {
-                                message += this + "\n";
-                            });
-                        }
-                    });
-                    $('pre#err-message').text(message);
-                    $('div#err-window').data("kendoWindow").open();
-                }
-            }
-
-            function closeWindow(selector) {
-                $(selector).data("kendoWindow").close();
-            }
-
-            function recordTimeStampFilter(element) {
-                element.kendoDateTimePicker();
-            }
-
-            $(document).ready(function () {
-                $("#apply").click(function () {
-                    var grid = $("#units").data("kendoGrid");
-                    grid.dataSource.read();
-                    grid.refresh();
-                    checkConfirmedStatus();
-                    grid.dataSource.fetch(function () {
-                        var totalRows = grid.dataSource.total();
-                        if (totalRows === 0) {
-                            hideCommandButtons();
-                        }
-                    });
-                });
-                prepareWindow();
-                prepareSuccessWindow();
-                hideCommandButtons();
-                hideShiftComboBox();
-                AttachEventToExportBtn("#excel-export", "#units");
-
-                $("#confirm").click(function () {
-                    var date = sendDate();
-                    $.ajax({
-                        url: 'Confirm',
-                        type: 'POST',
-                        data: date,
-                        success: function (data) {
-                            var confirmed = data.IsConfirmed;
-                            if (confirmed === true) {
-                                hideCommandButtons();
-                                var message = "Вие потвърдихте отчета успешно."
-                                $('pre#succ-message').text(message);
-                                $('div#success-window').data("kendoWindow").open();
-
-                            } else {
-                                if (data.errors) {
-                                    var errorMessage = "";
-                                    $.each(data.errors, function (key, value) {
-                                        if ('errors' in value) {
-                                            $.each(value.errors, function () {
-                                                errorMessage += this + "\n";
-                                            });
-                                        }
-                                    });
-                                    $('pre#err-message').text(errorMessage);
-                                    $('div#err-window').data("kendoWindow").open();
-                                }
-                                showCommandButtons();
-                            }
-                        },
-                        error: function (data) {
-                            var errorMessage = "";
-                            var response = JSON.parse(data.responseText).data;
-                            $.each(response.errors, function (key, value) {
-                                errorMessage += this + "\n";
-                            });
-                            $('pre#err-message').text(errorMessage);
-                            $('div#err-window').data("kendoWindow").open();
-                        }
-                    });
-                });
-            });
-
-            function prepareWindow() {
-                var window = $('div#err-window')
-                window.kendoWindow({
-                    width: "650px",
-                    title: "Възникна грешка в приложението",
-                    actions: ["Close"],
-                    modal: true,
-                    position: {
-                        top: "30%", // or "100px"
-                        left: "30%"
-                    },
-                    minHeight: 100,
-                    maxHeight: 350
-                });
-            }
-
-            function prepareSuccessWindow() {
-                var window = $('div#success-window')
-                window.kendoWindow({
-                    width: "650px",
-                    title: "Успешна операция",
-                    actions: ["Close"],
-                    modal: true,
-                    position: {
-                        top: "30%", // or "100px"
-                        left: "30%"
-                    },
-                    minHeight: 100,
-                    maxHeight: 350
-                });
-            }
-
-            function hideShiftComboBox() {
-                $("#shift-section").hide();
-            }
-
-            function hideCommandButtons() {
-                $("#confirm").hide();
-                $("#units").data("kendoGrid").hideColumn(8);
-            }
-
-            function showCommandButtons() {
-                $("#confirm").show();
-                $("#units").data("kendoGrid").showColumn(8);
-            }
-
-            function checkConfirmedStatus() {
-                var date = sendDate();
-                $.ajax({
-                    url: 'UnitsDailyDataIsConfirmed',
-                    type: 'POST',
-                    data: date,
-                    success: function (result) {
-                        var confirmed = result.IsConfirmed;
-                        if (confirmed === false) {
-                            showCommandButtons();
-                        } else {
-                            hideCommandButtons();
-                        }
-                    },
-                    error: function (result) {
-                        hideCommandButtons();
-                    }
-                });
-            }
-            function AttachEventToExportBtn(buttonSelector, targetSelector) {
-                $(buttonSelector).click(function () {
-                    $(targetSelector).data("kendoGrid").saveAsExcel();
-                });
-            }
-
-            var dataChanged = function (ev) {
-                if (this.dataSource) {
-
-                }
-            }
-
-            var dataBound = function () {
-                dataView = this.dataSource.view();
-                for (var i = 0; i < dataView.length; i++) {
-                    for (var j = 0; j < dataView[i].items.length; j++) {
-
-                        if (dataView[i].items[j].HasManualData === true) {
-                            var uid = dataView[i].items[j].uid;
-                            $("#" + $(this.element).attr('id') + " tbody").find("tr[data-uid=" + uid + "]").addClass("bg-danger");
-                        }
-                    }
-                }
-            }
-
-        </script>*@
 }
 @section sidebar{
     @Html.Partial("_UnitsDailySideBar")

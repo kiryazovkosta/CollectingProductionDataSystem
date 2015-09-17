@@ -108,5 +108,5 @@ div#content-wrapper {
 
 @font-face {
     font-family: 'BankGothic RUSS Medium';
-    src: url(../../fonts/bank-gotic.ttf);
+    src: url(../../fonts/bank-gotic.ttf) format('truetype');
 }
