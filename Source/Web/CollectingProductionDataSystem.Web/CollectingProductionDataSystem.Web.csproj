@@ -240,6 +240,7 @@
     <Compile Include="Areas\Administration\ViewModels\RegisterViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\ResetPasswordViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\RoleViewModel.cs" />
+    <Compile Include="Areas\DailyReporting\Controllers\AjaxController.cs" />
     <Compile Include="Areas\DailyReporting\Controllers\AreaBaseController.cs" />
     <Compile Include="Areas\DailyReporting\Controllers\UnitsDailyController.cs" />
     <Compile Include="Areas\DailyReporting\DailyReportingAreaRegistration.cs" />
@@ -1311,6 +1312,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Administration\Views\Ajax\" />
     <Folder Include="Areas\DailyReporting\Models\" />
+    <Folder Include="Areas\DailyReporting\Views\Ajax\" />
     <Folder Include="Areas\DailyReporting\Views\AreaBase\" />
     <Folder Include="Areas\DailyReporting\Views\Shared\" />
     <Folder Include="Areas\MonthlyReporting\Models\" />

@@ -41,43 +41,43 @@ namespace CollectingProductionDataSystem.ConsoleClient
             var shift3EndTimestamp = DateTime.Today.AddMinutes(shifts[2].BeginMinutes + shifts[2].OffsetMinutes);
 
             uow.DbContext.DbContext.Configuration.AutoDetectChangesEnabled = false;
-            var unitDatas = uow.UnitsData.All().Where(x=>x.RecordTimestamp < new DateTime(2015,9,15,5,2,0)).ToList();
-            Console.WriteLine(DateTime.Now.Date);
-            var result = unitDatas.Where(x => x.RecordTimestamp.Between(shift1BeginTimestamp, shift1EndTimestamp))
-                .ForEach(x => { x.ShiftId = ShiftType.First; x.RecordTimestamp = DbFunctions.TruncateTime(x.RecordTimestamp).Value; });
+            var unitDatas = uow.UnitsData.All().Where(x => x.RecordTimestamp < new DateTime(2015, 9, 15, 5, 30, 0)).ToList();
 
-            unitDatas.Where(x => x.RecordTimestamp.Between(shift1BeginTimestamp, shift1EndTimestamp))
-                .ForEach(x => { x.ShiftId = ShiftType.First; x.RecordTimestamp = DbFunctions.TruncateTime(x.RecordTimestamp).Value;})
-                .ForEach(x => { 
+            (unitDatas.Where(x => x.RecordTimestamp.Between(shift1BeginTimestamp, shift1EndTimestamp)).ToList() as ICollection<UnitsData>)
+                .ForEach(x =>{ x.ShiftId = ShiftType.First; x.RecordTimestamp = x.RecordTimestamp.Date;})
+                .ForEach(x =>
+                {
                     var ent = uow.DbContext.Entry<UnitsData>(x);
-                    if (ent.State==EntityState.Detached)
+                    if (ent.State == EntityState.Detached)
                     {
-                        uow.DbContext.DbContext.Set<UnitsData>().Attach(x); 
+                        uow.DbContext.DbContext.Set<UnitsData>().Attach(x);
                     }
-                    ent.State = EntityState.Modified; 
+                    ent.State = EntityState.Modified;
                 });
 
-            unitDatas.Where(x => x.RecordTimestamp.Between(shift2BeginTimestamp, shift2EndTimestamp))
-                .ForEach(x => { x.ShiftId = ShiftType.Second; /*x.RecordTimestamp = x.RecordTimestamp.Date; */})
-                 .ForEach(x => { 
-                    var ent = uow.DbContext.Entry<UnitsData>(x);
-                    if (ent.State==EntityState.Detached)
-                    {
-                        uow.DbContext.DbContext.Set<UnitsData>().Attach(x); 
-                    }
-                    ent.State = EntityState.Modified; 
-                });
+            (unitDatas.Where(x => x.RecordTimestamp.Between(shift2BeginTimestamp, shift2EndTimestamp)).ToList() as ICollection<UnitsData>)
+                .ForEach(x => { x.ShiftId = ShiftType.Second; x.RecordTimestamp = x.RecordTimestamp.Date; })
+                 .ForEach(x =>
+                 {
+                     var ent = uow.DbContext.Entry<UnitsData>(x);
+                     if (ent.State == EntityState.Detached)
+                     {
+                         uow.DbContext.DbContext.Set<UnitsData>().Attach(x);
+                     }
+                     ent.State = EntityState.Modified;
+                 });
 
-            unitDatas.Where(x => x.RecordTimestamp.Between(shift3BeginTimestamp, shift3EndTimestamp))
-                .ForEach(x => { x.ShiftId = ShiftType.Third; /*x.RecordTimestamp = x.RecordTimestamp.AddDays(-1).Date; */})
-                 .ForEach(x => { 
-                    var ent = uow.DbContext.Entry<UnitsData>(x);
-                    if (ent.State==EntityState.Detached)
-                    {
-                        uow.DbContext.DbContext.Set<UnitsData>().Attach(x); 
-                    }
-                    ent.State = EntityState.Modified; 
-                });
+            (unitDatas.Where(x => x.RecordTimestamp.Between(shift3BeginTimestamp, shift3EndTimestamp)).ToList() as ICollection<UnitsData>)
+                .ForEach(x => { x.ShiftId = ShiftType.Third; x.RecordTimestamp = x.RecordTimestamp.AddDays(-1).Date; })
+                 .ForEach(x =>
+                 {
+                     var ent = uow.DbContext.Entry<UnitsData>(x);
+                     if (ent.State == EntityState.Detached)
+                     {
+                         uow.DbContext.DbContext.Set<UnitsData>().Attach(x);
+                     }
+                     ent.State = EntityState.Modified;
+                 });
             uow.DbContext.DbContext.Configuration.AutoDetectChangesEnabled = false;
             uow.SaveChanges("Initial Loading");
 

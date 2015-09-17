@@ -19,7 +19,6 @@ namespace CollectingProductionDataSystem.Models.Productions
         public ShiftType ShiftId { get; set; }
         public decimal? Value { get; set; }
         public bool IsApproved { get; set; }
-        public int? UnitsDailyDataId { get; set; }
         public virtual UnitConfig UnitConfig { get; set; }
         public virtual UnitsManualData UnitsManualData { get; set; }
         public virtual ICollection<UnitsDailyData> UnitsDailyData 
