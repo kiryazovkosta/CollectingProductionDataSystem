@@ -180,36 +180,10 @@
                                 {
                                     int confidence;
                                     var now = DateTime.Now;
-                                    DateTime startDate;
-                                    DateTime endDate;
-                                    DateRange range;
-                                    if (now.Hour >= 5 && now.Hour < 13)
-                                    {
-                                        startDate = new DateTime(now.Year, now.Month, now.Day, 5, 1, 0);
-                                        endDate = new DateTime(now.Year, now.Month, now.Day, 13, 0, 0);
-                                        range = new DateRange(startDate, endDate);      
-                                    }
-                                    else if (now.Hour >= 13 && now.Hour < 21)
-	                                {
-                                        startDate = new DateTime(now.Year, now.Month, now.Day, 13, 1, 0);
-                                        endDate = new DateTime(now.Year, now.Month, now.Day, 21, 0, 0);
-                                        range = new DateRange(startDate, endDate);
-	                                }
-                                    else if (now.Hour >= 21)
-                                    {
-                                        startDate = new DateTime(now.Year, now.Month, now.Day, 21, 1, 0);
-                                        endDate = new DateTime(now.Year, now.Month, now.Day, 23, 59, 59);
-                                        range = new DateRange(startDate, endDate);
-                                    }
-                                    else
-                                    {
-                                        var prevDay = now.AddDays(-1);
-                                        startDate = new DateTime(prevDay.Year, prevDay.Month, prevDay.Day, 21, 1, 0);
-                                        endDate = new DateTime(now.Year, now.Month, now.Day, 5, ZERO, ZERO);
-                                        range = new DateRange(startDate, endDate);
-                                    }
+                                    var recordDataTime = GetRecordTimestamp(now);
+                                    var shift = GetShift(now);
 
-                                    var s = context.UnitsData.All().ToList().FirstOrDefault(x => x.UnitConfigId == unitConfig.Id  && range.Includes(x.RecordTimestamp));
+                                    var s = context.UnitsData.All().Where(x => x.UnitConfigId == unitConfig.Id  && x.RecordTimestamp == recordDataTime && x.ShiftId == shift).FirstOrDefault();
                                     if (s != null)
                                     {
                                         continue;
@@ -224,62 +198,71 @@
                                             if (now.Hour >= 5 && now.Hour < 13)
                                             {
                                                 var prevDay = unitData.RecordTimestamp.AddDays(-1);
-                                                unitData.RecordTimestamp = new DateTime(prevDay.Year, prevDay.Month, prevDay.Day, 0, 0, 0);
-                                                SetPrimaryDataInRange(now, context, unitData, ShiftType.Third, FIVE, THIRTEEN);
-                                            }
-                                            else if (now.Hour >= 13 && now.Hour < 21)
-	                                        {
-                                                unitData.RecordTimestamp = new DateTime(unitData.RecordTimestamp.Year, unitData.RecordTimestamp.Month, unitData.RecordTimestamp.Day, 0, 0, 0);
-                                                SetPrimaryDataInRange(now, context, unitData, ShiftType.First, THIRTEEN, TWENTY_ONE);
-	                                        }
-                                            else if (now.Hour >= 21)
-                                            {
-                                                var s1 = context.UnitsData.All().ToList().FirstOrDefault(x => x.UnitConfigId == unitData.UnitConfigId  && range.Includes(x.RecordTimestamp));
-                                                if (s1 == null)
+                                                var ppD = new DateTime(prevDay.Year, prevDay.Month, prevDay.Day, 0, 0, 0);
+                                                unitData.RecordTimestamp = ppD;
+                                                //SetPrimaryDataInRange(now, context, unitData, ShiftType.Third, FIVE, THIRTEEN);
+
+                                                //var startDate = new DateTime(now.Year, now.Month, now.Day, startHour, ONE, ZERO);
+                                                //var endDate = new DateTime(now.Year, now.Month, now.Day, endHour, ZERO, ZERO);
+                                                //var range = new DateRange(startDate, endDate);
+                                                var ss = context.UnitsData.All().Where(x => x.UnitConfigId == unitData.UnitConfigId && x.RecordTimestamp == ppD && x.ShiftId == shift).FirstOrDefault();
+                                                if (ss == null)
                                                 {
-                                                    unitData.ShiftId = ShiftType.Second;
-                                                    unitData.RecordTimestamp = new DateTime(unitData.RecordTimestamp.Year, unitData.RecordTimestamp.Month, unitData.RecordTimestamp.Day, 0, 0, 0);
+                                                    unitData.ShiftId = shift;
                                                     context.UnitsData.Add(unitData);   
                                                 }
                                                 else
                                                 {
                                                     logger.InfoFormat("[ProcessPrimaryProductionData][{0}][{1}][{2}]-[{3}][{4}][{5}] already exists", s.RecordTimestamp, s.UnitConfigId, s.Value, unitData.RecordTimestamp, unitData.UnitConfigId, unitData.Value);
                                                 }
+
+
                                             }
-                                            else
-                                            {
-                                                var s2 = context.UnitsData.All().ToList().FirstOrDefault(x => x.UnitConfigId == unitData.UnitConfigId && range.Includes(x.RecordTimestamp));
-                                                if (s2 == null)
-                                                {
-                                                    var prevDay = unitData.RecordTimestamp.AddDays(-1);
-                                                    unitData.RecordTimestamp = new DateTime(prevDay.Year, prevDay.Month, prevDay.Day, 0, 0, 0);
-                                                    unitData.ShiftId = ShiftType.Second;
-                                                    context.UnitsData.Add(unitData);   
-                                                }
-                                                else
-                                                {
-                                                    logger.InfoFormat("[ProcessPrimaryProductionData][{0}][{1}][{2}]-[{3}][{4}][{5}] already exists", s.RecordTimestamp, s.UnitConfigId, s.Value, unitData.RecordTimestamp, unitData.UnitConfigId, unitData.Value);
-                                                }
-                                            }
+                                            //else if (now.Hour >= 13 && now.Hour < 21)
+                                            //{
+                                            //    unitData.RecordTimestamp = new DateTime(unitData.RecordTimestamp.Year, unitData.RecordTimestamp.Month, unitData.RecordTimestamp.Day, 0, 0, 0);
+                                            //    SetPrimaryDataInRange(now, context, unitData, ShiftType.First, THIRTEEN, TWENTY_ONE);
+                                            //}
+                                            //else if (now.Hour >= 21)
+                                            //{
+                                            //    var s1 = context.UnitsData.All().ToList().FirstOrDefault(x => x.UnitConfigId == unitData.UnitConfigId  && range.Includes(x.RecordTimestamp));
+                                            //    if (s1 == null)
+                                            //    {
+                                            //        unitData.ShiftId = ShiftType.Second;
+                                            //        unitData.RecordTimestamp = new DateTime(unitData.RecordTimestamp.Year, unitData.RecordTimestamp.Month, unitData.RecordTimestamp.Day, 0, 0, 0);
+                                            //        context.UnitsData.Add(unitData);   
+                                            //    }
+                                            //    else
+                                            //    {
+                                            //        logger.InfoFormat("[ProcessPrimaryProductionData][{0}][{1}][{2}]-[{3}][{4}][{5}] already exists", s.RecordTimestamp, s.UnitConfigId, s.Value, unitData.RecordTimestamp, unitData.UnitConfigId, unitData.Value);
+                                            //    }
+                                            //}
+                                            //else
+                                            //{
+                                            //    var s2 = context.UnitsData.All().ToList().FirstOrDefault(x => x.UnitConfigId == unitData.UnitConfigId && range.Includes(x.RecordTimestamp));
+                                            //    if (s2 == null)
+                                            //    {
+                                            //        var prevDay = unitData.RecordTimestamp.AddDays(-1);
+                                            //        unitData.RecordTimestamp = new DateTime(prevDay.Year, prevDay.Month, prevDay.Day, 0, 0, 0);
+                                            //        unitData.ShiftId = ShiftType.Second;
+                                            //        context.UnitsData.Add(unitData);   
+                                            //    }
+                                            //    else
+                                            //    {
+                                            //        logger.InfoFormat("[ProcessPrimaryProductionData][{0}][{1}][{2}]-[{3}][{4}][{5}] already exists", s.RecordTimestamp, s.UnitConfigId, s.Value, unitData.RecordTimestamp, unitData.UnitConfigId, unitData.Value);
+                                            //    }
+                                            //}
                                         }
                                     }
                                     else
                                     {
-                                        var recordDataTime = GetRecordTimestamp(now);
-                                        var shift = GetShift(now);
-                                        var u = context.UnitsData
-                                            .All()
-                                            .FirstOrDefault(x => x.UnitConfigId == unitConfig.Id
-                                                && x.RecordTimestamp.CompareTo(recordDataTime) == ZERO);
+                                        var u = context.UnitsData.All().Where(x => x.UnitConfigId == unitConfig.Id && x.RecordTimestamp.CompareTo(recordDataTime) == ZERO).FirstOrDefault();
                                         if (u == null)
                                         {
                                             context.UnitsData.Add(
                                             new UnitsData
                                             {
-                                                UnitConfigId = unitConfig.Id,
-                                                Value = null,
-                                                RecordTimestamp = recordDataTime,
-                                                ShiftId = shift
+                                                UnitConfigId = unitConfig.Id, Value = null, RecordTimestamp = recordDataTime, ShiftId = shift
                                             });
                                         }
                                     }
@@ -289,16 +272,13 @@
                                     var now = DateTime.Now;
                                     var recordDataTime = GetRecordTimestamp(now);
                                     var shift = GetShift(now);
-                                    var u = context.UnitsData.All().FirstOrDefault(x => x.UnitConfigId == unitConfig.Id && x.RecordTimestamp.CompareTo(recordDataTime) == ZERO);
+                                    var u = context.UnitsData.All().Where(x => x.UnitConfigId == unitConfig.Id && x.RecordTimestamp.CompareTo(recordDataTime) == ZERO).FirstOrDefault();
                                     if (u == null)
                                     {
                                         context.UnitsData.Add(
                                         new UnitsData
                                         {
-                                            UnitConfigId = unitConfig.Id,
-                                            Value = null,
-                                            RecordTimestamp = recordDataTime,
-                                            ShiftId = shift
+                                            UnitConfigId = unitConfig.Id, Value = null, RecordTimestamp = recordDataTime, ShiftId = shift
                                         }); 
                                     }
                                 }

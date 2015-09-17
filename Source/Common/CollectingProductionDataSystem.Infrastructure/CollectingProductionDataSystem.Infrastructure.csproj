@@ -60,6 +60,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extentions\DateTimeExtentions.cs" />
     <Compile Include="Extentions\ICollectionExtensions.cs" />
     <Compile Include="Extentions\IEnumerableExtensions.cs" />
     <Compile Include="Extentions\ObjectExtensions.cs" />
