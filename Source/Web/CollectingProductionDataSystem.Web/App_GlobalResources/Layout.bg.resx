@@ -315,4 +315,7 @@
   <data name="LearnMore" xml:space="preserve">
     <value>Вижте повече</value>
   </data>
+  <data name="Shift" xml:space="preserve">
+    <value>Смяна</value>
+  </data>
 </root>

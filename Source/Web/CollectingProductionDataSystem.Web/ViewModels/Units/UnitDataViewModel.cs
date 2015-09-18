@@ -29,10 +29,14 @@
 
         public UnitsManualDataViewModel UnitsManualData { get; set; }
 
+        [Display(Name = "Shift", ResourceType = typeof(Resources.Layout))]
+        public ShiftType Shift { get; set; }
+
         public void CreateMappings(IConfiguration configuration)
         {
             configuration.CreateMap<UnitsData, UnitDataViewModel>()
-                .ForMember(p => p.UnitsManualData, opt => opt.MapFrom(p => p.UnitsManualData ?? new UnitsManualData() { Value = p.Value ?? 0M }));
+                .ForMember(p => p.UnitsManualData, opt => opt.MapFrom(p => p.UnitsManualData ?? new UnitsManualData() { Value = p.Value ?? 0M }))
+                .ForMember(p => p.Shift, opt => opt.MapFrom(p => p.ShiftId));
             //configuration.CreateMap<UnitsData, UnitDataViewModel>()
             //    .AfterMap(p => p.UnitsManualData.Value, opt => opt.MapFrom(p => p.UnitsManualData== null ? p.Value : p.UnitsManualData.Value))
             //    .ForMember(p => p.UnitsManualData.EditReason, opt => opt.MapFrom(p => p.UnitsManualData == null ? new EditReason(){Id = 0, Name = Resources.Layout.AutomaticData} : p.UnitsManualData.EditReason));

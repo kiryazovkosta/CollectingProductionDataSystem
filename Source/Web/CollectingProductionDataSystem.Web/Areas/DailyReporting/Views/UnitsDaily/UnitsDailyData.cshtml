@@ -141,14 +141,15 @@
                     columns.Bound(c => c.UnitConfig.CollectingDataMechanism).Width(30).Title(string.Empty);
                     columns.Bound(c => c.Value).Width(100).Format("{0:n2}");
                     columns.Bound(c => c.UnitsManualData.Value).Width(100).Format("{0:n2}");
-                    columns.Bound(c => c.UnitsManualData.EditReason).Width(200).ClientTemplate("#:UnitsManualData.EditReason.Name#");
-                    //.ClientTemplate("<div class=row><div class='col-xs-2 no-horisontal-padding'><div class='#:UnitsManualData.EditReason.Id == 0? 'bg-ok':'bg-warning'#'></div></div><div class='col-xs-9 no-horisontal-padding reason'>#:UnitsManualData.EditReason.Name#</div></div>");
+                    columns.Bound(c => c.UnitsManualData.EditReason).Width(200).ClientTemplate("\\#:UnitsManualData.EditReason.Name\\#")
+                    .ClientTemplate("<div class=row><div class='col-xs-2 no-horisontal-padding'><div class='\\#:UnitsManualData.EditReason.Id == 0? 'bg-ok':'bg-warning'\\#'></div></div><div class='col-xs-9 no-horisontal-padding reason'>\\#:UnitsManualData.EditReason.Name\\#</div></div>");
+                    columns.Bound(c => c.Shift).Hidden(true).ClientGroupHeaderTemplate(@Resources.Layout.Shift+" \\#=value\\#");
                 })
                 .DataSource(dataSource => dataSource
                     .Ajax()
                     //.PageSize(100)
                     .ServerOperation(true)
-                    //.Group(group => group.Add(c => c.UnitConfig.ProductType.Sort))
+                    .Group(group => group.Add(c => c.Shift))
                     .Read(read => read.Action("ReadDetails", "Ajax", new { area = "DailyReporting", recordId = "#=Id#" }).Data("sendAntiForgery"))
                             .Model(model =>
                 {

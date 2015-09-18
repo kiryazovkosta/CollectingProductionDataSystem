@@ -27,9 +27,9 @@ a#slide {
 }
 
 div#slide-text {
-    height:20px;
-    width:460px;
-    overflow:hidden;
+    height: 20px;
+    width: 460px;
+    overflow: hidden;
 }
 
 .sidebar-sidebaner-wrapper {
@@ -62,9 +62,9 @@ div#slide-text {
 }
 
 @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
-/* IE10+ CSS styles go here */
+    /* IE10+ CSS styles go here */
     .sidebar {
-        margin-right:-5px;
+        margin-right: -5px;
     }
 }
 
@@ -84,7 +84,7 @@ div#content-wrapper {
     top: 55;
     margin-left: 30px;
     margin-right: 20px;
-    padding-bottom:70px;
+    padding-bottom: 70px;
 }
 
 .sidebar-heading {
@@ -103,7 +103,7 @@ div#content-wrapper {
 }
 
 .margin-top-10 {
-    margin-top:10px;
+    margin-top: 10px;
 }
 
 @font-face {

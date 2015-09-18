@@ -312,4 +312,7 @@
   <data name="LearnMore" xml:space="preserve">
     <value>Learn More</value>
   </data>
+  <data name="Shift" xml:space="preserve">
+    <value>Shift</value>
+  </data>
 </root>
