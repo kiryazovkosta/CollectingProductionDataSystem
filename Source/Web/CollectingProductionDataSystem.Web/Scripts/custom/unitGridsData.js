@@ -1,4 +1,7 @@
-kendo.culture("@System.Threading.Thread.CurrentThread.CurrentCulture.Name");
+$(function () {
+    var culture = $('#culture').val();
+    kendo.culture(culture);
+});
 
 function sendProcessUnit() {
     return { "processUnitId": $('input[name=processunits]').val() }
@@ -184,13 +187,13 @@ var dataBound = function () {
 }
 
 nameGridCommancolumn = function () {
-    var grid =$("#units").data("kendoGrid");
+    var grid = $("#units").data("kendoGrid");
     if (grid) {
-        $.each( grid.columns, function (index, value) {
+        $.each(grid.columns, function (index, value) {
             if (!this.field) {
                 this.field = "commands";
             }
         });
     }
-   
+
 }

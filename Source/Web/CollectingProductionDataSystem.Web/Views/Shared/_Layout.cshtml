@@ -8,14 +8,13 @@
     @Scripts.Render("~/bundles/modernizr")
     @Styles.Render("~/Content/css")
     @RenderSection("styles", required: false)
-
 </head>
 <body>
+    <input id="culture" type="hidden" value="@System.Threading.Thread.CurrentThread.CurrentCulture.Name" />
     @Html.Partial("_MainNav")
     <div class="container-fluid body-content">
         @RenderBody()
     </div>
-
     <div class="nav navbar-fixed-bottom">
         <div class="clearfix">
             <div class="footer clerfix">
@@ -23,7 +22,6 @@
             </div>
         </div>
     </div>
-
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
 </body>
