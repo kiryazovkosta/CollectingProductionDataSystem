@@ -18,7 +18,7 @@
 @Html.ValidationSummary()
 @Html.AntiForgeryToken()
 <div class="row">
-    <div class="col-md-9">
+    <div class="col-md-12">
         @(Html.Kendo()
     .Grid<UnitDailyDataViewModel>()
     .Name("units")
@@ -49,11 +49,11 @@
         .Filterable(true)
         .ProxyURL(Url.Action("Excel_Export_Save", "Tests", new { area = "" }))
         .AllPages(true))
-    .Events(ev => ev.DataBound("dataBound"))
-    .Scrollable(scr => scr.Height(640))
-    .Filterable()
-    .ClientDetailTemplateId("template")
-    .DataSource(dataSource => dataSource
+        .Events(ev => ev.DataBound("dataBound"))
+        .Scrollable(scr => scr.Height(400))
+        .Filterable()
+        .ClientDetailTemplateId("template")
+        .DataSource(dataSource => dataSource
         .Ajax()
         .PageSize(50)
         .ServerOperation(true)
@@ -79,37 +79,37 @@
     )
         )
     </div>
+</div>
+        
+<div class="row">
 
-    <div class="col-md-3">
+    <div class="col-md-12">
         @(Html.Kendo()
-    .Grid<UnitDailyDataViewModel>()
-    .Name("productionPlan")
-    .AutoBind(false)
-    .Columns(
-        columns =>
-        {
-            columns.Bound("Id").Title("Продукт");
-            columns.Bound("Id").Title("%").Width(30);
-            columns.Bound("Id").Title("Количество (план T)");
-            columns.Bound("Id").Title("Количество (факт T)");
+        .Grid<ProductionPlanViewModel>()
+        .Name("productionPlan")
+        .AutoBind(false)
+        .Columns(
+            columns =>
+            {
+                columns.Bound("Name").Title("Продукт");
+                columns.Bound("Percentages").Title("%").Width(100).Format("{0:n2}");
+                columns.Bound("QuantityPlan").Title("Количество (план T)").Format("{0:n2}");
+                columns.Bound("QuantityFact").Title("Количество (факт T)").Format("{0:n2}");
 
-        })
+            })
     .Scrollable(scr => scr.Height(200))
     .DataSource(dataSource => dataSource
         .Ajax()
-        //.ServerOperation(true)
+        .ServerOperation(true)
         //    .Group(group => group.Add(c => c.UnitsDailyConfig.ProductType.Sort))
-        ////.Read(read => read.Action("ReadDailyUnitsData", "UnitsDaily", new { area = "DailyReporting" }).Data("sendDate"))
+        .Read(read => read.Action("ReadProductionPlanData", "UnitsDaily", new { area = "DailyReporting" }).Data("sendDate"))
         .Model(model =>
         {
-            model.Field(p => p.UnitsDailyConfig.Code).Editable(false);
-            model.Field(p => p.UnitsDailyConfig.ProductType.Name).Editable(false);
-            model.Field(p => p.UnitsDailyConfig.ProcessUnit.ShortName).Editable(false);
-            model.Field(p => p.UnitsDailyConfig.Name).Editable(false);
-            model.Field(p => p.UnitsDailyConfig.MeasureUnit.Code).Editable(false);
-            model.Field(p => p.Value).Editable(false);
-            model.Field(p => p.UnitsManualDailyData.Value).Editable(true);
-            model.Field(p => p.UnitsManualDailyData.EditReason).Editable(true);
+            model.Id(p => p.Id);
+            model.Field(p => p.Name).Editable(false);
+            model.Field(p => p.Percentages).Editable(false);
+            model.Field(p => p.QuantityPlan).Editable(false);
+            model.Field(p => p.QuantityFact).Editable(false);
         })
         .Events(events =>
         {

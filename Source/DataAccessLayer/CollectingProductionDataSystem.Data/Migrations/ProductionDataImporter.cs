@@ -1307,212 +1307,233 @@
                                     UnitsDailyConfigs = {
                                         new UnitsDailyConfig
                                         {
-                                            Code = "2А0100",
+                                            Code = "2A0100",
                                             MeasureUnitId = 11,
                                             Name = "Нефт",
-                                            ProductTypeId = 13,
-                                            AggregationMembers = "1A0100;1А0804;1А0903;1А1004;1А1104;1А1105;1А1203;1А1402;1А1503;1А1804",
+                                            ProductTypeId = 14,
+                                            AggregationMembers = "1A0100;1A0804;1A0903;1A1004;1A1104;1A1105;1A1203;1A1402;1A1503;1A1804",
                                             AggregationFormula = "p.p0-(p.p1+p.p2+p.p3+p.p4+p.p5+p.p6+p.p7+p.p8+p.p9)"
                                         },
                                         new UnitsDailyConfig
                                         {
-                                            Code = "2А0200",
+                                            Code = "2A0200",
                                             MeasureUnitId = 11,
                                             Name = "Некондиция",
-                                            ProductTypeId = 13,
-                                            AggregationMembers = "1А0804;1А0903;1А1004;1А1104;1А1105;1А1203;1А1402;1А1503;1А1804",
+                                            ProductTypeId = 14,
+                                            AggregationMembers = "1A0804;1A0903;1A1004;1A1104;1A1105;1A1203;1A1402;1A1503;1A1804",
                                             AggregationFormula = "p.p0+p.p1+p.p2+p.p3+p.p4+p.p5+p.p6+p.p7+p.p8"
                                         },
                                         new UnitsDailyConfig
                                         {
-                                            Code = "2А0300",
+                                            Code = "2A0300",
                                             MeasureUnitId = 11,
                                             Name = "Некондиционни продукти",
-                                            ProductTypeId = 13,
-                                            AggregationMembers = "1А0300;1А0400",
+                                            ProductTypeId = 14,
+                                            AggregationMembers = "1A0300;1A0400",
                                             AggregationFormula = "p.p0+p.p1"
                                         },
                                         new UnitsDailyConfig
                                         {
-                                            Code = "2А0400",
+                                            Code = "2A0400",
                                             MeasureUnitId = 11,
                                             Name = "Бензин отгон",
-                                            ProductTypeId = 13,
-                                            AggregationMembers = "1А0200",
+                                            ProductTypeId = 14,
+                                            AggregationMembers = "1A0200",
                                             AggregationFormula = "p.p0"
                                         },
                                         new UnitsDailyConfig
                                         {
-                                            Code = "2А9900",
+                                            Code = "2A9100",
                                             MeasureUnitId = 11,
                                             Name = "Сума преработка",
-                                            ProductTypeId = 13,
-                                            AggregationMembers = "1A0100;1А0300;1А0400;1А0200",
+                                            ProductTypeId = 14,
+                                            AggregationMembers = "1A0100;1A0300;1A0400;1A0200",
                                             AggregationFormula = "p.p0+p.p1+p.p2+p.p3"
                                         },
                                         new UnitsDailyConfig
                                         {
-                                            Code = "2А0500",
+                                            Code = "2A0500",
                                             MeasureUnitId = 11,
                                             Name = "Бензинова фракция от АД",
-                                            ProductTypeId = 14,
+                                            ProductTypeId = 15,
                                             AggregationMembers = "1A0800;1A0801;1A0802;1A0803;1A0900;1A0901;1A0902",
                                             AggregationFormula = "p.p0+p.p1+p.p2+p.p3+p.p4+p.p5+p.p6"
                                         },
                                         new UnitsDailyConfig
                                         {
-                                            Code = "2А0600",
+                                            Code = "2A0600",
                                             MeasureUnitId = 11,
                                             Name = "Керосинова фракция от АД",
-                                            ProductTypeId = 14,
+                                            ProductTypeId = 15,
                                             AggregationMembers = "1A1000;1A1001",
                                             AggregationFormula = "p.p0+p.p1"
                                         },
                                         new UnitsDailyConfig
                                         {
-                                            Code = "2А0700",
+                                            Code = "2A0700",
                                             MeasureUnitId = 11,
                                             Name = "Дизелова фракция от АД",
-                                            ProductTypeId = 14,
+                                            ProductTypeId = 15,
                                             AggregationMembers = "1A1002;1A1003;1A1100;1A1101;1A1102;1A1103;1A1106",
                                             AggregationFormula = "p.p0+p.p1+p.p2+p.p3+p.p4+p.p5+p.p6"
                                         },
                                         new UnitsDailyConfig
                                         {
-                                            Code = "2А0800",
+                                            Code = "2A0800",
                                             MeasureUnitId = 11,
                                             Name = "Дизелова фракция за ТСНП",
-                                            ProductTypeId = 14,
+                                            ProductTypeId = 15,
                                             AggregationMembers = "1A1803",
                                             AggregationFormula = "p.p0"
                                         },
                                         new UnitsDailyConfig
                                         {
-                                            Code = "2А0801",
+                                            Code = "2A0801",
                                             MeasureUnitId = 11,
                                             Name = "Дизелова фракция за ХО-1,2,3",
-                                            ProductTypeId = 14,
+                                            ProductTypeId = 15,
                                             AggregationMembers = "1A1500;1A1501;1A1800;1A1801",
                                             AggregationFormula = "p.p0+p.p1+p.p2+p.p3"
                                         },
                                         new UnitsDailyConfig
                                         {
-                                            Code = "2А0802",
+                                            Code = "2A0802",
                                             MeasureUnitId = 11,
                                             Name = "Дизелова фракция за ХО-4,5",
-                                            ProductTypeId = 14,
+                                            ProductTypeId = 15,
                                             AggregationMembers = "1A1502;1A1802",
                                             AggregationFormula = "p.p0+p.p1"
                                         },
                                         new UnitsDailyConfig
                                         {
-                                            Code = "2А0900",
+                                            Code = "2A0900",
                                             MeasureUnitId = 11,
                                             Name = "Атмосферен газьол за ККр",
-                                            ProductTypeId = 14,
+                                            ProductTypeId = 15,
                                             AggregationMembers = "1A1201",
                                             AggregationFormula = "p.p0"
                                         },
                                         new UnitsDailyConfig
                                         {
-                                            Code = "2А0901",
+                                            Code = "2A0901",
                                             MeasureUnitId = 11,
                                             Name = "Атмосферен газьол за ХО-5",
-                                            ProductTypeId = 14,
+                                            ProductTypeId = 15,
                                             AggregationMembers = "1A1200",
                                             AggregationFormula = "p.p0"
                                         },
                                         new UnitsDailyConfig
                                         {
-                                            Code = "2А0902",
+                                            Code = "2A0902",
                                             MeasureUnitId = 11,
                                             Name = "Атмосферен газьол за КПТО",
-                                            ProductTypeId = 14,
+                                            ProductTypeId = 15,
                                             AggregationMembers = "1A1202",
                                             AggregationFormula = "p.p0"
                                         },
                                         new UnitsDailyConfig
                                         {
-                                            Code = "2А1000",
+                                            Code = "2A1000",
                                             MeasureUnitId = 11,
                                             Name = "ШМФ",
-                                            ProductTypeId = 14,
+                                            ProductTypeId = 15,
                                             AggregationMembers = "1A1600;1A1601;1A1602;1A1700;1A1701",
                                             AggregationFormula = "p.p0+p.p1+p.p2+p.p3+p.p4"
                                         },
                                         new UnitsDailyConfig
                                         {
-                                            Code = "2А1100",
+                                            Code = "2A1100",
                                             MeasureUnitId = 11,
                                             Name = "Мазут от първична дестилация",
-                                            ProductTypeId = 14,
+                                            ProductTypeId = 15,
                                             AggregationMembers = "1A1400;1A1401;1A1402",
                                             AggregationFormula = "p.p0+p.p1+p.p2"
                                         },
                                         new UnitsDailyConfig
                                         {
-                                            Code = "2А1200",
+                                            Code = "2A1200",
                                             MeasureUnitId = 11,
                                             Name = "Гудрон за ТСНП",
-                                            ProductTypeId = 14,
+                                            ProductTypeId = 15,
                                             AggregationMembers = "1A2000;1A2001;1A2002;1A2100;1A2101;1A2102;1A2200;1A2201;1A2202",
                                             AggregationFormula = "p.p0+p.p1+p.p2+p.p3+p.p4+p.p5+p.p6+p.p7+p.p8"
                                         },
                                         new UnitsDailyConfig
                                         {
-                                            Code = "2А1300",
+                                            Code = "2A1300",
                                             MeasureUnitId = 11,
                                             Name = "Пропан-бутан за ЦГФИ",
-                                            ProductTypeId = 14,
+                                            ProductTypeId = 15,
                                             AggregationMembers = "1A0700",
                                             AggregationFormula = "p.p0"
                                         },
                                         new UnitsDailyConfig
                                         {
-                                            Code = "2А1301",
+                                            Code = "2A1301",
                                             MeasureUnitId = 11,
                                             Name = "Пропан-бутан за Братово",
-                                            ProductTypeId = 14,
+                                            ProductTypeId = 15,
                                             AggregationMembers = "1A0701",
                                             AggregationFormula = "p.p0"
                                         },
                                         new UnitsDailyConfig
                                         {
-                                            Code = "2А1400",
+                                            Code = "2A1400",
                                             MeasureUnitId = 11,
                                             Name = "Сух газ за АГФИ",
-                                            ProductTypeId = 14,
+                                            ProductTypeId = 15,
                                             AggregationMembers = "1A0500;1A0600",
                                             AggregationFormula = "p.p0+p.p1"
                                         },
                                         new UnitsDailyConfig
                                         {
-                                            Code = "2A9900",
+                                            Code = "2A9200",
                                             MeasureUnitId = 11,
                                             Name = "Сума произведено",
-                                            ProductTypeId = 14,
-                                            AggregationMembers = "1A0800;1A0801;1A0802;1A0803;1A0900;1A0901;1A0902;1A1000;1A1001;1A1002;1A1003;1A1100;1A1101;1A1102;1A1103;1A1106;1A1803;1A1500;1A1501;1A1800;1A1801;1A1502;1A1802;1A1201;1A1200;1A1202;1A1600;1A1601;1A1602;1A1700;1A1701;1A1400;1A1401;1A1402;1A2000;1A2001;1A2002;1A2100;1A2101;1A2102;1A2200;1A2201;1A2202;1A0700;1A0701;1A0500;1A0600",
-                                            AggregationFormula = "p.p0+p.p1+p.p2+p.p3+p.p4+p.p5+p.p6+p.p7+p.p8+p.p9+p.p10+p.p11+p.p12+p.p13+p.p14+p.p15+p.p16+p.p17+p.p18+p.p19+p.p20+p.p21+p.p22+p.p23+p.p24+p.p25+p.p26+p.p27+p.p28+p.p29+p.p30+p.p31+p.p32+p.p33+p.p34+p.p35+p.p36+p.p37+p.p38+p.p39+p.p40+p.p41+p.p42+p.p43+p.p44+p.p45+p.p46"
+                                            ProductTypeId = 15, 
+                                            AggregationCurrentLevel = true,
+                                            AggregationMembers = "2A0500;2A0600;2A0700;2A0800;2A0801;2A0802;2A0900;2A0901;2A0902;2A1000;2A1100;2A1200;2A1300;2A1301;2A1400",
+                                            AggregationFormula = "p.p0+p.p1+p.p2+p.p3+p.p4+p.p5+p.p6+p.p7+p.p8+p.p9+p.p10+p.p11+p.p12+p.p13+p.p14"
                                         },
                                         new UnitsDailyConfig
                                         {
-                                            Code = "2A9901",
+                                            Code = "2A9201",
                                             MeasureUnitId = 11,
                                             Name = "Загуби",
-                                            ProductTypeId = 14,
-                                            AggregationMembers = "1A0100;1А0300;1А0400;1А0200",
-                                            AggregationFormula = "(p.p0+p.p1+p.p2+p.p3)*(0.002)"
+                                            ProductTypeId = 15, 
+                                            AggregationCurrentLevel = true,
+                                            AggregationMembers = "2A9100;2A9200",
+                                            AggregationFormula = "p.p0-p.p1"
                                         },
                                         new UnitsDailyConfig
                                         {
-                                            Code = "2A9902",
+                                            Code = "2A9202",
                                             MeasureUnitId = 11,
                                             Name = "Общо",
-                                            ProductTypeId = 14,
-                                            AggregationMembers = "1A0100;1А0300;1А0400;1А0200;1A0800;1A0801;1A0802;1A0803;1A0900;1A0901;1A0902;1A1000;1A1001;1A1002;1A1003;1A1100;1A1101;1A1102;1A1103;1A1106;1A1803;1A1500;1A1501;1A1800;1A1801;1A1502;1A1802;1A1201;1A1200;1A1202;1A1600;1A1601;1A1602;1A1700;1A1701;1A1400;1A1401;1A1402;1A2000;1A2001;1A2002;1A2100;1A2101;1A2102;1A2200;1A2201;1A2202;1A0700;1A0701;1A0500;1A0600",
-                                            AggregationFormula = "((p.p0+p.p1+p.p2+p.p3)*(0.002))+(p.p4+p.p5+p.p6+p.p7+p.p8+p.p9+p.p10+p.p11+p.p12+p.p13+p.p14+p.p15+p.p16+p.p17+p.p18+p.p19+p.p20+p.p21+p.p22+p.p23+p.p24+p.p25+p.p26+p.p27+p.p28+p.p29+p.p30+p.p31+p.p32+p.p33+p.p34+p.p35+p.p36+p.p37+p.p38+p.p39+p.p40+p.p41+p.p42+p.p43+p.p44+p.p45+p.p46+p.p47+p.p48+p.p49+p.p50)"
+                                            ProductTypeId = 15, 
+                                            AggregationCurrentLevel = true,
+                                            AggregationMembers = "2A9200;2A9201",
+                                            AggregationFormula = "p.p0+p.p1"
                                         },
                                 
+                                    },
+                                    ProductionPlanConfigs = 
+                                    {
+                                        new ProductionPlanConfig { Percentages = 15.86m, Name = "Бензинова фракция от АД" },
+                                        new ProductionPlanConfig { Percentages = 5.09m, Name = "Керосинова фракция от АД" },                        
+                                        new ProductionPlanConfig { Percentages = 24.20m, Name = "Сума Дизелови фракции" },        
+                                        new ProductionPlanConfig { Percentages = 24.64m, Name = "Сума Атмосферен газьол" },        
+                                        new ProductionPlanConfig { Percentages = 24.79m, Name = "Гудрон за ТСНП" },               
+                                        new ProductionPlanConfig { Percentages = 0.55m, Name = "Сума Пропан-бутан" },                 
+                                        new ProductionPlanConfig { Percentages = 0.25m, Name = "Сух газ за АГФИ" },                 
+                                        new ProductionPlanConfig { Percentages = 0.20m, Name = "Загуби" },              
+                                        new ProductionPlanConfig { Percentages = 100.00m, Name = "Общо" },
+                                            
+
+
+
+
+
                                     }
                                 },
                                 new ProcessUnit

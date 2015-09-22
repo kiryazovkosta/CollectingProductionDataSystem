@@ -294,6 +294,7 @@
     <Compile Include="ViewModels\Tank\TankDataViewModel.cs" />
     <Compile Include="ViewModels\Units\FactoryViewModel.cs" />
     <Compile Include="ViewModels\Units\ProcessUnitViewModel.cs" />
+    <Compile Include="ViewModels\Units\ProductionPlanViewModel.cs" />
     <Compile Include="ViewModels\Units\UnitDailyDataViewModel.cs" />
     <Compile Include="ViewModels\Units\UnitDataViewModel.cs" />
   </ItemGroup>

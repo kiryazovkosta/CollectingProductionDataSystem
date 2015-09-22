@@ -83,6 +83,7 @@
     <Compile Include="Mappings\MeasurementPointsProductsConfigMap.cs" />
     <Compile Include="Mappings\MeasurementPointsProductsDataMap.cs" />
     <Compile Include="Mappings\ParkMap.cs" />
+    <Compile Include="Mappings\ProductionPlanConfigMap.cs" />
     <Compile Include="Mappings\ProductionShiftMap.cs" />
     <Compile Include="Mappings\TankConfigMap.cs" />
     <Compile Include="Mappings\TankDataMap.cs" />

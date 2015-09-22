@@ -190,14 +190,13 @@
                                     var s = unitsData.Where(x => x.UnitConfigId == unitConfig.Id).FirstOrDefault();
                                     if (s != null)
                                     {
-                                        logger.InfoFormat("[ProcessPrimaryProductionData][{0}][{1}][{2}] already exists", s.RecordTimestamp, s.UnitConfigId, s.Value);
                                         continue;
                                     }
 
                                     var unitData = GetUnitData(unitConfig, oPhd, out confidence);
                                     if (confidence > Properties.Settings.Default.INSPECTION_DATA_MINIMUM_CONFIDENCE && unitData.RecordTimestamp != null)
                                     {
-                                        if (/*now.Hour >= 5 && */now.Hour < 13)
+                                        if (now.Hour < 13)
                                         {
                                             var prevDay = unitData.RecordTimestamp.AddDays(-1).Date;
                                             unitData.RecordTimestamp = prevDay;

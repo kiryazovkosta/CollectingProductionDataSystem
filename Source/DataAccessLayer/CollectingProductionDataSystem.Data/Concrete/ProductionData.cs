@@ -277,6 +277,14 @@ using CollectingProductionDataSystem.Models.Transactions;
             }
         }
 
+        public IDeletableEntityRepository<ProductionPlanConfig> ProductionPlanConfigs
+        {
+            get
+            {
+                return this.GetDeletableEntityRepository<ProductionPlanConfig>();
+            }
+        }
+
         public IEfStatus SaveChanges(string userName)
         {
             return this.context.SaveChangesWithValidation(userName);    

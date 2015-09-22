@@ -19,6 +19,7 @@
         public int ProductTypeId { get; set; }
         public int MeasureUnitId { get; set; }
         public string AggregationFormula { get; set; }
+        public bool AggregationCurrentLevel { get; set; }
         public string AggregationMembers { get; set; }
         public virtual MeasureUnit MeasureUnit { get; set; }
         public virtual ProcessUnit ProcessUnit { get; set; }

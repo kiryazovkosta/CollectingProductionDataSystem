@@ -49,6 +49,11 @@ $(document).ready(function () {
         var grid = $("#units").data("kendoGrid");
         grid.dataSource.read();
         grid.refresh();
+
+        var planGrid = $('#productionPlan').data("kendoGrid");
+        planGrid.dataSource.read();
+        planGrid.refresh();
+
         checkConfirmedStatus();
         grid.dataSource.fetch(function () {
             var totalRows = grid.dataSource.total();

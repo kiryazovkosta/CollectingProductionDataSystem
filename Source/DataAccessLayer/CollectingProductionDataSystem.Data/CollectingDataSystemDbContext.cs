@@ -103,6 +103,8 @@
 
         public IDbSet<UnitsApprovedDailyData> UnitsApprovedDailyDatas { get; set; }
 
+        public IDbSet<ProductionPlanConfig> ProductionPlanConfigs { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             ModelBingConfig.RegisterMappings(modelBuilder);

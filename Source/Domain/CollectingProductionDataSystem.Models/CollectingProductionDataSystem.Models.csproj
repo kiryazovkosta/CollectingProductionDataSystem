@@ -84,6 +84,7 @@
     <Compile Include="Nomenclatures\Product.cs" />
     <Compile Include="Nomenclatures\ProductType.cs" />
     <Compile Include="Productions\ProcessUnit.cs" />
+    <Compile Include="Productions\ProductionPlanConfig.cs" />
     <Compile Include="Productions\Qpt\Density2FactorAlpha.cs" />
     <Compile Include="Productions\Qpt\PressureAndTemperature2CompressibilityFactor.cs" />
     <Compile Include="Productions\Qpt\PressureAndTemperature2EtilenDensity.cs" />

@@ -200,46 +200,81 @@
             var calculator = new Calculator();
             var splitter = new char[] { ';' };
 
+            Dictionary<string, double> level2Values = new Dictionary<string, double>();
+
             foreach (var item in unitsDailyData)
             {
-                var unitsDataList = new HashSet<UnitsData>();
-                var hasManualData = false;   
-                
-                var tokens = item.Members.Split(splitter, StringSplitOptions.RemoveEmptyEntries);
-                var inputParamsValues = new List<double>();
-                foreach (var token in tokens)
+                if (item.IsCurrentLevelCalculation)
                 {
-                    var hs = unitsDatasParam[token];
-                    var sum = 0.0;
-                    foreach (var unitsData in hs)
+                    var tokens = item.Members.Split(splitter, StringSplitOptions.RemoveEmptyEntries);
+                    var inputParamsValues = new List<double>();
+                    foreach (var token in tokens)
                     {
-                        if (unitsData.IsManual)
+                        double val;
+                        if(level2Values.TryGetValue(token, out val))
                         {
-                            hasManualData = true;
+                            inputParamsValues.Add(val);
                         }
-   
-                        sum += unitsData.RealValue;
                     }
 
-                    inputParamsValues.Add(sum);
-                    unitsDataList.AddRange(hs);
-                }
+                    var inputParams = new Dictionary<string, double>();
+                    for (int i = 0; i < inputParamsValues.Count(); i++)
+                    {
+                        inputParams.Add(string.Format("p{0}", i), inputParamsValues[i]);  
+                    }
 
-                var inputParams = new Dictionary<string, double>();
-                for (int i = 0; i < inputParamsValues.Count(); i++)
-                {
-                    inputParams.Add(string.Format("p{0}", i), inputParamsValues[i]);  
+                    var value = calculator.Calculate(item.Formula, "p", inputParams.Count, inputParams);
+                    level2Values.Add(item.Code, value);
+                    this.data.UnitsDailyDatas.Add(new UnitsDailyData
+                    {
+                        RecordTimestamp = model.date.Value,
+                        Value = (decimal)value,
+                        UnitsDailyConfigId = item.Id,
+                    });
                 }
-
-                var value = calculator.Calculate(item.Formula, "p", inputParams.Count, inputParams);
-                this.data.UnitsDailyDatas.Add(new UnitsDailyData
+                else
                 {
-                    RecordTimestamp = model.date.Value,
-                    Value = (decimal)value,
-                    UnitsDailyConfigId = item.Id,
-                    HasManualData = hasManualData,
-                    UnitsDatas = unitsDataList
-                });
+                    var unitsDataList = new HashSet<UnitsData>();
+                    var hasManualData = false;   
+                
+                    var tokens = item.Members.Split(splitter, StringSplitOptions.RemoveEmptyEntries);
+                    var inputParamsValues = new List<double>();
+                    foreach (var token in tokens)
+                    {
+                        var hs = unitsDatasParam[token];
+                        var sum = 0.0;
+                        foreach (var unitsData in hs)
+                        {
+                            if (unitsData.IsManual)
+                            {
+                                hasManualData = true;
+                            }
+   
+                            sum += unitsData.RealValue;
+                        }
+
+                        inputParamsValues.Add(sum);
+                        unitsDataList.AddRange(hs);
+                    }
+
+                    var inputParams = new Dictionary<string, double>();
+                    for (int i = 0; i < inputParamsValues.Count(); i++)
+                    {
+                        inputParams.Add(string.Format("p{0}", i), inputParamsValues[i]);  
+                    }
+
+                    var value = calculator.Calculate(item.Formula, "p", inputParams.Count, inputParams);
+                    level2Values.Add(item.Code, value);
+
+                    this.data.UnitsDailyDatas.Add(new UnitsDailyData
+                    {
+                        RecordTimestamp = model.date.Value,
+                        Value = (decimal)value,
+                        UnitsDailyConfigId = item.Id,
+                        HasManualData = hasManualData,
+                        UnitsDatas = unitsDataList
+                    });
+                }
             }
         }
  
@@ -253,7 +288,9 @@
                                             {
                                                 Id = u.Id,
                                                 Members = u.AggregationMembers,
-                                                Formula = u.AggregationFormula
+                                                Formula = u.AggregationFormula,
+                                                IsCurrentLevelCalculation = u.AggregationCurrentLevel,
+                                                Code = u.Code
                                             });
             return unitsDailyData;
         }
@@ -274,9 +311,7 @@
             {
                 if (result.ContainsKey(unitsData.UnitConfig.Code))
                 {
-                    /*var unitsDataList = */result[unitsData.UnitConfig.Code].Add(unitsData);
-                    //unitsDataList.Add(unitsData);
-                    //result[unitsData.UnitConfig.Code] = unitsDataList;
+                    result[unitsData.UnitConfig.Code].Add(unitsData);
                 }
                 else
                 {
@@ -348,5 +383,7 @@
         public int Id { get; set; }
         public string Members { get; set; }
         public string Formula { get; set; }
+        public bool IsCurrentLevelCalculation { get; set; }
+        public string Code { get; set; }
     }
 }

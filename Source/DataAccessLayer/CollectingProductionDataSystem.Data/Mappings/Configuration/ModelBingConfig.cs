@@ -37,6 +37,7 @@
             modelBuilder.Configurations.Add(new ApplicationUserMapping());
             modelBuilder.Configurations.Add(new UnitsApprovedDataMap());
             modelBuilder.Configurations.Add(new UnitsApprovedDailyDataMap());
+            modelBuilder.Configurations.Add(new ProductionPlanConfigMap());
         }
     }
 }

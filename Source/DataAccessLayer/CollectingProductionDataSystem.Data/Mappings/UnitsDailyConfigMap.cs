@@ -22,11 +22,11 @@ namespace CollectingProductionDataSystem.Data.Mappings
 
             this.Property(t => t.AggregationFormula)
                 .IsRequired()
-                .HasMaxLength(1024);
+                .HasMaxLength(2048);
 
             this.Property(t => t.AggregationMembers)
                 .IsRequired()
-                .HasMaxLength(1024);
+                .HasMaxLength(2048);
 
             // Table & Column Mappings
             this.ToTable("UnitsDailyConfigs");

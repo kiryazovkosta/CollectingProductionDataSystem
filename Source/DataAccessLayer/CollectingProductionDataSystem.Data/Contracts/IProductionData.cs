@@ -71,6 +71,8 @@
 
         IDeletableEntityRepository<UnitsApprovedDailyData> UnitsApprovedDailyDatas { get; }
 
+        IDeletableEntityRepository<ProductionPlanConfig> ProductionPlanConfigs { get; }
+
         IDbContext DbContext { get; }
 
         IEfStatus SaveChanges(string userName);
