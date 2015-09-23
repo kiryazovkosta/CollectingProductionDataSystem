@@ -250,6 +250,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Daily Data.
+        /// </summary>
+        public static string DailyData {
+            get {
+                return ResourceManager.GetString("DailyData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Date.
         /// </summary>
         public static string Date {
@@ -322,6 +331,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Free Water Level.
+        /// </summary>
+        public static string FreeWaterLevel {
+            get {
+                return ResourceManager.GetString("FreeWaterLevel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Full Name.
         /// </summary>
         public static string FullName {
@@ -363,6 +381,15 @@ namespace App_GlobalResources.Resources {
         public static string LearnMore {
             get {
                 return ResourceManager.GetString("LearnMore", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Liquid Level.
+        /// </summary>
+        public static string LiquidLevel {
+            get {
+                return ResourceManager.GetString("LiquidLevel", resourceCulture);
             }
         }
         
@@ -421,6 +448,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Net Standard Volume.
+        /// </summary>
+        public static string NetStandardVolume {
+            get {
+                return ResourceManager.GetString("NetStandardVolume", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to New Password.
         /// </summary>
         public static string NewPassword {
@@ -435,6 +471,15 @@ namespace App_GlobalResources.Resources {
         public static string Occupation {
             get {
                 return ResourceManager.GetString("Occupation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Park Name.
+        /// </summary>
+        public static string ParkName {
+            get {
+                return ResourceManager.GetString("ParkName", resourceCulture);
             }
         }
         
@@ -502,6 +547,24 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Product Level.
+        /// </summary>
+        public static string ProductLevel {
+            get {
+                return ResourceManager.GetString("ProductLevel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Product Name.
+        /// </summary>
+        public static string ProductName {
+            get {
+                return ResourceManager.GetString("ProductName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Product Type.
         /// </summary>
         public static string ProductType {
@@ -516,6 +579,15 @@ namespace App_GlobalResources.Resources {
         public static string RecordTimestamp {
             get {
                 return ResourceManager.GetString("RecordTimestamp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reference Density.
+        /// </summary>
+        public static string ReferenceDensity {
+            get {
+                return ResourceManager.GetString("ReferenceDensity", resourceCulture);
             }
         }
         
@@ -565,11 +637,38 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Shifts Data.
+        /// </summary>
+        public static string ShiftsData {
+            get {
+                return ResourceManager.GetString("ShiftsData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please Slect Roles....
         /// </summary>
         public static string SlectRoles {
             get {
                 return ResourceManager.GetString("SlectRoles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tank Name.
+        /// </summary>
+        public static string TankName {
+            get {
+                return ResourceManager.GetString("TankName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tanks Data.
+        /// </summary>
+        public static string TanksData {
+            get {
+                return ResourceManager.GetString("TanksData", resourceCulture);
             }
         }
         
@@ -669,6 +768,24 @@ namespace App_GlobalResources.Resources {
         public static string UsersAdministration {
             get {
                 return ResourceManager.GetString("UsersAdministration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Weight In Air.
+        /// </summary>
+        public static string WeightInAir {
+            get {
+                return ResourceManager.GetString("WeightInAir", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Weight In Vacuum.
+        /// </summary>
+        public static string WeightInVacuum {
+            get {
+                return ResourceManager.GetString("WeightInVacuum", resourceCulture);
             }
         }
     }

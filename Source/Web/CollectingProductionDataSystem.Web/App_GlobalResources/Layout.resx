@@ -321,4 +321,43 @@
   <data name="ChooseArea" xml:space="preserve">
     <value>Choose Area...</value>
   </data>
+  <data name="DailyData" xml:space="preserve">
+    <value>Daily Data</value>
+  </data>
+  <data name="ShiftsData" xml:space="preserve">
+    <value>Shifts Data</value>
+  </data>
+  <data name="TanksData" xml:space="preserve">
+    <value>Tanks Data</value>
+  </data>
+  <data name="FreeWaterLevel" xml:space="preserve">
+    <value>Free Water Level</value>
+  </data>
+  <data name="LiquidLevel" xml:space="preserve">
+    <value>Liquid Level</value>
+  </data>
+  <data name="NetStandardVolume" xml:space="preserve">
+    <value>Net Standard Volume</value>
+  </data>
+  <data name="ParkName" xml:space="preserve">
+    <value>Park Name</value>
+  </data>
+  <data name="ProductLevel" xml:space="preserve">
+    <value>Product Level</value>
+  </data>
+  <data name="ProductName" xml:space="preserve">
+    <value>Product Name</value>
+  </data>
+  <data name="ReferenceDensity" xml:space="preserve">
+    <value>Reference Density</value>
+  </data>
+  <data name="TankName" xml:space="preserve">
+    <value>Tank Name</value>
+  </data>
+  <data name="WeightInAir" xml:space="preserve">
+    <value>Weight In Air</value>
+  </data>
+  <data name="WeightInVacuum" xml:space="preserve">
+    <value>Weight In Vacuum</value>
+  </data>
 </root>

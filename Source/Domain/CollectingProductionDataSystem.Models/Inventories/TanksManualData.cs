@@ -3,6 +3,7 @@
     using System;
     using CollectingProductionDataSystem.Models.Abstract;
     using CollectingProductionDataSystem.Models.Contracts;
+    using CollectingProductionDataSystem.Models.Nomenclatures;
 
     public partial class TanksManualData : DeletableEntity, IEntity
     {
@@ -23,5 +24,7 @@
         public decimal? MaxVolume { get; set; }
         public decimal? AvailableRoom { get; set; }
         public virtual TankData TankData { get; set; }
+        public int EditReasonId { get; set; }
+        public virtual EditReason EditReason { get; set; }
     }
 }

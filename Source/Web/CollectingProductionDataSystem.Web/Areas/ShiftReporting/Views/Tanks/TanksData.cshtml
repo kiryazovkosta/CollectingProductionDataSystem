@@ -1,9 +1,19 @@
-﻿@using CollectingProductionDataSystem.Web.ViewModels.Tank;
+﻿@using System.Web.Optimization;
+@using CollectingProductionDataSystem.Web.ViewModels.Tank;
+@using Resources = App_GlobalResources.Resources;
 @model TankDataViewModel
 @{
     Layout = "~/Views/Shared/_KendoLayoutWithSideBar.cshtml";
 }
-<h2>Tanks Data</h2>
+<div class="row">
+    <div class="col-md-10">
+        <h2>@Resources.Layout.TanksData</h2>
+    </div>
+    <div class="col-md-2">
+        <button id="excel-export" class="k-button k-button-icontext k-grid-excel pull-right head-button"><span class="k-icon k-i-excel"></span>Експорт в Excel</button>
+    </div>
+</div>
+
 @Html.ValidationSummary()
 @Html.AntiForgeryToken()
 @(Html.Kendo().Grid<TankDataViewModel>()
@@ -15,25 +25,49 @@
                 columns.Bound(c => c.ParkName);
                 columns.Bound(c => c.TankName);
                 columns.Bound(c => c.ProductName);
-                columns.Bound(c => c.LiquidLevel);
-                columns.Bound(c => c.ProductLevel);
-                columns.Bound(c => c.NetStandardVolume);
-                columns.Bound(c => c.ReferenceDensity);
-                columns.Bound(c => c.WeightInVacuum);
-                columns.Bound(c => c.FreeWaterLevel);
+                columns.Bound(c => c.LiquidLevel).Format("{0:n2}");
+                columns.Bound(c => c.ProductLevel).Format("{0:n2}");
+                columns.Bound(c => c.NetStandardVolume).Format("{0:n2}");
+                columns.Bound(c => c.ReferenceDensity).Format("{0:n2}");
+                columns.Bound(c => c.WeightInVacuum).Format("{0:n2}");
+                columns.Bound(c => c.FreeWaterLevel).Format("{0:n2}");
+                columns.Bound(c => c.TanksManualData.EditReason).Width(200).ClientTemplate("#:TanksManualData.EditReason.Name#")
+                    .ClientTemplate("<div class=row><div class='col-xs-2 no-horisontal-padding'><div class='#:TanksManualData.EditReason.Id == 0? 'bg-ok':'bg-warning'#'></div></div><div class='col-xs-9 no-horisontal-padding reason'>#:TanksManualData.EditReason.Name#</div></div>");
+                columns.Command(c => c.Edit());
             })
         .Pageable(pageable => pageable
         .Refresh(true)
         .PageSizes(new[] { 10, 20, 50, 100 })
         .ButtonCount(5))
         .Sortable()
+        .Excel(excel => excel
+            .FileName(@Resources.Layout.TanksData + "_" + DateTime.Now + ".xlsx")
+            .Filterable(true)
+            .ProxyURL(Url.Action("Excel_Export_Save", "Tests", new { area = "" }))
+            .AllPages(true)
+        )
         .Scrollable(scr => scr.Height(660))
         .Filterable()
         .DataSource(dataSource => dataSource
             .Ajax()
             .PageSize(20)
             .ServerOperation(true)
-            .Read(read => read.Action("Read", "Tanks", new { area = "ShiftReporting" }).Data("sendDate"))
+            .Read(read => read.Action("ReadTanksData", "Tanks", new { area = "ShiftReporting" }).Data("sendDate"))
+            .Update(update => update.Action("Edit", "Tanks", new { area = "ShiftReporting" }).Data("sendAntiForgery"))
+            .Model(model =>
+            {
+                model.Id(p => p.Id);
+                model.Field(p => p.UnitConfig.Code).Editable(false);
+                model.Field(p => p.UnitConfig.ProductType.Name).Editable(false);
+                model.Field(p => p.UnitConfig.ProcessUnit.ShortName).Editable(false);
+                model.Field(p => p.UnitConfig.Name).Editable(false);
+                model.Field(p => p.UnitConfig.Position).Editable(false);
+                model.Field(p => p.UnitConfig.MeasureUnit.Code).Editable(false);
+                model.Field(p => p.UnitConfig.CollectingDataMechanism).Editable(false);
+                model.Field(p => p.Value).Editable(false);
+                model.Field(p => p.UnitsManualData.Value).Editable(true);
+                model.Field(p => p.UnitsManualData.EditReason).Editable(true);
+            })
         .Events(events =>
         {
             events.Error("error_handler");
@@ -122,6 +156,7 @@
         }
     </script>
 }
+
 @section sidebar{
     @Html.Partial("_TanksSideBar")
 }

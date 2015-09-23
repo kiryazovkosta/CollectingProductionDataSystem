@@ -31,7 +31,7 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Read([DataSourceRequest]DataSourceRequest request, DateTime? date, int? parkId, int? shiftMinutesOffset)
+        public ActionResult ReadTanksData([DataSourceRequest]DataSourceRequest request, DateTime? date, int? parkId, int? shiftMinutesOffset)
         {
             if (date == null)
             {
@@ -67,5 +67,57 @@
                 return Json(kendoResult);
             }
         }
+
+                [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit([DataSourceRequest]
+                                 DataSourceRequest request, TankDataViewModel model)
+        {
+            //if (ModelState.IsValid)
+            //{
+            //    var newManualRecord = new TanksManualData
+            //    {
+            //        Id = model.Id,
+            //        Value = model.UnitsManualData.Value,
+            //        EditReasonId = model.UnitsManualData.EditReason.Id
+            //    };
+            //    var existManualRecord = this.data.UnitsManualData.All().FirstOrDefault(x => x.Id == newManualRecord.Id);
+            //    if (existManualRecord == null)
+            //    {
+            //        this.data.UnitsManualData.Add(newManualRecord);
+            //    }
+            //    else
+            //    {
+            //        UpdateRecord(existManualRecord, model);
+            //    }
+            //    try
+            //    {
+            //        var result = this.data.SaveChanges(UserProfile.UserName);
+            //        if (!result.IsValid)
+            //        {
+            //            foreach (ValidationResult error in result.EfErrors)
+            //            {
+            //                this.ModelState.AddModelError(error.MemberNames.ToList()[0], error.ErrorMessage);
+            //            }
+            //        }
+            //    }
+            //    catch (DbUpdateException)
+            //    {
+            //        this.ModelState.AddModelError("ManualValue", "Записът не можа да бъде осъществен. Моля опитайте на ново!");
+            //    }
+            //    finally
+            //    {
+            //    }
+            //}
+
+            return Json(new[] { model }.ToDataSourceResult(request, ModelState));
+        }
+
+        //private void UpdateRecord(UnitsManualData existManualRecord, UnitDataViewModel model)
+        //{
+        //    existManualRecord.Value = model.UnitsManualData.Value;
+        //    existManualRecord.EditReasonId = model.UnitsManualData.EditReason.Id;
+        //    this.data.UnitsManualData.Update(existManualRecord);
+        //}
     }
 }

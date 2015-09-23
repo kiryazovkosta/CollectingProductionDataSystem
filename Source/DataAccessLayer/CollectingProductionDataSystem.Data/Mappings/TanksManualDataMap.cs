@@ -18,6 +18,10 @@
 
             // Table & Column Mappings
             this.ToTable("TanksManualDatas");
+
+            this.HasOptional(t => t.EditReason)
+                .WithMany()
+                .HasForeignKey(d => d.EditReasonId);
         }
     }
 }

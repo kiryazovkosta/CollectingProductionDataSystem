@@ -324,4 +324,43 @@
   <data name="ChooseArea" xml:space="preserve">
     <value>Изберете област...</value>
   </data>
+  <data name="DailyData" xml:space="preserve">
+    <value>Дневни данни</value>
+  </data>
+  <data name="ShiftsData" xml:space="preserve">
+    <value>Сменни данни</value>
+  </data>
+  <data name="TanksData" xml:space="preserve">
+    <value>Сменни данни за наличности по резервоари</value>
+  </data>
+  <data name="FreeWaterLevel" xml:space="preserve">
+    <value>Ниво вода на дъно</value>
+  </data>
+  <data name="LiquidLevel" xml:space="preserve">
+    <value>Ниво на течност</value>
+  </data>
+  <data name="NetStandardVolume" xml:space="preserve">
+    <value>Нетен компенсиран обем</value>
+  </data>
+  <data name="ParkName" xml:space="preserve">
+    <value>Парк</value>
+  </data>
+  <data name="ProductLevel" xml:space="preserve">
+    <value>Ниво на продукт</value>
+  </data>
+  <data name="ProductName" xml:space="preserve">
+    <value>Продукт</value>
+  </data>
+  <data name="ReferenceDensity" xml:space="preserve">
+    <value>Компенсирана плътност</value>
+  </data>
+  <data name="TankName" xml:space="preserve">
+    <value>Резервоар</value>
+  </data>
+  <data name="WeightInAir" xml:space="preserve">
+    <value>Маса във въздух</value>
+  </data>
+  <data name="WeightInVacuum" xml:space="preserve">
+    <value>Маса във вакуум</value>
+  </data>
 </root>
