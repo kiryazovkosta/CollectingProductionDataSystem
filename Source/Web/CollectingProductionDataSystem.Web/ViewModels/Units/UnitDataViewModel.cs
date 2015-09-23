@@ -104,7 +104,7 @@
         public int Id { get; set; }
 
         [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
-        [Display(Name = "ProcessUnitName", ResourceType = typeof(Resources.Layout))]
+        [Display(Name = "ProcessUnit", ResourceType = typeof(Resources.Layout))]
         public string ShortName { get; set; } 
 
     }

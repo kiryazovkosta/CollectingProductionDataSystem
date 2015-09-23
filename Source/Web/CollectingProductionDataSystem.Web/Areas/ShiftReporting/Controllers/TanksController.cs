@@ -14,6 +14,8 @@
     using CollectingProductionDataSystem.Web.ViewModels.Tank;
     using CollectingProductionDataSystem.Models.Inventories;
     using AutoMapper;
+    using System.Data.Entity.Infrastructure;
+    using System.ComponentModel.DataAnnotations;
 
     [Authorize]
     public class TanksController : AreaBaseController
@@ -73,51 +75,64 @@
         public ActionResult Edit([DataSourceRequest]
                                  DataSourceRequest request, TankDataViewModel model)
         {
-            //if (ModelState.IsValid)
-            //{
-            //    var newManualRecord = new TanksManualData
-            //    {
-            //        Id = model.Id,
-            //        Value = model.UnitsManualData.Value,
-            //        EditReasonId = model.UnitsManualData.EditReason.Id
-            //    };
-            //    var existManualRecord = this.data.UnitsManualData.All().FirstOrDefault(x => x.Id == newManualRecord.Id);
-            //    if (existManualRecord == null)
-            //    {
-            //        this.data.UnitsManualData.Add(newManualRecord);
-            //    }
-            //    else
-            //    {
-            //        UpdateRecord(existManualRecord, model);
-            //    }
-            //    try
-            //    {
-            //        var result = this.data.SaveChanges(UserProfile.UserName);
-            //        if (!result.IsValid)
-            //        {
-            //            foreach (ValidationResult error in result.EfErrors)
-            //            {
-            //                this.ModelState.AddModelError(error.MemberNames.ToList()[0], error.ErrorMessage);
-            //            }
-            //        }
-            //    }
-            //    catch (DbUpdateException)
-            //    {
-            //        this.ModelState.AddModelError("ManualValue", "Записът не можа да бъде осъществен. Моля опитайте на ново!");
-            //    }
-            //    finally
-            //    {
-            //    }
-            //}
+            if (ModelState.IsValid)
+            {
+                var newManualRecord = new TanksManualData
+                {
+                    Id = model.Id,
+                    LiquidLevel = model.LiquidLevel.Value,
+                    ProductLevel = model.ProductLevel.Value,
+                    NetStandardVolume = model.NetStandardVolume.Value,
+                    ReferenceDensity = model.ReferenceDensity.Value,
+                    WeightInAir = model.WeightInAir.Value,
+                    WeightInVacuum = model.WeightInVacuum.Value,
+                    FreeWaterLevel = model.FreeWaterLevel.Value,
+                    EditReasonId = model.TanksManualData.EditReason.Id
+                };
+
+                var existManualRecord = this.data.TanksManualData.All().FirstOrDefault(x => x.Id == newManualRecord.Id);
+                if (existManualRecord == null)
+                {
+                    this.data.TanksManualData.Add(newManualRecord);
+                }
+                else
+                {
+                    UpdateRecord(existManualRecord, model);
+                }
+                try
+                {
+                    var result = this.data.SaveChanges(UserProfile.UserName);
+                    if (!result.IsValid)
+                    {
+                        foreach (ValidationResult error in result.EfErrors)
+                        {
+                            this.ModelState.AddModelError(error.MemberNames.ToList()[0], error.ErrorMessage);
+                        }
+                    }
+                }
+                catch (DbUpdateException)
+                {
+                    this.ModelState.AddModelError("ManualValue", "Записът не можа да бъде осъществен. Моля опитайте на ново!");
+                }
+                finally
+                {
+                }
+            }
 
             return Json(new[] { model }.ToDataSourceResult(request, ModelState));
         }
 
-        //private void UpdateRecord(UnitsManualData existManualRecord, UnitDataViewModel model)
-        //{
-        //    existManualRecord.Value = model.UnitsManualData.Value;
-        //    existManualRecord.EditReasonId = model.UnitsManualData.EditReason.Id;
-        //    this.data.UnitsManualData.Update(existManualRecord);
-        //}
+        private void UpdateRecord(TanksManualData existManualRecord, TankDataViewModel model)
+        {
+            existManualRecord.LiquidLevel = model.LiquidLevel.Value;
+            existManualRecord.ProductLevel = model.ProductLevel.Value;
+            existManualRecord.NetStandardVolume = model.NetStandardVolume.Value;
+            existManualRecord.ReferenceDensity = model.ReferenceDensity.Value;
+            existManualRecord.WeightInAir = model.WeightInAir.Value;
+            existManualRecord.WeightInVacuum = model.WeightInVacuum.Value;
+            existManualRecord.FreeWaterLevel = model.FreeWaterLevel.Value;
+            existManualRecord.EditReasonId = model.TanksManualData.EditReason.Id;
+            this.data.TanksManualData.Update(existManualRecord);
+        }
     }
 }

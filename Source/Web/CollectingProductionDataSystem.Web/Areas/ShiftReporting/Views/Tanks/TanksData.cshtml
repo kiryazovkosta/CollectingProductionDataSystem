@@ -57,16 +57,17 @@
             .Model(model =>
             {
                 model.Id(p => p.Id);
-                model.Field(p => p.UnitConfig.Code).Editable(false);
-                model.Field(p => p.UnitConfig.ProductType.Name).Editable(false);
-                model.Field(p => p.UnitConfig.ProcessUnit.ShortName).Editable(false);
-                model.Field(p => p.UnitConfig.Name).Editable(false);
-                model.Field(p => p.UnitConfig.Position).Editable(false);
-                model.Field(p => p.UnitConfig.MeasureUnit.Code).Editable(false);
-                model.Field(p => p.UnitConfig.CollectingDataMechanism).Editable(false);
-                model.Field(p => p.Value).Editable(false);
-                model.Field(p => p.UnitsManualData.Value).Editable(true);
-                model.Field(p => p.UnitsManualData.EditReason).Editable(true);
+                model.Field(p => p.RecordTimestamp).Editable(false);
+                model.Field(p => p.ParkName).Editable(false);
+                model.Field(p => p.TankName).Editable(false);
+                model.Field(p => p.ProductName).Editable(false);
+                model.Field(p => p.LiquidLevel).Editable(true);
+                model.Field(p => p.ProductLevel).Editable(true);
+                model.Field(p => p.NetStandardVolume).Editable(true);
+                model.Field(p => p.ReferenceDensity).Editable(true);
+                model.Field(p => p.WeightInVacuum).Editable(true);
+                model.Field(p => p.FreeWaterLevel).Editable(true);
+                model.Field(p => p.TanksManualData.EditReason).Editable(true);
             })
         .Events(events =>
         {
@@ -154,6 +155,13 @@
                 maxHeight: 350
             });
         }
+
+        function AttachEventToExportBtn(buttonSelector, targetSelector) {
+            $(buttonSelector).click(function () {
+                $(targetSelector).data("kendoGrid").saveAsExcel();
+            });
+        }
+
     </script>
 }
 

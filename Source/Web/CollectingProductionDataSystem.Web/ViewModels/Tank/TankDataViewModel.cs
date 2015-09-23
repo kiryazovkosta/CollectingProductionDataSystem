@@ -29,24 +29,31 @@
         public string ProductName { get; set; }
 
         [Display(Name = "LiquidLevel", ResourceType = typeof(Resources.Layout))]
+        [Range(0, double.MaxValue, ErrorMessageResourceName = "LiquidLevel", ErrorMessageResourceType = typeof(Resources.Layout))]
         public decimal? LiquidLevel { get; set; }
 
         [Display(Name = "ProductLevel", ResourceType = typeof(Resources.Layout))]
+        [Range(0, double.MaxValue, ErrorMessageResourceName = "ProductLevel", ErrorMessageResourceType = typeof(Resources.Layout))]
         public decimal? ProductLevel { get; set; }
 
         [Display(Name = "NetStandardVolume", ResourceType = typeof(Resources.Layout))]
+        [Range(0, double.MaxValue, ErrorMessageResourceName = "NetStandardVolume", ErrorMessageResourceType = typeof(Resources.Layout))]
         public decimal? NetStandardVolume { get; set; }
 
         [Display(Name = "ReferenceDensity", ResourceType = typeof(Resources.Layout))]
+        [Range(0, double.MaxValue, ErrorMessageResourceName = "ReferenceDensity", ErrorMessageResourceType = typeof(Resources.Layout))]
         public decimal? ReferenceDensity { get; set; }
 
         [Display(Name = "WeightInAir", ResourceType = typeof(Resources.Layout))]
+        [Range(0, double.MaxValue, ErrorMessageResourceName = "WeightInAir", ErrorMessageResourceType = typeof(Resources.Layout))]
         public decimal? WeightInAir { get; set; }
 
         [Display(Name = "WeightInVacuum", ResourceType = typeof(Resources.Layout))]
+        [Range(0, double.MaxValue, ErrorMessageResourceName = "WeightInVacuum", ErrorMessageResourceType = typeof(Resources.Layout))]
         public decimal? WeightInVacuum { get; set; }
 
         [Display(Name = "FreeWaterLevel", ResourceType = typeof(Resources.Layout))]
+        [Range(0, double.MaxValue, ErrorMessageResourceName = "FreeWaterLevel", ErrorMessageResourceType = typeof(Resources.Layout))]
         public decimal? FreeWaterLevel { get; set; }
 
         public int ShiftId { get; set; }
