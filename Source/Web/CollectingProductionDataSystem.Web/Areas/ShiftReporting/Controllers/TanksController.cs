@@ -1,28 +1,29 @@
-﻿using System.Data.Entity;
-using AutoMapper;
-using CollectingProductionDataSystem.Application.UnitsDataServices;
-using CollectingProductionDataSystem.Data.Contracts;
-using CollectingProductionDataSystem.Models.Inventories;
-using CollectingProductionDataSystem.Web.ViewModels.Tank;
-using Kendo.Mvc.Extensions;
-using Kendo.Mvc.UI;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using Resources = App_GlobalResources.Resources;
-
-namespace CollectingProductionDataSystem.Web.Controllers
+﻿namespace CollectingProductionDataSystem.Web.Areas.ShiftReporting.Controllers
 {
+    using System.Data.Entity;
+    using CollectingProductionDataSystem.Data.Contracts;
+    using CollectingProductionDataSystem.Web.Infrastructure.Filters;
+    using Kendo.Mvc.Extensions;
+    using Kendo.Mvc.UI;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Web;
+    using System.Web.Mvc;
+    using Resources = App_GlobalResources.Resources;
+    using CollectingProductionDataSystem.Web.ViewModels.Tank;
+    using CollectingProductionDataSystem.Models.Inventories;
+    using AutoMapper;
+
     [Authorize]
-    public class TanksController : BaseController
+    public class TanksController : AreaBaseController
     {
         public TanksController(IProductionData dataParam)
             : base(dataParam)
         {
         }
 
+        [HttpGet]
         public ActionResult TanksData()
         {
             return View();
@@ -30,7 +31,7 @@ namespace CollectingProductionDataSystem.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult ReadTanksData([DataSourceRequest]DataSourceRequest request, DateTime? date, int? parkId, int? shiftMinutesOffset)
+        public ActionResult Read([DataSourceRequest]DataSourceRequest request, DateTime? date, int? parkId, int? shiftMinutesOffset)
         {
             if (date == null)
             {

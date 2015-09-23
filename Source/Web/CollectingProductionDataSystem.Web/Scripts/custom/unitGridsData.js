@@ -51,8 +51,10 @@ $(document).ready(function () {
         grid.refresh();
 
         var planGrid = $('#productionPlan').data("kendoGrid");
-        planGrid.dataSource.read();
-        planGrid.refresh();
+        if (planGrid !== null) {
+            planGrid.dataSource.read();
+            planGrid.refresh();
+        }
 
         checkConfirmedStatus();
         grid.dataSource.fetch(function () {

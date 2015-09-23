@@ -79,6 +79,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Area.
+        /// </summary>
+        public static string Area {
+            get {
+                return ResourceManager.GetString("Area", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Automatic Loaded.
         /// </summary>
         public static string AutomaticData {
@@ -129,6 +138,15 @@ namespace App_GlobalResources.Resources {
         public static string ChanhePasswordSuccess {
             get {
                 return ResourceManager.GetString("ChanhePasswordSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Choose Area....
+        /// </summary>
+        public static string ChooseArea {
+            get {
+                return ResourceManager.GetString("ChooseArea", resourceCulture);
             }
         }
         

@@ -6,8 +6,7 @@
 <h2>Tanks Data</h2>
 @Html.ValidationSummary()
 @Html.AntiForgeryToken()
-
-    @(Html.Kendo().Grid<TankDataViewModel>()
+@(Html.Kendo().Grid<TankDataViewModel>()
         .Name("tanks")
         .AutoBind(false)
         .Columns(columns =>
@@ -20,7 +19,6 @@
                 columns.Bound(c => c.ProductLevel);
                 columns.Bound(c => c.NetStandardVolume);
                 columns.Bound(c => c.ReferenceDensity);
-                columns.Bound(c => c.WeightInAir);
                 columns.Bound(c => c.WeightInVacuum);
                 columns.Bound(c => c.FreeWaterLevel);
             })
@@ -35,17 +33,19 @@
             .Ajax()
             .PageSize(20)
             .ServerOperation(true)
-            .Read(read => read.Action("ReadTanksData", "Tanks", new { area = "" })
-                .Data("sendDate"))
-                             .Events(events =>
-                           {
-                               events.Error("error_handler");
-                           }))
+            .Read(read => read.Action("Read", "Tanks", new { area = "ShiftReporting" }).Data("sendDate"))
+        .Events(events =>
+        {
+            events.Error("error_handler");
+        }))
 
-    )
+)
 
 @* //Error window for kendo grid error event handler *@
 <div id="err-window" style="display:none">@Html.Partial("_KendoGridErrorWindow")</div>
+@* //Error window for kendo grid error event handler *@
+<div id="success-window" style="display:none">@Html.Partial("_SuccessWindow")</div>
+
 @section scripts{
     <script src="~/Scripts/custom/sendAntiForgery.js"></script>
     <script>

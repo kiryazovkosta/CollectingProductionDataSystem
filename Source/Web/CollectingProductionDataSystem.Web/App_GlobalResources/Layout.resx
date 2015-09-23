@@ -315,4 +315,10 @@
   <data name="Shift" xml:space="preserve">
     <value>Shift</value>
   </data>
+  <data name="Area" xml:space="preserve">
+    <value>Area</value>
+  </data>
+  <data name="ChooseArea" xml:space="preserve">
+    <value>Choose Area...</value>
+  </data>
 </root>

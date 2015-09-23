@@ -248,6 +248,7 @@
     <Compile Include="Areas\MonthlyReporting\MonthlyReportingAreaRegistration.cs" />
     <Compile Include="Areas\ShiftReporting\Controllers\AjaxController.cs" />
     <Compile Include="Areas\ShiftReporting\Controllers\AreaBaseController.cs" />
+    <Compile Include="Areas\ShiftReporting\Controllers\TanksController.cs" />
     <Compile Include="Areas\ShiftReporting\Controllers\UnitsController.cs" />
     <Compile Include="Areas\ShiftReporting\ShiftReportingAreaRegistration.cs" />
     <Compile Include="Controllers\AccountController.cs">
@@ -258,7 +259,6 @@
     <Compile Include="Controllers\HomeController.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Controllers\TanksController.cs" />
     <Compile Include="Controllers\TestsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -675,11 +675,19 @@
     <Content Include="Areas\Administration\Views\Shared\_UserAdditionalData.cshtml" />
     <Content Include="Areas\Administration\Views\Shared\_KendoAdminLayout.cshtml" />
     <Content Include="Areas\DailyReporting\Views\UnitsDaily\UnitsDailyData.cshtml" />
+    <Content Include="Areas\ShiftReporting\Views\Tanks\TanksData.cshtml" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <None Include="Properties\PublishProfiles\Home.pubxml" />
+    <Content Include="Scripts\custom\sendArea.js" />
+    <Content Include="Scripts\custom\sendArea.min.js">
+      <DependentUpon>sendArea.js</DependentUpon>
+    </Content>
     <Content Include="Scripts\custom\sendFactory.js" />
     <Content Include="Scripts\custom\sendFactory.min.js.map">
       <DependentUpon>sendFactory.min.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\custom\sendArea.min.js.map">
+      <DependentUpon>sendArea.min.js</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\custom\sendFactory.min.js">
@@ -1300,7 +1308,6 @@
     <Content Include="Views\Shared\DisplayTemplates\EditReason.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\EditReasonInputModel.cshtml" />
     <Content Include="Views\Shared\_KendoGridErrorWindow.cshtml" />
-    <Content Include="Views\Tanks\TanksData.cshtml" />
     <Content Include="Views\Shared\_LayoutWithSideBar.cshtml" />
     <Content Include="Views\Shared\_MainNav.cshtml" />
     <Content Include="Views\Shared\_KendoLayoutWithSideBar.cshtml" />
@@ -1324,7 +1331,6 @@
     <Folder Include="Areas\ShiftReporting\Views\AreaBase\" />
     <Folder Include="Areas\ShiftReporting\Views\Shared\" />
     <Folder Include="Views\Ajax\" />
-    <Folder Include="Views\Units\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

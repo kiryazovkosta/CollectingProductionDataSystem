@@ -12,6 +12,7 @@
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
+                
                 <li>@Html.AuthorizedActionLink(@Resources.Layout.UnitsData, "UnitsData", "Units", new { area = "ShiftReporting" }, null)</li>
                 <li>@Html.AuthorizedActionLink(@Resources.Layout.UnitsDailyData, "UnitsDailyData", "UnitsDaily", new { area = "DailyReporting" }, null)</li>
                 @if (Html.ActionIsAccessibleToUser("Index", "User", "Administration"))
