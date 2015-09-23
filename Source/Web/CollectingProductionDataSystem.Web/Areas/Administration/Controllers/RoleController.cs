@@ -8,9 +8,9 @@
     using System.Web;
     using System.Web.Mvc;
     using AutoMapper;
+    using CollectingProductionDataSystem.Application.IdentityInfrastructure;
     using CollectingProductionDataSystem.Data.Contracts;
     using CollectingProductionDataSystem.Models.Identity;
-    using CollectingProductionDataSystem.Web.Infrastructure.IdentityInfrastructure;
     using CollectingProductionDataSystem.Web.ViewModels.Identity;
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.Owin;

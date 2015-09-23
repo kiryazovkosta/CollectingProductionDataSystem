@@ -1,4 +1,4 @@
-namespace CollectingProductionDataSystem.Web.Infrastructure.IdentityInfrastructure
+namespace CollectingProductionDataSystem.Application.IdentityInfrastructure
 {
     using System.Threading.Tasks;
     using Microsoft.AspNet.Identity;

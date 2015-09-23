@@ -11,7 +11,6 @@
     using CollectingProductionDataSystem.Data.Contracts;
     using CollectingProductionDataSystem.Models.Identity;
     using CollectingProductionDataSystem.Web.Areas.Administration.ViewModels;
-    using CollectingProductionDataSystem.Web.Infrastructure.IdentityInfrastructure;
     using CollectingProductionDataSystem.Web.ViewModels.Identity;
     using CollectingProductionDataSystem.Web.ViewModels.Tank;
     using CollectingProductionDataSystem.Web.ViewModels.Units;

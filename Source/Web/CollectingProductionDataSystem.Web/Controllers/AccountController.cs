@@ -8,9 +8,9 @@
     using System.Threading.Tasks;
     using System.Web;
     using System.Web.Mvc;
+    using CollectingProductionDataSystem.Application.IdentityInfrastructure;
     using CollectingProductionDataSystem.Data.Contracts;
     using CollectingProductionDataSystem.Web.Areas.Administration.ViewModels;
-    using CollectingProductionDataSystem.Web.Infrastructure.IdentityInfrastructure;
     using log4net.Core;
     using Resources = App_GlobalResources.Resources;
     using Microsoft.AspNet.Identity;

@@ -1,4 +1,4 @@
-namespace CollectingProductionDataSystem.Web.Infrastructure.IdentityInfrastructure
+namespace CollectingProductionDataSystem.Application.IdentityInfrastructure
 {
     using System;
     using System.Text.RegularExpressions;
@@ -6,7 +6,8 @@ namespace CollectingProductionDataSystem.Web.Infrastructure.IdentityInfrastructu
     using CollectingProductionDataSystem.Data;
     using CollectingProductionDataSystem.Data.Identity;
     using CollectingProductionDataSystem.Models.Identity;
-    using Resources = App_GlobalResources.Resources;
+    using Microsoft.Owin.Security.DataProtection;
+    using Resources = App_Resources;
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.Owin;
     using Microsoft.Owin;

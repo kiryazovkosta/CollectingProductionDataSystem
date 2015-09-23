@@ -15,7 +15,6 @@
     using CollectingProductionDataSystem.Models.Identity;
     using CollectingProductionDataSystem.Models.UtilityEntities;
     using CollectingProductionDataSystem.Web.Areas.Administration.ViewModels;
-    using CollectingProductionDataSystem.Web.Infrastructure.IdentityInfrastructure;
     using CollectingProductionDataSystem.Web.ViewModels.Tank;
     using CollectingProductionDataSystem.Web.ViewModels.Units;
     using Microsoft.AspNet.Identity.EntityFramework;

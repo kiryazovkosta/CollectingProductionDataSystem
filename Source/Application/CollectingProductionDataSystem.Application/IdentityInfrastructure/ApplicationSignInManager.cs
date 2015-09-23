@@ -1,4 +1,4 @@
-﻿namespace CollectingProductionDataSystem.Web.Infrastructure.IdentityInfrastructure
+﻿namespace CollectingProductionDataSystem.Application.IdentityInfrastructure
 {
     using System;
     using System.Linq;

@@ -18,7 +18,43 @@
 @Html.ValidationSummary()
 @Html.AntiForgeryToken()
 <div class="row">
-    <div class="col-md-12">
+    <div class="col-lg-4 col-lg-push-8">
+        @(Html.Kendo()
+        .Grid<ProductionPlanViewModel>()
+        .Name("productionPlan")
+        .AutoBind(false)
+        .Columns(
+            columns =>
+            {
+                columns.Bound("Name").Title("Продукт");
+                columns.Bound("Percentages").Title("%").Format("{0:n2}").Width(65);
+                columns.Bound("QuantityPlan").Title("Колич. (план T)").Format("{0:n2}").Width(90);
+                columns.Bound("QuantityFact").Title("Колич. (факт T)").Format("{0:n2}").Width(90);
+
+            })
+    .Scrollable(scr => scr.Height(350))
+    .DataSource(dataSource => dataSource
+        .Ajax()
+        .ServerOperation(true)
+        //    .Group(group => group.Add(c => c.UnitsDailyConfig.ProductType.Sort))
+        .Read(read => read.Action("ReadProductionPlanData", "UnitsDaily", new { area = "DailyReporting" }).Data("sendDate"))
+        .Model(model =>
+        {
+            model.Id(p => p.Id);
+            model.Field(p => p.Name).Editable(false);
+            model.Field(p => p.Percentages).Editable(false);
+            model.Field(p => p.QuantityPlan).Editable(false);
+            model.Field(p => p.QuantityFact).Editable(false);
+        })
+        .Events(events =>
+        {
+            events.Error("error_handler");
+        })
+    )
+        )
+    </div>
+
+    <div class="col-lg-8 col-lg-pull-4">
         @(Html.Kendo()
     .Grid<UnitDailyDataViewModel>()
     .Name("units")
@@ -26,7 +62,6 @@
     .Columns(
         columns =>
         {
-            columns.Bound(c => c.Id);
             columns.Bound(c => c.UnitsDailyConfig.Code).Width(77);
             columns.Bound(c => c.UnitsDailyConfig.ProductType.Sort).Hidden(true).ClientGroupHeaderTemplate("#=value#");
             columns.Bound(c => c.UnitsDailyConfig.ProcessUnit.ShortName).Width(100);
@@ -34,9 +69,9 @@
             columns.Bound(c => c.UnitsDailyConfig.MeasureUnit.Code).Width(80);
             columns.Bound(c => c.Value).Width(100).Format("{0:n2}");
             columns.Bound(c => c.UnitsManualDailyData.Value).Width(100).Format("{0:n2}");
-            columns.Bound(c => c.UnitsManualDailyData.EditReason).Width(200).ClientTemplate("#:UnitsManualDailyData.EditReason.Name#")
+            columns.Bound(c => c.UnitsManualDailyData.EditReason).Width(180).ClientTemplate("#:UnitsManualDailyData.EditReason.Name#")
                 .ClientTemplate("<div class=row><div class='col-xs-2 no-horisontal-padding'><div class='#:UnitsManualDailyData.EditReason.Id == 0? 'bg-ok':'bg-warning'#'></div></div><div class='col-xs-9 no-horisontal-padding reason'>#:UnitsManualDailyData.EditReason.Name#</div></div>");
-            columns.Command(c => c.Edit());
+            columns.Command(c => c.Edit()).Width(170);
         })
     .Pageable(pageable => pageable
         .Refresh(true)
@@ -50,7 +85,7 @@
         .ProxyURL(Url.Action("Excel_Export_Save", "Tests", new { area = "" }))
         .AllPages(true))
         .Events(ev => ev.DataBound("dataBound"))
-        .Scrollable(scr => scr.Height(400))
+                .Scrollable(scr => scr.Height(640))
         .Filterable()
         .ClientDetailTemplateId("template")
         .DataSource(dataSource => dataSource
@@ -71,45 +106,6 @@
             model.Field(p => p.Value).Editable(false);
             model.Field(p => p.UnitsManualDailyData.Value).Editable(true);
             model.Field(p => p.UnitsManualDailyData.EditReason).Editable(true);
-        })
-        .Events(events =>
-        {
-            events.Error("error_handler");
-        })
-    )
-        )
-    </div>
-</div>
-        
-<div class="row">
-
-    <div class="col-md-12">
-        @(Html.Kendo()
-        .Grid<ProductionPlanViewModel>()
-        .Name("productionPlan")
-        .AutoBind(false)
-        .Columns(
-            columns =>
-            {
-                columns.Bound("Name").Title("Продукт");
-                columns.Bound("Percentages").Title("%").Width(100).Format("{0:n2}");
-                columns.Bound("QuantityPlan").Title("Количество (план T)").Format("{0:n2}");
-                columns.Bound("QuantityFact").Title("Количество (факт T)").Format("{0:n2}");
-
-            })
-    .Scrollable(scr => scr.Height(200))
-    .DataSource(dataSource => dataSource
-        .Ajax()
-        .ServerOperation(true)
-        //    .Group(group => group.Add(c => c.UnitsDailyConfig.ProductType.Sort))
-        .Read(read => read.Action("ReadProductionPlanData", "UnitsDaily", new { area = "DailyReporting" }).Data("sendDate"))
-        .Model(model =>
-        {
-            model.Id(p => p.Id);
-            model.Field(p => p.Name).Editable(false);
-            model.Field(p => p.Percentages).Editable(false);
-            model.Field(p => p.QuantityPlan).Editable(false);
-            model.Field(p => p.QuantityFact).Editable(false);
         })
         .Events(events =>
         {
@@ -143,7 +139,7 @@
                     columns.Bound(c => c.UnitsManualData.Value).Width(100).Format("{0:n2}");
                     columns.Bound(c => c.UnitsManualData.EditReason).Width(200).ClientTemplate("\\#:UnitsManualData.EditReason.Name\\#")
                     .ClientTemplate("<div class=row><div class='col-xs-2 no-horisontal-padding'><div class='\\#:UnitsManualData.EditReason.Id == 0? 'bg-ok':'bg-warning'\\#'></div></div><div class='col-xs-9 no-horisontal-padding reason'>\\#:UnitsManualData.EditReason.Name\\#</div></div>");
-                    columns.Bound(c => c.Shift).Hidden(true).ClientGroupHeaderTemplate(@Resources.Layout.Shift+" \\#=value\\#");
+                    columns.Bound(c => c.Shift).Hidden(true).ClientGroupHeaderTemplate(@Resources.Layout.Shift + " \\#=value\\#");
                 })
                 .DataSource(dataSource => dataSource
                     .Ajax()

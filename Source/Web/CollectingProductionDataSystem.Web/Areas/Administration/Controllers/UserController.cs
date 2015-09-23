@@ -8,12 +8,13 @@
     using System.Web;
     using System.Web.Mvc;
     using AutoMapper;
+    using CollectingProductionDataSystem.Application.IdentityInfrastructure;
     using CollectingProductionDataSystem.Constants;
     using CollectingProductionDataSystem.Data.Contracts;
     using CollectingProductionDataSystem.Models.Identity;
     using CollectingProductionDataSystem.Web.Areas.Administration.ViewModels;
-    using CollectingProductionDataSystem.Web.Infrastructure.IdentityInfrastructure;
     using Kendo.Mvc.Extensions;
+    using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.Owin;
     using Resources = App_GlobalResources.Resources;
