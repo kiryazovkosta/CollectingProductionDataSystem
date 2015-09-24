@@ -68,6 +68,7 @@
     <Compile Include="Identity\UserLoginIntPk.cs" />
     <Compile Include="Identity\UserRoleIntPk.cs" />
     <Compile Include="Inventories\TankMasterProduct.cs" />
+    <Compile Include="Inventories\TanksApprovedData.cs" />
     <Compile Include="Inventories\TanksManualData.cs" />
     <Compile Include="Nomenclatures\Direction.cs" />
     <Compile Include="Inventories\Area.cs" />

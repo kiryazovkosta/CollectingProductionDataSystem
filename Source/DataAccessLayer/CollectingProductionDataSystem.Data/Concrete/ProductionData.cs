@@ -285,6 +285,14 @@ using CollectingProductionDataSystem.Models.Transactions;
             }
         }
 
+        public IDeletableEntityRepository<TanksApprovedData> TanksApprovedDatas
+        {
+            get
+            {
+                 return this.GetDeletableEntityRepository<TanksApprovedData>();
+            }
+        }
+
         public IEfStatus SaveChanges(string userName)
         {
             return this.context.SaveChangesWithValidation(userName);    

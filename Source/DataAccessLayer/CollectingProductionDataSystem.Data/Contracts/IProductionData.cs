@@ -73,6 +73,8 @@
 
         IDeletableEntityRepository<ProductionPlanConfig> ProductionPlanConfigs { get; }
 
+        IDeletableEntityRepository<TanksApprovedData> TanksApprovedDatas { get; }
+
         IDbContext DbContext { get; }
 
         IEfStatus SaveChanges(string userName);

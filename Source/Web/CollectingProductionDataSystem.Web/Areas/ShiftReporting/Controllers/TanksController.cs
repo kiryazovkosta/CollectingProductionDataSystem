@@ -16,6 +16,7 @@
     using AutoMapper;
     using System.Data.Entity.Infrastructure;
     using System.ComponentModel.DataAnnotations;
+    using System.Net;
 
     [Authorize]
     public class TanksController : AreaBaseController
@@ -35,18 +36,7 @@
         [ValidateAntiForgeryToken]
         public ActionResult ReadTanksData([DataSourceRequest]DataSourceRequest request, DateTime? date, int? parkId, int? shiftMinutesOffset)
         {
-            if (date == null)
-            {
-                this.ModelState.AddModelError("date", string.Format(Resources.ErrorMessages.Required, Resources.Layout.TanksDateSelector));
-            }
-            if (parkId == null)
-            {
-                this.ModelState.AddModelError("parks", string.Format(Resources.ErrorMessages.Required, Resources.Layout.TanksParkSelector));
-            }
-            if (shiftMinutesOffset == null)
-            {
-                this.ModelState.AddModelError("shifts", string.Format(Resources.ErrorMessages.Required, Resources.Layout.TanksShiftMinutesOffsetSelector));
-            }
+            ValidateInputModel(date, parkId, shiftMinutesOffset);
 
             if (this.ModelState.IsValid)
             {
@@ -67,6 +57,22 @@
             {
                 var kendoResult = new List<TankDataViewModel>().ToDataSourceResult(request, ModelState);
                 return Json(kendoResult);
+            }
+        }
+ 
+        private void ValidateInputModel(DateTime? date, int? parkId, int? shiftMinutesOffset)
+        {
+            if (date == null)
+            {
+                this.ModelState.AddModelError("date", string.Format(Resources.ErrorMessages.Required, Resources.Layout.TanksDateSelector));
+            }
+            if (parkId == null)
+            {
+                this.ModelState.AddModelError("parks", string.Format(Resources.ErrorMessages.Required, Resources.Layout.TanksParkSelector));
+            }
+            if (shiftMinutesOffset == null)
+            {
+                this.ModelState.AddModelError("shifts", string.Format(Resources.ErrorMessages.Required, Resources.Layout.TanksShiftMinutesOffsetSelector));
             }
         }
 
@@ -133,6 +139,75 @@
             existManualRecord.FreeWaterLevel = model.FreeWaterLevel.Value;
             existManualRecord.EditReasonId = model.TanksManualData.EditReason.Id;
             this.data.TanksManualData.Update(existManualRecord);
+        }
+
+        public ActionResult IsConfirmed([DataSourceRequest]
+                                        DataSourceRequest request, DateTime? date, int? parkId, int? shiftMinutesOffset)
+        {
+            ValidateInputModel(date, parkId, shiftMinutesOffset);
+
+            if (this.ModelState.IsValid)
+            {
+                var approvedShift = this.data.TanksApprovedDatas
+                    .All()
+                    .Where(u => u.RecordDate == date && u.ParkId == parkId && u.ShiftId == shiftMinutesOffset)
+                    .FirstOrDefault();
+                if (approvedShift == null)
+                {
+                    return Json(new { IsConfirmed = false });
+                }
+                return Json(new { IsConfirmed = true });
+            }
+            else
+            {
+                return Json(new { IsConfirmed = true });
+            }
+        }
+
+        public ActionResult Confirm(DateTime? date, int? parkId, int? shiftMinutesOffset)
+        {
+            ValidateInputModel(date, parkId, shiftMinutesOffset);
+
+            if (this.ModelState.IsValid)
+            {
+                var approvedShift = this.data.TanksApprovedDatas.All().Where(u => u.RecordDate == date && u.ParkId == parkId && u.ShiftId == shiftMinutesOffset).FirstOrDefault();
+                if (approvedShift == null)
+                {
+                    this.data.TanksApprovedDatas.Add(new TanksApprovedData
+                    {
+                        RecordDate = date.Value,
+                        ParkId = parkId.Value,
+                        ShiftId = shiftMinutesOffset.Value,
+                        Approved = true
+                    });
+
+                    data.SaveChanges(this.UserProfile.UserName);
+                    return Json(new { IsConfirmed = true }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                    ModelState.AddModelError("shiftdata", "Наличностите по резервоари за смяната вече са потвърдени!!!");
+                    var errors = GetErrorListFromModelState(ModelState);
+                    return Json(new { data = new { errors = errors } });
+                }
+            }
+            else
+            {
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                var errors = GetErrorListFromModelState(ModelState);
+                return Json(new { data = new { errors = errors } });
+            }
+        }
+
+        private List<string> GetErrorListFromModelState(ModelStateDictionary modelState)
+        {
+            var query = from state in modelState.Values
+                        from error in state.Errors
+                        select error.ErrorMessage;
+
+            var errorList = query.ToList();
+            return errorList;
         }
     }
 }

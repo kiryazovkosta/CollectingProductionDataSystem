@@ -105,6 +105,8 @@
 
         public IDbSet<ProductionPlanConfig> ProductionPlanConfigs { get; set; }
 
+        public IDbSet<TanksApprovedData> TanksApprovedDatas { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             ModelBingConfig.RegisterMappings(modelBuilder);

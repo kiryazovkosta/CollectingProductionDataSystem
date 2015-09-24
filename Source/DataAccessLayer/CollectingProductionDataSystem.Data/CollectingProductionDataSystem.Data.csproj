@@ -94,6 +94,7 @@
     <Compile Include="Mappings\ProductMap.cs" />
     <Compile Include="Mappings\ProductTypeMap.cs" />
     <Compile Include="Mappings\TankMasterProductMap.cs" />
+    <Compile Include="Mappings\TanksApprovedDataMap.cs" />
     <Compile Include="Mappings\TanksManualDataMap.cs" />
     <Compile Include="Mappings\TransportTypeMap.cs" />
     <Compile Include="Mappings\UnitConfigMap.cs" />
