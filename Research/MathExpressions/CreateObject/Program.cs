@@ -11,6 +11,7 @@ namespace CreateObject
         {
             CalculatorDemo();
             PartialPrint(455, 20.4);
+            PartialPrintTest(455, 20.4);
         }
 
         private static void CalculatorDemo()
@@ -34,6 +35,15 @@ namespace CreateObject
                             (503.43 + (11.02849 * Math.Log(((t + 273.15) / 647.6))) + (229.2569 * ((t + 273.15)/647.6)) + (37.93129 * Math.Pow(((t + 273.15) / 647.6), 2))))*0.001;
 
             Console.WriteLine("Entalpia -> {0}", fullResult);
+            
+
+        }
+
+        private static void PartialPrintTest(double t, double P)
+        {
+            var fullResult = Math.Log(t*P);
+
+            Console.WriteLine("Formula -> {0}", fullResult);
 
 
         }
