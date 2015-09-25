@@ -5,7 +5,10 @@ namespace CollectingProductionDataSystem.Web.AppStart
 {
     using System;
     using System.Web;
+    using CollectingProductionDataSystem.Application.Contracts;
     using CollectingProductionDataSystem.Application.TankDataServices;
+    using CollectingProductionDataSystem.Application.UserServices;
+    using CollectingProductionDataSystem.Data.Common;
     using CollectingProductionDataSystem.Data.Contracts;
     using CollectingProductionDataSystem.Web.Infrastructure.MadelBinders;
     using Microsoft.Web.Infrastructure.DynamicModuleHelper;
@@ -69,11 +72,13 @@ namespace CollectingProductionDataSystem.Web.AppStart
             kernel.Bind<DbContext>().To<CollectingDataSystemDbContext>();
             kernel.Bind(typeof(IDeletableEntityRepository<>)).To(typeof(DeletableEntityRepository<>));
             kernel.Bind(typeof(IRepository<>)).To(typeof(GenericRepository<>));
-            kernel.Bind<IProductionData>().To<ProductionData>();
+            kernel.Bind<IProductionData>().To<ProductionData>().InRequestScope();
             kernel.Bind<IPersister>().To<AuditablePersister>();
             kernel.Bind<ITankDataKendoService>().To<TankDataKendoService>();
             kernel.Bind<IUnitsDataService>().To<UnitsDataService>();
             kernel.Bind<EditUserViewModelBinder>().To<EditUserViewModelBinder>();
+            kernel.Bind<IUserService>().To<UserService>();
+            kernel.Bind<IEfStatus>().To<EfStatus>();
         }        
     }
 }

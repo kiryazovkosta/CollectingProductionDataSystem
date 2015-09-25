@@ -54,10 +54,14 @@
 
 @if (TempData["success"] != null)
 {
-    <div id="success-message" class="validation-summary-success">
-        <label>@TempData["success"]</label>
+    <div id="success-message" class="alert alert-success alert-dismissable">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+        @TempData["success"]
     </div>
 }
+
+@* //Error window for kendo grid error event handler *@
+<div id="err-window" style="display:none">@Html.Partial("_KendoGridErrorWindow")</div>
 
 @section scripts{
     <script src="~/Scripts/custom/sendAntiForgery.js"></script>
@@ -65,13 +69,19 @@
         $(document).ready(function () {
             var successMessage = $('#success-message');
             if (successMessage != null) {
-                successMessage.fadeOut(2000);
+                successMessage.fadeOut(7000);
             }
         });
 
         function error_handler(e) {
             if (e.errors) {
-                var message = "Errors:\n";
+                // prevent window from closing
+                var grid = $("#users").data("kendoGrid");
+                grid.one("dataBinding", function (e) {
+                    e.preventDefault();
+                });
+
+                var message = "";
                 $.each(e.errors, function (key, value) {
                     if ('errors' in value) {
                         $.each(value.errors, function () {
@@ -79,10 +89,16 @@
                         });
                     }
                 });
-                alert(message);
+
+                message = $('pre').text(message);
+                message.addClass('validation-summary-errors');
+                var validationSummary = $('#validation-summary');
+                validationSummary.html(message);
+                validationSummary.removeClass();
+                validationSummary.addClass('validation-summary-errors');
+                validationSummary.attr("display", "block");
             }
         }
-
     </script>
 }
 

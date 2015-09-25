@@ -48,7 +48,7 @@ namespace CollectingProductionDataSystem.Data.Common
         }
         public IEfStatus SetErrors(IEnumerable<ValidationResult> errors)
         {
-            errors = errors.ToList();
+            this.errors = errors.ToList();
             return this;
         }
     }
