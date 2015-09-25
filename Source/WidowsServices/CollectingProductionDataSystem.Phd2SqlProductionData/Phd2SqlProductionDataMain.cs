@@ -416,7 +416,8 @@
                         PhdTagReferenceDensity = t.PhdTagReferenceDensity,
                         PhdTagNetStandardVolume = t.PhdTagNetStandardVolume,
                         PhdTagWeightInAir = t.PhdTagWeightInAir,
-                        PhdTagWeightInVaccum = t.PhdTagWeightInVacuum
+                        PhdTagWeightInVaccum = t.PhdTagWeightInVacuum,
+                        CorrectionFactor = t.CorrectionFactor
                     });
 
                     if (tanks.Count() > 0)
@@ -441,6 +442,7 @@
                                     tankData.TankConfigId = t.TankId;
                                     tankData.ParkId = t.ParkId;
                                     tankData.NetStandardVolume = t.UnusableResidueLevel;
+                                    tankData.CorrectionFactor = t.CorrectionFactor;
 
                                     Tags tags = new Tags();
                                     SetPhdTag(t.PhdTagProductId, tags);              

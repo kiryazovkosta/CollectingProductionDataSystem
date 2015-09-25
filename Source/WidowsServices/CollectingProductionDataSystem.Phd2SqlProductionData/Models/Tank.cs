@@ -51,5 +51,9 @@
         /// Ниво на мъртъв остатък (МО),
         /// </summary>
         public decimal UnusableResidueLevel { get; set; }
+        /// <summary>
+        /// Коригиращ коефициент в сантиметри
+        /// </summary>
+        public string CorrectionFactor { get; set; }
     }
 }

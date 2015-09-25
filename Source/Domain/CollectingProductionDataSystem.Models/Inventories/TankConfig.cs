@@ -67,6 +67,7 @@ namespace CollectingProductionDataSystem.Models.Inventories
         public decimal AvailableRoomLowExtreme { get; set; }
         public decimal AvailableRoomHighExtreme { get; set; }
         public decimal UnusableResidueLevel { get; set; }
+        public string CorrectionFactor { get; set; }
         public virtual Park Park { get; set; }
         public virtual ICollection<TankData> TankDatas 
         {
