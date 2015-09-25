@@ -200,13 +200,14 @@ nameGridCommancolumn = function () {
 }
 
 var dataSave = function (ev) {
-    refreshGrid('#' + $(this.element).attr('id'));
-    refreshGrid('#productionPlan');
+    if (ev.type == 'update') {
+        refreshGrid('#unit');
+        refreshGrid('#productionPlan');
+    }
 }
 
 var refreshGrid = function (selector) {
     var grid = $(selector).data('kendoGrid');
-    grid.dataSource
     if (grid !== null) {
         grid.dataSource.read();
     }
