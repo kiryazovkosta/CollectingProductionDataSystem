@@ -1,5 +1,5 @@
 ﻿@model CollectingProductionDataSystem.Web.Areas.Administration.ViewModels.EditUserViewModel
-@Html.ValidationSummary(false)
+@Html.ValidationSummary(false,string.Empty,new{id="validation-summary"})
 <div class="container-fluid">
     @Html.HiddenFor(m => m.Id)
     <div class="col-lg-11">
