@@ -46,17 +46,11 @@ function recordTimeStampFilter(element) {
 
 $(document).ready(function () {
     $("#apply").click(function () {
-        var grid = $("#units").data("kendoGrid");
-        grid.dataSource.read();
-        grid.refresh();
-
-        var planGrid = $('#productionPlan').data("kendoGrid");
-        if (planGrid !== null) {
-            planGrid.dataSource.read();
-            planGrid.refresh();
-        }
-
+        refreshGrid("#units");
+        refreshGrid("#productionPlan");
         checkConfirmedStatus();
+
+        var grid = $('#units').data('kendoGrid');
         grid.dataSource.fetch(function () {
             var totalRows = grid.dataSource.total();
             if (totalRows === 0) {
@@ -203,4 +197,17 @@ nameGridCommancolumn = function () {
         });
     }
 
+}
+
+var dataSave = function (ev) {
+    refreshGrid('#' + $(this.element).attr('id'));
+    refreshGrid('#productionPlan');
+}
+
+var refreshGrid = function (selector) {
+    var grid = $(selector).data('kendoGrid');
+    grid.dataSource
+    if (grid !== null) {
+        grid.dataSource.read();
+    }
 }

@@ -78,14 +78,15 @@
         .PageSizes(new[] { 10, 20, 50, 100 })
         .ButtonCount(5)
     )
+            .Editable(editable => editable.Mode(GridEditMode.InLine))
     .Sortable()
      .Excel(excel => excel
         .FileName(@Resources.Layout.UnitsDailyData + "_" + DateTime.Now + ".xlsx")
         .Filterable(true)
         .ProxyURL(Url.Action("Excel_Export_Save", "Tests", new { area = "" }))
         .AllPages(true))
-        .Events(ev => ev.DataBound("dataBound"))
-                .Scrollable(scr => scr.Height(640))
+        .Events(ev => ev.DataBound("dataBound").Save("dataSave"))
+        .Scrollable(scr => scr.Height(640))
         .Filterable()
         .ClientDetailTemplateId("template")
         .DataSource(dataSource => dataSource
