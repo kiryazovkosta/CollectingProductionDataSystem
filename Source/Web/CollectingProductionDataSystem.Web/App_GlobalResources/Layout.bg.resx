@@ -334,33 +334,33 @@
     <value>Сменни данни за наличности по резервоари</value>
   </data>
   <data name="FreeWaterLevel" xml:space="preserve">
-    <value>Ниво вода на дъно</value>
+    <value>Ниво вода на дъно &lt;br/&gt;[см]</value>
   </data>
   <data name="LiquidLevel" xml:space="preserve">
-    <value>Ниво на течност</value>
+    <value>Ниво на течност &lt;br/&gt;[см]</value>
   </data>
   <data name="NetStandardVolume" xml:space="preserve">
-    <value>Нетен компенсиран обем</value>
+    <value>Нетен компенсиран обем &lt;br/&gt;[м3]</value>
   </data>
   <data name="ParkName" xml:space="preserve">
     <value>Парк</value>
   </data>
   <data name="ProductLevel" xml:space="preserve">
-    <value>Ниво на продукт</value>
+    <value>Ниво на продукт &lt;br/&gt;[см]</value>
   </data>
   <data name="ProductName" xml:space="preserve">
     <value>Продукт</value>
   </data>
   <data name="ReferenceDensity" xml:space="preserve">
-    <value>Компенсирана плътност</value>
+    <value>Компенсирана плътност &lt;br/&gt;[Кг/м3]</value>
   </data>
   <data name="TankName" xml:space="preserve">
     <value>Резервоар</value>
   </data>
   <data name="WeightInAir" xml:space="preserve">
-    <value>Маса във въздух</value>
+    <value>Маса във въздух &lt;br/&gt;[Тон]</value>
   </data>
   <data name="WeightInVacuum" xml:space="preserve">
-    <value>Маса във вакуум</value>
+    <value>Маса във вакуум &lt;br/&gt;[Тон]</value>
   </data>
 </root>

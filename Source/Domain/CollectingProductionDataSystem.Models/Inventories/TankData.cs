@@ -1,9 +1,12 @@
 namespace CollectingProductionDataSystem.Models.Inventories
 {
     using System;
+    using System.Collections.Generic;
     using CollectingProductionDataSystem.Models.Abstract;
     using CollectingProductionDataSystem.Models.Contracts;
     using CollectingProductionDataSystem.Models.Nomenclatures;
+    using System.ComponentModel.DataAnnotations.Schema;
+using MathExpressions.Application;
 
     public partial class TankData : AuditInfo, IApprovableEntity, IEntity
     {
@@ -34,5 +37,48 @@ namespace CollectingProductionDataSystem.Models.Inventories
         public virtual TankConfig TankConfig { get; set; }
         public virtual Product Product { get; set; }
         public virtual TanksManualData TanksManualData { get; set; }
+
+        [NotMapped]
+        public decimal? CorrectedLiquidLevel
+        { 
+            get
+            {
+                return GetCorrectedLevelValue(this.LiquidLevel);
+            }
+        }
+
+        [NotMapped]
+        public decimal? CorrectedProductLevel
+        { 
+            get
+            {
+                return GetCorrectedLevelValue(this.ProductLevel);
+            }
+        }
+
+        [NotMapped]
+        public decimal? CorrectedFreeWaterLevel
+        { 
+            get
+            {
+                return GetCorrectedLevelValue(this.FreeWaterLevel);
+            }
+        }
+        private decimal? GetCorrectedLevelValue(decimal? levelParam)
+        {
+            if (levelParam.HasValue)
+            {
+                var calc = new Calculator();
+                var inputParams = new Dictionary<string, double>();
+                inputParams.Add("p0", (double)levelParam);  
+                var formula = string.Format("p.p0 {0}", this.CorrectionFactor);
+                var value = calc.Calculate(formula, "p", inputParams.Count, inputParams);
+                return (decimal)value;
+            }
+            else
+            {
+                return levelParam;
+            }
+        }
     }
 }
