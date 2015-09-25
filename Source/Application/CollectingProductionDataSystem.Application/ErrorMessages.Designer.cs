@@ -68,5 +68,50 @@ namespace App_Resources {
                 return ResourceManager.GetString("Email", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid Password.
+        /// </summary>
+        public static string InvalidPassword {
+            get {
+                return ResourceManager.GetString("InvalidPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The user you are trying to update doesn&apos;t exist..
+        /// </summary>
+        public static string InvalidUser {
+            get {
+                return ResourceManager.GetString("InvalidUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid Id of user must be 0. Actual Id is {0}..
+        /// </summary>
+        public static string InvalidUserId {
+            get {
+                return ResourceManager.GetString("InvalidUserId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Modification of UserName is not permitted.
+        /// </summary>
+        public static string InvalidUserNameModification {
+            get {
+                return ResourceManager.GetString("InvalidUserNameModification", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The user {0} cannot be created. The user with the same UserName allready exists..
+        /// </summary>
+        public static string UserAllreadyExists {
+            get {
+                return ResourceManager.GetString("UserAllreadyExists", resourceCulture);
+            }
+        }
     }
 }
