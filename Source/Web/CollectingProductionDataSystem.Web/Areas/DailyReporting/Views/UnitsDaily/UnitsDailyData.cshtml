@@ -85,7 +85,7 @@
         .Filterable(true)
         .ProxyURL(Url.Action("Excel_Export_Save", "Tests", new { area = "" }))
         .AllPages(true))
-        .Events(ev => ev.DataBound("dataBound").Save("dataSave"))
+        .Events(ev => ev.DataBound("dataBound"))
         .Scrollable(scr => scr.Height(640))
         .Filterable()
         .ClientDetailTemplateId("template")
@@ -111,6 +111,7 @@
         .Events(events =>
         {
             events.Error("error_handler");
+            events.RequestEnd("dataSave");
         })
     )
         )
