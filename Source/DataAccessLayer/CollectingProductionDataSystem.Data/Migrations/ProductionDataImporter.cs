@@ -1528,12 +1528,6 @@
                                         new ProductionPlanConfig { Percentages = 0.25m, Name = "Сух газ за АГФИ" },                 
                                         new ProductionPlanConfig { Percentages = 0.20m, Name = "Загуби" },              
                                         new ProductionPlanConfig { Percentages = 100.00m, Name = "Общо" },
-                                            
-
-
-
-
-
                                     }
                                 },
                                 new ProcessUnit
@@ -1584,15 +1578,402 @@
                                 },
                                 new ProcessUnit
                                 {
-                                    ShortName = "ВИ-15 и PSA",
-                                    FullName = "Инсталация ВИ-15 и PSA",
+                                    ShortName = "ВИ-15",
+                                    FullName = "Инсталация ВИ-15",
                                     UnitsConfigs = {
                                     }
                                 },
                                 new ProcessUnit
                                 {
-                                    ShortName = "СКА и PОК",
-                                    FullName = "Инсталация СКА и PОК",
+                                    ShortName = "PSA",
+                                    FullName = "Инсталация PSA",
+                                    UnitsConfigs = {
+                                    }
+                                },
+                                new ProcessUnit
+                                {
+                                    ShortName = "СКА",
+                                    FullName = "Инсталация СКА",
+                                    UnitsConfigs = 
+                                    {
+                                        new UnitConfig
+                                        {
+                                            Code = "1S0100",
+                                            Position = "100FQI001",
+                                            Name = "Изо ББФ",
+                                            ProductTypeId = 2,
+                                            DirectionId = 1,
+                                            MeasureUnitId = 5,
+                                            MaterialTypeId = 1,
+                                            IsMaterial = true,
+                                            IsEnergy = false,
+                                            IsInspectionPoint = true,
+                                            CollectingDataMechanism = "A",
+                                            PreviousShiftTag = "SKA_100FQI001.TOTALIZER_S.OLDAV",
+                                            CurrentInspectionDataTag = "SKA_100FIC001.PID_PLA.PV"
+                                        },
+                                        new UnitConfig
+                                        {
+                                            Code = "1S0200",
+                                            Position = "100FQI004",
+                                            Name = "Изобутан",
+                                            ProductTypeId = 2,
+                                            DirectionId = 1,
+                                            MeasureUnitId = 5,
+                                            MaterialTypeId = 1,
+                                            IsMaterial = true,
+                                            IsEnergy = false,
+                                            IsInspectionPoint = true,
+                                            CollectingDataMechanism = "A",
+                                            PreviousShiftTag = "SKA_100FQI004.TOTALIZER_S.OLDAV",
+                                            CurrentInspectionDataTag = "SKA_100FIC004.DACA.PV"
+                                        },
+                                        new UnitConfig
+                                        {
+                                            Code = "1S0300",
+                                            Position = "100FQI036",
+                                            Name = "Сярна киселина",
+                                            ProductTypeId = 2,
+                                            DirectionId = 1,
+                                            MeasureUnitId = 5,
+                                            MaterialTypeId = 1,
+                                            IsMaterial = true,
+                                            IsEnergy = false,
+                                            IsInspectionPoint = true,
+                                            CollectingDataMechanism = "A",
+                                            PreviousShiftTag = "SKA_100FQI036.TOTALIZER_S.OLDAV",
+                                            CurrentInspectionDataTag = "SKA_100FIC036.PID_PLA.PV"
+                                        },
+                                        new UnitConfig
+                                        {
+                                            Code = "1S0400",
+                                            Position = "100FQI069",
+                                            Name = "Натриева основа",
+                                            ProductTypeId = 2,
+                                            DirectionId = 1,
+                                            MeasureUnitId = 5,
+                                            MaterialTypeId = 1,
+                                            IsMaterial = true,
+                                            IsEnergy = false,
+                                            IsInspectionPoint = true,
+                                            CollectingDataMechanism = "A",
+                                            PreviousShiftTag = "SKA_100FQI069.TOTALIZER_S.OLDAV",
+                                            CurrentInspectionDataTag = "SKA_100FI069.DACA.PV"
+                                        },
+                                        new UnitConfig
+                                        {
+                                            Code = "1S0500",
+                                            Position = "100FQI049",
+                                            Name = "Изобутан",
+                                            ProductTypeId = 3,
+                                            DirectionId = 1,
+                                            MeasureUnitId = 11,
+                                            MaterialTypeId = 1,
+                                            IsMaterial = true,
+                                            IsEnergy = false,
+                                            IsInspectionPoint = true,
+                                            CollectingDataMechanism = "A",
+                                            PreviousShiftTag = "SKA_100FQI049.TOTALIZER_S.OLDAV",
+                                            CurrentInspectionDataTag = "SKA_100FI049.DACA.PV"
+                                        },
+                                        new UnitConfig
+                                        {
+                                            Code = "1S0600",
+                                            Position = "100FQI042",
+                                            Name = "Алкилат",
+                                            ProductTypeId = 3,
+                                            DirectionId = 1,
+                                            MeasureUnitId = 11,
+                                            MaterialTypeId = 1,
+                                            IsMaterial = true,
+                                            IsEnergy = false,
+                                            IsInspectionPoint = true,
+                                            CollectingDataMechanism = "A",
+                                            PreviousShiftTag = "SKA_100FQI042.TOTALIZER_S.OLDAV",
+                                            CurrentInspectionDataTag = "SKA_100FIC042.DACA.PV"
+                                        },
+                                        new UnitConfig
+                                        {
+                                            Code = "1S0700",
+                                            Position = "100FQI053",
+                                            Name = "Нормален бутан",
+                                            ProductTypeId = 3,
+                                            DirectionId = 1,
+                                            MeasureUnitId = 11,
+                                            MaterialTypeId = 1,
+                                            IsMaterial = true,
+                                            IsEnergy = false,
+                                            IsInspectionPoint = true,
+                                            CollectingDataMechanism = "A",
+                                            PreviousShiftTag = "SKA_100FQI053.TOTALIZER_S.OLDAV",
+                                            CurrentInspectionDataTag = "SKA_100FIC053.DACA.PV"
+                                        },
+                                        new UnitConfig
+                                        {
+                                            Code = "1S0800",
+                                            Position = "100FQI035",
+                                            Name = "Пропан бутанова фракция за ПВГ",
+                                            ProductTypeId = 3,
+                                            DirectionId = 1,
+                                            MeasureUnitId = 11,
+                                            MaterialTypeId = 1,
+                                            IsMaterial = true,
+                                            IsEnergy = false,
+                                            IsInspectionPoint = true,
+                                            CollectingDataMechanism = "A",
+                                            PreviousShiftTag = "SKA_100FQI035.TOTALIZER_S.OLDAV",
+                                            CurrentInspectionDataTag = "SKA_100FIC035.DACA.PV"
+                                        },
+                                        new UnitConfig
+                                        {
+                                            Code = "1S0900",
+                                            Position = "100FQI081",
+                                            Name = "Пропан бутанова фракция за АГФИ",
+                                            ProductTypeId = 3,
+                                            DirectionId = 1,
+                                            MeasureUnitId = 11,
+                                            MaterialTypeId = 1,
+                                            IsMaterial = true,
+                                            IsEnergy = false,
+                                            IsInspectionPoint = true,
+                                            CollectingDataMechanism = "A",
+                                            PreviousShiftTag = "SKA_100FQI081.TOTALIZER_S.OLDAV",
+                                            CurrentInspectionDataTag = "SKA_100FI081.DACA.PV"
+                                        },
+                                        new UnitConfig
+                                        {
+                                            Code = "1S1000",
+                                            Position = "100FQI075",
+                                            Name = "Кип въздух СКА",
+                                            ProductTypeId = 10,
+                                            DirectionId = 2,
+                                            MeasureUnitId = 15,
+                                            MaterialTypeId = 1,
+                                            IsMaterial = true,
+                                            IsEnergy = false,
+                                            IsInspectionPoint = true,
+                                            CollectingDataMechanism = "A",
+                                            PreviousShiftTag = "SKA_100FQI075.TOTALIZER_S.OLDAV",
+                                            CurrentInspectionDataTag = "SKA_100FI075.DACA.PV"
+                                        },
+                                        new UnitConfig
+                                        {
+                                            Code = "1S1100",
+                                            Position = "300FQI002",
+                                            Name = "Свежа вода",
+                                            ProductTypeId = 10,
+                                            DirectionId = 2,
+                                            MeasureUnitId = 15,
+                                            MaterialTypeId = 1,
+                                            IsMaterial = true,
+                                            IsEnergy = false,
+                                            IsInspectionPoint = true,
+                                            CollectingDataMechanism = "A",
+                                            PreviousShiftTag = "SKA_300FQI002.TOTALIZER_S.OLDAV",
+                                            CurrentInspectionDataTag = "SKA_300FI002.DACA.PV"
+                                        },
+                                        new UnitConfig
+                                        {
+                                            Code = "1S1200",
+                                            Position = "100FQI058",
+                                            Name = "Азот",
+                                            ProductTypeId = 10,
+                                            DirectionId = 2,
+                                            MeasureUnitId = 15,
+                                            MaterialTypeId = 1,
+                                            IsMaterial = true,
+                                            IsEnergy = false,
+                                            IsInspectionPoint = true,
+                                            CollectingDataMechanism = "A",
+                                            PreviousShiftTag = "SKA_100FQI058.TOTALIZER_S.OLDAV",
+                                            CurrentInspectionDataTag = "SKA_100FI058.DACA.PV"
+                                        },
+                                        new UnitConfig
+                                        {
+                                            Code = "1S1300",
+                                            Position = "100FQI041",
+                                            Name = "Водна пара - вход",
+                                            ProductTypeId = 11,
+                                            DirectionId = 1,
+                                            MeasureUnitId = 12,
+                                            MaterialTypeId = 1,
+                                            IsMaterial = true,
+                                            IsEnergy = false,
+                                            IsInspectionPoint = true,
+                                            CollectingDataMechanism = "A",
+                                            PreviousShiftTag = "SKA_100FQI041.TOTALIZER_S.OLDAV",
+                                            CurrentInspectionDataTag = "SKA_100FI041.DACA.PV"
+                                        },
+                                        new UnitConfig
+                                        {
+                                            Code = "1S1301",
+                                            Position = "100TQI050",
+                                            Name = "Температура",
+                                            ProductTypeId = 11,
+                                            DirectionId = 1,
+                                            MeasureUnitId = 6,
+                                            MaterialTypeId = 1,
+                                            IsMaterial = true,
+                                            IsEnergy = false,
+                                            IsInspectionPoint = true,
+                                            CollectingDataMechanism = "A",
+                                            PreviousShiftTag = "SKA_100TQI050.DACB.PV",
+                                            CurrentInspectionDataTag = "SKA_100TI050.DACA.PV"
+                                        },
+                                        new UnitConfig
+                                        {
+                                            Code = "1S1302",
+                                            Position = "100PQI031",
+                                            Name = "Налягане",
+                                            ProductTypeId = 11,
+                                            DirectionId = 1,
+                                            MeasureUnitId = 5,
+                                            MaterialTypeId = 1,
+                                            IsMaterial = true,
+                                            IsEnergy = false,
+                                            IsInspectionPoint = true,
+                                            CollectingDataMechanism = "A",
+                                            PreviousShiftTag = "SKA_100PQI031.DACB.PV",
+                                            CurrentInspectionDataTag = "SKA_100PI031.DACA.PV"
+                                        },
+                                        new UnitConfig
+                                        {
+                                            Code = "1S1303",
+                                            Position = "100FQI041",
+                                            Name = "Количество енергия",
+                                            ProductTypeId = 11,
+                                            DirectionId = 1,
+                                            MeasureUnitId = 12,
+                                            MaterialTypeId = 1,
+                                            IsMaterial = true,
+                                            IsEnergy = false,
+                                            CollectingDataMechanism = "C",
+                                            PreviousShiftTag = null,
+                                            CurrentInspectionDataTag = null
+                                        },
+                                    },
+                                    UnitsDailyConfigs = 
+                                    {
+                                        new UnitsDailyConfig
+                                        {
+                                            Code = "2S0100",
+                                            MeasureUnitId = 11,
+                                            Name = "Изо ББФ",
+                                            ProductTypeId = 14,
+                                            AggregationMembers = "1S0100",
+                                            AggregationFormula = "p.p0"
+                                        },
+                                        new UnitsDailyConfig
+                                        {
+                                            Code = "2S0200",
+                                            MeasureUnitId = 11,
+                                            Name = "Изобутан",
+                                            ProductTypeId = 14,
+                                            AggregationMembers = "1S0200",
+                                            AggregationFormula = "p.p0"
+                                        },
+                                        new UnitsDailyConfig
+                                        {
+                                            Code = "2S0300",
+                                            MeasureUnitId = 11,
+                                            Name = "Сярна киселина",
+                                            ProductTypeId = 14,
+                                            AggregationMembers = "1S0300",
+                                            AggregationFormula = "p.p0"
+                                        },
+                                        new UnitsDailyConfig
+                                        {
+                                            Code = "2S9100",
+                                            MeasureUnitId = 11,
+                                            Name = "Сума преработка",
+                                            ProductTypeId = 14,
+                                            AggregationMembers = "1S0100;1S0200;1S0300",
+                                            AggregationFormula = "p.p0+p.p1+p.p2"
+                                        },
+
+
+                                        new UnitsDailyConfig
+                                        {
+                                            Code = "2S0400",
+                                            MeasureUnitId = 11,
+                                            Name = "Бензин Алкилат",
+                                            ProductTypeId = 15,
+                                            AggregationMembers = "1S0600",
+                                            AggregationFormula = "p.p0"
+                                        },
+                                        new UnitsDailyConfig
+                                        {
+                                            Code = "2S0500",
+                                            MeasureUnitId = 11,
+                                            Name = "Пропан бутанова фракция",
+                                            ProductTypeId = 15,
+                                            AggregationMembers = "1S0800;1S0900",
+                                            AggregationFormula = "p.p0+p.p1"
+                                        },
+                                        new UnitsDailyConfig
+                                        {
+                                            Code = "2S0600",
+                                            MeasureUnitId = 11,
+                                            Name = "Нормален бутан",
+                                            ProductTypeId = 15,
+                                            AggregationMembers = "1S0700",
+                                            AggregationFormula = "p.p0"
+                                        },
+                                        new UnitsDailyConfig
+                                        {
+                                            Code = "2S0700",
+                                            MeasureUnitId = 11,
+                                            Name = "Изобутан",
+                                            ProductTypeId = 15,
+                                            AggregationMembers = "1S0500",
+                                            AggregationFormula = "p.p0"
+                                        },
+                                        new UnitsDailyConfig
+                                        {
+                                            Code = "2S0800",
+                                            MeasureUnitId = 11,
+                                            Name = "Отработена сярна киселина",
+                                            ProductTypeId = 15,
+                                            AggregationMembers = "1S0300",
+                                            AggregationFormula = "p.p0"
+                                        },
+
+                                        new UnitsDailyConfig
+                                        {
+                                            Code = "2S9200",
+                                            MeasureUnitId = 11,
+                                            Name = "Сума произведено",
+                                            ProductTypeId = 15, 
+                                            AggregationCurrentLevel = true,
+                                            AggregationMembers = "2S0400;2S0500;2S0600;2S0700",
+                                            AggregationFormula = "p.p0+p.p1+p.p2+p.p3"
+                                        },
+                                        new UnitsDailyConfig
+                                        {
+                                            Code = "2S9201",
+                                            MeasureUnitId = 11,
+                                            Name = "Загуби",
+                                            ProductTypeId = 15, 
+                                            AggregationCurrentLevel = true,
+                                            AggregationMembers = "2S9100;2S9200",
+                                            AggregationFormula = "p.p0-p.p1"
+                                        },
+                                        new UnitsDailyConfig
+                                        {
+                                            Code = "2S9202",
+                                            MeasureUnitId = 11,
+                                            Name = "Общо",
+                                            ProductTypeId = 15, 
+                                            AggregationCurrentLevel = true,
+                                            AggregationMembers = "2S9200;2S9201",
+                                            AggregationFormula = "p.p0+p.p1"
+                                        },
+                                    }
+                                },
+                                new ProcessUnit
+                                {
+                                    ShortName = "POK",
+                                    FullName = "Инсталация POK",
                                     UnitsConfigs = {
                                     }
                                 },

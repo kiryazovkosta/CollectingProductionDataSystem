@@ -37,7 +37,7 @@
         .Ajax()
         .ServerOperation(true)
         //    .Group(group => group.Add(c => c.UnitsDailyConfig.ProductType.Sort))
-        .Read(read => read.Action("ReadProductionPlanData", "UnitsDaily", new { area = "DailyReporting" }).Data("sendDate"))
+        .Read(read => read.Action("ReadProductionPlanData", "Ajax", new { area = "DailyReporting" }).Data("sendDate"))
         .Model(model =>
         {
             model.Id(p => p.Id);

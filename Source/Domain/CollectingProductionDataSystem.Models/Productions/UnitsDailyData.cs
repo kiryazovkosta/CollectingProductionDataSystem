@@ -1,6 +1,7 @@
 ﻿namespace CollectingProductionDataSystem.Models.Productions
 {
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations.Schema;
     using CollectingProductionDataSystem.Models.Abstract;
     using CollectingProductionDataSystem.Models.Contracts;
     using System;
@@ -25,6 +26,22 @@
         { 
             get { return this.unitsDatas; }
             set { this.unitsDatas = value;}
+        }
+
+        [NotMapped]
+        public double RealValue 
+        { 
+            get
+            {
+                if (this.UnitsManualDailyData != null)
+                {
+                    return (double)this.UnitsManualDailyData.Value;
+                }
+                else
+                {
+                    return (double)this.Value;
+                }
+            }
         }
     }
 }

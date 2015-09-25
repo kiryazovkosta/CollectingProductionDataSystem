@@ -58,102 +58,6 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [AuthorizeFactory]
-        public JsonResult ReadProductionPlanData([DataSourceRequest]DataSourceRequest request, DateTime? date, int? processUnitId)
-        {
-            ValidateModelState(date, processUnitId);
-
-            var dailyData = unitsData.GetUnitsDailyDataForDateTime(date, processUnitId).ToList();
-
-            var dbResult = this.data.ProductionPlanConfigs.All();
-            if (processUnitId != null)
-            {
-                dbResult = dbResult.Where(x => x.ProcessUnitId == processUnitId.Value);
-            }
-
-            var productionPlans = dbResult.Select(p => new
-            {
-                Id = p.Id,
-                Name = p.Name,
-                Percentages = p.Percentages,
-                QuantityPlanFormula = p.QuantityPlanFormula,
-                QuantityPlanMembers = p.QuantityPlanMembers,
-                QuantityFactFormula = p.QuantityFactFormula,
-                QuantityFactMembers = p.QuantityFactMembers
-            }).ToList();
-
-            var calculator = new Calculator();
-            var splitter = new char[] { ';' };
-            var result = new HashSet<ProductionPlanViewModel>();
-
-            foreach (var productionPlan in productionPlans)
-            {
-                var planTokens = productionPlan.QuantityPlanMembers.Split(splitter, StringSplitOptions.RemoveEmptyEntries);
-                var planInputParamsValues = new List<double>();
-                foreach (var token in planTokens)
-                {
-                    foreach (var item in dailyData)
-                    {
-                        if (item.UnitsDailyConfig.Code == token)
-                        {
-                            planInputParamsValues.Add((double)item.Value);
-                        }  
-                    }
-                }
-
-                var planInputParams = new Dictionary<string, double>();
-                for (int i = 0; i < planInputParamsValues.Count(); i++)
-                {
-                    planInputParams.Add(string.Format("p{0}", i), planInputParamsValues[i]);  
-                }
-
-                var factTokens = productionPlan.QuantityFactMembers.Split(splitter, StringSplitOptions.RemoveEmptyEntries);
-                var factInputParamsValues = new List<double>();
-                foreach (var token in factTokens)
-                {
-                    foreach (var item in dailyData)
-                    {
-                        if (item.UnitsDailyConfig.Code == token)
-                        {
-                            factInputParamsValues.Add((double)item.Value);
-                        }  
-                    }
-                }
-
-                var factInputParams = new Dictionary<string, double>();
-                for (int i = 0; i < factInputParamsValues.Count(); i++)
-                {
-                    factInputParams.Add(string.Format("p{0}", i), factInputParamsValues[i]);  
-                }
-
-                var planValue = calculator.Calculate(productionPlan.QuantityPlanFormula, "p", planInputParams.Count, planInputParams);
-                var factValue = calculator.Calculate(productionPlan.QuantityFactFormula, "p", factInputParams.Count, factInputParams);
-
-                result.Add(new ProductionPlanViewModel
-                {
-                    Id = productionPlan.Id,
-                    Name = productionPlan.Name,
-                    Percentages = productionPlan.Percentages,
-                    QuantityPlan = (decimal)planValue,
-                    QuantityFact = (decimal)factValue
-                });
-            }
-
-            var kendoResult = new DataSourceResult();
-            try
-            {
-                kendoResult = result.ToDataSourceResult(request, ModelState);
-            }
-            catch (Exception ex1)
-            {
-                Debug.WriteLine(ex1.Message + "\n" + ex1.InnerException);
-            }
-
-            return Json(kendoResult);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
         public ActionResult Edit([DataSourceRequest]DataSourceRequest request, UnitDailyDataViewModel model)
         {
             if (ModelState.IsValid)
@@ -173,6 +77,63 @@
                 {
                     UpdateRecord(existManualRecord, model);
                 }
+
+
+
+                // get all records in which this record is formula's member. Nice ;)
+                var uc = this.data.UnitsDailyConfigs.All().Where(x => x.ProcessUnitId == model.UnitsDailyConfig.ProcessUnitId && x.AggregationCurrentLevel == true).ToList();
+                var ud = this.data.UnitsDailyDatas.All().Where(x => x.RecordTimestamp == model.RecordTimestamp && x.UnitsDailyConfig.ProcessUnitId == model.UnitsDailyConfig.ProcessUnitId).ToList();
+                var calculator = new Calculator();
+                var splitter = new char[] { ';' };
+
+                foreach (var c in uc)
+                {
+                    var tokens = c.AggregationMembers.Split(splitter, StringSplitOptions.RemoveEmptyEntries);
+                    var inputParamsValues = new List<double>();
+                    foreach (var token in tokens)
+                    {
+                        foreach (var d in ud)
+                        {
+                            if (d.UnitsDailyConfig.Code == token)
+                            {
+                                inputParamsValues.Add(d.RealValue);
+                            }   
+                        }
+
+                    }
+
+                    var inputParams = new Dictionary<string, double>();
+                    for (int i = 0; i < inputParamsValues.Count(); i++)
+                    {
+                        inputParams.Add(string.Format("p{0}", i), inputParamsValues[i]);  
+                    }
+
+                    var value = calculator.Calculate(c.AggregationFormula, "p", inputParams.Count, inputParams);
+                    var id = ud.Where(x => x.UnitsDailyConfig.Code == c.Code).FirstOrDefault();
+                    if (id != null)
+                    {
+                        var newNewManualRecord = new UnitsManualDailyData
+                        {
+                            Id = id.Id,
+                            Value = (decimal)value,
+                            EditReasonId = model.UnitsManualDailyData.EditReason.Id
+                        };
+                        var existNewManualRecord = this.data.UnitsManualDailyDatas.All().FirstOrDefault(x => x.Id == newNewManualRecord.Id);
+                        if (existNewManualRecord == null)
+                        {
+                            this.data.UnitsManualDailyDatas.Add(newNewManualRecord);
+                        }
+                        else
+                        {
+                            existNewManualRecord.Value = newNewManualRecord.Value;
+                            existNewManualRecord.EditReasonId = model.UnitsManualDailyData.EditReason.Id;
+                            this.data.UnitsManualDailyDatas.Update(existNewManualRecord);
+                        }
+                    }
+                }
+
+
+
                 try
                 {
                     var result = this.data.SaveChanges(UserProfile.UserName);
