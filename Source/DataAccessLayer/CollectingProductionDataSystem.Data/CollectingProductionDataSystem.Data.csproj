@@ -33,6 +33,14 @@
     <Reference Include="EntityFramework">
       <HintPath>..\..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
+    <Reference Include="EntityFramework.BulkInsert, Version=6.0.2.8, Culture=neutral, PublicKeyToken=630a17433349cb76, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EntityFramework.BulkInsert-ef6.6.0.2.8\lib\Net45\EntityFramework.BulkInsert.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.MappingAPI, Version=6.0.0.7, Culture=neutral, PublicKeyToken=7ee2e825d201459e, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EntityFramework.MappingAPI.6.0.0.7\lib\net45\EntityFramework.MappingAPI.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="EntityFramework.SqlServer">
       <HintPath>..\..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
@@ -62,7 +70,6 @@
     <Compile Include="Concrete\ImmutableEntityRepository.cs" />
     <Compile Include="Contracts\IApprovableEntityRepository.cs" />
     <Compile Include="Contracts\IAuditableDbContext.cs" />
-    <Compile Include="Contracts\IDataContext.cs" />
     <Compile Include="Contracts\IDeletableEntityRepository.cs" />
     <Compile Include="Contracts\IImmutableEntityRepository.cs" />
     <Compile Include="Contracts\IOrderable.cs" />

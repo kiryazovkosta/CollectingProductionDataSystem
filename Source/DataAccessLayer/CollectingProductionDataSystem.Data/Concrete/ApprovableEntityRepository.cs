@@ -1,11 +1,13 @@
 ﻿namespace CollectingProductionDataSystem.Data.Concrete
 {
     using System;
+    using System.Collections.Generic;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     using System.Linq;
     using CollectingProductionDataSystem.Data.Contracts;
     using CollectingProductionDataSystem.Models.Contracts;
+    using EntityFramework.BulkInsert.Extensions;
 
     public class ApprovableEntityRepository<T> : IApprovableEntityRepository<T> where T : class, IApprovableEntity
     {
@@ -62,6 +64,14 @@
         {
  	        DbEntityEntry entry = this.Context.Entry(entity);
             entry.State = EntityState.Detached;
+        }
+        /// <summary>
+        /// Bulks the insert.
+        /// </summary>
+        /// <param name="entities">The entities.</param>
+        public void BulkInsert(IEnumerable<T> entities)
+        {
+            this.Context.DbContext.BulkInsert(entities);
         }
     }
 }
