@@ -18,5 +18,7 @@ namespace CollectingProductionDataSystem.Data.Contracts
         void Approve(T entity);
 
         void Detach(T entity);
+
+        void BulkInsert(IEnumerable<T> entities);
     }
 }

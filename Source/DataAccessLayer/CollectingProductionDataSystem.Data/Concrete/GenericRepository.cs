@@ -12,6 +12,7 @@
     using CollectingProductionDataSystem.Infrastructure.Extentions;
     using CollectingProductionDataSystem.Data.Contracts;
     using CollectingProductionDataSystem.Models.Contracts;
+    using EntityFramework.BulkInsert.Extensions;
 
     public class GenericRepository<T> : IRepository<T> where T : class, IEntity
     {
@@ -163,6 +164,15 @@
                                 prop.SetValue(entry.Entity, value);
                             }
                         });
+        }
+
+        /// <summary>
+        /// Bulks the insert.
+        /// </summary>
+        /// <param name="entities">The entities.</param>
+        public void BulkInsert(IEnumerable<T> entities)
+        {
+            this.Context.DbContext.BulkInsert(entities);
         }
 
         private int GetPrimaryKey(DbEntityEntry entry)
