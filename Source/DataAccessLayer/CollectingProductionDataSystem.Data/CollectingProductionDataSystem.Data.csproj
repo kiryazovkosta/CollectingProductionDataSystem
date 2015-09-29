@@ -86,6 +86,7 @@
     <Compile Include="Mappings\EditReasonMap.cs" />
     <Compile Include="Mappings\FactoryMap.cs" />
     <Compile Include="Mappings\IkunkMap.cs" />
+    <Compile Include="Mappings\MaxAsoMeasuringPointDataSequenceNumberMap.cs" />
     <Compile Include="Mappings\MeasurementPointMap.cs" />
     <Compile Include="Mappings\MeasurementPointsProductsConfigMap.cs" />
     <Compile Include="Mappings\MeasurementPointsProductsDataMap.cs" />

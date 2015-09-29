@@ -112,6 +112,7 @@
       <DependentUpon>ModelErrors.bg.resx</DependentUpon>
     </Compile>
     <Compile Include="Transactions\Ikunk.cs" />
+    <Compile Include="Transactions\MaxAsoMeasuringPointDataSequenceNumber.cs" />
     <Compile Include="Transactions\MeasurementPoint.cs" />
     <Compile Include="Transactions\MeasurementPointsProductsConfig.cs" />
     <Compile Include="Transactions\MeasurementPointsProductsData.cs" />

@@ -309,6 +309,14 @@ using CollectingProductionDataSystem.Models.Transactions;
             }
         }
 
+        public IDeletableEntityRepository<MaxAsoMeasuringPointDataSequenceNumber> MaxAsoMeasuringPointDataSequenceNumberMap
+        {
+            get
+            {
+                return this.GetDeletableEntityRepository<MaxAsoMeasuringPointDataSequenceNumber>();
+            }
+        }
+
         public IEfStatus SaveChanges(string userName)
         {
             return this.context.SaveChangesWithValidation(userName);    

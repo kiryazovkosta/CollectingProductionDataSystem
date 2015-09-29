@@ -41,6 +41,7 @@
             modelBuilder.Configurations.Add(new TanksApprovedDataMap());
             modelBuilder.Configurations.Add(new MeasuringPointConfigMap());
             modelBuilder.Configurations.Add(new MeasuringPointConfigsDataMap());
+            modelBuilder.Configurations.Add(new MaxAsoMeasuringPointDataSequenceNumberMap());
         }
     }
 }

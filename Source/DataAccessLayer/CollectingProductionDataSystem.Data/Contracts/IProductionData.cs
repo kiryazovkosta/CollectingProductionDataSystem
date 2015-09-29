@@ -79,6 +79,8 @@
 
         IDeletableEntityRepository<MeasuringPointsConfigsData> MeasuringPointsConfigsDatas { get; }
 
+        IDeletableEntityRepository<MaxAsoMeasuringPointDataSequenceNumber> MaxAsoMeasuringPointDataSequenceNumberMap { get; }
+
         IDbContext DbContext { get; }
 
         IEfStatus SaveChanges(string userName);
