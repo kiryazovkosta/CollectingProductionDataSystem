@@ -39,6 +39,8 @@
             modelBuilder.Configurations.Add(new UnitsApprovedDailyDataMap());
             modelBuilder.Configurations.Add(new ProductionPlanConfigMap());
             modelBuilder.Configurations.Add(new TanksApprovedDataMap());
+            modelBuilder.Configurations.Add(new MeasuringPointConfigMap());
+            modelBuilder.Configurations.Add(new MeasuringPointConfigsDataMap());
         }
     }
 }

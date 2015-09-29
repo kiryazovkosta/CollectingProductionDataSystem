@@ -75,6 +75,10 @@
 
         IDeletableEntityRepository<TanksApprovedData> TanksApprovedDatas { get; }
 
+        IDeletableEntityRepository<MeasuringPointConfig> MeasuringPointConfigs { get; }
+
+        IDeletableEntityRepository<MeasuringPointsConfigsData> MeasuringPointsConfigsDatas { get; }
+
         IDbContext DbContext { get; }
 
         IEfStatus SaveChanges(string userName);
