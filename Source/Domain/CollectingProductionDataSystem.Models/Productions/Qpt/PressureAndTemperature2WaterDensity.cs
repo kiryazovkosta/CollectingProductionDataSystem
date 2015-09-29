@@ -1,5 +1,8 @@
 ﻿namespace CollectingProductionDataSystem.Models.Productions.Qpt
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public partial class PressureAndTemperature2WaterDensity
     {
         public int Id { get; set; }

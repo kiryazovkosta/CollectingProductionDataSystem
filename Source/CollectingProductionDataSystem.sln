@@ -68,6 +68,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CollectingProductionDataSys
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CollectingProductionDataSystem.ConsoleClient", "CollectingProductionDataSystem.ConsoleClient\CollectingProductionDataSystem.ConsoleClient.csproj", "{A3FAF9D3-62E5-4BA1-8125-74FD8259BDA9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CollectingProductionDataSystem.MathExpr.Test", "CollectingProductionDataSystem.MathExpr.Test\CollectingProductionDataSystem.MathExpr.Test.csproj", "{0E37C443-88FA-4BC2-AF40-9A4EFADAAF82}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -246,6 +248,14 @@ Global
 		{A3FAF9D3-62E5-4BA1-8125-74FD8259BDA9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A3FAF9D3-62E5-4BA1-8125-74FD8259BDA9}.Release|x64.ActiveCfg = Release|Any CPU
 		{A3FAF9D3-62E5-4BA1-8125-74FD8259BDA9}.Release|x86.ActiveCfg = Release|Any CPU
+		{0E37C443-88FA-4BC2-AF40-9A4EFADAAF82}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E37C443-88FA-4BC2-AF40-9A4EFADAAF82}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E37C443-88FA-4BC2-AF40-9A4EFADAAF82}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{0E37C443-88FA-4BC2-AF40-9A4EFADAAF82}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{0E37C443-88FA-4BC2-AF40-9A4EFADAAF82}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E37C443-88FA-4BC2-AF40-9A4EFADAAF82}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E37C443-88FA-4BC2-AF40-9A4EFADAAF82}.Release|x64.ActiveCfg = Release|Any CPU
+		{0E37C443-88FA-4BC2-AF40-9A4EFADAAF82}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -272,5 +282,6 @@ Global
 		{22CAF7D1-AD04-4204-B7B9-5D7719ED7AF7} = {14C4B4E0-9FEB-41DA-A347-43D99AB407BD}
 		{34672323-163B-48F2-9425-B4B55B33D144} = {1BA91924-D5E6-467D-8DB6-584D54F00F4F}
 		{A3FAF9D3-62E5-4BA1-8125-74FD8259BDA9} = {1BA91924-D5E6-467D-8DB6-584D54F00F4F}
+		{0E37C443-88FA-4BC2-AF40-9A4EFADAAF82} = {1BA91924-D5E6-467D-8DB6-584D54F00F4F}
 	EndGlobalSection
 EndGlobal
