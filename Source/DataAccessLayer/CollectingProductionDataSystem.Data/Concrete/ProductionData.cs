@@ -293,6 +293,22 @@ using CollectingProductionDataSystem.Models.Transactions;
             }
         }
 
+        public IDeletableEntityRepository<MeasuringPointConfig> MeasuringPointConfigs
+        {
+            get
+            {
+                return this.GetDeletableEntityRepository<MeasuringPointConfig>();
+            }
+        }
+
+        public IDeletableEntityRepository<MeasuringPointsConfigsData> MeasuringPointsConfigsDatas
+        {
+            get
+            {
+                return this.GetDeletableEntityRepository<MeasuringPointsConfigsData>();
+            }
+        }
+
         public IEfStatus SaveChanges(string userName)
         {
             return this.context.SaveChangesWithValidation(userName);    

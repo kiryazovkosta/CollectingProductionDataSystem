@@ -16,9 +16,17 @@ namespace CollectingProductionDataSystem.ConsoleClient
     {
         static void Main(string[] args)
         {
-            var uow = new ProductionData(new CollectingDataSystemDbContext());
+            string str = "test;;;;;;;;;;;;;";
+            string[] split = str.Split(new[] { ";" },2, StringSplitOptions.None);//(new[]{";"},StringSplitOptions.None);
+            for (int i = 0; i < split.Count(); i++)
+            {
+                Console.WriteLine("{0} => {1}", i, split[i]);
+            }
+            Console.WriteLine("---------------------");
+            Console.WriteLine("split members count is {0}.", split.Count());
+            //var uow = new ProductionData(new CollectingDataSystemDbContext());
             //TreeShiftsReports(uow);
-            SeedShiftsToDatabase(uow);
+            //SeedShiftsToDatabase(uow);
         }
 
         private static void SeedShiftsToDatabase(ProductionData uow)
