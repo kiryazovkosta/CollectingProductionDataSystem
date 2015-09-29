@@ -3,13 +3,16 @@ namespace CollectingProductionDataSystem.Data.Migrations
     using System;
     using System.Collections.Generic;
     using System.Data.Entity.Migrations;
+    using System.Diagnostics;
     using System.Linq;
+    using CollectingProductionDataSystem.Constants;
     using CollectingProductionDataSystem.Models;
     using CollectingProductionDataSystem.Models.Inventories;
     using CollectingProductionDataSystem.Models.Nomenclatures;
     using CollectingProductionDataSystem.Models.Productions;
     using CollectingProductionDataSystem.Models.Transactions;
     using CollectingProductionDataSystem.Models.Identity;
+    using EntityFramework.BulkInsert.Extensions;
     using Microsoft.AspNet.Identity;
     using CollectingProductionDataSystem.Data.Identity;
 
@@ -76,6 +79,13 @@ namespace CollectingProductionDataSystem.Data.Migrations
             {
                 this.CreateSystemAdministrator(context);
             }
+
+#if DEBUG
+            if (!context.Users.Where(x => x.UserName.Contains("User")).Any())
+            {
+                this.SeedUsers(context);
+            } 
+#endif
         }
 
         private void CreateProductionShifts(CollectingDataSystemDbContext context)
@@ -314,7 +324,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                 new EditReason
                 {
                     Name = "Грешно показание",
-                    CreatedOn=DateTime.Now
+                    CreatedOn = DateTime.Now
                 },
                 new EditReason
                 {
@@ -2443,7 +2453,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                     }
                 }
                 );
-                context.SaveChanges();
+            context.SaveChanges();
         }
 
         private void CreateSystemAdministrator(CollectingDataSystemDbContext context)
@@ -2451,7 +2461,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
 
 
             if (!context.Roles.Any())
-            { 
+            {
                 var roles = new List<ApplicationRole>()
                 {
                     new ApplicationRole{
@@ -2499,25 +2509,40 @@ namespace CollectingProductionDataSystem.Data.Migrations
                     RoleId = 1
                 });
                 var manager = new UserManager<ApplicationUser, int>(new UserStoreIntPk(context));
-                manager.Create(user, "12345678");
+                manager.Create(user, CommonConstants.StandartPassword);
             }
+        }
 
+        private void SeedUsers(CollectingDataSystemDbContext context)
+        {
+            var users = new List<ApplicationUser>();
+            var hasher = new PasswordHasher();
             for (int i = 0; i < 200; i++)
             {
-                if (context.Users.Where(x => x.UserName == "User_"+ i).FirstOrDefault() == null)
+                if (context.Users.Where(x => x.UserName == "User_" + i).FirstOrDefault() == null)
                 {
                     var user = new ApplicationUser()
                     {
-                        Email = "User_"+ i + "@bmsys.eu",
-                        UserName = "User_"+ i
+                        Email = "User_" + i + "@bmsys.eu",
+                        UserName = "User_" + i,
+                        PasswordHash = hasher.HashPassword(CommonConstants.StandartPassword),
+                        SecurityStamp = Guid.NewGuid().ToString(),
+                        FirstName = "Name" + i,
+                        MiddleName = "Sirname" + i,
+                        LastName = "Family" + i,
+                        Occupation = "Test Ltd."
                     };
 
-                    var manager = new UserManager<ApplicationUser, int>(new UserStoreIntPk(context));
-                    manager.Create(user, "123456");
+                    users.Add(user);
                 }
             }
 
-            context.SaveChanges();
+            var timer = new Stopwatch();
+            timer.Start();
+            context.BulkInsert(users);
+            context.SaveChanges("Initial Loading");
+            timer.Stop();
+            Debug.WriteLine("Estimated time for loading " + timer.Elapsed);
         }
     }
 }

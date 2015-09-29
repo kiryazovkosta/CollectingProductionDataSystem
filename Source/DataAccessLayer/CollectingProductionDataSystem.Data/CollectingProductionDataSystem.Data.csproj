@@ -137,6 +137,10 @@
       <Project>{69debde6-b1ba-4a55-9570-ae7e6abb5f98}</Project>
       <Name>CollectingProductionDataSystem.Infrastructure</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Constants\CollectingProductionDataSystem.Constants\CollectingProductionDataSystem.Constants.csproj">
+      <Project>{21B90CC4-73CC-4C1A-A2E3-FB6C7278BEB9}</Project>
+      <Name>CollectingProductionDataSystem.Constants</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Domain\CollectingProductionDataSystem.Models\CollectingProductionDataSystem.Models.csproj">
       <Project>{63cc73a0-f2c2-453d-a915-1913095f22fd}</Project>
       <Name>CollectingProductionDataSystem.Models</Name>
