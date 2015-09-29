@@ -5,6 +5,7 @@
     using System.Linq;
     using CollectingProductionDataSystem.Data.Contracts;
     using System.Data.Entity;
+    using CollectingProductionDataSystem.Infrastructure.Extentions;
     using CollectingProductionDataSystem.Models.Contracts;
     using System.Data.Entity.Infrastructure;
     using EntityFramework.BulkInsert.Extensions;
@@ -57,8 +58,17 @@
         /// Bulks the insert.
         /// </summary>
         /// <param name="entities">The entities.</param>
-        public void BulkInsert(IEnumerable<T> entities)
+        public void BulkInsert(IEnumerable<T> entities, string userName)
         {
+            if (entities.FirstOrDefault() is IAuditInfo)
+            {
+                entities.ForEach(x =>
+                {
+                    ((IAuditInfo)x).CreatedFrom = userName;
+                    ((IAuditInfo)x).CreatedOn = DateTime.Now;
+                });
+            }
+
             this.Context.DbContext.BulkInsert(entities);
         }
     }

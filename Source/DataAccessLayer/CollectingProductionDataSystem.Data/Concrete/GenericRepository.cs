@@ -5,6 +5,7 @@
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Diagnostics;
     using System.Linq;
     using System.Linq.Expressions;
     using System.ComponentModel.DataAnnotations;
@@ -170,8 +171,17 @@
         /// Bulks the insert.
         /// </summary>
         /// <param name="entities">The entities.</param>
-        public void BulkInsert(IEnumerable<T> entities)
+        public void BulkInsert(IEnumerable<T> entities, string userName)
         {
+            if (entities.FirstOrDefault() is IAuditInfo)
+            {
+                entities.ForEach(x =>
+                {
+                    ((IAuditInfo)x).CreatedFrom = userName;
+                    ((IAuditInfo)x).CreatedOn = DateTime.Now;
+                });
+            }
+
             this.Context.DbContext.BulkInsert(entities);
         }
 

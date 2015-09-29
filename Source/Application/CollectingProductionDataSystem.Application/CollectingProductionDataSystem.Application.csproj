@@ -105,6 +105,8 @@
     </Compile>
     <Compile Include="CalculateServices\ConditionFormulaCalcultor.cs" />
     <Compile Include="CalculateServices\IConditionFormulaCalcultor.cs" />
+    <Compile Include="FileServices\FileUploadService.cs" />
+    <Compile Include="Contracts\IFileUploadService.cs" />
     <Compile Include="IdentityInfrastructure\ApplicationRoleManager.cs" />
     <Compile Include="IdentityInfrastructure\ApplicationSignInManager.cs" />
     <Compile Include="IdentityInfrastructure\ApplicationUserManager.cs" />

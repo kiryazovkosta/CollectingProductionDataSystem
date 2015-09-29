@@ -15,6 +15,6 @@
 
         void Detach(T entity);
 
-        void BulkInsert(IEnumerable<T> entities);
+        void BulkInsert(IEnumerable<T> entities, string userName);
     }
 }

@@ -24,6 +24,6 @@
 
         void UpdateValues(Expression<Func<T, object>> entity);
 
-        void BulkInsert(IEnumerable<T> entities);
+        void BulkInsert(IEnumerable<T> entities, string userName);
     }
 }

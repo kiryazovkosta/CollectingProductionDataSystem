@@ -6,6 +6,7 @@ namespace CollectingProductionDataSystem.Web.AppStart
     using System;
     using System.Web;
     using CollectingProductionDataSystem.Application.Contracts;
+    using CollectingProductionDataSystem.Application.FileServices;
     using CollectingProductionDataSystem.Application.TankDataServices;
     using CollectingProductionDataSystem.Application.UserServices;
     using CollectingProductionDataSystem.Data.Common;
@@ -79,6 +80,7 @@ namespace CollectingProductionDataSystem.Web.AppStart
             kernel.Bind<EditUserViewModelBinder>().To<EditUserViewModelBinder>();
             kernel.Bind<IUserService>().To<UserService>();
             kernel.Bind<IEfStatus>().To<EfStatus>();
+            kernel.Bind<IFileUploadService>().To<FileUploadService>().InRequestScope();
         }        
     }
 }

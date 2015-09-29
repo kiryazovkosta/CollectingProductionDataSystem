@@ -23,7 +23,7 @@
     {
         private readonly IPersister persister;
 
-        static CollectingDataSystemDbContext() 
+        static CollectingDataSystemDbContext()
         {
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<CollectingDataSystemDbContext, Configuration>());
         }
@@ -31,9 +31,9 @@
         public CollectingDataSystemDbContext()
             : base("CollectingPrimaryDataSystemConnection")
         {
-            #if DEBUG
-                        this.Database.Log = (c) => { Debug.WriteLine(c); };
-            #endif
+#if DEBUG
+            this.Database.Log = (c) => { Debug.WriteLine(c); };
+#endif
             this.persister = new AuditablePersister();
         }
 
@@ -127,12 +127,12 @@
         /// Gets or sets the db context.
         /// </summary>
         /// <value>The db context.</value>
-        public DbContext DbContext 
+        public DbContext DbContext
         {
             get
             {
                 return this;
-            } 
+            }
         }
 
         public int SaveChanges(string userName)
@@ -143,7 +143,7 @@
                 userName = "System Change";
             }
 
-            var addedRecords= persister.PrepareSaveChanges(this, userName);
+            var addedRecords = persister.PrepareSaveChanges(this, userName);
             var returnValue = base.SaveChanges();
 
             //Append added records with their Ids into audit log

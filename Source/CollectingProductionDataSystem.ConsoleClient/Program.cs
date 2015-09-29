@@ -1,4 +1,5 @@
 ﻿using System.Data.Entity;
+using CollectingProductionDataSystem.Application.FileServices;
 using CollectingProductionDataSystem.Data;
 using CollectingProductionDataSystem.Data.Concrete;
 using CollectingProductionDataSystem.Models.Productions;
@@ -16,9 +17,39 @@ namespace CollectingProductionDataSystem.ConsoleClient
     {
         static void Main(string[] args)
         {
-            var uow = new ProductionData(new CollectingDataSystemDbContext());
+            var ninject = new NinjectConfig();
+            var timer = new Stopwatch();
+            timer.Start();
+            var kernel = ninject.Kernel;
+
+            var fileName = @"d:\Proba\ХО-2-Конфигурация инсталации.csv";
+
+            var fileUploader = kernel.GetService(typeof(IFileUploadService)) as IFileUploadService;
+
+            timer.Stop();
+            Console.WriteLine("Time for ninject init {0}.", timer.Elapsed);
+            timer.Reset();
+            timer.Start();
+
+            var result = fileUploader.UploadFileToDatabase(fileName, ";");
+
+            timer.Stop();
+
+            if (result.IsValid)
+            {
+                Console.WriteLine("File was uploaded successfully!!!");
+                Console.WriteLine("Estimated time for action {0}", timer.Elapsed);
+            }
+            else
+            {
+                result.EfErrors.ForEach(x =>
+                    Console.WriteLine("{0} => {1}", x.MemberNames.FirstOrDefault(), x.ErrorMessage)
+                    );
+            }
+
+
             //TreeShiftsReports(uow);
-            SeedShiftsToDatabase(uow);
+            //SeedShiftsToDatabase(uow);
         }
 
         private static void SeedShiftsToDatabase(ProductionData uow)
@@ -44,7 +75,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
             var unitDatas = uow.UnitsData.All().Where(x => x.RecordTimestamp < new DateTime(2015, 9, 15, 5, 30, 0)).ToList();
 
             (unitDatas.Where(x => x.RecordTimestamp.Between(shift1BeginTimestamp, shift1EndTimestamp)).ToList() as ICollection<UnitsData>)
-                .ForEach(x =>{ x.ShiftId = ShiftType.First; x.RecordTimestamp = x.RecordTimestamp.Date;})
+                .ForEach(x => { x.ShiftId = ShiftType.First; x.RecordTimestamp = x.RecordTimestamp.Date; })
                 .ForEach(x =>
                 {
                     var ent = uow.DbContext.Entry<UnitsData>(x);
