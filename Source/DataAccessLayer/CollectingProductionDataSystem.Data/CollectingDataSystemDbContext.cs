@@ -1,6 +1,7 @@
 ﻿namespace CollectingProductionDataSystem.Data
 {
     using System;
+    using System.Collections.Generic;
     using System.Data.Entity;
     using System.Data.Entity.Validation;
     using System.Diagnostics;
@@ -10,6 +11,8 @@
     using CollectingProductionDataSystem.Data.Contracts;
     using CollectingProductionDataSystem.Data.Mappings.Configuration;
     using CollectingProductionDataSystem.Data.Migrations;
+    using CollectingProductionDataSystem.Infrastructure.Extentions;
+    using CollectingProductionDataSystem.Models.Contracts;
     using CollectingProductionDataSystem.Models.Identity;
     using CollectingProductionDataSystem.Models.Inventories;
     using CollectingProductionDataSystem.Models.Nomenclatures;
@@ -17,6 +20,7 @@
     using CollectingProductionDataSystem.Models.Transactions;
     using CollectingProductionDataSystem.Models.UtilityEntities;
     using Microsoft.AspNet.Identity.EntityFramework;
+    using EntityFramework.BulkInsert.Extensions;
 
     public class CollectingDataSystemDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, int,
         UserLoginIntPk, UserRoleIntPk, UserClaimIntPk>, IAuditableDbContext
@@ -170,6 +174,20 @@
             //else it isn't an exception we understand so it throws in the normal way
 
             return result;
+        }
+
+        public void BulkInsert<T>(IEnumerable<T> entities, string userName) where T : class
+        {
+            if (entities.FirstOrDefault() is IAuditInfo)
+            {
+                entities.ForEach(x =>
+                {
+                    ((IAuditInfo)x).CreatedFrom = userName;
+                    ((IAuditInfo)x).CreatedOn = DateTime.Now;
+                });
+            }
+
+            this.BulkInsert(entities);
         }
 
         public new IDbSet<T> Set<T>() where T : class

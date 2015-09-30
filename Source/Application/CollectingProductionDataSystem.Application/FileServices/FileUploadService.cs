@@ -1,5 +1,6 @@
 ﻿namespace CollectingProductionDataSystem.Application.FileServices
 {
+    using System.Collections;
     using System.ComponentModel.DataAnnotations;
     using System.Diagnostics;
     using System.Globalization;
@@ -10,6 +11,7 @@
     using CollectingProductionDataSystem.Constants;
     using CollectingProductionDataSystem.Data.Contracts;
     using CollectingProductionDataSystem.Infrastructure.Extentions;
+    using CollectingProductionDataSystem.Models.Contracts;
     using CollectingProductionDataSystem.Models.Productions;
     using Ninject;
     using System;
@@ -356,20 +358,19 @@
         /// <returns></returns>
         private IEfStatus SaveRecordsToDataBase(IEnumerable<object> objResult, Type entityType)
         {
-            MethodInfo method = typeof(Enumerable).GetMethod("ConvertAll");
-            MethodInfo generic = method.MakeGenericMethod(entityType);
-            Type listOf = typeof(List<>);
-            Type collectionType = listOf.MakeGenericType(entityType);
-            var records = Activator.CreateInstance(collectionType);
+            var listType = typeof(List<>);
+            var collectionType = listType.MakeGenericType(new Type[] { entityType });
+            var collectionToPersist = Activator.CreateInstance(collectionType);
+            var addMethod = collectionToPersist.GetType().GetMethod("Add");
+            foreach (var record in objResult)
+            {
+                addMethod.Invoke(collectionToPersist, new object[] { record });
+            }
 
-
-            
-
-
-
-            //data.DbContext.Set(cobjResult)
+            data.DbContext.GetType().GetMethod("BulkInsert")
+            .MakeGenericMethod(entityType)
+            .Invoke(data.DbContext, new object[] { collectionToPersist, CommonConstants.LoadingUser });
             var res = data.SaveChanges(CommonConstants.LoadingUser);
-
             return res;
         }
 
