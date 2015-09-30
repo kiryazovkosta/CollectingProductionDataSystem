@@ -360,6 +360,9 @@
   <data name="WeightInVacuum" xml:space="preserve">
     <value>Weight In Vacuum</value>
   </data>
+  <data name="NomUploadTitle" xml:space="preserve">
+    <value>Upload Nomenclature From File</value>
+  </data>
   <data name="ChooseDirection" xml:space="preserve">
     <value>Choose Direction</value>
   </data>

@@ -363,6 +363,9 @@
   <data name="WeightInVacuum" xml:space="preserve">
     <value>Маса във вакуум &lt;br/&gt;[Тон]</value>
   </data>
+  <data name="NomUploadTitle" xml:space="preserve">
+    <value>Зареждане на номенклатура от файл</value>
+  </data>
   <data name="ChooseDirection" xml:space="preserve">
     <value>Изберете посока...</value>
   </data>

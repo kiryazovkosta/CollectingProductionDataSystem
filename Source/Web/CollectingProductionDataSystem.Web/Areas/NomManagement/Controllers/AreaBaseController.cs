@@ -6,7 +6,7 @@ using System.Web.Mvc;
 using CollectingProductionDataSystem.Data.Contracts;
 using CollectingProductionDataSystem.Web.Controllers;
 
-namespace CollectingProductionDataSystem.Web.Areas.Administration.Controllers
+namespace CollectingProductionDataSystem.Web.Areas.NomManagement.Controllers
 {
     [Authorize(Roles="Administrator")]
     public abstract class AreaBaseController : BaseController

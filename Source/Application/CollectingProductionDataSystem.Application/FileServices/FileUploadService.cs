@@ -1,5 +1,6 @@
 ﻿namespace CollectingProductionDataSystem.Application.FileServices
 {
+    using System.Collections;
     using System.ComponentModel.DataAnnotations;
     using System.Diagnostics;
     using System.Globalization;
@@ -10,6 +11,7 @@
     using CollectingProductionDataSystem.Constants;
     using CollectingProductionDataSystem.Data.Contracts;
     using CollectingProductionDataSystem.Infrastructure.Extentions;
+    using CollectingProductionDataSystem.Models.Contracts;
     using CollectingProductionDataSystem.Models.Productions;
     using Ninject;
     using System;
@@ -19,7 +21,7 @@
     using System.Threading.Tasks;
     using Resources = App_Resources.ErrorMessages;
 
-    public class FileUploadService : CollectingProductionDataSystem.Application.FileServices.IFileUploadService
+    public class FileUploadService : IFileUploadService
     {
         const int ASSEMBLY_NAME_POSITION = 0;
         const int ENTITY_NAME_POSITION = 1;
@@ -40,10 +42,10 @@
             return ParseRecordsAndPersistToDatabase(fileResult, delimiter);
         }
 
-        public IEfStatus UploadFileToDatabase(IStream fileStream, string delimiter)
+        public IEfStatus UploadFileToDatabase(Stream fileStream, string delimiter, string fileName)
         {
-            FileResult fileResult = GetRecordsFromFileAsStream(fileStream, delimiter);
-            return null;//ParseRecordsAndPersistToDatabase(fileResult);
+            FileResult fileResult = GetRecordsFromFileAsStream(fileStream, delimiter, fileName);
+            return ParseRecordsAndPersistToDatabase(fileResult,delimiter);
         }
 
         /// <summary>
@@ -52,10 +54,87 @@
         /// <param name="fileStream">The file stream.</param>
         /// <param name="delimiter">The delimiter.</param>
         /// <returns></returns>
-        private FileResult GetRecordsFromFileAsStream(IStream fileStream, string delimiter)
+        private FileResult GetRecordsFromFileAsStream(Stream fileStream, string delimiter,string fileName)
         {
-            // TODO: Implement this method
-            throw new NotImplementedException();
+            IEfStatus status = this.kernel.Get<IEfStatus>();
+
+            using (System.IO.StreamReader file = new System.IO.StreamReader(fileStream, Encoding.GetEncoding("windows-1251")))
+            {
+                string line;
+                int count = 0;
+
+                string[] result;
+                string assemblyName = string.Empty;
+                string entityName = string.Empty;
+                string dateTimeFormat = string.Empty;
+                char[] charSeparator = { Convert.ToChar(delimiter) };
+                Type originalType = null;
+                List<PropertyDescription> properties = new List<PropertyDescription>();
+                List<string> records = new List<string>();
+                try
+                {
+                    while ((line = file.ReadLine()) != null)
+                    {
+                        if (count == ENTITY_NAME_FILE_LINE)
+                        {
+                            result = line.Split(charSeparator, StringSplitOptions.RemoveEmptyEntries);
+                            assemblyName = result[ASSEMBLY_NAME_POSITION];
+                            entityName = result[ENTITY_NAME_POSITION];
+                            dateTimeFormat = result[DATETIME_FORMAT_POSITION];
+                            originalType = ExtractType(assemblyName, entityName);
+                            if (originalType == null)
+                            {
+                                throw new ArgumentNullException("originalType");
+                            }
+                        }
+                        if (count == PROPERTIES_DESCRIPTION_FILE_LINE)
+                        {
+                            result = line.Split(charSeparator, StringSplitOptions.RemoveEmptyEntries);
+                            for (int i = 0; i < result.Length; i++)
+                            {
+                                properties.Add(new PropertyDescription { Position = i, Name = result[i] });
+                            }
+                        }
+                        // content of records in the file
+                        if (count >= FILE_CONTENT_STARTING_LINE)
+                        {
+                            records.Add(line);
+                        }
+
+                        count++;
+                    }
+                }
+                catch (OutOfMemoryException oomException)
+                {
+                    // TODO:Add error logging after implementation of ILogger
+                    status.SetErrors(
+                        this.GetValidationResult(string.Format(Resources.FileProcessError, fileName))
+                        );
+
+                }
+                catch (IOException ioException)
+                {
+                    // TODO:Add error logging after implementation of ILogger
+                    status.SetErrors(
+                        this.GetValidationResult(string.Format(Resources.FileProcessError, fileName))
+                        );
+                }
+                catch (ArgumentNullException)
+                {
+                    status.SetErrors(
+                        this.GetValidationResult(string.Format(Resources.InvalidRecordType, entityName))
+                        );
+                }
+
+                return new FileResult()
+                {
+                    RecordOriginalType = originalType,
+                    DateTimeFormat = dateTimeFormat,
+                    Properties = properties,
+                    Records = records,
+                    Status = status
+                };
+            }
         }
 
         private IEfStatus ParseRecordsAndPersistToDatabase(FileResult fileResult, string delimiter)
@@ -226,88 +305,19 @@
         private FileResult GetRecordsFromFile(string fileName, string delimiter)
         {
             IEfStatus status = FileExist(fileName);
+            var result = new FileResult();
+
             if (!status.IsValid)
             {
                 return new FileResult { Status = status };
             }
 
-            using (System.IO.StreamReader file = new System.IO.StreamReader(fileName, Encoding.GetEncoding("windows-1251")))
+            using (FileStream file = new FileStream( fileName,FileMode.Open,FileAccess.Read))//, Encoding.GetEncoding("windows-1251")))
             {
-                string line;
-                int count = 0;
-
-                string[] result;
-                string assemblyName = string.Empty;
-                string entityName = string.Empty;
-                string dateTimeFormat = string.Empty;
-                char[] charSeparator = { Convert.ToChar(delimiter) };
-                Type originalType = null;
-                List<PropertyDescription> properties = new List<PropertyDescription>();
-                List<string> records = new List<string>();
-                try
-                {
-                    while ((line = file.ReadLine()) != null)
-                    {
-                        if (count == ENTITY_NAME_FILE_LINE)
-                        {
-                            result = line.Split(charSeparator, StringSplitOptions.RemoveEmptyEntries);
-                            assemblyName = result[ASSEMBLY_NAME_POSITION];
-                            entityName = result[ENTITY_NAME_POSITION];
-                            dateTimeFormat = result[DATETIME_FORMAT_POSITION];
-                            originalType = ExtractType(assemblyName, entityName);
-                            if (originalType == null)
-                            {
-                                throw new ArgumentNullException("originalType");
-                            }
-                        }
-                        if (count == PROPERTIES_DESCRIPTION_FILE_LINE)
-                        {
-                            result = line.Split(charSeparator, StringSplitOptions.RemoveEmptyEntries);
-                            for (int i = 0; i < result.Length; i++)
-                            {
-                                properties.Add(new PropertyDescription { Position = i, Name = result[i] });
-                            }
-                        }
-                        // content of records in the file
-                        if (count >= FILE_CONTENT_STARTING_LINE)
-                        {
-                            records.Add(line);
-                        }
-
-                        count++;
-                    }
-                }
-                catch (OutOfMemoryException oomException)
-                {
-                    // TODO:Add error logging after implementation of ILogger
-                    status.SetErrors(
-                        this.GetValidationResult(string.Format(Resources.FileProcessError, fileName))
-                        );
-
-                }
-                catch (IOException ioException)
-                {
-                    // TODO:Add error logging after implementation of ILogger
-                    status.SetErrors(
-                        this.GetValidationResult(string.Format(Resources.FileProcessError, fileName))
-                        );
-                }
-                catch (ArgumentNullException)
-                {
-                    status.SetErrors(
-                        this.GetValidationResult(string.Format(Resources.InvalidRecordType, entityName))
-                        );
-                }
-
-                return new FileResult()
-                                {
-                                    RecordOriginalType = originalType,
-                                    DateTimeFormat = dateTimeFormat,
-                                    Properties = properties,
-                                    Records = records,
-                                    Status = status
-                                };
+               result = this.GetRecordsFromFileAsStream(file,delimiter, fileName);
             }
+
+            return result;
         }
 
         /// <summary>
@@ -356,23 +366,29 @@
         /// <returns></returns>
         private IEfStatus SaveRecordsToDataBase(IEnumerable<object> objResult, Type entityType)
         {
-            MethodInfo method = typeof(Enumerable).GetMethod("ConvertAll");
-            MethodInfo generic = method.MakeGenericMethod(entityType);
-            Type listOf = typeof(List<>);
-            Type collectionType = listOf.MakeGenericType(entityType);
-            var records = Activator.CreateInstance(collectionType);
+            // construct the real collection type as List<entityType>
+            var listType = typeof(List<>);
+            var collectionType = listType.MakeGenericType(new Type[] { entityType });
+            var collectionToPersist = Activator.CreateInstance(collectionType);
 
+            // copy all the records from input collection to the new List<entityType>
+            var addMethod = collectionType.GetMethod("Add");
 
-            
+            foreach (var record in objResult)
+            {
+                addMethod.Invoke(collectionToPersist, new object[] { record });
+            }
 
-
-
-            //data.DbContext.Set(cobjResult)
+            data.DbContext.GetType().GetMethod("BulkInsert")
+            .MakeGenericMethod(entityType)
+            .Invoke(data.DbContext, new object[] { collectionToPersist, CommonConstants.LoadingUser });
             var res = data.SaveChanges(CommonConstants.LoadingUser);
-
+            if (res.IsValid)
+            {
+                res.ResultRecordsCount = objResult.Count();
+            }
             return res;
         }
-
 
         private T CreateNewObject<T>(Dictionary<string, object> inputParams)
             where T : new()

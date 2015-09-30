@@ -1,15 +1,19 @@
 ﻿namespace CollectingProductionDataSystem.Data
 {
     using System;
+    using System.Collections.Generic;
     using System.Data.Entity;
     using System.Data.Entity.Validation;
     using System.Diagnostics;
     using System.Linq;
+    using System.Transactions;
     using CollectingProductionDataSystem.Data.Common;
     using CollectingProductionDataSystem.Data.Concrete;
     using CollectingProductionDataSystem.Data.Contracts;
     using CollectingProductionDataSystem.Data.Mappings.Configuration;
     using CollectingProductionDataSystem.Data.Migrations;
+    using CollectingProductionDataSystem.Infrastructure.Extentions;
+    using CollectingProductionDataSystem.Models.Contracts;
     using CollectingProductionDataSystem.Models.Identity;
     using CollectingProductionDataSystem.Models.Inventories;
     using CollectingProductionDataSystem.Models.Nomenclatures;
@@ -17,6 +21,7 @@
     using CollectingProductionDataSystem.Models.Transactions;
     using CollectingProductionDataSystem.Models.UtilityEntities;
     using Microsoft.AspNet.Identity.EntityFramework;
+    using EntityFramework.BulkInsert.Extensions;
 
     public class CollectingDataSystemDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, int,
         UserLoginIntPk, UserRoleIntPk, UserClaimIntPk>, IAuditableDbContext
@@ -137,23 +142,26 @@
 
         public int SaveChanges(string userName)
         {
-            if (userName == null)
+            using (var transaction = new TransactionScope())
             {
-                // performed only if some MicroSoft API calls original SaveChanges
-                userName = "System Change";
-            }
+                if (userName == null)
+                {
+                    // performed only if some MicroSoft API calls original SaveChanges
+                    userName = "System Change";
+                }
 
-            var addedRecords = persister.PrepareSaveChanges(this, userName);
-            var returnValue = base.SaveChanges();
+                var addedRecords = persister.PrepareSaveChanges(this, userName);
+                var returnValue = base.SaveChanges();
 
-            //Append added records with their Ids into audit log
-            if (addedRecords != null && addedRecords.Count() > 0)
-            {
-                persister.GetAddedEntityes(addedRecords, this.AuditLogRecords);
-                base.SaveChanges();
-            }
-
-            return returnValue;
+                //Append added records with their Ids into audit log
+                if (addedRecords != null && addedRecords.Count() > 0)
+                {
+                    persister.GetAddedEntityes(addedRecords, this.AuditLogRecords);
+                    base.SaveChanges();
+                }
+                transaction.Complete();
+                return returnValue;
+            } 
         }
 
         public IEfStatus SaveChangesWithValidation(string userName)
@@ -170,6 +178,20 @@
             //else it isn't an exception we understand so it throws in the normal way
 
             return result;
+        }
+
+        public void BulkInsert<T>(IEnumerable<T> entities, string userName) where T : class
+        {
+            if (entities.FirstOrDefault() is IAuditInfo)
+            {
+                entities.ForEach(x =>
+                {
+                    ((IAuditInfo)x).CreatedFrom = userName;
+                    ((IAuditInfo)x).CreatedOn = DateTime.Now;
+                });
+            }
+
+            this.BulkInsert(entities);
         }
 
         public new IDbSet<T> Set<T>() where T : class

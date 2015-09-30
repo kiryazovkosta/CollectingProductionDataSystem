@@ -22,5 +22,7 @@
         IDbSet<T> Set<T>() where T : class;
 
         IEfStatus SaveChangesWithValidation(string userName);
+
+        void BulkInsert<T>(IEnumerable<T> entities, string userName) where T : class;
     }
 }
