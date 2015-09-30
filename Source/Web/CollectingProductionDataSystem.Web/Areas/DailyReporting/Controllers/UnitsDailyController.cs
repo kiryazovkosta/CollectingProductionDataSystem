@@ -68,6 +68,7 @@
                     Value = model.UnitsManualDailyData.Value,
                     EditReasonId = model.UnitsManualDailyData.EditReason.Id
                 };
+
                 var existManualRecord = this.data.UnitsManualDailyDatas.All().FirstOrDefault(x => x.Id == newManualRecord.Id);
                 if (existManualRecord == null)
                 {
@@ -78,61 +79,7 @@
                     UpdateRecord(existManualRecord, model);
                 }
 
-
-
-                // get all records in which this record is formula's member. Nice ;)
-                var uc = this.data.UnitsDailyConfigs.All().Where(x => x.ProcessUnitId == model.UnitsDailyConfig.ProcessUnitId && x.AggregationCurrentLevel == true).ToList();
-                var ud = this.data.UnitsDailyDatas.All().Where(x => x.RecordTimestamp == model.RecordTimestamp && x.UnitsDailyConfig.ProcessUnitId == model.UnitsDailyConfig.ProcessUnitId).ToList();
-                var calculator = new Calculator();
-                var splitter = new char[] { ';' };
-
-                foreach (var c in uc)
-                {
-                    var tokens = c.AggregationMembers.Split(splitter, StringSplitOptions.RemoveEmptyEntries);
-                    var inputParamsValues = new List<double>();
-                    foreach (var token in tokens)
-                    {
-                        foreach (var d in ud)
-                        {
-                            if (d.UnitsDailyConfig.Code == token)
-                            {
-                                inputParamsValues.Add(d.RealValue);
-                            }   
-                        }
-
-                    }
-
-                    var inputParams = new Dictionary<string, double>();
-                    for (int i = 0; i < inputParamsValues.Count(); i++)
-                    {
-                        inputParams.Add(string.Format("p{0}", i), inputParamsValues[i]);  
-                    }
-
-                    var value = calculator.Calculate(c.AggregationFormula, "p", inputParams.Count, inputParams);
-                    var id = ud.Where(x => x.UnitsDailyConfig.Code == c.Code).FirstOrDefault();
-                    if (id != null)
-                    {
-                        var newNewManualRecord = new UnitsManualDailyData
-                        {
-                            Id = id.Id,
-                            Value = (decimal)value,
-                            EditReasonId = model.UnitsManualDailyData.EditReason.Id
-                        };
-                        var existNewManualRecord = this.data.UnitsManualDailyDatas.All().FirstOrDefault(x => x.Id == newNewManualRecord.Id);
-                        if (existNewManualRecord == null)
-                        {
-                            this.data.UnitsManualDailyDatas.Add(newNewManualRecord);
-                        }
-                        else
-                        {
-                            existNewManualRecord.Value = newNewManualRecord.Value;
-                            existNewManualRecord.EditReasonId = model.UnitsManualDailyData.EditReason.Id;
-                            this.data.UnitsManualDailyDatas.Update(existNewManualRecord);
-                        }
-                    }
-                }
-
-
+                RecalculateData(model);
 
                 try
                 {
@@ -155,6 +102,60 @@
             }
 
             return Json(new[] { model }.ToDataSourceResult(request, ModelState));
+        }
+ 
+        private void RecalculateData(UnitDailyDataViewModel model)
+        {
+            // get all records in which this record is formula's member. Nice ;)
+            var uc = this.data.UnitsDailyConfigs.All().Where(x => x.ProcessUnitId == model.UnitsDailyConfig.ProcessUnitId && x.AggregationCurrentLevel == true).ToList();
+            var ud = this.data.UnitsDailyDatas.All().Where(x => x.RecordTimestamp == model.RecordTimestamp && x.UnitsDailyConfig.ProcessUnitId == model.UnitsDailyConfig.ProcessUnitId).ToList();
+            var calculator = new Calculator();
+            var splitter = new char[] { ';' };
+
+            foreach (var c in uc)
+            {
+                var tokens = c.AggregationMembers.Split(splitter, StringSplitOptions.RemoveEmptyEntries);
+                var inputParamsValues = new List<double>();
+                foreach (var token in tokens)
+                {
+                    foreach (var d in ud)
+                    {
+                        if (d.UnitsDailyConfig.Code == token)
+                        {
+                            inputParamsValues.Add(d.RealValue);
+                        }
+                    }
+                }
+
+                var inputParams = new Dictionary<string, double>();
+                for (int i = 0; i < inputParamsValues.Count(); i++)
+                {
+                    inputParams.Add(string.Format("p{0}", i), inputParamsValues[i]);  
+                }
+
+                var value = calculator.Calculate(c.AggregationFormula, "p", inputParams.Count, inputParams);
+                var id = ud.Where(x => x.UnitsDailyConfig.Code == c.Code).FirstOrDefault();
+                if (id != null)
+                {
+                    var newNewManualRecord = new UnitsManualDailyData
+                    {
+                        Id = id.Id,
+                        Value = (decimal)value,
+                        EditReasonId = model.UnitsManualDailyData.EditReason.Id
+                    };
+                    var existNewManualRecord = this.data.UnitsManualDailyDatas.All().FirstOrDefault(x => x.Id == newNewManualRecord.Id);
+                    if (existNewManualRecord == null)
+                    {
+                        this.data.UnitsManualDailyDatas.Add(newNewManualRecord);
+                    }
+                    else
+                    {
+                        existNewManualRecord.Value = newNewManualRecord.Value;
+                        existNewManualRecord.EditReasonId = model.UnitsManualDailyData.EditReason.Id;
+                        this.data.UnitsManualDailyDatas.Update(existNewManualRecord);
+                    }
+                }
+            }
         }
 
         private void UpdateRecord(UnitsManualDailyData existManualRecord, UnitDailyDataViewModel model)

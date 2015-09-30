@@ -360,4 +360,13 @@
   <data name="WeightInVacuum" xml:space="preserve">
     <value>Weight In Vacuum</value>
   </data>
+  <data name="ChooseDirection" xml:space="preserve">
+    <value>Choose Direction</value>
+  </data>
+  <data name="Direction" xml:space="preserve">
+    <value>Direction</value>
+  </data>
+  <data name="MeasuringPointsData" xml:space="preserve">
+    <value>MeasuringPointsData</value>
+  </data>
 </root>

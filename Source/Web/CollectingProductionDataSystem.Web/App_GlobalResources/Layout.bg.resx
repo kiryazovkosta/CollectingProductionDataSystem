@@ -363,4 +363,13 @@
   <data name="WeightInVacuum" xml:space="preserve">
     <value>Маса във вакуум &lt;br/&gt;[Тон]</value>
   </data>
+  <data name="ChooseDirection" xml:space="preserve">
+    <value>Изберете посока...</value>
+  </data>
+  <data name="Direction" xml:space="preserve">
+    <value>Посока</value>
+  </data>
+  <data name="MeasuringPointsData" xml:space="preserve">
+    <value>Данни за експидирани и доставени невфтопродукти</value>
+  </data>
 </root>

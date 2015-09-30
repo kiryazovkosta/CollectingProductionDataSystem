@@ -200,8 +200,8 @@ nameGridCommancolumn = function () {
 }
 
 var dataSave = function (ev) {
-    if (ev.type == 'update') {
-        refreshGrid('#unit');
+    if (ev.type === 'update') {
+        refreshGrid('#units');
         refreshGrid('#productionPlan');
     }
 }

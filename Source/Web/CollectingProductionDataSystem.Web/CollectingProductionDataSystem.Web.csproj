@@ -246,6 +246,7 @@
     <Compile Include="Areas\Administration\ViewModels\RoleViewModel.cs" />
     <Compile Include="Areas\DailyReporting\Controllers\AjaxController.cs" />
     <Compile Include="Areas\DailyReporting\Controllers\AreaBaseController.cs" />
+    <Compile Include="Areas\DailyReporting\Controllers\MeasuringPointsController.cs" />
     <Compile Include="Areas\DailyReporting\Controllers\UnitsDailyController.cs" />
     <Compile Include="Areas\DailyReporting\DailyReportingAreaRegistration.cs" />
     <Compile Include="Areas\MonthlyReporting\Controllers\AreaBaseController.cs" />
@@ -288,10 +289,12 @@
     <Compile Include="ViewModels\Identity\RoleCreateViewModel.cs" />
     <Compile Include="ViewModels\Identity\RoleEditViewModel.cs" />
     <Compile Include="ViewModels\Identity\RoleModificationViewModel.cs" />
+    <Compile Include="ViewModels\Nomenclatures\DirectionsViewModel.cs" />
     <Compile Include="ViewModels\Nomenclatures\ProductionShiftViewModel.cs" />
     <Compile Include="ViewModels\Tank\AreaViewModel.cs" />
     <Compile Include="ViewModels\Tank\ParkViewModel.cs" />
     <Compile Include="ViewModels\Tank\TankDataViewModel.cs" />
+    <Compile Include="ViewModels\Transactions\MeasuringPointsDataViewModel.cs" />
     <Compile Include="ViewModels\Units\FactoryViewModel.cs" />
     <Compile Include="ViewModels\Units\ProcessUnitViewModel.cs" />
     <Compile Include="ViewModels\Units\ProductionPlanViewModel.cs" />
@@ -676,6 +679,7 @@
     <Content Include="Areas\Administration\Views\Shared\_KendoAdminLayout.cshtml" />
     <Content Include="Areas\DailyReporting\Views\UnitsDaily\UnitsDailyData.cshtml" />
     <Content Include="Areas\ShiftReporting\Views\Tanks\TanksData.cshtml" />
+    <Content Include="Areas\DailyReporting\Views\MeasuringPoints\MeasuringPointsData.cshtml" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <None Include="Properties\PublishProfiles\Home.pubxml" />
     <Content Include="Scripts\custom\sendArea.js" />
@@ -1315,6 +1319,7 @@
     <Content Include="Views\Shared\_UnitsDailySideBar.cshtml" />
     <Content Include="Views\Shared\_SuccessWindow.cshtml" />
     <Content Include="Views\Shared\_TanksSideBar.cshtml" />
+    <Content Include="Views\Shared\_MeasurementsPointsSideBar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -151,6 +151,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Choose Direction.
+        /// </summary>
+        public static string ChooseDirection {
+            get {
+                return ResourceManager.GetString("ChooseDirection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Choose factory....
         /// </summary>
         public static string ChooseFactory {
@@ -282,6 +291,15 @@ namespace App_GlobalResources.Resources {
         public static string Description {
             get {
                 return ResourceManager.GetString("Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Direction.
+        /// </summary>
+        public static string Direction {
+            get {
+                return ResourceManager.GetString("Direction", resourceCulture);
             }
         }
         
@@ -435,6 +453,15 @@ namespace App_GlobalResources.Resources {
         public static string MeasureUnit {
             get {
                 return ResourceManager.GetString("MeasureUnit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MeasuringPointsData.
+        /// </summary>
+        public static string MeasuringPointsData {
+            get {
+                return ResourceManager.GetString("MeasuringPointsData", resourceCulture);
             }
         }
         

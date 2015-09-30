@@ -61,7 +61,7 @@ using CollectingProductionDataSystem.Models.Transactions;
             }
         }
 
-        public IDeletableEntityRepository<UnitConfig> Units
+        public IDeletableEntityRepository<UnitConfig> UnitConfigs
         {
             get
             {
@@ -314,6 +314,14 @@ using CollectingProductionDataSystem.Models.Transactions;
             get
             {
                 return this.GetDeletableEntityRepository<MaxAsoMeasuringPointDataSequenceNumber>();
+            }
+        }
+
+        public IDeletableEntityRepository<Direction> Directions
+        {
+            get
+            {
+                return this.GetDeletableEntityRepository<Direction>();
             }
         }
 

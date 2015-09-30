@@ -17,7 +17,7 @@
 
         IDeletableEntityRepository<ProcessUnit> ProcessUnits { get; }
 
-        IDeletableEntityRepository<UnitConfig> Units { get; }
+        IDeletableEntityRepository<UnitConfig> UnitConfigs { get; }
 
         IApprovableEntityRepository<UnitsData> UnitsData { get; }
 
@@ -80,6 +80,8 @@
         IDeletableEntityRepository<MeasuringPointsConfigsData> MeasuringPointsConfigsDatas { get; }
 
         IDeletableEntityRepository<MaxAsoMeasuringPointDataSequenceNumber> MaxAsoMeasuringPointDataSequenceNumberMap { get; }
+
+        IDeletableEntityRepository<Direction> Directions { get; }
 
         IDbContext DbContext { get; }
 

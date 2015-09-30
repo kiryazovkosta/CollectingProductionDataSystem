@@ -12,6 +12,7 @@ using CollectingProductionDataSystem.Web.InputModels;
 using CollectingProductionDataSystem.Web.ViewModels.Tank;
 using CollectingProductionDataSystem.Web.ViewModels.Nomenclatures;
 using CollectingProductionDataSystem.Web.ViewModels.Units;
+using CollectingProductionDataSystem.Models.Nomenclatures;
 
 namespace CollectingProductionDataSystem.Web.Controllers
 {
@@ -114,6 +115,13 @@ namespace CollectingProductionDataSystem.Web.Controllers
             }
             var processUnitView = Mapper.Map<IEnumerable<ProcessUnitViewModel>>(processUnits.ToList());
             return Json(processUnitView, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult GetDirections()
+        {
+            var directions = this.data.Directions.All().ToList();
+            var directionsView = Mapper.Map<IEnumerable<DirectionsViewModel>>(directions);
+            return Json(directionsView, JsonRequestBehavior.AllowGet);
         }
 
         

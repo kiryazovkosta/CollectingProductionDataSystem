@@ -50,7 +50,7 @@
 
                 using (var context = new ProductionData(new CollectingDataSystemDbContext(new AuditablePersister())))
                 {
-                    var units = context.Units
+                    var units = context.UnitConfigs
                         .All()
                         .Where(u => u.IsInspectionPoint == true)
                         .Select(u => new InspectionPoint()
@@ -178,7 +178,7 @@
                             var recordDataTime = GetRecordTimestamp(now);
                             var shift = GetShift(now);
 
-                            var unitsConfigsList = context.Units.All().ToList();
+                            var unitsConfigsList = context.UnitConfigs.All().ToList();
                             var unitsData = context.UnitsData.All().Where(x => x.RecordTimestamp == recordDataTime && x.ShiftId == shift).ToList();
 
                             foreach (var unitConfig in unitsConfigsList)
