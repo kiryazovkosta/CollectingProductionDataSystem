@@ -72,16 +72,7 @@
         /// <param name="entities">The entities.</param>
         public void BulkInsert(IEnumerable<T> entities, string userName)
         {
-            if (entities.FirstOrDefault() is IAuditInfo)
-            {
-                entities.ForEach(x =>
-                {
-                    ((IAuditInfo)x).CreatedFrom = userName;
-                    ((IAuditInfo)x).CreatedOn = DateTime.Now;
-                });
-            }
-
-            this.Context.DbContext.BulkInsert(entities);
+            this.Context.BulkInsert(entities, userName);
         }
     }
 }

@@ -236,7 +236,7 @@
     </Compile>
     <Compile Include="Areas\Administration\AdministrationAreaRegistration.cs" />
     <Compile Include="Areas\Administration\Controllers\AjaxController.cs" />
-    <Compile Include="Areas\Administration\Controllers\BaseController.cs" />
+    <Compile Include="Areas\Administration\Controllers\AreaBaseController.cs" />
     <Compile Include="Areas\Administration\Controllers\RoleController.cs" />
     <Compile Include="Areas\Administration\Controllers\UserController.cs" />
     <Compile Include="Areas\Administration\ViewModels\ChangePasswordViewModel.cs" />
@@ -250,6 +250,8 @@
     <Compile Include="Areas\DailyReporting\DailyReportingAreaRegistration.cs" />
     <Compile Include="Areas\MonthlyReporting\Controllers\AreaBaseController.cs" />
     <Compile Include="Areas\MonthlyReporting\MonthlyReportingAreaRegistration.cs" />
+    <Compile Include="Areas\NomManagement\Controllers\AreaBaseController.cs" />
+    <Compile Include="Areas\NomManagement\Controllers\UploadNomController.cs" />
     <Compile Include="Areas\NomManagement\NomManagementAreaRegistration.cs" />
     <Compile Include="Areas\ShiftReporting\Controllers\AjaxController.cs" />
     <Compile Include="Areas\ShiftReporting\Controllers\AreaBaseController.cs" />
@@ -678,6 +680,7 @@
     <Content Include="Areas\DailyReporting\Views\UnitsDaily\UnitsDailyData.cshtml" />
     <Content Include="Areas\ShiftReporting\Views\Tanks\TanksData.cshtml" />
     <Content Include="Areas\NomManagement\Views\web.config" />
+    <Content Include="Areas\NomManagement\Views\UploadNom\Index.cshtml" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <None Include="Properties\PublishProfiles\Home.pubxml" />
     <Content Include="Scripts\custom\sendArea.js" />
@@ -1328,7 +1331,6 @@
     <Folder Include="Areas\MonthlyReporting\Models\" />
     <Folder Include="Areas\MonthlyReporting\Views\AreaBase\" />
     <Folder Include="Areas\MonthlyReporting\Views\Shared\" />
-    <Folder Include="Areas\NomManagement\Controllers\" />
     <Folder Include="Areas\NomManagement\Models\" />
     <Folder Include="Areas\NomManagement\Views\Shared\" />
     <Folder Include="Areas\ShiftReporting\Models\" />

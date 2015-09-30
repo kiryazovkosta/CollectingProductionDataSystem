@@ -6,6 +6,7 @@
     using System.Data.Entity.Validation;
     using System.Diagnostics;
     using System.Linq;
+    using System.Transactions;
     using CollectingProductionDataSystem.Data.Common;
     using CollectingProductionDataSystem.Data.Concrete;
     using CollectingProductionDataSystem.Data.Contracts;
@@ -141,23 +142,26 @@
 
         public int SaveChanges(string userName)
         {
-            if (userName == null)
+            using (var transaction = new TransactionScope())
             {
-                // performed only if some MicroSoft API calls original SaveChanges
-                userName = "System Change";
-            }
+                if (userName == null)
+                {
+                    // performed only if some MicroSoft API calls original SaveChanges
+                    userName = "System Change";
+                }
 
-            var addedRecords = persister.PrepareSaveChanges(this, userName);
-            var returnValue = base.SaveChanges();
+                var addedRecords = persister.PrepareSaveChanges(this, userName);
+                var returnValue = base.SaveChanges();
 
-            //Append added records with their Ids into audit log
-            if (addedRecords != null && addedRecords.Count() > 0)
-            {
-                persister.GetAddedEntityes(addedRecords, this.AuditLogRecords);
-                base.SaveChanges();
-            }
-
-            return returnValue;
+                //Append added records with their Ids into audit log
+                if (addedRecords != null && addedRecords.Count() > 0)
+                {
+                    persister.GetAddedEntityes(addedRecords, this.AuditLogRecords);
+                    base.SaveChanges();
+                }
+                transaction.Complete();
+                return returnValue;
+            } 
         }
 
         public IEfStatus SaveChangesWithValidation(string userName)

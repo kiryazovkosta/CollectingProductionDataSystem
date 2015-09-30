@@ -1,0 +1,54 @@
+﻿@using Resources = App_GlobalResources.Resources;
+@{
+    ViewBag.Title = Resources.Layout.NomUploadTitle;
+    Layout = "~/Views/Shared/_KendoLayout.cshtml";
+}
+
+<h2 class="text-center">@ViewBag.Title</h2>
+<hr />
+<div class="container">
+    <form method="post" enctype="multipart/form-data" action="/NomManagement/UploadNom/Upload">
+        @Html.AntiForgeryToken()
+        @(Html.Kendo().Upload()
+            .Name("upload")
+            .Async(async =>
+                async.Save("Upload", "UploadNom")
+                )
+            .Multiple(false)
+            .Events(ev => ev.Success("onSuccess").Error("onError"))
+        )
+    </form>
+</div>
+
+<div id="alert" class="alert alert-success alert-dismissable">
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+    <p></p>.
+</div>
+
+@section scripts{
+    <script>
+        $(function () {
+            $('#alert').alert('close');
+        })
+        var onSuccess = function (ev) {
+            var result = ev.response;
+            if (result.IsValid == true) {
+                var message = "Успешно създадохте " + result.ResultRecordsCount + " записа.";
+                showAlert('#alert', 'alert-success', message);
+            }
+        }
+        var onError = function (ev) {
+            alert("error");
+        }
+
+        var showAlert = function (id, type, message) {
+            $(id).find('p').text(message);
+            $(id).removeClass('alert-success');
+            $(id).removeClass('alert-warning');
+            $(id).removeClass('alert-danger');
+            $(id).addClass(type);
+            $(id).alert('show');
+        }
+    </script>
+}
+

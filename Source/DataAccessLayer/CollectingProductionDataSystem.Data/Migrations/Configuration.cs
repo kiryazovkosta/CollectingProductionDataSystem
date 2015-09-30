@@ -2487,7 +2487,13 @@ namespace CollectingProductionDataSystem.Data.Migrations
                     {
                         Id=5,
                         Name= "PowerUser"
-                    }
+                    },
+                    new ApplicationRole
+                    {
+                        Id=6,
+                        Name= "NomManager",
+                        Description = "Управление на номенклатури"
+                    },
                 };
                 var roleManager = new RoleManager<ApplicationRole, int>(new RoleStoreIntPk(context));
                 foreach (var role in roles)
