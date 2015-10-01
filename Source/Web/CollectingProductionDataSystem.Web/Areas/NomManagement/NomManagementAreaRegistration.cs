@@ -17,7 +17,7 @@ namespace CollectingProductionDataSystem.Web.Areas.NomManagement
             context.MapRoute(
                 "NomManagement_default",
                 "NomManagement/{controller}/{action}/{id}",
-                new { action = "Index", id = UrlParameter.Optional },
+                 new { action = "Index", id = UrlParameter.Optional },
                  namespaces: new string[] { "CollectingProductionDataSystem.Web.Areas.NomManagement.Controllers" }
             );
         }

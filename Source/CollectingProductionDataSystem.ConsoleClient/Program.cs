@@ -48,6 +48,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
             }
 
 
+
             //TreeShiftsReports(uow);
             //SeedShiftsToDatabase(uow);
         }

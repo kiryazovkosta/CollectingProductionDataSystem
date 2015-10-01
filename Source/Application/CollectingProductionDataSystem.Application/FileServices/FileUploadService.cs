@@ -45,7 +45,7 @@
         public IEfStatus UploadFileToDatabase(Stream fileStream, string delimiter, string fileName)
         {
             FileResult fileResult = GetRecordsFromFileAsStream(fileStream, delimiter, fileName);
-            return ParseRecordsAndPersistToDatabase(fileResult,delimiter);
+            return ParseRecordsAndPersistToDatabase(fileResult, delimiter);
         }
 
         /// <summary>
@@ -54,7 +54,7 @@
         /// <param name="fileStream">The file stream.</param>
         /// <param name="delimiter">The delimiter.</param>
         /// <returns></returns>
-        private FileResult GetRecordsFromFileAsStream(Stream fileStream, string delimiter,string fileName)
+        private FileResult GetRecordsFromFileAsStream(Stream fileStream, string delimiter, string fileName)
         {
             IEfStatus status = this.kernel.Get<IEfStatus>();
 
@@ -206,6 +206,9 @@
         /// <returns></returns>
         private Dictionary<string, object> ConvertStringCollectionToPropDictionary(IEnumerable<string> propertiesValues, FileResult fileResult)
         {
+            System.Threading.Thread.CurrentThread.CurrentCulture =
+                System.Globalization.CultureInfo.InvariantCulture;
+
             Dictionary<string, object> result = new Dictionary<string, object>();
 
             var valuesArray = propertiesValues.ToArray();
@@ -245,6 +248,14 @@
                     }
                     else
                     {
+                        if (t != typeof(DateTime) && t == typeof(string))
+                        {
+                            if (valuesArray[i] != null)
+                            {
+                                valuesArray[i] = valuesArray[i].Replace(',', '.');
+                            }
+                        }
+
                         safeValue = (valuesArray[i] == null) ? null : Convert.ChangeType(valuesArray[i], t);
                     }
 
@@ -312,9 +323,9 @@
                 return new FileResult { Status = status };
             }
 
-            using (FileStream file = new FileStream( fileName,FileMode.Open,FileAccess.Read))//, Encoding.GetEncoding("windows-1251")))
+            using (FileStream file = new FileStream(fileName, FileMode.Open, FileAccess.Read))//, Encoding.GetEncoding("windows-1251")))
             {
-               result = this.GetRecordsFromFileAsStream(file,delimiter, fileName);
+                result = this.GetRecordsFromFileAsStream(file, delimiter, fileName);
             }
 
             return result;
@@ -403,8 +414,6 @@
 
             return newObj;
         }
-
-
     }
 
     internal class PropertyDescription
