@@ -72,7 +72,7 @@
 
         public IDbSet<ProcessUnit> ProcessUnit { get; set; }
 
-        public IDbSet<UnitConfig> Units { get; set; }
+        public IDbSet<UnitConfig> UnitsConfigs { get; set; }
 
         public IDbSet<UnitsData> UnitsData { get; set; }
 

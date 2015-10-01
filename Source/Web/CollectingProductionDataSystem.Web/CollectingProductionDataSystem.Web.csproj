@@ -252,6 +252,7 @@
     <Compile Include="Areas\MonthlyReporting\Controllers\AreaBaseController.cs" />
     <Compile Include="Areas\MonthlyReporting\MonthlyReportingAreaRegistration.cs" />
     <Compile Include="Areas\NomManagement\Controllers\AreaBaseController.cs" />
+    <Compile Include="Areas\NomManagement\Controllers\UnitConfigController.cs" />
     <Compile Include="Areas\NomManagement\Controllers\UploadNomController.cs" />
     <Compile Include="Areas\NomManagement\NomManagementAreaRegistration.cs" />
     <Compile Include="Areas\ShiftReporting\Controllers\AjaxController.cs" />
@@ -317,6 +318,7 @@
     <Content Include="Content\Images\error.png" />
     <Content Include="Content\Images\Excel-icon.png" />
     <Content Include="Content\Images\factory.png" />
+    <Content Include="Content\Images\line.png" />
     <Content Include="Content\Images\LUK.png" />
     <Content Include="Content\Images\ok.png" />
     <Content Include="Content\Images\tanks.png" />
@@ -685,6 +687,8 @@
     <Content Include="Areas\NomManagement\Views\web.config" />
     <Content Include="Areas\NomManagement\Views\UploadNom\Index.cshtml" />
     <Content Include="Areas\DailyReporting\Views\MeasuringPoints\MeasuringPointsData.cshtml" />
+    <Content Include="Areas\NomManagement\Views\UnitConfig\Index.cshtml" />
+    <Content Include="fonts\bank-gotic.eot" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <None Include="Properties\PublishProfiles\Home.pubxml" />
     <Content Include="Scripts\custom\sendArea.js" />
@@ -1344,6 +1348,7 @@
     <Folder Include="Areas\ShiftReporting\Views\Shared\" />
     <Folder Include="Views\Ajax\" />
     <Folder Include="Views\Factory\" />
+    <Folder Include="Views\UnitConfig\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
