@@ -1,4 +1,10 @@
-﻿.k-grid {
+﻿@font-face {
+    font-family: 'BankGothic RUSS Medium';
+    src: url(../../fonts/BankGothic1.eot);
+    src: url(../../fonts/BankGothic1.eot) format('embedded-opentype'), url(../../fonts/BankGothic1.ttf) format('truetype'), url('../../fonts/BankGothic1.woff') format('woff'), url('../../fonts/BankGothic1.woff2') format('woff2');
+}
+
+.k-grid {
     width: 100%;
 }
 
@@ -104,11 +110,4 @@ div#content-wrapper {
 
 .margin-top-10 {
     margin-top: 10px;
-}
-
-@font-face {
-    font-family: 'BankGothic RUSS Medium';
-    src: url(../../fonts/bank-gotic.eot);
-    src: url(../../fonts/bank-gotic.eot) format('embedded-opentype'), 
-         url(../../fonts/bank-gotic.ttf) format('truetype');
 }

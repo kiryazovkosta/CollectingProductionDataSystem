@@ -675,7 +675,6 @@
     <Content Include="Areas\Administration\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Administration\Views\Shared\EditorTemplates\AsignRoleViewModel.cshtml" />
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
-    <Content Include="fonts\bank-gotic.ttf" />
     <Content Include="Areas\ShiftReporting\Views\web.config" />
     <Content Include="Areas\DailyReporting\Views\web.config" />
     <Content Include="Areas\MonthlyReporting\Views\web.config" />
@@ -688,7 +687,10 @@
     <Content Include="Areas\NomManagement\Views\UploadNom\Index.cshtml" />
     <Content Include="Areas\DailyReporting\Views\MeasuringPoints\MeasuringPointsData.cshtml" />
     <Content Include="Areas\NomManagement\Views\UnitConfig\Index.cshtml" />
-    <Content Include="fonts\bank-gotic.eot" />
+    <Content Include="fonts\BankGothic1.eot" />
+    <Content Include="fonts\BankGothic1.ttf" />
+    <Content Include="fonts\BankGothic1.woff" />
+    <Content Include="fonts\BankGothic1.woff2" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <None Include="Properties\PublishProfiles\Home.pubxml" />
     <Content Include="Scripts\custom\sendArea.js" />
