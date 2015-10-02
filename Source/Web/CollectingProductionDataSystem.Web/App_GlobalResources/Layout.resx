@@ -172,7 +172,7 @@
     <value>Full Name</value>
   </data>
   <data name="GreetingMessage" xml:space="preserve">
-    <value>Hello {0}!</value>
+    <value>Hello, {0}!</value>
   </data>
   <data name="Id" xml:space="preserve">
     <value>Id</value>

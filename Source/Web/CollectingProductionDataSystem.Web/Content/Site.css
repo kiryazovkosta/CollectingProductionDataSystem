@@ -391,9 +391,3 @@ span.k-icon.k-i-excel {
 .separator {
 height:20px;
 }
-
-.navbar.navbar-default.navbar-inverse.navbar-fixed-top {
-    background-image:url("/Content/Images/line.png");
-    background-repeat:repeat-x;
-    background-size:2px;
-}

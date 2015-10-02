@@ -318,8 +318,8 @@
     <Content Include="Content\Images\error.png" />
     <Content Include="Content\Images\Excel-icon.png" />
     <Content Include="Content\Images\factory.png" />
-    <Content Include="Content\Images\line.png" />
-    <Content Include="Content\Images\LUK.png" />
+    <Content Include="Content\Images\LukBlack.png" />
+    <Content Include="Content\Images\LukTransparent.png" />
     <Content Include="Content\Images\ok.png" />
     <Content Include="Content\Images\tanks.png" />
     <Content Include="Content\Images\warning.png" />

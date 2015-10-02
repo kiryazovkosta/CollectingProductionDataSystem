@@ -104,8 +104,9 @@ div#content-wrapper {
 }
 
 .gothic {
-    font-family: 'BankGothic RUSS Medium';
     font-size: 12px;
+    text-transform:uppercase;
+    font-weight:bold;
 }
 
 .margin-top-10 {

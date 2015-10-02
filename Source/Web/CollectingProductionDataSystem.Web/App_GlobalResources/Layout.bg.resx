@@ -175,7 +175,7 @@
     <value>Име, Презиме, Фамилия</value>
   </data>
   <data name="GreetingMessage" xml:space="preserve">
-    <value>Здравейте {0}!</value>
+    <value>Здравейте, {0}!</value>
   </data>
   <data name="Id" xml:space="preserve">
     <value>№</value>

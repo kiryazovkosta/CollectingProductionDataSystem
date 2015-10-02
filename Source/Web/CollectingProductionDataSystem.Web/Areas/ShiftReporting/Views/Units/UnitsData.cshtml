@@ -27,7 +27,7 @@
             columns.Bound(c => c.UnitConfig.Code).Width(77);
             columns.Bound(c => c.UnitConfig.ProductType.Sort).Hidden(true).ClientGroupHeaderTemplate("#=value#");
             columns.Bound(c => c.UnitConfig.ProcessUnit.ShortName).Width(100);
-            columns.Bound(c => c.UnitConfig.Name);
+            columns.Bound(c => c.UnitConfig.Name).Width(310);
             columns.Bound(c => c.UnitConfig.Position).Width(140);
             columns.Bound(c => c.UnitConfig.MeasureUnit.Code).Width(80);
             columns.Bound(c => c.UnitConfig.CollectingDataMechanism).Width(30).Title(string.Empty);
