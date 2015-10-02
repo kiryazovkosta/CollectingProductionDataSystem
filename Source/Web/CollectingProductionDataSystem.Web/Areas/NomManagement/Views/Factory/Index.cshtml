@@ -1,0 +1,42 @@
+﻿@{
+    Layout = "~/Views/Shared/_KendoLayout.cshtml";
+}
+
+﻿﻿@(Html.Kendo().Grid<CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewModels.FactoryViewModel>()
+      .Name("grid")
+      .Columns(columns =>
+      {
+        columns.Bound(c => c.ShortName);
+        columns.Bound(c => c.FullName);
+        columns.Bound(c => c.Plant);
+        columns.Command(command => { command.Edit(); command.Destroy(); }).Width(180);
+      })
+      .ToolBar(toolbar => {
+            toolbar.Create();
+            toolbar.Excel();
+      }) 
+      .Editable(editable => editable.Mode(GridEditMode.InLine))
+      .Pageable()
+      .Sortable(sortable => {
+          sortable.SortMode(GridSortMode.SingleColumn);
+      })
+      .Filterable()
+      .Scrollable()
+      .DataSource(dataSource => dataSource
+          .Ajax()
+          .Model(model => model.Id(p => p.Id))
+              .Read(read => read.Action("Factories_Read", "Factory", new { area = "NomManagement" }))
+              .Create(create => create.Action("Factories_Create", "Factory", new { area = "NomManagement" }))
+              .Update(update => update.Action("Factories_Update", "Factory", new { area = "NomManagement" }))
+              .Destroy(destroy => destroy.Action("Factories_Destroy", "Factory", new { area = "NomManagement" }))
+      )
+)
+
+@section scripts{
+    <script>
+        $(function () {
+            var culture = $('#culture').val();
+            kendo.culture(culture);
+        });
+    </script>
+}

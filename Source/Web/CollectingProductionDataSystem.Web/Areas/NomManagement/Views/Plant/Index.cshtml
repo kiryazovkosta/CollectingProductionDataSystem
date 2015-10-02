@@ -1,0 +1,47 @@
+﻿@{
+    Layout = "~/Views/Shared/_KendoLayout.cshtml";
+}
+﻿﻿
+@(Html.Kendo().Grid<CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewModels.PlantViewModel>()
+      .Name("grid")
+      .Columns(columns =>
+      {
+          columns.Bound(c => c.ShortName);
+          columns.Bound(c => c.FullName);
+          columns.Command(command => { command.Edit(); command.Destroy(); }).Width(230);
+      })
+      .ToolBar(toolbar =>
+      {
+          toolbar.Create();
+          toolbar.Excel();
+      })
+      .Editable(editable => editable.Mode(GridEditMode.InLine))
+      .Pageable(pageable => pageable
+          .Refresh(true)
+          .PageSizes(new[] { 10, 20, 50, 100 })
+          .ButtonCount(5)
+      )
+      .Sortable(sortable =>
+      {
+          sortable.SortMode(GridSortMode.SingleColumn);
+      })
+      .Filterable()
+      .Scrollable(scrol => scrol.Height(620))
+      .DataSource(dataSource => dataSource
+          .Ajax()
+          .Model(model => model.Id(p => p.Id))
+              .Read(read => read.Action("Plants_Read", "Plant", new { area = "NomManagement" }))
+              .Create(create => create.Action("Plants_Create", "Plant", new { area = "NomManagement" }))
+              .Update(update => update.Action("Plants_Update", "Plant", new { area = "NomManagement" }))
+              .Destroy(destroy => destroy.Action("Plants_Destroy", "Plant", new { area = "NomManagement" }))
+      )
+)
+
+@section scripts{
+    <script>
+        $(function () {
+            var culture = $('#culture').val();
+            kendo.culture(culture);
+        });
+    </script>
+}

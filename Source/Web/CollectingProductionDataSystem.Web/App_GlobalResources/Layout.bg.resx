@@ -171,7 +171,7 @@
   <data name="FirstName" xml:space="preserve">
     <value>Име</value>
   </data>
-  <data name="FullName" xml:space="preserve">
+  <data name="FullUserName" xml:space="preserve">
     <value>Име, Презиме, Фамилия</value>
   </data>
   <data name="GreetingMessage" xml:space="preserve">
@@ -374,5 +374,14 @@
   </data>
   <data name="MeasuringPointsData" xml:space="preserve">
     <value>Данни за експидирани и доставени невфтопродукти</value>
+  </data>
+  <data name="FullName" xml:space="preserve">
+    <value>Пълно име</value>
+  </data>
+  <data name="Plant" xml:space="preserve">
+    <value>Plant ????</value>
+  </data>
+  <data name="ShortName" xml:space="preserve">
+    <value>Съкратено име</value>
   </data>
 </root>

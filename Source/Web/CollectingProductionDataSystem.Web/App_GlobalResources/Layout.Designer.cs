@@ -367,6 +367,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Full Name.
+        /// </summary>
+        public static string FullUserName {
+            get {
+                return ResourceManager.GetString("FullUserName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Hello, {0}!.
         /// </summary>
         public static string GreetingMessage {
@@ -538,6 +547,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to factory.
+        /// </summary>
+        public static string factory {
+            get {
+                return ResourceManager.GetString("factory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Position.
         /// </summary>
         public static string Position {
@@ -678,6 +696,15 @@ namespace App_GlobalResources.Resources {
         public static string ShiftsData {
             get {
                 return ResourceManager.GetString("ShiftsData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Short Name.
+        /// </summary>
+        public static string ShortName {
+            get {
+                return ResourceManager.GetString("ShortName", resourceCulture);
             }
         }
         

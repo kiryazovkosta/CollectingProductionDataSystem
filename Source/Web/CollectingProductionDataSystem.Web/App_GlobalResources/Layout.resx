@@ -168,7 +168,7 @@
   <data name="FirstName" xml:space="preserve">
     <value>First Name</value>
   </data>
-  <data name="FullName" xml:space="preserve">
+  <data name="FullUserName" xml:space="preserve">
     <value>Full Name</value>
   </data>
   <data name="GreetingMessage" xml:space="preserve">
@@ -371,5 +371,14 @@
   </data>
   <data name="MeasuringPointsData" xml:space="preserve">
     <value>MeasuringPointsData</value>
+  </data>
+  <data name="FullName" xml:space="preserve">
+    <value>Full Name</value>
+  </data>
+  <data name="Plant" xml:space="preserve">
+    <value>Plant</value>
+  </data>
+  <data name="ShortName" xml:space="preserve">
+    <value>Short Name</value>
   </data>
 </root>

@@ -50,7 +50,7 @@
         [Display(Name = "LastName", ResourceType = typeof(Resources.Layout))]
         public string LastName { get; set; }
 
-        [Display(Name = "FullName", ResourceType = typeof(Resources.Layout))]
+        [Display(Name = "FullUserName", ResourceType = typeof(Resources.Layout))]
         public string FullName
         {
             get

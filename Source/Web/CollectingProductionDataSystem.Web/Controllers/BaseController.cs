@@ -90,5 +90,10 @@
             Debug.WriteLine(string.Format("-------------------------------------------- Cache expired {0} because {1} ------------------------------------------------------", key,reason));
         }
 
+        protected override void Dispose(bool disposing)
+        {
+            data.Dispose();
+            base.Dispose(disposing);
+        }
     }
 }

@@ -214,21 +214,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Layout.bg.resx</DependentUpon>
     </Compile>
-    <Compile Include="App_GlobalResources\Layout.bg1.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Layout.bg.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\Layout.bg2.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Layout.bg.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\Layout.bg3.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Layout.bg.resx</DependentUpon>
-    </Compile>
     <Compile Include="App_GlobalResources\Layout.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -252,9 +237,14 @@
     <Compile Include="Areas\MonthlyReporting\Controllers\AreaBaseController.cs" />
     <Compile Include="Areas\MonthlyReporting\MonthlyReportingAreaRegistration.cs" />
     <Compile Include="Areas\NomManagement\Controllers\AreaBaseController.cs" />
+    <Compile Include="Areas\NomManagement\Controllers\FactoryController.cs" />
+    <Compile Include="Areas\NomManagement\Controllers\PlantController.cs" />
     <Compile Include="Areas\NomManagement\Controllers\UnitConfigController.cs" />
     <Compile Include="Areas\NomManagement\Controllers\UploadNomController.cs" />
+    <Compile Include="Areas\NomManagement\Models\ViewModels\FactoryViewModel.cs" />
+    <Compile Include="Areas\NomManagement\Models\ViewModels\ProcessUnitViewModel.cs" />
     <Compile Include="Areas\NomManagement\NomManagementAreaRegistration.cs" />
+    <Compile Include="Areas\NomManagement\Models\ViewModels\PlantViewModel.cs" />
     <Compile Include="Areas\ShiftReporting\Controllers\AjaxController.cs" />
     <Compile Include="Areas\ShiftReporting\Controllers\AreaBaseController.cs" />
     <Compile Include="Areas\ShiftReporting\Controllers\TanksController.cs" />
@@ -691,6 +681,8 @@
     <Content Include="fonts\BankGothic1.ttf" />
     <Content Include="fonts\BankGothic1.woff" />
     <Content Include="fonts\BankGothic1.woff2" />
+    <Content Include="Areas\NomManagement\Views\Plant\Index.cshtml" />
+    <Content Include="Areas\NomManagement\Views\Factory\Index.cshtml" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <None Include="Properties\PublishProfiles\Home.pubxml" />
     <Content Include="Scripts\custom\sendArea.js" />
@@ -1342,7 +1334,7 @@
     <Folder Include="Areas\MonthlyReporting\Models\" />
     <Folder Include="Areas\MonthlyReporting\Views\AreaBase\" />
     <Folder Include="Areas\MonthlyReporting\Views\Shared\" />
-    <Folder Include="Areas\NomManagement\Models\" />
+    <Folder Include="Areas\NomManagement\Models\InputModels\" />
     <Folder Include="Areas\NomManagement\Views\Shared\" />
     <Folder Include="Areas\ShiftReporting\Models\" />
     <Folder Include="Areas\ShiftReporting\Views\Ajax\" />
@@ -1350,6 +1342,7 @@
     <Folder Include="Areas\ShiftReporting\Views\Shared\" />
     <Folder Include="Views\Ajax\" />
     <Folder Include="Views\Factory\" />
+    <Folder Include="Views\Plant\" />
     <Folder Include="Views\UnitConfig\" />
   </ItemGroup>
   <ItemGroup>
