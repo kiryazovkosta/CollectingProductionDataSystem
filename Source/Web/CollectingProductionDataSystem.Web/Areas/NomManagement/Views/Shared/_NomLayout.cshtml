@@ -1,0 +1,19 @@
+﻿@{
+    Layout = "~/Views/Shared/_KendoLayout.cshtml";
+}
+@section styles{
+    @RenderSection("styles", required: false)
+}
+
+@Html.AntiForgeryToken()
+@RenderBody()
+
+@* //Error window for kendo grid error event handler *@
+<div id="err-window" style="display:none">@Html.Partial("_KendoGridErrorWindow")</div>
+@* //Error window for kendo grid error event handler *@
+<div id="success-window" style="display:none">@Html.Partial("_SuccessWindow")</div>
+
+@section scripts{
+    @Scripts.Render("~/bundles/custom/kendoadditional")
+    @RenderSection("scripts", required: false)
+}

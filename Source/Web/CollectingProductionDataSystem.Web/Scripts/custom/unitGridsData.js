@@ -1,8 +1,3 @@
-$(function () {
-    var culture = $('#culture').val();
-    kendo.culture(culture);
-});
-
 function sendProcessUnit() {
     return { "processUnitId": $('input[name=processunits]').val() }
 }
@@ -19,21 +14,6 @@ var sendDate = function () {
     }
     $.extend(result, sendAntiForgery());
     return result;
-}
-
-function error_handler(e) {
-    if (e.errors) {
-        var message = "";
-        $.each(e.errors, function (key, value) {
-            if ('errors' in value) {
-                $.each(value.errors, function () {
-                    message += this + "\n";
-                });
-            }
-        });
-        $('pre#err-message').text(message);
-        $('div#err-window').data("kendoWindow").open();
-    }
 }
 
 function closeWindow(selector) {
@@ -58,8 +38,7 @@ $(document).ready(function () {
             }
         });
     });
-    prepareWindow();
-    prepareSuccessWindow();
+    
     nameGridCommancolumn();
     hideCommandButtons();
     AttachEventToExportBtn("#excel-export", "#units");
@@ -106,38 +85,6 @@ $(document).ready(function () {
         });
     });
 });
-
-function prepareWindow() {
-    var window = $('div#err-window')
-    window.kendoWindow({
-        width: "650px",
-        title: "Възникна грешка в приложението",
-        actions: ["Close"],
-        modal: true,
-        position: {
-            top: "30%", // or "100px"
-            left: "30%"
-        },
-        minHeight: 100,
-        maxHeight: 350
-    });
-}
-
-function prepareSuccessWindow() {
-    var window = $('div#success-window')
-    window.kendoWindow({
-        width: "650px",
-        title: "Успешна операция",
-        actions: ["Close"],
-        modal: true,
-        position: {
-            top: "30%", // or "100px"
-            left: "30%"
-        },
-        minHeight: 100,
-        maxHeight: 350
-    });
-}
 
 function hideCommandButtons() {
     $("#confirm").hide();
@@ -196,19 +143,11 @@ nameGridCommancolumn = function () {
             }
         });
     }
-
 }
 
 var dataSave = function (ev) {
     if (ev.type === 'update') {
         refreshGrid('#units');
         refreshGrid('#productionPlan');
-    }
-}
-
-var refreshGrid = function (selector) {
-    var grid = $(selector).data('kendoGrid');
-    if (grid !== null) {
-        grid.dataSource.read();
     }
 }

@@ -31,6 +31,8 @@ namespace CollectingProductionDataSystem.Web.Areas.NomManagement.Controllers
             return View();
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Factories_Read([DataSourceRequest]DataSourceRequest request)
         {
             IQueryable<Factory> factories = data.Factories.All();
@@ -39,7 +41,8 @@ namespace CollectingProductionDataSystem.Web.Areas.NomManagement.Controllers
             return Json(result);
         }
 
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Factories_Create([DataSourceRequest]DataSourceRequest request, FactoryViewModel factory)
         {
             if (ModelState.IsValid)
@@ -61,7 +64,8 @@ namespace CollectingProductionDataSystem.Web.Areas.NomManagement.Controllers
             return Json(new[] { factory }.ToDataSourceResult(request, ModelState));
         }
 
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Factories_Update([DataSourceRequest]DataSourceRequest request, FactoryViewModel factory)
         {
             if (ModelState.IsValid)
@@ -75,7 +79,7 @@ namespace CollectingProductionDataSystem.Web.Areas.NomManagement.Controllers
                 }
                 else
                 {
-                    Mapper.Map(factory,dbEntity);
+                    Mapper.Map(factory, dbEntity);
 
                     data.Factories.Update(dbEntity);
 
@@ -91,7 +95,8 @@ namespace CollectingProductionDataSystem.Web.Areas.NomManagement.Controllers
             return Json(new[] { factory }.ToDataSourceResult(request, ModelState));
         }
 
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Factories_Destroy([DataSourceRequest]DataSourceRequest request, FactoryViewModel factory)
         {
             if (ModelState.IsValid)

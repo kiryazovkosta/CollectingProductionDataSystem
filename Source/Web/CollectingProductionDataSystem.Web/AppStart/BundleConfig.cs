@@ -58,10 +58,14 @@ namespace CollectingProductionDataSystem.Web.AppStart
 
             bundles.Add(new ScriptBundle("~/bundles/custom/sidebar").Include(
                 "~/Scripts/custom/sidebar.js"));
-            bundles.Add(new ScriptBundle("~/bundles/custom/unitGrids").Include(
-                "~/Scripts/custom/sendAntiForgery.js",                
+
+            bundles.Add(new ScriptBundle("~/bundles/custom/unitGrids").Include(          
                 "~/Scripts/custom/unitGridsData.js"
                 ));
+
+            bundles.Add(new ScriptBundle("~/bundles/custom/kendoadditional").Include(
+                "~/Scripts/custom/kendoAdditional.js",
+                "~/Scripts/custom/sendAntiForgery.js"));
         }
 
         public static void AddDefaultIgnorePatterns(IgnoreList ignoreList)

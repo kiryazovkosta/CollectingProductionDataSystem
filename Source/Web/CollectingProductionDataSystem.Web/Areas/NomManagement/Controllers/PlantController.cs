@@ -30,6 +30,8 @@ namespace CollectingProductionDataSystem.Web.Areas.NomManagement.Controllers
             return View();
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Plants_Read([DataSourceRequest]DataSourceRequest request)
         {
             IQueryable<Plant> plants = data.Plants.All();
@@ -38,7 +40,8 @@ namespace CollectingProductionDataSystem.Web.Areas.NomManagement.Controllers
             return Json(result);
         }
 
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Plants_Create([DataSourceRequest]DataSourceRequest request, PlantViewModel plant)
         {
             if (ModelState.IsValid)
@@ -60,7 +63,8 @@ namespace CollectingProductionDataSystem.Web.Areas.NomManagement.Controllers
             return Json(new[] { plant }.ToDataSourceResult(request, ModelState));
         }
 
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Plants_Update([DataSourceRequest]DataSourceRequest request, PlantViewModel plant)
         {
             if (ModelState.IsValid)
@@ -90,7 +94,8 @@ namespace CollectingProductionDataSystem.Web.Areas.NomManagement.Controllers
             return Json(new[] { plant }.ToDataSourceResult(request, ModelState));
         }
 
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Plants_Destroy([DataSourceRequest]DataSourceRequest request, PlantViewModel plant)
         {
             if (ModelState.IsValid)

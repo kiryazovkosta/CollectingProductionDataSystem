@@ -52,7 +52,6 @@
     .Editable(editable => editable.Mode(GridEditMode.InLine))
     .Scrollable(scr => scr.Height(640))
     .Filterable()
-    .Editable(editable => editable.Mode(GridEditMode.InLine))
     .DataSource(dataSource => dataSource
         .Ajax()
         .PageSize(100)
@@ -87,6 +86,7 @@
 
 
 @section scripts{
+    @Scripts.Render("~/bundles/custom/kendoadditional")
     @Scripts.Render("~/bundles/custom/unitGrids")
 }
 @section sidebar{

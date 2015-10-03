@@ -1,10 +1,10 @@
-﻿﻿﻿@(Html.Kendo().Grid<CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewModels.FactoryViewModel>()
+﻿﻿﻿@(Html.Kendo().Grid<CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewModels.ProcessUnitViewModel>()
       .Name("grid")
       .Columns(columns =>
       {
           columns.Bound(c => c.ShortName);
           columns.Bound(c => c.FullName);
-          columns.Bound(c => c.Plant).EditorTemplateName("PlantViewModel").ClientTemplate("#:data.Plant==null?'':data.Plant.FullName#");
+          columns.Bound(c => c.Factory).EditorTemplateName("FactoryViewModel").ClientTemplate("#:data.Factory==null?'':data.Factory.FullName#");
           columns.Command(command => { command.Edit(); command.Destroy(); }).Width(230);
       })
       .ToolBar(toolbar =>
@@ -29,13 +29,15 @@
           .Ajax()
           .PageSize(20)
           .Model(model => model.Id(p => p.Id))
-                  .Read(read => read.Action("Factories_Read", "Factory", new { area = "NomManagement" }).Data("sendAntiForgery"))
-                  .Create(create => create.Action("Factories_Create", "Factory", new { area = "NomManagement" }).Data("sendAntiForgery"))
-                  .Update(update => update.Action("Factories_Update", "Factory", new { area = "NomManagement" }).Data("sendAntiForgery"))
-                  .Destroy(destroy => destroy.Action("Factories_Destroy", "Factory", new { area = "NomManagement" }).Data("sendAntiForgery"))
+          .Read(read => read.Action("ProcessUnit_Read", "ProcessUnit", new { area = "NomManagement" }).Data("sendAntiForgery"))
+          .Create(create => create.Action("ProcessUnit_Create", "ProcessUnit", new { area = "NomManagement" }).Data("sendAntiForgery"))
+          .Update(update => update.Action("ProcessUnit_Update", "ProcessUnit", new { area = "NomManagement" }).Data("sendAntiForgery"))
+          .Destroy(destroy => destroy.Action("ProcessUnit_Destroy", "ProcessUnit", new { area = "NomManagement" }).Data("sendAntiForgery"))
           .Events(events =>
                 {
                     events.Error("error_handler");
                 })
       )
 )
+
+

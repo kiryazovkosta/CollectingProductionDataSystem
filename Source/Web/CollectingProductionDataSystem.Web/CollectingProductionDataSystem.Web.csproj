@@ -239,6 +239,7 @@
     <Compile Include="Areas\NomManagement\Controllers\AreaBaseController.cs" />
     <Compile Include="Areas\NomManagement\Controllers\FactoryController.cs" />
     <Compile Include="Areas\NomManagement\Controllers\PlantController.cs" />
+    <Compile Include="Areas\NomManagement\Controllers\ProcessUnitController.cs" />
     <Compile Include="Areas\NomManagement\Controllers\UnitConfigController.cs" />
     <Compile Include="Areas\NomManagement\Controllers\UploadNomController.cs" />
     <Compile Include="Areas\NomManagement\Models\ViewModels\FactoryViewModel.cs" />
@@ -652,7 +653,7 @@
     <Content Include="Content\kendo\images\kendoui.woff" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <Content Include="Scripts\custom\kendoGridErrorHandler.js" />
+    <Content Include="Scripts\custom\kendoAdditional.js" />
     <Content Include="Scripts\custom\sendAntiForgery.js" />
     <Content Include="Areas\Administration\Views\Role\Create.cshtml" />
     <Content Include="Areas\Administration\Views\Role\Edit.cshtml" />
@@ -683,6 +684,12 @@
     <Content Include="fonts\BankGothic1.woff2" />
     <Content Include="Areas\NomManagement\Views\Plant\Index.cshtml" />
     <Content Include="Areas\NomManagement\Views\Factory\Index.cshtml" />
+    <Content Include="Areas\NomManagement\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\NomManagement\Views\Shared\_NomLayout.cshtml" />
+    <Content Include="Areas\NomManagement\Views\Shared\EditorTemplates\PlantViewModel.cshtml" />
+    <Content Include="Areas\NomManagement\Views\Shared\DisplayTemplates\PlantViewModel.cshtml" />
+    <Content Include="Areas\NomManagement\Views\Shared\EditorTemplates\FactoryViewModel.cshtml" />
+    <Content Include="Areas\NomManagement\Views\ProcessUnit\Index.cshtml" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <None Include="Properties\PublishProfiles\Home.pubxml" />
     <Content Include="Scripts\custom\sendArea.js" />
@@ -1335,7 +1342,7 @@
     <Folder Include="Areas\MonthlyReporting\Views\AreaBase\" />
     <Folder Include="Areas\MonthlyReporting\Views\Shared\" />
     <Folder Include="Areas\NomManagement\Models\InputModels\" />
-    <Folder Include="Areas\NomManagement\Views\Shared\" />
+    <Folder Include="Areas\NomManagement\Views\Ajax\" />
     <Folder Include="Areas\ShiftReporting\Models\" />
     <Folder Include="Areas\ShiftReporting\Views\Ajax\" />
     <Folder Include="Areas\ShiftReporting\Views\AreaBase\" />
@@ -1343,6 +1350,7 @@
     <Folder Include="Views\Ajax\" />
     <Folder Include="Views\Factory\" />
     <Folder Include="Views\Plant\" />
+    <Folder Include="Views\ProcessUnit\" />
     <Folder Include="Views\UnitConfig\" />
   </ItemGroup>
   <ItemGroup>
@@ -1542,7 +1550,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>2555</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
