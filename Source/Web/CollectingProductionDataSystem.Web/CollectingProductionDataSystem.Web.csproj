@@ -238,6 +238,7 @@
     <Compile Include="Areas\MonthlyReporting\MonthlyReportingAreaRegistration.cs" />
     <Compile Include="Areas\NomManagement\Controllers\AreaBaseController.cs" />
     <Compile Include="Areas\NomManagement\Controllers\FactoryController.cs" />
+    <Compile Include="Areas\NomManagement\Controllers\GenericNomController.cs" />
     <Compile Include="Areas\NomManagement\Controllers\PlantController.cs" />
     <Compile Include="Areas\NomManagement\Controllers\ProcessUnitController.cs" />
     <Compile Include="Areas\NomManagement\Controllers\UnitConfigController.cs" />

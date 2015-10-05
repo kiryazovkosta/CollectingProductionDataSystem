@@ -29,10 +29,10 @@
           .Ajax()
           .PageSize(20)
           .Model(model => model.Id(p => p.Id))
-          .Read(read => read.Action("ProcessUnit_Read", "ProcessUnit", new { area = "NomManagement" }).Data("sendAntiForgery"))
-          .Create(create => create.Action("ProcessUnit_Create", "ProcessUnit", new { area = "NomManagement" }).Data("sendAntiForgery"))
-          .Update(update => update.Action("ProcessUnit_Update", "ProcessUnit", new { area = "NomManagement" }).Data("sendAntiForgery"))
-          .Destroy(destroy => destroy.Action("ProcessUnit_Destroy", "ProcessUnit", new { area = "NomManagement" }).Data("sendAntiForgery"))
+          .Read(read => read.Action("Read", "ProcessUnit", new { area = "NomManagement" }).Data("sendAntiForgery"))
+          .Create(create => create.Action("Create", "ProcessUnit", new { area = "NomManagement" }).Data("sendAntiForgery"))
+          .Update(update => update.Action("Update", "ProcessUnit", new { area = "NomManagement" }).Data("sendAntiForgery"))
+          .Destroy(destroy => destroy.Action("Destroy", "ProcessUnit", new { area = "NomManagement" }).Data("sendAntiForgery"))
           .Events(events =>
                 {
                     events.Error("error_handler");

@@ -17,107 +17,12 @@ using Resources = App_GlobalResources.Resources;
 
 namespace CollectingProductionDataSystem.Web.Areas.NomManagement.Controllers
 {
-    public class PlantController : AreaBaseController
+    public class PlantController : GenericNomController<Plant, PlantViewModel>
     {
         public PlantController(IProductionData dataParam)
             : base(dataParam)
         {
 
-        }
-
-        public ActionResult Index()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Plants_Read([DataSourceRequest]DataSourceRequest request)
-        {
-            IQueryable<Plant> plants = data.Plants.All();
-            DataSourceResult result = plants.ToDataSourceResult(request, Mapper.Map<PlantViewModel>);
-
-            return Json(result);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Plants_Create([DataSourceRequest]DataSourceRequest request, PlantViewModel plant)
-        {
-            if (ModelState.IsValid)
-            {
-                var entity = Mapper.Map<Plant>(plant);
-
-                data.Plants.Add(entity);
-
-                var result = data.SaveChanges(this.UserProfile.UserName);
-
-                if (!result.IsValid)
-                {
-                    result.ToModelStateErrors(ModelState);
-                }
-
-                plant.Id = entity.Id;
-            }
-
-            return Json(new[] { plant }.ToDataSourceResult(request, ModelState));
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Plants_Update([DataSourceRequest]DataSourceRequest request, PlantViewModel plant)
-        {
-            if (ModelState.IsValid)
-            {
-
-                var dbEntity = data.Plants.GetById(plant.Id);
-
-                if (dbEntity == null)
-                {
-                    ModelState.AddModelError("", string.Format(Resources.ErrorMessages.InvalidRecordUpdate, plant.Id));
-                }
-                else
-                {
-                    Mapper.Map(plant,dbEntity);
-
-                    data.Plants.Update(dbEntity);
-
-                    var result = data.SaveChanges(this.UserProfile.UserName);
-
-                    if (!result.IsValid)
-                    {
-                        result.ToModelStateErrors(ModelState);
-                    }
-                }
-            }
-
-            return Json(new[] { plant }.ToDataSourceResult(request, ModelState));
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Plants_Destroy([DataSourceRequest]DataSourceRequest request, PlantViewModel plant)
-        {
-            if (ModelState.IsValid)
-            {
-                data.Plants.Delete(plant.Id);
-                var result = data.SaveChanges(this.UserProfile.UserName);
-
-                if (!result.IsValid)
-                {
-                    result.ToModelStateErrors(ModelState);
-                }
-            }
-
-            return Json(new[] { plant }.ToDataSourceResult(request, ModelState));
-        }
-
-        [HttpPost]
-        public ActionResult Excel_Export_Save(string contentType, string base64, string fileName)
-        {
-            var fileContents = Convert.FromBase64String(base64);
-
-            return File(fileContents, contentType, fileName);
         }
     }
 }

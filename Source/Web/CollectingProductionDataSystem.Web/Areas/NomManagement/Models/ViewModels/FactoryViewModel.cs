@@ -9,8 +9,9 @@
     using CollectingProductionDataSystem.Infrastructure.Mapping;
     using CollectingProductionDataSystem.Models.Productions;
     using Resources = App_GlobalResources.Resources;
+    using CollectingProductionDataSystem.Models.Contracts;
 
-    public class FactoryViewModel : IMapFrom<Factory>, IHaveCustomMappings
+    public class FactoryViewModel : IMapFrom<Factory>, IHaveCustomMappings, IEntity
     {
 
         [Required]

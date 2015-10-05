@@ -4,13 +4,14 @@ namespace CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewMode
     using System.ComponentModel.DataAnnotations;
     using AutoMapper;
     using CollectingProductionDataSystem.Infrastructure.Mapping;
+    using CollectingProductionDataSystem.Models.Contracts;
     using CollectingProductionDataSystem.Models.Productions;
     using Resources = App_GlobalResources.Resources;
 
     /// <summary>
     /// 
     /// </summary>
-    public class ProcessUnitViewModel : IMapFrom<ProcessUnit>,IHaveCustomMappings
+    public class ProcessUnitViewModel : IMapFrom<ProcessUnit>,IHaveCustomMappings,IEntity
     {
         [Required]
         [UIHint("Hidden")]

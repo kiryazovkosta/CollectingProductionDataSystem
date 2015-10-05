@@ -8,8 +8,9 @@
     using CollectingProductionDataSystem.Infrastructure.Mapping;
     using CollectingProductionDataSystem.Models.Productions;
     using Resources = App_GlobalResources.Resources;
+    using CollectingProductionDataSystem.Models.Contracts;
 
-    public class PlantViewModel : IMapFrom<Plant>
+    public class PlantViewModel : IMapFrom<Plant>, IEntity
     {
         [Required]
         [UIHint("Hidden")]
