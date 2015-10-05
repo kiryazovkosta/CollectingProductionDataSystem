@@ -484,6 +484,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Name.
+        /// </summary>
+        public static string Name {
+            get {
+                return ResourceManager.GetString("Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Net Standard Volume.
         /// </summary>
         public static string NetStandardVolume {
@@ -520,6 +529,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Park.
+        /// </summary>
+        public static string Park {
+            get {
+                return ResourceManager.GetString("Park", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Park Name.
         /// </summary>
         public static string ParkName {
@@ -547,11 +565,11 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to factory.
+        ///   Looks up a localized string similar to Plant.
         /// </summary>
-        public static string factory {
+        public static string Plant {
             get {
-                return ResourceManager.GetString("factory", resourceCulture);
+                return ResourceManager.GetString("Plant", resourceCulture);
             }
         }
         

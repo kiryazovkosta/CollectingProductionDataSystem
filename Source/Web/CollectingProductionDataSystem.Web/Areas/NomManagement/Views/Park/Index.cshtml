@@ -1,0 +1,43 @@
+﻿﻿﻿@(Html.Kendo().Grid<CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewModels.ParkViewModel>()
+      .Name("grid")
+      .Columns(columns =>
+      {
+          columns.Bound(c => c.Name);
+          columns.ForeignKey(c => c.AreaId, (System.Collections.IEnumerable)ViewData["areas"], "Id", "Name").EditorTemplateName("AreaViewModel");
+          columns.Command(command => { command.Edit(); command.Destroy(); }).Width(230);
+      })
+      .ToolBar(toolbar =>
+      {
+          toolbar.Create();
+          toolbar.Excel();
+      })
+      .Editable(editable => editable.Mode(GridEditMode.InLine))
+          .Pageable(pageable => pageable
+              .Refresh(true)
+              .PageSizes(new[] { 20, 50, 100 })
+              .ButtonCount(5)
+          )
+          .Sortable(sortable =>
+          {
+              sortable.SortMode(GridSortMode.SingleColumn);
+          })
+          .Filterable()
+          .Scrollable(scrol => scrol.Height(620))
+      .Scrollable()
+      .DataSource(dataSource => dataSource
+          .Ajax()
+          .PageSize(20)
+          .Model(model => model.Id(p => p.Id))
+          .Read(read => read.Action("Read", "Park", new { area = "NomManagement" }).Data("sendAntiForgery"))
+          .Create(create => create.Action("Create", "Park", new { area = "NomManagement" }).Data("sendAntiForgery"))
+          .Update(update => update.Action("Update", "Park", new { area = "NomManagement" }).Data("sendAntiForgery"))
+          .Destroy(destroy => destroy.Action("Destroy", "Park", new { area = "NomManagement" }).Data("sendAntiForgery"))
+          .Events(events =>
+                {
+                    events.Error("error_handler");
+                })
+      )
+)
+
+
+

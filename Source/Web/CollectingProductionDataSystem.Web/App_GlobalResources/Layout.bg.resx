@@ -384,4 +384,10 @@
   <data name="ShortName" xml:space="preserve">
     <value>Съкратено име</value>
   </data>
+  <data name="Name" xml:space="preserve">
+    <value>Наименование</value>
+  </data>
+  <data name="Park" xml:space="preserve">
+    <value>Парк</value>
+  </data>
 </root>

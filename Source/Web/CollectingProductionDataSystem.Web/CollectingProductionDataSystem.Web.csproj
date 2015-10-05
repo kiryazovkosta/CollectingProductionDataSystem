@@ -214,6 +214,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Layout.bg.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\Layout.bg3.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Layout.bg.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\Layout.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -237,13 +242,21 @@
     <Compile Include="Areas\MonthlyReporting\Controllers\AreaBaseController.cs" />
     <Compile Include="Areas\MonthlyReporting\MonthlyReportingAreaRegistration.cs" />
     <Compile Include="Areas\NomManagement\Controllers\AreaBaseController.cs" />
+    <Compile Include="Areas\NomManagement\Controllers\AreaController.cs" />
+    <Compile Include="Areas\NomManagement\Controllers\DirectionController.cs" />
     <Compile Include="Areas\NomManagement\Controllers\FactoryController.cs" />
     <Compile Include="Areas\NomManagement\Controllers\GenericNomController.cs" />
+    <Compile Include="Areas\NomManagement\Controllers\MaterialTypeController.cs" />
+    <Compile Include="Areas\NomManagement\Controllers\ParkController.cs" />
     <Compile Include="Areas\NomManagement\Controllers\PlantController.cs" />
     <Compile Include="Areas\NomManagement\Controllers\ProcessUnitController.cs" />
     <Compile Include="Areas\NomManagement\Controllers\UnitConfigController.cs" />
     <Compile Include="Areas\NomManagement\Controllers\UploadNomController.cs" />
+    <Compile Include="Areas\NomManagement\Models\ViewModels\AreaViewModel.cs" />
+    <Compile Include="Areas\NomManagement\Models\ViewModels\DirectionViewModel.cs" />
     <Compile Include="Areas\NomManagement\Models\ViewModels\FactoryViewModel.cs" />
+    <Compile Include="Areas\NomManagement\Models\ViewModels\MaterialTypeViewModel.cs" />
+    <Compile Include="Areas\NomManagement\Models\ViewModels\ParkViewModel.cs" />
     <Compile Include="Areas\NomManagement\Models\ViewModels\ProcessUnitViewModel.cs" />
     <Compile Include="Areas\NomManagement\NomManagementAreaRegistration.cs" />
     <Compile Include="Areas\NomManagement\Models\ViewModels\PlantViewModel.cs" />
@@ -691,6 +704,11 @@
     <Content Include="Areas\NomManagement\Views\Shared\DisplayTemplates\PlantViewModel.cshtml" />
     <Content Include="Areas\NomManagement\Views\Shared\EditorTemplates\FactoryViewModel.cshtml" />
     <Content Include="Areas\NomManagement\Views\ProcessUnit\Index.cshtml" />
+    <Content Include="Areas\NomManagement\Views\MaterialType\Index.cshtml" />
+    <Content Include="Areas\NomManagement\Views\Direction\Index.cshtml" />
+    <Content Include="Areas\NomManagement\Views\Area\Index.cshtml" />
+    <Content Include="Areas\NomManagement\Views\Shared\EditorTemplates\AreaViewModel.cshtml" />
+    <Content Include="Areas\NomManagement\Views\Park\Index.cshtml" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <None Include="Properties\PublishProfiles\Home.pubxml" />
     <Content Include="Scripts\custom\sendArea.js" />
