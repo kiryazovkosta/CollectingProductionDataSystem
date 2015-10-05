@@ -25,5 +25,11 @@ namespace CollectingProductionDataSystem.Web.Areas.NomManagement.Controllers
         {
 
         }
+
+        public override ActionResult Index()
+        {
+            ViewData["plants"] = data.Plants.All().ToList();
+            return base.Index();
+        }
     }
 }

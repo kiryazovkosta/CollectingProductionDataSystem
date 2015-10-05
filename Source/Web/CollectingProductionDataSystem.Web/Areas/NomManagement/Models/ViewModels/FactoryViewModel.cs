@@ -11,7 +11,7 @@
     using Resources = App_GlobalResources.Resources;
     using CollectingProductionDataSystem.Models.Contracts;
 
-    public class FactoryViewModel : IMapFrom<Factory>, IHaveCustomMappings, IEntity
+    public class FactoryViewModel : IMapFrom<Factory>, IEntity
     {
 
         [Required]
@@ -26,20 +26,12 @@
         [Display(Name = "FullName", ResourceType = typeof(Resources.Layout))]
         public string FullName { get; set; }
 
+        //[Required]
+        //[Display(Name = "factory", ResourceType = typeof(Resources.Layout))]
+        //public PlantViewModel Plant { get; set; }
+
         [Required]
         [Display(Name = "factory", ResourceType = typeof(Resources.Layout))]
-        public PlantViewModel Plant { get; set; }
-        /// <summary>
-        /// Creates the mappings.
-        /// </summary>
-        /// <param name="configuration">The configuration.</param>
-        public void CreateMappings(IConfiguration configuration)
-        {
-            configuration.CreateMap<Factory, FactoryViewModel>()
-                .ForMember(p => p.Plant, opt => opt.MapFrom(p => p.Plant ?? new Plant() { Id = 0, FullName = string.Empty }));
-            configuration.CreateMap<FactoryViewModel, Factory>()
-                .ForMember(p => p.PlantId, opt => opt.MapFrom(p => p.Plant.Id))
-                .ForMember(p => p.Plant, opt => opt.Ignore());
-        }
+        public int PlantId { get; set; }
     }
 }

@@ -4,7 +4,7 @@
       {
           columns.Bound(c => c.ShortName);
           columns.Bound(c => c.FullName);
-          columns.Bound(c => c.Factory).EditorTemplateName("FactoryViewModel").ClientTemplate("#:data.Factory==null?'':data.Factory.FullName#");
+          columns.ForeignKey(c => c.FactoryId, (System.Collections.IEnumerable)ViewData["factories"], "Id", "FullName").EditorTemplateName("FactoryViewModel");
           columns.Command(command => { command.Edit(); command.Destroy(); }).Width(230);
       })
       .ToolBar(toolbar =>

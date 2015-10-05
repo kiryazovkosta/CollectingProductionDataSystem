@@ -11,7 +11,7 @@ namespace CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewMode
     /// <summary>
     /// 
     /// </summary>
-    public class ProcessUnitViewModel : IMapFrom<ProcessUnit>,IHaveCustomMappings,IEntity
+    public class ProcessUnitViewModel : IMapFrom<ProcessUnit>,IEntity
     {
         [Required]
         [UIHint("Hidden")]
@@ -27,20 +27,6 @@ namespace CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewMode
 
         [Required]
         [Display(Name = "Factory", ResourceType = typeof(Resources.Layout))]
-        public FactoryViewModel Factory { get; set; }
-
-        /// <summary>
-        /// Creates the mappings.
-        /// </summary>
-        /// <param name="configuration">The configuration.</param>
-        public void CreateMappings(IConfiguration configuration)
-        {
-            configuration.CreateMap<ProcessUnit, ProcessUnitViewModel>()
-                .ForMember(p => p.Factory, opt => opt.MapFrom(p => p.Factory ?? new Factory() { Id = 0, FullName = string.Empty }));
-
-            configuration.CreateMap<ProcessUnitViewModel, ProcessUnit>()
-                .ForMember(p => p.FactoryId, opt => opt.MapFrom(p => p.Factory.Id))
-                .ForMember(p => p.Factory, opt => opt.Ignore());
-        }
+        public int FactoryId { get; set; }
     }
 }

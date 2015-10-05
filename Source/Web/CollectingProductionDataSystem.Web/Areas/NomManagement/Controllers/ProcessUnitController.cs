@@ -22,7 +22,12 @@
         public ProcessUnitController(IProductionData dataParam)
             : base(dataParam)
         {
+        }
 
+        public override ActionResult Index()
+        {
+            ViewData["factories"] = data.Factories.All().ToList();
+            return base.Index();
         }
     }
 }
