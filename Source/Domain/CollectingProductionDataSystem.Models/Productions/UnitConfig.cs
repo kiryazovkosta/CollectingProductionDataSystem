@@ -22,7 +22,6 @@ namespace CollectingProductionDataSystem.Models.Productions
         public string Code { get; set; }
         public string Position { get; set; }
         public string Name { get; set; }
-        public int ProductTypeId { get; set; }
         public int? ProductId { get; set; }
         public int ProcessUnitId { get; set; }
         public int DirectionId { get; set; }
@@ -32,6 +31,7 @@ namespace CollectingProductionDataSystem.Models.Productions
         public bool IsEnergy { get; set; }
         public bool IsInspectionPoint { get; set; }
         public string CollectingDataMechanism { get; set; }
+        public string CalculatedFormula { get; set; }
         public string AggregateGroup { get; set; }
         public string AggregateParameter { get; set; }
         public bool IsCalculated { get; set; }
@@ -48,7 +48,6 @@ namespace CollectingProductionDataSystem.Models.Productions
         public virtual MeasureUnit MeasureUnit { get; set; }
         public virtual ProcessUnit ProcessUnit { get; set; }
         public virtual Product Product { get; set; }
-        public virtual ProductType ProductType { get; set; }
         public virtual ICollection<UnitsData> UnitsDatas 
         { 
             get {return this.unitsDatas; } 

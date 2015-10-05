@@ -37,9 +37,6 @@
             configuration.CreateMap<UnitsData, UnitDataViewModel>()
                 .ForMember(p => p.UnitsManualData, opt => opt.MapFrom(p => p.UnitsManualData ?? new UnitsManualData() { Value = p.Value ?? 0M }))
                 .ForMember(p => p.Shift, opt => opt.MapFrom(p => p.ShiftId));
-            //configuration.CreateMap<UnitsData, UnitDataViewModel>()
-            //    .AfterMap(p => p.UnitsManualData.Value, opt => opt.MapFrom(p => p.UnitsManualData== null ? p.Value : p.UnitsManualData.Value))
-            //    .ForMember(p => p.UnitsManualData.EditReason, opt => opt.MapFrom(p => p.UnitsManualData == null ? new EditReason(){Id = 0, Name = Resources.Layout.AutomaticData} : p.UnitsManualData.EditReason));
         }
     }
 
@@ -64,10 +61,8 @@
         [Display(Name = "CollectingDataMechanism", ResourceType = typeof(Resources.Layout))]
         public string CollectingDataMechanism { get; set; }
 
-        [UIHint("Hidden")]
-        public int ProductTypeId { get; set; }
-
-        public ProductTypeUnitDataViewModel ProductType { get; set; }
+        public int ProductId { get; set; }
+        public ProductViewModel Product { get; set; }
 
         public int ProcessUnitId { get; set; }
 
@@ -75,12 +70,12 @@
 
         public int MeasureUnitId { get; set; }
         public MeasureUnitUnitDataViewModel MeasureUnit { get; set; }
-
     }
 
     public class ProductTypeUnitDataViewModel : IMapFrom<ProductType>
     {
         [Required]
+        [UIHint("Hidden")]
         public int Id { get; set; }
 
         [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
@@ -95,7 +90,17 @@
                 return this.Id.ToString().PadLeft(2,'0')+ " " + this.Name;
             }
         }
+    }
 
+    public class ProductViewModel : IMapFrom<Product>
+    {
+        public int Id { get; set; }
+        public int Code { get; set; }
+        public string Name { get; set; }
+
+        [UIHint("Hidden")]
+        public int ProductTypeId { get; set; }
+        public ProductTypeUnitDataViewModel ProductType { get; set; }
     }
 
     public class ProcessUnitUnitDataViewModel : IMapFrom<ProcessUnit>

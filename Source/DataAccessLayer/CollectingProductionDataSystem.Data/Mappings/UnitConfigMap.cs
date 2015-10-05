@@ -40,12 +40,9 @@ namespace CollectingProductionDataSystem.Data.Mappings
             this.HasRequired(t => t.ProcessUnit)
                 .WithMany(t => t.UnitsConfigs)
                 .HasForeignKey(d => d.ProcessUnitId);
-            this.HasOptional(t => t.Product)
-                .WithMany(t => t.Units)
+            this.HasRequired(t => t.Product)
+                .WithMany(t => t.UnitConfigs)
                 .HasForeignKey(d => d.ProductId);
-            this.HasRequired(t => t.ProductType)
-                .WithMany(t => t.Units)
-                .HasForeignKey(d => d.ProductTypeId);
 
         }
     }

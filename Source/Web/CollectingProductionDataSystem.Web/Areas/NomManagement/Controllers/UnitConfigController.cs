@@ -62,7 +62,6 @@ namespace CollectingProductionDataSystem.Web.Areas.NomManagement.Controllers
                 MaterialTypeId = unitConfig.MaterialTypeId,
                 ProcessUnitId = unitConfig.ProcessUnitId,
                 ProductId = unitConfig.ProductId,
-                ProductTypeId = unitConfig.ProductTypeId,
                 MeasureUnitId = unitConfig.MeasureUnitId,
                 DirectionId = unitConfig.DirectionId
             });
@@ -105,7 +104,6 @@ namespace CollectingProductionDataSystem.Web.Areas.NomManagement.Controllers
                     MaterialTypeId = unitConfig.MaterialTypeId,
                     ProcessUnitId = unitConfig.ProcessUnitId,
                     ProductId = unitConfig.ProductId,
-                    ProductTypeId = unitConfig.ProductTypeId,
                     MeasureUnitId = unitConfig.MeasureUnitId,
                     DirectionId = unitConfig.DirectionId
                     
@@ -159,7 +157,6 @@ namespace CollectingProductionDataSystem.Web.Areas.NomManagement.Controllers
                     MaterialTypeId = unitConfig.MaterialTypeId,
                     ProcessUnitId = unitConfig.ProcessUnitId,
                     ProductId = unitConfig.ProductId,
-                    ProductTypeId = unitConfig.ProductTypeId,
                     MeasureUnitId = unitConfig.MeasureUnitId,
                     DirectionId = unitConfig.DirectionId
                 };
@@ -212,7 +209,6 @@ namespace CollectingProductionDataSystem.Web.Areas.NomManagement.Controllers
                     MaterialTypeId = unitConfig.MaterialTypeId,
                     ProcessUnitId = unitConfig.ProcessUnitId,
                     ProductId = unitConfig.ProductId,
-                    ProductTypeId = unitConfig.ProductTypeId,
                     MeasureUnitId = unitConfig.MeasureUnitId,
                     DirectionId = unitConfig.DirectionId
                 };

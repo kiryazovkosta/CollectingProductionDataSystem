@@ -183,13 +183,14 @@
 
                             foreach (var unitConfig in unitsConfigsList)
                             {
-                                if (unitConfig.CollectingDataMechanism == "A")
+                                if (unitConfig.CollectingDataMechanism.ToUpper() == "A")
                                 {
                                     var confidence = 0;
 
                                     var s = unitsData.Where(x => x.UnitConfigId == unitConfig.Id).FirstOrDefault();
                                     if (s != null)
                                     {
+                                        logger.InfoFormat("Exists: {0} : {1} : {2}", unitConfig.Id, unitConfig.PreviousShiftTag, s.Value);
                                         continue;
                                     }
 
@@ -213,6 +214,8 @@
                                     {
                                         SetDefaultValue(context, recordDataTime, shift, unitsData, unitConfig);
                                     }
+
+                                    logger.InfoFormat("New : {0} : {1} : {2}", unitConfig.Id, unitConfig.PreviousShiftTag, unitData.Value);
                                 }
                                 else 
                                 {
