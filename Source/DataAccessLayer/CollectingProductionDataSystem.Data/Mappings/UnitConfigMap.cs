@@ -31,15 +31,19 @@ namespace CollectingProductionDataSystem.Data.Mappings
             this.HasRequired(t => t.Direction)
                 .WithMany(t => t.Units)
                 .HasForeignKey(d => d.DirectionId);
+
             this.HasRequired(t => t.MaterialType)
                 .WithMany(t => t.Units)
                 .HasForeignKey(d => d.MaterialTypeId);
+
             this.HasRequired(t => t.MeasureUnit)
                 .WithMany(t => t.UnitsConfigs)
                 .HasForeignKey(d => d.MeasureUnitId);
+
             this.HasRequired(t => t.ProcessUnit)
                 .WithMany(t => t.UnitsConfigs)
                 .HasForeignKey(d => d.ProcessUnitId);
+
             this.HasRequired(t => t.Product)
                 .WithMany(t => t.UnitConfigs)
                 .HasForeignKey(d => d.ProductId);

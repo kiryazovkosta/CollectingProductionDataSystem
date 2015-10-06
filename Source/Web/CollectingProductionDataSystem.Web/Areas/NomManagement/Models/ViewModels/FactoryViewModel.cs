@@ -26,12 +26,8 @@
         [Display(Name = "FullName", ResourceType = typeof(Resources.Layout))]
         public string FullName { get; set; }
 
-        //[Required]
-        //[Display(Name = "factory", ResourceType = typeof(Resources.Layout))]
-        //public PlantViewModel Plant { get; set; }
-
         [Required]
-        [Display(Name = "factory", ResourceType = typeof(Resources.Layout))]
+        [Display(Name = "Plant", ResourceType = typeof(Resources.Layout))]
         public int PlantId { get; set; }
     }
 }

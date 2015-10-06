@@ -181,6 +181,22 @@ using CollectingProductionDataSystem.Models.Transactions;
             }
         }
 
+        public IDeletableEntityRepository<ShiftProductType> ShiftProductTypes
+        {
+            get
+            {
+                 return this.GetDeletableEntityRepository<ShiftProductType>();
+            }
+        }
+
+        public IDeletableEntityRepository<DailyProductType> DailyProductTypes
+        {
+            get
+            {
+                 return this.GetDeletableEntityRepository<DailyProductType>();
+            }
+        }
+
         public IDeletableEntityRepository<Ikunk> Ikunks
         {
             get

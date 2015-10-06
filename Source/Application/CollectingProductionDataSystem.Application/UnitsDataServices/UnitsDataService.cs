@@ -56,7 +56,7 @@
             var dbResult = this.data.UnitsData
                                .All()
                                .Include(x => x.UnitConfig)
-                               .Include(x => x.UnitConfig.Product.ProductType)
+                               .Include(x => x.UnitConfig.Product.DailyProductType)
                                .Include(x => x.UnitConfig.ProcessUnit)
                                .Include(x => x.UnitConfig.MeasureUnit)
                                .Include(x => x.UnitsManualData)
@@ -71,7 +71,7 @@
                 .All()
                 .Include(u => u.UnitsDailyConfig)
                 .Include(u => u.UnitsDailyConfig.MeasureUnit)
-                .Include(u => u.UnitsDailyConfig.Product.ProductType);
+                .Include(u => u.UnitsDailyConfig.Product.ShiftProductType);
 
             if (date.HasValue)
             {

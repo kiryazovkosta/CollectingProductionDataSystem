@@ -27,22 +27,30 @@ namespace CollectingProductionDataSystem.Models.Nomenclatures
         public int Code { get; set; }
         public string Name { get; set; }
         public int ProductTypeId { get; set; }
+        public virtual ProductType ProductType { get; set; }
+        public int? ShiftProductTypeId { get; set; }
+        public virtual ShiftProductType ShiftProductType { get; set; }
+        public int? DailyProductTypeId { get; set; }
+        public virtual DailyProductType DailyProductType { get; set; }
+
         public virtual ICollection<TankData> TanksDatas 
         {
             get { return this.tanksDatas; }
             set { this.tanksDatas = value; }
         }
-        public virtual ProductType ProductType { get; set; }
+
         public virtual ICollection<UnitConfig> UnitConfigs 
         {
             get { return this.unitConfigs; }
             set { this.unitConfigs = value; }
         }
+
         public virtual ICollection<MeasurementPointsProductsConfig> MeasurementPointsProductsConfigs 
         {
             get { return this.measurementPointsProductsConfigs; }
             set { this.measurementPointsProductsConfigs = value; }
         }
+
         public virtual ICollection<UnitsDailyConfig> UnitsDailyConfigs
         {
             get { return this.unitsDailyConfigs; }

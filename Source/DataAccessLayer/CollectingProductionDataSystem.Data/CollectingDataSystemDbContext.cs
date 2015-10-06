@@ -112,6 +112,10 @@
 
         public IDbSet<TanksApprovedData> TanksApprovedDatas { get; set; }
 
+        public IDbSet<ShiftProductType> ShiftProductTypes { get; set; }
+
+        public IDbSet<DailyProductType> DailyProductTypes { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             ModelBingConfig.RegisterMappings(modelBuilder);

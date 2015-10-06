@@ -62,7 +62,7 @@
         public string CollectingDataMechanism { get; set; }
 
         public int ProductId { get; set; }
-        public ProductViewModel Product { get; set; }
+        public ShiftProductViewModel Product { get; set; }
 
         public int ProcessUnitId { get; set; }
 
@@ -72,7 +72,7 @@
         public MeasureUnitUnitDataViewModel MeasureUnit { get; set; }
     }
 
-    public class ProductTypeUnitDataViewModel : IMapFrom<ProductType>
+    public class ShiftProductTypeUnitDataViewModel : IMapFrom<ShiftProductType>
     {
         [Required]
         [UIHint("Hidden")]
@@ -92,15 +92,15 @@
         }
     }
 
-    public class ProductViewModel : IMapFrom<Product>
+    public class ShiftProductViewModel : IMapFrom<Product>
     {
         public int Id { get; set; }
         public int Code { get; set; }
         public string Name { get; set; }
 
         [UIHint("Hidden")]
-        public int ProductTypeId { get; set; }
-        public ProductTypeUnitDataViewModel ProductType { get; set; }
+        public int ShiftProductTypeId { get; set; }
+        public ShiftProductTypeUnitDataViewModel ShiftProductType { get; set; }
     }
 
     public class ProcessUnitUnitDataViewModel : IMapFrom<ProcessUnit>

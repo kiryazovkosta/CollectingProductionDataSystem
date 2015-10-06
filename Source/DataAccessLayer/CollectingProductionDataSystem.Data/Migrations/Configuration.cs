@@ -75,6 +75,16 @@ namespace CollectingProductionDataSystem.Data.Migrations
                 this.CreateEditReasons(context);
             }
 
+            if (!context.ShiftProductTypes.Any())
+            {
+                this.CreateShiftProductTypes(context);
+            }
+
+            if (!context.DailyProductTypes.Any())
+            {
+                this.CreateDailyProductTypes(context);                
+            }
+
             if (!context.Users.Any())
             {
                 this.CreateSystemAdministrator(context);
@@ -389,6 +399,42 @@ namespace CollectingProductionDataSystem.Data.Migrations
                 });
 
             //context.SaveChanges();
+        }
+
+        private void CreateShiftProductTypes(CollectingDataSystemDbContext context)
+        {
+            context.ShiftProductTypes.AddOrUpdate(
+                m => m.Id,
+                new ShiftProductType
+                {
+                    Name = "Входни потоци",
+                },
+                new ShiftProductType
+                {
+                    Name = "Изходни потоци",
+                },
+                new ShiftProductType
+                {
+                    Name = "Енергоресурси",
+                },
+                new ShiftProductType
+                {
+                    Name = "Пари",
+                });
+        }
+
+        private void CreateDailyProductTypes(CollectingDataSystemDbContext context)
+        {
+            context.DailyProductTypes.AddOrUpdate(
+                m => m.Id,
+                new DailyProductType
+                {
+                    Name = "Преработено",
+                },
+                new DailyProductType
+                {
+                    Name = "Произведено",
+                });
         }
 
         private void CreateMeasurementPoints(CollectingDataSystemDbContext context)

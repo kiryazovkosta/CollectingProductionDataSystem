@@ -70,12 +70,14 @@
     <Compile Include="Inventories\TankMasterProduct.cs" />
     <Compile Include="Inventories\TanksApprovedData.cs" />
     <Compile Include="Inventories\TanksManualData.cs" />
+    <Compile Include="Nomenclatures\DailyProductType.cs" />
     <Compile Include="Nomenclatures\Direction.cs" />
     <Compile Include="Inventories\Area.cs" />
     <Compile Include="Inventories\TankData.cs" />
     <Compile Include="Nomenclatures\EditReason.cs" />
     <Compile Include="Nomenclatures\MeasureUnit.cs" />
     <Compile Include="Nomenclatures\ProductionShift.cs" />
+    <Compile Include="Nomenclatures\ShiftProductType.cs" />
     <Compile Include="Nomenclatures\TransportType.cs" />
     <Compile Include="Productions\Factory.cs" />
     <Compile Include="Inventories\Park.cs" />

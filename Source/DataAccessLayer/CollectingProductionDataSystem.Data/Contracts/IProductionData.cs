@@ -47,6 +47,10 @@
 
         IDeletableEntityRepository<ProductType> ProductTypes { get; }
 
+        IDeletableEntityRepository<ShiftProductType> ShiftProductTypes { get; }
+
+        IDeletableEntityRepository<DailyProductType> DailyProductTypes { get; }
+
         IDeletableEntityRepository<Ikunk> Ikunks { get; }
 
         IDeletableEntityRepository<Zone> Zones { get; }
