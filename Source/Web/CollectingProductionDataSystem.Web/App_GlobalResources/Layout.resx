@@ -381,4 +381,10 @@
   <data name="ShortName" xml:space="preserve">
     <value>Short Name</value>
   </data>
+  <data name="Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="Park" xml:space="preserve">
+    <value>Park</value>
+  </data>
 </root>

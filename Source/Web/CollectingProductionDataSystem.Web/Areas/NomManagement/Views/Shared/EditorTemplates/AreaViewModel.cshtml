@@ -2,8 +2,8 @@
 @model System.Int32
 @(Html.Kendo()
       .DropDownListFor(m => m)
-      .OptionLabel(Resources.Layout.ChooseFactory)
-      .DataTextField("FullName")
+      .OptionLabel(Resources.Layout.ChooseArea)
+      .DataTextField("Name")
       .DataValueField("Id")
       .Height(520)
           .DataSource(source =>
@@ -28,3 +28,4 @@
           })
 
 )
+
