@@ -37,14 +37,14 @@
         {
             try
             {
-                logger.Info("Begin");
+                logger.Info("Begin synchronization!");
                 
                 using (var context = new ProductionData(new CollectingDataSystemDbContext(new AuditablePersister())))
                 {
                     var max = context.MaxAsoMeasuringPointDataSequenceNumberMap.All().FirstOrDefault();
                     if (max != null)
                     {
-                        logger.Info(max.MaxSequenceNumber);
+                        logger.InfoFormat("Maximum transaction sequence number is {0}", max.MaxSequenceNumber);
                         var maxSequenceNumber = max.MaxSequenceNumber;
                         var adapter = new AsoDataSetTableAdapters.flow_MeasuringPointsDataTableAdapter();
                         var table = new AsoDataSet.flow_MeasuringPointsDataDataTable();
@@ -53,7 +53,6 @@
                         {
                             foreach (AsoDataSet.flow_MeasuringPointsDataRow row in table.Rows)
                             {
-                                logger.InfoFormat("Begin: {0}", row.SequenceNumber);
                                 var tr = new MeasuringPointsConfigsData();
                                 tr.MeasuringPointId = row.MeasuringPointId;
                                 tr.TransactionNumber = row.TransactionNumber;
@@ -260,30 +259,24 @@
                                 }
 
                                 context.MeasuringPointsConfigsDatas.Add(tr);
-                                logger.InfoFormat("End: {0}", row.SequenceNumber);
                             }
 
                             var status = context.SaveChanges("System Loading");
-                            logger.InfoFormat("Successfully synch {0} transactions from Aso to Cpds", status.ResultRecordsCount);
+                            logger.InfoFormat("Successfully synchronization {0} records from Aso to Cpds", status.ResultRecordsCount);
                             long maxValue = Convert.ToInt64(table.Compute("max(SequenceNumber)", string.Empty));
                             logger.Info(maxValue);
                             max.MaxSequenceNumber = maxValue;
                             context.MaxAsoMeasuringPointDataSequenceNumberMap.Update(max);
-                            context.SaveChanges("System Loading");
+                            context.SaveChanges("ASO2SQL");
                             logger.InfoFormat("Maximum sequence number updated to {0}.", maxValue);
                         }
                     }
-                    else
-                    {
-                        logger.Info("[4]");
-                    }
 
-                    logger.Info("End");
+                    logger.Info("End synchronization");
                 }
             }
             catch (Exception ex)
             {
-                logger.Info("[5]");
                 logger.Error(ex.Message, ex);
             }
         }
