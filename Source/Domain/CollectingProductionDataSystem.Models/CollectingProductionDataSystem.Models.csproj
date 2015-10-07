@@ -121,7 +121,6 @@
     <Compile Include="Transactions\MeasuringPointConfig.cs" />
     <Compile Include="Transactions\MeasuringPointsConfigsData.cs" />
     <Compile Include="Transactions\Zone.cs" />
-    <Compile Include="UtilityEntities\FormulaArguments.cs" />
     <Compile Include="UtilityEntities\UserProfile.cs" />
     <Compile Include="UtilityEntities\AuditLogRecord.cs" />
   </ItemGroup>

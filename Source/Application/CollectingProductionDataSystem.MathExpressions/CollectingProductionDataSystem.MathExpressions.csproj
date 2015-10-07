@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Calculator.cs" />
+    <Compile Include="FormulaArguments.cs" />
     <Compile Include="Formulas.cs" />
     <Compile Include="Functions.cs" />
     <Compile Include="ObjectBuilder.cs" />
