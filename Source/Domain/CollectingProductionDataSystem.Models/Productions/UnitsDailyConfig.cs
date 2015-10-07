@@ -17,6 +17,7 @@
         public string Code { get; set; }
         public int ProcessUnitId { get; set; }
         public int ProductId { get; set; }
+        public int? DailyProductTypeId { get; set; }
         public int MeasureUnitId { get; set; }
         public string AggregationFormula { get; set; }
         public bool AggregationCurrentLevel { get; set; }
@@ -24,6 +25,7 @@
         public virtual MeasureUnit MeasureUnit { get; set; }
         public virtual ProcessUnit ProcessUnit { get; set; }
         public virtual Product Product { get; set; }
+        public virtual DailyProductType DailyProductType { get; set; }
         public virtual ICollection<UnitsDailyData> UnitsDailyDatas { get; set; }
     }
 }

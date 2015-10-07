@@ -38,12 +38,8 @@
                                             DirectionId = 2,
                                             MeasureUnitId = 11,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
-                                            IsInspectionPoint = true,
                                             CollectingDataMechanism = "A",
-                                            PreviousShiftTag = "AV1_01-FICQ-001.TOTS_L",
-                                            CurrentInspectionDataTag = "AV1_01-FICQ-001.PV"
+                                            PreviousShiftTag = "AV1_01-FICQ-001.TOTS_L"
                                         },
                                         new UnitConfig
                                         {
@@ -53,12 +49,8 @@
                                             DirectionId = 2,
                                             MeasureUnitId = 11,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
-                                            IsInspectionPoint = true,
                                             CollectingDataMechanism = "A",
-                                            PreviousShiftTag = "AV1_01-FIQ-646A.TOTS_L",
-                                            CurrentInspectionDataTag = "AV1_01-FIQ-646A.PV"
+                                            PreviousShiftTag = "AV1_01-FIQ-646A.TOTS_L"
                                         },
                                         new UnitConfig
                                         {
@@ -68,12 +60,8 @@
                                             DirectionId = 3,
                                             MeasureUnitId = 11,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
-                                            IsInspectionPoint = true,
                                             CollectingDataMechanism = "A",
-                                            PreviousShiftTag = "AV1_01-FIQ-014.TOTS_L",
-                                            CurrentInspectionDataTag = "AV1_01-FIQ-014.PV"
+                                            PreviousShiftTag = "AV1_01-FIQ-014.TOTS_L"
                                         },
                                         new UnitConfig
                                         {
@@ -83,12 +71,8 @@
                                             DirectionId = 2,
                                             MeasureUnitId = 11,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
-                                            IsInspectionPoint = false,
                                             CollectingDataMechanism = "A",
-                                            PreviousShiftTag = "AV1_01-FIQ-147.TOTS_L",
-                                            CurrentInspectionDataTag = "AV1_01-FIQ-147.PV"
+                                            PreviousShiftTag = "AV1_01-FIQ-147.TOTS_L"
                                         },
                                         new UnitConfig
                                         {
@@ -98,12 +82,8 @@
                                             DirectionId = 1,
                                             MeasureUnitId = 11,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
-                                            IsInspectionPoint = true,
                                             CollectingDataMechanism = "A",
-                                            PreviousShiftTag = "AV1_01-FIQ-134.TOTS_L",
-                                            CurrentInspectionDataTag = "AV1_01-FIQ-134.PV"
+                                            PreviousShiftTag = "AV1_01-FIQ-134.TOTS_L"
                                         },
                                         new UnitConfig
                                         {
@@ -113,12 +93,8 @@
                                             DirectionId = 1,
                                             MeasureUnitId = 11,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
-                                            IsInspectionPoint = true,
                                             CollectingDataMechanism = "A",
-                                            PreviousShiftTag = "AV1_01-FIQ-135.TOTS_L",
-                                            CurrentInspectionDataTag = "AV1_01-FIQ-135.PV"
+                                            PreviousShiftTag = "AV1_01-FIQ-135.TOTS_L"
                                         },
                                         new UnitConfig
                                         {
@@ -128,12 +104,8 @@
                                             DirectionId = 1,
                                             MeasureUnitId = 11,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
-                                            IsInspectionPoint = true,
                                             CollectingDataMechanism = "A",
-                                            PreviousShiftTag = "AV1_01-FICQ-048.TOTS_L",
-                                            CurrentInspectionDataTag = "AV1_01-FICQ-048.PV"
+                                            PreviousShiftTag = "AV1_01-FICQ-048.TOTS_L"
                                         },
                                         new UnitConfig
                                         {
@@ -143,8 +115,6 @@
                                             DirectionId = 1,
                                             MeasureUnitId = 11,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
                                             CollectingDataMechanism = "М",
                                         },
                                         new UnitConfig
@@ -155,12 +125,8 @@
                                             DirectionId = 1,
                                             MeasureUnitId = 11,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
-                                            IsInspectionPoint = true,
                                             CollectingDataMechanism = "A",
-                                            PreviousShiftTag = "AV1_01-FIQ-050.TOTS_L",
-                                            CurrentInspectionDataTag = "AV1_01-FIQ-050.PV"
+                                            PreviousShiftTag = "AV1_01-FIQ-050.TOTS_L"
                                         },
                                         new UnitConfig
                                         {
@@ -170,8 +136,6 @@
                                             DirectionId = 1,
                                             MeasureUnitId = 11,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
                                             CollectingDataMechanism = "М",
                                         },
                                         new UnitConfig
@@ -182,8 +146,6 @@
                                             DirectionId = 1,
                                             MeasureUnitId = 11,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
                                             CollectingDataMechanism = "М",
                                         },
                                         new UnitConfig
@@ -194,8 +156,6 @@
                                             DirectionId = 1,
                                             MeasureUnitId = 11,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
                                             CollectingDataMechanism = "М",
                                         },
                                         new UnitConfig
@@ -206,8 +166,6 @@
                                             DirectionId = 1,
                                             MeasureUnitId = 11,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
                                             CollectingDataMechanism = "М",
                                         },
                                         new UnitConfig
@@ -218,12 +176,8 @@
                                             DirectionId = 1,
                                             MeasureUnitId = 11,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
-                                            IsInspectionPoint = true,
                                             CollectingDataMechanism = "A",
-                                            PreviousShiftTag = "AV1_01-FIQ-045.TOTS_L",
-                                            CurrentInspectionDataTag = "AV1_01-FIQ-045.PV"
+                                            PreviousShiftTag = "AV1_01-FIQ-045.TOTS_L"
                                         },
                                         new UnitConfig
                                         {
@@ -233,8 +187,6 @@
                                             DirectionId = 1,
                                             MeasureUnitId = 11,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
                                             CollectingDataMechanism = "М",
                                         },
                                         new UnitConfig
@@ -245,8 +197,6 @@
                                             DirectionId = 1,
                                             MeasureUnitId = 11,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
                                             CollectingDataMechanism = "М",
                                         },
                                         new UnitConfig
@@ -257,8 +207,6 @@
                                             DirectionId = 1,
                                             MeasureUnitId = 11,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
                                             CollectingDataMechanism = "М",
                                         },
                                         new UnitConfig
@@ -269,12 +217,8 @@
                                             DirectionId = 1,
                                             MeasureUnitId = 11,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
-                                            IsInspectionPoint = true,
                                             CollectingDataMechanism = "A",
-                                            PreviousShiftTag = "AV1_01-FIQ-047.TOTS_L",
-                                            CurrentInspectionDataTag = "AV1_01-FIQ-047.PV"
+                                            PreviousShiftTag = "AV1_01-FIQ-047.TOTS_L"
                                         },
                                         new UnitConfig
                                         {
@@ -284,8 +228,6 @@
                                             DirectionId = 1,
                                             MeasureUnitId = 11,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
                                             CollectingDataMechanism = "М",
                                         },
                                         new UnitConfig
@@ -296,8 +238,6 @@
                                             DirectionId = 1,
                                             MeasureUnitId = 11,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
                                             CollectingDataMechanism = "М",
                                         },
                                         new UnitConfig
@@ -308,8 +248,6 @@
                                             DirectionId = 1,
                                             MeasureUnitId = 11,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
                                             CollectingDataMechanism = "М",
                                         },
                                         new UnitConfig
@@ -320,8 +258,6 @@
                                             DirectionId = 1,
                                             MeasureUnitId = 11,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
                                             CollectingDataMechanism = "М",
                                         },
                                         new UnitConfig
@@ -332,12 +268,8 @@
                                             DirectionId = 1,
                                             MeasureUnitId = 11,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
-                                            IsInspectionPoint = true,
                                             CollectingDataMechanism = "A",
-                                            PreviousShiftTag = "AV1_01-FIQ-046.TOTS_L",
-                                            CurrentInspectionDataTag = "AV1_01-FIQ-046.PV"
+                                            PreviousShiftTag = "AV1_01-FIQ-046.TOTS_L"
                                         },
                                         new UnitConfig
                                         {
@@ -347,8 +279,6 @@
                                             DirectionId = 1,
                                             MeasureUnitId = 11,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
                                             CollectingDataMechanism = "М",
                                         },
                                         new UnitConfig
@@ -359,8 +289,6 @@
                                             DirectionId = 1,
                                             MeasureUnitId = 11,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
                                             CollectingDataMechanism = "М",
                                         },
                                         new UnitConfig
@@ -371,8 +299,6 @@
                                             DirectionId = 1,
                                             MeasureUnitId = 11,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
                                             CollectingDataMechanism = "М",
                                         },
                                         new UnitConfig
@@ -383,8 +309,6 @@
                                             DirectionId = 1,
                                             MeasureUnitId = 11,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
                                             CollectingDataMechanism = "М",
                                         },
                                         new UnitConfig
@@ -395,8 +319,6 @@
                                             DirectionId = 1,
                                             MeasureUnitId = 11,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
                                             CollectingDataMechanism = "М",
                                         },
                                         new UnitConfig
@@ -407,8 +329,6 @@
                                             DirectionId = 1,
                                             MeasureUnitId = 11,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
                                             CollectingDataMechanism = "М",
                                         },
                                         new UnitConfig
@@ -419,12 +339,8 @@
                                             DirectionId = 1,
                                             MeasureUnitId = 11,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
-                                            IsInspectionPoint = true,
                                             CollectingDataMechanism = "A",
-                                            PreviousShiftTag = "AV1_01-FIQ-049.TOTS_L",
-                                            CurrentInspectionDataTag = "AV1_01-FIQ-049.PV"
+                                            PreviousShiftTag = "AV1_01-FIQ-049.TOTS_L"
                                         },
                                         new UnitConfig
                                         {
@@ -434,8 +350,6 @@
                                             DirectionId = 1,
                                             MeasureUnitId = 11,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
                                             CollectingDataMechanism = "M",
                                         },
                                         new UnitConfig
@@ -446,8 +360,6 @@
                                             DirectionId = 1,
                                             MeasureUnitId = 11,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
                                             CollectingDataMechanism = "M",
                                         },
                                         new UnitConfig
@@ -458,8 +370,6 @@
                                             DirectionId = 1,
                                             MeasureUnitId = 11,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
                                             CollectingDataMechanism = "M",
                                         },
                                         new UnitConfig
@@ -470,12 +380,8 @@
                                             DirectionId = 3,
                                             MeasureUnitId = 11,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
-                                            IsInspectionPoint = true,
                                             CollectingDataMechanism = "A",
-                                            PreviousShiftTag = "AV1_01-FIC-090.TOTS_L",
-                                            CurrentInspectionDataTag = "AV1_01-FIC-090.PV"
+                                            PreviousShiftTag = "AV1_01-FIC-090.TOTS_L"
                                         },
                                         new UnitConfig
                                         {
@@ -485,12 +391,8 @@
                                             DirectionId = 1,
                                             MeasureUnitId = 11,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
-                                            IsInspectionPoint = true,
                                             CollectingDataMechanism = "A",
-                                            PreviousShiftTag = "AV1_01-FICQ-201.TOTS_L",
-                                            CurrentInspectionDataTag = "AV1_01-FICQ-201.PV"
+                                            PreviousShiftTag = "AV1_01-FICQ-201.TOTS_L"
                                         },
                                         new UnitConfig
                                         {
@@ -500,8 +402,6 @@
                                             DirectionId = 1,
                                             MeasureUnitId = 11,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
                                             CollectingDataMechanism = "M",
                                         },
                                         new UnitConfig
@@ -512,8 +412,6 @@
                                             DirectionId = 1,
                                             MeasureUnitId = 11,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
                                             CollectingDataMechanism = "M"
                                         },
                                         new UnitConfig
@@ -524,12 +422,8 @@
                                             DirectionId = 1,
                                             MeasureUnitId = 11,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
-                                            IsInspectionPoint = true,
                                             CollectingDataMechanism = "A",
-                                            PreviousShiftTag = "AV1_01-FIQ-117.TOTS_L",
-                                            CurrentInspectionDataTag = "AV1_01-FIQ-117.PV"
+                                            PreviousShiftTag = "AV1_01-FIQ-117.TOTS_L"
                                         },
                                         new UnitConfig
                                         {
@@ -539,8 +433,6 @@
                                             DirectionId = 1,
                                             MeasureUnitId = 11,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
                                             CollectingDataMechanism = "M",
                                         },
                                         new UnitConfig
@@ -551,8 +443,6 @@
                                             DirectionId = 1,
                                             MeasureUnitId = 11,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
                                             CollectingDataMechanism = "M",
                                         },
                                         new UnitConfig
@@ -563,8 +453,6 @@
                                             DirectionId = 1,
                                             MeasureUnitId = 11,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
                                             CollectingDataMechanism = "M",
                                         },
                                         new UnitConfig
@@ -575,12 +463,8 @@
                                             DirectionId = 1,
                                             MeasureUnitId = 11,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
-                                            IsInspectionPoint = true,
                                             CollectingDataMechanism = "A",
-                                            PreviousShiftTag = "AV1_01-FICQ-086.TOTS_L",
-                                            CurrentInspectionDataTag = "AV1_01-FICQ-086.PV"
+                                            PreviousShiftTag = "AV1_01-FICQ-086.TOTS_L"
                                         },
                                         new UnitConfig
                                         {
@@ -590,8 +474,6 @@
                                             DirectionId = 1,
                                             MeasureUnitId = 11,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
                                             CollectingDataMechanism = "M",
                                         },
                                         new UnitConfig
@@ -602,8 +484,6 @@
                                             DirectionId = 1,
                                             MeasureUnitId = 11,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
                                             CollectingDataMechanism = "M",
                                         },
                                         new UnitConfig
@@ -614,12 +494,8 @@
                                             DirectionId = 1,
                                             MeasureUnitId = 11,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
-                                            IsInspectionPoint = true,
                                             CollectingDataMechanism = "A",
-                                            PreviousShiftTag = "AV1_01-FIQ-087.TOTS_L",
-                                            CurrentInspectionDataTag = "AV1_01-FIQ-087.PV"
+                                            PreviousShiftTag = "AV1_01-FIQ-087.TOTS_L"
                                         },
                                         new UnitConfig
                                         {
@@ -629,8 +505,6 @@
                                             DirectionId = 1,
                                             MeasureUnitId = 11,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
                                             CollectingDataMechanism = "M",
                                         },
                                         new UnitConfig
@@ -641,12 +515,8 @@
                                             DirectionId = 1,
                                             MeasureUnitId = 11,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
-                                            IsInspectionPoint = true,
                                             CollectingDataMechanism = "A",
-                                            PreviousShiftTag = "AV1_01-FICQ-088.TOTS_L",
-                                            CurrentInspectionDataTag = "AV1_01-FICQ-088.PV"
+                                            PreviousShiftTag = "AV1_01-FICQ-088.TOTS_L"
                                         },
                                         new UnitConfig
                                         {
@@ -656,8 +526,6 @@
                                             DirectionId = 1,
                                             MeasureUnitId = 11,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
                                             CollectingDataMechanism = "M",
                                         },
                                         new UnitConfig
@@ -668,8 +536,6 @@
                                             DirectionId = 1,
                                             MeasureUnitId = 11,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
                                             CollectingDataMechanism = "M",
                                         },
                                         new UnitConfig
@@ -680,8 +546,6 @@
                                             DirectionId = 1,
                                             MeasureUnitId = 11,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
                                             CollectingDataMechanism = "M",
                                         },
                                         new UnitConfig
@@ -692,8 +556,6 @@
                                             DirectionId = 1,
                                             MeasureUnitId = 11,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
                                             CollectingDataMechanism = "M",
                                         },
                                         new UnitConfig
@@ -704,12 +566,8 @@
                                             DirectionId = 1,
                                             MeasureUnitId = 11,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
-                                            IsInspectionPoint = true,
                                             CollectingDataMechanism = "A",
-                                            PreviousShiftTag = "AV1_01-FICQ-085.TOTS_L",
-                                            CurrentInspectionDataTag = "AV1_01-FICQ-085.PV"
+                                            PreviousShiftTag = "AV1_01-FICQ-085.TOTS_L"
                                         },
                                         new UnitConfig
                                         {
@@ -719,12 +577,8 @@
                                             DirectionId = 1,
                                             MeasureUnitId = 11,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
-                                            IsInspectionPoint = true,
                                             CollectingDataMechanism = "A",
-                                            PreviousShiftTag = "AV1_01-FIQ-084.TOTS_L",
-                                            CurrentInspectionDataTag = "AV1_01-FIQ-084.PV"
+                                            PreviousShiftTag = "AV1_01-FIQ-084.TOTS_L"
                                         },
                                         new UnitConfig
                                         {
@@ -734,8 +588,6 @@
                                             DirectionId = 1,
                                             MeasureUnitId = 11,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
                                             CollectingDataMechanism = "M",
                                         },
                                         new UnitConfig
@@ -746,8 +598,6 @@
                                             DirectionId = 1,
                                             MeasureUnitId = 11,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
                                             CollectingDataMechanism = "M",
                                         },
                                         new UnitConfig
@@ -758,12 +608,8 @@
                                             DirectionId = 1,
                                             MeasureUnitId = 11,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
-                                            IsInspectionPoint = true,
                                             CollectingDataMechanism = "A",
-                                            PreviousShiftTag = "AV1_01-FIQ-083.TOTS_L",
-                                            CurrentInspectionDataTag = "AV1_01-FIQ-083.PV"
+                                            PreviousShiftTag = "AV1_01-FIQ-083.TOTS_L"
                                         },
                                         new UnitConfig
                                         {
@@ -773,8 +619,6 @@
                                             DirectionId = 1,
                                             MeasureUnitId = 11,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
                                             CollectingDataMechanism = "M",
                                         },
                                         new UnitConfig
@@ -785,8 +629,6 @@
                                             DirectionId = 1,
                                             MeasureUnitId = 11,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
                                             CollectingDataMechanism = "M",
                                         },
                                         new UnitConfig
@@ -797,12 +639,8 @@
                                             DirectionId = 1,
                                             MeasureUnitId = 11,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
-                                            IsInspectionPoint = true,
                                             CollectingDataMechanism = "A",
-                                            PreviousShiftTag = "AV1_01-FICQ-082.TOTS_L",
-                                            CurrentInspectionDataTag = "AV1_01-FICQ-082.PV"
+                                            PreviousShiftTag = "AV1_01-FICQ-082.TOTS_L"
                                         },
                                         new UnitConfig
                                         {
@@ -812,8 +650,6 @@
                                             DirectionId = 1,
                                             MeasureUnitId = 11,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
                                             CollectingDataMechanism = "M",
                                         },
                                         new UnitConfig
@@ -824,8 +660,6 @@
                                             DirectionId = 1,
                                             MeasureUnitId = 11,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
                                             CollectingDataMechanism = "M",
                                         },
                                         new UnitConfig
@@ -836,12 +670,8 @@
                                             DirectionId = 2,
                                             MeasureUnitId = 14,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
-                                            IsInspectionPoint = true,
                                             CollectingDataMechanism = "A",
-                                            PreviousShiftTag = "AV1_01-FIQ-119.TOTS_L",
-                                            CurrentInspectionDataTag = "AV1_01-FIQ-119.PV"
+                                            PreviousShiftTag = "AV1_01-FIQ-119.TOTS_L"
                                         },
                                         new UnitConfig
                                         {
@@ -851,12 +681,8 @@
                                             DirectionId = 2,
                                             MeasureUnitId = 14,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
-                                            IsInspectionPoint = true,
                                             CollectingDataMechanism = "A",
-                                            PreviousShiftTag = "AV1_01-FIQ-120.TOTS_L",
-                                            CurrentInspectionDataTag = "AV1_01-FIQ-120.PV"
+                                            PreviousShiftTag = "AV1_01-FIQ-120.TOTS_L"
                                         },
                                         new UnitConfig
                                         {
@@ -866,12 +692,8 @@
                                             DirectionId = 2,
                                             MeasureUnitId = 14,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
-                                            IsInspectionPoint = true,
                                             CollectingDataMechanism = "A",
-                                            PreviousShiftTag = "AV1_01-FIQ-121.TOTS_L",
-                                            CurrentInspectionDataTag = "AV1_01-FIQ-121.PV"
+                                            PreviousShiftTag = "AV1_01-FIQ-121.TOTS_L"
                                         },
                                         new UnitConfig
                                         {
@@ -881,12 +703,8 @@
                                             DirectionId = 2,
                                             MeasureUnitId = 14,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
-                                            IsInspectionPoint = true,
                                             CollectingDataMechanism = "A",
-                                            PreviousShiftTag = "AV1_01-FIQ-122.TOTS_L",
-                                            CurrentInspectionDataTag = "AV1_01-FIQ-122.PV"
+                                            PreviousShiftTag = "AV1_01-FIQ-122.TOTS_L"
                                         },
                                         new UnitConfig
                                         {
@@ -896,12 +714,8 @@
                                             DirectionId = 2,
                                             MeasureUnitId = 14,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
-                                            IsInspectionPoint = true,
                                             CollectingDataMechanism = "A",
-                                            PreviousShiftTag = "AV1_01-FIQ-139.TOTS_L",
-                                            CurrentInspectionDataTag = "AV1_01-FIQ-139.PV"
+                                            PreviousShiftTag = "AV1_01-FIQ-139.TOTS_L"
                                         },
                                         new UnitConfig
                                         {
@@ -911,12 +725,8 @@
                                             DirectionId = 2,
                                             MeasureUnitId = 14,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
-                                            IsInspectionPoint = true,
                                             CollectingDataMechanism = "A",
-                                            PreviousShiftTag = "AV1_01-FIQ-026.TOTS_L",
-                                            CurrentInspectionDataTag = "AV1_01-FIQ-026.PV"
+                                            PreviousShiftTag = "AV1_01-FIQ-026.TOTS_L"
                                         },
                                         new UnitConfig
                                         {
@@ -926,12 +736,8 @@
                                             DirectionId = 2,
                                             MeasureUnitId = 15,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
-                                            IsInspectionPoint = true,
                                             CollectingDataMechanism = "A",
                                             PreviousShiftTag = "AV1_01-FIQ-125.TOTS_L",
-                                            CurrentInspectionDataTag = "AV1_01-FIQ-125.PV"
                                         },
                                         new UnitConfig
                                         {
@@ -941,12 +747,8 @@
                                             DirectionId = 2,
                                             MeasureUnitId = 15,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
-                                            IsInspectionPoint = true,
                                             CollectingDataMechanism = "A",
-                                            PreviousShiftTag = "AV1_01-FIQ-133.TOTS_L",
-                                            CurrentInspectionDataTag = "AV1_01-FIQ-133.PV"
+                                            PreviousShiftTag = "AV1_01-FIQ-133.TOTS_L"
                                         },
                                         new UnitConfig
                                         {
@@ -956,12 +758,8 @@
                                             DirectionId = 2,
                                             MeasureUnitId = 11,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
-                                            IsInspectionPoint = true,
                                             CollectingDataMechanism = "A",
-                                            PreviousShiftTag = "AV1_01-FIQ-126.TOTS_L",
-                                            CurrentInspectionDataTag = "AV1_01-FIQ-126.PV"
+                                            PreviousShiftTag = "AV1_01-FIQ-126.TOTS_L"
                                         },
 
 
@@ -973,12 +771,8 @@
                                             DirectionId = 2,
                                             MeasureUnitId = 11,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
-                                            IsInspectionPoint = true,
                                             CollectingDataMechanism = "A",
-                                            PreviousShiftTag = "AV1_01-FIQ-089.TOTS_L",
-                                            CurrentInspectionDataTag = "AV1_01-FIQ-089.PV"
+                                            PreviousShiftTag = "AV1_01-FIQ-089.TOTS_L"
                                         },
                                         new UnitConfig
                                         {
@@ -988,12 +782,8 @@
                                             DirectionId = 2,
                                             MeasureUnitId = 6,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
-                                            IsInspectionPoint = true,
                                             CollectingDataMechanism = "A",
-                                            PreviousShiftTag = "AV1_01-TIQ-257.TOTS_L",
-                                            CurrentInspectionDataTag = "AV1_01-TI-257.PV"
+                                            PreviousShiftTag = "AV1_01-TIQ-257.TOTS_L"
                                         },
                                         new UnitConfig
                                         {
@@ -1003,12 +793,8 @@
                                             DirectionId = 2,
                                             MeasureUnitId = 5,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
-                                            IsInspectionPoint = true,
                                             CollectingDataMechanism = "A",
-                                            PreviousShiftTag = "AV1_01-PIQ-064.TOTS_L",
-                                            CurrentInspectionDataTag = "AV1_01-PIC-064.PV"
+                                            PreviousShiftTag = "AV1_01-PIQ-064.TOTS_L"
                                         },
                                         new UnitConfig
                                         {
@@ -1018,12 +804,9 @@
                                             DirectionId = 2,
                                             MeasureUnitId = 12,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
                                             IsCalculated = true,
                                             CollectingDataMechanism = "A",
-                                            PreviousShiftTag = "AV1_01-EIQ-089.TOTS_L",
-                                            CurrentInspectionDataTag = "AV1_01-EIQ-089.PV"
+                                            PreviousShiftTag = "AV1_01-EIQ-089.TOTS_L"
                                         },
                                         new UnitConfig
                                         {
@@ -1033,12 +816,8 @@
                                             DirectionId = 2,
                                             MeasureUnitId = 11,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
-                                            IsInspectionPoint = true,
                                             CollectingDataMechanism = "A",
                                             PreviousShiftTag = "AV1_01-FIQ-118.TOTS_L",
-                                            CurrentInspectionDataTag = "AV1_01-FIQ-118.PV"
                                         },
                                         new UnitConfig
                                         {
@@ -1048,12 +827,8 @@
                                             DirectionId = 2,
                                             MeasureUnitId = 6,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
-                                            IsInspectionPoint = true,
                                             CollectingDataMechanism = "A",
-                                            PreviousShiftTag = "AV1_01-TIQ-318.TOTS_L",
-                                            CurrentInspectionDataTag = "AV1_01-TI-318.PV"
+                                            PreviousShiftTag = "AV1_01-TIQ-318.TOTS_L"
                                         },
                                         new UnitConfig
                                         {
@@ -1063,11 +838,8 @@
                                             DirectionId = 2,
                                             MeasureUnitId = 5,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
                                             CollectingDataMechanism = "A",
-                                            PreviousShiftTag = "AV1_01-PIQ-096.TOTS_L",
-                                            CurrentInspectionDataTag = "AV1_01-PIC-096.PV"
+                                            PreviousShiftTag = "AV1_01-PIQ-096.TOTS_L"
                                         },
                                         new UnitConfig
                                         {
@@ -1077,11 +849,8 @@
                                             DirectionId = 1,
                                             MeasureUnitId = 12,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
                                             CollectingDataMechanism = "A",
                                             PreviousShiftTag = "AV1_01-EIQ-118.TOTS_L",
-                                            CurrentInspectionDataTag = "AV1_01-EIQ-118.PV",
                                         },
                                         new UnitConfig
                                         {
@@ -1091,12 +860,8 @@
                                             DirectionId = 1,
                                             MeasureUnitId = 12,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
-                                            IsInspectionPoint = true,
                                             CollectingDataMechanism = "A",
-                                            PreviousShiftTag = "AV1_01-FIQ-452.TOTS_L",
-                                            CurrentInspectionDataTag = "AV1_01-FIQ-452.PV"
+                                            PreviousShiftTag = "AV1_01-FIQ-452.TOTS_L"
                                         },
                                         new UnitConfig
                                         {
@@ -1106,12 +871,8 @@
                                             DirectionId = 1,
                                             MeasureUnitId = 6,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
-                                            IsInspectionPoint = true,
                                             CollectingDataMechanism = "A",
-                                            PreviousShiftTag = "AV1_01-TIQ-452.TOTS_L",
-                                            CurrentInspectionDataTag = "AV1_01-TICA-452.PV"
+                                            PreviousShiftTag = "AV1_01-TIQ-452.TOTS_L"
                                         },
                                         new UnitConfig
                                         {
@@ -1121,12 +882,8 @@
                                             DirectionId = 1,
                                             MeasureUnitId = 5,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
-                                            IsInspectionPoint = true,
                                             CollectingDataMechanism = "A",
-                                            PreviousShiftTag = "AV1_01-PIQ-452.TOTS_L",
-                                            CurrentInspectionDataTag = "AV1_01-PICA-452.PV"
+                                            PreviousShiftTag = "AV1_01-PIQ-452.TOTS_L"
                                         },
                                         new UnitConfig
                                         {
@@ -1136,11 +893,8 @@
                                             DirectionId = 1,
                                             MeasureUnitId = 12,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
                                             CollectingDataMechanism = "A",
-                                            PreviousShiftTag = "AV1_01-EIQ-452.TOTS_L",
-                                            CurrentInspectionDataTag = "AV1_01-EIQ-452.PV"
+                                            PreviousShiftTag = "AV1_01-EIQ-452.TOTS_L"
                                         },
                                         new UnitConfig
                                         {
@@ -1149,8 +903,6 @@
                                             DirectionId = 2,
                                             MeasureUnitId = 4,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
                                             CollectingDataMechanism = "C",
                                             IsDeleted = true
                                         },
@@ -1161,8 +913,6 @@
                                             DirectionId = 2,
                                             MeasureUnitId = 4,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
                                             CollectingDataMechanism = "C",
                                             IsDeleted = true
                                         },
@@ -1173,8 +923,6 @@
                                             DirectionId = 2,
                                             MeasureUnitId = 4,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
                                             CollectingDataMechanism = "C",
                                             IsDeleted = true
                                         },
@@ -1185,8 +933,6 @@
                                             DirectionId = 2,
                                             MeasureUnitId = 4,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
                                             CollectingDataMechanism = "C",
                                             IsDeleted = true
                                         },
@@ -1197,8 +943,6 @@
                                             DirectionId = 2,
                                             MeasureUnitId = 4,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
                                             CollectingDataMechanism = "C",
                                             IsDeleted = true
                                         },
@@ -1210,8 +954,6 @@
                                             DirectionId = 2,
                                             MeasureUnitId = 12,
                                             MaterialTypeId = 2,
-                                            IsMaterial = true,
-                                            IsEnergy = true,
                                             CollectingDataMechanism = "C",
                                             IsDeleted = true
                                         },
@@ -1493,12 +1235,8 @@
                                             DirectionId = 1,
                                             MeasureUnitId = 5,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
-                                            IsInspectionPoint = true,
                                             CollectingDataMechanism = "A",
-                                            PreviousShiftTag = "SKA_100FQI001.TOTALIZER_S.OLDAV",
-                                            CurrentInspectionDataTag = "SKA_100FIC001.PID_PLA.PV"
+                                            PreviousShiftTag = "SKA_100FQI001.TOTALIZER_S.OLDAV"
                                         },
                                         new UnitConfig
                                         {
@@ -1508,12 +1246,8 @@
                                             DirectionId = 1,
                                             MeasureUnitId = 5,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
-                                            IsInspectionPoint = true,
                                             CollectingDataMechanism = "A",
-                                            PreviousShiftTag = "SKA_100FQI004.TOTALIZER_S.OLDAV",
-                                            CurrentInspectionDataTag = "SKA_100FIC004.DACA.PV"
+                                            PreviousShiftTag = "SKA_100FQI004.TOTALIZER_S.OLDAV"
                                         },
                                         new UnitConfig
                                         {
@@ -1523,12 +1257,8 @@
                                             DirectionId = 1,
                                             MeasureUnitId = 5,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
-                                            IsInspectionPoint = true,
                                             CollectingDataMechanism = "A",
-                                            PreviousShiftTag = "SKA_100FQI036.TOTALIZER_S.OLDAV",
-                                            CurrentInspectionDataTag = "SKA_100FIC036.PID_PLA.PV"
+                                            PreviousShiftTag = "SKA_100FQI036.TOTALIZER_S.OLDAV"
                                         },
                                         new UnitConfig
                                         {
@@ -1538,12 +1268,8 @@
                                             DirectionId = 1,
                                             MeasureUnitId = 5,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
-                                            IsInspectionPoint = true,
                                             CollectingDataMechanism = "A",
-                                            PreviousShiftTag = "SKA_100FQI069.TOTALIZER_S.OLDAV",
-                                            CurrentInspectionDataTag = "SKA_100FI069.DACA.PV"
+                                            PreviousShiftTag = "SKA_100FQI069.TOTALIZER_S.OLDAV"
                                         },
                                         new UnitConfig
                                         {
@@ -1553,12 +1279,8 @@
                                             DirectionId = 1,
                                             MeasureUnitId = 11,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
-                                            IsInspectionPoint = true,
                                             CollectingDataMechanism = "A",
-                                            PreviousShiftTag = "SKA_100FQI049.TOTALIZER_S.OLDAV",
-                                            CurrentInspectionDataTag = "SKA_100FI049.DACA.PV"
+                                            PreviousShiftTag = "SKA_100FQI049.TOTALIZER_S.OLDAV"
                                         },
                                         new UnitConfig
                                         {
@@ -1568,12 +1290,8 @@
                                             DirectionId = 1,
                                             MeasureUnitId = 11,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
-                                            IsInspectionPoint = true,
                                             CollectingDataMechanism = "A",
-                                            PreviousShiftTag = "SKA_100FQI042.TOTALIZER_S.OLDAV",
-                                            CurrentInspectionDataTag = "SKA_100FIC042.DACA.PV"
+                                            PreviousShiftTag = "SKA_100FQI042.TOTALIZER_S.OLDAV"
                                         },
                                         new UnitConfig
                                         {
@@ -1583,12 +1301,8 @@
                                             DirectionId = 1,
                                             MeasureUnitId = 11,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
-                                            IsInspectionPoint = true,
                                             CollectingDataMechanism = "A",
-                                            PreviousShiftTag = "SKA_100FQI053.TOTALIZER_S.OLDAV",
-                                            CurrentInspectionDataTag = "SKA_100FIC053.DACA.PV"
+                                            PreviousShiftTag = "SKA_100FQI053.TOTALIZER_S.OLDAV"
                                         },
                                         new UnitConfig
                                         {
@@ -1598,12 +1312,8 @@
                                             DirectionId = 1,
                                             MeasureUnitId = 11,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
-                                            IsInspectionPoint = true,
                                             CollectingDataMechanism = "A",
-                                            PreviousShiftTag = "SKA_100FQI035.TOTALIZER_S.OLDAV",
-                                            CurrentInspectionDataTag = "SKA_100FIC035.DACA.PV"
+                                            PreviousShiftTag = "SKA_100FQI035.TOTALIZER_S.OLDAV"
                                         },
                                         new UnitConfig
                                         {
@@ -1613,12 +1323,8 @@
                                             DirectionId = 1,
                                             MeasureUnitId = 11,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
-                                            IsInspectionPoint = true,
                                             CollectingDataMechanism = "A",
-                                            PreviousShiftTag = "SKA_100FQI081.TOTALIZER_S.OLDAV",
-                                            CurrentInspectionDataTag = "SKA_100FI081.DACA.PV"
+                                            PreviousShiftTag = "SKA_100FQI081.TOTALIZER_S.OLDAV"
                                         },
                                         new UnitConfig
                                         {
@@ -1628,12 +1334,8 @@
                                             DirectionId = 2,
                                             MeasureUnitId = 15,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
-                                            IsInspectionPoint = true,
                                             CollectingDataMechanism = "A",
-                                            PreviousShiftTag = "SKA_100FQI075.TOTALIZER_S.OLDAV",
-                                            CurrentInspectionDataTag = "SKA_100FI075.DACA.PV"
+                                            PreviousShiftTag = "SKA_100FQI075.TOTALIZER_S.OLDAV"
                                         },
                                         new UnitConfig
                                         {
@@ -1643,12 +1345,8 @@
                                             DirectionId = 2,
                                             MeasureUnitId = 15,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
-                                            IsInspectionPoint = true,
                                             CollectingDataMechanism = "A",
-                                            PreviousShiftTag = "SKA_300FQI002.TOTALIZER_S.OLDAV",
-                                            CurrentInspectionDataTag = "SKA_300FI002.DACA.PV"
+                                            PreviousShiftTag = "SKA_300FQI002.TOTALIZER_S.OLDAV"
                                         },
                                         new UnitConfig
                                         {
@@ -1658,12 +1356,8 @@
                                             DirectionId = 2,
                                             MeasureUnitId = 15,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
-                                            IsInspectionPoint = true,
                                             CollectingDataMechanism = "A",
                                             PreviousShiftTag = "SKA_100FQI058.TOTALIZER_S.OLDAV",
-                                            CurrentInspectionDataTag = "SKA_100FI058.DACA.PV"
                                         },
                                         new UnitConfig
                                         {
@@ -1673,12 +1367,8 @@
                                             DirectionId = 1,
                                             MeasureUnitId = 12,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
-                                            IsInspectionPoint = true,
                                             CollectingDataMechanism = "A",
                                             PreviousShiftTag = "SKA_100FQI041.TOTALIZER_S.OLDAV",
-                                            CurrentInspectionDataTag = "SKA_100FI041.DACA.PV"
                                         },
                                         new UnitConfig
                                         {
@@ -1688,12 +1378,8 @@
                                             DirectionId = 1,
                                             MeasureUnitId = 6,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
-                                            IsInspectionPoint = true,
                                             CollectingDataMechanism = "A",
                                             PreviousShiftTag = "SKA_100TQI050.DACB.PV",
-                                            CurrentInspectionDataTag = "SKA_100TI050.DACA.PV"
                                         },
                                         new UnitConfig
                                         {
@@ -1703,12 +1389,8 @@
                                             DirectionId = 1,
                                             MeasureUnitId = 5,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
-                                            IsInspectionPoint = true,
                                             CollectingDataMechanism = "A",
                                             PreviousShiftTag = "SKA_100PQI031.DACB.PV",
-                                            CurrentInspectionDataTag = "SKA_100PI031.DACA.PV"
                                         },
                                         new UnitConfig
                                         {
@@ -1718,11 +1400,8 @@
                                             DirectionId = 1,
                                             MeasureUnitId = 12,
                                             MaterialTypeId = 1,
-                                            IsMaterial = true,
-                                            IsEnergy = false,
                                             CollectingDataMechanism = "C",
                                             PreviousShiftTag = null,
-                                            CurrentInspectionDataTag = null
                                         },
                                     },
                                     UnitsDailyConfigs = 

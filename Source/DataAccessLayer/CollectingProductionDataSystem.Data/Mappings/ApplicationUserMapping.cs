@@ -25,7 +25,6 @@ namespace CollectingProductionDataSystem.Data.Mappings
 
             this.HasMany(t => t.Parks)
                 .WithMany(t => t.Users);
-
         }
     }
 }

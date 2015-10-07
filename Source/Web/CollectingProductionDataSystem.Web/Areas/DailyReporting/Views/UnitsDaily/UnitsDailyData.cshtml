@@ -63,7 +63,7 @@
         columns =>
         {
             columns.Bound(c => c.UnitsDailyConfig.Code).Width(77);
-            columns.Bound(c => c.UnitsDailyConfig.Product.ProductType.Sort).Hidden(true).ClientGroupHeaderTemplate("#=value#");
+            columns.Bound(c => c.UnitsDailyConfig.ProductType.Sort).Hidden(true).ClientGroupHeaderTemplate("#=value#");
             columns.Bound(c => c.UnitsDailyConfig.ProcessUnit.ShortName).Width(100);
             columns.Bound(c => c.UnitsDailyConfig.Name);
             columns.Bound(c => c.UnitsDailyConfig.MeasureUnit.Code).Width(80);
@@ -93,14 +93,14 @@
         .Ajax()
         .PageSize(50)
         .ServerOperation(true)
-        .Group(group => group.Add(c => c.UnitsDailyConfig.Product.ProductType.Sort))
+        .Group(group => group.Add(c => c.UnitsDailyConfig.ProductType.Sort))
         .Read(read => read.Action("ReadDailyUnitsData", "UnitsDaily", new { area = "DailyReporting" }).Data("sendDate"))
         .Update(update => update.Action("Edit", "UnitsDaily", new { area = "DailyReporting" }).Data("sendAntiForgery"))
         .Model(model =>
         {
             model.Id(p => p.Id);
             model.Field(p => p.UnitsDailyConfig.Code).Editable(false);
-            model.Field(p => p.UnitsDailyConfig.Product.ProductType.Name).Editable(false);
+            model.Field(p => p.UnitsDailyConfig.ProductType.Name).Editable(false);
             model.Field(p => p.UnitsDailyConfig.ProcessUnit.ShortName).Editable(false);
             model.Field(p => p.UnitsDailyConfig.Name).Editable(false);
             model.Field(p => p.UnitsDailyConfig.MeasureUnit.Code).Editable(false);
@@ -153,7 +153,7 @@
                 {
                     model.Id(p => p.Id);
                     model.Field(p => p.UnitConfig.Code).Editable(false);
-                    model.Field(p => p.UnitConfig.Product.ShiftProductType.Name).Editable(false);
+                    model.Field(p => p.UnitConfig.ShiftProductType.Name).Editable(false);
                     model.Field(p => p.UnitConfig.ProcessUnit.ShortName).Editable(false);
                     model.Field(p => p.UnitConfig.Name).Editable(false);
                     model.Field(p => p.UnitConfig.Position).Editable(false);

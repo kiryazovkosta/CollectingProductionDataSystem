@@ -61,18 +61,22 @@
         [Display(Name = "CollectingDataMechanism", ResourceType = typeof(Resources.Layout))]
         public string CollectingDataMechanism { get; set; }
 
-        public int ProductId { get; set; }
-        public ShiftProductViewModel Product { get; set; }
+        //public int ProductId { get; set; }
+        //public ShiftProductViewModel Product { get; set; }
 
         public int ProcessUnitId { get; set; }
-
         public ProcessUnitUnitDataViewModel ProcessUnit { get; set; }
 
         public int MeasureUnitId { get; set; }
         public MeasureUnitUnitDataViewModel MeasureUnit { get; set; }
+
+        [UIHint("Hidden")]
+        public int ShiftProductTypeId { get; set; }
+        public ShiftProductTypeViewModel ShiftProductType { get; set; }
+
     }
 
-    public class ShiftProductTypeUnitDataViewModel : IMapFrom<ShiftProductType>
+    public class ShiftProductTypeViewModel : IMapFrom<ShiftProductType>
     {
         [Required]
         [UIHint("Hidden")]
@@ -92,16 +96,12 @@
         }
     }
 
-    public class ShiftProductViewModel : IMapFrom<Product>
-    {
-        public int Id { get; set; }
-        public int Code { get; set; }
-        public string Name { get; set; }
-
-        [UIHint("Hidden")]
-        public int ShiftProductTypeId { get; set; }
-        public ShiftProductTypeUnitDataViewModel ShiftProductType { get; set; }
-    }
+    //public class ShiftProductViewModel : IMapFrom<Product>
+    //{
+    //    public int Id { get; set; }
+    //    public int Code { get; set; }
+    //    public string Name { get; set; }
+    //}
 
     public class ProcessUnitUnitDataViewModel : IMapFrom<ProcessUnit>
     {

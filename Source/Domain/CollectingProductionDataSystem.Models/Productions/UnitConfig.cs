@@ -22,21 +22,18 @@ namespace CollectingProductionDataSystem.Models.Productions
         public string Code { get; set; }
         public string Position { get; set; }
         public string Name { get; set; }
+        public int? ShiftProductTypeId { get; set; }
         public int ProductId { get; set; }
         public int ProcessUnitId { get; set; }
         public int DirectionId { get; set; }
         public int MeasureUnitId { get; set; }
         public int MaterialTypeId { get; set; }
-        public bool IsMaterial { get; set; }
-        public bool IsEnergy { get; set; }
-        public bool IsInspectionPoint { get; set; }
         public string CollectingDataMechanism { get; set; }
         public string CalculatedFormula { get; set; }
         public string AggregateGroup { get; set; }
         public string AggregateParameter { get; set; }
         public bool IsCalculated { get; set; }
         public string PreviousShiftTag { get; set; }
-        public string CurrentInspectionDataTag { get; set; }
         public string Notes { get; set; }
         public decimal? MaximumCost { get; set; }
         public decimal? EstimatedDensity { get; set; }
@@ -48,6 +45,7 @@ namespace CollectingProductionDataSystem.Models.Productions
         public virtual MeasureUnit MeasureUnit { get; set; }
         public virtual ProcessUnit ProcessUnit { get; set; }
         public virtual Product Product { get; set; }
+        public virtual ShiftProductType ShiftProductType { get; set; }
         public virtual ICollection<UnitsData> UnitsDatas 
         { 
             get {return this.unitsDatas; } 

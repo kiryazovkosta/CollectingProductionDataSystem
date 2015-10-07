@@ -11,7 +11,7 @@
     using CollectingProductionDataSystem.Models.Nomenclatures;
     using Resources = App_GlobalResources.Resources;
 
-    public class ProductViewModel:IMapFrom<Product>,IHaveCustomMappings,IEntity
+    public class ProductViewModel:IMapFrom<Product>, IEntity
     {
         [Required]
         [UIHint("Hidden")]
@@ -29,25 +29,25 @@
         [Display(Name = "ProductType", ResourceType = typeof(Resources.Layout))]
         public int ProductTypeId { get; set; }
    
-        [Display(Name = "ShiftProductType", ResourceType = typeof(Resources.Layout))]
-        public int ShiftProductTypeId { get; set; }
+        //[Display(Name = "ShiftProductType", ResourceType = typeof(Resources.Layout))]
+        //public int ShiftProductTypeId { get; set; }
 
-        [Display(Name = "DailyProductType", ResourceType = typeof(Resources.Layout))]
-        public int DailyProductTypeId { get; set; }
+        //[Display(Name = "DailyProductType", ResourceType = typeof(Resources.Layout))]
+        //public int DailyProductTypeId { get; set; }
         
         /// <summary>
         /// Creates the mappings.
         /// </summary>
         /// <param name="configuration">The configuration.</param>
-        public void CreateMappings(IConfiguration configuration)
-        {
-            configuration.CreateMap<Product, ProductViewModel>()
-                .ForMember(p => p.DailyProductTypeId, opt => opt.MapFrom(p => p.DailyProductTypeId == null ? 0 : (int)p.DailyProductTypeId))
-                .ForMember(p => p.ShiftProductTypeId, opt => opt.MapFrom(p => p.ShiftProductTypeId == null ? 0 : (int)p.ShiftProductTypeId));
+        //public void CreateMappings(IConfiguration configuration)
+        //{
+        //    //configuration.CreateMap<Product, ProductViewModel>()
+        //    //    .ForMember(p => p.DailyProductTypeId, opt => opt.MapFrom(p => p.DailyProductTypeId == null ? 0 : (int)p.DailyProductTypeId))
+        //    //    .ForMember(p => p.ShiftProductTypeId, opt => opt.MapFrom(p => p.ShiftProductTypeId == null ? 0 : (int)p.ShiftProductTypeId));
 
-            configuration.CreateMap<ProductViewModel, Product>()
-                .ForMember(p => p.DailyProductTypeId, opt => opt.MapFrom(p => p.DailyProductTypeId == 0 ? null : (Nullable<int>)p.DailyProductTypeId))
-                .ForMember(p => p.ShiftProductTypeId, opt => opt.MapFrom(p => p.ShiftProductTypeId == 0 ? null : (Nullable<int>)p.ShiftProductTypeId));
-        }
+        //    //configuration.CreateMap<ProductViewModel, Product>()
+        //    //    .ForMember(p => p.DailyProductTypeId, opt => opt.MapFrom(p => p.DailyProductTypeId == 0 ? null : (Nullable<int>)p.DailyProductTypeId))
+        //    //    .ForMember(p => p.ShiftProductTypeId, opt => opt.MapFrom(p => p.ShiftProductTypeId == 0 ? null : (Nullable<int>)p.ShiftProductTypeId));
+        //}
     }
 }
