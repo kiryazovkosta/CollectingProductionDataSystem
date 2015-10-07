@@ -32,7 +32,7 @@
         /// <summary>
         /// D(2) - МАКС. РАЗХОД (ОТ ПАСП.ДАННИ)
         /// </summary>
-        public double? MaximumCost { get; set; }
+        public double? MaximumFlow{ get; set; }
 
         /// <summary>
         /// D(4) - РАЗЧЕТНА ПЛЪТНОСТ (ОТ ПАСП.ДАННИ)
