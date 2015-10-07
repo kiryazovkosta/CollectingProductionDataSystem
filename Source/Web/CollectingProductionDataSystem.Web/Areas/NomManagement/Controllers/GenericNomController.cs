@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Reflection;
@@ -119,6 +120,28 @@ namespace CollectingProductionDataSystem.Web.Areas.NomManagement.Controllers
             var fileContents = Convert.FromBase64String(base64);
 
             return File(fileContents, contentType, fileName);
+        }
+
+        public ActionResult ValueMapper(int[] values)
+        {
+            var indices = new List<int>();
+
+            if (values != null && values.Any())
+            {
+                var index = 0;
+
+                foreach (var item in this.repository.All())
+                {
+                    if (values.Contains(item.Id))
+                    {
+                        indices.Add(index);
+                    }
+
+                    index += 1;
+                }
+            }
+
+            return Json(indices, JsonRequestBehavior.AllowGet);
         }
     }
 }

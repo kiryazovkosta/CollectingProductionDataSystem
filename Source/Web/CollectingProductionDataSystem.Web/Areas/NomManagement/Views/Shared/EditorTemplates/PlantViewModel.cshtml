@@ -2,7 +2,7 @@
 @model System.Int32
 @(Html.Kendo()
       .DropDownListFor(m => m)
-      .OptionLabel(Resources.Layout.ChooseProcessUnit)
+      .OptionLabel(Resources.Layout.ChoosePlant)
       .DataTextField("FullName")
       .DataValueField("Id")
       .Height(520)
@@ -26,5 +26,7 @@
                             .Total("Total"); //define the [total](http://docs.telerik.com/kendo-ui/api/javascript/data/datasource#configuration-schema.total) option
                   });
           })
+              .Virtual(v => v.ItemHeight(26).ValueMapper("valueMapper"))
+                      .Filter(FilterType.Contains)
           
 )

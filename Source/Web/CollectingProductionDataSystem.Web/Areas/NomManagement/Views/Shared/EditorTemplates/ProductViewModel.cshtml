@@ -2,7 +2,7 @@
 @model System.Int32
 @(Html.Kendo()
       .DropDownListFor(m => m)
-      .OptionLabel(Resources.Layout.ChooseArea)
+      .OptionLabel(Resources.Layout.ChooseProduct)
       .DataTextField("Name")
       .DataValueField("Id")
       .Height(520)
@@ -17,7 +17,7 @@
                   {
                       transport.Read(read =>
                         {
-                            read.Action("Read", "Area", new { area = "NomManagement" }).Data("sendAntiForgery");
+                            read.Action("Read", "Product", new { area = "NomManagement" }).Data("sendAntiForgery");
                         });
                   })
                   .Schema(schema =>
@@ -27,7 +27,14 @@
                   });
           })
               .Virtual(v => v.ItemHeight(26).ValueMapper("valueMapper"))
-                      .Filter(FilterType.Contains)
+              .Filter(FilterType.Contains)
+          .HeaderTemplate("<div class=\"dropdown-header\">" +
+                        "<div class=\"k-widget k-header k-code-header\">"+Resources.Layout.Code +"</div>" +
+                                "<div class=\"k-widget k-header k-name-header\">" + Resources.Layout.Name + "</div>" +
+                    "</div>")
+              .Template("<div class=\"k-state-default k-code\">#:data.Code#</div>" +
+                            "<div class=\"k-state-default k-name\">#: data.Name #</div>")
 
 )
+
 

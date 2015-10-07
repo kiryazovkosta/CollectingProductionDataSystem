@@ -2,7 +2,7 @@
 @model System.Int32
 @(Html.Kendo()
       .DropDownListFor(m => m)
-      .OptionLabel(Resources.Layout.ChooseArea)
+      .OptionLabel(Resources.Layout.ChooseProcessUnit)
       .DataTextField("Name")
       .DataValueField("Id")
       .Height(520)
@@ -17,7 +17,7 @@
                   {
                       transport.Read(read =>
                         {
-                            read.Action("Read", "Area", new { area = "NomManagement" }).Data("sendAntiForgery");
+                            read.Action("Read", "ShiftProductType", new { area = "NomManagement" }).Data("sendAntiForgery");
                         });
                   })
                   .Schema(schema =>
@@ -26,8 +26,8 @@
                             .Total("Total"); //define the [total](http://docs.telerik.com/kendo-ui/api/javascript/data/datasource#configuration-schema.total) option
                   });
           })
-              .Virtual(v => v.ItemHeight(26).ValueMapper("valueMapper"))
-                      .Filter(FilterType.Contains)
+               .Virtual(v => v.ItemHeight(26).ValueMapper("valueMapper"))
+                  .Filter(FilterType.Contains)
 
 )
 

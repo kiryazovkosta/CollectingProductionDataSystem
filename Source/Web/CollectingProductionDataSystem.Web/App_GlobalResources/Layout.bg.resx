@@ -390,4 +390,76 @@
   <data name="Park" xml:space="preserve">
     <value>Парк</value>
   </data>
+  <data name="AggregateGroup" xml:space="preserve">
+    <value>Група на формула</value>
+  </data>
+  <data name="AggregateParameter" xml:space="preserve">
+    <value>Параметри на формула</value>
+  </data>
+  <data name="CalculatedFormula" xml:space="preserve">
+    <value>Формула</value>
+  </data>
+  <data name="CurrentInspectionDataTag" xml:space="preserve">
+    <value>PHD-tag (моментна стойност)</value>
+  </data>
+  <data name="DailyProductType" xml:space="preserve">
+    <value>Тип на продукта при дневни справки</value>
+  </data>
+  <data name="EstimatedCompressibilityFactor" xml:space="preserve">
+    <value>Прогнозна свиваемост</value>
+  </data>
+  <data name="EstimatedDensity" xml:space="preserve">
+    <value>Прогнозна плътност</value>
+  </data>
+  <data name="EstimatedPressure" xml:space="preserve">
+    <value>Прогнозна налягане</value>
+  </data>
+  <data name="EstimatedTemperature" xml:space="preserve">
+    <value>Прогнозна температура</value>
+  </data>
+  <data name="IsCalculated" xml:space="preserve">
+    <value>Калкулируем</value>
+  </data>
+  <data name="IsEnergy" xml:space="preserve">
+    <value>Енергия</value>
+  </data>
+  <data name="IsInspectionPoint" xml:space="preserve">
+    <value>Моментна стойност</value>
+  </data>
+  <data name="IsMaterial" xml:space="preserve">
+    <value>Материал</value>
+  </data>
+  <data name="MaterialType" xml:space="preserve">
+    <value>Тип на материала</value>
+  </data>
+  <data name="MaximumCost" xml:space="preserve">
+    <value>Максимален разход</value>
+  </data>
+  <data name="Notes" xml:space="preserve">
+    <value>Забележки</value>
+  </data>
+  <data name="PreviousShiftTag" xml:space="preserve">
+    <value>PHD-tag (предходна смяна)</value>
+  </data>
+  <data name="Product" xml:space="preserve">
+    <value>Продукт</value>
+  </data>
+  <data name="ShiftProductType" xml:space="preserve">
+    <value>Тип на продукта при сменни справки</value>
+  </data>
+  <data name="ChooseMaterialType" xml:space="preserve">
+    <value>Избарете тип на материала...</value>
+  </data>
+  <data name="ChooseProduct" xml:space="preserve">
+    <value>Изберете продукт...</value>
+  </data>
+  <data name="ChooseMeasureUnit" xml:space="preserve">
+    <value>Изберете мерна единица...</value>
+  </data>
+  <data name="ChoosePlant" xml:space="preserve">
+    <value>Изберете завод ...</value>
+  </data>
+  <data name="ChooseProductType" xml:space="preserve">
+    <value>Изберете тип на продукта...</value>
+  </data>
 </root>

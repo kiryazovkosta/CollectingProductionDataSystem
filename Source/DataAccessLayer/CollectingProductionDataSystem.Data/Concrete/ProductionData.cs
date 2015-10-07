@@ -11,7 +11,7 @@
     using CollectingProductionDataSystem.Models.Inventories;
     using CollectingProductionDataSystem.Models.Nomenclatures;
     using CollectingProductionDataSystem.Models.Productions;
-using CollectingProductionDataSystem.Models.Transactions;
+    using CollectingProductionDataSystem.Models.Transactions;
 
     public class ProductionData : IProductionData
     {
@@ -19,7 +19,7 @@ using CollectingProductionDataSystem.Models.Transactions;
 
         private readonly Dictionary<Type, object> repositories = new Dictionary<Type, object>();
 
-        public ProductionData(IPersister persisterParam) 
+        public ProductionData(IPersister persisterParam)
             : this(new CollectingDataSystemDbContext(persisterParam))
         {
         }
@@ -185,7 +185,7 @@ using CollectingProductionDataSystem.Models.Transactions;
         {
             get
             {
-                 return this.GetDeletableEntityRepository<ShiftProductType>();
+                return this.GetDeletableEntityRepository<ShiftProductType>();
             }
         }
 
@@ -193,7 +193,7 @@ using CollectingProductionDataSystem.Models.Transactions;
         {
             get
             {
-                 return this.GetDeletableEntityRepository<DailyProductType>();
+                return this.GetDeletableEntityRepository<DailyProductType>();
             }
         }
 
@@ -305,7 +305,7 @@ using CollectingProductionDataSystem.Models.Transactions;
         {
             get
             {
-                 return this.GetDeletableEntityRepository<TanksApprovedData>();
+                return this.GetDeletableEntityRepository<TanksApprovedData>();
             }
         }
 
@@ -341,9 +341,25 @@ using CollectingProductionDataSystem.Models.Transactions;
             }
         }
 
+        public IDeletableEntityRepository<MaterialType> MaterialTypes
+        {
+            get
+            {
+                return this.GetDeletableEntityRepository<MaterialType>();
+            }
+        }
+
+        public IDeletableEntityRepository<MeasureUnit> MeasureUnits
+        {
+            get
+            {
+                return this.GetDeletableEntityRepository<MeasureUnit>();
+            }
+        }
+
         public IEfStatus SaveChanges(string userName)
         {
-            return this.context.SaveChangesWithValidation(userName);    
+            return this.context.SaveChangesWithValidation(userName);
         }
 
         public void Dispose()
@@ -409,11 +425,11 @@ using CollectingProductionDataSystem.Models.Transactions;
         /// Gets or sets the db context.
         /// </summary>
         /// <value>The db context.</value>
-        public IDbContext DbContext 
+        public IDbContext DbContext
         {
-            get 
+            get
             {
-                return this.context; 
+                return this.context;
             }
         }
 

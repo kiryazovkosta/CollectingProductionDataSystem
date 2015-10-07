@@ -389,5 +389,55 @@ span.k-icon.k-i-excel {
 }
 
 .separator {
-height:20px;
+    height: 20px;
+}
+
+.k-code-header {
+    margin-left: -20px;
+    width: 30px;
+    display: inline-block;
+}
+
+.k-name-header {
+    width: 220px;
+    display: inline-block;
+}
+
+ul.k-list li:nth-child(2n) {
+    background-color: #fafafa;
+}
+
+ul.k-list li:hover {
+    background-color: #eee;
+}
+
+ul.k-list li {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+.k-code-header, .k-name-header {
+    height: 20px;
+    text-align: center;
+    font-size: 1.2em;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.k-code {
+    margin-left: -5px;
+    width: 30px;
+    text-align: right;
+}
+
+.k-name {
+    width: 200px;
+    border-left: 1px solid black;
+}
+
+.k-code, .k-name {
+    display: inline-block;
+    margin-top: 0;
+    margin-bottom: 0;
+    font-size: 0.8em;
 }
