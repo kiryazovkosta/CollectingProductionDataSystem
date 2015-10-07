@@ -2,7 +2,7 @@
 @model System.Int32
 @(Html.Kendo()
       .DropDownListFor(m => m)
-      .OptionLabel(Resources.Layout.ChooseArea)
+      .OptionLabel(Resources.Layout.ChooseMaterialType)
       .DataTextField("Name")
       .DataValueField("Id")
       .Height(520)
@@ -17,7 +17,7 @@
                   {
                       transport.Read(read =>
                         {
-                            read.Action("Read", "Area", new { area = "NomManagement" }).Data("sendAntiForgery");
+                            read.Action("Read", "MaterialType", new { area = "NomManagement" }).Data("sendAntiForgery");
                         });
                   })
                   .Schema(schema =>
@@ -28,6 +28,5 @@
           })
               .Virtual(v => v.ItemHeight(26).ValueMapper("valueMapper"))
                       .Filter(FilterType.Contains)
-
-)
+          )
 

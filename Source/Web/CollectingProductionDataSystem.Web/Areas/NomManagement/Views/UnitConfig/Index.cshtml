@@ -1,77 +1,65 @@
-﻿@using CollectingProductionDataSystem.Models.Productions;
-@{
-    Layout = "~/Views/Shared/_KendoLayout.cshtml";
-}
-
-@(Html.Kendo()
-      .Grid<UnitConfig>()
+﻿﻿﻿@(Html.Kendo().Grid<CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewModels.UnitConfigViewModel>()
       .Name("grid")
       .Columns(columns =>
       {
-          columns.Bound(c => c.Code);
-          columns.Bound(c => c.Position);
-          columns.Bound(c => c.Name);
-          columns.Bound(c => c.IsMaterial);
-          columns.Bound(c => c.IsEnergy);
-          columns.Bound(c => c.IsInspectionPoint);
-          columns.Bound(c => c.CollectingDataMechanism);
-          columns.Bound(c => c.AggregateGroup);
-          columns.Bound(c => c.AggregateParameter);
-          columns.Bound(c => c.IsCalculated);
-          columns.Bound(c => c.PreviousShiftTag);
-          columns.Bound(c => c.CurrentInspectionDataTag);
-          columns.Bound(c => c.Notes);
-          columns.Bound(c => c.MaximumCost);
-          columns.Bound(c => c.EstimatedDensity);
-          columns.Bound(c => c.EstimatedPressure);
-          columns.Bound(c => c.EstimatedTemperature);
+          columns.Bound(c => c.Code).Width(100);
+          columns.Bound(c => c.Position).Width(150);
+          columns.Bound(c => c.Name).Width(200);
+          columns.Bound(c => c.IsMaterial).Width(100);
+          columns.Bound(c => c.IsEnergy).Width(100);
+          columns.Bound(c => c.IsInspectionPoint).Width(100);
+          columns.Bound(c => c.CollectingDataMechanism).Width(100);
+          columns.Bound(c => c.AggregateGroup).Width(100);
+          columns.Bound(c => c.AggregateParameter).Width(100);
+          columns.Bound(c => c.IsCalculated).Width(100);
+          columns.Bound(c => c.PreviousShiftTag).Width(100);
+          columns.Bound(c => c.CurrentInspectionDataTag).Width(100);
+          columns.Bound(c => c.Notes).Width(100);
+          columns.Bound(c => c.MaximumCost).Width(100);
+          columns.Bound(c => c.EstimatedDensity).Width(100);
+          columns.Bound(c => c.EstimatedPressure).Width(100);
+          columns.Bound(c => c.EstimatedTemperature).Width(100);
           columns.Bound(c => c.EstimatedCompressibilityFactor);
-          columns.Bound(c => c.MaterialTypeId);
-          columns.Bound(c => c.ProcessUnitId);
-          columns.Bound(c => c.ProductId);
-          columns.Bound(c => c.ProductTypeId);
-          columns.Bound(c => c.MeasureUnitId);
-          columns.Bound(c => c.DirectionId);
-          columns.Bound(c => c.CreatedOn).Hidden().Format("{0:dd.MM.yyyy HH:mm}");
-          columns.Bound(c => c.CreatedFrom).Hidden();
-          columns.Command(command => { command.Edit(); command.Destroy(); }).Width(180);
+          columns.ForeignKey(c => c.MaterialTypeId, (System.Collections.IEnumerable)ViewData["materialTypes"], "Id", "Name").EditorTemplateName("MaterialTypeViewModel").Width(280);
+          columns.ForeignKey(c => c.ProcessUnitId, (System.Collections.IEnumerable)ViewData["processUnits"], "Id", "FullName").EditorTemplateName("ProcessUnitViewModel").Width(280);
+          columns.ForeignKey(c => c.ProductId, (System.Collections.IEnumerable)ViewData["products"], "Id", "Name").EditorTemplateName("ProductViewModel").Width(280);
+          columns.ForeignKey(c => c.MeasureUnitId, (System.Collections.IEnumerable)ViewData["measureUnits"], "Id", "Name").EditorTemplateName("MeasureUnitViewModel").Width(280);
+          columns.ForeignKey(c => c.DirectionId, (System.Collections.IEnumerable)ViewData["directions"], "Id", "Name").EditorTemplateName("DirectionViewModel").Width(280);
+          columns.Command(command => { command.Edit(); command.Destroy(); }).Width(230);
       })
       .ToolBar(toolbar =>
-        {
-            toolbar.Create();
-            toolbar.Excel();
-        })
-              .Editable(editable => editable.Mode(GridEditMode.InLine))
-                  .Pageable(pageable => pageable
-            .Refresh(true)
-            .PageSizes(new[] { 10, 20, 50, 100 })
-            .ButtonCount(5)
-        )
-              .Sortable(sortable =>
-        {
-            sortable.SortMode(GridSortMode.SingleColumn);
-        })
-      .Filterable()
-      .Scrollable(scrol => scrol.Height(620))
+      {
+          toolbar.Create();
+          toolbar.Excel();
+      })
+      .Editable(editable => editable.Mode(GridEditMode.InLine))
+          .Pageable(pageable => pageable
+              .Refresh(true)
+              .PageSizes(new[] { 20, 50, 100 })
+              .ButtonCount(5)
+          )
+          .Sortable(sortable =>
+          {
+              sortable.SortMode(GridSortMode.SingleColumn);
+          })
+          .Filterable()
+          .Scrollable(scrol => scrol.Height(620))
+      .Scrollable()
       .DataSource(dataSource => dataSource
-        .Ajax()
-        .Model(model => model.Id(p => p.Id))
-        .Read(read => read.Action("UnitConfigs_Read", "UnitConfig", new { area = "NomManagement" }))
-        .Create(create => create.Action("UnitConfigs_Create", "UnitConfig", new { area = "NomManagement" }))
-        .Update(update => update.Action("UnitConfigs_Update", "UnitConfig", new { area = "NomManagement" }))
-        .Destroy(destroy => destroy.Action("UnitConfigs_Destroy", "UnitConfig", new { area = "NomManagement" }))
+          .Ajax()
+          .PageSize(20)
+          .Model(model => model.Id(p => p.Id))
+          .Read(read => read.Action("Read", "UnitConfig", new { area = "NomManagement" }).Data("sendAntiForgery"))
+          .Create(create => create.Action("Create", "UnitConfig", new { area = "NomManagement" }).Data("sendAntiForgery"))
+          .Update(update => update.Action("Update", "UnitConfig", new { area = "NomManagement" }).Data("sendAntiForgery"))
+          .Destroy(destroy => destroy.Action("Destroy", "UnitConfig", new { area = "NomManagement" }).Data("sendAntiForgery"))
+          .Events(events =>
+                {
+                    events.Error("error_handler");
+                })
       )
+      
 )
-
-@section scripts{
-    <script>
-        $(function () {
-            var culture = $('#culture').val();
-            kendo.culture(culture);
-        });
-    </script>
-}
-
 
 
 

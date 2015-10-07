@@ -22,7 +22,7 @@ namespace CollectingProductionDataSystem.Models.Productions
         public string Code { get; set; }
         public string Position { get; set; }
         public string Name { get; set; }
-        public int? ProductId { get; set; }
+        public int ProductId { get; set; }
         public int ProcessUnitId { get; set; }
         public int DirectionId { get; set; }
         public int MeasureUnitId { get; set; }

@@ -1,0 +1,47 @@
+﻿﻿﻿@(Html.Kendo().Grid<CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewModels.ProductViewModel>()
+      .Name("grid")
+      .Columns(columns =>
+      {
+          columns.Bound(c => c.Code).Width(70);
+          columns.Bound(c => c.Name);
+          columns.ForeignKey(c => c.ProductTypeId, (System.Collections.IEnumerable)ViewData["productTypes"], "Id", "Name").EditorTemplateName("ProductTypeViewModel");
+          columns.ForeignKey(c => c.ShiftProductTypeId, (System.Collections.IEnumerable)ViewData["shiftProductTypes"], "Id", "Name").EditorTemplateName("ShiftProductTypeViewModel");
+          columns.ForeignKey(c => c.DailyProductTypeId, (System.Collections.IEnumerable)ViewData["dailyProductTypes"], "Id", "Name").EditorTemplateName("DailyProductTypeViewModel");
+          columns.Command(command => { command.Edit(); command.Destroy(); }).Width(230);
+      })
+      .ToolBar(toolbar =>
+      {
+          toolbar.Create();
+          toolbar.Excel();
+      })
+      .Editable(editable => editable.Mode(GridEditMode.InLine))
+          .Pageable(pageable => pageable
+              .Refresh(true)
+              .PageSizes(new[] { 20, 50, 100 })
+              .ButtonCount(5)
+          )
+          .Sortable(sortable =>
+          {
+              sortable.SortMode(GridSortMode.SingleColumn);
+          })
+          .Filterable()
+          .Scrollable(scrol => scrol.Height(620))
+      .Scrollable()
+      .DataSource(dataSource => dataSource
+          .Ajax()
+          .PageSize(20)
+          .Model(model => model.Id(p => p.Id))
+              .Read(read => read.Action("Read", "Product", new { area = "NomManagement" }).Data("sendAntiForgery"))
+              .Create(create => create.Action("Create", "Product", new { area = "NomManagement" }).Data("sendAntiForgery"))
+              .Update(update => update.Action("Update", "Product", new { area = "NomManagement" }).Data("sendAntiForgery"))
+              .Destroy(destroy => destroy.Action("Destroy", "Product", new { area = "NomManagement" }).Data("sendAntiForgery"))
+          .Events(events =>
+                {
+                    events.Error("error_handler");
+                })
+      )
+)
+
+
+
+

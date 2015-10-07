@@ -45,3 +45,27 @@ var refreshGrid = function (selector) {
         grid.dataSource.read();
     }
 }
+
+function valueMapper(options) {
+    var url = this.dataSource.options.transport.read.url.replace("Read", "ValueMapper");
+    
+        $.ajax({
+            url: url,
+            data: convertValues(options.value),
+            success: function (data) {
+                options.success(data);
+            }
+        });
+    }
+
+    function convertValues(value) {
+        var data = {};
+
+        value = $.isArray(value) ? value : [value];
+
+        for (var idx = 0; idx < value.length; idx++) {
+            data["values[" + idx + "]"] = value[idx];
+        }
+
+        return data;
+    }

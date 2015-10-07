@@ -387,4 +387,76 @@
   <data name="Park" xml:space="preserve">
     <value>Park</value>
   </data>
+  <data name="AggregateGroup" xml:space="preserve">
+    <value>AggregateGroup</value>
+  </data>
+  <data name="AggregateParameter" xml:space="preserve">
+    <value>AggregateParameter</value>
+  </data>
+  <data name="CalculatedFormula" xml:space="preserve">
+    <value>Calculated Formula</value>
+  </data>
+  <data name="CurrentInspectionDataTag" xml:space="preserve">
+    <value>CurrentInspectionDataTag</value>
+  </data>
+  <data name="DailyProductType" xml:space="preserve">
+    <value>Daily Product Type</value>
+  </data>
+  <data name="EstimatedCompressibilityFactor" xml:space="preserve">
+    <value>EstimatedCompressibilityFactor</value>
+  </data>
+  <data name="EstimatedDensity" xml:space="preserve">
+    <value>EstimatedDensity</value>
+  </data>
+  <data name="EstimatedPressure" xml:space="preserve">
+    <value>EstimatedPressure</value>
+  </data>
+  <data name="EstimatedTemperature" xml:space="preserve">
+    <value>EstimatedTemperature</value>
+  </data>
+  <data name="IsCalculated" xml:space="preserve">
+    <value>IsCalculated</value>
+  </data>
+  <data name="IsEnergy" xml:space="preserve">
+    <value>IsEnergy</value>
+  </data>
+  <data name="IsInspectionPoint" xml:space="preserve">
+    <value>IsInspectionPoint</value>
+  </data>
+  <data name="IsMaterial" xml:space="preserve">
+    <value>IsMaterial</value>
+  </data>
+  <data name="MaterialType" xml:space="preserve">
+    <value>Material Type</value>
+  </data>
+  <data name="MaximumCost" xml:space="preserve">
+    <value>MaximumFlow</value>
+  </data>
+  <data name="Notes" xml:space="preserve">
+    <value>Notes</value>
+  </data>
+  <data name="PreviousShiftTag" xml:space="preserve">
+    <value>PreviousShiftTag</value>
+  </data>
+  <data name="Product" xml:space="preserve">
+    <value>Product</value>
+  </data>
+  <data name="ShiftProductType" xml:space="preserve">
+    <value>Shift Product Type</value>
+  </data>
+  <data name="ChooseMaterialType" xml:space="preserve">
+    <value>Choose Material Type...</value>
+  </data>
+  <data name="ChooseProduct" xml:space="preserve">
+    <value>Choose Product...</value>
+  </data>
+  <data name="ChooseMeasureUnit" xml:space="preserve">
+    <value>Choose Measure Unit...</value>
+  </data>
+  <data name="ChoosePlant" xml:space="preserve">
+    <value>Choose Plant ...</value>
+  </data>
+  <data name="ChooseProductType" xml:space="preserve">
+    <value>Choose Product Type...</value>
+  </data>
 </root>

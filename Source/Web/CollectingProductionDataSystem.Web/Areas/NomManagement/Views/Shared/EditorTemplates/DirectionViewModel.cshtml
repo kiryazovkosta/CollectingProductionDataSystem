@@ -2,7 +2,7 @@
 @model System.Int32
 @(Html.Kendo()
       .DropDownListFor(m => m)
-      .OptionLabel(Resources.Layout.ChooseArea)
+      .OptionLabel(Resources.Layout.ChooseDirection)
       .DataTextField("Name")
       .DataValueField("Id")
       .Height(520)
@@ -17,7 +17,7 @@
                   {
                       transport.Read(read =>
                         {
-                            read.Action("Read", "Area", new { area = "NomManagement" }).Data("sendAntiForgery");
+                            read.Action("Read", "Direction", new { area = "NomManagement" }).Data("sendAntiForgery");
                         });
                   })
                   .Schema(schema =>
@@ -30,4 +30,5 @@
                       .Filter(FilterType.Contains)
 
 )
+
 
