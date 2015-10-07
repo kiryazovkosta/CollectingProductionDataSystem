@@ -952,6 +952,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to TankMaster Code.
+        /// </summary>
+        public static string TankMasterCode {
+            get {
+                return ResourceManager.GetString("TankMasterCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Tank Name.
         /// </summary>
         public static string TankName {

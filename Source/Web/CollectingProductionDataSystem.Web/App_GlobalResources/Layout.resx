@@ -459,4 +459,7 @@
   <data name="ChooseProductType" xml:space="preserve">
     <value>Choose Product Type...</value>
   </data>
+  <data name="TankMasterCode" xml:space="preserve">
+    <value>TankMaster Code</value>
+  </data>
 </root>
