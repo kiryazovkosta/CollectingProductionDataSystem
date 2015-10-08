@@ -585,4 +585,7 @@
   <data name="Zone" xml:space="preserve">
     <value>Zone</value>
   </data>
+  <data name="IsEditable" xml:space="preserve">
+    <value>IsEditable</value>
+  </data>
 </root>

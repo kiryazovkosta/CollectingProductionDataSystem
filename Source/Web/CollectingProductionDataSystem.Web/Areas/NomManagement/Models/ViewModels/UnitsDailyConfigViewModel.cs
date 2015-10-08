@@ -46,6 +46,10 @@
         
         [Display(Name = "AggregationMembers", ResourceType = typeof(Resources.Layout))]
         public string AggregationMembers { get; set; }
+
+        [Display(Name = "IsEditable", ResourceType = typeof(Resources.Layout))]
+        public bool IsEditable { get; set; }
+
         /// <summary>
         /// Creates the mappings.
         /// </summary>

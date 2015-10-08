@@ -93,6 +93,9 @@
 
         [Display(Name = "ShiftProductType", ResourceType = typeof(Resources.Layout))]
         public int ShiftProductTypeId { get; set; }
+
+        [Display(Name = "IsEditable", ResourceType = typeof(Resources.Layout))]
+        public bool IsEditable { get; set; }
         
         /// <summary>
         /// Creates the mappings.

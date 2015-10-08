@@ -646,6 +646,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to IsEditable.
+        /// </summary>
+        public static string IsEditable {
+            get {
+                return ResourceManager.GetString("IsEditable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to IsEnergy.
         /// </summary>
         public static string IsEnergy {

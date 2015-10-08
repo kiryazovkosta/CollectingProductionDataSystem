@@ -588,4 +588,7 @@
   <data name="Zone" xml:space="preserve">
     <value>Зони</value>
   </data>
+  <data name="IsEditable" xml:space="preserve">
+    <value>Редактируема</value>
+  </data>
 </root>
