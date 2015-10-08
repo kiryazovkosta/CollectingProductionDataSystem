@@ -64,8 +64,9 @@
         public int MeasureUnitId { get; set; }
         public MeasureUnitUnitsDailyDataViewModel MeasureUnit { get; set; }
 
-
-        public DailyProductTypeViewModel ProductType { get; set; }
+        [UIHint("Hidden")]
+        public int  DailyProductTypeId { get; set; }
+        public DailyProductTypeViewModel DailyProductType { get; set; }
 
         //public void CreateMappings(IConfiguration configuration)
         //{
