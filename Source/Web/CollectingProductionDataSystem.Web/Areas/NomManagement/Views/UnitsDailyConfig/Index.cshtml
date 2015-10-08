@@ -1,0 +1,48 @@
+﻿@(Html.Kendo().Grid<CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewModels.UnitsDailyConfigViewModel>()
+      .Name("grid")
+      .Columns(columns =>
+      {
+          columns.Bound(c => c.Name).Width(200);
+          columns.Bound(c => c.Code).Width(100);
+          columns.ForeignKey(c => c.ProcessUnitId, (System.Collections.IEnumerable)ViewData["processUnits"], "Id", "FullName").EditorTemplateName("ProcessUnitViewModel").Width(280);
+          columns.ForeignKey(c => c.ProductId, (System.Collections.IEnumerable)ViewData["products"], "Id", "Name").EditorTemplateName("ProductViewModel").Width(280);
+          columns.ForeignKey(c => c.MeasureUnitId, (System.Collections.IEnumerable)ViewData["measureUnits"], "Id", "Name").EditorTemplateName("MeasureUnitViewModel").Width(280);
+          columns.ForeignKey(c => c.DailyProductTypeId, (System.Collections.IEnumerable)ViewData["dailyProductTypes"], "Id", "Name").EditorTemplateName("DailyProductTypeViewModel").Width(280);
+          columns.Bound(c => c.AggregationFormula).Width(380);
+          columns.Bound(c => c.AggregationCurrentLevel).Width(100);
+          columns.Bound(c => c.AggregationMembers).Width(100);
+          columns.Command(command => { command.Edit(); command.Destroy(); }).Width(230);
+      })
+      .Resizable(res=>res.Columns(true))
+      .ToolBar(toolbar =>
+      {
+          toolbar.Create();
+          toolbar.Excel();
+      })
+      .Editable(editable => editable.Mode(GridEditMode.InLine))
+          .Pageable(pageable => pageable
+              .Refresh(true)
+              .PageSizes(new[] { 20, 50, 100 })
+              .ButtonCount(5)
+          )
+          .Sortable(sortable =>
+          {
+              sortable.SortMode(GridSortMode.SingleColumn);
+          })
+          .Filterable()
+          .Scrollable(scrol => scrol.Height(620))
+      .Scrollable()
+      .DataSource(dataSource => dataSource
+          .Ajax()
+          .PageSize(20)
+          .Model(model => model.Id(p => p.Id))
+              .Read(read => read.Action("Read", "UnitsDailyConfig", new { area = "NomManagement" }).Data("sendAntiForgery"))
+              .Create(create => create.Action("Create", "UnitsDailyConfig", new { area = "NomManagement" }).Data("sendAntiForgery"))
+              .Update(update => update.Action("Update", "UnitsDailyConfig", new { area = "NomManagement" }).Data("sendAntiForgery"))
+              .Destroy(destroy => destroy.Action("Destroy", "UnitsDailyConfig", new { area = "NomManagement" }).Data("sendAntiForgery"))
+          .Events(events =>
+                {
+                    events.Error("error_handler");
+                })
+      )
+)

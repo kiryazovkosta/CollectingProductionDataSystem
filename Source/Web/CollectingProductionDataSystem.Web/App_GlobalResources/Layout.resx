@@ -471,37 +471,118 @@
   <data name="AggregationMembers" xml:space="preserve">
     <value>Aggregation Members</value>
   </data>
+  <data name="Areas" xml:space="preserve">
+    <value>Areas</value>
+  </data>
+  <data name="DailyProductType1" xml:space="preserve">
+    <value>DailyProductType</value>
+  </data>
   <data name="DailyProductTypes" xml:space="preserve">
     <value>DailyProductTypes</value>
+  </data>
+  <data name="Direction1" xml:space="preserve">
+    <value>Direction</value>
   </data>
   <data name="Directions" xml:space="preserve">
     <value>Directions</value>
   </data>
+  <data name="EditReason1" xml:space="preserve">
+    <value>EditReason</value>
+  </data>
   <data name="Factories" xml:space="preserve">
     <value>Factories</value>
+  </data>
+  <data name="Factory1" xml:space="preserve">
+    <value>Factory</value>
+  </data>
+  <data name="Ikunk" xml:space="preserve">
+    <value>Ikunk</value>
+  </data>
+  <data name="Inventories" xml:space="preserve">
+    <value>Inventories</value>
+  </data>
+  <data name="MaterialType1" xml:space="preserve">
+    <value>MaterialType</value>
   </data>
   <data name="MaterialTypes" xml:space="preserve">
     <value>MaterialTypes</value>
   </data>
+  <data name="MeasurementPointsProductsConfig" xml:space="preserve">
+    <value>MeasurementPointsProductsConfig</value>
+  </data>
   <data name="MeasurementUnits" xml:space="preserve">
     <value>MeasurementUnits</value>
+  </data>
+  <data name="MeasureUnit1" xml:space="preserve">
+    <value>MeasureUnit</value>
+  </data>
+  <data name="MeasuringPointConfig" xml:space="preserve">
+    <value>MeasuringPointConfig</value>
+  </data>
+  <data name="Nomenclatures" xml:space="preserve">
+    <value>Nomenclatures</value>
+  </data>
+  <data name="Park1" xml:space="preserve">
+    <value>Park</value>
   </data>
   <data name="Plants" xml:space="preserve">
     <value>Plants</value>
   </data>
+  <data name="ProcessUnit1" xml:space="preserve">
+    <value>ProcessUnit</value>
+  </data>
+  <data name="Product1" xml:space="preserve">
+    <value>Product</value>
+  </data>
+  <data name="ProductionPlanConfig" xml:space="preserve">
+    <value>ProductionPlanConfig</value>
+  </data>
+  <data name="Productions" xml:space="preserve">
+    <value>Productions</value>
+  </data>
+  <data name="ProductionShift1" xml:space="preserve">
+    <value>ProductionShift</value>
+  </data>
   <data name="Products" xml:space="preserve">
     <value>Products</value>
+  </data>
+  <data name="ProductType1" xml:space="preserve">
+    <value>ProductType</value>
   </data>
   <data name="ProductTypes" xml:space="preserve">
     <value>ProductTypes</value>
   </data>
+  <data name="ShiftProductType1" xml:space="preserve">
+    <value>ShiftProductType</value>
+  </data>
   <data name="ShiftProductTypes" xml:space="preserve">
     <value>ShiftProductTypes</value>
+  </data>
+  <data name="TankConfig" xml:space="preserve">
+    <value>TankConfig</value>
+  </data>
+  <data name="TankMasterProduct" xml:space="preserve">
+    <value>TankMasterProduct</value>
+  </data>
+  <data name="Transactions" xml:space="preserve">
+    <value>Transactions</value>
+  </data>
+  <data name="TransportType" xml:space="preserve">
+    <value>TransportType</value>
+  </data>
+  <data name="UnitConfig" xml:space="preserve">
+    <value>UnitConfig</value>
   </data>
   <data name="UnitsConfigs" xml:space="preserve">
     <value>UnitsConfigs</value>
   </data>
+  <data name="UnitsDailyConfig" xml:space="preserve">
+    <value>UnitsDailyConfig</value>
+  </data>
   <data name="UnitsDailyConfigs" xml:space="preserve">
     <value>UnitsDailyConfigs</value>
+  </data>
+  <data name="Zone" xml:space="preserve">
+    <value>Zone</value>
   </data>
 </root>

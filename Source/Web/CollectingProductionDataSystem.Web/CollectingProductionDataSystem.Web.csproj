@@ -249,6 +249,7 @@
     <Compile Include="Areas\NomManagement\Controllers\GenericNomController.cs" />
     <Compile Include="Areas\NomManagement\Controllers\MaterialTypeController.cs" />
     <Compile Include="Areas\NomManagement\Controllers\MeasureUnitController.cs" />
+    <Compile Include="Areas\NomManagement\Controllers\NomenclaturesController.cs" />
     <Compile Include="Areas\NomManagement\Controllers\ParkController.cs" />
     <Compile Include="Areas\NomManagement\Controllers\PlantController.cs" />
     <Compile Include="Areas\NomManagement\Controllers\ProcessUnitController.cs" />
@@ -327,8 +328,6 @@
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
-    <Content Include="Content\bootstrap.cosmo.css" />
-    <Content Include="Content\bootstrap.cosmo.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\custom\slidebar.css" />
@@ -737,6 +736,7 @@
     <Content Include="Areas\NomManagement\Views\Shared\EditorTemplates\MeasureUnitViewModel.cshtml" />
     <Content Include="Areas\NomManagement\Views\MeasureUnit\Index.cshtml" />
     <Content Include="Areas\NomManagement\Views\UnitsDailyConfig\Index.cshtml" />
+    <Content Include="Areas\NomManagement\Views\Nomenclatures\Index.cshtml" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <None Include="Properties\PublishProfiles\Home.pubxml" />
     <Content Include="Scripts\custom\sendArea.js" />
@@ -758,6 +758,8 @@
     <Content Include="Scripts\custom\unitGridsData.js" />
     <Content Include="Scripts\jquery-2.1.4.js" />
     <Content Include="Scripts\jquery-2.1.4.min.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />

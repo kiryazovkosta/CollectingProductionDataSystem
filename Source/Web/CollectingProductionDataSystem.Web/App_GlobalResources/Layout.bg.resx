@@ -379,7 +379,7 @@
     <value>Пълно име</value>
   </data>
   <data name="Plant" xml:space="preserve">
-    <value>Plant ????</value>
+    <value>Завод</value>
   </data>
   <data name="ShortName" xml:space="preserve">
     <value>Съкратено име</value>
@@ -474,37 +474,118 @@
   <data name="AggregationMembers" xml:space="preserve">
     <value>Позиции за агрегиране</value>
   </data>
+  <data name="Areas" xml:space="preserve">
+    <value>Области</value>
+  </data>
+  <data name="DailyProductType1" xml:space="preserve">
+    <value>Дневни типове на продукти</value>
+  </data>
   <data name="DailyProductTypes" xml:space="preserve">
     <value>Дневни типове на продукт</value>
+  </data>
+  <data name="Direction1" xml:space="preserve">
+    <value>Посоки на потоци</value>
   </data>
   <data name="Directions" xml:space="preserve">
     <value>Посоки на движение</value>
   </data>
+  <data name="EditReason1" xml:space="preserve">
+    <value>Причини за корекции</value>
+  </data>
   <data name="Factories" xml:space="preserve">
     <value>Производства</value>
+  </data>
+  <data name="Factory1" xml:space="preserve">
+    <value>Производства</value>
+  </data>
+  <data name="Ikunk" xml:space="preserve">
+    <value>Икунк</value>
+  </data>
+  <data name="Inventories" xml:space="preserve">
+    <value>Наличности</value>
+  </data>
+  <data name="MaterialType1" xml:space="preserve">
+    <value>Типове материали</value>
   </data>
   <data name="MaterialTypes" xml:space="preserve">
     <value>Видове потоци</value>
   </data>
+  <data name="MeasurementPointsProductsConfig" xml:space="preserve">
+    <value>Разходомери</value>
+  </data>
   <data name="MeasurementUnits" xml:space="preserve">
     <value>Мерни единици</value>
+  </data>
+  <data name="MeasureUnit1" xml:space="preserve">
+    <value>Мерна единица</value>
+  </data>
+  <data name="MeasuringPointConfig" xml:space="preserve">
+    <value>Измервателни точки</value>
+  </data>
+  <data name="Nomenclatures" xml:space="preserve">
+    <value>Номенклатури</value>
+  </data>
+  <data name="Park1" xml:space="preserve">
+    <value>Резервоарни паркове</value>
   </data>
   <data name="Plants" xml:space="preserve">
     <value>Заводи</value>
   </data>
+  <data name="ProcessUnit1" xml:space="preserve">
+    <value>Инсталации</value>
+  </data>
+  <data name="Product1" xml:space="preserve">
+    <value>Продукти</value>
+  </data>
+  <data name="ProductionPlanConfig" xml:space="preserve">
+    <value>Отборни данни на потоци</value>
+  </data>
+  <data name="Productions" xml:space="preserve">
+    <value>Произодствени данни</value>
+  </data>
+  <data name="ProductionShift1" xml:space="preserve">
+    <value>Смени</value>
+  </data>
   <data name="Products" xml:space="preserve">
     <value>Продукти</value>
+  </data>
+  <data name="ProductType1" xml:space="preserve">
+    <value>Типове продукти по ЗАДС</value>
   </data>
   <data name="ProductTypes" xml:space="preserve">
     <value>Типове на продукт по ЗАДЦ</value>
   </data>
+  <data name="ShiftProductType1" xml:space="preserve">
+    <value>Сменни типове на продукти</value>
+  </data>
   <data name="ShiftProductTypes" xml:space="preserve">
     <value>Сменни типове на продукт</value>
+  </data>
+  <data name="TankConfig" xml:space="preserve">
+    <value>Резервоари</value>
+  </data>
+  <data name="TankMasterProduct" xml:space="preserve">
+    <value>Продукти в Tank Master</value>
+  </data>
+  <data name="Transactions" xml:space="preserve">
+    <value>Експедиция и доставки</value>
+  </data>
+  <data name="TransportType" xml:space="preserve">
+    <value>Видове транспорт</value>
+  </data>
+  <data name="UnitConfig" xml:space="preserve">
+    <value>Измервателни позиции</value>
   </data>
   <data name="UnitsConfigs" xml:space="preserve">
     <value>Сменни потоци по инсталации</value>
   </data>
+  <data name="UnitsDailyConfig" xml:space="preserve">
+    <value>Дневни измервателни точки</value>
+  </data>
   <data name="UnitsDailyConfigs" xml:space="preserve">
     <value>Дневни потоци по инсталации</value>
+  </data>
+  <data name="Zone" xml:space="preserve">
+    <value>Зони</value>
   </data>
 </root>

@@ -29,7 +29,7 @@ namespace CollectingProductionDataSystem.Web.Areas.NomManagement.Controllers
 
         public virtual ActionResult Index()
         {
-            return View();
+            return PartialView();
         }
 
         [HttpPost]
