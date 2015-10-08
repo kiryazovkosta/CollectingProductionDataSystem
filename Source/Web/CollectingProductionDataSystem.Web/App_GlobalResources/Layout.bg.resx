@@ -580,7 +580,7 @@
     <value>Сменни потоци по инсталации</value>
   </data>
   <data name="UnitsDailyConfig" xml:space="preserve">
-    <value>Дневни измервателни точки</value>
+    <value>Дневни измервателни позиции</value>
   </data>
   <data name="UnitsDailyConfigs" xml:space="preserve">
     <value>Дневни потоци по инсталации</value>
