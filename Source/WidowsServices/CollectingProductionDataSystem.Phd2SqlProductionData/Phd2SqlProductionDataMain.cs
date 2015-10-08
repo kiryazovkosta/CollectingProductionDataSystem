@@ -68,10 +68,12 @@
                                 if (unitConfig.CollectingDataMechanism.ToUpper() == "A")
                                 {
                                     var confidence = 0;
+                                    logger.Info(unitConfig.PreviousShiftTag);
 
                                     var s = unitsData.Where(x => x.UnitConfigId == unitConfig.Id).FirstOrDefault();
                                     if (s != null)
                                     {
+                                        logger.InfoFormat("Exists {0} {1}", unitConfig.Name, s.RealValue);
                                         continue;
                                     }
 
@@ -90,15 +92,19 @@
                                             unitData.RecordTimestamp = unitData.RecordTimestamp.Date;
                                             context.UnitsData.Add(unitData); 
                                         }
+
+                                        logger.InfoFormat("Added {0} {1}", unitConfig.Name, unitData.RealValue);
                                     }
                                     else
                                     {
                                         SetDefaultValue(context, recordDataTime, shift, unitsData, unitConfig);
+                                        logger.InfoFormat("Default {0} {1}", unitConfig.Name, unitData.RealValue);
                                     }
                                 }
                                 else 
                                 {
                                     SetDefaultValue(context, recordDataTime, shift, unitsData, unitConfig);
+                                    logger.InfoFormat("Manual {0} {1}", unitConfig.Name, 0);
                                 }
                             }
 
