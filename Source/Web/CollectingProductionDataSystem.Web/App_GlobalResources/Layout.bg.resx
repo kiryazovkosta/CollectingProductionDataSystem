@@ -465,4 +465,46 @@
   <data name="TankMasterCode" xml:space="preserve">
     <value>TankMaster Код</value>
   </data>
+  <data name="AggregationCurrentLevel" xml:space="preserve">
+    <value>Агрегация на тек. ниво</value>
+  </data>
+  <data name="AggregationFormula" xml:space="preserve">
+    <value>Формула</value>
+  </data>
+  <data name="AggregationMembers" xml:space="preserve">
+    <value>Позиции за агрегиране</value>
+  </data>
+  <data name="DailyProductTypes" xml:space="preserve">
+    <value>Дневни типове на продукт</value>
+  </data>
+  <data name="Directions" xml:space="preserve">
+    <value>Посоки на движение</value>
+  </data>
+  <data name="Factories" xml:space="preserve">
+    <value>Производства</value>
+  </data>
+  <data name="MaterialTypes" xml:space="preserve">
+    <value>Видове потоци</value>
+  </data>
+  <data name="MeasurementUnits" xml:space="preserve">
+    <value>Мерни единици</value>
+  </data>
+  <data name="Plants" xml:space="preserve">
+    <value>Заводи</value>
+  </data>
+  <data name="Products" xml:space="preserve">
+    <value>Продукти</value>
+  </data>
+  <data name="ProductTypes" xml:space="preserve">
+    <value>Типове на продукт по ЗАДЦ</value>
+  </data>
+  <data name="ShiftProductTypes" xml:space="preserve">
+    <value>Сменни типове на продукт</value>
+  </data>
+  <data name="UnitsConfigs" xml:space="preserve">
+    <value>Сменни потоци по инсталации</value>
+  </data>
+  <data name="UnitsDailyConfigs" xml:space="preserve">
+    <value>Дневни потоци по инсталации</value>
+  </data>
 </root>

@@ -18,9 +18,6 @@ namespace CollectingProductionDataSystem.Data.Mappings
             this.Property(t => t.PreviousShiftTag)
                 .HasMaxLength(50);
 
-            this.Property(t => t.CurrentInspectionDataTag)
-                .HasMaxLength(50);
-
             this.Property(t => t.Notes)
                 .HasMaxLength(200);
 
@@ -47,6 +44,10 @@ namespace CollectingProductionDataSystem.Data.Mappings
             this.HasRequired(t => t.Product)
                 .WithMany(t => t.UnitConfigs)
                 .HasForeignKey(d => d.ProductId);
+
+            this.HasOptional(t => t.ShiftProductType)
+                .WithMany(t => t.UnitConfigs)
+                .HasForeignKey(d => d.ShiftProductTypeId);
 
         }
     }

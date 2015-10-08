@@ -5,8 +5,8 @@
           columns.Bound(c => c.Code).Width(70);
           columns.Bound(c => c.Name);
           columns.ForeignKey(c => c.ProductTypeId, (System.Collections.IEnumerable)ViewData["productTypes"], "Id", "Name").EditorTemplateName("ProductTypeViewModel");
-          columns.ForeignKey(c => c.ShiftProductTypeId, (System.Collections.IEnumerable)ViewData["shiftProductTypes"], "Id", "Name").EditorTemplateName("ShiftProductTypeViewModel");
-          columns.ForeignKey(c => c.DailyProductTypeId, (System.Collections.IEnumerable)ViewData["dailyProductTypes"], "Id", "Name").EditorTemplateName("DailyProductTypeViewModel");
+          //columns.ForeignKey(c => c.ShiftProductTypeId, (System.Collections.IEnumerable)ViewData["shiftProductTypes"], "Id", "Name").EditorTemplateName("ShiftProductTypeViewModel");
+          //columns.ForeignKey(c => c.DailyProductTypeId, (System.Collections.IEnumerable)ViewData["dailyProductTypes"], "Id", "Name").EditorTemplateName("DailyProductTypeViewModel");
           columns.Command(command => { command.Edit(); command.Destroy(); }).Width(230);
       })
       .ToolBar(toolbar =>

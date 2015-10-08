@@ -5,8 +5,77 @@
     @RenderSection("styles", required: false)
 }
 
-@Html.AntiForgeryToken()
-@RenderBody()
+<div class="row">
+    <div class="col-sm-2">
+        <aside class="nom-side-nav">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <span class="glyphicon glyphicon-wrench"></span> на номенклатури
+                </div>
+                <div class="panel-body">
+                    <div class="panel-group" role="tablist">
+                        <div class="panel panel-default">
+                            <div class="panel-heading" role="tab" id="collapseListGroupHeading1">
+                                <h4 class="panel-title">
+                                    <a class="" role="button" data-toggle="collapse" href="#collapseListGroup1" aria-expanded="false" aria-controls="collapseListGroup1">
+                                        Collapsible list group 1
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapseListGroup1" class="panel-collapse collapse" role="tabpanel" aria-labelledby="collapseListGroupHeading1" aria-expanded="false">
+                                <ul class="list-group">
+                                    <li class="list-group-item">Bootply</li>
+                                    <li class="list-group-item">One itmus ac facilin</li>
+                                    <li class="list-group-item">Second eros</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-group" role="tablist">
+                        <div class="panel panel-default">
+                            <div class="panel-heading" role="tab" id="collapseListGroupHeading2">
+                                <h4 class="panel-title">
+                                    <a class="" role="button" data-toggle="collapse" href="#collapseListGroup2" aria-expanded="false" aria-controls="collapseListGroup2">
+                                        Collapsible list group 2
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapseListGroup2" class="panel-collapse collapse" role="tabpanel" aria-labelledby="collapseListGroupHeading2" aria-expanded="false">
+                                <ul class="list-group">
+                                    <li class="list-group-item">Bootply</li>
+                                    <li class="list-group-item">One itmus ac facilin</li>
+                                    <li class="list-group-item">Second eros</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-group" role="tablist">
+                        <div class="panel panel-default">
+                            <div class="panel-heading" role="tab" id="collapseListGroupHeading3">
+                                <h4 class="panel-title">
+                                    <a class="" role="button" data-toggle="collapse" href="#collapseListGroup3" aria-expanded="false" aria-controls="collapseListGroup2">
+                                        Collapsible list group 3
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapseListGroup3" class="panel-collapse collapse" role="tabpanel" aria-labelledby="collapseListGroupHeading3" aria-expanded="false">
+                                <ul class="list-group">
+                                    <li class="list-group-item">Bootply</li>
+                                    <li class="list-group-item">One itmus ac facilin</li>
+                                    <li class="list-group-item">Second eros</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+    </div>
+    <div class="col-sm-10">
+        @Html.AntiForgeryToken()
+        @RenderBody()
+    </div>
+</div>
 
 @* //Error window for kendo grid error event handler *@
 <div id="err-window" style="display:none">@Html.Partial("_KendoGridErrorWindow")</div>

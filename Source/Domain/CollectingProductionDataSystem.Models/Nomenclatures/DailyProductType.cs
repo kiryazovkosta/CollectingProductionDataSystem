@@ -1,22 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CollectingProductionDataSystem.Models.Abstract;
-using CollectingProductionDataSystem.Models.Contracts;
-
-namespace CollectingProductionDataSystem.Models.Nomenclatures
+﻿namespace CollectingProductionDataSystem.Models.Nomenclatures
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using CollectingProductionDataSystem.Models.Abstract;
+    using CollectingProductionDataSystem.Models.Contracts;
+    using CollectingProductionDataSystem.Models.Productions;
+
     public partial class DailyProductType : DeletableEntity, IEntity
     {
         public DailyProductType()
         {
-            this.Products = new HashSet<Product>();
+            this.UnitsDailyConfigs = new HashSet<UnitsDailyConfig>();
         }
 
         public int Id { get; set; }
         public string Name { get; set; }
-        public virtual ICollection<Product> Products { get; set; }
+        public virtual ICollection<UnitsDailyConfig> UnitsDailyConfigs { get; set; }
     }
 }

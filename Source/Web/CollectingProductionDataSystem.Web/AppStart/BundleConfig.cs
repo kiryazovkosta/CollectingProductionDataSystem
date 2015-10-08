@@ -21,7 +21,7 @@ namespace CollectingProductionDataSystem.Web.AppStart
         private static void ConfigureStyleBundles(BundleCollection bundles)
         {
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/bootstrap.css",
+                      "~/Content/bootstrap.min.css",
                       "~/Content/bootstrap-theme.min.css",
                       "~/Content/Site.css"));
 

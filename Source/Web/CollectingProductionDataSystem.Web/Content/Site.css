@@ -441,3 +441,22 @@ ul.k-list li {
     margin-bottom: 0;
     font-size: 0.8em;
 }
+
+/*----------- navigation of nom management ---------------*/
+
+aside.nom-side-nav {
+   margin-top:20px;
+}
+
+aside.nom-side-nav>div.panel.panel-default>.panel-heading {
+        font-variant:small-caps;
+        font-size:1.2em;
+        font-weight:bold;
+        text-align:center;
+    }
+
+    aside.nom-side-nav div.panel-group {
+        margin:0;
+    }
+
+     

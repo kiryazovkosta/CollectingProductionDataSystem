@@ -256,6 +256,7 @@
     <Compile Include="Areas\NomManagement\Controllers\ProductTypeController.cs" />
     <Compile Include="Areas\NomManagement\Controllers\ShiftProductTypeController.cs" />
     <Compile Include="Areas\NomManagement\Controllers\UnitConfigController.cs" />
+    <Compile Include="Areas\NomManagement\Controllers\UnitsDailyConfigController.cs" />
     <Compile Include="Areas\NomManagement\Controllers\UploadNomController.cs" />
     <Compile Include="Areas\NomManagement\Models\ViewModels\AreaViewModel.cs" />
     <Compile Include="Areas\NomManagement\Models\ViewModels\DailyProductTypeViewModel.cs" />
@@ -268,7 +269,9 @@
     <Compile Include="Areas\NomManagement\Models\ViewModels\ProductTypeViewModel.cs" />
     <Compile Include="Areas\NomManagement\Models\ViewModels\ProductViewModel.cs" />
     <Compile Include="Areas\NomManagement\Models\ViewModels\ShiftProductTypeViewModel.cs" />
+    <Compile Include="Areas\NomManagement\Models\ViewModels\TankMasterProductViewModel.cs" />
     <Compile Include="Areas\NomManagement\Models\ViewModels\UnitConfigViewModel.cs" />
+    <Compile Include="Areas\NomManagement\Models\ViewModels\UnitsDailyConfigViewModel.cs" />
     <Compile Include="Areas\NomManagement\NomManagementAreaRegistration.cs" />
     <Compile Include="Areas\NomManagement\Models\ViewModels\PlantViewModel.cs" />
     <Compile Include="Areas\ShiftReporting\Controllers\AjaxController.cs" />
@@ -733,6 +736,7 @@
     <Content Include="Areas\NomManagement\Views\Shared\EditorTemplates\MaterialTypeViewModel.cshtml" />
     <Content Include="Areas\NomManagement\Views\Shared\EditorTemplates\MeasureUnitViewModel.cshtml" />
     <Content Include="Areas\NomManagement\Views\MeasureUnit\Index.cshtml" />
+    <Content Include="Areas\NomManagement\Views\UnitsDailyConfig\Index.cshtml" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <None Include="Properties\PublishProfiles\Home.pubxml" />
     <Content Include="Scripts\custom\sendArea.js" />
@@ -1395,6 +1399,7 @@
     <Folder Include="Views\Plant\" />
     <Folder Include="Views\ProcessUnit\" />
     <Folder Include="Views\UnitConfig\" />
+    <Folder Include="Views\UnitsDailyConfig\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

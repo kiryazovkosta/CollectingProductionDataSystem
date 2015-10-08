@@ -44,120 +44,120 @@
 
         internal static void ProcessInspectionPointsData()
         {
-            try
-            {
-                logger.Info("Sync inspection points started!");
+            //try
+            //{
+            //    logger.Info("Sync inspection points started!");
 
-                using (var context = new ProductionData(new CollectingDataSystemDbContext(new AuditablePersister())))
-                {
-                    var units = context.UnitConfigs
-                        .All()
-                        .Where(u => u.IsInspectionPoint == true)
-                        .Select(u => new InspectionPoint()
-                        {
-                            UnitId = u.Id,
-                            InspectionPointTag = u.CurrentInspectionDataTag
-                        });
+            //    using (var context = new ProductionData(new CollectingDataSystemDbContext(new AuditablePersister())))
+            //    {
+            //        var units = context.UnitConfigs
+            //            .All()
+            //            .Where(u => u.IsInspectionPoint == true)
+            //            .Select(u => new InspectionPoint()
+            //            {
+            //                UnitId = u.Id,
+            //                InspectionPointTag = u.CurrentInspectionDataTag
+            //            });
 
-                    if (units.Count() > 0)
-                    {
-                        using (PHDHistorian oPhd = new PHDHistorian())
-                        {
-                            using (PHDServer defaultServer = new PHDServer(Properties.Settings.Default.PHD_HOST))
-                            {
-                                defaultServer.Port = Properties.Settings.Default.PHD_PORT;
-                                defaultServer.APIVersion = Uniformance.PHD.SERVERVERSION.RAPI200;
-                                oPhd.DefaultServer = defaultServer;
-                                oPhd.StartTime = "NOW - 2M";
-                                oPhd.EndTime = "NOW - 2M";
-                                oPhd.Sampletype = Properties.Settings.Default.INSPECTION_DATA_SAMPLETYPE;
-                                oPhd.MinimumConfidence = Properties.Settings.Default.INSPECTION_DATA_MINIMUM_CONFIDENCE;
-                                oPhd.MaximumRows = Properties.Settings.Default.INSPECTION_DATA_MAX_ROWS;
+            //        if (units.Count() > 0)
+            //        {
+            //            using (PHDHistorian oPhd = new PHDHistorian())
+            //            {
+            //                using (PHDServer defaultServer = new PHDServer(Properties.Settings.Default.PHD_HOST))
+            //                {
+            //                    defaultServer.Port = Properties.Settings.Default.PHD_PORT;
+            //                    defaultServer.APIVersion = Uniformance.PHD.SERVERVERSION.RAPI200;
+            //                    oPhd.DefaultServer = defaultServer;
+            //                    oPhd.StartTime = "NOW - 2M";
+            //                    oPhd.EndTime = "NOW - 2M";
+            //                    oPhd.Sampletype = Properties.Settings.Default.INSPECTION_DATA_SAMPLETYPE;
+            //                    oPhd.MinimumConfidence = Properties.Settings.Default.INSPECTION_DATA_MINIMUM_CONFIDENCE;
+            //                    oPhd.MaximumRows = Properties.Settings.Default.INSPECTION_DATA_MAX_ROWS;
 
-                                // get all inspection data
-                                foreach (var item in units)
-                                {
-                                    var unitInspectionPointData = new UnitsInspectionData();
-                                    unitInspectionPointData.UnitConfigId = item.UnitId;
-                                    DataSet dsGrid = oPhd.FetchRowData(item.InspectionPointTag);
-                                    var confidence = 100;
-                                    foreach (DataRow row in dsGrid.Tables[0].Rows)
-                                    {
-                                        foreach (DataColumn dc in dsGrid.Tables[0].Columns)
-                                        {
-                                            if (dc.ColumnName.Equals("Tolerance") || dc.ColumnName.Equals("HostName"))
-                                            {
-                                                continue;
-                                            }
-                                            else if (dc.ColumnName.Equals("Confidence"))
-                                            {
-                                                if (!string.IsNullOrWhiteSpace(row[dc].ToString()))
-                                                {
-                                                    confidence = Convert.ToInt32(row[dc]);
-                                                }
-                                                else
-                                                {
-                                                    confidence = 0;
-                                                    break;
-                                                }
+            //                    // get all inspection data
+            //                    foreach (var item in units)
+            //                    {
+            //                        var unitInspectionPointData = new UnitsInspectionData();
+            //                        unitInspectionPointData.UnitConfigId = item.UnitId;
+            //                        DataSet dsGrid = oPhd.FetchRowData(item.InspectionPointTag);
+            //                        var confidence = 100;
+            //                        foreach (DataRow row in dsGrid.Tables[0].Rows)
+            //                        {
+            //                            foreach (DataColumn dc in dsGrid.Tables[0].Columns)
+            //                            {
+            //                                if (dc.ColumnName.Equals("Tolerance") || dc.ColumnName.Equals("HostName"))
+            //                                {
+            //                                    continue;
+            //                                }
+            //                                else if (dc.ColumnName.Equals("Confidence"))
+            //                                {
+            //                                    if (!string.IsNullOrWhiteSpace(row[dc].ToString()))
+            //                                    {
+            //                                        confidence = Convert.ToInt32(row[dc]);
+            //                                    }
+            //                                    else
+            //                                    {
+            //                                        confidence = 0;
+            //                                        break;
+            //                                    }
                                                 
-                                            }
-                                            else if (dc.ColumnName.Equals("Value"))
-                                            {
-                                                if (!string.IsNullOrWhiteSpace(row[dc].ToString()))
-                                                {
-                                                    unitInspectionPointData.Value = Convert.ToDecimal(row[dc]);
-                                                }
-                                            }
-                                            else if (dc.ColumnName.Equals("TimeStamp"))
-                                            {
-                                                var recordDt = row[dc].ToString();
-                                                if (!string.IsNullOrWhiteSpace(recordDt))
-                                                {
-                                                     var recordTimestamp = DateTime.ParseExact(recordDt, "dd.MM.yyyy HH:mm:ss", CultureInfo.InvariantCulture);
-                                                    if (TimeZoneInfo.Local.IsDaylightSavingTime(recordTimestamp))
-                                                    {
-                                                        recordTimestamp = recordTimestamp.AddHours(-1);
-                                                    }
-                                                    unitInspectionPointData.RecordTimestamp = recordTimestamp;   
-                                                }
+            //                                }
+            //                                else if (dc.ColumnName.Equals("Value"))
+            //                                {
+            //                                    if (!string.IsNullOrWhiteSpace(row[dc].ToString()))
+            //                                    {
+            //                                        unitInspectionPointData.Value = Convert.ToDecimal(row[dc]);
+            //                                    }
+            //                                }
+            //                                else if (dc.ColumnName.Equals("TimeStamp"))
+            //                                {
+            //                                    var recordDt = row[dc].ToString();
+            //                                    if (!string.IsNullOrWhiteSpace(recordDt))
+            //                                    {
+            //                                         var recordTimestamp = DateTime.ParseExact(recordDt, "dd.MM.yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+            //                                        if (TimeZoneInfo.Local.IsDaylightSavingTime(recordTimestamp))
+            //                                        {
+            //                                            recordTimestamp = recordTimestamp.AddHours(-1);
+            //                                        }
+            //                                        unitInspectionPointData.RecordTimestamp = recordTimestamp;   
+            //                                    }
                                                
-                                            }
-                                        }
-                                    }
-                                    if (confidence > Properties.Settings.Default.INSPECTION_DATA_MINIMUM_CONFIDENCE
-                                        && unitInspectionPointData.RecordTimestamp != null)
-                                    {
-                                        context.UnitsInspectionData.Add(unitInspectionPointData);                                            
-                                    }
-                                }
+            //                                }
+            //                            }
+            //                        }
+            //                        if (confidence > Properties.Settings.Default.INSPECTION_DATA_MINIMUM_CONFIDENCE
+            //                            && unitInspectionPointData.RecordTimestamp != null)
+            //                        {
+            //                            context.UnitsInspectionData.Add(unitInspectionPointData);                                            
+            //                        }
+            //                    }
 
-                                context.SaveChanges("PHD2SQLInspectionData");
-                            }
-                        }
-                    }
+            //                    context.SaveChanges("PHD2SQLInspectionData");
+            //                }
+            //            }
+            //        }
 
-                    logger.Info("Sync inspection points finished!");
-                }
-            }
-            catch (DataException validationException)
-            {
-                var dbEntityException = validationException.InnerException as DbEntityValidationException;
-                if (dbEntityException != null)
-                {
-                    foreach (var validationErrors in dbEntityException.EntityValidationErrors)
-                    {
-                        foreach (var validationError in validationErrors.ValidationErrors)
-                        {
-                            logger.ErrorFormat("Property: {0} Error: {1}", validationError.PropertyName, validationError.ErrorMessage);
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                logger.Error(ex);
-            }
+            //        logger.Info("Sync inspection points finished!");
+            //    }
+            //}
+            //catch (DataException validationException)
+            //{
+            //    var dbEntityException = validationException.InnerException as DbEntityValidationException;
+            //    if (dbEntityException != null)
+            //    {
+            //        foreach (var validationErrors in dbEntityException.EntityValidationErrors)
+            //        {
+            //            foreach (var validationError in validationErrors.ValidationErrors)
+            //            {
+            //                logger.ErrorFormat("Property: {0} Error: {1}", validationError.PropertyName, validationError.ErrorMessage);
+            //            }
+            //        }
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    logger.Error(ex);
+            //}
         }
 
         internal static void ProcessPrimaryProductionData()
@@ -486,11 +486,11 @@
                                         if (tagName.Contains(".PROD_ID"))
                                         {
                                             var prId = Convert.ToInt32(tagValue);
-                                            var product = context.TankMasterProducts.All().Where(x => x.TankMasterProductId == prId).FirstOrDefault();
+                                            var product = context.TankMasterProducts.All().Where(x => x.TankMasterProductCode == prId).FirstOrDefault();
                                             if (product != null)
                                             {
                                                 tankData.ProductId = product.Id;
-                                                var pr = context.Products.All().Where(p => p.Code == product.ProductCode).FirstOrDefault();
+                                                var pr = context.Products.All().Where(p => p.Id == product.Id).FirstOrDefault();
                                                 if (pr != null)
                                                 {
                                                     tankData.ProductName = pr.Name;  

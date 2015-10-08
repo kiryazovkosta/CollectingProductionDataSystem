@@ -462,4 +462,46 @@
   <data name="TankMasterCode" xml:space="preserve">
     <value>TankMaster Code</value>
   </data>
+  <data name="AggregationCurrentLevel" xml:space="preserve">
+    <value>Aggregation Current Level</value>
+  </data>
+  <data name="AggregationFormula" xml:space="preserve">
+    <value>Aggregation Formula</value>
+  </data>
+  <data name="AggregationMembers" xml:space="preserve">
+    <value>Aggregation Members</value>
+  </data>
+  <data name="DailyProductTypes" xml:space="preserve">
+    <value>DailyProductTypes</value>
+  </data>
+  <data name="Directions" xml:space="preserve">
+    <value>Directions</value>
+  </data>
+  <data name="Factories" xml:space="preserve">
+    <value>Factories</value>
+  </data>
+  <data name="MaterialTypes" xml:space="preserve">
+    <value>MaterialTypes</value>
+  </data>
+  <data name="MeasurementUnits" xml:space="preserve">
+    <value>MeasurementUnits</value>
+  </data>
+  <data name="Plants" xml:space="preserve">
+    <value>Plants</value>
+  </data>
+  <data name="Products" xml:space="preserve">
+    <value>Products</value>
+  </data>
+  <data name="ProductTypes" xml:space="preserve">
+    <value>ProductTypes</value>
+  </data>
+  <data name="ShiftProductTypes" xml:space="preserve">
+    <value>ShiftProductTypes</value>
+  </data>
+  <data name="UnitsConfigs" xml:space="preserve">
+    <value>UnitsConfigs</value>
+  </data>
+  <data name="UnitsDailyConfigs" xml:space="preserve">
+    <value>UnitsDailyConfigs</value>
+  </data>
 </root>

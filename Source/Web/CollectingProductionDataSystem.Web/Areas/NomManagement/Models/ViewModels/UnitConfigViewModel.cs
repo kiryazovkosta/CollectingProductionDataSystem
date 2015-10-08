@@ -5,14 +5,14 @@
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
     using System.Web;
+    using AutoMapper;
     using CollectingProductionDataSystem.Infrastructure.Mapping;
     using CollectingProductionDataSystem.Models.Contracts;
     using CollectingProductionDataSystem.Models.Productions;
     using Resources = App_GlobalResources.Resources;
    
-    public class UnitConfigViewModel : IMapFrom<UnitConfig>, IEntity
+    public class UnitConfigViewModel : IMapFrom<UnitConfig>, IHaveCustomMappings, IEntity
     {
-
         [Required]
         [UIHint("Hidden")]
         public int Id { get; set; }
@@ -51,18 +51,6 @@
         public int MaterialTypeId { get; set; }
 
         [Required]
-        [Display(Name = "IsMaterial", ResourceType = typeof(Resources.Layout))]
-        public bool IsMaterial { get; set; }
-
-        [Required]
-        [Display(Name = "IsEnergy", ResourceType = typeof(Resources.Layout))]
-        public bool IsEnergy { get; set; }
-
-        [Required]
-        [Display(Name = "IsInspectionPoint", ResourceType = typeof(Resources.Layout))]
-        public bool IsInspectionPoint { get; set; }
-
-        [Required]
         [Display(Name = "CollectingDataMechanism", ResourceType = typeof(Resources.Layout))]
         public string CollectingDataMechanism { get; set; }
 
@@ -82,8 +70,8 @@
         [Display(Name = "PreviousShiftTag", ResourceType = typeof(Resources.Layout))]
         public string PreviousShiftTag { get; set; }
 
-        [Display(Name = "CurrentInspectionDataTag", ResourceType = typeof(Resources.Layout))]
-        public string CurrentInspectionDataTag { get; set; }
+        //[Display(Name = "CurrentInspectionDataTag", ResourceType = typeof(Resources.Layout))]
+        //public string CurrentInspectionDataTag { get; set; }
 
         [Display(Name = "Notes", ResourceType = typeof(Resources.Layout))]
         public string Notes { get; set; }
@@ -102,5 +90,21 @@
 
         [Display(Name = "EstimatedCompressibilityFactor", ResourceType = typeof(Resources.Layout))]
         public decimal? EstimatedCompressibilityFactor { get; set; }
+
+        [Display(Name = "ShiftProductType", ResourceType = typeof(Resources.Layout))]
+        public int ShiftProductTypeId { get; set; }
+        
+        /// <summary>
+        /// Creates the mappings.
+        /// </summary>
+        /// <param name="configuration">The configuration.</param>
+        public void CreateMappings(IConfiguration configuration)
+        {
+            configuration.CreateMap<UnitConfig, UnitConfigViewModel>()
+                .ForMember(p => p.ShiftProductTypeId, opt => opt.MapFrom(p => p.ShiftProductTypeId == null ? 0 : (int)p.ShiftProductTypeId));
+
+            configuration.CreateMap<UnitConfigViewModel, UnitConfig>()
+                .ForMember(p => p.ShiftProductTypeId, opt => opt.MapFrom(p => p.ShiftProductTypeId == 0 ? null : (Nullable<int>)p.ShiftProductTypeId));
+        }
     }
 }

@@ -19,8 +19,6 @@
         public override ActionResult Index()
         {
             this.ViewData["productTypes"] = Mapper.Map<IEnumerable<ProductTypeViewModel>>(this.data.ProductTypes.All().ToList());
-            this.ViewData["shiftProductTypes"] = Mapper.Map<IEnumerable<ShiftProductTypeViewModel>>(this.data.ShiftProductTypes.All().ToList());
-            this.ViewData["dailyProductTypes"] = Mapper.Map<IEnumerable<DailyProductTypeViewModel>>(this.data.DailyProductTypes.All().ToList());
             return base.Index();
         }
     }

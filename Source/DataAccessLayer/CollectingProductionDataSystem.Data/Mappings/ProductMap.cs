@@ -31,13 +31,9 @@ namespace CollectingProductionDataSystem.Data.Mappings
             this.HasRequired(t => t.ProductType)
                 .WithMany(t => t.Products)
                 .HasForeignKey(d => d.ProductTypeId);
-            this.HasOptional(t => t.ShiftProductType)
-                .WithMany(t => t.Products)
-                .HasForeignKey(d => d.ShiftProductTypeId);
-            this.HasOptional(t => t.DailyProductType)
-                .WithMany(t => t.Products)
-                .HasForeignKey(d => d.DailyProductTypeId);
 
+            this.HasOptional(t => t.TankMasterProduct)
+                .WithRequired(t => t.Product).WillCascadeOnDelete(false);
         }
     }
 }

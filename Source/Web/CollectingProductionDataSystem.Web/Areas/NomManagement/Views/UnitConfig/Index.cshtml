@@ -5,15 +5,11 @@
           columns.Bound(c => c.Code).Width(100);
           columns.Bound(c => c.Position).Width(150);
           columns.Bound(c => c.Name).Width(200);
-          //columns.Bound(c => c.IsMaterial).Width(100);
-          //columns.Bound(c => c.IsEnergy).Width(100);
-          //columns.Bound(c => c.IsInspectionPoint).Width(100);
           columns.Bound(c => c.CollectingDataMechanism).Width(100);
           columns.Bound(c => c.AggregateGroup).Width(100);
           columns.Bound(c => c.AggregateParameter).Width(100);
           columns.Bound(c => c.IsCalculated).Width(100);
           columns.Bound(c => c.PreviousShiftTag).Width(100);
-          //columns.Bound(c => c.CurrentInspectionDataTag).Width(100);
           columns.Bound(c => c.Notes).Width(100);
           columns.Bound(c => c.MaximumCost).Width(100);
           columns.Bound(c => c.EstimatedDensity).Width(100);
@@ -25,6 +21,7 @@
           columns.ForeignKey(c => c.ProductId, (System.Collections.IEnumerable)ViewData["products"], "Id", "Name").EditorTemplateName("ProductViewModel").Width(280);
           columns.ForeignKey(c => c.MeasureUnitId, (System.Collections.IEnumerable)ViewData["measureUnits"], "Id", "Name").EditorTemplateName("MeasureUnitViewModel").Width(280);
           columns.ForeignKey(c => c.DirectionId, (System.Collections.IEnumerable)ViewData["directions"], "Id", "Name").EditorTemplateName("DirectionViewModel").Width(280);
+          columns.ForeignKey(c => c.ShiftProductTypeId, (System.Collections.IEnumerable)ViewData["shiftProductTypes"], "Id", "Name").EditorTemplateName("ShiftProductTypeViewModel").Width(280);
           columns.Command(command => { command.Edit(); command.Destroy(); }).Width(230);
       })
       .ToolBar(toolbar =>

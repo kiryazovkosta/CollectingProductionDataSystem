@@ -13,7 +13,7 @@ namespace CollectingProductionDataSystem.Web.Tests
         [TestMethod]
         public void CheckMappinRoleViewModelToApplicationRole()
         {
-            Mapper.CreateMap<EditUserViewModel, ApplicationUser>();
+            Mapper.CreateMap<ApplicationUser,EditUserViewModel>();
 
             Mapper.AssertConfigurationIsValid();
         }
