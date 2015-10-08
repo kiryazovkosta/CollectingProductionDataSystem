@@ -43,24 +43,6 @@ namespace CollectingProductionDataSystem.Phd2SqlProductionData.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("00:15:00")]
-        public global::System.TimeSpan IDLE_TIMER_INSPECTION_POINTS {
-            get {
-                return ((global::System.TimeSpan)(this["IDLE_TIMER_INSPECTION_POINTS"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool SYNC_INSPECTION_POINTS {
-            get {
-                return ((bool)(this["SYNC_INSPECTION_POINTS"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("01:00:00")]
         public global::System.TimeSpan IDLE_TIMER_PRIMARY {
             get {

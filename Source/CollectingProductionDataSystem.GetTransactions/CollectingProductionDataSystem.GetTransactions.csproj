@@ -90,6 +90,11 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="ScaleDataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ScaleDataSet.xsd</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -108,6 +113,17 @@
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="ScaleDataSet.xsc">
+      <DependentUpon>ScaleDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="ScaleDataSet.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>ScaleDataSet.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="ScaleDataSet.xss">
+      <DependentUpon>ScaleDataSet.xsd</DependentUpon>
     </None>
   </ItemGroup>
   <ItemGroup>

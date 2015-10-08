@@ -35,6 +35,7 @@
             columns.Bound(c => c.UnitsManualData.Value).Width(100).Format("{0:n2}");
             columns.Bound(c => c.UnitsManualData.EditReason).Width(200).ClientTemplate("#:UnitsManualData.EditReason.Name#")
             .ClientTemplate("<div class=row><div class='col-xs-2 no-horisontal-padding'><div class='#:UnitsManualData.EditReason.Id == 0? 'bg-ok':'bg-warning'#'></div></div><div class='col-xs-9 no-horisontal-padding reason'>#:UnitsManualData.EditReason.Name#</div></div>");
+            columns.Bound(c => c.IsEditable).Visible(false);
             columns.Command(c => c.Edit());
         })
     .Pageable(pageable => pageable
@@ -72,6 +73,7 @@
             model.Field(p => p.Value).Editable(false);
             model.Field(p => p.UnitsManualData.Value).Editable(true);
             model.Field(p => p.UnitsManualData.EditReason).Editable(true);
+            model.Field(p => p.IsEditable).Editable(false);
         })
         .Events(events =>
         {

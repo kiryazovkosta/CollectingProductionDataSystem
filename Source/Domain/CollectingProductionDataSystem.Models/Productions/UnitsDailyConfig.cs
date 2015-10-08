@@ -4,6 +4,7 @@
     using CollectingProductionDataSystem.Models.Contracts;
     using CollectingProductionDataSystem.Models.Nomenclatures;
     using System.Collections.Generic;
+    using System.ComponentModel;
 
     public partial class UnitsDailyConfig : DeletableEntity, IEntity
     {
@@ -22,6 +23,8 @@
         public string AggregationFormula { get; set; }
         public bool AggregationCurrentLevel { get; set; }
         public string AggregationMembers { get; set; }
+        [DefaultValue(true)]
+        public bool IsEditable { get; set; }
         public virtual MeasureUnit MeasureUnit { get; set; }
         public virtual ProcessUnit ProcessUnit { get; set; }
         public virtual Product Product { get; set; }

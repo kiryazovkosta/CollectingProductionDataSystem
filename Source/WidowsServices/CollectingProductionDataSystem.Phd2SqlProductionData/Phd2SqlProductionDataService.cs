@@ -9,15 +9,11 @@ namespace CollectingProductionDataSystem.Phd2SqlProductionData
 
     public partial class Phd2SqlProductionDataService : ServiceBase
     {
-        private Timer inspectionDataTimer = null;
-
         private Timer primaryDataTimer = null;
 
         private Timer inventoryDataTimer = null;
 
         private Timer measurementDataTimer = null;
-
-        private static readonly object lockObjectInspectionPointsData = new object();
 
         private static readonly object lockObjectPrimaryData = new object();
 
@@ -38,11 +34,6 @@ namespace CollectingProductionDataSystem.Phd2SqlProductionData
             logger.Info("Service is started!");
             try
             {
-                if (Properties.Settings.Default.SYNC_INSPECTION_POINTS)
-                {
-                    this.inspectionDataTimer = new Timer(TimerHandlerInspectionPoints, null, 0, Timeout.Infinite);
-                }
-
                 if (Properties.Settings.Default.SYNC_PRIMARY)
                 {
                     this.primaryDataTimer = new Timer(TimerHandlerPrimary, null, 0, Timeout.Infinite);
@@ -74,28 +65,6 @@ namespace CollectingProductionDataSystem.Phd2SqlProductionData
             catch (Exception ex)
             {
                 logger.Info(ex);
-            }
-        }
-
-        private void TimerHandlerInspectionPoints(object state)
-        {
-            lock (lockObjectInspectionPointsData)
-            {
-                try
-                {
-                    Utility.SetRegionalSettings();
-                    this.inspectionDataTimer.Change(Timeout.Infinite, Timeout.Infinite);
-                    Phd2SqlProductionDataMain.ProcessInspectionPointsData();
-                }
-                catch (Exception ex)
-                {
-                    logger.Error(ex.Message, ex);
-                }
-                finally
-                {
-                    this.inspectionDataTimer.Change(Convert.ToInt64(Properties.Settings.Default.IDLE_TIMER_INSPECTION_POINTS.TotalMilliseconds), 
-                        System.Threading.Timeout.Infinite);
-                }
             }
         }
 
@@ -145,7 +114,7 @@ namespace CollectingProductionDataSystem.Phd2SqlProductionData
 
         private void TimerHandlerMeasurement(object state)
         {
-            lock (lockObjectInspectionPointsData)
+            lock (lockObjectMeasurementData)
             {
                 try
                 {

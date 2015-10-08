@@ -7,5 +7,6 @@
     {
         public int Id { get; set; }
         public long MaxSequenceNumber { get; set; }
+        public long MaxScaleSequenceNumber { get; set; }
     }
 }
