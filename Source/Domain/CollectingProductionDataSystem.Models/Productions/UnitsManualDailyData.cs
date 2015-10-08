@@ -23,10 +23,10 @@
                 yield return new ValidationResult(Resources.ModelErrors.UnitsManualData_Id, new string[] { "Id" });
             }
 
-            //if (this.Value <= 0 || this.Value > decimal.MaxValue) 
-            //{
-            //    yield return new ValidationResult(string.Format(Resources.ModelErrors.UnitsManualData_Value_Range, 0.01M, decimal.MaxValue), new string[] { "ManualValue" });
-            //}
+            if (this.Value < 0.0M || this.Value > decimal.MaxValue) 
+            {
+                yield return new ValidationResult(string.Format(Resources.ModelErrors.UnitsManualData_Value_Range, 0.01M, decimal.MaxValue), new string[] { "ManualValue" });
+            }
 
             if (this.EditReasonId < 1)
             {

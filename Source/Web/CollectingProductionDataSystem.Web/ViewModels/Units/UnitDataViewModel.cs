@@ -32,6 +32,8 @@
         [Display(Name = "Shift", ResourceType = typeof(Resources.Layout))]
         public ShiftType Shift { get; set; }
 
+        public bool IsEditable { get; set; }
+
         public void CreateMappings(IConfiguration configuration)
         {
             configuration.CreateMap<UnitsData, UnitDataViewModel>()

@@ -4,10 +4,11 @@ using CollectingProductionDataSystem.Models.Abstract;
 using CollectingProductionDataSystem.Models.Contracts;
 using CollectingProductionDataSystem.Models.Nomenclatures;
 using CollectingProductionDataSystem.Models.Productions;
+using System.ComponentModel;
 
 namespace CollectingProductionDataSystem.Models.Productions
 {
-    public partial class UnitConfig: DeletableEntity, IEntity
+    public partial class UnitConfig : DeletableEntity, IEntity
     {
         private ICollection<UnitsData> unitsDatas;
         private ICollection<UnitsInspectionData> unitsInspectionDatas;
@@ -40,6 +41,8 @@ namespace CollectingProductionDataSystem.Models.Productions
         public decimal? EstimatedPressure { get; set; }
         public decimal? EstimatedTemperature { get; set; }
         public decimal? EstimatedCompressibilityFactor { get; set; }
+        [DefaultValue(true)]
+        public bool IsEditable { get; set; }
         public virtual Direction Direction { get; set; }
         public virtual MaterialType MaterialType { get; set; }
         public virtual MeasureUnit MeasureUnit { get; set; }

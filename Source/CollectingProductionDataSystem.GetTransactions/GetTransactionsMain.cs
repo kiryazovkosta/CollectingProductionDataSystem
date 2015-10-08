@@ -280,5 +280,24 @@
                 logger.Error(ex.Message, ex);
             }
         }
+
+        internal static void ProcessScaleTransactionData()
+        {
+            try
+            {
+                logger.Info("Begin scale synchronization!");
+
+                using (var context = new ProductionData(new CollectingDataSystemDbContext(new AuditablePersister())))
+                {
+
+                }
+
+                logger.Info("End scale synchronization");
+            }
+            catch(Exception ex)
+            {
+                logger.Error(ex.Message, ex);
+            }
+        }
     }
 }

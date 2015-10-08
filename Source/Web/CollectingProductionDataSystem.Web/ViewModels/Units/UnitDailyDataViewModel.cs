@@ -29,6 +29,9 @@
 
         public UnitManualDailyDataViewModel UnitsManualDailyData { get; set; }
 
+        [UIHint("Hidden")]
+        public bool IsEditable { get; set; }
+
         public void CreateMappings(IConfiguration configuration)
         {
             configuration.CreateMap<UnitsDailyData, UnitDailyDataViewModel>()
