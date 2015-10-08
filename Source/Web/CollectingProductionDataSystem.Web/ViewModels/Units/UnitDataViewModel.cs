@@ -38,7 +38,8 @@
         {
             configuration.CreateMap<UnitsData, UnitDataViewModel>()
                 .ForMember(p => p.UnitsManualData, opt => opt.MapFrom(p => p.UnitsManualData ?? new UnitsManualData() { Value = p.Value ?? 0M }))
-                .ForMember(p => p.Shift, opt => opt.MapFrom(p => p.ShiftId));
+                .ForMember(p => p.Shift, opt => opt.MapFrom(p => p.ShiftId))
+                .ForMember(p => p.IsEditable, opt => opt.MapFrom(p => p.UnitConfig.IsEditable));
         }
     }
 
@@ -63,8 +64,7 @@
         [Display(Name = "CollectingDataMechanism", ResourceType = typeof(Resources.Layout))]
         public string CollectingDataMechanism { get; set; }
 
-        //public int ProductId { get; set; }
-        //public ShiftProductViewModel Product { get; set; }
+        public bool IsEditable { get; set; }
 
         public int ProcessUnitId { get; set; }
         public ProcessUnitUnitDataViewModel ProcessUnit { get; set; }
