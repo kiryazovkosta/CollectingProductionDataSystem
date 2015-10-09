@@ -281,7 +281,7 @@
             }
         }
 
-        internal static void ProcessScaleTransactionData()
+        internal static void ProcessScalesData()
         {
             try
             {
@@ -289,7 +289,56 @@
 
                 using (var context = new ProductionData(new CollectingDataSystemDbContext(new AuditablePersister())))
                 {
+                    var scaleAdapter = new ScaleDataSetTableAdapters.ScaleDataTableAdapter();
+                    var scaleTable = new ScaleDataSet.ScaleDataDataTable();
+                    scaleAdapter.Fill(scaleTable, DateTime.Now.AddDays(-5));
+                    foreach (ScaleDataSet.ScaleDataRow row in scaleTable.Rows)
+                    {
+                        //var tr = new MeasuringPointsConfigsData();
+                        //    tr.MeasuringPointId = row.MeasuringPointId;
+                        //    tr.TransactionNumber = Convert.ToInt64(row.TRS_NUM);
+                        //    tr.RowId = -1;
+                        //    tr.TransactionBeginTime = row.TRS_BGN_TIME;
+                        //    tr.TransactionEndTime = row.TRS_END_TIME;
+                        //    tr.ExciseStoreId = row.ExciseStoreId;
+                        //    tr.ZoneId = row.ZoneId;
+                        //    tr.BaseProductNumber = Convert.ToInt32(row.PRODUCT_ID);
+                        //    tr.BaseProductName = row.PRODUCT_NAME;
+                        //    tr.ProductNumber = Convert.ToInt32(row.PRODUCT_ID);
+                        //    tr.ProductName = row.PRODUCT_NAME;
+                        //    tr.FlowDirection = row.DIRECTION;
+                        //    tr.EngineeringUnitMass = string.Empty;
+                        //    tr.EngineeringUnitVolume = string.Empty;
+                        //    tr.EngineeringUnitDensity = string.Empty;
+                        //    tr.EngineeringUnitTemperature = string.Empty;
+                                
+                        //    if (!row.Is)
+                        //    {
+                        //        tr.TotalizerBeginMass = row.TotalizerBeginMass;
+                        //    }
+                        //    if (!row.IsTotalizerEndMassNull())
+                        //    {
+                        //        tr.TotalizerEndMass = row.TotalizerEndMass;
+                        //    }
 
+                        //    if (!row.IsTotalizerBeginCommonMassNull())
+                        //    {
+                        //        tr.TotalizerBeginCommonMass = row.TotalizerBeginCommonMass;
+                        //    }
+                        //    if (!row.IsTotalizerEndCommonMassNull())
+                        //    {
+                        //        tr.TotalizerEndCommonMass = row.TotalizerEndCommonMass;
+                        //    }
+
+                        //    if (!row.IsQTY_NET_MASSNull())
+                        //    {
+                        //        tr.Mass = row.QTY_NET_MASS;
+                        //    }
+                                
+                        //    tr.InsertTimestamp = row.InsertTimestamp;
+
+                        //    context.MeasuringPointsConfigsDatas.Add(tr);
+                    }
                 }
 
                 logger.Info("End scale synchronization");

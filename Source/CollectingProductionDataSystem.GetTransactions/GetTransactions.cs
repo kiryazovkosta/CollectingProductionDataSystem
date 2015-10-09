@@ -10,8 +10,10 @@
     public partial class GetTransactions : ServiceBase
     {
         private Timer transactionsDataTimer = null;
+        private Timer scaleDateTimer = null;
 
         private static readonly object lockObjectTransactionsData = new object();
+        private static readonly object lockObjectScaleData = new object();
 
         private readonly ILog logger;
 
@@ -29,6 +31,11 @@
                 if (Properties.Settings.Default.SYNC_TRANSACTIONS)
                 {
                     this.transactionsDataTimer = new Timer(TimerHandlerTransactionsData, null, 0, Timeout.Infinite);
+                }
+
+                if (Properties.Settings.Default.SYNC_SCALE)
+                {
+                    this.scaleDateTimer = new Timer(TimerHandlerScalesData, null, 0, Timeout.Infinite);
                 }
 
             }
@@ -68,6 +75,29 @@
                 {
                     this.transactionsDataTimer.Change(
                         Convert.ToInt64(Properties.Settings.Default.IDLE_TIMER_TRANSDACTION_DATA.TotalMilliseconds), 
+                        System.Threading.Timeout.Infinite);
+                }
+            }
+        }
+
+        private void TimerHandlerScalesData(object state)
+        {
+            lock (lockObjectScaleData)
+            {
+                try
+                {
+                    SetRegionalSettings();
+                    this.scaleDateTimer.Change(Timeout.Infinite, Timeout.Infinite);
+                    GetTransactionsMain.ProcessScalesData();
+                }
+                catch (Exception ex)
+                {
+                    logger.Error(ex.Message, ex);
+                }
+                finally
+                {
+                    this.scaleDateTimer.Change(
+                        Convert.ToInt64(Properties.Settings.Default.IDLE_TIMER_SCALE_DATA.TotalMilliseconds), 
                         System.Threading.Timeout.Infinite);
                 }
             }
