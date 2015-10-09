@@ -38,7 +38,7 @@ $(document).ready(function () {
             }
         });
     });
-    
+
     nameGridCommancolumn();
     hideCommandButtons();
     AttachEventToExportBtn("#excel-export", "#units");
@@ -124,11 +124,15 @@ function AttachEventToExportBtn(buttonSelector, targetSelector) {
 var dataBound = function () {
     dataView = this.dataSource.view();
     for (var i = 0; i < dataView.length; i++) {
-        for (var j = 0; j < dataView[i].items.length; j++) {
-
-            if (dataView[i].items[j].HasManualData === true) {
-                var uid = dataView[i].items[j].uid;
-                $("#" + $(this.element).attr('id') + " tbody").find("tr[data-uid=" + uid + "]").addClass("bg-danger");
+        var recordLen = dataView[i].items.length;
+        if (recordLen) {
+            for (var j = 0; j < recordLen; j++) {
+                if (!dataView[i].items[j].IsEditable) {
+                    var currentUid = dataView[i].items[j].uid;
+                    var currenRow = this.table.find("tr[data-uid='" + currentUid + "']");
+                    var editButton = $(currenRow).find(".k-grid-edit");
+                    editButton.attr("style", "display:none !important");
+                }
             }
         }
     }

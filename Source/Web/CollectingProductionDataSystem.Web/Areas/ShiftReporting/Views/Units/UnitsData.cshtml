@@ -80,6 +80,7 @@
             events.Error("error_handler");
         })
     )
+    .Events(ev=>ev.DataBound("dataBound"))
 )
 @* //Error window for kendo grid error event handler *@
 <div id="err-window" style="display:none">@Html.Partial("_KendoGridErrorWindow")</div>

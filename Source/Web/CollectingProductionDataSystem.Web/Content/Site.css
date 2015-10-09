@@ -522,6 +522,10 @@ aside.nom-side-nav panel-collapse {
         text-decoration: none;
     }
 
+    aside.nom-side-nav div.panel .panel-heading a span {
+        color:red;
+    }
+
         aside.nom-side-nav div.panel .panel-heading a:hover {
             background-color: #fff;
         }
