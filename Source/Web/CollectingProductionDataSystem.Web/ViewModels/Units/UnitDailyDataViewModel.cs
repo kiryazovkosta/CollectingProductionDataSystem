@@ -35,7 +35,8 @@
         public void CreateMappings(IConfiguration configuration)
         {
             configuration.CreateMap<UnitsDailyData, UnitDailyDataViewModel>()
-                .ForMember(p => p.UnitsManualDailyData, opt => opt.MapFrom(p => p.UnitsManualDailyData ?? new UnitsManualDailyData() { Value = p.Value }));
+                .ForMember(p => p.UnitsManualDailyData, opt => opt.MapFrom(p => p.UnitsManualDailyData ?? new UnitsManualDailyData() { Value = p.Value }))
+                .ForMember(p=>p.IsEditable, opt=>opt.MapFrom(p=>p.UnitsDailyConfig.IsEditable));
         }
 
         public bool HasManualData { get; set; }

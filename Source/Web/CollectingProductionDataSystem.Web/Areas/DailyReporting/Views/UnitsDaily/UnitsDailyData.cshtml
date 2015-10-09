@@ -51,6 +51,7 @@
             events.Error("error_handler");
         })
     )
+            .Events(ev => ev.DataBound("dataBound"))
         )
     </div>
 
@@ -71,6 +72,7 @@
             columns.Bound(c => c.UnitsManualDailyData.Value).Width(100).Format("{0:n2}");
             columns.Bound(c => c.UnitsManualDailyData.EditReason).Width(180).ClientTemplate("#:UnitsManualDailyData.EditReason.Name#")
                 .ClientTemplate("<div class=row><div class='col-xs-2 no-horisontal-padding'><div class='#:UnitsManualDailyData.EditReason.Id == 0? 'bg-ok':'bg-warning'#'></div></div><div class='col-xs-9 no-horisontal-padding reason'>#:UnitsManualDailyData.EditReason.Name#</div></div>");
+            columns.Bound(c => c.IsEditable).Visible(false);
             columns.Command(c => c.Edit()).Width(170);
         })
     .Pageable(pageable => pageable
