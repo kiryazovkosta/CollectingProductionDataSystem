@@ -5,110 +5,206 @@
 @section styles{
     @RenderSection("styles", required: false)
 }
-
-<div class="row">
-    <div class="col-sm-2">
-        <aside class="nom-side-nav">
-            <div class="panel">
-                <div class="panel-heading">
-                    <span class="glyphicon glyphicon-wrench"></span> Управление на номенклатури
+@*--------Aside for big display-----------*@
+<div id="aside-wrapper" class="hidden-sm hidden-xs">
+    <aside class="nom-side-nav nom-side-nav-lg">
+        <div class="panel">
+            <div class="panel-heading">
+                <span class="glyphicon glyphicon-wrench"></span> Управление на номенклатури
+            </div>
+            <div class="panel-body">
+                <div class="panel-group" role="tablist">
+                    <div class="panel">
+                        <div class="panel-heading" role="tab" id="collapseListGroupHeading1">
+                            <h4 class="panel-title">
+                                <a class="" role="button" data-toggle="collapse" href="#collapseListGroup1" aria-expanded="false" aria-controls="collapseListGroup1">
+                                    <span class="glyphicon glyphicon-tint"></span> @Resources.Layout.Nomenclatures
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapseListGroup1" class="panel-collapse collapse" role="tabpanel" aria-labelledby="collapseListGroupHeading1" aria-expanded="false">
+                            <ul class="list-group">
+                                <li class="list-group-item">@Ajax.ActionLink(Resources.Layout.DailyProductType, "Index", "DailyProductType", new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "page-content" })</li>
+                                <li class="list-group-item">@Ajax.ActionLink(Resources.Layout.Direction, "Index", "Direction", new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "page-content" })</li>
+                                <li class="list-group-item">@Ajax.ActionLink(Resources.Layout.EditReason, "Index", "EditReason", new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "page-content" })</li>
+                                <li class="list-group-item">@Ajax.ActionLink(Resources.Layout.MaterialType, "Index", "MaterialType", new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "page-content" })</li>
+                                <li class="list-group-item">@Ajax.ActionLink(Resources.Layout.MeasureUnit, "Index", "MeasureUnit", new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "page-content" })</li>
+                                <li class="list-group-item">@Ajax.ActionLink(Resources.Layout.Product, "Index", "Product", new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "page-content" })</li>
+                                <li class="list-group-item">@Ajax.ActionLink(Resources.Layout.ProductionShift, "Index", "ProductionShift", new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "page-content" })</li>
+                                <li class="list-group-item">@Ajax.ActionLink(Resources.Layout.ProductType, "Index", "ProductType", new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "page-content" })</li>
+                                <li class="list-group-item">@Ajax.ActionLink(Resources.Layout.ShiftProductType, "Index", "ShiftProductType", new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "page-content" })</li>
+                                <li class="list-group-item">@Ajax.ActionLink(Resources.Layout.TransportType, "Index", "TransportType", new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "page-content" })</li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
-                <div class="panel-body">
-                    <div class="panel-group" role="tablist">
-                        <div class="panel">
-                            <div class="panel-heading" role="tab" id="collapseListGroupHeading1">
-                                <h4 class="panel-title">
-                                    <a class="" role="button" data-toggle="collapse" href="#collapseListGroup1" aria-expanded="false" aria-controls="collapseListGroup1">
-                                        <span class="glyphicon glyphicon-tint"></span> @Resources.Layout.Nomenclatures
-                                    </a>
-                                </h4>
-                            </div>
-                            <div id="collapseListGroup1" class="panel-collapse collapse" role="tabpanel" aria-labelledby="collapseListGroupHeading1" aria-expanded="false">
-                                <ul class="list-group">
-                                    <li class="list-group-item">@Ajax.ActionLink(Resources.Layout.DailyProductType, "Index", "DailyProductType", new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "page-content" })</li>
-                                    <li class="list-group-item">@Ajax.ActionLink(Resources.Layout.Direction, "Index", "Direction", new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "page-content" })</li>
-                                    <li class="list-group-item">@Ajax.ActionLink(Resources.Layout.EditReason, "Index", "EditReason", new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "page-content" })</li>
-                                    <li class="list-group-item">@Ajax.ActionLink(Resources.Layout.MaterialType, "Index", "MaterialType", new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "page-content" })</li>
-                                    <li class="list-group-item">@Ajax.ActionLink(Resources.Layout.MeasureUnit, "Index", "MeasureUnit", new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "page-content" })</li>
-                                    <li class="list-group-item">@Ajax.ActionLink(Resources.Layout.Product, "Index", "Product", new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "page-content" })</li>
-                                    <li class="list-group-item">@Ajax.ActionLink(Resources.Layout.ProductionShift, "Index", "ProductionShift", new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "page-content" })</li>
-                                    <li class="list-group-item">@Ajax.ActionLink(Resources.Layout.ProductType, "Index", "ProductType", new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "page-content" })</li>
-                                    <li class="list-group-item">@Ajax.ActionLink(Resources.Layout.ShiftProductType, "Index", "ShiftProductType", new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "page-content" })</li>
-                                    <li class="list-group-item">@Ajax.ActionLink(Resources.Layout.TransportType, "Index", "TransportType", new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "page-content" })</li>
-                                </ul>
-                            </div>
+                <div class="panel-group" role="tablist">
+                    <div class="panel">
+                        <div class="panel-heading" role="tab" id="collapseListGroupHeading2">
+                            <h4 class="panel-title">
+                                <a class="" role="button" data-toggle="collapse" href="#collapseListGroup2" aria-expanded="false" aria-controls="collapseListGroup2">
+                                    <span class="glyphicon glyphicon-tint"></span> @Resources.Layout.Productions
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapseListGroup2" class="panel-collapse collapse" role="tabpanel" aria-labelledby="collapseListGroupHeading2" aria-expanded="false">
+                            <ul class="list-group">
+                                <li class="list-group-item">@Ajax.ActionLink(Resources.Layout.Plant, "Index", "Plant", new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "page-content" })</li>
+                                <li class="list-group-item">@Ajax.ActionLink(Resources.Layout.Factory, "Index", "Factory", new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "page-content" })</li>
+                                <li class="list-group-item">@Ajax.ActionLink(Resources.Layout.ProcessUnit, "Index", "ProcessUnit", new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "page-content" })</li>
+                                <li class="list-group-item">@Ajax.ActionLink(Resources.Layout.UnitConfig, "Index", "UnitConfig", new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "page-content" })</li>
+                                <li class="list-group-item">@Ajax.ActionLink(Resources.Layout.UnitsDailyConfig, "Index", "UnitsDailyConfig", new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "page-content" })</li>
+                                <li class="list-group-item">@Ajax.ActionLink(Resources.Layout.ProductionPlanConfig, "Index", "ProductionPlanConfig", new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "page-content" })</li>
+                            </ul>
                         </div>
                     </div>
-                    <div class="panel-group" role="tablist">
-                        <div class="panel">
-                            <div class="panel-heading" role="tab" id="collapseListGroupHeading2">
-                                <h4 class="panel-title">
-                                    <a class="" role="button" data-toggle="collapse" href="#collapseListGroup2" aria-expanded="false" aria-controls="collapseListGroup2">
-                                        <span class="glyphicon glyphicon-tint"></span> @Resources.Layout.Productions
-                                    </a>
-                                </h4>
-                            </div>
-                            <div id="collapseListGroup2" class="panel-collapse collapse" role="tabpanel" aria-labelledby="collapseListGroupHeading2" aria-expanded="false">
-                                <ul class="list-group">
-                                    <li class="list-group-item">@Ajax.ActionLink(Resources.Layout.Plant, "Index", "Plant", new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "page-content" })</li>
-                                    <li class="list-group-item">@Ajax.ActionLink(Resources.Layout.Factory, "Index", "Factory", new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "page-content" })</li>
-                                    <li class="list-group-item">@Ajax.ActionLink(Resources.Layout.ProcessUnit, "Index", "ProcessUnit", new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "page-content" })</li>
-                                    <li class="list-group-item">@Ajax.ActionLink(Resources.Layout.UnitConfig, "Index", "UnitConfig", new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "page-content" })</li>
-                                    <li class="list-group-item">@Ajax.ActionLink(Resources.Layout.UnitsDailyConfig, "Index", "UnitsDailyConfig", new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "page-content" })</li>
-                                    <li class="list-group-item">@Ajax.ActionLink(Resources.Layout.ProductionPlanConfig, "Index", "ProductionPlanConfig", new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "page-content" })</li>
-                                </ul>
-                            </div>
+                </div>
+                <div class="panel-group" role="tablist">
+                    <div class="panel ">
+                        <div class="panel-heading" role="tab" id="collapseListGroupHeading3">
+                            <h4 class="panel-title">
+                                <a class="" role="button" data-toggle="collapse" href="#collapseListGroup3" aria-expanded="false" aria-controls="collapseListGroup3">
+                                    <span class="glyphicon glyphicon-tint"></span> @Resources.Layout.Inventories
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapseListGroup3" class="panel-collapse collapse" role="tabpanel" aria-labelledby="collapseListGroupHeading3" aria-expanded="false">
+                            <ul class="list-group">
+                                <li class="list-group-item">@Ajax.ActionLink(Resources.Layout.Areas, "Index", "Area", new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "page-content" })</li>
+                                <li class="list-group-item">@Ajax.ActionLink(Resources.Layout.Parks, "Index", "Park", new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "page-content" })</li>
+                                <li class="list-group-item">@Ajax.ActionLink(Resources.Layout.TankConfig, "Index", "TankConfig", new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "page-content" })</li>
+                                <li class="list-group-item">@Ajax.ActionLink(Resources.Layout.TankMasterProduct, "Index", "TankMasterProduct", new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "page-content" })</li>
+                            </ul>
                         </div>
                     </div>
-                    <div class="panel-group" role="tablist">
-                        <div class="panel ">
-                            <div class="panel-heading" role="tab" id="collapseListGroupHeading3">
-                                <h4 class="panel-title">
-                                    <a class="" role="button" data-toggle="collapse" href="#collapseListGroup3" aria-expanded="false" aria-controls="collapseListGroup3">
-                                        <span class="glyphicon glyphicon-tint"></span> @Resources.Layout.Inventories
-                                    </a>
-                                </h4>
-                            </div>
-                            <div id="collapseListGroup3" class="panel-collapse collapse" role="tabpanel" aria-labelledby="collapseListGroupHeading3" aria-expanded="false">
-                                <ul class="list-group">
-                                    <li class="list-group-item">@Ajax.ActionLink(Resources.Layout.Areas, "Index", "Area", new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "page-content" })</li>
-                                    <li class="list-group-item">@Ajax.ActionLink(Resources.Layout.Parks, "Index", "Park", new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "page-content" })</li>
-                                    <li class="list-group-item">@Ajax.ActionLink(Resources.Layout.TankConfig, "Index", "TankConfig", new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "page-content" })</li>
-                                    <li class="list-group-item">@Ajax.ActionLink(Resources.Layout.TankMasterProduct, "Index", "TankMasterProduct", new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "page-content" })</li>
-                                </ul>
-                            </div>
+                </div>
+                <div class="panel-group" role="tablist">
+                    <div class="panel ">
+                        <div class="panel-heading" role="tab" id="collapseListGroupHeading4">
+                            <h4 class="panel-title">
+                                <a class="" role="button" data-toggle="collapse" href="#collapseListGroup4" aria-expanded="false" aria-controls="collapseListGroup4">
+                                    <span class="glyphicon glyphicon-tint"></span> @Resources.Layout.Transactions
+                                </a>
+                            </h4>
                         </div>
-                    </div>
-                    <div class="panel-group" role="tablist">
-                        <div class="panel ">
-                            <div class="panel-heading" role="tab" id="collapseListGroupHeading4">
-                                <h4 class="panel-title">
-                                    <a class="" role="button" data-toggle="collapse" href="#collapseListGroup4" aria-expanded="false" aria-controls="collapseListGroup4">
-                                        <span class="glyphicon glyphicon-tint"></span> @Resources.Layout.Transactions
-                                    </a>
-                                </h4>
-                            </div>
-                            <div id="collapseListGroup4" class="panel-collapse collapse" role="tabpanel" aria-labelledby="collapseListGroupHeading4" aria-expanded="false">
-                                <ul class="list-group">
-                                    <li class="list-group-item">@Ajax.ActionLink(Resources.Layout.Ikunk, "Index", "Ikunk", new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "page-content" })</li>
-                                    <li class="list-group-item">@Ajax.ActionLink(Resources.Layout.Zone, "Index", "Zone", new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "page-content" })</li>
-                                    <li class="list-group-item">@Ajax.ActionLink(Resources.Layout.MeasurementPointsProductsConfig, "Index", "MeasurementPointsProductsConfig", new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "page-content" })</li>
-                                    <li class="list-group-item">@Ajax.ActionLink(Resources.Layout.MeasuringPointConfig, "Index", "MeasuringPointConfig", new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "page-content" })</li>
+                        <div id="collapseListGroup4" class="panel-collapse collapse" role="tabpanel" aria-labelledby="collapseListGroupHeading4" aria-expanded="false">
+                            <ul class="list-group">
+                                <li class="list-group-item">@Ajax.ActionLink(Resources.Layout.Ikunk, "Index", "Ikunk", new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "page-content" })</li>
+                                <li class="list-group-item">@Ajax.ActionLink(Resources.Layout.Zone, "Index", "Zone", new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "page-content" })</li>
+                                <li class="list-group-item">@Ajax.ActionLink(Resources.Layout.MeasurementPointsProductsConfig, "Index", "MeasurementPointsProductsConfig", new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "page-content" })</li>
+                                <li class="list-group-item">@Ajax.ActionLink(Resources.Layout.MeasuringPointConfig, "Index", "MeasuringPointConfig", new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "page-content" })</li>
 
-                                </ul>
-                            </div>
+                            </ul>
                         </div>
                     </div>
                 </div>
             </div>
-        </aside>
+        </div>
+    </aside>
+    <div id="sidebar-toggle">
+        <a href="#"><span class="glyphicon glyphicon-triangle-left"></span></a>
     </div>
-    <div class="col-sm-10">
-        @Html.AntiForgeryToken()
-        <div id="page-content">
-            @RenderBody()
+</div>
+
+@* -------------------------------Aside for small display -----------------------------------------*@
+<aside class="nom-side-nav hidden-lg hidden-md">
+    <div class="panel">
+        <div class="panel-heading">
+            <span class="glyphicon glyphicon-wrench"></span> Управление на номенклатури
+        </div>
+        <div class="panel-body">
+            <div class="panel-group" role="tablist">
+                <div class="panel">
+                    <div class="panel-heading" role="tab" id="collapseListGroupHeading5">
+                        <h4 class="panel-title">
+                            <a class="" role="button" data-toggle="collapse" href="#collapseListGroup5" aria-expanded="false" aria-controls="collapseListGroup5">
+                                <span class="glyphicon glyphicon-tint"></span> @Resources.Layout.Nomenclatures
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseListGroup5" class="panel-collapse collapse" role="tabpanel" aria-labelledby="collapseListGroupHeading5" aria-expanded="false">
+                        <ul class="list-group">
+                            <li class="list-group-item">@Ajax.ActionLink(Resources.Layout.DailyProductType, "Index", "DailyProductType", new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "page-content" })</li>
+                            <li class="list-group-item">@Ajax.ActionLink(Resources.Layout.Direction, "Index", "Direction", new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "page-content" })</li>
+                            <li class="list-group-item">@Ajax.ActionLink(Resources.Layout.EditReason, "Index", "EditReason", new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "page-content" })</li>
+                            <li class="list-group-item">@Ajax.ActionLink(Resources.Layout.MaterialType, "Index", "MaterialType", new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "page-content" })</li>
+                            <li class="list-group-item">@Ajax.ActionLink(Resources.Layout.MeasureUnit, "Index", "MeasureUnit", new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "page-content" })</li>
+                            <li class="list-group-item">@Ajax.ActionLink(Resources.Layout.Product, "Index", "Product", new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "page-content" })</li>
+                            <li class="list-group-item">@Ajax.ActionLink(Resources.Layout.ProductionShift, "Index", "ProductionShift", new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "page-content" })</li>
+                            <li class="list-group-item">@Ajax.ActionLink(Resources.Layout.ProductType, "Index", "ProductType", new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "page-content" })</li>
+                            <li class="list-group-item">@Ajax.ActionLink(Resources.Layout.ShiftProductType, "Index", "ShiftProductType", new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "page-content" })</li>
+                            <li class="list-group-item">@Ajax.ActionLink(Resources.Layout.TransportType, "Index", "TransportType", new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "page-content" })</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-group" role="tablist">
+                <div class="panel">
+                    <div class="panel-heading" role="tab" id="collapseListGroupHeading6">
+                        <h4 class="panel-title">
+                            <a class="" role="button" data-toggle="collapse" href="#collapseListGroup6" aria-expanded="false" aria-controls="collapseListGroup6">
+                                <span class="glyphicon glyphicon-tint"></span> @Resources.Layout.Productions
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseListGroup6" class="panel-collapse collapse" role="tabpanel" aria-labelledby="collapseListGroupHeading6" aria-expanded="false">
+                        <ul class="list-group">
+                            <li class="list-group-item">@Ajax.ActionLink(Resources.Layout.Plant, "Index", "Plant", new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "page-content" })</li>
+                            <li class="list-group-item">@Ajax.ActionLink(Resources.Layout.Factory, "Index", "Factory", new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "page-content" })</li>
+                            <li class="list-group-item">@Ajax.ActionLink(Resources.Layout.ProcessUnit, "Index", "ProcessUnit", new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "page-content" })</li>
+                            <li class="list-group-item">@Ajax.ActionLink(Resources.Layout.UnitConfig, "Index", "UnitConfig", new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "page-content" })</li>
+                            <li class="list-group-item">@Ajax.ActionLink(Resources.Layout.UnitsDailyConfig, "Index", "UnitsDailyConfig", new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "page-content" })</li>
+                            <li class="list-group-item">@Ajax.ActionLink(Resources.Layout.ProductionPlanConfig, "Index", "ProductionPlanConfig", new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "page-content" })</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-group" role="tablist">
+                <div class="panel ">
+                    <div class="panel-heading" role="tab" id="collapseListGroupHeading7">
+                        <h4 class="panel-title">
+                            <a class="" role="button" data-toggle="collapse" href="#collapseListGroup7" aria-expanded="false" aria-controls="collapseListGroup7">
+                                <span class="glyphicon glyphicon-tint"></span> @Resources.Layout.Inventories
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseListGroup7" class="panel-collapse collapse" role="tabpanel" aria-labelledby="collapseListGroupHeading7" aria-expanded="false">
+                        <ul class="list-group">
+                            <li class="list-group-item">@Ajax.ActionLink(Resources.Layout.Areas, "Index", "Area", new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "page-content" })</li>
+                            <li class="list-group-item">@Ajax.ActionLink(Resources.Layout.Parks, "Index", "Park", new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "page-content" })</li>
+                            <li class="list-group-item">@Ajax.ActionLink(Resources.Layout.TankConfig, "Index", "TankConfig", new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "page-content" })</li>
+                            <li class="list-group-item">@Ajax.ActionLink(Resources.Layout.TankMasterProduct, "Index", "TankMasterProduct", new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "page-content" })</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-group" role="tablist">
+                <div class="panel ">
+                    <div class="panel-heading" role="tab" id="collapseListGroupHeading8">
+                        <h4 class="panel-title">
+                            <a class="" role="button" data-toggle="collapse" href="#collapseListGroup8" aria-expanded="false" aria-controls="collapseListGroup8">
+                                <span class="glyphicon glyphicon-tint"></span> @Resources.Layout.Transactions
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseListGroup8" class="panel-collapse collapse" role="tabpanel" aria-labelledby="collapseListGroupHeading8" aria-expanded="false">
+                        <ul class="list-group">
+                            <li class="list-group-item">@Ajax.ActionLink(Resources.Layout.Ikunk, "Index", "Ikunk", new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "page-content" })</li>
+                            <li class="list-group-item">@Ajax.ActionLink(Resources.Layout.Zone, "Index", "Zone", new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "page-content" })</li>
+                            <li class="list-group-item">@Ajax.ActionLink(Resources.Layout.MeasurementPointsProductsConfig, "Index", "MeasurementPointsProductsConfig", new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "page-content" })</li>
+                            <li class="list-group-item">@Ajax.ActionLink(Resources.Layout.MeasuringPointConfig, "Index", "MeasuringPointConfig", new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "page-content" })</li>
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+</aside>
+
+@Html.AntiForgeryToken()
+<div id="page-content" class="container-fluid">
+    @RenderBody()
 </div>
 
 @* //Error window for kendo grid error event handler *@
@@ -120,13 +216,31 @@
     @Scripts.Render("~/bundles/custom/kendoadditional")
     @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.min.js")
     @RenderSection("scripts", required: false)
-<script>
-    $(function(){
-        $("aside.nom-side-nav li.list-group-item > a ").click(function () {
-            var that = this;
-            $("aside.nom-side-nav li.list-group-item > a ").removeClass("active");
-            $(that).addClass("active");
-        });
-    })
-</script>
+    <script>
+        $(function () {
+            $("aside.nom-side-nav li.list-group-item > a ").click(function () {
+                var that = this;
+                $("aside.nom-side-nav li.list-group-item > a ").removeClass("active");
+                $(that).addClass("active");
+            });
+
+            $("#sidebar-toggle > a").click(function (e) {
+                e.preventDefault();
+                $('aside.nom-side-nav.nom-side-nav-lg').animate({ width: 'toggle' });
+       
+                if ($(this).hasClass('active')) {
+                    $(this).find('span').removeClass('glyphicon-wrench');
+                    $(this).find('span').addClass('glyphicon-triangle-left');
+                    $(this).removeClass('active');
+                } else {
+                    $(this).find('span').removeClass('glyphicon-triangle-left');
+                    $(this).find('span').addClass('glyphicon-wrench');
+                    $(this).addClass('active');
+
+                }
+                return false;
+
+            });
+        })
+    </script>
 }
