@@ -27,8 +27,23 @@ namespace CollectingProductionDataSystem.Web.Areas.DailyReporting.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AuthorizeFactory]
-        public JsonResult ReadMeasuringPointsData([DataSourceRequest]DataSourceRequest request, DateTime? date, int? direction)
+        public JsonResult ReadMeasuringPointsData([DataSourceRequest]DataSourceRequest request, DateTime? dateParam, int? directionParam)
         {
+            var beginTimestamp = dateParam.Value.AddMinutes(300);
+            var endTimestamp = beginTimestamp.AddMinutes(1440);
+
+            var transactionsData = this.data.MeasuringPointsConfigsDatas
+                .All()
+                .Where(x => x.TransactionEndTime >= beginTimestamp)
+                .Where(x => x.TransactionEndTime < endTimestamp)
+                .Where(x => x.RowId == -1)
+                .Select(x => new
+                {
+                    Id = x.MeasuringPointId,
+                    Direction = x.FlowDirection,
+                    ProductId = x.ProductNumber
+                });
+
             var transactions = new HashSet<MeasuringPointsDataViewModel>();
             transactions.Add(new MeasuringPointsDataViewModel
             {

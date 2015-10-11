@@ -237,6 +237,7 @@
     <Compile Include="Areas\DailyReporting\Controllers\AjaxController.cs" />
     <Compile Include="Areas\DailyReporting\Controllers\AreaBaseController.cs" />
     <Compile Include="Areas\DailyReporting\Controllers\MeasuringPointsController.cs" />
+    <Compile Include="Areas\DailyReporting\Controllers\TransactionsDailyController.cs" />
     <Compile Include="Areas\DailyReporting\Controllers\UnitsDailyController.cs" />
     <Compile Include="Areas\DailyReporting\DailyReportingAreaRegistration.cs" />
     <Compile Include="Areas\MonthlyReporting\Controllers\AreaBaseController.cs" />
@@ -703,7 +704,6 @@
     <Content Include="Areas\ShiftReporting\Views\Tanks\TanksData.cshtml" />
     <Content Include="Areas\NomManagement\Views\web.config" />
     <Content Include="Areas\NomManagement\Views\UploadNom\Index.cshtml" />
-    <Content Include="Areas\DailyReporting\Views\MeasuringPoints\MeasuringPointsData.cshtml" />
     <Content Include="Areas\NomManagement\Views\UnitConfig\Index.cshtml" />
     <Content Include="fonts\BankGothic1.eot" />
     <Content Include="fonts\BankGothic1.ttf" />
@@ -737,6 +737,7 @@
     <Content Include="Areas\NomManagement\Views\MeasureUnit\Index.cshtml" />
     <Content Include="Areas\NomManagement\Views\UnitsDailyConfig\Index.cshtml" />
     <Content Include="Areas\NomManagement\Views\Nomenclatures\Index.cshtml" />
+    <Content Include="Areas\DailyReporting\Views\TransactionsDaily\TransactionsDailyData.cshtml" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <None Include="Properties\PublishProfiles\Home.pubxml" />
     <Content Include="Scripts\custom\sendArea.js" />

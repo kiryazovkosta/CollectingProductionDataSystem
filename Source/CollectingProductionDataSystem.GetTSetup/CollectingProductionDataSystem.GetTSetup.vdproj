@@ -244,13 +244,25 @@
         "Entry"
         {
         "MsmKey" = "8:_FB5D1348FEB05604C0F626BCDA32D9AB"
-        "OwnerKey" = "8:_33AC361C6AE0C6B7D079A45419BD90D6"
+        "OwnerKey" = "8:_8941554B0B285AAA6851E9514338996F"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_FB5D1348FEB05604C0F626BCDA32D9AB"
-        "OwnerKey" = "8:_8941554B0B285AAA6851E9514338996F"
+        "OwnerKey" = "8:_33AC361C6AE0C6B7D079A45419BD90D6"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_7A8621523B5544649FCC061EF0C7AD95"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_2342F994FD451A359195554DE00FF578"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -341,18 +353,6 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_1D46F9ED3FCA4B5A7470F282DBC2A349"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_2342F994FD451A359195554DE00FF578"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_7A8621523B5544649FCC061EF0C7AD95"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -513,6 +513,11 @@
             "AssemblyAsmDisplayName" = "8:AutoMapper, Version=4.0.4.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
+                    "_1D46F9ED3FCA4B5A7470F282DBC2A349"
+                    {
+                    "Name" = "8:AutoMapper.dll"
+                    "Attributes" = "3:512"
+                    }
                 }
             "SourcePath" = "8:AutoMapper.dll"
             "TargetName" = "8:"
@@ -570,6 +575,11 @@
             "AssemblyAsmDisplayName" = "8:CollectingProductionDataSystem.Data, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
+                    "_33AC361C6AE0C6B7D079A45419BD90D6"
+                    {
+                    "Name" = "8:CollectingProductionDataSystem.Data.dll"
+                    "Attributes" = "3:512"
+                    }
                 }
             "SourcePath" = "8:CollectingProductionDataSystem.Data.dll"
             "TargetName" = "8:"
@@ -596,6 +606,11 @@
             "AssemblyAsmDisplayName" = "8:EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
+                    "_686DC9F4EF9D191DADDB091C17E27AD1"
+                    {
+                    "Name" = "8:EntityFramework.dll"
+                    "Attributes" = "3:512"
+                    }
                 }
             "SourcePath" = "8:EntityFramework.dll"
             "TargetName" = "8:"
@@ -622,6 +637,11 @@
             "AssemblyAsmDisplayName" = "8:CollectingProductionDataSystem.Infrastructure, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
+                    "_8941554B0B285AAA6851E9514338996F"
+                    {
+                    "Name" = "8:CollectingProductionDataSystem.Infrastructure.dll"
+                    "Attributes" = "3:512"
+                    }
                 }
             "SourcePath" = "8:CollectingProductionDataSystem.Infrastructure.dll"
             "TargetName" = "8:"
@@ -648,6 +668,11 @@
             "AssemblyAsmDisplayName" = "8:ExpressionEvaluator, Version=2.0.3.0, Culture=neutral, PublicKeyToken=90d9f15d622e2348, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
+                    "_93BD006B74C4C5A29BF3093459D3BA92"
+                    {
+                    "Name" = "8:ExpressionEvaluator.dll"
+                    "Attributes" = "3:512"
+                    }
                 }
             "SourcePath" = "8:ExpressionEvaluator.dll"
             "TargetName" = "8:"
@@ -674,6 +699,11 @@
             "AssemblyAsmDisplayName" = "8:EntityFramework.BulkInsert, Version=6.0.2.8, Culture=neutral, PublicKeyToken=630a17433349cb76, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
+                    "_9E4DA402833BA8CDCAA727B03220457E"
+                    {
+                    "Name" = "8:EntityFramework.BulkInsert.dll"
+                    "Attributes" = "3:512"
+                    }
                 }
             "SourcePath" = "8:EntityFramework.BulkInsert.dll"
             "TargetName" = "8:"
@@ -700,6 +730,11 @@
             "AssemblyAsmDisplayName" = "8:log4net, Version=1.2.13.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
+                    "_A8205DBDF1AFE46ACBC6D71FFE1ED2AA"
+                    {
+                    "Name" = "8:log4net.dll"
+                    "Attributes" = "3:512"
+                    }
                 }
             "SourcePath" = "8:log4net.dll"
             "TargetName" = "8:"
@@ -726,6 +761,11 @@
             "AssemblyAsmDisplayName" = "8:MathExpressions.Application, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
+                    "_B07601B5B84BE6B8181857D592D05112"
+                    {
+                    "Name" = "8:MathExpressions.Application.dll"
+                    "Attributes" = "3:512"
+                    }
                 }
             "SourcePath" = "8:MathExpressions.Application.dll"
             "TargetName" = "8:"
@@ -752,6 +792,11 @@
             "AssemblyAsmDisplayName" = "8:Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
+                    "_B184E4C0F0F89FF1CAF4361823D65615"
+                    {
+                    "Name" = "8:Microsoft.AspNet.Identity.Core.dll"
+                    "Attributes" = "3:512"
+                    }
                 }
             "SourcePath" = "8:Microsoft.AspNet.Identity.Core.dll"
             "TargetName" = "8:"
@@ -778,6 +823,11 @@
             "AssemblyAsmDisplayName" = "8:EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
+                    "_BCE3D3DEAA9040CA1E21C69E12F73078"
+                    {
+                    "Name" = "8:EntityFramework.SqlServer.dll"
+                    "Attributes" = "3:512"
+                    }
                 }
             "SourcePath" = "8:EntityFramework.SqlServer.dll"
             "TargetName" = "8:"
@@ -804,6 +854,11 @@
             "AssemblyAsmDisplayName" = "8:EntityFramework.MappingAPI, Version=6.0.0.7, Culture=neutral, PublicKeyToken=7ee2e825d201459e, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
+                    "_C90E4C77DAAB0F52AA75EEA5EEE00488"
+                    {
+                    "Name" = "8:EntityFramework.MappingAPI.dll"
+                    "Attributes" = "3:512"
+                    }
                 }
             "SourcePath" = "8:EntityFramework.MappingAPI.dll"
             "TargetName" = "8:"
@@ -830,6 +885,11 @@
             "AssemblyAsmDisplayName" = "8:Microsoft.AspNet.Identity.EntityFramework, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
+                    "_C98C33F26A406337D25A4154C24A4193"
+                    {
+                    "Name" = "8:Microsoft.AspNet.Identity.EntityFramework.dll"
+                    "Attributes" = "3:512"
+                    }
                 }
             "SourcePath" = "8:Microsoft.AspNet.Identity.EntityFramework.dll"
             "TargetName" = "8:"
@@ -856,6 +916,11 @@
             "AssemblyAsmDisplayName" = "8:CollectingProductionDataSystem.Models, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
+                    "_D158BFDBD4CD4AF9ADF89961105ED848"
+                    {
+                    "Name" = "8:CollectingProductionDataSystem.Models.dll"
+                    "Attributes" = "3:512"
+                    }
                 }
             "SourcePath" = "8:CollectingProductionDataSystem.Models.dll"
             "TargetName" = "8:"
@@ -882,6 +947,11 @@
             "AssemblyAsmDisplayName" = "8:Antlr3.Runtime, Version=3.5.0.2, Culture=neutral, PublicKeyToken=eb42632606e9261f, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
+                    "_D9DFAC5CE3185D77DD2C396E9EA6ABDA"
+                    {
+                    "Name" = "8:Antlr3.Runtime.dll"
+                    "Attributes" = "3:512"
+                    }
                 }
             "SourcePath" = "8:Antlr3.Runtime.dll"
             "TargetName" = "8:"
@@ -908,6 +978,11 @@
             "AssemblyAsmDisplayName" = "8:CollectingProductionDataSystem.Constants, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
+                    "_FB5D1348FEB05604C0F626BCDA32D9AB"
+                    {
+                    "Name" = "8:CollectingProductionDataSystem.Constants.dll"
+                    "Attributes" = "3:512"
+                    }
                 }
             "SourcePath" = "8:CollectingProductionDataSystem.Constants.dll"
             "TargetName" = "8:"
@@ -983,15 +1058,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:CollectingProductionDataSystem.GetTSetup"
-        "ProductCode" = "8:{633D7A97-D749-4472-A935-FFB0DF516818}"
-        "PackageCode" = "8:{866F9BE1-5096-45A5-8038-B0686FEE81B9}"
+        "ProductCode" = "8:{CF122ADA-20BD-4C5A-8712-971947692B01}"
+        "PackageCode" = "8:{79A32708-EF54-463F-ACBF-F132A20AAFDA}"
         "UpgradeCode" = "8:{C91449F3-672E-46D8-AA42-3B10ED7FDBA2}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:FALSE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:1.0.2"
+        "ProductVersion" = "8:1.0.6"
         "Manufacturer" = "8:BMS"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"

@@ -1,10 +1,15 @@
 ﻿namespace CollectingProductionDataSystem.Models.Transactions
 {
+    using System.Collections.Generic;
     using CollectingProductionDataSystem.Models.Abstract;
     using CollectingProductionDataSystem.Models.Contracts;
 
     public partial class MeasuringPointConfig : DeletableEntity, IEntity
     {
+        public MeasuringPointConfig()
+        {
+            this.MeasuringPointsConfigsDatas = new HashSet<MeasuringPointsConfigsData>();
+        }
         public int Id { get; set; }
         public int ZoneId { get; set; }
         public string ControlPoint { get; set; }
@@ -90,6 +95,9 @@
         public decimal TotalizerEndCommonMassReverseLowExtreme { get; set; }
         public decimal TotalizerEndCommonMassReverseHighExtreme { get; set; }
         public int? FlowDirection { get; set; }
+        public string WeightScaleNumber{ get; set; }
+        public bool IsInternalPoint { get; set; }
         public virtual Zone Zone { get; set; }
+        public virtual ICollection<MeasuringPointsConfigsData> MeasuringPointsConfigsDatas { get; set; }
     }
 }

@@ -52,6 +52,10 @@
 
             // Table & Column Mappings
             this.ToTable("MeasuringPointsConfigsDatas");
+
+            this.HasOptional(t => t.MeasuringPointConfig)
+                .WithMany(t => t.MeasuringPointsConfigsDatas)
+                .HasForeignKey(t => t.MeasuringPointConfigId);
         }
     }
 }

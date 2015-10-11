@@ -1,5 +1,6 @@
 ﻿@using CollectingProductionDataSystem.Web.ViewModels.Transactions;
 @using Resources = App_GlobalResources.Resources;
+@model MeasuringPointsDataViewModel
 @{
     Layout = "~/Views/Shared/_KendoLayoutWithSideBar.cshtml";
 }
@@ -31,7 +32,7 @@
             })
         .Pageable(pageable => pageable
         .Refresh(true)
-        .PageSizes(new[] { 10, 20, 50, 100 })
+        .PageSizes(new[] { 20, 50, 100 })
         .ButtonCount(5))
         .Sortable()
         .Excel(excel => excel
@@ -44,9 +45,9 @@
         .Filterable()
         .DataSource(dataSource => dataSource
             .Ajax()
-            .PageSize(20)
+            .PageSize(50)
             .ServerOperation(true)
-            .Read(read => read.Action("ReadMeasuringPointsData", "MeasuringPoints", new { area = "DailyReporting" }).Data("sendDate"))
+                    .Read(read => read.Action("ReadTransactionsDailyData", "TransactionsDaily", new { area = "DailyReporting" }).Data("sendDate"))
         .Events(events =>
         {
             events.Error("error_handler");
@@ -66,9 +67,13 @@
     <script>
         kendo.culture("@System.Threading.Thread.CurrentThread.CurrentCulture.Name");
 
-        function sendDirections() {
-            return { "directions": $('input[name=directions]').val() }
+        function sendDirectionId() {
+            return { "flowDirection": $('input[name=directions]').val() }
         }
+
+        //function sendShiftsOffset() {
+        //    return { "shiftMinutesOffset": $('input[name=shifts]').val() }
+        //}
 
         function sendAntiForgery() {
             return { "__RequestVerificationToken": $('input[name=__RequestVerificationToken]').val() }
@@ -76,7 +81,8 @@
 
         var sendDate = function () {
             var result = { "date": $('input[name=date]').val() };
-            $.extend(result, sendDirections());
+            $.extend(result, sendDirectionId());
+            //$.extend(result, sendShiftsOffset());
             $.extend(result, sendAntiForgery());
             return result;
         }
@@ -170,10 +176,6 @@
     </script>
 }
 
-
-
-
 @section sidebar{
     @Html.Partial("_MeasurementsPointsSideBar")
 }
-
