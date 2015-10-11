@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.Data.Entity;
+using System.Diagnostics;
 using CollectingProductionDataSystem.Data.Contracts;
 using System;
 using System.Collections.Generic;
@@ -33,6 +34,8 @@ namespace CollectingProductionDataSystem.Web.Areas.DailyReporting.Controllers
             ValidateModelState(date, flowDirection);
             var transactions = this.data.MeasuringPointsConfigsDatas
                 .All()
+                .Include(x => x.MeasuringPointConfig)
+                .Where(x => x.MeasuringPointConfig.IsInternalPoint == false)
                 .Where(x => x.RowId == -1);
 
             if (date.HasValue)
@@ -51,22 +54,55 @@ namespace CollectingProductionDataSystem.Web.Areas.DailyReporting.Controllers
             var transactionsData = transactions.Select(t => new TransactionDataModel
             {
                 MeasuringPointId = t.MeasuringPointId,
+                TransportId = t.MeasuringPointConfig.TransportTypeId,
                 ProductId = t.ProductNumber.Value,
                 Mass = t.Mass,
                 MassReverse = t.MassReverse
             });
 
+            var dict = new SortedDictionary<int, MeasuringPointsDataViewModel>();
+
             foreach (var transactionData in transactionsData)
             {
+                var mpd = new MeasuringPointsDataViewModel();
+
+                if (dict.ContainsKey(transactionData.ProductId))
+                {
+                    mpd = dict[transactionData.ProductId];
+                }
                 
+                mpd.ProductId = transactionData.ProductId;
+
+                if (transactionData.TransportId == 1)
+                {
+                    mpd.AvtoQuantity += transactionData.RealMass;
+                }
+                else if (transactionData.TransportId == 2)
+                {
+                    mpd.JpQuantity += transactionData.RealMass;
+                }
+                else if (transactionData.TransportId == 3)
+                {
+                    mpd.SeaQuantity += transactionData.RealMass;
+                }
+                else if (transactionData.TransportId == 4)
+                {
+                    mpd.PipeQuantity += transactionData.RealMass;
+                }
+
+                dict[transactionData.ProductId] = mpd;
             }
 
-
-            var kendoPreparedResult = Mapper.Map<IEnumerable<MeasuringPointsConfigsData>, IEnumerable<MeasuringPointsDataViewModel>>(transactions);
             var kendoResult = new DataSourceResult();
             try
             {
-                kendoResult = kendoPreparedResult.ToDataSourceResult(request, ModelState);
+                var hs = new HashSet<MeasuringPointsDataViewModel>();
+                foreach (var item in dict)
+                {
+                    hs.Add(item.Value);
+                }
+
+                kendoResult = hs.ToDataSourceResult(request, ModelState);
             }
             catch (Exception ex1)
             {
@@ -92,6 +128,7 @@ namespace CollectingProductionDataSystem.Web.Areas.DailyReporting.Controllers
     public class TransactionDataModel 
     { 
         public int MeasuringPointId { get; set; }
+        public int TransportId { get; set; }
         public int ProductId { get; set; }
         public decimal? Mass { get; set; }
         public decimal? MassReverse { get; set; }

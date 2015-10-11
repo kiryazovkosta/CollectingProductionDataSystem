@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using CollectingProductionDataSystem.Models.Abstract;
     using CollectingProductionDataSystem.Models.Contracts;
+    using CollectingProductionDataSystem.Models.Nomenclatures;
 
     public partial class MeasuringPointConfig : DeletableEntity, IEntity
     {
@@ -99,5 +100,7 @@
         public bool IsInternalPoint { get; set; }
         public virtual Zone Zone { get; set; }
         public virtual ICollection<MeasuringPointsConfigsData> MeasuringPointsConfigsDatas { get; set; }
+        public int TransportTypeId { get; set; }
+        public virtual TransportType TransportType { get; set; }
     }
 }

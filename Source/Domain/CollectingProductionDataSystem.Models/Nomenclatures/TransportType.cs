@@ -14,11 +14,13 @@
         public TransportType()
         {
             this.MeasurementPoints = new HashSet<MeasurementPoint>();
+            this.MeasuringPointConfigs = new HashSet<MeasuringPointConfig>();
         }
 
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public virtual ICollection<MeasurementPoint> MeasurementPoints { get; set; }
+        public virtual ICollection<MeasuringPointConfig> MeasuringPointConfigs { get; set; }
     }
 }

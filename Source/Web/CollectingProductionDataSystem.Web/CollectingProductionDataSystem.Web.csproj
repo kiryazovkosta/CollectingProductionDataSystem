@@ -236,7 +236,6 @@
     <Compile Include="Areas\Administration\ViewModels\RoleViewModel.cs" />
     <Compile Include="Areas\DailyReporting\Controllers\AjaxController.cs" />
     <Compile Include="Areas\DailyReporting\Controllers\AreaBaseController.cs" />
-    <Compile Include="Areas\DailyReporting\Controllers\MeasuringPointsController.cs" />
     <Compile Include="Areas\DailyReporting\Controllers\TransactionsDailyController.cs" />
     <Compile Include="Areas\DailyReporting\Controllers\UnitsDailyController.cs" />
     <Compile Include="Areas\DailyReporting\DailyReportingAreaRegistration.cs" />
