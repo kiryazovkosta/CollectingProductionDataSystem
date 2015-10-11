@@ -14,6 +14,7 @@ namespace CollectingProductionDataSystem.Models.Nomenclatures
         private ICollection<UnitConfig> unitConfigs;
         private ICollection<MeasurementPointsProductsConfig> measurementPointsProductsConfigs;
         private ICollection<UnitsDailyConfig> unitsDailyConfigs;
+        private ICollection<MeasuringPointsConfigsData> measuringPointsConfigsDatas;
 
         public Product()
         {
@@ -21,6 +22,7 @@ namespace CollectingProductionDataSystem.Models.Nomenclatures
             this.unitConfigs = new HashSet<UnitConfig>();
             this.measurementPointsProductsConfigs = new HashSet<MeasurementPointsProductsConfig>();
             this.unitsDailyConfigs = new HashSet<UnitsDailyConfig>();
+            this.measuringPointsConfigsDatas = new HashSet<MeasuringPointsConfigsData>();
         }
 
         public int Id { get; set; }
@@ -52,6 +54,12 @@ namespace CollectingProductionDataSystem.Models.Nomenclatures
         {
             get { return this.unitsDailyConfigs; }
             set { this.unitsDailyConfigs = value; }
+        }
+
+        public virtual ICollection<MeasuringPointsConfigsData> MeasuringPointsConfigsDatas 
+        {
+            get { return this.measuringPointsConfigsDatas; }
+            set { this.measuringPointsConfigsDatas = value; }
         }
     }
 }

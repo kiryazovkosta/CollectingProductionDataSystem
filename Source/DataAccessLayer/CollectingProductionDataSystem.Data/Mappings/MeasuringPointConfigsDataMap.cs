@@ -56,6 +56,9 @@
             this.HasRequired(t => t.MeasuringPointConfig)
                 .WithMany(t => t.MeasuringPointsConfigsDatas)
                 .HasForeignKey(t => t.MeasuringPointConfigId);
+            this.HasOptional(t => t.Product)
+                .WithMany(t => t.MeasuringPointsConfigsDatas)
+                .HasForeignKey(d => d.ProductId);
         }
     }
 }

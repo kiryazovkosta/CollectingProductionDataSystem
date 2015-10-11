@@ -99,7 +99,9 @@ namespace CollectingProductionDataSystem.Web.Areas.DailyReporting.Controllers
                 var hs = new HashSet<MeasuringPointsDataViewModel>();
                 foreach (var item in dict)
                 {
-                    hs.Add(item.Value);
+                    var p = item.Value;
+                    p.ProductName = this.data.Products.All().Where(x => x.Code == p.ProductId).FirstOrDefault().Name;
+                    hs.Add(p);
                 }
 
                 kendoResult = hs.ToDataSourceResult(request, ModelState);
