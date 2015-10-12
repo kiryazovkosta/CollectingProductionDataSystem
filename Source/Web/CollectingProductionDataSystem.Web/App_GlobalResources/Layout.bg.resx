@@ -477,11 +477,8 @@
   <data name="Areas" xml:space="preserve">
     <value>Области</value>
   </data>
-  <data name="DailyProductType1" xml:space="preserve">
-    <value>Дневни типове на продукти</value>
-  </data>
   <data name="DailyProductTypes" xml:space="preserve">
-    <value>Дневни типове на продукт</value>
+    <value>Типoве на продукта при дневни справки</value>
   </data>
   <data name="Direction1" xml:space="preserve">
     <value>Посоки на потоци</value>
@@ -489,7 +486,7 @@
   <data name="Directions" xml:space="preserve">
     <value>Посоки на движение</value>
   </data>
-  <data name="EditReason1" xml:space="preserve">
+  <data name="EditReasons" xml:space="preserve">
     <value>Причини за корекции</value>
   </data>
   <data name="Factories" xml:space="preserve">

@@ -10,7 +10,7 @@
     using CollectingProductionDataSystem.Models.Nomenclatures;
     using Resources = App_GlobalResources.Resources;
 
-    public class EditReasonViewModel : IMapFrom<EditReason>, IEntity
+    public class ShiftViewModel:IMapFrom<Shift>,IEntity
     {
         [Required]
         [UIHint("Hidden")]
@@ -19,5 +19,17 @@
         [Required]
         [Display(Name = "Name", ResourceType = typeof(Resources.Layout))]
         public string Name { get; set; }
+
+        [Required]
+        [Display(Name = "BeginTime", ResourceType = typeof(Resources.Layout))]
+        public TimeSpan BeginTime { get; set; }
+
+        [Required]
+        [Display(Name = "ReadOffset", ResourceType = typeof(Resources.Layout))]
+        public TimeSpan ReadOffset { get; set; }
+
+        [Required]
+        [Display(Name = "ReadPollTimeSlot", ResourceType = typeof(Resources.Layout))]
+        public TimeSpan ReadPollTimeSlot { get; set; }
     }
 }

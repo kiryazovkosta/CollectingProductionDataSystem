@@ -502,11 +502,11 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to EditReason.
+        ///   Looks up a localized string similar to Reasons For Edit.
         /// </summary>
-        public static string EditReason1 {
+        public static string EditReasons {
             get {
-                return ResourceManager.GetString("EditReason1", resourceCulture);
+                return ResourceManager.GetString("EditReasons", resourceCulture);
             }
         }
         

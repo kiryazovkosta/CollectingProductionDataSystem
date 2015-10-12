@@ -245,6 +245,7 @@
     <Compile Include="Areas\NomManagement\Controllers\AreaController.cs" />
     <Compile Include="Areas\NomManagement\Controllers\DailyProductTypeController.cs" />
     <Compile Include="Areas\NomManagement\Controllers\DirectionController.cs" />
+    <Compile Include="Areas\NomManagement\Controllers\EditReasonController.cs" />
     <Compile Include="Areas\NomManagement\Controllers\FactoryController.cs" />
     <Compile Include="Areas\NomManagement\Controllers\GenericNomController.cs" />
     <Compile Include="Areas\NomManagement\Controllers\MaterialTypeController.cs" />
@@ -255,7 +256,9 @@
     <Compile Include="Areas\NomManagement\Controllers\ProcessUnitController.cs" />
     <Compile Include="Areas\NomManagement\Controllers\ProductController.cs" />
     <Compile Include="Areas\NomManagement\Controllers\ProductTypeController.cs" />
+    <Compile Include="Areas\NomManagement\Controllers\ShiftController.cs" />
     <Compile Include="Areas\NomManagement\Controllers\ShiftProductTypeController.cs" />
+    <Compile Include="Areas\NomManagement\Controllers\TransportTypeController.cs" />
     <Compile Include="Areas\NomManagement\Controllers\UnitConfigController.cs" />
     <Compile Include="Areas\NomManagement\Controllers\UnitsDailyConfigController.cs" />
     <Compile Include="Areas\NomManagement\Controllers\UploadNomController.cs" />
@@ -273,6 +276,7 @@
     <Compile Include="Areas\NomManagement\Models\ViewModels\ProductViewModel.cs" />
     <Compile Include="Areas\NomManagement\Models\ViewModels\ShiftProductTypeViewModel.cs" />
     <Compile Include="Areas\NomManagement\Models\ViewModels\TankMasterProductViewModel.cs" />
+    <Compile Include="Areas\NomManagement\Models\ViewModels\TransportTypeViewModel.cs" />
     <Compile Include="Areas\NomManagement\Models\ViewModels\UnitConfigViewModel.cs" />
     <Compile Include="Areas\NomManagement\Models\ViewModels\UnitsDailyConfigViewModel.cs" />
     <Compile Include="Areas\NomManagement\NomManagementAreaRegistration.cs" />
@@ -739,6 +743,10 @@
     <Content Include="Areas\NomManagement\Views\UnitsDailyConfig\Index.cshtml" />
     <Content Include="Areas\NomManagement\Views\Nomenclatures\Index.cshtml" />
     <Content Include="Areas\DailyReporting\Views\TransactionsDaily\TransactionsDailyData.cshtml" />
+    <Content Include="Areas\NomManagement\Views\EditReason\Index.cshtml" />
+    <Content Include="Areas\NomManagement\Views\Shift\Index.cshtml" />
+    <Content Include="Areas\NomManagement\Views\TransportType\Index.cshtml" />
+    <Content Include="Areas\NomManagement\Views\Shared\EditorTemplates\TimeSpan.cshtml" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <None Include="Properties\PublishProfiles\Home.pubxml" />
     <Content Include="Scripts\custom\sendArea.js" />

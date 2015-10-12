@@ -486,8 +486,8 @@
   <data name="Directions" xml:space="preserve">
     <value>Directions</value>
   </data>
-  <data name="EditReason1" xml:space="preserve">
-    <value>EditReason</value>
+  <data name="EditReasons" xml:space="preserve">
+    <value>Reasons For Edit</value>
   </data>
   <data name="Factories" xml:space="preserve">
     <value>Factories</value>

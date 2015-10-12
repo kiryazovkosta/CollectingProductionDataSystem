@@ -10,7 +10,7 @@
     using CollectingProductionDataSystem.Models.Nomenclatures;
     using Resources = App_GlobalResources.Resources;
 
-    public class EditReasonViewModel : IMapFrom<EditReason>, IEntity
+    public class TransportTypeViewModel:IMapFrom<TransportType>,IEntity
     {
         [Required]
         [UIHint("Hidden")]
@@ -19,5 +19,9 @@
         [Required]
         [Display(Name = "Name", ResourceType = typeof(Resources.Layout))]
         public string Name { get; set; }
+
+        [Required]
+        [Display(Name = "Description", ResourceType = typeof(Resources.Layout))]
+        public string Description { get; set; }
     }
 }
