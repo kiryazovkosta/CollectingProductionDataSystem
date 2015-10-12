@@ -160,6 +160,8 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+
+
         ///   Looks up a localized string similar to Begin Minutes.
         /// </summary>
         public static string BeginMinutes {
@@ -174,6 +176,15 @@ namespace App_GlobalResources.Resources {
         public static string BeginTime {
             get {
                 return ResourceManager.GetString("BeginTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Auto Expedition&lt;br/&gt;[ton].
+        /// </summary>
+        public static string AvtoQuantity {
+            get {
+                return ResourceManager.GetString("AvtoQuantity", resourceCulture);
             }
         }
         
@@ -709,6 +720,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Jp Expedition&lt;br/&gt;[ton].
+        /// </summary>
+        public static string JpQuantity {
+            get {
+                return ResourceManager.GetString("JpQuantity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Last Name.
         /// </summary>
         public static string LastName {
@@ -988,6 +1008,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Pipe Expedition&lt;br/&gt;[ton].
+        /// </summary>
+        public static string PipeQuantity {
+            get {
+                return ResourceManager.GetString("PipeQuantity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Plant.
         /// </summary>
         public static string Plant {
@@ -1074,6 +1103,15 @@ namespace App_GlobalResources.Resources {
         public static string Product1 {
             get {
                 return ResourceManager.GetString("Product1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Product Id.
+        /// </summary>
+        public static string ProductId {
+            get {
+                return ResourceManager.GetString("ProductId", resourceCulture);
             }
         }
         
@@ -1240,6 +1278,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sea Expedition&lt;br/&gt;[ton].
+        /// </summary>
+        public static string SeaQuantity {
+            get {
+                return ResourceManager.GetString("SeaQuantity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Shift.
         /// </summary>
         public static string Shift {
@@ -1371,6 +1418,15 @@ namespace App_GlobalResources.Resources {
         public static string TanksShiftMinutesOffsetSelector {
             get {
                 return ResourceManager.GetString("TanksShiftMinutesOffsetSelector", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total Expediotion&lt;br/&gt;[ton].
+        /// </summary>
+        public static string TotalQuantity {
+            get {
+                return ResourceManager.GetString("TotalQuantity", resourceCulture);
             }
         }
         
