@@ -91,6 +91,8 @@
 
         IDeletableEntityRepository<MeasureUnit> MeasureUnits { get; }
 
+        IDeletableEntityRepository<ActiveTransactionsData> ActiveTransactionsDatas { get; }
+
         IDbContext DbContext { get; }
 
         IEfStatus SaveChanges(string userName);

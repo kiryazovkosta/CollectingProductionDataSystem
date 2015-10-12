@@ -10,6 +10,7 @@
         public MeasuringPointConfig()
         {
             this.MeasuringPointsConfigsDatas = new HashSet<MeasuringPointsConfigsData>();
+            this.ActiveTransactionsDatas = new HashSet<ActiveTransactionsData>();
         }
         public int Id { get; set; }
         public int ZoneId { get; set; }
@@ -105,5 +106,6 @@
         public string ActiveTransactionStatusTag { get; set; }
         public string ActiveTransactionProductTag { get; set; }
         public string ActiveTransactionMassTag { get; set; }
+        public virtual ICollection<ActiveTransactionsData> ActiveTransactionsDatas { get; set; }
     }
 }
