@@ -268,7 +268,7 @@
     <Compile Include="Areas\NomManagement\Models\ViewModels\MeasureUnitViewModel.cs" />
     <Compile Include="Areas\NomManagement\Models\ViewModels\ParkViewModel.cs" />
     <Compile Include="Areas\NomManagement\Models\ViewModels\ProcessUnitViewModel.cs" />
-    <Compile Include="Areas\NomManagement\Models\ViewModels\ProductionShiftViewModel.cs" />
+    <Compile Include="Areas\NomManagement\Models\ViewModels\ShiftViewModel.cs" />
     <Compile Include="Areas\NomManagement\Models\ViewModels\ProductTypeViewModel.cs" />
     <Compile Include="Areas\NomManagement\Models\ViewModels\ProductViewModel.cs" />
     <Compile Include="Areas\NomManagement\Models\ViewModels\ShiftProductTypeViewModel.cs" />

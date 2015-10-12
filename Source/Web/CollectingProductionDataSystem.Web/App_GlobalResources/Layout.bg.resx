@@ -603,4 +603,10 @@
   <data name="OffsetMinutes" xml:space="preserve">
     <value>Отместване в минути</value>
   </data>
+  <data name="ReadOffset" xml:space="preserve">
+    <value>Време за прочитане</value>
+  </data>
+  <data name="ReadPollTimeSlot" xml:space="preserve">
+    <value>Интервал за прочитане</value>
+  </data>
 </root>

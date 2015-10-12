@@ -1168,6 +1168,24 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Read Offset.
+        /// </summary>
+        public static string ReadOffset {
+            get {
+                return ResourceManager.GetString("ReadOffset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Read Poll Time Slot.
+        /// </summary>
+        public static string ReadPollTimeSlot {
+            get {
+                return ResourceManager.GetString("ReadPollTimeSlot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Record Timestamp.
         /// </summary>
         public static string RecordTimestamp {

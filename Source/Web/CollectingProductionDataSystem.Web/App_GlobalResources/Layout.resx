@@ -600,4 +600,10 @@
   <data name="OffsetMinutes" xml:space="preserve">
     <value>Offset Minutes</value>
   </data>
+  <data name="ReadOffset" xml:space="preserve">
+    <value>Read Offset</value>
+  </data>
+  <data name="ReadPollTimeSlot" xml:space="preserve">
+    <value>Read Poll Time Slot</value>
+  </data>
 </root>

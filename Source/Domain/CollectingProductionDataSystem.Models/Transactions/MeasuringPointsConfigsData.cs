@@ -82,7 +82,7 @@ namespace CollectingProductionDataSystem.Models.Transactions
         public long? BatchId { get; set; }
         public int MeasuringPointConfigId { get; set; }
         public virtual MeasuringPointConfig MeasuringPointConfig { get; set; }
-        public int? ProductId { get; set; }
+        public int ProductId { get; set; }
         public virtual Product Product { get; set; }
     }
 }
