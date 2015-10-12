@@ -116,6 +116,8 @@
 
         public IDbSet<DailyProductType> DailyProductTypes { get; set; }
 
+        public IDbSet<Shift> Shifts { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             ModelBingConfig.RegisterMappings(modelBuilder);

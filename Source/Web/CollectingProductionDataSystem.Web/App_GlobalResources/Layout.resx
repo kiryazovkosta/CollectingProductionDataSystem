@@ -588,6 +588,24 @@
   <data name="IsEditable" xml:space="preserve">
     <value>IsEditable</value>
   </data>
+  <data name="BeginMinutes" xml:space="preserve">
+    <value>Begin Minutes</value>
+  </data>
+  <data name="BeginTime" xml:space="preserve">
+    <value>Begin Time</value>
+  </data>
+  <data name="EndTime" xml:space="preserve">
+    <value>End Time</value>
+  </data>
+  <data name="OffsetMinutes" xml:space="preserve">
+    <value>Offset Minutes</value>
+  </data>
+  <data name="ReadOffset" xml:space="preserve">
+    <value>Read Offset</value>
+  </data>
+  <data name="ReadPollTimeSlot" xml:space="preserve">
+    <value>Read Poll Time Slot</value>
+  </data>
   <data name="AvtoQuantity" xml:space="preserve">
     <value>Auto Expedition&lt;br/&gt;[ton]</value>
   </data>

@@ -160,6 +160,26 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+
+
+        ///   Looks up a localized string similar to Begin Minutes.
+        /// </summary>
+        public static string BeginMinutes {
+            get {
+                return ResourceManager.GetString("BeginMinutes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Begin Time.
+        /// </summary>
+        public static string BeginTime {
+            get {
+                return ResourceManager.GetString("BeginTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Auto Expedition&lt;br/&gt;[ton].
         /// </summary>
         public static string AvtoQuantity {
@@ -507,6 +527,15 @@ namespace App_GlobalResources.Resources {
         public static string Email {
             get {
                 return ResourceManager.GetString("Email", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to End Time.
+        /// </summary>
+        public static string EndTime {
+            get {
+                return ResourceManager.GetString("EndTime", resourceCulture);
             }
         }
         
@@ -925,6 +954,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Offset Minutes.
+        /// </summary>
+        public static string OffsetMinutes {
+            get {
+                return ResourceManager.GetString("OffsetMinutes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Park.
         /// </summary>
         public static string Park {
@@ -1164,6 +1202,24 @@ namespace App_GlobalResources.Resources {
         public static string ProductTypes {
             get {
                 return ResourceManager.GetString("ProductTypes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Read Offset.
+        /// </summary>
+        public static string ReadOffset {
+            get {
+                return ResourceManager.GetString("ReadOffset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Read Poll Time Slot.
+        /// </summary>
+        public static string ReadPollTimeSlot {
+            get {
+                return ResourceManager.GetString("ReadPollTimeSlot", resourceCulture);
             }
         }
         

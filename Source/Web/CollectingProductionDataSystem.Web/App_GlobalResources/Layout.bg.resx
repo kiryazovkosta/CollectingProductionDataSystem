@@ -591,6 +591,24 @@
   <data name="IsEditable" xml:space="preserve">
     <value>Редактируема</value>
   </data>
+  <data name="BeginMinutes" xml:space="preserve">
+    <value>Начална минута</value>
+  </data>
+  <data name="BeginTime" xml:space="preserve">
+    <value>Начален час</value>
+  </data>
+  <data name="EndTime" xml:space="preserve">
+    <value>Краен час</value>
+  </data>
+  <data name="OffsetMinutes" xml:space="preserve">
+    <value>Отместване в минути</value>
+  </data>
+  <data name="ReadOffset" xml:space="preserve">
+    <value>Време за прочитане</value>
+  </data>
+  <data name="ReadPollTimeSlot" xml:space="preserve">
+    <value>Интервал за прочитане</value>
+  </data>
   <data name="AvtoQuantity" xml:space="preserve">
     <value>Експедиция Авто&lt;br&gt;[Тон]</value>
   </data>
