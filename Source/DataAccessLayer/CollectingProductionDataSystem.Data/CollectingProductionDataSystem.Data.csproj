@@ -120,6 +120,10 @@
     <Compile Include="Mappings\UnitsManualDataMap.cs" />
     <Compile Include="Mappings\UnitsInspectionDataMap.cs" />
     <Compile Include="Mappings\ZoneMap.cs" />
+    <Compile Include="Migrations\201510120948224_Create Shifts.cs" />
+    <Compile Include="Migrations\201510120948224_Create Shifts.Designer.cs">
+      <DependentUpon>201510120948224_Create Shifts.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Concrete\ProductionData.cs" />
     <Compile Include="Migrations\ProductionDataImporter.cs" />
@@ -152,6 +156,11 @@
       <Project>{63cc73a0-f2c2-453d-a915-1913095f22fd}</Project>
       <Name>CollectingProductionDataSystem.Models</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201510120948224_Create Shifts.resx">
+      <DependentUpon>201510120948224_Create Shifts.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
