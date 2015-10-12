@@ -588,4 +588,22 @@
   <data name="IsEditable" xml:space="preserve">
     <value>IsEditable</value>
   </data>
+  <data name="AvtoQuantity" xml:space="preserve">
+    <value>Auto Expedition&lt;br/&gt;[ton]</value>
+  </data>
+  <data name="ProductId" xml:space="preserve">
+    <value>Product Id</value>
+  </data>
+  <data name="JpQuantity" xml:space="preserve">
+    <value>Jp Expedition&lt;br/&gt;[ton]</value>
+  </data>
+  <data name="PipeQuantity" xml:space="preserve">
+    <value>Pipe Expedition&lt;br/&gt;[ton]</value>
+  </data>
+  <data name="SeaQuantity" xml:space="preserve">
+    <value>Sea Expedition&lt;br/&gt;[ton]</value>
+  </data>
+  <data name="TotalQuantity" xml:space="preserve">
+    <value>Total Expediotion&lt;br/&gt;[ton]</value>
+  </data>
 </root>

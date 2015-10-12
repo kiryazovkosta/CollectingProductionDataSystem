@@ -89,7 +89,7 @@ namespace CollectingProductionDataSystem.Web.Areas.DailyReporting.Controllers
                 {
                     mpd.PipeQuantity += transactionData.RealMass;
                 }
-
+                mpd.TotalQuantity += transactionData.RealMass;
                 dict[transactionData.ProductId] = mpd;
             }
 

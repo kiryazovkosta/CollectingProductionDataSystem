@@ -591,4 +591,22 @@
   <data name="IsEditable" xml:space="preserve">
     <value>Редактируема</value>
   </data>
+  <data name="AvtoQuantity" xml:space="preserve">
+    <value>Експедиция Авто&lt;br&gt;[Тон]</value>
+  </data>
+  <data name="ProductId" xml:space="preserve">
+    <value>Номер на продукт</value>
+  </data>
+  <data name="JpQuantity" xml:space="preserve">
+    <value>Експедиция ЖП&lt;br/&gt;[Тон]</value>
+  </data>
+  <data name="PipeQuantity" xml:space="preserve">
+    <value>Експедиция Продуктопровод&lt;br/&gt;[Тон]</value>
+  </data>
+  <data name="SeaQuantity" xml:space="preserve">
+    <value>Експедиция Танкер&lt;br/&gt;[Тон]</value>
+  </data>
+  <data name="TotalQuantity" xml:space="preserve">
+    <value>Общо до деня&lt;br/&gt;[Тон]</value>
+  </data>
 </root>
