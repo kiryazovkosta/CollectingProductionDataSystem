@@ -1,15 +1,14 @@
 ﻿namespace CollectingProductionDataSystem.GetTransactions
 {
     using System;
-    using System.Collections.Generic;
+    using System.Data.Entity.Core.Common.CommandTrees.ExpressionBuilder;
     using System.Linq;
     using System.ServiceProcess;
-    using System.Text;
-    using System.Threading.Tasks;
+    using System.Transactions;
     using CollectingProductionDataSystem.Data;
-    using log4net;
     using CollectingProductionDataSystem.Data.Concrete;
     using CollectingProductionDataSystem.Models.Transactions;
+    using log4net;
 
     static class GetTransactionsMain
     {
@@ -55,6 +54,7 @@
                             {
                                 var tr = new MeasuringPointsConfigsData();
                                 tr.MeasuringPointId = row.MeasuringPointId;
+                                tr.MeasuringPointConfigId = row.MeasuringPointId;
                                 tr.TransactionNumber = row.TransactionNumber;
                                 tr.RowId = row.RowId;
                                 tr.TransactionBeginTime = row.TransactionBeginTime;
@@ -261,14 +261,18 @@
                                 context.MeasuringPointsConfigsDatas.Add(tr);
                             }
 
-                            var status = context.SaveChanges("System Loading");
-                            logger.InfoFormat("Successfully synchronization {0} records from Aso to Cpds", status.ResultRecordsCount);
-                            long maxValue = Convert.ToInt64(table.Compute("max(SequenceNumber)", string.Empty));
-                            logger.Info(maxValue);
-                            max.MaxSequenceNumber = maxValue;
-                            context.MaxAsoMeasuringPointDataSequenceNumberMap.Update(max);
-                            context.SaveChanges("ASO2SQL");
-                            logger.InfoFormat("Maximum sequence number updated to {0}.", maxValue);
+                            using (TransactionScope scope = new TransactionScope())
+                            {
+                                var status = context.SaveChanges("Aso2Sql");
+                                long maxValue = Convert.ToInt64(table.Compute("max(SequenceNumber)", string.Empty));
+                                logger.Info(maxValue);
+                                max.MaxSequenceNumber = maxValue;
+                                context.MaxAsoMeasuringPointDataSequenceNumberMap.Update(max);
+                                context.SaveChanges("Aso2Sql");
+                                scope.Complete();
+                                logger.InfoFormat("Successfully synchronization {0} records from Aso to Cpds", status.ResultRecordsCount);
+                                logger.InfoFormat("Maximum sequence number updated to {0}.", maxValue);
+                            }
                         }
                     }
 
@@ -281,7 +285,7 @@
             }
         }
 
-        internal static void ProcessScaleTransactionData()
+        internal static void ProcessScalesData()
         {
             try
             {
@@ -289,7 +293,83 @@
 
                 using (var context = new ProductionData(new CollectingDataSystemDbContext(new AuditablePersister())))
                 {
+                    var max = context.MaxAsoMeasuringPointDataSequenceNumberMap.All().FirstOrDefault();
+                    if (max != null)
+                    {
+                        logger.InfoFormat("Last scale fetching date-time is {0}", max.LastFetchScales);
+                        var lastFetchScalesDateTime = max.LastFetchScales;
 
+                        var scaleAdapter = new ScaleDataSetTableAdapters.ScaleDataTableAdapter();
+                        var scaleTable = new ScaleDataSet.ScaleDataDataTable();
+                        scaleAdapter.Fill(scaleTable, lastFetchScalesDateTime);
+
+                        if (scaleTable.Rows.Count > 0)
+                        {
+                            var scales = context.MeasuringPointConfigs.All().Where(x => x.WeightScaleNumber != null).ToList();
+
+                            foreach (ScaleDataSet.ScaleDataRow row in scaleTable.Rows)
+                            {
+                                var tr = new MeasuringPointsConfigsData();
+                                var scale = scales.Where(s => s.WeightScaleNumber == row.SCALE_NUM).First();
+
+                                tr.MeasuringPointId = scale.Id;
+                                tr.MeasuringPointConfigId = scale.Id;
+                                tr.TransactionNumber = Convert.ToInt64(row.TRS_NUM);
+                                tr.RowId = -1;
+                                tr.TransactionBeginTime = row.TRS_BGN_TIME;
+                                tr.TransactionEndTime = row.TRS_END_TIME;
+                                tr.ExciseStoreId = scale.ControlPoint;
+                                tr.ZoneId = scale.ZoneId;
+                                tr.BaseProductNumber = Convert.ToInt32(row.PRODUCT_ID);
+                                tr.BaseProductName = row.PRODUCT_NAME;
+                                tr.ProductNumber = Convert.ToInt32(row.PRODUCT_ID);
+                                tr.ProductName = row.PRODUCT_NAME;
+                                tr.FlowDirection = row.DIRECTION==2?1:2;
+                                tr.EngineeringUnitMass = string.Empty;
+                                tr.EngineeringUnitVolume = string.Empty;
+                                tr.EngineeringUnitDensity = string.Empty;
+                                tr.EngineeringUnitTemperature = string.Empty;
+                                if (row.DIRECTION == 2)
+                                {
+                                    // Output
+                                    tr.TotalizerBeginMass = row.TOT_BGN_MASS_OUT;
+                                    tr.TotalizerEndMass = row.TOT_MASS_OUT;
+                                    tr.TotalizerBeginCommonMass = row.TOT_BGN_PROD_NET_MASS_OUT;
+                                    tr.TotalizerEndCommonMass = row.TOT_PROD_NET_MASS_OUT;
+                                }
+                                else 
+                                { 
+                                    // Input
+                                    tr.TotalizerBeginMass = row.TOT_BGN_MASS_IN;
+                                    tr.TotalizerEndMass = row.TOT_MASS_IN;
+                                    tr.TotalizerBeginCommonMass = row.TOT_BGN_PROD_NET_MASS_IN;
+                                    tr.TotalizerEndCommonMass = row.TOT_PROD_NET_MASS_IN;
+                                }
+
+                                if (!row.IsQTY_NET_MASSNull())
+                                {
+                                    tr.Mass = row.QTY_NET_MASS;
+                                }
+                                
+                                tr.InsertTimestamp = DateTime.Now;
+                                context.MeasuringPointsConfigsDatas.Add(tr);
+                                logger.InfoFormat("Successfully added transaction {0} from control point {1}", row.TRS_NUM, scale.ControlPoint);
+                            }
+
+                            using (var scope = new TransactionScope())
+                            {
+                                var status = context.SaveChanges("Scale2Sql");
+                                var now = DateTime.Now;
+                                max.LastFetchScales = now;
+                                context.MaxAsoMeasuringPointDataSequenceNumberMap.Update(max);
+                                context.SaveChanges("Scale2Sql");
+                                scope.Complete();
+                                logger.InfoFormat("Successfully sync {0} transactions between ASO.SCALE and Cpds", status.ResultRecordsCount);
+                                logger.InfoFormat("Last scale transaction data-time updated to {0}.", now);
+                            }
+
+                        }
+                    }
                 }
 
                 logger.Info("End scale synchronization");
@@ -299,5 +379,11 @@
                 logger.Error(ex.Message, ex);
             }
         }
+
+        private static MeasuringPointConfig GetMeasuringPointConfig(string scaleNumber,ProductionData context)
+        {
+ 	        throw new NotImplementedException();
+        }
+
     }
 }

@@ -52,8 +52,18 @@ namespace CollectingProductionDataSystem.GetTransactions.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("00:05:00")]
+        public global::System.TimeSpan IDLE_TIMER_TRANSDACTION_DATA {
+            get {
+                return ((global::System.TimeSpan)(this["IDLE_TIMER_TRANSDACTION_DATA"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=.;Initial Catalog=AutomatedReportingSystem;Integrated Security=True")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=.\\SQLEXPRESS;Initial Catalog=AutomatedReportingSystem;Persist Securit" +
+            "y Info=True;User ID=arsbase;Password=@ut0r3p0rt!")]
         public string AutomatedReportingSystemConnectionString {
             get {
                 return ((string)(this["AutomatedReportingSystemConnectionString"]));
@@ -62,10 +72,29 @@ namespace CollectingProductionDataSystem.GetTransactions.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("00:05:00")]
-        public global::System.TimeSpan IDLE_TIMER_TRANSDACTION_DATA {
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
+        [global::System.Configuration.DefaultSettingValueAttribute("Dsn=ASO;uid=PHD2CACHE;pwd=synchronize")]
+        public string ScaleConnectionString {
             get {
-                return ((global::System.TimeSpan)(this["IDLE_TIMER_TRANSDACTION_DATA"]));
+                return ((string)(this["ScaleConnectionString"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool SYNC_SCALE {
+            get {
+                return ((bool)(this["SYNC_SCALE"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("00:05:00")]
+        public global::System.TimeSpan IDLE_TIMER_SCALE_DATA {
+            get {
+                return ((global::System.TimeSpan)(this["IDLE_TIMER_SCALE_DATA"]));
             }
         }
     }

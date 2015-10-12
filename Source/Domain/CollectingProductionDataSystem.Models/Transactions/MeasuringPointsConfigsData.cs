@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CollectingProductionDataSystem.Models.Contracts;
+using CollectingProductionDataSystem.Models.Nomenclatures;
 
 namespace CollectingProductionDataSystem.Models.Transactions
 {
@@ -79,5 +80,9 @@ namespace CollectingProductionDataSystem.Models.Transactions
         public decimal? AlcoholContent { get; set; }
         public decimal? AlcoholContentReverse { get; set; }
         public long? BatchId { get; set; }
+        public int MeasuringPointConfigId { get; set; }
+        public virtual MeasuringPointConfig MeasuringPointConfig { get; set; }
+        public int? ProductId { get; set; }
+        public virtual Product Product { get; set; }
     }
 }

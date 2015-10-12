@@ -29,6 +29,7 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">@Resources.Layout.DailyData<span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <li>@Html.AuthorizedActionLink(@Resources.Layout.UnitsDailyData, "UnitsDailyData", "UnitsDaily", new { area = "DailyReporting" }, null)</li>
+                            <li>@Html.AuthorizedActionLink(@Resources.Layout.MeasuringPointsData, "TransactionsDailyData", "TransactionsDaily", new { area = "DailyReporting" }, null)</li>
                         </ul>
                     </li>
                 }

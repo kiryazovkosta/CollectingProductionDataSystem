@@ -46,6 +46,9 @@
             this.HasRequired(t => t.Zone)
                 .WithMany(t => t.MeasuringPointConfigs)
                 .HasForeignKey(d => d.ZoneId);
+            this.HasRequired(t => t.TransportType)
+                .WithMany(t => t.MeasuringPointConfigs)
+                .HasForeignKey(d => d.TransportTypeId);
         }
     }
 }

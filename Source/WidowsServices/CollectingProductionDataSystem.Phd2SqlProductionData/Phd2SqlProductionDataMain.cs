@@ -107,7 +107,7 @@
                                     logger.InfoFormat("Manual {0} {1}", unitConfig.Name, 0);
                                 }
                             }
-
+                            
                             context.SaveChanges("PHD2SQL");
                         }
                     }
@@ -141,13 +141,13 @@
             if (u == null)
             {
                 context.UnitsData.Add(
-                new UnitsData
-                {
-                    UnitConfigId = unitConfig.Id,
-                    Value = null,
-                    RecordTimestamp = recordDataTime,
-                    ShiftId = shift
-                });
+                    new UnitsData
+                    {
+                        UnitConfigId = unitConfig.Id,
+                        Value = null,
+                        RecordTimestamp = recordDataTime,
+                        ShiftId = shift
+                    });
             }
         }
 
@@ -236,13 +236,13 @@
                         {
                             confidence = 0;
                             break;
-                        }   
+                        }
                     }
                     else if (dc.ColumnName.Equals("Value"))
                     {
                         if (!string.IsNullOrWhiteSpace(row[dc].ToString()))
                         {
-                           unitData.Value = Convert.ToDecimal(row[dc]); 
+                            unitData.Value = Convert.ToDecimal(row[dc]); 
                         }
                     }
                     else if (dc.ColumnName.Equals("TimeStamp"))
@@ -281,7 +281,7 @@
                         if (!context.TanksData.All().Where(td => td.RecordTimestamp.CompareTo(checkedDateTime) == 0).Any())
                         {
                             logger.InfoFormat("The data for for {0:yyyy-MM-dd HH:ss:mm} does not exsits!", checkedDateTime);
-                        }    
+                        }
                     }
 
                     if (context.TanksData.All().Where(td => td.RecordTimestamp.CompareTo(recordTime) == 0).Any())
@@ -512,7 +512,6 @@
                                                     confidence = 0;
                                                     break;
                                                 }
-                                                
                                             }
                                             else if (dc.ColumnName.Equals("Value"))
                                             {
@@ -526,7 +525,7 @@
                                                 var recordDt = row[dc].ToString();
                                                 if (!string.IsNullOrWhiteSpace(recordDt))
                                                 {
-                                                     var recordTimestamp = DateTime.ParseExact(recordDt, "dd.MM.yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+                                                    var recordTimestamp = DateTime.ParseExact(recordDt, "dd.MM.yyyy HH:mm:ss", CultureInfo.InvariantCulture);
                                                     if (TimeZoneInfo.Local.IsDaylightSavingTime(recordTimestamp))
                                                     {
                                                         recordTimestamp = recordTimestamp.AddHours(-1);
@@ -536,8 +535,8 @@
                                             }
                                         }
                                     }
-                                    if (confidence > Properties.Settings.Default.INSPECTION_DATA_MINIMUM_CONFIDENCE
-                                        && measurementPointData.RecordTimestamp != null)
+                                    if (confidence > Properties.Settings.Default.INSPECTION_DATA_MINIMUM_CONFIDENCE &&
+                                        measurementPointData.RecordTimestamp != null)
                                     {
                                         context.MeasurementPointsProductsDatas.Add(measurementPointData);                                            
                                     }
@@ -597,8 +596,11 @@
         public interface IRange<T>
         {
             T Start { get; }
+
             T End { get; }
+
             bool Includes(T value);
+
             bool Includes(IRange<T> range);
         }
 
@@ -611,6 +613,7 @@
             }
 
             public DateTime Start { get; private set; }
+
             public DateTime End { get; private set; }
 
             public bool Includes(DateTime value)
@@ -623,6 +626,5 @@
                 return (Start <= range.Start) && (range.End <= End);
             }
         }
-
     }
 }
