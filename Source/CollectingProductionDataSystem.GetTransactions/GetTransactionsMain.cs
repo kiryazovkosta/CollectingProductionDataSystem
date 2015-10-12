@@ -65,6 +65,7 @@
                                 tr.BaseProductType = row.BaseProductType;
                                 tr.BaseProductName = row.BaseProductName;
                                 tr.ProductNumber = row.ProductNumber;
+                                tr.ProductId = row.ProductNumber;
                                 tr.ProductType = row.ProductType;
                                 tr.ProductName = row.ProductName;
                                 tr.FlowDirection = row.FlowDirection;
@@ -324,6 +325,7 @@
                                 tr.BaseProductName = row.PRODUCT_NAME;
                                 tr.ProductNumber = Convert.ToInt32(row.PRODUCT_ID);
                                 tr.ProductName = row.PRODUCT_NAME;
+                                tr.ProductId = Convert.ToInt32(row.PRODUCT_ID);
                                 tr.FlowDirection = row.DIRECTION==2?1:2;
                                 tr.EngineeringUnitMass = string.Empty;
                                 tr.EngineeringUnitVolume = string.Empty;

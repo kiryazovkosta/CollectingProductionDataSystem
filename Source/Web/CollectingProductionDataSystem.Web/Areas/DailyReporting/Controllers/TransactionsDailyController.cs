@@ -53,7 +53,7 @@ namespace CollectingProductionDataSystem.Web.Areas.DailyReporting.Controllers
 
             var transactionsData = transactions.Select(t => new TransactionDataModel
             {
-                MeasuringPointId = t.MeasuringPointId,
+                MeasuringPointId = t.MeasuringPointConfigId,
                 TransportId = t.MeasuringPointConfig.TransportTypeId,
                 ProductId = t.ProductNumber.Value,
                 Mass = t.Mass,
@@ -101,6 +101,26 @@ namespace CollectingProductionDataSystem.Web.Areas.DailyReporting.Controllers
                 {
                     var p = item.Value;
                     p.ProductName = this.data.Products.All().Where(x => x.Code == p.ProductId).FirstOrDefault().Name;
+                    if (p.AvtoQuantity > 0)
+                    {
+                        p.AvtoQuantity = p.AvtoQuantity / 1000;
+                    }
+                    if (p.JpQuantity > 0)
+                    {
+                        p.JpQuantity = p.JpQuantity / 1000;
+                    }
+                    if (p.SeaQuantity > 0)
+                    {
+                        p.SeaQuantity = p.SeaQuantity / 1000;
+                    }
+                    if (p.PipeQuantity > 0)
+                    {
+                        p.PipeQuantity = p.PipeQuantity / 1000;
+                    }
+                    if (p.TotalQuantity > 0)
+                    {
+                        p.TotalQuantity = p.TotalQuantity / 1000;
+                    }
                     hs.Add(p);
                 }
 

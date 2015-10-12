@@ -90,7 +90,6 @@
         IDeletableEntityRepository<MaterialType> MaterialTypes { get; }
 
         IDeletableEntityRepository<MeasureUnit> MeasureUnits { get; }
-        
 
         IDbContext DbContext { get; }
 

@@ -22,13 +22,13 @@
         .AutoBind(false)
         .Columns(columns =>
             {
-                columns.Bound(c => c.ProductId);
+                columns.Bound(c => c.ProductId).Width(100);
                 columns.Bound(c => c.ProductName);
-                columns.Bound(c => c.AvtoQuantity).Format("{0:n2}");
-                columns.Bound(c => c.JpQuantity).Format("{0:n2}");
-                columns.Bound(c => c.SeaQuantity).Format("{0:n2}");
-                columns.Bound(c => c.PipeQuantity).Format("{0:n2}");
-                columns.Bound(c => c.TotalQuantity).Format("{0:n2}");
+                columns.Bound(c => c.AvtoQuantity).Format("{0:n2}").Width(140);
+                columns.Bound(c => c.JpQuantity).Format("{0:n2}").Width(140);
+                columns.Bound(c => c.SeaQuantity).Format("{0:n2}").Width(140);
+                columns.Bound(c => c.PipeQuantity).Format("{0:n2}").Width(160);
+                columns.Bound(c => c.TotalQuantity).Format("{0:n2}").Width(140);
             })
         .Pageable(pageable => pageable
         .Refresh(true)

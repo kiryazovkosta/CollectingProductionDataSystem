@@ -102,5 +102,8 @@
         public virtual ICollection<MeasuringPointsConfigsData> MeasuringPointsConfigsDatas { get; set; }
         public int TransportTypeId { get; set; }
         public virtual TransportType TransportType { get; set; }
+        public string ActiveTransactionStatusTag { get; set; }
+        public string ActiveTransactionProductTag { get; set; }
+        public string ActiveTransactionMassTag { get; set; }
     }
 }

@@ -461,9 +461,10 @@
             try
             {
                 logger.Info("Sync measurements points data started!");
-                if (DateTime.Now.Hour < 5)
+                var now = DateTime.Now;
+
+                if (now.Hour < 5)
                 {
-                    logger.Info("Sync measurements points data : hours are before 5o'clock");
                     return;
                 }
 
