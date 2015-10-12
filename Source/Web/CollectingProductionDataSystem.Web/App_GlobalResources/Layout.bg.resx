@@ -591,4 +591,16 @@
   <data name="IsEditable" xml:space="preserve">
     <value>Редактируема</value>
   </data>
+  <data name="BeginMinutes" xml:space="preserve">
+    <value>Начална минута</value>
+  </data>
+  <data name="BeginTime" xml:space="preserve">
+    <value>Начален час</value>
+  </data>
+  <data name="EndTime" xml:space="preserve">
+    <value>Краен час</value>
+  </data>
+  <data name="OffsetMinutes" xml:space="preserve">
+    <value>Отместване в минути</value>
+  </data>
 </root>

@@ -160,6 +160,24 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Begin Minutes.
+        /// </summary>
+        public static string BeginMinutes {
+            get {
+                return ResourceManager.GetString("BeginMinutes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Begin Time.
+        /// </summary>
+        public static string BeginTime {
+            get {
+                return ResourceManager.GetString("BeginTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Calculated Formula.
         /// </summary>
         public static string CalculatedFormula {
@@ -498,6 +516,15 @@ namespace App_GlobalResources.Resources {
         public static string Email {
             get {
                 return ResourceManager.GetString("Email", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to End Time.
+        /// </summary>
+        public static string EndTime {
+            get {
+                return ResourceManager.GetString("EndTime", resourceCulture);
             }
         }
         
@@ -903,6 +930,15 @@ namespace App_GlobalResources.Resources {
         public static string Occupation {
             get {
                 return ResourceManager.GetString("Occupation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Offset Minutes.
+        /// </summary>
+        public static string OffsetMinutes {
+            get {
+                return ResourceManager.GetString("OffsetMinutes", resourceCulture);
             }
         }
         

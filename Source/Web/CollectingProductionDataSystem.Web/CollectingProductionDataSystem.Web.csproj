@@ -262,11 +262,13 @@
     <Compile Include="Areas\NomManagement\Models\ViewModels\AreaViewModel.cs" />
     <Compile Include="Areas\NomManagement\Models\ViewModels\DailyProductTypeViewModel.cs" />
     <Compile Include="Areas\NomManagement\Models\ViewModels\DirectionViewModel.cs" />
+    <Compile Include="Areas\NomManagement\Models\ViewModels\EditReasonViewModel.cs" />
     <Compile Include="Areas\NomManagement\Models\ViewModels\FactoryViewModel.cs" />
     <Compile Include="Areas\NomManagement\Models\ViewModels\MaterialTypeViewModel.cs" />
     <Compile Include="Areas\NomManagement\Models\ViewModels\MeasureUnitViewModel.cs" />
     <Compile Include="Areas\NomManagement\Models\ViewModels\ParkViewModel.cs" />
     <Compile Include="Areas\NomManagement\Models\ViewModels\ProcessUnitViewModel.cs" />
+    <Compile Include="Areas\NomManagement\Models\ViewModels\ProductionShiftViewModel.cs" />
     <Compile Include="Areas\NomManagement\Models\ViewModels\ProductTypeViewModel.cs" />
     <Compile Include="Areas\NomManagement\Models\ViewModels\ProductViewModel.cs" />
     <Compile Include="Areas\NomManagement\Models\ViewModels\ShiftProductTypeViewModel.cs" />
