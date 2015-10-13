@@ -13,8 +13,8 @@ namespace CollectingProductionDataSystem.Models.Transactions
     {
         public int Id { get; set; }
         public string ExciseStoreId { get; set; }
-        public int ZoneId { get; set; }
         public int MeasuringPointId { get; set; }
+        public int ZoneId { get; set; }
         public long TransactionNumber { get; set; }
         public int RowId { get; set; }
         public int? BaseProductNumber { get; set; }

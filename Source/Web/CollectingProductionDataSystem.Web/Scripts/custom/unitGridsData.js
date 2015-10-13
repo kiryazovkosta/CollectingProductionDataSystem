@@ -124,14 +124,16 @@ function AttachEventToExportBtn(buttonSelector, targetSelector) {
 var dataBound = function () {
     dataView = this.dataSource.view();
     for (var i = 0; i < dataView.length; i++) {
-        var recordLen = dataView[i].items.length;
-        if (recordLen) {
-            for (var j = 0; j < recordLen; j++) {
-                if (!dataView[i].items[j].IsEditable) {
-                    var currentUid = dataView[i].items[j].uid;
-                    var currenRow = this.table.find("tr[data-uid='" + currentUid + "']");
-                    var editButton = $(currenRow).find(".k-grid-edit");
-                    editButton.attr("style", "display:none !important");
+        if (dataView[i].items) {
+            var recordLen = dataView[i].items.length;
+            if (recordLen) {
+                for (var j = 0; j < recordLen; j++) {
+                    if (!dataView[i].items[j].IsEditable) {
+                        var currentUid = dataView[i].items[j].uid;
+                        var currenRow = this.table.find("tr[data-uid='" + currentUid + "']");
+                        var editButton = $(currenRow).find(".k-grid-edit");
+                        editButton.attr("style", "display:none !important");
+                    }
                 }
             }
         }

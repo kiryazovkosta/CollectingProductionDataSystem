@@ -90,7 +90,8 @@
         IDeletableEntityRepository<MaterialType> MaterialTypes { get; }
 
         IDeletableEntityRepository<MeasureUnit> MeasureUnits { get; }
-        
+
+        IDeletableEntityRepository<ActiveTransactionsData> ActiveTransactionsDatas { get; }
 
         IDbContext DbContext { get; }
 

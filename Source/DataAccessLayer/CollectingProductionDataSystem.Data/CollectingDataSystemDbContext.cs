@@ -118,6 +118,8 @@
 
         public IDbSet<Shift> Shifts { get; set; }
 
+        public IDbSet<ActiveTransactionsData> ActiveTransactionsDatas { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             ModelBingConfig.RegisterMappings(modelBuilder);

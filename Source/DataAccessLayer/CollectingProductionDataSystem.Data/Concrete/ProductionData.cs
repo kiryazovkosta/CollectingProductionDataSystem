@@ -357,6 +357,14 @@
             }
         }
 
+        public IDeletableEntityRepository<ActiveTransactionsData> ActiveTransactionsDatas
+        {
+            get
+            {
+                return this.GetDeletableEntityRepository<ActiveTransactionsData>();
+            }
+        }
+
         public IEfStatus SaveChanges(string userName)
         {
             return this.context.SaveChangesWithValidation(userName);

@@ -373,7 +373,7 @@
     <value>Посока</value>
   </data>
   <data name="MeasuringPointsData" xml:space="preserve">
-    <value>Данни за експидирани и доставени нефтопродукти</value>
+    <value>Данни за експедирани и доставени нефтопродукти</value>
   </data>
   <data name="FullName" xml:space="preserve">
     <value>Пълно име</value>
@@ -477,8 +477,11 @@
   <data name="Areas" xml:space="preserve">
     <value>Области</value>
   </data>
+  <data name="DailyProductType1" xml:space="preserve">
+    <value>Дневни типове на продукти</value>
+  </data>
   <data name="DailyProductTypes" xml:space="preserve">
-    <value>Типoве на продукта при дневни справки</value>
+    <value>Дневни типове на продукт</value>
   </data>
   <data name="Direction1" xml:space="preserve">
     <value>Посоки на потоци</value>
@@ -486,7 +489,7 @@
   <data name="Directions" xml:space="preserve">
     <value>Посоки на движение</value>
   </data>
-  <data name="EditReasons" xml:space="preserve">
+  <data name="EditReason1" xml:space="preserve">
     <value>Причини за корекции</value>
   </data>
   <data name="Factories" xml:space="preserve">
@@ -622,6 +625,6 @@
     <value>Експедиция Танкер&lt;br/&gt;[Тон]</value>
   </data>
   <data name="TotalQuantity" xml:space="preserve">
-    <value>Общо до деня&lt;br/&gt;[Тон]</value>
+    <value>Общо за деня&lt;br/&gt;[Тон]</value>
   </data>
 </root>

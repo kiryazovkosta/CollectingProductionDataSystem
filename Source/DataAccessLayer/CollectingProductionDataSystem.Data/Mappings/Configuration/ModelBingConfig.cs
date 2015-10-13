@@ -44,6 +44,7 @@
             modelBuilder.Configurations.Add(new MaxAsoMeasuringPointDataSequenceNumberMap());
             modelBuilder.Configurations.Add(new ShiftProductTypeMap());
             modelBuilder.Configurations.Add(new DailyProductTypeMap());
+            modelBuilder.Configurations.Add(new ActiveTransactionsDataMap());
         }
     }
 }
