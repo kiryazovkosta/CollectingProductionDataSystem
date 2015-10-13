@@ -42,6 +42,10 @@
         [Display(Name = "TotalQuantity", ResourceType = typeof(Resources.Layout))]
         public decimal TotalQuantity { get; set; }
 
+        //[Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
+        //[Display(Name = "ActiveQuantity", ResourceType = typeof(Resources.Layout))]
+        public decimal ActiveQuantity { get; set; }
+
         public void CreateMappings(IConfiguration configuration)
         {
             configuration.CreateMap<MeasuringPointsConfigsData, MeasuringPointsDataViewModel>()

@@ -64,33 +64,61 @@ namespace CollectingProductionDataSystem.Web.Areas.DailyReporting.Controllers
 
             foreach (var transactionData in transactionsData)
             {
-                var mpd = new MeasuringPointsDataViewModel();
+                var measuringPointData = new MeasuringPointsDataViewModel();
 
                 if (dict.ContainsKey(transactionData.ProductId))
                 {
-                    mpd = dict[transactionData.ProductId];
+                    measuringPointData = dict[transactionData.ProductId];
                 }
                 
-                mpd.ProductId = transactionData.ProductId;
+                measuringPointData.ProductId = transactionData.ProductId;
 
                 if (transactionData.TransportId == 1)
                 {
-                    mpd.AvtoQuantity += transactionData.RealMass;
+                    measuringPointData.AvtoQuantity += transactionData.RealMass;
                 }
                 else if (transactionData.TransportId == 2)
                 {
-                    mpd.JpQuantity += transactionData.RealMass;
+                    measuringPointData.JpQuantity += transactionData.RealMass;
                 }
                 else if (transactionData.TransportId == 3)
                 {
-                    mpd.SeaQuantity += transactionData.RealMass;
+                    measuringPointData.SeaQuantity += transactionData.RealMass;
                 }
                 else if (transactionData.TransportId == 4)
                 {
-                    mpd.PipeQuantity += transactionData.RealMass;
+                    measuringPointData.PipeQuantity += transactionData.RealMass;
                 }
-                mpd.TotalQuantity += transactionData.RealMass;
-                dict[transactionData.ProductId] = mpd;
+                measuringPointData.TotalQuantity += transactionData.RealMass;
+                dict[transactionData.ProductId] = measuringPointData;
+            }
+
+            var actDict = new Dictionary<int, decimal>();
+            var activeTransactionsDatas = this.data.ActiveTransactionsDatas
+                .All()
+                .Include(x => x.Product)
+                .Include(x => x.MeasuringPointConfig)
+                .Where(x => !string.IsNullOrEmpty(x.MeasuringPointConfig.ActiveTransactionStatusTag))
+                .Where(x => x.RecordTimestamp == date.Value)
+                .ToList();
+            foreach (var activeTransaction in activeTransactionsDatas)
+            {
+                var direction = activeTransaction.MeasuringPointConfig.FlowDirection.Value;
+                if(direction != flowDirection.Value)
+                {
+                    continue;
+                }
+
+                var prodId = data.Products.All().Where(p => p.Id == activeTransaction.ProductId).FirstOrDefault().Code;
+
+                if (actDict.ContainsKey(prodId))
+                {
+                    actDict[prodId] = actDict[prodId] + activeTransaction.Mass;
+                }
+                else
+                {
+                    actDict[prodId] = activeTransaction.Mass;
+                }
             }
 
             var kendoResult = new DataSourceResult();
@@ -101,6 +129,11 @@ namespace CollectingProductionDataSystem.Web.Areas.DailyReporting.Controllers
                 {
                     var p = item.Value;
                     p.ProductName = this.data.Products.All().Where(x => x.Code == p.ProductId).FirstOrDefault().Name;
+                    if (actDict.ContainsKey(p.ProductId))
+                    {
+                        p.ActiveQuantity = actDict[p.ProductId] / 1000;
+                    }
+
                     if (p.AvtoQuantity > 0)
                     {
                         p.AvtoQuantity = p.AvtoQuantity / 1000;
@@ -120,8 +153,8 @@ namespace CollectingProductionDataSystem.Web.Areas.DailyReporting.Controllers
                     if (p.TotalQuantity > 0)
                     {
                         p.TotalQuantity = p.TotalQuantity / 1000;
+                        hs.Add(p);
                     }
-                    hs.Add(p);
                 }
 
                 kendoResult = hs.ToDataSourceResult(request, ModelState);

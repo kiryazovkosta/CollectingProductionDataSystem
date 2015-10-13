@@ -11,6 +11,7 @@
     using CollectingProductionDataSystem.Models.Transactions;
     using log4net;
     using Uniformance.PHD;
+    using CollectingProductionDataSystem.Models.Nomenclatures;
 
     static class GetTransactionsMain
     {
@@ -389,49 +390,85 @@
             try
             {
                 logger.Info("Begin active transactions synchronization!");
-
-                var fiveOClock = DateTime.Today.AddHours(5);
                 var now = DateTime.Now;
-
+                var today = DateTime.Today;
+                var fiveOClock = today.AddHours(5);
+                
                 var ts = now - fiveOClock;
-                var differenceInMinutes = ts.Minutes;
-                logger.InfoFormat("Difference In Minutes: {0}", differenceInMinutes);
-
-                using (var context = new ProductionData(new CollectingDataSystemDbContext(new AuditablePersister())))
+                if(ts.Hours == 0)
                 {
-                    var activeTransactionsTags = context.MeasuringPointConfigs.All().Where(x => x.ActiveTransactionStatusTag != null).ToList();
-                    if (activeTransactionsTags.Count > 0)
+                    using (var context = new ProductionData(new CollectingDataSystemDbContext(new AuditablePersister())))
                     {
-                        using (PHDHistorian oPhd = new PHDHistorian())
+                        var currentDate = today.AddDays(-1);
+                        if (context.ActiveTransactionsDatas.All().Where(x => x.RecordTimestamp == currentDate).Any())
                         {
-                            using (PHDServer defaultServer = new PHDServer(Properties.Settings.Default.PHD_HOST))
+                            logger.InfoFormat("There is already an active transaction data for {0}", currentDate);
+                        }
+                        else
+                        {
+                            var activeTransactionsTags = context.MeasuringPointConfigs.All().Where(x => !String.IsNullOrEmpty(x.ActiveTransactionStatusTag)).ToList();
+                            if (activeTransactionsTags.Count > 0)
                             {
-                                defaultServer.Port = Properties.Settings.Default.PHD_PORT;
-                                defaultServer.APIVersion = Uniformance.PHD.SERVERVERSION.RAPI200;
-                                oPhd.DefaultServer = defaultServer;
-                                oPhd.StartTime = "NOW - 2M";
-                                oPhd.EndTime = "NOW - 2M";
-                                oPhd.Sampletype = SAMPLETYPE.Raw;
-                                oPhd.MinimumConfidence = 100;
-                                oPhd.MaximumRows = 1;
-
-                                var tagsList = new Tags();
-                                foreach (var item in activeTransactionsTags)
+                                using (PHDHistorian oPhd = new PHDHistorian())
                                 {
-                                      tagsList.Add(new Tag { TagName = item.ActiveTransactionStatusTag });
-                                }
+                                    using (PHDServer defaultServer = new PHDServer(Properties.Settings.Default.PHD_HOST))
+                                    {
+                                        defaultServer.Port = Properties.Settings.Default.PHD_PORT;
+                                        defaultServer.APIVersion = Uniformance.PHD.SERVERVERSION.RAPI200;
+                                        oPhd.DefaultServer = defaultServer;
+                                        oPhd.StartTime = string.Format("NOW - {0}M", ts.Minutes - 2);
+                                        oPhd.EndTime = string.Format("NOW - {0}M", ts.Minutes - 2);
+                                        oPhd.Sampletype = SAMPLETYPE.Snapshot;
+                                        oPhd.MinimumConfidence = 100;
+                                        oPhd.MaximumRows = 1;
 
-                                var result = oPhd.FetchRowData(tagsList);
-                                foreach (DataRow row in result.Tables[0].Rows)
-                                {
-                                    logger.InfoFormat("{0} {1} {2} {3}", row[0], row["TimeStamp"], row["Value"], row["Confidence"]);
+                                        var tagsList = new Tags();
+                                        foreach (var item in activeTransactionsTags)
+                                        {
+                                            tagsList.RemoveAll();
+                                            tagsList.Add(new Tag { TagName = item.ActiveTransactionStatusTag });
+                                            var result = oPhd.FetchRowData(tagsList);
+                                            var row = result.Tables[0].Rows[0];
+                                            if (row["Value"].ToString() == "1")
+                                            {
+                                                tagsList.RemoveAll();
+                                                tagsList.Add(new Tag { TagName = item.ActiveTransactionProductTag });
+                                                tagsList.Add(new Tag { TagName = item.ActiveTransactionMassTag });
+
+                                                var activeTransactionData = new ActiveTransactionsData
+                                                {
+                                                    RecordTimestamp = currentDate, 
+                                                    MeasuringPointConfigId = item.Id
+                                                };
+
+                                                var valueResult = oPhd.FetchRowData(tagsList);
+                                                foreach (DataRow valueRow in valueResult.Tables[0].Rows)
+                                                {
+                                                    if( valueRow[0].ToString().Equals(item.ActiveTransactionProductTag))
+                                                    {
+                                                        int code = Convert.ToInt32(valueRow["Value"]);
+                                                        var product = context.Products.All().Where(x => x.Code == code).FirstOrDefault();
+                                                        activeTransactionData.ProductId = product != null ? product.Id : 1;
+                                                    }
+                                                    else 
+                                                    {
+                                                        activeTransactionData.Mass = Convert.ToDecimal(valueRow["Value"]);
+                                                    }
+                                                }
+
+                                                context.ActiveTransactionsDatas.Add(activeTransactionData);
+                                            }
+                                        }
+
+                                        context.SaveChanges("Phd2Sql");
+                                    }
                                 }
                             }
                         }
                     }
                 }
 
-                logger.Info("End active transactions synchronization");
+                logger.Info("End active transactions synchronization!");
             }
             catch(Exception ex)
             {
