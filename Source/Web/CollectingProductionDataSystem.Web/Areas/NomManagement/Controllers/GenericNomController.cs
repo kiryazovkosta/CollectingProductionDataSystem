@@ -37,9 +37,18 @@ namespace CollectingProductionDataSystem.Web.Areas.NomManagement.Controllers
         public virtual ActionResult Read([DataSourceRequest]DataSourceRequest request)
         {
             var processUnits = this.repository.All();
-            DataSourceResult result = processUnits.ToDataSourceResult(request, Mapper.Map<TView>);
+            try
+            {
+                DataSourceResult result = processUnits.ToDataSourceResult(request, Mapper.Map<TView>);
+                return Json(result);
 
-            return Json(result);
+            }
+            catch (Exception ex) 
+            {
+                ModelState.AddModelError("", ex.Message);
+                DataSourceResult result = new object[] { null }.ToDataSourceResult(request, ModelState);
+                return Json(result);
+            }
         }
 
         [HttpPost]

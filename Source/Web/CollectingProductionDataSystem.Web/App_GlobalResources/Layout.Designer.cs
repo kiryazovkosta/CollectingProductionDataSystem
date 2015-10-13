@@ -160,8 +160,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
-
-
+        ///   Looks up a localized string similar to Auto Expedition&lt;br/&gt;[ton].
+        /// </summary>
+        public static string AvtoQuantity {
+            get {
+                return ResourceManager.GetString("AvtoQuantity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Begin Minutes.
         /// </summary>
         public static string BeginMinutes {
@@ -176,15 +183,6 @@ namespace App_GlobalResources.Resources {
         public static string BeginTime {
             get {
                 return ResourceManager.GetString("BeginTime", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Auto Expedition&lt;br/&gt;[ton].
-        /// </summary>
-        public static string AvtoQuantity {
-            get {
-                return ResourceManager.GetString("AvtoQuantity", resourceCulture);
             }
         }
         
@@ -450,6 +448,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Days.
+        /// </summary>
+        public static string Days {
+            get {
+                return ResourceManager.GetString("Days", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Delete.
         /// </summary>
         public static string Delete {
@@ -644,6 +651,15 @@ namespace App_GlobalResources.Resources {
         public static string GreetingMessage {
             get {
                 return ResourceManager.GetString("GreetingMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hours.
+        /// </summary>
+        public static string Hours {
+            get {
+                return ResourceManager.GetString("Hours", resourceCulture);
             }
         }
         
@@ -887,6 +903,15 @@ namespace App_GlobalResources.Resources {
         public static string MiddleName {
             get {
                 return ResourceManager.GetString("MiddleName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Minutes.
+        /// </summary>
+        public static string Minutes {
+            get {
+                return ResourceManager.GetString("Minutes", resourceCulture);
             }
         }
         

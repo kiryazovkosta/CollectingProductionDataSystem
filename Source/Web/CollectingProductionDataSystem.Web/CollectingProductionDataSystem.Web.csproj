@@ -747,6 +747,7 @@
     <Content Include="Areas\NomManagement\Views\Shift\Index.cshtml" />
     <Content Include="Areas\NomManagement\Views\TransportType\Index.cshtml" />
     <Content Include="Areas\NomManagement\Views\Shared\EditorTemplates\DateTime.cshtml" />
+    <Content Include="Areas\NomManagement\Views\Shared\EditorTemplates\TimeSpan.cshtml" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <None Include="Properties\PublishProfiles\Home.pubxml" />
     <Content Include="Scripts\custom\sendArea.js" />

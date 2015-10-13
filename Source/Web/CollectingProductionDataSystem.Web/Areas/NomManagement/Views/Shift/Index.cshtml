@@ -3,9 +3,9 @@
       .Columns(columns =>
       {
           columns.Bound(c => c.Name);
-          columns.Bound(c => c.BeginTime).Format("{0:HH:mm}");
-          columns.Bound(c => c.ReadOffset).Format("{0:HH:mm}");
-          columns.Bound(c => c.ReadPollTimeSlot).Format("{0:HH:mm}");
+          columns.Bound(c => c.BeginTime).Format("{0:d HH:mm}");
+          columns.Bound(c => c.ReadOffset).Format("{0:d HH:mm}");
+          columns.Bound(c => c.ReadPollTimeSlot).Format("{0:d HH:mm}");
           columns.Command(command => { command.Edit(); command.Destroy(); }).Width(230);
       })
           .ToolBar(toolbar =>
