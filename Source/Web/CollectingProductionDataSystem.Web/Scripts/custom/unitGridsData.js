@@ -16,10 +16,6 @@ var sendDate = function () {
     return result;
 }
 
-function closeWindow(selector) {
-    $(selector).data("kendoWindow").close();
-}
-
 function recordTimeStampFilter(element) {
     element.kendoDateTimePicker();
 }

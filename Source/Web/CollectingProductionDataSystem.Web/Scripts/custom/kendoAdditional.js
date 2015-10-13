@@ -39,6 +39,10 @@ function prepareWindow(selector, title) {
     }   
 }
 
+function closeWindow(selector) {
+    $(selector).data("kendoWindow").close();
+}
+
 var refreshGrid = function (selector) {
     var grid = $(selector).data('kendoGrid');
     if (grid !== null) {

@@ -5,6 +5,7 @@ namespace CollectingProductionDataSystem.Models.Nomenclatures
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations.Schema;
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
@@ -22,11 +23,48 @@ namespace CollectingProductionDataSystem.Models.Nomenclatures
 
         public string Name { get; set; }
 
-        public TimeSpan BeginTime { get; set; }
+        public long BeginTicks { get; set; }
+        public long ReadOffsetTicks { get; set; }
+        public long ReadPollTimeSlotTicks { get; set; }
 
-        public TimeSpan ReadOffset { get; set; }
+        [NotMapped]
+        public TimeSpan BeginTime
+        {
+            get
+            {
+                return new TimeSpan(this.BeginTicks);
+            }
+            set
+            {
+                this.BeginTicks = value.Ticks;
+            }
+        }
 
-        public TimeSpan ReadPollTimeSlot { get; set; }
+        [NotMapped]
+        public TimeSpan ReadOffset
+        {
+            get
+            {
+                return new TimeSpan(this.ReadOffsetTicks);
+            }
+            set
+            {
+                this.ReadOffsetTicks = value.Ticks;
+            }
+        }
+
+        [NotMapped]
+        public TimeSpan ReadPollTimeSlot
+        {
+            get
+            {
+                return new TimeSpan(this.ReadPollTimeSlotTicks);
+            }
+            set
+            {
+                this.ReadPollTimeSlotTicks = value.Ticks;
+            }
+        }
 
     }
 }
