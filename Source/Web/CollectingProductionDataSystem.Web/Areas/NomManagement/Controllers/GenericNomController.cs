@@ -39,11 +39,11 @@ namespace CollectingProductionDataSystem.Web.Areas.NomManagement.Controllers
             var processUnits = this.repository.All();
             try
             {
-                DataSourceResult result = processUnits.ToDataSourceResult(request, Mapper.Map<TView>);
+                DataSourceResult result = processUnits.ToDataSourceResult(request, ModelState, Mapper.Map<TView>);
                 return Json(result);
 
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 ModelState.AddModelError("", ex.Message);
                 DataSourceResult result = new object[] { null }.ToDataSourceResult(request, ModelState);
@@ -57,19 +57,25 @@ namespace CollectingProductionDataSystem.Web.Areas.NomManagement.Controllers
         {
             if (ModelState.IsValid)
             {
-
-                var entity = Mapper.Map<TModel>(inputViewModel);
-
-                this.repository.Add(entity);
-
-                var result = data.SaveChanges(this.UserProfile.UserName);
-
-                if (!result.IsValid)
+                try
                 {
-                    result.ToModelStateErrors(ModelState);
-                }
+                    var entity = Mapper.Map<TModel>(inputViewModel);
 
-                inputViewModel.Id = entity.Id;
+                    this.repository.Add(entity);
+
+                    var result = data.SaveChanges(this.UserProfile.UserName);
+
+                    if (!result.IsValid)
+                    {
+                        result.ToModelStateErrors(ModelState);
+                    }
+
+                    inputViewModel.Id = entity.Id;
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("", ex.Message + ex.StackTrace);
+                }
             }
 
             return Json(new[] { inputViewModel }.ToDataSourceResult(request, ModelState));

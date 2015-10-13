@@ -125,6 +125,10 @@
     <Compile Include="Migrations\201510130624289_Create Shifts.Designer.cs">
       <DependentUpon>201510130624289_Create Shifts.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201510131157502_Create Shifts int.cs" />
+    <Compile Include="Migrations\201510131157502_Create Shifts int.Designer.cs">
+      <DependentUpon>201510131157502_Create Shifts int.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Concrete\ProductionData.cs" />
     <Compile Include="Migrations\ProductionDataImporter.cs" />
@@ -161,6 +165,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201510130624289_Create Shifts.resx">
       <DependentUpon>201510130624289_Create Shifts.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201510131157502_Create Shifts int.resx">
+      <DependentUpon>201510131157502_Create Shifts int.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -23,13 +23,13 @@ namespace CollectingProductionDataSystem.Data.Mappings
                 .IsRequired()
                 .HasMaxLength(80);
 
-            this.Property(t => t.BeginTime)
+            this.Property(t => t.BeginTicks)
                 .IsRequired();
 
-            this.Property(t => t.ReadOffset)
+            this.Property(t => t.ReadOffsetTicks)
                 .IsRequired();
 
-            this.Property(t => t.ReadPollTimeSlot)
+            this.Property(t => t.ReadPollTimeSlotTicks)
                 .IsRequired();
 
 

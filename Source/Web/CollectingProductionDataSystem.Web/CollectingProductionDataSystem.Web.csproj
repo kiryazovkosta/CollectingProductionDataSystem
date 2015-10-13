@@ -304,6 +304,8 @@
     <Compile Include="Infrastructure\Helpers\IdentityHelpers.cs" />
     <Compile Include="Infrastructure\Helpers\HtmlPartialViewHelpers.cs" />
     <Compile Include="Infrastructure\MadelBinders\EditUserViewModelBinder.cs" />
+    <Compile Include="Infrastructure\MadelBinders\TimeSpanComponentAttribute.cs" />
+    <Compile Include="Infrastructure\MadelBinders\TimeSpanModelBinder.cs" />
     <Compile Include="InputModels\EditReasonInputModel.cs" />
     <Compile Include="InputModels\ProcessUnitConfirmShiftInputModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -18,7 +18,7 @@
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             AutoMapperConfig.RegisterMappings();
             ViewEnginesConfig.RegisterViewEngines(ViewEngines.Engines);
-           // ModelBindersConfig.RegisterModelBinders(ModelBinders.Binders, DependencyResolver.Current);
+            ModelBindersConfig.RegisterModelBinders(ModelBinders.Binders, DependencyResolver.Current);
             
         }
     }
