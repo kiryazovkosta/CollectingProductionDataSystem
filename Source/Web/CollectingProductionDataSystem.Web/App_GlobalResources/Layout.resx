@@ -633,4 +633,7 @@
   <data name="Minutes" xml:space="preserve">
     <value>Minutes</value>
   </data>
+  <data name="ActiveQuantity" xml:space="preserve">
+    <value>Active Excepition &lt;br/&gt;[ton]</value>
+  </data>
 </root>

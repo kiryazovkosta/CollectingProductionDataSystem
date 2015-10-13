@@ -636,4 +636,7 @@
   <data name="Minutes" xml:space="preserve">
     <value>Мин.</value>
   </data>
+  <data name="ActiveQuantity" xml:space="preserve">
+    <value>Незавършена експедиция &lt;br/&gt;[Тон]</value>
+  </data>
 </root>

@@ -37,7 +37,7 @@
         .ButtonCount(5))
         .Sortable()
         .Excel(excel => excel
-            .FileName(@Resources.Layout.TanksData + "_" + DateTime.Now + ".xlsx")
+                    .FileName(@Resources.Layout.MeasuringPointsData + "_" + DateTime.Now + ".xlsx")
             .Filterable(true)
             .ProxyURL(Url.Action("Excel_Export_Save", "Tests", new { area = "" }))
             .AllPages(true)
