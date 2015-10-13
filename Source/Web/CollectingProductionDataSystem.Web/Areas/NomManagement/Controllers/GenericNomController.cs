@@ -24,7 +24,7 @@ namespace CollectingProductionDataSystem.Web.Areas.NomManagement.Controllers
         {
             var method = this.data.GetType().GetMethod("GetDeletableEntityRepository", BindingFlags.NonPublic | BindingFlags.Instance);
             MethodInfo generic = method.MakeGenericMethod(typeof(TModel));
-            this.repository = generic.Invoke(this.data, new object[]{}) as IDeletableEntityRepository<TModel>;
+            this.repository = generic.Invoke(this.data, new object[] { }) as IDeletableEntityRepository<TModel>;
         }
 
         public virtual ActionResult Index()
@@ -37,9 +37,18 @@ namespace CollectingProductionDataSystem.Web.Areas.NomManagement.Controllers
         public virtual ActionResult Read([DataSourceRequest]DataSourceRequest request)
         {
             var processUnits = this.repository.All();
-            DataSourceResult result = processUnits.ToDataSourceResult(request, Mapper.Map<TView>);
+            try
+            {
+                DataSourceResult result = processUnits.ToDataSourceResult(request, Mapper.Map<TView>);
+                return Json(result);
 
-            return Json(result);
+            }
+            catch (Exception ex) 
+            {
+                ModelState.AddModelError("", ex.Message);
+                DataSourceResult result = new object[] { null }.ToDataSourceResult(request, ModelState);
+                return Json(result);
+            }
         }
 
         [HttpPost]
@@ -48,6 +57,7 @@ namespace CollectingProductionDataSystem.Web.Areas.NomManagement.Controllers
         {
             if (ModelState.IsValid)
             {
+
                 var entity = Mapper.Map<TModel>(inputViewModel);
 
                 this.repository.Add(entity);

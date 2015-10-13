@@ -8,6 +8,7 @@ namespace CollectingProductionDataSystem.Models.Nomenclatures
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
+    using CollectingProductionDataSystem.Infrastructure.Mapping;
     using CollectingProductionDataSystem.Models.Abstract;
     using CollectingProductionDataSystem.Models.Contracts;
 

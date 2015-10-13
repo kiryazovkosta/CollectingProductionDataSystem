@@ -624,4 +624,13 @@
   <data name="TotalQuantity" xml:space="preserve">
     <value>Total Expediotion&lt;br/&gt;[ton]</value>
   </data>
+  <data name="Days" xml:space="preserve">
+    <value>Days</value>
+  </data>
+  <data name="Hours" xml:space="preserve">
+    <value>Hours</value>
+  </data>
+  <data name="Minutes" xml:space="preserve">
+    <value>Minutes</value>
+  </data>
 </root>

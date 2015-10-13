@@ -627,4 +627,13 @@
   <data name="TotalQuantity" xml:space="preserve">
     <value>Общо за деня&lt;br/&gt;[Тон]</value>
   </data>
+  <data name="Days" xml:space="preserve">
+    <value>Дни</value>
+  </data>
+  <data name="Hours" xml:space="preserve">
+    <value>Часове</value>
+  </data>
+  <data name="Minutes" xml:space="preserve">
+    <value>Мин.</value>
+  </data>
 </root>

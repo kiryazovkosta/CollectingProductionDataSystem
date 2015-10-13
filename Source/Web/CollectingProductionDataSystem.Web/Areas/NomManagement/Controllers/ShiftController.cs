@@ -5,6 +5,7 @@
     using System.Linq;
     using System.Web;
     using System.Web.Mvc;
+    using AutoMapper;
     using CollectingProductionDataSystem.Data.Contracts;
     using CollectingProductionDataSystem.Models.Nomenclatures;
     using CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewModels;
@@ -14,6 +15,7 @@
         public ShiftController(IProductionData dataParam)
             : base(dataParam)
         {
+           
         }
     }
 }

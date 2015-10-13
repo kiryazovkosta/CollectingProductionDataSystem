@@ -1,7 +1,9 @@
 ﻿using System;
 using AutoMapper;
 using CollectingProductionDataSystem.Models.Identity;
+using CollectingProductionDataSystem.Models.Nomenclatures;
 using CollectingProductionDataSystem.Web.Areas.Administration.ViewModels;
+using CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace CollectingProductionDataSystem.Web.Tests
@@ -13,7 +15,10 @@ namespace CollectingProductionDataSystem.Web.Tests
         [TestMethod]
         public void CheckMappinRoleViewModelToApplicationRole()
         {
-            Mapper.CreateMap<ApplicationUser,EditUserViewModel>();
+            Mapper.CreateMap<ShiftViewModel,Shift>();
+
+            var map = new ShiftViewModel();
+                map.CreateMappings(Mapper.Configuration);
 
             Mapper.AssertConfigurationIsValid();
         }
