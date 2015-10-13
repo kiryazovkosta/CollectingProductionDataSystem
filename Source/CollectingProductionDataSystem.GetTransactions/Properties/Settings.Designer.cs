@@ -97,5 +97,41 @@ namespace CollectingProductionDataSystem.GetTransactions.Properties {
                 return ((global::System.TimeSpan)(this["IDLE_TIMER_SCALE_DATA"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool SYNC_ACTIVE_TRANSACTIONS {
+            get {
+                return ((bool)(this["SYNC_ACTIVE_TRANSACTIONS"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("00:10:00")]
+        public global::System.TimeSpan IDLE_TIMER_ACTIVE_TRANSACTIONS_DATA {
+            get {
+                return ((global::System.TimeSpan)(this["IDLE_TIMER_ACTIVE_TRANSACTIONS_DATA"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("srv-vm-mes-phd.neftochim.bg")]
+        public string PHD_HOST {
+            get {
+                return ((string)(this["PHD_HOST"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("3150")]
+        public int PHD_PORT {
+            get {
+                return ((int)(this["PHD_PORT"]));
+            }
+        }
     }
 }

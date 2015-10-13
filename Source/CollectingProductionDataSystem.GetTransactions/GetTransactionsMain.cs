@@ -1,6 +1,7 @@
 ﻿namespace CollectingProductionDataSystem.GetTransactions
 {
     using System;
+    using System.Data;
     using System.Data.Entity.Core.Common.CommandTrees.ExpressionBuilder;
     using System.Linq;
     using System.ServiceProcess;
@@ -9,6 +10,7 @@
     using CollectingProductionDataSystem.Data.Concrete;
     using CollectingProductionDataSystem.Models.Transactions;
     using log4net;
+    using Uniformance.PHD;
 
     static class GetTransactionsMain
     {
@@ -32,7 +34,7 @@
             ServiceBase.Run(servicesToRun);
         }
 
-        internal static void ProcessTransactionData()
+        internal static void ProcessTransactionsData()
         {
             try
             {
@@ -375,6 +377,61 @@
                 }
 
                 logger.Info("End scale synchronization");
+            }
+            catch(Exception ex)
+            {
+                logger.Error(ex.Message, ex);
+            }
+        }
+
+        internal static void ProcessActiveTransactionsData()
+        { 
+            try
+            {
+                logger.Info("Begin active transactions synchronization!");
+
+                var fiveOClock = DateTime.Today.AddHours(5);
+                var now = DateTime.Now;
+
+                var ts = now - fiveOClock;
+                var differenceInMinutes = ts.Minutes;
+                logger.InfoFormat("Difference In Minutes: {0}", differenceInMinutes);
+
+                using (var context = new ProductionData(new CollectingDataSystemDbContext(new AuditablePersister())))
+                {
+                    var activeTransactionsTags = context.MeasuringPointConfigs.All().Where(x => x.ActiveTransactionStatusTag != null).ToList();
+                    if (activeTransactionsTags.Count > 0)
+                    {
+                        using (PHDHistorian oPhd = new PHDHistorian())
+                        {
+                            using (PHDServer defaultServer = new PHDServer(Properties.Settings.Default.PHD_HOST))
+                            {
+                                defaultServer.Port = Properties.Settings.Default.PHD_PORT;
+                                defaultServer.APIVersion = Uniformance.PHD.SERVERVERSION.RAPI200;
+                                oPhd.DefaultServer = defaultServer;
+                                oPhd.StartTime = "NOW - 2M";
+                                oPhd.EndTime = "NOW - 2M";
+                                oPhd.Sampletype = SAMPLETYPE.Raw;
+                                oPhd.MinimumConfidence = 100;
+                                oPhd.MaximumRows = 1;
+
+                                var tagsList = new Tags();
+                                foreach (var item in activeTransactionsTags)
+                                {
+                                      tagsList.Add(new Tag { TagName = item.ActiveTransactionStatusTag });
+                                }
+
+                                var result = oPhd.FetchRowData(tagsList);
+                                foreach (DataRow row in result.Tables[0].Rows)
+                                {
+                                    logger.InfoFormat("{0} {1} {2} {3}", row[0], row["TimeStamp"], row["Value"], row["Confidence"]);
+                                }
+                            }
+                        }
+                    }
+                }
+
+                logger.Info("End active transactions synchronization");
             }
             catch(Exception ex)
             {

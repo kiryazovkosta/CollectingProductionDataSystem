@@ -11,9 +11,11 @@
     {
         private Timer transactionsDataTimer = null;
         private Timer scaleDateTimer = null;
+        private Timer activeTransactionsTimer = null;
 
         private static readonly object lockObjectTransactionsData = new object();
         private static readonly object lockObjectScaleData = new object();
+        private static readonly object lockObjectActiveTransactionsData = new object();
 
         private readonly ILog logger;
 
@@ -36,6 +38,11 @@
                 if (Properties.Settings.Default.SYNC_SCALE)
                 {
                     this.scaleDateTimer = new Timer(TimerHandlerScalesData, null, 0, Timeout.Infinite);
+                }
+
+                if (Properties.Settings.Default.SYNC_ACTIVE_TRANSACTIONS)
+                {
+                    this.activeTransactionsTimer = new Timer(TimerHandlerActiveTransactionsData, null, 0, Timeout.Infinite);
                 }
 
             }
@@ -65,7 +72,7 @@
                 {
                     SetRegionalSettings();
                     this.transactionsDataTimer.Change(Timeout.Infinite, Timeout.Infinite);
-                    GetTransactionsMain.ProcessTransactionData();
+                    GetTransactionsMain.ProcessTransactionsData();
                 }
                 catch (Exception ex)
                 {
@@ -98,6 +105,29 @@
                 {
                     this.scaleDateTimer.Change(
                         Convert.ToInt64(Properties.Settings.Default.IDLE_TIMER_SCALE_DATA.TotalMilliseconds), 
+                        System.Threading.Timeout.Infinite);
+                }
+            }
+        }
+
+        private void TimerHandlerActiveTransactionsData(object state)
+        {
+            lock (lockObjectActiveTransactionsData)
+            {
+                try
+                {
+                    SetRegionalSettings();
+                    this.activeTransactionsTimer.Change(Timeout.Infinite, Timeout.Infinite);
+                    GetTransactionsMain.ProcessActiveTransactionsData();
+                }
+                catch (Exception ex)
+                {
+                    logger.Error(ex.Message, ex);
+                }
+                finally
+                {
+                    this.activeTransactionsTimer.Change(
+                        Convert.ToInt64(Properties.Settings.Default.IDLE_TIMER_ACTIVE_TRANSACTIONS_DATA.TotalMilliseconds), 
                         System.Threading.Timeout.Infinite);
                 }
             }
