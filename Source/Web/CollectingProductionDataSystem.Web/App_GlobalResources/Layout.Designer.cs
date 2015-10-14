@@ -322,6 +322,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Choose Park....
+        /// </summary>
+        public static string ChoosePark {
+            get {
+                return ResourceManager.GetString("ChoosePark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Choose Parks....
         /// </summary>
         public static string ChooseParks {

@@ -797,8 +797,11 @@
   </data>
   <data name="WeightInVacuumLowExtreme" xml:space="preserve">
     <value>WeightInVacuumLowExtreme</value>
-</data>
+  </data>
   <data name="ActiveQuantity" xml:space="preserve">
     <value>Active Excepition &lt;br/&gt;[ton]</value>
+  </data>
+  <data name="ChoosePark" xml:space="preserve">
+    <value>Choose Park...</value>
   </data>
 </root>

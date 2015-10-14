@@ -800,8 +800,11 @@
   </data>
   <data name="WeightInVacuumLowExtreme" xml:space="preserve">
     <value>Минимално тегло във вакуум</value>
-	  </data>
+  </data>
   <data name="ActiveQuantity" xml:space="preserve">
     <value>Незавършена експедиция &lt;br/&gt;[Тон]</value>
+  </data>
+  <data name="ChoosePark" xml:space="preserve">
+    <value>Изберете парк...</value>
   </data>
 </root>

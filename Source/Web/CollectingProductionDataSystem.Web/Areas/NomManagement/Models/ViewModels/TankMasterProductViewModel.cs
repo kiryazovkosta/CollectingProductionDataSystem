@@ -6,22 +6,19 @@
     using System.Linq;
     using System.Web;
     using CollectingProductionDataSystem.Infrastructure.Mapping;
+    using CollectingProductionDataSystem.Models.Contracts;
     using CollectingProductionDataSystem.Models.Inventories;
     using Resources = App_GlobalResources.Resources;
 
-    public class TankMasterProductViewModel:IMapFrom<TankMasterProduct>
+    public class TankMasterProductViewModel:IMapFrom<TankMasterProduct>, IEntity
     {
         [Required]
-        [UIHint("Hidden")]
+        [Display(Name = "Product", ResourceType = typeof(Resources.Layout))]
         public int Id { get; set; }
 
         [Required]
         [Display(Name = "TankMasterCode", ResourceType = typeof(Resources.Layout))]
-        public int TankMasterProductId { get; set; }
-
-        [Required]
-        [Display(Name = "Code", ResourceType = typeof(Resources.Layout))]
-        public int ProductCode { get; set; }
+        public int TankMasterProductCode { get; set; }
 
         [Required]
         [Display(Name = "Name", ResourceType = typeof(Resources.Layout))]
