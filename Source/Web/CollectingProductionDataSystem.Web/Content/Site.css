@@ -444,6 +444,13 @@ ul.k-list li {
 
 /*----------- navigation of nom management ---------------*/
 
+@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+    /* IE10+ CSS styles go here */
+    div#sidebar-toggle {
+        margin-left: -5px;
+    }
+}
+
 div#sidebar-toggle {
     display: inline-block;
     top: 50px;
