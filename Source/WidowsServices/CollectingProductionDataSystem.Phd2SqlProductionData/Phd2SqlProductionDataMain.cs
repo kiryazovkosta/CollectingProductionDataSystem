@@ -68,12 +68,12 @@
                                 if (unitConfig.CollectingDataMechanism.ToUpper() == "A")
                                 {
                                     var confidence = 0;
-                                    logger.Info(unitConfig.PreviousShiftTag);
+                                    //logger.Info(unitConfig.PreviousShiftTag);
 
                                     var s = unitsData.Where(x => x.UnitConfigId == unitConfig.Id).FirstOrDefault();
                                     if (s != null)
                                     {
-                                        logger.InfoFormat("Exists {0} {1}", unitConfig.Name, s.RealValue);
+                                        //logger.InfoFormat("Exists {0} {1}", unitConfig.Name, s.RealValue);
                                         continue;
                                     }
 
@@ -93,22 +93,23 @@
                                             context.UnitsData.Add(unitData); 
                                         }
 
-                                        logger.InfoFormat("Added {0} {1}", unitConfig.Name, unitData.RealValue);
+                                        //logger.InfoFormat("Added {0} {1}", unitConfig.Name, unitData.RealValue);
                                     }
                                     else
                                     {
                                         SetDefaultValue(context, recordDataTime, shift, unitsData, unitConfig);
-                                        logger.InfoFormat("Default {0} {1}", unitConfig.Name, unitData.RealValue);
+                                        //logger.InfoFormat("Default {0} {1}", unitConfig.Name, unitData.RealValue);
                                     }
                                 }
                                 else 
                                 {
                                     SetDefaultValue(context, recordDataTime, shift, unitsData, unitConfig);
-                                    logger.InfoFormat("Manual {0} {1}", unitConfig.Name, 0);
+                                    //logger.InfoFormat("Manual {0} {1}", unitConfig.Name, 0);
                                 }
                             }
                             
-                            context.SaveChanges("PHD2SQL");
+                            var status = context.SaveChanges("PHD2SQL");
+                            logger.InfoFormat("Successfully added {0} records to CollectingPrimaryDataSystem", status.ResultRecordsCount);
                         }
                     }
                 }
