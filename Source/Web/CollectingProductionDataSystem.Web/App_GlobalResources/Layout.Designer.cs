@@ -61,6 +61,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Active Excepition &lt;br/&gt;[ton].
+        /// </summary>
+        public static string ActiveQuantity {
+            get {
+                return ResourceManager.GetString("ActiveQuantity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Administration.
         /// </summary>
         public static string Administration {

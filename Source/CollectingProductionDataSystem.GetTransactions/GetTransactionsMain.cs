@@ -1,6 +1,7 @@
 ﻿namespace CollectingProductionDataSystem.GetTransactions
 {
     using System;
+    using System.Data;
     using System.Data.Entity.Core.Common.CommandTrees.ExpressionBuilder;
     using System.Linq;
     using System.ServiceProcess;
@@ -9,6 +10,8 @@
     using CollectingProductionDataSystem.Data.Concrete;
     using CollectingProductionDataSystem.Models.Transactions;
     using log4net;
+    using Uniformance.PHD;
+    using CollectingProductionDataSystem.Models.Nomenclatures;
 
     static class GetTransactionsMain
     {
@@ -32,7 +35,7 @@
             ServiceBase.Run(servicesToRun);
         }
 
-        internal static void ProcessTransactionData()
+        internal static void ProcessTransactionsData()
         {
             try
             {
@@ -375,6 +378,97 @@
                 }
 
                 logger.Info("End scale synchronization");
+            }
+            catch(Exception ex)
+            {
+                logger.Error(ex.Message, ex);
+            }
+        }
+
+        internal static void ProcessActiveTransactionsData()
+        { 
+            try
+            {
+                logger.Info("Begin active transactions synchronization!");
+                var now = DateTime.Now;
+                var today = DateTime.Today;
+                var fiveOClock = today.AddHours(5);
+                
+                var ts = now - fiveOClock;
+                if(ts.Hours == 0)
+                {
+                    using (var context = new ProductionData(new CollectingDataSystemDbContext(new AuditablePersister())))
+                    {
+                        var currentDate = today.AddDays(-1);
+                        if (context.ActiveTransactionsDatas.All().Where(x => x.RecordTimestamp == currentDate).Any())
+                        {
+                            logger.InfoFormat("There is already an active transaction data for {0}", currentDate);
+                        }
+                        else
+                        {
+                            var activeTransactionsTags = context.MeasuringPointConfigs.All().Where(x => !String.IsNullOrEmpty(x.ActiveTransactionStatusTag)).ToList();
+                            if (activeTransactionsTags.Count > 0)
+                            {
+                                using (PHDHistorian oPhd = new PHDHistorian())
+                                {
+                                    using (PHDServer defaultServer = new PHDServer(Properties.Settings.Default.PHD_HOST))
+                                    {
+                                        defaultServer.Port = Properties.Settings.Default.PHD_PORT;
+                                        defaultServer.APIVersion = Uniformance.PHD.SERVERVERSION.RAPI200;
+                                        oPhd.DefaultServer = defaultServer;
+                                        oPhd.StartTime = string.Format("NOW - {0}M", ts.Minutes - 2);
+                                        oPhd.EndTime = string.Format("NOW - {0}M", ts.Minutes - 2);
+                                        oPhd.Sampletype = SAMPLETYPE.Snapshot;
+                                        oPhd.MinimumConfidence = 100;
+                                        oPhd.MaximumRows = 1;
+
+                                        var tagsList = new Tags();
+                                        foreach (var item in activeTransactionsTags)
+                                        {
+                                            tagsList.RemoveAll();
+                                            tagsList.Add(new Tag { TagName = item.ActiveTransactionStatusTag });
+                                            var result = oPhd.FetchRowData(tagsList);
+                                            var row = result.Tables[0].Rows[0];
+                                            if (row["Value"].ToString() == "1")
+                                            {
+                                                tagsList.RemoveAll();
+                                                tagsList.Add(new Tag { TagName = item.ActiveTransactionProductTag });
+                                                tagsList.Add(new Tag { TagName = item.ActiveTransactionMassTag });
+
+                                                var activeTransactionData = new ActiveTransactionsData
+                                                {
+                                                    RecordTimestamp = currentDate, 
+                                                    MeasuringPointConfigId = item.Id
+                                                };
+
+                                                var valueResult = oPhd.FetchRowData(tagsList);
+                                                foreach (DataRow valueRow in valueResult.Tables[0].Rows)
+                                                {
+                                                    if( valueRow[0].ToString().Equals(item.ActiveTransactionProductTag))
+                                                    {
+                                                        int code = Convert.ToInt32(valueRow["Value"]);
+                                                        var product = context.Products.All().Where(x => x.Code == code).FirstOrDefault();
+                                                        activeTransactionData.ProductId = product != null ? product.Id : 1;
+                                                    }
+                                                    else 
+                                                    {
+                                                        activeTransactionData.Mass = Convert.ToDecimal(valueRow["Value"]);
+                                                    }
+                                                }
+
+                                                context.ActiveTransactionsDatas.Add(activeTransactionData);
+                                            }
+                                        }
+
+                                        context.SaveChanges("Phd2Sql");
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                logger.Info("End active transactions synchronization!");
             }
             catch(Exception ex)
             {

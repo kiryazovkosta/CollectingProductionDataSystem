@@ -687,6 +687,7 @@
   <data name="Minutes" xml:space="preserve">
     <value>Minutes</value>
   </data>
+<<<<<<< HEAD
   <data name="NetStandardVolumeHighExtreme" xml:space="preserve">
     <value>NetStandardVolumeHighExtreme</value>
   </data>
@@ -797,5 +798,9 @@
   </data>
   <data name="WeightInVacuumLowExtreme" xml:space="preserve">
     <value>WeightInVacuumLowExtreme</value>
+=======
+  <data name="ActiveQuantity" xml:space="preserve">
+    <value>Active Excepition &lt;br/&gt;[ton]</value>
+>>>>>>> dd31d98cec2f28b4cd8b699678620fe51225eabd
   </data>
 </root>
