@@ -7,10 +7,13 @@
 
     public partial class MeasuringPointConfig : DeletableEntity, IEntity
     {
+        private ICollection<RelatedMeasuringPointConfigs> relatedMeasuringPointConfigs;
+
         public MeasuringPointConfig()
         {
             this.MeasuringPointsConfigsDatas = new HashSet<MeasuringPointsConfigsData>();
             this.ActiveTransactionsDatas = new HashSet<ActiveTransactionsData>();
+            this.relatedMeasuringPointConfigs = new HashSet<RelatedMeasuringPointConfigs>();
         }
         public int Id { get; set; }
         public int ZoneId { get; set; }
@@ -106,6 +109,12 @@
         public string ActiveTransactionStatusTag { get; set; }
         public string ActiveTransactionProductTag { get; set; }
         public string ActiveTransactionMassTag { get; set; }
+        public string TotalizerCurrentValueTag { get; set; }
         public virtual ICollection<ActiveTransactionsData> ActiveTransactionsDatas { get; set; }
+        public virtual ICollection<RelatedMeasuringPointConfigs> RelatedMeasuringPointConfigs
+        {
+            get { return this.relatedMeasuringPointConfigs; }
+            set { this.relatedMeasuringPointConfigs = value; }
+        }
     }
 }

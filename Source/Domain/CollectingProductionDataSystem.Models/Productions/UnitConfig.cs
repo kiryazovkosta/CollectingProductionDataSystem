@@ -12,11 +12,13 @@ namespace CollectingProductionDataSystem.Models.Productions
     {
         private ICollection<UnitsData> unitsDatas;
         private ICollection<UnitsInspectionData> unitsInspectionDatas;
+        private ICollection<RelatedUnitConfigs> relatedUnitConfigs;
 
         public UnitConfig()
         {
             this.unitsDatas = new HashSet<UnitsData>();
             this.unitsInspectionDatas = new HashSet<UnitsInspectionData>();
+            this.relatedUnitConfigs = new HashSet<RelatedUnitConfigs>();
         }
 
         public int Id { get; set; }
@@ -36,7 +38,7 @@ namespace CollectingProductionDataSystem.Models.Productions
         public bool IsCalculated { get; set; }
         public string PreviousShiftTag { get; set; }
         public string Notes { get; set; }
-        public decimal? MaximumCost { get; set; }
+        public decimal? MaximumFlow { get; set; }
         public decimal? EstimatedDensity { get; set; }
         public decimal? EstimatedPressure { get; set; }
         public decimal? EstimatedTemperature { get; set; }
@@ -58,6 +60,11 @@ namespace CollectingProductionDataSystem.Models.Productions
         {
             get { return this.unitsInspectionDatas; }
             set { this.unitsInspectionDatas = value; } 
+        }
+        public virtual ICollection<RelatedUnitConfigs> RelatedUnitConfigs
+        {
+            get { return this.relatedUnitConfigs; }
+            set { this.relatedUnitConfigs = value; }
         }
     }
 }

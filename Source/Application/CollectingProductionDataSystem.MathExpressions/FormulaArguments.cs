@@ -1,23 +1,19 @@
-﻿namespace CollectingProductionDataSystem.Models.UtilityEntities
+﻿namespace MathExpressions.Application
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
 
     public class FormulaArguments
     {
-        public int Id { get; set; }
         /// <summary>
         /// PL-ПЛОЩ/ПОКАЗАНИЕ НА БРОЯЧА
         /// </summary>
-        public double? IndicatorCounter { get; set; }
+        public double? CounterIndication { get; set; }
 
         /// <summary>
         /// P-НАЛЯГАНЕ
         /// </summary>
-        public double? Volume { get; set; }
+        public double? Pressure { get; set; }
 
         /// <summary>
         /// T-ТЕМПЕРАТУРА

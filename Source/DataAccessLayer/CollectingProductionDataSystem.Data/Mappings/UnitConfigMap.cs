@@ -49,6 +49,7 @@ namespace CollectingProductionDataSystem.Data.Mappings
                 .WithMany(t => t.UnitConfigs)
                 .HasForeignKey(d => d.ShiftProductTypeId);
 
+            this.HasMany(t => t.RelatedUnitConfigs);
         }
     }
 }

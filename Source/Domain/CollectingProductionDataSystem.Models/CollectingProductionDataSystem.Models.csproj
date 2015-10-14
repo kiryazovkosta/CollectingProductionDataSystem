@@ -67,6 +67,7 @@
     <Compile Include="Identity\UserClaimIntPk.cs" />
     <Compile Include="Identity\UserLoginIntPk.cs" />
     <Compile Include="Identity\UserRoleIntPk.cs" />
+    <Compile Include="Inventories\RelatedTankConfigs.cs" />
     <Compile Include="Inventories\TankMasterProduct.cs" />
     <Compile Include="Inventories\TanksApprovedData.cs" />
     <Compile Include="Inventories\TanksManualData.cs" />
@@ -93,6 +94,7 @@
     <Compile Include="Productions\Qpt\PressureAndTemperature2CompressibilityFactor.cs" />
     <Compile Include="Productions\Qpt\PressureAndTemperature2EtilenDensity.cs" />
     <Compile Include="Productions\Qpt\PressureAndTemperature2WaterDensity.cs" />
+    <Compile Include="Productions\RelatedUnitConfigs.cs" />
     <Compile Include="Productions\ShiftType.cs" />
     <Compile Include="Productions\UnitConfig.cs" />
     <Compile Include="Productions\UnitsApprovedDailyData.cs" />
@@ -122,6 +124,7 @@
     <Compile Include="Transactions\MeasurementPointsProductsData.cs" />
     <Compile Include="Transactions\MeasuringPointConfig.cs" />
     <Compile Include="Transactions\MeasuringPointsConfigsData.cs" />
+    <Compile Include="Transactions\RelatedMeasuringPointConfigs.cs" />
     <Compile Include="Transactions\Zone.cs" />
     <Compile Include="UtilityEntities\UserProfile.cs" />
     <Compile Include="UtilityEntities\AuditLogRecord.cs" />

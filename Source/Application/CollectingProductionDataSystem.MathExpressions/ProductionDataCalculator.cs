@@ -4,21 +4,46 @@
     using System.Collections.Generic;
     using System.Linq;
 
-    public class Formulas
+    public class ProductionDataCalculator
     {
         private static readonly Calculator calculator = new Calculator();
 
         ///  <summary>
         /// 1) P1 ;ПАРА-КОНСУМИРАНА [ТОНОВЕ] :: X A1,F Q
         ///  </summary>            
-        public static double FormulaP1() 
+        public static double FormulaP1(FormulaArguments args) 
         {
-            double p = 20;
-            double t = 20;
-            double d2 = 15;
-            double pl = 20;            
-            double d5 = 2;
-            double d6 = 2;
+            if (!args.CounterIndication.HasValue)
+            {
+                throw new ArgumentNullException("The value of CounterIndication(PL) is not allowed to be null");
+            }
+            if (!args.Pressure.HasValue)
+            {
+                throw new ArgumentNullException("The value of Pressure(P) is not allowed to be null");
+            }
+            if (!args.Temperature.HasValue)
+            {
+                throw new ArgumentNullException("The value of Temperature(T) is not allowed to be null");
+            }
+            if (!args.MaximumFlow.HasValue)
+            {
+                throw new ArgumentNullException("The value of MaximumFlow(D2) is not allowed to be null");
+            }
+            if (!args.EstimatedPressure.HasValue)
+            {
+                throw new ArgumentNullException("The value of EstimatedPressure(D5) is not allowed to be null");
+            }
+            if (!args.EstimatedTemperature.HasValue)
+            {
+                throw new ArgumentNullException("The value of EstimatedTemperature(D6) is not allowed to be null");
+            }
+
+            double pl = args.CounterIndication.Value;
+            double p = args.Pressure.Value;
+            double t = args.Temperature.Value;
+            double d2 = args.MaximumFlow.Value;
+            double d5 = args.EstimatedPressure.Value;
+            double d6 = args.EstimatedTemperature.Value;
 
             double a1 = Functions.GetValueFormulaA1(p, t, d5, d6);
             double f = Functions.GetValueFormulaF(d2, pl, a1);
@@ -101,11 +126,25 @@
         /// <summary>
         /// 5) Z2 ;ПАРА-КОНСУМИРАНА, АСУТП, [MWH] :: X K15,K2,K3,EN S Q=PL*ENT/0.860 Q
         /// </summary>
-        public static double FormulaZ2() 
+        public static double FormulaZ2(FormulaArguments args) 
         {
-            double p = 10;
-            double t = 50;
-            double pl = 20;
+            if (!args.CounterIndication.HasValue)
+            {
+                throw new ArgumentNullException("The value of CounterIndication(PL) is not allowed to be null");
+            }
+            if (!args.Pressure.HasValue)
+            {
+                throw new ArgumentNullException("The value of Pressure(P) is not allowed to be null");
+            }
+            if (!args.Temperature.HasValue)
+            {
+                throw new ArgumentNullException("The value of Temperature(T) is not allowed to be null");
+            }
+
+            double p = args.Pressure.Value;
+            double t = args.Temperature.Value;
+            double pl = args.CounterIndication.Value;
+
             double ent = Functions.GetValueFormulaEN(t, p);
 
             var inputParams = new Dictionary<string, double>();
@@ -662,10 +701,19 @@
         /// <summary>
         /// 62) G26 ;ПРЕВРЪЩАНЕ ДИМЕНСИЯТА ОТ "Н.M.КУБ." В "ТОНОВЕ" :: S Q=PL*D Q
         /// </summary>
-        public static double FormulaG26()
+        public static double FormulaG26(FormulaArguments args)
         {
-            double pl = 20;
-            double d = 50;            
+            if (!args.CounterIndication.HasValue)
+            {
+                throw new ArgumentNullException("The value of CounterIndication(PL) is not allowed to be null");
+            }
+            if (!args.Density.HasValue)
+            {
+                throw new ArgumentNullException("The value of Density(D) is not allowed to be null");
+            }
+
+            double pl = args.CounterIndication.Value;
+            double d = args.Density.Value;           
             double q = pl * d;
 
             var inputParams = new Dictionary<string, double>();

@@ -14,8 +14,8 @@ namespace ManyToManySelfRelation
             {
                 var records = db.Records.Include(x => x.RelatedRecords.Select(y=>y.Record)).ToList();
                 var related = new int[] { 1, 2, 3 };
-                //var newRecord = new List<Record> { new Record() { Name = "NewRecord" } }.Select(x => new Record { Name=x.Name, RelatedRecords = related.Select(y=>new RelatedRecords(){RecordId = x.Id,RelatedRecordId = y}).ToList()}).FirstOrDefault();
-                //db.Records.Add(newRecord);
+                var newRecord = new List<Record> { new Record() { Name = "NewRecord" } }.Select(x => new Record { Name=x.Name, RelatedRecords = related.Select(y=>new RelatedRecords(){RecordId = x.Id,RelatedRecordId = y}).ToList()}).FirstOrDefault();
+                db.Records.Add(newRecord);
                 db.SaveChanges();
                 foreach (var record in records)
                 {

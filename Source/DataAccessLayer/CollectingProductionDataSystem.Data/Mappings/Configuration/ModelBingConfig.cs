@@ -45,6 +45,9 @@
             modelBuilder.Configurations.Add(new ShiftProductTypeMap());
             modelBuilder.Configurations.Add(new DailyProductTypeMap());
             modelBuilder.Configurations.Add(new ActiveTransactionsDataMap());
+            modelBuilder.Configurations.Add(new RelatedMeasuringPointConfigsMap());
+            modelBuilder.Configurations.Add(new RelatedTankConfigsMap());
+            modelBuilder.Configurations.Add(new RelatedUnitConfigsMap());
         }
     }
 }

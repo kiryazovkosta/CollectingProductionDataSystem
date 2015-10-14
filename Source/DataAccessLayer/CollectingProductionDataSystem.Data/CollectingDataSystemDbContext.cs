@@ -120,6 +120,12 @@
 
         public IDbSet<ActiveTransactionsData> ActiveTransactionsDatas { get; set; }
 
+        public IDbSet<RelatedMeasuringPointConfigs> RelatedMeasuringPointConfigs { get; set; }
+
+        public IDbSet<RelatedTankConfigs> RelatedTankConfigs { get; set; }
+
+        public IDbSet<RelatedUnitConfigs> RelatedUnitConfigs { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             ModelBingConfig.RegisterMappings(modelBuilder);
