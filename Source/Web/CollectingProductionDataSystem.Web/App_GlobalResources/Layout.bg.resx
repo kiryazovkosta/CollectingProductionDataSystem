@@ -690,7 +690,6 @@
   <data name="Minutes" xml:space="preserve">
     <value>Мин.</value>
   </data>
-<<<<<<< HEAD
   <data name="NetStandardVolumeHighExtreme" xml:space="preserve">
     <value>Максимален нетен стандартен обем</value>
   </data>
@@ -801,9 +800,8 @@
   </data>
   <data name="WeightInVacuumLowExtreme" xml:space="preserve">
     <value>Минимално тегло във вакуум</value>
-=======
+	  </data>
   <data name="ActiveQuantity" xml:space="preserve">
     <value>Незавършена експедиция &lt;br/&gt;[Тон]</value>
->>>>>>> dd31d98cec2f28b4cd8b699678620fe51225eabd
   </data>
 </root>
