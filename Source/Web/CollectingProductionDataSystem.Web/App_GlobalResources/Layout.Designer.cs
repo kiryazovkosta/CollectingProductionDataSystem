@@ -160,6 +160,42 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to AvailableRoomHighExtreme.
+        /// </summary>
+        public static string AvailableRoomHighExtreme {
+            get {
+                return ResourceManager.GetString("AvailableRoomHighExtreme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to AvailableRoomLowExtreme.
+        /// </summary>
+        public static string AvailableRoomLowExtreme {
+            get {
+                return ResourceManager.GetString("AvailableRoomLowExtreme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to AverageTemperatureHighExtreme.
+        /// </summary>
+        public static string AverageTemperatureHighExtreme {
+            get {
+                return ResourceManager.GetString("AverageTemperatureHighExtreme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to AverageTemperatureLowExtreme.
+        /// </summary>
+        public static string AverageTemperatureLowExtreme {
+            get {
+                return ResourceManager.GetString("AverageTemperatureLowExtreme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Auto Expedition&lt;br/&gt;[ton].
         /// </summary>
         public static string AvtoQuantity {
@@ -372,6 +408,24 @@ namespace App_GlobalResources.Resources {
         public static string ConfirmPassword {
             get {
                 return ResourceManager.GetString("ConfirmPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ControlPoint.
+        /// </summary>
+        public static string ControlPoint {
+            get {
+                return ResourceManager.GetString("ControlPoint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CorrectionFactor.
+        /// </summary>
+        public static string CorrectionFactor {
+            get {
+                return ResourceManager.GetString("CorrectionFactor", resourceCulture);
             }
         }
         
@@ -628,6 +682,42 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to FreeWaterLevelHighExtreme.
+        /// </summary>
+        public static string FreeWaterLevelHighExtreme {
+            get {
+                return ResourceManager.GetString("FreeWaterLevelHighExtreme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to FreeWaterLevelLowExtreme.
+        /// </summary>
+        public static string FreeWaterLevelLowExtreme {
+            get {
+                return ResourceManager.GetString("FreeWaterLevelLowExtreme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to FreeWaterVolumeHighExtreme.
+        /// </summary>
+        public static string FreeWaterVolumeHighExtreme {
+            get {
+                return ResourceManager.GetString("FreeWaterVolumeHighExtreme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to FreeWaterVolumeLowExtreme.
+        /// </summary>
+        public static string FreeWaterVolumeLowExtreme {
+            get {
+                return ResourceManager.GetString("FreeWaterVolumeLowExtreme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Full Name.
         /// </summary>
         public static string FullName {
@@ -651,6 +741,42 @@ namespace App_GlobalResources.Resources {
         public static string GreetingMessage {
             get {
                 return ResourceManager.GetString("GreetingMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to GrossObservableVolumeHighExtreme.
+        /// </summary>
+        public static string GrossObservableVolumeHighExtreme {
+            get {
+                return ResourceManager.GetString("GrossObservableVolumeHighExtreme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to GrossObservableVolumeLowExtreme.
+        /// </summary>
+        public static string GrossObservableVolumeLowExtreme {
+            get {
+                return ResourceManager.GetString("GrossObservableVolumeLowExtreme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to GrossStandardVolumeHighExtreme.
+        /// </summary>
+        public static string GrossStandardVolumeHighExtreme {
+            get {
+                return ResourceManager.GetString("GrossStandardVolumeHighExtreme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to GrossStandardVolumeLowExtreme.
+        /// </summary>
+        public static string GrossStandardVolumeLowExtreme {
+            get {
+                return ResourceManager.GetString("GrossStandardVolumeLowExtreme", resourceCulture);
             }
         }
         
@@ -772,6 +898,24 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to LiquidLevelHighExtreme.
+        /// </summary>
+        public static string LiquidLevelHighExtreme {
+            get {
+                return ResourceManager.GetString("LiquidLevelHighExtreme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to LiquidLevelLowExtreme.
+        /// </summary>
+        public static string LiquidLevelLowExtreme {
+            get {
+                return ResourceManager.GetString("LiquidLevelLowExtreme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to LogIn.
         /// </summary>
         public static string Login {
@@ -840,6 +984,24 @@ namespace App_GlobalResources.Resources {
         public static string MaximumCost {
             get {
                 return ResourceManager.GetString("MaximumCost", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MaxVolumeHighExtreme.
+        /// </summary>
+        public static string MaxVolumeHighExtreme {
+            get {
+                return ResourceManager.GetString("MaxVolumeHighExtreme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MaxVolumeLowExtreme.
+        /// </summary>
+        public static string MaxVolumeLowExtreme {
+            get {
+                return ResourceManager.GetString("MaxVolumeLowExtreme", resourceCulture);
             }
         }
         
@@ -934,6 +1096,24 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to NetStandardVolumeHighExtreme.
+        /// </summary>
+        public static string NetStandardVolumeHighExtreme {
+            get {
+                return ResourceManager.GetString("NetStandardVolumeHighExtreme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to NetStandardVolumeLowExtreme.
+        /// </summary>
+        public static string NetStandardVolumeLowExtreme {
+            get {
+                return ResourceManager.GetString("NetStandardVolumeLowExtreme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to New Password.
         /// </summary>
         public static string NewPassword {
@@ -966,6 +1146,24 @@ namespace App_GlobalResources.Resources {
         public static string Notes {
             get {
                 return ResourceManager.GetString("Notes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ObservableDensityHighExtreme.
+        /// </summary>
+        public static string ObservableDensityHighExtreme {
+            get {
+                return ResourceManager.GetString("ObservableDensityHighExtreme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ObservableDensityLowExtreme.
+        /// </summary>
+        public static string ObservableDensityLowExtreme {
+            get {
+                return ResourceManager.GetString("ObservableDensityLowExtreme", resourceCulture);
             }
         }
         
@@ -1029,6 +1227,168 @@ namespace App_GlobalResources.Resources {
         public static string Password {
             get {
                 return ResourceManager.GetString("Password", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Percentages.
+        /// </summary>
+        public static string Percentages {
+            get {
+                return ResourceManager.GetString("Percentages", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PhdTagAvailableRoom.
+        /// </summary>
+        public static string PhdTagAvailableRoom {
+            get {
+                return ResourceManager.GetString("PhdTagAvailableRoom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PhdTagAverageTemperature.
+        /// </summary>
+        public static string PhdTagAverageTemperature {
+            get {
+                return ResourceManager.GetString("PhdTagAverageTemperature", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PhdTagFreeWaterLevel.
+        /// </summary>
+        public static string PhdTagFreeWaterLevel {
+            get {
+                return ResourceManager.GetString("PhdTagFreeWaterLevel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PhdTagFreeWaterVolume.
+        /// </summary>
+        public static string PhdTagFreeWaterVolume {
+            get {
+                return ResourceManager.GetString("PhdTagFreeWaterVolume", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PhdTagGrossObservableVolume.
+        /// </summary>
+        public static string PhdTagGrossObservableVolume {
+            get {
+                return ResourceManager.GetString("PhdTagGrossObservableVolume", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PhdTagGrossStandardVolume.
+        /// </summary>
+        public static string PhdTagGrossStandardVolume {
+            get {
+                return ResourceManager.GetString("PhdTagGrossStandardVolume", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PhdTagLiquidLevel.
+        /// </summary>
+        public static string PhdTagLiquidLevel {
+            get {
+                return ResourceManager.GetString("PhdTagLiquidLevel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PhdTagMaxVolume.
+        /// </summary>
+        public static string PhdTagMaxVolume {
+            get {
+                return ResourceManager.GetString("PhdTagMaxVolume", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PhdTagNetStandardVolume.
+        /// </summary>
+        public static string PhdTagNetStandardVolume {
+            get {
+                return ResourceManager.GetString("PhdTagNetStandardVolume", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PhdTagObservableDensity.
+        /// </summary>
+        public static string PhdTagObservableDensity {
+            get {
+                return ResourceManager.GetString("PhdTagObservableDensity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PhdTagProductId.
+        /// </summary>
+        public static string PhdTagProductId {
+            get {
+                return ResourceManager.GetString("PhdTagProductId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PhdTagProductLevel.
+        /// </summary>
+        public static string PhdTagProductLevel {
+            get {
+                return ResourceManager.GetString("PhdTagProductLevel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PhdTagProductName.
+        /// </summary>
+        public static string PhdTagProductName {
+            get {
+                return ResourceManager.GetString("PhdTagProductName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PhdTagReferenceDensity.
+        /// </summary>
+        public static string PhdTagReferenceDensity {
+            get {
+                return ResourceManager.GetString("PhdTagReferenceDensity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PhdTagTotalObservableVolume.
+        /// </summary>
+        public static string PhdTagTotalObservableVolume {
+            get {
+                return ResourceManager.GetString("PhdTagTotalObservableVolume", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PhdTagWeightInAir.
+        /// </summary>
+        public static string PhdTagWeightInAir {
+            get {
+                return ResourceManager.GetString("PhdTagWeightInAir", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PhdTagWeightInVacuum.
+        /// </summary>
+        public static string PhdTagWeightInVacuum {
+            get {
+                return ResourceManager.GetString("PhdTagWeightInVacuum", resourceCulture);
             }
         }
         
@@ -1186,6 +1546,24 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ProductLevelHighExtreme.
+        /// </summary>
+        public static string ProductLevelHighExtreme {
+            get {
+                return ResourceManager.GetString("ProductLevelHighExtreme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ProductLevelLowExtreme.
+        /// </summary>
+        public static string ProductLevelLowExtreme {
+            get {
+                return ResourceManager.GetString("ProductLevelLowExtreme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Product Name.
         /// </summary>
         public static string ProductName {
@@ -1231,6 +1609,42 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to QuantityFactFormula.
+        /// </summary>
+        public static string QuantityFactFormula {
+            get {
+                return ResourceManager.GetString("QuantityFactFormula", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to QuantityFactMembers.
+        /// </summary>
+        public static string QuantityFactMembers {
+            get {
+                return ResourceManager.GetString("QuantityFactMembers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Quantity Plan Formula.
+        /// </summary>
+        public static string QuantityPlanFormula {
+            get {
+                return ResourceManager.GetString("QuantityPlanFormula", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to QuantityPlanMembers.
+        /// </summary>
+        public static string QuantityPlanMembers {
+            get {
+                return ResourceManager.GetString("QuantityPlanMembers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Read Offset.
         /// </summary>
         public static string ReadOffset {
@@ -1263,6 +1677,24 @@ namespace App_GlobalResources.Resources {
         public static string ReferenceDensity {
             get {
                 return ResourceManager.GetString("ReferenceDensity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ReferenceDensityHighExtreme.
+        /// </summary>
+        public static string ReferenceDensityHighExtreme {
+            get {
+                return ResourceManager.GetString("ReferenceDensityHighExtreme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ReferenceDensityLowExtreme.
+        /// </summary>
+        public static string ReferenceDensityLowExtreme {
+            get {
+                return ResourceManager.GetString("ReferenceDensityLowExtreme", resourceCulture);
             }
         }
         
@@ -1447,6 +1879,24 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to TotalObservableVolumeHighExtreme.
+        /// </summary>
+        public static string TotalObservableVolumeHighExtreme {
+            get {
+                return ResourceManager.GetString("TotalObservableVolumeHighExtreme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TotalObservableVolumeLowExtreme.
+        /// </summary>
+        public static string TotalObservableVolumeLowExtreme {
+            get {
+                return ResourceManager.GetString("TotalObservableVolumeLowExtreme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Total Expediotion&lt;br/&gt;[ton].
         /// </summary>
         public static string TotalQuantity {
@@ -1564,6 +2014,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to UnusableResidueLevel.
+        /// </summary>
+        public static string UnusableResidueLevel {
+            get {
+                return ResourceManager.GetString("UnusableResidueLevel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to User Name.
         /// </summary>
         public static string UserName {
@@ -1591,11 +2050,47 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to WeightInAirHighExtreme.
+        /// </summary>
+        public static string WeightInAirHighExtreme {
+            get {
+                return ResourceManager.GetString("WeightInAirHighExtreme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WeightInAirLowExtreme.
+        /// </summary>
+        public static string WeightInAirLowExtreme {
+            get {
+                return ResourceManager.GetString("WeightInAirLowExtreme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Weight In Vacuum.
         /// </summary>
         public static string WeightInVacuum {
             get {
                 return ResourceManager.GetString("WeightInVacuum", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WeightInVacuumHighExtreme.
+        /// </summary>
+        public static string WeightInVacuumHighExtreme {
+            get {
+                return ResourceManager.GetString("WeightInVacuumHighExtreme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WeightInVacuumLowExtreme.
+        /// </summary>
+        public static string WeightInVacuumLowExtreme {
+            get {
+                return ResourceManager.GetString("WeightInVacuumLowExtreme", resourceCulture);
             }
         }
         

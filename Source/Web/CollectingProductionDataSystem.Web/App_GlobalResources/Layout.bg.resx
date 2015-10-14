@@ -627,13 +627,178 @@
   <data name="TotalQuantity" xml:space="preserve">
     <value>Общо за деня&lt;br/&gt;[Тон]</value>
   </data>
+  <data name="AvailableRoomHighExtreme" xml:space="preserve">
+    <value>Максимум на свободен обем в м3</value>
+  </data>
+  <data name="AvailableRoomLowExtreme" xml:space="preserve">
+    <value>Минимум на свободен обем в м3</value>
+  </data>
+  <data name="AverageTemperatureHighExtreme" xml:space="preserve">
+    <value>Максимална средна температура</value>
+  </data>
+  <data name="AverageTemperatureLowExtreme" xml:space="preserve">
+    <value>Минимална средна температура</value>
+  </data>
+  <data name="ControlPoint" xml:space="preserve">
+    <value>Контролна точка</value>
+  </data>
+  <data name="CorrectionFactor" xml:space="preserve">
+    <value>Коефициент за корекция на ниво</value>
+  </data>
   <data name="Days" xml:space="preserve">
     <value>Дни</value>
+  </data>
+  <data name="FreeWaterLevelHighExtreme" xml:space="preserve">
+    <value>Максимално свободно нивото на водата</value>
+  </data>
+  <data name="FreeWaterLevelLowExtreme" xml:space="preserve">
+    <value>Минимално свободно нивото на водата</value>
+  </data>
+  <data name="FreeWaterVolumeHighExtreme" xml:space="preserve">
+    <value>Максимален свободен обем на водата</value>
+  </data>
+  <data name="FreeWaterVolumeLowExtreme" xml:space="preserve">
+    <value>Минимален свободен обем на водата</value>
+  </data>
+  <data name="GrossObservableVolumeHighExtreme" xml:space="preserve">
+    <value>Максимален брутен наблюдаван обем</value>
+  </data>
+  <data name="GrossObservableVolumeLowExtreme" xml:space="preserve">
+    <value>Минимален брутен наблюдаван обем</value>
+  </data>
+  <data name="GrossStandardVolumeHighExtreme" xml:space="preserve">
+    <value>Максимален брутен стандартен обем</value>
+  </data>
+  <data name="GrossStandardVolumeLowExtreme" xml:space="preserve">
+    <value>Минимален брутен стандартен обем</value>
   </data>
   <data name="Hours" xml:space="preserve">
     <value>Часове</value>
   </data>
+  <data name="LiquidLevelHighExtreme" xml:space="preserve">
+    <value>Максимално ниво на течност</value>
+  </data>
+  <data name="LiquidLevelLowExtreme" xml:space="preserve">
+    <value>Минимално ниво на течност</value>
+  </data>
+  <data name="MaxVolumeHighExtreme" xml:space="preserve">
+    <value>Максимум на максимален обем</value>
+  </data>
+  <data name="MaxVolumeLowExtreme" xml:space="preserve">
+    <value>Минимум на максимален обем</value>
+  </data>
   <data name="Minutes" xml:space="preserve">
     <value>Мин.</value>
+  </data>
+  <data name="NetStandardVolumeHighExtreme" xml:space="preserve">
+    <value>Максимален нетен стандартен обем</value>
+  </data>
+  <data name="NetStandardVolumeLowExtreme" xml:space="preserve">
+    <value>Минимален нетен стандартен обем</value>
+  </data>
+  <data name="ObservableDensityHighExtreme" xml:space="preserve">
+    <value>Максимална наблюдавана плътност</value>
+  </data>
+  <data name="ObservableDensityLowExtreme" xml:space="preserve">
+    <value>Минимална наблюдавана плътност</value>
+  </data>
+  <data name="Percentages" xml:space="preserve">
+    <value>Проценти</value>
+  </data>
+  <data name="PhdTagAvailableRoom" xml:space="preserve">
+    <value>PhdTag свободен обем в м3</value>
+  </data>
+  <data name="PhdTagAverageTemperature" xml:space="preserve">
+    <value>PhdTag средна температура</value>
+  </data>
+  <data name="PhdTagFreeWaterLevel" xml:space="preserve">
+    <value>PhdTag свободно нивото на водата</value>
+  </data>
+  <data name="PhdTagFreeWaterVolume" xml:space="preserve">
+    <value>PhdTag свободен обем на водата</value>
+  </data>
+  <data name="PhdTagGrossObservableVolume" xml:space="preserve">
+    <value>PhdTag брутен наблюдаван обем</value>
+  </data>
+  <data name="PhdTagGrossStandardVolume" xml:space="preserve">
+    <value>PhdTag брутен стандартен обем</value>
+  </data>
+  <data name="PhdTagLiquidLevel" xml:space="preserve">
+    <value>PhdTag ниво на течност</value>
+  </data>
+  <data name="PhdTagMaxVolume" xml:space="preserve">
+    <value>PhdTag максимален обем</value>
+  </data>
+  <data name="PhdTagNetStandardVolume" xml:space="preserve">
+    <value>PhdTag нетен стандартен обем</value>
+  </data>
+  <data name="PhdTagObservableDensity" xml:space="preserve">
+    <value>PhdTag наблюдавана плътност</value>
+  </data>
+  <data name="PhdTagProductId" xml:space="preserve">
+    <value>PhdTag Id на продукта</value>
+  </data>
+  <data name="PhdTagProductLevel" xml:space="preserve">
+    <value>PhdTag ниво на продукт</value>
+  </data>
+  <data name="PhdTagProductName" xml:space="preserve">
+    <value>PhdTag Име на продукта</value>
+  </data>
+  <data name="PhdTagReferenceDensity" xml:space="preserve">
+    <value>PhdTag референтна плътност</value>
+  </data>
+  <data name="PhdTagTotalObservableVolume" xml:space="preserve">
+    <value>PhdTag общ наблюдаван обем</value>
+  </data>
+  <data name="PhdTagWeightInAir" xml:space="preserve">
+    <value>PhdTag тегло във въздух</value>
+  </data>
+  <data name="PhdTagWeightInVacuum" xml:space="preserve">
+    <value>PhdTag тегло във вакуум</value>
+  </data>
+  <data name="ProductLevelHighExtreme" xml:space="preserve">
+    <value>Максимално ниво на продукт</value>
+  </data>
+  <data name="ProductLevelLowExtreme" xml:space="preserve">
+    <value>Минимално ниво на продукт</value>
+  </data>
+  <data name="QuantityFactFormula" xml:space="preserve">
+    <value>Формула за количество по факт</value>
+  </data>
+  <data name="QuantityFactMembers" xml:space="preserve">
+    <value>Елементи на формула по факт</value>
+  </data>
+  <data name="QuantityPlanFormula" xml:space="preserve">
+    <value>Формула за количество по план</value>
+  </data>
+  <data name="QuantityPlanMembers" xml:space="preserve">
+    <value>Елементи на формула по план</value>
+  </data>
+  <data name="ReferenceDensityHighExtreme" xml:space="preserve">
+    <value>Максимална референтна плътност</value>
+  </data>
+  <data name="ReferenceDensityLowExtreme" xml:space="preserve">
+    <value>Минимална референтна плътност</value>
+  </data>
+  <data name="TotalObservableVolumeHighExtreme" xml:space="preserve">
+    <value>Максимален общ наблюдаван обем</value>
+  </data>
+  <data name="TotalObservableVolumeLowExtreme" xml:space="preserve">
+    <value>Минимален общ наблюдаван обем</value>
+  </data>
+  <data name="UnusableResidueLevel" xml:space="preserve">
+    <value>Ниво на мъртъв остатък</value>
+  </data>
+  <data name="WeightInAirHighExtreme" xml:space="preserve">
+    <value>Максимално тегло във въздух</value>
+  </data>
+  <data name="WeightInAirLowExtreme" xml:space="preserve">
+    <value>Минимално тегло във въздух</value>
+  </data>
+  <data name="WeightInVacuumHighExtreme" xml:space="preserve">
+    <value>Максимално тегло във вакуум</value>
+  </data>
+  <data name="WeightInVacuumLowExtreme" xml:space="preserve">
+    <value>Минимално тегло във вакуум</value>
   </data>
 </root>

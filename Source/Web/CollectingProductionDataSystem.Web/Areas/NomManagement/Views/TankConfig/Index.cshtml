@@ -1,0 +1,95 @@
+﻿﻿﻿@(Html.Kendo().Grid<CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewModels.TankConfigViewModel>()
+      .Name("grid")
+      .Columns(columns =>
+      {
+          columns.Bound(c => c.Id);
+          columns.ForeignKey(c => c.ParkId, (System.Collections.IEnumerable)ViewData["parks"], "Id", "Name").EditorTemplateName("ParkViewModel");
+          columns.Bound(c => c.ControlPoint);
+          columns.Bound(c => c.TankName);
+          columns.Bound(c => c.PhdTagProductId);
+          columns.Bound(c => c.PhdTagProductName);
+          columns.Bound(c => c.PhdTagLiquidLevel);
+          columns.Bound(c => c.LiquidLevelLowExtreme);
+          columns.Bound(c => c.LiquidLevelHighExtreme);
+          columns.Bound(c => c.PhdTagProductLevel);
+          columns.Bound(c => c.ProductLevelLowExtreme);
+          columns.Bound(c => c.ProductLevelHighExtreme);
+          columns.Bound(c => c.PhdTagFreeWaterLevel);
+          columns.Bound(c => c.FreeWaterLevelLowExtreme);
+          columns.Bound(c => c.FreeWaterLevelHighExtreme);
+          columns.Bound(c => c.PhdTagFreeWaterVolume);
+          columns.Bound(c => c.FreeWaterVolumeLowExtreme);
+          columns.Bound(c => c.FreeWaterVolumeHighExtreme);
+          columns.Bound(c => c.PhdTagObservableDensity);
+          columns.Bound(c => c.ObservableDensityLowExtreme);
+          columns.Bound(c => c.ObservableDensityHighExtreme);
+          columns.Bound(c => c.PhdTagReferenceDensity);
+          columns.Bound(c => c.ReferenceDensityLowExtreme);
+          columns.Bound(c => c.ReferenceDensityHighExtreme);
+          columns.Bound(c => c.PhdTagGrossObservableVolume);
+          columns.Bound(c => c.GrossObservableVolumeLowExtreme);
+          columns.Bound(c => c.GrossObservableVolumeHighExtreme);
+          columns.Bound(c => c.PhdTagGrossStandardVolume);
+          columns.Bound(c => c.GrossStandardVolumeLowExtreme);
+          columns.Bound(c => c.GrossStandardVolumeHighExtreme);
+          columns.Bound(c => c.PhdTagNetStandardVolume);
+          columns.Bound(c => c.NetStandardVolumeLowExtreme);
+          columns.Bound(c => c.NetStandardVolumeHighExtreme);
+          columns.Bound(c => c.PhdTagWeightInAir);
+          columns.Bound(c => c.WeightInAirLowExtreme);
+          columns.Bound(c => c.WeightInAirHighExtreme);
+          columns.Bound(c => c.PhdTagAverageTemperature);
+          columns.Bound(c => c.AverageTemperatureLowExtreme);
+          columns.Bound(c => c.AverageTemperatureHighExtreme);
+          columns.Bound(c => c.PhdTagTotalObservableVolume);
+          columns.Bound(c => c.TotalObservableVolumeLowExtreme);
+          columns.Bound(c => c.TotalObservableVolumeHighExtreme);
+          columns.Bound(c => c.PhdTagWeightInVacuum);
+          columns.Bound(c => c.WeightInVacuumLowExtreme);
+          columns.Bound(c => c.WeightInVacuumHighExtreme);
+          columns.Bound(c => c.PhdTagMaxVolume);
+          columns.Bound(c => c.MaxVolumeLowExtreme);
+          columns.Bound(c => c.MaxVolumeHighExtreme);
+          columns.Bound(c => c.PhdTagAvailableRoom);
+          columns.Bound(c => c.AvailableRoomLowExtreme);
+          columns.Bound(c => c.AvailableRoomHighExtreme);
+          columns.Bound(c => c.UnusableResidueLevel);
+          columns.Bound(c => c.CorrectionFactor);
+          columns.Command(command => { command.Edit(); command.Destroy(); }).Width(230);
+      })
+      .ToolBar(toolbar =>
+      {
+          toolbar.Create();
+          toolbar.Excel();
+      })
+      .Editable(editable => editable.Mode(GridEditMode.InLine))
+          .Pageable(pageable => pageable
+              .Refresh(true)
+              .PageSizes(new[] { 20, 50, 100 })
+              .ButtonCount(5)
+          )
+          .Sortable(sortable =>
+          {
+              sortable.SortMode(GridSortMode.SingleColumn);
+          })
+          .Filterable()
+          .Scrollable(scrol => scrol.Height(620))
+      .Scrollable()
+      .DataSource(dataSource => dataSource
+          .Ajax()
+          .PageSize(20)
+          .Model(model => model.Id(p => p.Id))
+          .Read(read => read.Action("Read", "Park", new { area = "NomManagement" }).Data("sendAntiForgery"))
+          .Create(create => create.Action("Create", "Park", new { area = "NomManagement" }).Data("sendAntiForgery"))
+          .Update(update => update.Action("Update", "Park", new { area = "NomManagement" }).Data("sendAntiForgery"))
+          .Destroy(destroy => destroy.Action("Destroy", "Park", new { area = "NomManagement" }).Data("sendAntiForgery"))
+          .Events(events =>
+                {
+                    events.Error("error_handler");
+                })
+      )
+)
+
+
+
+
