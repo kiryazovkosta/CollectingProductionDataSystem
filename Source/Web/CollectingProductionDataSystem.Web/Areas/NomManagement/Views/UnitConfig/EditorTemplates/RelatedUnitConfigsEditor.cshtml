@@ -1,0 +1,38 @@
+﻿@using CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewModels;
+@using Resources = App_GlobalResources.Resources;
+
+@model IEnumerable<RelatedUnitConfigsViewModel>
+@(Html.Kendo()
+    .MultiSelectFor(m => m)
+    .AutoClose(false)
+            .DataTextField("Code")
+                .DataValueField("RelatedUnitConfigId")
+                .Placeholder(@Resources.Layout.ChooseProcessUnits)
+                  .Value(Model)
+                      .Height(520)
+              .DataSource(source =>
+              {
+                  source.Custom()
+                      .ServerFiltering(true)
+                      .ServerPaging(true)
+                      .PageSize(80)
+                      .Type("aspnetmvc-ajax") //Set this type if you want to use DataSourceRequest and ToDataSourceResult instances
+                      .Transport(transport =>
+                      {
+                          transport.Read(read =>
+                            {
+                                read.Action("Read", "UnitConfig", new { area = "NomManagement" }).Data("sendAntiForgery");
+                            });
+                      })
+                      .Schema(schema =>
+                      {
+                          schema.Data("Data") //define the [data](http://docs.telerik.com/kendo-ui/api/javascript/data/datasource#configuration-schema.data) option
+                                .Total("Total"); //define the [total](http://docs.telerik.com/kendo-ui/api/javascript/data/datasource#configuration-schema.total) option
+
+                      });
+              })
+        .Virtual(v => v.ItemHeight(26).ValueMapper("valueMapper"))
+        .Filter(FilterType.Contains)
+        .ItemTemplate("<span class=\"order-id\">#= Code #</span> #= Name #")
+)
+

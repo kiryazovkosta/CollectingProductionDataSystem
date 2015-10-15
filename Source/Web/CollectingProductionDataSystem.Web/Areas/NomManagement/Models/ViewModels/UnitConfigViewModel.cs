@@ -10,7 +10,7 @@
     using CollectingProductionDataSystem.Models.Contracts;
     using CollectingProductionDataSystem.Models.Productions;
     using Resources = App_GlobalResources.Resources;
-   
+
     public class UnitConfigViewModel : IMapFrom<UnitConfig>, IHaveCustomMappings, IEntity
     {
         [Required]
@@ -96,7 +96,9 @@
 
         [Display(Name = "IsEditable", ResourceType = typeof(Resources.Layout))]
         public bool IsEditable { get; set; }
-        
+
+        public ICollection<RelatedUnitConfigsViewModel> RelatedUnitConfigs { get; set; }
+
         /// <summary>
         /// Creates the mappings.
         /// </summary>
@@ -104,10 +106,14 @@
         public void CreateMappings(IConfiguration configuration)
         {
             configuration.CreateMap<UnitConfig, UnitConfigViewModel>()
-                .ForMember(p => p.ShiftProductTypeId, opt => opt.MapFrom(p => p.ShiftProductTypeId == null ? 0 : (int)p.ShiftProductTypeId));
+                .ForMember(p => p.ShiftProductTypeId, opt => opt.MapFrom(p => p.ShiftProductTypeId == null ? 0 : (int)p.ShiftProductTypeId))
+                .ForMember(p => p.RelatedUnitConfigs, opt => opt.MapFrom(p => p.RelatedUnitConfigs.Select(x => x.RelatedUnitConfig).ToList()));
 
             configuration.CreateMap<UnitConfigViewModel, UnitConfig>()
-                .ForMember(p => p.ShiftProductTypeId, opt => opt.MapFrom(p => p.ShiftProductTypeId == 0 ? null : (Nullable<int>)p.ShiftProductTypeId));
+                .ForMember(p => p.ShiftProductTypeId, opt => opt.MapFrom(p => p.ShiftProductTypeId == 0 ? null : (Nullable<int>)p.ShiftProductTypeId))
+                .ForMember(p => p.RelatedUnitConfigs, opt => opt.MapFrom(p => p.RelatedUnitConfigs != null ?
+                    p.RelatedUnitConfigs.Select(x => new RelatedUnitConfigs() { UnitConfigId = p.Id, RelatedUnitConfigId = x.RelatedUnitConfigId }) :
+                    new List<RelatedUnitConfigs>()));
         }
     }
 }

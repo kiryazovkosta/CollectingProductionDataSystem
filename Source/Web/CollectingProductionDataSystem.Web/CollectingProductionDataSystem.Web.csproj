@@ -275,6 +275,7 @@
     <Compile Include="Areas\NomManagement\Models\ViewModels\ParkViewModel.cs" />
     <Compile Include="Areas\NomManagement\Models\ViewModels\ProcessUnitViewModel.cs" />
     <Compile Include="Areas\NomManagement\Models\ViewModels\ProductionPlanConfigViewModel.cs" />
+    <Compile Include="Areas\NomManagement\Models\ViewModels\RelatedUnitConfigsViewModel.cs" />
     <Compile Include="Areas\NomManagement\Models\ViewModels\ShiftViewModel.cs" />
     <Compile Include="Areas\NomManagement\Models\ViewModels\ProductTypeViewModel.cs" />
     <Compile Include="Areas\NomManagement\Models\ViewModels\ProductViewModel.cs" />
@@ -759,6 +760,7 @@
     <Content Include="Areas\NomManagement\Views\TankConfig\Index.cshtml" />
     <Content Include="Areas\NomManagement\Views\Shared\EditorTemplates\ParkViewModel.cshtml" />
     <Content Include="Areas\NomManagement\Views\TankMasterProduct\Index.cshtml" />
+    <Content Include="Areas\NomManagement\Views\UnitConfig\EditorTemplates\RelatedUnitConfigsEditor.cshtml" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <None Include="Properties\PublishProfiles\Home.pubxml" />
     <Content Include="Scripts\custom\sendArea.js" />
@@ -1584,10 +1586,6 @@
     <ProjectReference Include="..\..\Domain\CollectingProductionDataSystem.Models\CollectingProductionDataSystem.Models.csproj">
       <Project>{63cc73a0-f2c2-453d-a915-1913095f22fd}</Project>
       <Name>CollectingProductionDataSystem.Models</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\WidowsServices\CollectingProductionDataSystem.Phd2SqlProductionData\CollectingProductionDataSystem.Phd2SqlProductionData.csproj">
-      <Project>{D75C3866-4ECF-45B8-8DB5-F5DA019A45AB}</Project>
-      <Name>CollectingProductionDataSystem.Phd2SqlProductionData</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
