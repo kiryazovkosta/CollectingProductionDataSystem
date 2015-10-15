@@ -807,4 +807,19 @@
   <data name="ChoosePark" xml:space="preserve">
     <value>Изберете парк...</value>
   </data>
+  <data name="Shift1QuantityValue" xml:space="preserve">
+    <value>Количество за период&lt;br/&gt; 05:00-13:00</value>
+  </data>
+  <data name="Shift2QuantityValue" xml:space="preserve">
+    <value>Количество за период&lt;br/&gt; 13:00-21:00</value>
+  </data>
+  <data name="Shift3QuantityValue" xml:space="preserve">
+    <value>Количество за период&lt;br/&gt; 21:00-05:00</value>
+  </data>
+  <data name="TotalQuantityValue" xml:space="preserve">
+    <value>Количество за деня</value>
+  </data>
+  <data name="UnitsReportData" xml:space="preserve">
+    <value>Сменни данни за измервателни позиции - отчет</value>
+  </data>
 </root>

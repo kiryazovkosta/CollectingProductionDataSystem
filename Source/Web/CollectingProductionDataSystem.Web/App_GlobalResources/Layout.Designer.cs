@@ -1771,6 +1771,33 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Shift1 Quantity Value.
+        /// </summary>
+        public static string Shift1QuantityValue {
+            get {
+                return ResourceManager.GetString("Shift1QuantityValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shift2 QuantityValue.
+        /// </summary>
+        public static string Shift2QuantityValue {
+            get {
+                return ResourceManager.GetString("Shift2QuantityValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shift3 QuantityValue.
+        /// </summary>
+        public static string Shift3QuantityValue {
+            get {
+                return ResourceManager.GetString("Shift3QuantityValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Shift Product Type.
         /// </summary>
         public static string ShiftProductType {
@@ -1924,6 +1951,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Total Quantity Value.
+        /// </summary>
+        public static string TotalQuantityValue {
+            get {
+                return ResourceManager.GetString("TotalQuantityValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Transactions.
         /// </summary>
         public static string Transactions {
@@ -2028,6 +2064,15 @@ namespace App_GlobalResources.Resources {
         public static string UnitsProcessUnitShiftSelector {
             get {
                 return ResourceManager.GetString("UnitsProcessUnitShiftSelector", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Units Data.
+        /// </summary>
+        public static string UnitsReportData {
+            get {
+                return ResourceManager.GetString("UnitsReportData", resourceCulture);
             }
         }
         

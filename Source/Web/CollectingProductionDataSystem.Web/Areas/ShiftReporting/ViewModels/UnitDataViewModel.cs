@@ -1,4 +1,4 @@
-﻿namespace CollectingProductionDataSystem.Web.ViewModels.Units
+﻿namespace CollectingProductionDataSystem.Web.Areas.ShiftReporting.ViewModels
 {
     using System;
     using System.ComponentModel.DataAnnotations;

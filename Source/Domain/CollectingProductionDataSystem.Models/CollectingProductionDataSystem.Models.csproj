@@ -85,6 +85,7 @@
     <Compile Include="Inventories\Park.cs" />
     <Compile Include="Inventories\TankConfig.cs" />
     <Compile Include="Nomenclatures\MaterialType.cs" />
+    <Compile Include="Productions\MultiShift.cs" />
     <Compile Include="Productions\Plant.cs" />
     <Compile Include="Nomenclatures\Product.cs" />
     <Compile Include="Nomenclatures\ProductType.cs" />

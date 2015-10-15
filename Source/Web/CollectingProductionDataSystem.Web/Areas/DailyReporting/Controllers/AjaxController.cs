@@ -8,6 +8,7 @@ using AutoMapper;
 using CollectingProductionDataSystem.Application.UnitsDataServices;
 using CollectingProductionDataSystem.Data.Contracts;
 using CollectingProductionDataSystem.Models.Productions;
+using CollectingProductionDataSystem.Web.Areas.ShiftReporting.ViewModels;
 using CollectingProductionDataSystem.Web.ViewModels.Units;
 using Kendo.Mvc.Extensions;
 using Kendo.Mvc.UI;
@@ -49,6 +50,10 @@ namespace CollectingProductionDataSystem.Web.Areas.DailyReporting.Controllers
         public JsonResult ReadProductionPlanData([DataSourceRequest]DataSourceRequest request, DateTime? date, int? processUnitId)
         {
             var dailyData = unitsData.GetUnitsDailyDataForDateTime(date, processUnitId).ToList();
+            if (dailyData.Count == 0)
+            {
+                return Json(string.Empty);
+            }
 
             var dbResult = this.data.ProductionPlanConfigs.All();
             if (processUnitId != null)
@@ -141,6 +146,5 @@ namespace CollectingProductionDataSystem.Web.Areas.DailyReporting.Controllers
             var planValue = calculator.Calculate(productionPlan.QuantityPlanFormula, "p", planInputParams.Count, planInputParams);
             return planValue;
         }
-
     }
 }
