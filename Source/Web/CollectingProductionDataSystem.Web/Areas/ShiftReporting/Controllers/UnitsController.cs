@@ -16,9 +16,9 @@
     using CollectingProductionDataSystem.Data.Contracts;
     using CollectingProductionDataSystem.Models.Nomenclatures;
     using CollectingProductionDataSystem.Models.Productions;
+    using CollectingProductionDataSystem.Web.Areas.ShiftReporting.ViewModels;
     using CollectingProductionDataSystem.Web.Infrastructure.Filters;
     using CollectingProductionDataSystem.Web.InputModels;
-    using CollectingProductionDataSystem.Web.ViewModels.Units;
     using Kendo.Mvc.Extensions;
     using Kendo.Mvc.UI;
     using MathExpressions.Application;

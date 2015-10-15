@@ -804,4 +804,19 @@
   <data name="ChoosePark" xml:space="preserve">
     <value>Choose Park...</value>
   </data>
+  <data name="Shift1QuantityValue" xml:space="preserve">
+    <value>Shift1 Quantity Value</value>
+  </data>
+  <data name="Shift2QuantityValue" xml:space="preserve">
+    <value>Shift2 QuantityValue</value>
+  </data>
+  <data name="Shift3QuantityValue" xml:space="preserve">
+    <value>Shift3 QuantityValue</value>
+  </data>
+  <data name="TotalQuantityValue" xml:space="preserve">
+    <value>Total Quantity Value</value>
+  </data>
+  <data name="UnitsReportData" xml:space="preserve">
+    <value>Units Data</value>
+  </data>
 </root>
