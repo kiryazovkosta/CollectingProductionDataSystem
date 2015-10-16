@@ -36,7 +36,7 @@ namespace CollectingProductionDataSystem.Web.Areas.DailyReporting.Controllers
 
             var transactionsData = transactions.Select(t => new TransactionDataModel
             {
-                MeasuringPointId = t.MeasuringPointConfigId,
+                MeasuringPointId = t.MeasuringPointId,
                 DirectionId = t.MeasuringPointConfig.FlowDirection.Value,
                 TransportId = t.MeasuringPointConfig.TransportTypeId,
                 ProductId = t.ProductNumber.Value,
@@ -77,13 +77,13 @@ namespace CollectingProductionDataSystem.Web.Areas.DailyReporting.Controllers
             foreach (var item in dict)
             {
                 var p = SetMeasuringPointsDataViewModel(item, actDict);
-                if (p.TotalQuantity > 0)
+                if (p.TotalQuantity > 0 && p.ProductId != 22)
                 {
                     hs.Add(p);   
                 }
             }
 
-            if (actDict.Count > 0)
+            if (actDict != null && actDict.Count > 0)
             {
                 foreach (var item in actDict)
                 {
@@ -135,28 +135,65 @@ namespace CollectingProductionDataSystem.Web.Areas.DailyReporting.Controllers
 
             foreach (var activeTransaction in activeTransactionsDatas)
             {
-                //if (activeTransaction.MeasuringPointConfig.FlowDirection == 3)
-                //{
-                //    // data from Pt Rosenec
-                //    if (flowDirection == 2 && transactionData.MassReverse.Value == 0)
-                //    {
-                //        continue;
-                //    }
-                //    if (flowDirection == 1 && transactionData.Mass.Value == 0)
-                //    {
-                //        return null;
-                //    }
-                //}
+                var direction = activeTransaction.MeasuringPointConfig.FlowDirection.Value;
+
+                if (direction == 3)
+                {
+                    // data from Pt Rosenec
+                    if (flowDirection == 2 && activeTransaction.MassReverse == 0)
+                    {
+                        continue;
+                    }
+                    if (flowDirection == 1 && activeTransaction.Mass == 0)
+                    {
+                        return null;
+                    }
+                }
 
                 var prodId = data.Products.All().Where(p => p.Id == activeTransaction.ProductId).FirstOrDefault().Code;
-
                 if (actDict.ContainsKey(prodId))
                 {
-                    actDict[prodId] = actDict[prodId] + activeTransaction.Mass;
+                    if (direction == 1)
+                    {
+                        actDict[prodId] = actDict[prodId] + activeTransaction.Mass; 
+                    }
+                    else if (direction == 2)
+                    {
+                        actDict[prodId] = actDict[prodId] + activeTransaction.MassReverse;  
+                    }
+                    else 
+                    {
+                        if (flowDirection == 1)
+                        {
+                            actDict[prodId] = actDict[prodId] + activeTransaction.Mass;    
+                        }
+                        else
+                        {
+                            actDict[prodId] = actDict[prodId] + activeTransaction.MassReverse;  
+                        }
+                    }
                 }
                 else
                 {
-                    actDict[prodId] = activeTransaction.Mass;
+                    if (direction == 1)
+                    {
+                        actDict[prodId] = activeTransaction.Mass; 
+                    }
+                    else if (direction == 2)
+                    {
+                        actDict[prodId] = activeTransaction.MassReverse;  
+                    }
+                    else 
+                    {
+                        if (flowDirection == 1)
+                        {
+                            actDict[prodId] = activeTransaction.Mass;    
+                        }
+                        else
+                        {
+                            actDict[prodId] = activeTransaction.MassReverse;  
+                        }
+                    }
                 }
             }
 
@@ -167,7 +204,7 @@ namespace CollectingProductionDataSystem.Web.Areas.DailyReporting.Controllers
         {
             var p = item.Value;
             p.ProductName = this.data.Products.All().Where(x => x.Code == p.ProductId).FirstOrDefault().Name;
-            if (actDict.ContainsKey(p.ProductId))
+            if (actDict != null && actDict.ContainsKey(p.ProductId))
             {
                 p.ActiveQuantity = actDict[p.ProductId] / 1000;
                 actDict.Remove(p.ProductId);

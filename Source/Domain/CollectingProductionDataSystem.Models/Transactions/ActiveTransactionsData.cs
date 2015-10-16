@@ -16,7 +16,7 @@ namespace CollectingProductionDataSystem.Models.Transactions
         public int Id { get; set; }
         public DateTime RecordTimestamp { get; set; }
         public decimal Mass { get; set; }
-        public decimal? MassReverse { get; set; }
+        public decimal MassReverse { get; set; }
         public int MeasuringPointConfigId { get; set; }
         public virtual MeasuringPointConfig MeasuringPointConfig { get; set; }
         public int ProductId { get; set; }
