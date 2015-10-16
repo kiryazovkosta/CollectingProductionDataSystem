@@ -269,7 +269,6 @@
                             {
                                 var status = context.SaveChanges("Aso2Sql");
                                 long maxValue = Convert.ToInt64(table.Compute("max(SequenceNumber)", string.Empty));
-                                logger.Info(maxValue);
                                 max.MaxSequenceNumber = maxValue;
                                 context.MaxAsoMeasuringPointDataSequenceNumberMap.Update(max);
                                 context.SaveChanges("Aso2Sql");
@@ -395,7 +394,8 @@
                 var fiveOClock = today.AddHours(5);
                 
                 var ts = now - fiveOClock;
-                if(ts.Hours == 0)
+                var revTs = fiveOClock - now;
+                if(ts.TotalMinutes > 0 && ts.Hours == 0)
                 {
                     using (var context = new ProductionData(new CollectingDataSystemDbContext(new AuditablePersister())))
                     {
@@ -454,6 +454,15 @@
                                                     {
                                                         activeTransactionData.Mass = Convert.ToDecimal(valueRow["Value"]);
                                                     }
+
+                                                    logger.InfoFormat("{0} : {1} : {2} : {3} : {4} : {5} : {6}", 
+                                                        fiveOClock, 
+                                                        now, 
+                                                        valueRow["Timestamp"],
+                                                        ts.Hours,
+                                                        ts.Minutes,
+                                                        ts.TotalMinutes,
+                                                        revTs.TotalMinutes);
                                                 }
 
                                                 context.ActiveTransactionsDatas.Add(activeTransactionData);

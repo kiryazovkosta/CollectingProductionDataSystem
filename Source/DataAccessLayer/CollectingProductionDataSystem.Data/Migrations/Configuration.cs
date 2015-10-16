@@ -26,10 +26,21 @@ namespace CollectingProductionDataSystem.Data.Migrations
 
         protected override void Seed(CollectingDataSystemDbContext context)
         {
+            if (!context.ShiftProductTypes.Any())
+            {
+                this.CreateShiftProductTypes(context);
+            }
+
+            if (!context.DailyProductTypes.Any())
+            {
+                this.CreateDailyProductTypes(context);
+            }
+
             if (!context.ProductionShifts.Any())
             {
                 this.CreateProductionShifts(context);
             }
+
             if (!context.Products.Any())
             {
                 ProductsDataImporter.Insert(context);
@@ -73,16 +84,6 @@ namespace CollectingProductionDataSystem.Data.Migrations
             if (!context.EditReasons.Any())
             {
                 this.CreateEditReasons(context);
-            }
-
-            if (!context.ShiftProductTypes.Any())
-            {
-                this.CreateShiftProductTypes(context);
-            }
-
-            if (!context.DailyProductTypes.Any())
-            {
-                this.CreateDailyProductTypes(context);
             }
 
             if (!context.Users.Any())
