@@ -20,7 +20,7 @@
             this.Property(t => t.ExciseStoreId)
                 .HasMaxLength(50);
 
-            this.Property(t => t.MeasuringPointConfigId)
+            this.Property(t => t.MeasuringPointId)
                 .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
 
             this.Property(t => t.TransactionNumber)
