@@ -9,6 +9,8 @@
     using CollectingProductionDataSystem.Models.Nomenclatures;
     using CollectingProductionDataSystem.Models.Productions;
     using CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewModels;
+    using Kendo.Mvc.Extensions;
+    using Kendo.Mvc.UI;
 
     public class UnitConfigController : GenericNomController<UnitConfig, UnitConfigViewModel>
     {
@@ -25,6 +27,7 @@
             this.ViewData["measureUnits"] = Mapper.Map<IEnumerable<MeasureUnitViewModel>>(this.data.MeasureUnits.All().ToList());
             this.ViewData["directions"] = Mapper.Map<IEnumerable<DirectionViewModel>>(this.data.Directions.All().ToList());
             this.ViewData["shiftProductTypes"] = Mapper.Map<IEnumerable<ShiftProductTypeViewModel>>(this.data.ShiftProductTypes.All().ToList());
+            this.ViewData["relatedUnits"] = Mapper.Map <IEnumerable<UnitConfig>, IEnumerable<RelatedUnitConfigsViewModel>>(this.data.UnitConfigs.All().ToList());
             return base.Index();
         }
     }

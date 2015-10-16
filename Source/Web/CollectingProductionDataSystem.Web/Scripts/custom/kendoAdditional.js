@@ -21,7 +21,7 @@ function error_handler(e) {
 }
 
 function prepareWindow(selector, title) {
-    
+
     var window = $(selector)
     if (window) {
         window.kendoWindow({
@@ -36,7 +36,7 @@ function prepareWindow(selector, title) {
             minHeight: 100,
             maxHeight: 350
         });
-    }   
+    }
 }
 
 function closeWindow(selector) {
@@ -52,47 +52,64 @@ var refreshGrid = function (selector) {
 
 function valueMapper(options) {
     var url = this.dataSource.options.transport.read.url.replace("Read", "ValueMapper");
-    
-        $.ajax({
-            url: url,
-            data: convertValues(options.value),
-            success: function (data) {
-                options.success(data);
-            }
-        });
-    }
 
-    function convertValues(value) {
-        var data = {};
-
-        value = $.isArray(value) ? value : [value];
-
-        for (var idx = 0; idx < value.length; idx++) {
-            data["values[" + idx + "]"] = value[idx];
+    $.ajax({
+        url: url,
+        data: convertValues(options.value),
+        success: function (data) {
+            options.success(data);
         }
+    });
+}
 
-        return data;
+function convertValues(value) {
+    var data = {};
+
+    value = $.isArray(value) ? value : [value];
+
+    for (var idx = 0; idx < value.length; idx++) {
+        data["values[" + idx + "]"] = value[idx];
     }
 
+    return data;
+}
 
-    function serialize(data) {
-        for (var property in data) {
-            if ($.isArray(data[property])) {
-                serializeArray(property, data[property], data);
+
+function serialize(data) {
+    for (var property in data) {
+        if ($.isArray(data[property])) {
+            serializeArray(property, data[property], data);
+        }
+    }
+    $.extend(data, sendAntiForgery());
+}
+
+function serializeArray(prefix, array, result) {
+    for (var i = 0; i < array.length; i++) {
+        if ($.isPlainObject(array[i])) {
+            for (var property in array[i]) {
+                result[prefix + "[" + i + "]." + property] = array[i][property];
             }
         }
-        $.extend(data, sendAntiForgery());
+        else {
+            result[prefix + "[" + i + "]"] = array[i];
+        }
     }
+}
 
-    function serializeArray(prefix, array, result) {
-        for (var i = 0; i < array.length; i++) {
-            if ($.isPlainObject(array[i])) {
-                for (var property in array[i]) {
-                    result[prefix + "[" + i + "]." + property] = array[i][property];
+function boundEmptyRelatedRecords() {
+    var grid = this;
+    var propertyName = "RelatedUnitConfigs";
+    if (grid) {
+        var records = grid._data;
+        if (records) {
+            var len = records.length;
+            for (var i = 0; i < len; i++) {
+                var element = records[i][propertyName];
+                if (element.length == 0) {
+                    element.push({ Id: 0, Code: null, Name: null });
                 }
             }
-            else {
-                result[prefix + "[" + i + "]"] = array[i];
-            }
         }
     }
+}

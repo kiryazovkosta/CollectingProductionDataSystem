@@ -36,7 +36,7 @@ namespace CollectingProductionDataSystem.Web.Areas.NomManagement.Controllers
         [ValidateAntiForgeryToken]
         public virtual ActionResult Read([DataSourceRequest]DataSourceRequest request)
         {
-            var processUnits = this.repository.All();
+            var processUnits = this.repository.All().ToList();
             try
             {
                 DataSourceResult result = processUnits.ToDataSourceResult(request, ModelState, Mapper.Map<TView>);

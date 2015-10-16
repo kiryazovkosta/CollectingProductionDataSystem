@@ -3,35 +3,37 @@
 @(Html.Kendo()
       .Grid<UnitConfigViewModel>()
       .Name("grid")
-      .Columns(columns => {
-columns.Bound(c => c.Code).Width(100);
-columns.Bound(c => c.Position).Width(150);
-columns.Bound(c => c.Name).Width(200);
-columns.Bound(c => c.CollectingDataMechanism).Width(100);
-columns.Bound(c => c.AggregateGroup).Width(100);
-columns.Bound(c => c.AggregateParameter).Width(100);
-columns.Bound(c => c.RelatedUnitConfigs).Width(300).ClientTemplate("#=territoriesTemplate(RelatedUnitConfigs)#").EditorTemplateName("RelatedUnitConfigsEditor");
-columns.Bound(c => c.IsCalculated).Width(100);
-columns.Bound(c => c.PreviousShiftTag).Width(100);
-columns.Bound(c => c.Notes).Width(100);
-columns.Bound(c => c.MaximumCost).Width(100);
-columns.Bound(c => c.EstimatedDensity).Width(100);
-columns.Bound(c => c.EstimatedPressure).Width(100);
-columns.Bound(c => c.EstimatedTemperature).Width(100);
-columns.Bound(c => c.EstimatedCompressibilityFactor).Width(100);
-columns.Bound(c => c.IsEditable).Width(100)   ;
-columns.ForeignKey(c => c.MaterialTypeId, (System.Collections.IEnumerable)ViewData["materialTypes"], "Id", "Name").EditorTemplateName("MaterialTypeViewModel").Width(280);
-columns.ForeignKey(c => c.ProcessUnitId, (System.Collections.IEnumerable)ViewData["processUnits"], "Id", "FullName").EditorTemplateName("ProcessUnitViewModel").Width(280);
-columns.ForeignKey(c => c.ProductId, (System.Collections.IEnumerable)ViewData["products"], "Id", "Name").EditorTemplateName("ProductViewModel").Width(280);
-columns.ForeignKey(c => c.MeasureUnitId, (System.Collections.IEnumerable)ViewData["measureUnits"], "Id", "Name").EditorTemplateName("MeasureUnitViewModel").Width(280);
-columns.ForeignKey(c => c.DirectionId, (System.Collections.IEnumerable)ViewData["directions"], "Id", "Name").EditorTemplateName("DirectionViewModel").Width(280);
-columns.ForeignKey(c => c.ShiftProductTypeId, (System.Collections.IEnumerable)ViewData["shiftProductTypes"], "Id", "Name").EditorTemplateName("ShiftProductTypeViewModel").Width(280);
-columns.Command(command => { command.Edit(); command.Destroy(); }).Width(230);
-})
+      .AutoBind(true)
+      .Columns(columns =>
+      {
+          columns.Bound(c => c.Code).Width(100);
+          columns.Bound(c => c.Position).Width(150);
+          columns.Bound(c => c.Name).Width(200);
+          columns.Bound(c => c.CollectingDataMechanism).Width(100);
+          columns.Bound(c => c.AggregateGroup).Width(100);
+          columns.Bound(c => c.AggregateParameter).Width(100);
+          columns.Bound(c => c.RelatedUnitConfigs).Width(300).ClientTemplate("#=territoriesTemplate(RelatedUnitConfigs)#");
+          columns.Bound(c => c.IsCalculated).Width(100);
+          columns.Bound(c => c.PreviousShiftTag).Width(100);
+          columns.Bound(c => c.Notes).Width(100);
+          columns.Bound(c => c.MaximumFlow).Width(100);
+          columns.Bound(c => c.EstimatedDensity).Width(100);
+          columns.Bound(c => c.EstimatedPressure).Width(100);
+          columns.Bound(c => c.EstimatedTemperature).Width(100);
+          columns.Bound(c => c.EstimatedCompressibilityFactor).Width(100);
+          columns.Bound(c => c.IsEditable).Width(100);
+          columns.ForeignKey(c => c.MaterialTypeId, (System.Collections.IEnumerable)ViewData["materialTypes"], "Id", "Name").EditorTemplateName("MaterialTypeViewModel").Width(280);
+          columns.ForeignKey(c => c.ProcessUnitId, (System.Collections.IEnumerable)ViewData["processUnits"], "Id", "FullName").EditorTemplateName("ProcessUnitViewModel").Width(280);
+          columns.ForeignKey(c => c.ProductId, (System.Collections.IEnumerable)ViewData["products"], "Id", "Name").EditorTemplateName("ProductViewModel").Width(280);
+          columns.ForeignKey(c => c.MeasureUnitId, (System.Collections.IEnumerable)ViewData["measureUnits"], "Id", "Name").EditorTemplateName("MeasureUnitViewModel").Width(280);
+          columns.ForeignKey(c => c.DirectionId, (System.Collections.IEnumerable)ViewData["directions"], "Id", "Name").EditorTemplateName("DirectionViewModel").Width(280);
+          columns.ForeignKey(c => c.ShiftProductTypeId, (System.Collections.IEnumerable)ViewData["shiftProductTypes"], "Id", "Name").EditorTemplateName("ShiftProductTypeViewModel").Width(280);
+          columns.Command(command => { command.Edit(); command.Destroy(); }).Width(230);
+      })
       .ToolBar(toolbar =>
 {
-toolbar.Create();
-toolbar.Excel();
+    toolbar.Create();
+    toolbar.Excel();
 })
       .Editable(editable => editable.Mode(GridEditMode.InLine))
       .Pageable(pageable => pageable
@@ -41,35 +43,43 @@ toolbar.Excel();
 )
       .Sortable(sortable =>
 {
-sortable.SortMode(GridSortMode.SingleColumn);
+    sortable.SortMode(GridSortMode.SingleColumn);
 })
       .Filterable()
       .Scrollable(scrol => scrol.Height(620))
       .Scrollable()
       .DataSource(dataSource => dataSource
-.Ajax()
-.PageSize(20)
-.Model(model => 
-{
-model.Id(p => p.Id);
-model.Field(p => p.RelatedUnitConfigs).DefaultValue(new List<RelatedUnitConfigsViewModel>() { new RelatedUnitConfigsViewModel()});
-})
+                    .Ajax()
+                    .PageSize(20)
+                    .Model(model =>
+                    {
+                        model.Id(p => p.Id);
+                        model.Field(p => p.RelatedUnitConfigs).DefaultValue(new HashSet<RelatedUnitConfigsViewModel>() { new RelatedUnitConfigsViewModel() }).Editable(true);
+                    }
+                  )
 .Read(read => read.Action("Read", "UnitConfig", new { area = "NomManagement" }).Data("sendAntiForgery"))
 .Create(create => create.Action("Create", "UnitConfig", new { area = "NomManagement" }).Data("sendAntiForgery"))
 .Update(update => update.Action("Update", "UnitConfig", new { area = "NomManagement" }).Data("sendAntiForgery"))
 .Destroy(destroy => destroy.Action("Destroy", "UnitConfig", new { area = "NomManagement" }).Data("sendAntiForgery"))
 .Events(events =>
 {
-events.Error("error_handler");
+    events.Error("error_handler");
 })
-      )
-      
+    )
+
 )
 
 <script type="text/kendo" id="relatedUnitsTemplate">
+    #if(data){#
+    <ul>
         #for(var i = 0; i< data.length; i++){#
-        #:data[i].Code#,&nbsp; 
+            #if(data[i].Code != null){#
+            <li>#:data[i].Code#</li>
+            #}#
         #}#
+    </ul>
+    #}#
+
 </script>
 
 <script type="text/javascript">

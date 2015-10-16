@@ -2,6 +2,7 @@
 using AutoMapper;
 using CollectingProductionDataSystem.Models.Identity;
 using CollectingProductionDataSystem.Models.Nomenclatures;
+using CollectingProductionDataSystem.Models.Productions;
 using CollectingProductionDataSystem.Web.Areas.Administration.ViewModels;
 using CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -15,10 +16,19 @@ namespace CollectingProductionDataSystem.Web.Tests
         [TestMethod]
         public void CheckMappinRoleViewModelToApplicationRole()
         {
-            Mapper.CreateMap<ShiftViewModel,Shift>();
+            Mapper.CreateMap<RoleViewModel, ApplicationRole>();
+            Mapper.AssertConfigurationIsValid();
+        }
 
-            var map = new ShiftViewModel();
-                map.CreateMappings(Mapper.Configuration);
+        [TestMethod]
+        public void CheckMappinUnitConfigToUnitConfigVievModel()
+        {
+            Mapper.CreateMap<UnitConfig, UnitConfigViewModel>();
+
+            var mapper = new UnitConfigViewModel();
+            mapper.CreateMappings(Mapper.Configuration);
+            var mapper1 = new RelatedUnitConfigsViewModel();
+            mapper1.CreateMappings(Mapper.Configuration);
 
             Mapper.AssertConfigurationIsValid();
         }

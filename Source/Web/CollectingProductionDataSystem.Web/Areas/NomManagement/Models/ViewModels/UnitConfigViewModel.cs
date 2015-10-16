@@ -82,7 +82,7 @@
         public string Notes { get; set; }
 
         [Display(Name = "MaximumCost", ResourceType = typeof(Resources.Layout))]
-        public decimal? MaximumCost { get; set; }
+        public decimal? MaximumFlow { get; set; }
 
         [Display(Name = "EstimatedDensity", ResourceType = typeof(Resources.Layout))]
         public decimal? EstimatedDensity { get; set; }
@@ -102,6 +102,7 @@
         [Display(Name = "IsEditable", ResourceType = typeof(Resources.Layout))]
         public bool IsEditable { get; set; }
 
+        [UIHint("RelatedUnitConfigsEditor")]
         public ICollection<RelatedUnitConfigsViewModel> RelatedUnitConfigs { get; set; }
 
         /// <summary>
@@ -111,14 +112,33 @@
         public void CreateMappings(IConfiguration configuration)
         {
             configuration.CreateMap<UnitConfig, UnitConfigViewModel>()
-                .ForMember(p => p.ShiftProductTypeId, opt => opt.MapFrom(p => p.ShiftProductTypeId == null ? 0 : (int)p.ShiftProductTypeId))
-                .ForMember(p => p.RelatedUnitConfigs, opt => opt.MapFrom(p => p.RelatedUnitConfigs.Select(x => x.RelatedUnitConfig).ToList()));
+                .ForMember(p => p.ShiftProductTypeId, opt => opt.MapFrom(p => p.ShiftProductTypeId == null ? 0 : (int)p.ShiftProductTypeId));
+                //.ForMember(p => p.RelatedUnitConfigs, opt => opt.MapFrom(
+                //    p => (p.RelatedUnitConfigs != null) && (p.RelatedUnitConfigs.Count != 0) ?
+                //    p.RelatedUnitConfigs : new HashSet<RelatedUnitConfigs> { new RelatedUnitConfigs() }));
+
 
             configuration.CreateMap<UnitConfigViewModel, UnitConfig>()
                 .ForMember(p => p.ShiftProductTypeId, opt => opt.MapFrom(p => p.ShiftProductTypeId == 0 ? null : (Nullable<int>)p.ShiftProductTypeId))
                 .ForMember(p => p.RelatedUnitConfigs, opt => opt.MapFrom(p => p.RelatedUnitConfigs != null ?
                     p.RelatedUnitConfigs.Select(x => new RelatedUnitConfigs() { UnitConfigId = p.Id, RelatedUnitConfigId = x.Id }) :
-                    new List<RelatedUnitConfigs>()));
+                    new List<RelatedUnitConfigs>()))
+                .ForMember(p => p.Direction, opt => opt.Ignore())
+                .ForMember(p => p.MaterialType, opt => opt.Ignore())
+                .ForMember(p => p.MeasureUnit, opt => opt.Ignore())
+                .ForMember(p => p.ProcessUnit, opt => opt.Ignore())
+                .ForMember(p => p.Product, opt => opt.Ignore())
+                .ForMember(p => p.ShiftProductType, opt => opt.Ignore())
+                .ForMember(p => p.UnitsDatas, opt => opt.Ignore())
+                .ForMember(p => p.UnitsInspectionDatas, opt => opt.Ignore())
+                .ForMember(p => p.IsDeleted, opt => opt.Ignore())
+                .ForMember(p => p.DeletedOn, opt => opt.Ignore())
+                .ForMember(p => p.DeletedFrom, opt => opt.Ignore())
+                .ForMember(p => p.CreatedOn, opt => opt.Ignore())
+                .ForMember(p => p.PreserveCreatedOn, opt => opt.Ignore())
+                .ForMember(p => p.ModifiedOn, opt => opt.Ignore())
+                .ForMember(p => p.CreatedFrom, opt => opt.Ignore())
+                .ForMember(p => p.ModifiedFrom, opt => opt.Ignore());
         }
     }
 }
