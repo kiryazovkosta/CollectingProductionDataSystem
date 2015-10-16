@@ -1,4 +1,5 @@
 ﻿using CollectingProductionDataSystem.Infrastructure.Mapping;
+using CollectingProductionDataSystem.Models.Contracts;
 using CollectingProductionDataSystem.Models.Productions;
 using System;
 using System.Collections.Generic;
@@ -7,9 +8,9 @@ using System.Web;
 
 namespace CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewModels
 {
-    public class RelatedUnitConfigsViewModel:IMapFrom<RelatedUnitConfigs>,IMapFrom<UnitConfigViewModel>, IHaveCustomMappings
+    public class RelatedUnitConfigsViewModel:IMapFrom<RelatedUnitConfigs>,IMapFrom<UnitConfig>, IHaveCustomMappings,IEntity
     {
-        public int RelatedUnitConfigId { get; set; }
+        public int Id { get; set; }
 
         public string Code { get; set; }
 
@@ -20,12 +21,12 @@ namespace CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewMode
         public void CreateMappings(AutoMapper.IConfiguration configuration)
         {
             configuration.CreateMap<RelatedUnitConfigs, RelatedUnitConfigsViewModel>()
-                .ForMember(p=>p.RelatedUnitConfigId,opt=>opt.MapFrom(p=>p.RelatedUnitConfigId))
+                .ForMember(p=>p.Id,opt=>opt.MapFrom(p=>p.RelatedUnitConfigId))
                 .ForMember(p => p.Code, opt => opt.MapFrom(p => p.RelatedUnitConfig.Code))
                 .ForMember(p => p.Name, opt => opt.MapFrom(p => p.RelatedUnitConfig.Name));
 
             configuration.CreateMap<UnitConfig, RelatedUnitConfigsViewModel>()
-                .ForMember(p => p.RelatedUnitConfigId, opt => opt.MapFrom(p => p.Id));
+                .ForMember(p => p.Id, opt => opt.MapFrom(p => p.Id));
         }
     }
 }

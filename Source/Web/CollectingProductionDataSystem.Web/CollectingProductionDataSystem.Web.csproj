@@ -257,6 +257,7 @@
     <Compile Include="Areas\NomManagement\Controllers\ProductController.cs" />
     <Compile Include="Areas\NomManagement\Controllers\ProductionPlanConfigController.cs" />
     <Compile Include="Areas\NomManagement\Controllers\ProductTypeController.cs" />
+    <Compile Include="Areas\NomManagement\Controllers\RelatedUnitConfigsController.cs" />
     <Compile Include="Areas\NomManagement\Controllers\ShiftController.cs" />
     <Compile Include="Areas\NomManagement\Controllers\ShiftProductTypeController.cs" />
     <Compile Include="Areas\NomManagement\Controllers\TankConfigController.cs" />
@@ -1419,6 +1420,7 @@
     <Folder Include="Areas\MonthlyReporting\Views\Shared\" />
     <Folder Include="Areas\NomManagement\Models\InputModels\" />
     <Folder Include="Areas\NomManagement\Views\Ajax\" />
+    <Folder Include="Areas\NomManagement\Views\RelatedUnitConfigs\" />
     <Folder Include="Areas\ShiftReporting\Models\" />
     <Folder Include="Areas\ShiftReporting\Views\Ajax\" />
     <Folder Include="Areas\ShiftReporting\Views\AreaBase\" />

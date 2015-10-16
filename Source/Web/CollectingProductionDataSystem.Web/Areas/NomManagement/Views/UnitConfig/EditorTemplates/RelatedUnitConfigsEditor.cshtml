@@ -6,7 +6,7 @@
     .MultiSelectFor(m => m)
     .AutoClose(false)
             .DataTextField("Code")
-                .DataValueField("RelatedUnitConfigId")
+                .DataValueField("Id")
                 .Placeholder(@Resources.Layout.ChooseProcessUnits)
                   .Value(Model)
                       .Height(520)
@@ -21,7 +21,7 @@
                       {
                           transport.Read(read =>
                             {
-                                read.Action("Read", "UnitConfig", new { area = "NomManagement" }).Data("sendAntiForgery");
+                                read.Action("Read", "RelatedUnitConfigs", new { area = "NomManagement" }).Data("sendAntiForgery");
                             });
                       })
                       .Schema(schema =>

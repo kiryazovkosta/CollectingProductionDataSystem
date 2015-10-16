@@ -13,6 +13,11 @@
 
     public class UnitConfigViewModel : IMapFrom<UnitConfig>, IHaveCustomMappings, IEntity
     {
+        public UnitConfigViewModel() 
+        {
+            this.RelatedUnitConfigs = new HashSet<RelatedUnitConfigsViewModel>();
+        }
+
         [Required]
         [UIHint("Hidden")]
         public int Id { get; set; }
@@ -112,7 +117,7 @@
             configuration.CreateMap<UnitConfigViewModel, UnitConfig>()
                 .ForMember(p => p.ShiftProductTypeId, opt => opt.MapFrom(p => p.ShiftProductTypeId == 0 ? null : (Nullable<int>)p.ShiftProductTypeId))
                 .ForMember(p => p.RelatedUnitConfigs, opt => opt.MapFrom(p => p.RelatedUnitConfigs != null ?
-                    p.RelatedUnitConfigs.Select(x => new RelatedUnitConfigs() { UnitConfigId = p.Id, RelatedUnitConfigId = x.RelatedUnitConfigId }) :
+                    p.RelatedUnitConfigs.Select(x => new RelatedUnitConfigs() { UnitConfigId = p.Id, RelatedUnitConfigId = x.Id }) :
                     new List<RelatedUnitConfigs>()));
         }
     }
