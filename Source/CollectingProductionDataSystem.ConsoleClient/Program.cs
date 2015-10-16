@@ -132,7 +132,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
                     Code = x.UnitConfig.Code,
                     Position = x.UnitConfig.Position,
                     UnitConfigId = x.UnitConfigId,
-                    UnitConfigName = x.UnitConfig.Name,
+                    UnitName = x.UnitConfig.Name,
                     Shift1 = data.Where(y => y.RecordTimestamp == dateParam && y.ShiftId == ShiftType.First).Where(u => u.UnitConfigId == x.UnitConfigId).FirstOrDefault(),
                     Shift2 = data.Where(y => y.RecordTimestamp == dateParam && y.ShiftId == ShiftType.Second).Where(u => u.UnitConfigId == x.UnitConfigId).FirstOrDefault(),
                     Shift3 = data.Where(y => y.RecordTimestamp == dateParam && y.ShiftId == ShiftType.Third).Where(u => u.UnitConfigId == x.UnitConfigId).FirstOrDefault(),
@@ -142,7 +142,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
 
                 foreach (var item in result)
                 {
-                    Console.WriteLine("{0} {1} {2} {3} {4} {5}", item.TimeStamp, item.UnitConfigName, item.Shift1, item.Shift2, item.Shift3.RealValue, item.Total);
+                    Console.WriteLine("{0} {1} {2} {3} {4} {5}", item.TimeStamp, item.UnitName, item.Shift1, item.Shift2, item.Shift3.RealValue, item.TotalQuantityValue);
                 }
 
                 Console.WriteLine("Estimated Time For Action: {0}", timer.Elapsed);

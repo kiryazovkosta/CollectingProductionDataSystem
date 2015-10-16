@@ -110,6 +110,9 @@
         public string ActiveTransactionProductTag { get; set; }
         public string ActiveTransactionMassTag { get; set; }
         public string TotalizerCurrentValueTag { get; set; }
+        public string ActiveTransactionMassReverseTag { get; set; }
+
+        public string MassCorrectionFactor { get; set; }
         public virtual ICollection<ActiveTransactionsData> ActiveTransactionsDatas { get; set; }
         public virtual ICollection<RelatedMeasuringPointConfigs> RelatedMeasuringPointConfigs
         {

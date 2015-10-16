@@ -463,94 +463,90 @@
             {
                 logger.Info("Sync measurements points data started!");
                 var now = DateTime.Now;
-
-                if (now.Hour < 5)
+                var today = DateTime.Today;
+                var fiveOClock = today.AddHours(5);
+                
+                var ts = now - fiveOClock;
+                if (ts.Hours == 0)
                 {
-                    return;
-                }
-
-                using (var context = new ProductionData(new CollectingDataSystemDbContext(new AuditablePersister())))
-                {
-                    var measuringPoints = context.MeasurementPointsProductConfigs.All();
-
-                    if (measuringPoints.Count() > 0)
+                    using (var context = new ProductionData(new CollectingDataSystemDbContext(new AuditablePersister())))
                     {
-                        using (PHDHistorian oPhd = new PHDHistorian())
+                        var currentDate = today.AddDays(-1);
+                        if (context.MeasurementPointsProductsDatas.All().Where(x => x.RecordTimestamp == currentDate).Any())
                         {
-                            using (PHDServer defaultServer = new PHDServer(Properties.Settings.Default.PHD_HOST))
-                            {
-                                defaultServer.Port = Properties.Settings.Default.PHD_PORT;
-                                defaultServer.APIVersion = Uniformance.PHD.SERVERVERSION.RAPI200;
-                                oPhd.DefaultServer = defaultServer;
-                                oPhd.StartTime = "NOW - 2M";
-                                oPhd.EndTime = "NOW - 2M";
-                                oPhd.Sampletype = Properties.Settings.Default.INSPECTION_DATA_SAMPLETYPE;
-                                oPhd.MinimumConfidence = Properties.Settings.Default.INSPECTION_DATA_MINIMUM_CONFIDENCE;
-                                oPhd.MaximumRows = Properties.Settings.Default.INSPECTION_DATA_MAX_ROWS;
+                            logger.InfoFormat("There is already an active transaction data for {0}", currentDate);
+                            logger.Info("Sync measurements points data finished!");
+                            return;
+                        }
 
-                                // get all inspection data
-                                foreach (var item in measuringPoints)
+                        var measuringPoints = context.MeasurementPointsProductConfigs.All();
+
+                        if (measuringPoints.Count() > 0)
+                        {
+                            using (PHDHistorian oPhd = new PHDHistorian())
+                            {
+                                using (PHDServer defaultServer = new PHDServer(Properties.Settings.Default.PHD_HOST))
                                 {
-                                    var measurementPointData = new MeasurementPointsProductsData();
-                                    measurementPointData.MeasurementPointsProductsConfigId = item.Id;
-                                    DataSet dsGrid = oPhd.FetchRowData(item.PhdTotalCounterTag);
-                                    var confidence = 100;
-                                    foreach (DataRow row in dsGrid.Tables[0].Rows)
+                                    defaultServer.Port = Properties.Settings.Default.PHD_PORT;
+                                    defaultServer.APIVersion = Uniformance.PHD.SERVERVERSION.RAPI200;
+                                    oPhd.DefaultServer = defaultServer;
+                                    oPhd.StartTime = "NOW - 2M";
+                                    oPhd.EndTime = "NOW - 2M";
+                                    oPhd.Sampletype = Properties.Settings.Default.INSPECTION_DATA_SAMPLETYPE;
+                                    oPhd.MinimumConfidence = Properties.Settings.Default.INSPECTION_DATA_MINIMUM_CONFIDENCE;
+                                    oPhd.MaximumRows = Properties.Settings.Default.INSPECTION_DATA_MAX_ROWS;
+
+                                    foreach (var item in measuringPoints)
                                     {
-                                        foreach (DataColumn dc in dsGrid.Tables[0].Columns)
+                                        var measurementPointData = new MeasurementPointsProductsData();
+                                        measurementPointData.MeasurementPointsProductsConfigId = item.Id;
+                                        DataSet dsGrid = oPhd.FetchRowData(item.PhdTotalCounterTag);
+                                        var confidence = 100;
+                                        foreach (DataRow row in dsGrid.Tables[0].Rows)
                                         {
-                                            if (dc.ColumnName.Equals("Tolerance") || dc.ColumnName.Equals("HostName"))
+                                            foreach (DataColumn dc in dsGrid.Tables[0].Columns)
                                             {
-                                                continue;
-                                            }
-                                            else if (dc.ColumnName.Equals("Confidence"))
-                                            {
-                                                if (!string.IsNullOrWhiteSpace(row[dc].ToString()))
+                                                if (dc.ColumnName.Equals("Tolerance") || dc.ColumnName.Equals("HostName"))
                                                 {
-                                                    confidence = Convert.ToInt32(row[dc]);
+                                                    continue;
                                                 }
-                                                else
+                                                else if (dc.ColumnName.Equals("Confidence"))
                                                 {
-                                                    confidence = 0;
-                                                    break;
-                                                }
-                                            }
-                                            else if (dc.ColumnName.Equals("Value"))
-                                            {
-                                                if (!string.IsNullOrWhiteSpace(row[dc].ToString()))
-                                                {
-                                                    measurementPointData.Value = Convert.ToDecimal(row[dc]);
-                                                }
-                                            }
-                                            else if (dc.ColumnName.Equals("TimeStamp"))
-                                            {
-                                                var recordDt = row[dc].ToString();
-                                                if (!string.IsNullOrWhiteSpace(recordDt))
-                                                {
-                                                    var recordTimestamp = DateTime.ParseExact(recordDt, "dd.MM.yyyy HH:mm:ss", CultureInfo.InvariantCulture);
-                                                    if (TimeZoneInfo.Local.IsDaylightSavingTime(recordTimestamp))
+                                                    if (!string.IsNullOrWhiteSpace(row[dc].ToString()))
                                                     {
-                                                        recordTimestamp = recordTimestamp.AddHours(-1);
+                                                        confidence = Convert.ToInt32(row[dc]);
                                                     }
-                                                    measurementPointData.RecordTimestamp = recordTimestamp;   
+                                                    else
+                                                    {
+                                                        confidence = 0;
+                                                        break;
+                                                    }
+                                                }
+                                                else if (dc.ColumnName.Equals("Value"))
+                                                {
+                                                    if (!string.IsNullOrWhiteSpace(row[dc].ToString()))
+                                                    {
+                                                        measurementPointData.Value = Convert.ToDecimal(row[dc]);
+                                                    }
                                                 }
                                             }
                                         }
+                                        if (confidence > Properties.Settings.Default.INSPECTION_DATA_MINIMUM_CONFIDENCE &&
+                                            measurementPointData.RecordTimestamp != null)
+                                        {
+                                            measurementPointData.RecordTimestamp = currentDate;
+                                            context.MeasurementPointsProductsDatas.Add(measurementPointData);
+                                        }
                                     }
-                                    if (confidence > Properties.Settings.Default.INSPECTION_DATA_MINIMUM_CONFIDENCE &&
-                                        measurementPointData.RecordTimestamp != null)
-                                    {
-                                        context.MeasurementPointsProductsDatas.Add(measurementPointData);                                            
-                                    }
-                                }
 
-                                context.SaveChanges("PHD2SQL");
+                                    context.SaveChanges("PHD2SQL");
+                                }
                             }
                         }
                     }
-
-                    logger.Info("Sync measurements points data finished!");
                 }
+
+                logger.Info("Sync measurements points data finished!");
             }
             catch (DataException validationException)
             {
