@@ -25,8 +25,19 @@ namespace CollectingProductionDataSystem.Data.Mappings
             this.ToTable("UnitsConfigs");
 
             // Relationships
+            //this.HasMany(t => t.UnitsDailyConfigs)
+            //    .WithMany(t => t.UnitsConfigs)
+            //    .Map(m =>
+            //        {
+            //            m.ToTable("UnitConfigsUnitsDailyConfigs");
+            //            m.MapLeftKey("UnitConfigId");
+            //            m.MapRightKey("UnitsDailyConfigId");
+            //        });
+
+            //this.HasRequired(t => t.UnitsDailyConfigs).WithMany().WillCascadeOnDelete(false);
+
             this.HasRequired(t => t.Direction)
-                .WithMany(t => t.Units)
+                .WithMany(t => t.UnitConfigs)
                 .HasForeignKey(d => d.DirectionId);
 
             this.HasRequired(t => t.MaterialType)

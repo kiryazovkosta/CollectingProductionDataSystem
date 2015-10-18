@@ -4479,33 +4479,33 @@ namespace CollectingProductionDataSystem.GetTransactions.AsoDataSetTableAdapters
             this._commandCollection = new global::System.Data.SqlClient.SqlCommand[1];
             this._commandCollection[0] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[0].Connection = this.Connection;
-            this._commandCollection[0].CommandText = "SELECT SequenceNumber, ExciseStoreId, ZoneId, MeasuringPointId, TransactionNumber" +
-                ", RowId, BaseProductNumber, BaseProductType, BaseProductName, \r\n                " +
-                "         ProductNumber, ProductType, ProductName, FlowDirection, TransactionBegi" +
-                "nTime, TransactionEndTime, EngineeringUnitMass, EngineeringUnitVolume, \r\n       " +
-                "                  EngineeringUnitDensity, EngineeringUnitTemperature, FactorMass" +
-                ", FactorVolume, FactorDensity, FactorTemperature, TotalizerBeginGrossObservableV" +
-                "olume, \r\n                         TotalizerEndGrossObservableVolume, TotalizerBe" +
-                "ginGrossStandardVolume, TotalizerEndGrossStandardVolume, TotalizerBeginMass, Tot" +
-                "alizerEndMass, \r\n                         TotalizerBeginGrossObservableCommonVol" +
-                "ume, TotalizerEndGrossObservableCommonVolume, TotalizerBeginGrossStandardCommonV" +
-                "olume, \r\n                         TotalizerEndGrossStandardCommonVolume, Totaliz" +
-                "erBeginCommonMass, TotalizerEndCommonMass, GrossObservableVolume, GrossStandardV" +
-                "olume, Mass, \r\n                         AverageObservableDensity, AverageReferen" +
-                "ceDensity, AverageTemperature, TotalizerBeginGrossObservableVolumeReverse, \r\n   " +
-                "                      TotalizerEndGrossObservableVolumeReverse, TotalizerBeginGr" +
-                "ossStandardVolumeReverse, TotalizerEndGrossStandardVolumeReverse, \r\n            " +
-                "             TotalizerBeginMassReverse, TotalizerEndMassReverse, TotalizerBeginG" +
-                "rossObservableCommonVolumeReverse, \r\n                         TotalizerEndGrossO" +
-                "bservableCommonVolumeReverse, TotalizerBeginGrossStandardCommonVolumeReverse, To" +
-                "talizerEndGrossStandardCommonVolumeReverse, \r\n                         Totalizer" +
-                "BeginCommonMassReverse, TotalizerEndCommonMassReverse, GrossObservableVolumeReve" +
-                "rse, GrossStandardVolumeReverse, MassReverse, \r\n                         Average" +
-                "ObservableDensityReverse, AverageReferenceDensityReverse, AverageTemperatureReve" +
-                "rse, InsertTimestamp, ResultId, AdditiveResultId, \r\n                         Tam" +
-                "asCreateTimestamp, TamasRecipeTransId, EpksSequenceNumber, MartaRowNum, AlcoholC" +
-                "ontent, AlcoholContentReverse, BatchId\r\nFROM            flow_MeasuringPointsData" +
-                "\r\nWHERE        (SequenceNumber > @MaxNumber)";
+            this._commandCollection[0].CommandText = "SELECT        SequenceNumber, ExciseStoreId, ZoneId, MeasuringPointId, Transactio" +
+                "nNumber, RowId, BaseProductNumber, BaseProductType, BaseProductName, \r\n         " +
+                "                ProductNumber, ProductType, ProductName, FlowDirection, Transact" +
+                "ionBeginTime, TransactionEndTime, EngineeringUnitMass, EngineeringUnitVolume, \r\n" +
+                "                         EngineeringUnitDensity, EngineeringUnitTemperature, Fac" +
+                "torMass, FactorVolume, FactorDensity, FactorTemperature, TotalizerBeginGrossObse" +
+                "rvableVolume, \r\n                         TotalizerEndGrossObservableVolume, Tota" +
+                "lizerBeginGrossStandardVolume, TotalizerEndGrossStandardVolume, TotalizerBeginMa" +
+                "ss, TotalizerEndMass, \r\n                         TotalizerBeginGrossObservableCo" +
+                "mmonVolume, TotalizerEndGrossObservableCommonVolume, TotalizerBeginGrossStandard" +
+                "CommonVolume, \r\n                         TotalizerEndGrossStandardCommonVolume, " +
+                "TotalizerBeginCommonMass, TotalizerEndCommonMass, GrossObservableVolume, GrossSt" +
+                "andardVolume, Mass, \r\n                         AverageObservableDensity, Average" +
+                "ReferenceDensity, AverageTemperature, TotalizerBeginGrossObservableVolumeReverse" +
+                ", \r\n                         TotalizerEndGrossObservableVolumeReverse, Totalizer" +
+                "BeginGrossStandardVolumeReverse, TotalizerEndGrossStandardVolumeReverse, \r\n     " +
+                "                    TotalizerBeginMassReverse, TotalizerEndMassReverse, Totalize" +
+                "rBeginGrossObservableCommonVolumeReverse, \r\n                         TotalizerEn" +
+                "dGrossObservableCommonVolumeReverse, TotalizerBeginGrossStandardCommonVolumeReve" +
+                "rse, TotalizerEndGrossStandardCommonVolumeReverse, \r\n                         To" +
+                "talizerBeginCommonMassReverse, TotalizerEndCommonMassReverse, GrossObservableVol" +
+                "umeReverse, GrossStandardVolumeReverse, MassReverse, \r\n                         " +
+                "AverageObservableDensityReverse, AverageReferenceDensityReverse, AverageTemperat" +
+                "ureReverse, InsertTimestamp, ResultId, AdditiveResultId, \r\n                     " +
+                "    TamasCreateTimestamp, TamasRecipeTransId, EpksSequenceNumber, MartaRowNum, A" +
+                "lcoholContent, AlcoholContentReverse, BatchId\r\nFROM            flow_MeasuringPoi" +
+                "ntsData\r\nWHERE        (SequenceNumber > @MaxNumber) AND (RowId = - 1)";
             this._commandCollection[0].CommandType = global::System.Data.CommandType.Text;
             this._commandCollection[0].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@MaxNumber", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 0, 0, "SequenceNumber", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
         }

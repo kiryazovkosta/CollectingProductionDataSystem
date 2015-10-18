@@ -69,8 +69,6 @@
     <Compile Include="Identity\UserRoleIntPk.cs" />
     <Compile Include="Inventories\RelatedTankConfigs.cs" />
     <Compile Include="Inventories\TankMasterProduct.cs" />
-    <Compile Include="Inventories\TanksApprovedData.cs" />
-    <Compile Include="Inventories\TanksManualData.cs" />
     <Compile Include="Nomenclatures\DailyProductType.cs" />
     <Compile Include="Nomenclatures\Direction.cs" />
     <Compile Include="Inventories\Area.cs" />
@@ -96,6 +94,7 @@
     <Compile Include="Productions\Qpt\PressureAndTemperature2EtilenDensity.cs" />
     <Compile Include="Productions\Qpt\PressureAndTemperature2WaterDensity.cs" />
     <Compile Include="Productions\RelatedUnitConfigs.cs" />
+    <Compile Include="Productions\RelatedUnitDailyConfigs.cs" />
     <Compile Include="Productions\ShiftType.cs" />
     <Compile Include="Productions\UnitConfig.cs" />
     <Compile Include="Productions\UnitsApprovedDailyData.cs" />
@@ -106,7 +105,6 @@
     <Compile Include="Productions\UnitsManualData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Productions\UnitsData.cs" />
-    <Compile Include="Productions\UnitsInspectionData.cs" />
     <Compile Include="Resources\ModelErrors.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -120,9 +118,7 @@
     <Compile Include="Transactions\ActiveTransactionsData.cs" />
     <Compile Include="Transactions\Ikunk.cs" />
     <Compile Include="Transactions\MaxAsoMeasuringPointDataSequenceNumber.cs" />
-    <Compile Include="Transactions\MeasurementPoint.cs" />
-    <Compile Include="Transactions\MeasurementPointsProductsConfig.cs" />
-    <Compile Include="Transactions\MeasurementPointsProductsData.cs" />
+    <Compile Include="Transactions\MeasuringPointProductsData.cs" />
     <Compile Include="Transactions\MeasuringPointConfig.cs" />
     <Compile Include="Transactions\MeasuringPointsConfigsData.cs" />
     <Compile Include="Transactions\RelatedMeasuringPointConfigs.cs" />

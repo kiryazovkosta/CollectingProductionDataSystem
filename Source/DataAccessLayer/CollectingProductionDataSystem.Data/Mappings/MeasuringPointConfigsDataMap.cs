@@ -11,7 +11,7 @@
         public MeasuringPointConfigsDataMap()
         {
             // Primary Key
-            this.HasKey(t => new { t.MeasuringPointId, t.TransactionNumber, t.RowId, t.TransactionBeginTime, t.TransactionEndTime });
+            this.HasKey(t => new { t.MeasuringPointConfigId, t.TransactionNumber, t.RowId, t.TransactionBeginTime, t.TransactionEndTime });
 
             // Properties
             this.Property(t => t.Id)
@@ -20,7 +20,7 @@
             this.Property(t => t.ExciseStoreId)
                 .HasMaxLength(50);
 
-            this.Property(t => t.MeasuringPointId)
+            this.Property(t => t.MeasuringPointConfigId)
                 .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
 
             this.Property(t => t.TransactionNumber)

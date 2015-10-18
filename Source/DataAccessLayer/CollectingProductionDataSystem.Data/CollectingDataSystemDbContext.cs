@@ -64,8 +64,6 @@
 
         public IDbSet<TankData> TanksData { get; set; }
 
-        public IDbSet<TanksManualData> TanksManualData { get; set; }
-
         public IDbSet<Plant> Plants { get; set; }
 
         public IDbSet<Factory> Factories { get; set; }
@@ -76,19 +74,13 @@
 
         public IDbSet<UnitsData> UnitsData { get; set; }
 
-        public IDbSet<UnitsInspectionData> UnitsInspectionData { get; set; }
-
         public IDbSet<MaterialType> MaterialTypes { get; set; }
 
         public IDbSet<AuditLogRecord> AuditLogRecords { get; set; }
 
         public IDbSet<Ikunk> Ikunks { get; set; }
 
-        public IDbSet<MeasurementPoint> MeasurementPoints { get; set; }
-
-        public IDbSet<MeasurementPointsProductsConfig> MeasurementPointsProductConfigs { get; set; }
-
-        public IDbSet<MeasurementPointsProductsData> MeasurementPointsProductsDatas { get; set; }
+        public IDbSet<MeasuringPointProductsData> MeasurementPointsProductsDatas { get; set; }
 
         public IDbSet<TransportType> TransportTypes { get; set; }
 
@@ -110,8 +102,6 @@
 
         public IDbSet<ProductionPlanConfig> ProductionPlanConfigs { get; set; }
 
-        public IDbSet<TanksApprovedData> TanksApprovedDatas { get; set; }
-
         public IDbSet<ShiftProductType> ShiftProductTypes { get; set; }
 
         public IDbSet<DailyProductType> DailyProductTypes { get; set; }
@@ -125,6 +115,8 @@
         public IDbSet<RelatedTankConfigs> RelatedTankConfigs { get; set; }
 
         public IDbSet<RelatedUnitConfigs> RelatedUnitConfigs { get; set; }
+
+        public IDbSet<RelatedUnitDailyConfigs> RelatedUnitDailyConfigs { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

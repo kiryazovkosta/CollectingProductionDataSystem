@@ -90,8 +90,6 @@
     <Compile Include="Mappings\FactoryMap.cs" />
     <Compile Include="Mappings\IkunkMap.cs" />
     <Compile Include="Mappings\MaxAsoMeasuringPointDataSequenceNumberMap.cs" />
-    <Compile Include="Mappings\MeasurementPointMap.cs" />
-    <Compile Include="Mappings\MeasurementPointsProductsConfigMap.cs" />
     <Compile Include="Mappings\MeasurementPointsProductsDataMap.cs" />
     <Compile Include="Mappings\MeasuringPointConfigMap.cs" />
     <Compile Include="Mappings\MeasuringPointConfigsDataMap.cs" />
@@ -101,6 +99,7 @@
     <Compile Include="Mappings\RelatedMeasuringPointConfigsMap.cs" />
     <Compile Include="Mappings\RelatedTankConfigsMap.cs" />
     <Compile Include="Mappings\RelatedUnitConfigsMap.cs" />
+    <Compile Include="Mappings\RelatedUnitDailyConfigMap.cs" />
     <Compile Include="Mappings\ShiftMap.cs" />
     <Compile Include="Mappings\TankConfigMap.cs" />
     <Compile Include="Mappings\TankDataMap.cs" />
@@ -111,8 +110,6 @@
     <Compile Include="Mappings\ProductMap.cs" />
     <Compile Include="Mappings\ProductTypeMap.cs" />
     <Compile Include="Mappings\TankMasterProductMap.cs" />
-    <Compile Include="Mappings\TanksApprovedDataMap.cs" />
-    <Compile Include="Mappings\TanksManualDataMap.cs" />
     <Compile Include="Mappings\TransportTypeMap.cs" />
     <Compile Include="Mappings\UnitConfigMap.cs" />
     <Compile Include="Mappings\UnitsApprovedDailyDataMap.cs" />
@@ -122,7 +119,6 @@
     <Compile Include="Mappings\UnitsDataMap.cs" />
     <Compile Include="Mappings\UnitsManualDailyDataMap.cs" />
     <Compile Include="Mappings\UnitsManualDataMap.cs" />
-    <Compile Include="Mappings\UnitsInspectionDataMap.cs" />
     <Compile Include="Mappings\ZoneMap.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Concrete\ProductionData.cs" />

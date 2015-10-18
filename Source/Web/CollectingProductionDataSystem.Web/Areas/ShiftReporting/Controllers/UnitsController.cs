@@ -198,7 +198,7 @@
             ProcessUnitConfirmShiftInputModel model)
         {
             var calculator = new Calculator();
-            var splitter = new char[] { ',' };
+            var splitter = new char[] { '@' };
 
             Dictionary<string, double> level2Values = new Dictionary<string, double>();
 

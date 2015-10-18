@@ -95,7 +95,7 @@ namespace CollectingProductionDataSystem.Web.Areas.DailyReporting.Controllers
  
         private double CalculateFactValue(ProductionPlanConfig productionPlan, List<UnitsDailyData> dailyData, Calculator calculator)
         {
-            var splitter = new char[] { ';' };
+            var splitter = new char[] { '@' };
 
             var factTokens = productionPlan.QuantityFactMembers.Split(splitter, StringSplitOptions.RemoveEmptyEntries);
             var factInputParamsValues = new List<double>();
@@ -122,7 +122,7 @@ namespace CollectingProductionDataSystem.Web.Areas.DailyReporting.Controllers
  
         private double CalculatePlanValue(ProductionPlanConfig productionPlan, List<UnitsDailyData> dailyData, Calculator calculator)
         {
-            var splitter = new char[] { ';' };
+            var splitter = new char[] { '@' };
 
             var planTokens = productionPlan.QuantityPlanMembers.Split(splitter, StringSplitOptions.RemoveEmptyEntries);
             var planInputParamsValues = new List<double>();

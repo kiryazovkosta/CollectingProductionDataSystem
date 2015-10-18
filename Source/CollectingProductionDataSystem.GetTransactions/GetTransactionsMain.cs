@@ -68,7 +68,8 @@
                                 tr.BaseProductType = row.BaseProductType;
                                 tr.BaseProductName = row.BaseProductName;
                                 tr.ProductNumber = row.ProductNumber;
-                                tr.ProductId = row.ProductNumber;
+                                var prod = context.Products.All().Where(p => p.Code == row.ProductNumber).FirstOrDefault();
+                                tr.ProductId = prod.Id;
                                 tr.ProductType = row.ProductType;
                                 tr.ProductName = row.ProductName;
                                 tr.FlowDirection = row.FlowDirection;

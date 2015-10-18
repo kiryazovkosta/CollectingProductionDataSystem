@@ -130,7 +130,6 @@
                 .ForMember(p => p.Product, opt => opt.Ignore())
                 .ForMember(p => p.ShiftProductType, opt => opt.Ignore())
                 .ForMember(p => p.UnitsDatas, opt => opt.Ignore())
-                .ForMember(p => p.UnitsInspectionDatas, opt => opt.Ignore())
                 .ForMember(p => p.IsDeleted, opt => opt.Ignore())
                 .ForMember(p => p.DeletedOn, opt => opt.Ignore())
                 .ForMember(p => p.DeletedFrom, opt => opt.Ignore())

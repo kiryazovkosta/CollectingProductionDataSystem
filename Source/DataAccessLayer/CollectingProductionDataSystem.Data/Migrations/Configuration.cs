@@ -46,10 +46,10 @@ namespace CollectingProductionDataSystem.Data.Migrations
                 ProductsDataImporter.Insert(context);
             }
 
-            if (!context.TankMasterProducts.Any())
-            {
-                this.CreateTankMasterProducts(context);
-            }
+            //if (!context.TankMasterProducts.Any())
+            //{
+            //    this.CreateTankMasterProducts(context);
+            //}
 
             if (!context.MeasureUnits.Any())
             {
@@ -66,19 +66,9 @@ namespace CollectingProductionDataSystem.Data.Migrations
                 this.CreateMaterialTypes(context);
             }
 
-            if (!context.Factories.Any())
+            if (!context.TransportTypes.Any())
             {
-                ProductionDataImporter.Insert(context);
-            }
-
-            if (!context.InventoryTanks.Any())
-            {
-                TanksDataImporter.Insert(context);
-            }
-
-            if (!context.MeasurementPoints.Any())
-            {
-                this.CreateMeasurementPoints(context);
+                this.CreateTransportTypes(context);
             }
 
             if (!context.EditReasons.Any())
@@ -86,17 +76,26 @@ namespace CollectingProductionDataSystem.Data.Migrations
                 this.CreateEditReasons(context);
             }
 
-            if (!context.Users.Any())
+            if (!context.Factories.Any())
             {
-                this.CreateSystemAdministrator(context);
+                ProductionDataImporter.Insert(context);
             }
 
-#if DEBUG
-            if (!context.Users.Where(x => x.UserName.Contains("User")).Any())
+            //if (!context.InventoryTanks.Any())
+            //{
+            //    TanksDataImporter.Insert(context);
+            //}
+//#if DEBUG
+//            if (!context.Users.Where(x => x.UserName.Contains("User")).Any())
+//            {
+//                this.SeedUsers(context);
+//            }
+//#endif
+            if (!context.Users.Any())
             {
                 this.SeedUsers(context);
+                this.CreateSystemAdministrator(context);
             }
-#endif
         }
 
         private void CreateProductionShifts(CollectingDataSystemDbContext context)
@@ -439,7 +438,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                 });
         }
 
-        private void CreateMeasurementPoints(CollectingDataSystemDbContext context)
+        private void CreateTransportTypes(CollectingDataSystemDbContext context)
         {
             context.TransportTypes.AddOrUpdate(
                 new TransportType
@@ -2506,8 +2505,6 @@ namespace CollectingProductionDataSystem.Data.Migrations
 
         private void CreateSystemAdministrator(CollectingDataSystemDbContext context)
         {
-
-
             if (!context.Roles.Any())
             {
                 var roles = new List<ApplicationRole>()
@@ -2548,6 +2545,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                 {
                     roleManager.Create(role);
                 }
+                
             }
 
             if (context.Users.Where(x => x.UserName == "Administrator").FirstOrDefault() == null)
@@ -2571,7 +2569,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
         {
             var users = new List<ApplicationUser>();
             var hasher = new PasswordHasher();
-            for (int i = 0; i < 200; i++)
+            for (int i = 0; i < 1; i++)
             {
                 if (context.Users.Where(x => x.UserName == "User_" + i).FirstOrDefault() == null)
                 {

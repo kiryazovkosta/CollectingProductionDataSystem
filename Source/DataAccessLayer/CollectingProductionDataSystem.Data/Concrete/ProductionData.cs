@@ -101,14 +101,6 @@
             }
         }
 
-        public IImmutableEntityRepository<UnitsInspectionData> UnitsInspectionData
-        {
-            get
-            {
-                return this.GetImmutableEntityRepository<UnitsInspectionData>();
-            }
-        }
-
         public IDeletableEntityRepository<Area> Areas
         {
             get
@@ -149,19 +141,11 @@
             }
         }
 
-        public IApprovableEntityRepository<MeasurementPointsProductsData> MeasurementPointsProductsDatas
+        public IDeletableEntityRepository<MeasuringPointProductsData> MeasurementPointsProductsDatas
         {
             get
             {
-                return this.GetApprovableEntityRepository<MeasurementPointsProductsData>();
-            }
-        }
-
-        public IDeletableEntityRepository<TanksManualData> TanksManualData
-        {
-            get
-            {
-                return this.GetDeletableEntityRepository<TanksManualData>();
+                return this.GetDeletableEntityRepository<MeasuringPointProductsData>();
             }
         }
 
@@ -210,22 +194,6 @@
             get
             {
                 return this.GetDeletableEntityRepository<Zone>();
-            }
-        }
-
-        public IDeletableEntityRepository<MeasurementPoint> MeasurementPoints
-        {
-            get
-            {
-                return this.GetDeletableEntityRepository<MeasurementPoint>();
-            }
-        }
-
-        public IDeletableEntityRepository<MeasurementPointsProductsConfig> MeasurementPointsProductConfigs
-        {
-            get
-            {
-                return this.GetDeletableEntityRepository<MeasurementPointsProductsConfig>();
             }
         }
 
@@ -298,14 +266,6 @@
             get
             {
                 return this.GetDeletableEntityRepository<ProductionPlanConfig>();
-            }
-        }
-
-        public IDeletableEntityRepository<TanksApprovedData> TanksApprovedDatas
-        {
-            get
-            {
-                return this.GetDeletableEntityRepository<TanksApprovedData>();
             }
         }
 

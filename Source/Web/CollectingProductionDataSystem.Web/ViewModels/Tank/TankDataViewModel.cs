@@ -66,8 +66,6 @@
         [Display(Name = "ParkName", ResourceType = typeof(Resources.Layout))]
         public string ParkName { get; set; }
 
-        public TanksManualDataViewModel TanksManualData { get; set; }
-
         /// <summary>
         /// Creates the mappings.
         /// </summary>
@@ -79,31 +77,7 @@
                 .ForMember(p => p.ParkName, opt => opt.MapFrom(p => p.TankConfig.Park.Name))
                 .ForMember(p => p.LiquidLevel, opt => opt.MapFrom(p => p.CorrectedLiquidLevel))
                 .ForMember(p => p.ProductLevel, opt => opt.MapFrom(p => p.CorrectedProductLevel))
-                //.ForMember(p => p.NetStandardVolume, opt => opt.MapFrom(p => p.TanksManualData != null ? p.TanksManualData.NetStandardVolume : p.NetStandardVolume))
-                //.ForMember(p => p.ReferenceDensity, opt => opt.MapFrom(p => p.TanksManualData != null ? p.TanksManualData.ReferenceDensity : p.ReferenceDensity))
-                //.ForMember(p => p.WeightInAir, opt => opt.MapFrom(p => p.TanksManualData != null ? p.TanksManualData.WeightInAir : p.WeightInAir))
-                //.ForMember(p => p.WeightInVacuum, opt => opt.MapFrom(p => p.TanksManualData != null ? p.TanksManualData.WeightInVacuum : p.WeightInVacuum))
                 .ForMember(p => p.FreeWaterLevel, opt => opt.MapFrom(p => p.CorrectedFreeWaterLevel));
-                //.ForMember(p => p.TanksManualData, opt => opt.MapFrom(p => p.TanksManualData ?? new TanksManualData() { }));
-        }
-    }
-
-    public class TanksManualDataViewModel : IMapFrom<TanksManualData>, IHaveCustomMappings
-    {
-        public int Id { get; set; }
-
-        [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
-        [Display(Name = "EditReason", ResourceType = typeof(Resources.Layout))]
-        public EditReasonInputModel EditReason { get; set; }
-
-        /// <summary>
-        /// Creates the mappings.
-        /// </summary>
-        /// <param name="configuration">The configuration.</param>
-        public void CreateMappings(IConfiguration configuration)
-        {
-            configuration.CreateMap<TanksManualData, TanksManualDataViewModel>()
-                .ForMember(p => p.EditReason, opt => opt.MapFrom(p => p.EditReason ?? new EditReason() { Id = 0, Name = Resources.Layout.AutomaticData }));
         }
     }
 

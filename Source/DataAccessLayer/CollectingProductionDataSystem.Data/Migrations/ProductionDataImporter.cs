@@ -34,14 +34,8 @@
                                 },
                                 new ProcessUnit
                                 {
-                                    ShortName = "ВДМ-2",
-                                    FullName = "Инсталация ВДМ-2",
-                                    UnitsConfigs = { }
-                                },
-                                new ProcessUnit
-                                {
-                                    ShortName = "ТК",
-                                    FullName = "Инсталация ТК",
+                                    ShortName = "ВДТК",
+                                    FullName = "Инсталация ВДМ-2 и ТК",
                                     UnitsConfigs = { }
                                 },
                                 new ProcessUnit

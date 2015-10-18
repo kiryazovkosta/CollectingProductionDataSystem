@@ -49,6 +49,9 @@
             this.HasRequired(t => t.TransportType)
                 .WithMany(t => t.MeasuringPointConfigs)
                 .HasForeignKey(d => d.TransportTypeId);
+            this.HasRequired(t => t.Direction)
+                .WithMany(t => t.MeasuringPointConfigs)
+                .HasForeignKey(d => d.DirectionId);
 
             this.HasMany(t => t.RelatedMeasuringPointConfigs);
         }

@@ -26,12 +26,24 @@
 
         public ActionResult Index()
         {
+            //var d = this.data.UnitsDailyConfigs.All().FirstOrDefault();
+            //if (d != null)
+            //{
+            //    var s = this.data.UnitConfigs.All().FirstOrDefault();
+            //    if (s != null)
+            //    {
+            //        s.UnitsDailyConfig.Add(d);
+            //        this.data.SaveChanges("test");
+            //    }
+            //}
+
             return View(this.UserProfile);
         }
 
         [Authorize]
         public ActionResult Test()
         {
+
             // add product
             var pr1 = new Product() { Name = "Added Product", ProductTypeId = 1 };
             this.data.Products.Add(pr1);

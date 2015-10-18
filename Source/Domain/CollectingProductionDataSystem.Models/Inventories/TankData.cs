@@ -6,7 +6,7 @@ namespace CollectingProductionDataSystem.Models.Inventories
     using CollectingProductionDataSystem.Models.Contracts;
     using CollectingProductionDataSystem.Models.Nomenclatures;
     using System.ComponentModel.DataAnnotations.Schema;
-using MathExpressions.Application;
+    using MathExpressions.Application;
 
     public partial class TankData : AuditInfo, IApprovableEntity, IEntity
     {
@@ -36,7 +36,6 @@ using MathExpressions.Application;
         public bool IsApproved { get; set; }
         public virtual TankConfig TankConfig { get; set; }
         public virtual Product Product { get; set; }
-        public virtual TanksManualData TanksManualData { get; set; }
 
         [NotMapped]
         public decimal? CorrectedLiquidLevel

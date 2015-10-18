@@ -27,8 +27,6 @@
 
         IDeletableEntityRepository<UnitsManualDailyData> UnitsManualDailyDatas { get; }
 
-        IImmutableEntityRepository<UnitsInspectionData> UnitsInspectionData { get; }
-
         IDeletableEntityRepository<Area> Areas { get; }
 
         IDeletableEntityRepository<Park> Parks { get; }
@@ -39,9 +37,7 @@
 
         IApprovableEntityRepository<TankData> TanksData { get; }
 
-        IApprovableEntityRepository<MeasurementPointsProductsData> MeasurementPointsProductsDatas { get; }
-
-        IDeletableEntityRepository<TanksManualData> TanksManualData { get; }
+        IDeletableEntityRepository<MeasuringPointProductsData> MeasurementPointsProductsDatas { get; }
 
         IDeletableEntityRepository<Product> Products { get; }
 
@@ -54,10 +50,6 @@
         IDeletableEntityRepository<Ikunk> Ikunks { get; }
 
         IDeletableEntityRepository<Zone> Zones { get; }
-
-        IDeletableEntityRepository<MeasurementPoint> MeasurementPoints { get; }
-
-        IDeletableEntityRepository<MeasurementPointsProductsConfig> MeasurementPointsProductConfigs { get; }
 
         IDeletableEntityRepository<TransportType> TransportTypes { get; }
 
@@ -76,8 +68,6 @@
         IDeletableEntityRepository<UnitsApprovedDailyData> UnitsApprovedDailyDatas { get; }
 
         IDeletableEntityRepository<ProductionPlanConfig> ProductionPlanConfigs { get; }
-
-        IDeletableEntityRepository<TanksApprovedData> TanksApprovedDatas { get; }
 
         IDeletableEntityRepository<MeasuringPointConfig> MeasuringPointConfigs { get; }
 

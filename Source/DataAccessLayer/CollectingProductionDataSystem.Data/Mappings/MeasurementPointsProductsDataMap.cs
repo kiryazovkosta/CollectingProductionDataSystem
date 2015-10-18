@@ -1,16 +1,13 @@
-﻿using CollectingProductionDataSystem.Models.Transactions;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Data.Entity.Infrastructure.Annotations;
-using System.Data.Entity.ModelConfiguration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CollectingProductionDataSystem.Data.Mappings
+﻿namespace CollectingProductionDataSystem.Data.Mappings
 {
-    public class MeasurementPointsProductsDataMap : EntityTypeConfiguration<MeasurementPointsProductsData>
+    using System;
+    using System.ComponentModel.DataAnnotations.Schema;
+    using System.Data.Entity.Infrastructure.Annotations;
+    using System.Data.Entity.ModelConfiguration;
+    using System.Linq;
+    using CollectingProductionDataSystem.Models.Transactions;
+
+    public class MeasurementPointsProductsDataMap : EntityTypeConfiguration<MeasuringPointProductsData>
     {
         public MeasurementPointsProductsDataMap()
         {
@@ -25,7 +22,7 @@ namespace CollectingProductionDataSystem.Data.Mappings
                 .HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("ix_measurement_points_data", 1)))
                 .IsRequired();
 
-            this.Property(t => t.MeasurementPointsProductsConfigId)
+            this.Property(t => t.MeasuringPointConfigId)
                 .HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("ix_measurement_points_data", 2)))
                 .IsRequired();
 
@@ -33,9 +30,9 @@ namespace CollectingProductionDataSystem.Data.Mappings
             this.ToTable("MeasurementPointsProductsDatas");
 
             // Relationships
-            this.HasRequired(t => t.MeasurementPointsProductsConfig)
-                .WithMany(t => t.MeasurementPointsProductsDatas)
-                .HasForeignKey(t => t.MeasurementPointsProductsConfigId);
+            this.HasRequired(t => t.MeasuringPointConfig)
+                .WithMany(t => t.MeasuringPointProductsDatas)
+                .HasForeignKey(t => t.MeasuringPointConfigId);
         }
     }
 }

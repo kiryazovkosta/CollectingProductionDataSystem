@@ -467,7 +467,7 @@
                 var fiveOClock = today.AddHours(5);
                 
                 var ts = now - fiveOClock;
-                if (ts.Hours == 0)
+                if (ts.TotalMinutes > 0 && ts.Hours == 0)
                 {
                     using (var context = new ProductionData(new CollectingDataSystemDbContext(new AuditablePersister())))
                     {
@@ -479,7 +479,7 @@
                             return;
                         }
 
-                        var measuringPoints = context.MeasurementPointsProductConfigs.All();
+                        var measuringPoints = context.MeasuringPointConfigs.All().Where(x => !string.IsNullOrEmpty(x.TotalizerCurrentValueTag));
 
                         if (measuringPoints.Count() > 0)
                         {
@@ -498,9 +498,9 @@
 
                                     foreach (var item in measuringPoints)
                                     {
-                                        var measurementPointData = new MeasurementPointsProductsData();
-                                        measurementPointData.MeasurementPointsProductsConfigId = item.Id;
-                                        DataSet dsGrid = oPhd.FetchRowData(item.PhdTotalCounterTag);
+                                        var measurementPointData = new MeasuringPointProductsData();
+                                        measurementPointData.MeasuringPointConfigId = item.Id;
+                                        DataSet dsGrid = oPhd.FetchRowData(item.TotalizerCurrentValueTag);
                                         var confidence = 100;
                                         foreach (DataRow row in dsGrid.Tables[0].Rows)
                                         {
@@ -539,7 +539,7 @@
                                         }
                                     }
 
-                                    context.SaveChanges("PHD2SQL");
+                                    context.SaveChanges("Phd2Sql");
                                 }
                             }
                         }

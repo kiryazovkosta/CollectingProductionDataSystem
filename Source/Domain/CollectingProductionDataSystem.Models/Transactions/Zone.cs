@@ -8,17 +8,20 @@
 
     public partial class Zone : DeletableEntity, IEntity
     {
+        private ICollection<MeasuringPointConfig> measuringPointConfigs;
         public Zone()
         {
-            this.MeasurementPoints = new HashSet<MeasurementPoint>();
-            this.MeasuringPointConfigs = new HashSet<MeasuringPointConfig>();
+            this.measuringPointConfigs = new HashSet<MeasuringPointConfig>();
         }
 
         public int Id { get; set; }
         public string Name { get; set; }
         public int IkunkId { get; set; }
         public virtual Ikunk Ikunk { get; set; }
-        public virtual ICollection<MeasurementPoint> MeasurementPoints { get; set; }
-        public virtual ICollection<MeasuringPointConfig> MeasuringPointConfigs { get; set; }
+        public virtual ICollection<MeasuringPointConfig> MeasuringPointConfigs 
+        {
+            get { return this.measuringPointConfigs; }
+            set { this.measuringPointConfigs = value; } 
+        }
     }
 }

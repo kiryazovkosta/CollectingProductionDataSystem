@@ -31,6 +31,9 @@ namespace CollectingProductionDataSystem.Data.Mappings
             // Table & Column Mappings
             this.ToTable("UnitsDailyConfigs");
 
+            //this.HasMany(t => t.UnitsConfigs)
+            //    .WithMany(t => t.UnitsDailyConfigs);
+
             // Relationships
             this.HasRequired(t => t.MeasureUnit)
                 .WithMany(t => t.UnitsDailyConfigs)
@@ -44,9 +47,9 @@ namespace CollectingProductionDataSystem.Data.Mappings
                 .WithMany(t => t.UnitsDailyConfigs)
                 .HasForeignKey(d => d.DailyProductTypeId);
 
-            //this.HasRequired(t => t.Product)
-            //    .WithMany(t => t.UnitsDailyConfigs)
-            //    .HasForeignKey(d => d.ProductId);
+            this.HasMany(t => t.RelatedUnitDailyConfigs);
+
+            //this.HasRequired(t => t.UnitsConfigs).WithMany().WillCascadeOnDelete(false);
         }
     }
 }

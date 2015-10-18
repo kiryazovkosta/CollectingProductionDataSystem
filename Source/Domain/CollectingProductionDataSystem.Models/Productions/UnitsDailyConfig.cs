@@ -8,9 +8,14 @@
 
     public partial class UnitsDailyConfig : DeletableEntity, IEntity
     {
+        private ICollection<UnitsDailyData> unitsDailyDatas;
+        private ICollection<RelatedUnitDailyConfigs> relatedUnitDailyConfigs;
+
         public UnitsDailyConfig()
         {
-            this.UnitsDailyDatas = new HashSet<UnitsDailyData>();
+            this.unitsDailyDatas = new HashSet<UnitsDailyData>();
+            this.relatedUnitDailyConfigs = new HashSet<RelatedUnitDailyConfigs>();
+            //this.UnitsConfigs = new HashSet<UnitConfig>();
         }
 
         public int Id { get; set; }
@@ -29,6 +34,17 @@
         public virtual ProcessUnit ProcessUnit { get; set; }
         public virtual Product Product { get; set; }
         public virtual DailyProductType DailyProductType { get; set; }
-        public virtual ICollection<UnitsDailyData> UnitsDailyDatas { get; set; }
+        public virtual ICollection<UnitsDailyData> UnitsDailyDatas 
+        {
+            get { return this.unitsDailyDatas; }
+            set { this.unitsDailyDatas = value; }
+        }
+        public virtual ICollection<RelatedUnitDailyConfigs> RelatedUnitDailyConfigs 
+        {
+            get { return this.relatedUnitDailyConfigs; }
+            set { this.relatedUnitDailyConfigs = value; }
+        }
+        
+        //public virtual ICollection<UnitConfig> UnitsConfigs { get; set; }
     }
 }

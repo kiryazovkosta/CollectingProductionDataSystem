@@ -77,7 +77,7 @@ namespace CollectingProductionDataSystem.Web.Areas.DailyReporting.Controllers
             foreach (var item in dict)
             {
                 var p = SetMeasuringPointsDataViewModel(item, actDict);
-                if (p.TotalQuantity > 0 && p.ProductId != 22)
+                if (p.TotalQuantity > 0)
                 {
                     hs.Add(p);   
                 }

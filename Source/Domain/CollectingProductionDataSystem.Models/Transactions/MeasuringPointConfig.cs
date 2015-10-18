@@ -8,12 +8,14 @@
     public partial class MeasuringPointConfig : DeletableEntity, IEntity
     {
         private ICollection<RelatedMeasuringPointConfigs> relatedMeasuringPointConfigs;
+        private ICollection<MeasuringPointProductsData> measuringPointProductsDatas;
 
         public MeasuringPointConfig()
         {
             this.MeasuringPointsConfigsDatas = new HashSet<MeasuringPointsConfigsData>();
             this.ActiveTransactionsDatas = new HashSet<ActiveTransactionsData>();
             this.relatedMeasuringPointConfigs = new HashSet<RelatedMeasuringPointConfigs>();
+            this.measuringPointProductsDatas = new HashSet<MeasuringPointProductsData>();
         }
         public int Id { get; set; }
         public int ZoneId { get; set; }
@@ -100,6 +102,8 @@
         public decimal TotalizerEndCommonMassReverseLowExtreme { get; set; }
         public decimal TotalizerEndCommonMassReverseHighExtreme { get; set; }
         public int? FlowDirection { get; set; }
+        public int DirectionId { get; set; }
+        public virtual Direction Direction { get; set; }
         public string WeightScaleNumber{ get; set; }
         public bool IsInternalPoint { get; set; }
         public virtual Zone Zone { get; set; }
@@ -111,13 +115,17 @@
         public string ActiveTransactionMassTag { get; set; }
         public string TotalizerCurrentValueTag { get; set; }
         public string ActiveTransactionMassReverseTag { get; set; }
-
         public string MassCorrectionFactor { get; set; }
         public virtual ICollection<ActiveTransactionsData> ActiveTransactionsDatas { get; set; }
         public virtual ICollection<RelatedMeasuringPointConfigs> RelatedMeasuringPointConfigs
         {
             get { return this.relatedMeasuringPointConfigs; }
             set { this.relatedMeasuringPointConfigs = value; }
+        }
+        public virtual ICollection<MeasuringPointProductsData> MeasuringPointProductsDatas
+        {
+            get { return this.measuringPointProductsDatas; }
+            set { this.measuringPointProductsDatas = value; }
         }
     }
 }

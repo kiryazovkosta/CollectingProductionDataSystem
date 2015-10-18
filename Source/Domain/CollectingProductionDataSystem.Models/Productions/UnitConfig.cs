@@ -11,14 +11,13 @@ namespace CollectingProductionDataSystem.Models.Productions
     public partial class UnitConfig : DeletableEntity, IEntity
     {
         private ICollection<UnitsData> unitsDatas;
-        private ICollection<UnitsInspectionData> unitsInspectionDatas;
         private ICollection<RelatedUnitConfigs> relatedUnitConfigs;
 
         public UnitConfig()
         {
             this.unitsDatas = new HashSet<UnitsData>();
-            this.unitsInspectionDatas = new HashSet<UnitsInspectionData>();
             this.relatedUnitConfigs = new HashSet<RelatedUnitConfigs>();
+            //this.UnitsDailyConfigs = new HashSet<UnitsDailyConfig>();
         }
 
         public int Id { get; set; }
@@ -56,15 +55,12 @@ namespace CollectingProductionDataSystem.Models.Productions
             get {return this.unitsDatas; } 
             set {this.unitsDatas = value; }
         }
-        public virtual ICollection<UnitsInspectionData> UnitsInspectionDatas 
-        {
-            get { return this.unitsInspectionDatas; }
-            set { this.unitsInspectionDatas = value; } 
-        }
         public virtual ICollection<RelatedUnitConfigs> RelatedUnitConfigs
         {
             get { return this.relatedUnitConfigs; }
             set { this.relatedUnitConfigs = value; }
         }
+        
+        //public virtual ICollection<UnitsDailyConfig> UnitsDailyConfigs { get; set; }
     }
 }

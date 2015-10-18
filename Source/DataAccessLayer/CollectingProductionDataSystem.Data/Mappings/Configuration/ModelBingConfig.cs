@@ -25,10 +25,8 @@
             modelBuilder.Configurations.Add(new UnitConfigMap());
             modelBuilder.Configurations.Add(new UnitsDataMap());
             modelBuilder.Configurations.Add(new UnitsManualDataMap());
-            modelBuilder.Configurations.Add(new UnitsInspectionDataMap());
             modelBuilder.Configurations.Add(new IkunkMap());
             modelBuilder.Configurations.Add(new ZoneMap());
-            modelBuilder.Configurations.Add(new MeasurementPointsProductsConfigMap());
             modelBuilder.Configurations.Add(new TransportTypeMap());
             modelBuilder.Configurations.Add(new UnitsDailyConfigMap());
             modelBuilder.Configurations.Add(new TankMasterProductMap());
@@ -38,7 +36,6 @@
             modelBuilder.Configurations.Add(new UnitsApprovedDataMap());
             modelBuilder.Configurations.Add(new UnitsApprovedDailyDataMap());
             modelBuilder.Configurations.Add(new ProductionPlanConfigMap());
-            modelBuilder.Configurations.Add(new TanksApprovedDataMap());
             modelBuilder.Configurations.Add(new MeasuringPointConfigMap());
             modelBuilder.Configurations.Add(new MeasuringPointConfigsDataMap());
             modelBuilder.Configurations.Add(new MaxAsoMeasuringPointDataSequenceNumberMap());
@@ -48,6 +45,7 @@
             modelBuilder.Configurations.Add(new RelatedMeasuringPointConfigsMap());
             modelBuilder.Configurations.Add(new RelatedTankConfigsMap());
             modelBuilder.Configurations.Add(new RelatedUnitConfigsMap());
+            modelBuilder.Configurations.Add(new RelatedUnitDailyConfigMap());
         }
     }
 }
