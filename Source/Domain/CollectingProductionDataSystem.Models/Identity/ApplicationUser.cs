@@ -17,8 +17,9 @@
     public class ApplicationUser : IdentityUser<int, UserLoginIntPk, UserRoleIntPk, UserClaimIntPk>, IAuditInfo, IDeletableEntity, IEntity
     {
         private ICollection<ProcessUnit> processUnits;
-        private ICollection<Park> parks;
+        //private ICollection<Park> parks;
         private IEnumerable<ApplicationRole> userRoles;
+        private ICollection<ApplicationUserParks> applicationUserParks;
 
         #region IAuditInfo_IDeletableEntity
         /// <summary>
@@ -73,8 +74,9 @@
         public ApplicationUser()
         {
             this.processUnits = new HashSet<ProcessUnit>();
-            this.parks = new HashSet<Park>();
+           // this.parks = new HashSet<Park>();
             this.userRoles = new List<ApplicationRole>();
+            this.applicationUserParks = new HashSet<ApplicationUserParks>();
             this.CreatedOn = DateTime.Now;
         }
 
@@ -106,10 +108,16 @@
             set { this.processUnits = value; }
         }
 
-        public virtual ICollection<Park> Parks
+        //public virtual ICollection<Park> Parks
+        //{
+        //    get { return this.parks; }
+        //    set { this.parks = value; }
+        //}
+
+        public virtual ICollection<ApplicationUserParks> ApplicationUserParks
         {
-            get { return this.parks; }
-            set { this.parks = value; }
+            get { return this.ApplicationUserParks; }
+            set { this.ApplicationUserParks = value; }
         }
 
         [NotMapped]

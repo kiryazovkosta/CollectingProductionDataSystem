@@ -70,7 +70,7 @@
 
         public IDbSet<ProcessUnit> ProcessUnit { get; set; }
 
-        public IDbSet<UnitConfig> UnitsConfigs { get; set; }
+        public IDbSet<UnitConfig> UnitConfigs { get; set; }
 
         public IDbSet<UnitsData> UnitsData { get; set; }
 
@@ -86,7 +86,7 @@
 
         public IDbSet<EditReason> EditReasons { get; set; }
 
-        public IDbSet<UnitsDailyConfig> UnitsDailyConfigs { get; set; }
+        public IDbSet<UnitDailyConfig> UnitDailyConfigs { get; set; }
 
         public IDbSet<UnitsDailyData> UnitsDailyDatas { get; set; }
 
@@ -117,6 +117,8 @@
         public IDbSet<RelatedUnitConfigs> RelatedUnitConfigs { get; set; }
 
         public IDbSet<RelatedUnitDailyConfigs> RelatedUnitDailyConfigs { get; set; }
+
+        public IDbSet<UnitConfigUnitDailyConfig> UnitConfigUnitDailyConfigs { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

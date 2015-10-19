@@ -70,7 +70,7 @@
                 var user = this.data.Users.All()
                     .Include(x => x.Roles)
                     .Include(x => x.ProcessUnits)
-                    .Include(x => x.Parks)
+                    .Include(x => x.ApplicationUserParks.Select(y=>y.Park))
                     .FirstOrDefault(x => x.UserName == userName);
                 var roles = user.Roles.Select(x=>x.RoleId).ToList();
                 user.UserRoles = rolsStore.Where(rol => roles.Any(x => rol.Id == x)).ToList();

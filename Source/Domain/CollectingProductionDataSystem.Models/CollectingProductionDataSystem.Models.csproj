@@ -64,6 +64,7 @@
     <Compile Include="Contracts\IAuditInfo.cs" />
     <Compile Include="Contracts\IDeletableEntity.cs" />
     <Compile Include="Contracts\IEntity.cs" />
+    <Compile Include="Identity\ApplicationUserParks.cs" />
     <Compile Include="Identity\UserClaimIntPk.cs" />
     <Compile Include="Identity\UserLoginIntPk.cs" />
     <Compile Include="Identity\UserRoleIntPk.cs" />
@@ -97,8 +98,9 @@
     <Compile Include="Productions\RelatedUnitDailyConfigs.cs" />
     <Compile Include="Productions\ShiftType.cs" />
     <Compile Include="Productions\UnitConfig.cs" />
+    <Compile Include="Productions\UnitConfigUnitDailyConfig.cs" />
     <Compile Include="Productions\UnitsApprovedDailyData.cs" />
-    <Compile Include="Productions\UnitsDailyConfig.cs" />
+    <Compile Include="Productions\UnitDailyConfig.cs" />
     <Compile Include="Productions\UnitsDailyData.cs" />
     <Compile Include="Productions\UnitsApprovedData.cs" />
     <Compile Include="Productions\UnitsManualDailyData.cs" />

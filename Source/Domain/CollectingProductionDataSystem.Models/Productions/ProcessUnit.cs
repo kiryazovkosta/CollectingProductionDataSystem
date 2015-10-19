@@ -14,7 +14,7 @@ namespace CollectingProductionDataSystem.Models.Productions
         {
             this.users = new HashSet<ApplicationUser>();
             this.UnitsConfigs = new HashSet<UnitConfig>();
-            this.UnitsDailyConfigs = new HashSet<UnitsDailyConfig>();
+            this.UnitsDailyConfigs = new HashSet<UnitDailyConfig>();
             this.productionPlanConfigs = new HashSet<ProductionPlanConfig>();
         }
 
@@ -24,7 +24,7 @@ namespace CollectingProductionDataSystem.Models.Productions
         public int FactoryId { get; set; }
         public virtual Factory Factory { get; set; }
         public virtual ICollection<UnitConfig> UnitsConfigs { get; set; }
-        public virtual ICollection<UnitsDailyConfig> UnitsDailyConfigs { get; set; }
+        public virtual ICollection<UnitDailyConfig> UnitsDailyConfigs { get; set; }
         public virtual ICollection<ApplicationUser> Users 
         {
             get { return users; }

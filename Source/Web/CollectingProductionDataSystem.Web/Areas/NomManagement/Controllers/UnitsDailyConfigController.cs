@@ -10,7 +10,7 @@ using CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewModels;
 
 namespace CollectingProductionDataSystem.Web.Areas.NomManagement.Controllers
 {
-    public class UnitsDailyConfigController : GenericNomController<UnitsDailyConfig, UnitsDailyConfigViewModel>
+    public class UnitsDailyConfigController : GenericNomController<UnitDailyConfig, UnitsDailyConfigViewModel>
     {
         public UnitsDailyConfigController(IProductionData dataParam)
             : base(dataParam)

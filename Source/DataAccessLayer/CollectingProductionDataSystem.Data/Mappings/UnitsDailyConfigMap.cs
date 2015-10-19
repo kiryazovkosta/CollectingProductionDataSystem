@@ -4,7 +4,7 @@ namespace CollectingProductionDataSystem.Data.Mappings
     using System.Data.Entity.ModelConfiguration;
     using CollectingProductionDataSystem.Models.Productions;
 
-    public class UnitsDailyConfigMap : EntityTypeConfiguration<UnitsDailyConfig>
+    public class UnitsDailyConfigMap : EntityTypeConfiguration<UnitDailyConfig>
     {
         public UnitsDailyConfigMap()
         {
@@ -29,7 +29,7 @@ namespace CollectingProductionDataSystem.Data.Mappings
                 .HasMaxLength(2048);
 
             // Table & Column Mappings
-            this.ToTable("UnitsDailyConfigs");
+            this.ToTable("UnitDailyConfigs");
 
             //this.HasMany(t => t.UnitsConfigs)
             //    .WithMany(t => t.UnitsDailyConfigs);
@@ -49,7 +49,10 @@ namespace CollectingProductionDataSystem.Data.Mappings
 
             this.HasMany(t => t.RelatedUnitDailyConfigs);
 
-            //this.HasRequired(t => t.UnitsConfigs).WithMany().WillCascadeOnDelete(false);
+            this.HasMany(t => t.UnitConfigUnitDailyConfigs)
+                .WithRequired()
+                .HasForeignKey(x=>x.UnitDailyConfigId);
+
         }
     }
 }

@@ -10,7 +10,7 @@
     {
         public int UnitsDailyConfigId { get; set; }
         public int RelatedUnitsDailyConfigId { get; set; }
-        public virtual UnitsDailyConfig UnitsDailyConfig { get; set; }
-        public virtual UnitsDailyConfig RelatedUnitsDailyConfig { get; set; }
+        public virtual UnitDailyConfig UnitsDailyConfig { get; set; }
+        public virtual UnitDailyConfig RelatedUnitsDailyConfig { get; set; }
     }
 }

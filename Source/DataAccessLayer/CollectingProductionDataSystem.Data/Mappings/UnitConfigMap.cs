@@ -22,18 +22,11 @@ namespace CollectingProductionDataSystem.Data.Mappings
                 .HasMaxLength(200);
 
             // Table & Column Mappings
-            this.ToTable("UnitsConfigs");
+            this.ToTable("UnitConfigs");
 
             // Relationships
             //this.HasMany(t => t.UnitsDailyConfigs)
-            //    .WithMany(t => t.UnitsConfigs)
-            //    .Map(m =>
-            //        {
-            //            m.ToTable("UnitConfigsUnitsDailyConfigs");
-            //            m.MapLeftKey("UnitConfigId");
-            //            m.MapRightKey("UnitsDailyConfigId");
-            //        });
-
+            //    .WithMany(t => t.UnitConfigs);
             //this.HasRequired(t => t.UnitsDailyConfigs).WithMany().WillCascadeOnDelete(false);
 
             this.HasRequired(t => t.Direction)
@@ -61,6 +54,10 @@ namespace CollectingProductionDataSystem.Data.Mappings
                 .HasForeignKey(d => d.ShiftProductTypeId);
 
             this.HasMany(t => t.RelatedUnitConfigs);
+
+            this.HasMany(t => t.UnitConfigUnitDailyConfigs)
+                .WithRequired()
+                .HasForeignKey(x=>x.UnitConfigId);
         }
     }
 }

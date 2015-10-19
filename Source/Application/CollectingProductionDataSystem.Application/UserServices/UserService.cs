@@ -109,8 +109,6 @@ namespace CollectingProductionDataSystem.Application.UserServices
             dbUser.Roles.AddRange(user.Roles);
             dbUser.ProcessUnits.Clear();
             dbUser.ProcessUnits.AddRange(user.ProcessUnits);
-            dbUser.Parks.Clear();
-            dbUser.Parks.AddRange(user.Parks);
         }
 
         /// <summary>

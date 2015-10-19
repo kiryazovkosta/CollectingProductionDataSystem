@@ -33,7 +33,7 @@
 
         IDeletableEntityRepository<TankConfig> Tanks { get; }
 
-        IDeletableEntityRepository<UnitsDailyConfig> UnitsDailyConfigs { get; }
+        IDeletableEntityRepository<UnitDailyConfig> UnitsDailyConfigs { get; }
 
         IApprovableEntityRepository<TankData> TanksData { get; }
 

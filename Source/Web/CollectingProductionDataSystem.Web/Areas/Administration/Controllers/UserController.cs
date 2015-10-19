@@ -149,13 +149,13 @@
 
         private async Task<ApplicationUser> AddAditionalDataToUserAsync(ApplicationUser user, EditUserViewModel model)
         {
-            if (model.Parks != null)
-            {
-                List<int> parks = model.Parks.Select(x => x.Id).ToList();
-                ICollection<Park> parksToAdd = await data.Parks.All().Where(x => parks.Any(p => x.Id == p)).ToListAsync();
-                user.Parks.Clear();
-                user.Parks.AddRange(parksToAdd);
-            }
+            //if (model.Parks != null)
+            //{
+            //    List<int> parks = model.Parks.Select(x => x.Id).ToList();
+            //    ICollection<Park> parksToAdd = await data.Parks.All().Where(x => parks.Any(p => x.Id == p)).ToListAsync();
+            //    user.Parks.Clear();
+            //    user.Parks.AddRange(parksToAdd);
+            //}
             if (model.ProcessUnits != null)
             {
                 List<int> processUnits = model.ProcessUnits.Select(x => x.Id).ToList();

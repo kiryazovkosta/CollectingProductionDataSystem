@@ -42,7 +42,7 @@
         public bool HasManualData { get; set; }
     }
 
-    public class UnitsDailyConfigDataViewModel : IMapFrom<UnitsDailyConfig>
+    public class UnitsDailyConfigDataViewModel : IMapFrom<UnitDailyConfig>
     {
         [Required]
         public int Id { get; set; }

@@ -23,8 +23,11 @@
         /// <returns></returns>
         public IEnumerable<UnitsData> GetUnitsDataForDailyRecord(int unitDailyDataId)
         {
-            var dbResult = GetAllUnitDataIncludeRelations().Where(x => x.UnitsDailyData.Any(y=>y.Id == unitDailyDataId));
-            dbResult = dbResult.OrderBy(x => x.ShiftId).ThenBy(x => x.UnitConfig.Code);
+            var dbResult = GetAllUnitDataIncludeRelations()
+                .Where(x =>
+                    (x.UnitConfig.UnitConfigUnitDailyConfigs.Select(y => y.UnitDailyConfig))
+                    .Any(z=>z.UnitsDailyDatas.Any(w=>w.Id == unitDailyDataId)));
+
             return dbResult;
         }
 
@@ -61,7 +64,7 @@
                                .Include(x => x.UnitConfig.MeasureUnit)
                                .Include(x => x.UnitsManualData)
                                .Include(x => x.UnitsManualData.EditReason)
-                               .Include(x => x.UnitsDailyData);
+                               .Include(x => x.UnitConfig.UnitConfigUnitDailyConfigs.Select(y=>y.UnitDailyConfig).Select(z=>z.UnitsDailyDatas));
             return dbResult;
         }
 

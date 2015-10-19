@@ -125,11 +125,11 @@
             }
         }
 
-        public IDeletableEntityRepository<UnitsDailyConfig> UnitsDailyConfigs
+        public IDeletableEntityRepository<UnitDailyConfig> UnitsDailyConfigs
         {
             get
             {
-                return this.GetDeletableEntityRepository<UnitsDailyConfig>();
+                return this.GetDeletableEntityRepository<UnitDailyConfig>();
             }
         }
 

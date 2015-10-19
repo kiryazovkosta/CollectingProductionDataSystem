@@ -2,12 +2,14 @@
 {
     using System;
     using System.Data.Entity;
+    using System.Data.Entity.ModelConfiguration.Conventions;
     using System.Linq;
 
     public static class ModelBingConfig
     {
         internal static void RegisterMappings(DbModelBuilder modelBuilder)
         {
+            modelBuilder.Conventions.Remove<ManyToManyCascadeDeleteConvention>();
             modelBuilder.Configurations.Add(new AreaMap());
             modelBuilder.Configurations.Add(new AuditLogRecordMap());
             modelBuilder.Configurations.Add(new DirectionMap());
@@ -46,6 +48,7 @@
             modelBuilder.Configurations.Add(new RelatedTankConfigsMap());
             modelBuilder.Configurations.Add(new RelatedUnitConfigsMap());
             modelBuilder.Configurations.Add(new RelatedUnitDailyConfigMap());
+            modelBuilder.Configurations.Add(new UnitConfigUnitDailyConfigMap());
         }
     }
 }

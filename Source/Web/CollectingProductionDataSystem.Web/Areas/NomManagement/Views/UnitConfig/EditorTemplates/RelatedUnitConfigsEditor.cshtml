@@ -8,34 +8,6 @@
     .BindTo((IEnumerable<RelatedUnitConfigsViewModel>)ViewData["relatedUnits"])
     .DataTextField("Code")
     .DataValueField("Id")
-    //.AutoBind(true)
-                
-    //            .Placeholder(@Resources.Layout.ChooseProcessUnits)
-    //              .Value(Model)
-    //                  .Height(520)
-    //          .DataSource(source =>
-    //          {
-    //              source.Custom()
-    //                  .ServerFiltering(true)
-    //                  .ServerPaging(true)
-    //                  .PageSize(80)
-    //                  .Type("aspnetmvc-ajax") //Set this type if you want to use DataSourceRequest and ToDataSourceResult instances
-    //                  .Transport(transport =>
-    //                  {
-    //                      transport.Read(read =>
-    //                        {
-    //                            read.Action("Read", "RelatedUnitConfigs", new { area = "NomManagement" }).Data("sendAntiForgery");
-    //                        });
-    //                  })
-    //                  .Schema(schema =>
-    //                  {
-    //                      schema.Data("Data") //define the [data](http://docs.telerik.com/kendo-ui/api/javascript/data/datasource#configuration-schema.data) option
-    //                            .Total("Total"); //define the [total](http://docs.telerik.com/kendo-ui/api/javascript/data/datasource#configuration-schema.total) option
-
-    //                  });
-    //          })
-    //    .Virtual(v => v.ItemHeight(26).ValueMapper("valueMapper"))
-    //    .Filter(FilterType.Contains)
-        .ItemTemplate("<span class=\"order-id\">#= Code #</span> #= Name #")
+    .ItemTemplate("<span class=\"order-id\">#= Code #</span> #= Name #")
 )
 

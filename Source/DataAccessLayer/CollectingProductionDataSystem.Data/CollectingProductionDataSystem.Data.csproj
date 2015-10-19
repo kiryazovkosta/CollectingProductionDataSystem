@@ -78,6 +78,7 @@
     <Compile Include="Contracts\IProductionData.cs" />
     <Compile Include="Contracts\IRepository.cs" />
     <Compile Include="Mappings\ActiveTransactionsDataMap.cs" />
+    <Compile Include="Mappings\ApplicationUserParksMap.cs" />
     <Compile Include="Mappings\DailyProductTypeMap.cs" />
     <Compile Include="Identity\RoleStoreIntPk.cs" />
     <Compile Include="Identity\UserStoreIntPk.cs" />
@@ -112,6 +113,7 @@
     <Compile Include="Mappings\TankMasterProductMap.cs" />
     <Compile Include="Mappings\TransportTypeMap.cs" />
     <Compile Include="Mappings\UnitConfigMap.cs" />
+    <Compile Include="Mappings\UnitConfigUnitDailyConfigMap.cs" />
     <Compile Include="Mappings\UnitsApprovedDailyDataMap.cs" />
     <Compile Include="Mappings\UnitsDailyConfigMap.cs" />
     <Compile Include="Mappings\UnitsApprovedDataMap.cs" />

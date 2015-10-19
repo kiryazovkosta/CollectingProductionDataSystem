@@ -1,21 +1,24 @@
 ﻿namespace CollectingProductionDataSystem.Models.Productions
 {
+    using System.ComponentModel.DataAnnotations.Schema;
     using CollectingProductionDataSystem.Models.Abstract;
     using CollectingProductionDataSystem.Models.Contracts;
     using CollectingProductionDataSystem.Models.Nomenclatures;
     using System.Collections.Generic;
     using System.ComponentModel;
 
-    public partial class UnitsDailyConfig : DeletableEntity, IEntity
+    public partial class UnitDailyConfig : DeletableEntity, IEntity
     {
         private ICollection<UnitsDailyData> unitsDailyDatas;
         private ICollection<RelatedUnitDailyConfigs> relatedUnitDailyConfigs;
+        private ICollection<UnitConfigUnitDailyConfig> unitConfigUnitDailyConfig;
+        //private ICollection<UnitConfig> unitConfigs;
 
-        public UnitsDailyConfig()
+        public UnitDailyConfig()
         {
             this.unitsDailyDatas = new HashSet<UnitsDailyData>();
             this.relatedUnitDailyConfigs = new HashSet<RelatedUnitDailyConfigs>();
-            //this.UnitsConfigs = new HashSet<UnitConfig>();
+            this.unitConfigUnitDailyConfig = new HashSet<UnitConfigUnitDailyConfig>();
         }
 
         public int Id { get; set; }
@@ -44,7 +47,11 @@
             get { return this.relatedUnitDailyConfigs; }
             set { this.relatedUnitDailyConfigs = value; }
         }
-        
-        //public virtual ICollection<UnitConfig> UnitsConfigs { get; set; }
+
+        public virtual ICollection<UnitConfigUnitDailyConfig> UnitConfigUnitDailyConfigs
+        {
+            get { return this.unitConfigUnitDailyConfig; }
+            set { this.unitConfigUnitDailyConfig = value; }
+        }
     }
 }

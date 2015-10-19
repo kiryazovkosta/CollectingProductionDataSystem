@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using CollectingProductionDataSystem.Models.Abstract;
 using CollectingProductionDataSystem.Models.Contracts;
 using CollectingProductionDataSystem.Models.Nomenclatures;
@@ -12,12 +13,13 @@ namespace CollectingProductionDataSystem.Models.Productions
     {
         private ICollection<UnitsData> unitsDatas;
         private ICollection<RelatedUnitConfigs> relatedUnitConfigs;
+        private ICollection<UnitConfigUnitDailyConfig> unitConfigUnitDailyConfigs;
 
         public UnitConfig()
         {
             this.unitsDatas = new HashSet<UnitsData>();
             this.relatedUnitConfigs = new HashSet<RelatedUnitConfigs>();
-            //this.UnitsDailyConfigs = new HashSet<UnitsDailyConfig>();
+            this.unitConfigUnitDailyConfigs = new HashSet<UnitConfigUnitDailyConfig>();
         }
 
         public int Id { get; set; }
@@ -50,17 +52,21 @@ namespace CollectingProductionDataSystem.Models.Productions
         public virtual ProcessUnit ProcessUnit { get; set; }
         public virtual Product Product { get; set; }
         public virtual ShiftProductType ShiftProductType { get; set; }
-        public virtual ICollection<UnitsData> UnitsDatas 
-        { 
-            get {return this.unitsDatas; } 
-            set {this.unitsDatas = value; }
+        public virtual ICollection<UnitsData> UnitsDatas
+        {
+            get { return this.unitsDatas; }
+            set { this.unitsDatas = value; }
         }
         public virtual ICollection<RelatedUnitConfigs> RelatedUnitConfigs
         {
             get { return this.relatedUnitConfigs; }
             set { this.relatedUnitConfigs = value; }
         }
-        
-        //public virtual ICollection<UnitsDailyConfig> UnitsDailyConfigs { get; set; }
+
+        public virtual ICollection<UnitConfigUnitDailyConfig> UnitConfigUnitDailyConfigs
+        {
+            get { return this.unitConfigUnitDailyConfigs; }
+            set { this.unitConfigUnitDailyConfigs = value; }
+        }
     }
 }

@@ -272,7 +272,7 @@
                         Value = (decimal)value,
                         UnitsDailyConfigId = item.Id,
                         HasManualData = hasManualData,
-                        UnitsDatas = unitsDataList
+                        //UnitsDatas = unitsDataList
                     });
                 }
             }

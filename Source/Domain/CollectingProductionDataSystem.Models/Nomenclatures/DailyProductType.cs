@@ -11,11 +11,11 @@
     {
         public DailyProductType()
         {
-            this.UnitsDailyConfigs = new HashSet<UnitsDailyConfig>();
+            this.UnitsDailyConfigs = new HashSet<UnitDailyConfig>();
         }
 
         public int Id { get; set; }
         public string Name { get; set; }
-        public virtual ICollection<UnitsDailyConfig> UnitsDailyConfigs { get; set; }
+        public virtual ICollection<UnitDailyConfig> UnitsDailyConfigs { get; set; }
     }
 }

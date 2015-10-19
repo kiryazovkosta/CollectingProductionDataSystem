@@ -12,14 +12,14 @@ namespace CollectingProductionDataSystem.Models.Nomenclatures
     {
         private ICollection<TankData> tanksDatas;
         private ICollection<UnitConfig> unitConfigs;
-        private ICollection<UnitsDailyConfig> unitsDailyConfigs;
+        private ICollection<UnitDailyConfig> unitsDailyConfigs;
         private ICollection<MeasuringPointsConfigsData> measuringPointsConfigsDatas;
 
         public Product()
         {
             this.tanksDatas = new HashSet<TankData>();
             this.unitConfigs = new HashSet<UnitConfig>();
-            this.unitsDailyConfigs = new HashSet<UnitsDailyConfig>();
+            this.unitsDailyConfigs = new HashSet<UnitDailyConfig>();
             this.measuringPointsConfigsDatas = new HashSet<MeasuringPointsConfigsData>();
         }
 
@@ -42,7 +42,7 @@ namespace CollectingProductionDataSystem.Models.Nomenclatures
             set { this.unitConfigs = value; }
         }
 
-        public virtual ICollection<UnitsDailyConfig> UnitsDailyConfigs
+        public virtual ICollection<UnitDailyConfig> UnitsDailyConfigs
         {
             get { return this.unitsDailyConfigs; }
             set { this.unitsDailyConfigs = value; }

@@ -9,7 +9,7 @@
     using CollectingProductionDataSystem.Models.Productions;
     using Resources = App_GlobalResources.Resources;
 
-    public class UnitsDailyConfigViewModel : IMapFrom<UnitsDailyConfig>, IHaveCustomMappings,IEntity
+    public class UnitsDailyConfigViewModel : IMapFrom<UnitDailyConfig>, IHaveCustomMappings,IEntity
     {
         [Required]
         [UIHint("Hidden")]
@@ -56,9 +56,9 @@
         /// <param name="configuration">The configuration.</param>
         public void CreateMappings(IConfiguration configuration)
         {
-            configuration.CreateMap<UnitsDailyConfig, UnitsDailyConfigViewModel>()
+            configuration.CreateMap<UnitDailyConfig, UnitsDailyConfigViewModel>()
                     .ForMember(p => p.DailyProductTypeId, opt => opt.MapFrom(p => p.DailyProductTypeId == null ? 0 : (int)p.DailyProductTypeId));
-            configuration.CreateMap<UnitsDailyConfigViewModel, UnitsDailyConfig>()
+            configuration.CreateMap<UnitsDailyConfigViewModel, UnitDailyConfig>()
                  .ForMember(p => p.DailyProductTypeId, opt => opt.MapFrom(p => p.DailyProductTypeId == 0 ? null : (Nullable<int>)p.DailyProductTypeId));
         }
     }
