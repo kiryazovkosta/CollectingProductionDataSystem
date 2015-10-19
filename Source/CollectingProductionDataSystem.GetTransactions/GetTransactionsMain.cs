@@ -2,16 +2,14 @@
 {
     using System;
     using System.Data;
-    using System.Data.Entity.Core.Common.CommandTrees.ExpressionBuilder;
     using System.Linq;
     using System.ServiceProcess;
     using System.Transactions;
     using CollectingProductionDataSystem.Data;
     using CollectingProductionDataSystem.Data.Concrete;
     using CollectingProductionDataSystem.Models.Transactions;
-    using log4net;
     using Uniformance.PHD;
-    using CollectingProductionDataSystem.Models.Nomenclatures;
+    using log4net;
 
     static class GetTransactionsMain
     {
@@ -395,17 +393,13 @@
                 var fiveOClock = today.AddHours(5);
                 
                 var ts = now - fiveOClock;
-                var revTs = fiveOClock - now;
                 if(ts.TotalMinutes > 0 && ts.Hours == 0)
                 {
                     using (var context = new ProductionData(new CollectingDataSystemDbContext(new AuditablePersister())))
                     {
                         var currentDate = today.AddDays(-1);
-                        if (context.ActiveTransactionsDatas.All().Where(x => x.RecordTimestamp == currentDate).Any())
-                        {
-                            logger.InfoFormat("There is already an active transaction data for {0}", currentDate);
-                        }
-                        else
+                        var existsActiveTransactionData = context.ActiveTransactionsDatas.All().Where(x => x.RecordTimestamp == currentDate).Any();
+                        if (!existsActiveTransactionData)
                         {
                             var activeTransactionsTags = context.MeasuringPointConfigs.All().Where(x => !String.IsNullOrEmpty(x.ActiveTransactionStatusTag)).ToList();
                             if (activeTransactionsTags.Count > 0)
@@ -414,59 +408,15 @@
                                 {
                                     using (PHDServer defaultServer = new PHDServer(Properties.Settings.Default.PHD_HOST))
                                     {
-                                        defaultServer.Port = Properties.Settings.Default.PHD_PORT;
-                                        defaultServer.APIVersion = Uniformance.PHD.SERVERVERSION.RAPI200;
-                                        oPhd.DefaultServer = defaultServer;
-                                        oPhd.StartTime = string.Format("NOW - {0}M", ts.Minutes - 2);
-                                        oPhd.EndTime = string.Format("NOW - {0}M", ts.Minutes - 2);
-                                        oPhd.Sampletype = SAMPLETYPE.Snapshot;
-                                        oPhd.MinimumConfidence = 100;
-                                        oPhd.MaximumRows = 1;
+                                        SetPhdConnectionSettings(defaultServer, oPhd, ts);
 
                                         var tagsList = new Tags();
                                         foreach (var item in activeTransactionsTags)
                                         {
-                                            tagsList.RemoveAll();
-                                            tagsList.Add(new Tag { TagName = item.ActiveTransactionStatusTag });
-                                            var result = oPhd.FetchRowData(tagsList);
-                                            var row = result.Tables[0].Rows[0];
-                                            if (row["Value"].ToString() == "1")
+                                            var activeTransactionData = ProcessMeasuringPoint(tagsList, item, oPhd, currentDate, context);
+                                            if (activeTransactionData != null)
                                             {
-                                                tagsList.RemoveAll();
-                                                tagsList.Add(new Tag { TagName = item.ActiveTransactionProductTag });
-                                                tagsList.Add(new Tag { TagName = item.ActiveTransactionMassTag });
-
-                                                var activeTransactionData = new ActiveTransactionsData
-                                                {
-                                                    RecordTimestamp = currentDate, 
-                                                    MeasuringPointConfigId = item.Id
-                                                };
-
-                                                var valueResult = oPhd.FetchRowData(tagsList);
-                                                foreach (DataRow valueRow in valueResult.Tables[0].Rows)
-                                                {
-                                                    if( valueRow[0].ToString().Equals(item.ActiveTransactionProductTag))
-                                                    {
-                                                        int code = Convert.ToInt32(valueRow["Value"]);
-                                                        var product = context.Products.All().Where(x => x.Code == code).FirstOrDefault();
-                                                        activeTransactionData.ProductId = product != null ? product.Id : 1;
-                                                    }
-                                                    else 
-                                                    {
-                                                        activeTransactionData.Mass = Convert.ToDecimal(valueRow["Value"]);
-                                                    }
-
-                                                    logger.InfoFormat("{0} : {1} : {2} : {3} : {4} : {5} : {6}", 
-                                                        fiveOClock, 
-                                                        now, 
-                                                        valueRow["Timestamp"],
-                                                        ts.Hours,
-                                                        ts.Minutes,
-                                                        ts.TotalMinutes,
-                                                        revTs.TotalMinutes);
-                                                }
-
-                                                context.ActiveTransactionsDatas.Add(activeTransactionData);
+                                                context.ActiveTransactionsDatas.Add(activeTransactionData); 
                                             }
                                         }
 
@@ -484,6 +434,84 @@
             {
                 logger.Error(ex.Message, ex);
             }
+        }
+ 
+        private static ActiveTransactionsData ProcessMeasuringPoint(Tags tagsList, MeasuringPointConfig item, PHDHistorian oPhd, DateTime currentDate, ProductionData context)
+        {
+            tagsList.RemoveAll();
+            tagsList.Add(new Tag { TagName = item.ActiveTransactionStatusTag });
+            var result = oPhd.FetchRowData(tagsList);
+            var row = result.Tables[0].Rows[0];
+            if (row["Value"].ToString() == "1")
+            {
+                tagsList.RemoveAll();
+                tagsList.Add(new Tag { TagName = item.ActiveTransactionProductTag });
+                if (item.DirectionId == 1)
+                {
+                    tagsList.Add(new Tag { TagName = item.ActiveTransactionMassTag });
+                }
+                else if (item.DirectionId == 2)
+                {
+                    tagsList.Add(new Tag { TagName = item.ActiveTransactionMassReverseTag });
+                }
+                else 
+                { 
+                    tagsList.Add(new Tag { TagName = item.ActiveTransactionMassTag });
+                    tagsList.Add(new Tag { TagName = item.ActiveTransactionMassReverseTag });
+                }
+
+                var activeTransactionData = new ActiveTransactionsData
+                {
+                    RecordTimestamp = currentDate,
+                    MeasuringPointConfigId = item.Id
+                };
+
+                var valueResult = oPhd.FetchRowData(tagsList);
+                foreach (DataRow valueRow in valueResult.Tables[0].Rows)
+                {
+                    if (valueRow[0].ToString().Equals(item.ActiveTransactionProductTag))
+                    {
+                        int code = Convert.ToInt32(valueRow["Value"]);
+                        var product = context.Products.All().Where(x => x.Code == code).FirstOrDefault();
+                        activeTransactionData.ProductId = product != null ? product.Id : 1;
+                    }
+                    else 
+                    {
+                        var value = 0m;
+                        if (valueRow[0].ToString().Equals(item.ActiveTransactionMassTag))
+                        {
+
+                            if(decimal.TryParse(valueRow["Value"].ToString(), out value))
+                            {
+                                activeTransactionData.Mass = value;
+                            }
+                        }
+                        else if (valueRow[0].ToString().Equals(item.ActiveTransactionMassReverseTag))
+                        {
+                            if(decimal.TryParse(valueRow["Value"].ToString(), out value))
+                            {
+                                activeTransactionData.Mass = value;
+                            }
+                        }
+                    }
+                }
+
+                return activeTransactionData;
+            }
+
+            return null;
+        }
+ 
+        private static void SetPhdConnectionSettings(PHDServer defaultServer, PHDHistorian oPhd, TimeSpan ts)
+        {
+            defaultServer.Port = Properties.Settings.Default.PHD_PORT;
+            defaultServer.APIVersion = Uniformance.PHD.SERVERVERSION.RAPI200;
+            oPhd.DefaultServer = defaultServer;
+            oPhd.StartTime = string.Format("NOW - {0}M", ts.Minutes - 2);
+            oPhd.EndTime = string.Format("NOW - {0}M", ts.Minutes - 2);
+            oPhd.Sampletype = SAMPLETYPE.Snapshot;
+            oPhd.MinimumConfidence = 100;
+            oPhd.MaximumRows = 1;
         }
 
         private static MeasuringPointConfig GetMeasuringPointConfig(string scaleNumber,ProductionData context)
