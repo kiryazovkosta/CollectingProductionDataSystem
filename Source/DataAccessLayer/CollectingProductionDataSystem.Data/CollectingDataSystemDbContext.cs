@@ -120,6 +120,11 @@
 
         public IDbSet<UnitConfigUnitDailyConfig> UnitConfigUnitDailyConfigs { get; set; }
 
+        public IDbSet<ApplicationUserPark> ApplicationUserParks { get; set; }
+
+        public IDbSet<ApplicationUserProcessUnit> ApplicationUserProcessUnits { get; set; }
+
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             ModelBingConfig.RegisterMappings(modelBuilder);

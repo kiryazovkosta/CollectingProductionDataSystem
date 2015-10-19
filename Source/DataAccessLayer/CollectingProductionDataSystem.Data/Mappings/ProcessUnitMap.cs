@@ -28,6 +28,9 @@ namespace CollectingProductionDataSystem.Data.Mappings
                 .WithMany(t => t.ProcessUnits)
                 .HasForeignKey(d => d.FactoryId);
 
+            this.HasMany(t => t.ApplicationUserProcessUnits)
+               .WithRequired()
+               .HasForeignKey(x => x.ProcessUnitId).WillCascadeOnDelete(false);
         }
     }
 }

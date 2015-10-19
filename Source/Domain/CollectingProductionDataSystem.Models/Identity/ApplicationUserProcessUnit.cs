@@ -1,25 +1,23 @@
 ﻿/// <summary>
-/// Summary description for ApplicationUserPark
+/// Summary description for ApplicationUserProcessUnit
 /// </summary>
 namespace CollectingProductionDataSystem.Models.Identity
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
-    using CollectingProductionDataSystem.Models.Inventories;
+    using CollectingProductionDataSystem.Models.Productions;
 
-    public class ApplicationUserPark
+    public class ApplicationUserProcessUnit
     {
         public int ApplicationUserId { get; set; }
 
-        public int ParkId { get; set; }
+        public int ProcessUnitId { get; set; }
 
         public virtual ApplicationUser ApplicationUser { get; set; }
 
-        public virtual Park Park { get; set; }
+        public virtual ProcessUnit ProcessUnit { get; set; }
     }
 }

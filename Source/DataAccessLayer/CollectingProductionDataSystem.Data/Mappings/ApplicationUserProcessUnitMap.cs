@@ -1,5 +1,5 @@
 ﻿/// <summary>
-/// Summary description for ApplicationUserPark
+/// Summary description for ApplicationUserProcessUnitMap
 /// </summary>
 namespace CollectingProductionDataSystem.Data.Mappings
 {
@@ -11,16 +11,16 @@ namespace CollectingProductionDataSystem.Data.Mappings
     using System.Threading.Tasks;
     using CollectingProductionDataSystem.Models.Identity;
 
-    public class ApplicationUserParkMap:EntityTypeConfiguration<ApplicationUserPark>
+    class ApplicationUserProcessUnitMap:EntityTypeConfiguration<ApplicationUserProcessUnit>
     {
-        public ApplicationUserParkMap()
+        public ApplicationUserProcessUnitMap()
         {
             // Key
-            this.HasKey(t => (new { ApplicationUserId = t.ApplicationUserId, ParkId = t.ParkId }));
+            this.HasKey(t => (new { ApplicationUserId = t.ApplicationUserId, ProcessUnitId = t.ProcessUnitId }));
 
             //Foreign Keys
             this.HasRequired(p => p.ApplicationUser).WithMany().HasForeignKey(y => y.ApplicationUserId).WillCascadeOnDelete(false);
-            this.HasRequired(p => p.Park).WithMany().HasForeignKey(y=>y.ParkId).WillCascadeOnDelete(false);
+            this.HasRequired(p => p.ProcessUnit).WithMany().HasForeignKey(y=>y.ProcessUnitId).WillCascadeOnDelete(false);
         }
     }
 }

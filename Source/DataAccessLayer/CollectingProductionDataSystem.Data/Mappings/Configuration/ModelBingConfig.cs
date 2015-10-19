@@ -49,6 +49,8 @@
             modelBuilder.Configurations.Add(new RelatedUnitConfigsMap());
             modelBuilder.Configurations.Add(new RelatedUnitDailyConfigMap());
             modelBuilder.Configurations.Add(new UnitConfigUnitDailyConfigMap());
+            modelBuilder.Configurations.Add(new ApplicationUserParkMap());
+            modelBuilder.Configurations.Add(new ApplicationUserProcessUnitMap());
         }
     }
 }

@@ -107,8 +107,10 @@ namespace CollectingProductionDataSystem.Application.UserServices
             dbUser.IsChangePasswordRequired = user.IsChangePasswordRequired;
             dbUser.Roles.Clear();
             dbUser.Roles.AddRange(user.Roles);
-            dbUser.ProcessUnits.Clear();
-            dbUser.ProcessUnits.AddRange(user.ProcessUnits);
+            dbUser.ApplicationUserParks.Clear();
+            dbUser.ApplicationUserParks.AddRange(user.ApplicationUserParks);
+            dbUser.ApplicationUserProcessUnits.Clear();
+            dbUser.ApplicationUserProcessUnits.AddRange(user.ApplicationUserProcessUnits);
         }
 
         /// <summary>

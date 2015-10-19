@@ -156,13 +156,13 @@
             //    user.Parks.Clear();
             //    user.Parks.AddRange(parksToAdd);
             //}
-            if (model.ProcessUnits != null)
-            {
-                List<int> processUnits = model.ProcessUnits.Select(x => x.Id).ToList();
-                var processUnitsToAdd = await data.ProcessUnits.All().Where(x => processUnits.Any(p => x.Id == p)).ToListAsync();
-                user.ProcessUnits.Clear();
-                user.ProcessUnits.AddRange(processUnitsToAdd);
-            }
+            //if (model.ProcessUnits != null)
+            //{
+            //    List<int> processUnits = model.ProcessUnits.Select(x => x.Id).ToList();
+            //    var processUnitsToAdd = await data.ProcessUnits.All().Where(x => processUnits.Any(p => x.Id == p)).ToListAsync();
+            //    user.ProcessUnits.Clear();
+            //    user.ProcessUnits.AddRange(processUnitsToAdd);
+            //}
             return user;
         }
     }

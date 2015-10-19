@@ -64,7 +64,8 @@
     <Compile Include="Contracts\IAuditInfo.cs" />
     <Compile Include="Contracts\IDeletableEntity.cs" />
     <Compile Include="Contracts\IEntity.cs" />
-    <Compile Include="Identity\ApplicationUserParks.cs" />
+    <Compile Include="Identity\ApplicationUserPark.cs" />
+    <Compile Include="Identity\ApplicationUserProcessUnit.cs" />
     <Compile Include="Identity\UserClaimIntPk.cs" />
     <Compile Include="Identity\UserLoginIntPk.cs" />
     <Compile Include="Identity\UserRoleIntPk.cs" />

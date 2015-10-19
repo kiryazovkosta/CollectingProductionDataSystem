@@ -19,14 +19,16 @@ namespace CollectingProductionDataSystem.Data.Mappings
             // Primary Key
             this.HasKey(t => t.Id);
 
-            // Relationships
-            this.HasMany(t => t.ProcessUnits)
-                .WithMany(t => t.Users);
+   
+            
 
-            //this.HasMany(t => t.Parks)
-            //    .WithMany(t => t.Users);
+            //Foreign Keys
 
             this.HasMany(t => t.ApplicationUserParks)
+                .WithRequired()
+                .HasForeignKey(x => x.ApplicationUserId).WillCascadeOnDelete(false);
+
+            this.HasMany(t => t.ApplicationUserProcessUnits)
                 .WithRequired()
                 .HasForeignKey(x => x.ApplicationUserId).WillCascadeOnDelete(false);
         }

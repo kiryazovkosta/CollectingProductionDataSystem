@@ -16,10 +16,10 @@
     // You can add profile data for the user by adding more properties to your ApplicationUser class, please visit http://go.microsoft.com/fwlink/?LinkID=317594 to learn more.
     public class ApplicationUser : IdentityUser<int, UserLoginIntPk, UserRoleIntPk, UserClaimIntPk>, IAuditInfo, IDeletableEntity, IEntity
     {
-        private ICollection<ProcessUnit> processUnits;
+        private ICollection<ApplicationUserProcessUnit> applicationUserProcessUnits;
         //private ICollection<Park> parks;
         private IEnumerable<ApplicationRole> userRoles;
-        private ICollection<ApplicationUserParks> applicationUserParks;
+        private ICollection<ApplicationUserPark> applicationUserParks;
 
         #region IAuditInfo_IDeletableEntity
         /// <summary>
@@ -73,10 +73,9 @@
 
         public ApplicationUser()
         {
-            this.processUnits = new HashSet<ProcessUnit>();
-           // this.parks = new HashSet<Park>();
+            this.applicationUserProcessUnits = new HashSet<ApplicationUserProcessUnit>();
             this.userRoles = new List<ApplicationRole>();
-            this.applicationUserParks = new HashSet<ApplicationUserParks>();
+            this.applicationUserParks = new HashSet<ApplicationUserPark>();
             this.CreatedOn = DateTime.Now;
         }
 
@@ -102,19 +101,13 @@
 
         public bool IsChangePasswordRequired { get; set; }
 
-        public virtual ICollection<ProcessUnit> ProcessUnits
+        public virtual ICollection<ApplicationUserProcessUnit> ApplicationUserProcessUnits
         {
-            get { return this.processUnits; }
-            set { this.processUnits = value; }
+            get { return this.applicationUserProcessUnits; }
+            set { this.applicationUserProcessUnits = value; }
         }
 
-        //public virtual ICollection<Park> Parks
-        //{
-        //    get { return this.parks; }
-        //    set { this.parks = value; }
-        //}
-
-        public virtual ICollection<ApplicationUserParks> ApplicationUserParks
+        public virtual ICollection<ApplicationUserPark> ApplicationUserParks
         {
             get { return this.ApplicationUserParks; }
             set { this.ApplicationUserParks = value; }

@@ -8,11 +8,11 @@ namespace CollectingProductionDataSystem.Models.Productions
 
     public partial class ProcessUnit : DeletableEntity, IEntity
     {
-        private ICollection<ApplicationUser> users;
+        private ICollection<ApplicationUserProcessUnit> applicationUserProcessUnits;
         private ICollection<ProductionPlanConfig> productionPlanConfigs;
         public ProcessUnit()
         {
-            this.users = new HashSet<ApplicationUser>();
+            this.applicationUserProcessUnits = new HashSet<ApplicationUserProcessUnit>();
             this.UnitsConfigs = new HashSet<UnitConfig>();
             this.UnitsDailyConfigs = new HashSet<UnitDailyConfig>();
             this.productionPlanConfigs = new HashSet<ProductionPlanConfig>();
@@ -25,10 +25,10 @@ namespace CollectingProductionDataSystem.Models.Productions
         public virtual Factory Factory { get; set; }
         public virtual ICollection<UnitConfig> UnitsConfigs { get; set; }
         public virtual ICollection<UnitDailyConfig> UnitsDailyConfigs { get; set; }
-        public virtual ICollection<ApplicationUser> Users 
+        public virtual ICollection<ApplicationUserProcessUnit> ApplicationUserProcessUnits 
         {
-            get { return users; }
-            set { this.users = value; }
+            get { return applicationUserProcessUnits; }
+            set { this.applicationUserProcessUnits = value; }
         }
         public virtual ICollection<ProductionPlanConfig> ProductionPlanConfigs
         {
