@@ -261,6 +261,7 @@
                                     tr.BatchId = row.BatchId;
                                 }
 
+                                logger.InfoFormat("Processing sequence number {0}", row.SequenceNumber);
                                 context.MeasuringPointsConfigsDatas.Add(tr);
                             }
 
@@ -326,7 +327,16 @@
                                 tr.BaseProductName = row.PRODUCT_NAME;
                                 tr.ProductNumber = Convert.ToInt32(row.PRODUCT_ID);
                                 tr.ProductName = row.PRODUCT_NAME;
-                                tr.ProductId = Convert.ToInt32(row.PRODUCT_ID);
+                                int code = Convert.ToInt32(row.PRODUCT_ID);
+                                var product = context.Products.All().Where(p=>p.Code == code).FirstOrDefault();
+                                if(product != null)
+                                { 
+                                    tr.ProductId = product.Id;
+                                }
+                                else
+                                {
+                                    logger.InfoFormat("{0}", row.PRODUCT_ID);
+                                }
                                 tr.FlowDirection = row.DIRECTION==2?1:2;
                                 tr.EngineeringUnitMass = string.Empty;
                                 tr.EngineeringUnitVolume = string.Empty;
@@ -480,9 +490,12 @@
                         var value = 0m;
                         if (valueRow[0].ToString().Equals(item.ActiveTransactionMassTag))
                         {
-
                             if(decimal.TryParse(valueRow["Value"].ToString(), out value))
                             {
+                                if (!string.IsNullOrEmpty(item.MassCorrectionFactor))
+                                {
+                                    value = value / Convert.ToDecimal(item.MassCorrectionFactor); 
+                                }
                                 activeTransactionData.Mass = value;
                             }
                         }
@@ -490,6 +503,10 @@
                         {
                             if(decimal.TryParse(valueRow["Value"].ToString(), out value))
                             {
+                                if (!string.IsNullOrEmpty(item.MassCorrectionFactor))
+                                {
+                                    value = value / Convert.ToDecimal(item.MassCorrectionFactor); 
+                                }
                                 activeTransactionData.Mass = value;
                             }
                         }

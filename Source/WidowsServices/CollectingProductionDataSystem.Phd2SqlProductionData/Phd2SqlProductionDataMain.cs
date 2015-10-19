@@ -108,7 +108,7 @@
                                 }
                             }
                             
-                            var status = context.SaveChanges("PHD2SQL");
+                            var status = context.SaveChanges("Phd2SqlLoader");
                             logger.InfoFormat("Successfully added {0} records to CollectingPrimaryDataSystem", status.ResultRecordsCount);
                         }
                     }
