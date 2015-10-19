@@ -85,16 +85,46 @@ namespace CollectingProductionDataSystem.Data.Migrations
             //{
             //    TanksDataImporter.Insert(context);
             //}
-//#if DEBUG
-//            if (!context.Users.Where(x => x.UserName.Contains("User")).Any())
-//            {
-//                this.SeedUsers(context);
-//            }
-//#endif
-            if (!context.Users.Any())
+            //#if DEBUG
+            //            if (!context.Users.Where(x => x.UserName.Contains("User")).Any())
+            //            {
+            //                this.SeedUsers(context);
+            //            }
+            //#endif
+            if (!context.Roles.Any())
             {
-                this.SeedUsers(context);
-                this.CreateSystemAdministrator(context);
+                this.CreateRoles(context);
+                
+                //this.SeedUsers(context);
+            }
+            this.CreateSystemAdministrator(context);
+        }
+ 
+        /// <summary>
+        /// Creates the system administrator.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        private void CreateSystemAdministrator(CollectingDataSystemDbContext context)
+        {
+            if (context.Users.Where(x => x.UserName == "Administrator").FirstOrDefault() == null)
+            {
+                var user = new ApplicationUser()
+                {
+                    Id = 1,
+                    Email = "Nikolay.Kostadinov@bmsys.eu",
+                    UserName = "Administrator",
+                    CreatedOn = DateTime.Now,
+                    CreatedFrom = "InitialLoading",
+                    PasswordHash = new PasswordHasher().HashPassword(CommonConstants.StandartPassword),
+                    SecurityStamp = Guid.NewGuid().ToString(),
+                };
+                user.Roles.Add(new UserRoleIntPk() { UserId = user.Id, RoleId = 1 });
+                context.Users.Add(user);
+                //context.SaveChanges("InitialLoading");
+                //var userManger = new UserManager<ApplicationUser,int>(new UserStoreIntPk(context));
+                //userManger.Create(user, CommonConstants.StandartPassword);
+                //userManger.AddToRole(user.Id,"Administrator");
+                ////context.SaveChanges("InitialLoading");
             }
         }
 
@@ -129,8 +159,8 @@ namespace CollectingProductionDataSystem.Data.Migrations
 
         private void CreateTankMasterProducts(CollectingDataSystemDbContext context)
         {
-            context.TankMasterProducts.AddOrUpdate(p=>p.Id, 
-                
+            context.TankMasterProducts.AddOrUpdate(p => p.Id,
+
                 new TankMasterProduct { TankMasterProductCode = 1, Name = "NEFT", Id = 2 },
                 new TankMasterProduct { TankMasterProductCode = 2, Name = "Mazut za specificna prerabotka", Id = 3 },
                 new TankMasterProduct { TankMasterProductCode = 4, Name = "MTBE - vnos", Id = 5 },
@@ -2503,7 +2533,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
             context.SaveChanges();
         }
 
-        private void CreateSystemAdministrator(CollectingDataSystemDbContext context)
+        private void CreateRoles(CollectingDataSystemDbContext context)
         {
             if (!context.Roles.Any())
             {
@@ -2540,28 +2570,15 @@ namespace CollectingProductionDataSystem.Data.Migrations
                         Description = "Управление на номенклатури"
                     },
                 };
+
                 var roleManager = new RoleManager<ApplicationRole, int>(new RoleStoreIntPk(context));
+               
                 foreach (var role in roles)
                 {
                     roleManager.Create(role);
                 }
-                
-            }
 
-            if (context.Users.Where(x => x.UserName == "Administrator").FirstOrDefault() == null)
-            {
-                var user = new ApplicationUser()
-                {
-                    Email = "Nikolay.Kostadinov@bmsys.eu",
-                    UserName = "Administrator"
-                };
-                user.Roles.Add(new UserRoleIntPk()
-                {
-                    UserId = 1,
-                    RoleId = 1
-                });
-                var manager = new UserManager<ApplicationUser, int>(new UserStoreIntPk(context));
-                manager.Create(user, CommonConstants.StandartPassword);
+                context.SaveChanges("InitialLoading");
             }
         }
 
@@ -2569,7 +2586,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
         {
             var users = new List<ApplicationUser>();
             var hasher = new PasswordHasher();
-            for (int i = 0; i < 1; i++)
+            for (int i = 2; i < 200; i++)
             {
                 if (context.Users.Where(x => x.UserName == "User_" + i).FirstOrDefault() == null)
                 {

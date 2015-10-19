@@ -109,8 +109,8 @@
 
         public virtual ICollection<ApplicationUserPark> ApplicationUserParks
         {
-            get { return this.ApplicationUserParks; }
-            set { this.ApplicationUserParks = value; }
+            get { return this.applicationUserParks; }
+            set { this.applicationUserParks = value; }
         }
 
         [NotMapped]

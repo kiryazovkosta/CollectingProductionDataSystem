@@ -19,8 +19,6 @@ namespace CollectingProductionDataSystem.Data.Mappings
             // Primary Key
             this.HasKey(t => t.Id);
 
-   
-            
 
             //Foreign Keys
 
