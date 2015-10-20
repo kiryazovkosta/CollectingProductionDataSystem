@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using AutoMapper;
+using AutoMapper;
 using CollectingProductionDataSystem.Infrastructure.Mapping;
 using CollectingProductionDataSystem.Models.Identity;
 using CollectingProductionDataSystem.Models.Inventories;
@@ -9,7 +11,7 @@ using CollectingProductionDataSystem.Models.Productions;
 
 namespace CollectingProductionDataSystem.Models.UtilityEntities
 {
-    public class UserProfile : IMapFrom<ApplicationUser>
+    public class UserProfile : IMapFrom<ApplicationUser>, IHaveCustomMappings
     {
         public int Id { get; set; }
 
@@ -22,6 +24,18 @@ namespace CollectingProductionDataSystem.Models.UtilityEntities
         public string MiddleName { get; set; }
 
         public string LastName { get; set; }
+
+        /// <summary>
+        /// Creates the mappings.
+        /// </summary>
+        /// <param name="configuration">The configuration.</param>
+        public void CreateMappings(IConfiguration configuration)
+        {
+            configuration.CreateMap<ApplicationUser, UserProfile>()
+                .ForMember(p => p.Parks, opt => opt.MapFrom(p => p.ApplicationUserParks.Select(x => x.Park)))
+                .ForMember(p => p.ProcessUnits, opt => opt.MapFrom(p => p.ApplicationUserProcessUnits.Select(x => x.ProcessUnit)));
+
+        }
 
         public string FullName
         {
