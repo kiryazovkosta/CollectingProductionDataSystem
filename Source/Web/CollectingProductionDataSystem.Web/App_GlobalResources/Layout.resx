@@ -819,4 +819,10 @@
   <data name="UnitsReportData" xml:space="preserve">
     <value>Units Data</value>
   </data>
+  <data name="RelatedUnitConfigs" xml:space="preserve">
+    <value>Related Unit Configs</value>
+  </data>
+  <data name="UnitConfigUnitDailyConfig" xml:space="preserve">
+    <value>Related Dhift Unit Config</value>
+  </data>
 </root>

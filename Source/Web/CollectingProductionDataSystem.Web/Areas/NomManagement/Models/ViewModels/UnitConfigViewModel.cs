@@ -103,6 +103,7 @@
         public bool IsEditable { get; set; }
 
         [UIHint("RelatedUnitConfigsEditor")]
+        [Display(Name = "RelatedUnitConfigs", ResourceType = typeof(Resources.Layout))]
         public ICollection<RelatedUnitConfigsViewModel> RelatedUnitConfigs { get; set; }
 
         /// <summary>
@@ -137,7 +138,8 @@
                 .ForMember(p => p.PreserveCreatedOn, opt => opt.Ignore())
                 .ForMember(p => p.ModifiedOn, opt => opt.Ignore())
                 .ForMember(p => p.CreatedFrom, opt => opt.Ignore())
-                .ForMember(p => p.ModifiedFrom, opt => opt.Ignore());
+                .ForMember(p => p.ModifiedFrom, opt => opt.Ignore())
+                .ForMember(p => p.UnitConfigUnitDailyConfigs, opt => opt.Ignore());
         }
     }
 }

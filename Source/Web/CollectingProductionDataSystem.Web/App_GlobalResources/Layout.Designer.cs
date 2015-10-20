@@ -1717,6 +1717,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Related Unit Configs.
+        /// </summary>
+        public static string RelatedUnitConfigs {
+            get {
+                return ResourceManager.GetString("RelatedUnitConfigs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Remember me?.
         /// </summary>
         public static string RememberMe {
@@ -1983,6 +1992,15 @@ namespace App_GlobalResources.Resources {
         public static string UnitConfig {
             get {
                 return ResourceManager.GetString("UnitConfig", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Related Dhift Unit Config.
+        /// </summary>
+        public static string UnitConfigUnitDailyConfig {
+            get {
+                return ResourceManager.GetString("UnitConfigUnitDailyConfig", resourceCulture);
             }
         }
         

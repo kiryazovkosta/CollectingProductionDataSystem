@@ -10,9 +10,14 @@ namespace CollectingProductionDataSystem.Models.Productions
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
+    using CollectingProductionDataSystem.Models.Abstract;
+    using CollectingProductionDataSystem.Models.Contracts;
 
-    public class UnitConfigUnitDailyConfig 
+    public class UnitConfigUnitDailyConfig : DeletableEntity, IEntity
     {
+        [NotMapped]
+        public int Id { get; set; }
+            
         public int UnitConfigId { get; set; }
 
         public int UnitDailyConfigId { get; set; }

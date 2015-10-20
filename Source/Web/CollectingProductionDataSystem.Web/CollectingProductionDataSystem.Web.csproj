@@ -284,6 +284,7 @@
     <Compile Include="Areas\NomManagement\Models\ViewModels\TankMasterProductViewModel.cs" />
     <Compile Include="Areas\NomManagement\Models\ViewModels\TankConfigViewModel.cs" />
     <Compile Include="Areas\NomManagement\Models\ViewModels\TransportTypeViewModel.cs" />
+    <Compile Include="Areas\NomManagement\Models\ViewModels\UnitConfigUnitDailyConfigViewModel.cs" />
     <Compile Include="Areas\NomManagement\Models\ViewModels\UnitConfigViewModel.cs" />
     <Compile Include="Areas\NomManagement\Models\ViewModels\UnitsDailyConfigViewModel.cs" />
     <Compile Include="Areas\NomManagement\NomManagementAreaRegistration.cs" />
@@ -765,6 +766,7 @@
     <Content Include="Areas\NomManagement\Views\TankMasterProduct\Index.cshtml" />
     <Content Include="Areas\NomManagement\Views\UnitConfig\EditorTemplates\RelatedUnitConfigsEditor.cshtml" />
     <Content Include="Areas\ShiftReporting\Views\UnitsReports\UnitsReportsData.cshtml" />
+    <Content Include="Areas\NomManagement\Views\UnitsDailyConfig\EditorTemplates\UnitConfigUnitDailyConfigEditor.cshtml" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <None Include="Properties\PublishProfiles\Home.pubxml" />
     <Content Include="Scripts\custom\sendArea.js" />

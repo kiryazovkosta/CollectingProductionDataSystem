@@ -18,15 +18,7 @@ namespace CollectingProductionDataSystem.Data.Mappings
             // Key
             this.HasKey(t => (new { UnitConfigId = t.UnitConfigId, UnitDailyConfigId = t.UnitDailyConfigId }));
 
-            //this.Property(t => t.UnitConfigId)
-            //    .IsRequired()
-            //    .HasColumnName("UnitConfigId");
-            //this.Property(t => t.UnitDailyConfigId)
-            //    .IsRequired()
-            //    .HasColumnName("UnitDailyConfigId");
-            
-
-            //this.ToTable("UnitConfigUnitDailyConfigs");
+            // Relationships
             this.HasRequired(p => p.UnitConfig).WithMany().HasForeignKey(y => y.UnitConfigId).WillCascadeOnDelete(false);
             this.HasRequired(p => p.UnitDailyConfig).WithMany().HasForeignKey(y=>y.UnitDailyConfigId).WillCascadeOnDelete(false);
         }

@@ -83,6 +83,8 @@
 
         IDeletableEntityRepository<ActiveTransactionsData> ActiveTransactionsDatas { get; }
 
+        IDeletableEntityRepository<UnitConfigUnitDailyConfig> UnitConfigUnitDailyConfigs { get; }
+
         IDbContext DbContext { get; }
 
         IEfStatus SaveChanges(string userName);

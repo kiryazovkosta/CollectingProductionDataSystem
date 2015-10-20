@@ -23,10 +23,16 @@
         /// <returns></returns>
         public IEnumerable<UnitsData> GetUnitsDataForDailyRecord(int unitDailyDataId)
         {
-            var dbResult = GetAllUnitDataIncludeRelations()
-                .Where(x =>
-                    (x.UnitConfig.UnitConfigUnitDailyConfigs.Select(y => y.UnitDailyConfig))
-                    .Any(z=>z.UnitsDailyDatas.Any(w=>w.Id == unitDailyDataId)));
+            //var dbResult = GetAllUnitDataIncludeRelations()
+            //    .Where(x =>
+            //        (x.UnitConfig.UnitConfigUnitDailyConfigs.Select(y => y.UnitDailyConfig))
+            //        .Any(z=>z.UnitsDailyDatas.Any(w=>w.Id == unitDailyDataId)));
+
+            var unitDailyData = this.data.UnitsDailyDatas.GetById(unitDailyDataId);
+
+            var dbResult = this.data.UnitsDailyDatas.GetById(unitDailyDataId).UnitsDailyConfig.UnitConfigUnitDailyConfigs
+                            .SelectMany(x => x.UnitConfig.UnitsDatas)
+                            .Where(y => y.RecordTimestamp == unitDailyData.RecordTimestamp);
 
             return dbResult;
         }

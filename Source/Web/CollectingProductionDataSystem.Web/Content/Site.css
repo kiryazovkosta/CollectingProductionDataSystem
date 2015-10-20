@@ -471,8 +471,8 @@ aside.nom-side-nav.nom-side-nav-lg {
     background-color: #aaa;
     overflow-y: auto;
     max-width: 98%;
-    width:320px;
-    height:700px;
+    width: 320px;
+    height: 700px;
 }
 
 .paddingless {
@@ -529,9 +529,9 @@ aside.nom-side-nav panel-collapse {
         text-decoration: none;
     }
 
-    aside.nom-side-nav div.panel .panel-heading a span {
-        color:red;
-    }
+        aside.nom-side-nav div.panel .panel-heading a span {
+            color: red;
+        }
 
         aside.nom-side-nav div.panel .panel-heading a:hover {
             background-color: #fff;
@@ -594,36 +594,51 @@ aside.nom-side-nav li {
 }
 
 div#page-content {
-    display:inline-block;
+    display: inline-block;
     position: absolute;
     margin: 0 20px;
 }
+
 div#aside-wrapper {
-    display:inline-block;
-    max-width:350px;
-    margin-top:-9px;
-    margin-left:-15px;
-    max-height:95%;
+    display: inline-block;
+    max-width: 350px;
+    margin-top: -9px;
+    margin-left: -15px;
+    max-height: 95%;
 }
+
+/*---------------grid stiling --------------------*/
+
+td[role=gridcell] ul {
+    margin: 0;
+    padding: 0;
+}
+
+    td[role=gridcell] ul li {
+        display: inline-block;
+        border: 1px solid black;
+        border-radius: 4px;
+        margin: 2px;
+    }
 
 /*Small*/
 @media only screen and (min-device-width: 992px) {
     aside.nom-side-nav.nom-side-nav-lg {
         height: 300px;
-        margin-bottom:-20px;
+        margin-bottom: -20px;
     }
 }
 /*Desktop*/
 @media only screen and (min-device-width: 1300px) {
     aside.nom-side-nav.nom-side-nav-lg {
         height: 575px;
-        margin-bottom:-20px;
+        margin-bottom: -20px;
     }
 }
 /*Huge*/
 @media only screen and (min-device-width: 1900px) {
     aside.nom-side-nav.nom-side-nav-lg {
         height: 845px;
-        margin-bottom:-20px;
+        margin-bottom: -20px;
     }
 }

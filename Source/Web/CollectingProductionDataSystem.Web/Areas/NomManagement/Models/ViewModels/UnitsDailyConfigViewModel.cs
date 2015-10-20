@@ -1,6 +1,7 @@
 ﻿namespace CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewModels
 {
     using System;
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
     using AutoMapper;
@@ -11,6 +12,11 @@
 
     public class UnitsDailyConfigViewModel : IMapFrom<UnitDailyConfig>, IHaveCustomMappings,IEntity
     {
+        public UnitsDailyConfigViewModel() 
+        {
+            this.UnitConfigUnitDailyConfigs = new HashSet<UnitConfigUnitDailyConfigViewModel>();
+        }
+
         [Required]
         [UIHint("Hidden")]
         public int Id { get; set; }
@@ -50,6 +56,10 @@
         [Display(Name = "IsEditable", ResourceType = typeof(Resources.Layout))]
         public bool IsEditable { get; set; }
 
+        [UIHint("UnitConfigUnitDailyConfigEditor")]
+        [Display(Name = "UnitConfigUnitDailyConfig", ResourceType = typeof(Resources.Layout))]
+        public ICollection<UnitConfigUnitDailyConfigViewModel> UnitConfigUnitDailyConfigs { get; set; }
+
         /// <summary>
         /// Creates the mappings.
         /// </summary>
@@ -57,9 +67,14 @@
         public void CreateMappings(IConfiguration configuration)
         {
             configuration.CreateMap<UnitDailyConfig, UnitsDailyConfigViewModel>()
-                    .ForMember(p => p.DailyProductTypeId, opt => opt.MapFrom(p => p.DailyProductTypeId == null ? 0 : (int)p.DailyProductTypeId));
+                    .ForMember(p => p.DailyProductTypeId, opt => opt.MapFrom(p => p.DailyProductTypeId == null ? 0 : (int)p.DailyProductTypeId))
+                    .ForMember(p => p.UnitConfigUnitDailyConfigs, opt => opt.MapFrom(p => p.UnitConfigUnitDailyConfigs));
+
             configuration.CreateMap<UnitsDailyConfigViewModel, UnitDailyConfig>()
-                 .ForMember(p => p.DailyProductTypeId, opt => opt.MapFrom(p => p.DailyProductTypeId == 0 ? null : (Nullable<int>)p.DailyProductTypeId));
+                 .ForMember(p => p.DailyProductTypeId, opt => opt.MapFrom(p => p.DailyProductTypeId == 0 ? null : (Nullable<int>)p.DailyProductTypeId))
+                .ForMember(p => p.UnitConfigUnitDailyConfigs, opt => opt.MapFrom(p => p.UnitConfigUnitDailyConfigs != null ?
+                    p.UnitConfigUnitDailyConfigs.Select(x => new UnitConfigUnitDailyConfig() { UnitConfigId = x.UnitConfigId, UnitDailyConfigId = p.Id }) :
+                    new List<UnitConfigUnitDailyConfig>()));
         }
     }
 }

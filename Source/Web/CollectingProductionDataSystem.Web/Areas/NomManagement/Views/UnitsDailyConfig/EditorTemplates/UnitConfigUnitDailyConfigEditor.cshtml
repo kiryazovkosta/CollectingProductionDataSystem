@@ -1,0 +1,14 @@
+﻿@using CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewModels;
+@using Resources = App_GlobalResources.Resources;
+
+@model IEnumerable<UnitConfigUnitDailyConfigViewModel>
+@(Html.Kendo()
+    .MultiSelectFor(m => m)
+    .AutoClose(false)
+        .BindTo((IEnumerable<UnitConfigUnitDailyConfigViewModel>)ViewData["relatedUnitConfigs"])
+    .DataTextField("Code")
+    .DataValueField("Id")
+    .ItemTemplate("<span class=\"order-id\">#= Code #</span> #= Name #")
+)
+
+

@@ -822,4 +822,10 @@
   <data name="UnitsReportData" xml:space="preserve">
     <value>Сменни данни за измервателни позиции - отчет</value>
   </data>
+  <data name="RelatedUnitConfigs" xml:space="preserve">
+    <value>Свързани измервателни позиции</value>
+  </data>
+  <data name="UnitConfigUnitDailyConfig" xml:space="preserve">
+    <value>Свързани сменни измервателни позиции</value>
+  </data>
 </root>

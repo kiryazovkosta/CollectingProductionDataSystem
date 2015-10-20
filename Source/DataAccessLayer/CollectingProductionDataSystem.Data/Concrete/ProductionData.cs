@@ -325,6 +325,14 @@
             }
         }
 
+        public IDeletableEntityRepository<UnitConfigUnitDailyConfig> UnitConfigUnitDailyConfigs
+        {
+            get
+            {
+                return this.GetDeletableEntityRepository<UnitConfigUnitDailyConfig>();
+            }
+        }
+
         public IEfStatus SaveChanges(string userName)
         {
             return this.context.SaveChangesWithValidation(userName);

@@ -17,6 +17,8 @@ namespace CollectingProductionDataSystem.Web.Tests
         public void CheckMappinRoleViewModelToApplicationRole()
         {
             Mapper.CreateMap<RoleViewModel, ApplicationRole>();
+            var mapper = new RoleViewModel();
+            mapper.CreateMappings(Mapper.Configuration);
             Mapper.AssertConfigurationIsValid();
         }
 

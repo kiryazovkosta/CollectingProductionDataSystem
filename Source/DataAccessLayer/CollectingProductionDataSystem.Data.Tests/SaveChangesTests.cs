@@ -36,10 +36,14 @@ namespace CollectingProductionDataSystem.Data.Tests
         public void TestIfAddingNewRecordCouseAddingLogRecord()
         {
             //Arrange
-            var auditRecordsCount = this.dbContext.Set<AuditLogRecord>().CountAsync().Result;
+            var testProductType = new ProductType() { Name = "TestProductType" };
+            this.dbContext.ProductTypes.Add(testProductType);
+            this.dbContext.SaveChanges("TestUser");
 
+            var auditRecordsCount = this.dbContext.Set<AuditLogRecord>().CountAsync().Result;
+            
             //Act
-            var newProduct = new Product { Name = "Test Product", ProductTypeId = 1 };
+            var newProduct = new Product { Name = "Test Product", ProductTypeId = testProductType.Id };
             this.dbContext.Products.Add(newProduct);
             this.dbContext.SaveChanges("TestUser");
             var auditRecord = this.dbContext.AuditLogRecords.FirstOrDefault(x => x.EntityName == "Product" && x.EntityId == newProduct.Id && x.OperationType == EntityState.Added);
@@ -56,8 +60,11 @@ namespace CollectingProductionDataSystem.Data.Tests
         public void TestIfDeletingARecordCouseAddingLogRecord()
         {
             //Arrange
-            //Arrange
-            var deletedRecord = new Product { Name = "Test Product", ProductTypeId = 1 };
+            var testProductType = new ProductType() { Name = "TestProductType" };
+            this.dbContext.ProductTypes.Add(testProductType);
+            this.dbContext.SaveChanges("TestUser");
+
+            var deletedRecord = new Product { Name = "Test Product", ProductTypeId = testProductType.Id };
             this.dbContext.Products.Add(deletedRecord);
             this.dbContext.SaveChanges("AnotherTestUser");
             //remove Log record for create operation
@@ -84,7 +91,11 @@ namespace CollectingProductionDataSystem.Data.Tests
         public void TestIfModifingARecordCouseAddingLogRecords()
         {
             //Arrange
-            var modifiedRecord = new Product { Name = "Test Product", ProductTypeId = 1, Code = 0 };
+            var testProductType = new ProductType() { Name = "TestProductType" };
+            this.dbContext.ProductTypes.Add(testProductType);
+            this.dbContext.SaveChanges("TestUser");
+
+            var modifiedRecord = new Product { Name = "Test Product", ProductTypeId = testProductType.Id, Code = 0 };
             this.dbContext.Products.Add(modifiedRecord);
             this.dbContext.SaveChanges("AnotherTestUser");
             //remove Log record for create operation

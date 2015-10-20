@@ -11,6 +11,7 @@
           columns.Bound(c => c.AggregationFormula).Width(380);
           columns.Bound(c => c.AggregationCurrentLevel).Width(100);
           columns.Bound(c => c.AggregationMembers).Width(100);
+          columns.Bound(c => c.UnitConfigUnitDailyConfigs).Width(300).ClientTemplate("#=unitConfigTemplate(UnitConfigUnitDailyConfigs)#");
           columns.Bound(c => c.IsEditable).Width(100);
           columns.Command(command => { command.Edit(); command.Destroy(); }).Width(230);
       })
@@ -47,3 +48,20 @@
                 })
       )
 )
+
+<script type="text/kendo" id="unitConfigTemplate">
+    #if(data){#
+    <ul>
+        #for(var i = 0; i< data.length; i++){#
+        #if(data[i].Code != null){#
+        <li>#:data[i].Code#</li>
+        #}#
+        #}#
+    </ul>
+    #}#
+
+</script>
+
+<script type="text/javascript">
+    var unitConfigTemplate = kendo.template($("#unitConfigTemplate").html(), { useWithBlock: false });
+</script>

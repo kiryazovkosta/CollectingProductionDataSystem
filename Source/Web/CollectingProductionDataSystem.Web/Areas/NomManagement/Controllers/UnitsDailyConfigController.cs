@@ -23,6 +23,7 @@ namespace CollectingProductionDataSystem.Web.Areas.NomManagement.Controllers
             this.ViewData["products"] = Mapper.Map<IEnumerable<ProductViewModel>>(this.data.Products.All().ToList());
             this.ViewData["measureUnits"] = Mapper.Map<IEnumerable<MeasureUnitViewModel>>(this.data.MeasureUnits.All().ToList());
             this.ViewData["dailyProductTypes"] = Mapper.Map<IEnumerable<DailyProductTypeViewModel>>(this.data.DailyProductTypes.All().ToList());
+            this.ViewData["relatedUnitConfigs"] = Mapper.Map<IEnumerable<UnitConfig>, IEnumerable<UnitConfigUnitDailyConfigViewModel>>(this.data.UnitConfigs.All()).ToList();
             return base.Index();
         }
     }
