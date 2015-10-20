@@ -403,7 +403,7 @@
                 var fiveOClock = today.AddHours(5);
                 
                 var ts = now - fiveOClock;
-                if(ts.TotalMinutes > 0 && ts.Hours == 0)
+                if(ts.TotalMinutes > 0 /*&& ts.Hours == 0*/)
                 {
                     using (var context = new ProductionData(new CollectingDataSystemDbContext(new AuditablePersister())))
                     {
@@ -524,8 +524,9 @@
             defaultServer.Port = Properties.Settings.Default.PHD_PORT;
             defaultServer.APIVersion = Uniformance.PHD.SERVERVERSION.RAPI200;
             oPhd.DefaultServer = defaultServer;
-            oPhd.StartTime = string.Format("NOW - {0}M", ts.Minutes - 2);
-            oPhd.EndTime = string.Format("NOW - {0}M", ts.Minutes - 2);
+            oPhd.StartTime = "NOW-2H22M";
+            //oPhd.EndTime = string.Format("NOW - {0}M", ts.TotalMinutes - 2);
+            oPhd.EndTime = "NOW-2H22M";
             oPhd.Sampletype = SAMPLETYPE.Snapshot;
             oPhd.MinimumConfidence = 100;
             oPhd.MaximumRows = 1;
