@@ -16,6 +16,8 @@ namespace CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewMode
 
         public string Name { get; set; }
 
+        public int Position { get; set; }
+
 
 
         public void CreateMappings(AutoMapper.IConfiguration configuration)
@@ -26,7 +28,8 @@ namespace CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewMode
                 .ForMember(p => p.Name, opt => opt.MapFrom(p => p.RelatedUnitConfig.Name));
 
             configuration.CreateMap<UnitConfig, RelatedUnitConfigsViewModel>()
-                .ForMember(p => p.Id, opt => opt.MapFrom(p => p.Id));
+                .ForMember(p => p.Id, opt => opt.MapFrom(p => p.Id))
+                .ForMember(p => p.Position, opt => opt.Ignore());
         }
     }
 }

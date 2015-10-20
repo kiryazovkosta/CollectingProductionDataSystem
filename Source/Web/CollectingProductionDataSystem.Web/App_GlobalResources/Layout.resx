@@ -822,6 +822,9 @@
   <data name="RelatedUnitConfigs" xml:space="preserve">
     <value>Related Unit Configs</value>
   </data>
+  <data name="RelatedUnitDailyConfigs" xml:space="preserve">
+    <value>Related Unit Daily Configs</value>
+  </data>
   <data name="UnitConfigUnitDailyConfig" xml:space="preserve">
     <value>Related Dhift Unit Config</value>
   </data>

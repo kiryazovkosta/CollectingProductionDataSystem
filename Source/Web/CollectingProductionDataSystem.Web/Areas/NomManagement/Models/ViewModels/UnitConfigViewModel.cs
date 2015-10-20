@@ -113,7 +113,8 @@
         public void CreateMappings(IConfiguration configuration)
         {
             configuration.CreateMap<UnitConfig, UnitConfigViewModel>()
-                .ForMember(p => p.ShiftProductTypeId, opt => opt.MapFrom(p => p.ShiftProductTypeId == null ? 0 : (int)p.ShiftProductTypeId));
+                .ForMember(p => p.ShiftProductTypeId, opt => opt.MapFrom(p => p.ShiftProductTypeId == null ? 0 : (int)p.ShiftProductTypeId))
+                .ForMember(p => p.RelatedUnitConfigs, opt => opt.MapFrom(p=>p.RelatedUnitConfigs.OrderBy(x=>x.Position)));
                 //.ForMember(p => p.RelatedUnitConfigs, opt => opt.MapFrom(
                 //    p => (p.RelatedUnitConfigs != null) && (p.RelatedUnitConfigs.Count != 0) ?
                 //    p.RelatedUnitConfigs : new HashSet<RelatedUnitConfigs> { new RelatedUnitConfigs() }));
@@ -122,7 +123,7 @@
             configuration.CreateMap<UnitConfigViewModel, UnitConfig>()
                 .ForMember(p => p.ShiftProductTypeId, opt => opt.MapFrom(p => p.ShiftProductTypeId == 0 ? null : (Nullable<int>)p.ShiftProductTypeId))
                 .ForMember(p => p.RelatedUnitConfigs, opt => opt.MapFrom(p => p.RelatedUnitConfigs != null ?
-                    p.RelatedUnitConfigs.Select(x => new RelatedUnitConfigs() { UnitConfigId = p.Id, RelatedUnitConfigId = x.Id }) :
+                    p.RelatedUnitConfigs.Select((x,ixd) => new RelatedUnitConfigs() { UnitConfigId = p.Id, RelatedUnitConfigId = x.Id, Position=ixd+1 }) :
                     new List<RelatedUnitConfigs>()))
                 .ForMember(p => p.Direction, opt => opt.Ignore())
                 .ForMember(p => p.MaterialType, opt => opt.Ignore())

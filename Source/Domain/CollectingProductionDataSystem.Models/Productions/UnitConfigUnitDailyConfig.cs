@@ -25,5 +25,7 @@ namespace CollectingProductionDataSystem.Models.Productions
         public virtual UnitConfig UnitConfig { get; set; }
 
         public virtual UnitDailyConfig UnitDailyConfig { get; set; }
+
+        public int Position { get; set; }
     }
 }

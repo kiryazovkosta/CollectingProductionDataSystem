@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using AutoMapper;
 using CollectingProductionDataSystem.Models.Identity;
 using CollectingProductionDataSystem.Models.Nomenclatures;
@@ -31,6 +32,27 @@ namespace CollectingProductionDataSystem.Web.Tests
             mapper.CreateMappings(Mapper.Configuration);
             var mapper1 = new RelatedUnitConfigsViewModel();
             mapper1.CreateMappings(Mapper.Configuration);
+
+            Mapper.AssertConfigurationIsValid();
+        }
+        [TestMethod]
+        public void CheckMappinIEnumerable_UnitDailyConfig_To_IEnumerable_UnitConfigUnitDailyConfigViewModel()
+        {
+            Mapper.CreateMap<IEnumerable<UnitDailyConfig>, IEnumerable<UnitConfigUnitDailyConfigViewModel>>();
+
+            var mapper = new UnitConfigUnitDailyConfigViewModel();
+            mapper.CreateMappings(Mapper.Configuration);
+
+            Mapper.AssertConfigurationIsValid();
+        }
+
+        [TestMethod]
+        public void CheckMappinIEnumerable_UnitConfig_To_IEnumerable_RelatedUnitConfigsViewModel()
+        {
+            Mapper.CreateMap<IEnumerable<UnitConfig>, IEnumerable<RelatedUnitConfigsViewModel>>();
+
+            var mapper = new RelatedUnitDailyConfigsViewModel();
+            mapper.CreateMappings(Mapper.Configuration);
 
             Mapper.AssertConfigurationIsValid();
         }

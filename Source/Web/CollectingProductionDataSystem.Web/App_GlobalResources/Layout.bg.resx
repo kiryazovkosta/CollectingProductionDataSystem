@@ -825,6 +825,9 @@
   <data name="RelatedUnitConfigs" xml:space="preserve">
     <value>Свързани измервателни позиции</value>
   </data>
+  <data name="RelatedUnitDailyConfigs" xml:space="preserve">
+    <value>Свързани дневни измервателни позиции</value>
+  </data>
   <data name="UnitConfigUnitDailyConfig" xml:space="preserve">
     <value>Свързани сменни измервателни позиции</value>
   </data>

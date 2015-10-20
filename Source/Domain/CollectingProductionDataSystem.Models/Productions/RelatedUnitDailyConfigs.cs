@@ -12,5 +12,7 @@
         public int RelatedUnitsDailyConfigId { get; set; }
         public virtual UnitDailyConfig UnitsDailyConfig { get; set; }
         public virtual UnitDailyConfig RelatedUnitsDailyConfig { get; set; }
+
+        public int Position { get; set; }
     }
 }

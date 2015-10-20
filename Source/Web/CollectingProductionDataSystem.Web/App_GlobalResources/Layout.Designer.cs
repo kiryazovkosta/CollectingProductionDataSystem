@@ -1726,6 +1726,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Related Unit Daily Configs.
+        /// </summary>
+        public static string RelatedUnitDailyConfigs {
+            get {
+                return ResourceManager.GetString("RelatedUnitDailyConfigs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Remember me?.
         /// </summary>
         public static string RememberMe {

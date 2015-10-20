@@ -277,6 +277,7 @@
     <Compile Include="Areas\NomManagement\Models\ViewModels\ProcessUnitViewModel.cs" />
     <Compile Include="Areas\NomManagement\Models\ViewModels\ProductionPlanConfigViewModel.cs" />
     <Compile Include="Areas\NomManagement\Models\ViewModels\RelatedUnitConfigsViewModel.cs" />
+    <Compile Include="Areas\NomManagement\Models\ViewModels\RelatedUnitDailyConfigsViewModel.cs" />
     <Compile Include="Areas\NomManagement\Models\ViewModels\ShiftViewModel.cs" />
     <Compile Include="Areas\NomManagement\Models\ViewModels\ProductTypeViewModel.cs" />
     <Compile Include="Areas\NomManagement\Models\ViewModels\ProductViewModel.cs" />
@@ -767,6 +768,7 @@
     <Content Include="Areas\NomManagement\Views\UnitConfig\EditorTemplates\RelatedUnitConfigsEditor.cshtml" />
     <Content Include="Areas\ShiftReporting\Views\UnitsReports\UnitsReportsData.cshtml" />
     <Content Include="Areas\NomManagement\Views\UnitsDailyConfig\EditorTemplates\UnitConfigUnitDailyConfigEditor.cshtml" />
+    <Content Include="Areas\NomManagement\Views\UnitsDailyConfig\EditorTemplates\RelatedUnitDailyConfigsEditor.cshtml" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <None Include="Properties\PublishProfiles\Home.pubxml" />
     <Content Include="Scripts\custom\sendArea.js" />

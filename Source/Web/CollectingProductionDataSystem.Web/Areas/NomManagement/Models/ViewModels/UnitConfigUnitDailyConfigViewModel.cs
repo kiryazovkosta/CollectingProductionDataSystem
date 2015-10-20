@@ -16,6 +16,8 @@ namespace CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewMode
 
         public string Name { get; set; }
 
+        public int Position { get; set; }
+
         /// <summary>
         /// Creates the mappings.
         /// </summary>
@@ -27,7 +29,8 @@ namespace CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewMode
                 .ForMember(p => p.Name, opt => opt.MapFrom(p => p.UnitConfig.Name));
 
             configuration.CreateMap<UnitConfig, UnitConfigUnitDailyConfigViewModel>()
-               .ForMember(p => p.UnitConfigId, opt => opt.MapFrom(p => p.Id));
+               .ForMember(p => p.UnitConfigId, opt => opt.MapFrom(p => p.Id))
+               .ForMember(p => p.Position, opt => opt.Ignore());
         }
     }
 }

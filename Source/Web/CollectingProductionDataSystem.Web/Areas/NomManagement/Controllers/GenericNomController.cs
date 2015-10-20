@@ -41,7 +41,6 @@ namespace CollectingProductionDataSystem.Web.Areas.NomManagement.Controllers
             {
                 DataSourceResult result = processUnits.ToDataSourceResult(request, ModelState, Mapper.Map<TView>);
                 return Json(result);
-
             }
             catch (Exception ex)
             {
