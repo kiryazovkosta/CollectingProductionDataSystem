@@ -189,6 +189,24 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_B6BD3304BE597339F0D2618225794339"
+        "OwnerKey" = "8:_669515BB7DFC7C3AD5DA6CDA535E35AB"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_B6BD3304BE597339F0D2618225794339"
+        "OwnerKey" = "8:_01FA19F7B07E61A9A68DFEA0361DAE9A"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_B6BD3304BE597339F0D2618225794339"
+        "OwnerKey" = "8:_7A8621523B5544649FCC061EF0C7AD95"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_C930F408A1ECE27E7BB2A893CA379CA6"
         "OwnerKey" = "8:_7A8621523B5544649FCC061EF0C7AD95"
         "MsmSig" = "8:_UNDEFINED"
@@ -237,18 +255,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_F83A305B0C3A585198ED96F6EE13B69D"
-        "OwnerKey" = "8:_7A8621523B5544649FCC061EF0C7AD95"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_F83A305B0C3A585198ED96F6EE13B69D"
-        "OwnerKey" = "8:_669515BB7DFC7C3AD5DA6CDA535E35AB"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_FA4A90301EBE2E4BA84634AAA115F510"
         "OwnerKey" = "8:_2B66DC06D639A4FE6C44F6469EA51BAB"
         "MsmSig" = "8:_UNDEFINED"
@@ -268,13 +274,13 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_F83A305B0C3A585198ED96F6EE13B69D"
+        "OwnerKey" = "8:_D4011979220D2DC91ABD8D19F04458C3"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_D4011979220D2DC91ABD8D19F04458C3"
+        "OwnerKey" = "8:_B6BD3304BE597339F0D2618225794339"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -809,6 +815,32 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_B6BD3304BE597339F0D2618225794339"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:AutoMapper, Version=4.0.4.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                }
+            "SourcePath" = "8:AutoMapper.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_C382320859F549C4996E8E3C0F00ECCB"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_C930F408A1ECE27E7BB2A893CA379CA6"
             {
             "AssemblyRegister" = "3:1"
@@ -913,32 +945,6 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_F83A305B0C3A585198ED96F6EE13B69D"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:AutoMapper, Version=4.0.4.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                }
-            "SourcePath" = "8:AutoMapper.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_C382320859F549C4996E8E3C0F00ECCB"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_FA4A90301EBE2E4BA84634AAA115F510"
             {
             "AssemblyRegister" = "3:1"
@@ -1021,15 +1027,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:CollectingProductionDataSystem.SyncTransactions"
-        "ProductCode" = "8:{7438A48C-0910-483B-B9EB-07BF5A69EB02}"
-        "PackageCode" = "8:{27FEF392-290B-4E3A-AA9B-A7C9F3D14359}"
+        "ProductCode" = "8:{E6C4A1ED-5A5A-47DA-9EFC-ABB10367EB89}"
+        "PackageCode" = "8:{55844E6A-BB6C-4BAD-89A9-A5EAC62B8E35}"
         "UpgradeCode" = "8:{C91449F3-672E-46D8-AA42-3B10ED7FDBA2}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:FALSE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:1.1.8"
+        "ProductVersion" = "8:1.2.0"
         "Manufacturer" = "8:Business Management Systems"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"

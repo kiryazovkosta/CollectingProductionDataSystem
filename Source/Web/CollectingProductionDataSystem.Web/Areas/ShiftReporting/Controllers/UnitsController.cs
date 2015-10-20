@@ -69,6 +69,11 @@
         {
             if (ModelState.IsValid)
             {
+                if (model.UnitConfig.IsCalculated)
+                {
+                    model.UnitsManualData.Value = (decimal)CalculateValueByProductionDataFormula(model);
+                }
+
                 var newManualRecord = new UnitsManualData
                 {
                     Id = model.Id,
@@ -105,6 +110,20 @@
             }
 
             return Json(new[] { model }.ToDataSourceResult(request, ModelState));
+        }
+ 
+        private double CalculateValueByProductionDataFormula(UnitDataViewModel model)
+        {
+            var formulaCode = model.UnitConfig.CalculatedFormula ?? string.Empty;
+            var arguments = new FormulaArguments();
+            arguments.InputValue = (double)model.UnitsManualData.Value;
+            arguments.MaximumFlow = (double?)model.UnitConfig.MaximumFlow;
+            arguments.EstimatedDensity = (double?)model.UnitConfig.EstimatedDensity;
+            arguments.EstimatedPressure = (double?)model.UnitConfig.EstimatedPressure;
+            arguments.EstimatedTemperature = (double?)model.UnitConfig.EstimatedTemperature;
+            arguments.EstimatedCompressibilityFactor = (double?)model.UnitConfig.EstimatedCompressibilityFactor;
+            // Todo: need to add arguments here. Need to create a good mechanism for parameters!
+            return ProductionDataCalculator.Calculate(formulaCode, arguments);
         }
 
         private void UpdateRecord(UnitsManualData existManualRecord, UnitDataViewModel model)

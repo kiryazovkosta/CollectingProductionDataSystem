@@ -4,7 +4,6 @@ namespace MathExpressions.Application
 
     public class Functions
     {
-        
         public static double GetValueFormulaF(double d2, double pl, double res)
         {
 

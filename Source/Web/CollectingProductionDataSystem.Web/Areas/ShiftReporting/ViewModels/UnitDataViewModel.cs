@@ -66,6 +66,15 @@
 
         public bool IsEditable { get; set; }
 
+        [UIHint("Hidden")]
+        public bool IsCalculated { get; set; }
+        public string CalculatedFormula { get; set; }
+        public decimal? MaximumFlow { get; set; }
+        public decimal? EstimatedDensity { get; set; }
+        public decimal? EstimatedPressure { get; set; }
+        public decimal? EstimatedTemperature { get; set; }
+        public decimal? EstimatedCompressibilityFactor { get; set; }
+
         public int ProcessUnitId { get; set; }
         public ProcessUnitUnitDataViewModel ProcessUnit { get; set; }
 

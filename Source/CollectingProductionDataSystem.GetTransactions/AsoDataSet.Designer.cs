@@ -4505,18 +4505,18 @@ namespace CollectingProductionDataSystem.GetTransactions.AsoDataSetTableAdapters
                 "ureReverse, InsertTimestamp, ResultId, AdditiveResultId, \r\n                     " +
                 "    TamasCreateTimestamp, TamasRecipeTransId, EpksSequenceNumber, MartaRowNum, A" +
                 "lcoholContent, AlcoholContentReverse, BatchId\r\nFROM            flow_MeasuringPoi" +
-                "ntsData\r\nWHERE        (SequenceNumber > @MaxNumber) AND (RowId = - 1)";
+                "ntsData\r\nWHERE        (InsertTimestamp > @MaxInsertTimestamp) AND (RowId = - 1)";
             this._commandCollection[0].CommandType = global::System.Data.CommandType.Text;
-            this._commandCollection[0].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@MaxNumber", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 0, 0, "SequenceNumber", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[0].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@MaxInsertTimestamp", global::System.Data.SqlDbType.DateTime2, 8, global::System.Data.ParameterDirection.Input, 0, 0, "InsertTimestamp", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, true)]
-        public virtual int Fill(AsoDataSet.flow_MeasuringPointsDataDataTable dataTable, long MaxNumber) {
+        public virtual int Fill(AsoDataSet.flow_MeasuringPointsDataDataTable dataTable, System.DateTime MaxInsertTimestamp) {
             this.Adapter.SelectCommand = this.CommandCollection[0];
-            this.Adapter.SelectCommand.Parameters[0].Value = ((long)(MaxNumber));
+            this.Adapter.SelectCommand.Parameters[0].Value = ((System.DateTime)(MaxInsertTimestamp));
             if ((this.ClearBeforeFill == true)) {
                 dataTable.Clear();
             }
@@ -4528,9 +4528,9 @@ namespace CollectingProductionDataSystem.GetTransactions.AsoDataSetTableAdapters
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, true)]
-        public virtual AsoDataSet.flow_MeasuringPointsDataDataTable GetData(long MaxNumber) {
+        public virtual AsoDataSet.flow_MeasuringPointsDataDataTable GetData(System.DateTime MaxInsertTimestamp) {
             this.Adapter.SelectCommand = this.CommandCollection[0];
-            this.Adapter.SelectCommand.Parameters[0].Value = ((long)(MaxNumber));
+            this.Adapter.SelectCommand.Parameters[0].Value = ((System.DateTime)(MaxInsertTimestamp));
             AsoDataSet.flow_MeasuringPointsDataDataTable dataTable = new AsoDataSet.flow_MeasuringPointsDataDataTable();
             this.Adapter.Fill(dataTable);
             return dataTable;

@@ -44,11 +44,11 @@
                     var max = context.MaxAsoMeasuringPointDataSequenceNumberMap.All().FirstOrDefault();
                     if (max != null)
                     {
-                        logger.InfoFormat("Maximum transaction sequence number is {0}", max.MaxSequenceNumber);
-                        var maxSequenceNumber = max.MaxSequenceNumber;
+                        logger.InfoFormat("Last transaction fetching date-time was {0}", max.LastTransactionsFetchingDateTime);
+                        var maxLastTransactionsFetchingDateTime = max.LastTransactionsFetchingDateTime;
                         var adapter = new AsoDataSetTableAdapters.flow_MeasuringPointsDataTableAdapter();
                         var table = new AsoDataSet.flow_MeasuringPointsDataDataTable();
-                        adapter.Fill(table, maxSequenceNumber);
+                        adapter.Fill(table, maxLastTransactionsFetchingDateTime.Value);
                         if (table.Rows.Count > 0)
                         {
                             foreach (AsoDataSet.flow_MeasuringPointsDataRow row in table.Rows)
@@ -268,13 +268,12 @@
                             using (TransactionScope scope = new TransactionScope())
                             {
                                 var status = context.SaveChanges("Aso2Sql");
-                                long maxValue = Convert.ToInt64(table.Compute("max(SequenceNumber)", string.Empty));
-                                max.MaxSequenceNumber = maxValue;
+                                max.LastTransactionsFetchingDateTime = DateTime.Now;
                                 context.MaxAsoMeasuringPointDataSequenceNumberMap.Update(max);
                                 context.SaveChanges("Aso2Sql");
                                 scope.Complete();
                                 logger.InfoFormat("Successfully synchronization {0} records from Aso to Cpds", status.ResultRecordsCount);
-                                logger.InfoFormat("Maximum sequence number updated to {0}.", maxValue);
+                                logger.InfoFormat("Last transactions fetching date-time was updated to {0}.", DateTime.Now);
                             }
                         }
                     }
@@ -369,19 +368,31 @@
                                 logger.InfoFormat("Successfully added transaction {0} from control point {1}", row.TRS_NUM, scale.ControlPoint);
                             }
 
-                            using (var scope = new TransactionScope())
-                            {
-                                var status = context.SaveChanges("Scale2Sql");
-                                var now = DateTime.Now;
-                                max.LastFetchScales = now;
-                                context.MaxAsoMeasuringPointDataSequenceNumberMap.Update(max);
-                                context.SaveChanges("Scale2Sql");
-                                scope.Complete();
-                                logger.InfoFormat("Successfully sync {0} transactions between ASO.SCALE and Cpds", status.ResultRecordsCount);
-                                logger.InfoFormat("Last scale transaction data-time updated to {0}.", now);
-                            }
+                            //using (var scope = new TransactionScope())
+                            //{
+                            //    var status = context.SaveChanges("Scale2Sql");
+                            //    var now = DateTime.Now;
+                            //    max.LastFetchScales = now;
+                            //    context.MaxAsoMeasuringPointDataSequenceNumberMap.Update(max);
+                            //    context.SaveChanges("Scale2Sql");
+                            //    scope.Complete();
+                            //    logger.InfoFormat("Successfully sync {0} transactions between ASO.SCALE and Cpds", status.ResultRecordsCount);
+                            //    logger.InfoFormat("Last scale transaction data-time updated to {0}.", now);
+                            //}
 
                         }
+                    }
+
+                    using (var scope = new TransactionScope())
+                    {
+                        var status = context.SaveChanges("Scale2Sql");
+                        var now = DateTime.Now;
+                        max.LastFetchScales = now;
+                        context.MaxAsoMeasuringPointDataSequenceNumberMap.Update(max);
+                        context.SaveChanges("Scale2Sql");
+                        scope.Complete();
+                        logger.InfoFormat("Successfully sync {0} transactions between ASO.SCALE and Cpds", status.ResultRecordsCount);
+                        logger.InfoFormat("Last scale transaction data-time updated to {0}.", now);
                     }
                 }
 
@@ -403,7 +414,7 @@
                 var fiveOClock = today.AddHours(5);
                 
                 var ts = now - fiveOClock;
-                if(ts.TotalMinutes > 0 /*&& ts.Hours == 0*/)
+                if(ts.TotalMinutes > 2 && ts.Hours == 0)
                 {
                     using (var context = new ProductionData(new CollectingDataSystemDbContext(new AuditablePersister())))
                     {
@@ -490,24 +501,28 @@
                         var value = 0m;
                         if (valueRow[0].ToString().Equals(item.ActiveTransactionMassTag))
                         {
+                            logger.Info(item.ActiveTransactionMassTag);
                             if(decimal.TryParse(valueRow["Value"].ToString(), out value))
                             {
                                 if (!string.IsNullOrEmpty(item.MassCorrectionFactor))
                                 {
-                                    value = value / Convert.ToDecimal(item.MassCorrectionFactor); 
+                                    logger.Info(item.MassCorrectionFactor);
+                                    value = value * Convert.ToDecimal(item.MassCorrectionFactor); 
                                 }
                                 activeTransactionData.Mass = value;
                             }
                         }
                         else if (valueRow[0].ToString().Equals(item.ActiveTransactionMassReverseTag))
                         {
+                            logger.Info(item.ActiveTransactionMassTag);
                             if(decimal.TryParse(valueRow["Value"].ToString(), out value))
                             {
                                 if (!string.IsNullOrEmpty(item.MassCorrectionFactor))
                                 {
-                                    value = value / Convert.ToDecimal(item.MassCorrectionFactor); 
+                                    logger.Info(item.MassCorrectionFactor);
+                                    value = value * Convert.ToDecimal(item.MassCorrectionFactor); 
                                 }
-                                activeTransactionData.Mass = value;
+                                activeTransactionData.MassReverse = value;
                             }
                         }
                     }
@@ -524,9 +539,8 @@
             defaultServer.Port = Properties.Settings.Default.PHD_PORT;
             defaultServer.APIVersion = Uniformance.PHD.SERVERVERSION.RAPI200;
             oPhd.DefaultServer = defaultServer;
-            oPhd.StartTime = "NOW-2H22M";
-            //oPhd.EndTime = string.Format("NOW - {0}M", ts.TotalMinutes - 2);
-            oPhd.EndTime = "NOW-2H22M";
+            oPhd.StartTime = string.Format("NOW - {0}M", ts.Minutes - 2);
+            oPhd.EndTime = string.Format("NOW - {0}M", ts.Minutes - 2);
             oPhd.Sampletype = SAMPLETYPE.Snapshot;
             oPhd.MinimumConfidence = 100;
             oPhd.MaximumRows = 1;

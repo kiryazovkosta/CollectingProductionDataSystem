@@ -9,7 +9,7 @@
         public int Id { get; set; }
         public long MaxSequenceNumber { get; set; }
         public long MaxScaleSequenceNumber { get; set; }
-
         public DateTime? LastFetchScales { get; set; }
+        public DateTime? LastTransactionsFetchingDateTime { get; set; }
     }
 }

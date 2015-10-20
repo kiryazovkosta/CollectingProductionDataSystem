@@ -8,7 +8,7 @@
         /// <summary>
         /// PL-ПЛОЩ/ПОКАЗАНИЕ НА БРОЯЧА
         /// </summary>
-        public double? CounterIndication { get; set; }
+        public double? InputValue { get; set; }
 
         /// <summary>
         /// P-НАЛЯГАНЕ

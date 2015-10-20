@@ -106,6 +106,7 @@ namespace CollectingProductionDataSystem.Web.Areas.DailyReporting.Controllers
                     if (item.UnitsDailyConfig.Code == token)
                     {
                         factInputParamsValues.Add((double)item.RealValue);
+                        break;
                     }
                 }
             }

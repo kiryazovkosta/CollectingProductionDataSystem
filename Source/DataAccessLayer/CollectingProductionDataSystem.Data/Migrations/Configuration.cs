@@ -26,78 +26,78 @@ namespace CollectingProductionDataSystem.Data.Migrations
 
         protected override void Seed(CollectingDataSystemDbContext context)
         {
-            if (!context.ShiftProductTypes.Any())
-            {
-                this.CreateShiftProductTypes(context);
-            }
+            //if (!context.ShiftProductTypes.Any())
+            //{
+            //    this.CreateShiftProductTypes(context);
+            //}
 
-            if (!context.DailyProductTypes.Any())
-            {
-                this.CreateDailyProductTypes(context);
-            }
+            //if (!context.DailyProductTypes.Any())
+            //{
+            //    this.CreateDailyProductTypes(context);
+            //}
 
             if (!context.ProductionShifts.Any())
             {
                 this.CreateProductionShifts(context);
             }
 
-            if (!context.Products.Any())
-            {
-                ProductsDataImporter.Insert(context);
-            }
-
-            //if (!context.TankMasterProducts.Any())
+            //if (!context.Products.Any())
             //{
-            //    this.CreateTankMasterProducts(context);
+            //    ProductsDataImporter.Insert(context);
             //}
 
-            if (!context.MeasureUnits.Any())
-            {
-                this.CreateMeasureUnits(context);
-            }
+            ////if (!context.TankMasterProducts.Any())
+            ////{
+            ////    this.CreateTankMasterProducts(context);
+            ////}
 
-            if (!context.Directions.Any())
-            {
-                this.CreateDirections(context);
-            }
-
-            if (!context.MaterialTypes.Any())
-            {
-                this.CreateMaterialTypes(context);
-            }
-
-            if (!context.TransportTypes.Any())
-            {
-                this.CreateTransportTypes(context);
-            }
-
-            if (!context.EditReasons.Any())
-            {
-                this.CreateEditReasons(context);
-            }
-
-            if (!context.Factories.Any())
-            {
-                ProductionDataImporter.Insert(context);
-            }
-
-            //if (!context.InventoryTanks.Any())
+            //if (!context.MeasureUnits.Any())
             //{
-            //    TanksDataImporter.Insert(context);
+            //    this.CreateMeasureUnits(context);
             //}
-            //#if DEBUG
-            //            if (!context.Users.Where(x => x.UserName.Contains("User")).Any())
-            //            {
-            //                this.SeedUsers(context);
-            //            }
-            //#endif
-            if (!context.Roles.Any())
-            {
-                this.CreateRoles(context);
+
+            //if (!context.Directions.Any())
+            //{
+            //    this.CreateDirections(context);
+            //}
+
+            //if (!context.MaterialTypes.Any())
+            //{
+            //    this.CreateMaterialTypes(context);
+            //}
+
+            //if (!context.TransportTypes.Any())
+            //{
+            //    this.CreateTransportTypes(context);
+            //}
+
+            //if (!context.EditReasons.Any())
+            //{
+            //    this.CreateEditReasons(context);
+            //}
+
+            //if (!context.Factories.Any())
+            //{
+            //    ProductionDataImporter.Insert(context);
+            //}
+
+            ////if (!context.InventoryTanks.Any())
+            ////{
+            ////    TanksDataImporter.Insert(context);
+            ////}
+            ////#if DEBUG
+            ////            if (!context.Users.Where(x => x.UserName.Contains("User")).Any())
+            ////            {
+            ////                this.SeedUsers(context);
+            ////            }
+            ////#endif
+            //if (!context.Roles.Any())
+            //{
+            //    this.CreateRoles(context);
                 
-                //this.SeedUsers(context);
-            }
-            this.CreateSystemAdministrator(context);
+            //    //this.SeedUsers(context);
+            //}
+            //this.CreateSystemAdministrator(context);
         }
  
         /// <summary>

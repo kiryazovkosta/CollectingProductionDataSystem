@@ -8,12 +8,125 @@
     {
         private static readonly Calculator calculator = new Calculator();
 
+        public static double Calculate(string formulaCode, FormulaArguments arguments)
+        {
+            if (string.IsNullOrEmpty(formulaCode))
+            {
+                throw new ArgumentNullException("The value of the formulaCode can not be null or an empty string!");
+            }
+
+            if (arguments == null)
+            {
+                throw new ArgumentNullException("The value of formula arguments can not be null!"); 
+            }
+
+            double result = double.MinValue;
+            switch (formulaCode)
+            {
+                case "P1":
+                    result = FormulaP1(arguments);
+                    break;
+                case "PP1":
+                    result = FormulaPP1(arguments);
+                    break;
+                case "Z1":
+                    result = FormulaZ1(arguments);
+                    break;
+                case "ZZ1":
+                    result = FormulaZZ1(arguments);
+                    break;
+                case "Z2":
+                    result = FormulaZ2(arguments);
+                    break;
+                case "ZZ2":
+                    result = FormulaZZ2(arguments);
+                    break;
+                case "N2":
+                    result = FormulaN2(arguments);
+                    break;
+                case "G2":
+                    result = FormulaG2(arguments);
+                    break;
+                case "V2":
+                    result = FormulaV2(arguments);
+                    break;
+                case "N3":
+                    result = FormulaN3(arguments);
+                    break;
+                case "G3":
+                    result = FormulaG3(arguments);
+                    break;
+                case "V3":
+                    result = FormulaV3(arguments);
+                    break;
+                case "PP3":
+                    result = FormulaPP3(arguments);
+                    break;
+                case "N4":
+                    result = FormulaN4(arguments);
+                    break;
+                case "N5":
+                    result = FormulaN5(arguments);
+                    break;
+                case "G6":
+                    result = FormulaG6(arguments);
+                    break;
+                case "G7":
+                    result = FormulaG7(arguments);
+                    break;
+                case "R10":
+                    result = FormulaR10(arguments);
+                    break;
+                case "O13":
+                    result = FormulaO13(arguments);
+                    break;
+                case "V14":
+                    result = FormulaV14(arguments);
+                    break;
+                case "I16":
+                    result = FormulaI16(arguments);
+                    break;
+                case "I17":
+                    result = FormulaI17(arguments);
+                    break;
+                case "R18":
+                    result = FormulaR18(arguments);
+                    break;
+                case "ZZ52":
+                    result = FormulaZZ52(arguments);
+                    break;
+                case "Z18":
+                    result = FormulaZ18(arguments);
+                    break;
+                case "N19":
+                    result = FormulaN19(arguments);
+                    break;
+                case "G19":
+                    result = FormulaG19(arguments);
+                    break;
+                case "G26":
+                    result = FormulaG26(arguments);
+                    break;
+                case "P26":
+                    result = FormulaP26(arguments);
+                    break;
+                case "N42":
+                    result = FormulaN42(arguments);
+                    break;
+                default:
+                    throw new ArgumentException("The entered value of the formula code is invalid!");
+                    break;
+            }
+
+            return result;
+        }
+
         ///  <summary>
         /// 1) P1 ;ПАРА-КОНСУМИРАНА [ТОНОВЕ] :: X A1,F Q
         ///  </summary>            
         public static double FormulaP1(FormulaArguments args) 
         {
-            if (!args.CounterIndication.HasValue)
+            if (!args.InputValue.HasValue)
             {
                 throw new ArgumentNullException("The value of CounterIndication(PL) is not allowed to be null");
             }
@@ -38,7 +151,7 @@
                 throw new ArgumentNullException("The value of EstimatedTemperature(D6) is not allowed to be null");
             }
 
-            double pl = args.CounterIndication.Value;
+            double pl = args.InputValue.Value;
             double p = args.Pressure.Value;
             double t = args.Temperature.Value;
             double d2 = args.MaximumFlow.Value;
@@ -58,7 +171,7 @@
         /// <summary>
         /// 2) PP1 ;ПАРА-ПРОИЗВЕДЕНА [ТОНОВЕ] :: X A1,F Q
         /// </summary>
-        public static double FormulaPP1()
+        public static double FormulaPP1(FormulaArguments args)
         {
             double p = 20;
             double t = 20;
@@ -78,7 +191,7 @@
         /// <summary>
         /// 3) Z1 ;ПАРА-КОНСУМИРАНА [MWH] :: X A1,F,K15,K2,K3,EN S Q=Q*ENT/0.860 Q
         /// </summary>
-        public static double FormulaZ1()
+        public static double FormulaZ1(FormulaArguments args)
         {
             //Arrange
             double p = 10;
@@ -102,7 +215,7 @@
         /// <summary>
         /// 4) ZZ1 ;ПАРА-ПРОИЗВЕДЕНА [MWH] :: X A1,F,K15,K2,K3,EN S Q=Q*ENT/0.860 Q
         /// </summary>
-        public static double FormulaZZ1()
+        public static double FormulaZZ1(FormulaArguments args)
         {
             //Arrange
             double p = 10;
@@ -128,7 +241,7 @@
         /// </summary>
         public static double FormulaZ2(FormulaArguments args) 
         {
-            if (!args.CounterIndication.HasValue)
+            if (!args.InputValue.HasValue)
             {
                 throw new ArgumentNullException("The value of CounterIndication(PL) is not allowed to be null");
             }
@@ -143,7 +256,7 @@
 
             double p = args.Pressure.Value;
             double t = args.Temperature.Value;
-            double pl = args.CounterIndication.Value;
+            double pl = args.InputValue.Value;
 
             double ent = Functions.GetValueFormulaEN(t, p);
 
@@ -159,7 +272,7 @@
         /// <summary>
         ///  6) ZZ2 ;ПАРА-ПРОИЗВЕДЕНА, АСУТП, [MWH] :: X K15,K2,K3,EN S Q=PL*ENT/0.860 Q
         /// </summary>
-        public static double FormulaZZ2()
+        public static double FormulaZZ2(FormulaArguments args)
         {
             double p = 10;
             double t = 50;
@@ -178,7 +291,7 @@
         /// <summary>
         /// 7) N2 ;ТЕЧНИ НЕФТОПРОДУКТИ И ВТЕЧНЕНИ ГАЗОВЕ ;ИЗЧИСЛЯВАНЕ НА ПЛЪТНОСТ :: S:D<0.5 D=0.5 X C,A2,F Q 
         /// </summary>
-        public static double FormulaN2()
+        public static double FormulaN2(FormulaArguments args)
         {
             double c = 0;
             double a2 = 0;
@@ -212,7 +325,7 @@
         /// <summary>
         /// 8) G2 ;НЕФТОЗАВОДСКИ ГАЗ И ВОДОРОД :: S DF=D X A2,F Q
         /// </summary>
-        public static double FormulaG2()
+        public static double FormulaG2(FormulaArguments args)
         {
             double a2 = 0;
             double f = 0;
@@ -238,7 +351,7 @@
         /// <summary>
         /// 9) V2 ;КОНДЕНЗАТ И ХОВ :: X C1,A2,F Q
         /// </summary>
-        public static double FormulaV2()
+        public static double FormulaV2(FormulaArguments args)
         {
             double p = 15;
             double t = 40;
@@ -262,7 +375,7 @@
         /// <summary>
         /// 10) N3 ;ТЕЧНИ НЕФТОПРОДУКТИ И ВТЕЧНЕНИ ГАЗОВЕ :: S:D<0.5 D=0.5 X C,A7,F S Q=Q*DF Q
         /// </summary>
-        public static double FormulaN3()
+        public static double FormulaN3(FormulaArguments args)
         {
             double p = 15;
             double t = 40;
@@ -293,7 +406,7 @@
         /// <summary>
         /// 11) G3 ;НЕФТОЗАВОДСКИ ГАЗ :: S DF=D X A7,F S Q=Q*DF Q
         /// </summary>
-        public static double FormulaG3()
+        public static double FormulaG3(FormulaArguments args)
         {
             double p = 15;
             double t = 40;
@@ -320,7 +433,7 @@
         /// <summary>
         /// 12) G3 ;КОНДЕНЗАТ И ХОВ :: X C1,A7,F S Q=Q*DF Q
         /// </summary>
-        public static double FormulaV3()
+        public static double FormulaV3(FormulaArguments args)
         {
             double p = 15;
             double t = 40;
@@ -349,7 +462,7 @@
         /// <summary>
         /// 13) PP3 ;МРЕЖОВА ВОДА :: X C1,A7,F S Q=Q*DF Q
         /// </summary>
-        public static double FormulaPP3()
+        public static double FormulaPP3(FormulaArguments args)
         {
             double p = 15;
             double t = 40;
@@ -378,7 +491,7 @@
         /// <summary>
         /// 14) N4 ;ТЕЧНИ НЕФТОПРОДУКТИ И ВТЕЧНЕНИ ГАЗОВЕ :: S:D<0.5 D=0.5 X C,A3,F Q
         /// </summary>
-        public static double FormulaN4()
+        public static double FormulaN4(FormulaArguments args)
         {
             double t = 40;
             double pl = 20;
@@ -407,7 +520,7 @@
         /// <summary>
         /// 15) N5 ;ТЕЧНИ НЕФТОПРОДУКТИ И ВТЕЧНЕНИ ГАЗОВЕ :: S:D<0.5 D=0.5 X C,A15,F S Q=Q*DF Q
         /// </summary>
-        public static double FormulaN5()
+        public static double FormulaN5(FormulaArguments args)
         {
             double t = 40;
             double pl = 20;
@@ -437,7 +550,7 @@
         /// <summary>
         /// 16) G6 ;НЕФТОЗАВОДСКИ ГАЗ И ВОДОРОД :: X A4,F S Q=Q/1000 Q
         /// </summary>
-        public static double FormulaG6()
+        public static double FormulaG6(FormulaArguments args)
         {
             double p = 15;
             double pl = 20;
@@ -459,7 +572,7 @@
         /// <summary>
         /// 17) G7 ;НЕФТОЗАВОДСКИ ГАЗ И ВОДОРОД :: S DF=D X A7,F S Q=Q*DF/1000 Q
         /// </summary>
-        public static double FormulaG7()
+        public static double FormulaG7(FormulaArguments args)
         {
             double p = 15;
             double t = 40;
@@ -486,7 +599,7 @@
         /// <summary>
         /// 20) R10 ;ПРИРОДЕН ГАЗ :: X A7,F S Q=Q/1000 Q
         /// </summary>
-        public static double FormulaR10()
+        public static double FormulaR10(FormulaArguments args)
         {
             double p = 15;
             double t = 40;
@@ -512,7 +625,7 @@
         /// <summary>
         /// 23) O13 ;ОБОРОТНИ, ПИТЕЙНИ И ОТПАДНИ ВОДИ :: X A10 Q
         /// </summary>
-        public static double FormulaO13()
+        public static double FormulaO13(FormulaArguments args)
         {
             double pl = 20;
             double d2 = 15;
@@ -530,7 +643,7 @@
         /// <summary>
         /// 26) V14 ;КОНДЕНЗАТ, ХОВ :: X A10 Q
         /// </summary>
-        public static double FormulaV14()
+        public static double FormulaV14(FormulaArguments args)
         {
             double pl = 20;
             double d2 = 15;
@@ -548,7 +661,7 @@
         /// <summary>
         /// 30) I16 ;ВЪЗДУХ, АЗОТ, КИСЛОРОД :: X A1,F Q
         /// </summary>
-        public static double FormulaI16()
+        public static double FormulaI16(FormulaArguments args)
         {
             double p = 20;
             double t = 20;
@@ -570,7 +683,7 @@
         /// <summary>
         /// 31) I17 ;ВЪЗДУХ, АЗОТ, КИСЛОРОД :: X A4,F Q
         /// </summary>
-        public static double FormulaI17()
+        public static double FormulaI17(FormulaArguments args)
         {
             //Arrange
             double p = 15;
@@ -592,7 +705,7 @@
         /// <summary>
         /// 32) R18 ;БРОЯЧИ ЗА ПРИРОДЕН ГАЗ :: X A11 Q
         /// </summary>
-        public static double FormulaR18()
+        public static double FormulaR18(FormulaArguments args)
         {
             double pl = 20;
             double pl1 = 10;
@@ -611,7 +724,7 @@
         /// <summary>
         /// 41) ZZ52 ;БРОЯЧИ ЗА ПАРА - ДОБАВЕНО 03/05/2007 - ЗА ТЕЦА /ТЦ104/  :: X A11 Q
         /// </summary>
-        public static double FormulaZZ52()
+        public static double FormulaZZ52(FormulaArguments args)
         {
             double pl = 20;
             double pl1 = 10;
@@ -630,7 +743,7 @@
         /// <summary>
         /// 42) Z18 ;БРОЯЧИ ЗА ПАРА [MWH] :: X A11,K15,K2,K3,EN S Q=Q*ENT/0.860 Q
         /// </summary>
-        public static double FormulaZ18()
+        public static double FormulaZ18(FormulaArguments args)
         {
             double p = 15;
             double t = 40;
@@ -652,7 +765,7 @@
         /// <summary>
         /// 47) N19 ;БРОЯЧИ ЗА НЕФТОПРОДУКТИ :: S:D<0.5 D=0.5 X C,A11 S Q=Q*DF Q
         /// </summary>
-        public static double FormulaN19()
+        public static double FormulaN19(FormulaArguments args)
         {
             double pl = 20;
             double pl1 = 10;
@@ -679,7 +792,7 @@
         /// <summary>
         ///  48) G19 ;БРОЯЧИ ЗА ГАЗОВЕ :: S DF=D X A11 S Q=Q*DF Q
         /// </summary>
-        public static double FormulaG19()
+        public static double FormulaG19(FormulaArguments args)
         {
             double pl = 20;
             double pl1 = 10;
@@ -703,17 +816,17 @@
         /// </summary>
         public static double FormulaG26(FormulaArguments args)
         {
-            if (!args.CounterIndication.HasValue)
+            if (!args.InputValue.HasValue)
             {
                 throw new ArgumentNullException("The value of CounterIndication(PL) is not allowed to be null");
             }
-            if (!args.Density.HasValue)
+            if (!args.EstimatedDensity.HasValue)
             {
                 throw new ArgumentNullException("The value of Density(D) is not allowed to be null");
             }
 
-            double pl = args.CounterIndication.Value;
-            double d = args.Density.Value;           
+            double pl = args.InputValue.Value;
+            double d = args.EstimatedDensity.Value;           
             double q = pl * d;
 
             var inputParams = new Dictionary<string, double>();
@@ -727,7 +840,7 @@
         /// <summary>
         /// 63) P26 ;ПРЕВРЪЩАНЕ ДИМЕНСИЯТА ОТ "M.КУБ." В "ТОНОВЕ" :: S Q=PL*D Q
         /// </summary>
-        public static double FormulaP26()
+        public static double FormulaP26(FormulaArguments args)
         {
             double pl = 20;
             double d = 50;
@@ -744,7 +857,7 @@
         /// <summary>
         /// 87) N42 ;НЕФТОПРОДУКТИ /ХО-1/ :: S:D<0.5 D=0.5 X C S Q=PL*DF Q
         /// </summary>
-        public static double FormulaN42()
+        public static double FormulaN42(FormulaArguments args)
         {
             double pl = 20;
             double t = 40;

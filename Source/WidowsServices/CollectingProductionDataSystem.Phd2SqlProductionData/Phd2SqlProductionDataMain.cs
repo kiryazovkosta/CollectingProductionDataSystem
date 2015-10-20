@@ -467,7 +467,7 @@
                 var fiveOClock = today.AddHours(5);
                 
                 var ts = now - fiveOClock;
-                if (ts.TotalMinutes > 0 && ts.Hours == 0)
+                if (ts.TotalMinutes > 2 && ts.Hours == 0)
                 {
                     using (var context = new ProductionData(new CollectingDataSystemDbContext(new AuditablePersister())))
                     {
