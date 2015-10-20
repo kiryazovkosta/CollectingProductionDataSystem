@@ -13,7 +13,7 @@ namespace CollectingProductionDataSystem.Models.Productions
     using CollectingProductionDataSystem.Models.Abstract;
     using CollectingProductionDataSystem.Models.Contracts;
 
-    public class UnitConfigUnitDailyConfig : DeletableEntity, IEntity
+    public class UnitConfigUnitDailyConfig : IEntity
     {
         [NotMapped]
         public int Id { get; set; }

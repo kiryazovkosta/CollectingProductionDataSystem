@@ -83,7 +83,7 @@
 
         IDeletableEntityRepository<ActiveTransactionsData> ActiveTransactionsDatas { get; }
 
-        IDeletableEntityRepository<UnitConfigUnitDailyConfig> UnitConfigUnitDailyConfigs { get; }
+        IRepository<UnitConfigUnitDailyConfig> UnitConfigUnitDailyConfigs { get; }
 
         IDbContext DbContext { get; }
 
