@@ -619,6 +619,8 @@ td[role=gridcell] ul {
         border: 1px solid black;
         border-radius: 4px;
         margin: 2px;
+        padding-left:4px;
+        padding-right:4px;
     }
 
 /*Small*/

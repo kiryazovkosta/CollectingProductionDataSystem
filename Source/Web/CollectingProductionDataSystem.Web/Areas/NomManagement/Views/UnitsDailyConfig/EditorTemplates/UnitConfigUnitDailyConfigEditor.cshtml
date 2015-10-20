@@ -7,7 +7,7 @@
     .AutoClose(false)
         .BindTo((IEnumerable<UnitConfigUnitDailyConfigViewModel>)ViewData["relatedUnitConfigs"])
     .DataTextField("Code")
-    .DataValueField("Id")
+    .DataValueField("UnitConfigId")
     .ItemTemplate("<span class=\"order-id\">#= Code #</span> #= Name #")
 )
 
