@@ -35,10 +35,10 @@
                     this.transactionsDataTimer = new Timer(TimerHandlerTransactionsData, null, 0, Timeout.Infinite);
                 }
 
-                if (Properties.Settings.Default.SYNC_SCALE)
-                {
-                    this.scaleDateTimer = new Timer(TimerHandlerScalesData, null, 0, Timeout.Infinite);
-                }
+                //if (Properties.Settings.Default.SYNC_SCALE)
+                //{
+                //    this.scaleDateTimer = new Timer(TimerHandlerScalesData, null, 0, Timeout.Infinite);
+                //}
 
                 if (Properties.Settings.Default.SYNC_ACTIVE_TRANSACTIONS)
                 {

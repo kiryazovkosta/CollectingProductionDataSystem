@@ -31,7 +31,7 @@
       <Value Profile="(Default)">Dsn=ASO;uid=PHD2CACHE;pwd=synchronize</Value>
     </Setting>
     <Setting Name="SYNC_SCALE" Type="System.Boolean" Scope="Application">
-      <Value Profile="(Default)">True</Value>
+      <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="IDLE_TIMER_SCALE_DATA" Type="System.TimeSpan" Scope="Application">
       <Value Profile="(Default)">00:05:00</Value>
