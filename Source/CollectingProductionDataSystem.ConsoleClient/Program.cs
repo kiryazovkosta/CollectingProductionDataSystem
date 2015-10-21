@@ -2,6 +2,7 @@
 using CollectingProductionDataSystem.Application.FileServices;
 using CollectingProductionDataSystem.Data;
 using CollectingProductionDataSystem.Data.Concrete;
+using CollectingProductionDataSystem.Data.Contracts;
 using CollectingProductionDataSystem.Models.Productions;
 using System;
 using System.Collections.Generic;
@@ -22,6 +23,8 @@ namespace CollectingProductionDataSystem.ConsoleClient
             //timer.Start();
             var kernel = ninject.Kernel;
 
+            var data = kernel.GetService(typeof(IProductionData)) as IProductionData;
+            TranspormDatabase(data);
             //var fileName = @"d:\Proba\ХО-2-Конфигурация инсталации.csv";
 
             //var fileUploader = kernel.GetService(typeof(IFileUploadService)) as IFileUploadService;
@@ -49,8 +52,14 @@ namespace CollectingProductionDataSystem.ConsoleClient
 
 
 
-            TreeShiftsReports(DateTime.Today.AddDays(-2), 1);
+            //TreeShiftsReports(DateTime.Today.AddDays(-2), 1);
             //SeedShiftsToDatabase(uow);
+        }
+
+        private static void TranspormDatabase(IProductionData data)
+        {
+            var records = data.UnitsDailyConfigs.All().Where(x=>x.IsConverted == false);
+            //var records
         }
 
         //private static void SeedShiftsToDatabase(ProductionData uow, DateTime dateParam)

@@ -19,7 +19,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
     using CollectingProductionDataSystem.Web.Infrastructure.MadelBinders;
     using Ninject;
 
-    public class NinjectConfig
+    public class NinjectConfig: IDisposable
     {
         private readonly IKernel kernel;
         public NinjectConfig() 
@@ -35,7 +35,26 @@ namespace CollectingProductionDataSystem.ConsoleClient
             kernel.Bind<IUserService>().To<UserService>();
             kernel.Bind<IEfStatus>().To<EfStatus>();
             kernel.Bind<IFileUploadService>().To<FileUploadService>();
+            
         }
-        public IKernel Kernel { get { return this.kernel; } }
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing,
+        /// or resetting unmanaged resources.
+        /// </summary>
+        public void Dispose()
+        {
+            this.kernel.Dispose();
+        }
+
+        public IKernel Kernel
+        {
+            get
+            {
+                return this.kernel;
+            }
+        }
+    
+        
     }
 }

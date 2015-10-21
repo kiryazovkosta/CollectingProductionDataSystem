@@ -37,6 +37,8 @@
         public virtual ProcessUnit ProcessUnit { get; set; }
         public virtual Product Product { get; set; }
         public virtual DailyProductType DailyProductType { get; set; }
+
+        public bool IsConverted { get; set; }
         public virtual ICollection<UnitsDailyData> UnitsDailyDatas 
         {
             get { return this.unitsDailyDatas; }

@@ -10,5 +10,10 @@ namespace CollectingProductionDataSystem.Data.Identity
             : base(context)
         {
         }
+
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+        }
     }
 }
