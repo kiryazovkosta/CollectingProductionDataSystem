@@ -75,17 +75,21 @@ namespace CollectingProductionDataSystem.ConsoleClient
             foreach (var record in recordsDependOnUnitDailyConfig)
             {
                 var depedentRecords = FindDependantRecords<UnitDailyConfig>(record.AggregationMembers, data);
-                record.RelatedUnitDailyConfigs.Clear();
-                record.RelatedUnitDailyConfigs.AddRange(depedentRecords.Select((x, ix) => 
-                    new RelatedUnitDailyConfigs 
-                    { 
-                        UnitsDailyConfigId = record.Id, 
-                        RelatedUnitsDailyConfigId = x.Id,
-                        Position = ix+1
-                    }).ToList());
-                record.IsConverted = true;
+                if (depedentRecords.Count() > 0)
+                {
+                    record.RelatedUnitDailyConfigs.Clear();
+                    record.RelatedUnitDailyConfigs.AddRange(depedentRecords.Select((x, ix) =>
+                        new RelatedUnitDailyConfigs
+                        {
+                            UnitsDailyConfigId = record.Id,
+                            RelatedUnitsDailyConfigId = x.Id,
+                            Position = ix + 1
+                        }).ToList());
+                    record.IsConverted = true;
+                    record.ProductId = record.ProductId == 0 ? 1 : record.ProductId;
 
-                data.UnitsDailyConfigs.Update(record);
+                    data.UnitsDailyConfigs.Update(record);
+                }
             }
 
             data.SaveChanges("InitialLoading");
@@ -115,17 +119,21 @@ namespace CollectingProductionDataSystem.ConsoleClient
             foreach (var record in recordsDependOnUnitConfig)
             {
                 var depedentRecords = FindDependantRecords<UnitConfig>(record.AggregationMembers, data);
-                record.UnitConfigUnitDailyConfigs.Clear();
-                record.UnitConfigUnitDailyConfigs.AddRange(depedentRecords.Select((x,ix) =>
-                    new UnitConfigUnitDailyConfig
-                    {
-                        UnitDailyConfigId = record.Id,
-                        UnitConfigId = x.Id,
-                        Position = ix + 1
-                    }).ToList());
-                record.IsConverted = true;
+                if (depedentRecords.Count() > 0)
+                {
+                    record.UnitConfigUnitDailyConfigs.Clear();
+                    record.UnitConfigUnitDailyConfigs.AddRange(depedentRecords.Select((x, ix) =>
+                        new UnitConfigUnitDailyConfig
+                        {
+                            UnitDailyConfigId = record.Id,
+                            UnitConfigId = x.Id,
+                            Position = ix + 1
+                        }).ToList());
+                    record.IsConverted = true;
+                    record.ProductId = record.ProductId == 0 ? 1 : record.ProductId;
 
-                data.UnitsDailyConfigs.Update(record);
+                    data.UnitsDailyConfigs.Update(record);
+                }
             }
 
             data.SaveChanges("InitialLoading");

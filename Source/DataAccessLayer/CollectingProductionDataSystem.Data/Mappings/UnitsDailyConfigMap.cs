@@ -43,7 +43,7 @@ namespace CollectingProductionDataSystem.Data.Mappings
                 .WithMany(t => t.UnitsDailyConfigs)
                 .HasForeignKey(d => d.ProcessUnitId);
 
-            this.HasOptional(t => t.DailyProductType)
+            this.HasRequired(t => t.DailyProductType)
                 .WithMany(t => t.UnitsDailyConfigs)
                 .HasForeignKey(d => d.DailyProductTypeId);
 

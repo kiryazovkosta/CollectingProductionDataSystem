@@ -28,7 +28,7 @@
         public int ProcessUnitId { get; set; }
 
         public int ProductId { get; set; }
-        public int? DailyProductTypeId { get; set; }
+        public int DailyProductTypeId { get; set; }
         public int MeasureUnitId { get; set; }
         public string AggregationFormula { get; set; }
         public bool AggregationCurrentLevel { get; set; }
