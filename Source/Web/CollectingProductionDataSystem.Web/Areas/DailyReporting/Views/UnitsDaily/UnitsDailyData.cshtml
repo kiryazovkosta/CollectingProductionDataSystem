@@ -52,7 +52,7 @@
             events.Error("error_handler");
         })
     )
-            .Events(ev => ev.DataBound("dataBound"))
+       .Events(ev => ev.DataBound("dataBound"))
         )
     </div>
 
@@ -88,7 +88,7 @@
         .Filterable(true)
         .ProxyURL(Url.Action("Excel_Export_Save", "Tests", new { area = "" }))
         .AllPages(true))
-        .Events(ev => ev.DataBound("dataBound"))
+        .Events(ev => ev.DataBound("dataBoundDaily"))
         .Scrollable(scr => scr.Height(640))
         .Filterable()
         .ClientDetailTemplateId("template")

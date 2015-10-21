@@ -136,6 +136,19 @@ var dataBound = function () {
     }
 }
 
+var dataBoundDaily = function () {
+    dataView = this.dataSource.view();
+    for (var i = 0; i < dataView.length; i++) {
+        for (var j = 0; j < dataView[i].items.length; j++) {
+
+            if (dataView[i].items[j].HasManualData === true) {
+                var uid = dataView[i].items[j].uid;
+                $("#" + $(this.element).attr('id') + " tbody").find("tr[data-uid=" + uid + "]").addClass("bg-danger");
+            }
+        }
+    }
+}
+
 nameGridCommancolumn = function () {
     var grid = $("#units").data("kendoGrid");
     if (grid) {
