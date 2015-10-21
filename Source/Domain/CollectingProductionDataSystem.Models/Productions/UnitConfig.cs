@@ -9,7 +9,7 @@ using System.ComponentModel;
 
 namespace CollectingProductionDataSystem.Models.Productions
 {
-    public partial class UnitConfig : DeletableEntity, IEntity
+    public partial class UnitConfig : DeletableEntity, IEntity, IAggregatable, IConvertable
     {
         private ICollection<UnitsData> unitsDatas;
         private ICollection<RelatedUnitConfigs> relatedUnitConfigs;
@@ -24,8 +24,11 @@ namespace CollectingProductionDataSystem.Models.Productions
 
         public int Id { get; set; }
         public string Code { get; set; }
+
         public string Position { get; set; }
+
         public string Name { get; set; }
+
         public int? ShiftProductTypeId { get; set; }
         public int ProductId { get; set; }
         public int ProcessUnitId { get; set; }
@@ -35,7 +38,7 @@ namespace CollectingProductionDataSystem.Models.Productions
         public string CollectingDataMechanism { get; set; }
         public string CalculatedFormula { get; set; }
         public string AggregateGroup { get; set; }
-        public string AggregateParameter { get; set; }
+        public string AggregationMembers { get; set; }
         public bool IsCalculated { get; set; }
         public string PreviousShiftTag { get; set; }
         public string Notes { get; set; }
@@ -52,11 +55,18 @@ namespace CollectingProductionDataSystem.Models.Productions
         public virtual ProcessUnit ProcessUnit { get; set; }
         public virtual Product Product { get; set; }
         public virtual ShiftProductType ShiftProductType { get; set; }
+        /// <summary>
+        /// Gets or sets the is converted.
+        /// </summary>
+        /// <value>The is converted.</value>
+        public bool IsConverted { get; set; }
+
         public virtual ICollection<UnitsData> UnitsDatas
         {
             get { return this.unitsDatas; }
             set { this.unitsDatas = value; }
         }
+
         public virtual ICollection<RelatedUnitConfigs> RelatedUnitConfigs
         {
             get { return this.relatedUnitConfigs; }

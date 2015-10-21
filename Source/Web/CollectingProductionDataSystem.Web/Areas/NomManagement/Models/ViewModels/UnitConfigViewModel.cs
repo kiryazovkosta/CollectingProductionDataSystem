@@ -65,8 +65,8 @@
         [Display(Name = "AggregateGroup", ResourceType = typeof(Resources.Layout))]
         public string AggregateGroup { get; set; }
 
-        [Display(Name = "AggregateParameter", ResourceType = typeof(Resources.Layout))]
-        public string AggregateParameter { get; set; }
+        [Display(Name = "AggregationMembers", ResourceType = typeof(Resources.Layout))]
+        public string AggregationMembers { get; set; }
 
         [Required]
         [Display(Name = "IsCalculated", ResourceType = typeof(Resources.Layout))]

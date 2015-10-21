@@ -3,6 +3,7 @@ using CollectingProductionDataSystem.Application.FileServices;
 using CollectingProductionDataSystem.Data;
 using CollectingProductionDataSystem.Data.Concrete;
 using CollectingProductionDataSystem.Data.Contracts;
+using CollectingProductionDataSystem.Models.Contracts;
 using CollectingProductionDataSystem.Models.Productions;
 using System;
 using System.Collections.Generic;
@@ -58,8 +59,76 @@ namespace CollectingProductionDataSystem.ConsoleClient
 
         private static void TranspormDatabase(IProductionData data)
         {
-            var records = data.UnitsDailyConfigs.All().Where(x=>x.IsConverted == false);
-            //var records
+            var records = data.UnitsDailyConfigs.All().Where(x => x.IsConverted == false);
+            var recordsDependOnUnitConfig = records.Where(x => x.AggregationCurrentLevel == false);
+            var recordsDependOnUnitDailyConfig = records.Where(x => x.AggregationCurrentLevel == true);
+            TransformRecordsDependOnUnitConfig(recordsDependOnUnitConfig, data);
+            TransformRecordsDependOnUnitDailyConfig(recordsDependOnUnitDailyConfig, data);
+        }
+
+        /// <summary>
+        /// Transforms the records depend on unit daily config.
+        /// </summary>
+        /// <param name="recordsDependOnUnitDailyConfig">The records depend on unit daily config.</param>
+        private static void TransformRecordsDependOnUnitDailyConfig(IQueryable<UnitDailyConfig> recordsDependOnUnitDailyConfig, IProductionData data)
+        {
+            foreach (var record in recordsDependOnUnitDailyConfig)
+            {
+                var depedentRecords = FindDependantRecords<UnitDailyConfig>(record.AggregationMembers, data);
+                record.RelatedUnitDailyConfigs.Clear();
+                record.RelatedUnitDailyConfigs.AddRange(depedentRecords.Select((x, ix) => 
+                    new RelatedUnitDailyConfigs 
+                    { 
+                        UnitsDailyConfigId = record.Id, 
+                        RelatedUnitsDailyConfigId = x.Id,
+                        Position = ix+1
+                    }).ToList());
+                record.IsConverted = true;
+
+                data.UnitsDailyConfigs.Update(record);
+            }
+
+            data.SaveChanges("InitialLoading");
+        }
+
+        /// <summary>
+        /// Finds the dependant records.
+        /// </summary>
+        /// <param name="aggregationMembers">The aggregation members.</param>
+        /// <returns></returns>
+        private static IEnumerable<T> FindDependantRecords<T>(string aggregationMembers, IProductionData data)
+            where T : class, IEntity, IAggregatable
+        {
+
+            var recordCodes = aggregationMembers.Split(new char[] { '@' }, StringSplitOptions.RemoveEmptyEntries);
+            var records = data.DbContext.Set<T>().Where(x => recordCodes.Any(y => y == x.Code));
+
+            return records;
+        }
+
+        /// <summary>
+        /// Transforms the records depend on unit config.
+        /// </summary>
+        /// <param name="recordsDependOnUnitConfig">The records depend on unit config.</param>
+        private static void TransformRecordsDependOnUnitConfig(IQueryable<UnitDailyConfig> recordsDependOnUnitConfig, IProductionData data)
+        {
+            foreach (var record in recordsDependOnUnitConfig)
+            {
+                var depedentRecords = FindDependantRecords<UnitConfig>(record.AggregationMembers, data);
+                record.UnitConfigUnitDailyConfigs.Clear();
+                record.UnitConfigUnitDailyConfigs.AddRange(depedentRecords.Select((x,ix) =>
+                    new UnitConfigUnitDailyConfig
+                    {
+                        UnitDailyConfigId = record.Id,
+                        UnitConfigId = x.Id,
+                        Position = ix + 1
+                    }).ToList());
+                record.IsConverted = true;
+
+                data.UnitsDailyConfigs.Update(record);
+            }
+
+            data.SaveChanges("InitialLoading");
         }
 
         //private static void SeedShiftsToDatabase(ProductionData uow, DateTime dateParam)

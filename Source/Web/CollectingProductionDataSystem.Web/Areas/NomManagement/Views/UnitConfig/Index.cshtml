@@ -11,7 +11,7 @@
           columns.Bound(c => c.Name).Width(200);
           columns.Bound(c => c.CollectingDataMechanism).Width(100);
           columns.Bound(c => c.AggregateGroup).Width(100);
-          columns.Bound(c => c.AggregateParameter).Width(100);
+          columns.Bound(c => c.AggregationMembers).Width(100);
           columns.Bound(c => c.RelatedUnitConfigs).Width(300).ClientTemplate("#=territoriesTemplate(RelatedUnitConfigs)#");
           columns.Bound(c => c.IsCalculated).Width(100);
           columns.Bound(c => c.PreviousShiftTag).Width(100);
