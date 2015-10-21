@@ -25,20 +25,16 @@ namespace CollectingProductionDataSystem.ConsoleClient
             var kernel = ninject.Kernel;
 
             var data = kernel.GetService(typeof(IProductionData)) as IProductionData;
-            TranspormDatabase(data);
+            TransformUnitDailyConfigTable(data);
+            TransformUnitConfigTable(data);
             //var fileName = @"d:\Proba\ХО-2-Конфигурация инсталации.csv";
-
             //var fileUploader = kernel.GetService(typeof(IFileUploadService)) as IFileUploadService;
-
             //timer.Stop();
             //Console.WriteLine("Time for ninject init {0}.", timer.Elapsed);
             //timer.Reset();
             //timer.Start();
-
             //var result = fileUploader.UploadFileToDatabase(fileName, ";");
-
             //timer.Stop();
-
             //if (result.IsValid)
             //{
             //    Console.WriteLine("File was uploaded successfully!!!");
@@ -50,14 +46,21 @@ namespace CollectingProductionDataSystem.ConsoleClient
             //        Console.WriteLine("{0} => {1}", x.MemberNames.FirstOrDefault(), x.ErrorMessage)
             //        );
             //}
-
-
-
             //TreeShiftsReports(DateTime.Today.AddDays(-2), 1);
             //SeedShiftsToDatabase(uow);
         }
+ 
+        /// <summary>
+        /// Transforms the unit config table.
+        /// </summary>
+        /// <param name="data">The data.</param>
+        private static void TransformUnitConfigTable(IProductionData data)
+        {
+            var records = data.UnitConfigs.All().Where(x => x.IsConverted == false);
+            TransformRecords(records, data);
+        }
 
-        private static void TranspormDatabase(IProductionData data)
+        private static void TransformUnitDailyConfigTable(IProductionData data)
         {
             var records = data.UnitsDailyConfigs.All().Where(x => x.IsConverted == false);
             var recordsDependOnUnitConfig = records.Where(x => x.AggregationCurrentLevel == false);
@@ -95,20 +98,6 @@ namespace CollectingProductionDataSystem.ConsoleClient
             data.SaveChanges("InitialLoading");
         }
 
-        /// <summary>
-        /// Finds the dependant records.
-        /// </summary>
-        /// <param name="aggregationMembers">The aggregation members.</param>
-        /// <returns></returns>
-        private static IEnumerable<T> FindDependantRecords<T>(string aggregationMembers, IProductionData data)
-            where T : class, IEntity, IAggregatable
-        {
-
-            var recordCodes = aggregationMembers.Split(new char[] { '@' }, StringSplitOptions.RemoveEmptyEntries);
-            var records = data.DbContext.Set<T>().Where(x => recordCodes.Any(y => y == x.Code));
-
-            return records;
-        }
 
         /// <summary>
         /// Transforms the records depend on unit config.
@@ -138,6 +127,54 @@ namespace CollectingProductionDataSystem.ConsoleClient
 
             data.SaveChanges("InitialLoading");
         }
+
+        /// <summary>
+        /// Transforms the records.
+        /// </summary>
+        /// <param name="records">The records.</param>
+        /// <param name="data">The data.</param>
+        private static void TransformRecords(IQueryable<UnitConfig> records, IProductionData data)
+        {
+            foreach (var record in records)
+            {
+                var depedentRecords = FindDependantRecords<UnitConfig>(record.AggregationMembers, data);
+                if (depedentRecords.Count() > 0)
+                {
+                    record.UnitConfigUnitDailyConfigs.Clear();
+                    record.UnitConfigUnitDailyConfigs.AddRange(depedentRecords.Select((x, ix) =>
+                        new UnitConfigUnitDailyConfig
+                        {
+                            UnitDailyConfigId = record.Id,
+                            UnitConfigId = x.Id,
+                            Position = ix + 1
+                        }).ToList());
+                    record.IsConverted = true;
+                    record.ProductId = record.ProductId == 0 ? 1 : record.ProductId;
+
+                    data.UnitConfigs.Update(record);
+                }
+            }
+
+            data.SaveChanges("InitialLoading");
+        }
+
+        /// <summary>
+        /// Finds the dependant records.
+        /// </summary>
+        /// <param name="aggregationMembers">The aggregation members.</param>
+        /// <returns></returns>
+        private static IEnumerable<T> FindDependantRecords<T>(string aggregationMembers, IProductionData data)
+            where T : class, IEntity, IAggregatable
+        {
+
+            var recordCodes = aggregationMembers.Split(new char[] { '@' }, StringSplitOptions.RemoveEmptyEntries);
+            var records = data.DbContext.Set<T>().Where(x => recordCodes.Any(y => y == x.Code));
+
+            return records;
+        }
+
+       
+
 
         //private static void SeedShiftsToDatabase(ProductionData uow, DateTime dateParam)
         //{
