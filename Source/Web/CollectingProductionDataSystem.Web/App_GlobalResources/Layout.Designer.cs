@@ -880,6 +880,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to IsTotal.
+        /// </summary>
+        public static string IsTotal {
+            get {
+                return ResourceManager.GetString("IsTotal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Jp Expedition&lt;br/&gt;[ton].
         /// </summary>
         public static string JpQuantity {

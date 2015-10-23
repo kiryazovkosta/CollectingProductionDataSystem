@@ -831,4 +831,7 @@
   <data name="UnitConfigUnitDailyConfig" xml:space="preserve">
     <value>Свързани сменни измервателни позиции</value>
   </data>
+  <data name="IsTotal" xml:space="preserve">
+    <value>Тотализатор</value>
+  </data>
 </root>

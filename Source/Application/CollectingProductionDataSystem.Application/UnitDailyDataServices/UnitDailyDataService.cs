@@ -41,13 +41,19 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
             }
 
             // Day is ready and calculations begin
-
             var targetUnitDailyRecordConfigs = data.UnitsDailyConfigs.All()
                .Include(x => x.UnitConfigUnitDailyConfigs)
                .Include(x => x.UnitConfigUnitDailyConfigs.Select(y => y.UnitConfig).Select(z => z.UnitsDatas.Select(f => f.UnitsManualData)))
+               .Include(x => x.RelatedUnitDailyConfigs.Select(y=>y.RelatedUnitsDailyConfig).Select(z=>z.UnitsDailyDatas.Select(w=>w.UnitsManualDailyData)))
                .Include(x => x.UnitConfigUnitDailyConfigs.Select(y => y.UnitDailyConfig).Select(w => w.ProcessUnit))
-               .Where(x => x.ProcessUnitId == processUnitId);
-            //.ToList();
+               .Where(x => x.ProcessUnitId == processUnitId)
+               .ToList();
+
+            //Day is already calculated
+            if (DayIsCalculated(targetUnitDailyRecordConfigs, targetDay))
+            {
+                return this.kernel.Get(typeof(IEfStatus)) as IEfStatus;
+            }
 
             using (var transaction = new TransactionScope(TransactionScopeOption.Required,
                 new TransactionOptions() { IsolationLevel = System.Transactions.IsolationLevel.ReadCommitted, Timeout = new TimeSpan(0, 0, 30) }))
@@ -59,12 +65,30 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
                 }
                 
                 status = CalculateAndSaveDailyUnitDataFromRelatedRecords(targetUnitDailyRecordConfigs, targetDay, userName);
-                transaction.Dispose();
+                
+                if (!status.IsValid)
+                {
+                    return status;
+                }
+                else 
+                {
+                    transaction.Complete();
+                }
+
                 return status;
             }
             // Console.WriteLine("{0}\t\t{1}\t\t{2}", targetUnitDailyRecordConfig.Code, targetUnitDailyRecordConfig.ProcessUnit.ShortName, targetUnitDailyRecordConfig.Name);
         }
-
+ 
+        /// <summary>
+        /// Days the is calculated.
+        /// </summary>
+        /// <param name="targetUnitDailyRecordConfigs">The target unit daily record configs.</param>
+        /// <returns></returns>
+        private bool DayIsCalculated(IEnumerable<UnitDailyConfig> targetUnitDailyRecordConfigs, DateTime targetDay)
+        {
+            return targetUnitDailyRecordConfigs.SelectMany(x => x.UnitsDailyDatas).Where(y => y.RecordTimestamp == targetDay).Count() > 0;
+        }
 
         private IEfStatus CalculateAndSaveDailyUnitDataFromShiftData(IEnumerable<UnitDailyConfig> targetUnitDailyRecordConfigs, DateTime targetDay, string userName)
         {
@@ -96,17 +120,17 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
 
             }
 
-            if (result.Count < 0)
+            // Check if anyone else already have been calculate the day
+            var IsCalculated = DayIsCalculated(targetUnitDailyRecordConfigs.Where(x => x.AggregationCurrentLevel == false), targetDay);
+
+            if ((result.Count <= 0) || (IsCalculated))
             {
                 return kernel.Get(typeof(IEfStatus)) as IEfStatus;
             }
-            
-            Console.WriteLine(targetUnitDailyRecordConfigs.FirstOrDefault(x => x.ProcessUnitId == 1).UnitsDailyDatas.Where(y=>y.RecordTimestamp == targetDay).Count());
-            (data.DbContext.Set<UnitsDailyData>() as DbSet<UnitsDailyData>).AddRange(result);
-            var res = this.data.SaveChanges(userName);
-            Console.WriteLine(targetUnitDailyRecordConfigs.FirstOrDefault(x => x.ProcessUnitId == 1).UnitsDailyDatas.Where(y => y.RecordTimestamp == targetDay).Count());
 
-            return res;//this.data.SaveChanges(userName);
+            (data.DbContext.Set<UnitsDailyData>() as DbSet<UnitsDailyData>).AddRange(result);
+
+            return this.data.SaveChanges(userName);
         }
 
         /// <summary>
@@ -143,16 +167,20 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
                     Value = (decimal)dailyValue
                 };
 
-                //result.Add(dailyRecord);
+                result.Add(dailyRecord);
 
                 Console.WriteLine("{0}\t\t{1}\t\t{2}\t\t{3}", targetUnitDailyRecordConfig.Code, targetUnitDailyRecordConfig.ProcessUnit.ShortName, targetUnitDailyRecordConfig.Name, dailyRecord.Value);
 
             }
 
-            if (result.Count < 0)
+            var IsCalculated = DayIsCalculated(targetUnitDailyRecordConfigs.Where(x => x.AggregationCurrentLevel == true), targetDay);
+
+            if ((result.Count <= 0)||IsCalculated)
             {
                 return kernel.Get(typeof(IEfStatus)) as IEfStatus;
             }
+
+            (data.DbContext.Set<UnitsDailyData>() as DbSet<UnitsDailyData>).AddRange(result);
 
             return this.data.SaveChanges(userName);
         }

@@ -140,7 +140,8 @@
                 .ForMember(p => p.ModifiedOn, opt => opt.Ignore())
                 .ForMember(p => p.CreatedFrom, opt => opt.Ignore())
                 .ForMember(p => p.ModifiedFrom, opt => opt.Ignore())
-                .ForMember(p => p.UnitConfigUnitDailyConfigs, opt => opt.Ignore());
+                .ForMember(p => p.UnitConfigUnitDailyConfigs, opt => opt.Ignore())
+                .ForMember(p => p.IsConverted, opt => opt.Ignore()); 
         }
     }
 }

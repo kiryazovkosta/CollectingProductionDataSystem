@@ -65,6 +65,9 @@
         [Display(Name = "RelatedUnitDailyConfigs", ResourceType = typeof(Resources.Layout))]
         public ICollection<RelatedUnitDailyConfigsViewModel> RelatedUnitDailyConfigs { get; set; }
 
+        [Display(Name = "IsTotal", ResourceType = typeof(Resources.Layout))]
+        public bool IsTotal { get; set; }
+
         /// <summary>
         /// Creates the mappings.
         /// </summary>
@@ -75,6 +78,7 @@
                     .ForMember(p => p.DailyProductTypeId, opt => opt.MapFrom(p => p.DailyProductTypeId == null ? 0 : (int)p.DailyProductTypeId))
                     .ForMember(p => p.UnitConfigUnitDailyConfigs, opt => opt.MapFrom(p => p.UnitConfigUnitDailyConfigs.OrderBy(x => x.Position)))
                     .ForMember(p => p.RelatedUnitDailyConfigs, opt => opt.MapFrom(p => p.RelatedUnitDailyConfigs.OrderBy(x => x.Position)));
+                   
 
             configuration.CreateMap<UnitsDailyConfigViewModel, UnitDailyConfig>()
                  .ForMember(p => p.DailyProductTypeId, opt => opt.MapFrom(p => p.DailyProductTypeId == 0 ? null : (Nullable<int>)p.DailyProductTypeId))
@@ -83,7 +87,8 @@
                     new List<UnitConfigUnitDailyConfig>()))
                  .ForMember(p => p.RelatedUnitDailyConfigs, opt => opt.MapFrom(p => p.RelatedUnitDailyConfigs != null ?
                     p.RelatedUnitDailyConfigs.Select((x, ixc) => new RelatedUnitDailyConfigs() { UnitsDailyConfigId = p.Id, RelatedUnitsDailyConfigId = x.Id, Position = ixc + 1 }) :
-                    new List<RelatedUnitDailyConfigs>()));
+                    new List<RelatedUnitDailyConfigs>()))
+                  .ForMember(p => p.IsConverted, opt => opt.Ignore());
         }
     }
 }

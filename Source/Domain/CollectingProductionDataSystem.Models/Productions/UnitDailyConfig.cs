@@ -33,6 +33,7 @@
         public string AggregationFormula { get; set; }
         public bool AggregationCurrentLevel { get; set; }
         public string AggregationMembers { get; set; }
+        public bool IsTotal { get; set; }
 
         [DefaultValue(true)]
         public bool IsEditable { get; set; }

@@ -20,7 +20,7 @@ namespace CollectingProductionDataSystem.ConsoleTester
             var kernel = ninject.Kernel;
 
             var service = kernel.GetService(typeof(UnitDailyDataService)) as UnitDailyDataService;
-            var processUnitId = 1;
+            var processUnitId = 2;
             var result = service.CalculateAndSaveDailyData(processUnitId, DateTime.Today.AddDays(-4), "Test");
         }
     }

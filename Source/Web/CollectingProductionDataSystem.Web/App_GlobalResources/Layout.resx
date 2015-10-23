@@ -828,4 +828,7 @@
   <data name="UnitConfigUnitDailyConfig" xml:space="preserve">
     <value>Related Dhift Unit Config</value>
   </data>
+  <data name="IsTotal" xml:space="preserve">
+    <value>IsTotal</value>
+  </data>
 </root>
