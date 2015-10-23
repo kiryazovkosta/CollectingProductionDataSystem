@@ -12,6 +12,7 @@
     using System.Transactions;
     using System.Web.Mvc;
     using AutoMapper;
+    using CollectingProductionDataSystem.Application.CalculatorService;
     using CollectingProductionDataSystem.Application.UnitsDataServices;
     using CollectingProductionDataSystem.Data.Contracts;
     using CollectingProductionDataSystem.Models.Nomenclatures;

@@ -1,5 +1,5 @@
 function sendProcessUnit() {
-    return { "processUnitId": $('input[name=processunits]').val() }
+    return { "processUnitId": $('input[name=processunits]').val() };
 }
 
 function sendShift() {
@@ -130,20 +130,11 @@ var dataBound = function () {
                         var editButton = $(currenRow).find(".k-grid-edit");
                         editButton.attr("style", "display:none !important");
                     }
+                    if (dataView[i].items[j].HasManualData === true) {
+                        var uid = dataView[i].items[j].uid;
+                        $("#" + $(this.element).attr('id') + " tbody").find("tr[data-uid=" + uid + "]").addClass("bg-danger");
+                    }
                 }
-            }
-        }
-    }
-}
-
-var dataBoundDaily = function () {
-    dataView = this.dataSource.view();
-    for (var i = 0; i < dataView.length; i++) {
-        for (var j = 0; j < dataView[i].items.length; j++) {
-
-            if (dataView[i].items[j].HasManualData === true) {
-                var uid = dataView[i].items[j].uid;
-                $("#" + $(this.element).attr('id') + " tbody").find("tr[data-uid=" + uid + "]").addClass("bg-danger");
             }
         }
     }

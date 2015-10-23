@@ -61,7 +61,7 @@
 
         IDeletableEntityRepository<UnitsApprovedData> UnitsApprovedDatas { get; }
 
-        IDeletableEntityRepository<ApplicationUser> Users{get;}
+        IDeletableEntityRepository<ApplicationUser> Users { get; }
 
         IDeletableEntityRepository<ApplicationRole> Roles { get; }
 
@@ -84,6 +84,8 @@
         IDeletableEntityRepository<ActiveTransactionsData> ActiveTransactionsDatas { get; }
 
         IRepository<UnitConfigUnitDailyConfig> UnitConfigUnitDailyConfigs { get; }
+
+        IDeletableEntityRepository<Shift> Shifts { get; }
 
         IDbContext DbContext { get; }
 

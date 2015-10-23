@@ -126,6 +126,9 @@
   <data name="FileProcessError" xml:space="preserve">
     <value>Възникна грешка при обработка на файл {0}.</value>
   </data>
+  <data name="InvalidParameter" xml:space="preserve">
+    <value>Невалидна стоиност на параметъра {0}. Стойността трябва да бъде между {1} и {2}</value>
+  </data>
   <data name="InvalidPassword" xml:space="preserve">
     <value>Невалидна парола</value>
   </data>

@@ -126,6 +126,9 @@
   <data name="FileProcessError" xml:space="preserve">
     <value>There  is an error durring file processing {0}.</value>
   </data>
+  <data name="InvalidParameter" xml:space="preserve">
+    <value>Invalid parameter {0}. Value must be between {1} and {2}.</value>
+  </data>
   <data name="InvalidPassword" xml:space="preserve">
     <value>Invalid Password</value>
   </data>

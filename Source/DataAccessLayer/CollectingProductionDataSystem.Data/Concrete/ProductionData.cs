@@ -338,6 +338,14 @@
             return this.context.SaveChangesWithValidation(userName);
         }
 
+        public IDeletableEntityRepository<Shift> Shifts 
+        { 
+            get 
+            {
+                return this.GetDeletableEntityRepository<Shift>(); 
+            } 
+        }
+
         public void Dispose()
         {
             this.Dispose(true);

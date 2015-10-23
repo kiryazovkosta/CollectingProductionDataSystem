@@ -41,6 +41,10 @@ namespace CollectingProductionDataSystem.Data.Migrations
                 this.CreateProductionShifts(context);
             }
 
+            if (!context.Shifts.Any())
+            {
+                this.CreateShifts(context);
+            }
             //if (!context.Products.Any())
             //{
             //    ProductsDataImporter.Insert(context);
@@ -94,12 +98,12 @@ namespace CollectingProductionDataSystem.Data.Migrations
             //if (!context.Roles.Any())
             //{
             //    this.CreateRoles(context);
-                
+
             //    //this.SeedUsers(context);
             //}
             //this.CreateSystemAdministrator(context);
         }
- 
+
         /// <summary>
         /// Creates the system administrator.
         /// </summary>
@@ -154,6 +158,36 @@ namespace CollectingProductionDataSystem.Data.Migrations
                     EndTime = "05:00",
                     BeginMinutes = 1740,
                     OffsetMinutes = 120
+                });
+        }
+
+        private void CreateShifts(CollectingDataSystemDbContext context)
+        {
+            context.Shifts.AddOrUpdate(
+                p => p.Id,
+                new Shift
+                {
+                    Id = 1,
+                    Name = "Първа смяна",
+                    BeginTime = new TimeSpan(5, 1, 0),
+                    ReadOffset = new TimeSpan(13, 0, 0),
+                    ReadPollTimeSlot = new TimeSpan(2, 0, 0)
+                },
+                new Shift
+                {
+                    Id = 2,
+                    Name = "Втора смяна",
+                    BeginTime = new TimeSpan(13, 1, 0),
+                    ReadOffset = new TimeSpan(21, 0, 0),
+                    ReadPollTimeSlot = new TimeSpan(2, 0, 0)
+                },
+                new Shift
+                {
+                    Id = 3,
+                    Name = "Трета смяна",
+                    BeginTime = new TimeSpan(-2, -59, 0),
+                    ReadOffset = new TimeSpan(5, 0, 0),
+                    ReadPollTimeSlot = new TimeSpan(2, 0, 0)
                 });
         }
 
@@ -2572,7 +2606,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                 };
 
                 var roleManager = new RoleManager<ApplicationRole, int>(new RoleStoreIntPk(context));
-               
+
                 foreach (var role in roles)
                 {
                     roleManager.Create(role);

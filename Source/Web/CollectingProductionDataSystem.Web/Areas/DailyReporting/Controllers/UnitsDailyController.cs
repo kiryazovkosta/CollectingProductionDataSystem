@@ -4,6 +4,7 @@
     using System.Data.Entity.Infrastructure;
     using System.Diagnostics;
     using AutoMapper;
+    using CollectingProductionDataSystem.Application.CalculatorService;
     using CollectingProductionDataSystem.Application.UnitsDataServices;
     using System;
     using System.Collections.Generic;
@@ -17,7 +18,6 @@
     using CollectingProductionDataSystem.Web.Infrastructure.Filters;
     using Resources = App_GlobalResources.Resources;
     using System.Net;
-    using MathExpressions.Application;
 
     [Authorize]
     public class UnitsDailyController : AreaBaseController
@@ -109,7 +109,7 @@
             // get all records in which this record is formula's member. Nice ;)
             var uc = this.data.UnitsDailyConfigs.All().Where(x => x.ProcessUnitId == model.UnitsDailyConfig.ProcessUnitId && x.AggregationCurrentLevel == true).ToList();
             var ud = this.data.UnitsDailyDatas.All().Where(x => x.RecordTimestamp == model.RecordTimestamp && x.UnitsDailyConfig.ProcessUnitId == model.UnitsDailyConfig.ProcessUnitId).ToList();
-            var calculator = new Calculator();
+            var calculator = new CalculatorService();
             var splitter = new char[] { ',' };
 
             foreach (var c in uc)

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using AutoMapper;
+using CollectingProductionDataSystem.Application.CalculatorService;
 using CollectingProductionDataSystem.Application.UnitsDataServices;
 using CollectingProductionDataSystem.Data.Contracts;
 using CollectingProductionDataSystem.Models.Productions;
@@ -12,7 +13,6 @@ using CollectingProductionDataSystem.Web.Areas.ShiftReporting.ViewModels;
 using CollectingProductionDataSystem.Web.ViewModels.Units;
 using Kendo.Mvc.Extensions;
 using Kendo.Mvc.UI;
-using MathExpressions.Application;
 using CollectingProductionDataSystem.Web.Infrastructure.Filters;
 
 namespace CollectingProductionDataSystem.Web.Areas.DailyReporting.Controllers
@@ -62,7 +62,7 @@ namespace CollectingProductionDataSystem.Web.Areas.DailyReporting.Controllers
             }
 
             var productionPlans = dbResult.ToList();
-            var calculator = new Calculator();
+            var calculator = new CalculatorService();
             var result = new HashSet<ProductionPlanViewModel>();
             foreach (ProductionPlanConfig productionPlan in productionPlans)
             {
@@ -93,7 +93,7 @@ namespace CollectingProductionDataSystem.Web.Areas.DailyReporting.Controllers
         }
 
  
-        private double CalculateFactValue(ProductionPlanConfig productionPlan, List<UnitsDailyData> dailyData, Calculator calculator)
+        private double CalculateFactValue(ProductionPlanConfig productionPlan, List<UnitsDailyData> dailyData, CalculatorService calculator)
         {
             var splitter = new char[] { '@' };
 
@@ -121,7 +121,7 @@ namespace CollectingProductionDataSystem.Web.Areas.DailyReporting.Controllers
             return factValue;
         }
  
-        private double CalculatePlanValue(ProductionPlanConfig productionPlan, List<UnitsDailyData> dailyData, Calculator calculator)
+        private double CalculatePlanValue(ProductionPlanConfig productionPlan, List<UnitsDailyData> dailyData, CalculatorService calculator)
         {
             var splitter = new char[] { '@' };
 
