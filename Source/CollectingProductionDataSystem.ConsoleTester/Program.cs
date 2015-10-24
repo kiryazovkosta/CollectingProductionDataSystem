@@ -5,6 +5,7 @@ using System.Linq;
 using CollectingProductionDataSystem.Application.UnitDailyDataServices;
 using CollectingProductionDataSystem.Data.Contracts;
 using CollectingProductionDataSystem.Models.Productions;
+using CollectingProductionDataSystem.Application.UnitsDataServices;
 
 namespace CollectingProductionDataSystem.ConsoleTester
 {
@@ -12,8 +13,8 @@ namespace CollectingProductionDataSystem.ConsoleTester
     {
         static void Main(string[] args)
         {
-            Console.BufferWidth = 200;
-            Console.WindowWidth = 200;
+            //Console.BufferWidth = 190;
+            //Console.WindowWidth = 190;
             var ninject = new NinjectConfig();
             //var timer = new Stopwatch();
             //timer.Start();

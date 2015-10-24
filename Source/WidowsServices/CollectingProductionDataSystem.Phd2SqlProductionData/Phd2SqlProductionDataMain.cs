@@ -3,6 +3,7 @@
     using System.Data.Entity;
     using System.Data.Entity.Validation;
     using System.Linq;
+    using CollectingProductionDataSystem.Data.Common;
     using log4net;
     using System;
     using System.ServiceProcess;
@@ -16,20 +17,20 @@
     using System.Globalization;
     using CollectingProductionDataSystem.Models.Transactions;
     using System.Collections.Generic;
+    using CollectingProductionDataSystem.Application.UnitsDataServices;
+    using CollectingProductionDataSystem.Application.PrimaryDataServices;
 
     static class Phd2SqlProductionDataMain
     {
-        private static readonly int ZERO = 0;
-        private static readonly int ONE = 1;
-        private static readonly int FIVE = 5;
-        private static readonly int THIRTEEN = 13;
-        private static readonly int TWENTY_ONE = 21;
-
         private static readonly ILog logger;
+
+        private static readonly NinjectConfig ninject;
 
         static Phd2SqlProductionDataMain()
         {
             logger = LogManager.GetLogger("CollectingProductionDataSystem.Phd2SqlProductionData");
+            ninject = new NinjectConfig();
+
         }
 
         internal static void Main()
@@ -55,6 +56,11 @@
                         using (PHDServer defaultServer = new PHDServer(Properties.Settings.Default.PHD_HOST))
                         {
                             SetPhdConnectionSettings(oPhd, defaultServer);
+
+                            //var kernel = ninject.Kernel;
+                            //var service = kernel.GetService(typeof(PhdPrimaryDataService)) as PhdPrimaryDataService;
+                            //var result = service.ReadAndSaveUnitsDataForShift();
+                            //logger.InfoFormat("Successfully added {0} records to CollectingPrimaryDataSystem", result.ResultRecordsCount);
 
                             var now = DateTime.Now;
                             var recordDataTime = GetRecordTimestamp(now);
@@ -90,7 +96,7 @@
                                         {
                                             unitData.ShiftId = shift;
                                             unitData.RecordTimestamp = unitData.RecordTimestamp.Date;
-                                            context.UnitsData.Add(unitData); 
+                                            context.UnitsData.Add(unitData);
                                         }
 
                                         //logger.InfoFormat("Added {0} {1}", unitConfig.Name, unitData.RealValue);
@@ -101,13 +107,13 @@
                                         //logger.InfoFormat("Default {0} {1}", unitConfig.Name, unitData.RealValue);
                                     }
                                 }
-                                else 
+                                else
                                 {
                                     SetDefaultValue(context, recordDataTime, shift, unitsData, unitConfig);
                                     //logger.InfoFormat("Manual {0} {1}", unitConfig.Name, 0);
                                 }
                             }
-                            
+
                             var status = context.SaveChanges("Phd2SqlLoader");
                             logger.InfoFormat("Successfully added {0} records to CollectingPrimaryDataSystem", status.ResultRecordsCount);
                         }
@@ -118,21 +124,26 @@
             }
             catch (DataException validationException)
             {
-                var dbEntityException = validationException.InnerException as DbEntityValidationException;
-                if (dbEntityException != null)
-                {
-                    foreach (var validationErrors in dbEntityException.EntityValidationErrors)
-                    {
-                        foreach (var validationError in validationErrors.ValidationErrors)
-                        {
-                            logger.ErrorFormat("Property: {0} Error: {1}", validationError.PropertyName, validationError.ErrorMessage);
-                        }
-                    }
-                }
+                LogValidationDataException(validationException);
             }
             catch (Exception ex)
             {
                 logger.Error(ex);
+            }
+        }
+
+        private static void LogValidationDataException(DataException validationException)
+        {
+            var dbEntityException = validationException.InnerException as DbEntityValidationException;
+            if (dbEntityException != null)
+            {
+                foreach (var validationErrors in dbEntityException.EntityValidationErrors)
+                {
+                    foreach (var validationError in validationErrors.ValidationErrors)
+                    {
+                        logger.ErrorFormat("Property: {0} Error: {1}", validationError.PropertyName, validationError.ErrorMessage);
+                    }
+                }
             }
         }
 
@@ -182,8 +193,8 @@
  
         private static void SetPrimaryDataInRange(DateTime now, ProductionData context, UnitsData unitData, ShiftType shiftType, int startHour, int endHour)
         {
-            var startDate = new DateTime(now.Year, now.Month, now.Day, startHour, ONE, ZERO);
-            var endDate = new DateTime(now.Year, now.Month, now.Day, endHour, ZERO, ZERO);
+            var startDate = new DateTime(now.Year, now.Month, now.Day, startHour, 1, 0);
+            var endDate = new DateTime(now.Year, now.Month, now.Day, endHour, 0, 0);
             var range = new DateRange(startDate, endDate);
             var s = context.UnitsData
                            .All()

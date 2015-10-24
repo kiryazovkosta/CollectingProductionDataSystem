@@ -12,7 +12,6 @@
     using System.Transactions;
     using System.Web.Mvc;
     using AutoMapper;
-    using CollectingProductionDataSystem.Application.CalculatorService;
     using CollectingProductionDataSystem.Application.UnitsDataServices;
     using CollectingProductionDataSystem.Data.Contracts;
     using CollectingProductionDataSystem.Models.Nomenclatures;
@@ -143,11 +142,10 @@
             if (this.ModelState.IsValid)
             {
                 var approvedShift = this.data.UnitsApprovedDatas
-                                        .All()
-                                        .Where(u => u.RecordDate == model.date &&
-                                                    u.ProcessUnitId == model.processUnitId &&
-                                                    u.ShiftId == model.shiftId)
-                                        .FirstOrDefault();
+                    .All()
+                    .Where(u => u.RecordDate == model.date && 
+                        u.ProcessUnitId == model.processUnitId && 
+                        u.ShiftId == model.shiftId).FirstOrDefault();
                 if (approvedShift == null)
                 {
                     this.data.UnitsApprovedDatas.Add(new UnitsApprovedData
@@ -158,52 +156,36 @@
                         Approved = true
                     });
 
-                    var lastShiftId = this.data.ProductionShifts.All().OrderByDescending(x => x.Id).First().Id;
-                    if (model.shiftId.Value == lastShiftId)
+                    IEfStatus status;
+                    using (TransactionScope transaction = new TransactionScope())
                     {
-                        var confirmedShifts = this.data.UnitsApprovedDatas.All()
-                            .Where(x => x.RecordDate == model.date.Value)
-                            .Where(x => x.ProcessUnitId == model.processUnitId.Value)
-                            .Where(x => x.ShiftId == (int)ShiftType.First || x.ShiftId == (int)ShiftType.Second)
-                            .Count();
-                        if (confirmedShifts != lastShiftId - 1)
-                        {
-                            Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                            ModelState.AddModelError("shifts", "Не са потвърдени данните за предходните смени!!!");
-                            var errors = GetErrorListFromModelState(ModelState);
-                            return Json(new { data = new { errors = errors } });   
-                        }
-
-                        var lastShift = this.data.ProductionShifts.All().Where(s => s.Id == model.shiftId.Value).FirstOrDefault();
-                        if (lastShift != null)
-                        {
-                            using (TransactionScope transaction = new TransactionScope())
+                        status = data.SaveChanges(this.UserProfile.UserName);
+                        if (status.IsValid)
+	                    {
+                            var approvedShiftsCount = this.data.UnitsApprovedDatas.All().Where(x => x.ProcessUnitId == model.processUnitId.Value && x.RecordDate == model.date.Value).Count();
+                            var shiftsCount = this.data.ProductionShifts.All().Count();
+                            if (approvedShiftsCount == shiftsCount)
                             {
-                                data.SaveChanges(this.UserProfile.UserName);
                                 var ud = GetUnitsDataForDay(model);
                                 var ht = CalculateDailyDataByCodes(ud);
                                 var unitsDailyData = GetUnitsDailyDataConfig(model);
                                 CalculateUnitsDailyData(unitsDailyData, ht, model);
-                                this.data.SaveChanges(this.UserProfile.UserName);
-                                transaction.Complete();
+                                this.data.SaveChanges(this.UserProfile.UserName);   
                             }
-                        }
-                        else
-                        {
-                            Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                            ModelState.AddModelError("shiftdata", "Данните за смяната вече са потвърдени!!!");
-                            var errors = GetErrorListFromModelState(ModelState);
-                            return Json(new { data = new { errors = errors } });
-                        }
-                    }
-                    else 
-                    { 
-                        data.SaveChanges(this.UserProfile.UserName);
+	                    }
+                        
+                        transaction.Complete();
                     }
 
-                    return Json(new { IsConfirmed = true }, JsonRequestBehavior.AllowGet);
+                    return Json(new { IsConfirmed = status.IsValid }, JsonRequestBehavior.AllowGet);
                 }
-                return new HttpStatusCodeResult(200,"Ok");
+                else
+                {
+                    Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                    ModelState.AddModelError("shiftdata", "Данните за смяната вече са потвърдени!!!");
+                    var errors = GetErrorListFromModelState(ModelState);
+                    return Json(new { data = new { errors = errors } });
+                }
             }
             else
             {
@@ -212,6 +194,7 @@
                 return Json(new { data = new { errors = errors } });
             }
         }
+            
  
         private void CalculateUnitsDailyData(IQueryable<CalculatedField> unitsDailyData, 
             Dictionary<string, HashSet<UnitsData>> unitsDatasParam, 

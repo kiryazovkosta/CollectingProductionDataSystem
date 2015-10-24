@@ -52,6 +52,9 @@
     <Reference Include="Microsoft.AspNet.Identity.EntityFramework">
       <HintPath>..\..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.1\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
     </Reference>
+    <Reference Include="Ninject">
+      <HintPath>..\..\packages\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>
+    </Reference>
     <Reference Include="phdapinet">
       <HintPath>..\..\ExternalLibraries\Uniformance\phdapinet.dll</HintPath>
     </Reference>
@@ -71,6 +74,7 @@
     <Compile Include="Models\InspectionPoint.cs" />
     <Compile Include="Models\PreviousShift.cs" />
     <Compile Include="Models\Tank.cs" />
+    <Compile Include="NinjectConfig.cs" />
     <Compile Include="Phd2SqlProductionDataService.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -108,6 +112,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Application\CollectingProductionDataSystem.Application\CollectingProductionDataSystem.Application.csproj">
+      <Project>{3a125de9-28b9-4004-a1d9-bebde62ac786}</Project>
+      <Name>CollectingProductionDataSystem.Application</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\DataAccessLayer\CollectingProductionDataSystem.Data\CollectingProductionDataSystem.Data.csproj">
       <Project>{59ca4923-fd5f-4087-a7ee-5623f1dd8ca9}</Project>
       <Name>CollectingProductionDataSystem.Data</Name>
