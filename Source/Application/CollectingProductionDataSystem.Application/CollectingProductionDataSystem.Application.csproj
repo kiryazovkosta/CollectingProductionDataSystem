@@ -104,7 +104,6 @@
     <Compile Include="CalculatorService\CalculatorService.cs" />
     <Compile Include="Contracts\ICalculatorService.cs" />
     <Compile Include="CalculatorService\ObjectBuilder.cs" />
-    <Compile Include="Contracts\IPrimaryDataService.cs" />
     <Compile Include="Contracts\IUserService.cs" />
     <Compile Include="ErrorMessages.bg.Designer.cs">
       <AutoGen>True</AutoGen>
