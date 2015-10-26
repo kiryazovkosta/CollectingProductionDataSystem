@@ -155,8 +155,7 @@
 
         public int SaveChanges(string userName)
         {
-            using (var transaction = new TransactionScope(TransactionScopeOption.Required,
-               new TransactionOptions() { IsolationLevel = System.Transactions.IsolationLevel.ReadCommitted, Timeout = new TimeSpan(0, 0, 30) }))
+            using (var transaction = new TransactionScope(TransactionScopeOption.Required, new TimeSpan(0, 0, 30)))
             {
                 if (userName == null)
                 {

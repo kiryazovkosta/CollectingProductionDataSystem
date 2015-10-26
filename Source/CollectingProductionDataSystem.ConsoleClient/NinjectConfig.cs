@@ -1,5 +1,4 @@
-﻿
-namespace CollectingProductionDataSystem.ConsoleClient
+﻿namespace CollectingProductionDataSystem.ConsoleClient
 {
     using System;
     using System.Collections.Generic;
