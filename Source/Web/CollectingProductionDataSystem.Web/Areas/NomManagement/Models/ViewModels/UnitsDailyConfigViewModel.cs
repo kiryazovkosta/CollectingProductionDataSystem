@@ -65,9 +65,6 @@
         [Display(Name = "RelatedUnitDailyConfigs", ResourceType = typeof(Resources.Layout))]
         public ICollection<RelatedUnitDailyConfigsViewModel> RelatedUnitDailyConfigs { get; set; }
 
-        [Display(Name = "IsTotal", ResourceType = typeof(Resources.Layout))]
-        public bool IsTotal { get; set; }
-
         /// <summary>
         /// Creates the mappings.
         /// </summary>

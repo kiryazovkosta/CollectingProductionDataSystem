@@ -6,7 +6,7 @@ using System.Web;
 using System.Web.Mvc;
 using AutoMapper;
 using CollectingProductionDataSystem.Application.CalculatorService;
-using CollectingProductionDataSystem.Application.UnitsDataServices;
+using CollectingProductionDataSystem.Application.Contracts;
 using CollectingProductionDataSystem.Data.Contracts;
 using CollectingProductionDataSystem.Models.Productions;
 using CollectingProductionDataSystem.Web.Areas.ShiftReporting.ViewModels;

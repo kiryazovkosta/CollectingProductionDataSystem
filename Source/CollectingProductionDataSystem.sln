@@ -72,6 +72,8 @@ Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "CollectingProductionDataSys
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CollectingProductionDataSystem.ConsoleTester", "CollectingProductionDataSystem.ConsoleTester\CollectingProductionDataSystem.ConsoleTester.csproj", "{4028E5FA-0601-4757-91CD-C6E045DC5A7F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CollectingProductionDataSystem.PhdApplication", "CollectingProductionDataSystem.PhdApplication\CollectingProductionDataSystem.PhdApplication.csproj", "{BA08DAD7-81BE-4AEB-8EED-E835721574B5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -256,6 +258,14 @@ Global
 		{4028E5FA-0601-4757-91CD-C6E045DC5A7F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4028E5FA-0601-4757-91CD-C6E045DC5A7F}.Release|x64.ActiveCfg = Release|Any CPU
 		{4028E5FA-0601-4757-91CD-C6E045DC5A7F}.Release|x86.ActiveCfg = Release|Any CPU
+		{BA08DAD7-81BE-4AEB-8EED-E835721574B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA08DAD7-81BE-4AEB-8EED-E835721574B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA08DAD7-81BE-4AEB-8EED-E835721574B5}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{BA08DAD7-81BE-4AEB-8EED-E835721574B5}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{BA08DAD7-81BE-4AEB-8EED-E835721574B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA08DAD7-81BE-4AEB-8EED-E835721574B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA08DAD7-81BE-4AEB-8EED-E835721574B5}.Release|x64.ActiveCfg = Release|Any CPU
+		{BA08DAD7-81BE-4AEB-8EED-E835721574B5}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -284,5 +294,6 @@ Global
 		{5CB94FCF-2E20-4146-B28A-B1AE032C177D} = {43D6A01F-7526-42F9-A34E-D060EAB9CBDB}
 		{E567F2E2-358E-4251-B3DE-657D7F6F23AE} = {43D6A01F-7526-42F9-A34E-D060EAB9CBDB}
 		{4028E5FA-0601-4757-91CD-C6E045DC5A7F} = {1BA91924-D5E6-467D-8DB6-584D54F00F4F}
+		{BA08DAD7-81BE-4AEB-8EED-E835721574B5} = {1BA91924-D5E6-467D-8DB6-584D54F00F4F}
 	EndGlobalSection
 EndGlobal

@@ -4,6 +4,8 @@
     using System.Collections.Generic;
     using System.Data.Entity;
     using System.Linq;
+    using System.Threading.Tasks;
+    using CollectingProductionDataSystem.Application.Contracts;
     using CollectingProductionDataSystem.Data.Contracts;
     using CollectingProductionDataSystem.Models.Productions;
 using CollectingProductionDataSystem.Data.Common;
@@ -95,6 +97,15 @@ using CollectingProductionDataSystem.Data.Common;
 
             dbResult = dbResult.OrderBy(x => x.UnitsDailyConfig.Code);
             return dbResult;
+        }
+
+        public async Task<bool> IsShitApproved(DateTime date, int processUnitId, int shiftId ) 
+        {
+           return await this.data.UnitsApprovedDatas
+                    .All()
+                    .Where(u => u.RecordDate == date &&
+                        u.ProcessUnitId == processUnitId &&
+                        u.ShiftId == shiftId).AnyAsync();
         }
     }
 }

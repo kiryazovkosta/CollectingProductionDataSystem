@@ -89,10 +89,6 @@
       <HintPath>..\..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="phdapinet, Version=300.1.0.1, Culture=neutral, PublicKeyToken=5c915cbb2b8fbc32, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\ExternalLibraries\Uniformance\phdapinet.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Activities" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -127,7 +123,6 @@
     <Compile Include="IdentityInfrastructure\ApplicationUserManager.cs" />
     <Compile Include="IdentityInfrastructure\EmailService.cs" />
     <Compile Include="IdentityInfrastructure\SmsService.cs" />
-    <Compile Include="PrimaryDataServices\PhdPrimaryDataService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -136,8 +131,9 @@
     </Compile>
     <Compile Include="TankDataServices\ITankDataKendoService.cs" />
     <Compile Include="TankDataServices\TankDataKendoService.cs" />
+    <Compile Include="Contracts\IUnitDailyDataService.cs" />
     <Compile Include="UnitDailyDataServices\UnitDailyDataService.cs" />
-    <Compile Include="UnitsDataServices\IUnitsDataService.cs" />
+    <Compile Include="Contracts\IUnitsDataService.cs" />
     <Compile Include="UnitsDataServices\UnitsDataService.cs" />
     <Compile Include="UserServices\UserService.cs" />
   </ItemGroup>

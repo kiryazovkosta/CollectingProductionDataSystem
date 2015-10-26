@@ -2,7 +2,7 @@
 {
     using System.Diagnostics;
     using AutoMapper;
-    using CollectingProductionDataSystem.Application.UnitsDataServices;
+    using CollectingProductionDataSystem.Application.Contracts;
     using CollectingProductionDataSystem.Data.Contracts;
     using CollectingProductionDataSystem.Models.Productions;
     using CollectingProductionDataSystem.Web.Infrastructure.Filters;
