@@ -4,6 +4,7 @@
     using System.Data.Entity.Validation;
     using System.Linq;
     using CollectingProductionDataSystem.Data.Common;
+    using CollectingProductionDataSystem.PhdApplication.PrimaryDataServices;
     using log4net;
     using System;
     using System.ServiceProcess;
@@ -17,8 +18,6 @@
     using System.Globalization;
     using CollectingProductionDataSystem.Models.Transactions;
     using System.Collections.Generic;
-    using CollectingProductionDataSystem.Application.UnitsDataServices;
-    using CollectingProductionDataSystem.Application.PrimaryDataServices;
 
     static class Phd2SqlProductionDataMain
     {

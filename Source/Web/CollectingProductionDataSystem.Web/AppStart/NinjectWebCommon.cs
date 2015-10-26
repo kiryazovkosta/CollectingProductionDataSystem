@@ -9,6 +9,7 @@ namespace CollectingProductionDataSystem.Web.AppStart
     using CollectingProductionDataSystem.Application.Contracts;
     using CollectingProductionDataSystem.Application.FileServices;
     using CollectingProductionDataSystem.Application.TankDataServices;
+    using CollectingProductionDataSystem.Application.UnitDailyDataServices;
     using CollectingProductionDataSystem.Application.UserServices;
     using CollectingProductionDataSystem.Data.Common;
     using CollectingProductionDataSystem.Data.Contracts;
@@ -83,6 +84,7 @@ namespace CollectingProductionDataSystem.Web.AppStart
             kernel.Bind<IEfStatus>().To<EfStatus>();
             kernel.Bind<IFileUploadService>().To<FileUploadService>().InRequestScope();
             kernel.Bind<ICalculatorService>().To<CalculatorService>();
+            kernel.Bind<IUnitDailyDataService>().To<UnitDailyDataService>();
         }        
     }
 }

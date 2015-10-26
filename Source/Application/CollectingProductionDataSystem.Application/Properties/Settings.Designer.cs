@@ -22,59 +22,5 @@ namespace CollectingProductionDataSystem.Application.Properties {
                 return defaultInstance;
             }
         }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("srv-vm-mes-phd.neftochim.bg")]
-        public string PHD_HOST {
-            get {
-                return ((string)(this["PHD_HOST"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("3150")]
-        public int PHD_PORT {
-            get {
-                return ((int)(this["PHD_PORT"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Snapshot")]
-        public global::Uniformance.PHD.SAMPLETYPE PHD_SAMPLETYPE {
-            get {
-                return ((global::Uniformance.PHD.SAMPLETYPE)(this["PHD_SAMPLETYPE"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("RAPI200")]
-        public global::Uniformance.PHD.SERVERVERSION PHD_API_VERSION {
-            get {
-                return ((global::Uniformance.PHD.SERVERVERSION)(this["PHD_API_VERSION"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("49")]
-        public int PHD_DATA_MIN_CONFIDENCE {
-            get {
-                return ((int)(this["PHD_DATA_MIN_CONFIDENCE"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1")]
-        public uint PHD_DATA_MAX_ROWS {
-            get {
-                return ((uint)(this["PHD_DATA_MAX_ROWS"]));
-            }
-        }
     }
 }

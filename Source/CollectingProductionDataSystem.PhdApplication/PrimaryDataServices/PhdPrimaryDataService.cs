@@ -1,4 +1,4 @@
-﻿namespace CollectingProductionDataSystem.Application.PrimaryDataServices
+﻿namespace CollectingProductionDataSystem.PhdApplication.PrimaryDataServices
 {
     using System.Data;
     using System.Globalization;
@@ -22,77 +22,77 @@
 
         public IEfStatus ReadAndSaveUnitsDataForShift()
         {
-             using (PHDHistorian oPhd = new PHDHistorian())
-            {
-                using (PHDServer defaultServer = new PHDServer(Properties.Settings.Default.PHD_HOST))
-                {
-                    SetPhdConnectionSettings(oPhd, defaultServer);
+            // using (PHDHistorian oPhd = new PHDHistorian())
+            //{
+            //    using (PHDServer defaultServer = new PHDServer(Properties.Settings.Default.PHD_HOST))
+            //    {
+            //        SetPhdConnectionSettings(oPhd, defaultServer);
 
-                    var now = DateTime.Now;
-                    var today = DateTime.Today;
+            //        var now = DateTime.Now;
+            //        var today = DateTime.Today;
 
-                    var shift = GetShift(now);
-                    var recordDataTime = GetRecordTimestamp(now);
+            //        var shift = GetShift(now);
+            //        var recordDataTime = GetRecordTimestamp(now);
                     
 
-                    var unitsConfigsList = this.data.UnitConfigs.All().ToList();
-                    var unitsData = this.data.UnitsData.All().Where(x => x.RecordTimestamp == recordDataTime && x.ShiftId == shift).ToList();
+            //        var unitsConfigsList = this.data.UnitConfigs.All().ToList();
+            //        var unitsData = this.data.UnitsData.All().Where(x => x.RecordTimestamp == recordDataTime && x.ShiftId == shift).ToList();
 
-                    foreach (var unitConfig in unitsConfigsList)
-                    {
-                        if (unitConfig.CollectingDataMechanism.ToUpper() == "A")
-                        {
-                            var confidence = 0;
-                            var s = unitsData.Where(x => x.UnitConfigId == unitConfig.Id).FirstOrDefault();
-                            if (s != null)
-                            {
-                                continue;
-                            }
+            //        foreach (var unitConfig in unitsConfigsList)
+            //        {
+            //            if (unitConfig.CollectingDataMechanism.ToUpper() == "A")
+            //            {
+            //                var confidence = 0;
+            //                var s = unitsData.Where(x => x.UnitConfigId == unitConfig.Id).FirstOrDefault();
+            //                if (s != null)
+            //                {
+            //                    continue;
+            //                }
 
-                            var unitData = GetUnitData(unitConfig, oPhd, today, out confidence);
-                            if (confidence > Properties.Settings.Default.PHD_DATA_MIN_CONFIDENCE && unitData.RecordTimestamp != null)
-                            {
-                                if (now.Hour < 13)
-                                {
-                                    var prevDay = unitData.RecordTimestamp.AddDays(-1).Date;
-                                    unitData.RecordTimestamp = prevDay;
-                                }
+            //                var unitData = GetUnitData(unitConfig, oPhd, today, out confidence);
+            //                if (confidence > Properties.Settings.Default.PHD_DATA_MIN_CONFIDENCE && unitData.RecordTimestamp != null)
+            //                {
+            //                    if (now.Hour < 13)
+            //                    {
+            //                        var prevDay = unitData.RecordTimestamp.AddDays(-1).Date;
+            //                        unitData.RecordTimestamp = prevDay;
+            //                    }
 
-                                if (unitsData.Where(x => x.RecordTimestamp == unitData.RecordTimestamp && x.ShiftId == shift).FirstOrDefault() == null)
-                                {
-                                    unitData.ShiftId = shift;
-                                    unitData.RecordTimestamp = unitData.RecordTimestamp.Date;
-                                    this.data.UnitsData.Add(unitData);
-                                }
-                            }
-                            else
-                            {
-                                SetDefaultValue(recordDataTime, shift, unitsData, unitConfig);
-                            }
-                        }
-                        else
-                        {
-                            SetDefaultValue(recordDataTime, shift, unitsData, unitConfig);
-                        }
-                    }
-                }
-            }
+            //                    if (unitsData.Where(x => x.RecordTimestamp == unitData.RecordTimestamp && x.ShiftId == shift).FirstOrDefault() == null)
+            //                    {
+            //                        unitData.ShiftId = shift;
+            //                        unitData.RecordTimestamp = unitData.RecordTimestamp.Date;
+            //                        this.data.UnitsData.Add(unitData);
+            //                    }
+            //                }
+            //                else
+            //                {
+            //                    SetDefaultValue(recordDataTime, shift, unitsData, unitConfig);
+            //                }
+            //            }
+            //            else
+            //            {
+            //                SetDefaultValue(recordDataTime, shift, unitsData, unitConfig);
+            //            }
+            //        }
+            //    }
+            //}
 
             var status = new EfStatus();
-            //status = this.data.SaveChanges("Phd2SqlLoader");
+            ////status = this.data.SaveChanges("Phd2SqlLoader");
             return status;
         }
 
         private static void SetPhdConnectionSettings(PHDHistorian oPhd, PHDServer defaultServer)
         {
-            defaultServer.Port = Properties.Settings.Default.PHD_PORT;
-            defaultServer.APIVersion = Properties.Settings.Default.PHD_API_VERSION;
-            oPhd.DefaultServer = defaultServer;
-            oPhd.StartTime = "NOW - 2M";
-            oPhd.EndTime = "NOW - 2M";
-            oPhd.Sampletype = Properties.Settings.Default.PHD_SAMPLETYPE;
-            oPhd.MinimumConfidence = Properties.Settings.Default.PHD_DATA_MIN_CONFIDENCE;
-            oPhd.MaximumRows = Properties.Settings.Default.PHD_DATA_MAX_ROWS;
+            //defaultServer.Port = Properties.Settings.Default.PHD_PORT;
+            //defaultServer.APIVersion = Properties.Settings.Default.PHD_API_VERSION;
+            //oPhd.DefaultServer = defaultServer;
+            //oPhd.StartTime = "NOW - 2M";
+            //oPhd.EndTime = "NOW - 2M";
+            //oPhd.Sampletype = Properties.Settings.Default.PHD_SAMPLETYPE;
+            //oPhd.MinimumConfidence = Properties.Settings.Default.PHD_DATA_MIN_CONFIDENCE;
+            //oPhd.MaximumRows = Properties.Settings.Default.PHD_DATA_MAX_ROWS;
         }
 
         private void SetDefaultValue(DateTime recordDataTime, ShiftType shift, List<UnitsData> unitsData, UnitConfig unitConfig)

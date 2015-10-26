@@ -1,8 +1,9 @@
-namespace CollectingProductionDataSystem.Application.UnitsDataServices
+namespace CollectingProductionDataSystem.Application.Contracts
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading.Tasks;
     using CollectingProductionDataSystem.Models.Productions;
     using CollectingProductionDataSystem.Data.Contracts;
 
@@ -18,5 +19,7 @@ namespace CollectingProductionDataSystem.Application.UnitsDataServices
         IQueryable<UnitsData> GetUnitsDataForDateTime(DateTime? date, int? processUnitId, int? shiftId);
 
         IQueryable<UnitsDailyData> GetUnitsDailyDataForDateTime(DateTime? date, int? processUnitId);
+
+        Task<bool> IsShitApproved(DateTime date, int processUnitId, int shiftId);
     }
 }

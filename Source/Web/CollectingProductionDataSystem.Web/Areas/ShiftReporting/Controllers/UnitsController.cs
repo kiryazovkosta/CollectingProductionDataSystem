@@ -9,10 +9,11 @@
     using System.Diagnostics;
     using System.Linq;
     using System.Net;
+    using System.Threading.Tasks;
     using System.Transactions;
     using System.Web.Mvc;
     using AutoMapper;
-    using CollectingProductionDataSystem.Application.UnitsDataServices;
+    using CollectingProductionDataSystem.Application.Contracts;
     using CollectingProductionDataSystem.Data.Contracts;
     using CollectingProductionDataSystem.Models.Nomenclatures;
     using CollectingProductionDataSystem.Models.Productions;
@@ -27,11 +28,14 @@
     [Authorize]
     public class UnitsController : AreaBaseController
     {
-        private readonly IUnitsDataService unitsData;
+        private readonly IUnitsDataService shiftServices;
+        private readonly IUnitDailyDataService dailyServices;
 
-        public UnitsController(IProductionData dataParam, IUnitsDataService unitsDataParam) : base(dataParam)
+        public UnitsController(IProductionData dataParam, IUnitsDataService shiftServicesParam, IUnitDailyDataService dailyServicesParam)
+            : base(dataParam)
         {
-            this.unitsData = unitsDataParam;
+            this.shiftServices = shiftServicesParam;
+            this.dailyServices = dailyServicesParam;
         }
 
         [HttpGet]
@@ -47,7 +51,7 @@
                                         DataSourceRequest request, DateTime? date, int? processUnitId, int? shiftId)
         {
             ValidateModelState(date, processUnitId, shiftId);
-            var dbResult = this.unitsData.GetUnitsDataForDateTime(date, processUnitId, shiftId);
+            var dbResult = this.shiftServices.GetUnitsDataForDateTime(date, processUnitId, shiftId);
             var kendoPreparedResult = Mapper.Map<IEnumerable<UnitsData>, IEnumerable<UnitDataViewModel>>(dbResult);
             var kendoResult = new DataSourceResult();
             try
@@ -111,7 +115,7 @@
 
             return Json(new[] { model }.ToDataSourceResult(request, ModelState));
         }
- 
+
         private double CalculateValueByProductionDataFormula(UnitDataViewModel model)
         {
             var formulaCode = model.UnitConfig.CalculatedFormula ?? string.Empty;
@@ -135,52 +139,55 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Confirm(ProcessUnitConfirmShiftInputModel model)
+        public async Task<ActionResult> Confirm(ProcessUnitConfirmShiftInputModel model)
         {
             ValidateModelState(model.date, model.processUnitId, model.shiftId);
 
             if (this.ModelState.IsValid)
             {
-                var approvedShift = this.data.UnitsApprovedDatas
-                    .All()
-                    .Where(u => u.RecordDate == model.date && 
-                        u.ProcessUnitId == model.processUnitId && 
-                        u.ShiftId == model.shiftId).FirstOrDefault();
-                if (approvedShift == null)
+                if (!await this.shiftServices.IsShitApproved(model.date, model.processUnitId, model.shiftId))
                 {
                     this.data.UnitsApprovedDatas.Add(new UnitsApprovedData
                     {
-                        RecordDate = model.date.Value,
-                        ProcessUnitId = model.processUnitId.Value,
-                        ShiftId = model.shiftId.Value,
+                        RecordDate = model.date,
+                        ProcessUnitId = model.processUnitId,
+                        ShiftId = model.shiftId,
                         Approved = true
                     });
 
                     IEfStatus status;
+
+                    IEnumerable<UnitsDailyData> dailyResult = new List<UnitsDailyData>();
+
                     using (TransactionScope transaction = new TransactionScope())
                     {
                         status = data.SaveChanges(this.UserProfile.UserName);
+
                         if (status.IsValid)
-	                    {
-                            var approvedShiftsCount = this.data.UnitsApprovedDatas
-                                .All()
-                                .Where(x => x.ProcessUnitId == model.processUnitId.Value && x.RecordDate == model.date.Value)
-                                .Count();
-                            var shiftsCount = this.data.Shifts.All().Count();
-                            if (approvedShiftsCount == shiftsCount)
+                        {
+                            if (dailyServices.CheckIfAllShiftsAreReady(model.date, model.processUnitId))
                             {
-                                var ud = GetUnitsDataForDay(model);
-                                var ht = CalculateDailyDataByCodes(ud);
-                                var unitsDailyData = GetUnitsDailyDataConfig(model);
-                                CalculateUnitsDailyData(unitsDailyData, ht, model);
-                                this.data.SaveChanges(this.UserProfile.UserName);   
+                                if (!dailyServices.CheckIfDayIsApproved(model.date, model.processUnitId))
+                                {
+                                    status = dailyServices.ClearUnitDailyDatas(model.date, model.processUnitId, this.UserProfile.UserName);
+                                    if (status.IsValid)
+                                    {
+                                        dailyResult = dailyServices.CalculateDailyDataForProcessUnit(model.processUnitId, model.date);
+                                    }
+                                }
                             }
-	                    }
-                        
+                        }
+
+                        if (dailyResult.Count() > 0)
+                        {
+                            this.data.UnitsDailyDatas.BulkInsert(dailyResult, this.UserProfile.UserName);
+                            status = this.data.SaveChanges(this.UserProfile.UserName);
+                        }
+
                         transaction.Complete();
                     }
 
-                    return Json(new { IsConfirmed = status.IsValid }, JsonRequestBehavior.AllowGet);
+                    return Json(new { IsConfirmed = status.IsValid });
                 }
                 else
                 {
@@ -197,137 +204,30 @@
                 return Json(new { data = new { errors = errors } });
             }
         }
-            
- 
-        private void CalculateUnitsDailyData(IQueryable<CalculatedField> unitsDailyData, 
-            Dictionary<string, HashSet<UnitsData>> unitsDatasParam, 
-            ProcessUnitConfirmShiftInputModel model)
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> IsConfirmed([DataSourceRequest]
+                                        DataSourceRequest request, DateTime date, int processUnitId, int shiftId)
         {
-            var calculator = new Calculator();
-            var splitter = new char[] { '@' };
+            ValidateModelState(date, processUnitId, shiftId);
 
-            Dictionary<string, double> level2Values = new Dictionary<string, double>();
-
-            foreach (var item in unitsDailyData)
+            if (this.ModelState.IsValid)
             {
-                if (item.IsCurrentLevelCalculation)
-                {
-                    var tokens = item.Members.Split(splitter, StringSplitOptions.RemoveEmptyEntries);
-                    var inputParamsValues = new List<double>();
-                    foreach (var token in tokens)
-                    {
-                        double val;
-                        if(level2Values.TryGetValue(token, out val))
-                        {
-                            inputParamsValues.Add(val);
-                        }
-                    }
-
-                    var inputParams = new Dictionary<string, double>();
-                    for (int i = 0; i < inputParamsValues.Count(); i++)
-                    {
-                        inputParams.Add(string.Format("p{0}", i), inputParamsValues[i]);  
-                    }
-
-                    var value = calculator.Calculate(item.Formula, "p", inputParams.Count, inputParams);
-                    level2Values.Add(item.Code, value);
-                    this.data.UnitsDailyDatas.Add(new UnitsDailyData
-                    {
-                        RecordTimestamp = model.date.Value,
-                        Value = (decimal)value,
-                        UnitsDailyConfigId = item.Id,
-                    });
-                }
-                else
-                {
-                    var unitsDataList = new HashSet<UnitsData>();
-                    var hasManualData = false;   
-                
-                    var tokens = item.Members.Split(splitter, StringSplitOptions.RemoveEmptyEntries);
-                    var inputParamsValues = new List<double>();
-                    foreach (var token in tokens)
-                    {
-                        var hs = unitsDatasParam[token];
-                        var sum = 0.0;
-                        foreach (var unitsData in hs)
-                        {
-                            if (unitsData.IsManual)
-                            {
-                                hasManualData = true;
-                            }
-   
-                            sum += unitsData.RealValue;
-                        }
-
-                        inputParamsValues.Add(sum);
-                        unitsDataList.AddRange(hs);
-                    }
-
-                    var inputParams = new Dictionary<string, double>();
-                    for (int i = 0; i < inputParamsValues.Count(); i++)
-                    {
-                        inputParams.Add(string.Format("p{0}", i), inputParamsValues[i]);  
-                    }
-
-                    var value = calculator.Calculate(item.Formula, "p", inputParams.Count, inputParams);
-                    level2Values.Add(item.Code, value);
-
-                    this.data.UnitsDailyDatas.Add(new UnitsDailyData
-                    {
-                        RecordTimestamp = model.date.Value,
-                        Value = (decimal)value,
-                        UnitsDailyConfigId = item.Id,
-                        HasManualData = hasManualData,
-                        //UnitsDatas = unitsDataList
-                    });
-                }
-            }
-        }
- 
-        private IQueryable<CalculatedField> GetUnitsDailyDataConfig(ProcessUnitConfirmShiftInputModel model)
-        {
-            var unitsDailyData = this.data.UnitsDailyConfigs
-                                     .All()
-                                     .Include(u => u.ProcessUnit)
-                                     .Where(u => u.ProcessUnitId == model.processUnitId.Value)
-                                     .Select(u => new CalculatedField
-                                            {
-                                                Id = u.Id,
-                                                Members = u.AggregationMembers,
-                                                Formula = u.AggregationFormula,
-                                                IsCurrentLevelCalculation = u.AggregationCurrentLevel,
-                                                Code = u.Code
-                                            });
-            return unitsDailyData;
-        }
- 
-        private IQueryable<UnitsData> GetUnitsDataForDay(ProcessUnitConfirmShiftInputModel model)
-        {
-            var records = this.data.UnitsData.All()
-                              .Include(u => u.UnitConfig)
-                              .Where(u => u.RecordTimestamp == model.date &&
-                                          u.UnitConfig.ProcessUnitId == model.processUnitId.Value);
-            return records;
-        }
- 
-        private Dictionary<string, HashSet<UnitsData>> CalculateDailyDataByCodes(IQueryable<UnitsData> unitsDataParam)
-        {
-            var result = new Dictionary<string, HashSet<UnitsData>>();
-            foreach (var unitsData in unitsDataParam)
-            {
-                if (result.ContainsKey(unitsData.UnitConfig.Code))
-                {
-                    result[unitsData.UnitConfig.Code].Add(unitsData);
-                }
-                else
-                {
-                    var unitsDataList = new HashSet<UnitsData>();
-                    unitsDataList.Add(unitsData);
-                    result.Add(unitsData.UnitConfig.Code, unitsDataList);
-                }
+                return Json(new { IsConfirmed = await shiftServices.IsShitApproved(date, processUnitId, shiftId)});
             }
 
-            return result;
+            return Json(new { IsConfirmed = false });
+        }
+
+        private List<string> GetErrorListFromModelState(ModelStateDictionary modelState)
+        {
+            var query = from state in modelState.Values
+                        from error in state.Errors
+                        select error.ErrorMessage;
+
+            var errorList = query.ToList();
+            return errorList;
         }
 
         private void ValidateModelState(DateTime? date, int? processUnitId, int? shiftId)
@@ -345,51 +245,5 @@
                 this.ModelState.AddModelError("shifts", string.Format(Resources.ErrorMessages.Required, Resources.Layout.UnitsProcessUnitShiftSelector));
             }
         }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult IsConfirmed([DataSourceRequest]
-                                        DataSourceRequest request, DateTime? date, int? processUnitId, int? shiftId)
-        {
-            ValidateModelState(date, processUnitId, shiftId);
-
-            if (this.ModelState.IsValid)
-            {
-                var approvedShift = this.data.UnitsApprovedDatas
-                    .All()
-                    .Where(u => u.RecordDate == date &&
-                                u.ProcessUnitId == processUnitId &&
-                                u.ShiftId == shiftId)
-                    .FirstOrDefault();
-                if (approvedShift == null)
-                {
-                    return Json(new { IsConfirmed = false });
-                }
-                return Json(new { IsConfirmed = true });
-            }
-            else
-            {
-                return Json(new { IsConfirmed = true });
-            }
-        }
-
-        private List<string> GetErrorListFromModelState(ModelStateDictionary modelState)
-        {
-            var query = from state in modelState.Values
-                        from error in state.Errors
-                        select error.ErrorMessage;
-
-            var errorList = query.ToList();
-            return errorList;
-        }
-    }
-
-    public class CalculatedField
-    {
-        public int Id { get; set; }
-        public string Members { get; set; }
-        public string Formula { get; set; }
-        public bool IsCurrentLevelCalculation { get; set; }
-        public string Code { get; set; }
     }
 }
