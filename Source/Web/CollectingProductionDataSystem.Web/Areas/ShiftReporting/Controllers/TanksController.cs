@@ -29,13 +29,13 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult ReadTanksData([DataSourceRequest]DataSourceRequest request, DateTime? date, int? parkId, int? shiftMinutesOffset)
+        public ActionResult ReadTanksData([DataSourceRequest]DataSourceRequest request, DateTime? date, int? parkId, long? shiftMinutesOffset)
         {
             ValidateInputModel(date, parkId, shiftMinutesOffset);
 
             if (this.ModelState.IsValid)
             {
-                date = date.Value.AddMinutes(shiftMinutesOffset.Value);
+                date = date.Value.AddTicks(shiftMinutesOffset.Value);
 
                 var dbResult = this.data.TanksData.All()
                     .Include(t => t.TankConfig)
@@ -55,7 +55,7 @@
             }
         }
  
-        private void ValidateInputModel(DateTime? date, int? parkId, int? shiftMinutesOffset)
+        private void ValidateInputModel(DateTime? date, int? parkId, long? shiftMinutesOffset)
         {
             if (date == null)
             {

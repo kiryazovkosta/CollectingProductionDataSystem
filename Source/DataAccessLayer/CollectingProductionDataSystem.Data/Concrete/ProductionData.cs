@@ -221,14 +221,6 @@
             }
         }
 
-        public IDeletableEntityRepository<ProductionShift> ProductionShifts
-        {
-            get
-            {
-                return this.GetDeletableEntityRepository<ProductionShift>();
-            }
-        }
-
         public IDeletableEntityRepository<UnitsApprovedData> UnitsApprovedDatas
         {
             get

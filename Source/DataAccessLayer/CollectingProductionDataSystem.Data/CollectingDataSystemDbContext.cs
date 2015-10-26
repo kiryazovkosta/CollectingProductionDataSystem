@@ -91,8 +91,6 @@
 
         public IDbSet<TankMasterProduct> TankMasterProducts { get; set; }
 
-        public IDbSet<ProductionShift> ProductionShifts { get; set; }
-
         public IDbSet<UnitsApprovedData> UnitsApprovedDatas { get; set; }
 
         public IDbSet<UnitsApprovedDailyData> UnitsApprovedDailyDatas { get; set; }
