@@ -44,22 +44,20 @@
                     var max = context.MaxAsoMeasuringPointDataSequenceNumberMap.All().FirstOrDefault();
                     if (max != null)
                     {
-                        GetTransactionsFromAso(max, context);
-
-                        GetTransactionsFromScales(max, context);
-
-                        using (TransactionScope scope = new TransactionScope())
-                        {
+                        //using (TransactionScope scope = new TransactionScope())
+                        //{
+                            GetTransactionsFromAso(max, context);
+                            GetTransactionsFromScales(max, context);
                             var status = context.SaveChanges("Aso2Sql");
                             max.LastFetchScales = DateTime.Now;
                             max.LastTransactionsFetchingDateTime = DateTime.Now;
                             context.MaxAsoMeasuringPointDataSequenceNumberMap.Update(max);
                             context.SaveChanges("Aso2Sql");
-                            scope.Complete();
+                            //scope.Complete();
                             logger.InfoFormat("Successfully synchronization {0} records from Aso to Cpds", status.ResultRecordsCount);
                             logger.InfoFormat("Successfully sync {0} transactions between ASO.SCALE and Cpds", status.ResultRecordsCount);
                             logger.InfoFormat("Last transactions fetching date-time was updated to {0}.", DateTime.Now);
-                        }
+                        //}
                     }
 
                     logger.Info("End synchronization");
