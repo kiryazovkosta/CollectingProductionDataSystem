@@ -66,6 +66,13 @@
  	        DbEntityEntry entry = this.Context.Entry(entity);
             entry.State = EntityState.Detached;
         }
+
+        public void Delete(T entity)
+        {
+            var entry = this.Context.Entry(entity);
+            entry.State = EntityState.Deleted;
+        }
+
         /// <summary>
         /// Bulks the insert.
         /// </summary>

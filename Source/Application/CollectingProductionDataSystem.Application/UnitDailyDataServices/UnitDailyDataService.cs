@@ -36,10 +36,10 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
             }
 
             // Day is not ready
-            if (!CheckIfAllShiftsAreReady(targetDay, processUnitId))
-            {
-                return new List<UnitsDailyData>();
-            }
+            //if (!CheckIfAllShiftsAreReady(targetDay, processUnitId))
+            //{
+            //    return new List<UnitsDailyData>();
+            //}
 
             // Day is ready and calculations begin
             var targetUnitDailyRecordConfigs = data.UnitsDailyConfigs.All()
@@ -390,14 +390,12 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
             return calculator.Calculate(unitDailyConfig.AggregationFormula, "p", inputDictionary.Count, inputDictionary);
         }
 
-        
-
         /// <summary>
         /// Checks if all shifts are ready.
         /// </summary>
         /// <param name="unitDatas">The unit datas.</param>
         /// <returns></returns>
-        private bool CheckIfAllShiftsAreReady(DateTime targetDate, int processUnitId)
+        public bool CheckIfAllShiftsAreReady(DateTime targetDate, int processUnitId)
         {
             var currentApprovedUnitDatasCount = this.data.UnitsApprovedDatas.All().Where(x => x.ProcessUnitId == processUnitId && x.RecordDate == targetDate).ToList();
             var shiftsCount = this.data.Shifts.All().ToList();
@@ -408,6 +406,31 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
             }
 
             return true;
+        }
+
+        /// <summary>
+        /// Checks if all shifts are ready.
+        /// </summary>
+        /// <param name="unitDatas">The unit datas.</param>
+        /// <returns></returns>
+        public bool CheckIfDayIsApproved(DateTime targetDate, int processUnitId)
+        {
+            var currentApprovedUnitDailyDatas = this.data.UnitsApprovedDailyDatas.All().Where(x => x.ProcessUnitId == processUnitId && x.RecordDate == targetDate).FirstOrDefault();
+
+            return currentApprovedUnitDailyDatas == null;
+        }
+
+
+        public void ClearUnitDailyDatas(DateTime targetDate, int processUnitId, string userName)
+        {
+            var unitDailyDatas = this.data.UnitsDailyDatas.All().Include(x=>x.UnitsDailyConfig)
+                .Where(y => y.RecordTimestamp == targetDate && y.UnitsDailyConfig.ProcessUnitId == processUnitId).ToList();
+            foreach (var record in unitDailyDatas)
+            {
+                this.data.UnitsDailyDatas.Delete(record);
+            }
+
+            this.data.SaveChanges(userName);
         }
     }
 }
