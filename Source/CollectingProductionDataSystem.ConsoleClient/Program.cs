@@ -49,7 +49,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
             //TreeShiftsReports(DateTime.Today.AddDays(-2), 1);
             //SeedShiftsToDatabase(uow);
         }
- 
+
         /// <summary>
         /// Transforms the unit config table.
         /// </summary>
@@ -62,9 +62,8 @@ namespace CollectingProductionDataSystem.ConsoleClient
 
         private static void TransformUnitDailyConfigTable(IProductionData data)
         {
-            var records = data.UnitsDailyConfigs.All().Where(x => x.IsConverted == false);
-            var recordsDependOnUnitConfig = records.Where(x => x.AggregationCurrentLevel == false);
-            var recordsDependOnUnitDailyConfig = records.Where(x => x.AggregationCurrentLevel == true);
+            var recordsDependOnUnitConfig = data.UnitsDailyConfigs.All().Where(x => x.IsConverted == false && x.AggregationCurrentLevel == false);
+            var recordsDependOnUnitDailyConfig = data.UnitsDailyConfigs.All().Where(x => x.IsConverted == false && x.AggregationCurrentLevel == true);
             TransformRecordsDependOnUnitConfig(recordsDependOnUnitConfig, data);
             TransformRecordsDependOnUnitDailyConfig(recordsDependOnUnitDailyConfig, data);
         }
@@ -95,7 +94,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
                 }
             }
 
-            data.SaveChanges("InitialLoading");
+            var result = data.SaveChanges("InitialLoading");
         }
 
 
@@ -103,9 +102,9 @@ namespace CollectingProductionDataSystem.ConsoleClient
         /// Transforms the records depend on unit config.
         /// </summary>
         /// <param name="recordsDependOnUnitConfig">The records depend on unit config.</param>
-        private static void TransformRecordsDependOnUnitConfig(IQueryable<UnitDailyConfig> recordsDependOnUnitConfig, IProductionData data)
+        private static void TransformRecordsDependOnUnitConfig(IQueryable<UnitDailyConfig> records, IProductionData data)
         {
-            foreach (var record in recordsDependOnUnitConfig)
+            foreach (var record in records)
             {
                 var depedentRecords = FindDependantRecords<UnitConfig>(record.AggregationMembers, data);
                 if (depedentRecords.Count() > 0)
@@ -166,14 +165,18 @@ namespace CollectingProductionDataSystem.ConsoleClient
         private static IEnumerable<T> FindDependantRecords<T>(string aggregationMembers, IProductionData data)
             where T : class, IEntity, IAggregatable
         {
+            if (string.IsNullOrEmpty(aggregationMembers))
+            {
+                return new List<T>();
+            }
 
             var recordCodes = aggregationMembers.Split(new char[] { '@' }, StringSplitOptions.RemoveEmptyEntries);
-            var records = data.DbContext.Set<T>().Where(x => recordCodes.Any(y => y == x.Code));
+            var records = data.DbContext.Set<T>().ToList().Where(x => recordCodes.Any(y => y == x.Code));
 
             return records;
         }
 
-       
+
 
 
         //private static void SeedShiftsToDatabase(ProductionData uow, DateTime dateParam)

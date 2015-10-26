@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using CollectingProductionDataSystem.Application.UnitDailyDataServices;
 using CollectingProductionDataSystem.Data.Contracts;
@@ -22,7 +23,12 @@ namespace CollectingProductionDataSystem.ConsoleTester
 
             var service = kernel.GetService(typeof(UnitDailyDataService)) as UnitDailyDataService;
             var processUnitId = 2;
-            var result = service.CalculateAndSaveDailyData(processUnitId, DateTime.Today.AddDays(-4), "Test");
+            var timer = new Stopwatch();
+            timer.Start();
+            var result = service.CalculateDailyDataForProcessUnit(processUnitId, DateTime.Today.AddDays(-6));
+           // var result = service.CalculateAndSaveDailyData(processUnitId, DateTime.Today.AddDays(-5), "Test");
+            timer.Stop();
+            Console.WriteLine("Estimated time for action: {0}", timer.Elapsed);
         }
     }
 }
