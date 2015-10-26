@@ -22,7 +22,7 @@
         .Columns(columns =>
             {
                 columns.Bound(c => c.RecordTimestamp).Format("{0:dd.MM.yyyy HH:mm}").Width(160);
-                columns.Bound(c => c.ParkName);
+                columns.Bound(c => c.ParkName).Width(100);
                 columns.Bound(c => c.TankName).Width(100);
                 columns.Bound(c => c.ProductName);
                 columns.Bound(c => c.LiquidLevel).Format("{0:n2}").Width(180);

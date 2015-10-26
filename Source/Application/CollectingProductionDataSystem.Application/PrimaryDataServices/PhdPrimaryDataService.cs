@@ -78,8 +78,7 @@
                 }
             }
 
-            var status = new EfStatus();
-            //status = this.data.SaveChanges("Phd2SqlLoader");
+            var status = this.data.SaveChanges("Phd2SqlLoader");
             return status;
         }
 
