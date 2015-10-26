@@ -48,78 +48,10 @@
             try
             {
                 logger.Info("Sync primary data started!");
-
-                using (var context = new ProductionData(new CollectingDataSystemDbContext(new AuditablePersister())))
-                {
-                    using (PHDHistorian oPhd = new PHDHistorian())
-                    {
-                        using (PHDServer defaultServer = new PHDServer(Properties.Settings.Default.PHD_HOST))
-                        {
-                            SetPhdConnectionSettings(oPhd, defaultServer);
-
-                            //var kernel = ninject.Kernel;
-                            //var service = kernel.GetService(typeof(PhdPrimaryDataService)) as PhdPrimaryDataService;
-                            //var result = service.ReadAndSaveUnitsDataForShift();
-                            //logger.InfoFormat("Successfully added {0} records to CollectingPrimaryDataSystem", result.ResultRecordsCount);
-
-                            var now = DateTime.Now;
-                            var recordDataTime = GetRecordTimestamp(now);
-                            var shift = GetShift(now);
-
-                            var unitsConfigsList = context.UnitConfigs.All().ToList();
-                            var unitsData = context.UnitsData.All().Where(x => x.RecordTimestamp == recordDataTime && x.ShiftId == shift).ToList();
-
-                            foreach (var unitConfig in unitsConfigsList)
-                            {
-                                if (unitConfig.CollectingDataMechanism.ToUpper() == "A")
-                                {
-                                    var confidence = 0;
-                                    //logger.Info(unitConfig.PreviousShiftTag);
-
-                                    var s = unitsData.Where(x => x.UnitConfigId == unitConfig.Id).FirstOrDefault();
-                                    if (s != null)
-                                    {
-                                        //logger.InfoFormat("Exists {0} {1}", unitConfig.Name, s.RealValue);
-                                        continue;
-                                    }
-
-                                    var unitData = GetUnitData(unitConfig, oPhd, out confidence);
-                                    if (confidence > Properties.Settings.Default.INSPECTION_DATA_MINIMUM_CONFIDENCE && unitData.RecordTimestamp != null)
-                                    {
-                                        if (now.Hour < 13)
-                                        {
-                                            var prevDay = unitData.RecordTimestamp.AddDays(-1).Date;
-                                            unitData.RecordTimestamp = prevDay;
-                                        }
-
-                                        if (unitsData.Where(x => x.RecordTimestamp == unitData.RecordTimestamp && x.ShiftId == shift).FirstOrDefault() == null)
-                                        {
-                                            unitData.ShiftId = shift;
-                                            unitData.RecordTimestamp = unitData.RecordTimestamp.Date;
-                                            context.UnitsData.Add(unitData);
-                                        }
-
-                                        //logger.InfoFormat("Added {0} {1}", unitConfig.Name, unitData.RealValue);
-                                    }
-                                    else
-                                    {
-                                        SetDefaultValue(context, recordDataTime, shift, unitsData, unitConfig);
-                                        //logger.InfoFormat("Default {0} {1}", unitConfig.Name, unitData.RealValue);
-                                    }
-                                }
-                                else
-                                {
-                                    SetDefaultValue(context, recordDataTime, shift, unitsData, unitConfig);
-                                    //logger.InfoFormat("Manual {0} {1}", unitConfig.Name, 0);
-                                }
-                            }
-
-                            var status = context.SaveChanges("Phd2SqlLoader");
-                            logger.InfoFormat("Successfully added {0} records to CollectingPrimaryDataSystem", status.ResultRecordsCount);
-                        }
-                    }
-                }
-
+                var kernel = ninject.Kernel;
+                var service = kernel.GetService(typeof(PhdPrimaryDataService)) as PhdPrimaryDataService;
+                var result = service.ReadAndSaveUnitsDataForShift();
+                logger.InfoFormat("Successfully added {0} records to CollectingPrimaryDataSystem", result.ResultRecordsCount);
                 logger.Info("Sync primary data finished!");
             }
             catch (DataException validationException)
@@ -147,135 +79,6 @@
             }
         }
 
-        private static void SetDefaultValue(ProductionData context, DateTime recordDataTime, ShiftType shift, List<UnitsData> unitsData, UnitConfig unitConfig)
-        {
-            var u = unitsData.Where(x => x.UnitConfigId == unitConfig.Id).FirstOrDefault();
-            if (u == null)
-            {
-                context.UnitsData.Add(
-                    new UnitsData
-                    {
-                        UnitConfigId = unitConfig.Id,
-                        Value = null,
-                        RecordTimestamp = recordDataTime,
-                        ShiftId = shift
-                    });
-            }
-        }
-
-        private static DateTime GetRecordTimestamp(DateTime recordDateTime)
-        {
-            var result = new DateTime(recordDateTime.Year, recordDateTime.Month, recordDateTime.Day, 0, 0, 0);
-
-            if (/*recordDateTime.Hour >= 5 && */recordDateTime.Hour < 13)
-            {
-                result = result.AddDays(-1);
-            }
-
-            return result;
-        }
-
-        private static ShiftType GetShift(DateTime recordDateTime)
-        {
-            if (recordDateTime.Hour >= 5 && recordDateTime.Hour < 13)
-            {
-                return ShiftType.Third;
-            }
-            else if (recordDateTime.Hour >= 13 && recordDateTime.Hour < 21)
-            {
-                return ShiftType.First;
-            }
-            else
-            {
-                return ShiftType.Second;
-            }
-        }
- 
-        private static void SetPrimaryDataInRange(DateTime now, ProductionData context, UnitsData unitData, ShiftType shiftType, int startHour, int endHour)
-        {
-            var startDate = new DateTime(now.Year, now.Month, now.Day, startHour, 1, 0);
-            var endDate = new DateTime(now.Year, now.Month, now.Day, endHour, 0, 0);
-            var range = new DateRange(startDate, endDate);
-            var s = context.UnitsData
-                           .All()
-                           .ToList()
-                           .FirstOrDefault(x => x.UnitConfigId == unitData.UnitConfigId &&
-                                                range.Includes(x.RecordTimestamp));
-            if (s == null)
-            {
-                unitData.ShiftId = shiftType;
-                context.UnitsData.Add(unitData);   
-            }
-            else
-            {
-                logger.InfoFormat("[ProcessPrimaryProductionData][{0}][{1}][{2}]-[{3}][{4}][{5}] already exists", s.RecordTimestamp, s.UnitConfigId, s.Value, unitData.RecordTimestamp, unitData.UnitConfigId, unitData.Value);
-            }
-        }
-
-        private static void SetPhdConnectionSettings(PHDHistorian oPhd, PHDServer defaultServer)
-        {
-            defaultServer.Port = Properties.Settings.Default.PHD_PORT;
-            defaultServer.APIVersion = Uniformance.PHD.SERVERVERSION.RAPI200;
-            oPhd.DefaultServer = defaultServer;
-            oPhd.StartTime = "NOW - 2M";
-            oPhd.EndTime = "NOW - 2M";
-            oPhd.Sampletype = Properties.Settings.Default.INSPECTION_DATA_SAMPLETYPE;
-            oPhd.MinimumConfidence = Properties.Settings.Default.INSPECTION_DATA_MINIMUM_CONFIDENCE;
-            oPhd.MaximumRows = Properties.Settings.Default.INSPECTION_DATA_MAX_ROWS;
-        }
- 
-        private static UnitsData GetUnitData(UnitConfig unitConfig, PHDHistorian oPhd, out int confidence)
-        {
-            var unitData = new UnitsData();
-            unitData.UnitConfigId = unitConfig.Id;
-            DataSet dsGrid = oPhd.FetchRowData(unitConfig.PreviousShiftTag);
-            confidence = 100;
-            foreach (DataRow row in dsGrid.Tables[0].Rows)
-            {
-                foreach (DataColumn dc in dsGrid.Tables[0].Columns)
-                {
-                    if (dc.ColumnName.Equals("Tolerance") || dc.ColumnName.Equals("HostName"))
-                    {
-                        continue;
-                    }
-                    else if (dc.ColumnName.Equals("Confidence"))
-                    {
-                        if (!string.IsNullOrWhiteSpace(row[dc].ToString()))
-                        {
-                            confidence = Convert.ToInt32(row[dc]);
-                        }
-                        else
-                        {
-                            confidence = 0;
-                            break;
-                        }
-                    }
-                    else if (dc.ColumnName.Equals("Value"))
-                    {
-                        if (!string.IsNullOrWhiteSpace(row[dc].ToString()))
-                        {
-                            unitData.Value = Convert.ToDecimal(row[dc]); 
-                        }
-                    }
-                    else if (dc.ColumnName.Equals("TimeStamp"))
-                    {
-                        if (!string.IsNullOrEmpty(row[dc].ToString()))
-                        {
-                            var recordTimestamp = DateTime.ParseExact(row[dc].ToString(), "dd.MM.yyyy HH:mm:ss", CultureInfo.InvariantCulture);
-                            if (TimeZoneInfo.Local.IsDaylightSavingTime(recordTimestamp))
-                            {
-                                recordTimestamp = recordTimestamp.AddHours(-1);    
-                            }
-
-                            unitData.RecordTimestamp = recordTimestamp;  
-                        }
-                    }
-                }
-            }
-
-            return unitData;
-        }
-
         internal static void ProcessInventoryTanksData()
         {
             try
@@ -284,7 +87,7 @@
 
                 using (var context = new ProductionData(new CollectingDataSystemDbContext(new AuditablePersister())))
                 {
-                    DateTime recordTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, 0, 0);
+                    DateTime recordTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, 1, 0);
                     
                     // TODO: Mechanism to get all data for past period
                     for (int hours = 1; hours < Properties.Settings.Default.UPDATE_INVENTORY_DATA_INTERVAL; hours++)

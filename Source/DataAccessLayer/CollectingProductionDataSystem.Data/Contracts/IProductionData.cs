@@ -57,8 +57,6 @@
 
         IDeletableEntityRepository<TankMasterProduct> TankMasterProducts { get; }
 
-        IDeletableEntityRepository<ProductionShift> ProductionShifts { get; }
-
         IDeletableEntityRepository<UnitsApprovedData> UnitsApprovedDatas { get; }
 
         IDeletableEntityRepository<ApplicationUser> Users { get; }

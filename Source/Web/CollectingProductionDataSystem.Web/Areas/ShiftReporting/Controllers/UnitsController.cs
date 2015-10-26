@@ -162,8 +162,11 @@
                         status = data.SaveChanges(this.UserProfile.UserName);
                         if (status.IsValid)
 	                    {
-                            var approvedShiftsCount = this.data.UnitsApprovedDatas.All().Where(x => x.ProcessUnitId == model.processUnitId.Value && x.RecordDate == model.date.Value).Count();
-                            var shiftsCount = this.data.ProductionShifts.All().Count();
+                            var approvedShiftsCount = this.data.UnitsApprovedDatas
+                                .All()
+                                .Where(x => x.ProcessUnitId == model.processUnitId.Value && x.RecordDate == model.date.Value)
+                                .Count();
+                            var shiftsCount = this.data.Shifts.All().Count();
                             if (approvedShiftsCount == shiftsCount)
                             {
                                 var ud = GetUnitsDataForDay(model);

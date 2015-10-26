@@ -8,17 +8,18 @@ using System.Web;
 
 namespace CollectingProductionDataSystem.Web.ViewModels.Nomenclatures
 {
-    public class ProductionShiftViewModel : IMapFrom<ProductionShift>, IHaveCustomMappings
+    public class ShiftViewModel : IMapFrom<Shift>, IHaveCustomMappings
     {
         public  int Id { get; set;}
         public string Name { get; set; }
-        public int Minutes { get; set; }
-        public int OffsetMinutes { get; set; }
+        public long BeginTicks { get; set; }
+        public long ReadOffsetTicks { get; set; }
+        public long ReadPollTimeSlotTicks { get; set; }
 
         public void CreateMappings(IConfiguration configuration)
         {
-            configuration.CreateMap<ProductionShift, ProductionShiftViewModel>()
-                .ForMember(p => p.Minutes, opt => opt.MapFrom(p => p.BeginMinutes));
+            //configuration.CreateMap<Shift, ShiftViewModel>()
+            //    .ForMember(p => p.Minutes, opt => opt.MapFrom(p => p.BeginMinutes));
         }
     }
 }

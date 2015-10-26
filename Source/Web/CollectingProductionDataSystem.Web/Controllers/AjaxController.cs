@@ -75,8 +75,8 @@ namespace CollectingProductionDataSystem.Web.Controllers
 
         public JsonResult GetShifts()
         {
-            var shifts = this.data.ProductionShifts.All().ToList();
-            var shiftView = Mapper.Map<IEnumerable<ProductionShiftViewModel>>(shifts);
+            var shifts = this.data.Shifts.All().ToList();
+            var shiftView = Mapper.Map<IEnumerable<ShiftViewModel>>(shifts);
             return Json(shiftView, JsonRequestBehavior.AllowGet);
         }
 

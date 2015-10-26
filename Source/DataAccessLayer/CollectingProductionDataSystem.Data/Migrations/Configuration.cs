@@ -36,11 +36,6 @@ namespace CollectingProductionDataSystem.Data.Migrations
             //    this.CreateDailyProductTypes(context);
             //}
 
-            if (!context.ProductionShifts.Any())
-            {
-                this.CreateProductionShifts(context);
-            }
-
             if (!context.Shifts.Any())
             {
                 this.CreateShifts(context);
@@ -130,35 +125,6 @@ namespace CollectingProductionDataSystem.Data.Migrations
                 //userManger.AddToRole(user.Id,"Administrator");
                 ////context.SaveChanges("InitialLoading");
             }
-        }
-
-        private void CreateProductionShifts(CollectingDataSystemDbContext context)
-        {
-            context.ProductionShifts.AddOrUpdate(
-                new ProductionShift
-                {
-                    Name = "Първа смяна",
-                    BeginTime = "05:01",
-                    EndTime = "13:00",
-                    BeginMinutes = 780,
-                    OffsetMinutes = 120
-                },
-                new ProductionShift
-                {
-                    Name = "Втора смяна",
-                    BeginTime = "13:01",
-                    EndTime = "21:00",
-                    BeginMinutes = 1260,
-                    OffsetMinutes = 120
-                },
-                new ProductionShift
-                {
-                    Name = "Трета смяна",
-                    BeginTime = "21:01",
-                    EndTime = "05:00",
-                    BeginMinutes = 1740,
-                    OffsetMinutes = 120
-                });
         }
 
         private void CreateShifts(CollectingDataSystemDbContext context)
