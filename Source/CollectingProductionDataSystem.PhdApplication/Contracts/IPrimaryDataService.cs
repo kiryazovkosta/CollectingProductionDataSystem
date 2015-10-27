@@ -1,4 +1,4 @@
-﻿namespace CollectingProductionDataSystem.Application.Contracts
+﻿namespace CollectingProductionDataSystem.PhdApplication.Contracts
 {
     using CollectingProductionDataSystem.Data.Contracts;
     using System;

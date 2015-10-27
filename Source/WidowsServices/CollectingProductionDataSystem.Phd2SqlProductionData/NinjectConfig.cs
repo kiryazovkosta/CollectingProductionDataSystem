@@ -1,11 +1,5 @@
 ﻿namespace CollectingProductionDataSystem.Phd2SqlProductionData
 {
-    using CollectingProductionDataSystem.Application.CalculatorService;
-    using CollectingProductionDataSystem.Application.Contracts;
-    using CollectingProductionDataSystem.Application.FileServices;
-    using CollectingProductionDataSystem.Application.TankDataServices;
-    using CollectingProductionDataSystem.Application.UnitsDataServices;
-    using CollectingProductionDataSystem.Application.UserServices;
     using CollectingProductionDataSystem.Data;
     using CollectingProductionDataSystem.Data.Common;
     using CollectingProductionDataSystem.Data.Concrete;
@@ -26,12 +20,7 @@
             kernel.Bind(typeof(IRepository<>)).To(typeof(GenericRepository<>));
             kernel.Bind<IProductionData>().To<ProductionData>();
             kernel.Bind<IPersister>().To<AuditablePersister>();
-            kernel.Bind<ITankDataKendoService>().To<TankDataKendoService>();
-            kernel.Bind<IUnitsDataService>().To<UnitsDataService>();
-            kernel.Bind<IUserService>().To<UserService>();
             kernel.Bind<IEfStatus>().To<EfStatus>();
-            kernel.Bind<IFileUploadService>().To<FileUploadService>();
-            kernel.Bind<ICalculatorService>().To<CalculatorService>();
             
         }
 
