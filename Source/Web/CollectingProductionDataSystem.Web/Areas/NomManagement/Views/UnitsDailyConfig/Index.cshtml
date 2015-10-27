@@ -1,9 +1,9 @@
-﻿@(Html.Kendo().Grid<CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewModels.UnitsDailyConfigViewModel>()
+﻿@(Html.Kendo()
+      .Grid<CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewModels.UnitsDailyConfigViewModel>()
       .Name("grid")
-      .Columns(columns =>
-      {
+      .Columns(columns => {
+          columns.Bound(c => c.Code).Template(@<text></text>).ClientTemplate(Html.AuthorizedActionLinkOrText("#=data.Code#", "Index", "History", new { area = "RecordsHistory", id = "#=data.id#", entityName = "UnitsDailyConfig" },null).ToHtmlString()).Width(100);
           columns.Bound(c => c.Name).Width(200);
-          columns.Bound(c => c.Code).Width(100);
           columns.ForeignKey(c => c.ProcessUnitId, (System.Collections.IEnumerable)ViewData["processUnits"], "Id", "FullName").EditorTemplateName("ProcessUnitViewModel").Width(280);
           columns.ForeignKey(c => c.ProductId, (System.Collections.IEnumerable)ViewData["products"], "Id", "Name").EditorTemplateName("ProductViewModel").Width(280);
           columns.ForeignKey(c => c.MeasureUnitId, (System.Collections.IEnumerable)ViewData["measureUnits"], "Id", "Name").EditorTemplateName("MeasureUnitViewModel").Width(280);
@@ -12,7 +12,7 @@
           columns.Bound(c => c.AggregationCurrentLevel).Width(100);
           columns.Bound(c => c.AggregationMembers).Width(100);
           columns.Bound(c => c.UnitConfigUnitDailyConfigs).Width(300).ClientTemplate("#=unitConfigTemplate(UnitConfigUnitDailyConfigs)#");
-          columns.Bound(c => c.RelatedUnitDailyConfigs).Width(300).ClientTemplate("#=unitConfigTemplate(RelatedUnitDailyConfigs)#");          
+          columns.Bound(c => c.RelatedUnitDailyConfigs).Width(300).ClientTemplate("#=unitConfigTemplate(RelatedUnitDailyConfigs)#");
           columns.Bound(c => c.IsEditable).Width(100);
           columns.Command(command => { command.Edit(); command.Destroy(); }).Width(230);
       })

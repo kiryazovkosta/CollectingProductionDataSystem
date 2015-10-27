@@ -229,6 +229,8 @@
     <Compile Include="Areas\Administration\AdministrationAreaRegistration.cs" />
     <Compile Include="Areas\Administration\Controllers\AjaxController.cs" />
     <Compile Include="Areas\Administration\Controllers\AreaBaseController.cs" />
+    <Compile Include="Areas\RecordsHistory\Controllers\AreaBaseController.cs" />
+    <Compile Include="Areas\RecordsHistory\Controllers\HistoryController.cs" />
     <Compile Include="Areas\Administration\Controllers\RoleController.cs" />
     <Compile Include="Areas\Administration\Controllers\UserController.cs" />
     <Compile Include="Areas\Administration\ViewModels\ChangePasswordViewModel.cs" />
@@ -292,6 +294,8 @@
     <Compile Include="Areas\NomManagement\Models\ViewModels\UnitsDailyConfigViewModel.cs" />
     <Compile Include="Areas\NomManagement\NomManagementAreaRegistration.cs" />
     <Compile Include="Areas\NomManagement\Models\ViewModels\PlantViewModel.cs" />
+    <Compile Include="Areas\RecordsHistory\RecordsHistoryAreaRegistration.cs" />
+    <Compile Include="Areas\RecordsHistory\ViewModels\AuditLogRecordViewModel.cs" />
     <Compile Include="Areas\ShiftReporting\Controllers\AjaxController.cs" />
     <Compile Include="Areas\ShiftReporting\Controllers\AreaBaseController.cs" />
     <Compile Include="Areas\ShiftReporting\Controllers\TanksController.cs" />
@@ -323,6 +327,7 @@
     <Compile Include="InputModels\ProcessUnitConfirmShiftInputModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="ViewModels\Utility\HistoryLink.cs" />
     <Compile Include="ViewModels\Home\IndexInventoryTanksViewModel.cs" />
     <Compile Include="ViewModels\Identity\AccountViewModels.cs" />
     <Compile Include="ViewModels\Identity\AsignRoleViewModel.cs" />
@@ -771,6 +776,9 @@
     <Content Include="Areas\ShiftReporting\Views\UnitsReports\UnitsReportsData.cshtml" />
     <Content Include="Areas\NomManagement\Views\UnitsDailyConfig\EditorTemplates\UnitConfigUnitDailyConfigEditor.cshtml" />
     <Content Include="Areas\NomManagement\Views\UnitsDailyConfig\EditorTemplates\RelatedUnitDailyConfigsEditor.cshtml" />
+    <Content Include="Areas\RecordsHistory\Views\web.config" />
+    <Content Include="Areas\RecordsHistory\Views\History\Index.cshtml" />
+    <Content Include="Areas\RecordsHistory\Views\_ViewStart.cshtml" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <None Include="Properties\PublishProfiles\Home.pubxml" />
     <Content Include="Scripts\custom\sendArea.js" />
@@ -1413,10 +1421,12 @@
     <Content Include="Views\Shared\_SuccessWindow.cshtml" />
     <Content Include="Views\Shared\_TanksSideBar.cshtml" />
     <Content Include="Views\Shared\_MeasurementsPointsSideBar.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\ShowHistory.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Administration\Views\Ajax\" />
+    <Folder Include="Areas\Administration\Views\History\" />
     <Folder Include="Areas\DailyReporting\Models\" />
     <Folder Include="Areas\DailyReporting\Views\Ajax\" />
     <Folder Include="Areas\DailyReporting\Views\AreaBase\" />
@@ -1427,6 +1437,7 @@
     <Folder Include="Areas\NomManagement\Models\InputModels\" />
     <Folder Include="Areas\NomManagement\Views\Ajax\" />
     <Folder Include="Areas\NomManagement\Views\RelatedUnitConfigs\" />
+    <Folder Include="Areas\RecordsHistory\Views\Shared\" />
     <Folder Include="Areas\ShiftReporting\Models\" />
     <Folder Include="Areas\ShiftReporting\Views\Ajax\" />
     <Folder Include="Areas\ShiftReporting\Views\AreaBase\" />
@@ -1435,6 +1446,7 @@
     <Folder Include="Views\Factory\" />
     <Folder Include="Views\Plant\" />
     <Folder Include="Views\ProcessUnit\" />
+    <Folder Include="Views\Test\" />
     <Folder Include="Views\UnitConfig\" />
     <Folder Include="Views\UnitsDailyConfig\" />
   </ItemGroup>

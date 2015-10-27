@@ -112,6 +112,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Application\CollectingProductionDataSystem.Application\CollectingProductionDataSystem.Application.csproj">
+      <Project>{3a125de9-28b9-4004-a1d9-bebde62ac786}</Project>
+      <Name>CollectingProductionDataSystem.Application</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\CollectingProductionDataSystem.PhdApplication\CollectingProductionDataSystem.PhdApplication.csproj">
       <Project>{ba08dad7-81be-4aeb-8eed-e835721574b5}</Project>
       <Name>CollectingProductionDataSystem.PhdApplication</Name>

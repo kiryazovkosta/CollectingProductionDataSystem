@@ -831,4 +831,31 @@
   <data name="IsTotal" xml:space="preserve">
     <value>IsTotal</value>
   </data>
+  <data name="EntityId" xml:space="preserve">
+    <value>Record Id</value>
+  </data>
+  <data name="EntityName" xml:space="preserve">
+    <value>From Table</value>
+  </data>
+  <data name="FieldName" xml:space="preserve">
+    <value>Field</value>
+  </data>
+  <data name="HistoryOfRecord" xml:space="preserve">
+    <value>History Of The </value>
+  </data>
+  <data name="NewValue" xml:space="preserve">
+    <value>New Value</value>
+  </data>
+  <data name="OldValue" xml:space="preserve">
+    <value>Old Value</value>
+  </data>
+  <data name="OperationType" xml:space="preserve">
+    <value>Operation</value>
+  </data>
+  <data name="TimeStamp" xml:space="preserve">
+    <value>Timestamp</value>
+  </data>
+  <data name="UserChanger" xml:space="preserve">
+    <value>User</value>
+  </data>
 </root>

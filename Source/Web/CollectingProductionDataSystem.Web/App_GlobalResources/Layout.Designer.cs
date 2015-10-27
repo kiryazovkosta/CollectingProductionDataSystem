@@ -619,6 +619,24 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Record Id.
+        /// </summary>
+        public static string EntityId {
+            get {
+                return ResourceManager.GetString("EntityId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to From Table.
+        /// </summary>
+        public static string EntityName {
+            get {
+                return ResourceManager.GetString("EntityName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to EstimatedCompressibilityFactor.
         /// </summary>
         public static string EstimatedCompressibilityFactor {
@@ -678,6 +696,15 @@ namespace App_GlobalResources.Resources {
         public static string Factory1 {
             get {
                 return ResourceManager.GetString("Factory1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Field.
+        /// </summary>
+        public static string FieldName {
+            get {
+                return ResourceManager.GetString("FieldName", resourceCulture);
             }
         }
         
@@ -795,6 +822,15 @@ namespace App_GlobalResources.Resources {
         public static string GrossStandardVolumeLowExtreme {
             get {
                 return ResourceManager.GetString("GrossStandardVolumeLowExtreme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to History Of The .
+        /// </summary>
+        public static string HistoryOfRecord {
+            get {
+                return ResourceManager.GetString("HistoryOfRecord", resourceCulture);
             }
         }
         
@@ -1150,6 +1186,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to New Value.
+        /// </summary>
+        public static string NewValue {
+            get {
+                return ResourceManager.GetString("NewValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Nomenclatures.
         /// </summary>
         public static string Nomenclatures {
@@ -1209,6 +1254,24 @@ namespace App_GlobalResources.Resources {
         public static string OffsetMinutes {
             get {
                 return ResourceManager.GetString("OffsetMinutes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Old Value.
+        /// </summary>
+        public static string OldValue {
+            get {
+                return ResourceManager.GetString("OldValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Operation.
+        /// </summary>
+        public static string OperationType {
+            get {
+                return ResourceManager.GetString("OperationType", resourceCulture);
             }
         }
         
@@ -1951,6 +2014,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Timestamp.
+        /// </summary>
+        public static string TimeStamp {
+            get {
+                return ResourceManager.GetString("TimeStamp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to TotalObservableVolumeHighExtreme.
         /// </summary>
         public static string TotalObservableVolumeHighExtreme {
@@ -2118,6 +2190,15 @@ namespace App_GlobalResources.Resources {
         public static string UnusableResidueLevel {
             get {
                 return ResourceManager.GetString("UnusableResidueLevel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User.
+        /// </summary>
+        public static string UserChanger {
+            get {
+                return ResourceManager.GetString("UserChanger", resourceCulture);
             }
         }
         

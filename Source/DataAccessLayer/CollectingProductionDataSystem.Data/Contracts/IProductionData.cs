@@ -6,6 +6,7 @@
     using CollectingProductionDataSystem.Models.Nomenclatures;
     using CollectingProductionDataSystem.Models.Productions;
     using CollectingProductionDataSystem.Models.Transactions;
+    using CollectingProductionDataSystem.Models.UtilityEntities;
 
     public interface IProductionData : IDisposable
     {
@@ -82,6 +83,8 @@
         IDeletableEntityRepository<ActiveTransactionsData> ActiveTransactionsDatas { get; }
 
         IRepository<UnitConfigUnitDailyConfig> UnitConfigUnitDailyConfigs { get; }
+
+        IRepository<AuditLogRecord> AuditLogRecords{get;}
 
         IDeletableEntityRepository<Shift> Shifts { get; }
 

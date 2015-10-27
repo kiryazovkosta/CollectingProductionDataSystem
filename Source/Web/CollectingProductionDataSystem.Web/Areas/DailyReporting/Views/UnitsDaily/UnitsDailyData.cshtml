@@ -1,5 +1,6 @@
 ﻿@using System.Web.Optimization;
 @using CollectingProductionDataSystem.Web.Areas.ShiftReporting.ViewModels;
+@using CollectingProductionDataSystem.Web.Infrastructure.Helpers;
 @using CollectingProductionDataSystem.Web.ViewModels.Units;
 @using Resources = App_GlobalResources.Resources;
 
@@ -64,60 +65,69 @@
     .Columns(
         columns =>
         {
-            columns.Bound(c => c.UnitsDailyConfig.Code).Width(77);
+            columns.Bound(c => c.UnitsDailyConfig.Code)
+                .Template(@<text></text>)
+                .ClientTemplate(Html.AuthorizedActionLinkOrText("#=data.UnitsDailyConfig.Code#", "Index", "History", new { area = "RecordsHistory", id = "#=data.id#", entityName = "UnitsDailyData" }, null)
+                .ToHtmlString())
+                .Width(77);
             columns.Bound(c => c.UnitsDailyConfig.DailyProductType.Sort).Hidden(true).ClientGroupHeaderTemplate("#=value#");
             columns.Bound(c => c.UnitsDailyConfig.ProcessUnit.ShortName).Width(100);
             columns.Bound(c => c.UnitsDailyConfig.Name);
             columns.Bound(c => c.UnitsDailyConfig.MeasureUnit.Code).Width(80);
             columns.Bound(c => c.Value).Width(100).Format("{0:n2}");
-            columns.Bound(c => c.UnitsManualDailyData.Value).Width(100).Format("{0:n2}");
+            columns.Bound(c => c.UnitsManualDailyData.Value)
+                .Template(@<text></text>)
+                .ClientTemplate(Html.AuthorizedActionLinkOrText("#=data.UnitsManualDailyData.Value#", "Index", "History", new { area = "RecordsHistory", id = "#=data.id#", entityName = "UnitsManualDailyData" }, null)
+                .ToHtmlString())
+                .Width(100)
+                .Format("{0:n2}");
             columns.Bound(c => c.UnitsManualDailyData.EditReason).Width(180).ClientTemplate("#:UnitsManualDailyData.EditReason.Name#")
                 .ClientTemplate("<div class=row><div class='col-xs-2 no-horisontal-padding'><div class='#:UnitsManualDailyData.EditReason.Id == 0? 'bg-ok':'bg-warning'#'></div></div><div class='col-xs-9 no-horisontal-padding reason'>#:UnitsManualDailyData.EditReason.Name#</div></div>");
             columns.Bound(c => c.IsEditable).Visible(false);
             columns.Command(c => c.Edit()).Width(170);
         })
-    .Pageable(pageable => pageable
-        .Refresh(true)
-        .PageSizes(new[] { 10, 20, 50, 100 })
-        .ButtonCount(5)
-    )
-            .Editable(editable => editable.Mode(GridEditMode.InLine))
-    .Sortable()
-     .Excel(excel => excel
-        .FileName(@Resources.Layout.UnitsDailyData + "_" + DateTime.Now + ".xlsx")
-        .Filterable(true)
-        .ProxyURL(Url.Action("Excel_Export_Save", "Tests", new { area = "" }))
-        .AllPages(true))
-        .Events(ev => ev.DataBound("dataBound"))
-        .Scrollable(scr => scr.Height(640))
-        .Filterable()
-        .ClientDetailTemplateId("template")
-        .DataSource(dataSource => dataSource
-        .Ajax()
-        .PageSize(50)
-        .ServerOperation(true)
-        .Group(group => group.Add(c => c.UnitsDailyConfig.DailyProductType.Sort))
-        .Read(read => read.Action("ReadDailyUnitsData", "UnitsDaily", new { area = "DailyReporting" }).Data("sendDate"))
-        .Update(update => update.Action("Edit", "UnitsDaily", new { area = "DailyReporting" }).Data("sendAntiForgery"))
-        .Model(model =>
-        {
-            model.Id(p => p.Id);
-            model.Field(p => p.UnitsDailyConfig.Code).Editable(false);
-            model.Field(p => p.UnitsDailyConfig.DailyProductType.Name).Editable(false);
-            model.Field(p => p.UnitsDailyConfig.ProcessUnit.ShortName).Editable(false);
-            model.Field(p => p.UnitsDailyConfig.Name).Editable(false);
-            model.Field(p => p.UnitsDailyConfig.MeasureUnit.Code).Editable(false);
-            model.Field(p => p.Value).Editable(false);
-            model.Field(p => p.UnitsManualDailyData.Value).Editable(true);
-            model.Field(p => p.UnitsManualDailyData.EditReason).Editable(true);
-        })
-        .Events(events =>
-        {
-            events.Error("error_handler");
-            events.RequestEnd("dataSave");
-        })
-    )
-        )
+                                                            .Pageable(pageable => pageable
+                                                                .Refresh(true)
+                                                                .PageSizes(new[] { 10, 20, 50, 100 })
+                                                                .ButtonCount(5)
+                                                            )
+                                                                    .Editable(editable => editable.Mode(GridEditMode.InLine))
+                                                            .Sortable()
+                                                             .Excel(excel => excel
+                                                                .FileName(@Resources.Layout.UnitsDailyData + "_" + DateTime.Now + ".xlsx")
+                                                                .Filterable(true)
+                                                                .ProxyURL(Url.Action("Excel_Export_Save", "Tests", new { area = "" }))
+                                                                .AllPages(true))
+                                                                .Events(ev => ev.DataBound("dataBound"))
+                                                                .Scrollable(scr => scr.Height(640))
+                                                                .Filterable()
+                                                                .ClientDetailTemplateId("template")
+                                                                .DataSource(dataSource => dataSource
+                                                                .Ajax()
+                                                                .PageSize(50)
+                                                                .ServerOperation(true)
+                                                                .Group(group => group.Add(c => c.UnitsDailyConfig.DailyProductType.Sort))
+                                                                .Read(read => read.Action("ReadDailyUnitsData", "UnitsDaily", new { area = "DailyReporting" }).Data("sendDate"))
+                                                                .Update(update => update.Action("Edit", "UnitsDaily", new { area = "DailyReporting" }).Data("sendAntiForgery"))
+                                                                .Model(model =>
+                                                                {
+                                                                    model.Id(p => p.Id);
+                                                                    model.Field(p => p.UnitsDailyConfig.Code).Editable(false);
+                                                                    model.Field(p => p.UnitsDailyConfig.DailyProductType.Name).Editable(false);
+                                                                    model.Field(p => p.UnitsDailyConfig.ProcessUnit.ShortName).Editable(false);
+                                                                    model.Field(p => p.UnitsDailyConfig.Name).Editable(false);
+                                                                    model.Field(p => p.UnitsDailyConfig.MeasureUnit.Code).Editable(false);
+                                                                    model.Field(p => p.Value).Editable(false);
+                                                                    model.Field(p => p.UnitsManualDailyData.Value).Editable(true);
+                                                                    model.Field(p => p.UnitsManualDailyData.EditReason).Editable(true);
+                                                                })
+                                                                .Events(events =>
+                                                                {
+                                                                    events.Error("error_handler");
+                                                                    events.RequestEnd("dataSave");
+                                                                })
+                                                            )
+)
     </div>
 </div>
 

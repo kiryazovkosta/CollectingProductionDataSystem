@@ -8,6 +8,7 @@
     using System.Web;
     using System.ComponentModel.DataAnnotations;
     using CollectingProductionDataSystem.Models.Contracts;
+    using CollectingProductionDataSystem.Web.ViewModels.Utility;
     using Resources = App_GlobalResources.Resources;
 
     public class AreaViewModel:IMapFrom<Area>,IEntity

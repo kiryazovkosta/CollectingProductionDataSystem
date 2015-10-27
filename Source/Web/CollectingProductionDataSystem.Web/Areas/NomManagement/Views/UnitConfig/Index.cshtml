@@ -1,4 +1,5 @@
 ﻿@using CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewModels;
+@using CollectingProductionDataSystem.Web.Infrastructure.Helpers;
 
 @(Html.Kendo()
       .Grid<UnitConfigViewModel>()
@@ -6,7 +7,7 @@
       .AutoBind(true)
       .Columns(columns =>
       {
-          columns.Bound(c => c.Code).Width(100);
+          columns.Bound(c => c.Code).Template(@<text></text>).ClientTemplate(Html.AuthorizedActionLinkOrText("#=data.Code#", "Index", "History", new { area = "RecordsHistory", id = "#=data.id#", entityName = "UnitConfig" }, null).ToHtmlString()).Width(100);
           columns.Bound(c => c.Position).Width(150);
           columns.Bound(c => c.Name).Width(200);
           columns.Bound(c => c.CollectingDataMechanism).Width(100);

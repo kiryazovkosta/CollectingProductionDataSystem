@@ -1,0 +1,30 @@
+﻿@using CollectingProductionDataSystem.Web.Areas.RecordsHistory.ViewModels;
+@using Resources = App_GlobalResources.Resources
+@model IEnumerable<AuditLogRecordViewModel>
+
+<h2 class="text-center">
+    @Resources.Layout.HistoryOfRecord @Resources.Layout.EntityId: @TempData["recordId"]<br/>
+    @Resources.Layout.EntityName: @TempData["entityName"]
+</h2>
+
+
+@(Html.Kendo()
+      .Grid(Model)
+      .Name("grid")
+      .Columns(columns =>
+        {
+            columns.Bound(c => c.TimeStamp).Format("{0:dd-mm-yyyy HH:mm:sss}");
+            columns.Bound(c => c.OperationType);
+            columns.Bound(c => c.OldValue);
+            columns.Bound(c => c.NewValue);
+            columns.Bound(c => c.UserName);
+        })
+        .Pageable(pageable => pageable
+                    .Refresh(true)
+                    .PageSizes(new[] { 20, 50, 100 })
+                    .ButtonCount(5)
+                    )
+        .Filterable()
+        .Scrollable()
+        .Sortable()
+)

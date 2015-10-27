@@ -8,7 +8,7 @@ using CollectingProductionDataSystem.Web.Controllers;
 
 namespace CollectingProductionDataSystem.Web.Areas.NomManagement.Controllers
 {
-    [Authorize(Roles="Administrator")]
+    [Authorize(Roles="Administrator, NomManager")]
     public abstract class AreaBaseController : BaseController
     {
         public AreaBaseController(IProductionData dataParam) 

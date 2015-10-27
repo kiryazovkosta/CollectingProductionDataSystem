@@ -1,39 +1,42 @@
-﻿@(Html.Kendo().Grid<CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewModels.AreaViewModel>()
+﻿@using CollectingProductionDataSystem.Web.Infrastructure.Helpers;
+
+@(Html.Kendo()
+      .Grid<CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewModels.AreaViewModel>()
       .Name("grid")
       .Columns(columns =>
       {
-          columns.Bound(c => c.Name);
-          columns.Command(command => { command.Edit(); command.Destroy(); }).Width(230);
-      })
+          columns.Bound(c => c.Name).Template(@<text></text>).ClientTemplate(Html.AuthorizedActionLinkOrText("#=data.Name#", "Index", "History", new { area = "RecordsHistory", id = "#=data.id#", entityName = "Area" }, null).ToHtmlString());
+columns.Command(command => { command.Edit(); command.Destroy(); }).Width(230);
+})
       .ToolBar(toolbar =>
-      {
-          toolbar.Create();
-          toolbar.Excel();
-      })
+{
+toolbar.Create();
+toolbar.Excel();
+})
       .Editable(editable => editable.Mode(GridEditMode.InLine))
       .Pageable(pageable => pageable
-          .Refresh(true)
-          .PageSizes(new[] { 20, 50, 100 })
-          .ButtonCount(5)
-      )
+.Refresh(true)
+.PageSizes(new[] { 20, 50, 100 })
+.ButtonCount(5)
+)
       .Sortable(sortable =>
-      {
-          sortable.SortMode(GridSortMode.SingleColumn);
-      })
+{
+sortable.SortMode(GridSortMode.SingleColumn);
+})
       .Filterable()
       .Scrollable(scrol => scrol.Height(620))
       .DataSource(dataSource => dataSource
-          .Ajax()
-          .PageSize(20)
-          .Model(model => model.Id(p => p.Id))
-          .Read(read => read.Action("Read", "Area", new { area = "NomManagement" }).Data("sendAntiForgery"))
-          .Create(create => create.Action("Create", "Area", new { area = "NomManagement" }).Data("sendAntiForgery"))
-          .Update(update => update.Action("Update", "Area", new { area = "NomManagement" }).Data("sendAntiForgery"))
-          .Destroy(destroy => destroy.Action("Destroy", "Area", new { area = "NomManagement" }).Data("sendAntiForgery"))
-          .Events(events =>
-            {
-                events.Error("error_handler");
-            })
+.Ajax()
+.PageSize(20)
+.Model(model => model.Id(p => p.Id))
+.Read(read => read.Action("Read", "Area", new { area = "NomManagement" }).Data("sendAntiForgery"))
+.Create(create => create.Action("Create", "Area", new { area = "NomManagement" }).Data("sendAntiForgery"))
+.Update(update => update.Action("Update", "Area", new { area = "NomManagement" }).Data("sendAntiForgery"))
+.Destroy(destroy => destroy.Action("Destroy", "Area", new { area = "NomManagement" }).Data("sendAntiForgery"))
+.Events(events =>
+{
+events.Error("error_handler");
+})
       )
 )
 

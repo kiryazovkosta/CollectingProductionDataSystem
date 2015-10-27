@@ -2546,22 +2546,26 @@ namespace CollectingProductionDataSystem.Data.Migrations
                     new ApplicationRole
                     {
                         Id=2,
-                        Name = "ShiftReporter"
+                        Name = "ShiftReporter",
+                        Description = "Изготвяне на сменни отчети"
                     },
                     new ApplicationRole
                     {
                         Id=3,
-                        Name = "DailyReporter"
+                        Name = "DailyReporter",
+                        Description = "Изгорвяне на дневни отчети"
                     },
                     new ApplicationRole
                     {
                         Id=4,
-                        Name= "MonthlyReporter"
+                        Name= "MonthlyReporter",
+                        Description = "За бъдещо развитие на системата"
                     },
                      new ApplicationRole
                     {
                         Id=5,
-                        Name= "PowerUser"
+                        Name= "PowerUser",
+                        Description="В комбинация с ShiftReporter и DailyReporter дава достъп до всички инсталации и паркове"
                     },
                     new ApplicationRole
                     {
@@ -2569,6 +2573,12 @@ namespace CollectingProductionDataSystem.Data.Migrations
                         Name= "NomManager",
                         Description = "Управление на номенклатури"
                     },
+                    new ApplicationRole
+                    {
+                        Id=6,
+                        Name = "HistoryManager",
+                        Description = "Достъп до изторията на записите в системата"
+                    }
                 };
 
                 var roleManager = new RoleManager<ApplicationRole, int>(new RoleStoreIntPk(context));

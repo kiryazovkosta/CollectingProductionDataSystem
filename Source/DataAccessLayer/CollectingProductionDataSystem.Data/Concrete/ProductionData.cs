@@ -12,6 +12,7 @@
     using CollectingProductionDataSystem.Models.Nomenclatures;
     using CollectingProductionDataSystem.Models.Productions;
     using CollectingProductionDataSystem.Models.Transactions;
+    using CollectingProductionDataSystem.Models.UtilityEntities;
 
     public class ProductionData : IProductionData
     {
@@ -325,17 +326,25 @@
             }
         }
 
+        public IRepository<AuditLogRecord> AuditLogRecords
+        {
+            get
+            {
+                return this.GetRepository<AuditLogRecord>();
+            }
+        }
+
         public IEfStatus SaveChanges(string userName)
         {
             return this.context.SaveChangesWithValidation(userName);
         }
 
-        public IDeletableEntityRepository<Shift> Shifts 
-        { 
-            get 
+        public IDeletableEntityRepository<Shift> Shifts
+        {
+            get
             {
-                return this.GetDeletableEntityRepository<Shift>(); 
-            } 
+                return this.GetDeletableEntityRepository<Shift>();
+            }
         }
 
         public void Dispose()
