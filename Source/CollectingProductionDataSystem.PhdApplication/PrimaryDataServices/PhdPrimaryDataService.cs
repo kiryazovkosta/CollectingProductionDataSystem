@@ -46,11 +46,11 @@
                                 var unitData = GetUnitData(unitConfig, oPhd, today, out confidence);
                                 if (confidence > Properties.Settings.Default.PHD_DATA_MIN_CONFIDENCE && unitData.RecordTimestamp != null)
                                 {
-                                    //if (now.Hour < 13)
-                                    //{
-                                    //    var prevDay = unitData.RecordTimestamp.AddDays(-1).Date;
-                                    //    unitData.RecordTimestamp = prevDay;
-                                    //}
+                                    if (now.Hour < 13)
+                                    {
+                                        var prevDay = unitData.RecordTimestamp.AddDays(-1).Date;
+                                        unitData.RecordTimestamp = prevDay;
+                                    }
 
                                     if (!unitsData.Where(x => x.RecordTimestamp == unitData.RecordTimestamp && x.ShiftId == shift).Any())
                                     {
