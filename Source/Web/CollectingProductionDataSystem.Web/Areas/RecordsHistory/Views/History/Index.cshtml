@@ -13,8 +13,9 @@
       .Name("grid")
       .Columns(columns =>
         {
-            columns.Bound(c => c.TimeStamp).Format("{0:dd-mm-yyyy HH:mm:sss}");
+            columns.Bound(c => c.TimeStamp).Format("{0:dd-mm-yyyy HH:mm:ss:fff}");
             columns.Bound(c => c.OperationType);
+            columns.Bound(c => c.FieldName);
             columns.Bound(c => c.OldValue);
             columns.Bound(c => c.NewValue);
             columns.Bound(c => c.UserName);
@@ -25,6 +26,7 @@
                     .ButtonCount(5)
                     )
         .Filterable()
-        .Scrollable()
+        .Scrollable(scr=>scr.Height(500))
         .Sortable()
+        
 )
