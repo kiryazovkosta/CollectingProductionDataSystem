@@ -28,5 +28,9 @@ namespace CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewMode
         [Required]
         [Display(Name = "Factory", ResourceType = typeof(Resources.Layout))]
         public int FactoryId { get; set; }
+
+        [UIHint("Hidden")]
+        [Editable(false)]
+        public bool IsDeleted { get; set; }
     }
 }

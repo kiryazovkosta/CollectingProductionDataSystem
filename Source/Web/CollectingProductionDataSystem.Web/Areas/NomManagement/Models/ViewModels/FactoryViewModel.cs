@@ -29,5 +29,9 @@
         [Required]
         [Display(Name = "Plant", ResourceType = typeof(Resources.Layout))]
         public int PlantId { get; set; }
+
+        [UIHint("Hidden")]
+        [Editable(false)]
+        public bool IsDeleted { get; set; }
     }
 }

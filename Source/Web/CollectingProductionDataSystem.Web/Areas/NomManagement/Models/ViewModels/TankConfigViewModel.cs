@@ -223,5 +223,9 @@
         [Required]
         [Display(Name = "CorrectionFactor", ResourceType = typeof(Resources.Layout))]
         public string CorrectionFactor { get; set; }
+
+        [UIHint("Hidden")]
+        [Editable(false)]
+        public bool IsDeleted { get; set; }
     }
 }

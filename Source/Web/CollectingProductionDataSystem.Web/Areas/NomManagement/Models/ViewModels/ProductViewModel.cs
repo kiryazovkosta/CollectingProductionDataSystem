@@ -28,6 +28,10 @@
         [Required]
         [Display(Name = "ProductType", ResourceType = typeof(Resources.Layout))]
         public int ProductTypeId { get; set; }
+
+        [UIHint("Hidden")]
+        [Editable(false)]
+        public bool IsDeleted { get; set; }
    
         //[Display(Name = "ShiftProductType", ResourceType = typeof(Resources.Layout))]
         //public int ShiftProductTypeId { get; set; }

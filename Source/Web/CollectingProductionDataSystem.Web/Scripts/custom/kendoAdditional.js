@@ -114,8 +114,23 @@ function boundEmptyRelatedRecords() {
     }
 }
 
-function sendHistoryData(){
+function sendHistoryData() {
     var result = { 'id': $('input[name=id]').val(), 'entityName': $('input[name=entityName]').val() };
     $.extend(result, sendAntiForgery());
     return result;
+}
+
+var deletableDataBound = function () {
+    var items = this.dataSource.view();
+    for (var i = 0; i < items.length; i++) {
+        if (items[i].IsDeleted) {
+            var currentUid = items[i].uid;
+            var currenRow = this.table.find("tr[data-uid='" + currentUid + "']");
+            var editButton = $(currenRow).find(".k-grid-edit,.k-grid-delete");
+            editButton.attr("style", "display:none !important");
+            var cellsForColloring = $("#" + $(this.element).attr('id') + " tbody").find("tr[data-uid=" + currentUid + "] td");
+            cellsForColloring.addClass("text-danger");
+            cellsForColloring.find('a').addClass("text-warning");
+        }
+    }
 }

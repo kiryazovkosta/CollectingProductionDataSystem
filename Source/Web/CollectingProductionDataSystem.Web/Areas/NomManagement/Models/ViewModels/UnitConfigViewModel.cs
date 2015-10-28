@@ -106,6 +106,10 @@
         [Display(Name = "RelatedUnitConfigs", ResourceType = typeof(Resources.Layout))]
         public ICollection<RelatedUnitConfigsViewModel> RelatedUnitConfigs { get; set; }
 
+        [UIHint("Hidden")]
+        [Editable(false)]
+        public bool IsDeleted { get; set; }
+
         /// <summary>
         /// Creates the mappings.
         /// </summary>

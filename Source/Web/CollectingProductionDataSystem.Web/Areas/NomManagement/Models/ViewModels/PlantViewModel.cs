@@ -24,5 +24,9 @@
         [Display(Name = "FullName", ResourceType = typeof(Resources.Layout))]
         public string FullName { get; set; }
 
+        [UIHint("Hidden")]
+        [Editable(false)]
+        public bool IsDeleted { get; set; }
+
     }
 }

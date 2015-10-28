@@ -47,6 +47,10 @@
         [Display(Name = "ReadPollTimeSlot", ResourceType = typeof(Resources.Layout))]
         public TimeSpan ReadPollTimeSlot { get; set; }
 
+        [UIHint("Hidden")]
+        [Editable(false)]
+        public bool IsDeleted { get; set; }
+
         /// <summary>
         /// Creates the mappings.
         /// </summary>

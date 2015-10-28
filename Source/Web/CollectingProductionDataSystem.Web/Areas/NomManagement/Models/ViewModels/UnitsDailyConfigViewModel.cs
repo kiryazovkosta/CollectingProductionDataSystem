@@ -65,6 +65,10 @@
         [Display(Name = "RelatedUnitDailyConfigs", ResourceType = typeof(Resources.Layout))]
         public ICollection<RelatedUnitDailyConfigsViewModel> RelatedUnitDailyConfigs { get; set; }
 
+        [UIHint("Hidden")]
+        [Editable(false)]
+        public bool IsDeleted { get; set; }
+
         /// <summary>
         /// Creates the mappings.
         /// </summary>

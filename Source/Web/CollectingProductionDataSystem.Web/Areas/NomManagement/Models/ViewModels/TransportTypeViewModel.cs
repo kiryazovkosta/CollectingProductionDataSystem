@@ -23,5 +23,9 @@
         [Required]
         [Display(Name = "Description", ResourceType = typeof(Resources.Layout))]
         public string Description { get; set; }
+
+        [UIHint("Hidden")]
+        [Editable(false)]
+        public bool IsDeleted { get; set; }
     }
 }

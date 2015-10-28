@@ -42,5 +42,9 @@ namespace CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewMode
         [Required]
         [Display(Name = "ProcessUnit", ResourceType = typeof(Resources.Layout))]
         public int ProcessUnitId { get; set; }
+
+        [UIHint("Hidden")]
+        [Editable(false)]
+        public bool IsDeleted { get; set; }
     }
 }

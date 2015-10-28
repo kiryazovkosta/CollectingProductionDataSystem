@@ -44,5 +44,6 @@ sortable.SortMode(GridSortMode.SingleColumn);
 events.Error("error_handler");
 })
       )
+          .Events(ev => ev.DataBound("deletableDataBound"))
 )
 

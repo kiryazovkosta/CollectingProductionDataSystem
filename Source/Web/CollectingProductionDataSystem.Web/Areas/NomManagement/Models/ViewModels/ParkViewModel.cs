@@ -23,5 +23,9 @@ namespace CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewMode
         [Required]
         [Display(Name = "Park", ResourceType = typeof(Resources.Layout))]
         public int AreaId { get; set; }
+
+        [UIHint("Hidden")]
+        [Editable(false)]
+        public bool IsDeleted { get; set; }
     }
 }
