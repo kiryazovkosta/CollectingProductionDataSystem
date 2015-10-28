@@ -17,7 +17,7 @@ namespace CollectingProductionDataSystem.Web.Areas.RecordsHistory
             context.MapRoute(
             "RecordsHistory_history",
             "RecordsHistory/History/{entityName}/{id}",
-            new { controller = "History", action = "Index", id = UrlParameter.Optional, entityName = UrlParameter.Optional },
+            new { controller = "History", action = "Index"},
             namespaces: new string[] { "CollectingProductionDataSystem.Web.Areas.RecordsHistory.Controllers" }
             );
 

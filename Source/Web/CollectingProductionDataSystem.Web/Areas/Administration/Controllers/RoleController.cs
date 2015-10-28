@@ -33,11 +33,12 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Required]string name)
+        public async Task<ActionResult> Create(CreateRoleViewModel model)
         {
             if (ModelState.IsValid)
             {
-                IdentityResult result = await RoleManager.CreateAsync(new ApplicationRole(name));
+                var role = Mapper.Map<ApplicationRole>(model);
+                IdentityResult result = await RoleManager.CreateAsync(role);
                 if (result.Succeeded)
                 {
                     return RedirectToAction("Index");
@@ -47,7 +48,7 @@
                     AddErrorsFromResult(result);
                 }
             }
-            return View(name);
+            return View(model);
         }
 
         [HttpPost]

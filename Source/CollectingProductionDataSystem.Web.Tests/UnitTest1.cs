@@ -6,6 +6,7 @@ using CollectingProductionDataSystem.Models.Nomenclatures;
 using CollectingProductionDataSystem.Models.Productions;
 using CollectingProductionDataSystem.Web.Areas.Administration.ViewModels;
 using CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewModels;
+using CollectingProductionDataSystem.Web.ViewModels.Identity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace CollectingProductionDataSystem.Web.Tests
@@ -19,6 +20,15 @@ namespace CollectingProductionDataSystem.Web.Tests
         {
             Mapper.CreateMap<RoleViewModel, ApplicationRole>();
             var mapper = new RoleViewModel();
+            mapper.CreateMappings(Mapper.Configuration);
+            Mapper.AssertConfigurationIsValid();
+        }
+
+        [TestMethod]
+        public void CheckMappinCreateRoleViewModelToApplicationRole()
+        {
+            Mapper.CreateMap<CreateRoleViewModel, ApplicationRole>();
+            var mapper = new CreateRoleViewModel();
             mapper.CreateMappings(Mapper.Configuration);
             Mapper.AssertConfigurationIsValid();
         }

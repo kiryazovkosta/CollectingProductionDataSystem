@@ -2577,7 +2577,7 @@ namespace CollectingProductionDataSystem.Data.Migrations
                     {
                         Id=6,
                         Name = "HistoryManager",
-                        Description = "Достъп до изторията на записите в системата"
+                        Description = "Достъп до историята на записите в системата"
                     }
                 };
 

@@ -9,8 +9,11 @@ using AutoMapper;
 using CollectingProductionDataSystem.Data;
 using CollectingProductionDataSystem.Data.Contracts;
 using CollectingProductionDataSystem.Models.Contracts;
+using CollectingProductionDataSystem.Models.UtilityEntities;
 using CollectingProductionDataSystem.Web.Areas.Administration.Controllers;
 using CollectingProductionDataSystem.Web.Areas.RecordsHistory.ViewModels;
+using Kendo.Mvc.Extensions;
+using Kendo.Mvc.UI;
 
 namespace CollectingProductionDataSystem.Web.Areas.RecordsHistory.Controllers
 {
@@ -26,14 +29,30 @@ namespace CollectingProductionDataSystem.Web.Areas.RecordsHistory.Controllers
             TempData["recordId"] = id;
             TempData["entityName"] = entityName;
 
-            var dbHistory = this.data.AuditLogRecords.All().Where(x => x.EntityName == entityName && x.EntityId == id).ToList();
-            var model = Mapper.Map<IEnumerable<AuditLogRecordViewModel>>(dbHistory);
-            if (model.Count() == 0)
-            {
-                model = GetCreationData(id, entityName);
-            }
+            return PartialView();
+        }
 
-            return View(model);
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public virtual ActionResult Read([DataSourceRequest]DataSourceRequest request, int? id, string entityName)
+        {
+            try
+            {
+                IEnumerable<AuditLogRecord> dbHistory = this.data.AuditLogRecords.All().Where(x => (id == null) || (x.EntityName == entityName && x.EntityId == id));
+                if ((dbHistory.Count() == 0) && id.HasValue)
+                {
+                    dbHistory = GetCreationData(id.Value, entityName);
+                }
+
+                DataSourceResult result = dbHistory.ToDataSourceResult(request, ModelState, Mapper.Map<AuditLogRecordViewModel>);
+                return Json(result);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", ex.Message);
+                DataSourceResult result = new object[] { null }.ToDataSourceResult(request, ModelState);
+                return Json(result);
+            }
         }
 
         /// <summary>
@@ -42,30 +61,30 @@ namespace CollectingProductionDataSystem.Web.Areas.RecordsHistory.Controllers
         /// <param name="id">The id.</param>
         /// <param name="entityName">Name of the entity.</param>
         /// <returns></returns>
-        private IEnumerable<AuditLogRecordViewModel> GetCreationData(int id, string entityName)
+        private IEnumerable<AuditLogRecord> GetCreationData(int id, string entityName)
         {
             var modelAssembly = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(assembly => assembly.GetName().Name == "CollectingProductionDataSystem.Models");
             if (modelAssembly == null)
             {
-                return new List<AuditLogRecordViewModel> ();
+                return new List<AuditLogRecord>();
             }
             var type = modelAssembly.GetTypes().FirstOrDefault(x => x.Name == entityName);
             if (type == null)
             {
-                return new List<AuditLogRecordViewModel> ();
+                return new List<AuditLogRecord>();
             }
 
             MethodInfo method = this.GetType().GetMethod("GetCreationFromRecord", BindingFlags.Instance | BindingFlags.NonPublic);
             MethodInfo generic = method.MakeGenericMethod(type);
-            var result = generic.Invoke(this, new object[] { id }) as AuditLogRecordViewModel;
-            if (result ==null)
+            var result = generic.Invoke(this, new object[] { id }) as AuditLogRecord;
+            if (result == null)
             {
-                return new List<AuditLogRecordViewModel>();
+                return new List<AuditLogRecord>();
             }
-            return new List<AuditLogRecordViewModel> { result };
+            return new List<AuditLogRecord> { result };
         }
 
-        private AuditLogRecordViewModel GetCreationFromRecord<T>(int id)
+        private AuditLogRecord GetCreationFromRecord<T>(int id)
             where T : class, IAuditInfo, IEntity
         {
             var result = this.data.DbContext.Set<T>().FirstOrDefault(x => x.Id == id);
@@ -73,7 +92,7 @@ namespace CollectingProductionDataSystem.Web.Areas.RecordsHistory.Controllers
             {
                 return null;
             }
-            return new AuditLogRecordViewModel
+            return new AuditLogRecord
             {
                 EntityName = typeof(T).Name,
                 OperationType = EntityState.Added,

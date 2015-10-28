@@ -47,7 +47,7 @@
                             }
                         </td>
                         <td>
-                            @using (Html.BeginForm("Delete", "RoleAdmin", new { id = role.Id }))
+                            @using (Html.BeginForm("Delete", "Role", new { id = role.Id }))
                             {
                                 @Html.AntiForgeryToken()
                                 @Html.ActionLink(Resources.Layout.Edit, "Edit", new { id = role.Id },

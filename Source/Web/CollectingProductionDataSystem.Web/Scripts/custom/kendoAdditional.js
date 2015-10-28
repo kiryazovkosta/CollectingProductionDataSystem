@@ -113,3 +113,9 @@ function boundEmptyRelatedRecords() {
         }
     }
 }
+
+function sendHistoryData(){
+    var result = { 'id': $('input[name=id]').val(), 'entityName': $('input[name=entityName]').val() };
+    $.extend(result, sendAntiForgery());
+    return result;
+}

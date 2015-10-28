@@ -2,7 +2,14 @@
       .Grid<CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewModels.UnitsDailyConfigViewModel>()
       .Name("grid")
       .Columns(columns => {
-          columns.Bound(c => c.Code).Template(@<text></text>).ClientTemplate(Html.AuthorizedActionLinkOrText("#=data.Code#", "Index", "History", new { area = "RecordsHistory", id = "#=data.id#", entityName = "UnitDailyConfig" },null).ToHtmlString()).Width(100);
+          columns.Bound(c => c.Code)
+          .ClientTemplate(
+                Ajax.AuthorizedAjaxActionLinkOrText("#=data.Code#", "Index", "History",
+                                                new AjaxOptions() { HttpMethod = "Get", OnSuccess = "showRecordHistoriModal" },
+                                                new { area = "RecordsHistory", id = "#=data.id#", entityName = "UnitConfig" },
+                                                new { data_ajax_mode = "replace", data_ajax_update = @"\#record-history-body" })
+                                                .ToHtmlString())
+          .Width(100);
           columns.Bound(c => c.Name).Width(200);
           columns.ForeignKey(c => c.ProcessUnitId, (System.Collections.IEnumerable)ViewData["processUnits"], "Id", "FullName").EditorTemplateName("ProcessUnitViewModel").Width(280);
           columns.ForeignKey(c => c.ProductId, (System.Collections.IEnumerable)ViewData["products"], "Id", "Name").EditorTemplateName("ProductViewModel").Width(280);

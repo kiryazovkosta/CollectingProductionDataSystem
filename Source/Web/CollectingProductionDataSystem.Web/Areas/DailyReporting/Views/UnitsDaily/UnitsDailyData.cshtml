@@ -66,9 +66,12 @@
         columns =>
         {
             columns.Bound(c => c.UnitsDailyConfig.Code)
-                .Template(@<text></text>)
-                .ClientTemplate(Html.AuthorizedActionLinkOrText("#=data.UnitsDailyConfig.Code#", "Index", "History", new { area = "RecordsHistory", id = "#=data.id#", entityName = "UnitsDailyData" }, null)
-                .ToHtmlString())
+                .ClientTemplate(
+                Ajax.AuthorizedAjaxActionLinkOrText("#=data.UnitsDailyConfig.Code#", "Index", "History",
+                                                new AjaxOptions() { HttpMethod = "Get", OnSuccess = "showRecordHistoriModal" },
+                                                new { area = "RecordsHistory", id = "#=data.id#", entityName = "UnitsDailyData" },
+                                                new { data_ajax_mode = "replace", data_ajax_update = @"\#record-history-body" })
+                                                .ToHtmlString())
                 .Width(77);
             columns.Bound(c => c.UnitsDailyConfig.DailyProductType.Sort).Hidden(true).ClientGroupHeaderTemplate("#=value#");
             columns.Bound(c => c.UnitsDailyConfig.ProcessUnit.ShortName).Width(100);
@@ -76,9 +79,12 @@
             columns.Bound(c => c.UnitsDailyConfig.MeasureUnit.Code).Width(80);
             columns.Bound(c => c.Value).Width(100).Format("{0:n2}");
             columns.Bound(c => c.UnitsManualDailyData.Value)
-                .Template(@<text></text>)
-                .ClientTemplate(Html.AuthorizedActionLinkOrText("#=data.UnitsManualDailyData.Value#", "Index", "History", new { area = "RecordsHistory", id = "#=data.id#", entityName = "UnitsManualDailyData" }, null)
-                .ToHtmlString())
+                 .ClientTemplate(
+                Ajax.AuthorizedAjaxActionLinkOrText("#=data.UnitsManualDailyData.Value#", "Index", "History",
+                                                new AjaxOptions() { HttpMethod = "Get", OnSuccess = "showRecordHistoriModal" },
+                                                new { area = "RecordsHistory", id = "#=data.id#", entityName = "UnitsManualDailyData" },
+                                                new { data_ajax_mode = "replace", data_ajax_update = @"\#record-history-body" })
+                                                .ToHtmlString())
                 .Width(100)
                 .Format("{0:n2}");
             columns.Bound(c => c.UnitsManualDailyData.EditReason).Width(180).ClientTemplate("#:UnitsManualDailyData.EditReason.Name#")
@@ -184,6 +190,7 @@
 @section scripts{
     @Scripts.Render("~/bundles/custom/kendoadditional")
     @Scripts.Render("~/bundles/custom/unitGrids")
+    @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.min.js")
 }
 @section sidebar{
     @Html.Partial("_UnitsDailySideBar")

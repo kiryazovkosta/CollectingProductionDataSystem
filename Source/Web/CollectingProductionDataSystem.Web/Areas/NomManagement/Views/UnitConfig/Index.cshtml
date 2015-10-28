@@ -7,7 +7,14 @@
       .AutoBind(true)
       .Columns(columns =>
       {
-          columns.Bound(c => c.Code).Template(@<text></text>).ClientTemplate(Html.AuthorizedActionLinkOrText("#=data.Code#", "Index", "History", new { area = "RecordsHistory", id = "#=data.id#", entityName = "UnitConfig" }, null).ToHtmlString()).Width(100);
+          columns.Bound(c => c.Code)
+               .ClientTemplate(
+                Ajax.AuthorizedAjaxActionLinkOrText("#=data.Code#", "Index", "History",
+                                                new AjaxOptions() { HttpMethod = "Get", OnSuccess = "showRecordHistoriModal" },
+                                                new { area = "RecordsHistory", id = "#=data.id#", entityName = "UnitConfig" },
+                                                new { data_ajax_mode = "replace", data_ajax_update = @"\#record-history-body" })
+                                                .ToHtmlString())
+              .Width(100);
           columns.Bound(c => c.Position).Width(150);
           columns.Bound(c => c.Name).Width(200);
           columns.Bound(c => c.CollectingDataMechanism).Width(100);
