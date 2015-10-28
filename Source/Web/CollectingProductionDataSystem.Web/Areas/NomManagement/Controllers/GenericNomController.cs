@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Web.Mvc;
 using AutoMapper;
 using CollectingProductionDataSystem.Data.Contracts;
+using CollectingProductionDataSystem.Models.Abstract;
 using CollectingProductionDataSystem.Models.Contracts;
 using CollectingProductionDataSystem.Web.Infrastructure.Extentions;
 using Kendo.Mvc.Extensions;
@@ -36,10 +37,18 @@ namespace CollectingProductionDataSystem.Web.Areas.NomManagement.Controllers
         [ValidateAntiForgeryToken]
         public virtual ActionResult Read([DataSourceRequest]DataSourceRequest request)
         {
-            var processUnits = this.repository.All().ToList();
+            IEnumerable<TModel> records = new List<TModel>();
+            if (User.IsInRole("Administrator") && typeof(IDeletableEntity).IsAssignableFrom(typeof(TModel)))
+            {
+                records = this.repository.AllWithDeleted().ToList();
+            }
+            else
+            {
+                records = this.repository.All().ToList();
+            }
             try
             {
-                DataSourceResult result = processUnits.ToDataSourceResult(request, ModelState, Mapper.Map<TView>);
+                DataSourceResult result = records.ToDataSourceResult(request, ModelState, Mapper.Map<TView>);
                 return Json(result);
             }
             catch (Exception ex)
