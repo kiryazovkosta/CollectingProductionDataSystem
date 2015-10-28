@@ -193,13 +193,38 @@
         /// </summary>
         public static double FormulaZ1(FormulaArguments args)
         {
-            //Arrange
-            double p = 10;
-            double t = 50;
-            double pl = 20;
-            double d2 = 15;
-            double d5 = 2;
-            double d6 = 3;
+            if (!args.InputValue.HasValue)
+            {
+                throw new ArgumentNullException("The value of CounterIndication(PL) is not allowed to be null");
+            }
+            if (!args.Pressure.HasValue)
+            {
+                throw new ArgumentNullException("The value of Pressure(P) is not allowed to be null");
+            }
+            if (!args.Temperature.HasValue)
+            {
+                throw new ArgumentNullException("The value of Temperature(T) is not allowed to be null");
+            }
+            if (!args.MaximumFlow.HasValue)
+            {
+                throw new ArgumentNullException("The value of MaximumFlow(D2) is not allowed to be null");
+            }
+            if (!args.EstimatedPressure.HasValue)
+            {
+                throw new ArgumentNullException("The value of EstimatedPressure(D5) is not allowed to be null");
+            }
+            if (!args.EstimatedTemperature.HasValue)
+            {
+                throw new ArgumentNullException("The value of EstimatedTemperature(D6) is not allowed to be null");
+            }
+
+            double pl = args.InputValue.Value;
+            double p = args.Pressure.Value;
+            double t = args.Temperature.Value;
+            double d2 = args.MaximumFlow.Value;
+            double d5 = args.EstimatedPressure.Value;
+            double d6 = args.EstimatedTemperature.Value;
+
             double a1 = Functions.GetValueFormulaA1(p, t, d5, d6);
             double f = Functions.GetValueFormulaF(d2, pl, a1);
             double ent = Functions.GetValueFormulaEN(t, p);            
@@ -254,9 +279,9 @@
                 throw new ArgumentNullException("The value of Temperature(T) is not allowed to be null");
             }
 
+            double pl = args.InputValue.Value;
             double p = args.Pressure.Value;
             double t = args.Temperature.Value;
-            double pl = args.InputValue.Value;
 
             double ent = Functions.GetValueFormulaEN(t, p);
 
@@ -274,9 +299,22 @@
         /// </summary>
         public static double FormulaZZ2(FormulaArguments args)
         {
-            double p = 10;
-            double t = 50;
-            double pl = 20;
+            if (!args.InputValue.HasValue)
+            {
+                throw new ArgumentNullException("The value of CounterIndication(PL) is not allowed to be null");
+            }
+            if (!args.Pressure.HasValue)
+            {
+                throw new ArgumentNullException("The value of Pressure(P) is not allowed to be null");
+            }
+            if (!args.Temperature.HasValue)
+            {
+                throw new ArgumentNullException("The value of Temperature(T) is not allowed to be null");
+            }
+
+            double pl = args.InputValue.Value;
+            double p = args.Pressure.Value;
+            double t = args.Temperature.Value;
             double ent = Functions.GetValueFormulaEN(t, p);
 
             var inputParams = new Dictionary<string, double>();

@@ -15,7 +15,6 @@
     using AutoMapper;
     using CollectingProductionDataSystem.Application.Contracts;
     using CollectingProductionDataSystem.Data.Contracts;
-    using CollectingProductionDataSystem.Models.Nomenclatures;
     using CollectingProductionDataSystem.Models.Productions;
     using CollectingProductionDataSystem.Web.Areas.ShiftReporting.ViewModels;
     using CollectingProductionDataSystem.Web.Infrastructure.Filters;
@@ -73,9 +72,13 @@
         {
             if (ModelState.IsValid)
             {
-                if (model.UnitConfig.IsCalculated)
+                var relatedUnitConfigs = this.data.RelatedUnitConfigs.All().Where(x=>x.RelatedUnitConfigId == model.UnitConfigId).ToList();
+                if (relatedUnitConfigs.Count() > 0)
                 {
-                    model.UnitsManualData.Value = (decimal)CalculateValueByProductionDataFormula(model);
+                    foreach (var relatedUnitConfig in relatedUnitConfigs)
+	                {
+                        UpdateRelatedUnitConfig(relatedUnitConfig.UnitConfigId, model);
+	                } 
                 }
 
                 var newManualRecord = new UnitsManualData
@@ -116,18 +119,138 @@
             return Json(new[] { model }.ToDataSourceResult(request, ModelState));
         }
 
+        private void UpdateRelatedUnitConfig(int unitConfigId, UnitDataViewModel model)
+        {
+            var unitConfig = this.data.UnitConfigs.GetById(unitConfigId);
+            if(unitConfig.IsCalculated)
+            {
+                var formulaCode = unitConfig.CalculatedFormula ?? string.Empty;
+                var arguments = PopulateFormulaTadaFromPassportData(unitConfig);
+                PopulateFormulaDataFromRelatedUnitConfigs(unitConfig, model, arguments);
+                var newValue = ProductionDataCalculator.Calculate(formulaCode, arguments);
+                UpdateCalculatedUnitConfig(model, unitConfigId, newValue);
+            }
+        }
+ 
+        private void UpdateCalculatedUnitConfig(UnitDataViewModel model, int unitConfigId, double newValue)
+        {
+            var recordId = data.UnitsData
+                               .All()
+                               .Where(x => x.RecordTimestamp == model.RecordTimestamp && x.ShiftId == model.Shift && x.UnitConfigId == unitConfigId)
+                               .FirstOrDefault()
+                               .Id;
+
+            var existManualRecord = this.data.UnitsManualData.All().FirstOrDefault(x => x.Id == recordId);
+            if (existManualRecord == null)
+            {
+                this.data.UnitsManualData.Add(new UnitsManualData
+                {
+                    Id = recordId,
+                    Value = (decimal)newValue,
+                    EditReasonId = model.UnitsManualData.EditReason.Id
+                });
+            }
+            else
+            {
+                existManualRecord.Value = (decimal)newValue;
+                existManualRecord.EditReasonId = model.UnitsManualData.EditReason.Id;
+                this.data.UnitsManualData.Update(existManualRecord);
+            }
+        }
+ 
+        private FormulaArguments PopulateFormulaTadaFromPassportData(UnitConfig unitConfig)
+        {
+            var arguments = new FormulaArguments();
+            arguments.MaximumFlow = (double?)unitConfig.MaximumFlow;
+            arguments.EstimatedDensity = (double?)unitConfig.EstimatedDensity;
+            arguments.EstimatedPressure = (double?)unitConfig.EstimatedPressure;
+            arguments.EstimatedTemperature = (double?)unitConfig.EstimatedTemperature;
+            arguments.EstimatedCompressibilityFactor = (double?)unitConfig.EstimatedCompressibilityFactor;
+            return arguments;
+        }
+ 
+        private void PopulateFormulaDataFromRelatedUnitConfigs(UnitConfig unitConfig, UnitDataViewModel model, FormulaArguments arguments)
+        {
+            var ruc = unitConfig.RelatedUnitConfigs.ToList();
+            foreach (var ru in ruc)
+            {
+                var parameterType = ru.RelatedUnitConfig.AggregateGroup;
+                var inputValue = 0.0;
+                if (ru.RelatedUnitConfigId == model.UnitConfigId)
+                {
+                    inputValue = (double)model.UnitsManualData.Value;    
+                }
+                else 
+                { 
+                    inputValue = data.UnitsData.All()
+                        .Where(x => x.RecordTimestamp == model.RecordTimestamp && x.ShiftId == model.Shift && x.UnitConfigId == ru.RelatedUnitConfigId)
+                        .FirstOrDefault()
+                        .RealValue;
+                }
+
+                if (parameterType == "I")
+                {
+                    arguments.InputValue = inputValue;   
+                }
+                else if (parameterType == "T")
+                {
+                    arguments.Temperature = inputValue;
+                }
+                else if (parameterType == "P")
+                {
+                    arguments.Pressure = inputValue;    
+                }
+                else if (parameterType == "D")
+                {
+                    arguments.Density = inputValue;  
+                }
+            }
+        }
+
         private double CalculateValueByProductionDataFormula(UnitDataViewModel model)
         {
             var formulaCode = model.UnitConfig.CalculatedFormula ?? string.Empty;
             var arguments = new FormulaArguments();
-            arguments.InputValue = (double)model.UnitsManualData.Value;
             arguments.MaximumFlow = (double?)model.UnitConfig.MaximumFlow;
             arguments.EstimatedDensity = (double?)model.UnitConfig.EstimatedDensity;
             arguments.EstimatedPressure = (double?)model.UnitConfig.EstimatedPressure;
             arguments.EstimatedTemperature = (double?)model.UnitConfig.EstimatedTemperature;
             arguments.EstimatedCompressibilityFactor = (double?)model.UnitConfig.EstimatedCompressibilityFactor;
-            // Todo: need to add arguments here. Need to create a good mechanism for parameters!
+            //// Todo: need to add arguments here. Need to create a good mechanism for parameters!
 
+
+            var uc = this.data.UnitConfigs.GetById(model.UnitConfigId);
+            if (uc != null)
+            {
+                var ruc = uc.RelatedUnitConfigs.ToList();
+                foreach (var ru in ruc)
+                {
+                    var parameterType = ru.RelatedUnitConfig.AggregateGroup;
+                    var inputValue = data.UnitsData
+                            .All()
+                            .Where(x => x.RecordTimestamp == model.RecordTimestamp)
+                            .Where(x => x.ShiftId == model.Shift)
+                            .Where(x => x.UnitConfigId == ru.RelatedUnitConfigId)
+                            .FirstOrDefault()
+                            .RealValue;
+                    if (parameterType == "I")
+                    {
+                        arguments.InputValue = inputValue;   
+                    }
+                    else if (parameterType == "T")
+                    {
+                        arguments.Temperature = inputValue;
+                    }
+                    else if (parameterType == "P")
+                    {
+                        arguments.Pressure = inputValue;    
+                    }
+                    else if (parameterType == "D")
+                    {
+                        arguments.Density = inputValue;  
+                    }
+                }
+            }
 
             return ProductionDataCalculator.Calculate(formulaCode, arguments);
         }
