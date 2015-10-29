@@ -49,8 +49,8 @@
                 logger.Info("Sync primary data started!");
                 var kernel = ninject.Kernel;
                 var service = kernel.GetService(typeof(PhdPrimaryDataService)) as PhdPrimaryDataService;
-                var result = service.ReadAndSaveUnitsDataForShift();
-                logger.InfoFormat("Successfully added {0} records to CollectingPrimaryDataSystem", result.ResultRecordsCount);
+                var insertedRecords = service.ReadAndSaveUnitsDataForShift();
+                logger.InfoFormat("Successfully added {0} records to CollectingPrimaryDataSystem", insertedRecords);
                 logger.Info("Sync primary data finished!");
             }
             catch (DataException validationException)

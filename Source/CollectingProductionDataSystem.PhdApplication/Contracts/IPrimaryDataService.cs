@@ -9,6 +9,6 @@
 
     public interface IPrimaryDataService
     {
-        IEfStatus ReadAndSaveUnitsDataForShift();
+        int ReadAndSaveUnitsDataForShift();
     }
 }
