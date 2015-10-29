@@ -5,7 +5,13 @@
       .Name("grid")
       .Columns(columns =>
       {
-          columns.Bound(c => c.ShortName);
+          columns.Bound(c => c.ShortName)
+              .ClientTemplate(
+                Ajax.AuthorizedAjaxActionLinkOrText("#=data.ShortName#", "Index", "History",
+                                                new AjaxOptions() { HttpMethod = "Get", OnSuccess = "showRecordHistoriModal" },
+                                                new { area = "RecordsHistory", id = "#=data.id#", entityName = "Factory" },
+                                                new { data_ajax_mode = "replace", data_ajax_update = @"\#record-history-body" })
+                                                .ToHtmlString());
           columns.Bound(c => c.FullName);
           columns.ForeignKey(c => c.PlantId, (System.Collections.IEnumerable)ViewData["plants"], "Id", "FullName").EditorTemplateName("PlantViewModel");
           columns.Command(command => { command.Edit(); command.Destroy(); }).Width(230);
@@ -44,7 +50,8 @@
     events.Error("error_handler");
 })
       )
-)
+           .Events(ev => ev.DataBound("deletableDataBound"))
+      )
 @section scripts{
     <script>
 

@@ -2,7 +2,13 @@
       .Name("grid")
       .Columns(columns =>
       {
-          columns.Bound(c => c.Name);
+          columns.Bound(c => c.Name)
+               .ClientTemplate(
+                Ajax.AuthorizedAjaxActionLinkOrText("#=data.Name#", "Index", "History",
+                                                new AjaxOptions() { HttpMethod = "Get", OnSuccess = "showRecordHistoriModal" },
+                                                new { area = "RecordsHistory", id = "#=data.id#", entityName = "MaterialType" },
+                                                new { data_ajax_mode = "replace", data_ajax_update = @"\#record-history-body" })
+                                                .ToHtmlString());
           columns.Command(command => { command.Edit(); command.Destroy(); }).Width(230);
       })
       .ToolBar(toolbar =>
@@ -34,6 +40,7 @@
             {
                 events.Error("error_handler");
             })
-      )
+          )
+          .Events(ev => ev.DataBound("deletableDataBound"))
 )
 

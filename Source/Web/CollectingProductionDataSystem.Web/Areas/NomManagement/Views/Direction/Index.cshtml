@@ -40,5 +40,6 @@
             {
                 events.Error("error_handler");
             })
-      )
+          )
+          .Events(ev => ev.DataBound("deletableDataBound"))
 )

@@ -54,7 +54,8 @@
                 {
                     events.Error("error_handler");
                 })
-      )
+          )
+          .Events(ev => ev.DataBound("deletableDataBound"))
 )
 
 <script type="text/kendo" id="unitConfigTemplate">

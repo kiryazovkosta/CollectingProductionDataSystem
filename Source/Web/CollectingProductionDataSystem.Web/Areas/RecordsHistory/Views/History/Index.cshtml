@@ -16,7 +16,7 @@
       .Name("history-grid")
       .Columns(columns =>
         {
-            columns.Bound(c => c.TimeStamp).Format("{0:dd-mm-yyyy HH:mm:ss:fff}");
+            columns.Bound(c => c.TimeStamp).Format("{0:dd-MM-yyyy HH:mm:ss:fff}");
             columns.Bound(c => c.OperationType);
             columns.Bound(c => c.FieldName);
             columns.Bound(c => c.OldValue);
