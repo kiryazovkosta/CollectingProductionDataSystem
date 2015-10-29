@@ -229,6 +229,13 @@
     <Compile Include="Areas\Administration\AdministrationAreaRegistration.cs" />
     <Compile Include="Areas\Administration\Controllers\AjaxController.cs" />
     <Compile Include="Areas\Administration\Controllers\AreaBaseController.cs" />
+    <Compile Include="Areas\NomManagement\Controllers\IkunkController.cs" />
+    <Compile Include="Areas\NomManagement\Controllers\MeasuringPointConfigController.cs" />
+    <Compile Include="Areas\NomManagement\Controllers\ZoneController.cs" />
+    <Compile Include="Areas\NomManagement\Models\ViewModels\IkunkViewModel.cs" />
+    <Compile Include="Areas\NomManagement\Models\ViewModels\MeasuringPointConfigViewModel.cs" />
+    <Compile Include="Areas\NomManagement\Models\ViewModels\RelatedMeasuringPointConfigsViewModel.cs" />
+    <Compile Include="Areas\NomManagement\Models\ViewModels\ZoneViewModel.cs" />
     <Compile Include="Areas\RecordsHistory\Controllers\AreaBaseController.cs" />
     <Compile Include="Areas\RecordsHistory\Controllers\HistoryController.cs" />
     <Compile Include="Areas\Administration\Controllers\RoleController.cs" />
@@ -781,6 +788,13 @@
     <Content Include="Areas\RecordsHistory\Views\web.config" />
     <Content Include="Areas\RecordsHistory\Views\History\Index.cshtml" />
     <Content Include="Areas\RecordsHistory\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\NomManagement\Views\Ikunk\Index.cshtml" />
+    <Content Include="Areas\NomManagement\Views\Zone\Index.cshtml" />
+    <Content Include="Areas\NomManagement\Views\Shared\EditorTemplates\IkunkViewModel.cshtml" />
+    <Content Include="Areas\NomManagement\Views\MeasuringPointConfig\Index.cshtml" />
+    <Content Include="Areas\NomManagement\Views\Shared\EditorTemplates\ZoneViewModel.cshtml" />
+    <Content Include="Areas\NomManagement\Views\MeasuringPointConfig\EditorTemplates\RelatedMeasuringPointConfigEditor.cshtml" />
+    <Content Include="Areas\NomManagement\Views\Shared\EditorTemplates\TransportTypeViewModel.cshtml" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <None Include="Properties\PublishProfiles\Home.pubxml" />
     <Content Include="Scripts\custom\sendArea.js" />

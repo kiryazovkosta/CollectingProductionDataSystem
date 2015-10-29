@@ -858,4 +858,298 @@
   <data name="UserChanger" xml:space="preserve">
     <value>User</value>
   </data>
+  <data name="ChooseIkunk" xml:space="preserve">
+    <value>Choose IKUNK ...</value>
+  </data>
+  <data name="ActiveTransactionMassReverseTag" xml:space="preserve">
+    <value>ActiveTransactionMassReverseTag</value>
+  </data>
+  <data name="ActiveTransactionMassTag" xml:space="preserve">
+    <value>ActiveTransactionMassTag</value>
+  </data>
+  <data name="ActiveTransactionProductTag" xml:space="preserve">
+    <value>ActiveTransactionProductTag</value>
+  </data>
+  <data name="ActiveTransactionStatusTag" xml:space="preserve">
+    <value>ActiveTransactionStatusTag</value>
+  </data>
+  <data name="AverageObservableDensityHighExtreme" xml:space="preserve">
+    <value>AverageObservableDensityHighExtreme</value>
+  </data>
+  <data name="AverageObservableDensityLowExtreme" xml:space="preserve">
+    <value>AverageObservableDensityLowExtreme</value>
+  </data>
+  <data name="AverageObservableDensityReverseHighExtreme" xml:space="preserve">
+    <value>AverageObservableDensityReverseHighExtreme</value>
+  </data>
+  <data name="AverageObservableDensityReverseLowExtreme" xml:space="preserve">
+    <value>AverageObservableDensityReverseLowExtreme</value>
+  </data>
+  <data name="AverageReferenceDensityHighExtreme" xml:space="preserve">
+    <value>AverageReferenceDensityHighExtreme</value>
+  </data>
+  <data name="AverageReferenceDensityLowExtreme" xml:space="preserve">
+    <value>AverageReferenceDensityLowExtreme</value>
+  </data>
+  <data name="AverageReferenceDensityReverseHighExtreme" xml:space="preserve">
+    <value>AverageReferenceDensityReverseHighExtreme</value>
+  </data>
+  <data name="AverageReferenceDensityReverseLowExtreme" xml:space="preserve">
+    <value>AverageReferenceDensityReverseLowExtreme</value>
+  </data>
+  <data name="AverageTemperatureHighExtreme1" xml:space="preserve">
+    <value>AverageTemperatureHighExtreme</value>
+  </data>
+  <data name="AverageTemperatureLowExtreme1" xml:space="preserve">
+    <value>AverageTemperatureLowExtreme</value>
+  </data>
+  <data name="AverageTemperatureReverseHighExtreme" xml:space="preserve">
+    <value>AverageTemperatureReverseHighExtreme</value>
+  </data>
+  <data name="AverageTemperatureReverseLowExtreme" xml:space="preserve">
+    <value>AverageTemperatureReverseLowExtreme</value>
+  </data>
+  <data name="ChooseTransportType" xml:space="preserve">
+    <value>Choose an Transport Type...</value>
+  </data>
+  <data name="ChooseZone" xml:space="preserve">
+    <value>Choose Zone ...</value>
+  </data>
+  <data name="ControlPoint1" xml:space="preserve">
+    <value>ControlPoint</value>
+  </data>
+  <data name="DirectionId" xml:space="preserve">
+    <value>DirectionId</value>
+  </data>
+  <data name="EngineeringUnitDensity" xml:space="preserve">
+    <value>EngineeringUnitDensity</value>
+  </data>
+  <data name="EngineeringUnitMass" xml:space="preserve">
+    <value>EngineeringUnitMass</value>
+  </data>
+  <data name="EngineeringUnitTemperature" xml:space="preserve">
+    <value>EngineeringUnitTemperature</value>
+  </data>
+  <data name="EngineeringUnitVolume" xml:space="preserve">
+    <value>EngineeringUnitVolume</value>
+  </data>
+  <data name="FactorDensity" xml:space="preserve">
+    <value>FactorDensity</value>
+  </data>
+  <data name="FactorMass" xml:space="preserve">
+    <value>FactorMass</value>
+  </data>
+  <data name="FactorTemperature" xml:space="preserve">
+    <value>FactorTemperature</value>
+  </data>
+  <data name="FactorVolume" xml:space="preserve">
+    <value>FactorVolume</value>
+  </data>
+  <data name="FlowDirection" xml:space="preserve">
+    <value>FlowDirection</value>
+  </data>
+  <data name="GrossObservableVolumeHighExtreme1" xml:space="preserve">
+    <value>GrossObservableVolumeHighExtreme</value>
+  </data>
+  <data name="GrossObservableVolumeLowExtreme1" xml:space="preserve">
+    <value>GrossObservableVolumeLowExtreme</value>
+  </data>
+  <data name="GrossObservableVolumeReverseHighExtreme" xml:space="preserve">
+    <value>GrossObservableVolumeReverseHighExtreme</value>
+  </data>
+  <data name="GrossObservableVolumeReverseLowExtreme" xml:space="preserve">
+    <value>GrossObservableVolumeReverseLowExtreme</value>
+  </data>
+  <data name="GrossStandardVolumeHighExtreme1" xml:space="preserve">
+    <value>GrossStandardVolumeHighExtreme</value>
+  </data>
+  <data name="GrossStandardVolumeLowExtreme1" xml:space="preserve">
+    <value>GrossStandardVolumeLowExtreme</value>
+  </data>
+  <data name="GrossStandardVolumeReverseHighExtreme" xml:space="preserve">
+    <value>GrossStandardVolumeReverseHighExtreme</value>
+  </data>
+  <data name="GrossStandardVolumeReverseLowExtreme" xml:space="preserve">
+    <value>GrossStandardVolumeReverseLowExtreme</value>
+  </data>
+  <data name="IsInternalPoint" xml:space="preserve">
+    <value>IsInternalPoint</value>
+  </data>
+  <data name="MassCorrectionFactor" xml:space="preserve">
+    <value>MassCorrectionFactor</value>
+  </data>
+  <data name="MassHighExtreme" xml:space="preserve">
+    <value>MassHighExtreme</value>
+  </data>
+  <data name="MassLowExtreme" xml:space="preserve">
+    <value>MassLowExtreme</value>
+  </data>
+  <data name="MassReverseHighExtreme" xml:space="preserve">
+    <value>MassReverseHighExtreme</value>
+  </data>
+  <data name="MassReverseLowExtreme" xml:space="preserve">
+    <value>MassReverseLowExtreme</value>
+  </data>
+  <data name="MeasuringPointName" xml:space="preserve">
+    <value>MeasuringPointName</value>
+  </data>
+  <data name="RelatedMeasuringPointConfigs" xml:space="preserve">
+    <value>Related Measuring Point Configs</value>
+  </data>
+  <data name="TotalizerBeginCommonMassHighExtreme" xml:space="preserve">
+    <value>TotalizerBeginCommonMassHighExtreme</value>
+  </data>
+  <data name="TotalizerBeginCommonMassLowExtreme" xml:space="preserve">
+    <value>TotalizerBeginCommonMassLowExtreme</value>
+  </data>
+  <data name="TotalizerBeginCommonMassReverseHighExtreme" xml:space="preserve">
+    <value>TotalizerBeginCommonMassReverseHighExtreme</value>
+  </data>
+  <data name="TotalizerBeginCommonMassReverseLowExtreme" xml:space="preserve">
+    <value>TotalizerBeginCommonMassReverseLowExtreme</value>
+  </data>
+  <data name="TotalizerBeginGrossObservableCommonVolumeHighExtreme" xml:space="preserve">
+    <value>TotalizerBeginGrossObservableCommonVolumeHighExtreme</value>
+  </data>
+  <data name="TotalizerBeginGrossObservableCommonVolumeLowExtreme" xml:space="preserve">
+    <value>TotalizerBeginGrossObservableCommonVolumeLowExtreme</value>
+  </data>
+  <data name="TotalizerBeginGrossObservableCommonVolumeReverseHighExtreme" xml:space="preserve">
+    <value>TotalizerBeginGrossObservableCommonVolumeReverseHighExtreme</value>
+  </data>
+  <data name="TotalizerBeginGrossObservableCommonVolumeReverseLowExtreme" xml:space="preserve">
+    <value>TotalizerBeginGrossObservableCommonVolumeReverseLowExtreme</value>
+  </data>
+  <data name="TotalizerBeginGrossObservableVolumeHighExtreme" xml:space="preserve">
+    <value>TotalizerBeginGrossObservableVolumeHighExtreme</value>
+  </data>
+  <data name="TotalizerBeginGrossObservableVolumeLowExtreme" xml:space="preserve">
+    <value>TotalizerBeginGrossObservableVolumeLowExtreme</value>
+  </data>
+  <data name="TotalizerBeginGrossObservableVolumeReverseHighExtreme" xml:space="preserve">
+    <value>TotalizerBeginGrossObservableVolumeReverseHighExtreme</value>
+  </data>
+  <data name="TotalizerBeginGrossObservableVolumeReverseLowExtreme" xml:space="preserve">
+    <value>TotalizerBeginGrossObservableVolumeReverseLowExtreme</value>
+  </data>
+  <data name="TotalizerBeginGrossStandardCommonVolumeHighExtreme" xml:space="preserve">
+    <value>TotalizerBeginGrossStandardCommonVolumeHighExtreme</value>
+  </data>
+  <data name="TotalizerBeginGrossStandardCommonVolumeLowExtreme" xml:space="preserve">
+    <value>TotalizerBeginGrossStandardCommonVolumeLowExtreme</value>
+  </data>
+  <data name="TotalizerBeginGrossStandardCommonVolumeReverseHighExtreme" xml:space="preserve">
+    <value>TotalizerBeginGrossStandardCommonVolumeReverseHighExtreme</value>
+  </data>
+  <data name="TotalizerBeginGrossStandardCommonVolumeReverseLowExtreme" xml:space="preserve">
+    <value>TotalizerBeginGrossStandardCommonVolumeReverseLowExtreme</value>
+  </data>
+  <data name="TotalizerBeginGrossStandardVolumeHighExtreme" xml:space="preserve">
+    <value>TotalizerBeginGrossStandardVolumeHighExtreme</value>
+  </data>
+  <data name="TotalizerBeginGrossStandardVolumeLowExtreme" xml:space="preserve">
+    <value>TotalizerBeginGrossStandardVolumeLowExtreme</value>
+  </data>
+  <data name="TotalizerBeginGrossStandardVolumeReverseHighExtreme" xml:space="preserve">
+    <value>TotalizerBeginGrossStandardVolumeReverseHighExtreme</value>
+  </data>
+  <data name="TotalizerBeginGrossStandardVolumeReverseLowExtreme" xml:space="preserve">
+    <value>TotalizerBeginGrossStandardVolumeReverseLowExtreme</value>
+  </data>
+  <data name="TotalizerBeginMassHighExtreme" xml:space="preserve">
+    <value>TotalizerBeginMassHighExtreme</value>
+  </data>
+  <data name="TotalizerBeginMassLowExtreme" xml:space="preserve">
+    <value>TotalizerBeginMassLowExtreme</value>
+  </data>
+  <data name="TotalizerBeginMassReverseHighExtreme" xml:space="preserve">
+    <value>TotalizerBeginMassReverseHighExtreme</value>
+  </data>
+  <data name="TotalizerBeginMassReverseLowExtreme" xml:space="preserve">
+    <value>TotalizerBeginMassReverseLowExtreme</value>
+  </data>
+  <data name="TotalizerCurrentValueTag" xml:space="preserve">
+    <value>TotalizerCurrentValueTag</value>
+  </data>
+  <data name="TotalizerEndCommonMassHighExtreme" xml:space="preserve">
+    <value>TotalizerEndCommonMassHighExtreme</value>
+  </data>
+  <data name="TotalizerEndCommonMassLowExtreme" xml:space="preserve">
+    <value>TotalizerEndCommonMassLowExtreme</value>
+  </data>
+  <data name="TotalizerEndCommonMassReverseHighExtreme" xml:space="preserve">
+    <value>TotalizerEndCommonMassReverseHighExtreme</value>
+  </data>
+  <data name="TotalizerEndCommonMassReverseLowExtreme" xml:space="preserve">
+    <value>TotalizerEndCommonMassReverseLowExtreme</value>
+  </data>
+  <data name="TotalizerEndGrossObservableCommonVolumeHighExtreme" xml:space="preserve">
+    <value>TotalizerEndGrossObservableCommonVolumeHighExtreme</value>
+  </data>
+  <data name="TotalizerEndGrossObservableCommonVolumeLowExtreme" xml:space="preserve">
+    <value>TotalizerEndGrossObservableCommonVolumeLowExtreme</value>
+  </data>
+  <data name="TotalizerEndGrossObservableCommonVolumeReverseHighExtreme" xml:space="preserve">
+    <value>TotalizerEndGrossObservableCommonVolumeReverseHighExtreme</value>
+  </data>
+  <data name="TotalizerEndGrossObservableCommonVolumeReverseLowExtreme" xml:space="preserve">
+    <value>TotalizerEndGrossObservableCommonVolumeReverseLowExtreme</value>
+  </data>
+  <data name="TotalizerEndGrossObservableVolumeHighExtreme" xml:space="preserve">
+    <value>TotalizerEndGrossObservableVolumeHighExtreme</value>
+  </data>
+  <data name="TotalizerEndGrossObservableVolumeLowExtreme" xml:space="preserve">
+    <value>TotalizerEndGrossObservableVolumeLowExtreme</value>
+  </data>
+  <data name="TotalizerEndGrossObservableVolumeReverseHighExtreme" xml:space="preserve">
+    <value>TotalizerEndGrossObservableVolumeReverseHighExtreme</value>
+  </data>
+  <data name="TotalizerEndGrossObservableVolumeReverseLowExtreme" xml:space="preserve">
+    <value>TotalizerEndGrossObservableVolumeReverseLowExtreme</value>
+  </data>
+  <data name="TotalizerEndGrossStandardCommonVolumeHighExtreme" xml:space="preserve">
+    <value>TotalizerEndGrossStandardCommonVolumeHighExtreme</value>
+  </data>
+  <data name="TotalizerEndGrossStandardCommonVolumeLowExtreme" xml:space="preserve">
+    <value>TotalizerEndGrossStandardCommonVolumeLowExtreme</value>
+  </data>
+  <data name="TotalizerEndGrossStandardCommonVolumeReverseHighExtreme" xml:space="preserve">
+    <value>TotalizerEndGrossStandardCommonVolumeReverseHighExtreme</value>
+  </data>
+  <data name="TotalizerEndGrossStandardCommonVolumeReverseLowExtreme" xml:space="preserve">
+    <value>TotalizerEndGrossStandardCommonVolumeReverseLowExtreme</value>
+  </data>
+  <data name="TotalizerEndGrossStandardVolumeHighExtreme" xml:space="preserve">
+    <value>TotalizerEndGrossStandardVolumeHighExtreme</value>
+  </data>
+  <data name="TotalizerEndGrossStandardVolumeLowExtreme" xml:space="preserve">
+    <value>TotalizerEndGrossStandardVolumeLowExtreme</value>
+  </data>
+  <data name="TotalizerEndGrossStandardVolumeReverseHighExtreme" xml:space="preserve">
+    <value>TotalizerEndGrossStandardVolumeReverseHighExtreme</value>
+  </data>
+  <data name="TotalizerEndGrossStandardVolumeReverseLowExtreme" xml:space="preserve">
+    <value>TotalizerEndGrossStandardVolumeReverseLowExtreme</value>
+  </data>
+  <data name="TotalizerEndMassHighExtreme" xml:space="preserve">
+    <value>TotalizerEndMassHighExtreme</value>
+  </data>
+  <data name="TotalizerEndMassLowExtreme" xml:space="preserve">
+    <value>TotalizerEndMassLowExtreme</value>
+  </data>
+  <data name="TotalizerEndMassReverseHighExtreme" xml:space="preserve">
+    <value>TotalizerEndMassReverseHighExtreme</value>
+  </data>
+  <data name="TotalizerEndMassReverseLowExtreme" xml:space="preserve">
+    <value>TotalizerEndMassReverseLowExtreme</value>
+  </data>
+  <data name="TransportTypeId" xml:space="preserve">
+    <value>TransportTypeId</value>
+  </data>
+  <data name="WeightScaleNumber" xml:space="preserve">
+    <value>WeightScaleNumber</value>
+  </data>
+  <data name="ZoneId" xml:space="preserve">
+    <value>ZoneId</value>
+  </data>
 </root>

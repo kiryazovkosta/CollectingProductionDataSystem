@@ -861,4 +861,298 @@
   <data name="UserChanger" xml:space="preserve">
     <value>Потребител</value>
   </data>
+  <data name="ChooseIkunk" xml:space="preserve">
+    <value>Изберете ИКУНК ...</value>
+  </data>
+  <data name="ActiveTransactionMassReverseTag" xml:space="preserve">
+    <value>PHD  таг за за маса на доставен продукт в активна транзакция</value>
+  </data>
+  <data name="ActiveTransactionMassTag" xml:space="preserve">
+    <value>PHD  таг за за маса на експедиран продукт в активна транзакция</value>
+  </data>
+  <data name="ActiveTransactionProductTag" xml:space="preserve">
+    <value>PHD  таг за код на продукта в активната транзакция</value>
+  </data>
+  <data name="ActiveTransactionStatusTag" xml:space="preserve">
+    <value>PHD  таг за активна транзакция</value>
+  </data>
+  <data name="AverageObservableDensityHighExtreme" xml:space="preserve">
+    <value>Средна некомпенсирана плътност - горна граница</value>
+  </data>
+  <data name="AverageObservableDensityLowExtreme" xml:space="preserve">
+    <value>Средна некомпенсирана плътност - долна граница</value>
+  </data>
+  <data name="AverageObservableDensityReverseHighExtreme" xml:space="preserve">
+    <value>Средна некомпенсирана плътност за обратно количество - горна граница</value>
+  </data>
+  <data name="AverageObservableDensityReverseLowExtreme" xml:space="preserve">
+    <value>Средна некомпенсирана плътност за обратно количество - долна граница</value>
+  </data>
+  <data name="AverageReferenceDensityHighExtreme" xml:space="preserve">
+    <value>Средна компенсирана плътност - горна граница</value>
+  </data>
+  <data name="AverageReferenceDensityLowExtreme" xml:space="preserve">
+    <value>Средна компенсирана плътност - долна граница</value>
+  </data>
+  <data name="AverageReferenceDensityReverseHighExtreme" xml:space="preserve">
+    <value>Средна компенсирана плътност за обратно количество - горна граница</value>
+  </data>
+  <data name="AverageReferenceDensityReverseLowExtreme" xml:space="preserve">
+    <value>Средна компенсирана плътност за обратно количество - долна граница</value>
+  </data>
+  <data name="AverageTemperatureHighExtreme1" xml:space="preserve">
+    <value>Средна температура - горна граница</value>
+  </data>
+  <data name="AverageTemperatureLowExtreme1" xml:space="preserve">
+    <value>Средна температура - долна граница</value>
+  </data>
+  <data name="AverageTemperatureReverseHighExtreme" xml:space="preserve">
+    <value>Средна температура за обратно количество - горна граница</value>
+  </data>
+  <data name="AverageTemperatureReverseLowExtreme" xml:space="preserve">
+    <value>Средна температура за обратно количество - долна граница</value>
+  </data>
+  <data name="ChooseTransportType" xml:space="preserve">
+    <value>Изберете тип на транспорта ...</value>
+  </data>
+  <data name="ChooseZone" xml:space="preserve">
+    <value>Изберете зона...</value>
+  </data>
+  <data name="ControlPoint1" xml:space="preserve">
+    <value>Контролна точка на прибора</value>
+  </data>
+  <data name="DirectionId" xml:space="preserve">
+    <value>Посока на точката за измерване</value>
+  </data>
+  <data name="EngineeringUnitDensity" xml:space="preserve">
+    <value>Инженерни единици - плътност</value>
+  </data>
+  <data name="EngineeringUnitMass" xml:space="preserve">
+    <value>Инженерни единици - маса</value>
+  </data>
+  <data name="EngineeringUnitTemperature" xml:space="preserve">
+    <value>Инженерни единици - температура</value>
+  </data>
+  <data name="EngineeringUnitVolume" xml:space="preserve">
+    <value>Инженерни единици - обем</value>
+  </data>
+  <data name="FactorDensity" xml:space="preserve">
+    <value>Коефициент на преобразуване - плътност</value>
+  </data>
+  <data name="FactorMass" xml:space="preserve">
+    <value>Коефициент на преобразуване - маса</value>
+  </data>
+  <data name="FactorTemperature" xml:space="preserve">
+    <value>Коефициент на преобразуване - температура</value>
+  </data>
+  <data name="FactorVolume" xml:space="preserve">
+    <value>Коефициент на преобразуване - обем</value>
+  </data>
+  <data name="FlowDirection" xml:space="preserve">
+    <value>Посока на точката за измерване (експедиция - 1, доставка - 2) ( Не играе )</value>
+  </data>
+  <data name="GrossObservableVolumeHighExtreme1" xml:space="preserve">
+    <value>Количество за транзакция (некомпенсиран обем) - горна граница</value>
+  </data>
+  <data name="GrossObservableVolumeLowExtreme1" xml:space="preserve">
+    <value>Количество за транзакция (некомпенсиран обем) - долна граница</value>
+  </data>
+  <data name="GrossObservableVolumeReverseHighExtreme" xml:space="preserve">
+    <value>Обратно количество за транзакция (некомпенсиран обем) - горна граница</value>
+  </data>
+  <data name="GrossObservableVolumeReverseLowExtreme" xml:space="preserve">
+    <value>Обратно количество за транзакция (некомпенсиран обем) - долна граница</value>
+  </data>
+  <data name="GrossStandardVolumeHighExtreme1" xml:space="preserve">
+    <value>Количество за транзакция (компенсиран обем) - горна граница</value>
+  </data>
+  <data name="GrossStandardVolumeLowExtreme1" xml:space="preserve">
+    <value>Количество за транзакция (компенсиран обем) - долна граница</value>
+  </data>
+  <data name="GrossStandardVolumeReverseHighExtreme" xml:space="preserve">
+    <value>Обратно количество за транзакция (компенсиран обем) - горна граница</value>
+  </data>
+  <data name="GrossStandardVolumeReverseLowExtreme" xml:space="preserve">
+    <value>Обратно количество за транзакция (компенсиран обем) - долна граница</value>
+  </data>
+  <data name="IsInternalPoint" xml:space="preserve">
+    <value>Измервателната точка е за вътрешна употреба</value>
+  </data>
+  <data name="MassCorrectionFactor" xml:space="preserve">
+    <value>Коригиращ коефициент за маса</value>
+  </data>
+  <data name="MassHighExtreme" xml:space="preserve">
+    <value>Количество за транзакция (маса) - горна граница</value>
+  </data>
+  <data name="MassLowExtreme" xml:space="preserve">
+    <value>Количество за транзакция (маса) - долна граница</value>
+  </data>
+  <data name="MassReverseHighExtreme" xml:space="preserve">
+    <value>Обратно количество за транзакция (маса) - горна граница</value>
+  </data>
+  <data name="MassReverseLowExtreme" xml:space="preserve">
+    <value>Обратно количество за транзакция (маса) - долна граница</value>
+  </data>
+  <data name="MeasuringPointName" xml:space="preserve">
+    <value>Наименование на измервателна точка</value>
+  </data>
+  <data name="RelatedMeasuringPointConfigs" xml:space="preserve">
+    <value>Свързани измервателни точки</value>
+  </data>
+  <data name="TotalizerBeginCommonMassHighExtreme" xml:space="preserve">
+    <value>Начално показание на общ брояч (маса) - горна граница</value>
+  </data>
+  <data name="TotalizerBeginCommonMassLowExtreme" xml:space="preserve">
+    <value>Начално показание на общ брояч (маса) - долна граница</value>
+  </data>
+  <data name="TotalizerBeginCommonMassReverseHighExtreme" xml:space="preserve">
+    <value>Начално показание на обратен общ брояч (маса) - горна граница</value>
+  </data>
+  <data name="TotalizerBeginCommonMassReverseLowExtreme" xml:space="preserve">
+    <value>Начално показание на обратен общ брояч (маса) - долна граница</value>
+  </data>
+  <data name="TotalizerBeginGrossObservableCommonVolumeHighExtreme" xml:space="preserve">
+    <value>Начално показание на общ брояч (некомпенсиран обем) - горна граница</value>
+  </data>
+  <data name="TotalizerBeginGrossObservableCommonVolumeLowExtreme" xml:space="preserve">
+    <value>Начално показание на общ брояч (некомпенсиран обем) - долна граница</value>
+  </data>
+  <data name="TotalizerBeginGrossObservableCommonVolumeReverseHighExtreme" xml:space="preserve">
+    <value>Начално показание на обратен общ брояч (некомпенсиран обем) - горна граница</value>
+  </data>
+  <data name="TotalizerBeginGrossObservableCommonVolumeReverseLowExtreme" xml:space="preserve">
+    <value>Начално показание на обратен общ брояч (некомпенсиран обем) - долна граница</value>
+  </data>
+  <data name="TotalizerBeginGrossObservableVolumeHighExtreme" xml:space="preserve">
+    <value>Начално показание на брояч (некомпенсиран обем) - горна граница</value>
+  </data>
+  <data name="TotalizerBeginGrossObservableVolumeLowExtreme" xml:space="preserve">
+    <value>Начално показание на брояч (некомпенсиран обем) - долна граница</value>
+  </data>
+  <data name="TotalizerBeginGrossObservableVolumeReverseHighExtreme" xml:space="preserve">
+    <value>Начално показание на обратен брояч (некомпенсиран обем) - горна граница</value>
+  </data>
+  <data name="TotalizerBeginGrossObservableVolumeReverseLowExtreme" xml:space="preserve">
+    <value>Начално показание на обратен брояч (некомпенсиран обем) - долна граница</value>
+  </data>
+  <data name="TotalizerBeginGrossStandardCommonVolumeHighExtreme" xml:space="preserve">
+    <value>Начално показание на общ брояч (компенсиран обем) - горна граница</value>
+  </data>
+  <data name="TotalizerBeginGrossStandardCommonVolumeLowExtreme" xml:space="preserve">
+    <value>Начално показание на общ брояч (компенсиран обем) - долна граница</value>
+  </data>
+  <data name="TotalizerBeginGrossStandardCommonVolumeReverseHighExtreme" xml:space="preserve">
+    <value>Начално показание на обратен общ брояч (компенсиран обем) - горна граница</value>
+  </data>
+  <data name="TotalizerBeginGrossStandardCommonVolumeReverseLowExtreme" xml:space="preserve">
+    <value>Начално показание на обратен общ брояч (компенсиран обем) - долна граница</value>
+  </data>
+  <data name="TotalizerBeginGrossStandardVolumeHighExtreme" xml:space="preserve">
+    <value>Начално показание на брояч (компенсиран обем) - горна граница</value>
+  </data>
+  <data name="TotalizerBeginGrossStandardVolumeLowExtreme" xml:space="preserve">
+    <value>Начално показание на брояч (компенсиран обем) - долна граница</value>
+  </data>
+  <data name="TotalizerBeginGrossStandardVolumeReverseHighExtreme" xml:space="preserve">
+    <value>Начално показание на обратен брояч (компенсиран обем) - горна граница</value>
+  </data>
+  <data name="TotalizerBeginGrossStandardVolumeReverseLowExtreme" xml:space="preserve">
+    <value>Начално показание на обратен брояч (компенсиран обем) - долна граница</value>
+  </data>
+  <data name="TotalizerBeginMassHighExtreme" xml:space="preserve">
+    <value>Начално показание на брояч (маса) - горна граница</value>
+  </data>
+  <data name="TotalizerBeginMassLowExtreme" xml:space="preserve">
+    <value>Начално показание на брояч (маса) - долна граница</value>
+  </data>
+  <data name="TotalizerBeginMassReverseHighExtreme" xml:space="preserve">
+    <value>Начално показание на обратен брояч (маса) - горна граница</value>
+  </data>
+  <data name="TotalizerBeginMassReverseLowExtreme" xml:space="preserve">
+    <value>Начално показание на обратен брояч (маса) - долна граница</value>
+  </data>
+  <data name="TotalizerCurrentValueTag" xml:space="preserve">
+    <value>PHD таг за моментна стойност на разходомер</value>
+  </data>
+  <data name="TotalizerEndCommonMassHighExtreme" xml:space="preserve">
+    <value>Начално показание на общ брояч (маса) - горна граница</value>
+  </data>
+  <data name="TotalizerEndCommonMassLowExtreme" xml:space="preserve">
+    <value>Начално показание на общ брояч (маса) - долна граница</value>
+  </data>
+  <data name="TotalizerEndCommonMassReverseHighExtreme" xml:space="preserve">
+    <value>Начално показание на общ брояч (маса) - горна граница</value>
+  </data>
+  <data name="TotalizerEndCommonMassReverseLowExtreme" xml:space="preserve">
+    <value>Начално показание на общ брояч (маса) - долна граница</value>
+  </data>
+  <data name="TotalizerEndGrossObservableCommonVolumeHighExtreme" xml:space="preserve">
+    <value>Крайно показание на общ брояч (некомпенсиран обем) - горна граница</value>
+  </data>
+  <data name="TotalizerEndGrossObservableCommonVolumeLowExtreme" xml:space="preserve">
+    <value>Крайно показание на общ брояч (некомпенсиран обем) - долна граница</value>
+  </data>
+  <data name="TotalizerEndGrossObservableCommonVolumeReverseHighExtreme" xml:space="preserve">
+    <value>Крайно показание на обратен общ брояч (некомпенсиран обем) - горна граница</value>
+  </data>
+  <data name="TotalizerEndGrossObservableCommonVolumeReverseLowExtreme" xml:space="preserve">
+    <value>Крайно показание на обратен общ брояч (некомпенсиран обем) - долна граница</value>
+  </data>
+  <data name="TotalizerEndGrossObservableVolumeHighExtreme" xml:space="preserve">
+    <value>Крайно показание на брояч (некомпенсиран обем) - горна граница</value>
+  </data>
+  <data name="TotalizerEndGrossObservableVolumeLowExtreme" xml:space="preserve">
+    <value>Крайно показание на брояч (некомпенсиран обем) - долна граница</value>
+  </data>
+  <data name="TotalizerEndGrossObservableVolumeReverseHighExtreme" xml:space="preserve">
+    <value>Крайно показание на обратен брояч (некомпенсиран обем) - горна граница</value>
+  </data>
+  <data name="TotalizerEndGrossObservableVolumeReverseLowExtreme" xml:space="preserve">
+    <value>Крайно показание на обратен брояч (некомпенсиран обем) - долна граница</value>
+  </data>
+  <data name="TotalizerEndGrossStandardCommonVolumeHighExtreme" xml:space="preserve">
+    <value>Крайно показание на общ брояч (компенсиран обем) - горна граница</value>
+  </data>
+  <data name="TotalizerEndGrossStandardCommonVolumeLowExtreme" xml:space="preserve">
+    <value>Крайно показание на общ брояч (компенсиран обем) - долна граница</value>
+  </data>
+  <data name="TotalizerEndGrossStandardCommonVolumeReverseHighExtreme" xml:space="preserve">
+    <value>Крайно показание на обратен общ брояч (компенсиран обем) - горна граница</value>
+  </data>
+  <data name="TotalizerEndGrossStandardCommonVolumeReverseLowExtreme" xml:space="preserve">
+    <value>Крайно показание на обратен общ брояч (компенсиран обем) - долна граница</value>
+  </data>
+  <data name="TotalizerEndGrossStandardVolumeHighExtreme" xml:space="preserve">
+    <value>Крайно показание на брояч (компенсиран обем) - горна граница</value>
+  </data>
+  <data name="TotalizerEndGrossStandardVolumeLowExtreme" xml:space="preserve">
+    <value>Крайно показание на брояч (компенсиран обем) - долна граница</value>
+  </data>
+  <data name="TotalizerEndGrossStandardVolumeReverseHighExtreme" xml:space="preserve">
+    <value>Крайно показание на обратен брояч (компенсиран обем) - горна граница</value>
+  </data>
+  <data name="TotalizerEndGrossStandardVolumeReverseLowExtreme" xml:space="preserve">
+    <value>Крайно показание на обратен брояч (компенсиран обем) - долна граница</value>
+  </data>
+  <data name="TotalizerEndMassHighExtreme" xml:space="preserve">
+    <value>Начално показание на брояч (маса) - горна граница</value>
+  </data>
+  <data name="TotalizerEndMassLowExtreme" xml:space="preserve">
+    <value>Начално показание на брояч (маса) - долна граница</value>
+  </data>
+  <data name="TotalizerEndMassReverseHighExtreme" xml:space="preserve">
+    <value>Начално показание на брояч (маса) - горна граница</value>
+  </data>
+  <data name="TotalizerEndMassReverseLowExtreme" xml:space="preserve">
+    <value>Начално показание на брояч (маса) - долна граница</value>
+  </data>
+  <data name="TransportTypeId" xml:space="preserve">
+    <value>Вид на транспорта</value>
+  </data>
+  <data name="WeightScaleNumber" xml:space="preserve">
+    <value>Номер на везна</value>
+  </data>
+  <data name="ZoneId" xml:space="preserve">
+    <value>Идентификатор на зона</value>
+  </data>
 </root>

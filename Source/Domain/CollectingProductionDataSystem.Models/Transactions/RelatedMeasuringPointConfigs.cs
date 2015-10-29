@@ -6,6 +6,7 @@
 
     public partial class RelatedMeasuringPointConfigs
     {
+        public int Position { get; set; }
         public int MeasuringPointConfigId { get; set; }
         public int RelatedMeasuringPointConfigId { get; set; }
         public virtual MeasuringPointConfig MeasuringPointConfig { get; set; }

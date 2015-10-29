@@ -2,9 +2,15 @@
       .Name("grid")
       .Columns(columns =>
       {
+          columns.Bound(c => c.TankName)
+              .ClientTemplate(Ajax.AuthorizedAjaxActionLinkOrText("#=data.TankName#", "Index", "History",
+                new AjaxOptions() { HttpMethod = "Get", OnSuccess = "showRecordHistoriModal" },
+                new { area = "RecordsHistory", id = "#=data.id#", entityName = "TankConfig" },
+                new { data_ajax_mode = "replace", data_ajax_update = @"\#record-history-body" })
+                .ToHtmlString())
+                .Width(200);
+          columns.Bound(c => c.ControlPoint).Width(200);          
           columns.ForeignKey(c => c.ParkId, (System.Collections.IEnumerable)ViewData["parks"], "Id", "Name").EditorTemplateName("ParkViewModel").Width(200);
-          columns.Bound(c => c.ControlPoint).Width(200);
-          columns.Bound(c => c.TankName).Width(200);
           columns.Bound(c => c.PhdTagProductId).Width(200);
           columns.Bound(c => c.PhdTagProductName).Width(200);
           columns.Bound(c => c.PhdTagLiquidLevel).Width(200);
