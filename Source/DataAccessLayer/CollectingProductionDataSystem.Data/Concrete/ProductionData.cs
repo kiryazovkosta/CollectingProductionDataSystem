@@ -347,6 +347,14 @@
             }
         }
 
+        public IRepository<RelatedUnitConfigs> RelatedUnitConfigs
+        {
+            get
+            {
+                return this.GetRepository<RelatedUnitConfigs>();
+            }
+        }
+
         public void Dispose()
         {
             this.Dispose(true);

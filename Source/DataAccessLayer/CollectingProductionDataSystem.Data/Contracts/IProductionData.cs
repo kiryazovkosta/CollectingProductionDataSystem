@@ -88,6 +88,8 @@
 
         IDeletableEntityRepository<Shift> Shifts { get; }
 
+        IRepository<RelatedUnitConfigs> RelatedUnitConfigs { get; }
+
         IDbContext DbContext { get; }
 
         IEfStatus SaveChanges(string userName);
