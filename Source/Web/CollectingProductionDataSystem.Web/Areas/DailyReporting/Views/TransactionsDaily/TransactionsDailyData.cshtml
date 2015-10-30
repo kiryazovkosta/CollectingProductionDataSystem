@@ -72,10 +72,6 @@
             return { "flowDirection": $('input[name=directions]').val() }
         }
 
-        //function sendShiftsOffset() {
-        //    return { "shiftMinutesOffset": $('input[name=shifts]').val() }
-        //}
-
         function sendAntiForgery() {
             return { "__RequestVerificationToken": $('input[name=__RequestVerificationToken]').val() }
         }
@@ -116,12 +112,31 @@
                 var grid = $("#measuringpoints").data("kendoGrid");
                 grid.dataSource.read();
                 grid.refresh();
+                setGridColumnsHeaderText();
             });
 
             prepareWindow();
             prepareSuccessWindow();
             AttachEventToExportBtn("#excel-export", "#measuringpoints");
         });
+
+        function setGridColumnsHeaderText() {
+            var ddl = $("#directions").data("kendoDropDownList");
+            var direction = ddl.value();
+            if (direction === "1") {
+                $("#measuringpoints thead [data-field=AvtoQuantity] .k-link").html("Експедиция Авто<br/>[тон]")
+                $("#measuringpoints thead [data-field=JpQuantity] .k-link").html("Експедиция Ж.П.<br/>[тон]")
+                $("#measuringpoints thead [data-field=SeaQuantity] .k-link").html("Експедиция Танкер<br/>[тон]")
+                $("#measuringpoints thead [data-field=PipeQuantity] .k-link").html("Експедиция Продуктопровод<br/>[тон]")
+                $("#measuringpoints thead [data-field=ActiveQuantity] .k-link").html("Незавършена Експедиция<br/>[тон]")
+            } else if (direction === "2") {
+                $("#measuringpoints thead [data-field=AvtoQuantity] .k-link").html("Доставено Авто<br/>[тон]")
+                $("#measuringpoints thead [data-field=JpQuantity] .k-link").html("Доставено Ж.П.<br/>[тон]")
+                $("#measuringpoints thead [data-field=SeaQuantity] .k-link").html("Доставено Танкер<br/>[тон]")
+                $("#measuringpoints thead [data-field=PipeQuantity] .k-link").html("Доставено Продуктопровод<br/>[тон]")
+                $("#measuringpoints thead [data-field=ActiveQuantity] .k-link").html("Незавършени Доставки<br/>[тон]")
+            }
+        }
 
         function prepareWindow() {
             var window = $('div#err-window')

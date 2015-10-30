@@ -119,7 +119,7 @@ namespace CollectingProductionDataSystem.Web.Controllers
 
         public JsonResult GetDirections()
         {
-            var directions = this.data.Directions.All().ToList();
+            var directions = this.data.Directions.All().Where(x=>x.Id <= 2).ToList();
             var directionsView = Mapper.Map<IEnumerable<DirectionsViewModel>>(directions);
             return Json(directionsView, JsonRequestBehavior.AllowGet);
         }
