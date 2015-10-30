@@ -70,7 +70,7 @@ namespace CollectingProductionDataSystem.Models.Inventories
                 var calc = new Calculator();
                 var inputParams = new Dictionary<string, double>();
                 inputParams.Add("p0", (double)levelParam);  
-                var formula = string.Format("p.p0 {0}", this.CorrectionFactor);
+                var formula = string.Format("p.p0 {0}", this.TankConfig.CorrectionFactor);
                 var value = calc.Calculate(formula, "p", inputParams.Count, inputParams);
                 return (decimal)value;
             }

@@ -6,6 +6,7 @@
     using System.Linq;
     using CollectingProductionDataSystem.Data.Contracts;
     using CollectingProductionDataSystem.Models.Productions;
+    using MathExpressions.Application;
     using Uniformance.PHD;
     using CollectingProductionDataSystem.PhdApplication.Contracts;
 
@@ -18,12 +19,13 @@
             this.data = dataParam;
         }
 
-        public IEfStatus ReadAndSaveUnitsDataForShift()
+        public int ReadAndSaveUnitsDataForShift()
         {
              using (PHDHistorian oPhd = new PHDHistorian())
             {
                 using (PHDServer defaultServer = new PHDServer(Properties.Settings.Default.PHD_HOST))
                 {
+                    var totalInsertedRecords = 0;
                     SetPhdConnectionSettings(oPhd, defaultServer);
 
                     var now = DateTime.Now;
@@ -35,46 +37,99 @@
                     var unitsConfigsList = this.data.UnitConfigs.All().ToList();
                     var unitsData = this.data.UnitsData.All().Where(x => x.RecordTimestamp == recordDataTime && x.ShiftId == shift).ToList();
 
-                    foreach (var unitConfig in unitsConfigsList)
+                    foreach (var unitConfig in unitsConfigsList.Where(x=>x.CollectingDataMechanism == "A"))
                     {
-                        if (unitConfig.CollectingDataMechanism.ToUpper() == "A")
+                        var confidence = 0;
+                        if (!unitsData.Where(x => x.UnitConfigId == unitConfig.Id).Any())
                         {
-                            var confidence = 0;
-                            if (!unitsData.Where(x => x.UnitConfigId == unitConfig.Id).Any())
+
+                            var unitData = GetUnitData(unitConfig, oPhd, today, out confidence);
+                            if (confidence > Properties.Settings.Default.PHD_DATA_MIN_CONFIDENCE && unitData.RecordTimestamp != null)
                             {
-
-                                var unitData = GetUnitData(unitConfig, oPhd, today, out confidence);
-                                if (confidence > Properties.Settings.Default.PHD_DATA_MIN_CONFIDENCE && unitData.RecordTimestamp != null)
+                                if (now.Hour < 13)
                                 {
-                                    if (now.Hour < 13)
-                                    {
-                                        var prevDay = unitData.RecordTimestamp.AddDays(-1).Date;
-                                        unitData.RecordTimestamp = prevDay;
-                                    }
-
-                                    if (!unitsData.Where(x => x.RecordTimestamp == unitData.RecordTimestamp && x.ShiftId == shift).Any())
-                                    {
-                                        unitData.ShiftId = shift;
-                                        unitData.RecordTimestamp = unitData.RecordTimestamp.Date;
-                                        this.data.UnitsData.Add(unitData);
-                                    }
+                                    var prevDay = unitData.RecordTimestamp.AddDays(-1).Date;
+                                    unitData.RecordTimestamp = prevDay;
                                 }
-                                else
+
+                                if (!unitsData.Where(x => x.RecordTimestamp == unitData.RecordTimestamp && x.ShiftId == shift).Any())
                                 {
-                                    SetDefaultValue(recordDataTime, shift, unitsData, unitConfig);
+                                    unitData.ShiftId = shift;
+                                    unitData.RecordTimestamp = unitData.RecordTimestamp.Date;
+                                    this.data.UnitsData.Add(unitData);
                                 }
                             }
-                        }
-                        else
-                        {
-                            SetDefaultValue(recordDataTime, shift, unitsData, unitConfig);
+                            else
+                            {
+                                SetDefaultValue(recordDataTime, shift, unitsData, unitConfig);
+                            }
                         }
                     }
+                    totalInsertedRecords += this.data.SaveChanges("Phd2SqlLoader").ResultRecordsCount;
+
+                    foreach (var unitConfig in unitsConfigsList.Where(x=>x.CollectingDataMechanism == "M"))
+                    {
+                        SetDefaultValue(recordDataTime, shift, unitsData, unitConfig);    
+                    }
+                    totalInsertedRecords += this.data.SaveChanges("Phd2SqlLoader").ResultRecordsCount;
+
+                    foreach (var unitConfig in unitsConfigsList.Where(x=>x.CollectingDataMechanism == "C"))
+                    {
+                        var formulaCode = unitConfig.CalculatedFormula ?? string.Empty;
+                        var arguments = new FormulaArguments();
+                        arguments.MaximumFlow = (double?) unitConfig.MaximumFlow;
+                        arguments.EstimatedDensity = (double?) unitConfig.EstimatedDensity;
+                        arguments.EstimatedPressure = (double?) unitConfig.EstimatedPressure;
+                        arguments.EstimatedTemperature = (double?) unitConfig.EstimatedTemperature;
+                        arguments.EstimatedCompressibilityFactor = (double?) unitConfig.EstimatedCompressibilityFactor;
+
+                        var ruc = unitConfig.RelatedUnitConfigs.ToList();
+                        foreach (var ru in ruc)
+                        {
+                            var parameterType = ru.RelatedUnitConfig.AggregateGroup;
+                            var inputValue = data.UnitsData
+                                    .All()
+                                    .Where(x => x.RecordTimestamp == recordDataTime)
+                                    .Where(x => x.ShiftId == shift)
+                                    .Where(x => x.UnitConfigId == ru.RelatedUnitConfigId)
+                                    .FirstOrDefault()
+                                    .RealValue;
+                            if (parameterType == "I")
+                            {
+                                arguments.InputValue = inputValue;   
+                            }
+                            else if (parameterType == "T")
+                            {
+                                arguments.Temperature = inputValue;
+                            }
+                            else if (parameterType == "P")
+                            {
+                                arguments.Pressure = inputValue;    
+                            }
+                            else if (parameterType == "D")
+                            {
+                                arguments.Density = inputValue;  
+                            }
+                        }
+
+                        var result = ProductionDataCalculator.Calculate(formulaCode, arguments);
+                        if (!unitsData.Where(x => x.RecordTimestamp == recordDataTime && x.ShiftId == shift && x.UnitConfigId == unitConfig.Id).Any())
+                        {
+                            this.data.UnitsData.Add(
+                                new UnitsData
+                                {
+                                    UnitConfigId = unitConfig.Id, 
+                                    RecordTimestamp = recordDataTime, 
+                                    ShiftId = shift, 
+                                    Value = (decimal)result
+                                });
+                        }
+                    }
+                    totalInsertedRecords += this.data.SaveChanges("Phd2SqlLoader").ResultRecordsCount;
+                    return totalInsertedRecords;
                 }
             }
-
-            var status = this.data.SaveChanges("Phd2SqlLoader");
-            return status;
+            
         }
 
         private static void SetPhdConnectionSettings(PHDHistorian oPhd, PHDServer defaultServer)
