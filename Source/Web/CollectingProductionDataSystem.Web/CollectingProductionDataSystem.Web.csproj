@@ -808,6 +808,7 @@
     <Content Include="Scripts\custom\sendArea.min.js.map">
       <DependentUpon>sendArea.min.js</DependentUpon>
     </Content>
+    <None Include="Properties\PublishProfiles\Productive.pubxml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\custom\sendFactory.min.js">
       <DependentUpon>sendFactory.js</DependentUpon>
