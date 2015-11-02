@@ -6,6 +6,9 @@
 });
 
 function error_handler(e) {
+    if (this.data) {
+        this.data([]);
+    }
     if (e.errors) {
         var message = "";
         $.each(e.errors, function (key, value) {

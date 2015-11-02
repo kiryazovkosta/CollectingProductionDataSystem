@@ -12,6 +12,7 @@
     using CollectingProductionDataSystem.Application.Contracts;
     using CollectingProductionDataSystem.Data.Contracts;
     using CollectingProductionDataSystem.Models.Productions;
+    using CollectingProductionDataSystem.Web.Infrastructure.Extentions;
     using CollectingProductionDataSystem.Web.ViewModels.Units;
     using Kendo.Mvc.Extensions;
     using Kendo.Mvc.UI;
@@ -23,10 +24,13 @@
     public class UnitsDailyController : AreaBaseController
     {
         private readonly IUnitsDataService unitsData;
+        private readonly IUnitDailyDataService dailyService;
 
-        public UnitsDailyController(IProductionData dataParam, IUnitsDataService unitsDataParam) : base(dataParam)
+        public UnitsDailyController(IProductionData dataParam, IUnitsDataService unitsDataParam, IUnitDailyDataService dailyServiceParam)
+            : base(dataParam)
         {
             this.unitsData = unitsDataParam;
+            this.dailyService = dailyServiceParam;
         }
 
         [HttpGet]
@@ -46,6 +50,10 @@
             var kendoResult = new DataSourceResult();
             try
             {
+                if (date != null && processUnitId != null)
+                {
+                    dailyService.CheckIfShiftsAreReady(date.Value, processUnitId.Value).ToModelStateErrors(this.ModelState);
+                }
                 kendoResult = kendoPreparedResult.ToDataSourceResult(request, ModelState);
             }
             catch (Exception ex1)
@@ -103,7 +111,7 @@
 
             return Json(new[] { model }.ToDataSourceResult(request, ModelState));
         }
- 
+
         private void RecalculateData(UnitDailyDataViewModel model)
         {
             // get all records in which this record is formula's member. Nice ;)
@@ -131,7 +139,7 @@
                 var inputParams = new Dictionary<string, double>();
                 for (int i = 0; i < inputParamsValues.Count(); i++)
                 {
-                    inputParams.Add(string.Format("p{0}", i), inputParamsValues[i]);  
+                    inputParams.Add(string.Format("p{0}", i), inputParamsValues[i]);
                 }
 
                 var value = calculator.Calculate(c.AggregationFormula, "p", inputParams.Count, inputParams);
@@ -197,34 +205,35 @@
             ValidateModelState(date, processUnitId);
             if (ModelState.IsValid)
             {
-                 var approvedShift = this.data.UnitsApprovedDailyDatas
-                    .All()
-                    .Where(u => u.RecordDate == date && u.ProcessUnitId == processUnitId)
-                    .FirstOrDefault();
+                var approvedShift = this.data.UnitsApprovedDailyDatas
+                   .All()
+                   .Where(u => u.RecordDate == date && u.ProcessUnitId == processUnitId)
+                   .FirstOrDefault();
                 if (approvedShift == null)
                 {
                     this.data.UnitsApprovedDailyDatas.Add(
-                        new UnitsApprovedDailyData { 
-                            RecordDate = date.Value, 
-                            ProcessUnitId = processUnitId.Value, 
-                            Approved = true 
+                        new UnitsApprovedDailyData
+                        {
+                            RecordDate = date.Value,
+                            ProcessUnitId = processUnitId.Value,
+                            Approved = true
                         });
                     var result = this.data.SaveChanges(this.UserProfile.UserName);
-                    return Json(new { IsConfirmed = result.IsValid}, JsonRequestBehavior.AllowGet);
+                    return Json(new { IsConfirmed = result.IsValid }, JsonRequestBehavior.AllowGet);
                 }
                 else
                 {
                     ModelState.AddModelError("unitsapproveddata", "Дневните данни вече са потвърдени");
                     Response.StatusCode = (int)HttpStatusCode.BadRequest;
                     var errors = GetErrorListFromModelState(ModelState);
-                    return Json(new { data = new { errors=errors} });
+                    return Json(new { data = new { errors = errors } });
                 }
             }
             else
             {
                 Response.StatusCode = (int)HttpStatusCode.BadRequest;
                 var errors = GetErrorListFromModelState(ModelState);
-                return Json(new { data = new { errors=errors} });
+                return Json(new { data = new { errors = errors } });
             }
         }
 

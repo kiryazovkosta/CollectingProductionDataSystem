@@ -12,5 +12,6 @@ namespace CollectingProductionDataSystem.Application.Contracts
         bool CheckIfAllShiftsAreReady(DateTime targetDate, int processUnitId);
         bool CheckIfDayIsApproved(DateTime targetDate, int processUnitId);
         IEfStatus ClearUnitDailyDatas(DateTime targetDate, int processUnitId, string userName);
+        IEfStatus CheckIfShiftsAreReady(DateTime targetDate, int processUnitId);
     }
 }

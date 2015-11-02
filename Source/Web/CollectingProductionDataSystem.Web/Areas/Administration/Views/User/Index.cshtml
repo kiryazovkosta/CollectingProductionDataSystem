@@ -19,7 +19,9 @@
                    columns.Bound(c => c.UserName);
                    columns.Bound(c => c.Email);
                    columns.Bound(c => c.FullName);
-                   columns.Bound(c => c.Occupation);
+                   columns.Bound(c => c.UserRoles).ClientTemplate("#=customeTemplate(UserRoles)#");
+                   columns.Bound(c => c.ProcessUnits).ClientTemplate("#=customeTemplate(ProcessUnits)#");
+                   columns.Bound(c => c.Parks).ClientTemplate("#=customeTemplate(Parks)#");
                    columns.Command(c => { c.Edit(); c.Destroy(); }).Width(220);
                })
           .Editable(editable => editable.Mode(GridEditMode.PopUp).TemplateName("EditUserViewModel").Window(window => window.Scrollable(false)))
@@ -28,7 +30,7 @@
                 .PageSizes(new[] { 10, 20, 50, 100 })
                 .ButtonCount(5))
           .Sortable()
-          .Scrollable(scr => scr.Height(430))
+          .Scrollable(scr => scr.Height(600))
           .Filterable()
           .DataSource(dataSource => dataSource
                 .Ajax()
@@ -39,9 +41,9 @@
                         .Model(model =>
                         {
                             model.Id(p => p.Id);
-                            model.Field(p => p.Id).Editable(false);
-                            model.Field(p => p.UserName);
-                            model.Field(p => p.Email);
+                            //model.Field(p => p.Id).Editable(false);
+                            //model.Field(p => p.UserName);
+                            //model.Field(p => p.Email);
                         })
                         .Update(update => update.Action("Edit", "User", new { area = "Administration" }).Data("sendAntiForgery"))
                         .Destroy(update => update.Action("Delete", "User", new { area = "Administration" }).Data("sendAntiForgery"))
@@ -60,64 +62,81 @@
     </div>
 }
 
-@* //Error window for kendo grid error event handler *@
-<div id="err-window" style="display:none">@Html.Partial("_KendoGridErrorWindow")</div>
+    @* //Error window for kendo grid error event handler *@
+    <div id="err-window" style="display:none">@Html.Partial("_KendoGridErrorWindow")</div>
 
-@section scripts{
-    <script src="~/Scripts/custom/sendAntiForgery.js"></script>
-    <script>
-        $(document).ready(function () {
-            var successMessage = $('#success-message');
-            if (successMessage != null) {
-                successMessage.fadeOut(7000);
-            }
-        });
-
-        function error_handler(e) {
-            if (e.errors) {
-                // prevent window from closing
-                var grid = $("#users").data("kendoGrid");
-                grid.one("dataBinding", function (e) {
-                    e.preventDefault();
-                });
-
-                var message = "";
-                $.each(e.errors, function (key, value) {
-                    if ('errors' in value) {
-                        $.each(value.errors, function () {
-                            message += this + "\n";
-                        });
-                    }
-                });
-
-                message = $('pre').text(message);
-                message.addClass('validation-summary-errors');
-                var validationSummary = $('#validation-summary');
-                validationSummary.html(message);
-                validationSummary.removeClass();
-                validationSummary.addClass('validation-summary-errors');
-                validationSummary.attr("display", "block");
-            }
-        }
+    <script type="text/kendo" id="customeTemplate">
+        #if(data){#
+        #for(var i = 0; i< data.length; i++){#
+        #if(data[i].Name != null){#
+        &bull;&nbsp;#:data[i].Name#<br/>     
+        #}#
+        #}#
+        #}#
     </script>
-}
 
-@section styles{
-    <style>
-        .k-edit-buttons {
-            max-width: 650px;
-            width: 632px;
-        }
+    @section scripts{
+        <script src="~/Scripts/custom/sendAntiForgery.js"></script>
+        <script>
+            $(document).ready(function () {
+                var successMessage = $('#success-message');
+                if (successMessage != null) {
+                    successMessage.fadeOut(7000);
+                }
+            });
 
-        .k-edit-form-container {
-            width: 95%;
-            margin-left: auto;
-            margin-right: auto;
-        }
+            function error_handler(e) {
+                if (e.errors) {
+                    // prevent window from closing
+                    var grid = $("#users").data("kendoGrid");
+                    grid.one("dataBinding", function (e) {
+                        e.preventDefault();
+                    });
 
-        div.k-window-content {
-            width: 685px;
-        }
-    </style>
-}
+                    var message = "";
+                    $.each(e.errors, function (key, value) {
+                        if ('errors' in value) {
+                            $.each(value.errors, function () {
+                                message += this + "\n";
+                            });
+                        }
+                    });
+
+                    message = $('pre').text(message);
+                    message.addClass('validation-summary-errors');
+                    var validationSummary = $('#validation-summary');
+                    validationSummary.html(message);
+                    validationSummary.removeClass();
+                    validationSummary.addClass('validation-summary-errors');
+                    validationSummary.attr("display", "block");
+                }
+            }
+
+
+            var customeTemplate = kendo.template($("#customeTemplate").html(), { useWithBlock: false });
+        </script>
+    }
+
+    @section styles{
+        <style>
+            .k-edit-buttons {
+                max-width: 650px;
+                width: 632px;
+            }
+
+            .k-edit-form-container {
+                width: 95%;
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            div.k-window-content {
+                width: 685px;
+            }
+        </style>
+    }
+
+
+
+
 

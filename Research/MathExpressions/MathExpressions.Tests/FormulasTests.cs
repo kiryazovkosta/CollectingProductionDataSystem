@@ -1096,6 +1096,28 @@ namespace MathExpressions.Tests
         }
 
         [TestMethod]
+        public void FormulaN18()              // 34) N18 ;;БРОЯЧИ ЗА НЕФТОПРОДУКТИ И ВТЕЧНЕНИ ГАЗОВЕ :: X A11 Q
+        {
+            //Arrange
+            double pl = 20;
+            double pl1 = 10;
+            double d2 = 15;
+
+            double q = GetValueFormulaA11(pl, pl1, d2);
+
+            var inputParams = new Dictionary<string, double>();
+            inputParams.Add("q", q);
+            double expected = 150;
+
+            string expr = @"par.q";
+            //Act
+            double actual = calculator.Calculate(expr, "par", 1, inputParams);
+            //Assert
+            //150.0
+            Assert.AreEqual(Convert.ToDecimal(expected), Convert.ToDecimal(actual));
+        }
+
+        [TestMethod]
         public void FormulaZZ52()              // 41) ZZ52 ;БРОЯЧИ ЗА ПАРА - ДОБАВЕНО 03/05/2007 - ЗА ТЕЦА /ТЦ104/  :: X A11 Q
         {
             //Arrange
