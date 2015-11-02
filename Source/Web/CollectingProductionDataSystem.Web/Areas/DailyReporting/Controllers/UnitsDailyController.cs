@@ -110,7 +110,7 @@
             var uc = this.data.UnitsDailyConfigs.All().Where(x => x.ProcessUnitId == model.UnitsDailyConfig.ProcessUnitId && x.AggregationCurrentLevel == true).ToList();
             var ud = this.data.UnitsDailyDatas.All().Where(x => x.RecordTimestamp == model.RecordTimestamp && x.UnitsDailyConfig.ProcessUnitId == model.UnitsDailyConfig.ProcessUnitId).ToList();
             var calculator = new CalculatorService();
-            var splitter = new char[] { ',' };
+            var splitter = new char[] { '@' };
 
             foreach (var c in uc)
             {
@@ -123,6 +123,7 @@
                         if (d.UnitsDailyConfig.Code == token)
                         {
                             inputParamsValues.Add(d.RealValue);
+                            continue;
                         }
                     }
                 }

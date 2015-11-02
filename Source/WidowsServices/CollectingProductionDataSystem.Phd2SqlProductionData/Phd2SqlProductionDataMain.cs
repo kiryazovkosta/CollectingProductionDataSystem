@@ -18,6 +18,7 @@
     using System.Globalization;
     using CollectingProductionDataSystem.Models.Transactions;
     using System.Collections.Generic;
+    using System.Net.Mail;
 
     static class Phd2SqlProductionDataMain
     {
@@ -197,12 +198,14 @@
                                                     else
                                                     {
                                                         tankData.ProductName = "N/A";
+                                                        SendEmail("kosta.kiryazov@bmsys.eu", "Phd2Sql Inventory", "There is a product with unknown id in TankMaster configuration");
                                                     }
                                                 }
                                                 else 
                                                 { 
                                                     tankData.ProductId = Convert.ToInt32(tagValue);
                                                     tankData.ProductName = "N/A";
+                                                    SendEmail("kosta.kiryazov@bmsys.eu", "Phd2Sql Inventory", "There is a product with unknown id in TankMaster configuration");
                                                 }
                                             }
                                             else if (tagName.EndsWith(".LL") || tagName.EndsWith(".LEVEL_MM"))
@@ -380,6 +383,25 @@
             {
                 tags.Add(new Tag(tagName));    
             }
+        }
+
+        private static void SendEmail(string toParam, string titleParam, string bodyParam)
+        {
+            string to = @toParam;
+            string from = "mes@bmsys.eu";
+            MailMessage message = new MailMessage(from, to);
+            message.Subject = @titleParam;
+            message.Body = @bodyParam;
+            SmtpClient client = new SmtpClient("192.168.7.195");
+            client.UseDefaultCredentials = true;
+
+            try
+            {
+                client.Send(message);
+            }
+            catch (Exception ex)
+            {
+            } 
         }
     }
 }
