@@ -4,8 +4,11 @@
     using System.Collections.Generic;
     using System.Data.Entity;
     using System.Linq;
+    using System.Threading.Tasks;
+    using CollectingProductionDataSystem.Application.Contracts;
     using CollectingProductionDataSystem.Data.Contracts;
     using CollectingProductionDataSystem.Models.Productions;
+using CollectingProductionDataSystem.Data.Common;
 
     public class UnitsDataService : IUnitsDataService
     {
@@ -23,8 +26,17 @@
         /// <returns></returns>
         public IEnumerable<UnitsData> GetUnitsDataForDailyRecord(int unitDailyDataId)
         {
-            var dbResult = GetAllUnitDataIncludeRelations().Where(x => x.UnitsDailyData.Any(y=>y.Id == unitDailyDataId));
-            dbResult = dbResult.OrderBy(x => x.ShiftId).ThenBy(x => x.UnitConfig.Code);
+            //var dbResult = GetAllUnitDataIncludeRelations()
+            //    .Where(x =>
+            //        (x.UnitConfig.UnitConfigUnitDailyConfigs.Select(y => y.UnitDailyConfig))
+            //        .Any(z=>z.UnitsDailyDatas.Any(w=>w.Id == unitDailyDataId)));
+
+            var unitDailyData = this.data.UnitsDailyDatas.GetById(unitDailyDataId);
+
+            var dbResult = this.data.UnitsDailyDatas.GetById(unitDailyDataId).UnitsDailyConfig.UnitConfigUnitDailyConfigs
+                            .SelectMany(x => x.UnitConfig.UnitsDatas)
+                            .Where(y => y.RecordTimestamp == unitDailyData.RecordTimestamp);
+
             return dbResult;
         }
 
@@ -56,12 +68,12 @@
             var dbResult = this.data.UnitsData
                                .All()
                                .Include(x => x.UnitConfig)
-                               .Include(x => x.UnitConfig.ProductType)
+                               .Include(x => x.UnitConfig.Product)
                                .Include(x => x.UnitConfig.ProcessUnit)
                                .Include(x => x.UnitConfig.MeasureUnit)
                                .Include(x => x.UnitsManualData)
                                .Include(x => x.UnitsManualData.EditReason)
-                               .Include(x => x.UnitsDailyData);
+                               .Include(x => x.UnitConfig.UnitConfigUnitDailyConfigs.Select(y=>y.UnitDailyConfig).Select(z=>z.UnitsDailyDatas));
             return dbResult;
         }
 
@@ -71,7 +83,7 @@
                 .All()
                 .Include(u => u.UnitsDailyConfig)
                 .Include(u => u.UnitsDailyConfig.MeasureUnit)
-                .Include(u => u.UnitsDailyConfig.ProductType);
+                .Include(u => u.UnitsDailyConfig.Product);
 
             if (date.HasValue)
             {
@@ -85,6 +97,15 @@
 
             dbResult = dbResult.OrderBy(x => x.UnitsDailyConfig.Code);
             return dbResult;
+        }
+
+        public async Task<bool> IsShitApproved(DateTime date, int processUnitId, int shiftId ) 
+        {
+           return await this.data.UnitsApprovedDatas
+                    .All()
+                    .Where(u => u.RecordDate == date &&
+                        u.ProcessUnitId == processUnitId &&
+                        u.ShiftId == shiftId).AnyAsync();
         }
     }
 }

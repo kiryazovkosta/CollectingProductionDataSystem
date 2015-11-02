@@ -37,8 +37,6 @@
             this.HasOptional(t => t.UnitsManualDailyData)
                 .WithRequired(t => t.UnitsDailyData).WillCascadeOnDelete(false);
 
-            this.HasMany(t => t.UnitsDatas)
-                .WithMany(t => t.UnitsDailyData);
         }
     }
 }

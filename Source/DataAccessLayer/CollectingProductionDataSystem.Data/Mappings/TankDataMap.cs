@@ -17,15 +17,15 @@ namespace CollectingProductionDataSystem.Data.Mappings
                 .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 
             this.Property(t => t.RecordTimestamp)
-                .HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("ix_tankdata_log", 1)))
+                .HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("ix_tankdata", 1)))
                 .IsRequired();
 
             this.Property(t => t.TankConfigId)
-                .HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("ix_tankdata_log", 2)))
+                .HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("ix_tankdata", 2)))
                 .IsRequired();
 
             this.Property(t => t.ParkId)
-                .HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("ix_tankdata_log", 3)))
+                .HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("ix_tankdata", 3)))
                 .IsRequired();
 
             // Table & Column Mappings
@@ -38,9 +38,6 @@ namespace CollectingProductionDataSystem.Data.Mappings
             this.HasOptional(t => t.Product)
                 .WithMany(t => t.TanksDatas)
                 .HasForeignKey(d => d.ProductId);
-            
-            this.HasOptional(t => t.TanksManualData)
-                .WithRequired(t => t.TankData);
         }
     }
 }

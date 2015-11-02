@@ -1,0 +1,160 @@
+﻿@(Html.Kendo()
+      .Grid<CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewModels.MeasuringPointConfigViewModel>()
+      .Name("grid")
+      .Columns(columns =>
+      {
+          columns.Bound(p => p.ControlPoint)
+              .ClientTemplate(
+                                Ajax.AuthorizedAjaxActionLinkOrText("#=data.ControlPoint#", "Index", "History",
+                                      new AjaxOptions() { HttpMethod = "Get", OnSuccess = "showRecordHistoriModal" },
+                                      new { area = "RecordsHistory", id = "#=data.id#", entityName = "MeasuringPointConfig" },
+                                      new { data_ajax_mode = "replace", data_ajax_update = @"\#record-history-body" })
+                                      .ToHtmlString())
+                                      .Width(200);
+          columns.Bound(p => p.MeasuringPointName).Width(200);
+          columns.ForeignKey(p => p.ZoneId, (System.Collections.IEnumerable)ViewData["zones"], "Id", "Name").EditorTemplateName("ZoneViewModel").Width(280);
+          columns.Bound(p => p.EngineeringUnitMass).Width(100);
+          columns.Bound(p => p.EngineeringUnitVolume).Width(100);
+          columns.Bound(p => p.EngineeringUnitDensity).Width(100);
+          columns.Bound(p => p.EngineeringUnitTemperature).Width(100);
+          columns.Bound(p => p.FactorMass).Width(100).Format("{0:n2}");
+          columns.Bound(p => p.FactorVolume).Width(100).Format("{0:n2}");
+          columns.Bound(p => p.FactorDensity).Width(100).Format("{0:n2}");
+          columns.Bound(p => p.FactorTemperature).Width(100).Format("{0:n2}");
+          columns.Bound(p => p.TotalizerBeginGrossObservableVolumeLowExtreme).Width(100).Format("{0:n2}");
+          columns.Bound(p => p.TotalizerBeginGrossObservableVolumeHighExtreme).Width(100).Format("{0:n2}");
+          columns.Bound(p => p.TotalizerEndGrossObservableVolumeLowExtreme).Width(100).Format("{0:n2}");
+          columns.Bound(p => p.TotalizerEndGrossObservableVolumeHighExtreme).Width(100).Format("{0:n2}");
+          columns.Bound(p => p.TotalizerBeginGrossStandardVolumeLowExtreme).Width(100).Format("{0:n2}");
+          columns.Bound(p => p.TotalizerBeginGrossStandardVolumeHighExtreme).Width(100).Format("{0:n2}");
+          columns.Bound(p => p.TotalizerEndGrossStandardVolumeLowExtreme).Width(100).Format("{0:n2}");
+          columns.Bound(p => p.TotalizerEndGrossStandardVolumeHighExtreme).Width(100).Format("{0:n2}");
+          columns.Bound(p => p.TotalizerBeginMassLowExtreme).Width(100).Format("{0:n2}");
+          columns.Bound(p => p.TotalizerBeginMassHighExtreme).Width(100).Format("{0:n2}");
+          columns.Bound(p => p.TotalizerEndMassLowExtreme).Width(100).Format("{0:n2}");
+          columns.Bound(p => p.TotalizerEndMassHighExtreme).Width(100).Format("{0:n2}");
+          columns.Bound(p => p.TotalizerBeginGrossObservableCommonVolumeLowExtreme).Width(100).Format("{0:n2}");
+          columns.Bound(p => p.TotalizerBeginGrossObservableCommonVolumeHighExtreme).Width(100).Format("{0:n2}");
+          columns.Bound(p => p.TotalizerEndGrossObservableCommonVolumeLowExtreme).Width(100).Format("{0:n2}");
+          columns.Bound(p => p.TotalizerEndGrossObservableCommonVolumeHighExtreme).Width(100).Format("{0:n2}");
+          columns.Bound(p => p.TotalizerBeginGrossStandardCommonVolumeLowExtreme).Width(100).Format("{0:n2}");
+          columns.Bound(p => p.TotalizerBeginGrossStandardCommonVolumeHighExtreme).Width(100).Format("{0:n2}");
+          columns.Bound(p => p.TotalizerEndGrossStandardCommonVolumeLowExtreme).Width(100).Format("{0:n2}");
+          columns.Bound(p => p.TotalizerEndGrossStandardCommonVolumeHighExtreme).Width(100).Format("{0:n2}");
+          columns.Bound(p => p.TotalizerBeginCommonMassLowExtreme).Width(100).Format("{0:n2}");
+          columns.Bound(p => p.TotalizerBeginCommonMassHighExtreme).Width(100).Format("{0:n2}");
+          columns.Bound(p => p.TotalizerEndCommonMassLowExtreme).Width(100).Format("{0:n2}");
+          columns.Bound(p => p.TotalizerEndCommonMassHighExtreme).Width(100).Format("{0:n2}");
+          columns.Bound(p => p.GrossObservableVolumeLowExtreme).Width(100).Format("{0:n2}");
+          columns.Bound(p => p.GrossObservableVolumeHighExtreme).Width(100).Format("{0:n2}");
+          columns.Bound(p => p.GrossStandardVolumeLowExtreme).Width(100).Format("{0:n2}");
+          columns.Bound(p => p.GrossStandardVolumeHighExtreme).Width(100).Format("{0:n2}");
+          columns.Bound(p => p.MassLowExtreme).Width(100).Format("{0:n2}");
+          columns.Bound(p => p.MassHighExtreme).Width(100).Format("{0:n2}");
+          columns.Bound(p => p.AverageObservableDensityLowExtreme).Width(100).Format("{0:n2}");
+          columns.Bound(p => p.AverageObservableDensityHighExtreme).Width(100).Format("{0:n2}");
+          columns.Bound(p => p.AverageReferenceDensityLowExtreme).Width(100).Format("{0:n2}");
+          columns.Bound(p => p.AverageReferenceDensityHighExtreme).Width(100).Format("{0:n2}");
+          columns.Bound(p => p.AverageTemperatureLowExtreme).Width(100).Format("{0:n2}");
+          columns.Bound(p => p.AverageTemperatureHighExtreme).Width(100).Format("{0:n2}");
+          columns.Bound(p => p.GrossObservableVolumeReverseLowExtreme).Width(100).Format("{0:n2}");
+          columns.Bound(p => p.GrossObservableVolumeReverseHighExtreme).Width(100).Format("{0:n2}");
+          columns.Bound(p => p.GrossStandardVolumeReverseLowExtreme).Width(100).Format("{0:n2}");
+          columns.Bound(p => p.GrossStandardVolumeReverseHighExtreme).Width(100).Format("{0:n2}");
+          columns.Bound(p => p.MassReverseLowExtreme).Width(100).Format("{0:n2}");
+          columns.Bound(p => p.MassReverseHighExtreme).Width(100).Format("{0:n2}");
+          columns.Bound(p => p.AverageObservableDensityReverseLowExtreme).Width(100).Format("{0:n2}");
+          columns.Bound(p => p.AverageObservableDensityReverseHighExtreme).Width(100).Format("{0:n2}");
+          columns.Bound(p => p.AverageReferenceDensityReverseLowExtreme).Width(100).Format("{0:n2}");
+          columns.Bound(p => p.AverageReferenceDensityReverseHighExtreme).Width(100).Format("{0:n2}");
+          columns.Bound(p => p.AverageTemperatureReverseLowExtreme).Width(100).Format("{0:n2}");
+          columns.Bound(p => p.AverageTemperatureReverseHighExtreme).Width(100).Format("{0:n2}");
+          columns.Bound(p => p.TotalizerBeginGrossObservableVolumeReverseLowExtreme).Width(100).Format("{0:n2}");
+          columns.Bound(p => p.TotalizerBeginGrossObservableVolumeReverseHighExtreme).Width(100).Format("{0:n2}");
+          columns.Bound(p => p.TotalizerEndGrossObservableVolumeReverseLowExtreme).Width(100).Format("{0:n2}");
+          columns.Bound(p => p.TotalizerEndGrossObservableVolumeReverseHighExtreme).Width(100).Format("{0:n2}");
+          columns.Bound(p => p.TotalizerBeginGrossStandardVolumeReverseLowExtreme).Width(100).Format("{0:n2}");
+          columns.Bound(p => p.TotalizerBeginGrossStandardVolumeReverseHighExtreme).Width(100).Format("{0:n2}");
+          columns.Bound(p => p.TotalizerEndGrossStandardVolumeReverseLowExtreme).Width(100).Format("{0:n2}");
+          columns.Bound(p => p.TotalizerEndGrossStandardVolumeReverseHighExtreme).Width(100).Format("{0:n2}");
+          columns.Bound(p => p.TotalizerBeginMassReverseLowExtreme).Width(100).Format("{0:n2}");
+          columns.Bound(p => p.TotalizerBeginMassReverseHighExtreme).Width(100).Format("{0:n2}");
+          columns.Bound(p => p.TotalizerEndMassReverseLowExtreme).Width(100).Format("{0:n2}");
+          columns.Bound(p => p.TotalizerEndMassReverseHighExtreme).Width(100).Format("{0:n2}");
+          columns.Bound(p => p.TotalizerBeginGrossObservableCommonVolumeReverseLowExtreme).Width(100).Format("{0:n2}");
+          columns.Bound(p => p.TotalizerBeginGrossObservableCommonVolumeReverseHighExtreme).Width(100).Format("{0:n2}");
+          columns.Bound(p => p.TotalizerEndGrossObservableCommonVolumeReverseLowExtreme).Width(100).Format("{0:n2}");
+          columns.Bound(p => p.TotalizerEndGrossObservableCommonVolumeReverseHighExtreme).Width(100).Format("{0:n2}");
+          columns.Bound(p => p.TotalizerBeginGrossStandardCommonVolumeReverseLowExtreme).Width(100).Format("{0:n2}");
+          columns.Bound(p => p.TotalizerBeginGrossStandardCommonVolumeReverseHighExtreme).Width(100).Format("{0:n2}");
+          columns.Bound(p => p.TotalizerEndGrossStandardCommonVolumeReverseLowExtreme).Width(100).Format("{0:n2}");
+          columns.Bound(p => p.TotalizerEndGrossStandardCommonVolumeReverseHighExtreme).Width(100).Format("{0:n2}");
+          columns.Bound(p => p.TotalizerBeginCommonMassReverseLowExtreme).Width(100).Format("{0:n2}");
+          columns.Bound(p => p.TotalizerBeginCommonMassReverseHighExtreme).Width(100).Format("{0:n2}");
+          columns.Bound(p => p.TotalizerEndCommonMassReverseLowExtreme).Width(100).Format("{0:n2}");
+          columns.Bound(p => p.TotalizerEndCommonMassReverseHighExtreme).Width(100).Format("{0:n2}");
+          columns.ForeignKey(p => p.DirectionId, (System.Collections.IEnumerable)ViewData["directions"], "Id", "Name").EditorTemplateName("DirectionViewModel").Width(280);
+          columns.Bound(p => p.WeightScaleNumber).Width(100);
+          columns.Bound(p => p.IsInternalPoint).Width(100);
+          columns.ForeignKey(p => p.TransportTypeId, (System.Collections.IEnumerable)ViewData["transportTypes"], "Id", "Name").EditorTemplateName("TransportTypeViewModel").Width(280);
+          columns.Bound(p => p.ActiveTransactionStatusTag).Width(100);
+          columns.Bound(p => p.ActiveTransactionProductTag).Width(100);
+          columns.Bound(p => p.ActiveTransactionMassTag).Width(100);
+          columns.Bound(p => p.TotalizerCurrentValueTag).Width(100);
+          columns.Bound(p => p.ActiveTransactionMassReverseTag).Width(100);
+          columns.Bound(p => p.MassCorrectionFactor).Width(100);
+          columns.Bound(c => c.RelatedMeasuringPointConfigs).Width(300).ClientTemplate("#=relatedMeasuringPointConfigsTemplate(RelatedMeasuringPointConfigs)#");
+          columns.Command(command => { command.Edit(); command.Destroy(); }).Width(230);
+      })
+      .Resizable(res => res.Columns(true))
+      .ToolBar(toolbar =>
+      {
+          toolbar.Create();
+          toolbar.Excel();
+      })
+      .Editable(editable => editable.Mode(GridEditMode.InLine))
+          .Pageable(pageable => pageable
+              .Refresh(true)
+              .PageSizes(new[] { 20, 50, 100 })
+              .ButtonCount(5)
+          )
+          .Sortable(sortable =>
+          {
+              sortable.SortMode(GridSortMode.SingleColumn);
+          })
+          .Filterable()
+          .Scrollable(scrol => scrol.Height(620))
+      .Scrollable()
+      .DataSource(dataSource => dataSource
+          .Ajax()
+          .PageSize(20)
+          .Model(model => model.Id(p => p.Id))
+                  .Read(read => read.Action("Read", "MeasuringPointConfig", new { area = "NomManagement" }).Data("sendAntiForgery"))
+                  .Create(create => create.Action("Create", "MeasuringPointConfig", new { area = "NomManagement" }).Data("sendAntiForgery"))
+                  .Update(update => update.Action("Update", "MeasuringPointConfig", new { area = "NomManagement" }).Data("sendAntiForgery"))
+                  .Destroy(destroy => destroy.Action("Destroy", "MeasuringPointConfig", new { area = "NomManagement" }).Data("sendAntiForgery"))
+          .Events(events =>
+                {
+                    events.Error("error_handler");
+                })
+          )
+          .Events(ev => ev.DataBound("deletableDataBound"))
+)
+
+<script type="text/kendo" id="relatedMeasuringPointConfigsTemplate">
+    #if(data){#
+    <ul>
+        #for(var i = 0; i< data.length; i++){#
+        #if(data[i].ControlPoint != null){#
+        <li>#:data[i].ControlPoint#</li>
+        #}#
+        #}#
+    </ul>
+    #}#
+
+</script>
+
+<script type="text/javascript">
+    var relatedMeasuringPointConfigsTemplate = kendo.template($("#relatedMeasuringPointConfigsTemplate").html(), { useWithBlock: false });
+</script>
+

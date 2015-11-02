@@ -12,8 +12,12 @@ namespace CollectingProductionDataSystem.Constants
 
         private static readonly string[] powerUsers = new string[] { "Administrator", "PowerUser" };
 
+        private static readonly string loadingUser = "Initial Loading";
+
         public static string StandartPassword { get { return standartPassword; } }
 
         public static string[] PowerUsers { get { return powerUsers; } }
+
+        public static string LoadingUser { get { return loadingUser; } }
     }
 }

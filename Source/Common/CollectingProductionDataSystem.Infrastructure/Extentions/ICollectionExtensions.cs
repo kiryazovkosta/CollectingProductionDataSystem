@@ -17,7 +17,7 @@ namespace CollectingProductionDataSystem.Infrastructure.Extentions
             return collection;
         }
 
-        public static void AddRange<T>(this ICollection<T> collection, ICollection<T> collectionToAdd )
+        public static void AddRange<T>(this ICollection<T> collection, ICollection<T> collectionToAdd)
         {
             collectionToAdd.ForEach((item) => { collection.Add(item); });
         }

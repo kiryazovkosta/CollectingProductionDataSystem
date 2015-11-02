@@ -1,5 +1,6 @@
 ﻿@using System.Web.Optimization;
-@using CollectingProductionDataSystem.Web.ViewModels.Units;
+@using CollectingProductionDataSystem.Web.Areas.ShiftReporting.ViewModels;
+@using CollectingProductionDataSystem.Web.Infrastructure.Helpers;
 @using Resources = App_GlobalResources.Resources;
 
 @model UnitDataViewModel
@@ -24,18 +25,32 @@
     .Columns(
         columns =>
         {
-            columns.Bound(c => c.UnitConfig.Code).Width(77);
-            columns.Bound(c => c.UnitConfig.ProductType.Sort).Hidden(true).ClientGroupHeaderTemplate("#=value#");
+            columns.Bound(c => c.UnitConfig.Code)
+                          .ClientTemplate(
+                Ajax.AuthorizedAjaxActionLinkOrText("#=data.UnitConfig.Code#", "Index", "History", 
+                                                new AjaxOptions() { HttpMethod = "Get", OnSuccess="showRecordHistoriModal"},
+                                                new { area = "RecordsHistory", id = "#=data.id#", entityName = "UnitsData" }, 
+                                                new { data_ajax_mode = "replace", data_ajax_update = @"\#record-history-body" })
+                                                .ToHtmlString())
+                .Width(77);
+            columns.Bound(c => c.UnitConfig.ShiftProductType.Sort).Hidden(true).ClientGroupHeaderTemplate("#=value#");
             columns.Bound(c => c.UnitConfig.ProcessUnit.ShortName).Width(100);
-            columns.Bound(c => c.UnitConfig.Name);
+            columns.Bound(c => c.UnitConfig.Name).Width(310);
             columns.Bound(c => c.UnitConfig.Position).Width(140);
             columns.Bound(c => c.UnitConfig.MeasureUnit.Code).Width(80);
             columns.Bound(c => c.UnitConfig.CollectingDataMechanism).Width(30).Title(string.Empty);
             columns.Bound(c => c.Value).Width(100).Format("{0:n2}");
-            columns.Bound(c => c.UnitsManualData.Value).Width(100).Format("{0:n2}");
+            columns.Bound(c => c.UnitsManualData.Value).Width(100).Format("{0:n2}")
+                .ClientTemplate(
+                Ajax.AuthorizedAjaxActionLinkOrText("#=data.UnitsManualData.Value#", "Index", "History",
+                                                new AjaxOptions() { HttpMethod = "Get", OnSuccess = "showRecordHistoriModal" },
+                                                new { area = "RecordsHistory", id = "#=data.id#", entityName = "UnitsManualData" },
+                                                new { data_ajax_mode = "replace", data_ajax_update = @"\#record-history-body" })
+                                                .ToHtmlString());
             columns.Bound(c => c.UnitsManualData.EditReason).Width(200).ClientTemplate("#:UnitsManualData.EditReason.Name#")
             .ClientTemplate("<div class=row><div class='col-xs-2 no-horisontal-padding'><div class='#:UnitsManualData.EditReason.Id == 0? 'bg-ok':'bg-warning'#'></div></div><div class='col-xs-9 no-horisontal-padding reason'>#:UnitsManualData.EditReason.Name#</div></div>");
-            columns.Command(c => c.Edit());
+            columns.Bound(c => c.IsEditable).Visible(false);
+            columns.Command(c => c.Edit()).Width(180);
         })
     .Pageable(pageable => pageable
         .Refresh(true)
@@ -52,19 +67,18 @@
     .Editable(editable => editable.Mode(GridEditMode.InLine))
     .Scrollable(scr => scr.Height(640))
     .Filterable()
-    .Editable(editable => editable.Mode(GridEditMode.InLine))
     .DataSource(dataSource => dataSource
         .Ajax()
         .PageSize(100)
         .ServerOperation(true)
-        .Group(group => group.Add(c => c.UnitConfig.ProductType.Sort))
+        .Group(group => group.Add(c => c.UnitConfig.ShiftProductType.Sort))
         .Read(read => read.Action("ReadUnitsData", "Units", new { area = "ShiftReporting" }).Data("sendDate"))
         .Update(update => update.Action("Edit", "Units", new { area = "ShiftReporting" }).Data("sendAntiForgery"))
         .Model(model =>
         {
             model.Id(p => p.Id);
             model.Field(p => p.UnitConfig.Code).Editable(false);
-            model.Field(p => p.UnitConfig.ProductType.Name).Editable(false);
+            model.Field(p => p.UnitConfig.ShiftProductType.Name).Editable(false);
             model.Field(p => p.UnitConfig.ProcessUnit.ShortName).Editable(false);
             model.Field(p => p.UnitConfig.Name).Editable(false);
             model.Field(p => p.UnitConfig.Position).Editable(false);
@@ -73,12 +87,15 @@
             model.Field(p => p.Value).Editable(false);
             model.Field(p => p.UnitsManualData.Value).Editable(true);
             model.Field(p => p.UnitsManualData.EditReason).Editable(true);
+            model.Field(p => p.IsEditable).Editable(false);
         })
         .Events(events =>
         {
             events.Error("error_handler");
+            events.RequestEnd("dataSave");
         })
     )
+    .Events(ev=>ev.DataBound("dataBound"))
 )
 @* //Error window for kendo grid error event handler *@
 <div id="err-window" style="display:none">@Html.Partial("_KendoGridErrorWindow")</div>
@@ -87,180 +104,9 @@
 
 
 @section scripts{
+    @Scripts.Render("~/bundles/custom/kendoadditional")
     @Scripts.Render("~/bundles/custom/unitGrids")
-
-
-    @*<script>
-        kendo.culture("@System.Threading.Thread.CurrentThread.CurrentCulture.Name");
-
-        function sendProcessUnit() {
-            return { "processUnitId": $('input[name=processunits]').val() }
-        }
-
-        function sendShift() {
-            return { "shiftId": $('input[name=shifts]').val() }
-        }
-
-        var sendDate = function () {
-            var result = { "date": $('input[name=date]').val() };
-            $.extend(result, sendProcessUnit());
-            $.extend(result, sendShift());
-            $.extend(result, sendAntiForgery());
-            return result;
-        }
-        function error_handler(e) {
-            if (e.errors) {
-                var message = "";
-                $.each(e.errors, function (key, value) {
-                    if ('errors' in value) {
-                        $.each(value.errors, function () {
-                            message += this + "\n";
-                        });
-                    }
-                });
-                $('pre#err-message').text(message);
-                $('div#err-window').data("kendoWindow").open();
-            }
-        }
-
-        function closeWindow(selector) {
-            $(selector).data("kendoWindow").close();
-        }
-
-        function recordTimeStampFilter(element) {
-            element.kendoDateTimePicker();
-        }
-
-        $(document).ready(function () {
-            $("#apply").click(function () {
-                var grid = $("#units").data("kendoGrid");
-                grid.dataSource.read();
-                grid.refresh();
-                checkConfirmedStatus();
-            });
-
-            prepareWindow();
-            prepareSuccessWindow();
-            hideCommands();
-            AttachEventToExportBtn("#excel-export", "#units");
-            //TODO: Add success screen!!!!
-
-
-            $("#confirm").click(function () {
-                var date = sendDate();
-                $.ajax({
-                    url: 'Confirm',
-                    type: 'POST',
-                    data: date,
-                    success: function (data) {
-                        var confirmed = data.IsConfirmed;
-                        if (confirmed === true) {
-                            hideCommands();
-                            var message = "Вие потвърдихте отчета успешно."
-                            $('pre#succ-message').text(message);
-                            $('div#success-window').data("kendoWindow").open();
-
-                        } else {
-                            //TODO: Perse errors and show error screen
-                            if (data.errors) {
-                                var errorMessage = "";
-                                $.each(data.errors, function (key, value) {
-                                    if ('errors' in value) {
-                                        $.each(value.errors, function () {
-                                            errorMessage += this + "\n";
-                                        });
-                                    }
-                                });
-                                $('pre#err-message').text(errorMessage);
-                                $('div#err-window').data("kendoWindow").open();
-                            }
-                            showCommands();
-                        }
-                    },
-                    error: function (data) {
-                        var errorMessage = "";
-                        var response = JSON.parse(data.responseText).data;
-                        $.each(response.errors, function (key, value) {
-                            errorMessage += this + "\n";
-                        });
-                        $('pre#err-message').text(errorMessage);
-                        $('div#err-window').data("kendoWindow").open();
-                    }
-                });
-            });
-        });
-
-        function prepareWindow() {
-            var window = $('div#err-window')
-            window.kendoWindow({
-                width: "650px",
-                title: "Възникна грешка в приложението",
-                actions: ["Close"],
-                modal: true,
-                position: {
-                    top: "30%", // or "100px"
-                    left: "30%"
-                },
-                minHeight: 100,
-                maxHeight: 350
-            });
-        }
-
-        function prepareSuccessWindow() {
-            var window = $('div#success-window')
-            window.kendoWindow({
-                width: "650px",
-                title: "Успешна операция",
-                actions: ["Close"],
-                modal: true,
-                position: {
-                    top: "30%", // or "100px"
-                    left: "30%"
-                },
-                minHeight: 100,
-                maxHeight: 350
-            });
-        }
-
-        function hideCommands() {
-            $("#confirm").hide();
-            $("#units").data("kendoGrid").hideColumn(10);
-        }
-
-        function showCommands() {
-            $("#confirm").show();
-            $("#units").data("kendoGrid").showColumn(10);
-        }
-
-        function checkConfirmedStatus() {
-            var date = sendDate();
-            $.ajax({
-                url: 'UnitsDataIsConfirmed',
-                type: 'POST',
-                data: date,
-                success: function (result) {
-                    var confirmed = result.IsConfirmed;
-                    if (confirmed === false) {
-                        showCommands();
-                    } else {
-                        hideCommands();
-                    }
-                },
-                error: function (result) {
-                    alert('error');
-                    hideCommands();
-                }
-            });
-        }
-
-        function AttachEventToExportBtn(buttonSelector, targetSelector) {
-            $(buttonSelector).click(function () {
-                $(targetSelector).data("kendoGrid").saveAsExcel();
-            });
-        }
-
-
-    </script>*@
+    @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.min.js")
 }
 @section sidebar{
     @Html.Partial("_SampleSideBar")

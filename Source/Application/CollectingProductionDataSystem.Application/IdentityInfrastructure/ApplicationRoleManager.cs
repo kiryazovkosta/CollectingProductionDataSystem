@@ -22,5 +22,10 @@
         {
             return new ApplicationRoleManager(new RoleStoreIntPk(context.Get<CollectingDataSystemDbContext>()));
         }
+
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+        }
     }
 }

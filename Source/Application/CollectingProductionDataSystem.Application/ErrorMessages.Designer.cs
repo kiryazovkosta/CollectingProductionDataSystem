@@ -68,5 +68,104 @@ namespace App_Resources {
                 return ResourceManager.GetString("Email", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The file {0} not found..
+        /// </summary>
+        public static string FileNotFound {
+            get {
+                return ResourceManager.GetString("FileNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There  is an error durring file processing {0}..
+        /// </summary>
+        public static string FileProcessError {
+            get {
+                return ResourceManager.GetString("FileProcessError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid parameter {0}. Value must be between {1} and {2}..
+        /// </summary>
+        public static string InvalidParameter {
+            get {
+                return ResourceManager.GetString("InvalidParameter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid Password.
+        /// </summary>
+        public static string InvalidPassword {
+            get {
+                return ResourceManager.GetString("InvalidPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid Record on line {0}..
+        /// </summary>
+        public static string InvalidRecord {
+            get {
+                return ResourceManager.GetString("InvalidRecord", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid Record Type {0}..
+        /// </summary>
+        public static string InvalidRecordType {
+            get {
+                return ResourceManager.GetString("InvalidRecordType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The user you are trying to update doesn&apos;t exist..
+        /// </summary>
+        public static string InvalidUser {
+            get {
+                return ResourceManager.GetString("InvalidUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid Id of user must be 0. Actual Id is {0}..
+        /// </summary>
+        public static string InvalidUserId {
+            get {
+                return ResourceManager.GetString("InvalidUserId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Modification of UserName is not permitted.
+        /// </summary>
+        public static string InvalidUserNameModification {
+            get {
+                return ResourceManager.GetString("InvalidUserNameModification", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The data for {0} are not approved..
+        /// </summary>
+        public static string ShiftNotReady {
+            get {
+                return ResourceManager.GetString("ShiftNotReady", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The user {0} cannot be created. The user with the same UserName allready exists..
+        /// </summary>
+        public static string UserAllreadyExists {
+            get {
+                return ResourceManager.GetString("UserAllreadyExists", resourceCulture);
+            }
+        }
     }
 }

@@ -56,10 +56,12 @@
       <HintPath>..\..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Kendo.Mvc">
+    <Reference Include="Kendo.Mvc, Version=2015.3.930.545, Culture=neutral, PublicKeyToken=121fae78165ba3d4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\ExternalLibraries\Kendo\Kendo.Mvc.dll</HintPath>
     </Reference>
-    <Reference Include="Kendo.Mvc.resources">
+    <Reference Include="Kendo.Mvc.resources, Version=2015.3.930.545, Culture=bg-BG, PublicKeyToken=121fae78165ba3d4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\ExternalLibraries\Kendo\bg-BG\Kendo.Mvc.resources.dll</HintPath>
     </Reference>
     <Reference Include="log4net">
@@ -214,16 +216,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Layout.bg.resx</DependentUpon>
     </Compile>
-    <Compile Include="App_GlobalResources\Layout.bg1.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Layout.bg.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\Layout.bg2.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Layout.bg.resx</DependentUpon>
-    </Compile>
     <Compile Include="App_GlobalResources\Layout.bg3.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -236,7 +228,16 @@
     </Compile>
     <Compile Include="Areas\Administration\AdministrationAreaRegistration.cs" />
     <Compile Include="Areas\Administration\Controllers\AjaxController.cs" />
-    <Compile Include="Areas\Administration\Controllers\BaseController.cs" />
+    <Compile Include="Areas\Administration\Controllers\AreaBaseController.cs" />
+    <Compile Include="Areas\NomManagement\Controllers\IkunkController.cs" />
+    <Compile Include="Areas\NomManagement\Controllers\MeasuringPointConfigController.cs" />
+    <Compile Include="Areas\NomManagement\Controllers\ZoneController.cs" />
+    <Compile Include="Areas\NomManagement\Models\ViewModels\IkunkViewModel.cs" />
+    <Compile Include="Areas\NomManagement\Models\ViewModels\MeasuringPointConfigViewModel.cs" />
+    <Compile Include="Areas\NomManagement\Models\ViewModels\RelatedMeasuringPointConfigsViewModel.cs" />
+    <Compile Include="Areas\NomManagement\Models\ViewModels\ZoneViewModel.cs" />
+    <Compile Include="Areas\RecordsHistory\Controllers\AreaBaseController.cs" />
+    <Compile Include="Areas\RecordsHistory\Controllers\HistoryController.cs" />
     <Compile Include="Areas\Administration\Controllers\RoleController.cs" />
     <Compile Include="Areas\Administration\Controllers\UserController.cs" />
     <Compile Include="Areas\Administration\ViewModels\ChangePasswordViewModel.cs" />
@@ -246,15 +247,69 @@
     <Compile Include="Areas\Administration\ViewModels\RoleViewModel.cs" />
     <Compile Include="Areas\DailyReporting\Controllers\AjaxController.cs" />
     <Compile Include="Areas\DailyReporting\Controllers\AreaBaseController.cs" />
+    <Compile Include="Areas\DailyReporting\Controllers\TransactionsDailyController.cs" />
     <Compile Include="Areas\DailyReporting\Controllers\UnitsDailyController.cs" />
     <Compile Include="Areas\DailyReporting\DailyReportingAreaRegistration.cs" />
     <Compile Include="Areas\MonthlyReporting\Controllers\AreaBaseController.cs" />
     <Compile Include="Areas\MonthlyReporting\MonthlyReportingAreaRegistration.cs" />
+    <Compile Include="Areas\NomManagement\Controllers\AreaBaseController.cs" />
+    <Compile Include="Areas\NomManagement\Controllers\AreaController.cs" />
+    <Compile Include="Areas\NomManagement\Controllers\DailyProductTypeController.cs" />
+    <Compile Include="Areas\NomManagement\Controllers\DirectionController.cs" />
+    <Compile Include="Areas\NomManagement\Controllers\EditReasonController.cs" />
+    <Compile Include="Areas\NomManagement\Controllers\FactoryController.cs" />
+    <Compile Include="Areas\NomManagement\Controllers\GenericNomController.cs" />
+    <Compile Include="Areas\NomManagement\Controllers\MaterialTypeController.cs" />
+    <Compile Include="Areas\NomManagement\Controllers\MeasureUnitController.cs" />
+    <Compile Include="Areas\NomManagement\Controllers\NomenclaturesController.cs" />
+    <Compile Include="Areas\NomManagement\Controllers\ParkController.cs" />
+    <Compile Include="Areas\NomManagement\Controllers\PlantController.cs" />
+    <Compile Include="Areas\NomManagement\Controllers\ProcessUnitController.cs" />
+    <Compile Include="Areas\NomManagement\Controllers\ProductController.cs" />
+    <Compile Include="Areas\NomManagement\Controllers\ProductionPlanConfigController.cs" />
+    <Compile Include="Areas\NomManagement\Controllers\ProductTypeController.cs" />
+    <Compile Include="Areas\NomManagement\Controllers\RelatedUnitConfigsController.cs" />
+    <Compile Include="Areas\NomManagement\Controllers\ShiftController.cs" />
+    <Compile Include="Areas\NomManagement\Controllers\ShiftProductTypeController.cs" />
+    <Compile Include="Areas\NomManagement\Controllers\TankConfigController.cs" />
+    <Compile Include="Areas\NomManagement\Controllers\TankMasterProductController.cs" />
+    <Compile Include="Areas\NomManagement\Controllers\TransportTypeController.cs" />
+    <Compile Include="Areas\NomManagement\Controllers\UnitConfigController.cs" />
+    <Compile Include="Areas\NomManagement\Controllers\UnitsDailyConfigController.cs" />
+    <Compile Include="Areas\NomManagement\Controllers\UploadNomController.cs" />
+    <Compile Include="Areas\NomManagement\Models\ViewModels\AreaViewModel.cs" />
+    <Compile Include="Areas\NomManagement\Models\ViewModels\DailyProductTypeViewModel.cs" />
+    <Compile Include="Areas\NomManagement\Models\ViewModels\DirectionViewModel.cs" />
+    <Compile Include="Areas\NomManagement\Models\ViewModels\EditReasonViewModel.cs" />
+    <Compile Include="Areas\NomManagement\Models\ViewModels\FactoryViewModel.cs" />
+    <Compile Include="Areas\NomManagement\Models\ViewModels\MaterialTypeViewModel.cs" />
+    <Compile Include="Areas\NomManagement\Models\ViewModels\MeasureUnitViewModel.cs" />
+    <Compile Include="Areas\NomManagement\Models\ViewModels\ParkViewModel.cs" />
+    <Compile Include="Areas\NomManagement\Models\ViewModels\ProcessUnitViewModel.cs" />
+    <Compile Include="Areas\NomManagement\Models\ViewModels\ProductionPlanConfigViewModel.cs" />
+    <Compile Include="Areas\NomManagement\Models\ViewModels\RelatedUnitConfigsViewModel.cs" />
+    <Compile Include="Areas\NomManagement\Models\ViewModels\RelatedUnitDailyConfigsViewModel.cs" />
+    <Compile Include="Areas\NomManagement\Models\ViewModels\ShiftViewModel.cs" />
+    <Compile Include="Areas\NomManagement\Models\ViewModels\ProductTypeViewModel.cs" />
+    <Compile Include="Areas\NomManagement\Models\ViewModels\ProductViewModel.cs" />
+    <Compile Include="Areas\NomManagement\Models\ViewModels\ShiftProductTypeViewModel.cs" />
+    <Compile Include="Areas\NomManagement\Models\ViewModels\TankMasterProductViewModel.cs" />
+    <Compile Include="Areas\NomManagement\Models\ViewModels\TankConfigViewModel.cs" />
+    <Compile Include="Areas\NomManagement\Models\ViewModels\TransportTypeViewModel.cs" />
+    <Compile Include="Areas\NomManagement\Models\ViewModels\UnitConfigUnitDailyConfigViewModel.cs" />
+    <Compile Include="Areas\NomManagement\Models\ViewModels\UnitConfigViewModel.cs" />
+    <Compile Include="Areas\NomManagement\Models\ViewModels\UnitsDailyConfigViewModel.cs" />
+    <Compile Include="Areas\NomManagement\NomManagementAreaRegistration.cs" />
+    <Compile Include="Areas\NomManagement\Models\ViewModels\PlantViewModel.cs" />
+    <Compile Include="Areas\RecordsHistory\RecordsHistoryAreaRegistration.cs" />
+    <Compile Include="Areas\RecordsHistory\ViewModels\AuditLogRecordViewModel.cs" />
     <Compile Include="Areas\ShiftReporting\Controllers\AjaxController.cs" />
     <Compile Include="Areas\ShiftReporting\Controllers\AreaBaseController.cs" />
     <Compile Include="Areas\ShiftReporting\Controllers\TanksController.cs" />
     <Compile Include="Areas\ShiftReporting\Controllers\UnitsController.cs" />
+    <Compile Include="Areas\ShiftReporting\Controllers\UnitsReportsController.cs" />
     <Compile Include="Areas\ShiftReporting\ShiftReportingAreaRegistration.cs" />
+    <Compile Include="Areas\ShiftReporting\ViewModels\UnitsReportsDataViewModel.cs" />
     <Compile Include="Controllers\AccountController.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -267,15 +322,20 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Infrastructure\Extentions\IEfStatusExtentions.cs" />
     <Compile Include="Infrastructure\Filters\AuthorizeFactoryAttribute.cs" />
+    <Compile Include="Infrastructure\Helpers\AuthorizeActionLinkAjaxHelper.cs" />
     <Compile Include="Infrastructure\Helpers\AuthorizedActionLinkHtmlHelper.cs" />
     <Compile Include="Infrastructure\Helpers\IdentityHelpers.cs" />
     <Compile Include="Infrastructure\Helpers\HtmlPartialViewHelpers.cs" />
     <Compile Include="Infrastructure\MadelBinders\EditUserViewModelBinder.cs" />
+    <Compile Include="Infrastructure\MadelBinders\TimeSpanComponentAttribute.cs" />
+    <Compile Include="Infrastructure\MadelBinders\TimeSpanModelBinder.cs" />
     <Compile Include="InputModels\EditReasonInputModel.cs" />
     <Compile Include="InputModels\ProcessUnitConfirmShiftInputModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="ViewModels\Utility\HistoryLink.cs" />
     <Compile Include="ViewModels\Home\IndexInventoryTanksViewModel.cs" />
     <Compile Include="ViewModels\Identity\AccountViewModels.cs" />
     <Compile Include="ViewModels\Identity\AsignRoleViewModel.cs" />
@@ -287,21 +347,21 @@
     <Compile Include="ViewModels\Identity\RoleCreateViewModel.cs" />
     <Compile Include="ViewModels\Identity\RoleEditViewModel.cs" />
     <Compile Include="ViewModels\Identity\RoleModificationViewModel.cs" />
-    <Compile Include="ViewModels\Nomenclatures\ProductionShiftViewModel.cs" />
+    <Compile Include="ViewModels\Nomenclatures\DirectionsViewModel.cs" />
+    <Compile Include="ViewModels\Nomenclatures\ShiftViewModel.cs" />
     <Compile Include="ViewModels\Tank\AreaViewModel.cs" />
     <Compile Include="ViewModels\Tank\ParkViewModel.cs" />
     <Compile Include="ViewModels\Tank\TankDataViewModel.cs" />
+    <Compile Include="ViewModels\Transactions\MeasuringPointsDataViewModel.cs" />
     <Compile Include="ViewModels\Units\FactoryViewModel.cs" />
     <Compile Include="ViewModels\Units\ProcessUnitViewModel.cs" />
     <Compile Include="ViewModels\Units\ProductionPlanViewModel.cs" />
     <Compile Include="ViewModels\Units\UnitDailyDataViewModel.cs" />
-    <Compile Include="ViewModels\Units\UnitDataViewModel.cs" />
+    <Compile Include="Areas\ShiftReporting\ViewModels\UnitDataViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
-    <Content Include="Content\bootstrap.cosmo.css" />
-    <Content Include="Content\bootstrap.cosmo.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\custom\slidebar.css" />
@@ -310,7 +370,8 @@
     <Content Include="Content\Images\error.png" />
     <Content Include="Content\Images\Excel-icon.png" />
     <Content Include="Content\Images\factory.png" />
-    <Content Include="Content\Images\LUK.png" />
+    <Content Include="Content\Images\LukBlack.png" />
+    <Content Include="Content\Images\LukTransparent.png" />
     <Content Include="Content\Images\ok.png" />
     <Content Include="Content\Images\tanks.png" />
     <Content Include="Content\Images\warning.png" />
@@ -653,7 +714,8 @@
     <Content Include="Content\kendo\images\kendoui.woff" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <Content Include="Scripts\custom\kendoGridErrorHandler.js" />
+    <Content Include="Scripts\custom\bootstrapAdditional.js" />
+    <Content Include="Scripts\custom\kendoAdditional.js" />
     <Content Include="Scripts\custom\sendAntiForgery.js" />
     <Content Include="Areas\Administration\Views\Role\Create.cshtml" />
     <Content Include="Areas\Administration\Views\Role\Edit.cshtml" />
@@ -666,7 +728,6 @@
     <Content Include="Areas\Administration\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Administration\Views\Shared\EditorTemplates\AsignRoleViewModel.cshtml" />
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
-    <Content Include="fonts\bank-gotic.ttf" />
     <Content Include="Areas\ShiftReporting\Views\web.config" />
     <Content Include="Areas\DailyReporting\Views\web.config" />
     <Content Include="Areas\MonthlyReporting\Views\web.config" />
@@ -675,6 +736,65 @@
     <Content Include="Areas\Administration\Views\Shared\_KendoAdminLayout.cshtml" />
     <Content Include="Areas\DailyReporting\Views\UnitsDaily\UnitsDailyData.cshtml" />
     <Content Include="Areas\ShiftReporting\Views\Tanks\TanksData.cshtml" />
+    <Content Include="Areas\NomManagement\Views\web.config" />
+    <Content Include="Areas\NomManagement\Views\UploadNom\Index.cshtml" />
+    <Content Include="Areas\NomManagement\Views\UnitConfig\Index.cshtml" />
+    <Content Include="fonts\BankGothic1.eot" />
+    <Content Include="fonts\BankGothic1.ttf" />
+    <Content Include="fonts\BankGothic1.woff" />
+    <Content Include="fonts\BankGothic1.woff2" />
+    <Content Include="Areas\NomManagement\Views\Plant\Index.cshtml" />
+    <Content Include="Areas\NomManagement\Views\Factory\Index.cshtml" />
+    <Content Include="Areas\NomManagement\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\NomManagement\Views\Shared\_NomLayout.cshtml" />
+    <Content Include="Areas\NomManagement\Views\Shared\EditorTemplates\PlantViewModel.cshtml" />
+    <Content Include="Areas\NomManagement\Views\Shared\DisplayTemplates\PlantViewModel.cshtml" />
+    <Content Include="Areas\NomManagement\Views\Shared\EditorTemplates\FactoryViewModel.cshtml" />
+    <Content Include="Areas\NomManagement\Views\ProcessUnit\Index.cshtml" />
+    <Content Include="Areas\NomManagement\Views\MaterialType\Index.cshtml" />
+    <Content Include="Areas\NomManagement\Views\Direction\Index.cshtml" />
+    <Content Include="Areas\NomManagement\Views\Area\Index.cshtml" />
+    <Content Include="Areas\NomManagement\Views\Shared\EditorTemplates\AreaViewModel.cshtml" />
+    <Content Include="Areas\NomManagement\Views\Park\Index.cshtml" />
+    <Content Include="Areas\NomManagement\Views\Shared\EditorTemplates\ShiftProductTypeViewModel.cshtml" />
+    <Content Include="Areas\NomManagement\Views\Shared\EditorTemplates\DailyProductTypeViewModel.cshtml" />
+    <Content Include="Areas\NomManagement\Views\Shared\EditorTemplates\ProductTypeViewModel.cshtml" />
+    <Content Include="Areas\NomManagement\Views\DailyProductType\Index.cshtml" />
+    <Content Include="Areas\NomManagement\Views\ShiftProductType\Index.cshtml" />
+    <Content Include="Areas\NomManagement\Views\ProductType\Index.cshtml" />
+    <Content Include="Areas\NomManagement\Views\Product\Index.cshtml" />
+    <Content Include="Areas\NomManagement\Views\Shared\EditorTemplates\ProcessUnitViewModel.cshtml" />
+    <Content Include="Areas\NomManagement\Views\Shared\EditorTemplates\ProductViewModel.cshtml" />
+    <Content Include="Areas\NomManagement\Views\Shared\EditorTemplates\DirectionViewModel.cshtml" />
+    <Content Include="Areas\NomManagement\Views\Shared\EditorTemplates\MaterialTypeViewModel.cshtml" />
+    <Content Include="Areas\NomManagement\Views\Shared\EditorTemplates\MeasureUnitViewModel.cshtml" />
+    <Content Include="Areas\NomManagement\Views\MeasureUnit\Index.cshtml" />
+    <Content Include="Areas\NomManagement\Views\UnitsDailyConfig\Index.cshtml" />
+    <Content Include="Areas\NomManagement\Views\Nomenclatures\Index.cshtml" />
+    <Content Include="Areas\DailyReporting\Views\TransactionsDaily\TransactionsDailyData.cshtml" />
+    <Content Include="Areas\NomManagement\Views\EditReason\Index.cshtml" />
+    <Content Include="Areas\NomManagement\Views\Shift\Index.cshtml" />
+    <Content Include="Areas\NomManagement\Views\TransportType\Index.cshtml" />
+    <Content Include="Areas\NomManagement\Views\Shared\EditorTemplates\DateTime.cshtml" />
+    <Content Include="Areas\NomManagement\Views\Shared\EditorTemplates\TimeSpan.cshtml" />
+    <Content Include="Areas\NomManagement\Views\ProductionPlanConfig\Index.cshtml" />
+    <Content Include="Areas\NomManagement\Views\TankConfig\Index.cshtml" />
+    <Content Include="Areas\NomManagement\Views\Shared\EditorTemplates\ParkViewModel.cshtml" />
+    <Content Include="Areas\NomManagement\Views\TankMasterProduct\Index.cshtml" />
+    <Content Include="Areas\NomManagement\Views\UnitConfig\EditorTemplates\RelatedUnitConfigsEditor.cshtml" />
+    <Content Include="Areas\ShiftReporting\Views\UnitsReports\UnitsReportsData.cshtml" />
+    <Content Include="Areas\NomManagement\Views\UnitsDailyConfig\EditorTemplates\UnitConfigUnitDailyConfigEditor.cshtml" />
+    <Content Include="Areas\NomManagement\Views\UnitsDailyConfig\EditorTemplates\RelatedUnitDailyConfigsEditor.cshtml" />
+    <Content Include="Areas\RecordsHistory\Views\web.config" />
+    <Content Include="Areas\RecordsHistory\Views\History\Index.cshtml" />
+    <Content Include="Areas\RecordsHistory\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\NomManagement\Views\Ikunk\Index.cshtml" />
+    <Content Include="Areas\NomManagement\Views\Zone\Index.cshtml" />
+    <Content Include="Areas\NomManagement\Views\Shared\EditorTemplates\IkunkViewModel.cshtml" />
+    <Content Include="Areas\NomManagement\Views\MeasuringPointConfig\Index.cshtml" />
+    <Content Include="Areas\NomManagement\Views\Shared\EditorTemplates\ZoneViewModel.cshtml" />
+    <Content Include="Areas\NomManagement\Views\MeasuringPointConfig\EditorTemplates\RelatedMeasuringPointConfigEditor.cshtml" />
+    <Content Include="Areas\NomManagement\Views\Shared\EditorTemplates\TransportTypeViewModel.cshtml" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <None Include="Properties\PublishProfiles\Home.pubxml" />
     <Content Include="Scripts\custom\sendArea.js" />
@@ -688,6 +808,7 @@
     <Content Include="Scripts\custom\sendArea.min.js.map">
       <DependentUpon>sendArea.min.js</DependentUpon>
     </Content>
+    <None Include="Properties\PublishProfiles\Productive.pubxml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\custom\sendFactory.min.js">
       <DependentUpon>sendFactory.js</DependentUpon>
@@ -696,6 +817,8 @@
     <Content Include="Scripts\custom\unitGridsData.js" />
     <Content Include="Scripts\jquery-2.1.4.js" />
     <Content Include="Scripts\jquery-2.1.4.min.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -1314,10 +1437,14 @@
     <Content Include="Views\Shared\_UnitsDailySideBar.cshtml" />
     <Content Include="Views\Shared\_SuccessWindow.cshtml" />
     <Content Include="Views\Shared\_TanksSideBar.cshtml" />
+    <Content Include="Views\Shared\_MeasurementsPointsSideBar.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\ShowHistory.cshtml" />
+    <Content Include="Views\Shared\_BootstrapModal.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Administration\Views\Ajax\" />
+    <Folder Include="Areas\Administration\Views\History\" />
     <Folder Include="Areas\DailyReporting\Models\" />
     <Folder Include="Areas\DailyReporting\Views\Ajax\" />
     <Folder Include="Areas\DailyReporting\Views\AreaBase\" />
@@ -1325,11 +1452,21 @@
     <Folder Include="Areas\MonthlyReporting\Models\" />
     <Folder Include="Areas\MonthlyReporting\Views\AreaBase\" />
     <Folder Include="Areas\MonthlyReporting\Views\Shared\" />
+    <Folder Include="Areas\NomManagement\Models\InputModels\" />
+    <Folder Include="Areas\NomManagement\Views\Ajax\" />
+    <Folder Include="Areas\NomManagement\Views\RelatedUnitConfigs\" />
+    <Folder Include="Areas\RecordsHistory\Views\Shared\" />
     <Folder Include="Areas\ShiftReporting\Models\" />
     <Folder Include="Areas\ShiftReporting\Views\Ajax\" />
     <Folder Include="Areas\ShiftReporting\Views\AreaBase\" />
     <Folder Include="Areas\ShiftReporting\Views\Shared\" />
     <Folder Include="Views\Ajax\" />
+    <Folder Include="Views\Factory\" />
+    <Folder Include="Views\Plant\" />
+    <Folder Include="Views\ProcessUnit\" />
+    <Folder Include="Views\Test\" />
+    <Folder Include="Views\UnitConfig\" />
+    <Folder Include="Views\UnitsDailyConfig\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -1528,7 +1665,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>2555</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>

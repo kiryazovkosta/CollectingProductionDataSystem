@@ -1,5 +1,4 @@
-﻿@* Enables rendering suctom scripts caming from partial views *@
-@using CollectingProductionDataSystem.Web.Infrastructure.Helpers;
+﻿@using CollectingProductionDataSystem.Web.Infrastructure.Helpers;
 <!DOCTYPE html>
 <html>
 <head>
@@ -44,6 +43,7 @@
             </div>
         </div>
     </div>
+    @Html.Partial("_BootstrapModal")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
     @* Renders scripts came from the partial views *@

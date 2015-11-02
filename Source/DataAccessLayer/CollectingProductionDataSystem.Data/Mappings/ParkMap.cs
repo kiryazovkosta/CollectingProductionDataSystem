@@ -24,6 +24,9 @@ namespace CollectingProductionDataSystem.Data.Mappings
                 .WithMany(t => t.Parks)
                 .HasForeignKey(d => d.AreaId);
 
+            this.HasMany(t => t.ApplicationUserParks)
+                .WithRequired()
+                .HasForeignKey(x => x.ParkId).WillCascadeOnDelete(false);
         }
     }
 }

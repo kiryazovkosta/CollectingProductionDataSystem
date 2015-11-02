@@ -1,0 +1,50 @@
+﻿@using CollectingProductionDataSystem.Web.Areas.RecordsHistory.ViewModels;
+@using Resources = App_GlobalResources.Resources
+@Html.AntiForgeryToken()
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h4 class="modal-title" id="record-history-label">
+        @Resources.Layout.HistoryOfRecord @Resources.Layout.EntityId: @TempData["recordId"]
+        @Resources.Layout.EntityName: @TempData["entityName"]
+    </h4>
+</div>
+@Html.Hidden("id", TempData["recordId"])
+@Html.Hidden("entityName", TempData["entityName"])
+<div class="modal-body">
+    @(Html.Kendo()
+      .Grid<AuditLogRecordViewModel>()
+      .Name("history-grid")
+      .Columns(columns =>
+        {
+            columns.Bound(c => c.TimeStamp).Format("{0:dd-MM-yyyy HH:mm:ss:fff}");
+            columns.Bound(c => c.OperationType);
+            columns.Bound(c => c.FieldName);
+            columns.Bound(c => c.OldValue);
+            columns.Bound(c => c.NewValue);
+            columns.Bound(c => c.UserName);
+        })
+        .Pageable(pageable => pageable
+                    .PageSizes(new[] { 20, 50, 100 })
+                    .ButtonCount(5)
+                    .Refresh(true)
+                    )
+        .Filterable()
+        .Scrollable(scr => scr.Height(500))
+        .Sortable()
+
+                .DataSource(dataSource => dataSource
+                  .Ajax()
+                  .PageSize(20)
+                  .Model(model => model.Id(p => p.Id))
+                  .Read(read => read.Action("Read", "History", new { area = "RecordsHistory" }).Data("sendHistoryData"))
+                  .Events(events =>
+                        {
+                            events.Error("error_handler");
+                        })
+              )
+
+    )
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+</div>

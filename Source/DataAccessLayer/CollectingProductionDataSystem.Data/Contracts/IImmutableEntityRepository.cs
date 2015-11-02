@@ -1,5 +1,6 @@
 ﻿namespace CollectingProductionDataSystem.Data.Contracts
 {
+    using System.Collections.Generic;
     using System.Linq;
     using CollectingProductionDataSystem.Models.Contracts;
     using System;
@@ -13,5 +14,7 @@
         void Add(T entity);
 
         void Detach(T entity);
+
+        void BulkInsert(IEnumerable<T> entities, string userName);
     }
 }

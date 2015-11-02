@@ -21,7 +21,7 @@ namespace CollectingProductionDataSystem.Web.AppStart
         private static void ConfigureStyleBundles(BundleCollection bundles)
         {
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/bootstrap.css",
+                      "~/Content/bootstrap.min.css",
                       "~/Content/bootstrap-theme.min.css",
                       "~/Content/Site.css"));
 
@@ -47,7 +47,8 @@ namespace CollectingProductionDataSystem.Web.AppStart
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap.js",
-                      "~/Scripts/respond.js"));
+                      "~/Scripts/respond.js",
+                      "~/Scripts/custom/bootstrapAdditional.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/kendo").Include(
             "~/Scripts/kendo/kendo.all.min.js",
@@ -58,10 +59,14 @@ namespace CollectingProductionDataSystem.Web.AppStart
 
             bundles.Add(new ScriptBundle("~/bundles/custom/sidebar").Include(
                 "~/Scripts/custom/sidebar.js"));
-            bundles.Add(new ScriptBundle("~/bundles/custom/unitGrids").Include(
-                "~/Scripts/custom/sendAntiForgery.js",                
+
+            bundles.Add(new ScriptBundle("~/bundles/custom/unitGrids").Include(          
                 "~/Scripts/custom/unitGridsData.js"
                 ));
+
+            bundles.Add(new ScriptBundle("~/bundles/custom/kendoadditional").Include(
+                "~/Scripts/custom/kendoAdditional.js",
+                "~/Scripts/custom/sendAntiForgery.js"));
         }
 
         public static void AddDefaultIgnorePatterns(IgnoreList ignoreList)

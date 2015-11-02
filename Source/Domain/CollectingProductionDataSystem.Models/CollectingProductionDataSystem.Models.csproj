@@ -30,6 +30,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper, Version=4.0.4.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\AutoMapper.4.0.4\lib\net45\AutoMapper.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework">
       <HintPath>..\..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -64,22 +68,29 @@
     <Compile Include="Contracts\IAuditInfo.cs" />
     <Compile Include="Contracts\IDeletableEntity.cs" />
     <Compile Include="Contracts\IEntity.cs" />
+    <Compile Include="Identity\ApplicationUserPark.cs" />
+    <Compile Include="Identity\ApplicationUserProcessUnit.cs" />
     <Compile Include="Identity\UserClaimIntPk.cs" />
     <Compile Include="Identity\UserLoginIntPk.cs" />
     <Compile Include="Identity\UserRoleIntPk.cs" />
+    <Compile Include="Inventories\RelatedTankConfigs.cs" />
     <Compile Include="Inventories\TankMasterProduct.cs" />
-    <Compile Include="Inventories\TanksManualData.cs" />
+    <Compile Include="Nomenclatures\DailyProductType.cs" />
     <Compile Include="Nomenclatures\Direction.cs" />
     <Compile Include="Inventories\Area.cs" />
     <Compile Include="Inventories\TankData.cs" />
     <Compile Include="Nomenclatures\EditReason.cs" />
     <Compile Include="Nomenclatures\MeasureUnit.cs" />
-    <Compile Include="Nomenclatures\ProductionShift.cs" />
+    <Compile Include="Nomenclatures\Shift.cs" />
+    <Compile Include="Nomenclatures\ShiftProductType.cs" />
     <Compile Include="Nomenclatures\TransportType.cs" />
     <Compile Include="Productions\Factory.cs" />
     <Compile Include="Inventories\Park.cs" />
     <Compile Include="Inventories\TankConfig.cs" />
     <Compile Include="Nomenclatures\MaterialType.cs" />
+    <Compile Include="Contracts\IAggregatable.cs" />
+    <Compile Include="Contracts\IConvertable.cs" />
+    <Compile Include="Productions\MultiShift.cs" />
     <Compile Include="Productions\Plant.cs" />
     <Compile Include="Nomenclatures\Product.cs" />
     <Compile Include="Nomenclatures\ProductType.cs" />
@@ -89,17 +100,19 @@
     <Compile Include="Productions\Qpt\PressureAndTemperature2CompressibilityFactor.cs" />
     <Compile Include="Productions\Qpt\PressureAndTemperature2EtilenDensity.cs" />
     <Compile Include="Productions\Qpt\PressureAndTemperature2WaterDensity.cs" />
+    <Compile Include="Productions\RelatedUnitConfigs.cs" />
+    <Compile Include="Productions\RelatedUnitDailyConfigs.cs" />
     <Compile Include="Productions\ShiftType.cs" />
     <Compile Include="Productions\UnitConfig.cs" />
+    <Compile Include="Productions\UnitConfigUnitDailyConfig.cs" />
     <Compile Include="Productions\UnitsApprovedDailyData.cs" />
-    <Compile Include="Productions\UnitsDailyConfig.cs" />
+    <Compile Include="Productions\UnitDailyConfig.cs" />
     <Compile Include="Productions\UnitsDailyData.cs" />
     <Compile Include="Productions\UnitsApprovedData.cs" />
     <Compile Include="Productions\UnitsManualDailyData.cs" />
     <Compile Include="Productions\UnitsManualData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Productions\UnitsData.cs" />
-    <Compile Include="Productions\UnitsInspectionData.cs" />
     <Compile Include="Resources\ModelErrors.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -110,10 +123,13 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ModelErrors.bg.resx</DependentUpon>
     </Compile>
+    <Compile Include="Transactions\ActiveTransactionsData.cs" />
     <Compile Include="Transactions\Ikunk.cs" />
-    <Compile Include="Transactions\MeasurementPoint.cs" />
-    <Compile Include="Transactions\MeasurementPointsProductsConfig.cs" />
-    <Compile Include="Transactions\MeasurementPointsProductsData.cs" />
+    <Compile Include="Transactions\MaxAsoMeasuringPointDataSequenceNumber.cs" />
+    <Compile Include="Transactions\MeasuringPointProductsData.cs" />
+    <Compile Include="Transactions\MeasuringPointConfig.cs" />
+    <Compile Include="Transactions\MeasuringPointsConfigsData.cs" />
+    <Compile Include="Transactions\RelatedMeasuringPointConfigs.cs" />
     <Compile Include="Transactions\Zone.cs" />
     <Compile Include="UtilityEntities\UserProfile.cs" />
     <Compile Include="UtilityEntities\AuditLogRecord.cs" />
@@ -134,6 +150,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Application\CollectingProductionDataSystem.MathExpressions\CollectingProductionDataSystem.MathExpressions.csproj">
+      <Project>{34672323-163b-48f2-9425-b4b55b33d144}</Project>
+      <Name>CollectingProductionDataSystem.MathExpressions</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Common\CollectingProductionDataSystem.Infrastructure\CollectingProductionDataSystem.Infrastructure.csproj">
       <Project>{69DEBDE6-B1BA-4A55-9570-AE7E6ABB5F98}</Project>
       <Name>CollectingProductionDataSystem.Infrastructure</Name>

@@ -48,6 +48,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Calculator.cs" />
+    <Compile Include="FormulaArguments.cs" />
+    <Compile Include="ProductionDataCalculator.cs" />
+    <Compile Include="Functions.cs" />
     <Compile Include="ObjectBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

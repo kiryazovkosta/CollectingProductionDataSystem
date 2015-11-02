@@ -12,6 +12,7 @@ using CollectingProductionDataSystem.Web.InputModels;
 using CollectingProductionDataSystem.Web.ViewModels.Tank;
 using CollectingProductionDataSystem.Web.ViewModels.Nomenclatures;
 using CollectingProductionDataSystem.Web.ViewModels.Units;
+using CollectingProductionDataSystem.Models.Nomenclatures;
 
 namespace CollectingProductionDataSystem.Web.Controllers
 {
@@ -74,8 +75,8 @@ namespace CollectingProductionDataSystem.Web.Controllers
 
         public JsonResult GetShifts()
         {
-            var shifts = this.data.ProductionShifts.All().ToList();
-            var shiftView = Mapper.Map<IEnumerable<ProductionShiftViewModel>>(shifts);
+            var shifts = this.data.Shifts.All().ToList();
+            var shiftView = Mapper.Map<IEnumerable<ShiftViewModel>>(shifts);
             return Json(shiftView, JsonRequestBehavior.AllowGet);
         }
 
@@ -114,6 +115,13 @@ namespace CollectingProductionDataSystem.Web.Controllers
             }
             var processUnitView = Mapper.Map<IEnumerable<ProcessUnitViewModel>>(processUnits.ToList());
             return Json(processUnitView, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult GetDirections()
+        {
+            var directions = this.data.Directions.All().Where(x=>x.Id <= 2).ToList();
+            var directionsView = Mapper.Map<IEnumerable<DirectionsViewModel>>(directions);
+            return Json(directionsView, JsonRequestBehavior.AllowGet);
         }
 
         

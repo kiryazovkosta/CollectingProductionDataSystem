@@ -33,6 +33,14 @@
     <Reference Include="EntityFramework">
       <HintPath>..\..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
+    <Reference Include="EntityFramework.BulkInsert, Version=6.0.2.8, Culture=neutral, PublicKeyToken=630a17433349cb76, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EntityFramework.BulkInsert-ef6.6.0.2.8\lib\Net45\EntityFramework.BulkInsert.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.MappingAPI, Version=6.0.0.7, Culture=neutral, PublicKeyToken=7ee2e825d201459e, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EntityFramework.MappingAPI.6.0.0.7\lib\net45\EntityFramework.MappingAPI.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="EntityFramework.SqlServer">
       <HintPath>..\..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
@@ -45,6 +53,7 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -62,13 +71,16 @@
     <Compile Include="Concrete\ImmutableEntityRepository.cs" />
     <Compile Include="Contracts\IApprovableEntityRepository.cs" />
     <Compile Include="Contracts\IAuditableDbContext.cs" />
-    <Compile Include="Contracts\IDataContext.cs" />
     <Compile Include="Contracts\IDeletableEntityRepository.cs" />
     <Compile Include="Contracts\IImmutableEntityRepository.cs" />
     <Compile Include="Contracts\IOrderable.cs" />
     <Compile Include="Contracts\IPersister.cs" />
     <Compile Include="Contracts\IProductionData.cs" />
     <Compile Include="Contracts\IRepository.cs" />
+    <Compile Include="Mappings\ActiveTransactionsDataMap.cs" />
+    <Compile Include="Mappings\ApplicationUserParkMap.cs" />
+    <Compile Include="Mappings\ApplicationUserProcessUnitMap.cs" />
+    <Compile Include="Mappings\DailyProductTypeMap.cs" />
     <Compile Include="Identity\RoleStoreIntPk.cs" />
     <Compile Include="Identity\UserStoreIntPk.cs" />
     <Compile Include="Mappings\ApplicationUserMapping.cs" />
@@ -79,12 +91,17 @@
     <Compile Include="Mappings\EditReasonMap.cs" />
     <Compile Include="Mappings\FactoryMap.cs" />
     <Compile Include="Mappings\IkunkMap.cs" />
-    <Compile Include="Mappings\MeasurementPointMap.cs" />
-    <Compile Include="Mappings\MeasurementPointsProductsConfigMap.cs" />
+    <Compile Include="Mappings\MaxAsoMeasuringPointDataSequenceNumberMap.cs" />
     <Compile Include="Mappings\MeasurementPointsProductsDataMap.cs" />
+    <Compile Include="Mappings\MeasuringPointConfigMap.cs" />
+    <Compile Include="Mappings\MeasuringPointConfigsDataMap.cs" />
     <Compile Include="Mappings\ParkMap.cs" />
     <Compile Include="Mappings\ProductionPlanConfigMap.cs" />
-    <Compile Include="Mappings\ProductionShiftMap.cs" />
+    <Compile Include="Mappings\RelatedMeasuringPointConfigsMap.cs" />
+    <Compile Include="Mappings\RelatedTankConfigsMap.cs" />
+    <Compile Include="Mappings\RelatedUnitConfigsMap.cs" />
+    <Compile Include="Mappings\RelatedUnitDailyConfigMap.cs" />
+    <Compile Include="Mappings\ShiftMap.cs" />
     <Compile Include="Mappings\TankConfigMap.cs" />
     <Compile Include="Mappings\TankDataMap.cs" />
     <Compile Include="Mappings\MaterialTypeMap.cs" />
@@ -94,9 +111,9 @@
     <Compile Include="Mappings\ProductMap.cs" />
     <Compile Include="Mappings\ProductTypeMap.cs" />
     <Compile Include="Mappings\TankMasterProductMap.cs" />
-    <Compile Include="Mappings\TanksManualDataMap.cs" />
     <Compile Include="Mappings\TransportTypeMap.cs" />
     <Compile Include="Mappings\UnitConfigMap.cs" />
+    <Compile Include="Mappings\UnitConfigUnitDailyConfigMap.cs" />
     <Compile Include="Mappings\UnitsApprovedDailyDataMap.cs" />
     <Compile Include="Mappings\UnitsDailyConfigMap.cs" />
     <Compile Include="Mappings\UnitsApprovedDataMap.cs" />
@@ -104,7 +121,6 @@
     <Compile Include="Mappings\UnitsDataMap.cs" />
     <Compile Include="Mappings\UnitsManualDailyDataMap.cs" />
     <Compile Include="Mappings\UnitsManualDataMap.cs" />
-    <Compile Include="Mappings\UnitsInspectionDataMap.cs" />
     <Compile Include="Mappings\ZoneMap.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Concrete\ProductionData.cs" />
@@ -113,6 +129,7 @@
     <Compile Include="Migrations\ProductsDataImporter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Contracts\IDbContext.cs" />
+    <Compile Include="Mappings\ShiftProductTypeMap.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
@@ -128,6 +145,10 @@
     <ProjectReference Include="..\..\Common\CollectingProductionDataSystem.Infrastructure\CollectingProductionDataSystem.Infrastructure.csproj">
       <Project>{69debde6-b1ba-4a55-9570-ae7e6abb5f98}</Project>
       <Name>CollectingProductionDataSystem.Infrastructure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Constants\CollectingProductionDataSystem.Constants\CollectingProductionDataSystem.Constants.csproj">
+      <Project>{21B90CC4-73CC-4C1A-A2E3-FB6C7278BEB9}</Project>
+      <Name>CollectingProductionDataSystem.Constants</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Domain\CollectingProductionDataSystem.Models\CollectingProductionDataSystem.Models.csproj">
       <Project>{63cc73a0-f2c2-453d-a915-1913095f22fd}</Project>

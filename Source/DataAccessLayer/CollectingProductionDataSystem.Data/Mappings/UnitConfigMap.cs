@@ -18,35 +18,46 @@ namespace CollectingProductionDataSystem.Data.Mappings
             this.Property(t => t.PreviousShiftTag)
                 .HasMaxLength(50);
 
-            this.Property(t => t.CurrentInspectionDataTag)
-                .HasMaxLength(50);
-
             this.Property(t => t.Notes)
                 .HasMaxLength(200);
 
             // Table & Column Mappings
-            this.ToTable("UnitsConfigs");
+            this.ToTable("UnitConfigs");
 
             // Relationships
+            //this.HasMany(t => t.UnitsDailyConfigs)
+            //    .WithMany(t => t.UnitConfigs);
+            //this.HasRequired(t => t.UnitsDailyConfigs).WithMany().WillCascadeOnDelete(false);
+
             this.HasRequired(t => t.Direction)
-                .WithMany(t => t.Units)
+                .WithMany(t => t.UnitConfigs)
                 .HasForeignKey(d => d.DirectionId);
+
             this.HasRequired(t => t.MaterialType)
                 .WithMany(t => t.Units)
                 .HasForeignKey(d => d.MaterialTypeId);
+
             this.HasRequired(t => t.MeasureUnit)
                 .WithMany(t => t.UnitsConfigs)
                 .HasForeignKey(d => d.MeasureUnitId);
+
             this.HasRequired(t => t.ProcessUnit)
                 .WithMany(t => t.UnitsConfigs)
                 .HasForeignKey(d => d.ProcessUnitId);
-            this.HasOptional(t => t.Product)
-                .WithMany(t => t.Units)
-                .HasForeignKey(d => d.ProductId);
-            this.HasRequired(t => t.ProductType)
-                .WithMany(t => t.Units)
-                .HasForeignKey(d => d.ProductTypeId);
 
+            this.HasRequired(t => t.Product)
+                .WithMany(t => t.UnitConfigs)
+                .HasForeignKey(d => d.ProductId);
+
+            this.HasOptional(t => t.ShiftProductType)
+                .WithMany(t => t.UnitConfigs)
+                .HasForeignKey(d => d.ShiftProductTypeId);
+
+            this.HasMany(t => t.RelatedUnitConfigs);
+
+            this.HasMany(t => t.UnitConfigUnitDailyConfigs)
+                .WithRequired()
+                .HasForeignKey(x=>x.UnitConfigId);
         }
     }
 }

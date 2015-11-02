@@ -1,0 +1,197 @@
+﻿@using CollectingProductionDataSystem.Web.ViewModels.Transactions;
+@using Resources = App_GlobalResources.Resources;
+@model MeasuringPointsDataViewModel
+@{
+    Layout = "~/Views/Shared/_KendoLayoutWithSideBar.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-10">
+        <h2>@Resources.Layout.MeasuringPointsData</h2>
+    </div>
+    <div class="col-md-2">
+        <button id="excel-export" class="k-button k-button-icontext k-grid-excel pull-right head-button"><span class="k-icon k-i-excel"></span>Експорт в Excel</button>
+    </div>
+</div>
+@Html.ValidationSummary()
+@Html.AntiForgeryToken()
+<div class="row">
+    <div class="col-lg-12 col">
+        @(Html.Kendo().Grid<MeasuringPointsDataViewModel>()
+        .Name("measuringpoints")
+        .AutoBind(false)
+        .Columns(columns =>
+            {
+                columns.Bound(c => c.ProductId).Width(100);
+                columns.Bound(c => c.ProductName);
+                columns.Bound(c => c.AvtoQuantity).Format("{0:n2}").Width(140);
+                columns.Bound(c => c.JpQuantity).Format("{0:n2}").Width(140);
+                columns.Bound(c => c.SeaQuantity).Format("{0:n2}").Width(140);
+                columns.Bound(c => c.PipeQuantity).Format("{0:n2}").Width(160);
+                columns.Bound(c => c.TotalQuantity).Format("{0:n2}").Width(140);
+                columns.Bound(c => c.ActiveQuantity).Format("{0:n2}").Width(140);
+            })
+        .Pageable(pageable => pageable
+        .Refresh(true)
+        .PageSizes(new[] { 20, 50, 100 })
+        .ButtonCount(5))
+        .Sortable()
+        .Excel(excel => excel
+                    .FileName(@Resources.Layout.MeasuringPointsData + "_" + DateTime.Now + ".xlsx")
+            .Filterable(true)
+            .ProxyURL(Url.Action("Excel_Export_Save", "Tests", new { area = "" }))
+            .AllPages(true)
+        )
+        .Scrollable(scr => scr.Height(660))
+        .Filterable()
+        .DataSource(dataSource => dataSource
+            .Ajax()
+            .PageSize(50)
+            .ServerOperation(true)
+                    .Read(read => read.Action("ReadTransactionsDailyData", "TransactionsDaily", new { area = "DailyReporting" }).Data("sendDate"))
+        .Events(events =>
+        {
+            events.Error("error_handler");
+        }))
+
+        )
+    </div>
+</div>
+
+@* //Error window for kendo grid error event handler *@
+<div id="err-window" style="display:none">@Html.Partial("_KendoGridErrorWindow")</div>
+@* //Error window for kendo grid error event handler *@
+<div id="success-window" style="display:none">@Html.Partial("_SuccessWindow")</div>
+
+@section scripts{
+    <script src="~/Scripts/custom/sendAntiForgery.js"></script>
+    <script>
+        kendo.culture("@System.Threading.Thread.CurrentThread.CurrentCulture.Name");
+
+        function sendDirectionId() {
+            return { "flowDirection": $('input[name=directions]').val() }
+        }
+
+        function sendAntiForgery() {
+            return { "__RequestVerificationToken": $('input[name=__RequestVerificationToken]').val() }
+        }
+
+        var sendDate = function () {
+            var result = { "date": $('input[name=date]').val() };
+            $.extend(result, sendDirectionId());
+            //$.extend(result, sendShiftsOffset());
+            $.extend(result, sendAntiForgery());
+            return result;
+        }
+
+        function error_handler(e) {
+            if (e.errors) {
+                var message = "";
+                $.each(e.errors, function (key, value) {
+                    if ('errors' in value) {
+                        $.each(value.errors, function () {
+                            message += this + "\n";
+                        });
+                    }
+                });
+                $('pre#err-message').text(message);
+                $('div#err-window').data("kendoWindow").open();
+            }
+        }
+
+        function closeWindow(selector) {
+            $(selector).data("kendoWindow").close();
+        }
+
+        function recordTimeStampFilter(element) {
+            element.kendoDateTimePicker();
+        }
+
+        $(document).ready(function () {
+            $("#apply").click(function () {
+                var grid = $("#measuringpoints").data("kendoGrid");
+                grid.dataSource.read();
+                grid.refresh();
+                setGridColumnsHeaderText();
+            });
+
+            prepareWindow();
+            prepareSuccessWindow();
+            AttachEventToExportBtn("#excel-export", "#measuringpoints");
+        });
+
+        function setGridColumnsHeaderText() {
+            var ddl = $("#directions").data("kendoDropDownList");
+            var direction = ddl.value();
+            if (direction === "1") {
+                $("#measuringpoints thead [data-field=AvtoQuantity] .k-link").html("Експедиция Авто<br/>[тон]")
+                $("#measuringpoints thead [data-field=JpQuantity] .k-link").html("Експедиция Ж.П.<br/>[тон]")
+                $("#measuringpoints thead [data-field=SeaQuantity] .k-link").html("Експедиция Танкер<br/>[тон]")
+                $("#measuringpoints thead [data-field=PipeQuantity] .k-link").html("Експедиция Продуктопровод<br/>[тон]")
+                $("#measuringpoints thead [data-field=ActiveQuantity] .k-link").html("Незавършена Експедиция<br/>[тон]")
+            } else if (direction === "2") {
+                $("#measuringpoints thead [data-field=AvtoQuantity] .k-link").html("Доставено Авто<br/>[тон]")
+                $("#measuringpoints thead [data-field=JpQuantity] .k-link").html("Доставено Ж.П.<br/>[тон]")
+                $("#measuringpoints thead [data-field=SeaQuantity] .k-link").html("Доставено Танкер<br/>[тон]")
+                $("#measuringpoints thead [data-field=PipeQuantity] .k-link").html("Доставено Продуктопровод<br/>[тон]")
+                $("#measuringpoints thead [data-field=ActiveQuantity] .k-link").html("Незавършени Доставки<br/>[тон]")
+            }
+        }
+
+        function prepareWindow() {
+            var window = $('div#err-window')
+            window.kendoWindow({
+                width: "650px",
+                title: "Възникна грешка в приложението",
+                actions: ["Close"],
+                modal: true,
+                position: {
+                    top: "30%", // or "100px"
+                    left: "30%"
+                },
+                minHeight: 100,
+                maxHeight: 350
+            });
+        }
+
+        function prepareSuccessWindow() {
+            var window = $('div#success-window')
+            window.kendoWindow({
+                width: "650px",
+                title: "Успешна операция",
+                actions: ["Close"],
+                modal: true,
+                position: {
+                    top: "30%", // or "100px"
+                    left: "30%"
+                },
+                minHeight: 100,
+                maxHeight: 350
+            });
+        }
+
+        function AttachEventToExportBtn(buttonSelector, targetSelector) {
+            $(buttonSelector).click(function () {
+                $(targetSelector).data("kendoGrid").saveAsExcel();
+            });
+        }
+
+        var dataBound = function () {
+            dataView = this.dataSource.view();
+            for (var i = 0; i < dataView.length; i++) {
+                for (var j = 0; j < dataView[i].items.length; j++) {
+
+                    if (dataView[i].items[j].HasManualData === true) {
+                        var uid = dataView[i].items[j].uid;
+                        $("#" + $(this.element).attr('id') + " tbody").find("tr[data-uid=" + uid + "]").addClass("bg-danger");
+                    }
+                }
+            }
+        }
+
+    </script>
+}
+
+@section sidebar{
+    @Html.Partial("_MeasurementsPointsSideBar")
+}

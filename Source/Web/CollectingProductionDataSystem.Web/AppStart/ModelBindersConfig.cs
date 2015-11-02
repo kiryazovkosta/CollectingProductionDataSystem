@@ -7,6 +7,7 @@
     using System.Web.Mvc;
     using CollectingProductionDataSystem.Data.Concrete;
     using CollectingProductionDataSystem.Web.Areas.Administration.ViewModels;
+    using CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewModels;
     using CollectingProductionDataSystem.Web.Infrastructure.MadelBinders;
     using Ninject;
 
@@ -14,7 +15,7 @@
     {
         public static void RegisterModelBinders(ModelBinderDictionary binders, IDependencyResolver kernel) 
         {
-            binders.Add(typeof(EditUserViewModel), kernel.GetService<EditUserViewModelBinder>());
+            binders.Add(typeof(ShiftViewModel), kernel.GetService<TimeSpanModelBinder>());
         }
     }
 }

@@ -163,7 +163,7 @@
         [ChildActionOnly]
         public ActionResult GetGreetingMessage()
         {
-            var user = UserManager.FindById(User.Identity.GetUserId<int>());
+            var user = this.UserProfile;
             return PartialView((object)user.FullName);
         }
 

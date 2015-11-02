@@ -29,16 +29,20 @@
 
         public UnitManualDailyDataViewModel UnitsManualDailyData { get; set; }
 
+        [UIHint("Hidden")]
+        public bool IsEditable { get; set; }
+
         public void CreateMappings(IConfiguration configuration)
         {
             configuration.CreateMap<UnitsDailyData, UnitDailyDataViewModel>()
-                .ForMember(p => p.UnitsManualDailyData, opt => opt.MapFrom(p => p.UnitsManualDailyData ?? new UnitsManualDailyData() { Value = p.Value }));
+                .ForMember(p => p.UnitsManualDailyData, opt => opt.MapFrom(p => p.UnitsManualDailyData ?? new UnitsManualDailyData() { Value = p.Value }))
+                .ForMember(p=>p.IsEditable, opt=>opt.MapFrom(p=>p.UnitsDailyConfig.IsEditable));
         }
 
         public bool HasManualData { get; set; }
     }
 
-    public class UnitsDailyConfigDataViewModel : IMapFrom<UnitsDailyConfig>
+    public class UnitsDailyConfigDataViewModel : IMapFrom<UnitDailyConfig>
     {
         [Required]
         public int Id { get; set; }
@@ -51,20 +55,44 @@
         [Display(Name = "UnitName", ResourceType = typeof(Resources.Layout))]
         public string Name { get; set; }
 
-        [UIHint("Hidden")]
-        public int ProductTypeId { get; set; }
-
-        public ProductTypeUnitsDailyDataViewModel ProductType { get; set; }
+        //[UIHint("Hidden")]
+        //public int ProductId { get; set; }
+        //public DailyProductViewModel Product { get; set; }
 
         public int ProcessUnitId { get; set; }
-
         public ProcessUnitUnitsDailyDataViewModel ProcessUnit { get; set; }
 
         public int MeasureUnitId { get; set; }
         public MeasureUnitUnitsDailyDataViewModel MeasureUnit { get; set; }
-    }
 
-    public class ProductTypeUnitsDailyDataViewModel : IMapFrom<ProductType>
+        [UIHint("Hidden")]
+        public int  DailyProductTypeId { get; set; }
+        public DailyProductTypeViewModel DailyProductType { get; set; }
+
+        //public void CreateMappings(IConfiguration configuration)
+        //{
+        //    configuration.CreateMap<UnitsDailyConfig, UnitsDailyConfigDataViewModel>()
+        //        .ForMember(p => p.Product, opt => opt.MapFrom(p => p.Product ?? new Product() { Id = 0 }));
+        //}
+    }
+ 
+    //public class DailyProductViewModel:IMapFrom<Product>,IHaveCustomMappings
+    //{
+    //    public int Id { get; set; }
+    //    public int Code { get; set; }
+
+    //    public string Name { get; set; }
+
+    //    public DailyProductTypeViewModel ProductType { get; set; }
+
+    //    public void CreateMappings(IConfiguration configuration)
+    //    {
+    //        configuration.CreateMap<Product, DailyProductViewModel>()
+    //            .ForMember(p => p.ProductType, opt => opt.MapFrom(p => p.DailyProductType ?? new DailyProductType() { Id=0 }));
+    //    }
+    //}
+
+    public class DailyProductTypeViewModel : IMapFrom<DailyProductType>
     {
         [Required]
         public int Id { get; set; }

@@ -171,11 +171,11 @@
   <data name="FirstName" xml:space="preserve">
     <value>Име</value>
   </data>
-  <data name="FullName" xml:space="preserve">
+  <data name="FullUserName" xml:space="preserve">
     <value>Име, Презиме, Фамилия</value>
   </data>
   <data name="GreetingMessage" xml:space="preserve">
-    <value>Здравейте {0}!</value>
+    <value>Здравейте, {0}!</value>
   </data>
   <data name="Id" xml:space="preserve">
     <value>№</value>
@@ -334,33 +334,825 @@
     <value>Сменни данни за наличности по резервоари</value>
   </data>
   <data name="FreeWaterLevel" xml:space="preserve">
-    <value>Ниво вода на дъно</value>
+    <value>Ниво вода на дъно &lt;br/&gt;[см]</value>
   </data>
   <data name="LiquidLevel" xml:space="preserve">
-    <value>Ниво на течност</value>
+    <value>Ниво на течност &lt;br/&gt;[см]</value>
   </data>
   <data name="NetStandardVolume" xml:space="preserve">
-    <value>Нетен компенсиран обем</value>
+    <value>Нетен компенсиран обем &lt;br/&gt;[м3]</value>
   </data>
   <data name="ParkName" xml:space="preserve">
     <value>Парк</value>
   </data>
   <data name="ProductLevel" xml:space="preserve">
-    <value>Ниво на продукт</value>
+    <value>Ниво на продукт &lt;br/&gt;[см]</value>
   </data>
   <data name="ProductName" xml:space="preserve">
     <value>Продукт</value>
   </data>
   <data name="ReferenceDensity" xml:space="preserve">
-    <value>Компенсирана плътност</value>
+    <value>Компенсирана плътност &lt;br/&gt;[Кг/м3]</value>
   </data>
   <data name="TankName" xml:space="preserve">
     <value>Резервоар</value>
   </data>
   <data name="WeightInAir" xml:space="preserve">
-    <value>Маса във въздух</value>
+    <value>Маса във въздух &lt;br/&gt;[Тон]</value>
   </data>
   <data name="WeightInVacuum" xml:space="preserve">
-    <value>Маса във вакуум</value>
+    <value>Маса във вакуум &lt;br/&gt;[Тон]</value>
+  </data>
+  <data name="NomUploadTitle" xml:space="preserve">
+    <value>Зареждане на номенклатура от файл</value>
+  </data>
+  <data name="ChooseDirection" xml:space="preserve">
+    <value>Изберете посока...</value>
+  </data>
+  <data name="Direction" xml:space="preserve">
+    <value>Посока</value>
+  </data>
+  <data name="MeasuringPointsData" xml:space="preserve">
+    <value>Данни за експедирани и доставени нефтопродукти</value>
+  </data>
+  <data name="FullName" xml:space="preserve">
+    <value>Пълно име</value>
+  </data>
+  <data name="Plant" xml:space="preserve">
+    <value>Завод</value>
+  </data>
+  <data name="ShortName" xml:space="preserve">
+    <value>Съкратено име</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Наименование</value>
+  </data>
+  <data name="Park" xml:space="preserve">
+    <value>Парк</value>
+  </data>
+  <data name="AggregateGroup" xml:space="preserve">
+    <value>Група на формула</value>
+  </data>
+  <data name="AggregateParameter" xml:space="preserve">
+    <value>Параметри на формула</value>
+  </data>
+  <data name="CalculatedFormula" xml:space="preserve">
+    <value>Формула</value>
+  </data>
+  <data name="CurrentInspectionDataTag" xml:space="preserve">
+    <value>PHD-tag (моментна стойност)</value>
+  </data>
+  <data name="DailyProductType" xml:space="preserve">
+    <value>Тип на продукта при дневни справки</value>
+  </data>
+  <data name="EstimatedCompressibilityFactor" xml:space="preserve">
+    <value>Прогнозна свиваемост</value>
+  </data>
+  <data name="EstimatedDensity" xml:space="preserve">
+    <value>Прогнозна плътност</value>
+  </data>
+  <data name="EstimatedPressure" xml:space="preserve">
+    <value>Прогнозна налягане</value>
+  </data>
+  <data name="EstimatedTemperature" xml:space="preserve">
+    <value>Прогнозна температура</value>
+  </data>
+  <data name="IsCalculated" xml:space="preserve">
+    <value>Калкулируем</value>
+  </data>
+  <data name="IsEnergy" xml:space="preserve">
+    <value>Енергия</value>
+  </data>
+  <data name="IsInspectionPoint" xml:space="preserve">
+    <value>Моментна стойност</value>
+  </data>
+  <data name="IsMaterial" xml:space="preserve">
+    <value>Материал</value>
+  </data>
+  <data name="MaterialType" xml:space="preserve">
+    <value>Тип на материала</value>
+  </data>
+  <data name="MaximumCost" xml:space="preserve">
+    <value>Максимален разход</value>
+  </data>
+  <data name="Notes" xml:space="preserve">
+    <value>Забележки</value>
+  </data>
+  <data name="PreviousShiftTag" xml:space="preserve">
+    <value>PHD-tag (предходна смяна)</value>
+  </data>
+  <data name="Product" xml:space="preserve">
+    <value>Продукт</value>
+  </data>
+  <data name="ShiftProductType" xml:space="preserve">
+    <value>Тип на продукта при сменни справки</value>
+  </data>
+  <data name="ChooseMaterialType" xml:space="preserve">
+    <value>Избарете тип на материала...</value>
+  </data>
+  <data name="ChooseProduct" xml:space="preserve">
+    <value>Изберете продукт...</value>
+  </data>
+  <data name="ChooseMeasureUnit" xml:space="preserve">
+    <value>Изберете мерна единица...</value>
+  </data>
+  <data name="ChoosePlant" xml:space="preserve">
+    <value>Изберете завод ...</value>
+  </data>
+  <data name="ChooseProductType" xml:space="preserve">
+    <value>Изберете тип на продукта...</value>
+  </data>
+  <data name="TankMasterCode" xml:space="preserve">
+    <value>TankMaster Код</value>
+  </data>
+  <data name="AggregationCurrentLevel" xml:space="preserve">
+    <value>Агрегация на тек. ниво</value>
+  </data>
+  <data name="AggregationFormula" xml:space="preserve">
+    <value>Формула</value>
+  </data>
+  <data name="AggregationMembers" xml:space="preserve">
+    <value>Позиции за агрегиране</value>
+  </data>
+  <data name="Areas" xml:space="preserve">
+    <value>Области</value>
+  </data>
+  <data name="DailyProductType1" xml:space="preserve">
+    <value>Дневни типове на продукти</value>
+  </data>
+  <data name="DailyProductTypes" xml:space="preserve">
+    <value>Дневни типове на продукт</value>
+  </data>
+  <data name="Direction1" xml:space="preserve">
+    <value>Посоки на потоци</value>
+  </data>
+  <data name="Directions" xml:space="preserve">
+    <value>Посоки на движение</value>
+  </data>
+  <data name="EditReason1" xml:space="preserve">
+    <value>Причини за корекции</value>
+  </data>
+  <data name="Factories" xml:space="preserve">
+    <value>Производства</value>
+  </data>
+  <data name="Factory1" xml:space="preserve">
+    <value>Производства</value>
+  </data>
+  <data name="Ikunk" xml:space="preserve">
+    <value>Икунк</value>
+  </data>
+  <data name="Inventories" xml:space="preserve">
+    <value>Наличности</value>
+  </data>
+  <data name="MaterialType1" xml:space="preserve">
+    <value>Типове материали</value>
+  </data>
+  <data name="MaterialTypes" xml:space="preserve">
+    <value>Видове потоци</value>
+  </data>
+  <data name="MeasurementPointsProductsConfig" xml:space="preserve">
+    <value>Разходомери</value>
+  </data>
+  <data name="MeasurementUnits" xml:space="preserve">
+    <value>Мерни единици</value>
+  </data>
+  <data name="MeasureUnit1" xml:space="preserve">
+    <value>Мерна единица</value>
+  </data>
+  <data name="MeasuringPointConfig" xml:space="preserve">
+    <value>Измервателни точки</value>
+  </data>
+  <data name="Nomenclatures" xml:space="preserve">
+    <value>Номенклатури</value>
+  </data>
+  <data name="Park1" xml:space="preserve">
+    <value>Резервоарни паркове</value>
+  </data>
+  <data name="Plants" xml:space="preserve">
+    <value>Заводи</value>
+  </data>
+  <data name="ProcessUnit1" xml:space="preserve">
+    <value>Инсталации</value>
+  </data>
+  <data name="Product1" xml:space="preserve">
+    <value>Продукти</value>
+  </data>
+  <data name="ProductionPlanConfig" xml:space="preserve">
+    <value>Отборни данни на потоци</value>
+  </data>
+  <data name="Productions" xml:space="preserve">
+    <value>Произодствени данни</value>
+  </data>
+  <data name="ProductionShift1" xml:space="preserve">
+    <value>Смени</value>
+  </data>
+  <data name="Products" xml:space="preserve">
+    <value>Продукти</value>
+  </data>
+  <data name="ProductType1" xml:space="preserve">
+    <value>Типове продукти по ЗАДС</value>
+  </data>
+  <data name="ProductTypes" xml:space="preserve">
+    <value>Типове на продукт по ЗАДЦ</value>
+  </data>
+  <data name="ShiftProductType1" xml:space="preserve">
+    <value>Сменни типове на продукти</value>
+  </data>
+  <data name="ShiftProductTypes" xml:space="preserve">
+    <value>Сменни типове на продукт</value>
+  </data>
+  <data name="TankConfig" xml:space="preserve">
+    <value>Резервоари</value>
+  </data>
+  <data name="TankMasterProduct" xml:space="preserve">
+    <value>Продукти в Tank Master</value>
+  </data>
+  <data name="Transactions" xml:space="preserve">
+    <value>Експедиция и доставки</value>
+  </data>
+  <data name="TransportType" xml:space="preserve">
+    <value>Видове транспорт</value>
+  </data>
+  <data name="UnitConfig" xml:space="preserve">
+    <value>Измервателни позиции</value>
+  </data>
+  <data name="UnitsConfigs" xml:space="preserve">
+    <value>Сменни потоци по инсталации</value>
+  </data>
+  <data name="UnitsDailyConfig" xml:space="preserve">
+    <value>Дневни измервателни позиции</value>
+  </data>
+  <data name="UnitsDailyConfigs" xml:space="preserve">
+    <value>Дневни потоци по инсталации</value>
+  </data>
+  <data name="Zone" xml:space="preserve">
+    <value>Зони</value>
+  </data>
+  <data name="IsEditable" xml:space="preserve">
+    <value>Редактируема</value>
+  </data>
+  <data name="BeginMinutes" xml:space="preserve">
+    <value>Начална минута</value>
+  </data>
+  <data name="BeginTime" xml:space="preserve">
+    <value>Начален час</value>
+  </data>
+  <data name="EndTime" xml:space="preserve">
+    <value>Краен час</value>
+  </data>
+  <data name="OffsetMinutes" xml:space="preserve">
+    <value>Отместване в минути</value>
+  </data>
+  <data name="ReadOffset" xml:space="preserve">
+    <value>Време за прочитане</value>
+  </data>
+  <data name="ReadPollTimeSlot" xml:space="preserve">
+    <value>Интервал за прочитане</value>
+  </data>
+  <data name="AvtoQuantity" xml:space="preserve">
+    <value>Експедиция Авто&lt;br&gt;[Тон]</value>
+  </data>
+  <data name="ProductId" xml:space="preserve">
+    <value>Номер на продукт</value>
+  </data>
+  <data name="JpQuantity" xml:space="preserve">
+    <value>Експедиция ЖП&lt;br/&gt;[Тон]</value>
+  </data>
+  <data name="PipeQuantity" xml:space="preserve">
+    <value>Експедиция Продуктопровод&lt;br/&gt;[Тон]</value>
+  </data>
+  <data name="SeaQuantity" xml:space="preserve">
+    <value>Експедиция Танкер&lt;br/&gt;[Тон]</value>
+  </data>
+  <data name="TotalQuantity" xml:space="preserve">
+    <value>Общо за деня&lt;br/&gt;[Тон]</value>
+  </data>
+  <data name="AvailableRoomHighExtreme" xml:space="preserve">
+    <value>Максимум на свободен обем в м3</value>
+  </data>
+  <data name="AvailableRoomLowExtreme" xml:space="preserve">
+    <value>Минимум на свободен обем в м3</value>
+  </data>
+  <data name="AverageTemperatureHighExtreme" xml:space="preserve">
+    <value>Максимална средна температура</value>
+  </data>
+  <data name="AverageTemperatureLowExtreme" xml:space="preserve">
+    <value>Минимална средна температура</value>
+  </data>
+  <data name="ControlPoint" xml:space="preserve">
+    <value>Контролна точка</value>
+  </data>
+  <data name="CorrectionFactor" xml:space="preserve">
+    <value>Коефициент за корекция на ниво</value>
+  </data>
+  <data name="Days" xml:space="preserve">
+    <value>Дни</value>
+  </data>
+  <data name="FreeWaterLevelHighExtreme" xml:space="preserve">
+    <value>Максимално свободно нивото на водата</value>
+  </data>
+  <data name="FreeWaterLevelLowExtreme" xml:space="preserve">
+    <value>Минимално свободно нивото на водата</value>
+  </data>
+  <data name="FreeWaterVolumeHighExtreme" xml:space="preserve">
+    <value>Максимален свободен обем на водата</value>
+  </data>
+  <data name="FreeWaterVolumeLowExtreme" xml:space="preserve">
+    <value>Минимален свободен обем на водата</value>
+  </data>
+  <data name="GrossObservableVolumeHighExtreme" xml:space="preserve">
+    <value>Максимален брутен наблюдаван обем</value>
+  </data>
+  <data name="GrossObservableVolumeLowExtreme" xml:space="preserve">
+    <value>Минимален брутен наблюдаван обем</value>
+  </data>
+  <data name="GrossStandardVolumeHighExtreme" xml:space="preserve">
+    <value>Максимален брутен стандартен обем</value>
+  </data>
+  <data name="GrossStandardVolumeLowExtreme" xml:space="preserve">
+    <value>Минимален брутен стандартен обем</value>
+  </data>
+  <data name="Hours" xml:space="preserve">
+    <value>Часове</value>
+  </data>
+  <data name="LiquidLevelHighExtreme" xml:space="preserve">
+    <value>Максимално ниво на течност</value>
+  </data>
+  <data name="LiquidLevelLowExtreme" xml:space="preserve">
+    <value>Минимално ниво на течност</value>
+  </data>
+  <data name="MaxVolumeHighExtreme" xml:space="preserve">
+    <value>Максимум на максимален обем</value>
+  </data>
+  <data name="MaxVolumeLowExtreme" xml:space="preserve">
+    <value>Минимум на максимален обем</value>
+  </data>
+  <data name="Minutes" xml:space="preserve">
+    <value>Мин.</value>
+  </data>
+  <data name="NetStandardVolumeHighExtreme" xml:space="preserve">
+    <value>Максимален нетен стандартен обем</value>
+  </data>
+  <data name="NetStandardVolumeLowExtreme" xml:space="preserve">
+    <value>Минимален нетен стандартен обем</value>
+  </data>
+  <data name="ObservableDensityHighExtreme" xml:space="preserve">
+    <value>Максимална наблюдавана плътност</value>
+  </data>
+  <data name="ObservableDensityLowExtreme" xml:space="preserve">
+    <value>Минимална наблюдавана плътност</value>
+  </data>
+  <data name="Percentages" xml:space="preserve">
+    <value>Проценти</value>
+  </data>
+  <data name="PhdTagAvailableRoom" xml:space="preserve">
+    <value>PhdTag свободен обем в м3</value>
+  </data>
+  <data name="PhdTagAverageTemperature" xml:space="preserve">
+    <value>PhdTag средна температура</value>
+  </data>
+  <data name="PhdTagFreeWaterLevel" xml:space="preserve">
+    <value>PhdTag свободно нивото на водата</value>
+  </data>
+  <data name="PhdTagFreeWaterVolume" xml:space="preserve">
+    <value>PhdTag свободен обем на водата</value>
+  </data>
+  <data name="PhdTagGrossObservableVolume" xml:space="preserve">
+    <value>PhdTag брутен наблюдаван обем</value>
+  </data>
+  <data name="PhdTagGrossStandardVolume" xml:space="preserve">
+    <value>PhdTag брутен стандартен обем</value>
+  </data>
+  <data name="PhdTagLiquidLevel" xml:space="preserve">
+    <value>PhdTag ниво на течност</value>
+  </data>
+  <data name="PhdTagMaxVolume" xml:space="preserve">
+    <value>PhdTag максимален обем</value>
+  </data>
+  <data name="PhdTagNetStandardVolume" xml:space="preserve">
+    <value>PhdTag нетен стандартен обем</value>
+  </data>
+  <data name="PhdTagObservableDensity" xml:space="preserve">
+    <value>PhdTag наблюдавана плътност</value>
+  </data>
+  <data name="PhdTagProductId" xml:space="preserve">
+    <value>PhdTag Id на продукта</value>
+  </data>
+  <data name="PhdTagProductLevel" xml:space="preserve">
+    <value>PhdTag ниво на продукт</value>
+  </data>
+  <data name="PhdTagProductName" xml:space="preserve">
+    <value>PhdTag Име на продукта</value>
+  </data>
+  <data name="PhdTagReferenceDensity" xml:space="preserve">
+    <value>PhdTag референтна плътност</value>
+  </data>
+  <data name="PhdTagTotalObservableVolume" xml:space="preserve">
+    <value>PhdTag общ наблюдаван обем</value>
+  </data>
+  <data name="PhdTagWeightInAir" xml:space="preserve">
+    <value>PhdTag тегло във въздух</value>
+  </data>
+  <data name="PhdTagWeightInVacuum" xml:space="preserve">
+    <value>PhdTag тегло във вакуум</value>
+  </data>
+  <data name="ProductLevelHighExtreme" xml:space="preserve">
+    <value>Максимално ниво на продукт</value>
+  </data>
+  <data name="ProductLevelLowExtreme" xml:space="preserve">
+    <value>Минимално ниво на продукт</value>
+  </data>
+  <data name="QuantityFactFormula" xml:space="preserve">
+    <value>Формула за количество по факт</value>
+  </data>
+  <data name="QuantityFactMembers" xml:space="preserve">
+    <value>Елементи на формула по факт</value>
+  </data>
+  <data name="QuantityPlanFormula" xml:space="preserve">
+    <value>Формула за количество по план</value>
+  </data>
+  <data name="QuantityPlanMembers" xml:space="preserve">
+    <value>Елементи на формула по план</value>
+  </data>
+  <data name="ReferenceDensityHighExtreme" xml:space="preserve">
+    <value>Максимална референтна плътност</value>
+  </data>
+  <data name="ReferenceDensityLowExtreme" xml:space="preserve">
+    <value>Минимална референтна плътност</value>
+  </data>
+  <data name="TotalObservableVolumeHighExtreme" xml:space="preserve">
+    <value>Максимален общ наблюдаван обем</value>
+  </data>
+  <data name="TotalObservableVolumeLowExtreme" xml:space="preserve">
+    <value>Минимален общ наблюдаван обем</value>
+  </data>
+  <data name="UnusableResidueLevel" xml:space="preserve">
+    <value>Ниво на мъртъв остатък</value>
+  </data>
+  <data name="WeightInAirHighExtreme" xml:space="preserve">
+    <value>Максимално тегло във въздух</value>
+  </data>
+  <data name="WeightInAirLowExtreme" xml:space="preserve">
+    <value>Минимално тегло във въздух</value>
+  </data>
+  <data name="WeightInVacuumHighExtreme" xml:space="preserve">
+    <value>Максимално тегло във вакуум</value>
+  </data>
+  <data name="WeightInVacuumLowExtreme" xml:space="preserve">
+    <value>Минимално тегло във вакуум</value>
+  </data>
+  <data name="ActiveQuantity" xml:space="preserve">
+    <value>Незавършена експедиция &lt;br/&gt;[Тон]</value>
+  </data>
+  <data name="ChoosePark" xml:space="preserve">
+    <value>Изберете парк...</value>
+  </data>
+  <data name="Shift1QuantityValue" xml:space="preserve">
+    <value>Количество за период&lt;br/&gt; 05:00-13:00</value>
+  </data>
+  <data name="Shift2QuantityValue" xml:space="preserve">
+    <value>Количество за период&lt;br/&gt; 13:00-21:00</value>
+  </data>
+  <data name="Shift3QuantityValue" xml:space="preserve">
+    <value>Количество за период&lt;br/&gt; 21:00-05:00</value>
+  </data>
+  <data name="TotalQuantityValue" xml:space="preserve">
+    <value>Количество за деня</value>
+  </data>
+  <data name="UnitsReportData" xml:space="preserve">
+    <value>Сменни данни за измервателни позиции - отчет</value>
+  </data>
+  <data name="RelatedUnitConfigs" xml:space="preserve">
+    <value>Свързани измервателни позиции</value>
+  </data>
+  <data name="RelatedUnitDailyConfigs" xml:space="preserve">
+    <value>Свързани дневни измервателни позиции</value>
+  </data>
+  <data name="UnitConfigUnitDailyConfig" xml:space="preserve">
+    <value>Свързани сменни измервателни позиции</value>
+  </data>
+  <data name="IsTotal" xml:space="preserve">
+    <value>Тотализатор</value>
+  </data>
+  <data name="EntityId" xml:space="preserve">
+    <value>запис номер</value>
+  </data>
+  <data name="EntityName" xml:space="preserve">
+    <value>от таблица</value>
+  </data>
+  <data name="FieldName" xml:space="preserve">
+    <value>Поле</value>
+  </data>
+  <data name="HistoryOfRecord" xml:space="preserve">
+    <value>История на</value>
+  </data>
+  <data name="NewValue" xml:space="preserve">
+    <value>Нова стойност</value>
+  </data>
+  <data name="OldValue" xml:space="preserve">
+    <value>Стара стойност</value>
+  </data>
+  <data name="OperationType" xml:space="preserve">
+    <value>Операция</value>
+  </data>
+  <data name="TimeStamp" xml:space="preserve">
+    <value>Време на регистрация</value>
+  </data>
+  <data name="UserChanger" xml:space="preserve">
+    <value>Потребител</value>
+  </data>
+  <data name="ChooseIkunk" xml:space="preserve">
+    <value>Изберете ИКУНК ...</value>
+  </data>
+  <data name="ActiveTransactionMassReverseTag" xml:space="preserve">
+    <value>PHD  таг за за маса на доставен продукт в активна транзакция</value>
+  </data>
+  <data name="ActiveTransactionMassTag" xml:space="preserve">
+    <value>PHD  таг за за маса на експедиран продукт в активна транзакция</value>
+  </data>
+  <data name="ActiveTransactionProductTag" xml:space="preserve">
+    <value>PHD  таг за код на продукта в активната транзакция</value>
+  </data>
+  <data name="ActiveTransactionStatusTag" xml:space="preserve">
+    <value>PHD  таг за активна транзакция</value>
+  </data>
+  <data name="AverageObservableDensityHighExtreme" xml:space="preserve">
+    <value>Средна некомпенсирана плътност - горна граница</value>
+  </data>
+  <data name="AverageObservableDensityLowExtreme" xml:space="preserve">
+    <value>Средна некомпенсирана плътност - долна граница</value>
+  </data>
+  <data name="AverageObservableDensityReverseHighExtreme" xml:space="preserve">
+    <value>Средна некомпенсирана плътност за обратно количество - горна граница</value>
+  </data>
+  <data name="AverageObservableDensityReverseLowExtreme" xml:space="preserve">
+    <value>Средна некомпенсирана плътност за обратно количество - долна граница</value>
+  </data>
+  <data name="AverageReferenceDensityHighExtreme" xml:space="preserve">
+    <value>Средна компенсирана плътност - горна граница</value>
+  </data>
+  <data name="AverageReferenceDensityLowExtreme" xml:space="preserve">
+    <value>Средна компенсирана плътност - долна граница</value>
+  </data>
+  <data name="AverageReferenceDensityReverseHighExtreme" xml:space="preserve">
+    <value>Средна компенсирана плътност за обратно количество - горна граница</value>
+  </data>
+  <data name="AverageReferenceDensityReverseLowExtreme" xml:space="preserve">
+    <value>Средна компенсирана плътност за обратно количество - долна граница</value>
+  </data>
+  <data name="AverageTemperatureHighExtreme1" xml:space="preserve">
+    <value>Средна температура - горна граница</value>
+  </data>
+  <data name="AverageTemperatureLowExtreme1" xml:space="preserve">
+    <value>Средна температура - долна граница</value>
+  </data>
+  <data name="AverageTemperatureReverseHighExtreme" xml:space="preserve">
+    <value>Средна температура за обратно количество - горна граница</value>
+  </data>
+  <data name="AverageTemperatureReverseLowExtreme" xml:space="preserve">
+    <value>Средна температура за обратно количество - долна граница</value>
+  </data>
+  <data name="ChooseTransportType" xml:space="preserve">
+    <value>Изберете тип на транспорта ...</value>
+  </data>
+  <data name="ChooseZone" xml:space="preserve">
+    <value>Изберете зона...</value>
+  </data>
+  <data name="ControlPoint1" xml:space="preserve">
+    <value>Контролна точка на прибора</value>
+  </data>
+  <data name="DirectionId" xml:space="preserve">
+    <value>Посока на точката за измерване</value>
+  </data>
+  <data name="EngineeringUnitDensity" xml:space="preserve">
+    <value>Инженерни единици - плътност</value>
+  </data>
+  <data name="EngineeringUnitMass" xml:space="preserve">
+    <value>Инженерни единици - маса</value>
+  </data>
+  <data name="EngineeringUnitTemperature" xml:space="preserve">
+    <value>Инженерни единици - температура</value>
+  </data>
+  <data name="EngineeringUnitVolume" xml:space="preserve">
+    <value>Инженерни единици - обем</value>
+  </data>
+  <data name="FactorDensity" xml:space="preserve">
+    <value>Коефициент на преобразуване - плътност</value>
+  </data>
+  <data name="FactorMass" xml:space="preserve">
+    <value>Коефициент на преобразуване - маса</value>
+  </data>
+  <data name="FactorTemperature" xml:space="preserve">
+    <value>Коефициент на преобразуване - температура</value>
+  </data>
+  <data name="FactorVolume" xml:space="preserve">
+    <value>Коефициент на преобразуване - обем</value>
+  </data>
+  <data name="FlowDirection" xml:space="preserve">
+    <value>Посока на точката за измерване (експедиция - 1, доставка - 2) ( Не играе )</value>
+  </data>
+  <data name="GrossObservableVolumeHighExtreme1" xml:space="preserve">
+    <value>Количество за транзакция (некомпенсиран обем) - горна граница</value>
+  </data>
+  <data name="GrossObservableVolumeLowExtreme1" xml:space="preserve">
+    <value>Количество за транзакция (некомпенсиран обем) - долна граница</value>
+  </data>
+  <data name="GrossObservableVolumeReverseHighExtreme" xml:space="preserve">
+    <value>Обратно количество за транзакция (некомпенсиран обем) - горна граница</value>
+  </data>
+  <data name="GrossObservableVolumeReverseLowExtreme" xml:space="preserve">
+    <value>Обратно количество за транзакция (некомпенсиран обем) - долна граница</value>
+  </data>
+  <data name="GrossStandardVolumeHighExtreme1" xml:space="preserve">
+    <value>Количество за транзакция (компенсиран обем) - горна граница</value>
+  </data>
+  <data name="GrossStandardVolumeLowExtreme1" xml:space="preserve">
+    <value>Количество за транзакция (компенсиран обем) - долна граница</value>
+  </data>
+  <data name="GrossStandardVolumeReverseHighExtreme" xml:space="preserve">
+    <value>Обратно количество за транзакция (компенсиран обем) - горна граница</value>
+  </data>
+  <data name="GrossStandardVolumeReverseLowExtreme" xml:space="preserve">
+    <value>Обратно количество за транзакция (компенсиран обем) - долна граница</value>
+  </data>
+  <data name="IsInternalPoint" xml:space="preserve">
+    <value>Измервателната точка е за вътрешна употреба</value>
+  </data>
+  <data name="MassCorrectionFactor" xml:space="preserve">
+    <value>Коригиращ коефициент за маса</value>
+  </data>
+  <data name="MassHighExtreme" xml:space="preserve">
+    <value>Количество за транзакция (маса) - горна граница</value>
+  </data>
+  <data name="MassLowExtreme" xml:space="preserve">
+    <value>Количество за транзакция (маса) - долна граница</value>
+  </data>
+  <data name="MassReverseHighExtreme" xml:space="preserve">
+    <value>Обратно количество за транзакция (маса) - горна граница</value>
+  </data>
+  <data name="MassReverseLowExtreme" xml:space="preserve">
+    <value>Обратно количество за транзакция (маса) - долна граница</value>
+  </data>
+  <data name="MeasuringPointName" xml:space="preserve">
+    <value>Наименование на измервателна точка</value>
+  </data>
+  <data name="RelatedMeasuringPointConfigs" xml:space="preserve">
+    <value>Свързани измервателни точки</value>
+  </data>
+  <data name="TotalizerBeginCommonMassHighExtreme" xml:space="preserve">
+    <value>Начално показание на общ брояч (маса) - горна граница</value>
+  </data>
+  <data name="TotalizerBeginCommonMassLowExtreme" xml:space="preserve">
+    <value>Начално показание на общ брояч (маса) - долна граница</value>
+  </data>
+  <data name="TotalizerBeginCommonMassReverseHighExtreme" xml:space="preserve">
+    <value>Начално показание на обратен общ брояч (маса) - горна граница</value>
+  </data>
+  <data name="TotalizerBeginCommonMassReverseLowExtreme" xml:space="preserve">
+    <value>Начално показание на обратен общ брояч (маса) - долна граница</value>
+  </data>
+  <data name="TotalizerBeginGrossObservableCommonVolumeHighExtreme" xml:space="preserve">
+    <value>Начално показание на общ брояч (некомпенсиран обем) - горна граница</value>
+  </data>
+  <data name="TotalizerBeginGrossObservableCommonVolumeLowExtreme" xml:space="preserve">
+    <value>Начално показание на общ брояч (некомпенсиран обем) - долна граница</value>
+  </data>
+  <data name="TotalizerBeginGrossObservableCommonVolumeReverseHighExtreme" xml:space="preserve">
+    <value>Начално показание на обратен общ брояч (некомпенсиран обем) - горна граница</value>
+  </data>
+  <data name="TotalizerBeginGrossObservableCommonVolumeReverseLowExtreme" xml:space="preserve">
+    <value>Начално показание на обратен общ брояч (некомпенсиран обем) - долна граница</value>
+  </data>
+  <data name="TotalizerBeginGrossObservableVolumeHighExtreme" xml:space="preserve">
+    <value>Начално показание на брояч (некомпенсиран обем) - горна граница</value>
+  </data>
+  <data name="TotalizerBeginGrossObservableVolumeLowExtreme" xml:space="preserve">
+    <value>Начално показание на брояч (некомпенсиран обем) - долна граница</value>
+  </data>
+  <data name="TotalizerBeginGrossObservableVolumeReverseHighExtreme" xml:space="preserve">
+    <value>Начално показание на обратен брояч (некомпенсиран обем) - горна граница</value>
+  </data>
+  <data name="TotalizerBeginGrossObservableVolumeReverseLowExtreme" xml:space="preserve">
+    <value>Начално показание на обратен брояч (некомпенсиран обем) - долна граница</value>
+  </data>
+  <data name="TotalizerBeginGrossStandardCommonVolumeHighExtreme" xml:space="preserve">
+    <value>Начално показание на общ брояч (компенсиран обем) - горна граница</value>
+  </data>
+  <data name="TotalizerBeginGrossStandardCommonVolumeLowExtreme" xml:space="preserve">
+    <value>Начално показание на общ брояч (компенсиран обем) - долна граница</value>
+  </data>
+  <data name="TotalizerBeginGrossStandardCommonVolumeReverseHighExtreme" xml:space="preserve">
+    <value>Начално показание на обратен общ брояч (компенсиран обем) - горна граница</value>
+  </data>
+  <data name="TotalizerBeginGrossStandardCommonVolumeReverseLowExtreme" xml:space="preserve">
+    <value>Начално показание на обратен общ брояч (компенсиран обем) - долна граница</value>
+  </data>
+  <data name="TotalizerBeginGrossStandardVolumeHighExtreme" xml:space="preserve">
+    <value>Начално показание на брояч (компенсиран обем) - горна граница</value>
+  </data>
+  <data name="TotalizerBeginGrossStandardVolumeLowExtreme" xml:space="preserve">
+    <value>Начално показание на брояч (компенсиран обем) - долна граница</value>
+  </data>
+  <data name="TotalizerBeginGrossStandardVolumeReverseHighExtreme" xml:space="preserve">
+    <value>Начално показание на обратен брояч (компенсиран обем) - горна граница</value>
+  </data>
+  <data name="TotalizerBeginGrossStandardVolumeReverseLowExtreme" xml:space="preserve">
+    <value>Начално показание на обратен брояч (компенсиран обем) - долна граница</value>
+  </data>
+  <data name="TotalizerBeginMassHighExtreme" xml:space="preserve">
+    <value>Начално показание на брояч (маса) - горна граница</value>
+  </data>
+  <data name="TotalizerBeginMassLowExtreme" xml:space="preserve">
+    <value>Начално показание на брояч (маса) - долна граница</value>
+  </data>
+  <data name="TotalizerBeginMassReverseHighExtreme" xml:space="preserve">
+    <value>Начално показание на обратен брояч (маса) - горна граница</value>
+  </data>
+  <data name="TotalizerBeginMassReverseLowExtreme" xml:space="preserve">
+    <value>Начално показание на обратен брояч (маса) - долна граница</value>
+  </data>
+  <data name="TotalizerCurrentValueTag" xml:space="preserve">
+    <value>PHD таг за моментна стойност на разходомер</value>
+  </data>
+  <data name="TotalizerEndCommonMassHighExtreme" xml:space="preserve">
+    <value>Начално показание на общ брояч (маса) - горна граница</value>
+  </data>
+  <data name="TotalizerEndCommonMassLowExtreme" xml:space="preserve">
+    <value>Начално показание на общ брояч (маса) - долна граница</value>
+  </data>
+  <data name="TotalizerEndCommonMassReverseHighExtreme" xml:space="preserve">
+    <value>Начално показание на общ брояч (маса) - горна граница</value>
+  </data>
+  <data name="TotalizerEndCommonMassReverseLowExtreme" xml:space="preserve">
+    <value>Начално показание на общ брояч (маса) - долна граница</value>
+  </data>
+  <data name="TotalizerEndGrossObservableCommonVolumeHighExtreme" xml:space="preserve">
+    <value>Крайно показание на общ брояч (некомпенсиран обем) - горна граница</value>
+  </data>
+  <data name="TotalizerEndGrossObservableCommonVolumeLowExtreme" xml:space="preserve">
+    <value>Крайно показание на общ брояч (некомпенсиран обем) - долна граница</value>
+  </data>
+  <data name="TotalizerEndGrossObservableCommonVolumeReverseHighExtreme" xml:space="preserve">
+    <value>Крайно показание на обратен общ брояч (некомпенсиран обем) - горна граница</value>
+  </data>
+  <data name="TotalizerEndGrossObservableCommonVolumeReverseLowExtreme" xml:space="preserve">
+    <value>Крайно показание на обратен общ брояч (некомпенсиран обем) - долна граница</value>
+  </data>
+  <data name="TotalizerEndGrossObservableVolumeHighExtreme" xml:space="preserve">
+    <value>Крайно показание на брояч (некомпенсиран обем) - горна граница</value>
+  </data>
+  <data name="TotalizerEndGrossObservableVolumeLowExtreme" xml:space="preserve">
+    <value>Крайно показание на брояч (некомпенсиран обем) - долна граница</value>
+  </data>
+  <data name="TotalizerEndGrossObservableVolumeReverseHighExtreme" xml:space="preserve">
+    <value>Крайно показание на обратен брояч (некомпенсиран обем) - горна граница</value>
+  </data>
+  <data name="TotalizerEndGrossObservableVolumeReverseLowExtreme" xml:space="preserve">
+    <value>Крайно показание на обратен брояч (некомпенсиран обем) - долна граница</value>
+  </data>
+  <data name="TotalizerEndGrossStandardCommonVolumeHighExtreme" xml:space="preserve">
+    <value>Крайно показание на общ брояч (компенсиран обем) - горна граница</value>
+  </data>
+  <data name="TotalizerEndGrossStandardCommonVolumeLowExtreme" xml:space="preserve">
+    <value>Крайно показание на общ брояч (компенсиран обем) - долна граница</value>
+  </data>
+  <data name="TotalizerEndGrossStandardCommonVolumeReverseHighExtreme" xml:space="preserve">
+    <value>Крайно показание на обратен общ брояч (компенсиран обем) - горна граница</value>
+  </data>
+  <data name="TotalizerEndGrossStandardCommonVolumeReverseLowExtreme" xml:space="preserve">
+    <value>Крайно показание на обратен общ брояч (компенсиран обем) - долна граница</value>
+  </data>
+  <data name="TotalizerEndGrossStandardVolumeHighExtreme" xml:space="preserve">
+    <value>Крайно показание на брояч (компенсиран обем) - горна граница</value>
+  </data>
+  <data name="TotalizerEndGrossStandardVolumeLowExtreme" xml:space="preserve">
+    <value>Крайно показание на брояч (компенсиран обем) - долна граница</value>
+  </data>
+  <data name="TotalizerEndGrossStandardVolumeReverseHighExtreme" xml:space="preserve">
+    <value>Крайно показание на обратен брояч (компенсиран обем) - горна граница</value>
+  </data>
+  <data name="TotalizerEndGrossStandardVolumeReverseLowExtreme" xml:space="preserve">
+    <value>Крайно показание на обратен брояч (компенсиран обем) - долна граница</value>
+  </data>
+  <data name="TotalizerEndMassHighExtreme" xml:space="preserve">
+    <value>Начално показание на брояч (маса) - горна граница</value>
+  </data>
+  <data name="TotalizerEndMassLowExtreme" xml:space="preserve">
+    <value>Начално показание на брояч (маса) - долна граница</value>
+  </data>
+  <data name="TotalizerEndMassReverseHighExtreme" xml:space="preserve">
+    <value>Начално показание на брояч (маса) - горна граница</value>
+  </data>
+  <data name="TotalizerEndMassReverseLowExtreme" xml:space="preserve">
+    <value>Начално показание на брояч (маса) - долна граница</value>
+  </data>
+  <data name="TransportTypeId" xml:space="preserve">
+    <value>Вид на транспорта</value>
+  </data>
+  <data name="WeightScaleNumber" xml:space="preserve">
+    <value>Номер на везна</value>
+  </data>
+  <data name="ZoneId" xml:space="preserve">
+    <value>Идентификатор на зона</value>
   </data>
 </root>

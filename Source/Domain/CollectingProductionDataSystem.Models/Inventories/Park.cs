@@ -11,11 +11,12 @@ namespace CollectingProductionDataSystem.Models.Inventories
     public partial class Park : DeletableEntity, IEntity
     {
         private ICollection<TankConfig> tankConfigs;
-        private ICollection<ApplicationUser> users;
+        private ICollection<ApplicationUserPark> applicationUserParks;
 
         public Park()
         {
             this.tankConfigs = new HashSet<TankConfig>();
+            this.applicationUserParks = new HashSet<ApplicationUserPark>();
         }
 
         public int Id { get; set; }
@@ -28,10 +29,16 @@ namespace CollectingProductionDataSystem.Models.Inventories
             set { this.tankConfigs = value; } 
         }
 
-        public virtual ICollection<ApplicationUser> Users 
+        //public virtual ICollection<ApplicationUser> Users 
+        //{
+        //    get { return this.users; }
+        //    set { this.users = value; }
+        //}
+
+        public virtual ICollection<ApplicationUserPark> ApplicationUserParks 
         {
-            get { return this.users; }
-            set { this.users = value; }
+            get { return this.applicationUserParks; }
+            set { this.applicationUserParks = value; }
         }
     }
 }

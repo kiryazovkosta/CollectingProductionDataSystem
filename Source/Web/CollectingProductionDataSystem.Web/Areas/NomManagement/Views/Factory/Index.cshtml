@@ -1,0 +1,76 @@
+﻿@using CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewModels;
+
+@(Html.Kendo()
+      .Grid<CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewModels.FactoryViewModel>()
+      .Name("grid")
+      .Columns(columns =>
+      {
+          columns.Bound(c => c.ShortName)
+              .ClientTemplate(
+                Ajax.AuthorizedAjaxActionLinkOrText("#=data.ShortName#", "Index", "History",
+                                                new AjaxOptions() { HttpMethod = "Get", OnSuccess = "showRecordHistoriModal" },
+                                                new { area = "RecordsHistory", id = "#=data.id#", entityName = "Factory" },
+                                                new { data_ajax_mode = "replace", data_ajax_update = @"\#record-history-body" })
+                                                .ToHtmlString());
+          columns.Bound(c => c.FullName);
+          columns.ForeignKey(c => c.PlantId, (System.Collections.IEnumerable)ViewData["plants"], "Id", "FullName").EditorTemplateName("PlantViewModel");
+          columns.Command(command => { command.Edit(); command.Destroy(); }).Width(230);
+      })
+      .ToolBar(toolbar =>
+{
+    toolbar.Create();
+    toolbar.Excel();
+})
+      .Editable(editable => editable.Mode(GridEditMode.InLine))
+      .Pageable(pageable => pageable
+.Refresh(true)
+.PageSizes(new[] { 20, 50, 100 })
+.ButtonCount(5)
+)
+      .Sortable(sortable =>
+{
+    sortable.SortMode(GridSortMode.SingleColumn);
+})
+      .Filterable()
+      .Scrollable(scrol => scrol.Height(620))
+      .Scrollable()
+      .DataSource(dataSource => dataSource
+.Ajax()
+.PageSize(20)
+.Model(model =>
+{
+    model.Id(p => p.Id);
+})
+.Read(read => read.Action("Read", "Factory", new { area = "NomManagement" }).Data("sendAntiForgery"))
+.Create(create => create.Action("Create", "Factory", new { area = "NomManagement" }).Data("sendAntiForgery"))
+.Update(update => update.Action("Update", "Factory", new { area = "NomManagement" }).Data("sendAntiForgery"))
+.Destroy(destroy => destroy.Action("Destroy", "Factory", new { area = "NomManagement" }).Data("sendAntiForgery"))
+.Events(events =>
+{
+    events.Error("error_handler");
+})
+      )
+           .Events(ev => ev.DataBound("deletableDataBound"))
+      )
+@section scripts{
+    <script>
+
+        plantFilter = function (element) {
+            element.kendoDropDownList({
+                dataTextField: "FullName",
+                dataValueField: "Id",
+                dataSource: {
+                    transport: {
+                        read: {
+                            url: "@Url.Action("Read", "Plant", new { area = "NomManagement" })",
+                            type: 'POST',
+                            dataType: 'jsonp',
+                            data: sendAntiForgery(),
+                        }
+                    }
+                },
+                optionLabel: "--Select Value--"
+            });
+        }
+    </script>
+}

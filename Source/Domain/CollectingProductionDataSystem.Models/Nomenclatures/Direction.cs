@@ -9,15 +9,26 @@ namespace CollectingProductionDataSystem.Models.Nomenclatures
 
     public partial class Direction: DeletableEntity, IEntity
     {
+        private ICollection<UnitConfig> unitConfigs;
+        private ICollection<MeasuringPointConfig> measuringPointConfigs;
+
         public Direction()
         {
-            this.Units = new HashSet<UnitConfig>();
-            this.MeasurementPointsProductsConfigs = new HashSet<MeasurementPointsProductsConfig>();
+            this.unitConfigs = new HashSet<UnitConfig>();
+            this.measuringPointConfigs = new HashSet<MeasuringPointConfig>();
         }
 
         public int Id { get; set; }
         public string Name { get; set; }
-        public virtual ICollection<UnitConfig> Units { get; set; }
-        public virtual ICollection<MeasurementPointsProductsConfig> MeasurementPointsProductsConfigs { get; set; }
+        public virtual ICollection<UnitConfig> UnitConfigs 
+        {
+            get { return this.unitConfigs; }
+            set { this.unitConfigs = value; } 
+        }
+        public virtual ICollection<MeasuringPointConfig> MeasuringPointConfigs 
+        {
+            get { return this.measuringPointConfigs; }
+            set { this.measuringPointConfigs = value; } 
+        }
     }
 }

@@ -4,7 +4,7 @@ namespace CollectingProductionDataSystem.Data.Mappings
     using System.Data.Entity.ModelConfiguration;
     using CollectingProductionDataSystem.Models.Productions;
 
-    public class UnitsDailyConfigMap : EntityTypeConfiguration<UnitsDailyConfig>
+    public class UnitsDailyConfigMap : EntityTypeConfiguration<UnitDailyConfig>
     {
         public UnitsDailyConfigMap()
         {
@@ -29,18 +29,30 @@ namespace CollectingProductionDataSystem.Data.Mappings
                 .HasMaxLength(2048);
 
             // Table & Column Mappings
-            this.ToTable("UnitsDailyConfigs");
+            this.ToTable("UnitDailyConfigs");
+
+            //this.HasMany(t => t.UnitsConfigs)
+            //    .WithMany(t => t.UnitsDailyConfigs);
 
             // Relationships
             this.HasRequired(t => t.MeasureUnit)
                 .WithMany(t => t.UnitsDailyConfigs)
                 .HasForeignKey(d => d.MeasureUnitId);
+
             this.HasRequired(t => t.ProcessUnit)
                 .WithMany(t => t.UnitsDailyConfigs)
                 .HasForeignKey(d => d.ProcessUnitId);
-            this.HasRequired(t => t.ProductType)
+
+            this.HasRequired(t => t.DailyProductType)
                 .WithMany(t => t.UnitsDailyConfigs)
-                .HasForeignKey(d => d.ProductTypeId);
+                .HasForeignKey(d => d.DailyProductTypeId);
+
+            this.HasMany(t => t.RelatedUnitDailyConfigs);
+
+            this.HasMany(t => t.UnitConfigUnitDailyConfigs)
+                .WithRequired()
+                .HasForeignKey(x=>x.UnitDailyConfigId);
+
         }
     }
 }

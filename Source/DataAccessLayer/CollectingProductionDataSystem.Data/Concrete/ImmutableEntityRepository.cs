@@ -1,11 +1,14 @@
 ﻿namespace CollectingProductionDataSystem.Data.Concrete
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using CollectingProductionDataSystem.Data.Contracts;
     using System.Data.Entity;
+    using CollectingProductionDataSystem.Infrastructure.Extentions;
     using CollectingProductionDataSystem.Models.Contracts;
     using System.Data.Entity.Infrastructure;
+    using EntityFramework.BulkInsert.Extensions;
 
     public class ImmutableEntityRepository<T> : IImmutableEntityRepository<T> where T : class, IEntity
     {
@@ -50,6 +53,14 @@
         {
  	        DbEntityEntry entry = this.Context.Entry(entity);
             entry.State = EntityState.Detached;
+        }
+        /// <summary>
+        /// Bulks the insert.
+        /// </summary>
+        /// <param name="entities">The entities.</param>
+        public void BulkInsert(IEnumerable<T> entities, string userName)
+        {
+            this.Context.BulkInsert(entities, userName);
         }
     }
 }

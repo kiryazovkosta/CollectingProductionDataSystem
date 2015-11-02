@@ -120,4 +120,37 @@
   <data name="Email" xml:space="preserve">
     <value>Invalid e-mail</value>
   </data>
+  <data name="FileNotFound" xml:space="preserve">
+    <value>The file {0} not found.</value>
+  </data>
+  <data name="FileProcessError" xml:space="preserve">
+    <value>There  is an error durring file processing {0}.</value>
+  </data>
+  <data name="InvalidParameter" xml:space="preserve">
+    <value>Invalid parameter {0}. Value must be between {1} and {2}.</value>
+  </data>
+  <data name="InvalidPassword" xml:space="preserve">
+    <value>Invalid Password</value>
+  </data>
+  <data name="InvalidRecord" xml:space="preserve">
+    <value>Invalid Record on line {0}.</value>
+  </data>
+  <data name="InvalidRecordType" xml:space="preserve">
+    <value>Invalid Record Type {0}.</value>
+  </data>
+  <data name="InvalidUser" xml:space="preserve">
+    <value>The user you are trying to update doesn't exist.</value>
+  </data>
+  <data name="InvalidUserId" xml:space="preserve">
+    <value>Invalid Id of user must be 0. Actual Id is {0}.</value>
+  </data>
+  <data name="InvalidUserNameModification" xml:space="preserve">
+    <value>Modification of UserName is not permitted</value>
+  </data>
+  <data name="ShiftNotReady" xml:space="preserve">
+    <value>The data for {0} are not approved.</value>
+  </data>
+  <data name="UserAllreadyExists" xml:space="preserve">
+    <value>The user {0} cannot be created. The user with the same UserName allready exists.</value>
+  </data>
 </root>

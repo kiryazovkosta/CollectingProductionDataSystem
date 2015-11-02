@@ -11,7 +11,8 @@
     using CollectingProductionDataSystem.Models.Inventories;
     using CollectingProductionDataSystem.Models.Nomenclatures;
     using CollectingProductionDataSystem.Models.Productions;
-using CollectingProductionDataSystem.Models.Transactions;
+    using CollectingProductionDataSystem.Models.Transactions;
+    using CollectingProductionDataSystem.Models.UtilityEntities;
 
     public class ProductionData : IProductionData
     {
@@ -19,7 +20,7 @@ using CollectingProductionDataSystem.Models.Transactions;
 
         private readonly Dictionary<Type, object> repositories = new Dictionary<Type, object>();
 
-        public ProductionData(IPersister persisterParam) 
+        public ProductionData(IPersister persisterParam)
             : this(new CollectingDataSystemDbContext(persisterParam))
         {
         }
@@ -61,7 +62,7 @@ using CollectingProductionDataSystem.Models.Transactions;
             }
         }
 
-        public IDeletableEntityRepository<UnitConfig> Units
+        public IDeletableEntityRepository<UnitConfig> UnitConfigs
         {
             get
             {
@@ -101,14 +102,6 @@ using CollectingProductionDataSystem.Models.Transactions;
             }
         }
 
-        public IImmutableEntityRepository<UnitsInspectionData> UnitsInspectionData
-        {
-            get
-            {
-                return this.GetImmutableEntityRepository<UnitsInspectionData>();
-            }
-        }
-
         public IDeletableEntityRepository<Area> Areas
         {
             get
@@ -133,11 +126,11 @@ using CollectingProductionDataSystem.Models.Transactions;
             }
         }
 
-        public IDeletableEntityRepository<UnitsDailyConfig> UnitsDailyConfigs
+        public IDeletableEntityRepository<UnitDailyConfig> UnitsDailyConfigs
         {
             get
             {
-                return this.GetDeletableEntityRepository<UnitsDailyConfig>();
+                return this.GetDeletableEntityRepository<UnitDailyConfig>();
             }
         }
 
@@ -149,19 +142,11 @@ using CollectingProductionDataSystem.Models.Transactions;
             }
         }
 
-        public IApprovableEntityRepository<MeasurementPointsProductsData> MeasurementPointsProductsDatas
+        public IDeletableEntityRepository<MeasuringPointProductsData> MeasurementPointsProductsDatas
         {
             get
             {
-                return this.GetApprovableEntityRepository<MeasurementPointsProductsData>();
-            }
-        }
-
-        public IDeletableEntityRepository<TanksManualData> TanksManualData
-        {
-            get
-            {
-                return this.GetDeletableEntityRepository<TanksManualData>();
+                return this.GetDeletableEntityRepository<MeasuringPointProductsData>();
             }
         }
 
@@ -181,6 +166,22 @@ using CollectingProductionDataSystem.Models.Transactions;
             }
         }
 
+        public IDeletableEntityRepository<ShiftProductType> ShiftProductTypes
+        {
+            get
+            {
+                return this.GetDeletableEntityRepository<ShiftProductType>();
+            }
+        }
+
+        public IDeletableEntityRepository<DailyProductType> DailyProductTypes
+        {
+            get
+            {
+                return this.GetDeletableEntityRepository<DailyProductType>();
+            }
+        }
+
         public IDeletableEntityRepository<Ikunk> Ikunks
         {
             get
@@ -194,22 +195,6 @@ using CollectingProductionDataSystem.Models.Transactions;
             get
             {
                 return this.GetDeletableEntityRepository<Zone>();
-            }
-        }
-
-        public IDeletableEntityRepository<MeasurementPoint> MeasurementPoints
-        {
-            get
-            {
-                return this.GetDeletableEntityRepository<MeasurementPoint>();
-            }
-        }
-
-        public IDeletableEntityRepository<MeasurementPointsProductsConfig> MeasurementPointsProductConfigs
-        {
-            get
-            {
-                return this.GetDeletableEntityRepository<MeasurementPointsProductsConfig>();
             }
         }
 
@@ -234,14 +219,6 @@ using CollectingProductionDataSystem.Models.Transactions;
             get
             {
                 return this.GetDeletableEntityRepository<TankMasterProduct>();
-            }
-        }
-
-        public IDeletableEntityRepository<ProductionShift> ProductionShifts
-        {
-            get
-            {
-                return this.GetDeletableEntityRepository<ProductionShift>();
             }
         }
 
@@ -285,9 +262,97 @@ using CollectingProductionDataSystem.Models.Transactions;
             }
         }
 
+        public IDeletableEntityRepository<MeasuringPointConfig> MeasuringPointConfigs
+        {
+            get
+            {
+                return this.GetDeletableEntityRepository<MeasuringPointConfig>();
+            }
+        }
+
+        public IDeletableEntityRepository<MeasuringPointsConfigsData> MeasuringPointsConfigsDatas
+        {
+            get
+            {
+                return this.GetDeletableEntityRepository<MeasuringPointsConfigsData>();
+            }
+        }
+
+        public IDeletableEntityRepository<MaxAsoMeasuringPointDataSequenceNumber> MaxAsoMeasuringPointDataSequenceNumberMap
+        {
+            get
+            {
+                return this.GetDeletableEntityRepository<MaxAsoMeasuringPointDataSequenceNumber>();
+            }
+        }
+
+        public IDeletableEntityRepository<Direction> Directions
+        {
+            get
+            {
+                return this.GetDeletableEntityRepository<Direction>();
+            }
+        }
+
+        public IDeletableEntityRepository<MaterialType> MaterialTypes
+        {
+            get
+            {
+                return this.GetDeletableEntityRepository<MaterialType>();
+            }
+        }
+
+        public IDeletableEntityRepository<MeasureUnit> MeasureUnits
+        {
+            get
+            {
+                return this.GetDeletableEntityRepository<MeasureUnit>();
+            }
+        }
+
+        public IDeletableEntityRepository<ActiveTransactionsData> ActiveTransactionsDatas
+        {
+            get
+            {
+                return this.GetDeletableEntityRepository<ActiveTransactionsData>();
+            }
+        }
+
+        public IRepository<UnitConfigUnitDailyConfig> UnitConfigUnitDailyConfigs
+        {
+            get
+            {
+                return this.GetRepository<UnitConfigUnitDailyConfig>();
+            }
+        }
+
+        public IRepository<AuditLogRecord> AuditLogRecords
+        {
+            get
+            {
+                return this.GetRepository<AuditLogRecord>();
+            }
+        }
+
         public IEfStatus SaveChanges(string userName)
         {
-            return this.context.SaveChangesWithValidation(userName);    
+            return this.context.SaveChangesWithValidation(userName);
+        }
+
+        public IDeletableEntityRepository<Shift> Shifts
+        {
+            get
+            {
+                return this.GetDeletableEntityRepository<Shift>();
+            }
+        }
+
+        public IRepository<RelatedUnitConfigs> RelatedUnitConfigs
+        {
+            get
+            {
+                return this.GetRepository<RelatedUnitConfigs>();
+            }
         }
 
         public void Dispose()
@@ -353,11 +418,11 @@ using CollectingProductionDataSystem.Models.Transactions;
         /// Gets or sets the db context.
         /// </summary>
         /// <value>The db context.</value>
-        public IDbContext DbContext 
+        public IDbContext DbContext
         {
-            get 
+            get
             {
-                return this.context; 
+                return this.context;
             }
         }
 

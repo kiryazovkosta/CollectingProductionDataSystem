@@ -12,34 +12,46 @@ namespace CollectingProductionDataSystem.Models.Nomenclatures
     {
         private ICollection<TankData> tanksDatas;
         private ICollection<UnitConfig> unitConfigs;
-        private ICollection<MeasurementPointsProductsConfig> measurementPointsProductsConfigs;
+        private ICollection<UnitDailyConfig> unitsDailyConfigs;
+        private ICollection<MeasuringPointsConfigsData> measuringPointsConfigsDatas;
 
         public Product()
         {
             this.tanksDatas = new HashSet<TankData>();
             this.unitConfigs = new HashSet<UnitConfig>();
-            this.measurementPointsProductsConfigs = new HashSet<MeasurementPointsProductsConfig>();
+            this.unitsDailyConfigs = new HashSet<UnitDailyConfig>();
+            this.measuringPointsConfigsDatas = new HashSet<MeasuringPointsConfigsData>();
         }
 
         public int Id { get; set; }
         public int Code { get; set; }
         public string Name { get; set; }
         public int ProductTypeId { get; set; }
+        public virtual TankMasterProduct TankMasterProduct { get; set; }
+        public virtual ProductType ProductType { get; set; }
+
         public virtual ICollection<TankData> TanksDatas 
         {
             get { return this.tanksDatas; }
             set { this.tanksDatas = value; }
         }
-        public virtual ProductType ProductType { get; set; }
-        public virtual ICollection<UnitConfig> Units 
+
+        public virtual ICollection<UnitConfig> UnitConfigs 
         {
             get { return this.unitConfigs; }
             set { this.unitConfigs = value; }
         }
-        public virtual ICollection<MeasurementPointsProductsConfig> MeasurementPointsProductsConfigs 
+
+        public virtual ICollection<UnitDailyConfig> UnitsDailyConfigs
         {
-            get { return this.measurementPointsProductsConfigs; }
-            set { this.measurementPointsProductsConfigs = value; }
+            get { return this.unitsDailyConfigs; }
+            set { this.unitsDailyConfigs = value; }
+        }
+
+        public virtual ICollection<MeasuringPointsConfigsData> MeasuringPointsConfigsDatas 
+        {
+            get { return this.measuringPointsConfigsDatas; }
+            set { this.measuringPointsConfigsDatas = value; }
         }
     }
 }

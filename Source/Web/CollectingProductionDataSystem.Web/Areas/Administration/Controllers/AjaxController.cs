@@ -40,6 +40,8 @@ namespace CollectingProductionDataSystem.Web.Areas.Administration.Controllers
         public async Task<JsonResult> GetAllUsers([DataSourceRequest]DataSourceRequest request)
         {
             var rolsStore = data.Roles.All();
+            var parksStore = data.Parks.All();
+            var processUnitsStore = data.ProcessUnits.All();
             var users = await (data.Users.All().Select(u => new EditUserViewModel
             {
                 Id = u.Id,
@@ -50,8 +52,9 @@ namespace CollectingProductionDataSystem.Web.Areas.Administration.Controllers
                 LastName = u.LastName,
                 Occupation = u.Occupation,
                 UserRoles = rolsStore.Where(rol => rol.Users.Any(x => x.UserId == u.Id)).Select(x => new RoleViewModel { Id = x.Id, Name = x.Name, Description = x.Description }),
-                ProcessUnits = u.ProcessUnits.Select(x => new ProcessUnitViewModel { Id = x.Id, Name = x.ShortName, FullName = x.FullName }),
-                Parks = u.Parks.Select(x => new ParkViewModel { Id = x.Id, Name = x.Name }),
+                ProcessUnits = processUnitsStore.Where(proc => proc.ApplicationUserProcessUnits.Any(x => x.ApplicationUserId == u.Id)).Select(x => new ProcessUnitViewModel { Id = x.Id, Name = x.FullName }),
+                Parks = parksStore.Where(park => park.ApplicationUserParks.Any(x => x.ApplicationUserId == u.Id)).Select(x => new ParkViewModel { Id = x.Id, Name = x.Name}),
+                //u.Parks.Select(x => new ParkViewModel { Id = x.Id, Name = x.Name }),
             })).ToListAsync();
             return Json(users.ToDataSourceResult(request, ModelState));
 

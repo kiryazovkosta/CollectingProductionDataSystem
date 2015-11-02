@@ -69,11 +69,12 @@
             var rolsStore = data.Roles.All();
                 var user = this.data.Users.All()
                     .Include(x => x.Roles)
-                    .Include(x => x.ProcessUnits)
-                    .Include(x => x.Parks)
+                    .Include(x => x.ApplicationUserProcessUnits.Select(y=>y.ProcessUnit))
+                    .Include(x => x.ApplicationUserParks.Select(y=>y.Park))
                     .FirstOrDefault(x => x.UserName == userName);
                 var roles = user.Roles.Select(x=>x.RoleId).ToList();
                 user.UserRoles = rolsStore.Where(rol => roles.Any(x => rol.Id == x)).ToList();
+                
                 this.UserProfile= new UserProfile();
                 Mapper.Map(user, this.UserProfile);
                 context.HttpContext.Cache.Add(userName + "_profile", this.UserProfile,null,DateTime.Now.AddMinutes(2), Cache.NoSlidingExpiration, CacheItemPriority.High, RemovedCallback);
@@ -90,5 +91,10 @@
             Debug.WriteLine(string.Format("-------------------------------------------- Cache expired {0} because {1} ------------------------------------------------------", key,reason));
         }
 
+        protected override void Dispose(bool disposing)
+        {
+            data.Dispose();
+            base.Dispose(disposing);
+        }
     }
 }

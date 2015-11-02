@@ -1,6 +1,7 @@
 ﻿namespace CollectingProductionDataSystem.Data.Contracts
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
     using CollectingProductionDataSystem.Models.Contracts;
@@ -22,5 +23,7 @@
         void Detach(T entity);
 
         void UpdateValues(Expression<Func<T, object>> entity);
+
+        void BulkInsert(IEnumerable<T> entities, string userName);
     }
 }

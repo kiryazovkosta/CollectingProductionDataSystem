@@ -2,12 +2,14 @@
 {
     using System;
     using System.Data.Entity;
+    using System.Data.Entity.ModelConfiguration.Conventions;
     using System.Linq;
 
     public static class ModelBingConfig
     {
         internal static void RegisterMappings(DbModelBuilder modelBuilder)
         {
+            modelBuilder.Conventions.Remove<ManyToManyCascadeDeleteConvention>();
             modelBuilder.Configurations.Add(new AreaMap());
             modelBuilder.Configurations.Add(new AuditLogRecordMap());
             modelBuilder.Configurations.Add(new DirectionMap());
@@ -25,10 +27,8 @@
             modelBuilder.Configurations.Add(new UnitConfigMap());
             modelBuilder.Configurations.Add(new UnitsDataMap());
             modelBuilder.Configurations.Add(new UnitsManualDataMap());
-            modelBuilder.Configurations.Add(new UnitsInspectionDataMap());
             modelBuilder.Configurations.Add(new IkunkMap());
             modelBuilder.Configurations.Add(new ZoneMap());
-            modelBuilder.Configurations.Add(new MeasurementPointsProductsConfigMap());
             modelBuilder.Configurations.Add(new TransportTypeMap());
             modelBuilder.Configurations.Add(new UnitsDailyConfigMap());
             modelBuilder.Configurations.Add(new TankMasterProductMap());
@@ -38,6 +38,19 @@
             modelBuilder.Configurations.Add(new UnitsApprovedDataMap());
             modelBuilder.Configurations.Add(new UnitsApprovedDailyDataMap());
             modelBuilder.Configurations.Add(new ProductionPlanConfigMap());
+            modelBuilder.Configurations.Add(new MeasuringPointConfigMap());
+            modelBuilder.Configurations.Add(new MeasuringPointConfigsDataMap());
+            modelBuilder.Configurations.Add(new MaxAsoMeasuringPointDataSequenceNumberMap());
+            modelBuilder.Configurations.Add(new ShiftProductTypeMap());
+            modelBuilder.Configurations.Add(new DailyProductTypeMap());
+            modelBuilder.Configurations.Add(new ActiveTransactionsDataMap());
+            modelBuilder.Configurations.Add(new RelatedMeasuringPointConfigsMap());
+            modelBuilder.Configurations.Add(new RelatedTankConfigsMap());
+            modelBuilder.Configurations.Add(new RelatedUnitConfigsMap());
+            modelBuilder.Configurations.Add(new RelatedUnitDailyConfigMap());
+            modelBuilder.Configurations.Add(new UnitConfigUnitDailyConfigMap());
+            modelBuilder.Configurations.Add(new ApplicationUserParkMap());
+            modelBuilder.Configurations.Add(new ApplicationUserProcessUnitMap());
         }
     }
 }

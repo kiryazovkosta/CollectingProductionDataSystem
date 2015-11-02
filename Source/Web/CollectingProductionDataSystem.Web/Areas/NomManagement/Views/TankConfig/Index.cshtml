@@ -1,0 +1,101 @@
+﻿﻿﻿@(Html.Kendo().Grid<CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewModels.TankConfigViewModel>()
+      .Name("grid")
+      .Columns(columns =>
+      {
+          columns.Bound(c => c.TankName)
+              .ClientTemplate(Ajax.AuthorizedAjaxActionLinkOrText("#=data.TankName#", "Index", "History",
+                new AjaxOptions() { HttpMethod = "Get", OnSuccess = "showRecordHistoriModal" },
+                new { area = "RecordsHistory", id = "#=data.id#", entityName = "TankConfig" },
+                new { data_ajax_mode = "replace", data_ajax_update = @"\#record-history-body" })
+                .ToHtmlString())
+                .Width(200);
+          columns.Bound(c => c.ControlPoint).Width(200);          
+          columns.ForeignKey(c => c.ParkId, (System.Collections.IEnumerable)ViewData["parks"], "Id", "Name").EditorTemplateName("ParkViewModel").Width(200);
+          columns.Bound(c => c.PhdTagProductId).Width(200);
+          columns.Bound(c => c.PhdTagProductName).Width(200);
+          columns.Bound(c => c.PhdTagLiquidLevel).Width(200);
+          columns.Bound(c => c.LiquidLevelLowExtreme).Width(200);
+          columns.Bound(c => c.LiquidLevelHighExtreme).Width(200);
+          columns.Bound(c => c.PhdTagProductLevel).Width(200);
+          columns.Bound(c => c.ProductLevelLowExtreme).Width(200);
+          columns.Bound(c => c.ProductLevelHighExtreme).Width(200);
+          columns.Bound(c => c.PhdTagFreeWaterLevel).Width(200);
+          columns.Bound(c => c.FreeWaterLevelLowExtreme).Width(200);
+          columns.Bound(c => c.FreeWaterLevelHighExtreme).Width(200);
+          columns.Bound(c => c.PhdTagFreeWaterVolume).Width(200);
+          columns.Bound(c => c.FreeWaterVolumeLowExtreme).Width(200);
+          columns.Bound(c => c.FreeWaterVolumeHighExtreme).Width(200);
+          columns.Bound(c => c.PhdTagObservableDensity).Width(200);
+          columns.Bound(c => c.ObservableDensityLowExtreme).Width(200);
+          columns.Bound(c => c.ObservableDensityHighExtreme).Width(200);
+          columns.Bound(c => c.PhdTagReferenceDensity).Width(200);
+          columns.Bound(c => c.ReferenceDensityLowExtreme).Width(200);
+          columns.Bound(c => c.ReferenceDensityHighExtreme).Width(200);
+          columns.Bound(c => c.PhdTagGrossObservableVolume).Width(200);
+          columns.Bound(c => c.GrossObservableVolumeLowExtreme).Width(200);
+          columns.Bound(c => c.GrossObservableVolumeHighExtreme).Width(200);
+          columns.Bound(c => c.PhdTagGrossStandardVolume).Width(200);
+          columns.Bound(c => c.GrossStandardVolumeLowExtreme).Width(200);
+          columns.Bound(c => c.GrossStandardVolumeHighExtreme).Width(200);
+          columns.Bound(c => c.PhdTagNetStandardVolume).Width(200);
+          columns.Bound(c => c.NetStandardVolumeLowExtreme).Width(200);
+          columns.Bound(c => c.NetStandardVolumeHighExtreme).Width(200);
+          columns.Bound(c => c.PhdTagWeightInAir).Width(200);
+          columns.Bound(c => c.WeightInAirLowExtreme).Width(200);
+          columns.Bound(c => c.WeightInAirHighExtreme).Width(200);
+          columns.Bound(c => c.PhdTagAverageTemperature).Width(200);
+          columns.Bound(c => c.AverageTemperatureLowExtreme).Width(200);
+          columns.Bound(c => c.AverageTemperatureHighExtreme).Width(200);
+          columns.Bound(c => c.PhdTagTotalObservableVolume).Width(200);
+          columns.Bound(c => c.TotalObservableVolumeLowExtreme).Width(200);
+          columns.Bound(c => c.TotalObservableVolumeHighExtreme).Width(200);
+          columns.Bound(c => c.PhdTagWeightInVacuum).Width(200);
+          columns.Bound(c => c.WeightInVacuumLowExtreme).Width(200);
+          columns.Bound(c => c.WeightInVacuumHighExtreme).Width(200);
+          columns.Bound(c => c.PhdTagMaxVolume).Width(200);
+          columns.Bound(c => c.MaxVolumeLowExtreme).Width(200);
+          columns.Bound(c => c.MaxVolumeHighExtreme).Width(200);
+          columns.Bound(c => c.PhdTagAvailableRoom).Width(200);
+          columns.Bound(c => c.AvailableRoomLowExtreme).Width(200);
+          columns.Bound(c => c.AvailableRoomHighExtreme).Width(200);
+          columns.Bound(c => c.UnusableResidueLevel).Width(200);
+          columns.Bound(c => c.CorrectionFactor).Width(200);
+          columns.Command(command => { command.Edit(); command.Destroy(); }).Width(230);
+      })
+      .ToolBar(toolbar =>
+      {
+          toolbar.Create();
+          toolbar.Excel();
+      })
+      .Editable(editable => editable.Mode(GridEditMode.InLine))
+          .Pageable(pageable => pageable
+              .Refresh(true)
+              .PageSizes(new[] { 20, 50, 100 })
+              .ButtonCount(5)
+          )
+          .Sortable(sortable =>
+          {
+              sortable.SortMode(GridSortMode.SingleColumn);
+          })
+          .Filterable()
+          .Scrollable(scrol => scrol.Height(620))
+      .Scrollable()
+      .DataSource(dataSource => dataSource
+          .Ajax()
+          .PageSize(20)
+          .Model(model => model.Id(p => p.Id))
+              .Read(read => read.Action("Read", "TankConfig", new { area = "NomManagement" }).Data("sendAntiForgery"))
+              .Create(create => create.Action("Create", "TankConfig", new { area = "NomManagement" }).Data("sendAntiForgery"))
+              .Update(update => update.Action("Update", "TankConfig", new { area = "NomManagement" }).Data("sendAntiForgery"))
+              .Destroy(destroy => destroy.Action("Destroy", "TankConfig", new { area = "NomManagement" }).Data("sendAntiForgery"))
+          .Events(events =>
+                {
+                    events.Error("error_handler");
+                })
+          )
+          .Events(ev => ev.DataBound("deletableDataBound"))
+)
+
+
+
+

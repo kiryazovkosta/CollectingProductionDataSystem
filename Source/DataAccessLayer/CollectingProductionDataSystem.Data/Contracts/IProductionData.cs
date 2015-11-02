@@ -6,6 +6,7 @@
     using CollectingProductionDataSystem.Models.Nomenclatures;
     using CollectingProductionDataSystem.Models.Productions;
     using CollectingProductionDataSystem.Models.Transactions;
+    using CollectingProductionDataSystem.Models.UtilityEntities;
 
     public interface IProductionData : IDisposable
     {
@@ -17,7 +18,7 @@
 
         IDeletableEntityRepository<ProcessUnit> ProcessUnits { get; }
 
-        IDeletableEntityRepository<UnitConfig> Units { get; }
+        IDeletableEntityRepository<UnitConfig> UnitConfigs { get; }
 
         IApprovableEntityRepository<UnitsData> UnitsData { get; }
 
@@ -27,33 +28,29 @@
 
         IDeletableEntityRepository<UnitsManualDailyData> UnitsManualDailyDatas { get; }
 
-        IImmutableEntityRepository<UnitsInspectionData> UnitsInspectionData { get; }
-
         IDeletableEntityRepository<Area> Areas { get; }
 
         IDeletableEntityRepository<Park> Parks { get; }
 
         IDeletableEntityRepository<TankConfig> Tanks { get; }
 
-        IDeletableEntityRepository<UnitsDailyConfig> UnitsDailyConfigs { get; }
+        IDeletableEntityRepository<UnitDailyConfig> UnitsDailyConfigs { get; }
 
         IApprovableEntityRepository<TankData> TanksData { get; }
 
-        IApprovableEntityRepository<MeasurementPointsProductsData> MeasurementPointsProductsDatas { get; }
-
-        IDeletableEntityRepository<TanksManualData> TanksManualData { get; }
+        IDeletableEntityRepository<MeasuringPointProductsData> MeasurementPointsProductsDatas { get; }
 
         IDeletableEntityRepository<Product> Products { get; }
 
         IDeletableEntityRepository<ProductType> ProductTypes { get; }
 
+        IDeletableEntityRepository<ShiftProductType> ShiftProductTypes { get; }
+
+        IDeletableEntityRepository<DailyProductType> DailyProductTypes { get; }
+
         IDeletableEntityRepository<Ikunk> Ikunks { get; }
 
         IDeletableEntityRepository<Zone> Zones { get; }
-
-        IDeletableEntityRepository<MeasurementPoint> MeasurementPoints { get; }
-
-        IDeletableEntityRepository<MeasurementPointsProductsConfig> MeasurementPointsProductConfigs { get; }
 
         IDeletableEntityRepository<TransportType> TransportTypes { get; }
 
@@ -61,17 +58,37 @@
 
         IDeletableEntityRepository<TankMasterProduct> TankMasterProducts { get; }
 
-        IDeletableEntityRepository<ProductionShift> ProductionShifts { get; }
-
         IDeletableEntityRepository<UnitsApprovedData> UnitsApprovedDatas { get; }
 
-        IDeletableEntityRepository<ApplicationUser> Users{get;}
+        IDeletableEntityRepository<ApplicationUser> Users { get; }
 
         IDeletableEntityRepository<ApplicationRole> Roles { get; }
 
         IDeletableEntityRepository<UnitsApprovedDailyData> UnitsApprovedDailyDatas { get; }
 
         IDeletableEntityRepository<ProductionPlanConfig> ProductionPlanConfigs { get; }
+
+        IDeletableEntityRepository<MeasuringPointConfig> MeasuringPointConfigs { get; }
+
+        IDeletableEntityRepository<MeasuringPointsConfigsData> MeasuringPointsConfigsDatas { get; }
+
+        IDeletableEntityRepository<MaxAsoMeasuringPointDataSequenceNumber> MaxAsoMeasuringPointDataSequenceNumberMap { get; }
+
+        IDeletableEntityRepository<Direction> Directions { get; }
+
+        IDeletableEntityRepository<MaterialType> MaterialTypes { get; }
+
+        IDeletableEntityRepository<MeasureUnit> MeasureUnits { get; }
+
+        IDeletableEntityRepository<ActiveTransactionsData> ActiveTransactionsDatas { get; }
+
+        IRepository<UnitConfigUnitDailyConfig> UnitConfigUnitDailyConfigs { get; }
+
+        IRepository<AuditLogRecord> AuditLogRecords{get;}
+
+        IDeletableEntityRepository<Shift> Shifts { get; }
+
+        IRepository<RelatedUnitConfigs> RelatedUnitConfigs { get; }
 
         IDbContext DbContext { get; }
 

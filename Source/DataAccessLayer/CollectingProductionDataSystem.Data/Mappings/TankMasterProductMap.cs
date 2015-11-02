@@ -14,13 +14,10 @@ namespace CollectingProductionDataSystem.Data.Mappings
 
             // Properties
             this.Property(t => t.Id)
-                .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+                .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
 
-            this.Property(t => t.TankMasterProductId)
+            this.Property(t => t.TankMasterProductCode)
                 .HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("ix_tankmaster_prod", 1)))
-                .IsRequired();
-
-            this.Property(t => t.ProductCode)
                 .IsRequired();
 
             this.Property(t => t.Name)

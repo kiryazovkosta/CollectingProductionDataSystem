@@ -1,10 +1,5 @@
-$(function () {
-    var culture = $('#culture').val();
-    kendo.culture(culture);
-});
-
 function sendProcessUnit() {
-    return { "processUnitId": $('input[name=processunits]').val() }
+    return { "processUnitId": $('input[name=processunits]').val() };
 }
 
 function sendShift() {
@@ -21,42 +16,17 @@ var sendDate = function () {
     return result;
 }
 
-function error_handler(e) {
-    if (e.errors) {
-        var message = "";
-        $.each(e.errors, function (key, value) {
-            if ('errors' in value) {
-                $.each(value.errors, function () {
-                    message += this + "\n";
-                });
-            }
-        });
-        $('pre#err-message').text(message);
-        $('div#err-window').data("kendoWindow").open();
-    }
-}
-
-function closeWindow(selector) {
-    $(selector).data("kendoWindow").close();
-}
-
 function recordTimeStampFilter(element) {
     element.kendoDateTimePicker();
 }
 
 $(document).ready(function () {
     $("#apply").click(function () {
-        var grid = $("#units").data("kendoGrid");
-        grid.dataSource.read();
-        grid.refresh();
-
-        var planGrid = $('#productionPlan').data("kendoGrid");
-        if (planGrid !== null) {
-            planGrid.dataSource.read();
-            planGrid.refresh();
-        }
-
+        refreshGrid("#units");
+        refreshGrid("#productionPlan");
         checkConfirmedStatus();
+
+        var grid = $('#units').data('kendoGrid');
         grid.dataSource.fetch(function () {
             var totalRows = grid.dataSource.total();
             if (totalRows === 0) {
@@ -64,8 +34,7 @@ $(document).ready(function () {
             }
         });
     });
-    prepareWindow();
-    prepareSuccessWindow();
+
     nameGridCommancolumn();
     hideCommandButtons();
     AttachEventToExportBtn("#excel-export", "#units");
@@ -113,38 +82,6 @@ $(document).ready(function () {
     });
 });
 
-function prepareWindow() {
-    var window = $('div#err-window')
-    window.kendoWindow({
-        width: "650px",
-        title: "Възникна грешка в приложението",
-        actions: ["Close"],
-        modal: true,
-        position: {
-            top: "30%", // or "100px"
-            left: "30%"
-        },
-        minHeight: 100,
-        maxHeight: 350
-    });
-}
-
-function prepareSuccessWindow() {
-    var window = $('div#success-window')
-    window.kendoWindow({
-        width: "650px",
-        title: "Успешна операция",
-        actions: ["Close"],
-        modal: true,
-        position: {
-            top: "30%", // or "100px"
-            left: "30%"
-        },
-        minHeight: 100,
-        maxHeight: 350
-    });
-}
-
 function hideCommandButtons() {
     $("#confirm").hide();
     $("#units").data("kendoGrid").hideColumn('commands');
@@ -183,11 +120,21 @@ function AttachEventToExportBtn(buttonSelector, targetSelector) {
 var dataBound = function () {
     dataView = this.dataSource.view();
     for (var i = 0; i < dataView.length; i++) {
-        for (var j = 0; j < dataView[i].items.length; j++) {
-
-            if (dataView[i].items[j].HasManualData === true) {
-                var uid = dataView[i].items[j].uid;
-                $("#" + $(this.element).attr('id') + " tbody").find("tr[data-uid=" + uid + "]").addClass("bg-danger");
+        if (dataView[i].items) {
+            var recordLen = dataView[i].items.length;
+            if (recordLen) {
+                for (var j = 0; j < recordLen; j++) {
+                    if (!dataView[i].items[j].IsEditable) {
+                        var currentUid = dataView[i].items[j].uid;
+                        var currenRow = this.table.find("tr[data-uid='" + currentUid + "']");
+                        var editButton = $(currenRow).find(".k-grid-edit");
+                        editButton.attr("style", "display:none !important");
+                    }
+                    if (dataView[i].items[j].HasManualData === true) {
+                        var uid = dataView[i].items[j].uid;
+                        $("#" + $(this.element).attr('id') + " tbody").find("tr[data-uid=" + uid + "]").addClass("bg-danger");
+                    }
+                }
             }
         }
     }
@@ -202,5 +149,11 @@ nameGridCommancolumn = function () {
             }
         });
     }
+}
 
+var dataSave = function (ev) {
+    if (ev.type === 'update') {
+        refreshGrid('#units');
+        refreshGrid('#productionPlan');
+    }
 }

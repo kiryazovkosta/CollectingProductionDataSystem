@@ -1,0 +1,12 @@
+﻿@using CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewModels;
+@using Resources = App_GlobalResources.Resources;
+
+@model IEnumerable<RelatedMeasuringPointConfigsViewModel>
+@(Html.Kendo()
+    .MultiSelectFor(m => m)
+    .AutoClose(false)
+        .BindTo((IEnumerable<RelatedMeasuringPointConfigsViewModel>)ViewData["relatedMeasuringPoint"])
+    .DataTextField("ControlPoint")
+    .DataValueField("Id")
+            .ItemTemplate("<span class=\"order-id\">#= ControlPoint #</span> #= MeasuringPointName #")
+)

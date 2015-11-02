@@ -1,0 +1,94 @@
+﻿@using CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewModels;
+@using CollectingProductionDataSystem.Web.Infrastructure.Helpers;
+
+@(Html.Kendo()
+      .Grid<UnitConfigViewModel>()
+      .Name("grid")
+      .AutoBind(true)
+      .Columns(columns =>
+      {
+          columns.Bound(c => c.Code)
+               .ClientTemplate(
+                Ajax.AuthorizedAjaxActionLinkOrText("#=data.Code#", "Index", "History",
+                                                new AjaxOptions() { HttpMethod = "Get", OnSuccess = "showRecordHistoriModal" },
+                                                new { area = "RecordsHistory", id = "#=data.id#", entityName = "UnitConfig" },
+                                                new { data_ajax_mode = "replace", data_ajax_update = @"\#record-history-body" })
+                                                .ToHtmlString())
+              .Width(100);
+          columns.Bound(c => c.Position).Width(150);
+          columns.Bound(c => c.Name).Width(200);
+          columns.Bound(c => c.CollectingDataMechanism).Width(100);
+          columns.Bound(c => c.AggregateGroup).Width(100);
+          columns.Bound(c => c.AggregationMembers).Width(100);
+          columns.Bound(c => c.RelatedUnitConfigs).Width(300).ClientTemplate("#=territoriesTemplate(RelatedUnitConfigs)#");
+          columns.Bound(c => c.IsCalculated).Width(100);
+          columns.Bound(c => c.PreviousShiftTag).Width(100);
+          columns.Bound(c => c.Notes).Width(100);
+          columns.Bound(c => c.MaximumFlow).Width(100);
+          columns.Bound(c => c.EstimatedDensity).Width(100);
+          columns.Bound(c => c.EstimatedPressure).Width(100);
+          columns.Bound(c => c.EstimatedTemperature).Width(100);
+          columns.Bound(c => c.EstimatedCompressibilityFactor).Width(100);
+          columns.Bound(c => c.IsEditable).Width(100);
+          columns.ForeignKey(c => c.MaterialTypeId, (System.Collections.IEnumerable)ViewData["materialTypes"], "Id", "Name").EditorTemplateName("MaterialTypeViewModel").Width(280);
+          columns.ForeignKey(c => c.ProcessUnitId, (System.Collections.IEnumerable)ViewData["processUnits"], "Id", "FullName").EditorTemplateName("ProcessUnitViewModel").Width(280);
+          columns.ForeignKey(c => c.ProductId, (System.Collections.IEnumerable)ViewData["products"], "Id", "Name").EditorTemplateName("ProductViewModel").Width(280);
+          columns.ForeignKey(c => c.MeasureUnitId, (System.Collections.IEnumerable)ViewData["measureUnits"], "Id", "Name").EditorTemplateName("MeasureUnitViewModel").Width(280);
+          columns.ForeignKey(c => c.DirectionId, (System.Collections.IEnumerable)ViewData["directions"], "Id", "Name").EditorTemplateName("DirectionViewModel").Width(280);
+          columns.ForeignKey(c => c.ShiftProductTypeId, (System.Collections.IEnumerable)ViewData["shiftProductTypes"], "Id", "Name").EditorTemplateName("ShiftProductTypeViewModel").Width(280);
+          columns.Command(command => { command.Edit(); command.Destroy(); }).Width(230);
+      })
+      .ToolBar(toolbar =>
+{
+    toolbar.Create();
+    toolbar.Excel();
+})
+      .Editable(editable => editable.Mode(GridEditMode.InLine))
+      .Pageable(pageable => pageable
+.Refresh(true)
+.PageSizes(new[] { 20, 50, 100 })
+.ButtonCount(5)
+)
+      .Sortable(sortable =>
+{
+    sortable.SortMode(GridSortMode.SingleColumn);
+})
+      .Filterable()
+      .Scrollable(scrol => scrol.Height(620))
+      .Scrollable()
+      .DataSource(dataSource => dataSource
+                    .Ajax()
+                    .PageSize(20)
+                    .Model(model =>
+                    {
+                        model.Id(p => p.Id);
+                        model.Field(p => p.RelatedUnitConfigs).DefaultValue(new HashSet<RelatedUnitConfigsViewModel>() { new RelatedUnitConfigsViewModel() }).Editable(true);
+                    }
+                  )
+.Read(read => read.Action("Read", "UnitConfig", new { area = "NomManagement" }).Data("sendAntiForgery"))
+.Create(create => create.Action("Create", "UnitConfig", new { area = "NomManagement" }).Data("sendAntiForgery"))
+.Update(update => update.Action("Update", "UnitConfig", new { area = "NomManagement" }).Data("sendAntiForgery"))
+.Destroy(destroy => destroy.Action("Destroy", "UnitConfig", new { area = "NomManagement" }).Data("sendAntiForgery"))
+.Events(events =>
+{
+    events.Error("error_handler");
+})
+    )
+    .Events(ev => ev.DataBound("deletableDataBound"))
+)
+
+<script type="text/kendo" id="relatedUnitsTemplate">
+    #if(data){#
+    <ul>
+        #for(var i = 0; i< data.length; i++){#
+            #if(data[i].Code != null){#
+            <li>#:data[i].Code#</li>
+            #}#
+        #}#
+    </ul>
+    #}#
+</script>
+
+<script type="text/javascript">
+    var territoriesTemplate = kendo.template($("#relatedUnitsTemplate").html(), { useWithBlock: false });
+</script>

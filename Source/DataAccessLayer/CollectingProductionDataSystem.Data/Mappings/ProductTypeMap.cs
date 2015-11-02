@@ -18,7 +18,6 @@ namespace CollectingProductionDataSystem.Data.Mappings
 
             // Table & Column Mappings
             this.ToTable("ProductTypes");
-
         }
     }
 }
