@@ -151,6 +151,15 @@ namespace App_Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The data for {0} are not approved..
+        /// </summary>
+        public static string ShiftNotReady {
+            get {
+                return ResourceManager.GetString("ShiftNotReady", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The user {0} cannot be created. The user with the same UserName allready exists..
         /// </summary>
         public static string UserAllreadyExists {

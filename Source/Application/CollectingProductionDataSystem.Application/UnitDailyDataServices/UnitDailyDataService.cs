@@ -6,6 +6,7 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     using System.Data.Entity;
     using System.Diagnostics;
     using System.Linq;
@@ -15,6 +16,7 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
     using CollectingProductionDataSystem.Data.Contracts;
     using CollectingProductionDataSystem.Models.Productions;
     using Ninject;
+    using Resources = App_Resources;
 
     public class UnitDailyDataService : IUnitDailyDataService
     {
@@ -231,13 +233,44 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
         {
             var unitDailyDatas = this.data.UnitsDailyDatas.All().Include(x => x.UnitsDailyConfig)
                 .Where(y => y.RecordTimestamp == targetDate && y.UnitsDailyConfig.ProcessUnitId == processUnitId).ToList();
-            
+
             foreach (var record in unitDailyDatas)
             {
                 this.data.UnitsDailyDatas.Delete(record);
             }
 
             return this.data.SaveChanges(userName);
+        }
+
+        /// <summary>
+        /// Checks if shifts are ready.
+        /// </summary>
+        /// <param name="targetDate">The target date.</param>
+        /// <param name="processUnitId">The process unit identifier.</param>
+        /// <returns></returns>
+        public IEfStatus CheckIfShiftsAreReady(DateTime targetDate, int processUnitId)
+        {
+            var currentApprovedUnitDatas = this.data.UnitsApprovedDatas.All().Where(x => x.ProcessUnitId == processUnitId && x.RecordDate == targetDate).ToList();
+            var shifts = this.data.Shifts.All().ToList();
+
+            var validationResults = new List<ValidationResult>();
+            foreach (var shift in shifts)
+            {
+                if (!currentApprovedUnitDatas.Any(x => x.ShiftId == shift.Id))
+                {
+                    validationResults.Add(new ValidationResult(string.Format(Resources.ErrorMessages.ShiftNotReady, shift.Name)));
+
+                }
+            }
+
+            var status = kernel.Get<IEfStatus>();
+
+            if (validationResults.Count > 0)
+            {
+                status.SetErrors(validationResults);
+            }
+
+            return status;
         }
     }
 }

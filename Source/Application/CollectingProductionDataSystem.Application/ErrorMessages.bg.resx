@@ -147,6 +147,9 @@
   <data name="InvaludUser" xml:space="preserve">
     <value>Потребителя който коригирате не съществува.</value>
   </data>
+  <data name="ShiftNotReady" xml:space="preserve">
+    <value>Данните за {0} не са потвърдени.</value>
+  </data>
   <data name="UserAllreadyExists" xml:space="preserve">
     <value>Потребител {0} не може да бъде създаден. Съществува потребител със същото име.</value>
   </data>
