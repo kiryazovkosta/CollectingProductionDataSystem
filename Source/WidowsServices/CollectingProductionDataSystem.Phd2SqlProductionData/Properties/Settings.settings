@@ -47,5 +47,8 @@
     <Setting Name="MAX_GET_INVENTORY_HOURS_INTERVAL" Type="System.Int32" Scope="Application">
       <Value Profile="(Default)">2</Value>
     </Setting>
+    <Setting Name="SYNC_PRIMARY_HOURS_OFFSET" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">113</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
