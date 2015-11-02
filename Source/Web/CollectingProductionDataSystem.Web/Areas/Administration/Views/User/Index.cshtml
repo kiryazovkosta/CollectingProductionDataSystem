@@ -19,9 +19,9 @@
                    columns.Bound(c => c.UserName);
                    columns.Bound(c => c.Email);
                    columns.Bound(c => c.FullName);
-                   columns.Bound(c => c.UserRoles).ClientTemplate("#=customeTemplate(UserRoles)#").Width(220);
-                   columns.Bound(c => c.ProcessUnits).ClientTemplate("#=customeTemplate(ProcessUnits)#").Width(250);
-                   columns.Bound(c => c.Parks).ClientTemplate("#=customeTemplate(Parks)#").Width(220);
+                   columns.Bound(c => c.UserRoles).ClientTemplate("#=customeTemplate(UserRoles)#");
+                   columns.Bound(c => c.ProcessUnits).ClientTemplate("#=customeTemplate(ProcessUnits)#");
+                   columns.Bound(c => c.Parks).ClientTemplate("#=customeTemplate(Parks)#");
                    columns.Command(c => { c.Edit(); c.Destroy(); }).Width(220);
                })
           .Editable(editable => editable.Mode(GridEditMode.PopUp).TemplateName("EditUserViewModel").Window(window => window.Scrollable(false)))
@@ -67,13 +67,11 @@
 
     <script type="text/kendo" id="customeTemplate">
         #if(data){#
-        <ul>
-            #for(var i = 0; i< data.length; i++){#
-            #if(data[i].Name != null){#
-            <li>#:data[i].Name#</li>
-            #}#
-            #}#
-        </ul>
+        #for(var i = 0; i< data.length; i++){#
+        #if(data[i].Name != null){#
+        &bull;&nbsp;#:data[i].Name#<br/>     
+        #}#
+        #}#
         #}#
     </script>
 
