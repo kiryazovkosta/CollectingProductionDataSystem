@@ -13,7 +13,7 @@ namespace CollectingProductionDataSystem.Data.Mappings
 
             // Properties
             this.Property(t => t.CollectingDataMechanism)
-                .HasMaxLength(1);
+                .HasMaxLength(2);
 
             this.Property(t => t.PreviousShiftTag)
                 .HasMaxLength(50);

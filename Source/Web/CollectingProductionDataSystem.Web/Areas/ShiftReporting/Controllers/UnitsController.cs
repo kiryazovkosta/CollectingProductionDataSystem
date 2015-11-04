@@ -224,8 +224,6 @@
             arguments.EstimatedPressure = (double?)model.UnitConfig.EstimatedPressure;
             arguments.EstimatedTemperature = (double?)model.UnitConfig.EstimatedTemperature;
             arguments.EstimatedCompressibilityFactor = (double?)model.UnitConfig.EstimatedCompressibilityFactor;
-            //// Todo: need to add arguments here. Need to create a good mechanism for parameters!
-
 
             var uc = this.data.UnitConfigs.GetById(model.UnitConfigId);
             if (uc != null)
