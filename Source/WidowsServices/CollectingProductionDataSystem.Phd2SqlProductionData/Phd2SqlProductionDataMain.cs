@@ -50,8 +50,12 @@
                 logger.Info("Sync primary data started!");
                 var kernel = ninject.Kernel;
                 var service = kernel.GetService(typeof(PhdPrimaryDataService)) as PhdPrimaryDataService;
-                var insertedRecords = service.ReadAndSaveUnitsDataForShift();
-                logger.InfoFormat("Successfully added {0} records to CollectingPrimaryDataSystem", insertedRecords);
+                for (int offsetInHours = 0; offsetInHours < Properties.Settings.Default.SYNC_PRIMARY_HOURS_OFFSET; offsetInHours += 8)
+                {
+                    var offset = offsetInHours == 0 ? offsetInHours : offsetInHours * -1;
+                    var recordsDates = service.ReadAndSaveUnitsDataForShift(DateTime.Now, offset);
+                    logger.InfoFormat("Successfully added {0} UnitsData records to CollectingPrimaryDataSystem", recordsDates);
+                }
                 logger.Info("Sync primary data finished!");
             }
             catch (DataException validationException)
@@ -245,7 +249,7 @@
                                     {
                                         context.TanksData.BulkInsert(tanksDataList, "Phd2SqlLoading");
                                         var status = context.SaveChanges("Phd2SqlLoading");
-                                        logger.InfoFormat("Inserted {0} records for: {1:yyyy-MM-dd HH:ss:mm}!", status.ResultRecordsCount, checkedDateTime);
+                                        logger.InfoFormat("Successfully added {0} TanksData records for: {1:yyyy-MM-dd HH:ss:mm}!", status.ResultRecordsCount, checkedDateTime);
                                     }
                                 }
                             }
