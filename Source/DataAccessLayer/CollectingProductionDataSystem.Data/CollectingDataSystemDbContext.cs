@@ -119,6 +119,8 @@
 
         public IDbSet<ApplicationUserProcessUnit> ApplicationUserProcessUnits { get; set; }
 
+        public IDbSet<UnitEnteredForCalculationData> UnitEnteredForCalculationDatas { get; set; }
+
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

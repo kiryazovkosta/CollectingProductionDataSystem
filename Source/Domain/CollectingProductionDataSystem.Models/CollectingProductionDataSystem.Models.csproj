@@ -105,6 +105,7 @@
     <Compile Include="Productions\ShiftType.cs" />
     <Compile Include="Productions\UnitConfig.cs" />
     <Compile Include="Productions\UnitConfigUnitDailyConfig.cs" />
+    <Compile Include="Productions\UnitEnteredForCalculationData.cs" />
     <Compile Include="Productions\UnitsApprovedDailyData.cs" />
     <Compile Include="Productions\UnitDailyConfig.cs" />
     <Compile Include="Productions\UnitsDailyData.cs" />

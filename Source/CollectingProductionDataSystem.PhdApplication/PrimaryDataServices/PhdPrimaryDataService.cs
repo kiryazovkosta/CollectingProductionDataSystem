@@ -118,7 +118,10 @@
 
         private void ProcessManualUnits(List<UnitConfig> unitsConfigsList, DateTime recordDataTime, ShiftType shift, List<UnitsData> unitsData)
         {
-            foreach (var unitConfig in unitsConfigsList.Where(x => x.CollectingDataMechanism == "M"))
+            foreach (var unitConfig in unitsConfigsList.Where(x => x.CollectingDataMechanism == "M" || 
+                x.CollectingDataMechanism == "MC" || 
+                x.CollectingDataMechanism == "MD" || 
+                x.CollectingDataMechanism == "MS"  ))
             {
                 SetDefaultValue(recordDataTime, shift, unitsData, unitConfig);    
             }

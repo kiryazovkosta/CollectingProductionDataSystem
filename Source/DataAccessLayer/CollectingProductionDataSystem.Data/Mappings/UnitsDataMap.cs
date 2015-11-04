@@ -39,6 +39,9 @@ namespace CollectingProductionDataSystem.Data.Mappings
 
             this.HasOptional(t => t.UnitsManualData)
                 .WithRequired(t => t.UnitsData).WillCascadeOnDelete(false);
+
+            this.HasOptional(t => t.UnitEnteredForCalculationData)
+                .WithRequired(t => t.UnitsData).WillCascadeOnDelete(false);
         }
     }
 }

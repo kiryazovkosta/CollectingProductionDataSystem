@@ -355,6 +355,14 @@
             }
         }
 
+        public IDeletableEntityRepository<UnitEnteredForCalculationData> UnitEnteredForCalculationDatas
+        {
+            get
+            {
+                return this.GetDeletableEntityRepository<UnitEnteredForCalculationData>();
+            }
+        }
+
         public void Dispose()
         {
             this.Dispose(true);

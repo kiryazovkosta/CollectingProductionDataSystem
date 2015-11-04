@@ -1,24 +1,20 @@
 ﻿namespace CollectingProductionDataSystem.Phd2SqlProductionData
 {
-    using System.Data.Entity;
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
     using System.Data.Entity.Validation;
     using System.Linq;
-    using CollectingProductionDataSystem.Data.Common;
-    using CollectingProductionDataSystem.PhdApplication.PrimaryDataServices;
-    using log4net;
-    using System;
+    using System.Net.Mail;
     using System.ServiceProcess;
-    using Uniformance.PHD;
-    using System.Data;
-    using CollectingProductionDataSystem.Phd2SqlProductionData.Models;
-    using CollectingProductionDataSystem.Models.Inventories;
     using CollectingProductionDataSystem.Data;
     using CollectingProductionDataSystem.Data.Concrete;
-    using CollectingProductionDataSystem.Models.Productions;
-    using System.Globalization;
+    using CollectingProductionDataSystem.Models.Inventories;
     using CollectingProductionDataSystem.Models.Transactions;
-    using System.Collections.Generic;
-    using System.Net.Mail;
+    using CollectingProductionDataSystem.Phd2SqlProductionData.Models;
+    using CollectingProductionDataSystem.PhdApplication.PrimaryDataServices;
+    using Uniformance.PHD;
+    using log4net;
 
     static class Phd2SqlProductionDataMain
     {

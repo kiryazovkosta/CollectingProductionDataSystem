@@ -90,6 +90,8 @@
 
         IRepository<RelatedUnitConfigs> RelatedUnitConfigs { get; }
 
+        IDeletableEntityRepository<UnitEnteredForCalculationData> UnitEnteredForCalculationDatas { get; }
+
         IDbContext DbContext { get; }
 
         IEfStatus SaveChanges(string userName);
