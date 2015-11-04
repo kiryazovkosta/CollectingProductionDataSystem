@@ -309,6 +309,7 @@
     <Compile Include="Areas\ShiftReporting\Controllers\UnitsController.cs" />
     <Compile Include="Areas\ShiftReporting\Controllers\UnitsReportsController.cs" />
     <Compile Include="Areas\ShiftReporting\ShiftReportingAreaRegistration.cs" />
+    <Compile Include="Areas\ShiftReporting\ViewModels\ManualCalculationViewModel.cs" />
     <Compile Include="Areas\ShiftReporting\ViewModels\UnitsReportsDataViewModel.cs" />
     <Compile Include="Controllers\AccountController.cs">
       <SubType>Code</SubType>
@@ -795,6 +796,7 @@
     <Content Include="Areas\NomManagement\Views\Shared\EditorTemplates\ZoneViewModel.cshtml" />
     <Content Include="Areas\NomManagement\Views\MeasuringPointConfig\EditorTemplates\RelatedMeasuringPointConfigEditor.cshtml" />
     <Content Include="Areas\NomManagement\Views\Shared\EditorTemplates\TransportTypeViewModel.cshtml" />
+    <Content Include="Areas\ShiftReporting\Views\Units\_ManualDataCalculation.cshtml" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <None Include="Properties\PublishProfiles\Home.pubxml" />
     <Content Include="Scripts\custom\sendArea.js" />

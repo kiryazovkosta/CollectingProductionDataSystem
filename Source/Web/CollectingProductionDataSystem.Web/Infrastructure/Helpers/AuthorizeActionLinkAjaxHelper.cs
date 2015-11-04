@@ -127,7 +127,8 @@ namespace CollectingProductionDataSystem.Web.Infrastructure.Helpers
             {
                 return MvcHtmlString.Create(linkText);
             }
-            return ajaxHelper.ActionLink(linkText, actionName, controllerName, routeValues,options, htmlAttributes);
+            
+           return ajaxHelper.ActionLink(linkText, actionName, controllerName, routeValues,options, htmlAttributes);
         }
     }
 }

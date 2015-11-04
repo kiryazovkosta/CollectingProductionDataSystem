@@ -14,9 +14,11 @@
     using System.Web.Mvc;
     using AutoMapper;
     using CollectingProductionDataSystem.Application.Contracts;
+    using CollectingProductionDataSystem.Data.Common;
     using CollectingProductionDataSystem.Data.Contracts;
     using CollectingProductionDataSystem.Models.Productions;
     using CollectingProductionDataSystem.Web.Areas.ShiftReporting.ViewModels;
+    using CollectingProductionDataSystem.Web.Infrastructure.Extentions;
     using CollectingProductionDataSystem.Web.Infrastructure.Filters;
     using CollectingProductionDataSystem.Web.InputModels;
     using Kendo.Mvc.Extensions;
@@ -40,6 +42,12 @@
         [HttpGet]
         public ActionResult UnitsData()
         {
+            // ToDo: It's very importaint to set manual data indicator which sets different process of entering data (water-meter, flow-meter, electro-meter, etc.)
+            ViewBag.ManualIndicator = "MD";
+            ViewBag.ManualCalcumated = "MC";
+            ViewBag.ManualSelfCalculated = "MS";
+
+
             return View();
         }
 
@@ -72,13 +80,13 @@
         {
             if (ModelState.IsValid)
             {
-                var relatedUnitConfigs = this.data.RelatedUnitConfigs.All().Where(x=>x.RelatedUnitConfigId == model.UnitConfigId).ToList();
+                var relatedUnitConfigs = this.data.RelatedUnitConfigs.All().Where(x => x.RelatedUnitConfigId == model.UnitConfigId).ToList();
                 if (relatedUnitConfigs.Count() > 0)
                 {
                     foreach (var relatedUnitConfig in relatedUnitConfigs)
-	                {
+                    {
                         UpdateRelatedUnitConfig(relatedUnitConfig.UnitConfigId, model);
-	                } 
+                    }
                 }
 
                 var newManualRecord = new UnitsManualData
@@ -122,7 +130,7 @@
         private void UpdateRelatedUnitConfig(int unitConfigId, UnitDataViewModel model)
         {
             var unitConfig = this.data.UnitConfigs.GetById(unitConfigId);
-            if(unitConfig.IsCalculated)
+            if (unitConfig.IsCalculated)
             {
                 var formulaCode = unitConfig.CalculatedFormula ?? string.Empty;
                 var arguments = PopulateFormulaTadaFromPassportData(unitConfig);
@@ -131,7 +139,7 @@
                 UpdateCalculatedUnitConfig(model, unitConfigId, newValue);
             }
         }
- 
+
         private void UpdateCalculatedUnitConfig(UnitDataViewModel model, int unitConfigId, double newValue)
         {
             var recordId = data.UnitsData
@@ -157,7 +165,7 @@
                 this.data.UnitsManualData.Update(existManualRecord);
             }
         }
- 
+
         private FormulaArguments PopulateFormulaTadaFromPassportData(UnitConfig unitConfig)
         {
             var arguments = new FormulaArguments();
@@ -168,7 +176,7 @@
             arguments.EstimatedCompressibilityFactor = (double?)unitConfig.EstimatedCompressibilityFactor;
             return arguments;
         }
- 
+
         private void PopulateFormulaDataFromRelatedUnitConfigs(UnitConfig unitConfig, UnitDataViewModel model, FormulaArguments arguments)
         {
             var ruc = unitConfig.RelatedUnitConfigs.ToList();
@@ -178,10 +186,10 @@
                 var inputValue = 0.0;
                 if (ru.RelatedUnitConfigId == model.UnitConfigId)
                 {
-                    inputValue = (double)model.UnitsManualData.Value;    
+                    inputValue = (double)model.UnitsManualData.Value;
                 }
-                else 
-                { 
+                else
+                {
                     inputValue = data.UnitsData.All()
                         .Where(x => x.RecordTimestamp == model.RecordTimestamp && x.ShiftId == model.Shift && x.UnitConfigId == ru.RelatedUnitConfigId)
                         .FirstOrDefault()
@@ -190,7 +198,7 @@
 
                 if (parameterType == "I")
                 {
-                    arguments.InputValue = inputValue;   
+                    arguments.InputValue = inputValue;
                 }
                 else if (parameterType == "T")
                 {
@@ -198,11 +206,11 @@
                 }
                 else if (parameterType == "P")
                 {
-                    arguments.Pressure = inputValue;    
+                    arguments.Pressure = inputValue;
                 }
                 else if (parameterType == "D")
                 {
-                    arguments.Density = inputValue;  
+                    arguments.Density = inputValue;
                 }
             }
         }
@@ -235,7 +243,7 @@
                             .RealValue;
                     if (parameterType == "I")
                     {
-                        arguments.InputValue = inputValue;   
+                        arguments.InputValue = inputValue;
                     }
                     else if (parameterType == "T")
                     {
@@ -243,11 +251,11 @@
                     }
                     else if (parameterType == "P")
                     {
-                        arguments.Pressure = inputValue;    
+                        arguments.Pressure = inputValue;
                     }
                     else if (parameterType == "D")
                     {
-                        arguments.Density = inputValue;  
+                        arguments.Density = inputValue;
                     }
                 }
             }
@@ -339,7 +347,7 @@
 
             if (this.ModelState.IsValid)
             {
-                return Json(new { IsConfirmed = await shiftServices.IsShitApproved(date, processUnitId, shiftId)});
+                return Json(new { IsConfirmed = await shiftServices.IsShitApproved(date, processUnitId, shiftId) });
             }
 
             return Json(new { IsConfirmed = false });
@@ -370,5 +378,41 @@
                 this.ModelState.AddModelError("shifts", string.Format(Resources.ErrorMessages.Required, Resources.Layout.UnitsProcessUnitShiftSelector));
             }
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ShowManualDataModal(UnitDataViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var manualCalculationModel = new ManualCalculationViewModel()
+                {
+                    IsOldValueAvailableForEditing = false,
+                    MeasurementCode = model.UnitConfig.MeasureUnit.Code,
+                    UnitDataId = model.Id,
+                    EditorScreenHeading = string.Format(Resources.Layout.EditValueFor,model.UnitConfig.Name)
+                };
+                return PartialView("_ManualDataCalculation", manualCalculationModel);
+            }
+            else 
+            {
+                var errors = this.ModelState.Values.SelectMany(x => x.Errors);
+                return Json(new { success=false, status = 400, errors= errors });
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CalculateManualEntry(ManualCalculationViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return PartialView("_ManualDataCalculation", model);
+            }
+            // ToDo: add some business process here
+            
+            return Json("success");
+        }
+
     }
 }

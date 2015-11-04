@@ -137,3 +137,10 @@ var deletableDataBound = function () {
         }
     }
 }
+
+var rowEdited = function (ev) {
+    if (ev.model.UnitConfig.CollectingDataMechanism == "M") {
+        ev.preventDefault();
+        alert("Row Edited");
+    }
+}

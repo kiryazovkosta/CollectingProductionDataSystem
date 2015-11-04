@@ -118,7 +118,11 @@ function AttachEventToExportBtn(buttonSelector, targetSelector) {
 }
 
 var dataBound = function () {
-    dataView = this.dataSource.view();
+    var dataView = this.dataSource.view();
+    var manualIndicator = $('#manualIndicator').val();
+    var manualCalcumated = $('#manualCalcumated').val();
+    var manualSelfCalculated = $('#manualSelfCalculated').val();
+
     for (var i = 0; i < dataView.length; i++) {
         if (dataView[i].items) {
             var recordLen = dataView[i].items.length;
@@ -134,6 +138,17 @@ var dataBound = function () {
                         var uid = dataView[i].items[j].uid;
                         $("#" + $(this.element).attr('id') + " tbody").find("tr[data-uid=" + uid + "]").addClass("bg-danger");
                     }
+
+                    if (dataView[i].items[j].UnitConfig.CollectingDataMechanism == manualIndicator) {
+                        var currentUid = dataView[i].items[j].uid;
+                        var currenRow = this.table.find("tr[data-uid='" + currentUid + "']");
+                        var editButton = $(currenRow).find(".k-grid-edit");
+                        editButton.click(dataView[i].items[j], manualEntry);
+                    }
+
+
+
+
                 }
             }
         }
@@ -157,3 +172,74 @@ var dataSave = function (ev) {
         refreshGrid('#productionPlan');
     }
 }
+
+var AddAntiForgeryToken = function (data) {
+    data.__RequestVerificationToken = $('input[name=__RequestVerificationToken]').val();
+    return data;
+};
+
+var manualEntry = function (ev) {
+    ev.preventDefault();
+    ev.stopPropagation();
+    var culture = $('#culture').val();
+    $.ajax({
+        url: "/ShiftReporting/Units/ShowManualDataModal",
+        type: "POST",
+        content: document.body,
+        data: JSON.parse(JSON.stringify(AddAntiForgeryToken(ev.data), replacer))
+    }).done(function (data) {
+        if (data.success === undefined) {
+            $("#modal-dialog-body").html(data);
+            showRecordHistoriModal();
+        } else {
+            if (data.success == false) {
+                manual_error_handler(data.errors);
+            }
+        }
+    }).fail(function (data) {
+        alert("Error!!!");
+    });
+}
+
+function replacer(key, value) {
+
+    if (value instanceof Date) {
+        return value.toLocaleString(culture.value);
+    }
+
+    if (value === parseInt(value)) {
+        return value.toString().replace(' ', '');
+    }
+
+    if (value === parseFloat(value)) {
+        return value.toLocaleString(culture.value).replace(/\s/g, "");
+    }
+
+    return value;
+}
+
+var manualEntryFailure = function (data) {
+    alert("Error");
+}
+
+var successCalculateManualEntry = function (data) {
+    if (data) {
+        if (data == "success") {
+            hideRecordHistoriModal();
+            refreshGrid('#units');
+        }
+    }
+}
+
+function manual_error_handler(errors) {
+    if (errors) {
+        var message = "";
+        $.each(errors, function (key, value) {
+            message += value.ErrorMessage + "\n";
+        });
+        $('pre#err-message').text(message);
+        $('div#err-window').data("kendoWindow").open();
+    }
+}
+
+

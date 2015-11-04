@@ -10,7 +10,7 @@
                 Ajax.AuthorizedAjaxActionLinkOrText("#=data.ShortName#", "Index", "History",
                                                 new AjaxOptions() { HttpMethod = "Get", OnSuccess = "showRecordHistoriModal" },
                                                 new { area = "RecordsHistory", id = "#=data.id#", entityName = "Factory" },
-                                                new { data_ajax_mode = "replace", data_ajax_update = @"\#record-history-body" })
+                                                new { data_ajax_mode = "replace", data_ajax_update = @"\#modal-dialog-body" })
                                                 .ToHtmlString());
           columns.Bound(c => c.FullName);
           columns.ForeignKey(c => c.PlantId, (System.Collections.IEnumerable)ViewData["plants"], "Id", "FullName").EditorTemplateName("PlantViewModel");

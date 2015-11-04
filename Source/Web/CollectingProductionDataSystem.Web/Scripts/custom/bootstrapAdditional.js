@@ -1,3 +1,7 @@
 ﻿var showRecordHistoriModal = function () {
-    $('#record-history').modal('show');
+    $('#modal-dialog').modal('show');
+}
+
+var hideRecordHistoriModal = function () {
+    $('#modal-dialog').modal('hide');
 }

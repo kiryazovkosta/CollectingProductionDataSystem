@@ -7,7 +7,7 @@
               .ClientTemplate(Ajax.AuthorizedAjaxActionLinkOrText("#=data.Name#", "Index", "History",
                                                 new AjaxOptions() { HttpMethod = "Get", OnSuccess = "showRecordHistoriModal" },
                                                 new { area = "RecordsHistory", id = "#=data.id#", entityName = "Product" },
-                                                new { data_ajax_mode = "replace", data_ajax_update = @"\#record-history-body" })
+                                                new { data_ajax_mode = "replace", data_ajax_update = @"\#modal-dialog-body" })
                                                 .ToHtmlString());
           columns.ForeignKey(c => c.ProductTypeId, (System.Collections.IEnumerable)ViewData["productTypes"], "Id", "Name").EditorTemplateName("ProductTypeViewModel");
           //columns.ForeignKey(c => c.ShiftProductTypeId, (System.Collections.IEnumerable)ViewData["shiftProductTypes"], "Id", "Name").EditorTemplateName("ShiftProductTypeViewModel");
