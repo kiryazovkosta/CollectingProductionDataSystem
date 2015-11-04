@@ -57,58 +57,65 @@
         {
             foreach (var unitConfig in unitsConfigsList.Where(x => x.CollectingDataMechanism == "C"))
             {
-                var formulaCode = unitConfig.CalculatedFormula ?? string.Empty;
-                var arguments = new FormulaArguments();
-                arguments.MaximumFlow = (double?)unitConfig.MaximumFlow;
-                arguments.EstimatedDensity = (double?)unitConfig.EstimatedDensity;
-                arguments.EstimatedPressure = (double?)unitConfig.EstimatedPressure;
-                arguments.EstimatedTemperature = (double?)unitConfig.EstimatedTemperature;
-                arguments.EstimatedCompressibilityFactor = (double?)unitConfig.EstimatedCompressibilityFactor;
+                try 
+	            {	        
+		            var formulaCode = unitConfig.CalculatedFormula ?? string.Empty;
+                    var arguments = new FormulaArguments();
+                    arguments.MaximumFlow = (double?)unitConfig.MaximumFlow;
+                    arguments.EstimatedDensity = (double?)unitConfig.EstimatedDensity;
+                    arguments.EstimatedPressure = (double?)unitConfig.EstimatedPressure;
+                    arguments.EstimatedTemperature = (double?)unitConfig.EstimatedTemperature;
+                    arguments.EstimatedCompressibilityFactor = (double?)unitConfig.EstimatedCompressibilityFactor;
 
-                var ruc = unitConfig.RelatedUnitConfigs.ToList();
-                foreach (var ru in ruc)
-                {
-                    var parameterType = ru.RelatedUnitConfig.AggregateGroup;
-                    var inputValue = data.UnitsData
-                                         .All()
-                                         .Where(x => x.RecordTimestamp == recordDataTime)
-                                         .Where(x => x.ShiftId == shift)
-                                         .Where(x => x.UnitConfigId == ru.RelatedUnitConfigId)
-                                         .FirstOrDefault()
-                                         .RealValue;
-                    if (parameterType == "I")
+                    var ruc = unitConfig.RelatedUnitConfigs.ToList();
+                    foreach (var ru in ruc)
                     {
-                        arguments.InputValue = inputValue;   
-                    }
-                    else if (parameterType == "T")
-                    {
-                        arguments.Temperature = inputValue;
-                    }
-                    else if (parameterType == "P")
-                    {
-                        arguments.Pressure = inputValue;    
-                    }
-                    else if (parameterType == "D")
-                    {
-                        arguments.Density = inputValue;  
-                    }
-                }
-
-                var result = ProductionDataCalculator.Calculate(formulaCode, arguments);
-                if (!unitsData.Where(x => x.RecordTimestamp == recordDataTime && x.ShiftId == shift && x.UnitConfigId == unitConfig.Id).Any())
-                {
-                    this.data.UnitsData.Add(
-                        new UnitsData
+                        var parameterType = ru.RelatedUnitConfig.AggregateGroup;
+                        var inputValue = data.UnitsData
+                                                .All()
+                                                .Where(x => x.RecordTimestamp == recordDataTime)
+                                                .Where(x => x.ShiftId == shift)
+                                                .Where(x => x.UnitConfigId == ru.RelatedUnitConfigId)
+                                                .FirstOrDefault()
+                                                .RealValue;
+                        if (parameterType == "I")
                         {
-                            UnitConfigId = unitConfig.Id,
-                            RecordTimestamp = recordDataTime,
-                            ShiftId = shift,
-                            Value = (decimal)result
-                        });
-                }
+                            arguments.InputValue = inputValue;   
+                        }
+                        else if (parameterType == "T")
+                        {
+                            arguments.Temperature = inputValue;
+                        }
+                        else if (parameterType == "P")
+                        {
+                            arguments.Pressure = inputValue;    
+                        }
+                        else if (parameterType == "D")
+                        {
+                            arguments.Density = inputValue;  
+                        }
+                    }
+
+                    var result = ProductionDataCalculator.Calculate(formulaCode, arguments);
+                    if (!unitsData.Where(x => x.RecordTimestamp == recordDataTime && x.ShiftId == shift && x.UnitConfigId == unitConfig.Id).Any())
+                    {
+                        this.data.UnitsData.Add(
+                            new UnitsData
+                            {
+                                UnitConfigId = unitConfig.Id,
+                                RecordTimestamp = recordDataTime,
+                                ShiftId = shift,
+                                Value = (decimal)result
+                            });
+                    }
+	            }
+	            catch (Exception ex)
+	            {
+		            throw new Exception(string.Format("UnitConfigId: {0} [{1}]", unitConfig.Id, ex.Message), ex);
+	            }
             }
         }
- 
+
         private void ProcessManualUnits(List<UnitConfig> unitsConfigsList, DateTime recordDataTime, ShiftType shift, List<UnitsData> unitsData)
         {
             foreach (var unitConfig in unitsConfigsList.Where(x => x.CollectingDataMechanism == "M"))
