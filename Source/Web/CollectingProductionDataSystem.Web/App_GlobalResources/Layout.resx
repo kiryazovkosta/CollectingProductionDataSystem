@@ -1152,4 +1152,7 @@
   <data name="ZoneId" xml:space="preserve">
     <value>ZoneId</value>
   </data>
+  <data name="EditValueFor" xml:space="preserve">
+    <value>Editing value for position {0}</value>
+  </data>
 </root>

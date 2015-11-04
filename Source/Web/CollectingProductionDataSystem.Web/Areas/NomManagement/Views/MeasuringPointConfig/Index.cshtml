@@ -8,7 +8,7 @@
                                 Ajax.AuthorizedAjaxActionLinkOrText("#=data.ControlPoint#", "Index", "History",
                                       new AjaxOptions() { HttpMethod = "Get", OnSuccess = "showRecordHistoriModal" },
                                       new { area = "RecordsHistory", id = "#=data.id#", entityName = "MeasuringPointConfig" },
-                                      new { data_ajax_mode = "replace", data_ajax_update = @"\#record-history-body" })
+                                      new { data_ajax_mode = "replace", data_ajax_update = @"\#modal-dialog-body" })
                                       .ToHtmlString())
                                       .Width(200);
           columns.Bound(p => p.MeasuringPointName).Width(200);

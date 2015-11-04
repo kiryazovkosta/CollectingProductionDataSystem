@@ -7,6 +7,11 @@
 @{
     Layout = "~/Views/Shared/_KendoLayoutWithSideBar.cshtml";
 }
+@*Indicates records with different input method*@
+<input id="manualIndicator" type="hidden" value="@(ViewBag.ManualIndicator ?? string.Empty)" />
+<input id="manualCalcumated" type="hidden" value="@(ViewBag.ManualCalcumated ?? string.Empty)" />
+<input id="manualSelfCalculated" type="hidden" value="@(ViewBag.ManualSelfCalculated ?? string.Empty)" />
+
 <div class="row">
     <div class="col-md-10">
         <h2>@Resources.Layout.UnitsData</h2>
@@ -30,7 +35,7 @@
                 Ajax.AuthorizedAjaxActionLinkOrText("#=data.UnitConfig.Code#", "Index", "History", 
                                                 new AjaxOptions() { HttpMethod = "Get", OnSuccess="showRecordHistoriModal"},
                                                 new { area = "RecordsHistory", id = "#=data.id#", entityName = "UnitsData" }, 
-                                                new { data_ajax_mode = "replace", data_ajax_update = @"\#record-history-body" })
+                                                new { data_ajax_mode = "replace", data_ajax_update = @"\#modal-dialog-body" })
                                                 .ToHtmlString())
                 .Width(77);
             columns.Bound(c => c.UnitConfig.ShiftProductType.Sort).Hidden(true).ClientGroupHeaderTemplate("#=value#");
@@ -45,7 +50,7 @@
                 Ajax.AuthorizedAjaxActionLinkOrText("#=data.UnitsManualData.Value#", "Index", "History",
                                                 new AjaxOptions() { HttpMethod = "Get", OnSuccess = "showRecordHistoriModal" },
                                                 new { area = "RecordsHistory", id = "#=data.id#", entityName = "UnitsManualData" },
-                                                new { data_ajax_mode = "replace", data_ajax_update = @"\#record-history-body" })
+                                                new { data_ajax_mode = "replace", data_ajax_update = @"\#modal-dialog-body" })
                                                 .ToHtmlString());
             columns.Bound(c => c.UnitsManualData.EditReason).Width(200).ClientTemplate("#:UnitsManualData.EditReason.Name#")
             .ClientTemplate("<div class=row><div class='col-xs-2 no-horisontal-padding'><div class='#:UnitsManualData.EditReason.Id == 0? 'bg-ok':'bg-warning'#'></div></div><div class='col-xs-9 no-horisontal-padding reason'>#:UnitsManualData.EditReason.Name#</div></div>");
@@ -95,8 +100,11 @@
             events.RequestEnd("dataSave");
         })
     )
-    .Events(ev=>ev.DataBound("dataBound"))
+    .Events(ev=>ev
+        .DataBound("dataBound")
+        )
 )
+
 @* //Error window for kendo grid error event handler *@
 <div id="err-window" style="display:none">@Html.Partial("_KendoGridErrorWindow")</div>
 @* //Error window for kendo grid error event handler *@
@@ -106,6 +114,7 @@
 @section scripts{
     @Scripts.Render("~/bundles/custom/kendoadditional")
     @Scripts.Render("~/bundles/custom/unitGrids")
+    @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.min.js")
 }
 @section sidebar{

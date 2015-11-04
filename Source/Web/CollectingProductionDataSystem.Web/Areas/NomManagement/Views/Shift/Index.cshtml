@@ -6,7 +6,7 @@
               .ClientTemplate(Ajax.AuthorizedAjaxActionLinkOrText("#=data.Name#", "Index", "History",
                                                 new AjaxOptions() { HttpMethod = "Get", OnSuccess = "showRecordHistoriModal" },
                                                 new { area = "RecordsHistory", id = "#=data.id#", entityName = "Shift" },
-                                                new { data_ajax_mode = "replace", data_ajax_update = @"\#record-history-body" })
+                                                new { data_ajax_mode = "replace", data_ajax_update = @"\#modal-dialog-body" })
                                                 .ToHtmlString());
           columns.Bound(c => c.BeginTime)
                  .ClientTemplate("#=kendo.format(\"{0}.{1:00}:{2:00}\",data.BeginTime == null?0:BeginTime.Days,data.BeginTime == null?0:BeginTime.Hours, data.BeginTime == null?0:BeginTime.Minutes)#");

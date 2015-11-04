@@ -1155,4 +1155,7 @@
   <data name="ZoneId" xml:space="preserve">
     <value>Идентификатор на зона</value>
   </data>
+  <data name="EditValueFor" xml:space="preserve">
+    <value>Въвеждане на сойност за позиция {0}</value>
+  </data>
 </root>

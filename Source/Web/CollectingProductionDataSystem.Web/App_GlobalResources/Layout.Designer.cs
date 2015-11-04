@@ -790,6 +790,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Editing value for position {0}.
+        /// </summary>
+        public static string EditValueFor {
+            get {
+                return ResourceManager.GetString("EditValueFor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to E-mail.
         /// </summary>
         public static string Email {
