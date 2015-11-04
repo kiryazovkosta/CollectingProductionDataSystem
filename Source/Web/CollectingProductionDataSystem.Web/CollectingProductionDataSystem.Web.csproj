@@ -716,6 +716,7 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\custom\bootstrapAdditional.js" />
+    <Content Include="Scripts\custom\jquery-kendo-globalize.js" />
     <Content Include="Scripts\custom\kendoAdditional.js" />
     <Content Include="Scripts\custom\sendAntiForgery.js" />
     <Content Include="Areas\Administration\Views\Role\Create.cshtml" />

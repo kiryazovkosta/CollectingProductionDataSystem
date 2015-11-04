@@ -190,6 +190,7 @@ var manualEntry = function (ev) {
     }).done(function (data) {
         if (data.success === undefined) {
             $("#modal-dialog-body").html(data);
+            PrepareValidationScripts();
             showRecordHistoriModal();
         } else {
             if (data.success == false) {
@@ -240,6 +241,16 @@ function manual_error_handler(errors) {
         $('pre#err-message').text(message);
         $('div#err-window').data("kendoWindow").open();
     }
+}
+
+function PrepareValidationScripts() {
+    var form = $('#modal-dialog-body');
+    if (form.executed)
+        return;
+
+    form.removeData("validator");
+    $.validator.unobtrusive.parse(document);
+    form.executed = true;
 }
 
 
