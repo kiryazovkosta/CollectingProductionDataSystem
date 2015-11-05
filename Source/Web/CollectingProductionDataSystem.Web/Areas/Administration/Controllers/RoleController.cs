@@ -93,9 +93,9 @@
             id = id ?? 0;
             ApplicationRole role = await RoleManager.FindByIdAsync((int)id);
             int[] memberIds = role.Users.Select(x => x.UserId).ToArray();
-            var auMembers = UserManager.Users.Where(x => memberIds.Any(y => y == x.Id));
+            var auMembers = data.Users.All().ToList().Where(x => memberIds.Any(y => y == x.Id)).ToList();
             IEnumerable<ApplicationUserModel> members = Mapper.Map<IEnumerable<ApplicationUserModel>>(auMembers);
-            IEnumerable<ApplicationUserModel> nonMembes =  Mapper.Map<IEnumerable<ApplicationUserModel>>(UserManager.Users.Except(auMembers));
+            IEnumerable<ApplicationUserModel> nonMembes =  Mapper.Map<IEnumerable<ApplicationUserModel>>(data.Users.All().ToList().Except(auMembers));
             return View(new RoleEditViewModel
             {
                 Role = role,

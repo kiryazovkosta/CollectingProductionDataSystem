@@ -16,7 +16,7 @@
                 async.Save("Upload", "UploadNom")
                 )
             .Multiple(false)
-            .Events(ev => ev.Success("onSuccess").Error("onError"))
+                            .Events(ev => ev.Success("uploadNom.onSuccess").Error("uploadNom.onError"))
         )
     </form>
     <div class="separator"></div>
@@ -27,28 +27,6 @@
 </div>
 
 @section scripts{
-    <script>
-        $(function () { $('#close').click(function () { $('#alert').hide(); }) });
-        var onSuccess = function (ev) {
-            var result = ev.response;
-            if (result.IsValid == true) {
-                var message = "Успешно създадохте " + result.ResultRecordsCount + " записа.";
-                showAlert('#alert', 'alert-success', message);
-            }
-        }
-        var onError = function (ev) {
-            alert("error");
-        }
-
-        var showAlert = function (id, type, message) {
-            var alert = $(id);
-            alert.find('p').text(message);
-            alert.removeClass('alert-success');
-            alert.removeClass('alert-warning');
-            alert.removeClass('alert-danger');
-            alert.addClass(type);
-            alert.show();
-        }
-    </script>
+    <script src="~/Scripts/custom/uploadNom.js"></script>
 }
 
