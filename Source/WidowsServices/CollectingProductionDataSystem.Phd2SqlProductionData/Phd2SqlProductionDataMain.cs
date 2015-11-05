@@ -271,11 +271,6 @@
             }
         }
 
-        private static void ProcessInventoryTankForSpecificDateTime(DateTime checkedDateTime)
-        {
-            throw new NotImplementedException();
-        }
-
         internal static void ProcessMeasuringPointsData()
         {
             try

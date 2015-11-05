@@ -14,6 +14,7 @@
     using System.Web.Mvc;
     using AutoMapper;
     using CollectingProductionDataSystem.Application.Contracts;
+    using CollectingProductionDataSystem.Application.ProductionDataServices;
     using CollectingProductionDataSystem.Data.Common;
     using CollectingProductionDataSystem.Data.Contracts;
     using CollectingProductionDataSystem.Models.Productions;
@@ -23,7 +24,6 @@
     using CollectingProductionDataSystem.Web.InputModels;
     using Kendo.Mvc.Extensions;
     using Kendo.Mvc.UI;
-    using MathExpressions.Application;
     using Resources = App_GlobalResources.Resources;
 
     [Authorize]
@@ -31,12 +31,14 @@
     {
         private readonly IUnitsDataService shiftServices;
         private readonly IUnitDailyDataService dailyServices;
+        private readonly IProductionDataCalculatorService productionDataCalculator;
 
-        public UnitsController(IProductionData dataParam, IUnitsDataService shiftServicesParam, IUnitDailyDataService dailyServicesParam)
+        public UnitsController(IProductionData dataParam, IUnitsDataService shiftServicesParam, IUnitDailyDataService dailyServicesParam, IProductionDataCalculatorService productionDataCalcParam)
             : base(dataParam)
         {
             this.shiftServices = shiftServicesParam;
             this.dailyServices = dailyServicesParam;
+            this.productionDataCalculator = productionDataCalcParam;
         }
 
         [HttpGet]
@@ -135,7 +137,7 @@
                 var formulaCode = unitConfig.CalculatedFormula ?? string.Empty;
                 var arguments = PopulateFormulaTadaFromPassportData(unitConfig);
                 PopulateFormulaDataFromRelatedUnitConfigs(unitConfig, model, arguments);
-                var newValue = ProductionDataCalculator.Calculate(formulaCode, arguments);
+                var newValue = this.productionDataCalculator.Calculate(formulaCode, arguments);
                 UpdateCalculatedUnitConfig(model, unitConfigId, newValue);
             }
         }
@@ -258,7 +260,7 @@
                 }
             }
 
-            return ProductionDataCalculator.Calculate(formulaCode, arguments);
+            return this.productionDataCalculator.Calculate(formulaCode, arguments);
         }
 
         private void UpdateRecord(UnitsManualData existManualRecord, UnitDataViewModel model)
@@ -444,44 +446,11 @@
             }
             
             // ToDo: add some business process here
-            var unitConfig = this.data.UnitsData.GetById(model.UnitDataId).UnitConfig;
-            if (unitConfig != null)
+            var status = this.productionDataCalculator.CalculateByUnitData(model.Value, model.UnitDataId, this.UserProfile.UserName);
+            if (!status.IsValid)
             {
-                var formulaCode = this.data.UnitsData.GetById(model.UnitDataId).UnitConfig.CalculatedFormula;
-                var arguments = new FormulaArguments();
-                arguments.InputValue = (double)model.Value;
-                arguments.MaximumFlow = (double?)unitConfig.MaximumFlow;
-                arguments.EstimatedDensity = (double?)unitConfig.EstimatedDensity;
-                arguments.EstimatedPressure = (double?)unitConfig.EstimatedPressure;
-                arguments.EstimatedTemperature = (double?)unitConfig.EstimatedTemperature;
-                arguments.EstimatedCompressibilityFactor = (double?)unitConfig.EstimatedCompressibilityFactor;
-
-                var calculatedValue = ProductionDataCalculator.Calculate(formulaCode, arguments);
-                using (var scope = new TransactionScope())
-                {
-                    this.data.UnitEnteredForCalculationDatas.Add(new UnitEnteredForCalculationData
-                    {
-                        Id = model.UnitDataId,
-                        OldValue = 0,
-                        NewValue = model.Value
-                    });
-                    this.data.SaveChanges(this.UserProfile.UserName);
-
-                    this.data.UnitsManualData.Add(new UnitsManualData
-                    {
-                        Id = model.UnitDataId,
-                        Value = (decimal)calculatedValue
-                    });
-                    this.data.SaveChanges(this.UserProfile.UserName);
-
-                    scope.Complete();
-                }
+                status.ToModelStateErrors(this.ModelState);
             }
-            else
-            {
-                ModelState.AddModelError("unitConfig", "There is not an unit config fot that unit data????");
-            }
-
 
             return Json("success");
         }
