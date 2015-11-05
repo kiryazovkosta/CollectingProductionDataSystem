@@ -140,29 +140,10 @@
             if (unitConfig != null)
             {
                 var formulaCode = unitConfig.CalculatedFormula;
-                var arguments = new FormulaArguments();
-                arguments.InputValue = (double)value;
-                arguments.MaximumFlow = (double?)unitConfig.MaximumFlow;
-                arguments.EstimatedDensity = (double?)unitConfig.EstimatedDensity;
-                arguments.EstimatedPressure = (double?)unitConfig.EstimatedPressure;
-                arguments.EstimatedTemperature = (double?)unitConfig.EstimatedTemperature;
-                arguments.EstimatedCompressibilityFactor = (double?)unitConfig.EstimatedCompressibilityFactor;
-
+                var arguments = GetUnitConfigPassportData(unitConfig, value);
                 var calculatedValue = this.Calculate(formulaCode, arguments);
-                this.data.UnitEnteredForCalculationDatas.Add(new UnitEnteredForCalculationData
-                {
-                    Id = unitDataId,
-                    OldValue = default(decimal),
-                    NewValue = value
-                });
-
-                this.data.UnitsManualData.Add(new UnitsManualData
-                {
-                    Id = unitDataId,
-                    Value = (decimal)calculatedValue,
-                    EditReasonId = this.data.EditReasons.All().Where(x => x.Name == "Калкулация").FirstOrDefault().Id
-                });
-                
+                AddOrUpdateUnitEnteredForCalculationData(unitDataId, value);
+                AddOrUpdateUnitsManualData(unitDataId, calculatedValue);
                 var status = this.data.SaveChanges(userName);
                 return status;
             }
@@ -172,6 +153,58 @@
                 validationResults.Add(new ValidationResult("There is not a unit config for that unit data!!!", new[] { "UnitConfig" }));
                 return new EfStatus().SetErrors(validationResults);
             }
+        }
+ 
+        private void AddOrUpdateUnitsManualData(int unitDataId, double calculatedValue)
+        {
+            var newManualRecord = new UnitsManualData
+            {
+                Id = unitDataId,
+                Value = (decimal)calculatedValue,
+                EditReasonId = this.data.EditReasons.All().Where(x => x.Name == "Калкулация").FirstOrDefault().Id
+            };
+            var existManualRecord = this.data.UnitsManualData.All().FirstOrDefault(x => x.Id == newManualRecord.Id);
+            if (existManualRecord == null)
+            {
+                this.data.UnitsManualData.Add(newManualRecord);
+            }
+            else
+            {
+                existManualRecord.Value = (decimal)calculatedValue;
+                this.data.UnitsManualData.Update(existManualRecord);
+            }
+        }
+ 
+        private void AddOrUpdateUnitEnteredForCalculationData(int unitDataId, decimal value)
+        {
+            var newUnitEnteredForCalculationRecord = new UnitEnteredForCalculationData
+            {
+                Id = unitDataId,
+                OldValue = default(decimal),
+                NewValue = value
+            };
+            var existsUnitEnteredForCalculationRecord = this.data.UnitEnteredForCalculationDatas.All().Where(x => x.Id == newUnitEnteredForCalculationRecord.Id).FirstOrDefault();
+            if (existsUnitEnteredForCalculationRecord == null)
+            {
+                this.data.UnitEnteredForCalculationDatas.Add(newUnitEnteredForCalculationRecord);   
+            }
+            else
+            {
+                existsUnitEnteredForCalculationRecord.NewValue = value;
+                this.data.UnitEnteredForCalculationDatas.Update(existsUnitEnteredForCalculationRecord);
+            }
+        }
+ 
+        private FormulaArguments GetUnitConfigPassportData(UnitConfig unitConfig, decimal value)
+        {
+            var arguments = new FormulaArguments();
+            arguments.InputValue = (double)value;
+            arguments.MaximumFlow = (double?)unitConfig.MaximumFlow;
+            arguments.EstimatedDensity = (double?)unitConfig.EstimatedDensity;
+            arguments.EstimatedPressure = (double?)unitConfig.EstimatedPressure;
+            arguments.EstimatedTemperature = (double?)unitConfig.EstimatedTemperature;
+            arguments.EstimatedCompressibilityFactor = (double?)unitConfig.EstimatedCompressibilityFactor;
+            return arguments;
         }
 
         ///  <summary>
@@ -743,8 +776,18 @@
         /// </summary>
         private double FormulaO13(FormulaArguments args)
         {
-            double pl = 20;
-            double d2 = 15;
+            if (!args.InputValue.HasValue)
+            {
+                throw new ArgumentNullException("The value of CounterIndication(PL) is not allowed to be null");
+            }
+
+            if (!args.MaximumFlow.HasValue)
+            {
+                throw new ArgumentNullException("The value of MaximumFlow(D2) is not allowed to be null");
+            }
+
+            double pl = args.InputValue.Value;
+            double d2 = args.MaximumFlow.Value;
             
             double q = Functions.GetValueFormulaA10(pl, d2);
             
@@ -801,11 +844,27 @@
         /// </summary>
         private double FormulaI17(FormulaArguments args)
         {
-            //Arrange
-            double p = 15;
-            double pl = 20;
-            double d2 = 15;
-            double d5 = 10;
+            if (!args.InputValue.HasValue)
+            {
+                throw new ArgumentNullException("The value of CounterIndication(PL) is not allowed to be null");
+            }
+            if (!args.MaximumFlow.HasValue)
+            {
+                throw new ArgumentNullException("The value of MaximumFlow(D2) is not allowed to be null");
+            }
+            if (!args.EstimatedPressure.HasValue)
+            {
+                throw new ArgumentNullException("The value of EstimatedPressure(D5) is not allowed to be null");
+            }
+            if (!args.Pressure.HasValue)
+            {
+                args.Pressure = args.EstimatedPressure;
+            }
+
+            double pl = args.InputValue.Value;
+            double p = args.Pressure.Value;
+            double d2 = args.MaximumFlow.Value;
+            double d5 = args.EstimatedPressure.Value;
 
             double a4 = Functions.GetValueFormulaA4(p, d5);
             double f = Functions.GetValueFormulaF(d2, pl, a4);

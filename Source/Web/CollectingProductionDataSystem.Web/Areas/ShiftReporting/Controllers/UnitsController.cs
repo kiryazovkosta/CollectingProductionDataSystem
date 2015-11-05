@@ -129,6 +129,166 @@
             return Json(new[] { model }.ToDataSourceResult(request, ModelState));
         }
 
+        
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Confirm(ProcessUnitConfirmShiftInputModel model)
+        {
+            ValidateModelState(model.date, model.processUnitId, model.shiftId);
+
+            if (this.ModelState.IsValid)
+            {
+                if (!await this.shiftServices.IsShitApproved(model.date, model.processUnitId, model.shiftId))
+                {
+                    this.data.UnitsApprovedDatas.Add(new UnitsApprovedData
+                    {
+                        RecordDate = model.date,
+                        ProcessUnitId = model.processUnitId,
+                        ShiftId = model.shiftId,
+                        Approved = true
+                    });
+
+                    IEfStatus status;
+
+                    IEnumerable<UnitsDailyData> dailyResult = new List<UnitsDailyData>();
+
+                    using (TransactionScope transaction = new TransactionScope())
+                    {
+                        status = data.SaveChanges(this.UserProfile.UserName);
+
+                        if (status.IsValid)
+                        {
+                            if (dailyServices.CheckIfAllShiftsAreReady(model.date, model.processUnitId))
+                            {
+                                if (!dailyServices.CheckIfDayIsApproved(model.date, model.processUnitId))
+                                {
+                                    status = dailyServices.ClearUnitDailyDatas(model.date, model.processUnitId, this.UserProfile.UserName);
+                                    if (status.IsValid)
+                                    {
+                                        dailyResult = dailyServices.CalculateDailyDataForProcessUnit(model.processUnitId, model.date);
+                                    }
+                                }
+                            }
+                        }
+
+                        if (dailyResult.Count() > 0)
+                        {
+                            this.data.UnitsDailyDatas.BulkInsert(dailyResult, this.UserProfile.UserName);
+                            status = this.data.SaveChanges(this.UserProfile.UserName);
+                        }
+
+                        transaction.Complete();
+                    }
+
+                    return Json(new { IsConfirmed = status.IsValid });
+                }
+                else
+                {
+                    Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                    ModelState.AddModelError("shiftdata", "Данните за смяната вече са потвърдени!!!");
+                    var errors = GetErrorListFromModelState(ModelState);
+                    return Json(new { data = new { errors = errors } });
+                }
+            }
+            else
+            {
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                var errors = GetErrorListFromModelState(ModelState);
+                return Json(new { data = new { errors = errors } });
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> IsConfirmed([DataSourceRequest]
+                                        DataSourceRequest request, DateTime date, int processUnitId, int shiftId)
+        {
+            ValidateModelState(date, processUnitId, shiftId);
+
+            if (this.ModelState.IsValid)
+            {
+                return Json(new { IsConfirmed = await shiftServices.IsShitApproved(date, processUnitId, shiftId) });
+            }
+
+            return Json(new { IsConfirmed = false });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ShowManualDataModal(UnitDataViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var manualCalculationModel = new ManualCalculationViewModel()
+                {
+                    IsOldValueAvailableForEditing = false,
+                    MeasurementCode = model.UnitConfig.MeasureUnit.Code,
+                    UnitDataId = model.Id,
+                    EditorScreenHeading = string.Format(Resources.Layout.EditValueFor,model.UnitConfig.Name)
+                };
+                return PartialView("_ManualDataCalculation", manualCalculationModel);
+            }
+            else 
+            {
+                var errors = this.ModelState.Values.SelectMany(x => x.Errors);
+                return Json(new { success=false, status = 400, errors= errors });
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CalculateManualEntry(ManualCalculationViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return PartialView("_ManualDataCalculation", model);
+            }
+            // ToDo: add some business process here
+            
+            return Json("success");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ShowManualSelfCalculatedDataModal(UnitDataViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var manualSelfCalculationModel = new ManualSelfCalculationViewModel()
+                {
+                    MeasurementCode = model.UnitConfig.MeasureUnit.Code,
+                    UnitDataId = model.Id,
+                    EditorScreenHeading = string.Format(Resources.Layout.EditValueFor, string.Format("{0} {1}", model.UnitConfig.Position, model.UnitConfig.Name))
+                };
+                return PartialView("_ManualDataSelfCalculation", manualSelfCalculationModel);
+            }
+            else 
+            {
+                var errors = this.ModelState.Values.SelectMany(x => x.Errors);
+                return Json(new { success=false, errors= errors });
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult SelfCalculateManualEntry(ManualSelfCalculationViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return PartialView("_ManualDataSelfCalculation", model);
+            }
+            
+            // ToDo: add some business process here
+            var status = this.productionDataCalculator.CalculateByUnitData(model.Value, model.UnitDataId, this.UserProfile.UserName);
+            if (!status.IsValid)
+            {
+                status.ToModelStateErrors(this.ModelState);
+            }
+
+            return Json("success");
+        }
+
         private void UpdateRelatedUnitConfig(int unitConfigId, UnitDataViewModel model)
         {
             var unitConfig = this.data.UnitConfigs.GetById(unitConfigId);
@@ -270,89 +430,6 @@
             this.data.UnitsManualData.Update(existManualRecord);
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Confirm(ProcessUnitConfirmShiftInputModel model)
-        {
-            ValidateModelState(model.date, model.processUnitId, model.shiftId);
-
-            if (this.ModelState.IsValid)
-            {
-                if (!await this.shiftServices.IsShitApproved(model.date, model.processUnitId, model.shiftId))
-                {
-                    this.data.UnitsApprovedDatas.Add(new UnitsApprovedData
-                    {
-                        RecordDate = model.date,
-                        ProcessUnitId = model.processUnitId,
-                        ShiftId = model.shiftId,
-                        Approved = true
-                    });
-
-                    IEfStatus status;
-
-                    IEnumerable<UnitsDailyData> dailyResult = new List<UnitsDailyData>();
-
-                    using (TransactionScope transaction = new TransactionScope())
-                    {
-                        status = data.SaveChanges(this.UserProfile.UserName);
-
-                        if (status.IsValid)
-                        {
-                            if (dailyServices.CheckIfAllShiftsAreReady(model.date, model.processUnitId))
-                            {
-                                if (!dailyServices.CheckIfDayIsApproved(model.date, model.processUnitId))
-                                {
-                                    status = dailyServices.ClearUnitDailyDatas(model.date, model.processUnitId, this.UserProfile.UserName);
-                                    if (status.IsValid)
-                                    {
-                                        dailyResult = dailyServices.CalculateDailyDataForProcessUnit(model.processUnitId, model.date);
-                                    }
-                                }
-                            }
-                        }
-
-                        if (dailyResult.Count() > 0)
-                        {
-                            this.data.UnitsDailyDatas.BulkInsert(dailyResult, this.UserProfile.UserName);
-                            status = this.data.SaveChanges(this.UserProfile.UserName);
-                        }
-
-                        transaction.Complete();
-                    }
-
-                    return Json(new { IsConfirmed = status.IsValid });
-                }
-                else
-                {
-                    Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                    ModelState.AddModelError("shiftdata", "Данните за смяната вече са потвърдени!!!");
-                    var errors = GetErrorListFromModelState(ModelState);
-                    return Json(new { data = new { errors = errors } });
-                }
-            }
-            else
-            {
-                Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                var errors = GetErrorListFromModelState(ModelState);
-                return Json(new { data = new { errors = errors } });
-            }
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> IsConfirmed([DataSourceRequest]
-                                        DataSourceRequest request, DateTime date, int processUnitId, int shiftId)
-        {
-            ValidateModelState(date, processUnitId, shiftId);
-
-            if (this.ModelState.IsValid)
-            {
-                return Json(new { IsConfirmed = await shiftServices.IsShitApproved(date, processUnitId, shiftId) });
-            }
-
-            return Json(new { IsConfirmed = false });
-        }
-
         private List<string> GetErrorListFromModelState(ModelStateDictionary modelState)
         {
             var query = from state in modelState.Values
@@ -377,82 +454,6 @@
             {
                 this.ModelState.AddModelError("shifts", string.Format(Resources.ErrorMessages.Required, Resources.Layout.UnitsProcessUnitShiftSelector));
             }
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult ShowManualDataModal(UnitDataViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                var manualCalculationModel = new ManualCalculationViewModel()
-                {
-                    IsOldValueAvailableForEditing = false,
-                    MeasurementCode = model.UnitConfig.MeasureUnit.Code,
-                    UnitDataId = model.Id,
-                    EditorScreenHeading = string.Format(Resources.Layout.EditValueFor,model.UnitConfig.Name)
-                };
-                return PartialView("_ManualDataCalculation", manualCalculationModel);
-            }
-            else 
-            {
-                var errors = this.ModelState.Values.SelectMany(x => x.Errors);
-                return Json(new { success=false, status = 400, errors= errors });
-            }
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult CalculateManualEntry(ManualCalculationViewModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return PartialView("_ManualDataCalculation", model);
-            }
-            // ToDo: add some business process here
-            
-            return Json("success");
-        }
-
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult ShowManualSelfCalculatedDataModal(UnitDataViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                var manualSelfCalculationModel = new ManualSelfCalculationViewModel()
-                {
-                    MeasurementCode = model.UnitConfig.MeasureUnit.Code,
-                    UnitDataId = model.Id,
-                    EditorScreenHeading = string.Format(Resources.Layout.EditValueFor, string.Format("{0} {1}", model.UnitConfig.Position, model.UnitConfig.Name))
-                };
-                return PartialView("_ManualDataSelfCalculation", manualSelfCalculationModel);
-            }
-            else 
-            {
-                var errors = this.ModelState.Values.SelectMany(x => x.Errors);
-                return Json(new { success=false, errors= errors });
-            }
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult SelfCalculateManualEntry(ManualSelfCalculationViewModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return PartialView("_ManualDataSelfCalculation", model);
-            }
-            
-            // ToDo: add some business process here
-            var status = this.productionDataCalculator.CalculateByUnitData(model.Value, model.UnitDataId, this.UserProfile.UserName);
-            if (!status.IsValid)
-            {
-                status.ToModelStateErrors(this.ModelState);
-            }
-
-            return Json("success");
         }
 
     }
