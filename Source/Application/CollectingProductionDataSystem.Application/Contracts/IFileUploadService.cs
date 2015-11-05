@@ -1,4 +1,4 @@
-﻿namespace CollectingProductionDataSystem.Application.FileServices
+﻿namespace CollectingProductionDataSystem.Application.Contracts
 {
     using System;
     using System.IO;
