@@ -449,6 +449,7 @@
             {
                 var formulaCode = this.data.UnitsData.GetById(model.UnitDataId).UnitConfig.CalculatedFormula;
                 var arguments = new FormulaArguments();
+                arguments.InputValue = (double)model.Value;
                 arguments.MaximumFlow = (double?)unitConfig.MaximumFlow;
                 arguments.EstimatedDensity = (double?)unitConfig.EstimatedDensity;
                 arguments.EstimatedPressure = (double?)unitConfig.EstimatedPressure;
