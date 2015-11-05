@@ -36,10 +36,10 @@
                   .Ajax()
                   .PageSize(20)
                   .Model(model => model.Id(p => p.Id))
-                  .Read(read => read.Action("Read", "History", new { area = "RecordsHistory" }).Data("sendHistoryData"))
+                          .Read(read => read.Action("Read", "History", new { area = "RecordsHistory" }).Data("kendoAdditional.SendHistoryData"))
                   .Events(events =>
                         {
-                            events.Error("error_handler");
+                            events.Error("kendoAdditional.ErrorHandler");
                         })
               )
 

@@ -26,7 +26,7 @@
                             .Total("Total"); //define the [total](http://docs.telerik.com/kendo-ui/api/javascript/data/datasource#configuration-schema.total) option
                   });
           })
-              .Virtual(v => v.ItemHeight(26).ValueMapper("valueMapper"))
+                  .Virtual(v => v.ItemHeight(26).ValueMapper("kendoAdditional.ValueMapper"))
                       .Filter(FilterType.Contains)
           
 )

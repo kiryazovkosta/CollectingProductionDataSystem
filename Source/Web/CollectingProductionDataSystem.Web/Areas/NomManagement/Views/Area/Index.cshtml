@@ -41,9 +41,9 @@ sortable.SortMode(GridSortMode.SingleColumn);
 .Destroy(destroy => destroy.Action("Destroy", "Area", new { area = "NomManagement" }).Data("sendAntiForgery"))
 .Events(events =>
 {
-events.Error("error_handler");
+    events.Error("kendoAdditional.ErrorHandler");
 })
       )
-          .Events(ev => ev.DataBound("deletableDataBound"))
+              .Events(ev => ev.DataBound("kendoAdditional.DeletableDataBound"))
 )
 

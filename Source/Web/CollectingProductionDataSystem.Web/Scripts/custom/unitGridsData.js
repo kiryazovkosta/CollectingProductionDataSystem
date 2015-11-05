@@ -27,8 +27,8 @@ var unitGridsData = (function () {
     //local
     $(document).ready(function () {
         $("#apply").click(function () {
-            refreshGrid("#units");
-            refreshGrid("#productionPlan");
+            kendoAdditional.RefreshGrid("#units");
+            kendoAdditional.RefreshGrid("#productionPlan");
             checkConfirmedStatus();
 
             var grid = $('#units').data('kendoGrid');
@@ -193,8 +193,8 @@ var unitGridsData = (function () {
     // global
     var dataSave = function (ev) {
         if (ev.type === 'update') {
-            refreshGrid('#units');
-            refreshGrid('#productionPlan');
+            kendoAdditional.RefreshGrid('#units');
+            kendoAdditional.RefreshGrid('#productionPlan');
         }
     }
 
@@ -274,7 +274,7 @@ var unitGridsData = (function () {
         if (data) {
             if (data == "success") {
                 hideRecordHistoriModal();
-                refreshGrid('#units');
+                kendoAdditional.RefreshGrid('#units');
             }
         }
     }
