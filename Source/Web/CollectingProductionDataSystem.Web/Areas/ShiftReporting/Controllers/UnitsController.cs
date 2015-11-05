@@ -412,5 +412,78 @@
             return Json("success");
         }
 
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ShowManualSelfCalculatedDataModal(UnitDataViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var manualSelfCalculationModel = new ManualSelfCalculationViewModel()
+                {
+                    MeasurementCode = model.UnitConfig.MeasureUnit.Code,
+                    UnitDataId = model.Id,
+                    EditorScreenHeading = string.Format(Resources.Layout.EditValueFor, string.Format("{0} {1}", model.UnitConfig.Position, model.UnitConfig.Name))
+                };
+                return PartialView("_ManualDataSelfCalculation", manualSelfCalculationModel);
+            }
+            else 
+            {
+                var errors = this.ModelState.Values.SelectMany(x => x.Errors);
+                return Json(new { success=false, errors= errors });
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult SelfCalculateManualEntry(ManualSelfCalculationViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return PartialView("_ManualDataSelfCalculation", model);
+            }
+            
+            // ToDo: add some business process here
+            var unitConfig = this.data.UnitsData.GetById(model.UnitDataId).UnitConfig;
+            if (unitConfig != null)
+            {
+                var formulaCode = this.data.UnitsData.GetById(model.UnitDataId).UnitConfig.CalculatedFormula;
+                var arguments = new FormulaArguments();
+                arguments.MaximumFlow = (double?)unitConfig.MaximumFlow;
+                arguments.EstimatedDensity = (double?)unitConfig.EstimatedDensity;
+                arguments.EstimatedPressure = (double?)unitConfig.EstimatedPressure;
+                arguments.EstimatedTemperature = (double?)unitConfig.EstimatedTemperature;
+                arguments.EstimatedCompressibilityFactor = (double?)unitConfig.EstimatedCompressibilityFactor;
+
+                var calculatedValue = ProductionDataCalculator.Calculate(formulaCode, arguments);
+                using (var scope = new TransactionScope())
+                {
+                    this.data.UnitEnteredForCalculationDatas.Add(new UnitEnteredForCalculationData
+                    {
+                        Id = model.UnitDataId,
+                        OldValue = 0,
+                        NewValue = model.Value
+                    });
+                    this.data.SaveChanges(this.UserProfile.UserName);
+
+                    this.data.UnitsManualData.Add(new UnitsManualData
+                    {
+                        Id = model.UnitDataId,
+                        Value = (decimal)calculatedValue
+                    });
+                    this.data.SaveChanges(this.UserProfile.UserName);
+
+                    scope.Complete();
+                }
+            }
+            else
+            {
+                ModelState.AddModelError("unitConfig", "There is not an unit config fot that unit data????");
+            }
+
+
+            return Json("success");
+        }
+
     }
 }
