@@ -47,7 +47,7 @@
             columns.Bound(c => c.Value).Width(100).Format("{0:n2}");
             columns.Bound(c => c.UnitsManualData.Value).Width(100).Format("{0:n2}")
                 .ClientTemplate(
-                Ajax.AuthorizedAjaxActionLinkOrText("#=data.UnitsManualData.Value#", "Index", "History",
+                Ajax.AuthorizedAjaxActionLinkOrText("#=data.UnitsManualData.Value.toLocaleString(kendo.culture().name)#", "Index", "History",
                                                 new AjaxOptions() { HttpMethod = "Get", OnSuccess = "showRecordHistoriModal" },
                                                 new { area = "RecordsHistory", id = "#=data.id#", entityName = "UnitsManualData" },
                                                 new { data_ajax_mode = "replace", data_ajax_update = @"\#modal-dialog-body" })

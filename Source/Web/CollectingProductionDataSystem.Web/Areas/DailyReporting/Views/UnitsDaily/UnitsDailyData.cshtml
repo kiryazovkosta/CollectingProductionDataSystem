@@ -80,7 +80,7 @@
             columns.Bound(c => c.Value).Width(100).Format("{0:n2}");
             columns.Bound(c => c.UnitsManualDailyData.Value)
                  .ClientTemplate(
-                Ajax.AuthorizedAjaxActionLinkOrText("#=data.UnitsManualDailyData.Value#", "Index", "History",
+                Ajax.AuthorizedAjaxActionLinkOrText("#=data.UnitsManualDailyData.Value.toLocaleString(kendo.culture().name)#", "Index", "History",
                                                 new AjaxOptions() { HttpMethod = "Get", OnSuccess = "showRecordHistoriModal" },
                                                 new { area = "RecordsHistory", id = "#=data.id#", entityName = "UnitsManualDailyData" },
                                                 new { data_ajax_mode = "replace", data_ajax_update = @"\#modal-dialog-body" })
