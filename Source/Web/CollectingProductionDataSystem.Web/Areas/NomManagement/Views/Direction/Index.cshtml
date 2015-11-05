@@ -38,8 +38,8 @@
           .Destroy(destroy => destroy.Action("Destroy", "Direction", new { area = "NomManagement" }).Data("sendAntiForgery"))
           .Events(events =>
             {
-                events.Error("error_handler");
+                events.Error("kendoAdditional.ErrorHandler");
             })
           )
-          .Events(ev => ev.DataBound("deletableDataBound"))
+              .Events(ev => ev.DataBound("kendoAdditional.DeletableDataBound"))
 )
