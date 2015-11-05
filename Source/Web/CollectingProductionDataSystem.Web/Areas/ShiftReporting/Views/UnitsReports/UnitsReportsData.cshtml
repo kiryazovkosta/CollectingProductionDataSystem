@@ -52,7 +52,7 @@
         .Ajax()
         .PageSize(100)
         .ServerOperation(true)
-        .Read(read => read.Action("ReadUnitsReportsData", "UnitsReports", new { area = "ShiftReporting" }).Data("sendDate"))
+        .Read(read => read.Action("ReadUnitsReportsData", "UnitsReports", new { area = "ShiftReporting" }).Data("unitGridsData.sendDate"))
         .Model(model =>
         {
             model.Id(p => p.Id);
@@ -71,7 +71,7 @@
             events.Error("error_handler");
         })
     )
-    .Events(ev => ev.DataBound("dataBound"))
+        .Events(ev => ev.DataBound("unitGridsData.dataBound"))
 )
 @* //Error window for kendo grid error event handler *@
 <div id="err-window" style="display:none">@Html.Partial("_KendoGridErrorWindow")</div>
