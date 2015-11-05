@@ -1,5 +1,7 @@
-﻿function sendFactory() {
-    return {
-        factoryId: $("#factories").val()
-    };
-}
+﻿(function () {
+    sendFactory = function () {
+        return {
+            factoryId: $("#factories").val()
+        };
+    }
+})();
