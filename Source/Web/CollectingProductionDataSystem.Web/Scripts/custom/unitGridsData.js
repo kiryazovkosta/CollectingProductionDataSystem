@@ -139,23 +139,33 @@ var dataBound = function () {
                         $("#" + $(this.element).attr('id') + " tbody").find("tr[data-uid=" + uid + "]").addClass("bg-danger");
                     }
 
-                    if (dataView[i].items[j].UnitConfig.CollectingDataMechanism == manualIndicator) {
+                    if (dataView[i].items[j].UnitConfig.CollectingDataMechanism === manualIndicator) {
                         var currentUid = dataView[i].items[j].uid;
                         var currenRow = this.table.find("tr[data-uid='" + currentUid + "']");
                         var editButton = $(currenRow).find(".k-grid-edit");
-                        editButton.click(dataView[i].items[j], manualEntry);
+                        editButton.click({ data: dataView[i].items[j], url: "/ShiftReporting/Units/ShowManualDataModal" }, manualEntry);
                     }
 
+                    if (dataView[i].items[j].UnitConfig.CollectingDataMechanism === manualCalcumated) {
+                        var currentUid = dataView[i].items[j].uid;
+                        var currenRow = this.table.find("tr[data-uid='" + currentUid + "']");
+                        var editButton = $(currenRow).find(".k-grid-edit");
+                        editButton.click({ data: dataView[i].items[j], url: "/ShiftReporting/Units/ShowManualCalculatedDataModal" }, manualEntry);
+                    }
 
-
-
+                    if (dataView[i].items[j].UnitConfig.CollectingDataMechanism === manualSelfCalculated) {
+                        var currentUid = dataView[i].items[j].uid;
+                        var currenRow = this.table.find("tr[data-uid='" + currentUid + "']");
+                        var editButton = $(currenRow).find(".k-grid-edit");
+                        editButton.click({ data: dataView[i].items[j], url: "/ShiftReporting/Units/ShowManualSelfcalculatedDataModal" }, manualEntry);
+                    }
                 }
             }
         }
     }
 }
 
-nameGridCommancolumn = function () {
+var nameGridCommancolumn = function () {
     var grid = $("#units").data("kendoGrid");
     if (grid) {
         $.each(grid.columns, function (index, value) {
@@ -183,10 +193,10 @@ var manualEntry = function (ev) {
     ev.stopPropagation();
     var culture = $('#culture').val();
     $.ajax({
-        url: "/ShiftReporting/Units/ShowManualDataModal",
+        url: ev.data.url,
         type: "POST",
         content: document.body,
-        data: JSON.parse(JSON.stringify(AddAntiForgeryToken(ev.data), replacer))
+        data: JSON.parse(JSON.stringify(AddAntiForgeryToken(ev.data.data), replacer))
     }).done(function (data) {
         if (data.success === undefined) {
             $("#modal-dialog-body").html(data);
@@ -252,5 +262,6 @@ function PrepareValidationScripts() {
     $.validator.unobtrusive.parse(document);
     form.executed = true;
 }
+
 
 
