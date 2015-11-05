@@ -225,7 +225,17 @@ var unitGridsData = (function () {
                 }
             }
         }).fail(function (data) {
-            alert("Error!!!");
+            var message = "Възникна грешка";
+            if (data) {
+                var status = data.status + 0;
+                if (400 <= status && status < 500) {
+                    message = "Не e намерена заявената страница";
+                }
+                if (status >= 500) {
+                    message = "Възникна грешка при обработка на вашата заявка";
+                }
+            }
+            showKendoError(message);
         });
     }
 
@@ -250,6 +260,11 @@ var unitGridsData = (function () {
     // global
     var manualEntryFailure = function (data) {
 
+        showKendoError("Възникна грешка при обработка на вашата заявка");
+    }
+
+    var showKendoError = function (message)
+    {
         $('pre#err-message').text(message);
         $('div#err-window').data("kendoWindow").open();
     }
