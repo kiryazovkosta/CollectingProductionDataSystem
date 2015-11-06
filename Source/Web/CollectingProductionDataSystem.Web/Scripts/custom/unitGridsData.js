@@ -235,7 +235,7 @@ var unitGridsData = (function () {
     var SendTanksData = function () {
         var result = { "date": $('input[name=date]').val() };
         $.extend(result, sendZoneId());
-        $.extend(result, sendShiftsOffset());
+        $.extend(result, sendShift());
         $.extend(result, sendAntiForgery());
         return result;
     }
