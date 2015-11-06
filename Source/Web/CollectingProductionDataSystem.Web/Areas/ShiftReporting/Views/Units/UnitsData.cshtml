@@ -77,7 +77,7 @@
         .PageSize(100)
         .ServerOperation(true)
         .Group(group => group.Add(c => c.UnitConfig.ShiftProductType.Sort))
-        .Read(read => read.Action("ReadUnitsData", "Units", new { area = "ShiftReporting" }).Data("unitGridsData.sendDate"))
+        .Read(read => read.Action("ReadUnitsData", "Units", new { area = "ShiftReporting" }).Data("unitGridsData.SendDate"))
         .Update(update => update.Action("Edit", "Units", new { area = "ShiftReporting" }).Data("sendAntiForgery"))
         .Model(model =>
         {
@@ -97,11 +97,11 @@
         .Events(events =>
         {
             events.Error("kendoAdditional.ErrorHandler");
-            events.RequestEnd("unitGridsData.dataSave");
+            events.RequestEnd("unitGridsData.DataSave");
         })
     )
     .Events(ev=>ev
-    .DataBound("unitGridsData.dataBound")
+    .DataBound("unitGridsData.DataBound")
         )
 )
 
@@ -119,5 +119,5 @@
     @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.min.js")
 }
 @section sidebar{
-    @Html.Partial("_SampleSideBar")
+    @Html.Partial("_UnitsSideBar")
 }

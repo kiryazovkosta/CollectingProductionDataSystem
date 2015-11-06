@@ -820,6 +820,7 @@
     </Content>
     <Content Include="Scripts\custom\sidebar.js" />
     <Content Include="Scripts\custom\unitGridsData.js" />
+    <Content Include="Scripts\custom\uploadNom.js" />
     <Content Include="Scripts\jquery-2.1.4.js" />
     <Content Include="Scripts\jquery-2.1.4.min.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
@@ -1438,7 +1439,7 @@
     <Content Include="Views\Shared\_LayoutWithSideBar.cshtml" />
     <Content Include="Views\Shared\_MainNav.cshtml" />
     <Content Include="Views\Shared\_KendoLayoutWithSideBar.cshtml" />
-    <Content Include="Views\Shared\_SampleSideBar.cshtml" />
+    <Content Include="Views\Shared\_UnitsSideBar.cshtml" />
     <Content Include="Views\Shared\_UnitsDailySideBar.cshtml" />
     <Content Include="Views\Shared\_SuccessWindow.cshtml" />
     <Content Include="Views\Shared\_TanksSideBar.cshtml" />

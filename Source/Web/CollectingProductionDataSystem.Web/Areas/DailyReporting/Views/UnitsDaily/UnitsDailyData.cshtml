@@ -39,7 +39,7 @@
         .Ajax()
         .ServerOperation(true)
         //    .Group(group => group.Add(c => c.UnitsDailyConfig.ProductType.Sort))
-        .Read(read => read.Action("ReadProductionPlanData", "Ajax", new { area = "DailyReporting" }).Data("unitGridsData.sendDate"))
+        .Read(read => read.Action("ReadProductionPlanData", "Ajax", new { area = "DailyReporting" }).Data("unitGridsData.SendDate"))
         .Model(model =>
         {
             model.Id(p => p.Id);
@@ -53,7 +53,7 @@
             events.Error("kendoAdditional.ErrorHandler");
         })
         )
-       .Events(ev => ev.DataBound("unitGridsData.dataBound"))
+       .Events(ev => ev.DataBound("unitGridsData.DataBound"))
         )
     </div>
 
@@ -104,7 +104,7 @@
                                                                 .Filterable(true)
                                                                 .ProxyURL(Url.Action("Excel_Export_Save", "Tests", new { area = "" }))
                                                                 .AllPages(true))
-                                                                .Events(ev => ev.DataBound("unitGridsData.dataBound"))
+                                                                .Events(ev => ev.DataBound("unitGridsData.DataBound"))
                                                                 .Scrollable(scr => scr.Height(640))
                                                                 .Filterable()
                                                                 .ClientDetailTemplateId("template")
@@ -113,7 +113,7 @@
                                                                 .PageSize(50)
                                                                 .ServerOperation(true)
                                                                 .Group(group => group.Add(c => c.UnitsDailyConfig.DailyProductType.Sort))
-                                                                        .Read(read => read.Action("ReadDailyUnitsData", "UnitsDaily", new { area = "DailyReporting" }).Data("unitGridsData.sendDate"))
+                                                                        .Read(read => read.Action("ReadDailyUnitsData", "UnitsDaily", new { area = "DailyReporting" }).Data("unitGridsData.SendDate"))
                                                                 .Update(update => update.Action("Edit", "UnitsDaily", new { area = "DailyReporting" }).Data("sendAntiForgery"))
                                                                 .Model(model =>
                                                                 {
@@ -130,7 +130,7 @@
                                                                 .Events(events =>
                                                                 {
                                                                     events.Error("kendoAdditional.ErrorHandler");
-                                                                    events.RequestEnd("unitGridsData.dataSave");
+                                                                    events.RequestEnd("unitGridsData.DataSave");
                                                                 })
                                                             )
 )

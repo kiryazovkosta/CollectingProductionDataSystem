@@ -51,26 +51,4 @@
 })
       )
                .Events(ev => ev.DataBound("kendoAdditional.DeletableDataBound"))
-      )
-@section scripts{
-    <script>
-
-        plantFilter = function (element) {
-            element.kendoDropDownList({
-                dataTextField: "FullName",
-                dataValueField: "Id",
-                dataSource: {
-                    transport: {
-                        read: {
-                            url: "@Url.Action("Read", "Plant", new { area = "NomManagement" })",
-                            type: 'POST',
-                            dataType: 'jsonp',
-                            data: sendAntiForgery(),
-                        }
-                    }
-                },
-                optionLabel: "--Select Value--"
-            });
-        }
-    </script>
-}
+)

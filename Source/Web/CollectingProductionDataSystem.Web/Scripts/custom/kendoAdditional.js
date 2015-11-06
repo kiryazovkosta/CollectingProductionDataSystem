@@ -1,4 +1,5 @@
 ﻿var kendoAdditional = (function () {
+    // ----------------- autorun function on document ready -------------------
     $(function () {
         var culture = $('#culture').val();
         kendo.culture(culture);
@@ -6,27 +7,8 @@
         prepareWindow('div#success-window', 'Успешна операция');
     });
 
-    // public 
+    //------------------ private functions ------------------------------------
 
-    var ErrorHandler = function (e) {
-        if (this.data) {
-            this.data([]);
-        }
-        if (e.errors) {
-            var message = "";
-            $.each(e.errors, function (key, value) {
-                if ('errors' in value) {
-                    $.each(value.errors, function () {
-                        message += this + "\n";
-                    });
-                }
-            });
-            $('pre#err-message').text(message);
-            $('div#err-window').data("kendoWindow").open();
-        }
-    }
-
-    // local
     var prepareWindow = function (selector, title) {
 
         var window = $(selector)
@@ -46,33 +28,6 @@
         }
     }
 
-    // global
-    var CloseWindow = function (selector) {
-        $(selector).data("kendoWindow").close();
-    }
-
-    // global
-    var RefreshGrid = function (selector) {
-        var grid = $(selector).data('kendoGrid');
-        if (grid !== null) {
-            grid.dataSource.read();
-        }
-    }
-
-    // global
-    var ValueMapper = function (options) {
-        var url = this.dataSource.options.transport.read.url.replace("Read", "ValueMapper");
-
-        $.ajax({
-            url: url,
-            data: convertValues(options.value),
-            success: function (data) {
-                options.success(data);
-            }
-        });
-    }
-
-    // local 
     var convertValues = function (value) {
         var data = {};
 
@@ -85,7 +40,6 @@
         return data;
     }
 
-    // local
     var serialize = function (data) {
         for (var property in data) {
             if ($.isArray(data[property])) {
@@ -95,7 +49,6 @@
         $.extend(data, sendAntiForgery());
     }
 
-    // local
     var serializeArray = function (prefix, array, result) {
         for (var i = 0; i < array.length; i++) {
             if ($.isPlainObject(array[i])) {
@@ -109,8 +62,7 @@
         }
     }
 
-    // local 
-    function boundEmptyRelatedRecords() {
+    var boundEmptyRelatedRecords = function () {
         var grid = this;
         var propertyName = "RelatedUnitConfigs";
         if (grid) {
@@ -127,14 +79,55 @@
         }
     }
 
-    // global
+    //------------------ public functions ------------------------------------
+
+    var ErrorHandler = function (e) {
+        if (this.data) {
+            this.data([]);
+        }
+        if (e.errors) {
+            var message = "";
+            $.each(e.errors, function (key, value) {
+                if ('errors' in value) {
+                    $.each(value.errors, function () {
+                        message += this + "\n";
+                    });
+                }
+            });
+            $('pre#err-message').text(message);
+            $('div#err-window').data("kendoWindow").open();
+        }
+    }
+
+    var CloseWindow = function (selector) {
+        $(selector).data("kendoWindow").close();
+    }
+
+    var RefreshGrid = function (selector) {
+        var grid = $(selector).data('kendoGrid');
+        if (grid !== null) {
+            grid.dataSource.read();
+        }
+    }
+
+    var ValueMapper = function (options) {
+        var url = this.dataSource.options.transport.read.url.replace("Read", "ValueMapper");
+
+        $.ajax({
+            url: url,
+            data: convertValues(options.value),
+            success: function (data) {
+                options.success(data);
+            }
+        });
+    }
+
     var SendHistoryData = function () {
         var result = { 'id': $('input[name=id]').val(), 'entityName': $('input[name=entityName]').val() };
         $.extend(result, sendAntiForgery());
         return result;
     }
 
-    // global
     var DeletableDataBound = function () {
         var items = this.dataSource.view();
         for (var i = 0; i < items.length; i++) {
