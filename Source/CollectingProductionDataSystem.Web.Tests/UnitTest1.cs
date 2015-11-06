@@ -6,6 +6,7 @@ using CollectingProductionDataSystem.Models.Nomenclatures;
 using CollectingProductionDataSystem.Models.Productions;
 using CollectingProductionDataSystem.Web.Areas.Administration.ViewModels;
 using CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewModels;
+using CollectingProductionDataSystem.Web.Areas.ShiftReporting.ViewModels;
 using CollectingProductionDataSystem.Web.ViewModels.Identity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -62,6 +63,17 @@ namespace CollectingProductionDataSystem.Web.Tests
             Mapper.CreateMap<IEnumerable<UnitConfig>, IEnumerable<RelatedUnitConfigsViewModel>>();
 
             var mapper = new RelatedUnitDailyConfigsViewModel();
+            mapper.CreateMappings(Mapper.Configuration);
+
+            Mapper.AssertConfigurationIsValid();
+        }
+
+        [TestMethod]
+        public void CheckMappinIEnumerable_MultiShift_To_IEnumerable_UnitsReportsDataViewModel()
+        {
+            Mapper.CreateMap<IEnumerable<MultiShift>, IEnumerable<UnitsReportsDataViewModel>>();
+
+            var mapper = new UnitsReportsDataViewModel();
             mapper.CreateMappings(Mapper.Configuration);
 
             Mapper.AssertConfigurationIsValid();

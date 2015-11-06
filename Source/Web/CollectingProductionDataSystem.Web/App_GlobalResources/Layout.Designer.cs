@@ -628,6 +628,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Create.
+        /// </summary>
+        public static string Create {
+            get {
+                return ResourceManager.GetString("Create", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Create User Account.
         /// </summary>
         public static string CreateUser {
@@ -993,6 +1002,24 @@ namespace App_GlobalResources.Resources {
         public static string FlowDirection {
             get {
                 return ResourceManager.GetString("FlowDirection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Exclude From Role.
+        /// </summary>
+        public static string ForExcluding {
+            get {
+                return ResourceManager.GetString("ForExcluding", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Includ in Role.
+        /// </summary>
+        public static string ForIncluding {
+            get {
+                return ResourceManager.GetString("ForIncluding", resourceCulture);
             }
         }
         
@@ -2266,6 +2293,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Save.
+        /// </summary>
+        public static string Save {
+            get {
+                return ResourceManager.GetString("Save", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sea Expedition&lt;br/&gt;[ton].
         /// </summary>
         public static string SeaQuantity {
@@ -2307,6 +2343,15 @@ namespace App_GlobalResources.Resources {
         public static string Shift3QuantityValue {
             get {
                 return ResourceManager.GetString("Shift3QuantityValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shift Duration.
+        /// </summary>
+        public static string ShiftDuration {
+            get {
+                return ResourceManager.GetString("ShiftDuration", resourceCulture);
             }
         }
         
@@ -3063,6 +3108,15 @@ namespace App_GlobalResources.Resources {
         public static string UnusableResidueLevel {
             get {
                 return ResourceManager.GetString("UnusableResidueLevel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User Accounts.
+        /// </summary>
+        public static string UserAccounts {
+            get {
+                return ResourceManager.GetString("UserAccounts", resourceCulture);
             }
         }
         

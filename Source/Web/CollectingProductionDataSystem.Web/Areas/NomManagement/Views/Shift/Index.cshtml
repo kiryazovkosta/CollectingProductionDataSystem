@@ -10,8 +10,14 @@
                                                 .ToHtmlString());
           columns.Bound(c => c.BeginTime)
                  .ClientTemplate("#=kendo.format(\"{0}.{1:00}:{2:00}\",data.BeginTime == null?0:BeginTime.Days,data.BeginTime == null?0:BeginTime.Hours, data.BeginTime == null?0:BeginTime.Minutes)#");
-          columns.Bound(c => c.ReadOffset).ClientTemplate("#=kendo.format(\"{0}.{1:00}:{2:00}\",data.ReadOffset == null?0:ReadOffset.Days,data.ReadOffset == null?0:ReadOffset.Hours, data.ReadOffset == null?0:ReadOffset.Minutes)#");
-          columns.Bound(c => c.ReadPollTimeSlot).ClientTemplate("#=kendo.format(\"{0}.{1:00}:{2:00}\",data.ReadPollTimeSlot == null?0:ReadPollTimeSlot.Days,data.ReadPollTimeSlot == null?0:ReadPollTimeSlot.Hours, data.ReadPollTimeSlot == null?0:ReadPollTimeSlot.Minutes)#");
+          columns.Bound(c => c.EndTime)
+                .ClientTemplate("#=kendo.format(\"{0}.{1:00}:{2:00}\",data.EndTime == null?0:EndTime.Days,data.EndTime == null?0:EndTime.Hours, data.EndTime == null?0:EndTime.Minutes)#");
+          columns.Bound(c => c.ReadOffset)
+              .ClientTemplate("#=kendo.format(\"{0}.{1:00}:{2:00}\",data.ReadOffset == null?0:ReadOffset.Days,data.ReadOffset == null?0:ReadOffset.Hours, data.ReadOffset == null?0:ReadOffset.Minutes)#");
+          columns.Bound(c => c.ReadPollTimeSlot)
+              .ClientTemplate("#=kendo.format(\"{0}.{1:00}:{2:00}\",data.ReadPollTimeSlot == null?0:ReadPollTimeSlot.Days,data.ReadPollTimeSlot == null?0:ReadPollTimeSlot.Hours, data.ReadPollTimeSlot == null?0:ReadPollTimeSlot.Minutes)#");
+          columns.Bound(c => c.ShiftDuration)
+              .ClientTemplate("#=kendo.format(\"{0}.{1:00}:{2:00}\",data.ShiftDuration == null?0:ShiftDuration.Days,data.ShiftDuration == null?0:ShiftDuration.Hours, data.ShiftDuration == null?0:ShiftDuration.Minutes)#");
           columns.Command(command => { command.Edit(); command.Destroy(); }).Width(230);
       })
           .ToolBar(toolbar =>
@@ -38,8 +44,11 @@
                   {
                       model.Id(p => p.Id);
                       model.Field(p => p.BeginTime).DefaultValue(new TimeSpan());
+                      model.Field(p => p.EndTime).DefaultValue(new TimeSpan());
                       model.Field(p => p.ReadOffset).DefaultValue(new TimeSpan());
-                      model.Field(p => p.ReadPollTimeSlot).DefaultValue(new TimeSpan());                                            
+                      model.Field(p => p.ReadPollTimeSlot).DefaultValue(new TimeSpan());
+                      model.Field(p => p.ShiftDuration).DefaultValue(new TimeSpan());
+                                                               
                   })
                       .Read(read => read.Action("Read", "Shift", new { area = "NomManagement" }).Data("sendAntiForgery"))
                       .Create(create => create.Action("Create", "Shift", new { area = "NomManagement" }).Data("sendAntiForgery"))

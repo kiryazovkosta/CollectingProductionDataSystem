@@ -1,5 +1,6 @@
 ﻿@using CollectingProductionDataSystem.Web.ViewModels.Transactions;
 @using Resources = App_GlobalResources.Resources;
+
 @model MeasuringPointsDataViewModel
 @{
     Layout = "~/Views/Shared/_KendoLayoutWithSideBar.cshtml";
@@ -51,7 +52,7 @@
                     .Read(read => read.Action("ReadTransactionsDailyData", "TransactionsDaily", new { area = "DailyReporting" }).Data("sendDate"))
         .Events(events =>
         {
-            events.Error("error_handler");
+            events.Error("kendoAdditional.ErrorHandler");
         }))
 
         )
@@ -64,6 +65,7 @@
 <div id="success-window" style="display:none">@Html.Partial("_SuccessWindow")</div>
 
 @section scripts{
+    @Scripts.Render("~/bundles/custom/kendoadditional") 
     <script src="~/Scripts/custom/sendAntiForgery.js"></script>
     <script>
         kendo.culture("@System.Threading.Thread.CurrentThread.CurrentCulture.Name");

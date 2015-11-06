@@ -26,10 +26,16 @@ namespace CollectingProductionDataSystem.Data.Mappings
             this.Property(t => t.BeginTicks)
                 .IsRequired();
 
+            this.Property(t => t.EndTicks)
+                .IsRequired();
+
             this.Property(t => t.ReadOffsetTicks)
                 .IsRequired();
 
             this.Property(t => t.ReadPollTimeSlotTicks)
+                .IsRequired();
+
+            this.Property(t => t.ShiftDurationTicks)
                 .IsRequired();
 
 
