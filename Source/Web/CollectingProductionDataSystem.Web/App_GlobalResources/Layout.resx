@@ -1155,4 +1155,22 @@
   <data name="EditValueFor" xml:space="preserve">
     <value>Editing value for position {0}</value>
   </data>
+  <data name="Create" xml:space="preserve">
+    <value>Create</value>
+  </data>
+  <data name="ForExcluding" xml:space="preserve">
+    <value>Exclude From Role</value>
+  </data>
+  <data name="ForIncluding" xml:space="preserve">
+    <value>Includ in Role</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="ShiftDuration" xml:space="preserve">
+    <value>Shift Duration</value>
+  </data>
+  <data name="UserAccounts" xml:space="preserve">
+    <value>User Accounts</value>
+  </data>
 </root>

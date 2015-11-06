@@ -1,4 +1,5 @@
-﻿@model IEnumerable<CollectingProductionDataSystem.Web.Areas.Administration.ViewModels.EditUserViewModel>
+﻿@using Resources = App_GlobalResources.Resources
+@model IEnumerable<CollectingProductionDataSystem.Web.Areas.Administration.ViewModels.EditUserViewModel>
 
 @{
     Layout = "~/Areas/Administration/Views/Shared/_KendoAdminLayout.cshtml";
@@ -6,7 +7,7 @@
 
 <div class="panel panel-primary">
     <div class="panel-heading">
-        User Accounts
+        @Resources.Layout.UserAccounts
     </div>
     @Html.AntiForgeryToken()
     @(Html.Kendo()
@@ -41,9 +42,6 @@
                         .Model(model =>
                         {
                             model.Id(p => p.Id);
-                            //model.Field(p => p.Id).Editable(false);
-                            //model.Field(p => p.UserName);
-                            //model.Field(p => p.Email);
                         })
                         .Update(update => update.Action("Edit", "User", new { area = "Administration" }).Data("sendAntiForgery"))
                         .Destroy(update => update.Action("Delete", "User", new { area = "Administration" }).Data("sendAntiForgery"))
@@ -51,7 +49,7 @@
     )
 </div>
 <div class="well well-sm">
-    @Html.ActionLink("Create", "Create", null, new { @class = "btn btn-primary" })
+    @Html.ActionLink(Resources.Layout.Create, "Create", null, new { @class = "btn btn-primary" })
 </div>
 
 @if (TempData["success"] != null)
