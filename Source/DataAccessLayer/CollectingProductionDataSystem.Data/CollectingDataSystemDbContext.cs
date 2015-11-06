@@ -121,6 +121,8 @@
 
         public IDbSet<UnitEnteredForCalculationData> UnitEnteredForCalculationDatas { get; set; }
 
+        public IDbSet<MeasuringPointProductsConfig> MeasuringPointProductsConfigs { get; set; }
+
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

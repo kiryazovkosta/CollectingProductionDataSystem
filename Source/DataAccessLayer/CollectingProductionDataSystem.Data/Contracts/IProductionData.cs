@@ -92,6 +92,8 @@
 
         IDeletableEntityRepository<UnitEnteredForCalculationData> UnitEnteredForCalculationDatas { get; }
 
+        IDeletableEntityRepository<MeasuringPointProductsConfig> MeasuringPointProductsConfigs { get; }
+
         IDbContext DbContext { get; }
 
         IEfStatus SaveChanges(string userName);

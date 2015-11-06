@@ -9,6 +9,7 @@
     {
         private ICollection<RelatedMeasuringPointConfigs> relatedMeasuringPointConfigs;
         private ICollection<MeasuringPointProductsData> measuringPointProductsDatas;
+        private ICollection<MeasuringPointProductsConfig> measuringPointProductsConfigs;
 
         public MeasuringPointConfig()
         {
@@ -16,6 +17,7 @@
             this.ActiveTransactionsDatas = new HashSet<ActiveTransactionsData>();
             this.relatedMeasuringPointConfigs = new HashSet<RelatedMeasuringPointConfigs>();
             this.measuringPointProductsDatas = new HashSet<MeasuringPointProductsData>();
+            this.measuringPointProductsConfigs = new HashSet<MeasuringPointProductsConfig>();
         }
         public int Id { get; set; }
         public int ZoneId { get; set; }
@@ -126,6 +128,11 @@
         {
             get { return this.measuringPointProductsDatas; }
             set { this.measuringPointProductsDatas = value; }
+        }
+        public virtual ICollection<MeasuringPointProductsConfig> MeasuringPointProductsConfigs 
+        {
+            get { return this.measuringPointProductsConfigs; }
+            set { this.measuringPointProductsConfigs = value; }
         }
     }
 }

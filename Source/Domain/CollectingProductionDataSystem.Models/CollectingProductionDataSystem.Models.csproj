@@ -127,6 +127,7 @@
     <Compile Include="Transactions\ActiveTransactionsData.cs" />
     <Compile Include="Transactions\Ikunk.cs" />
     <Compile Include="Transactions\MaxAsoMeasuringPointDataSequenceNumber.cs" />
+    <Compile Include="Transactions\MeasuringPointProductsConfig.cs" />
     <Compile Include="Transactions\MeasuringPointProductsData.cs" />
     <Compile Include="Transactions\MeasuringPointConfig.cs" />
     <Compile Include="Transactions\MeasuringPointsConfigsData.cs" />

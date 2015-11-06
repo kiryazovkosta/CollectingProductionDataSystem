@@ -363,6 +363,14 @@
             }
         }
 
+        public IDeletableEntityRepository<MeasuringPointProductsConfig> MeasuringPointProductsConfigs
+        {
+            get
+            {
+                return this.GetDeletableEntityRepository<MeasuringPointProductsConfig>();
+            }
+        }
+
         public void Dispose()
         {
             this.Dispose(true);
