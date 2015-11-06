@@ -11,7 +11,7 @@
     </h4>
 </div>
 @Html.ValidationSummary(true)
-@using (Ajax.BeginForm("CalculateManualEntry", "Units", null, new AjaxOptions() { HttpMethod = "POST", UpdateTargetId = "modal-dialog-body", OnSuccess = "unitGridsData.successCalculateManualEntry", OnFailure = "unitGridsData.manualEntryFailure" }, new { area = "ShiftReporting", @class = "form-horizontal" }))
+@using (Ajax.BeginForm("CalculateManualEntry", "Units", null, new AjaxOptions() { HttpMethod = "POST", UpdateTargetId = "modal-dialog-body", OnSuccess = "unitGridsData.SuccessCalculateManualEntry", OnFailure = "unitGridsData.ManualEntryFailure" }, new { area = "ShiftReporting", @class = "form-horizontal" }))
 {
     @Html.HiddenFor(m=>m.UnitDataId)
     @Html.HiddenFor(m=>m.MeasurementCode)
