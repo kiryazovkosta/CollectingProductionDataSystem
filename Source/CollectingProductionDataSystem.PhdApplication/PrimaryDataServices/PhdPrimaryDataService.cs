@@ -137,7 +137,7 @@
                     var unitData = GetUnitData(unitConfig, oPhd, recordDataTime, out confidence);
                     if (confidence > Properties.Settings.Default.PHD_DATA_MIN_CONFIDENCE && unitData.RecordTimestamp != null)
                     {
-                        if (!unitsData.Where(x => x.RecordTimestamp == unitData.RecordTimestamp && x.ShiftId == shift).Any())
+                        if (!unitsData.Where(x => x.RecordTimestamp == unitData.RecordTimestamp && x.ShiftId == shift && x.UnitConfigId == unitConfig.Id).Any())
                         {
                             unitData.ShiftId = shift;
                             unitData.RecordTimestamp = unitData.RecordTimestamp.Date;
