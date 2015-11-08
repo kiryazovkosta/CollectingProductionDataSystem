@@ -12,6 +12,7 @@ var unitGridsData = (function () {
             if ($("#tanks")) {
                 kendoAdditional.RefreshGrid("#tanks");
             }
+
             checkConfirmedStatus();
 
             var grid = $('#units').data('kendoGrid');
@@ -91,8 +92,12 @@ var unitGridsData = (function () {
     }
 
     var hideCommandButtons = function () {
-        $("#confirm").hide();
-        $("#units").data("kendoGrid").hideColumn('commands');
+        if ($("#confirm")) {
+            $("#confirm").hide();
+        }
+        if ($("#units")) {
+            $("#units").data("kendoGrid").hideColumn('commands');
+        }
     }
 
     var showCommandButtons = function () {
