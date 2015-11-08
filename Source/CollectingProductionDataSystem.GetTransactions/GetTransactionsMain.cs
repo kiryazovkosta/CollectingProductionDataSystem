@@ -553,7 +553,8 @@
                                             ProductType = scaleProduct.Product.ProductType.Id,
                                             BaseProductNumber = scaleProduct.Product.Code,
                                             BaseProductName = scaleProduct.Product.Name,
-                                            BaseProductType = scaleProduct.Product.ProductType.Id
+                                            BaseProductType = scaleProduct.Product.ProductType.Id,
+                                            FlowDirection = scaleProduct.DirectionId
                                         };
                                         context.MeasuringPointsConfigsDatas.Add(measuringPointConfigData);
                                     }

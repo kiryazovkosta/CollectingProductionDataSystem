@@ -243,11 +243,11 @@ namespace CollectingProductionDataSystem.Web.Areas.DailyReporting.Controllers
             if (transactionData.DirectionId == 3)
             {
                 // data from Pt Rosenec
-                if (flowDirection == 2 && transactionData.MassReverse.Value == 0)
+                if (flowDirection == 2 && (transactionData.MassReverse.HasValue == false || transactionData.MassReverse.Value == 0))
                 {
                     return null;
                 }
-                if (flowDirection == 1 && transactionData.Mass.Value == 0)
+                if (flowDirection == 1 && (transactionData.Mass.HasValue == false || transactionData.Mass.Value == 0))
                 {
                     return null;
                 }
