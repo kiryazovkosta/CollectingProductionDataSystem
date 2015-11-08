@@ -1173,4 +1173,7 @@
   <data name="UserAccounts" xml:space="preserve">
     <value>User Accounts</value>
   </data>
+  <data name="IsMemberOfShiftReport" xml:space="preserve">
+    <value>IsMemberOfShiftReport</value>
+  </data>
 </root>

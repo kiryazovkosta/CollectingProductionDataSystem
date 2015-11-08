@@ -21,6 +21,14 @@
         public DateTime TimeStamp{get;set;}
 
         [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
+        [Display(Name = "Factory", ResourceType = typeof(Resources.Layout))]
+        public string Factory { get; set; }
+
+        [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
+        [Display(Name = "ProcessUnit", ResourceType = typeof(Resources.Layout))]
+        public string ProcessUnit { get; set; }
+
+        [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
         [Display(Name = "Code", ResourceType = typeof(Resources.Layout))]
         public string Code { get; set; }
 
@@ -57,9 +65,9 @@
         public void CreateMappings(IConfiguration configuration)
         {
             configuration.CreateMap<MultiShift, UnitsReportsDataViewModel>()
-                .ForMember(p => p.Shift1QuantityValue, opt => opt.MapFrom(p => (p.Shift1!=null)?p.Shift1.RealValue:0))
-                .ForMember(p => p.Shift2QuantityValue, opt => opt.MapFrom(p => (p.Shift2!=null)?p.Shift2.RealValue:0))
-                .ForMember(p => p.Shift3QuantityValue, opt => opt.MapFrom(p => (p.Shift3!=null)?p.Shift3.RealValue:0));
+                .ForMember(p => p.Shift1QuantityValue, opt => opt.MapFrom(p => (p.Shift1 != null) ? p.Shift1.RealValue : 0))
+                .ForMember(p => p.Shift2QuantityValue, opt => opt.MapFrom(p => (p.Shift2 != null) ? p.Shift2.RealValue : 0))
+                .ForMember(p => p.Shift3QuantityValue, opt => opt.MapFrom(p => (p.Shift3 != null) ? p.Shift3.RealValue : 0));
         }
     }
 }

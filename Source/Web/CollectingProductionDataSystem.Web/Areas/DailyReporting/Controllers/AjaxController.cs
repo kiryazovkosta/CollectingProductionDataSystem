@@ -1,22 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using AutoMapper;
-using CollectingProductionDataSystem.Application.CalculatorService;
-using CollectingProductionDataSystem.Application.Contracts;
-using CollectingProductionDataSystem.Data.Contracts;
-using CollectingProductionDataSystem.Models.Productions;
-using CollectingProductionDataSystem.Web.Areas.ShiftReporting.ViewModels;
-using CollectingProductionDataSystem.Web.ViewModels.Units;
-using Kendo.Mvc.Extensions;
-using Kendo.Mvc.UI;
-using CollectingProductionDataSystem.Web.Infrastructure.Filters;
-
-namespace CollectingProductionDataSystem.Web.Areas.DailyReporting.Controllers
+﻿namespace CollectingProductionDataSystem.Web.Areas.DailyReporting.Controllers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics;
+    using System.Linq;
+    using System.Web;
+    using System.Web.Mvc;
+    using AutoMapper;
+    using CollectingProductionDataSystem.Application.CalculatorService;
+    using CollectingProductionDataSystem.Application.Contracts;
+    using CollectingProductionDataSystem.Data.Contracts;
+    using CollectingProductionDataSystem.Models.Productions;
+    using CollectingProductionDataSystem.Web.Areas.ShiftReporting.ViewModels;
+    using CollectingProductionDataSystem.Web.ViewModels.Units;
+    using Kendo.Mvc.Extensions;
+    using Kendo.Mvc.UI;
+    using CollectingProductionDataSystem.Web.Infrastructure.Filters;
+    using Resources = App_GlobalResources.Resources;
+
     public class AjaxController : AreaBaseController
     {
         private readonly IUnitsDataService unitsData;
@@ -49,6 +50,11 @@ namespace CollectingProductionDataSystem.Web.Areas.DailyReporting.Controllers
         [AuthorizeFactory]
         public JsonResult ReadProductionPlanData([DataSourceRequest]DataSourceRequest request, DateTime? date, int? processUnitId)
         {
+            if (!date.HasValue)
+            {
+                return Json(string.Empty);
+            }
+
             var dailyData = unitsData.GetUnitsDailyDataForDateTime(date, processUnitId).ToList();
             if (dailyData.Count == 0)
             {

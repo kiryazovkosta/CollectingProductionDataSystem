@@ -32,34 +32,36 @@ namespace CollectingProductionDataSystem.Web.Areas.DailyReporting.Controllers
         public JsonResult ReadTransactionsDailyData([DataSourceRequest]DataSourceRequest request, DateTime? date, int? flowDirection)
         {
             ValidateModelState(date, flowDirection);
-            var transactions = GetMeasurementPointsDataByDateAndDirection(date, flowDirection);
-
-            var transactionsData = transactions.Select(t => new TransactionDataModel
-            {
-                MeasuringPointId = t.MeasuringPointId,
-                DirectionId = t.MeasuringPointConfig.FlowDirection.Value,
-                TransportId = t.MeasuringPointConfig.TransportTypeId,
-                ProductId = t.ProductNumber.Value,
-                Mass = t.Mass,
-                MassReverse = t.MassReverse,
-                ScaleNumber = t.MeasuringPointConfig.WeightScaleNumber,
-                FlowDirection = t.FlowDirection.Value
-            });
-
-            var dict = new SortedDictionary<int, MeasuringPointsDataViewModel>();
-            foreach (var transactionData in transactionsData)
-            {
-                var measuringPointData = FillModelObject(transactionData, dict, flowDirection);
-                if (measuringPointData != null)
-                {
-                    dict[transactionData.ProductId] = measuringPointData;   
-                }
-            }
-
-            var actDict = GetActiveTransactionsData(date, flowDirection);
             var kendoResult = new DataSourceResult();
             try
             {
+                var transactionsData = GetMeasurementPointsDataByDateAndDirection(date, flowDirection)
+                    .Select(t => new TransactionDataModel
+                {
+                    MeasuringPointId = t.MeasuringPointId,
+                    DirectionId = t.MeasuringPointConfig.FlowDirection.Value,
+                    TransportId = t.MeasuringPointConfig.TransportTypeId,
+                    ProductId = t.ProductNumber.Value,
+                    Mass = t.Mass,
+                    MassReverse = t.MassReverse,
+                    FlowDirection = t.MeasuringPointConfig.FlowDirection.Value,
+                });
+
+                var dict = new SortedDictionary<int, MeasuringPointsDataViewModel>();
+                
+                foreach (var transactionData in transactionsData)
+                {
+                    var measuringPointData = FillModelObject(transactionData, dict, flowDirection);
+                    if (measuringPointData != null)
+                    {
+                        dict[transactionData.ProductId] = measuringPointData;   
+                    }
+
+                }
+
+                var actDict = GetActiveTransactionsData(date, flowDirection);
+
+
                 var hs = PopulateAllMeaurementPointDatas(dict, actDict);
                 kendoResult = hs.ToDataSourceResult(request, ModelState);
             }
@@ -240,25 +242,14 @@ namespace CollectingProductionDataSystem.Web.Areas.DailyReporting.Controllers
             var measuringPointData = new MeasuringPointsDataViewModel();
             if (transactionData.DirectionId == 3)
             {
-                if (!String.IsNullOrEmpty(transactionData.ScaleNumber))
+                // data from Pt Rosenec
+                if (flowDirection == 2 && (transactionData.MassReverse.HasValue == false || transactionData.MassReverse.Value == 0))
                 {
-                    // Data from weight scale with output/input
-                    if (transactionData.FlowDirection != flowDirection)
-                    {
-                        return null;    
-                    }
+                    return null;
                 }
-                else
+                if (flowDirection == 1 && (transactionData.Mass.HasValue == false || transactionData.Mass.Value == 0))
                 {
-                    // data from Pt Rosenec
-                    if (flowDirection == 2 && transactionData.MassReverse.Value == 0)
-                    {
-                        return null;
-                    }
-                    if (flowDirection == 1 && transactionData.Mass.Value == 0)
-                    {
-                        return null;
-                    }
+                    return null;
                 }
             }
 
@@ -309,7 +300,6 @@ namespace CollectingProductionDataSystem.Web.Areas.DailyReporting.Controllers
         public int DirectionId { get; set; }
         public int TransportId { get; set; }
         public int ProductId { get; set; }
-        public string ScaleNumber { get; set; }
         public int FlowDirection { get; set; }
         public decimal? Mass { get; set; }
         public decimal? MassReverse { get; set; }

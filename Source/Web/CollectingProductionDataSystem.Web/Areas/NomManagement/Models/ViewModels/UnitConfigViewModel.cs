@@ -110,6 +110,9 @@
         [Editable(false)]
         public bool IsDeleted { get; set; }
 
+        [Display(Name = "IsMemberOfShiftReport", ResourceType = typeof(Resources.Layout))]
+        public bool IsMemberOfShiftsReport { get; set; }
+
         /// <summary>
         /// Creates the mappings.
         /// </summary>
@@ -147,7 +150,9 @@
                 .ForMember(p => p.ModifiedFrom, opt => opt.Ignore())
                 .ForMember(p => p.UnitConfigUnitDailyConfigs, opt => opt.Ignore())
                 .ForMember(p => p.IsConverted, opt => opt.Ignore())
-                .ForMember(p=>p.StartupValue,opt=>opt.Ignore()); 
+                .ForMember(p=>p.StartupValue,opt=>opt.Ignore())
+                .ForMember(p => p.IsMemberOfShiftsReport, opt=>opt.Ignore());
+                
         }
     }
 }

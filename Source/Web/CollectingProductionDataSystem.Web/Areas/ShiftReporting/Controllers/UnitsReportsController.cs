@@ -43,13 +43,15 @@
             if (ModelState.IsValid)
             {
                 var dbResult = this.unitsData.GetUnitsDataForDateTime(date, processUnitId, null)
-                    .Where(x => x.UnitConfig.MeasureUnitId != 6 && x.UnitConfig.MeasureUnitId != 5)
+                    .Where(x => x.UnitConfig.IsMemberOfShiftsReport)
                     .OrderBy(x => x.UnitConfig.Code)
                     .ToList();
 
                 var result = dbResult.Select(x => new MultiShift
                     {
                         TimeStamp = x.RecordTimestamp,
+                        Factory = x.UnitConfig.ProcessUnit.Factory.ShortName,
+                        ProcessUnit = x.UnitConfig.ProcessUnit.ShortName,
                         Code = x.UnitConfig.Code,
                         Position = x.UnitConfig.Position,
                         MeasureUnit = x.UnitConfig.MeasureUnit.Code,

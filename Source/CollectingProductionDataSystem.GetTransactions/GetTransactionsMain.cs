@@ -448,83 +448,121 @@
             try
             {
                 logger.Info("Begin scale transactions synchronization!");
-                var now = DateTime.Now;
-                var today = DateTime.Today;
-                var fiveOClock = today.AddHours(5);
-                
-                var ts = now - fiveOClock;
-                //if(ts.TotalMinutes > 2 && ts.Hours == 0)
                 {
-                    var phdValues = new Dictionary<int, int>();
+                    var now = DateTime.Now;
+                    var today = DateTime.Today;
+                    var fiveOClock = today.AddHours(5);
 
-                    using (var context = new ProductionData(new CollectingDataSystemDbContext(new AuditablePersister())))
+                    logger.InfoFormat("Today.Ticks: {0}", today.Ticks);
+                
+                    var ts = now - fiveOClock;
+                    if(ts.TotalMinutes > 2 && ts.Hours == 0)
                     {
-                        var currentPhdTimestamp = string.Format("NOW-{0}H{1}M", ts.Hours, ts.Minutes);
-                        var previousPhdTimestamp = string.Format("NOW-{0}H{1}M",  ts.Hours + 24, ts.Minutes);
+                        var phdValues = new Dictionary<int, int>();
 
-                        var scaleMeasuringPointProducts = context.MeasuringPointProductsConfigs
-                            .All()
-                            .Include(x=>x.MeasuringPointConfig)
-                            .Include(x=>x.MeasuringPointConfig.Zone)
-                            .Include(x=>x.Product)
-                            .Include(x=>x.Direction)
-                            .ToList();
-                        foreach (var scaleMeasuringPointProduct in scaleMeasuringPointProducts)
+                        using (var context = new ProductionData(new CollectingDataSystemDbContext(new AuditablePersister())))
                         {
-                            using (PHDHistorian oPhd = new PHDHistorian())
+                            if (!context.MeasuringPointsConfigsDatas.All().Where(x => x.TransactionNumber >= today.Ticks).Any())
                             {
-                                using (PHDServer defaultServer = new PHDServer(Properties.Settings.Default.PHD_HOST))
+
+                                var currentPhdTimestamp = string.Format("NOW-{0}H{1}M", Math.Truncate(ts.TotalHours), ts.Minutes);
+                                var previousPhdTimestamp = string.Format("NOW-{0}H{1}M", Math.Truncate(ts.TotalHours) + 24, ts.Minutes);
+
+                                var scaleMeasuringPointProducts = context.MeasuringPointProductsConfigs
+                                    .All()
+                                    .Include(x => x.MeasuringPointConfig)
+                                    .Include(x => x.MeasuringPointConfig.Zone)
+                                    .Include(x => x.Product)
+                                    .Include(x => x.Product.ProductType)
+                                    .Include(x => x.Direction)
+                                    .ToList();
+                                foreach (var scaleMeasuringPointProduct in scaleMeasuringPointProducts)
                                 {
-                                    SetPhdConnectionSettings(defaultServer, oPhd, currentPhdTimestamp);
-                                    var result = oPhd.FetchRowData(scaleMeasuringPointProduct.PhdProductTotalizerTag);
-                                    var row = result.Tables[0].Rows[0];
-                                    var value = Convert.ToInt32(row["Value"]);
-                                    phdValues.Add(scaleMeasuringPointProduct.Id, value);
-                                    logger.InfoFormat("{0} {1} {2}", scaleMeasuringPointProduct.Id, scaleMeasuringPointProduct.PhdProductTotalizerTag, value);
+                                    using (PHDHistorian oPhd = new PHDHistorian())
+                                    {
+                                        using (PHDServer defaultServer = new PHDServer(Properties.Settings.Default.PHD_HOST))
+                                        {
+                                            SetPhdConnectionSettings(defaultServer, oPhd, currentPhdTimestamp);
+                                            var result = oPhd.FetchRowData(scaleMeasuringPointProduct.PhdProductTotalizerTag);
+                                            var row = result.Tables[0].Rows[0];
+                                            var value = Convert.ToInt32(row["Value"]);
+                                            phdValues.Add(scaleMeasuringPointProduct.Id, value);
+                                        }
+                                    }
                                 }
-                            }
-                        }
 
-                        foreach (var scaleMeasuringPointProduct in scaleMeasuringPointProducts)
-                        { 
-                            using (PHDHistorian oPhd = new PHDHistorian())
-                            {
-                                using (PHDServer defaultServer = new PHDServer(Properties.Settings.Default.PHD_HOST))
+                                foreach (var scaleMeasuringPointProduct in scaleMeasuringPointProducts)
                                 {
-                                    SetPhdConnectionSettings(defaultServer, oPhd, previousPhdTimestamp);
-                                    var result = oPhd.FetchRowData(scaleMeasuringPointProduct.PhdProductTotalizerTag);
-                                    var row = result.Tables[0].Rows[0];
-                                    var value = Convert.ToInt32(row["Value"]);
-                                    logger.InfoFormat("{0} {1} {2}", scaleMeasuringPointProduct.Id, scaleMeasuringPointProduct.PhdProductTotalizerTag, value);
-                                    phdValues[scaleMeasuringPointProduct.Id] = phdValues[scaleMeasuringPointProduct.Id] - value;
+                                    using (PHDHistorian oPhd = new PHDHistorian())
+                                    {
+                                        using (PHDServer defaultServer = new PHDServer(Properties.Settings.Default.PHD_HOST))
+                                        {
+                                            SetPhdConnectionSettings(defaultServer, oPhd, previousPhdTimestamp);
+                                            var result = oPhd.FetchRowData(scaleMeasuringPointProduct.PhdProductTotalizerTag);
+                                            var row = result.Tables[0].Rows[0];
+                                            var value = Convert.ToInt32(row["Value"]);
+                                            phdValues[scaleMeasuringPointProduct.Id] = phdValues[scaleMeasuringPointProduct.Id] - value;
+                                        }
+                                    }
                                 }
-                            }
-                        }
 
-                        foreach(KeyValuePair<int, int> entry in phdValues)
-                        {
-                            if (entry.Value > 0)
-                            { 
-                                var scaleProduct = scaleMeasuringPointProducts.FirstOrDefault(x => x.Id == entry.Key);
-                                logger.InfoFormat("{0} {1} {2}", entry.Key, scaleProduct.PhdProductTotalizerTag, entry.Value);
-                                var measuringPointConfigData = new MeasuringPointsConfigsData
+                                foreach (KeyValuePair<int, int> entry in phdValues)
                                 {
-                                    MeasuringPointConfigId = scaleProduct.MeasuringPointConfigId,
-                                    TransactionNumber = today.Ticks + entry.Key,
-                                    RowId = -1,
-                                    ProductId = scaleProduct.Product.Code,
-                                    Mass = entry.Value,
-                                    TransactionBeginTime = today,
-                                    TransactionEndTime = today.AddHours(4),
-                                    InsertTimestamp = DateTime.Now,
-                                    MeasuringPointId = scaleProduct.MeasuringPointConfigId,
-                                    ZoneId = scaleProduct.MeasuringPointConfig.Zone.Id
-                                };
-                                context.MeasuringPointsConfigsDatas.Add(measuringPointConfigData);
+                                    if (entry.Value > 0)
+                                    {
+                                        var scaleProduct = scaleMeasuringPointProducts.FirstOrDefault(x => x.Id == entry.Key);
+                                        logger.InfoFormat("Processing virtual transaction for {0} {1} {2}", entry.Key, scaleProduct.PhdProductTotalizerTag, entry.Value);
+
+                                        decimal? mass = null;
+                                        decimal? revMass = null;
+                                        if (scaleProduct.MeasuringPointConfig.DirectionId == 1)
+                                        {
+                                            mass = entry.Value;
+                                        }
+                                        else if (scaleProduct.MeasuringPointConfig.DirectionId == 2)
+                                        {
+                                            revMass = entry.Value;
+                                        }
+                                        else
+                                        {
+                                            if (scaleProduct.DirectionId == 1)
+                                            {
+                                                mass = entry.Value;
+                                            }
+                                            else
+                                            {
+                                                revMass = entry.Value;
+                                            }
+                                        }
+
+                                        var measuringPointConfigData = new MeasuringPointsConfigsData
+                                        {
+                                            MeasuringPointConfigId = scaleProduct.MeasuringPointConfigId,
+                                            TransactionNumber = today.Ticks + entry.Key,
+                                            RowId = -1,
+                                            Mass = mass,
+                                            MassReverse = revMass,
+                                            TransactionBeginTime = today,
+                                            TransactionEndTime = today.AddHours(4),
+                                            InsertTimestamp = DateTime.Now,
+                                            MeasuringPointId = scaleProduct.MeasuringPointConfigId,
+                                            ZoneId = scaleProduct.MeasuringPointConfig.Zone.Id,
+                                            ProductId = scaleProduct.Product.Code,
+                                            ProductNumber = scaleProduct.Product.Code,
+                                            ProductName = scaleProduct.Product.Name,
+                                            ProductType = scaleProduct.Product.ProductType.Id,
+                                            BaseProductNumber = scaleProduct.Product.Code,
+                                            BaseProductName = scaleProduct.Product.Name,
+                                            BaseProductType = scaleProduct.Product.ProductType.Id,
+                                            FlowDirection = scaleProduct.DirectionId
+                                        };
+                                        context.MeasuringPointsConfigsDatas.Add(measuringPointConfigData);
+                                    }
+                                }
+
+                                context.SaveChanges("Phd2SqlTotalizer");
                             }
                         }
-
-                        context.SaveChanges("Phd2SqlTotalizer");
                     }
                 }
 

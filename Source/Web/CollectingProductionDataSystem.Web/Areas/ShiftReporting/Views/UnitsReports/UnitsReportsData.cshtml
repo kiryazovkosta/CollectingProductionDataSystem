@@ -24,6 +24,8 @@
         columns =>
         {
             columns.Bound(c => c.TimeStamp).Format("{0:yyyy-MM-dd}").Width(100);
+            columns.Bound(c => c.Factory).Width(80);
+            columns.Bound(c => c.ProcessUnit).Width(80);
             columns.Bound(c => c.Code).Width(80);
             columns.Bound(c => c.Position).Width(140);
             columns.Bound(c => c.UnitName);

@@ -14,19 +14,19 @@ var unitGridsData = (function () {
             }
 
             checkConfirmedStatus();
-
-            var grid = $('#units').data('kendoGrid');
-            grid.dataSource.fetch(function () {
-                var totalRows = grid.dataSource.total();
-                if (totalRows === 0) {
-                    hideCommandButtons();
-                }
-            });
         });
 
         nameGridCommancolumn();
         hideCommandButtons();
-        attachEventToExportBtn("#excel-export", "#units");
+        var unitsGrid = $('#units').data('kendoGrid');
+        if (unitsGrid) {
+            attachEventToExportBtn("#excel-export", "#units");
+        }
+
+        var tanksGrid = $('#tanks').data('kendoGrid');
+        if (tanksGrid) {
+            attachEventToExportBtn("#excel-export", "#tanks");
+        }
 
         if ($("#confirm")) {
             $("#confirm").click(function () {
@@ -92,37 +92,49 @@ var unitGridsData = (function () {
     }
 
     var hideCommandButtons = function () {
-        if ($("#confirm")) {
-            $("#confirm").hide();
+        var confirmButton = $("#confirm");
+        if (confirmButton) {
+            confirmButton.hide();
         }
-        if ($("#units")) {
-            $("#units").data("kendoGrid").hideColumn('commands');
+        var unitsGrid = $("#units").data("kendoGrid");
+        if (unitsGrid) {
+            unitsGrid.hideColumn('commands');
         }
     }
 
     var showCommandButtons = function () {
-        $("#confirm").show();
-        $("#units").data("kendoGrid").showColumn('commands');
+        var confirmButton = $("#confirm");
+        if (confirmButton) {
+            confirmButton.show();
+        }
+
+        var unitsGrid = $("#units").data("kendoGrid");
+        if (unitsGrid) {
+            unitsGrid.showColumn('commands');
+        }
     }
 
     var checkConfirmedStatus = function () {
-        var date = SendDate();
-        $.ajax({
-            url: 'IsConfirmed',
-            type: 'POST',
-            data: date,
-            success: function (result) {
-                var confirmed = result.IsConfirmed;
-                if (confirmed === false) {
-                    showCommandButtons();
-                } else {
+        var grid = $("#units").data("kendoGrid");
+        if (grid) {
+            var date = SendDate();
+            $.ajax({
+                url: 'IsConfirmed',
+                type: 'POST',
+                data: date,
+                success: function (result) {
+                    var confirmed = result.IsConfirmed;
+                    if (confirmed === false) {
+                        showCommandButtons();
+                    } else {
+                        hideCommandButtons();
+                    }
+                },
+                error: function (result) {
                     hideCommandButtons();
                 }
-            },
-            error: function (result) {
-                hideCommandButtons();
-            }
-        });
+            });
+        }
     }
 
     var attachEventToExportBtn = function (buttonSelector, targetSelector) {
@@ -268,25 +280,27 @@ var unitGridsData = (function () {
                             $("#" + $(this.element).attr('id') + " tbody").find("tr[data-uid=" + uid + "]").addClass("bg-danger");
                         }
 
-                        if (dataView[i].items[j].UnitConfig.CollectingDataMechanism === manualIndicator) {
-                            currentUid = dataView[i].items[j].uid;
-                            currenRow = this.table.find("tr[data-uid='" + currentUid + "']");
-                            editButton = $(currenRow).find(".k-grid-edit");
-                            editButton.click({ data: dataView[i].items[j], url: "/ShiftReporting/Units/ShowManualDataModal" }, manualEntry);
-                        }
+                        if (dataView[i].items[j].UnitConfig) {
+                            if (dataView[i].items[j].UnitConfig.CollectingDataMechanism === manualIndicator) {
+                                currentUid = dataView[i].items[j].uid;
+                                currenRow = this.table.find("tr[data-uid='" + currentUid + "']");
+                                editButton = $(currenRow).find(".k-grid-edit");
+                                editButton.click({ data: dataView[i].items[j], url: "/ShiftReporting/Units/ShowManualDataModal" }, manualEntry);
+                            }
 
-                        if (dataView[i].items[j].UnitConfig.CollectingDataMechanism === manualCalcumated) {
-                            currentUid = dataView[i].items[j].uid;
-                            currenRow = this.table.find("tr[data-uid='" + currentUid + "']");
-                            editButton = $(currenRow).find(".k-grid-edit");
-                            editButton.click({ data: dataView[i].items[j], url: "/ShiftReporting/Units/ShowManualCalculatedDataModal" }, manualEntry);
-                        }
+                            if (dataView[i].items[j].UnitConfig.CollectingDataMechanism === manualCalcumated) {
+                                currentUid = dataView[i].items[j].uid;
+                                currenRow = this.table.find("tr[data-uid='" + currentUid + "']");
+                                editButton = $(currenRow).find(".k-grid-edit");
+                                editButton.click({ data: dataView[i].items[j], url: "/ShiftReporting/Units/ShowManualCalculatedDataModal" }, manualEntry);
+                            }
 
-                        if (dataView[i].items[j].UnitConfig.CollectingDataMechanism === manualSelfCalculated) {
-                            currentUid = dataView[i].items[j].uid;
-                            currenRow = this.table.find("tr[data-uid='" + currentUid + "']");
-                            editButton = $(currenRow).find(".k-grid-edit");
-                            editButton.click({ data: dataView[i].items[j], url: "/ShiftReporting/Units/ShowManualSelfCalculatedDataModal" }, manualEntry);
+                            if (dataView[i].items[j].UnitConfig.CollectingDataMechanism === manualSelfCalculated) {
+                                currentUid = dataView[i].items[j].uid;
+                                currenRow = this.table.find("tr[data-uid='" + currentUid + "']");
+                                editButton = $(currenRow).find(".k-grid-edit");
+                                editButton.click({ data: dataView[i].items[j], url: "/ShiftReporting/Units/ShowManualSelfCalculatedDataModal" }, manualEntry);
+                            }
                         }
                     }
                 }

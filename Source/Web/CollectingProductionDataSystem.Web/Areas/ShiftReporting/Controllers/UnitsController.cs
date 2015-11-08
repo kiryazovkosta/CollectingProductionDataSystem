@@ -1,10 +1,8 @@
 ﻿namespace CollectingProductionDataSystem.Web.Areas.ShiftReporting.Controllers
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-    using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     using System.Diagnostics;
     using System.Linq;
@@ -15,7 +13,6 @@
     using AutoMapper;
     using CollectingProductionDataSystem.Application.Contracts;
     using CollectingProductionDataSystem.Application.ProductionDataServices;
-    using CollectingProductionDataSystem.Data.Common;
     using CollectingProductionDataSystem.Data.Contracts;
     using CollectingProductionDataSystem.Models.Productions;
     using CollectingProductionDataSystem.Web.Areas.ShiftReporting.ViewModels;
@@ -49,7 +46,6 @@
             ViewBag.ManualCalcumated = "MC";
             ViewBag.ManualSelfCalculated = "MS";
 
-
             return View();
         }
 
@@ -60,19 +56,27 @@
                                         DataSourceRequest request, DateTime? date, int? processUnitId, int? shiftId)
         {
             ValidateModelState(date, processUnitId, shiftId);
-            var dbResult = this.shiftServices.GetUnitsDataForDateTime(date, processUnitId, shiftId);
-            var kendoPreparedResult = Mapper.Map<IEnumerable<UnitsData>, IEnumerable<UnitDataViewModel>>(dbResult);
-            var kendoResult = new DataSourceResult();
-            try
+            if (ModelState.IsValid)
             {
-                kendoResult = kendoPreparedResult.ToDataSourceResult(request, ModelState);
-            }
-            catch (Exception ex1)
-            {
-                Debug.WriteLine(ex1.Message + "\n" + ex1.InnerException);
-            }
+                var dbResult = this.shiftServices.GetUnitsDataForDateTime(date, processUnitId, shiftId);
+                var kendoPreparedResult = Mapper.Map<IEnumerable<UnitsData>, IEnumerable<UnitDataViewModel>>(dbResult);
+                var kendoResult = new DataSourceResult();
+                try
+                {
+                    kendoResult = kendoPreparedResult.ToDataSourceResult(request, ModelState);
+                }
+                catch (Exception ex1)
+                {
+                    Debug.WriteLine(ex1.Message + "\n" + ex1.InnerException);
+                }
 
-            return Json(kendoResult);
+                return Json(kendoResult);
+            }
+            else
+            {
+                var kendoResult = new List<UnitDataViewModel>().ToDataSourceResult(request, ModelState);
+                return Json(kendoResult);
+            }
         }
 
         [HttpPost]
@@ -208,10 +212,16 @@
 
             if (this.ModelState.IsValid)
             {
-                return Json(new { IsConfirmed = await shiftServices.IsShitApproved(date, processUnitId, shiftId) });
+                var isConfirmed = await shiftServices.IsShitApproved(date, processUnitId, shiftId);
+                if (!isConfirmed)
+                {
+                    isConfirmed = !this.data.UnitsData.All().Where(x => x.RecordTimestamp == date && x.UnitConfig.ProcessUnitId == processUnitId && (int)x.ShiftId == shiftId).Any();
+                }
+                //return Json(new { IsConfirmed = await shiftServices.IsShitApproved(date, processUnitId, shiftId) });
+                return Json(new { IsConfirmed = isConfirmed });
             }
 
-            return Json(new { IsConfirmed = false });
+            return Json(new { IsConfirmed = true });
         }
 
         [HttpPost]

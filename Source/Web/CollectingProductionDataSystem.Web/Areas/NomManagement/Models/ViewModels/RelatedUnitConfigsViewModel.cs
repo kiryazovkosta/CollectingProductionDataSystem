@@ -23,13 +23,14 @@ namespace CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewMode
         public void CreateMappings(AutoMapper.IConfiguration configuration)
         {
             configuration.CreateMap<RelatedUnitConfigs, RelatedUnitConfigsViewModel>()
-                .ForMember(p=>p.Id,opt=>opt.MapFrom(p=>p.RelatedUnitConfigId))
+                .ForMember(p => p.Id, opt => opt.MapFrom(p => p.RelatedUnitConfigId))
                 .ForMember(p => p.Code, opt => opt.MapFrom(p => p.RelatedUnitConfig.Code))
                 .ForMember(p => p.Name, opt => opt.MapFrom(p => p.RelatedUnitConfig.Name));
 
             configuration.CreateMap<UnitConfig, RelatedUnitConfigsViewModel>()
                 .ForMember(p => p.Id, opt => opt.MapFrom(p => p.Id))
-                .ForMember(p => p.Position, opt => opt.Ignore());
+                .ForMember(p => p.Position, opt => opt.Ignore())
+                .ForSourceMember(p => p.IsMemberOfShiftsReport, opt => opt.Ignore());
         }
     }
 }

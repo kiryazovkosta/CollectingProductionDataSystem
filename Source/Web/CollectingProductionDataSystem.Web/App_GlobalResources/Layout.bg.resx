@@ -1176,4 +1176,7 @@
   <data name="UserAccounts" xml:space="preserve">
     <value>Потребителски профили</value>
   </data>
+  <data name="IsMemberOfShiftReport" xml:space="preserve">
+    <value>Участва в дневен отчет по смени</value>
+  </data>
 </root>
