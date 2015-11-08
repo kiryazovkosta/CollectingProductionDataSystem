@@ -9293,7 +9293,8 @@
                         new Park
                         {
                             Name = @"База Камено",
-                            TankConfigs = {
+                            TankConfigs = 
+                            {
                                 new TankConfig
                                 {
                                     ControlPoint = "KT1074",
@@ -9822,7 +9823,8 @@
                         new Park
                         {
                             Name = "АЖПНЕ - 15 и 16 коловоз",
-                            TankConfigs = {
+                            TankConfigs = 
+                            {
                                 new TankConfig
                                 {
                                     IsDeleted = true,
@@ -9887,7 +9889,8 @@
                         new Park
                         {
                             Name = "КПТО",
-                            TankConfigs = {
+                            TankConfigs = 
+                            {
                                 new TankConfig
                                 {
                                     ControlPoint = "KT1196",

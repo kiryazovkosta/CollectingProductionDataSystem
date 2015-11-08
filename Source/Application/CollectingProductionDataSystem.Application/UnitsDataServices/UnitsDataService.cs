@@ -70,6 +70,7 @@ using CollectingProductionDataSystem.Data.Common;
                                .Include(x => x.UnitConfig)
                                .Include(x => x.UnitConfig.Product)
                                .Include(x => x.UnitConfig.ProcessUnit)
+                               .Include(x => x.UnitConfig.ProcessUnit.Factory)
                                .Include(x => x.UnitConfig.MeasureUnit)
                                .Include(x => x.UnitsManualData)
                                .Include(x => x.UnitsManualData.EditReason)

@@ -1,14 +1,9 @@
-﻿
-
-namespace CollectingProductionDataSystem.Models.Transactions
+﻿namespace CollectingProductionDataSystem.Models.Transactions
 {
+    using System;
+    using System.Linq;
     using CollectingProductionDataSystem.Models.Abstract;
     using CollectingProductionDataSystem.Models.Contracts;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
     using CollectingProductionDataSystem.Models.Nomenclatures;
 
     public class ActiveTransactionsData : DeletableEntity, IEntity

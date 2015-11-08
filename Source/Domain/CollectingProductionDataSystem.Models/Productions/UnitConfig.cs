@@ -79,5 +79,7 @@ namespace CollectingProductionDataSystem.Models.Productions
             set { this.unitConfigUnitDailyConfigs = value; }
         }
         public decimal? StartupValue { get; set; }
+
+        public bool IsMemberOfShiftsReport { get; set; }
     }
 }

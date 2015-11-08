@@ -45,23 +45,35 @@
         public JsonResult ReadDailyUnitsData([DataSourceRequest]DataSourceRequest request, DateTime? date, int? processUnitId)
         {
             ValidateModelState(date, processUnitId);
-            var dbResult = unitsData.GetUnitsDailyDataForDateTime(date, processUnitId);
-            var kendoPreparedResult = Mapper.Map<IEnumerable<UnitsDailyData>, IEnumerable<UnitDailyDataViewModel>>(dbResult);
-            var kendoResult = new DataSourceResult();
-            try
+            if (ModelState.IsValid)
             {
-                if (date != null && processUnitId != null)
+                var kendoResult = new DataSourceResult();
+                if (ModelState.IsValid)
                 {
-                    dailyService.CheckIfShiftsAreReady(date.Value, processUnitId.Value).ToModelStateErrors(this.ModelState);
-                }
-                kendoResult = kendoPreparedResult.ToDataSourceResult(request, ModelState);
-            }
-            catch (Exception ex1)
-            {
-                Debug.WriteLine(ex1.Message + "\n" + ex1.InnerException);
-            }
+                    var dbResult = unitsData.GetUnitsDailyDataForDateTime(date, processUnitId);
+                    var kendoPreparedResult = Mapper.Map<IEnumerable<UnitsDailyData>, IEnumerable<UnitDailyDataViewModel>>(dbResult);
 
-            return Json(kendoResult);
+                    try
+                    {
+                        if (date != null && processUnitId != null)
+                        {
+                            dailyService.CheckIfShiftsAreReady(date.Value, processUnitId.Value).ToModelStateErrors(this.ModelState);
+                        }
+                        kendoResult = kendoPreparedResult.ToDataSourceResult(request, ModelState);
+                    }
+                    catch (Exception ex1)
+                    {
+                        Debug.WriteLine(ex1.Message + "\n" + ex1.InnerException);
+                    }
+                }
+
+                return Json(kendoResult);
+            }
+            else
+            {
+                var kendoResult = new List<UnitDailyDataViewModel>().ToDataSourceResult(request, ModelState);
+                return Json(kendoResult);
+            }
         }
 
         [HttpPost]
@@ -176,7 +188,7 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult IsConfirmed([DataSourceRequest]DataSourceRequest request, DateTime? date, int? processUnitId)
+        public ActionResult IsConfirmed([DataSourceRequest]DataSourceRequest request, DateTime date, int processUnitId)
         {
             ValidateModelState(date, processUnitId);
 
@@ -188,7 +200,10 @@
                     .FirstOrDefault();
                 if (approvedShift == null)
                 {
-                    return Json(new { IsConfirmed = false });
+                    if (this.data.UnitsDailyDatas.All().Where(x => x.RecordTimestamp == date && x.UnitsDailyConfig.ProcessUnitId == processUnitId).Any())
+                    {
+                        return Json(new { IsConfirmed = false });
+                    }
                 }
                 return Json(new { IsConfirmed = true });
             }

@@ -1,9 +1,8 @@
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Data.Entity.ModelConfiguration;
-using CollectingProductionDataSystem.Models.Productions;
-
 namespace CollectingProductionDataSystem.Data.Mappings
 {
+    using System.Data.Entity.ModelConfiguration;
+    using CollectingProductionDataSystem.Models.Productions;
+
     public class UnitConfigMap : EntityTypeConfiguration<UnitConfig>
     {
         public UnitConfigMap()
