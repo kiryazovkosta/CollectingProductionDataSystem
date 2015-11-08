@@ -230,9 +230,26 @@
         {
             if (ModelState.IsValid)
             {
+                var startupValue = decimal.MinValue;
+
+                var lastEnteredData = data.UnitEnteredForCalculationDatas.All().Where(x => x.UnitsData.UnitConfigId == model.UnitConfigId).OrderByDescending(x => x.Id).FirstOrDefault();
+                if (lastEnteredData == null)
+                {
+                    var unitConfig = data.UnitConfigs.All().Where(x => x.Id == model.UnitConfigId).FirstOrDefault();
+                    if (unitConfig.StartupValue.HasValue)
+                    {
+                        startupValue = unitConfig.StartupValue.Value;
+                    }
+                }
+                else
+                {
+                    startupValue = lastEnteredData.NewValue;
+                }
+
                 var manualCalculationModel = new ManualCalculationViewModel()
                 {
-                    IsOldValueAvailableForEditing = false,
+                    IsOldValueAvailableForEditing = startupValue == decimal.MinValue,
+                    OldValue = startupValue == decimal.MinValue?0:startupValue,
                     MeasurementCode = model.UnitConfig.MeasureUnit.Code,
                     UnitDataId = model.Id,
                     EditorScreenHeading = string.Format(Resources.Layout.EditValueFor,model.UnitConfig.Name)
@@ -254,8 +271,13 @@
             {
                 return PartialView("_ManualDataCalculation", model);
             }
-            // ToDo: add some business process here
-            
+
+            var status = this.productionDataCalculator.CalculateDeltaByUnitData(model.OldValue, model.NewValue, model.UnitDataId, this.UserProfile.UserName);
+            if (!status.IsValid)
+            {
+                status.ToModelStateErrors(this.ModelState);
+            }
+
             return Json("success");
         }
 
@@ -287,6 +309,46 @@
             if (!ModelState.IsValid)
             {
                 return PartialView("_ManualDataSelfCalculation", model);
+            }
+            
+            // ToDo: add some business process here
+            var status = this.productionDataCalculator.CalculateByUnitData(model.Value, model.UnitDataId, this.UserProfile.UserName);
+            if (!status.IsValid)
+            {
+                status.ToModelStateErrors(this.ModelState);
+            }
+
+            return Json("success");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ShowManualCalculatedDataModal(UnitDataViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var manualSelfCalculationModel = new ManualSelfCalculationViewModel()
+                {
+                    MeasurementCode = model.UnitConfig.MeasureUnit.Code,
+                    UnitDataId = model.Id,
+                    EditorScreenHeading = string.Format(Resources.Layout.EditValueFor, string.Format("{0} {1}", model.UnitConfig.Position, model.UnitConfig.Name))
+                };
+                return PartialView("_ManualDataWithRelatedCalculation", manualSelfCalculationModel);
+            }
+            else 
+            {
+                var errors = this.ModelState.Values.SelectMany(x => x.Errors);
+                return Json(new { success=false, errors= errors });
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult WithRelatedCalculateManualEntry(ManualSelfCalculationViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return PartialView("_ManualDataWithRelatedCalculation", model);
             }
             
             // ToDo: add some business process here

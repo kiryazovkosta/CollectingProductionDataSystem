@@ -565,6 +565,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Close.
+        /// </summary>
+        public static string Close {
+            get {
+                return ResourceManager.GetString("Close", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Code.
         /// </summary>
         public static string Code {
@@ -1713,6 +1722,15 @@ namespace App_GlobalResources.Resources {
         public static string OldValue {
             get {
                 return ResourceManager.GetString("OldValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OldValueBiggerThanNewValue.
+        /// </summary>
+        public static string OldValueBiggerThanNewValue {
+            get {
+                return ResourceManager.GetString("OldValueBiggerThanNewValue", resourceCulture);
             }
         }
         

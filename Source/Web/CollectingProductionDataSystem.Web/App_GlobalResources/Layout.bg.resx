@@ -1156,7 +1156,7 @@
     <value>Идентификатор на зона</value>
   </data>
   <data name="EditValueFor" xml:space="preserve">
-    <value>Въвеждане на сойност за позиция {0}</value>
+    <value>Въвеждане на стойност за позиция {0}</value>
   </data>
   <data name="Create" xml:space="preserve">
     <value>Създай</value>
@@ -1178,5 +1178,11 @@
   </data>
   <data name="IsMemberOfShiftReport" xml:space="preserve">
     <value>Участва в дневен отчет по смени</value>
+  </data>
+  <data name="OldValueBiggerThanNewValue" xml:space="preserve">
+    <value>Новата стойност трябва да е по-голяма или равна на старата</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>Затвори</value>
   </data>
 </root>

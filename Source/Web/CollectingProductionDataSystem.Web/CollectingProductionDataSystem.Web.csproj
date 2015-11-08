@@ -800,6 +800,7 @@
     <Content Include="Areas\NomManagement\Views\Shared\EditorTemplates\TransportTypeViewModel.cshtml" />
     <Content Include="Areas\ShiftReporting\Views\Units\_ManualDataCalculation.cshtml" />
     <Content Include="Areas\ShiftReporting\Views\Units\_ManualDataSelfCalculation.cshtml" />
+    <Content Include="Areas\ShiftReporting\Views\Units\_ManualDataWithRelatedCalculation.cshtml" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <None Include="Properties\PublishProfiles\Home.pubxml" />
     <Content Include="Scripts\custom\sendArea.js" />

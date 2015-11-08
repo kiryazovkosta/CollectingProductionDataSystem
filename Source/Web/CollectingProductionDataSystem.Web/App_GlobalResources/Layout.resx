@@ -1176,4 +1176,10 @@
   <data name="IsMemberOfShiftReport" xml:space="preserve">
     <value>IsMemberOfShiftReport</value>
   </data>
+  <data name="OldValueBiggerThanNewValue" xml:space="preserve">
+    <value>OldValueBiggerThanNewValue</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>Close</value>
+  </data>
 </root>
