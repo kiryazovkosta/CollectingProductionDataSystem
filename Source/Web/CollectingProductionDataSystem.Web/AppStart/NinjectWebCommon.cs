@@ -22,6 +22,7 @@ namespace CollectingProductionDataSystem.Web.AppStart
     using CollectingProductionDataSystem.Data;
     using CollectingProductionDataSystem.Data.Concrete;
     using CollectingProductionDataSystem.Application.UnitsDataServices;
+    using log4net;
 
     public static class NinjectWebCommon 
     {
@@ -87,6 +88,7 @@ namespace CollectingProductionDataSystem.Web.AppStart
             kernel.Bind<ICalculatorService>().To<CalculatorService>();
             kernel.Bind<IUnitDailyDataService>().To<UnitDailyDataService>();
             kernel.Bind<IProductionDataCalculatorService>().To<ProductionDataCalculatorService>();
+            kernel.Bind<ILog>().ToMethod(context => LogManager.GetLogger(context.Request.Target.Member.ReflectedType)).InRequestScope();    
         }        
     }
 }

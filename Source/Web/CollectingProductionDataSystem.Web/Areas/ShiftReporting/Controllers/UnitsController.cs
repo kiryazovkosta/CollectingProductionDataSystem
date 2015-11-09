@@ -45,7 +45,6 @@
             ViewBag.ManualIndicator = "MD";
             ViewBag.ManualCalcumated = "MC";
             ViewBag.ManualSelfCalculated = "MS";
-
             return View();
         }
 
