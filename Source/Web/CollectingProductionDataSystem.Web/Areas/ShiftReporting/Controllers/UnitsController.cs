@@ -86,14 +86,7 @@
         {
             if (ModelState.IsValid)
             {
-                var relatedUnitConfigs = this.data.RelatedUnitConfigs.All().Where(x => x.RelatedUnitConfigId == model.UnitConfigId).ToList();
-                if (relatedUnitConfigs.Count() > 0)
-                {
-                    foreach (var relatedUnitConfig in relatedUnitConfigs)
-                    {
-                        UpdateRelatedUnitConfig(relatedUnitConfig.UnitConfigId, model);
-                    }
-                }
+                UpdateRelatedUnitConfigData(model);
 
                 var newManualRecord = new UnitsManualData
                 {
@@ -132,8 +125,18 @@
 
             return Json(new[] { model }.ToDataSourceResult(request, ModelState));
         }
-
-        
+ 
+        private void UpdateRelatedUnitConfigData(UnitDataViewModel model)
+        {
+            var relatedUnitConfigs = this.data.RelatedUnitConfigs.All().Where(x => x.RelatedUnitConfigId == model.UnitConfigId).ToList();
+            if (relatedUnitConfigs.Count() > 0)
+            {
+                foreach (var relatedUnitConfig in relatedUnitConfigs)
+                {
+                    UpdateRelatedUnitConfig(relatedUnitConfig.UnitConfigId, model);
+                }
+            }
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -230,29 +233,14 @@
         {
             if (ModelState.IsValid)
             {
-                var startupValue = decimal.MinValue;
-
-                var lastEnteredData = data.UnitEnteredForCalculationDatas.All().Where(x => x.UnitsData.UnitConfigId == model.UnitConfigId).OrderByDescending(x => x.Id).FirstOrDefault();
-                if (lastEnteredData == null)
-                {
-                    var unitConfig = data.UnitConfigs.All().Where(x => x.Id == model.UnitConfigId).FirstOrDefault();
-                    if (unitConfig.StartupValue.HasValue)
-                    {
-                        startupValue = unitConfig.StartupValue.Value;
-                    }
-                }
-                else
-                {
-                    startupValue = lastEnteredData.NewValue;
-                }
-
+                var startupValue = GetUnitConfigStartupValue(model);
                 var manualCalculationModel = new ManualCalculationViewModel()
                 {
                     IsOldValueAvailableForEditing = startupValue == decimal.MinValue,
                     OldValue = startupValue == decimal.MinValue?0:startupValue,
                     MeasurementCode = model.UnitConfig.MeasureUnit.Code,
                     UnitDataId = model.Id,
-                    EditorScreenHeading = string.Format(Resources.Layout.EditValueFor,model.UnitConfig.Name)
+                    EditorScreenHeading = string.Format(Resources.Layout.EditValueFor, model.UnitConfig.Name)
                 };
                 return PartialView("_ManualDataCalculation", manualCalculationModel);
             }
@@ -327,13 +315,13 @@
         {
             if (ModelState.IsValid)
             {
-                var manualSelfCalculationModel = new ManualSelfCalculationViewModel()
+                var manualWithRelatedCalculationModel = new ManualCalculationWithRelatedViewModel()
                 {
                     MeasurementCode = model.UnitConfig.MeasureUnit.Code,
                     UnitDataId = model.Id,
                     EditorScreenHeading = string.Format(Resources.Layout.EditValueFor, string.Format("{0} {1}", model.UnitConfig.Position, model.UnitConfig.Name))
                 };
-                return PartialView("_ManualDataWithRelatedCalculation", manualSelfCalculationModel);
+                return PartialView("_ManualDataWithRelatedCalculation", manualWithRelatedCalculationModel);
             }
             else 
             {
@@ -344,19 +332,20 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult WithRelatedCalculateManualEntry(ManualSelfCalculationViewModel model)
+        public ActionResult WithRelatedCalculateManualEntry(ManualCalculationWithRelatedViewModel model)
         {
             if (!ModelState.IsValid)
             {
                 return PartialView("_ManualDataWithRelatedCalculation", model);
             }
-            
-            // ToDo: add some business process here
-            //var status = this.productionDataCalculator.CalculateByUnitData(model.Value, model.UnitDataId, this.UserProfile.UserName);
-            //if (!status.IsValid)
-            //{
-            //    status.ToModelStateErrors(this.ModelState);
-            //}
+
+            var status = this.productionDataCalculator.CalculateByUnitAndRelatedData(model.Value, model.UnitDataId, this.UserProfile.UserName);
+            if (!status.IsValid)
+            {
+                status.ToModelStateErrors(this.ModelState);
+            }
+
+            // ToDo: Need to recalculate values of the related unit configs
 
             return Json("success");
         }
@@ -368,13 +357,13 @@
             {
                 var formulaCode = unitConfig.CalculatedFormula ?? string.Empty;
                 var arguments = PopulateFormulaTadaFromPassportData(unitConfig);
-                PopulateFormulaDataFromRelatedUnitConfigs(unitConfig, model, arguments);
+                PopulateFormulaDataFromRelatedUnitConfigs(unitConfig, arguments, model);
                 var newValue = this.productionDataCalculator.Calculate(formulaCode, arguments);
-                UpdateCalculatedUnitConfig(model, unitConfigId, newValue);
+                UpdateCalculatedUnitConfig(unitConfigId, newValue, model);
             }
         }
 
-        private void UpdateCalculatedUnitConfig(UnitDataViewModel model, int unitConfigId, double newValue)
+        private void UpdateCalculatedUnitConfig(int unitConfigId, double newValue, UnitDataViewModel model)
         {
             var recordId = data.UnitsData
                                .All()
@@ -411,7 +400,7 @@
             return arguments;
         }
 
-        private void PopulateFormulaDataFromRelatedUnitConfigs(UnitConfig unitConfig, UnitDataViewModel model, FormulaArguments arguments)
+        private void PopulateFormulaDataFromRelatedUnitConfigs(UnitConfig unitConfig, FormulaArguments arguments, UnitDataViewModel model)
         {
             var ruc = unitConfig.RelatedUnitConfigs.ToList();
             foreach (var ru in ruc)
@@ -526,6 +515,26 @@
             {
                 this.ModelState.AddModelError("shifts", string.Format(Resources.ErrorMessages.Required, Resources.Layout.UnitsProcessUnitShiftSelector));
             }
+        }
+
+        private decimal GetUnitConfigStartupValue(UnitDataViewModel model)
+        {
+            var startupValue = decimal.MinValue;
+
+            var lastEnteredData = data.UnitEnteredForCalculationDatas.All().Where(x => x.UnitsData.UnitConfigId == model.UnitConfigId).OrderByDescending(x => x.Id).FirstOrDefault();
+            if (lastEnteredData == null)
+            {
+                var unitConfig = data.UnitConfigs.All().Where(x => x.Id == model.UnitConfigId).FirstOrDefault();
+                if (unitConfig.StartupValue.HasValue)
+                {
+                    startupValue = unitConfig.StartupValue.Value;
+                }
+            }
+            else
+            {
+                startupValue = lastEnteredData.NewValue;
+            }
+            return startupValue;
         }
 
     }

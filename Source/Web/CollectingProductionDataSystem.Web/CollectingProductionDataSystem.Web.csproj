@@ -309,6 +309,7 @@
     <Compile Include="Areas\ShiftReporting\Controllers\UnitsController.cs" />
     <Compile Include="Areas\DailyReporting\Controllers\UnitsReportsController.cs" />
     <Compile Include="Areas\ShiftReporting\ShiftReportingAreaRegistration.cs" />
+    <Compile Include="Areas\ShiftReporting\ViewModels\ManualCalculationWithRelatedViewModel.cs" />
     <Compile Include="Areas\ShiftReporting\ViewModels\ManualSelfCalculationViewModel.cs" />
     <Compile Include="Areas\ShiftReporting\ViewModels\ManualCalculationViewModel.cs" />
     <Compile Include="Areas\DailyReporting\ViewModels\UnitsReportsDataViewModel.cs" />

@@ -16,6 +16,10 @@
     @Html.HiddenFor(m=>m.UnitDataId)
     @Html.HiddenFor(m=>m.MeasurementCode)
     @Html.HiddenFor(m=>m.EditorScreenHeading)
+    if (Model.OldValue > 0)
+    {
+        @Html.HiddenFor(m=>m.OldValue)
+    }
     <div class="modal-body">
         <div class="container-fluid">
             @Html.AntiForgeryToken()

@@ -179,6 +179,77 @@
             }
         }
  
+        public IEfStatus CalculateByUnitAndRelatedData(decimal value, int unitDataId, string userName)
+        {
+            var unitData = this.data.UnitsData.GetById(unitDataId);
+            var unitConfig = this.data.UnitsData.GetById(unitDataId).UnitConfig;
+            if (unitConfig != null)
+            {
+                var formula = unitConfig.CalculatedFormula;
+                var arguments = GetUnitConfigAndRelatedPassportData(unitConfig, unitData, value);
+                var calculatedValue = this.Calculate(formula, arguments);
+                AddOrUpdateUnitEnteredForCalculationData(unitDataId, default(decimal), value);
+                AddOrUpdateUnitsManualData(unitDataId, calculatedValue);
+                var status = this.data.SaveChanges(userName);
+                return status;
+            }
+            else
+            {
+                var validationResults = new List<ValidationResult>();
+                validationResults.Add(new ValidationResult("There is not a unit config for that unit data!!!", new[] { "UnitConfig" }));
+                return new EfStatus().SetErrors(validationResults);
+            }
+        }
+ 
+        private FormulaArguments GetUnitConfigPassportData(UnitConfig unitConfig, decimal value)
+        {
+            var arguments = new FormulaArguments();
+            arguments.InputValue = (double)value;
+            arguments.MaximumFlow = (double?)unitConfig.MaximumFlow;
+            arguments.EstimatedDensity = (double?)unitConfig.EstimatedDensity;
+            arguments.EstimatedPressure = (double?)unitConfig.EstimatedPressure;
+            arguments.EstimatedTemperature = (double?)unitConfig.EstimatedTemperature;
+            arguments.EstimatedCompressibilityFactor = (double?)unitConfig.EstimatedCompressibilityFactor;
+            return arguments;
+        }
+
+        private FormulaArguments GetUnitConfigAndRelatedPassportData(UnitConfig unitConfig, UnitsData unitData, decimal value)
+        {
+            var arguments = new FormulaArguments();
+            arguments.InputValue = (double)value;
+            arguments.MaximumFlow = (double?)unitConfig.MaximumFlow;
+            arguments.EstimatedDensity = (double?)unitConfig.EstimatedDensity;
+            arguments.EstimatedPressure = (double?)unitConfig.EstimatedPressure;
+            arguments.EstimatedTemperature = (double?)unitConfig.EstimatedTemperature;
+            arguments.EstimatedCompressibilityFactor = (double?)unitConfig.EstimatedCompressibilityFactor;
+
+            var relatedUnitConfigs = unitConfig.RelatedUnitConfigs.ToList();
+            foreach (var relatedUnitConfig in relatedUnitConfigs)
+            {
+                var parameterType = relatedUnitConfig.RelatedUnitConfig.AggregateGroup;
+                var inputValue = data.UnitsData
+                        .All()
+                        .Where(x => x.RecordTimestamp == unitData.RecordTimestamp)
+                        .Where(x => x.ShiftId == unitData.ShiftId)
+                        .Where(x => x.UnitConfigId == unitConfig.Id)
+                        .FirstOrDefault()
+                        .RealValue;
+                if (parameterType == "T")
+                {
+                    arguments.Temperature = inputValue;
+                }
+                else if (parameterType == "P")
+                {
+                    arguments.Pressure = inputValue;
+                }
+                else if (parameterType == "D")
+                {
+                    arguments.Density = inputValue;
+                }
+            }
+            return arguments;
+        }
+
         private FormulaArguments GetUnitConfigDeltaPassportData(UnitConfig unitConfig, decimal oldValue, decimal newValue)
         {
             var formulaArguments = new FormulaArguments();
@@ -190,7 +261,7 @@
             formulaArguments.InputValue = (double?)newValue;
             return formulaArguments;
         }
- 
+
         private void AddOrUpdateUnitsManualData(int unitDataId, double calculatedValue)
         {
             var newManualRecord = new UnitsManualData
@@ -230,18 +301,6 @@
                 existsUnitEnteredForCalculationRecord.NewValue = newValue;
                 this.data.UnitEnteredForCalculationDatas.Update(existsUnitEnteredForCalculationRecord);
             }
-        }
- 
-        private FormulaArguments GetUnitConfigPassportData(UnitConfig unitConfig, decimal value)
-        {
-            var arguments = new FormulaArguments();
-            arguments.InputValue = (double)value;
-            arguments.MaximumFlow = (double?)unitConfig.MaximumFlow;
-            arguments.EstimatedDensity = (double?)unitConfig.EstimatedDensity;
-            arguments.EstimatedPressure = (double?)unitConfig.EstimatedPressure;
-            arguments.EstimatedTemperature = (double?)unitConfig.EstimatedTemperature;
-            arguments.EstimatedCompressibilityFactor = (double?)unitConfig.EstimatedCompressibilityFactor;
-            return arguments;
         }
 
         ///  <summary>
@@ -322,11 +381,11 @@
             }
             if (!args.Pressure.HasValue)
             {
-                throw new ArgumentNullException("The value of Pressure(P) is not allowed to be null");
+                args.Pressure = args.EstimatedPressure;
             }
             if (!args.Temperature.HasValue)
             {
-                throw new ArgumentNullException("The value of Temperature(T) is not allowed to be null");
+                args.Temperature = args.EstimatedTemperature;
             }
             if (!args.MaximumFlow.HasValue)
             {
