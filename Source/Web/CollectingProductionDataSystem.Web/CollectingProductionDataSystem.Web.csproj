@@ -308,11 +308,11 @@
     <Compile Include="Areas\ShiftReporting\Controllers\AreaBaseController.cs" />
     <Compile Include="Areas\ShiftReporting\Controllers\TanksController.cs" />
     <Compile Include="Areas\ShiftReporting\Controllers\UnitsController.cs" />
-    <Compile Include="Areas\ShiftReporting\Controllers\UnitsReportsController.cs" />
+    <Compile Include="Areas\DailyReporting\Controllers\UnitsReportsController.cs" />
     <Compile Include="Areas\ShiftReporting\ShiftReportingAreaRegistration.cs" />
     <Compile Include="Areas\ShiftReporting\ViewModels\ManualSelfCalculationViewModel.cs" />
     <Compile Include="Areas\ShiftReporting\ViewModels\ManualCalculationViewModel.cs" />
-    <Compile Include="Areas\ShiftReporting\ViewModels\UnitsReportsDataViewModel.cs" />
+    <Compile Include="Areas\DailyReporting\ViewModels\UnitsReportsDataViewModel.cs" />
     <Compile Include="Controllers\AccountController.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -788,7 +788,7 @@
     <Content Include="Areas\NomManagement\Views\Shared\EditorTemplates\ParkViewModel.cshtml" />
     <Content Include="Areas\NomManagement\Views\TankMasterProduct\Index.cshtml" />
     <Content Include="Areas\NomManagement\Views\UnitConfig\EditorTemplates\RelatedUnitConfigsEditor.cshtml" />
-    <Content Include="Areas\ShiftReporting\Views\UnitsReports\UnitsReportsData.cshtml" />
+    <Content Include="Areas\DailyReporting\Views\UnitsReports\UnitsReportsData.cshtml" />
     <Content Include="Areas\NomManagement\Views\UnitsDailyConfig\EditorTemplates\UnitConfigUnitDailyConfigEditor.cshtml" />
     <Content Include="Areas\NomManagement\Views\UnitsDailyConfig\EditorTemplates\RelatedUnitDailyConfigsEditor.cshtml" />
     <Content Include="Areas\RecordsHistory\Views\web.config" />
@@ -803,6 +803,7 @@
     <Content Include="Areas\NomManagement\Views\Shared\EditorTemplates\TransportTypeViewModel.cshtml" />
     <Content Include="Areas\ShiftReporting\Views\Units\_ManualDataCalculation.cshtml" />
     <Content Include="Areas\ShiftReporting\Views\Units\_ManualDataSelfCalculation.cshtml" />
+    <Content Include="Areas\ShiftReporting\Views\Units\_ManualDataWithRelatedCalculation.cshtml" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <None Include="Properties\PublishProfiles\Home.pubxml" />
     <Content Include="Scripts\custom\sendArea.js" />

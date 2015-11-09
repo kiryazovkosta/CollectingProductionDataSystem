@@ -111,6 +111,9 @@
                 case "Z18":
                     result = FormulaZ18(arguments);
                     break;
+                case "N18":
+                    result = FormulaN18(arguments);
+                    break;
                 case "N19":
                     result = FormulaN19(arguments);
                     break;
@@ -142,7 +145,7 @@
                 var formulaCode = unitConfig.CalculatedFormula;
                 var arguments = GetUnitConfigPassportData(unitConfig, value);
                 var calculatedValue = this.Calculate(formulaCode, arguments);
-                AddOrUpdateUnitEnteredForCalculationData(unitDataId, value);
+                AddOrUpdateUnitEnteredForCalculationData(unitDataId, default(decimal), value);
                 AddOrUpdateUnitsManualData(unitDataId, calculatedValue);
                 var status = this.data.SaveChanges(userName);
                 return status;
@@ -153,6 +156,39 @@
                 validationResults.Add(new ValidationResult("There is not a unit config for that unit data!!!", new[] { "UnitConfig" }));
                 return new EfStatus().SetErrors(validationResults);
             }
+        }
+
+        public IEfStatus CalculateDeltaByUnitData(decimal oldValue, decimal newValue, int unitDataId, string userName)
+        {
+            var unitConfig = this.data.UnitsData.GetById(unitDataId).UnitConfig;
+            if (unitConfig != null)
+            {
+                var formula = unitConfig.CalculatedFormula;
+                var arguments = GetUnitConfigDeltaPassportData(unitConfig, oldValue, newValue);
+                var calculatedValue = this.Calculate(formula, arguments);
+                AddOrUpdateUnitEnteredForCalculationData(unitDataId, oldValue, newValue);
+                AddOrUpdateUnitsManualData(unitDataId, calculatedValue);
+                var status = this.data.SaveChanges(userName);
+                return status;
+            }
+            else
+            {
+                var validationResults = new List<ValidationResult>();
+                validationResults.Add(new ValidationResult("There is not a unit config for that unit data!!!", new[] { "UnitConfig" }));
+                return new EfStatus().SetErrors(validationResults);
+            }
+        }
+ 
+        private FormulaArguments GetUnitConfigDeltaPassportData(UnitConfig unitConfig, decimal oldValue, decimal newValue)
+        {
+            var formulaArguments = new FormulaArguments();
+            formulaArguments.MaximumFlow = (double?)unitConfig.MaximumFlow;
+            formulaArguments.EstimatedDensity = (double?)unitConfig.EstimatedDensity;
+            formulaArguments.EstimatedPressure = (double?)unitConfig.EstimatedPressure;
+            formulaArguments.EstimatedTemperature = (double?)unitConfig.EstimatedTemperature;
+            formulaArguments.OldValue = (double?)oldValue;
+            formulaArguments.InputValue = (double?)newValue;
+            return formulaArguments;
         }
  
         private void AddOrUpdateUnitsManualData(int unitDataId, double calculatedValue)
@@ -175,13 +211,13 @@
             }
         }
  
-        private void AddOrUpdateUnitEnteredForCalculationData(int unitDataId, decimal value)
+        private void AddOrUpdateUnitEnteredForCalculationData(int unitDataId, decimal oldValue, decimal newValue)
         {
             var newUnitEnteredForCalculationRecord = new UnitEnteredForCalculationData
             {
                 Id = unitDataId,
-                OldValue = default(decimal),
-                NewValue = value
+                OldValue = oldValue,
+                NewValue = newValue
             };
             var existsUnitEnteredForCalculationRecord = this.data.UnitEnteredForCalculationDatas.All().Where(x => x.Id == newUnitEnteredForCalculationRecord.Id).FirstOrDefault();
             if (existsUnitEnteredForCalculationRecord == null)
@@ -190,7 +226,8 @@
             }
             else
             {
-                existsUnitEnteredForCalculationRecord.NewValue = value;
+                existsUnitEnteredForCalculationRecord.OldValue = oldValue;
+                existsUnitEnteredForCalculationRecord.NewValue = newValue;
                 this.data.UnitEnteredForCalculationDatas.Update(existsUnitEnteredForCalculationRecord);
             }
         }
@@ -938,15 +975,75 @@
         }
 
         /// <summary>
+        /// // 34) N18 ;;БРОЯЧИ ЗА НЕФТОПРОДУКТИ И ВТЕЧНЕНИ ГАЗОВЕ :: X A11 Q
+        /// </summary>
+        public double FormulaN18(FormulaArguments args)              
+        {
+            if (!args.InputValue.HasValue)
+            {
+                throw new ArgumentNullException("The value of CounterIndication(PL) is not allowed to be null");
+            }
+            if (!args.OldValue.HasValue)
+            {
+                throw new ArgumentNullException("The value of Old CounterIndication(PL-1) is not allowed to be null");
+            }
+            if (!args.MaximumFlow.HasValue)
+            {
+                throw new ArgumentNullException("The value of MaximumFlow(D2) is not allowed to be null");
+            }
+
+            double pl = args.InputValue.Value;
+            double pl1 = args.OldValue.Value;
+            double d2 = args.MaximumFlow.Value;
+
+            double q = Functions.GetValueFormulaA11(pl, pl1, d2);
+
+            var inputParams = new Dictionary<string, double>();
+            inputParams.Add("q", q);
+            string expr = @"par.q";
+            var result = calculator.Calculate(expr, "par", 1, inputParams);
+            return result;
+        }
+
+        /// <summary>
         /// 47) N19 ;БРОЯЧИ ЗА НЕФТОПРОДУКТИ :: S:D<0.5 D=0.5 X C,A11 S Q=Q*DF Q
         /// </summary>
         private double FormulaN19(FormulaArguments args)
         {
-            double pl = 20;
-            double pl1 = 10;
-            double t = 40;            
-            double d = 50;
-            double d2 = 15;
+            if (!args.InputValue.HasValue)
+            {
+                throw new ArgumentNullException("The value of CounterIndication(PL) is not allowed to be null");
+            }
+            if (!args.OldValue.HasValue)
+            {
+                throw new ArgumentNullException("The value of Old CounterIndication(PL-1) is not allowed to be null");
+            }
+            if (!args.EstimatedTemperature.HasValue)
+            {
+                throw new ArgumentNullException("The value of EstimatedTemperature(D6) is not allowed to be null");
+            }
+            if (!args.Temperature.HasValue)
+            {
+                args.Temperature = args.EstimatedTemperature;
+            }
+            if (!args.MaximumFlow.HasValue)
+            {
+                throw new ArgumentNullException("The value of MaximumFlow(D2) is not allowed to be null");
+            }
+            if (!args.EstimatedDensity.HasValue)
+            {
+                throw new ArgumentNullException("The value of EstimatedPressure(D5) is not allowed to be null");
+            }
+            if (!args.Density.HasValue)
+            {
+                args.Density = args.EstimatedDensity;
+            }
+
+            double pl = args.InputValue.Value;
+            double pl1 = args.OldValue.Value;
+            double t = args.Temperature.Value;
+            double d = args.Density.Value;
+            double d2 = args.MaximumFlow.Value;
             double al = 0.001163;
             if (d < 0.5)
             {

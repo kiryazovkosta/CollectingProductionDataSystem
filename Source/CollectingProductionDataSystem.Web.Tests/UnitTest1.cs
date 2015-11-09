@@ -9,6 +9,7 @@ using CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewModels;
 using CollectingProductionDataSystem.Web.Areas.ShiftReporting.ViewModels;
 using CollectingProductionDataSystem.Web.ViewModels.Identity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using CollectingProductionDataSystem.Web.Areas.DailyReporting.ViewModels;
 
 namespace CollectingProductionDataSystem.Web.Tests
 {

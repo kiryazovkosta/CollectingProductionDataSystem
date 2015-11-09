@@ -50,5 +50,10 @@
         /// </summary>
         public double? EstimatedCompressibilityFactor { get; set; }
 
+        /// <summary>
+        /// PL1 - СТАРО ПОКАЗАНИЕ НА БРОЯЧА
+        /// </summary>
+        public double? OldValue { get; set; }
+
     }
 }
