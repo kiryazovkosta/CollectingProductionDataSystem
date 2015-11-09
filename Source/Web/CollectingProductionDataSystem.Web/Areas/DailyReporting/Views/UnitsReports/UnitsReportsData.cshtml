@@ -1,5 +1,5 @@
 ﻿@using System.Web.Optimization;
-@using CollectingProductionDataSystem.Web.Areas.ShiftReporting.ViewModels;
+@using CollectingProductionDataSystem.Web.Areas.DailyReporting.ViewModels;
 @using Resources = App_GlobalResources.Resources;
 
 @model UnitsReportsDataViewModel
@@ -54,7 +54,7 @@
         .Ajax()
         .PageSize(100)
         .ServerOperation(true)
-        .Read(read => read.Action("ReadUnitsReportsData", "UnitsReports", new { area = "ShiftReporting" }).Data("unitGridsData.SendDate"))
+            .Read(read => read.Action("ReadUnitsReportsData", "UnitsReports", new { area = "DailyReporting" }).Data("unitGridsData.SendDate"))
         .Events(events =>
         {
             events.Error("kendoAdditional.ErrorHandler");

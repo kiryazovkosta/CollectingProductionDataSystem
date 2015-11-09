@@ -1,4 +1,4 @@
-﻿namespace CollectingProductionDataSystem.Web.Areas.ShiftReporting.Controllers
+﻿namespace CollectingProductionDataSystem.Web.Areas.DailyReporting.Controllers
 {
     using System.Diagnostics;
     using AutoMapper;
@@ -11,9 +11,8 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Web;
     using System.Web.Mvc;
-    using CollectingProductionDataSystem.Web.Areas.ShiftReporting.ViewModels;
+    using CollectingProductionDataSystem.Web.Areas.DailyReporting.ViewModels;
     using Resources = App_GlobalResources.Resources;
 
     [Authorize]

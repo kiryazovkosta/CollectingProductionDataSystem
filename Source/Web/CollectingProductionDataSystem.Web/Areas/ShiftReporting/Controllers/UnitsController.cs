@@ -352,11 +352,11 @@
             }
             
             // ToDo: add some business process here
-            var status = this.productionDataCalculator.CalculateByUnitData(model.Value, model.UnitDataId, this.UserProfile.UserName);
-            if (!status.IsValid)
-            {
-                status.ToModelStateErrors(this.ModelState);
-            }
+            //var status = this.productionDataCalculator.CalculateByUnitData(model.Value, model.UnitDataId, this.UserProfile.UserName);
+            //if (!status.IsValid)
+            //{
+            //    status.ToModelStateErrors(this.ModelState);
+            //}
 
             return Json("success");
         }

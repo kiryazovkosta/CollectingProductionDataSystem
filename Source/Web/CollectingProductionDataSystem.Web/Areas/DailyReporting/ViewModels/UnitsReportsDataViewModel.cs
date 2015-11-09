@@ -1,11 +1,9 @@
-﻿namespace CollectingProductionDataSystem.Web.Areas.ShiftReporting.ViewModels
+﻿namespace CollectingProductionDataSystem.Web.Areas.DailyReporting.ViewModels
 {
     using AutoMapper;
     using CollectingProductionDataSystem.Infrastructure.Mapping;
     using System;
-    using System.Collections.Generic;
     using System.Linq;
-    using System.Web;
     using CollectingProductionDataSystem.Models.Productions;
     using System.ComponentModel.DataAnnotations;
     using Resources = App_GlobalResources.Resources;
