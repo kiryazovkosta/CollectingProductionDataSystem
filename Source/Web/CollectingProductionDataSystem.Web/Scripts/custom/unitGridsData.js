@@ -83,11 +83,11 @@ var unitGridsData = (function () {
         return { "shiftId": $('input[name=shifts]').val() }
     }
 
-    var sendZoneId = function() {
+    var sendZoneId = function () {
         return { "parkId": $('input[name=parks]').val() }
     }
 
-    var sendShiftsOffset = function() {
+    var sendShiftsOffset = function () {
         return { "shiftMinutesOffset": $('input[name=shifts]').val() }
     }
 
@@ -210,8 +210,7 @@ var unitGridsData = (function () {
         return value;
     }
 
-    var showKendoError = function (message)
-    {
+    var showKendoError = function (message) {
         $('pre#err-message').text(message);
         $('div#err-window').data("kendoWindow").open();
     }
