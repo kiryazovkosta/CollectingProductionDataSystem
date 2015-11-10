@@ -11,6 +11,7 @@
     using CollectingProductionDataSystem.Models.Inventories;
     using CollectingProductionDataSystem.Models.Nomenclatures;
     using CollectingProductionDataSystem.Models.Productions;
+    using CollectingProductionDataSystem.Models.Productions.Qpt;
     using CollectingProductionDataSystem.Models.Transactions;
     using CollectingProductionDataSystem.Models.UtilityEntities;
 
@@ -368,6 +369,14 @@
             get
             {
                 return this.GetDeletableEntityRepository<MeasuringPointProductsConfig>();
+            }
+        }
+
+        public IDeletableEntityRepository<Density2FactorAlpha> Density2FactorAlphas
+        {
+            get
+            {
+                return this.GetDeletableEntityRepository<Density2FactorAlpha>();
             }
         }
 

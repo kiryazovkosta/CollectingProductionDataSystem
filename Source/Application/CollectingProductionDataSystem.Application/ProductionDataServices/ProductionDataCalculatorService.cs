@@ -137,34 +137,14 @@
             return result;
         }
 
-        public IEfStatus CalculateByUnitData(decimal value, int unitDataId, string userName)
+        public IEfStatus CalculateByUnitData(int unitDataId, string userName, decimal newValue, decimal oldValue = 0)
         {
-            var unitConfig = this.data.UnitsData.GetById(unitDataId).UnitConfig;
-            if (unitConfig != null)
-            {
-                var formulaCode = unitConfig.CalculatedFormula;
-                var arguments = GetUnitConfigPassportData(unitConfig, value);
-                var calculatedValue = this.Calculate(formulaCode, arguments);
-                AddOrUpdateUnitEnteredForCalculationData(unitDataId, default(decimal), value);
-                AddOrUpdateUnitsManualData(unitDataId, calculatedValue);
-                var status = this.data.SaveChanges(userName);
-                return status;
-            }
-            else
-            {
-                var validationResults = new List<ValidationResult>();
-                validationResults.Add(new ValidationResult("There is not a unit config for that unit data!!!", new[] { "UnitConfig" }));
-                return new EfStatus().SetErrors(validationResults);
-            }
-        }
-
-        public IEfStatus CalculateDeltaByUnitData(decimal oldValue, decimal newValue, int unitDataId, string userName)
-        {
-            var unitConfig = this.data.UnitsData.GetById(unitDataId).UnitConfig;
+            var unitData = this.data.UnitsData.GetById(unitDataId);
+            var unitConfig = unitData.UnitConfig;
             if (unitConfig != null)
             {
                 var formula = unitConfig.CalculatedFormula;
-                var arguments = GetUnitConfigDeltaPassportData(unitConfig, oldValue, newValue);
+                var arguments = GetUnitConfigPassportData(unitConfig, unitData, newValue, oldValue);
                 var calculatedValue = this.Calculate(formula, arguments);
                 AddOrUpdateUnitEnteredForCalculationData(unitDataId, oldValue, newValue);
                 AddOrUpdateUnitsManualData(unitDataId, calculatedValue);
@@ -178,50 +158,30 @@
                 return new EfStatus().SetErrors(validationResults);
             }
         }
- 
-        public IEfStatus CalculateByUnitAndRelatedData(decimal value, int unitDataId, string userName)
-        {
-            var unitData = this.data.UnitsData.GetById(unitDataId);
-            var unitConfig = this.data.UnitsData.GetById(unitDataId).UnitConfig;
-            if (unitConfig != null)
-            {
-                var formula = unitConfig.CalculatedFormula;
-                var arguments = GetUnitConfigAndRelatedPassportData(unitConfig, unitData, value);
-                var calculatedValue = this.Calculate(formula, arguments);
-                AddOrUpdateUnitEnteredForCalculationData(unitDataId, default(decimal), value);
-                AddOrUpdateUnitsManualData(unitDataId, calculatedValue);
-                var status = this.data.SaveChanges(userName);
-                return status;
-            }
-            else
-            {
-                var validationResults = new List<ValidationResult>();
-                validationResults.Add(new ValidationResult("There is not a unit config for that unit data!!!", new[] { "UnitConfig" }));
-                return new EfStatus().SetErrors(validationResults);
-            }
-        }
- 
-        private FormulaArguments GetUnitConfigPassportData(UnitConfig unitConfig, decimal value)
-        {
-            var arguments = new FormulaArguments();
-            arguments.InputValue = (double)value;
-            arguments.MaximumFlow = (double?)unitConfig.MaximumFlow;
-            arguments.EstimatedDensity = (double?)unitConfig.EstimatedDensity;
-            arguments.EstimatedPressure = (double?)unitConfig.EstimatedPressure;
-            arguments.EstimatedTemperature = (double?)unitConfig.EstimatedTemperature;
-            arguments.EstimatedCompressibilityFactor = (double?)unitConfig.EstimatedCompressibilityFactor;
-            return arguments;
-        }
 
-        private FormulaArguments GetUnitConfigAndRelatedPassportData(UnitConfig unitConfig, UnitsData unitData, decimal value)
+        private FormulaArguments GetUnitConfigPassportData(UnitConfig unitConfig, UnitsData unitData, decimal newValue, decimal oldValue = 0)
         {
             var arguments = new FormulaArguments();
-            arguments.InputValue = (double)value;
+            arguments.InputValue = (double)newValue;
+            arguments.OldValue = (double)oldValue;
             arguments.MaximumFlow = (double?)unitConfig.MaximumFlow;
             arguments.EstimatedDensity = (double?)unitConfig.EstimatedDensity;
             arguments.EstimatedPressure = (double?)unitConfig.EstimatedPressure;
             arguments.EstimatedTemperature = (double?)unitConfig.EstimatedTemperature;
             arguments.EstimatedCompressibilityFactor = (double?)unitConfig.EstimatedCompressibilityFactor;
+            if (arguments.EstimatedDensity.HasValue)
+            {
+                var d = ((int)(arguments.EstimatedDensity.Value * 1000)) / 100;
+                if (d < 50)
+                {
+                    d = 50;
+                }
+                var alpha = this.data.Density2FactorAlphas.All().Where(x => x.Density == d).FirstOrDefault();
+                if (alpha != null)
+                {
+                    arguments.FactorAlpha = (double?)alpha.FactorAlpha;
+                }
+            }
 
             var relatedUnitConfigs = unitConfig.RelatedUnitConfigs.ToList();
             foreach (var relatedUnitConfig in relatedUnitConfigs)
@@ -248,18 +208,6 @@
                 }
             }
             return arguments;
-        }
-
-        private FormulaArguments GetUnitConfigDeltaPassportData(UnitConfig unitConfig, decimal oldValue, decimal newValue)
-        {
-            var formulaArguments = new FormulaArguments();
-            formulaArguments.MaximumFlow = (double?)unitConfig.MaximumFlow;
-            formulaArguments.EstimatedDensity = (double?)unitConfig.EstimatedDensity;
-            formulaArguments.EstimatedPressure = (double?)unitConfig.EstimatedPressure;
-            formulaArguments.EstimatedTemperature = (double?)unitConfig.EstimatedTemperature;
-            formulaArguments.OldValue = (double?)oldValue;
-            formulaArguments.InputValue = (double?)newValue;
-            return formulaArguments;
         }
 
         private void AddOrUpdateUnitsManualData(int unitDataId, double calculatedValue)
@@ -487,8 +435,8 @@
             }
 
             double pl = args.InputValue.Value;
-            double p = args.Pressure.Value;
-            double t = args.Temperature.Value;
+            double p = args.Pressure.Value > 0 ? args.Pressure.Value : args.EstimatedTemperature.Value;
+            double t = args.Temperature.Value > 0 ? args.Temperature.Value : args.EstimatedTemperature.Value;
 
             double ent = Functions.GetValueFormulaEN(t, p);
 
@@ -520,8 +468,8 @@
             }
 
             double pl = args.InputValue.Value;
-            double p = args.Pressure.Value;
-            double t = args.Temperature.Value;
+            double p = args.Pressure.Value > 0 ? args.Pressure.Value : args.EstimatedTemperature.Value;
+            double t = args.Temperature.Value > 0 ? args.Temperature.Value : args.EstimatedTemperature.Value;
             double ent = Functions.GetValueFormulaEN(t, p);
 
             var inputParams = new Dictionary<string, double>();
@@ -1097,13 +1045,17 @@
             {
                 args.Density = args.EstimatedDensity;
             }
+            if (!args.FactorAlpha.HasValue)
+            {
+                throw new ArgumentNullException("The value of FactorAlpha(AL) is not allowed to be null");
+            }
 
             double pl = args.InputValue.Value;
             double pl1 = args.OldValue.Value;
             double t = args.Temperature.Value;
             double d = args.Density.Value;
             double d2 = args.MaximumFlow.Value;
-            double al = 0.001163;
+            double al = args.FactorAlpha.Value;
             if (d < 0.5)
             {
                 d = 0.5;
