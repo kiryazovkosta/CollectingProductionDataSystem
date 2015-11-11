@@ -219,7 +219,6 @@
                 {
                     isConfirmed = !this.data.UnitsData.All().Where(x => x.RecordTimestamp == date && x.UnitConfig.ProcessUnitId == processUnitId && (int)x.ShiftId == shiftId).Any();
                 }
-                //return Json(new { IsConfirmed = await shiftServices.IsShitApproved(date, processUnitId, shiftId) });
                 return Json(new { IsConfirmed = isConfirmed });
             }
 
@@ -259,7 +258,7 @@
                 return PartialView("_ManualDataCalculation", model);
             }
 
-            var status = this.productionDataCalculator.CalculateDeltaByUnitData(model.OldValue, model.NewValue, model.UnitDataId, this.UserProfile.UserName);
+            var status = this.productionDataCalculator.CalculateByUnitData(model.UnitDataId, this.UserProfile.UserName, model.NewValue, model.OldValue);
             if (!status.IsValid)
             {
                 status.ToModelStateErrors(this.ModelState);
@@ -298,8 +297,7 @@
                 return PartialView("_ManualDataSelfCalculation", model);
             }
             
-            // ToDo: add some business process here
-            var status = this.productionDataCalculator.CalculateByUnitData(model.Value, model.UnitDataId, this.UserProfile.UserName);
+            var status = this.productionDataCalculator.CalculateByUnitData(model.UnitDataId, this.UserProfile.UserName, model.Value);
             if (!status.IsValid)
             {
                 status.ToModelStateErrors(this.ModelState);
@@ -338,13 +336,11 @@
                 return PartialView("_ManualDataWithRelatedCalculation", model);
             }
 
-            var status = this.productionDataCalculator.CalculateByUnitAndRelatedData(model.Value, model.UnitDataId, this.UserProfile.UserName);
+            var status = this.productionDataCalculator.CalculateByUnitData(model.UnitDataId, this.UserProfile.UserName, model.Value);
             if (!status.IsValid)
             {
                 status.ToModelStateErrors(this.ModelState);
             }
-
-            // ToDo: Need to recalculate values of the related unit configs
 
             return Json("success");
         }

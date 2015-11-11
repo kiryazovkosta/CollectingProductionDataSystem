@@ -8,10 +8,6 @@ namespace CollectingProductionDataSystem.Application.Contracts
     {
         double Calculate(string formulaCode, FormulaArguments arguments);
 
-        IEfStatus CalculateByUnitData(decimal value, int unitDataId, string userName);
-
-        IEfStatus CalculateDeltaByUnitData(decimal oldValue, decimal newValue, int unitDataId, string userName);
-
-        IEfStatus CalculateByUnitAndRelatedData(decimal value, int unitDataId, string userName);
+        IEfStatus CalculateByUnitData(int unitDataId, string userName, decimal newValue, decimal oldValue = 0);
     }
 }

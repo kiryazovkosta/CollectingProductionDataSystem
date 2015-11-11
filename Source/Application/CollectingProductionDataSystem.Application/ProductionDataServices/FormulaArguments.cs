@@ -55,5 +55,10 @@
         /// </summary>
         public double? OldValue { get; set; }
 
+        /// <summary>
+        /// Коригиращ фактор алфа
+        /// </summary>
+        public double? FactorAlpha { get; set; }
+
     }
 }
