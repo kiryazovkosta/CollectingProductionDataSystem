@@ -7,10 +7,10 @@ namespace CollectingProductionDataSystem.Web.AppStart
 {
     public class FilterConfig
     {
-        public static void RegisterGlobalFilters(GlobalFilterCollection filters,IDependencyResolver kernel)
+        public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
-            //filters.Add(new HandleErrorAttribute());
-            filters.Add(kernel.GetService<GlobalErrorFilterAttribute>());
+            filters.Add(new HandleErrorAttribute());
+            //filters.Add(new GlobalErrorFilterAttribute());
         }
     }
 }
