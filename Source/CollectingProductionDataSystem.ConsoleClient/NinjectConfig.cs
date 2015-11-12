@@ -15,7 +15,6 @@
     using CollectingProductionDataSystem.Data.Common;
     using CollectingProductionDataSystem.Data.Concrete;
     using CollectingProductionDataSystem.Data.Contracts;
-    using CollectingProductionDataSystem.Web.Infrastructure.MadelBinders;
     using Ninject;
 
     public class NinjectConfig: IDisposable
@@ -34,7 +33,6 @@
             kernel.Bind<IUserService>().To<UserService>();
             kernel.Bind<IEfStatus>().To<EfStatus>();
             kernel.Bind<IFileUploadService>().To<FileUploadService>();
-            
         }
 
         /// <summary>

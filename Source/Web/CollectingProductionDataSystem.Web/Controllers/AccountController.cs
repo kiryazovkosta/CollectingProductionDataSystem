@@ -10,6 +10,7 @@
     using System.Web.Mvc;
     using CollectingProductionDataSystem.Application.IdentityInfrastructure;
     using CollectingProductionDataSystem.Data.Contracts;
+    using CollectingProductionDataSystem.Infrastructure.Contracts;
     using CollectingProductionDataSystem.Web.Areas.Administration.ViewModels;
     using Resources = App_GlobalResources.Resources;
     using Microsoft.AspNet.Identity;
@@ -20,30 +21,32 @@
     [Authorize]
     public class AccountController : BaseController
     {
-        private ApplicationSignInManager _signInManager;
-        private ApplicationUserManager _userManager;
+        private ApplicationSignInManager signInManager;
+        private ApplicationUserManager userManager;
+        private ILogger logger;
 
-        public AccountController(IProductionData dataParam)
+        public AccountController(IProductionData dataParam,ILogger loggerParam)
             : base(dataParam)
         {
+            this.logger = loggerParam;
         }
 
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager, IProductionData dataParam)
-            : this(dataParam)
+        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager, IProductionData dataParam, ILogger loggerParam)
+            : this(dataParam,loggerParam)
         {
-            UserManager = userManager;
-            SignInManager = signInManager;
+            this.userManager = userManager;
+            this.signInManager = signInManager;
         }
 
         public ApplicationSignInManager SignInManager
         {
             get
             {
-                return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
+                return signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
             }
             private set
             {
-                _signInManager = value;
+                signInManager = value;
             }
         }
 
@@ -51,11 +54,11 @@
         {
             get
             {
-                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+                return userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
             }
             private set
             {
-                _userManager = value;
+                userManager = value;
             }
         }
 
@@ -92,6 +95,10 @@
                 return View(model);
             }
             var result = await SignInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, shouldLockout: false);
+            if (result != SignInStatus.Success)
+            {
+                logger.AuthenticationError("Invalid Attempt to Login", this, model.UserName);
+            }
             switch (result)
             {
                 case SignInStatus.Success:
@@ -170,16 +177,16 @@
         {
             if (disposing)
             {
-                if (_userManager != null)
+                if (userManager != null)
                 {
-                    _userManager.Dispose();
-                    _userManager = null;
+                    userManager.Dispose();
+                    userManager = null;
                 }
 
-                if (_signInManager != null)
+                if (signInManager != null)
                 {
-                    _signInManager.Dispose();
-                    _signInManager = null;
+                    signInManager.Dispose();
+                    signInManager = null;
                 }
             }
 

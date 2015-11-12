@@ -1,4 +1,4 @@
-namespace CollectingProductionDataSystem.Web.Infrastructure.MadelBinders
+namespace CollectingProductionDataSystem.Web.Infrastructure.ModelBinders
 {
     using System;
 

@@ -12,7 +12,9 @@
     using CollectingProductionDataSystem.Data.Contracts;
     using CollectingProductionDataSystem.Data.Mappings.Configuration;
     using CollectingProductionDataSystem.Data.Migrations;
+    using CollectingProductionDataSystem.Infrastructure.Contracts;
     using CollectingProductionDataSystem.Infrastructure.Extentions;
+    using CollectingProductionDataSystem.Infrastructure.Log;
     using CollectingProductionDataSystem.Models.Contracts;
     using CollectingProductionDataSystem.Models.Identity;
     using CollectingProductionDataSystem.Models.Inventories;
@@ -29,6 +31,7 @@
         UserLoginIntPk, UserRoleIntPk, UserClaimIntPk>, IAuditableDbContext
     {
         private readonly IPersister persister;
+        private ILogger logger;
 
         static CollectingDataSystemDbContext()
         {
@@ -39,9 +42,10 @@
             : base("CollectingPrimaryDataSystemConnection")
         {
             this.persister = new AuditablePersister();
+            this.logger = new Logger();
         }
 
-        public CollectingDataSystemDbContext(IPersister param)
+        public CollectingDataSystemDbContext(IPersister param, ILogger loggerParam)
             : base("CollectingPrimaryDataSystemConnection")
         {
             this.persister = param;
@@ -193,6 +197,7 @@
             }
             catch (DbEntityValidationException ex)
             {
+                logger.Error(ex.Message, this, ex);
                 return result.SetErrors(ex.EntityValidationErrors);
             }
             //else it isn't an exception we understand so it throws in the normal way

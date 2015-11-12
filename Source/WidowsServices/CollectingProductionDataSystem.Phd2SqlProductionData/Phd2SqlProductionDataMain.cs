@@ -9,6 +9,7 @@
     using System.ServiceProcess;
     using CollectingProductionDataSystem.Data;
     using CollectingProductionDataSystem.Data.Concrete;
+    using CollectingProductionDataSystem.Infrastructure.Log;
     using CollectingProductionDataSystem.Models.Inventories;
     using CollectingProductionDataSystem.Models.Transactions;
     using CollectingProductionDataSystem.Phd2SqlProductionData.Models;
@@ -90,7 +91,7 @@
                 logger.Info("Sync inventory tanks data started!");
                 var now = DateTime.Now;
 
-                using (var context = new ProductionData(new CollectingDataSystemDbContext(new AuditablePersister())))
+                using (var context = new ProductionData(new CollectingDataSystemDbContext(new AuditablePersister(), new Logger())))
                 {
                     DateTime recordTime = new DateTime(now.Year, now.Month, now.Day, now.Hour, 0, 0);
                     var tanks = context.Tanks.All().Select(t => new Tank()
@@ -283,7 +284,7 @@
                 var ts = now - fiveOClock;
                 if (ts.TotalMinutes > 2 && ts.Hours == 0)
                 {
-                    using (var context = new ProductionData(new CollectingDataSystemDbContext(new AuditablePersister())))
+                    using (var context = new ProductionData(new CollectingDataSystemDbContext(new AuditablePersister(),new Logger())))
                     {
                         var currentDate = today.AddDays(-1);
                         if (context.MeasurementPointsProductsDatas.All().Where(x => x.RecordTimestamp == currentDate).Any())

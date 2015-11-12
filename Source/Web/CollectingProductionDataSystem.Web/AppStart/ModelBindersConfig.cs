@@ -8,7 +8,7 @@
     using CollectingProductionDataSystem.Data.Concrete;
     using CollectingProductionDataSystem.Web.Areas.Administration.ViewModels;
     using CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewModels;
-    using CollectingProductionDataSystem.Web.Infrastructure.MadelBinders;
+    using CollectingProductionDataSystem.Web.Infrastructure.ModelBinders;
     using Ninject;
 
     public static class ModelBindersConfig

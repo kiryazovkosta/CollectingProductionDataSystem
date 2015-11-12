@@ -6,6 +6,7 @@
     using System.ServiceProcess;
     using CollectingProductionDataSystem.Data;
     using CollectingProductionDataSystem.Data.Concrete;
+    using CollectingProductionDataSystem.Infrastructure.Log;
     using CollectingProductionDataSystem.Models.Transactions;
     using Uniformance.PHD;
     using log4net;
@@ -40,7 +41,7 @@
             {
                 logger.Info("Begin synchronization!");
                 
-                using (var context = new ProductionData(new CollectingDataSystemDbContext(new AuditablePersister())))
+                using (var context = new ProductionData(new CollectingDataSystemDbContext(new AuditablePersister(),new Logger())))
                 {
                     var max = context.MaxAsoMeasuringPointDataSequenceNumberMap.All().FirstOrDefault();
                     if (max != null)
@@ -309,7 +310,7 @@
                 var ts = now - fiveOClock;
                 if(ts.TotalMinutes > 2 && ts.Hours == 0)
                 {
-                    using (var context = new ProductionData(new CollectingDataSystemDbContext(new AuditablePersister())))
+                    using (var context = new ProductionData(new CollectingDataSystemDbContext(new AuditablePersister(),new Logger())))
                     {
                         var currentDate = today.AddDays(-1);
                         var existsActiveTransactionData = context.ActiveTransactionsDatas.All().Where(x => x.RecordTimestamp == currentDate).Any();
@@ -469,7 +470,7 @@
                     {
                         var phdValues = new Dictionary<int, long>();
 
-                        using (var context = new ProductionData(new CollectingDataSystemDbContext(new AuditablePersister())))
+                        using (var context = new ProductionData(new CollectingDataSystemDbContext(new AuditablePersister(),new Logger())))
                         {
                             if (!context.MeasuringPointsConfigsDatas.All().Where(x => x.TransactionNumber >= today.Ticks).Any())
                             {

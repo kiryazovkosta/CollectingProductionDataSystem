@@ -76,10 +76,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Common\CollectingProductionDataSystem.Contracts\CollectingProductionDataSystem.Contracts.csproj">
-      <Project>{8dd67abb-5bfb-4a28-82df-7bfe8ca483a6}</Project>
-      <Name>CollectingProductionDataSystem.Contracts</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Common\CollectingProductionDataSystem.Infrastructure\CollectingProductionDataSystem.Infrastructure.csproj">
       <Project>{69debde6-b1ba-4a55-9570-ae7e6abb5f98}</Project>
       <Name>CollectingProductionDataSystem.Infrastructure</Name>

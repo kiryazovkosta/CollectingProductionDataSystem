@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Web.Mvc;
-using Resources = App_GlobalResources.Resources;
-
-namespace CollectingProductionDataSystem.Web.Infrastructure.MadelBinders
+﻿namespace CollectingProductionDataSystem.Web.Infrastructure.ModelBinders
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Reflection;
+    using System.Web.Mvc;
+    using CollectingProductionDataSystem.Web.Infrastructure.ModelBinders;
+    using Resources = App_GlobalResources.Resources;
+
     public class TimeSpanModelBinder : DefaultModelBinder
     {
         public override object BindModel(ControllerContext controllerContext,

@@ -7,6 +7,7 @@
     using AutoMapper;
     using CollectingProductionDataSystem.Application.TankDataServices;
     using CollectingProductionDataSystem.Data.Contracts;
+    using CollectingProductionDataSystem.Infrastructure.Contracts;
     using CollectingProductionDataSystem.Models.Identity;
     using CollectingProductionDataSystem.Models.Inventories;
     using CollectingProductionDataSystem.Models.Nomenclatures;
@@ -18,10 +19,12 @@
     public class TestsController : BaseController
     {
         private readonly ITankDataKendoService tankData;
-        public TestsController(IProductionData dataParam, ITankDataKendoService tankDataParam)
+        private readonly ILogger logger;
+        public TestsController(IProductionData dataParam, ITankDataKendoService tankDataParam,ILogger loggerParam)
             : base(dataParam)
         {
             this.tankData = tankDataParam;
+            this.logger = loggerParam;
         }
 
         public ActionResult Index()
@@ -36,7 +39,8 @@
             //        this.data.SaveChanges("test");
             //    }
             //}
-            throw new NotImplementedException("Test Global Error Handler!!!");
+            var ex = new NotImplementedException("Test Global Error Handler!!!");
+            logger.Error(ex.Message, this, ex);
             return View(this.UserProfile);
         }
 

@@ -60,10 +60,6 @@
       <Project>{34672323-163b-48f2-9425-b4b55b33d144}</Project>
       <Name>CollectingProductionDataSystem.MathExpressions</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Common\CollectingProductionDataSystem.Contracts\CollectingProductionDataSystem.Contracts.csproj">
-      <Project>{8dd67abb-5bfb-4a28-82df-7bfe8ca483a6}</Project>
-      <Name>CollectingProductionDataSystem.Contracts</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Constants\CollectingProductionDataSystem.Constants\CollectingProductionDataSystem.Constants.csproj">
       <Project>{21b90cc4-73cc-4c1a-a2e3-fb6c7278beb9}</Project>
       <Name>CollectingProductionDataSystem.Constants</Name>

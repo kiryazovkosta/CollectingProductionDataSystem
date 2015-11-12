@@ -6,6 +6,7 @@
     using CollectingProductionDataSystem.Data;
     using CollectingProductionDataSystem.Data.Common;
     using CollectingProductionDataSystem.Data.Contracts;
+    using CollectingProductionDataSystem.Infrastructure.Contracts;
     using CollectingProductionDataSystem.Models.Contracts;
     using CollectingProductionDataSystem.Models.Identity;
     using CollectingProductionDataSystem.Models.Inventories;
@@ -22,8 +23,8 @@
 
         private readonly Dictionary<Type, object> repositories = new Dictionary<Type, object>();
 
-        public ProductionData(IPersister persisterParam)
-            : this(new CollectingDataSystemDbContext(persisterParam))
+        public ProductionData(IPersister persisterParam, ILogger loggerParam)
+            : this(new CollectingDataSystemDbContext(persisterParam,loggerParam))
         {
         }
 

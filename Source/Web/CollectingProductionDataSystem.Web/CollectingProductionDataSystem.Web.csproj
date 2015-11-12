@@ -324,6 +324,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Infrastructure\CustomLogEvents\CustomExceptionEvent.cs" />
     <Compile Include="Infrastructure\Extentions\IEfStatusExtentions.cs" />
     <Compile Include="Infrastructure\Filters\AuthorizeFactoryAttribute.cs" />
     <Compile Include="Infrastructure\Filters\GlobalErrorFilterAttribute.cs" />
@@ -331,9 +332,9 @@
     <Compile Include="Infrastructure\Helpers\AuthorizedActionLinkHtmlHelper.cs" />
     <Compile Include="Infrastructure\Helpers\IdentityHelpers.cs" />
     <Compile Include="Infrastructure\Helpers\HtmlPartialViewHelpers.cs" />
-    <Compile Include="Infrastructure\MadelBinders\EditUserViewModelBinder.cs" />
-    <Compile Include="Infrastructure\MadelBinders\TimeSpanComponentAttribute.cs" />
-    <Compile Include="Infrastructure\MadelBinders\TimeSpanModelBinder.cs" />
+    <Compile Include="Infrastructure\ModelBinders\EditUserViewModelBinder.cs" />
+    <Compile Include="Infrastructure\ModelBinders\TimeSpanComponentAttribute.cs" />
+    <Compile Include="Infrastructure\ModelBinders\TimeSpanModelBinder.cs" />
     <Compile Include="InputModels\EditReasonInputModel.cs" />
     <Compile Include="InputModels\ProcessUnitConfirmShiftInputModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -1613,10 +1614,6 @@
     <ProjectReference Include="..\..\Application\CollectingProductionDataSystem.Application\CollectingProductionDataSystem.Application.csproj">
       <Project>{3a125de9-28b9-4004-a1d9-bebde62ac786}</Project>
       <Name>CollectingProductionDataSystem.Application</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Common\CollectingProductionDataSystem.Contracts\CollectingProductionDataSystem.Contracts.csproj">
-      <Project>{8dd67abb-5bfb-4a28-82df-7bfe8ca483a6}</Project>
-      <Name>CollectingProductionDataSystem.Contracts</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Common\CollectingProductionDataSystem.Enumerations\CollectingProductionDataSystem.Enumerations.csproj">
       <Project>{d39275e1-1997-41c3-99cc-ff1b7502e93f}</Project>
