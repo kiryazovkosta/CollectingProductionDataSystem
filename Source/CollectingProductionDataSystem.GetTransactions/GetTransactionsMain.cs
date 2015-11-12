@@ -72,8 +72,17 @@
             adapter.Fill(table, maxLastTransactionsFetchingDateTime.Value);
             if (table.Rows.Count > 0)
             {
+                var mesurinpPointsByTransactions = context.MeasuringPointConfigs.All().Where(x => x.IsUsedPhdTotalizers == true).Select(x => x.Id).ToList();
+
                 foreach (AsoDataSet.flow_MeasuringPointsDataRow row in table.Rows)
                 {
+                    logger.InfoFormat("Processing transaction {0} from control point {1}", row.TransactionNumber, row.MeasuringPointId);
+
+                    if (mesurinpPointsByTransactions.Contains(row.MeasuringPointId))
+                    {
+                        continue;
+                    }
+
                     var tr = new MeasuringPointsConfigsData();
                     tr.MeasuringPointId = row.MeasuringPointId;
                     tr.MeasuringPointConfigId = row.MeasuringPointId;
@@ -458,7 +467,7 @@
                     var ts = now - fiveOClock;
                     if(ts.TotalMinutes > 2 && ts.Hours == 0)
                     {
-                        var phdValues = new Dictionary<int, int>();
+                        var phdValues = new Dictionary<int, long>();
 
                         using (var context = new ProductionData(new CollectingDataSystemDbContext(new AuditablePersister())))
                         {
@@ -482,11 +491,13 @@
                                     {
                                         using (PHDServer defaultServer = new PHDServer(Properties.Settings.Default.PHD_HOST))
                                         {
+
                                             SetPhdConnectionSettings(defaultServer, oPhd, currentPhdTimestamp);
                                             var result = oPhd.FetchRowData(scaleMeasuringPointProduct.PhdProductTotalizerTag);
                                             var row = result.Tables[0].Rows[0];
-                                            var value = Convert.ToInt32(row["Value"]);
+                                            var value = Convert.ToInt64(row["Value"]);
                                             phdValues.Add(scaleMeasuringPointProduct.Id, value);
+                                            logger.InfoFormat("Processing data for {0} {1} {2}", scaleMeasuringPointProduct.PhdProductTotalizerTag, currentPhdTimestamp, value);
                                         }
                                     }
                                 }
@@ -500,18 +511,19 @@
                                             SetPhdConnectionSettings(defaultServer, oPhd, previousPhdTimestamp);
                                             var result = oPhd.FetchRowData(scaleMeasuringPointProduct.PhdProductTotalizerTag);
                                             var row = result.Tables[0].Rows[0];
-                                            var value = Convert.ToInt32(row["Value"]);
+                                            var value = Convert.ToInt64(row["Value"]);
                                             phdValues[scaleMeasuringPointProduct.Id] = phdValues[scaleMeasuringPointProduct.Id] - value;
+                                            logger.InfoFormat("Processing data for {0} {1} {2} {3}", scaleMeasuringPointProduct.PhdProductTotalizerTag, currentPhdTimestamp, value, phdValues[scaleMeasuringPointProduct.Id]);
                                         }
                                     }
                                 }
 
-                                foreach (KeyValuePair<int, int> entry in phdValues)
+                                foreach (KeyValuePair<int, long> entry in phdValues)
                                 {
                                     if (entry.Value > 0)
                                     {
                                         var scaleProduct = scaleMeasuringPointProducts.FirstOrDefault(x => x.Id == entry.Key);
-                                        logger.InfoFormat("Processing virtual transaction for {0} {1} {2}", entry.Key, scaleProduct.PhdProductTotalizerTag, entry.Value);
+                                        logger.InfoFormat("Processing virtual transaction for {0} {1} {2} {3}", entry.Key, scaleProduct.PhdProductTotalizerTag, entry.Value, scaleProduct.Direction.Name);
 
                                         decimal? mass = null;
                                         decimal? revMass = null;
