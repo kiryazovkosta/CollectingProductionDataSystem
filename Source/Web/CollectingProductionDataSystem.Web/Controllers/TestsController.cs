@@ -20,7 +20,7 @@
     {
         private readonly ITankDataKendoService tankData;
         private readonly ILogger logger;
-        public TestsController(IProductionData dataParam, ITankDataKendoService tankDataParam,ILogger loggerParam)
+        public TestsController(IProductionData dataParam, ITankDataKendoService tankDataParam, ILogger loggerParam)
             : base(dataParam)
         {
             this.tankData = tankDataParam;
@@ -39,9 +39,20 @@
             //        this.data.SaveChanges("test");
             //    }
             //}
-            var ex = new NotImplementedException("Test Global Error Handler!!!");
-            logger.Error(ex.Message, this, ex);
+            try
+            {
+                InvokeException();
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex.Message, this, ex, new List<string>{ "******************************", "****   some custom info   ****", "******************************" });
+            }
             return View(this.UserProfile);
+        }
+
+        private void InvokeException()
+        {
+            throw new NotImplementedException("Test Global Error Handler!!!");
         }
 
         [Authorize]
@@ -110,25 +121,25 @@
         {
             var user = new ApplicationUser()
             {
-                UserName="Manual",
+                UserName = "Manual",
                 Email = "manual@test.com",
-                FirstName="Manualy",
+                FirstName = "Manualy",
                 MiddleName = "Created",
                 LastName = "User",
                 SecurityStamp = Guid.NewGuid().ToString(),
                 PasswordHash = new PasswordHasher().HashPassword("12345678"),
-                IsChangePasswordRequired=true,
+                IsChangePasswordRequired = true,
             };
 
             data.Users.Add(user);
             var result = data.SaveChanges(UserProfile.UserName);
             if (result.IsValid)
             {
-                return Content(string.Format("User: {0} was created successfully",user.FullName));
+                return Content(string.Format("User: {0} was created successfully", user.FullName));
             }
-            else 
+            else
             {
-                return Content(string.Join("\n", result.EfErrors.Select(x => x.ErrorMessage)));                
+                return Content(string.Join("\n", result.EfErrors.Select(x => x.ErrorMessage)));
             }
         }
 

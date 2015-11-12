@@ -2,6 +2,7 @@
 namespace CollectingProductionDataSystem.Infrastructure.Log
 {
     using System;
+    using System.Collections.Generic;
     using CollectingProductionDataSystem.Infrastructure.Contracts;
 
     public class Logger : ILogger
@@ -13,9 +14,9 @@ namespace CollectingProductionDataSystem.Infrastructure.Log
             errEvent.Raise();
         }
 
-        public void Error(string message,object eventSource,Exception exception) 
+        public void Error(string message, object eventSource, Exception exception, IEnumerable<string> customDetails = null)
         {
-            var errEvent = new CustomWebErrorEvent(message, eventSource, exception);
+            var errEvent = new CustomWebErrorEvent(message, eventSource, exception, customDetails);
             errEvent.Raise();
         }
     }
