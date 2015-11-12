@@ -1,26 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Web;
-using System.Web.Mvc;
-using AutoMapper;
-using CollectingProductionDataSystem.Application.IdentityInfrastructure;
-using CollectingProductionDataSystem.Data.Contracts;
-using CollectingProductionDataSystem.Models.Identity;
-using CollectingProductionDataSystem.Web.Areas.Administration.ViewModels;
-using CollectingProductionDataSystem.Web.ViewModels.Identity;
-using CollectingProductionDataSystem.Web.ViewModels.Tank;
-using Kendo.Mvc.Extensions;
-using Kendo.Mvc.UI;
-using Microsoft.AspNet.Identity.EntityFramework;
-using Microsoft.AspNet.Identity.Owin;
-using CollectingProductionDataSystem.Web.ViewModels.Units;
-
-namespace CollectingProductionDataSystem.Web.Areas.Administration.Controllers
+﻿namespace CollectingProductionDataSystem.Web.Areas.Administration.Controllers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data.Entity;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using System.Web;
+    using System.Web.Mvc;
+    using AutoMapper;
+    using CollectingProductionDataSystem.Application.IdentityInfrastructure;
+    using CollectingProductionDataSystem.Data.Contracts;
+    using CollectingProductionDataSystem.Web.Areas.Administration.ViewModels;
+    using CollectingProductionDataSystem.Web.ViewModels.Identity;
+    using CollectingProductionDataSystem.Web.ViewModels.Tank;
+    using CollectingProductionDataSystem.Web.ViewModels.Units;
+    using Kendo.Mvc.Extensions;
+    using Kendo.Mvc.UI;
+    using Microsoft.AspNet.Identity.Owin;
+
     public class AjaxController : AreaBaseController
     {
         public AjaxController(IProductionData dataParam)
@@ -57,7 +54,6 @@ namespace CollectingProductionDataSystem.Web.Areas.Administration.Controllers
                 //u.Parks.Select(x => new ParkViewModel { Id = x.Id, Name = x.Name }),
             })).ToListAsync();
             return Json(users.ToDataSourceResult(request, ModelState));
-
         }
 
 

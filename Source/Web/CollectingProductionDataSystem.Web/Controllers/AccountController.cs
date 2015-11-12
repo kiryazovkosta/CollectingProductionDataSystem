@@ -11,7 +11,6 @@
     using CollectingProductionDataSystem.Application.IdentityInfrastructure;
     using CollectingProductionDataSystem.Data.Contracts;
     using CollectingProductionDataSystem.Web.Areas.Administration.ViewModels;
-    using log4net.Core;
     using Resources = App_GlobalResources.Resources;
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.Owin;
@@ -274,8 +273,9 @@
             }
             catch (Exception ex)
             {
-                var logger = Resolver.GetService<ILogger>();
-                logger.Log(typeof(IdentityResult), Level.Error, ex.Message, ex);
+                //TODO: Log this error !!!
+                //var logger = Resolver.GetService<ILogger>();
+                //logger.Log(typeof(IdentityResult), Level.Error, ex.Message, ex);
                 return new IdentityResult(new string[] { Resources.ErrorMessages.InvalidChangePassword });
             }
         }

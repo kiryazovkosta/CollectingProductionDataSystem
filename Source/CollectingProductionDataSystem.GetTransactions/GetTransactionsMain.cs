@@ -4,12 +4,13 @@
     using System.Data;
     using System.Linq;
     using System.ServiceProcess;
-    using System.Transactions;
     using CollectingProductionDataSystem.Data;
     using CollectingProductionDataSystem.Data.Concrete;
     using CollectingProductionDataSystem.Models.Transactions;
     using Uniformance.PHD;
     using log4net;
+    using System.Collections.Generic;
+    using System.Data.Entity;
 
     static class GetTransactionsMain
     {
@@ -44,20 +45,13 @@
                     var max = context.MaxAsoMeasuringPointDataSequenceNumberMap.All().FirstOrDefault();
                     if (max != null)
                     {
-                        //using (TransactionScope scope = new TransactionScope())
-                        //{
-                            GetTransactionsFromAso(max, context);
-                            GetTransactionsFromScales(max, context);
-                            var status = context.SaveChanges("Aso2Sql");
-                            max.LastFetchScales = DateTime.Now;
-                            max.LastTransactionsFetchingDateTime = DateTime.Now;
-                            context.MaxAsoMeasuringPointDataSequenceNumberMap.Update(max);
-                            context.SaveChanges("Aso2Sql");
-                            //scope.Complete();
-                            logger.InfoFormat("Successfully synchronization {0} records from Aso to Cpds", status.ResultRecordsCount);
-                            logger.InfoFormat("Successfully sync {0} transactions between ASO.SCALE and Cpds", status.ResultRecordsCount);
-                            logger.InfoFormat("Last transactions fetching date-time was updated to {0}.", DateTime.Now);
-                        //}
+                        GetTransactionsFromAso(max, context);
+                        var status = context.SaveChanges("Aso2Sql");
+                        max.LastTransactionsFetchingDateTime = DateTime.Now;
+                        context.MaxAsoMeasuringPointDataSequenceNumberMap.Update(max);
+                        context.SaveChanges("Aso2Sql");
+                        logger.InfoFormat("Successfully synchronization {0} records from Aso to Cpds", status.ResultRecordsCount);
+                        logger.InfoFormat("Last transactions fetching date-time was updated to {0}.", DateTime.Now);
                     }
 
                     logger.Info("End synchronization");
@@ -66,80 +60,6 @@
             catch (Exception ex)
             {
                 logger.Error(ex.Message, ex);
-            }
-        }
- 
-        private static void GetTransactionsFromScales(MaxAsoMeasuringPointDataSequenceNumber max, ProductionData context)
-        {
-            logger.InfoFormat("Last scale fetching date-time is {0}", max.LastFetchScales);
-            var lastFetchScalesDateTime = max.LastFetchScales;
-
-            var scaleAdapter = new ScaleDataSetTableAdapters.ScaleDataTableAdapter();
-            var scaleTable = new ScaleDataSet.ScaleDataDataTable();
-            scaleAdapter.Fill(scaleTable, lastFetchScalesDateTime);
-
-            if (scaleTable.Rows.Count > 0)
-            {
-                var scales = context.MeasuringPointConfigs.All().Where(x => x.WeightScaleNumber != null).ToList();
-
-                foreach (ScaleDataSet.ScaleDataRow row in scaleTable.Rows)
-                {
-                    var tr = new MeasuringPointsConfigsData();
-                    var scale = scales.Where(s => s.WeightScaleNumber == row.SCALE_NUM).First();
-
-                    tr.MeasuringPointId = scale.Id;
-                    tr.MeasuringPointConfigId = scale.Id;
-                    tr.TransactionNumber = Convert.ToInt64(row.TRS_NUM);
-                    tr.RowId = -1;
-                    tr.TransactionBeginTime = row.TRS_BGN_TIME;
-                    tr.TransactionEndTime = row.TRS_END_TIME;
-                    tr.ExciseStoreId = scale.ControlPoint;
-                    tr.ZoneId = scale.ZoneId;
-                    tr.BaseProductNumber = Convert.ToInt32(row.PRODUCT_ID);
-                    tr.BaseProductName = row.PRODUCT_NAME;
-                    tr.ProductNumber = Convert.ToInt32(row.PRODUCT_ID);
-                    tr.ProductName = row.PRODUCT_NAME;
-                    int code = Convert.ToInt32(row.PRODUCT_ID);
-                    var product = context.Products.All().Where(p => p.Code == code).FirstOrDefault();
-                    if (product != null)
-                    { 
-                        tr.ProductId = product.Id;
-                    }
-                    else
-                    {
-                        logger.InfoFormat("{0}", row.PRODUCT_ID);
-                    }
-                    tr.FlowDirection = row.DIRECTION == 2 ? 1 : 2;
-                    tr.EngineeringUnitMass = string.Empty;
-                    tr.EngineeringUnitVolume = string.Empty;
-                    tr.EngineeringUnitDensity = string.Empty;
-                    tr.EngineeringUnitTemperature = string.Empty;
-                    if (row.DIRECTION == 2)
-                    {
-                        // Output
-                        tr.TotalizerBeginMass = row.TOT_BGN_MASS_OUT;
-                        tr.TotalizerEndMass = row.TOT_MASS_OUT;
-                        tr.TotalizerBeginCommonMass = row.TOT_BGN_PROD_NET_MASS_OUT;
-                        tr.TotalizerEndCommonMass = row.TOT_PROD_NET_MASS_OUT;
-                    }
-                    else 
-                    { 
-                        // Input
-                        tr.TotalizerBeginMass = row.TOT_BGN_MASS_IN;
-                        tr.TotalizerEndMass = row.TOT_MASS_IN;
-                        tr.TotalizerBeginCommonMass = row.TOT_BGN_PROD_NET_MASS_IN;
-                        tr.TotalizerEndCommonMass = row.TOT_PROD_NET_MASS_IN;
-                    }
-
-                    if (!row.IsQTY_NET_MASSNull())
-                    {
-                        tr.Mass = row.QTY_NET_MASS;
-                    }
-                                
-                    tr.InsertTimestamp = DateTime.Now;
-                    context.MeasuringPointsConfigsDatas.Add(tr);
-                    logger.InfoFormat("Successfully added transaction {0} from control point {1}", row.TRS_NUM, scale.ControlPoint);
-                }
             }
         }
  
@@ -152,8 +72,17 @@
             adapter.Fill(table, maxLastTransactionsFetchingDateTime.Value);
             if (table.Rows.Count > 0)
             {
+                var mesurinpPointsByTransactions = context.MeasuringPointConfigs.All().Where(x => x.IsUsedPhdTotalizers == true).Select(x => x.Id).ToList();
+
                 foreach (AsoDataSet.flow_MeasuringPointsDataRow row in table.Rows)
                 {
+                    logger.InfoFormat("Processing transaction {0} from control point {1}", row.TransactionNumber, row.MeasuringPointId);
+
+                    if (mesurinpPointsByTransactions.Contains(row.MeasuringPointId))
+                    {
+                        continue;
+                    }
+
                     var tr = new MeasuringPointsConfigsData();
                     tr.MeasuringPointId = row.MeasuringPointId;
                     tr.MeasuringPointConfigId = row.MeasuringPointId;
@@ -368,123 +297,6 @@
             }
         }
 
-        internal static void ProcessScalesData()
-        {
-            try
-            {
-                logger.Info("Begin scale synchronization!");
-
-                using (var context = new ProductionData(new CollectingDataSystemDbContext(new AuditablePersister())))
-                {
-                    var max = context.MaxAsoMeasuringPointDataSequenceNumberMap.All().FirstOrDefault();
-                    if (max != null)
-                    {
-                        logger.InfoFormat("Last scale fetching date-time is {0}", max.LastFetchScales);
-                        var lastFetchScalesDateTime = max.LastFetchScales;
-
-                        var scaleAdapter = new ScaleDataSetTableAdapters.ScaleDataTableAdapter();
-                        var scaleTable = new ScaleDataSet.ScaleDataDataTable();
-                        scaleAdapter.Fill(scaleTable, lastFetchScalesDateTime);
-
-                        if (scaleTable.Rows.Count > 0)
-                        {
-                            var scales = context.MeasuringPointConfigs.All().Where(x => x.WeightScaleNumber != null).ToList();
-
-                            foreach (ScaleDataSet.ScaleDataRow row in scaleTable.Rows)
-                            {
-                                var tr = new MeasuringPointsConfigsData();
-                                var scale = scales.Where(s => s.WeightScaleNumber == row.SCALE_NUM).First();
-
-                                tr.MeasuringPointId = scale.Id;
-                                tr.MeasuringPointConfigId = scale.Id;
-                                tr.TransactionNumber = Convert.ToInt64(row.TRS_NUM);
-                                tr.RowId = -1;
-                                tr.TransactionBeginTime = row.TRS_BGN_TIME;
-                                tr.TransactionEndTime = row.TRS_END_TIME;
-                                tr.ExciseStoreId = scale.ControlPoint;
-                                tr.ZoneId = scale.ZoneId;
-                                tr.BaseProductNumber = Convert.ToInt32(row.PRODUCT_ID);
-                                tr.BaseProductName = row.PRODUCT_NAME;
-                                tr.ProductNumber = Convert.ToInt32(row.PRODUCT_ID);
-                                tr.ProductName = row.PRODUCT_NAME;
-                                int code = Convert.ToInt32(row.PRODUCT_ID);
-                                var product = context.Products.All().Where(p=>p.Code == code).FirstOrDefault();
-                                if(product != null)
-                                { 
-                                    tr.ProductId = product.Id;
-                                }
-                                else
-                                {
-                                    logger.InfoFormat("{0}", row.PRODUCT_ID);
-                                }
-                                tr.FlowDirection = row.DIRECTION==2?1:2;
-                                tr.EngineeringUnitMass = string.Empty;
-                                tr.EngineeringUnitVolume = string.Empty;
-                                tr.EngineeringUnitDensity = string.Empty;
-                                tr.EngineeringUnitTemperature = string.Empty;
-                                if (row.DIRECTION == 2)
-                                {
-                                    // Output
-                                    tr.TotalizerBeginMass = row.TOT_BGN_MASS_OUT;
-                                    tr.TotalizerEndMass = row.TOT_MASS_OUT;
-                                    tr.TotalizerBeginCommonMass = row.TOT_BGN_PROD_NET_MASS_OUT;
-                                    tr.TotalizerEndCommonMass = row.TOT_PROD_NET_MASS_OUT;
-                                }
-                                else 
-                                { 
-                                    // Input
-                                    tr.TotalizerBeginMass = row.TOT_BGN_MASS_IN;
-                                    tr.TotalizerEndMass = row.TOT_MASS_IN;
-                                    tr.TotalizerBeginCommonMass = row.TOT_BGN_PROD_NET_MASS_IN;
-                                    tr.TotalizerEndCommonMass = row.TOT_PROD_NET_MASS_IN;
-                                }
-
-                                if (!row.IsQTY_NET_MASSNull())
-                                {
-                                    tr.Mass = row.QTY_NET_MASS;
-                                }
-                                
-                                tr.InsertTimestamp = DateTime.Now;
-                                context.MeasuringPointsConfigsDatas.Add(tr);
-                                logger.InfoFormat("Successfully added transaction {0} from control point {1}", row.TRS_NUM, scale.ControlPoint);
-                            }
-
-                            //using (var scope = new TransactionScope())
-                            //{
-                            //    var status = context.SaveChanges("Scale2Sql");
-                            //    var now = DateTime.Now;
-                            //    max.LastFetchScales = now;
-                            //    context.MaxAsoMeasuringPointDataSequenceNumberMap.Update(max);
-                            //    context.SaveChanges("Scale2Sql");
-                            //    scope.Complete();
-                            //    logger.InfoFormat("Successfully sync {0} transactions between ASO.SCALE and Cpds", status.ResultRecordsCount);
-                            //    logger.InfoFormat("Last scale transaction data-time updated to {0}.", now);
-                            //}
-
-                        }
-                    }
-
-                    using (var scope = new TransactionScope())
-                    {
-                        var status = context.SaveChanges("Scale2Sql");
-                        var now = DateTime.Now;
-                        max.LastFetchScales = now;
-                        context.MaxAsoMeasuringPointDataSequenceNumberMap.Update(max);
-                        context.SaveChanges("Scale2Sql");
-                        scope.Complete();
-                        logger.InfoFormat("Successfully sync {0} transactions between ASO.SCALE and Cpds", status.ResultRecordsCount);
-                        logger.InfoFormat("Last scale transaction data-time updated to {0}.", now);
-                    }
-                }
-
-                logger.Info("End scale synchronization");
-            }
-            catch(Exception ex)
-            {
-                logger.Error(ex.Message, ex);
-            }
-        }
-
         internal static void ProcessActiveTransactionsData()
         { 
             try
@@ -627,10 +439,151 @@
             oPhd.MaximumRows = 1;
         }
 
-        private static MeasuringPointConfig GetMeasuringPointConfig(string scaleNumber,ProductionData context)
+        private static void SetPhdConnectionSettings(PHDServer defaultServer, PHDHistorian oPhd, string recordTimestamp)
         {
- 	        throw new NotImplementedException();
+            defaultServer.Port = Properties.Settings.Default.PHD_PORT;
+            defaultServer.APIVersion = Uniformance.PHD.SERVERVERSION.RAPI200;
+            oPhd.DefaultServer = defaultServer;
+            oPhd.StartTime = recordTimestamp;
+            oPhd.EndTime = recordTimestamp;
+            oPhd.Sampletype = SAMPLETYPE.Snapshot;
+            oPhd.MinimumConfidence = 100;
+            oPhd.MaximumRows = 1;
         }
 
+
+        internal static void ProcessScaleTransactionsData()
+        {
+            try
+            {
+                logger.Info("Begin scale transactions synchronization!");
+                {
+                    var now = DateTime.Now;
+                    var today = DateTime.Today;
+                    var fiveOClock = today.AddHours(5);
+
+                    logger.InfoFormat("Today.Ticks: {0}", today.Ticks);
+                
+                    var ts = now - fiveOClock;
+                    if(ts.TotalMinutes > 2 && ts.Hours == 0)
+                    {
+                        var phdValues = new Dictionary<int, long>();
+
+                        using (var context = new ProductionData(new CollectingDataSystemDbContext(new AuditablePersister())))
+                        {
+                            if (!context.MeasuringPointsConfigsDatas.All().Where(x => x.TransactionNumber >= today.Ticks).Any())
+                            {
+
+                                var currentPhdTimestamp = string.Format("NOW-{0}H{1}M", Math.Truncate(ts.TotalHours), ts.Minutes);
+                                var previousPhdTimestamp = string.Format("NOW-{0}H{1}M", Math.Truncate(ts.TotalHours) + 24, ts.Minutes);
+
+                                var scaleMeasuringPointProducts = context.MeasuringPointProductsConfigs
+                                    .All()
+                                    .Include(x => x.MeasuringPointConfig)
+                                    .Include(x => x.MeasuringPointConfig.Zone)
+                                    .Include(x => x.Product)
+                                    .Include(x => x.Product.ProductType)
+                                    .Include(x => x.Direction)
+                                    .ToList();
+                                foreach (var scaleMeasuringPointProduct in scaleMeasuringPointProducts)
+                                {
+                                    using (PHDHistorian oPhd = new PHDHistorian())
+                                    {
+                                        using (PHDServer defaultServer = new PHDServer(Properties.Settings.Default.PHD_HOST))
+                                        {
+
+                                            SetPhdConnectionSettings(defaultServer, oPhd, currentPhdTimestamp);
+                                            var result = oPhd.FetchRowData(scaleMeasuringPointProduct.PhdProductTotalizerTag);
+                                            var row = result.Tables[0].Rows[0];
+                                            var value = Convert.ToInt64(row["Value"]);
+                                            phdValues.Add(scaleMeasuringPointProduct.Id, value);
+                                            logger.InfoFormat("Processing data for {0} {1} {2}", scaleMeasuringPointProduct.PhdProductTotalizerTag, currentPhdTimestamp, value);
+                                        }
+                                    }
+                                }
+
+                                foreach (var scaleMeasuringPointProduct in scaleMeasuringPointProducts)
+                                {
+                                    using (PHDHistorian oPhd = new PHDHistorian())
+                                    {
+                                        using (PHDServer defaultServer = new PHDServer(Properties.Settings.Default.PHD_HOST))
+                                        {
+                                            SetPhdConnectionSettings(defaultServer, oPhd, previousPhdTimestamp);
+                                            var result = oPhd.FetchRowData(scaleMeasuringPointProduct.PhdProductTotalizerTag);
+                                            var row = result.Tables[0].Rows[0];
+                                            var value = Convert.ToInt64(row["Value"]);
+                                            phdValues[scaleMeasuringPointProduct.Id] = phdValues[scaleMeasuringPointProduct.Id] - value;
+                                            logger.InfoFormat("Processing data for {0} {1} {2} {3}", scaleMeasuringPointProduct.PhdProductTotalizerTag, currentPhdTimestamp, value, phdValues[scaleMeasuringPointProduct.Id]);
+                                        }
+                                    }
+                                }
+
+                                foreach (KeyValuePair<int, long> entry in phdValues)
+                                {
+                                    if (entry.Value > 0)
+                                    {
+                                        var scaleProduct = scaleMeasuringPointProducts.FirstOrDefault(x => x.Id == entry.Key);
+                                        logger.InfoFormat("Processing virtual transaction for {0} {1} {2} {3}", entry.Key, scaleProduct.PhdProductTotalizerTag, entry.Value, scaleProduct.Direction.Name);
+
+                                        decimal? mass = null;
+                                        decimal? revMass = null;
+                                        if (scaleProduct.MeasuringPointConfig.DirectionId == 1)
+                                        {
+                                            mass = entry.Value;
+                                        }
+                                        else if (scaleProduct.MeasuringPointConfig.DirectionId == 2)
+                                        {
+                                            revMass = entry.Value;
+                                        }
+                                        else
+                                        {
+                                            if (scaleProduct.DirectionId == 1)
+                                            {
+                                                mass = entry.Value;
+                                            }
+                                            else
+                                            {
+                                                revMass = entry.Value;
+                                            }
+                                        }
+
+                                        var measuringPointConfigData = new MeasuringPointsConfigsData
+                                        {
+                                            MeasuringPointConfigId = scaleProduct.MeasuringPointConfigId,
+                                            TransactionNumber = today.Ticks + entry.Key,
+                                            RowId = -1,
+                                            Mass = mass,
+                                            MassReverse = revMass,
+                                            TransactionBeginTime = today,
+                                            TransactionEndTime = today.AddHours(4),
+                                            InsertTimestamp = DateTime.Now,
+                                            MeasuringPointId = scaleProduct.MeasuringPointConfigId,
+                                            ZoneId = scaleProduct.MeasuringPointConfig.Zone.Id,
+                                            ProductId = scaleProduct.Product.Code,
+                                            ProductNumber = scaleProduct.Product.Code,
+                                            ProductName = scaleProduct.Product.Name,
+                                            ProductType = scaleProduct.Product.ProductType.Id,
+                                            BaseProductNumber = scaleProduct.Product.Code,
+                                            BaseProductName = scaleProduct.Product.Name,
+                                            BaseProductType = scaleProduct.Product.ProductType.Id,
+                                            FlowDirection = scaleProduct.DirectionId
+                                        };
+                                        context.MeasuringPointsConfigsDatas.Add(measuringPointConfigData);
+                                    }
+                                }
+
+                                context.SaveChanges("Phd2SqlTotalizer");
+                            }
+                        }
+                    }
+                }
+
+                logger.Info("End scale transactions synchronization!");
+            }
+            catch(Exception ex)
+            {
+                logger.Error(ex.Message, ex);
+            }
+        }
     }
 }

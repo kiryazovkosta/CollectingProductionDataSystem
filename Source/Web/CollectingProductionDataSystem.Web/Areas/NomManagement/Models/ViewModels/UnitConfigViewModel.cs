@@ -110,6 +110,9 @@
         [Editable(false)]
         public bool IsDeleted { get; set; }
 
+        [Display(Name = "IsMemberOfShiftReport", ResourceType = typeof(Resources.Layout))]
+        public bool IsMemberOfShiftsReport { get; set; }
+
         /// <summary>
         /// Creates the mappings.
         /// </summary>
@@ -118,7 +121,8 @@
         {
             configuration.CreateMap<UnitConfig, UnitConfigViewModel>()
                 .ForMember(p => p.ShiftProductTypeId, opt => opt.MapFrom(p => p.ShiftProductTypeId == null ? 0 : (int)p.ShiftProductTypeId))
-                .ForMember(p => p.RelatedUnitConfigs, opt => opt.MapFrom(p=>p.RelatedUnitConfigs.OrderBy(x=>x.Position)));
+                .ForMember(p => p.RelatedUnitConfigs, opt => opt.MapFrom(p => p.RelatedUnitConfigs.OrderBy(x => x.Position)));
+                
                 //.ForMember(p => p.RelatedUnitConfigs, opt => opt.MapFrom(
                 //    p => (p.RelatedUnitConfigs != null) && (p.RelatedUnitConfigs.Count != 0) ?
                 //    p.RelatedUnitConfigs : new HashSet<RelatedUnitConfigs> { new RelatedUnitConfigs() }));
@@ -145,7 +149,10 @@
                 .ForMember(p => p.CreatedFrom, opt => opt.Ignore())
                 .ForMember(p => p.ModifiedFrom, opt => opt.Ignore())
                 .ForMember(p => p.UnitConfigUnitDailyConfigs, opt => opt.Ignore())
-                .ForMember(p => p.IsConverted, opt => opt.Ignore()); 
+                .ForMember(p => p.IsConverted, opt => opt.Ignore())
+                .ForMember(p=>p.StartupValue,opt=>opt.Ignore())
+                .ForMember(p => p.IsMemberOfShiftsReport, opt=>opt.Ignore());
+                
         }
     }
 }

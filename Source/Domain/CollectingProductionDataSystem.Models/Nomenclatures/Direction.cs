@@ -11,11 +11,13 @@ namespace CollectingProductionDataSystem.Models.Nomenclatures
     {
         private ICollection<UnitConfig> unitConfigs;
         private ICollection<MeasuringPointConfig> measuringPointConfigs;
+        private ICollection<MeasuringPointProductsConfig> measuringPointProductsConfigs;
 
         public Direction()
         {
             this.unitConfigs = new HashSet<UnitConfig>();
             this.measuringPointConfigs = new HashSet<MeasuringPointConfig>();
+            this.measuringPointProductsConfigs = new HashSet<MeasuringPointProductsConfig>();
         }
 
         public int Id { get; set; }
@@ -29,6 +31,11 @@ namespace CollectingProductionDataSystem.Models.Nomenclatures
         {
             get { return this.measuringPointConfigs; }
             set { this.measuringPointConfigs = value; } 
+        }
+        public virtual ICollection<MeasuringPointProductsConfig> MeasuringPointProductsConfigs 
+        {
+            get { return this.measuringPointProductsConfigs; }
+            set { this.measuringPointProductsConfigs = value; }
         }
     }
 }

@@ -5,6 +5,8 @@
     using CollectingProductionDataSystem.Models.Inventories;
     using CollectingProductionDataSystem.Models.Nomenclatures;
     using CollectingProductionDataSystem.Models.Productions;
+    using CollectingProductionDataSystem.Models.Productions.Qpt;
+    using CollectingProductionDataSystem.Models.SystemLog;
     using CollectingProductionDataSystem.Models.Transactions;
     using CollectingProductionDataSystem.Models.UtilityEntities;
 
@@ -89,6 +91,14 @@
         IDeletableEntityRepository<Shift> Shifts { get; }
 
         IRepository<RelatedUnitConfigs> RelatedUnitConfigs { get; }
+
+        IDeletableEntityRepository<UnitEnteredForCalculationData> UnitEnteredForCalculationDatas { get; }
+
+        IDeletableEntityRepository<MeasuringPointProductsConfig> MeasuringPointProductsConfigs { get; }
+
+        IDeletableEntityRepository<Density2FactorAlpha> Density2FactorAlphas { get; }
+
+        IRepository<Event> Events { get; }
 
         IDbContext DbContext { get; }
 

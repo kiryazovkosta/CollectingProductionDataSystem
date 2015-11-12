@@ -122,6 +122,10 @@
     <Compile Include="IdentityInfrastructure\ApplicationUserManager.cs" />
     <Compile Include="IdentityInfrastructure\EmailService.cs" />
     <Compile Include="IdentityInfrastructure\SmsService.cs" />
+    <Compile Include="ProductionDataServices\FormulaArguments.cs" />
+    <Compile Include="ProductionDataServices\Functions.cs" />
+    <Compile Include="Contracts\IProductionDataCalculatorService.cs" />
+    <Compile Include="ProductionDataServices\ProductionDataCalculatorService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>

@@ -13,15 +13,17 @@
     using CollectingProductionDataSystem.Web.Infrastructure.MadelBinders;
     using Resources = App_GlobalResources.Resources;
 
-    [Bind(Exclude = "BeginTime, ReadOffset, ReadPollTimeSlot")]
+    [Bind(Exclude = "BeginTime, EndTime, ReadOffset, ReadPollTimeSlot, ShiftDuration")]
     public class ShiftViewModel : IMapFrom<Shift>, IHaveCustomMappings, IEntity
     {
 
         public ShiftViewModel()
         {
             this.BeginTime = new TimeSpan();
+            this.EndTime = new TimeSpan();
             this.ReadOffset = new TimeSpan();
             this.ReadPollTimeSlot = new TimeSpan();
+            this.ShiftDuration = new TimeSpan();
         }
 
         [Required]
@@ -39,6 +41,11 @@
 
         [Required]
         [TimeSpanComponent]
+        [Display(Name = "EndTime", ResourceType = typeof(Resources.Layout))]
+        public TimeSpan EndTime { get; set; }
+
+        [Required]
+        [TimeSpanComponent]
         [Display(Name = "ReadOffset", ResourceType = typeof(Resources.Layout))]
         public TimeSpan ReadOffset { get; set; }
 
@@ -46,6 +53,11 @@
         [TimeSpanComponent]
         [Display(Name = "ReadPollTimeSlot", ResourceType = typeof(Resources.Layout))]
         public TimeSpan ReadPollTimeSlot { get; set; }
+
+        [Required]
+        [TimeSpanComponent]
+        [Display(Name = "ShiftDuration", ResourceType = typeof(Resources.Layout))]
+        public TimeSpan ShiftDuration { get; set; }
 
         [UIHint("Hidden")]
         [Editable(false)]
@@ -59,8 +71,10 @@
         {
             configuration.CreateMap<ShiftViewModel, Shift>()
                 .ForMember(p => p.BeginTicks, opt => opt.Ignore())
+                .ForMember(p => p.EndTicks, opt => opt.Ignore())
                 .ForMember(p => p.ReadOffsetTicks, opt => opt.Ignore())
                 .ForMember(p => p.ReadPollTimeSlotTicks, opt => opt.Ignore())
+                .ForMember(p => p.ShiftDurationTicks, opt => opt.Ignore())
                 .ForMember(p => p.IsDeleted, opt => opt.Ignore())
                 .ForMember(p => p.DeletedOn, opt => opt.Ignore())
                 .ForMember(p => p.DeletedFrom, opt => opt.Ignore())

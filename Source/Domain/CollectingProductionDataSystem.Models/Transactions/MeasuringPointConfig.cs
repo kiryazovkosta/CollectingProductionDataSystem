@@ -9,6 +9,7 @@
     {
         private ICollection<RelatedMeasuringPointConfigs> relatedMeasuringPointConfigs;
         private ICollection<MeasuringPointProductsData> measuringPointProductsDatas;
+        private ICollection<MeasuringPointProductsConfig> measuringPointProductsConfigs;
 
         public MeasuringPointConfig()
         {
@@ -16,6 +17,7 @@
             this.ActiveTransactionsDatas = new HashSet<ActiveTransactionsData>();
             this.relatedMeasuringPointConfigs = new HashSet<RelatedMeasuringPointConfigs>();
             this.measuringPointProductsDatas = new HashSet<MeasuringPointProductsData>();
+            this.measuringPointProductsConfigs = new HashSet<MeasuringPointProductsConfig>();
         }
         public int Id { get; set; }
         public int ZoneId { get; set; }
@@ -116,6 +118,7 @@
         public string TotalizerCurrentValueTag { get; set; }
         public string ActiveTransactionMassReverseTag { get; set; }
         public string MassCorrectionFactor { get; set; }
+        public bool IsUsedPhdTotalizers { get; set; }
         public virtual ICollection<ActiveTransactionsData> ActiveTransactionsDatas { get; set; }
         public virtual ICollection<RelatedMeasuringPointConfigs> RelatedMeasuringPointConfigs
         {
@@ -126,6 +129,11 @@
         {
             get { return this.measuringPointProductsDatas; }
             set { this.measuringPointProductsDatas = value; }
+        }
+        public virtual ICollection<MeasuringPointProductsConfig> MeasuringPointProductsConfigs 
+        {
+            get { return this.measuringPointProductsConfigs; }
+            set { this.measuringPointProductsConfigs = value; }
         }
     }
 }

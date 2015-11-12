@@ -24,8 +24,14 @@ namespace CollectingProductionDataSystem.Models.Nomenclatures
         public string Name { get; set; }
 
         public long BeginTicks { get; set; }
+
+        public long EndTicks { get; set; }
+
         public long ReadOffsetTicks { get; set; }
+
         public long ReadPollTimeSlotTicks { get; set; }
+
+        public long ShiftDurationTicks { get; set; }
 
         [NotMapped]
         public TimeSpan BeginTime
@@ -37,6 +43,19 @@ namespace CollectingProductionDataSystem.Models.Nomenclatures
             set
             {
                 this.BeginTicks = value.Ticks;
+            }
+        }
+
+        [NotMapped]
+        public TimeSpan EndTime
+        {
+            get
+            {
+                return new TimeSpan(this.EndTicks);
+            }
+            set
+            {
+                this.EndTicks = value.Ticks;
             }
         }
 
@@ -63,6 +82,19 @@ namespace CollectingProductionDataSystem.Models.Nomenclatures
             set
             {
                 this.ReadPollTimeSlotTicks = value.Ticks;
+            }
+        }
+
+        [NotMapped]
+        public TimeSpan ShiftDuration
+        {
+            get
+            {
+                return new TimeSpan(this.ShiftDurationTicks);
+            }
+            set
+            {
+                this.ShiftDurationTicks = value.Ticks;
             }
         }
 

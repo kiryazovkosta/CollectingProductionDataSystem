@@ -1,9 +1,8 @@
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Data.Entity.ModelConfiguration;
-using CollectingProductionDataSystem.Models.Productions;
-
 namespace CollectingProductionDataSystem.Data.Mappings
 {
+    using System.Data.Entity.ModelConfiguration;
+    using CollectingProductionDataSystem.Models.Productions;
+
     public class UnitConfigMap : EntityTypeConfiguration<UnitConfig>
     {
         public UnitConfigMap()
@@ -13,7 +12,7 @@ namespace CollectingProductionDataSystem.Data.Mappings
 
             // Properties
             this.Property(t => t.CollectingDataMechanism)
-                .HasMaxLength(1);
+                .HasMaxLength(2);
 
             this.Property(t => t.PreviousShiftTag)
                 .HasMaxLength(50);

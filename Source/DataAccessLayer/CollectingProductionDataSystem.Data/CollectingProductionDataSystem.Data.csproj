@@ -87,14 +87,17 @@
     <Compile Include="Mappings\AreaMap.cs" />
     <Compile Include="Mappings\AuditLogRecordMap.cs" />
     <Compile Include="Mappings\Configuration\ModelBingConfig.cs" />
+    <Compile Include="Mappings\Density2FactorAlphaMap.cs" />
     <Compile Include="Mappings\DirectionMap.cs" />
     <Compile Include="Mappings\EditReasonMap.cs" />
+    <Compile Include="Mappings\EventMap.cs" />
     <Compile Include="Mappings\FactoryMap.cs" />
     <Compile Include="Mappings\IkunkMap.cs" />
     <Compile Include="Mappings\MaxAsoMeasuringPointDataSequenceNumberMap.cs" />
     <Compile Include="Mappings\MeasurementPointsProductsDataMap.cs" />
     <Compile Include="Mappings\MeasuringPointConfigMap.cs" />
     <Compile Include="Mappings\MeasuringPointConfigsDataMap.cs" />
+    <Compile Include="Mappings\MeasuringPointProductsConfigMap.cs" />
     <Compile Include="Mappings\ParkMap.cs" />
     <Compile Include="Mappings\ProductionPlanConfigMap.cs" />
     <Compile Include="Mappings\RelatedMeasuringPointConfigsMap.cs" />
@@ -114,6 +117,7 @@
     <Compile Include="Mappings\TransportTypeMap.cs" />
     <Compile Include="Mappings\UnitConfigMap.cs" />
     <Compile Include="Mappings\UnitConfigUnitDailyConfigMap.cs" />
+    <Compile Include="Mappings\UnitEnteredForCalculationDataMap.cs" />
     <Compile Include="Mappings\UnitsApprovedDailyDataMap.cs" />
     <Compile Include="Mappings\UnitsDailyConfigMap.cs" />
     <Compile Include="Mappings\UnitsApprovedDataMap.cs" />

@@ -105,6 +105,7 @@
     <Compile Include="Productions\ShiftType.cs" />
     <Compile Include="Productions\UnitConfig.cs" />
     <Compile Include="Productions\UnitConfigUnitDailyConfig.cs" />
+    <Compile Include="Productions\UnitEnteredForCalculationData.cs" />
     <Compile Include="Productions\UnitsApprovedDailyData.cs" />
     <Compile Include="Productions\UnitDailyConfig.cs" />
     <Compile Include="Productions\UnitsDailyData.cs" />
@@ -123,9 +124,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ModelErrors.bg.resx</DependentUpon>
     </Compile>
+    <Compile Include="SystemLog\Event.cs" />
     <Compile Include="Transactions\ActiveTransactionsData.cs" />
     <Compile Include="Transactions\Ikunk.cs" />
     <Compile Include="Transactions\MaxAsoMeasuringPointDataSequenceNumber.cs" />
+    <Compile Include="Transactions\MeasuringPointProductsConfig.cs" />
     <Compile Include="Transactions\MeasuringPointProductsData.cs" />
     <Compile Include="Transactions\MeasuringPointConfig.cs" />
     <Compile Include="Transactions\MeasuringPointsConfigsData.cs" />

@@ -1155,4 +1155,85 @@
   <data name="ZoneId" xml:space="preserve">
     <value>Идентификатор на зона</value>
   </data>
+  <data name="EditValueFor" xml:space="preserve">
+    <value>Въвеждане на стойност за позиция {0}</value>
+  </data>
+  <data name="Create" xml:space="preserve">
+    <value>Създай</value>
+  </data>
+  <data name="ForExcluding" xml:space="preserve">
+    <value>Изключи от роля</value>
+  </data>
+  <data name="ForIncluding" xml:space="preserve">
+    <value>Добави към роля</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Запис</value>
+  </data>
+  <data name="ShiftDuration" xml:space="preserve">
+    <value>Продължителност на смяната</value>
+  </data>
+  <data name="UserAccounts" xml:space="preserve">
+    <value>Потребителски профили</value>
+  </data>
+  <data name="IsMemberOfShiftReport" xml:space="preserve">
+    <value>Участва в дневен отчет по смени</value>
+  </data>
+  <data name="OldValueBiggerThanNewValue" xml:space="preserve">
+    <value>Новата стойност трябва да е по-голяма или равна на старата</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>Затвори</value>
+  </data>
+  <data name="ApplicationPath" xml:space="preserve">
+    <value>Път до приложение</value>
+  </data>
+  <data name="ApplicationVirtualPath" xml:space="preserve">
+    <value>Виртуален път</value>
+  </data>
+  <data name="Details" xml:space="preserve">
+    <value>Детайли</value>
+  </data>
+  <data name="EventCode" xml:space="preserve">
+    <value>Код на събитие</value>
+  </data>
+  <data name="EventDetailCode" xml:space="preserve">
+    <value>Детайлен код</value>
+  </data>
+  <data name="EventId" xml:space="preserve">
+    <value>ID</value>
+  </data>
+  <data name="EventOccurrence" xml:space="preserve">
+    <value>Брой на събития</value>
+  </data>
+  <data name="EventSequence" xml:space="preserve">
+    <value>Номер на събитие</value>
+  </data>
+  <data name="EventTime" xml:space="preserve">
+    <value>Време на събитие</value>
+  </data>
+  <data name="EventTimeUtc" xml:space="preserve">
+    <value>Врема на събитие (Utc)</value>
+  </data>
+  <data name="EventType" xml:space="preserve">
+    <value>Тип на събитие</value>
+  </data>
+  <data name="ExceptionType" xml:space="preserve">
+    <value>Тип на грешката</value>
+  </data>
+  <data name="MachineName" xml:space="preserve">
+    <value>Име на машината</value>
+  </data>
+  <data name="Message" xml:space="preserve">
+    <value>Съобщение</value>
+  </data>
+  <data name="RequestUrl" xml:space="preserve">
+    <value>Заявен Url</value>
+  </data>
+  <data name="ApplicationLog" xml:space="preserve">
+    <value>Журнал на приложението</value>
+  </data>
+  <data name="DetailsForEvent" xml:space="preserve">
+    <value>Детайли за събитие</value>
+  </data>
 </root>

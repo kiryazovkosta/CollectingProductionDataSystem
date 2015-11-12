@@ -157,5 +157,14 @@ namespace CollectingProductionDataSystem.Phd2SqlProductionData.Properties {
                 return ((int)(this["MAX_GET_INVENTORY_HOURS_INTERVAL"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("113")]
+        public int SYNC_PRIMARY_HOURS_OFFSET {
+            get {
+                return ((int)(this["SYNC_PRIMARY_HOURS_OFFSET"]));
+            }
+        }
     }
 }

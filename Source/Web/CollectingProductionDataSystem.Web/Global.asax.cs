@@ -1,5 +1,6 @@
 ﻿namespace CollectingProductionDataSystem.Web
 {
+    using System;
     using System.Web;
     using System.Web.Mvc;
     using System.Web.Optimization;
@@ -10,6 +11,7 @@
 
     public class MvcApplication : HttpApplication
     {
+
         protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();

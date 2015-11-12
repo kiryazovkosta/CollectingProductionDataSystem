@@ -1,5 +1,7 @@
-﻿function sendArea() {
-    return {
-        areaId: $("#areas").val()
-    };
-}
+﻿(function () {
+    sendArea = function () {
+        return {
+            areaId: $("#areas").val()
+        };
+    }
+})();

@@ -17,6 +17,7 @@ namespace CollectingProductionDataSystem.Models.Productions
         public bool IsApproved { get; set; }
         public virtual UnitConfig UnitConfig { get; set; }
         public virtual UnitsManualData UnitsManualData { get; set; }
+        public virtual UnitEnteredForCalculationData UnitEnteredForCalculationData { get; set; }
 
         [NotMapped]
         public bool IsManual 

@@ -6,7 +6,7 @@
               .ClientTemplate(Ajax.AuthorizedAjaxActionLinkOrText("#=data.Name#", "Index", "History",
                                                 new AjaxOptions() { HttpMethod = "Get", OnSuccess = "showRecordHistoriModal" },
                                                 new { area = "RecordsHistory", id = "#=data.id#", entityName = "ProductType" },
-                                                new { data_ajax_mode = "replace", data_ajax_update = @"\#record-history-body" })
+                                                new { data_ajax_mode = "replace", data_ajax_update = @"\#modal-dialog-body" })
                                                 .ToHtmlString());
           columns.Command(command => { command.Edit(); command.Destroy(); }).Width(230);
       })
@@ -37,7 +37,7 @@
                   .Destroy(destroy => destroy.Action("Destroy", "ProductType", new { area = "NomManagement" }).Data("sendAntiForgery"))
           .Events(events =>
             {
-                events.Error("error_handler");
+                events.Error("kendoAdditional.ErrorHandler");
             })
-          ).Events(ev => ev.DataBound("deletableDataBound"))
+              ).Events(ev => ev.DataBound("kendoAdditional.DeletableDataBound"))
 )

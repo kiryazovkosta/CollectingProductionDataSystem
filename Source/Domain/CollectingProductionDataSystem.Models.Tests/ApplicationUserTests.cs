@@ -11,7 +11,7 @@ namespace CollectingProductionDataSystem.Models.Tests
         public void CheckIfFullNameIsOkWith_FirstName_MiddleName_LastName()
         {
             //Arrange
-            var user = new ApplicationUser { FirstName="First", MiddleName = "Middle", LastName = "Last"};
+            var user = new ApplicationUser { FirstName = "First", MiddleName = "Middle", LastName = "Last" };
             var expected = "First Middle Last";
             //Act
             var actual = user.FullName;
@@ -107,7 +107,7 @@ namespace CollectingProductionDataSystem.Models.Tests
         public void CheckIfFullNameIsOkWith_Null_Null_NullReturn_UserName()
         {
             //Arrange
-            var user = new ApplicationUser { UserName="UserName", FirstName = null, MiddleName = null, LastName = null };
+            var user = new ApplicationUser { UserName = "UserName", FirstName = null, MiddleName = null, LastName = null };
             var expected = "UserName";
             //Act
             var actual = user.FullName;

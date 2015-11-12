@@ -36,7 +36,7 @@
             //        this.data.SaveChanges("test");
             //    }
             //}
-
+            throw new NotImplementedException("Test Global Error Handler!!!");
             return View(this.UserProfile);
         }
 

@@ -126,6 +126,9 @@
   <data name="Error" xml:space="preserve">
     <value>An error has occurred.</value>
   </data>
+  <data name="ErrorContacts" xml:space="preserve">
+    <value>Pleace register incident in the system or call to our Service Desk on 37-11</value>
+  </data>
   <data name="InvalidChangePassword" xml:space="preserve">
     <value>Ivalid attempt to change password.</value>
   </data>
@@ -140,6 +143,9 @@
   </data>
   <data name="ManualValue" xml:space="preserve">
     <value>The value of the field {0} must be between {1} and {2}. </value>
+  </data>
+  <data name="Message" xml:space="preserve">
+    <value>There was an error in application</value>
   </data>
   <data name="Password" xml:space="preserve">
     <value>The {0} must be at least {2} characters long.</value>

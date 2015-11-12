@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.Data.Entity.Validation;
-    using CollectingProductionDataSystem.Data.Common;
 
     public interface IEfStatus
     {

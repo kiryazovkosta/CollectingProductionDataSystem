@@ -1,0 +1,40 @@
+﻿@using CollectingProductionDataSystem.Web.Areas.RecordsHistory.ViewModels;
+@using CollectingProductionDataSystem.Web.Areas.ShiftReporting.ViewModels;
+@using CollectingProductionDataSystem.Web.Infrastructure.Helpers;
+@using Resources = App_GlobalResources.Resources
+
+@model ManualSelfCalculationViewModel
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h4 class="modal-title" id="record-history-label">
+        @Model.EditorScreenHeading
+    </h4>
+</div>
+@Html.ValidationSummary(true)
+@using (Ajax.BeginForm("SelfCalculateManualEntry", "Units", null, new AjaxOptions() { HttpMethod = "POST", UpdateTargetId = "modal-dialog-body", OnSuccess = "unitGridsData.SuccessCalculateManualEntry", OnFailure = "unitGridsData.ManualEntryFailure" }, new { area = "ShiftReporting", @class = "form-horizontal" }))
+{
+    @Html.HiddenFor(m=>m.UnitDataId)
+    @Html.HiddenFor(m=>m.MeasurementCode)
+    @Html.HiddenFor(m=>m.EditorScreenHeading)
+    <div class="modal-body">
+        <div class="container-fluid">
+            @Html.AntiForgeryToken()
+            <div class="form-group">
+                @Html.LabelFor(m => m.Value, new { @class = "col-sm-3 control-label" })
+                <div class="col-sm-4">
+                    <div class="input-group">
+                        @Html.EditorFor(m => m.Value, new { htmlAttributes = new { @class = "form-control" } })
+                        <div class="input-group-addon">@Model.MeasurementCode</div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    @Html.ValidationMessageFor(m => m.Value)
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">@Resources.Layout.Apply</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">@Resources.Layout.Close</button>
+    </div>
+}

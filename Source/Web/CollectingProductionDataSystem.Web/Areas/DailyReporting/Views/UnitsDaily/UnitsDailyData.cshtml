@@ -39,7 +39,7 @@
         .Ajax()
         .ServerOperation(true)
         //    .Group(group => group.Add(c => c.UnitsDailyConfig.ProductType.Sort))
-        .Read(read => read.Action("ReadProductionPlanData", "Ajax", new { area = "DailyReporting" }).Data("sendDate"))
+        .Read(read => read.Action("ReadProductionPlanData", "Ajax", new { area = "DailyReporting" }).Data("unitGridsData.SendDate"))
         .Model(model =>
         {
             model.Id(p => p.Id);
@@ -50,10 +50,10 @@
         })
         .Events(events =>
         {
-            events.Error("error_handler");
+            events.Error("kendoAdditional.ErrorHandler");
         })
-    )
-       .Events(ev => ev.DataBound("dataBound"))
+        )
+       .Events(ev => ev.DataBound("unitGridsData.DataBound"))
         )
     </div>
 
@@ -70,7 +70,7 @@
                 Ajax.AuthorizedAjaxActionLinkOrText("#=data.UnitsDailyConfig.Code#", "Index", "History",
                                                 new AjaxOptions() { HttpMethod = "Get", OnSuccess = "showRecordHistoriModal" },
                                                 new { area = "RecordsHistory", id = "#=data.id#", entityName = "UnitsDailyData" },
-                                                new { data_ajax_mode = "replace", data_ajax_update = @"\#record-history-body" })
+                                                new { data_ajax_mode = "replace", data_ajax_update = @"\#modal-dialog-body" })
                                                 .ToHtmlString())
                 .Width(77);
             columns.Bound(c => c.UnitsDailyConfig.DailyProductType.Sort).Hidden(true).ClientGroupHeaderTemplate("#=value#");
@@ -80,10 +80,10 @@
             columns.Bound(c => c.Value).Width(100).Format("{0:n2}");
             columns.Bound(c => c.UnitsManualDailyData.Value)
                  .ClientTemplate(
-                Ajax.AuthorizedAjaxActionLinkOrText("#=data.UnitsManualDailyData.Value#", "Index", "History",
+                Ajax.AuthorizedAjaxActionLinkOrText("#=data.UnitsManualDailyData.Value.toLocaleString(kendo.culture().name)#", "Index", "History",
                                                 new AjaxOptions() { HttpMethod = "Get", OnSuccess = "showRecordHistoriModal" },
                                                 new { area = "RecordsHistory", id = "#=data.id#", entityName = "UnitsManualDailyData" },
-                                                new { data_ajax_mode = "replace", data_ajax_update = @"\#record-history-body" })
+                                                new { data_ajax_mode = "replace", data_ajax_update = @"\#modal-dialog-body" })
                                                 .ToHtmlString())
                 .Width(100)
                 .Format("{0:n2}");
@@ -104,7 +104,7 @@
                                                                 .Filterable(true)
                                                                 .ProxyURL(Url.Action("Excel_Export_Save", "Tests", new { area = "" }))
                                                                 .AllPages(true))
-                                                                .Events(ev => ev.DataBound("dataBound"))
+                                                                .Events(ev => ev.DataBound("unitGridsData.DataBound"))
                                                                 .Scrollable(scr => scr.Height(640))
                                                                 .Filterable()
                                                                 .ClientDetailTemplateId("template")
@@ -113,7 +113,7 @@
                                                                 .PageSize(50)
                                                                 .ServerOperation(true)
                                                                 .Group(group => group.Add(c => c.UnitsDailyConfig.DailyProductType.Sort))
-                                                                .Read(read => read.Action("ReadDailyUnitsData", "UnitsDaily", new { area = "DailyReporting" }).Data("sendDate"))
+                                                                        .Read(read => read.Action("ReadDailyUnitsData", "UnitsDaily", new { area = "DailyReporting" }).Data("unitGridsData.SendDate"))
                                                                 .Update(update => update.Action("Edit", "UnitsDaily", new { area = "DailyReporting" }).Data("sendAntiForgery"))
                                                                 .Model(model =>
                                                                 {
@@ -129,8 +129,8 @@
                                                                 })
                                                                 .Events(events =>
                                                                 {
-                                                                    events.Error("error_handler");
-                                                                    events.RequestEnd("dataSave");
+                                                                    events.Error("kendoAdditional.ErrorHandler");
+                                                                    events.RequestEnd("unitGridsData.DataSave");
                                                                 })
                                                             )
 )

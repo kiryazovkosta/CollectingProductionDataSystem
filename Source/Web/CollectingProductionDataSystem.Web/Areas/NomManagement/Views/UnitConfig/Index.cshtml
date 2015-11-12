@@ -12,7 +12,7 @@
                 Ajax.AuthorizedAjaxActionLinkOrText("#=data.Code#", "Index", "History",
                                                 new AjaxOptions() { HttpMethod = "Get", OnSuccess = "showRecordHistoriModal" },
                                                 new { area = "RecordsHistory", id = "#=data.id#", entityName = "UnitConfig" },
-                                                new { data_ajax_mode = "replace", data_ajax_update = @"\#record-history-body" })
+                                                new { data_ajax_mode = "replace", data_ajax_update = @"\#modal-dialog-body" })
                                                 .ToHtmlString())
               .Width(100);
           columns.Bound(c => c.Position).Width(150);
@@ -71,10 +71,10 @@
 .Destroy(destroy => destroy.Action("Destroy", "UnitConfig", new { area = "NomManagement" }).Data("sendAntiForgery"))
 .Events(events =>
 {
-    events.Error("error_handler");
+    events.Error("kendoAdditional.ErrorHandler");
 })
     )
-    .Events(ev => ev.DataBound("deletableDataBound"))
+        .Events(ev => ev.DataBound("kendoAdditional.DeletableDataBound"))
 )
 
 <script type="text/kendo" id="relatedUnitsTemplate">

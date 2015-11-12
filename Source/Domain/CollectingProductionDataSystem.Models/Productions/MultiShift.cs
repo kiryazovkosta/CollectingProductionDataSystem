@@ -9,6 +9,8 @@
     public class MultiShift
     {
         public DateTime TimeStamp { get; set; }
+        public string Factory { get; set; }
+        public string ProcessUnit { get; set; }
         public string Code { get; set; }
         public string Position { get; set; }
         public string MeasureUnit { get; set; }

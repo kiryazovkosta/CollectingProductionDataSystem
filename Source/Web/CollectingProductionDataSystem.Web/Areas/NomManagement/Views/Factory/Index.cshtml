@@ -10,7 +10,7 @@
                 Ajax.AuthorizedAjaxActionLinkOrText("#=data.ShortName#", "Index", "History",
                                                 new AjaxOptions() { HttpMethod = "Get", OnSuccess = "showRecordHistoriModal" },
                                                 new { area = "RecordsHistory", id = "#=data.id#", entityName = "Factory" },
-                                                new { data_ajax_mode = "replace", data_ajax_update = @"\#record-history-body" })
+                                                new { data_ajax_mode = "replace", data_ajax_update = @"\#modal-dialog-body" })
                                                 .ToHtmlString());
           columns.Bound(c => c.FullName);
           columns.ForeignKey(c => c.PlantId, (System.Collections.IEnumerable)ViewData["plants"], "Id", "FullName").EditorTemplateName("PlantViewModel");
@@ -47,30 +47,8 @@
 .Destroy(destroy => destroy.Action("Destroy", "Factory", new { area = "NomManagement" }).Data("sendAntiForgery"))
 .Events(events =>
 {
-    events.Error("error_handler");
+    events.Error("kendoAdditional.ErrorHandler");
 })
       )
-           .Events(ev => ev.DataBound("deletableDataBound"))
-      )
-@section scripts{
-    <script>
-
-        plantFilter = function (element) {
-            element.kendoDropDownList({
-                dataTextField: "FullName",
-                dataValueField: "Id",
-                dataSource: {
-                    transport: {
-                        read: {
-                            url: "@Url.Action("Read", "Plant", new { area = "NomManagement" })",
-                            type: 'POST',
-                            dataType: 'jsonp',
-                            data: sendAntiForgery(),
-                        }
-                    }
-                },
-                optionLabel: "--Select Value--"
-            });
-        }
-    </script>
-}
+               .Events(ev => ev.DataBound("kendoAdditional.DeletableDataBound"))
+)

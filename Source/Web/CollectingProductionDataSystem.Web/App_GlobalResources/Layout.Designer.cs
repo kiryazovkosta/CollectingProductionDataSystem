@@ -160,6 +160,33 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ApplicationLog.
+        /// </summary>
+        public static string ApplicationLog {
+            get {
+                return ResourceManager.GetString("ApplicationLog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ApplicationPath.
+        /// </summary>
+        public static string ApplicationPath {
+            get {
+                return ResourceManager.GetString("ApplicationPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ApplicationVirtualPath.
+        /// </summary>
+        public static string ApplicationVirtualPath {
+            get {
+                return ResourceManager.GetString("ApplicationVirtualPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Apply.
         /// </summary>
         public static string Apply {
@@ -565,6 +592,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Close.
+        /// </summary>
+        public static string Close {
+            get {
+                return ResourceManager.GetString("Close", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Code.
         /// </summary>
         public static string Code {
@@ -624,6 +660,15 @@ namespace App_GlobalResources.Resources {
         public static string CorrectionFactor {
             get {
                 return ResourceManager.GetString("CorrectionFactor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create.
+        /// </summary>
+        public static string Create {
+            get {
+                return ResourceManager.GetString("Create", resourceCulture);
             }
         }
         
@@ -727,6 +772,24 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Details.
+        /// </summary>
+        public static string Details {
+            get {
+                return ResourceManager.GetString("Details", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Details For Event.
+        /// </summary>
+        public static string DetailsForEvent {
+            get {
+                return ResourceManager.GetString("DetailsForEvent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Direction.
         /// </summary>
         public static string Direction {
@@ -786,6 +849,15 @@ namespace App_GlobalResources.Resources {
         public static string EditReasons {
             get {
                 return ResourceManager.GetString("EditReasons", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Editing value for position {0}.
+        /// </summary>
+        public static string EditValueFor {
+            get {
+                return ResourceManager.GetString("EditValueFor", resourceCulture);
             }
         }
         
@@ -898,6 +970,87 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to EventCode.
+        /// </summary>
+        public static string EventCode {
+            get {
+                return ResourceManager.GetString("EventCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to EventDetailCode.
+        /// </summary>
+        public static string EventDetailCode {
+            get {
+                return ResourceManager.GetString("EventDetailCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to EventId.
+        /// </summary>
+        public static string EventId {
+            get {
+                return ResourceManager.GetString("EventId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to EventOccurrence.
+        /// </summary>
+        public static string EventOccurrence {
+            get {
+                return ResourceManager.GetString("EventOccurrence", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to EventSequence.
+        /// </summary>
+        public static string EventSequence {
+            get {
+                return ResourceManager.GetString("EventSequence", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to EventTime.
+        /// </summary>
+        public static string EventTime {
+            get {
+                return ResourceManager.GetString("EventTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to EventTimeUtc.
+        /// </summary>
+        public static string EventTimeUtc {
+            get {
+                return ResourceManager.GetString("EventTimeUtc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to EventType.
+        /// </summary>
+        public static string EventType {
+            get {
+                return ResourceManager.GetString("EventType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ExceptionType.
+        /// </summary>
+        public static string ExceptionType {
+            get {
+                return ResourceManager.GetString("ExceptionType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to FactorDensity.
         /// </summary>
         public static string FactorDensity {
@@ -984,6 +1137,24 @@ namespace App_GlobalResources.Resources {
         public static string FlowDirection {
             get {
                 return ResourceManager.GetString("FlowDirection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Exclude From Role.
+        /// </summary>
+        public static string ForExcluding {
+            get {
+                return ResourceManager.GetString("ForExcluding", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Includ in Role.
+        /// </summary>
+        public static string ForIncluding {
+            get {
+                return ResourceManager.GetString("ForIncluding", resourceCulture);
             }
         }
         
@@ -1267,6 +1438,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to IsMemberOfShiftReport.
+        /// </summary>
+        public static string IsMemberOfShiftReport {
+            get {
+                return ResourceManager.GetString("IsMemberOfShiftReport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to IsTotal.
         /// </summary>
         public static string IsTotal {
@@ -1353,6 +1533,15 @@ namespace App_GlobalResources.Resources {
         public static string Logoff {
             get {
                 return ResourceManager.GetString("Logoff", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MachineName.
+        /// </summary>
+        public static string MachineName {
+            get {
+                return ResourceManager.GetString("MachineName", resourceCulture);
             }
         }
         
@@ -1528,6 +1717,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Message.
+        /// </summary>
+        public static string Message {
+            get {
+                return ResourceManager.GetString("Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Middle Name.
         /// </summary>
         public static string MiddleName {
@@ -1668,6 +1866,15 @@ namespace App_GlobalResources.Resources {
         public static string OldValue {
             get {
                 return ResourceManager.GetString("OldValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OldValueBiggerThanNewValue.
+        /// </summary>
+        public static string OldValueBiggerThanNewValue {
+            get {
+                return ResourceManager.GetString("OldValueBiggerThanNewValue", resourceCulture);
             }
         }
         
@@ -2230,6 +2437,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to RequestUrl.
+        /// </summary>
+        public static string RequestUrl {
+            get {
+                return ResourceManager.GetString("RequestUrl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Role.
         /// </summary>
         public static string RoleName {
@@ -2253,6 +2469,15 @@ namespace App_GlobalResources.Resources {
         public static string RolesAdministration {
             get {
                 return ResourceManager.GetString("RolesAdministration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save.
+        /// </summary>
+        public static string Save {
+            get {
+                return ResourceManager.GetString("Save", resourceCulture);
             }
         }
         
@@ -2298,6 +2523,15 @@ namespace App_GlobalResources.Resources {
         public static string Shift3QuantityValue {
             get {
                 return ResourceManager.GetString("Shift3QuantityValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shift Duration.
+        /// </summary>
+        public static string ShiftDuration {
+            get {
+                return ResourceManager.GetString("ShiftDuration", resourceCulture);
             }
         }
         
@@ -3054,6 +3288,15 @@ namespace App_GlobalResources.Resources {
         public static string UnusableResidueLevel {
             get {
                 return ResourceManager.GetString("UnusableResidueLevel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User Accounts.
+        /// </summary>
+        public static string UserAccounts {
+            get {
+                return ResourceManager.GetString("UserAccounts", resourceCulture);
             }
         }
         

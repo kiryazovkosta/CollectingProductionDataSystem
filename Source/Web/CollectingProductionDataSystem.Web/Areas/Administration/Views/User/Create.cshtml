@@ -72,8 +72,8 @@
 
     <div class="well clearfix">
         <div class="pull-right">
-            <button id="create" type="submit" class="btn btn-primary">Create</button>
-            @Html.ActionLink("Cancel", "Index", null, new { @class = "btn btn-default" })
+            <button id="create" type="submit" class="btn btn-primary">@Resources.Layout.Create</button>
+            @Html.ActionLink(Resources.Layout.Cancel, "Index", null, new { @class = "btn btn-default" })
         </div>
     </div>
     }

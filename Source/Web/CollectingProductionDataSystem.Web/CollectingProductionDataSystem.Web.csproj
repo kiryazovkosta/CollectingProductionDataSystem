@@ -64,9 +64,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\ExternalLibraries\Kendo\bg-BG\Kendo.Mvc.resources.dll</HintPath>
     </Reference>
-    <Reference Include="log4net">
-      <HintPath>..\..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
       <Private>True</Private>
@@ -229,6 +226,8 @@
     <Compile Include="Areas\Administration\AdministrationAreaRegistration.cs" />
     <Compile Include="Areas\Administration\Controllers\AjaxController.cs" />
     <Compile Include="Areas\Administration\Controllers\AreaBaseController.cs" />
+    <Compile Include="Areas\Administration\Controllers\EventsController.cs" />
+    <Compile Include="Areas\Administration\ViewModels\EventViewModel.cs" />
     <Compile Include="Areas\NomManagement\Controllers\IkunkController.cs" />
     <Compile Include="Areas\NomManagement\Controllers\MeasuringPointConfigController.cs" />
     <Compile Include="Areas\NomManagement\Controllers\ZoneController.cs" />
@@ -307,9 +306,12 @@
     <Compile Include="Areas\ShiftReporting\Controllers\AreaBaseController.cs" />
     <Compile Include="Areas\ShiftReporting\Controllers\TanksController.cs" />
     <Compile Include="Areas\ShiftReporting\Controllers\UnitsController.cs" />
-    <Compile Include="Areas\ShiftReporting\Controllers\UnitsReportsController.cs" />
+    <Compile Include="Areas\DailyReporting\Controllers\UnitsReportsController.cs" />
     <Compile Include="Areas\ShiftReporting\ShiftReportingAreaRegistration.cs" />
-    <Compile Include="Areas\ShiftReporting\ViewModels\UnitsReportsDataViewModel.cs" />
+    <Compile Include="Areas\ShiftReporting\ViewModels\ManualCalculationWithRelatedViewModel.cs" />
+    <Compile Include="Areas\ShiftReporting\ViewModels\ManualSelfCalculationViewModel.cs" />
+    <Compile Include="Areas\ShiftReporting\ViewModels\ManualCalculationViewModel.cs" />
+    <Compile Include="Areas\DailyReporting\ViewModels\UnitsReportsDataViewModel.cs" />
     <Compile Include="Controllers\AccountController.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -324,6 +326,7 @@
     </Compile>
     <Compile Include="Infrastructure\Extentions\IEfStatusExtentions.cs" />
     <Compile Include="Infrastructure\Filters\AuthorizeFactoryAttribute.cs" />
+    <Compile Include="Infrastructure\Filters\GlobalErrorFilterAttribute.cs" />
     <Compile Include="Infrastructure\Helpers\AuthorizeActionLinkAjaxHelper.cs" />
     <Compile Include="Infrastructure\Helpers\AuthorizedActionLinkHtmlHelper.cs" />
     <Compile Include="Infrastructure\Helpers\IdentityHelpers.cs" />
@@ -335,6 +338,7 @@
     <Compile Include="InputModels\ProcessUnitConfirmShiftInputModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="ViewModels\Utility\ErrorScreenViewModel.cs" />
     <Compile Include="ViewModels\Utility\HistoryLink.cs" />
     <Compile Include="ViewModels\Home\IndexInventoryTanksViewModel.cs" />
     <Compile Include="ViewModels\Identity\AccountViewModels.cs" />
@@ -365,6 +369,8 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\custom\slidebar.css" />
+    <Content Include="Content\ErrorPage\error.css" />
+    <Content Include="Content\ErrorPage\Error.html" />
     <Content Include="Content\Images\center.png" />
     <Content Include="Content\Images\danger.png" />
     <Content Include="Content\Images\error.png" />
@@ -715,6 +721,7 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\custom\bootstrapAdditional.js" />
+    <Content Include="Scripts\custom\jquery-kendo-globalize.js" />
     <Content Include="Scripts\custom\kendoAdditional.js" />
     <Content Include="Scripts\custom\sendAntiForgery.js" />
     <Content Include="Areas\Administration\Views\Role\Create.cshtml" />
@@ -782,7 +789,7 @@
     <Content Include="Areas\NomManagement\Views\Shared\EditorTemplates\ParkViewModel.cshtml" />
     <Content Include="Areas\NomManagement\Views\TankMasterProduct\Index.cshtml" />
     <Content Include="Areas\NomManagement\Views\UnitConfig\EditorTemplates\RelatedUnitConfigsEditor.cshtml" />
-    <Content Include="Areas\ShiftReporting\Views\UnitsReports\UnitsReportsData.cshtml" />
+    <Content Include="Areas\DailyReporting\Views\UnitsReports\UnitsReportsData.cshtml" />
     <Content Include="Areas\NomManagement\Views\UnitsDailyConfig\EditorTemplates\UnitConfigUnitDailyConfigEditor.cshtml" />
     <Content Include="Areas\NomManagement\Views\UnitsDailyConfig\EditorTemplates\RelatedUnitDailyConfigsEditor.cshtml" />
     <Content Include="Areas\RecordsHistory\Views\web.config" />
@@ -795,6 +802,11 @@
     <Content Include="Areas\NomManagement\Views\Shared\EditorTemplates\ZoneViewModel.cshtml" />
     <Content Include="Areas\NomManagement\Views\MeasuringPointConfig\EditorTemplates\RelatedMeasuringPointConfigEditor.cshtml" />
     <Content Include="Areas\NomManagement\Views\Shared\EditorTemplates\TransportTypeViewModel.cshtml" />
+    <Content Include="Areas\ShiftReporting\Views\Units\_ManualDataCalculation.cshtml" />
+    <Content Include="Areas\ShiftReporting\Views\Units\_ManualDataSelfCalculation.cshtml" />
+    <Content Include="Areas\ShiftReporting\Views\Units\_ManualDataWithRelatedCalculation.cshtml" />
+    <Content Include="Areas\Administration\Views\Events\Index.cshtml" />
+    <Content Include="Areas\Administration\Views\Events\Details.cshtml" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <None Include="Properties\PublishProfiles\Home.pubxml" />
     <Content Include="Scripts\custom\sendArea.js" />
@@ -815,6 +827,7 @@
     </Content>
     <Content Include="Scripts\custom\sidebar.js" />
     <Content Include="Scripts\custom\unitGridsData.js" />
+    <Content Include="Scripts\custom\uploadNom.js" />
     <Content Include="Scripts\jquery-2.1.4.js" />
     <Content Include="Scripts\jquery-2.1.4.min.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
@@ -1433,7 +1446,7 @@
     <Content Include="Views\Shared\_LayoutWithSideBar.cshtml" />
     <Content Include="Views\Shared\_MainNav.cshtml" />
     <Content Include="Views\Shared\_KendoLayoutWithSideBar.cshtml" />
-    <Content Include="Views\Shared\_SampleSideBar.cshtml" />
+    <Content Include="Views\Shared\_UnitsSideBar.cshtml" />
     <Content Include="Views\Shared\_UnitsDailySideBar.cshtml" />
     <Content Include="Views\Shared\_SuccessWindow.cshtml" />
     <Content Include="Views\Shared\_TanksSideBar.cshtml" />
@@ -1461,6 +1474,7 @@
     <Folder Include="Areas\ShiftReporting\Views\AreaBase\" />
     <Folder Include="Areas\ShiftReporting\Views\Shared\" />
     <Folder Include="Views\Ajax\" />
+    <Folder Include="Views\Events\" />
     <Folder Include="Views\Factory\" />
     <Folder Include="Views\Plant\" />
     <Folder Include="Views\ProcessUnit\" />
@@ -1599,10 +1613,6 @@
     <ProjectReference Include="..\..\Application\CollectingProductionDataSystem.Application\CollectingProductionDataSystem.Application.csproj">
       <Project>{3a125de9-28b9-4004-a1d9-bebde62ac786}</Project>
       <Name>CollectingProductionDataSystem.Application</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Application\CollectingProductionDataSystem.MathExpressions\CollectingProductionDataSystem.MathExpressions.csproj">
-      <Project>{34672323-163b-48f2-9425-b4b55b33d144}</Project>
-      <Name>CollectingProductionDataSystem.MathExpressions</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Common\CollectingProductionDataSystem.Contracts\CollectingProductionDataSystem.Contracts.csproj">
       <Project>{8dd67abb-5bfb-4a28-82df-7bfe8ca483a6}</Project>

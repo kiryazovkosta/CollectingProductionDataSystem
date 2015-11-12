@@ -88,6 +88,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Pleace register incident in the system or call to our Service Desk on 37-11.
+        /// </summary>
+        public static string ErrorContacts {
+            get {
+                return ResourceManager.GetString("ErrorContacts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ivalid attempt to change password..
         /// </summary>
         public static string InvalidChangePassword {
@@ -129,6 +138,15 @@ namespace App_GlobalResources.Resources {
         public static string ManualValue {
             get {
                 return ResourceManager.GetString("ManualValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There was an error in application.
+        /// </summary>
+        public static string Message {
+            get {
+                return ResourceManager.GetString("Message", resourceCulture);
             }
         }
         

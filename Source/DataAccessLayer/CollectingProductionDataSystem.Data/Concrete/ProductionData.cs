@@ -11,6 +11,8 @@
     using CollectingProductionDataSystem.Models.Inventories;
     using CollectingProductionDataSystem.Models.Nomenclatures;
     using CollectingProductionDataSystem.Models.Productions;
+    using CollectingProductionDataSystem.Models.Productions.Qpt;
+    using CollectingProductionDataSystem.Models.SystemLog;
     using CollectingProductionDataSystem.Models.Transactions;
     using CollectingProductionDataSystem.Models.UtilityEntities;
 
@@ -355,6 +357,36 @@
             }
         }
 
+        public IDeletableEntityRepository<UnitEnteredForCalculationData> UnitEnteredForCalculationDatas
+        {
+            get
+            {
+                return this.GetDeletableEntityRepository<UnitEnteredForCalculationData>();
+            }
+        }
+
+        public IDeletableEntityRepository<MeasuringPointProductsConfig> MeasuringPointProductsConfigs
+        {
+            get
+            {
+                return this.GetDeletableEntityRepository<MeasuringPointProductsConfig>();
+            }
+        }
+
+        public IDeletableEntityRepository<Density2FactorAlpha> Density2FactorAlphas
+        {
+            get
+            {
+                return this.GetDeletableEntityRepository<Density2FactorAlpha>();
+            }
+        }
+        public IRepository<Event> Events
+        {
+            get
+            {
+                return this.GetRepository<Event>();
+            }
+        }
         public void Dispose()
         {
             this.Dispose(true);
@@ -381,6 +413,7 @@
 
             return (IRepository<T>)this.repositories[typeof(T)];
         }
+
 
         private IDeletableEntityRepository<T> GetDeletableEntityRepository<T>() where T : class, IEntity, IDeletableEntity
         {

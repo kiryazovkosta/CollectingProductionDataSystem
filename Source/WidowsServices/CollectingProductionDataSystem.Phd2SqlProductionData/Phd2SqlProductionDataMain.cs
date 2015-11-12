@@ -1,24 +1,20 @@
 ﻿namespace CollectingProductionDataSystem.Phd2SqlProductionData
 {
-    using System.Data.Entity;
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
     using System.Data.Entity.Validation;
     using System.Linq;
-    using CollectingProductionDataSystem.Data.Common;
-    using CollectingProductionDataSystem.PhdApplication.PrimaryDataServices;
-    using log4net;
-    using System;
+    using System.Net.Mail;
     using System.ServiceProcess;
-    using Uniformance.PHD;
-    using System.Data;
-    using CollectingProductionDataSystem.Phd2SqlProductionData.Models;
-    using CollectingProductionDataSystem.Models.Inventories;
     using CollectingProductionDataSystem.Data;
     using CollectingProductionDataSystem.Data.Concrete;
-    using CollectingProductionDataSystem.Models.Productions;
-    using System.Globalization;
+    using CollectingProductionDataSystem.Models.Inventories;
     using CollectingProductionDataSystem.Models.Transactions;
-    using System.Collections.Generic;
-    using System.Net.Mail;
+    using CollectingProductionDataSystem.Phd2SqlProductionData.Models;
+    using CollectingProductionDataSystem.PhdApplication.PrimaryDataServices;
+    using Uniformance.PHD;
+    using log4net;
 
     static class Phd2SqlProductionDataMain
     {
@@ -50,8 +46,12 @@
                 logger.Info("Sync primary data started!");
                 var kernel = ninject.Kernel;
                 var service = kernel.GetService(typeof(PhdPrimaryDataService)) as PhdPrimaryDataService;
-                var insertedRecords = service.ReadAndSaveUnitsDataForShift();
-                logger.InfoFormat("Successfully added {0} records to CollectingPrimaryDataSystem", insertedRecords);
+                for (int offsetInHours = 0; offsetInHours < Properties.Settings.Default.SYNC_PRIMARY_HOURS_OFFSET; offsetInHours += 8)
+                {
+                    var offset = offsetInHours == 0 ? offsetInHours : offsetInHours * -1;
+                    var recordsDates = service.ReadAndSaveUnitsDataForShift(DateTime.Now, offset);
+                    logger.InfoFormat("Successfully added {0} UnitsData records to CollectingPrimaryDataSystem", recordsDates);
+                }
                 logger.Info("Sync primary data finished!");
             }
             catch (DataException validationException)
@@ -245,7 +245,7 @@
                                     {
                                         context.TanksData.BulkInsert(tanksDataList, "Phd2SqlLoading");
                                         var status = context.SaveChanges("Phd2SqlLoading");
-                                        logger.InfoFormat("Inserted {0} records for: {1:yyyy-MM-dd HH:ss:mm}!", status.ResultRecordsCount, checkedDateTime);
+                                        logger.InfoFormat("Successfully added {0} TanksData records for: {1:yyyy-MM-dd HH:ss:mm}!", status.ResultRecordsCount, checkedDateTime);
                                     }
                                 }
                             }
@@ -269,11 +269,6 @@
             {
                 logger.Error(ex.ToString());
             }
-        }
-
-        private static void ProcessInventoryTankForSpecificDateTime(DateTime checkedDateTime)
-        {
-            throw new NotImplementedException();
         }
 
         internal static void ProcessMeasuringPointsData()

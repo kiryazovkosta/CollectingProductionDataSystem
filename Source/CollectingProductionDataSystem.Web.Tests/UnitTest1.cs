@@ -4,10 +4,13 @@ using AutoMapper;
 using CollectingProductionDataSystem.Models.Identity;
 using CollectingProductionDataSystem.Models.Nomenclatures;
 using CollectingProductionDataSystem.Models.Productions;
+using CollectingProductionDataSystem.Models.SystemLog;
 using CollectingProductionDataSystem.Web.Areas.Administration.ViewModels;
 using CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewModels;
+using CollectingProductionDataSystem.Web.Areas.ShiftReporting.ViewModels;
 using CollectingProductionDataSystem.Web.ViewModels.Identity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using CollectingProductionDataSystem.Web.Areas.DailyReporting.ViewModels;
 
 namespace CollectingProductionDataSystem.Web.Tests
 {
@@ -63,6 +66,28 @@ namespace CollectingProductionDataSystem.Web.Tests
 
             var mapper = new RelatedUnitDailyConfigsViewModel();
             mapper.CreateMappings(Mapper.Configuration);
+
+            Mapper.AssertConfigurationIsValid();
+        }
+
+        [TestMethod]
+        public void CheckMappinIEnumerable_MultiShift_To_IEnumerable_UnitsReportsDataViewModel()
+        {
+            Mapper.CreateMap<IEnumerable<MultiShift>, IEnumerable<UnitsReportsDataViewModel>>();
+
+            var mapper = new UnitsReportsDataViewModel();
+            mapper.CreateMappings(Mapper.Configuration);
+
+            Mapper.AssertConfigurationIsValid();
+        }
+
+        [TestMethod]
+        public void CheckMappin_Event_To_EventView_Model()
+        {
+            Mapper.CreateMap<Event, EventViewModel>();
+
+            //var mapper = new EventViewModel();
+            //mapper.CreateMappings(Mapper.Configuration);
 
             Mapper.AssertConfigurationIsValid();
         }

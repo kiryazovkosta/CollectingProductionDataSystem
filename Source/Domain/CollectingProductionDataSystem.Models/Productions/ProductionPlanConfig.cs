@@ -15,16 +15,23 @@
         }
 
         public int Id { get; set; }
+
         public string Name { get; set; }
+
         public decimal Percentages { get; set; }
+
         public string QuantityPlanFormula { get; set; }
+
         public string QuantityPlanMembers { get; set; }
+
         public string QuantityFactFormula { get; set; }
+
         public string QuantityFactMembers { get; set; }
+
         public int ProcessUnitId { get; set; }
+
         public virtual ProcessUnit ProcessUnit { get; set; }
-        //public int UnitsDailyConfigId { get; set; }
-        //public virtual UnitsDailyConfig UnitsDailyConfigPlan { get; set; }
+
         public virtual ICollection<UnitDailyConfig> UnitsDailyConfigsFact 
         {
             get { return this.unitsDailyConfigs; }

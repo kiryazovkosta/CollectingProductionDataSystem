@@ -1,5 +1,7 @@
 ﻿using System.Web;
 using System.Web.Mvc;
+using CollectingProductionDataSystem.Web.Infrastructure.Filters;
+using Ninject;
 
 namespace CollectingProductionDataSystem.Web.AppStart
 {
@@ -7,7 +9,8 @@ namespace CollectingProductionDataSystem.Web.AppStart
     {
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
-            filters.Add(new HandleErrorAttribute());
+            //filters.Add(new HandleErrorAttribute());
+            filters.Add(new GlobalErrorFilterAttribute());
         }
     }
 }

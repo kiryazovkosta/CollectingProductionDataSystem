@@ -51,6 +51,9 @@
             modelBuilder.Configurations.Add(new UnitConfigUnitDailyConfigMap());
             modelBuilder.Configurations.Add(new ApplicationUserParkMap());
             modelBuilder.Configurations.Add(new ApplicationUserProcessUnitMap());
+            modelBuilder.Configurations.Add(new UnitEnteredForCalculationDataMap());
+            modelBuilder.Configurations.Add(new MeasuringPointProductsConfigMap());
+            modelBuilder.Configurations.Add(new EventMap());
         }
     }
 }
