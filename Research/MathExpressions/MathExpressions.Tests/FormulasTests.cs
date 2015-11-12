@@ -828,7 +828,7 @@ namespace MathExpressions.Tests
             string expr = @"par.f";
             //Act
             double actual = calculator.Calculate(expr, "par", 1, inputParams);
-            //Assert
+            //Assertal =
             //58.114432368317267
             Assert.AreEqual(Convert.ToDecimal(expected), Convert.ToDecimal(actual));
         }
@@ -1004,6 +1004,27 @@ namespace MathExpressions.Tests
         }
 
         [TestMethod]
+        public void FormulaN14()              // 25) N14 ;ТЕЧНИ НЕФТОПРОДУКТИ И ВТЕЧНЕНИ ГАЗОВЕ :: X A10 Q
+        {
+            //Arrange
+            double pl = 20;
+            double d2 = 15;
+
+            double q = GetValueFormulaA10(pl, d2);
+
+            var inputParams = new Dictionary<string, double>();
+            inputParams.Add("q", q);
+            double expected = 3;
+
+            string expr = @"par.q";
+            //Act
+            double actual = calculator.Calculate(expr, "par", 1, inputParams);
+            //Assert
+            //3.0
+            Assert.AreEqual(Convert.ToDecimal(expected), Convert.ToDecimal(actual));
+        }
+
+        [TestMethod]
         public void FormulaV14()              // 26) V14 ;КОНДЕНЗАТ, ХОВ :: X A10 Q
         {
             //Arrange
@@ -1097,6 +1118,50 @@ namespace MathExpressions.Tests
 
         [TestMethod]
         public void FormulaN18()              // 34) N18 ;;БРОЯЧИ ЗА НЕФТОПРОДУКТИ И ВТЕЧНЕНИ ГАЗОВЕ :: X A11 Q
+        {
+            //Arrange
+            double pl = 20;
+            double pl1 = 10;
+            double d2 = 15;
+
+            double q = GetValueFormulaA11(pl, pl1, d2);
+
+            var inputParams = new Dictionary<string, double>();
+            inputParams.Add("q", q);
+            double expected = 150;
+
+            string expr = @"par.q";
+            //Act
+            double actual = calculator.Calculate(expr, "par", 1, inputParams);
+            //Assert
+            //150.0
+            Assert.AreEqual(Convert.ToDecimal(expected), Convert.ToDecimal(actual));
+        }
+
+        [TestMethod]
+        public void FormulaO18()              // 36) O18 ;;БРОЯЧИ ЗА ВОДИ :: X A11 Q
+        {
+            //Arrange
+            double pl = 20;
+            double pl1 = 10;
+            double d2 = 15;
+
+            double q = GetValueFormulaA11(pl, pl1, d2);
+
+            var inputParams = new Dictionary<string, double>();
+            inputParams.Add("q", q);
+            double expected = 150;
+
+            string expr = @"par.q";
+            //Act
+            double actual = calculator.Calculate(expr, "par", 1, inputParams);
+            //Assert
+            //150.0
+            Assert.AreEqual(Convert.ToDecimal(expected), Convert.ToDecimal(actual));
+        }
+
+        [TestMethod]
+        public void FormulaP18()              // 39) P18 ;;БРОЯЧИ ЗА ПАРА :: X A11 Q
         {
             //Arrange
             double pl = 20;
