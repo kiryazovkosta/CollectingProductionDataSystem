@@ -1,17 +1,17 @@
 ﻿var uploadNom = (function () {
     $(function () { $('#close').click(function () { $('#alert').hide(); }) });
-    var OnSuccess = function (ev) {
+    function OnSuccess(ev) {
         var result = ev.response;
         if (result.IsValid == true) {
             var message = "Успешно създадохте " + result.ResultRecordsCount + " записа.";
             showAlert('#alert', 'alert-success', message);
         }
     }
-    var OnError = function (ev) {
+    function OnError(ev) {
         alert("error");
     }
 
-    var showAlert = function (id, type, message) {
+    function showAlert(id, type, message) {
         var alert = $(id);
         var classes = ['alert-success', 'alert-warning', 'alert-danger'];
         alert.find('p').text(message);

@@ -1,6 +1,7 @@
 var unitGridsData = (function () {
 
     // ----------------- autorun function on document ready -------------------
+    'use strict';
     $(document).ready(function () {
         $("#apply").click(function () {
             if ($("#units")) {
@@ -30,7 +31,7 @@ var unitGridsData = (function () {
 
         if ($("#confirm")) {
             $("#confirm").click(function () {
-                var date = SendDate();
+                var date = sendDate();
                 $.ajax({
                     url: 'Confirm',
                     type: 'POST',
@@ -75,23 +76,23 @@ var unitGridsData = (function () {
 
     //------------------ private functions ------------------------------------
 
-    var sendProcessUnit = function () {
+    function sendProcessUnit() {
         return { "processUnitId": $('input[name=processunits]').val() };
     }
 
-    var sendShift = function sendShift() {
+    function sendShift() {
         return { "shiftId": $('input[name=shifts]').val() }
     }
 
-    var sendZoneId = function () {
+    function sendZoneId() {
         return { "parkId": $('input[name=parks]').val() }
     }
 
-    var sendShiftsOffset = function () {
+    function sendShiftsOffset() {
         return { "shiftMinutesOffset": $('input[name=shifts]').val() }
     }
 
-    var hideCommandButtons = function () {
+    function hideCommandButtons() {
         var confirmButton = $("#confirm");
         if (confirmButton) {
             confirmButton.hide();
@@ -102,7 +103,7 @@ var unitGridsData = (function () {
         }
     }
 
-    var showCommandButtons = function () {
+    function showCommandButtons() {
         var confirmButton = $("#confirm");
         if (confirmButton) {
             confirmButton.show();
@@ -114,10 +115,10 @@ var unitGridsData = (function () {
         }
     }
 
-    var checkConfirmedStatus = function () {
+    function checkConfirmedStatus() {
         var grid = $("#units").data("kendoGrid");
         if (grid) {
-            var date = SendDate();
+            var date = sendDate();
             $.ajax({
                 url: 'IsConfirmed',
                 type: 'POST',
@@ -137,13 +138,13 @@ var unitGridsData = (function () {
         }
     }
 
-    var attachEventToExportBtn = function (buttonSelector, targetSelector) {
+    function attachEventToExportBtn(buttonSelector, targetSelector) {
         $(buttonSelector).click(function () {
             $(targetSelector).data("kendoGrid").saveAsExcel();
         });
     }
 
-    var nameGridCommancolumn = function () {
+    function nameGridCommancolumn() {
         var grid = $("#units").data("kendoGrid");
         if (grid) {
             $.each(grid.columns, function (index, value) {
@@ -154,12 +155,12 @@ var unitGridsData = (function () {
         }
     }
 
-    var addAntiForgeryToken = function (data) {
+    function addAntiForgeryToken(data) {
         data.__RequestVerificationToken = $('input[name=__RequestVerificationToken]').val();
         return data;
     };
 
-    var manualEntry = function (ev) {
+    function manualEntry(ev) {
         ev.preventDefault();
         ev.stopPropagation();
         var culture = $('#culture').val();
@@ -193,7 +194,7 @@ var unitGridsData = (function () {
         });
     }
 
-    var replacer = function replacer(key, value) {
+    function replacer(key, value) {
 
         if (value instanceof Date) {
             return value.toLocaleString(culture.value);
@@ -210,12 +211,12 @@ var unitGridsData = (function () {
         return value;
     }
 
-    var showKendoError = function (message) {
+    function showKendoError(message) {
         $('pre#err-message').text(message);
         $('div#err-window').data("kendoWindow").open();
     }
 
-    var manualEntryDoneErrorHandler = function (errors) {
+    function manualEntryDoneErrorHandler(errors) {
         if (errors) {
             var message = "";
             $.each(errors, function (key, value) {
@@ -238,7 +239,7 @@ var unitGridsData = (function () {
 
     //------------------ public functions ------------------------------------
 
-    var SendDate = function () {
+    function sendDate() {
         var result = { "date": $('input[name=date]').val() };
         $.extend(result, sendProcessUnit());
         if ($('input[name=shifts]')) {
@@ -248,7 +249,7 @@ var unitGridsData = (function () {
         return result;
     }
 
-    var SendTanksData = function () {
+    function SendTanksData() {
         var result = { "date": $('input[name=date]').val() };
         $.extend(result, sendZoneId());
         $.extend(result, sendShift());
@@ -256,7 +257,7 @@ var unitGridsData = (function () {
         return result;
     }
 
-    var DataBound = function () {
+    function DataBound() {
         var dataView = this.dataSource.view();
         var manualIndicator = $('#manualIndicator').val();
         var manualCalcumated = $('#manualCalcumated').val();
@@ -307,19 +308,19 @@ var unitGridsData = (function () {
         }
     }
 
-    var DataSave = function (ev) {
+    function DataSave(ev) {
         if (ev.type === 'update') {
             kendoAdditional.RefreshGrid('#units');
             kendoAdditional.RefreshGrid('#productionPlan');
         }
     }
 
-    var ManualEntryFailure = function (data) {
+    function ManualEntryFailure(data) {
 
         showKendoError("Възникна грешка при обработка на вашата заявка");
     }
 
-    var SuccessCalculateManualEntry = function (data) {
+    function SuccessCalculateManualEntry(data) {
         if (data) {
             if (data == "success") {
                 hideRecordHistoriModal();
@@ -329,7 +330,7 @@ var unitGridsData = (function () {
     }
 
     return {
-        SendDate: SendDate,
+        SendDate: sendDate,
         SendTanksData: SendTanksData,
         DataBound: DataBound,
         DataSave: DataSave,

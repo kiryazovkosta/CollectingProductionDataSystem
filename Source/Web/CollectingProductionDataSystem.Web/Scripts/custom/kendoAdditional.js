@@ -1,5 +1,6 @@
 ﻿var kendoAdditional = (function () {
     // ----------------- autorun function on document ready -------------------
+    'use strict';
     $(function () {
         var culture = $('#culture').val();
         kendo.culture(culture);
@@ -9,9 +10,9 @@
 
     //------------------ private functions ------------------------------------
 
-    var prepareWindow = function (selector, title) {
+    function prepareWindow(selector, title) {
 
-        var window = $(selector)
+        var window = $(selector);
         if (window) {
             window.kendoWindow({
                 width: "650px",
@@ -28,41 +29,41 @@
         }
     }
 
-    var convertValues = function (value) {
+    function convertValues(value) {
         var data = {};
-
         value = $.isArray(value) ? value : [value];
-
-        for (var idx = 0; idx < value.length; idx++) {
-            data["values[" + idx + "]"] = value[idx];
-        }
-
+        value.forEach(function (element, index, array) {
+            data["values[" + index + "]"] = element;
+        });
         return data;
     }
 
-    var serialize = function (data) {
-        for (var property in data) {
-            if ($.isArray(data[property])) {
-                serializeArray(property, data[property], data);
+    function serialize(data) {
+        var dataKeys = Object.keys(data);
+        dataKeys.forEach(function (element, index, array) {
+            if ($.isArray(element)) {
+                serializeArray(property, element, array);
             }
-        }
+        });
         $.extend(data, sendAntiForgery());
     }
 
-    var serializeArray = function (prefix, array, result) {
-        for (var i = 0; i < array.length; i++) {
-            if ($.isPlainObject(array[i])) {
-                for (var property in array[i]) {
-                    result[prefix + "[" + i + "]." + property] = array[i][property];
-                }
+    function serializeArray(prefix, array, result) {
+        array = $.isArray(array) ? array : [array];
+        array.forEach(function (element, index, array) {
+            if ($.isPlainObject(element)) {
+                var elementKeys = Object.keys(element);
+                elementKeys.forEach(function (property,ix,arr) {
+                    result[prefix + "[" + index + "]." + property] = element[property];
+                });
+            } else {
+                result[prefix + "[" + index + "]"] = element;
             }
-            else {
-                result[prefix + "[" + i + "]"] = array[i];
-            }
-        }
+        });
+
     }
 
-    var boundEmptyRelatedRecords = function () {
+    function boundEmptyRelatedRecords() {
         var grid = this;
         var propertyName = "RelatedUnitConfigs";
         if (grid) {
@@ -81,7 +82,7 @@
 
     //------------------ public functions ------------------------------------
 
-    var ErrorHandler = function (e) {
+    function ErrorHandler(e) {
         if (this.data) {
             this.data([]);
         }
@@ -99,18 +100,18 @@
         }
     }
 
-    var CloseWindow = function (selector) {
+    function CloseWindow(selector) {
         $(selector).data("kendoWindow").close();
     }
 
-    var RefreshGrid = function (selector) {
+    function RefreshGrid(selector) {
         var grid = $(selector).data('kendoGrid');
         if (grid !== null) {
             grid.dataSource.read();
         }
     }
 
-    var ValueMapper = function (options) {
+    function ValueMapper(options) {
         var url = this.dataSource.options.transport.read.url.replace("Read", "ValueMapper");
 
         $.ajax({
@@ -128,7 +129,7 @@
         return result;
     }
 
-    var DeletableDataBound = function () {
+    function DeletableDataBound() {
         var items = this.dataSource.view();
         for (var i = 0; i < items.length; i++) {
             if (items[i].IsDeleted) {

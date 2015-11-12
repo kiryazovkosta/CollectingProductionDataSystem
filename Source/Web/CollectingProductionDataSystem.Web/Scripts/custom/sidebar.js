@@ -59,7 +59,7 @@
         }
     }
 
-    var esc = function (string) {
+    function esc(string) {
         return string.replace(/[-[\]{}()*+?,\\^$|#<>\s]/g, "\$&");
     }
 })();
