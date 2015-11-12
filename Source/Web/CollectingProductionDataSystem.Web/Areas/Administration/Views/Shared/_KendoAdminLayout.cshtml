@@ -18,7 +18,8 @@
                         <a href="@Url.Action("Index", "Role", new { area="Administration"})">Roles</a>
                     </li>
                     <li class="nav-header"><span class="glyphicon glyphicon-signal"></span>  Statistics</li>
-                    <li><a href="#">General</a></li>
+                    <li class='@(Request.RawUrl == @Url.Action("Index", "Events", new { area = "Administration" }) ? "active" : string.Empty)'>
+                    <a href="@Url.Action("Index", "Events", new { area = "Administration" })">Application Log</a></li>
                     <li><a href="#">Users</a></li>
                     <li><a href="#">Visitors</a></li>
                     <li class="nav-header"><span class="glyphicon glyphicon-user"></span> Profile</li>

@@ -1,0 +1,53 @@
+﻿@using CollectingProductionDataSystem.Web.Infrastructure.Helpers;
+@using Resources = App_GlobalResources.Resources
+@{
+    Layout = "~/Areas/Administration/Views/Shared/_KendoAdminLayout.cshtml";
+}
+<h2>
+    @Resources.Layout.ApplicationLog
+</h2>
+@(Html.Kendo().Grid<CollectingProductionDataSystem.Web.Areas.Administration.ViewModels.EventViewModel>()
+      .Name("events")
+      .Columns(columns =>
+      {
+          columns.Bound(c => c.EventId)
+              .ClientTemplate(
+                Ajax.AuthorizedAjaxActionLinkOrText("#=data.EventId#", "Details", "Events",
+                                                new AjaxOptions() { HttpMethod = "Get", OnSuccess = "showRecordHistoriModal" },
+                                                new { area = "Administration", eventId = "#=data.EventId#" },
+                                                new { data_ajax_mode = "replace", data_ajax_update = @"\#modal-dialog-body" })
+                                                .ToHtmlString());
+          //columns.Bound(c => c.EventTimeUtc).Format("{0:dd.MM.yyyy HH:mm}").Width(160);
+          columns.Bound(c => c.EventTime).Format("{0:dd.MM.yyyy HH:mm}").Width(120);
+          columns.Bound(c => c.EventType);
+          columns.Bound(c => c.EventSequence).Width(80);
+          columns.Bound(c => c.EventOccurrence).Width(80);
+          columns.Bound(c => c.EventCode).Width(80);
+          columns.Bound(c => c.EventDetailCode).Width(80);
+          columns.Bound(c => c.Message);
+          columns.Bound(c => c.ApplicationPath);
+          columns.Bound(c => c.ApplicationVirtualPath);
+          columns.Bound(c => c.MachineName);
+          columns.Bound(c => c.RequestUrl);
+          columns.Bound(c => c.ExceptionType);
+      })
+          .Pageable(pageable => pageable
+                    .Refresh(true)
+                    .PageSizes(new[] { 10, 20, 50, 100 })
+                    .ButtonCount(5))
+              .Sortable()
+              .Scrollable(scr => scr.Height(600))
+              .Filterable()
+              .Resizable(c => c.Columns(true))
+              .ColumnMenu()
+      .DataSource(dataSource => dataSource
+          .Ajax()
+              .PageSize(20)
+              .Read(read => read.Action("Read", "Events", new { area = "Administration" }).Data("sendAntiForgery"))
+              )
+)
+
+@section scripts{
+    @Scripts.Render("~/bundles/custom/kendoadditional")
+    @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.min.js")
+}

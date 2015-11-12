@@ -47,3 +47,8 @@ sortable.SortMode(GridSortMode.SingleColumn);
               .Events(ev => ev.DataBound("kendoAdditional.DeletableDataBound"))
 )
 
+
+@section scripts{
+    @Scripts.Render("~/bundles/custom/kendoadditional")
+    @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.min.js")
+    }

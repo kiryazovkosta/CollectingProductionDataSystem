@@ -124,6 +124,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ModelErrors.bg.resx</DependentUpon>
     </Compile>
+    <Compile Include="SystemLog\Event.cs" />
     <Compile Include="Transactions\ActiveTransactionsData.cs" />
     <Compile Include="Transactions\Ikunk.cs" />
     <Compile Include="Transactions\MaxAsoMeasuringPointDataSequenceNumber.cs" />

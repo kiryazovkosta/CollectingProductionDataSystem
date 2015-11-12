@@ -9,8 +9,8 @@ namespace CollectingProductionDataSystem.Web.AppStart
     {
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
-            filters.Add(new HandleErrorAttribute());
-            //filters.Add(new GlobalErrorFilterAttribute());
+            //filters.Add(new HandleErrorAttribute());
+            filters.Add(new GlobalErrorFilterAttribute());
         }
     }
 }

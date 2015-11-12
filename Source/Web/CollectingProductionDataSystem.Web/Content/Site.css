@@ -644,3 +644,14 @@ td[role=gridcell] ul {
         margin-bottom: -20px;
     }
 }
+
+#events {
+    font-size:12px;
+}
+
+#Details {
+    height:680px;
+    max-width:100%;
+    width:100%;
+    padding:10px;
+}

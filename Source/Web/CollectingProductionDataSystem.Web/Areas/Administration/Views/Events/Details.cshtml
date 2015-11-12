@@ -1,0 +1,39 @@
+﻿@using CollectingProductionDataSystem.Web.Areas.Administration.ViewModels;
+@using Resources = App_GlobalResources.Resources
+
+@model EventViewModel
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h4 class="modal-title" id="record-history-label">
+        @Resources.Layout.DetailsForEvent @Model.EventId
+    </h4>
+</div>
+<div class="modal-body">
+    @Html.TextAreaFor(m => m.Details, new { disabled = "disabled" })
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+</div>
+
+
+
+
+
+
+
+@*EventId
+
+    EventTime
+    EventType
+    EventSequence
+    EventOccurrence
+    EventCode
+    EventDetailCode
+    Message
+    ApplicationPath
+    ApplicationVirtualPath
+    MachineName
+    RequestUrl
+    ExceptionType
+    Details*@

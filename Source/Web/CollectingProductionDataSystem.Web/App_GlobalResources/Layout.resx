@@ -1182,4 +1182,55 @@
   <data name="Close" xml:space="preserve">
     <value>Close</value>
   </data>
+  <data name="ApplicationPath" xml:space="preserve">
+    <value>ApplicationPath</value>
+  </data>
+  <data name="ApplicationVirtualPath" xml:space="preserve">
+    <value>ApplicationVirtualPath</value>
+  </data>
+  <data name="Details" xml:space="preserve">
+    <value>Details</value>
+  </data>
+  <data name="EventCode" xml:space="preserve">
+    <value>EventCode</value>
+  </data>
+  <data name="EventDetailCode" xml:space="preserve">
+    <value>EventDetailCode</value>
+  </data>
+  <data name="EventId" xml:space="preserve">
+    <value>EventId</value>
+  </data>
+  <data name="EventOccurrence" xml:space="preserve">
+    <value>EventOccurrence</value>
+  </data>
+  <data name="EventSequence" xml:space="preserve">
+    <value>EventSequence</value>
+  </data>
+  <data name="EventTime" xml:space="preserve">
+    <value>EventTime</value>
+  </data>
+  <data name="EventTimeUtc" xml:space="preserve">
+    <value>EventTimeUtc</value>
+  </data>
+  <data name="EventType" xml:space="preserve">
+    <value>EventType</value>
+  </data>
+  <data name="ExceptionType" xml:space="preserve">
+    <value>ExceptionType</value>
+  </data>
+  <data name="MachineName" xml:space="preserve">
+    <value>MachineName</value>
+  </data>
+  <data name="Message" xml:space="preserve">
+    <value>Message</value>
+  </data>
+  <data name="RequestUrl" xml:space="preserve">
+    <value>RequestUrl</value>
+  </data>
+  <data name="ApplicationLog" xml:space="preserve">
+    <value>ApplicationLog</value>
+  </data>
+  <data name="DetailsForEvent" xml:space="preserve">
+    <value>Details For Event</value>
+  </data>
 </root>

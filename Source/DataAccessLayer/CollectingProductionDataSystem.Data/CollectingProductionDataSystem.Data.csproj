@@ -90,6 +90,7 @@
     <Compile Include="Mappings\Density2FactorAlphaMap.cs" />
     <Compile Include="Mappings\DirectionMap.cs" />
     <Compile Include="Mappings\EditReasonMap.cs" />
+    <Compile Include="Mappings\EventMap.cs" />
     <Compile Include="Mappings\FactoryMap.cs" />
     <Compile Include="Mappings\IkunkMap.cs" />
     <Compile Include="Mappings\MaxAsoMeasuringPointDataSequenceNumberMap.cs" />
