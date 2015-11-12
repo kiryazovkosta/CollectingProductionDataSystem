@@ -64,10 +64,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\ExternalLibraries\Kendo\bg-BG\Kendo.Mvc.resources.dll</HintPath>
     </Reference>
-    <Reference Include="log4net, Version=1.2.13.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
       <Private>True</Private>
@@ -230,6 +226,8 @@
     <Compile Include="Areas\Administration\AdministrationAreaRegistration.cs" />
     <Compile Include="Areas\Administration\Controllers\AjaxController.cs" />
     <Compile Include="Areas\Administration\Controllers\AreaBaseController.cs" />
+    <Compile Include="Areas\Administration\Controllers\EventsController.cs" />
+    <Compile Include="Areas\Administration\ViewModels\EventViewModel.cs" />
     <Compile Include="Areas\NomManagement\Controllers\IkunkController.cs" />
     <Compile Include="Areas\NomManagement\Controllers\MeasuringPointConfigController.cs" />
     <Compile Include="Areas\NomManagement\Controllers\ZoneController.cs" />
@@ -371,6 +369,8 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\custom\slidebar.css" />
+    <Content Include="Content\ErrorPage\error.css" />
+    <Content Include="Content\ErrorPage\Error.html" />
     <Content Include="Content\Images\center.png" />
     <Content Include="Content\Images\danger.png" />
     <Content Include="Content\Images\error.png" />
@@ -805,6 +805,8 @@
     <Content Include="Areas\ShiftReporting\Views\Units\_ManualDataCalculation.cshtml" />
     <Content Include="Areas\ShiftReporting\Views\Units\_ManualDataSelfCalculation.cshtml" />
     <Content Include="Areas\ShiftReporting\Views\Units\_ManualDataWithRelatedCalculation.cshtml" />
+    <Content Include="Areas\Administration\Views\Events\Index.cshtml" />
+    <Content Include="Areas\Administration\Views\Events\Details.cshtml" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <None Include="Properties\PublishProfiles\Home.pubxml" />
     <Content Include="Scripts\custom\sendArea.js" />
@@ -1472,6 +1474,7 @@
     <Folder Include="Areas\ShiftReporting\Views\AreaBase\" />
     <Folder Include="Areas\ShiftReporting\Views\Shared\" />
     <Folder Include="Views\Ajax\" />
+    <Folder Include="Views\Events\" />
     <Folder Include="Views\Factory\" />
     <Folder Include="Views\Plant\" />
     <Folder Include="Views\ProcessUnit\" />

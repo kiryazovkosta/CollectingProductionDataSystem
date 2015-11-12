@@ -4,6 +4,7 @@ using AutoMapper;
 using CollectingProductionDataSystem.Models.Identity;
 using CollectingProductionDataSystem.Models.Nomenclatures;
 using CollectingProductionDataSystem.Models.Productions;
+using CollectingProductionDataSystem.Models.SystemLog;
 using CollectingProductionDataSystem.Web.Areas.Administration.ViewModels;
 using CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewModels;
 using CollectingProductionDataSystem.Web.Areas.ShiftReporting.ViewModels;
@@ -76,6 +77,17 @@ namespace CollectingProductionDataSystem.Web.Tests
 
             var mapper = new UnitsReportsDataViewModel();
             mapper.CreateMappings(Mapper.Configuration);
+
+            Mapper.AssertConfigurationIsValid();
+        }
+
+        [TestMethod]
+        public void CheckMappin_Event_To_EventView_Model()
+        {
+            Mapper.CreateMap<Event, EventViewModel>();
+
+            //var mapper = new EventViewModel();
+            //mapper.CreateMappings(Mapper.Configuration);
 
             Mapper.AssertConfigurationIsValid();
         }

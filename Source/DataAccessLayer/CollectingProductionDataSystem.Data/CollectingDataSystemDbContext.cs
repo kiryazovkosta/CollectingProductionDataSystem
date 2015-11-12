@@ -19,6 +19,7 @@
     using CollectingProductionDataSystem.Models.Nomenclatures;
     using CollectingProductionDataSystem.Models.Productions;
     using CollectingProductionDataSystem.Models.Productions.Qpt;
+    using CollectingProductionDataSystem.Models.SystemLog;
     using CollectingProductionDataSystem.Models.Transactions;
     using CollectingProductionDataSystem.Models.UtilityEntities;
     using Microsoft.AspNet.Identity.EntityFramework;
@@ -125,6 +126,8 @@
         public IDbSet<MeasuringPointProductsConfig> MeasuringPointProductsConfigs { get; set; }
 
         public IDbSet<Density2FactorAlpha> Density2FactorAlphas { get; set; }
+
+        public IDbSet<Event> Events{ get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

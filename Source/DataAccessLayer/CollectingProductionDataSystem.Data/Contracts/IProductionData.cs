@@ -6,6 +6,7 @@
     using CollectingProductionDataSystem.Models.Nomenclatures;
     using CollectingProductionDataSystem.Models.Productions;
     using CollectingProductionDataSystem.Models.Productions.Qpt;
+    using CollectingProductionDataSystem.Models.SystemLog;
     using CollectingProductionDataSystem.Models.Transactions;
     using CollectingProductionDataSystem.Models.UtilityEntities;
 
@@ -96,6 +97,8 @@
         IDeletableEntityRepository<MeasuringPointProductsConfig> MeasuringPointProductsConfigs { get; }
 
         IDeletableEntityRepository<Density2FactorAlpha> Density2FactorAlphas { get; }
+
+        IRepository<Event> Events { get; }
 
         IDbContext DbContext { get; }
 

@@ -35,16 +35,16 @@
                     </li>
                 }
                 
-                @if (Html.ActionIsAccessibleToUser("Index", "User", "Administration"))
+                @*@if (Html.ActionIsAccessibleToUser("Index", "User", "Administration"))
                 {
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">@Resources.Layout.Administration<span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li>@Html.AuthorizedActionLink(@Resources.Layout.UsersAdministration, "Index", "User", new { area = "Administration" }, null)</li>
-                            <li>@Html.AuthorizedActionLink(@Resources.Layout.RolesAdministration, "Index", "Role", new { area = "Administration" }, null)</li>
+                        <ul class="dropdown-menu">*@
+                            <li>@Html.AuthorizedActionLink(@Resources.Layout.Administration, "Index", "User", new { area = "Administration" }, null)</li>
+                            @*<li>@Html.AuthorizedActionLink(@Resources.Layout.RolesAdministration, "Index", "Role", new { area = "Administration" }, null)</li>
                         </ul>
                     </li>
-                }
+                }*@
                 <li>@Html.AuthorizedActionLink(@Resources.Layout.Nomenclatures,"Index","Nomenclatures",new { area = "NomManagement" }, null)</li>
             </ul>
             @Html.Partial("_LoginPartial")
