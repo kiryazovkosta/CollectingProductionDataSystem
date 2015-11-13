@@ -3301,6 +3301,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to PasswordChanged.
+        /// </summary>
+        public static string UserChangedPassword {
+            get {
+                return ResourceManager.GetString("UserChangedPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to User.
         /// </summary>
         public static string UserChanger {

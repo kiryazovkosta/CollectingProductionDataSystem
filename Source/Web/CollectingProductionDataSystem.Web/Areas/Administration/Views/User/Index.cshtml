@@ -16,6 +16,8 @@
           .Columns(
                columns =>
                {
+                   columns.Bound(c => c.UserChangedPassword).Width(40)
+                       .ClientTemplate("<img src='#:data.UserChangedPassword? '/Content/Images/PNG/32x32/OKShield.png':'/Content/Images/PNG/32x32/ErrorCircle.png'#' class='grid-icon'/>");
                    columns.Bound(c => c.Id).Width(45);
                    columns.Bound(c => c.UserName);
                    columns.Bound(c => c.Email);
@@ -67,7 +69,8 @@
         #if(data){#
         #for(var i = 0; i< data.length; i++){#
         #if(data[i].Name != null){#
-        &bull;&nbsp;#:data[i].Name#<br/>     
+        &bull;&nbsp;#:data[i].Name#
+        <br />
         #}#
         #}#
         #}#
