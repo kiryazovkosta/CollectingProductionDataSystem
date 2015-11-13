@@ -1233,4 +1233,7 @@
   <data name="DetailsForEvent" xml:space="preserve">
     <value>Details For Event</value>
   </data>
+  <data name="UserChangedPassword" xml:space="preserve">
+    <value>PasswordChanged</value>
+  </data>
 </root>

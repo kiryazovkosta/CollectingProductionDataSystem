@@ -655,3 +655,7 @@ td[role=gridcell] ul {
     width:100%;
     padding:10px;
 }
+
+.grid-icon {
+    margin-left:-4px;
+}

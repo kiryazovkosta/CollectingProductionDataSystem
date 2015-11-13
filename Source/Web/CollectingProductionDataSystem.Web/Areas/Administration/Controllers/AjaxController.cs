@@ -48,6 +48,7 @@
                 MiddleName = u.MiddleName,
                 LastName = u.LastName,
                 Occupation = u.Occupation,
+                UserChangedPassword = !u.IsChangePasswordRequired,
                 UserRoles = rolsStore.Where(rol => rol.Users.Any(x => x.UserId == u.Id)).Select(x => new RoleViewModel { Id = x.Id, Name = x.Name, Description = x.Description }),
                 ProcessUnits = processUnitsStore.Where(proc => proc.ApplicationUserProcessUnits.Any(x => x.ApplicationUserId == u.Id)).Select(x => new ProcessUnitViewModel { Id = x.Id, Name = x.FullName }),
                 Parks = parksStore.Where(park => park.ApplicationUserParks.Any(x => x.ApplicationUserId == u.Id)).Select(x => new ParkViewModel { Id = x.Id, Name = x.Name}),

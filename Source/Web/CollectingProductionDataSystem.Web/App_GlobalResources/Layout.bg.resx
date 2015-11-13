@@ -1236,4 +1236,7 @@
   <data name="DetailsForEvent" xml:space="preserve">
     <value>Детайли за събитие</value>
   </data>
+  <data name="UserChangedPassword" xml:space="preserve">
+    <value>Сменена парола</value>
+  </data>
 </root>

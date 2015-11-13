@@ -100,6 +100,9 @@
         [DataType(DataType.Password)]
         public string NewPassword { get; set; }
 
+        [Display(Name = "UserChangedPassword", ResourceType = typeof(Resources.Layout))]
+        [DataType(DataType.Password)]
+        public bool UserChangedPassword { get; set; }
         /// <summary>
         /// Creates the mappings.
         /// </summary>
@@ -113,6 +116,8 @@
                 .ForMember(p => p.ApplicationUserParks, opt => opt.MapFrom(x => x.Parks.AsQueryable().Select(y => new ApplicationUserPark() { ApplicationUserId = x.Id, ParkId = y.Id }).ToList()))
                 .ForMember(p => p.ApplicationUserProcessUnits, opt => opt.MapFrom(x => x.ProcessUnits.AsQueryable().Select(y => new ApplicationUserProcessUnit() { ApplicationUserId = x.Id, ProcessUnitId = y.Id }).ToList()))
                 .ForMember(p => p.PasswordHash, opt => opt.MapFrom(x => x.NewPassword != null ? new PasswordHasher().HashPassword(x.NewPassword) : string.Empty));
+            configuration.CreateMap<ApplicationUser, EditUserViewModel>()
+                .ForMember(p => p.UserChangedPassword, opt => opt.MapFrom(p => !p.IsChangePasswordRequired));
         }
 
     }
