@@ -43,7 +43,7 @@ namespace CollectingProductionDataSystem.Phd2SqlProductionData.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("01:00:00")]
+        [global::System.Configuration.DefaultSettingValueAttribute("00:30:00")]
         public global::System.TimeSpan IDLE_TIMER_PRIMARY {
             get {
                 return ((global::System.TimeSpan)(this["IDLE_TIMER_PRIMARY"]));
@@ -61,7 +61,7 @@ namespace CollectingProductionDataSystem.Phd2SqlProductionData.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("00:20:00")]
+        [global::System.Configuration.DefaultSettingValueAttribute("00:15:00")]
         public global::System.TimeSpan IDLE_TIMER_INVENTORY {
             get {
                 return ((global::System.TimeSpan)(this["IDLE_TIMER_INVENTORY"]));
@@ -133,7 +133,7 @@ namespace CollectingProductionDataSystem.Phd2SqlProductionData.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool SYNC_MEASUREMENTS_POINTS {
             get {
                 return ((bool)(this["SYNC_MEASUREMENTS_POINTS"]));

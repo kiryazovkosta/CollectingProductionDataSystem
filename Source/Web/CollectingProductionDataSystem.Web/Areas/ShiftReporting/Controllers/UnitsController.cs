@@ -208,13 +208,13 @@
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> IsConfirmed([DataSourceRequest]
-                                        DataSourceRequest request, DateTime date, int processUnitId, int shiftId)
+                                        DataSourceRequest request, DateTime? date, int? processUnitId, int? shiftId)
         {
             ValidateModelState(date, processUnitId, shiftId);
 
             if (this.ModelState.IsValid)
             {
-                var isConfirmed = await shiftServices.IsShitApproved(date, processUnitId, shiftId);
+                var isConfirmed = await shiftServices.IsShitApproved(date.Value, processUnitId.Value, shiftId.Value);
                 if (!isConfirmed)
                 {
                     isConfirmed = !this.data.UnitsData.All().Where(x => x.RecordTimestamp == date && x.UnitConfig.ProcessUnitId == processUnitId && (int)x.ShiftId == shiftId).Any();
