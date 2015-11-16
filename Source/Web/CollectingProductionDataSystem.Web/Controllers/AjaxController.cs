@@ -117,17 +117,28 @@ namespace CollectingProductionDataSystem.Web.Controllers
             return Json(processUnitView, JsonRequestBehavior.AllowGet);
         }
 
+        public ActionResult SaveGridState(string data) 
+        {
+            Session["data"] = data;
+            return new EmptyResult();
+        }
+
+        public ActionResult LoadGridState() 
+        {
+            return Json(Session["data"], JsonRequestBehavior.AllowGet);
+        }
+
         public JsonResult GetDirections()
         {
             var directions = this.data.Directions.All().Where(x=>x.Id <= 2).ToList();
             var directionsView = Mapper.Map<IEnumerable<DirectionsViewModel>>(directions);
             return Json(directionsView, JsonRequestBehavior.AllowGet);
         }
-
         
         private bool IsPowerUser()
         {
             return UserProfile.UserRoles.Where(x => CommonConstants.PowerUsers.Any(y => y == x.Name)).Any();
         }
+
     }
 }
