@@ -139,13 +139,13 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Confirm(ProcessUnitConfirmShiftInputModel model)
+        public ActionResult Confirm(ProcessUnitConfirmShiftInputModel model)
         {
             ValidateModelState(model.date, model.processUnitId, model.shiftId);
 
             if (this.ModelState.IsValid)
             {
-                if (!await this.shiftServices.IsShitApproved(model.date, model.processUnitId, model.shiftId))
+                if (!this.shiftServices.IsShitApproved(model.date, model.processUnitId, model.shiftId))
                 {
                     this.data.UnitsApprovedDatas.Add(new UnitsApprovedData
                     {
@@ -154,7 +154,7 @@
                         ShiftId = model.shiftId,
                         Approved = true
                     });
-
+                   
                     IEfStatus status;
 
                     IEnumerable<UnitsDailyData> dailyResult = new List<UnitsDailyData>();
@@ -207,14 +207,14 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> IsConfirmed([DataSourceRequest]
+        public ActionResult IsConfirmed([DataSourceRequest]
                                         DataSourceRequest request, DateTime? date, int? processUnitId, int? shiftId)
         {
             ValidateModelState(date, processUnitId, shiftId);
 
             if (this.ModelState.IsValid)
             {
-                var isConfirmed = await shiftServices.IsShitApproved(date.Value, processUnitId.Value, shiftId.Value);
+                var isConfirmed = shiftServices.IsShitApproved(date.Value, processUnitId.Value, shiftId.Value);
                 if (!isConfirmed)
                 {
                     isConfirmed = !this.data.UnitsData.All().Where(x => x.RecordTimestamp == date && x.UnitConfig.ProcessUnitId == processUnitId && (int)x.ShiftId == shiftId).Any();

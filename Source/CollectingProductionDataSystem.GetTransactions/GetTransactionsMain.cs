@@ -452,7 +452,6 @@
             oPhd.MaximumRows = 1;
         }
 
-
         internal static void ProcessScaleTransactionsData()
         {
             try

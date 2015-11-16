@@ -20,6 +20,6 @@ namespace CollectingProductionDataSystem.Application.Contracts
 
         IQueryable<UnitsDailyData> GetUnitsDailyDataForDateTime(DateTime? date, int? processUnitId);
 
-        Task<bool> IsShitApproved(DateTime date, int processUnitId, int shiftId);
+        bool IsShitApproved(DateTime date, int processUnitId, int shiftId);
     }
 }
