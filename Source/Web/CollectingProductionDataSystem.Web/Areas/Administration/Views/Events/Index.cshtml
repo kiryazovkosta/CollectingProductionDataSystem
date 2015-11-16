@@ -6,6 +6,7 @@
 <h2>
     @Resources.Layout.ApplicationLog
 </h2>
+@Html.Hidden("user", this.User.Identity.Name)
 @(Html.Kendo().Grid<CollectingProductionDataSystem.Web.Areas.Administration.ViewModels.EventViewModel>()
       .Name("events")
       .Columns(columns =>
@@ -50,4 +51,5 @@
 @section scripts{
     @Scripts.Render("~/bundles/custom/kendoadditional")
     @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.min.js")
+    @Scripts.Render("~/Scripts/custom/kendoGridState.js")
 }

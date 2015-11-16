@@ -2,11 +2,13 @@
 {
     using System;
     using System.Web;
+    using System.Web.Helpers;
     using System.Web.Mvc;
     using System.Web.Optimization;
     using System.Web.Routing;
     using CollectingProductionDataSystem.Infrastructure.Mapping;
     using CollectingProductionDataSystem.Web.AppStart;
+    
     using CollectingProductionDataSystem.Web.Areas.Administration.ViewModels;
 
     public class MvcApplication : HttpApplication
@@ -21,7 +23,6 @@
             AutoMapperConfig.RegisterMappings();
             ViewEnginesConfig.RegisterViewEngines(ViewEngines.Engines);
             ModelBindersConfig.RegisterModelBinders(ModelBinders.Binders, DependencyResolver.Current);
-            
         }
     }
 }
