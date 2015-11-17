@@ -93,6 +93,9 @@
                 case "O13":
                     result = FormulaO13(arguments);
                     break;
+                case "O18":
+                    result = FormulaO18(arguments);
+                    break;
                 case "V14":
                     result = FormulaV14(arguments);
                     break;
@@ -840,6 +843,38 @@
 
             string expr = @"par.q";
             double result = calculator.Calculate(expr, "par", 1, inputParams);
+            return result;
+        }
+
+        /// <summary>
+        /// 36) O18 ;;БРОЯЧИ ЗА ВОДИ :: X A11 Q
+        /// </summary>
+        private double FormulaO18(FormulaArguments args)              
+        {
+            if (!args.InputValue.HasValue)
+            {
+                throw new ArgumentNullException("The value of CounterIndication(PL) is not allowed to be null");
+            }
+            if (!args.OldValue.HasValue)
+            {
+                throw new ArgumentNullException("The value of Old CounterIndication(PL-1) is not allowed to be null");
+            }
+            if (!args.MaximumFlow.HasValue)
+            {
+                throw new ArgumentNullException("The value of MaximumFlow(D2) is not allowed to be null");
+            }
+
+            double pl = args.InputValue.Value;
+            double pl1 = args.OldValue.Value;
+            double d2 = args.MaximumFlow.Value;
+
+            double q = Functions.GetValueFormulaA11(pl, pl1, d2);
+
+            var inputParams = new Dictionary<string, double>();
+            inputParams.Add("q", q);
+
+            string expr = @"par.q";
+            var result = calculator.Calculate(expr, "par", 1, inputParams);
             return result;
         }
 

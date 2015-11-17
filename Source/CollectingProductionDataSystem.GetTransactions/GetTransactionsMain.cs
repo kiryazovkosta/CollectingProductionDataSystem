@@ -497,7 +497,7 @@
                                             var row = result.Tables[0].Rows[0];
                                             var value = Convert.ToInt64(row["Value"]);
                                             phdValues.Add(scaleMeasuringPointProduct.Id, value);
-                                            logger.InfoFormat("Processing data for {0} {1} {2}", scaleMeasuringPointProduct.PhdProductTotalizerTag, currentPhdTimestamp, value);
+                                            //logger.InfoFormat("Processing data for {0} {1} {2}", scaleMeasuringPointProduct.PhdProductTotalizerTag, currentPhdTimestamp, value);
                                         }
                                     }
                                 }
@@ -513,7 +513,7 @@
                                             var row = result.Tables[0].Rows[0];
                                             var value = Convert.ToInt64(row["Value"]);
                                             phdValues[scaleMeasuringPointProduct.Id] = phdValues[scaleMeasuringPointProduct.Id] - value;
-                                            logger.InfoFormat("Processing data for {0} {1} {2} {3}", scaleMeasuringPointProduct.PhdProductTotalizerTag, currentPhdTimestamp, value, phdValues[scaleMeasuringPointProduct.Id]);
+                                            //logger.InfoFormat("Processing data for {0} {1} {2} {3}", scaleMeasuringPointProduct.PhdProductTotalizerTag, currentPhdTimestamp, value, phdValues[scaleMeasuringPointProduct.Id]);
                                         }
                                     }
                                 }
@@ -523,7 +523,6 @@
                                     if (entry.Value > 0)
                                     {
                                         var scaleProduct = scaleMeasuringPointProducts.FirstOrDefault(x => x.Id == entry.Key);
-                                        logger.InfoFormat("Processing virtual transaction for {0} {1} {2} {3}", entry.Key, scaleProduct.PhdProductTotalizerTag, entry.Value, scaleProduct.Direction.Name);
 
                                         decimal? mass = null;
                                         decimal? revMass = null;
@@ -559,7 +558,7 @@
                                             InsertTimestamp = DateTime.Now,
                                             MeasuringPointId = scaleProduct.MeasuringPointConfigId,
                                             ZoneId = scaleProduct.MeasuringPointConfig.Zone.Id,
-                                            ProductId = scaleProduct.Product.Code,
+                                            ProductId = scaleProduct.ProductId,
                                             ProductNumber = scaleProduct.Product.Code,
                                             ProductName = scaleProduct.Product.Name,
                                             ProductType = scaleProduct.Product.ProductType.Id,
@@ -568,6 +567,7 @@
                                             BaseProductType = scaleProduct.Product.ProductType.Id,
                                             FlowDirection = scaleProduct.DirectionId
                                         };
+                                        logger.InfoFormat("Processing virtual transaction for {0} {1} {2} {3}", entry.Key, scaleProduct.PhdProductTotalizerTag, entry.Value, scaleProduct.Direction.Name);
                                         context.MeasuringPointsConfigsDatas.Add(measuringPointConfigData);
                                     }
                                 }
