@@ -50,7 +50,7 @@
         [AuthorizeFactory]
         public JsonResult ReadProductionPlanData([DataSourceRequest]DataSourceRequest request, DateTime? date, int? processUnitId)
         {
-            if (!date.HasValue)
+            if (!date.HasValue || !processUnitId.HasValue)
             {
                 return Json(string.Empty);
             }
