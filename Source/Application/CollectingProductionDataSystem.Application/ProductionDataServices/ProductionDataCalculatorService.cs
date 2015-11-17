@@ -306,12 +306,38 @@
         /// </summary>
         private double FormulaPP1(FormulaArguments args)
         {
-            double p = 20;
-            double t = 20;
-            double d2 = 15;
-            double pl = 20;
-            double d5 = 2;
-            double d6 = 2;
+            if (!args.InputValue.HasValue)
+            {
+                throw new ArgumentNullException("The value of CounterIndication(PL) is not allowed to be null");
+            }
+            if (!args.MaximumFlow.HasValue)
+            {
+                throw new ArgumentNullException("The value of MaximumFlow(D2) is not allowed to be null");
+            }
+            if (!args.EstimatedPressure.HasValue)
+            {
+                throw new ArgumentNullException("The value of EstimatedPressure(D5) is not allowed to be null");
+            }
+            if (!args.Pressure.HasValue)
+            {
+                args.Pressure = args.EstimatedPressure.Value;
+            }
+            if (!args.EstimatedTemperature.HasValue)
+            {
+                throw new ArgumentNullException("The value of EstimatedTemperature(D6) is not allowed to be null");
+            }
+            if (!args.Temperature.HasValue)
+            {
+                args.Temperature = args.EstimatedTemperature.Value;
+            }
+
+            double pl = args.InputValue.Value;
+            double d2 = args.MaximumFlow.Value;
+            double p = args.Pressure.Value;
+            double t = args.Temperature.Value;
+            double d5 = args.EstimatedPressure.Value;
+            double d6 = args.EstimatedTemperature.Value;
+
             double a1 = Functions.GetValueFormulaA1(p, t, d5, d6);
             double f = Functions.GetValueFormulaF(d2, pl, a1);
 
@@ -770,14 +796,48 @@
         /// </summary>
         private double FormulaG7(FormulaArguments args)
         {
-            double p = 15;
-            double t = 40;
-            double pl = 20;
-            double d2 = 15;
-            double d4 = 5;
-            double d5 = 10;
-            double d6 = 50;
-            double d = 50;
+            if (!args.InputValue.HasValue)
+            {
+                throw new ArgumentNullException("The value of CounterIndication(PL) is not allowed to be null");
+            }
+            if (!args.MaximumFlow.HasValue)
+            {
+                throw new ArgumentNullException("The value of MaximumFlow(D2) is not allowed to be null");
+            }
+            if (!args.EstimatedDensity.HasValue)
+            {
+                throw new ArgumentNullException("The value of EstimatedDensity(D4) is not allowed to be null");
+            }
+            if (!args.Density.HasValue)
+            {
+                args.Density = args.EstimatedDensity.Value;
+            }
+            if (!args.EstimatedPressure.HasValue)
+            {
+                throw new ArgumentNullException("The value of EstimatedPressure(D5) is not allowed to be null");
+            }
+            if (!args.Pressure.HasValue)
+            {
+                args.Pressure = args.EstimatedPressure.Value;
+            }
+
+            if (!args.EstimatedTemperature.HasValue)
+            {
+                throw new ArgumentNullException("The value of EstimatedTemperature(D6) is not allowed to be null");
+            }
+            if (!args.Temperature.HasValue)
+            {
+                args.Temperature = args.EstimatedTemperature.Value;
+            }
+
+            double pl = args.InputValue.Value;
+            double p = args.Pressure.Value;
+            double t = args.Temperature.Value;
+            double d = args.Density.Value;
+            double d2 = args.MaximumFlow.Value;
+            double d4 = args.EstimatedDensity.Value;
+            double d5 = args.EstimatedPressure.Value;
+            double d6 = args.EstimatedTemperature.Value;
             double df = d;
 
             double a7 = Functions.GetValueFormulaA7(p, t, d, d4, d5, d6);
@@ -788,7 +848,7 @@
             inputParams.Add("f", f);
 
             string expr = @"par.f";
-            double result = calculator.Calculate(expr, "par", 1, inputParams);
+            var result = calculator.Calculate(expr, "par", 1, inputParams);
             return result;
         }
 
