@@ -327,7 +327,7 @@
     <Compile Include="Infrastructure\CustomLogEvents\CustomExceptionEvent.cs" />
     <Compile Include="Infrastructure\Extentions\IEfStatusExtentions.cs" />
     <Compile Include="Infrastructure\Filters\AuthorizeFactoryAttribute.cs" />
-    <Compile Include="Infrastructure\Filters\GlobalErrorFilterAttribute.cs" />
+    <Compile Include="Infrastructure\Filters\HandleAntiforgeryTokenErrorAttribute.cs" />
     <Compile Include="Infrastructure\Helpers\AuthorizeActionLinkAjaxHelper.cs" />
     <Compile Include="Infrastructure\Helpers\AuthorizedActionLinkHtmlHelper.cs" />
     <Compile Include="Infrastructure\Helpers\IdentityHelpers.cs" />
