@@ -1,8 +1,9 @@
 ﻿@using Resources = App_GlobalResources.Resources;
 @using CollectingProductionDataSystem.Web.Infrastructure.Helpers;
+@Html.Hidden("user", User.Identity.Name)
 <div class="form-group">
     <label for="date">@Resources.Layout.Date</label>
-    @Html.Kendo().DatePicker().Name("date").Culture("bg-BG").HtmlAttributes(new { style = "width:95%" })
+    @Html.Kendo().DatePicker().Name("date").Culture("bg-BG").HtmlAttributes(new { style = "width:95%" }).Value(DateTime.Today.AddDays(-1))
 </div>
 <div class="form-group">
     <label for="directions">@Resources.Layout.Direction</label>

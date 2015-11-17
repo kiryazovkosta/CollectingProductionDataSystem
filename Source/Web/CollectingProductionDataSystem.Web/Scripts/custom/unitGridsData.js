@@ -77,7 +77,10 @@ var unitGridsData = (function () {
     //------------------ private functions ------------------------------------
 
     function sendProcessUnit() {
-        return { "processUnitId": $('input[name=processunits]').val() };
+        var value = $('input[name=processunits]').val() || $('input[name=processunitsD]').val();
+        if (value) {
+            return { "processUnitId": value };
+        }
     }
 
     function sendShift() {

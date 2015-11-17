@@ -1,7 +1,14 @@
 ﻿(function () {
     sendFactory = function () {
-        return {
-            factoryId: $("#factories").val()
-        };
+        if ($("#factories")) {
+            return {
+                factoryId: $("#factories").val()
+            };
+        }
+        if ($("#factoriesD")) {
+            return {
+                factoryId: $("#factoriesD").val()
+            };
+        }
     }
 })();

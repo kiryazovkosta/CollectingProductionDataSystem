@@ -781,6 +781,7 @@
     <Content Include="Scripts\custom\jquery-kendo-globalize.js" />
     <Content Include="Scripts\custom\kendoAdditional.js" />
     <Content Include="Scripts\custom\kendoGridState.js" />
+    <Content Include="Scripts\custom\saveSiteBarStatus.js" />
     <Content Include="Scripts\custom\sendAntiForgery.js" />
     <Content Include="Areas\Administration\Views\Role\Create.cshtml" />
     <Content Include="Areas\Administration\Views\Role\Edit.cshtml" />
