@@ -1,5 +1,6 @@
 ﻿using System.Web;
 using System.Web.Mvc;
+using CollectingProductionDataSystem.Infrastructure.Contracts;
 using CollectingProductionDataSystem.Web.Infrastructure.Filters;
 using Ninject;
 
@@ -11,7 +12,9 @@ namespace CollectingProductionDataSystem.Web.AppStart
         {
             filters.Add(new HandleErrorAttribute());
             //filters.Add(new GlobalErrorFilterAttribute());
-            filters.Add(new HandleAntiforgeryTokenErrorAttribute() { ExceptionType = typeof(HttpAntiForgeryException)});
+            var handleAntiforgeryTokenError = DependencyResolver.Current.GetService<HandleAntiforgeryTokenErrorAttribute>();
+            handleAntiforgeryTokenError.ExceptionType = typeof(HttpAntiForgeryException);
+            filters.Add(handleAntiforgeryTokenError);
         }
     }
 }
