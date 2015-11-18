@@ -27,14 +27,14 @@
         private ApplicationUserManager userManager;
         private ILogger logger;
 
-        public AccountController(IProductionData dataParam,ILogger loggerParam)
+        public AccountController(IProductionData dataParam, ILogger loggerParam)
             : base(dataParam)
         {
             this.logger = loggerParam;
         }
 
         public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager, IProductionData dataParam, ILogger loggerParam)
-            : this(dataParam,loggerParam)
+            : this(dataParam, loggerParam)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
@@ -101,7 +101,7 @@
             {
                 logger.AuthenticationError("Invalid Attempt to Login", this, model.UserName);
             }
-            
+
             switch (result)
             {
                 case SignInStatus.Success:
@@ -226,43 +226,45 @@
             var user = this.data.Users.All().FirstOrDefault(x => x.UserName == userName);
             if (user != null)
             {
-                user.IsUserLoggedIn = isOperationLogIn;
-                
+                user.IsUserLoggedIn += isOperationLogIn ? 1 : -1;
+
+                if (user.IsUserLoggedIn < 0)
+                {
+                    user.IsUserLoggedIn = 0;
+                }
+
                 if (isOperationLogIn)
                 {
                     user.LastLogedIn = DateTime.Now;
                 }
 
                 this.data.Users.Update(user);
-                var result = this.data.SaveChanges(userName);
-                if (!result.IsValid)
-                {
-                    logger.Error("Cannot persist user LogIn", this, new AccessViolationException(), result.EfErrors.Select(x => x.ErrorMessage));
-                }
 
-                using (var transaction = new TransactionScope(TransactionScopeOption.Required))
+                try
                 {
-                    try
+                    var result = this.data.SaveChanges(userName);
+                    if (!result.IsValid)
                     {
-                        var numberLogedInUsers = this.data.Users.All().Count(x => x.IsUserLoggedIn);
-                        var logedInUsers = new LogedInUser() { LogedUsersCount = numberLogedInUsers };
-                        this.data.LogedInUsers.Add(logedInUsers);
-                        result = this.data.SaveChanges("System");
-
-                        if (!result.IsValid)
-                        {
-                            logger.Error("Cannot persist user LogIn", this, new AccessViolationException(), result.EfErrors.Select(x => x.ErrorMessage));
-                        }
-
-                        transaction.Complete();
+                        logger.Error("Cannot persist user LogIn", this, new AccessViolationException(), result.EfErrors.Select(x => x.ErrorMessage));
                     }
-                    catch (Exception ex) {
-                        transaction.Dispose();
-                        logger.Error(ex.Message, this, ex);
+
+                    var numberLogedInUsers = this.data.Users.All().Count(x => x.IsUserLoggedIn > 0);
+                    var logedInUsers = new LogedInUser() { LogedUsersCount = numberLogedInUsers };
+                    this.data.LogedInUsers.Add(logedInUsers);
+                    result = this.data.SaveChanges("System");
+
+                    if (!result.IsValid)
+                    {
+                        logger.Error("Cannot persist user LogIn", this, new AccessViolationException(), result.EfErrors.Select(x => x.ErrorMessage));
                     }
+                }
+                catch (Exception ex)
+                {
+                    logger.Error(ex.Message, this, ex);
                 }
             }
         }
+
 
         private ActionResult RedirectToLocal(string returnUrl)
         {

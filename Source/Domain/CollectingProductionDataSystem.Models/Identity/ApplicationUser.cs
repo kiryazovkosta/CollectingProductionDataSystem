@@ -101,7 +101,7 @@
 
         public bool IsChangePasswordRequired { get; set; }
 
-        public bool IsUserLoggedIn { get; set; }
+        public int IsUserLoggedIn { get; set; }
 
         public DateTime? LastLogedIn { get; set; }
 

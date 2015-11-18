@@ -39,14 +39,14 @@
             //        this.data.SaveChanges("test");
             //    }
             //}
-            try
-            {
+            //try
+            //{
                 InvokeException();
-            }
-            catch (Exception ex)
-            {
-                logger.Error(ex.Message, this, ex, new List<string>{ "******************************", "****   some custom info   ****", "******************************" });
-            }
+            //}
+            //catch (Exception ex)
+            //{
+            //    logger.Error(ex.Message, this, ex, new List<string>{ "******************************", "****   some custom info   ****", "******************************" });
+            //}
             return View(this.UserProfile);
         }
 
