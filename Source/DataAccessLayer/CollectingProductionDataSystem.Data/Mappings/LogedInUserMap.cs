@@ -6,6 +6,7 @@ namespace CollectingProductionDataSystem.Data.Mappings
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations.Schema;
+    using System.Data.Entity.Infrastructure.Annotations;
     using System.Data.Entity.ModelConfiguration;
     using System.Linq;
     using System.Text;
@@ -17,13 +18,14 @@ namespace CollectingProductionDataSystem.Data.Mappings
         public LogedInUserMap()
         {
             // Primary Key
-            this.HasKey(t => new { t.TimeStamp, t.Id });
+            this.HasKey(t => t.Id);
 
             // Properties
             this.Property(t => t.Id)
                 .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 
             this.Property(t => t.TimeStamp)
+                .HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("ix_LogedInUserMap__TimeStamp", 1)))
                 .IsRequired();
             
             this.Property(t => t.LogedUsersCount)

@@ -6,11 +6,13 @@
     using System.Linq;
     using System.Security.Claims;
     using System.Threading.Tasks;
+    using System.Transactions;
     using System.Web;
     using System.Web.Mvc;
     using CollectingProductionDataSystem.Application.IdentityInfrastructure;
     using CollectingProductionDataSystem.Data.Contracts;
     using CollectingProductionDataSystem.Infrastructure.Contracts;
+    using CollectingProductionDataSystem.Models.Identity;
     using CollectingProductionDataSystem.Web.Areas.Administration.ViewModels;
     using Resources = App_GlobalResources.Resources;
     using Microsoft.AspNet.Identity;
@@ -236,6 +238,28 @@
                 if (!result.IsValid)
                 {
                     logger.Error("Cannot persist user LogIn", this, new AccessViolationException(), result.EfErrors.Select(x => x.ErrorMessage));
+                }
+
+                using (var transaction = new TransactionScope(TransactionScopeOption.Required))
+                {
+                    try
+                    {
+                        var numberLogedInUsers = this.data.Users.All().Count(x => x.IsUserLoggedIn);
+                        var logedInUsers = new LogedInUser() { LogedUsersCount = numberLogedInUsers };
+                        this.data.LogedInUsers.Add(logedInUsers);
+                        result = this.data.SaveChanges("System");
+
+                        if (!result.IsValid)
+                        {
+                            logger.Error("Cannot persist user LogIn", this, new AccessViolationException(), result.EfErrors.Select(x => x.ErrorMessage));
+                        }
+
+                        transaction.Complete();
+                    }
+                    catch (Exception ex) {
+                        transaction.Dispose();
+                        logger.Error(ex.Message, this, ex);
+                    }
                 }
             }
         }
