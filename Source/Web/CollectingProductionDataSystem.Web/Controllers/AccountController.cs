@@ -99,9 +99,11 @@
             {
                 logger.AuthenticationError("Invalid Attempt to Login", this, model.UserName);
             }
+            
             switch (result)
             {
                 case SignInStatus.Success:
+                    DocumentUserLogIn(model.UserName, true);
                     if (userProfile.IsChangePasswordRequired)
                     {
                         return RedirectToAction("ChangePassword");
@@ -117,7 +119,6 @@
                     return View(model);
             }
         }
-
 
         // GET: /Account/ChangePassword
         public ActionResult ChangePassword()
@@ -163,7 +164,7 @@
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-
+            DocumentUserLogIn(this.UserProfile.UserName, false);
             return RedirectToAction("Index", "Home");
         }
 
@@ -211,6 +212,31 @@
             foreach (var error in result.Errors)
             {
                 ModelState.AddModelError("", error);
+            }
+        }
+
+        /// <summary>
+        /// Documents the user log in.
+        /// </summary>
+        /// <param name="model">The model.</param>
+        private void DocumentUserLogIn(string userName, bool isOperationLogIn)
+        {
+            var user = this.data.Users.All().FirstOrDefault(x => x.UserName == userName);
+            if (user != null)
+            {
+                user.IsUserLoggedIn = isOperationLogIn;
+                
+                if (isOperationLogIn)
+                {
+                    user.LastLogedIn = DateTime.Now;
+                }
+
+                this.data.Users.Update(user);
+                var result = this.data.SaveChanges(userName);
+                if (!result.IsValid)
+                {
+                    logger.Error("Cannot persist user LogIn", this, new AccessViolationException(), result.EfErrors.Select(x => x.ErrorMessage));
+                }
             }
         }
 
