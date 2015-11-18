@@ -134,6 +134,8 @@
 
         public IDbSet<Event> Events{ get; set; }
 
+        public IDbSet<LogedInUser> LogedInUsers { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             ModelBingConfig.RegisterMappings(modelBuilder);

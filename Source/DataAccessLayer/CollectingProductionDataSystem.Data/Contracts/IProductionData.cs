@@ -100,6 +100,8 @@
 
         IRepository<Event> Events { get; }
 
+        IRepository<LogedInUser> LogedInUsers { get; }
+
         IDbContext DbContext { get; }
 
         IEfStatus SaveChanges(string userName);

@@ -329,6 +329,14 @@
             }
         }
 
+        public IRepository<LogedInUser> LogedInUsers
+        {
+            get
+            {
+                return this.GetRepository<LogedInUser>();
+            }
+        }
+
         public IRepository<AuditLogRecord> AuditLogRecords
         {
             get
