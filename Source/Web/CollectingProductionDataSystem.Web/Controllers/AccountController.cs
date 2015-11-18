@@ -224,7 +224,8 @@
             var user = this.data.Users.All().FirstOrDefault(x => x.UserName == userName);
             if (user != null)
             {
-                user.IsUserLoggedIn = true;
+                user.IsUserLoggedIn = isOperationLogIn;
+                
                 if (isOperationLogIn)
                 {
                     user.LastLogedIn = DateTime.Now;
