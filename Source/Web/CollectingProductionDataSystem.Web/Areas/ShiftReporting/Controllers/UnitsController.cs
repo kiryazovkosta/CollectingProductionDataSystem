@@ -24,6 +24,7 @@
     using Kendo.Mvc.Extensions;
     using Kendo.Mvc.UI;
     using Resources = App_GlobalResources.Resources;
+using CollectingProductionDataSystem.Infrastructure.Contracts;
 
     [Authorize]
     public class UnitsController : AreaBaseController
@@ -31,13 +32,15 @@
         private readonly IUnitsDataService shiftServices;
         private readonly IUnitDailyDataService dailyServices;
         private readonly IProductionDataCalculatorService productionDataCalculator;
+        private readonly ILogger logger;
 
-        public UnitsController(IProductionData dataParam, IUnitsDataService shiftServicesParam, IUnitDailyDataService dailyServicesParam, IProductionDataCalculatorService productionDataCalcParam)
+        public UnitsController(IProductionData dataParam, IUnitsDataService shiftServicesParam, IUnitDailyDataService dailyServicesParam, IProductionDataCalculatorService productionDataCalcParam, ILogger loggerParam)
             : base(dataParam)
         {
             this.shiftServices = shiftServicesParam;
             this.dailyServices = dailyServicesParam;
             this.productionDataCalculator = productionDataCalcParam;
+            this.logger = loggerParam;
         }
 
         [HttpGet]
@@ -141,6 +144,8 @@
                         return result;
                     }
                 }
+
+                //.data.SaveChanges(this.UserProfile.UserName);
             }
 
             return DependencyResolver.Current.GetService<IEfStatus>();
@@ -382,7 +387,7 @@
                                     Value = (decimal)newValue,
                                     EditReasonId = model.UnitsManualData.EditReason.Id
                                 }, record.UnitConfig);
-            if (!result.IsValid)
+            if (result.IsValid)
             {
 
                 var existManualRecord = this.data.UnitsManualData.All().FirstOrDefault(x => x.Id == record.Id);
@@ -424,6 +429,7 @@
             if (errors.Count > 0)
             {
                 result.SetErrors(errors);
+                logger.Error("", this, new Exception(), new string[] { "", "", "" });
             }
 
             return result;
