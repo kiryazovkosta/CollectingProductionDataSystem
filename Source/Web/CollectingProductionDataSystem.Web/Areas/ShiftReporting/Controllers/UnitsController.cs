@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     using System.Diagnostics;
     using System.Linq;
@@ -14,6 +15,7 @@
     using CollectingProductionDataSystem.Application.Contracts;
     using CollectingProductionDataSystem.Application.ProductionDataServices;
     using CollectingProductionDataSystem.Data.Contracts;
+    using CollectingProductionDataSystem.Infrastructure.Extentions;
     using CollectingProductionDataSystem.Models.Productions;
     using CollectingProductionDataSystem.Web.Areas.ShiftReporting.ViewModels;
     using CollectingProductionDataSystem.Web.Infrastructure.Extentions;
@@ -22,6 +24,7 @@
     using Kendo.Mvc.Extensions;
     using Kendo.Mvc.UI;
     using Resources = App_GlobalResources.Resources;
+using CollectingProductionDataSystem.Infrastructure.Contracts;
 
     [Authorize]
     public class UnitsController : AreaBaseController
@@ -29,13 +32,15 @@
         private readonly IUnitsDataService shiftServices;
         private readonly IUnitDailyDataService dailyServices;
         private readonly IProductionDataCalculatorService productionDataCalculator;
+        private readonly ILogger logger;
 
-        public UnitsController(IProductionData dataParam, IUnitsDataService shiftServicesParam, IUnitDailyDataService dailyServicesParam, IProductionDataCalculatorService productionDataCalcParam)
+        public UnitsController(IProductionData dataParam, IUnitsDataService shiftServicesParam, IUnitDailyDataService dailyServicesParam, IProductionDataCalculatorService productionDataCalcParam, ILogger loggerParam)
             : base(dataParam)
         {
             this.shiftServices = shiftServicesParam;
             this.dailyServices = dailyServicesParam;
             this.productionDataCalculator = productionDataCalcParam;
+            this.logger = loggerParam;
         }
 
         [HttpGet]
@@ -85,56 +90,65 @@
         {
             if (ModelState.IsValid)
             {
-                UpdateRelatedUnitConfigData(model);
-
-                var newManualRecord = new UnitsManualData
+                IEfStatus result = UpdateRelatedUnitConfigData(model);
+                if (result.IsValid)
                 {
-                    Id = model.Id,
-                    Value = model.UnitsManualData.Value,
-                    EditReasonId = model.UnitsManualData.EditReason.Id
-                };
-                var existManualRecord = this.data.UnitsManualData.All().FirstOrDefault(x => x.Id == newManualRecord.Id);
-                if (existManualRecord == null)
-                {
-                    this.data.UnitsManualData.Add(newManualRecord);
+                    var newManualRecord = new UnitsManualData
+                    {
+                        Id = model.Id,
+                        Value = model.UnitsManualData.Value,
+                        EditReasonId = model.UnitsManualData.EditReason.Id
+                    };
+                    var existManualRecord = this.data.UnitsManualData.All().FirstOrDefault(x => x.Id == newManualRecord.Id);
+                    if (existManualRecord == null)
+                    {
+                        this.data.UnitsManualData.Add(newManualRecord);
+                    }
+                    else
+                    {
+                        UpdateRecord(existManualRecord, model);
+                    }
+                    try
+                    {
+                        result = this.data.SaveChanges(UserProfile.UserName);
+                        if (!result.IsValid)
+                        {
+                            result.ToModelStateErrors(this.ModelState);
+                        }
+                    }
+                    catch (DbUpdateException)
+                    {
+                        this.ModelState.AddModelError("ManualValue", "Записът не можа да бъде осъществен. Моля опитайте на ново!");
+                    }
                 }
                 else
                 {
-                    UpdateRecord(existManualRecord, model);
-                }
-                try
-                {
-                    var result = this.data.SaveChanges(UserProfile.UserName);
-                    if (!result.IsValid)
-                    {
-                        foreach (ValidationResult error in result.EfErrors)
-                        {
-                            this.ModelState.AddModelError(error.MemberNames.ToList()[0], error.ErrorMessage);
-                        }
-                    }
-                }
-                catch (DbUpdateException)
-                {
-                    this.ModelState.AddModelError("ManualValue", "Записът не можа да бъде осъществен. Моля опитайте на ново!");
-                }
-                finally
-                {
+                    result.ToModelStateErrors(this.ModelState);
                 }
             }
 
             return Json(new[] { model }.ToDataSourceResult(request, ModelState));
         }
- 
-        private void UpdateRelatedUnitConfigData(UnitDataViewModel model)
+
+        private IEfStatus UpdateRelatedUnitConfigData(UnitDataViewModel model)
         {
+            IEfStatus result;
             var relatedUnitConfigs = this.data.RelatedUnitConfigs.All().Where(x => x.RelatedUnitConfigId == model.UnitConfigId).ToList();
             if (relatedUnitConfigs.Count() > 0)
             {
                 foreach (var relatedUnitConfig in relatedUnitConfigs)
                 {
-                    UpdateRelatedUnitConfig(relatedUnitConfig.UnitConfigId, model);
+                    result = UpdateRelatedUnitConfig(relatedUnitConfig.UnitConfigId, model);
+                    if (!result.IsValid)
+                    {
+                        return result;
+                    }
                 }
+
+                //.data.SaveChanges(this.UserProfile.UserName);
             }
+
+            return DependencyResolver.Current.GetService<IEfStatus>();
         }
 
         [HttpPost]
@@ -154,7 +168,7 @@
                         ShiftId = model.shiftId,
                         Approved = true
                     });
-                   
+
                     IEfStatus status;
 
                     IEnumerable<UnitsDailyData> dailyResult = new List<UnitsDailyData>();
@@ -235,17 +249,17 @@
                 var manualCalculationModel = new ManualCalculationViewModel()
                 {
                     IsOldValueAvailableForEditing = startupValue == decimal.MinValue,
-                    OldValue = startupValue == decimal.MinValue?0:startupValue,
+                    OldValue = startupValue == decimal.MinValue ? 0 : startupValue,
                     MeasurementCode = model.UnitConfig.MeasureUnit.Code,
                     UnitDataId = model.Id,
                     EditorScreenHeading = string.Format(Resources.Layout.EditValueFor, model.UnitConfig.Name)
                 };
                 return PartialView("_ManualDataCalculation", manualCalculationModel);
             }
-            else 
+            else
             {
                 var errors = this.ModelState.Values.SelectMany(x => x.Errors);
-                return Json(new { success=false, status = 400, errors= errors });
+                return Json(new { success = false, status = 400, errors = errors });
             }
         }
 
@@ -281,10 +295,10 @@
                 };
                 return PartialView("_ManualDataSelfCalculation", manualSelfCalculationModel);
             }
-            else 
+            else
             {
                 var errors = this.ModelState.Values.SelectMany(x => x.Errors);
-                return Json(new { success=false, errors= errors });
+                return Json(new { success = false, errors = errors });
             }
         }
 
@@ -296,7 +310,7 @@
             {
                 return PartialView("_ManualDataSelfCalculation", model);
             }
-            
+
             var status = this.productionDataCalculator.CalculateByUnitData(model.UnitDataId, this.UserProfile.UserName, model.Value);
             if (!status.IsValid)
             {
@@ -320,10 +334,10 @@
                 };
                 return PartialView("_ManualDataWithRelatedCalculation", manualWithRelatedCalculationModel);
             }
-            else 
+            else
             {
                 var errors = this.ModelState.Values.SelectMany(x => x.Errors);
-                return Json(new { success=false, errors= errors });
+                return Json(new { success = false, errors = errors });
             }
         }
 
@@ -345,7 +359,7 @@
             return Json("success");
         }
 
-        private void UpdateRelatedUnitConfig(int unitConfigId, UnitDataViewModel model)
+        private IEfStatus UpdateRelatedUnitConfig(int unitConfigId, UnitDataViewModel model)
         {
             var unitConfig = this.data.UnitConfigs.GetById(unitConfigId);
             if (unitConfig.IsCalculated)
@@ -354,34 +368,71 @@
                 var arguments = PopulateFormulaTadaFromPassportData(unitConfig);
                 PopulateFormulaDataFromRelatedUnitConfigs(unitConfig, arguments, model);
                 var newValue = this.productionDataCalculator.Calculate(formulaCode, arguments);
-                UpdateCalculatedUnitConfig(unitConfigId, newValue, model);
+                IEfStatus result = UpdateCalculatedUnitConfig(unitConfigId, newValue, model);
+                return result;
             }
+            return DependencyResolver.Current.GetService<IEfStatus>();
         }
 
-        private void UpdateCalculatedUnitConfig(int unitConfigId, double newValue, UnitDataViewModel model)
+        private IEfStatus UpdateCalculatedUnitConfig(int unitConfigId, double newValue, UnitDataViewModel model)
         {
-            var recordId = data.UnitsData
-                               .All()
+            var record = data.UnitsData
+                               .All().Include(x => x.UnitConfig)
                                .Where(x => x.RecordTimestamp == model.RecordTimestamp && x.ShiftId == model.Shift && x.UnitConfigId == unitConfigId)
-                               .FirstOrDefault()
-                               .Id;
+                               .FirstOrDefault();
 
-            var existManualRecord = this.data.UnitsManualData.All().FirstOrDefault(x => x.Id == recordId);
-            if (existManualRecord == null)
+            IEfStatus result = ValidateObject(new UnitsManualData
+                                {
+                                    Id = record.Id,
+                                    Value = (decimal)newValue,
+                                    EditReasonId = model.UnitsManualData.EditReason.Id
+                                }, record.UnitConfig);
+            if (result.IsValid)
             {
-                this.data.UnitsManualData.Add(new UnitsManualData
+
+                var existManualRecord = this.data.UnitsManualData.All().FirstOrDefault(x => x.Id == record.Id);
+                if (existManualRecord == null)
                 {
-                    Id = recordId,
-                    Value = (decimal)newValue,
-                    EditReasonId = model.UnitsManualData.EditReason.Id
-                });
+                    this.data.UnitsManualData.Add(new UnitsManualData
+                    {
+                        Id = record.Id,
+                        Value = (decimal)newValue,
+                        EditReasonId = model.UnitsManualData.EditReason.Id
+                    });
+                }
+                else
+                {
+                    existManualRecord.Value = (decimal)newValue;
+                    existManualRecord.EditReasonId = model.UnitsManualData.EditReason.Id;
+                    this.data.UnitsManualData.Update(existManualRecord);
+                }
             }
-            else
+
+            return result;
+        }
+
+        private IEfStatus ValidateObject(UnitsManualData unitsManualData, UnitConfig unitConfig)
+        {
+            var result = DependencyResolver.Current.GetService<IEfStatus>();
+            var errors = new List<ValidationResult>();
+            foreach (var error in unitsManualData.Validate(null))
             {
-                existManualRecord.Value = (decimal)newValue;
-                existManualRecord.EditReasonId = model.UnitsManualData.EditReason.Id;
-                this.data.UnitsManualData.Update(existManualRecord);
+                error.ErrorMessage = string.Format("{0}: {1}\n{2}: {3}\n {4}",
+                Resources.Layout.Code,
+                unitConfig.Code,
+                Resources.Layout.UnitName,
+                unitConfig.Name,
+                error.ErrorMessage);
+                errors.Add(error);
             }
+
+            if (errors.Count > 0)
+            {
+                result.SetErrors(errors);
+                logger.Error("", this, new Exception(), new string[] { "", "", "" });
+            }
+
+            return result;
         }
 
         private FormulaArguments PopulateFormulaTadaFromPassportData(UnitConfig unitConfig)

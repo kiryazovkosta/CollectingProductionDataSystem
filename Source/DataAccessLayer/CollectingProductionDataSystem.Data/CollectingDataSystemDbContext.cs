@@ -49,6 +49,7 @@
             : base("CollectingPrimaryDataSystemConnection")
         {
             this.persister = param;
+            this.logger = loggerParam;
         }
 
         public IDbSet<Product> Products { get; set; }

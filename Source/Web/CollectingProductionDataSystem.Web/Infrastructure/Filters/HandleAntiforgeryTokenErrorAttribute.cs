@@ -18,19 +18,22 @@
         }
         public override void OnException(ExceptionContext filterContext)
         {
-            filterContext.ExceptionHandled = true;
-            logger.AuthenticationError("Handled AntiforgeryTokenError", this, filterContext.HttpContext.User.Identity.Name);
-            filterContext.Result = new RedirectToRouteResult(
-                new RouteValueDictionary(new { action = "Login", controller = "Account" }));
-
-            //clear client-site cookies to prevents unauthorized access
-
-            var requestCookyKeys = filterContext.HttpContext.Request.Cookies.AllKeys;
-
-            filterContext.HttpContext.Response.Cookies.Clear();
-            foreach (var key in requestCookyKeys)
+            if (filterContext.Exception.GetType()==this.ExceptionType)
             {
-                filterContext.HttpContext.Response.Cookies.Add(new HttpCookie(key) { Expires = DateTime.Now.AddDays(-1) });
+                filterContext.ExceptionHandled = true;
+                logger.AuthenticationError("Handled AntiforgeryTokenError", this, filterContext.HttpContext.User.Identity.Name);
+                filterContext.Result = new RedirectToRouteResult(
+                    new RouteValueDictionary(new { action = "Login", controller = "Account" }));
+
+                //clear client-site cookies to prevents unauthorized access
+
+                var requestCookyKeys = filterContext.HttpContext.Request.Cookies.AllKeys;
+
+                filterContext.HttpContext.Response.Cookies.Clear();
+                foreach (var key in requestCookyKeys)
+                {
+                    filterContext.HttpContext.Response.Cookies.Add(new HttpCookie(key) { Expires = DateTime.Now.AddDays(-1) });
+                } 
             }
         }
     }
