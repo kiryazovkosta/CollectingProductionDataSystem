@@ -1,9 +1,9 @@
 ﻿@using CollectingProductionDataSystem.Web.ViewModels.Utility;
 @using Resources = App_GlobalResources.Resources
-@model ErrorScreenViewModel
+@model HandleErrorInfo
 
-<h1 class="text-danger">@(Model != null ? Model.Title : Resources.ErrorMessages.Error)</h1>
+<h1 class="text-danger">@(User.IsInRole("Administrator") != null ? string.Format("Controller: {0} \nAction: {1}\n",Model.ControllerName, Model.ActionName)  : Resources.ErrorMessages.Error)</h1>
 <hr/>
-<h2 class="text-danger">@(Model != null ? Model.Title : Resources.ErrorMessages.Message)</h2>
+<h2 class="text-danger">@(User.IsInRole("Administrator") != null ? string.Format("Exception type: {0}\nMessage: {1}\nStackTrace: {2}",Model.Exception.GetType().Name, Model.Exception.Message,Model.Exception.StackTrace) : Resources.ErrorMessages.Message)</h2>
 <br/>
-<p>@(Model != null ? Model.Contacts : Resources.ErrorMessages.ErrorContacts)</p>
+<p>@Resources.ErrorMessages.ErrorContacts</p>
