@@ -70,6 +70,7 @@
     <Compile Include="Contracts\IEntity.cs" />
     <Compile Include="Identity\ApplicationUserPark.cs" />
     <Compile Include="Identity\ApplicationUserProcessUnit.cs" />
+    <Compile Include="Identity\LogedInUser.cs" />
     <Compile Include="Identity\UserClaimIntPk.cs" />
     <Compile Include="Identity\UserLoginIntPk.cs" />
     <Compile Include="Identity\UserRoleIntPk.cs" />

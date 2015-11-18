@@ -93,6 +93,7 @@
     <Compile Include="Mappings\EventMap.cs" />
     <Compile Include="Mappings\FactoryMap.cs" />
     <Compile Include="Mappings\IkunkMap.cs" />
+    <Compile Include="Mappings\LogedInUserMap.cs" />
     <Compile Include="Mappings\MaxAsoMeasuringPointDataSequenceNumberMap.cs" />
     <Compile Include="Mappings\MeasurementPointsProductsDataMap.cs" />
     <Compile Include="Mappings\MeasuringPointConfigMap.cs" />
