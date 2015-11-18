@@ -127,9 +127,9 @@
                         {
                             using (PHDHistorian oPhd = new PHDHistorian())
                             {
-                                using (PHDServer defaultServer = new PHDServer("srv-vm-mes-phd"))
+                                using (PHDServer defaultServer = new PHDServer(Properties.Settings.Default.PHD_HOST))
                                 {
-                                    defaultServer.Port = 3150;
+                                    defaultServer.Port = Properties.Settings.Default.PHD_PORT;
                                     defaultServer.APIVersion = Uniformance.PHD.SERVERVERSION.RAPI200;
                                     oPhd.DefaultServer = defaultServer;
                                     oPhd.StartTime = getRecordTimestamp;

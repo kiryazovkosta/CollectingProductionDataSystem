@@ -25,15 +25,6 @@ namespace CollectingProductionDataSystem.Phd2SqlProductionData.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("srv-vm-mes-phd.neftochim.bg")]
-        public string PHD_HOST {
-            get {
-                return ((string)(this["PHD_HOST"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("3150")]
         public int PHD_PORT {
             get {
@@ -164,6 +155,15 @@ namespace CollectingProductionDataSystem.Phd2SqlProductionData.Properties {
         public int SYNC_PRIMARY_HOURS_OFFSET {
             get {
                 return ((int)(this["SYNC_PRIMARY_HOURS_OFFSET"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("srv-vm-mes-phd.neftochim.bg")]
+        public string PHD_HOST {
+            get {
+                return ((string)(this["PHD_HOST"]));
             }
         }
     }

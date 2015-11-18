@@ -2,9 +2,6 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="CollectingProductionDataSystem.Phd2SqlProductionData.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="PHD_HOST" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">srv-vm-mes-phd.neftochim.bg</Value>
-    </Setting>
     <Setting Name="PHD_PORT" Type="System.Int32" Scope="Application">
       <Value Profile="(Default)">3150</Value>
     </Setting>
@@ -49,6 +46,9 @@
     </Setting>
     <Setting Name="SYNC_PRIMARY_HOURS_OFFSET" Type="System.Int32" Scope="Application">
       <Value Profile="(Default)">113</Value>
+    </Setting>
+    <Setting Name="PHD_HOST" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">srv-vm-mes-phd.neftochim.bg</Value>
     </Setting>
   </Settings>
 </SettingsFile>

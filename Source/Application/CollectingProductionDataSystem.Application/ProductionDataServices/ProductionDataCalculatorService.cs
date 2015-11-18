@@ -497,7 +497,7 @@
             }
 
             double pl = args.InputValue.Value;
-            double p = args.Pressure.Value > 0 ? args.Pressure.Value : args.EstimatedTemperature.Value;
+            double p = args.Pressure.Value > 0 ? args.Pressure.Value : args.EstimatedPressure.Value;
             double t = args.Temperature.Value > 0 ? args.Temperature.Value : args.EstimatedTemperature.Value;
             double ent = Functions.GetValueFormulaEN(t, p);
 
