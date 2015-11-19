@@ -32,6 +32,7 @@
     {
         private readonly IPersister persister;
         private ILogger logger;
+        private TransactionOptions transantionOption;
 
         static CollectingDataSystemDbContext()
         {
@@ -39,10 +40,8 @@
         }
 
         public CollectingDataSystemDbContext()
-            : base("CollectingPrimaryDataSystemConnection")
+            : this(new AuditablePersister(),new Logger())
         {
-            this.persister = new AuditablePersister();
-            this.logger = new Logger();
         }
 
         public CollectingDataSystemDbContext(IPersister param, ILogger loggerParam)
@@ -50,6 +49,7 @@
         {
             this.persister = param;
             this.logger = loggerParam;
+            this.transantionOption = DefaultTransactionOptions.Instance.TransactionOptions;
         }
 
         public IDbSet<Product> Products { get; set; }
@@ -169,7 +169,7 @@
 
         public int SaveChanges(string userName)
         {
-            using (var transaction = new TransactionScope(TransactionScopeOption.Required, TimeSpan.FromSeconds(30)))
+            using (var transaction = new TransactionScope(TransactionScopeOption.Required, this.transantionOption))
             {
                 if (userName == null)
                 {
