@@ -227,7 +227,9 @@
     <Compile Include="Areas\Administration\Controllers\AjaxController.cs" />
     <Compile Include="Areas\Administration\Controllers\AreaBaseController.cs" />
     <Compile Include="Areas\Administration\Controllers\EventsController.cs" />
+    <Compile Include="Areas\Administration\Controllers\UserStatisticsController.cs" />
     <Compile Include="Areas\Administration\ViewModels\EventViewModel.cs" />
+    <Compile Include="Areas\Administration\ViewModels\UserPieViewModel.cs" />
     <Compile Include="Areas\NomManagement\Controllers\IkunkController.cs" />
     <Compile Include="Areas\NomManagement\Controllers\MeasuringPointConfigController.cs" />
     <Compile Include="Areas\NomManagement\Controllers\ZoneController.cs" />
@@ -364,6 +366,7 @@
     <Compile Include="ViewModels\Units\ProductionPlanViewModel.cs" />
     <Compile Include="ViewModels\Units\UnitDailyDataViewModel.cs" />
     <Compile Include="Areas\ShiftReporting\ViewModels\UnitDataViewModel.cs" />
+    <Compile Include="ViewModels\Utility\PieViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
@@ -867,6 +870,7 @@
     <Content Include="Areas\ShiftReporting\Views\Units\_ManualDataWithRelatedCalculation.cshtml" />
     <Content Include="Areas\Administration\Views\Events\Index.cshtml" />
     <Content Include="Areas\Administration\Views\Events\Details.cshtml" />
+    <Content Include="Areas\Administration\Views\UserStatistics\Index.cshtml" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <None Include="Properties\PublishProfiles\Home.pubxml" />
     <Content Include="Scripts\custom\sendArea.js" />
@@ -1709,7 +1713,6 @@
     <EmbeddedResource Include="App_GlobalResources\Layout.bg.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <CustomToolNamespace>App_GlobalResources.Resources</CustomToolNamespace>
-      <LastGenOutput>Layout.bg3.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Layout.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

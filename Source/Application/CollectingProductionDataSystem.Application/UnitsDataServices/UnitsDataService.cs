@@ -8,7 +8,7 @@
     using CollectingProductionDataSystem.Application.Contracts;
     using CollectingProductionDataSystem.Data.Contracts;
     using CollectingProductionDataSystem.Models.Productions;
-using CollectingProductionDataSystem.Data.Common;
+    using CollectingProductionDataSystem.Data.Common;
 
     public class UnitsDataService : IUnitsDataService
     {
@@ -29,7 +29,14 @@ using CollectingProductionDataSystem.Data.Common;
 
             var unitDailyData = this.data.UnitsDailyDatas.GetById(unitDailyDataId);
 
-            var dbResult = this.data.UnitsDailyDatas.GetById(unitDailyDataId).UnitsDailyConfig.UnitConfigUnitDailyConfigs
+            var dbResult = this.data.UnitsDailyDatas.All()
+                            .Include(x => x.UnitsDailyConfig)
+                            .Include(x => x.UnitsDailyConfig.UnitConfigUnitDailyConfigs.Select(y => y.UnitConfig).Select(z => z.UnitsDatas.Select(w => w.UnitsManualData).Select(r => r.EditReason)))
+                            .Include(x => x.UnitsDailyConfig.UnitConfigUnitDailyConfigs.Select(y => y.UnitConfig).Select(z => z.ShiftProductType))
+                            .Include(x => x.UnitsDailyConfig.UnitConfigUnitDailyConfigs.Select(y => y.UnitConfig).Select(z => z.MeasureUnit))
+                            .Include(x => x.UnitsDailyConfig.UnitConfigUnitDailyConfigs.Select(y => y.UnitConfig).Select(z => z.ProcessUnit))
+                            .FirstOrDefault(x => x.Id == unitDailyDataId)
+                            .UnitsDailyConfig.UnitConfigUnitDailyConfigs
                             .SelectMany(x => x.UnitConfig.UnitsDatas)
                             .Where(y => y.RecordTimestamp == unitDailyData.RecordTimestamp);
 
@@ -70,7 +77,7 @@ using CollectingProductionDataSystem.Data.Common;
                                .Include(x => x.UnitConfig.MeasureUnit)
                                .Include(x => x.UnitsManualData)
                                .Include(x => x.UnitsManualData.EditReason)
-                               .Include(x => x.UnitConfig.UnitConfigUnitDailyConfigs.Select(y=>y.UnitDailyConfig).Select(z=>z.UnitsDailyDatas));
+                               .Include(x => x.UnitConfig.UnitConfigUnitDailyConfigs.Select(y => y.UnitDailyConfig).Select(z => z.UnitsDailyDatas));
             return dbResult;
         }
 
@@ -79,8 +86,11 @@ using CollectingProductionDataSystem.Data.Common;
             var dbResult = this.data.UnitsDailyDatas
                 .All()
                 .Include(u => u.UnitsDailyConfig)
+                .Include(u => u.UnitsDailyConfig.ProcessUnit)
+                .Include(u => u.UnitsDailyConfig.DailyProductType)
                 .Include(u => u.UnitsDailyConfig.MeasureUnit)
-                .Include(u => u.UnitsDailyConfig.Product);
+                .Include(u => u.UnitsDailyConfig.Product)
+                .Include(u => u.UnitsManualDailyData);
 
             if (date.HasValue)
             {
@@ -96,13 +106,13 @@ using CollectingProductionDataSystem.Data.Common;
             return dbResult;
         }
 
-        public bool IsShitApproved(DateTime date, int processUnitId, int shiftId ) 
+        public bool IsShitApproved(DateTime date, int processUnitId, int shiftId)
         {
-           return this.data.UnitsApprovedDatas
-                    .All()
-                    .Where(u => u.RecordDate == date &&
-                        u.ProcessUnitId == processUnitId &&
-                        u.ShiftId == shiftId).Any();
+            return this.data.UnitsApprovedDatas
+                     .All()
+                     .Where(u => u.RecordDate == date &&
+                         u.ProcessUnitId == processUnitId &&
+                         u.ShiftId == shiftId).Any();
         }
     }
 }

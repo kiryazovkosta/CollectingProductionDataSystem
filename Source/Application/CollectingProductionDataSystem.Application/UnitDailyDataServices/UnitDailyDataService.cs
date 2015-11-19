@@ -259,7 +259,6 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
                 if (!currentApprovedUnitDatas.Any(x => x.ShiftId == shift.Id))
                 {
                     validationResults.Add(new ValidationResult(string.Format(Resources.ErrorMessages.ShiftNotReady, shift.Name)));
-
                 }
             }
 

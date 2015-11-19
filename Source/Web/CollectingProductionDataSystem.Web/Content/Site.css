@@ -659,3 +659,7 @@ td[role=gridcell] ul {
 .grid-icon {
     margin-left:-4px;
 }
+
+.pie {
+    width:40% ;    
+}

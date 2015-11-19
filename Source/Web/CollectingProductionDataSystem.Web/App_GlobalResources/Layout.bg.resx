@@ -1239,4 +1239,19 @@
   <data name="UserChangedPassword" xml:space="preserve">
     <value>Сменена парола</value>
   </data>
+  <data name="AllUsersCount" xml:space="preserve">
+    <value>Общ брой потребители</value>
+  </data>
+  <data name="CurrentlyLogedInUsers" xml:space="preserve">
+    <value>Потребители в системата</value>
+  </data>
+  <data name="LogedInUsers" xml:space="preserve">
+    <value>Брой потребители\n в системата</value>
+  </data>
+  <data name="NotLoggedInUsers" xml:space="preserve">
+    <value>Брой потребители\n извън системата</value>
+  </data>
+  <data name="UserStatistics" xml:space="preserve">
+    <value>Статистика за потребителите</value>
+  </data>
 </root>

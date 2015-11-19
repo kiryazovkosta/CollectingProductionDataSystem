@@ -1236,4 +1236,19 @@
   <data name="UserChangedPassword" xml:space="preserve">
     <value>PasswordChanged</value>
   </data>
+  <data name="AllUsersCount" xml:space="preserve">
+    <value>All Users Coint</value>
+  </data>
+  <data name="CurrentlyLogedInUsers" xml:space="preserve">
+    <value>Currently LogedIn Users</value>
+  </data>
+  <data name="LogedInUsers" xml:space="preserve">
+    <value>LogedIn Users Count</value>
+  </data>
+  <data name="NotLoggedInUsers" xml:space="preserve">
+    <value>Offline Users Count</value>
+  </data>
+  <data name="UserStatistics" xml:space="preserve">
+    <value>User Statistics</value>
+  </data>
 </root>
