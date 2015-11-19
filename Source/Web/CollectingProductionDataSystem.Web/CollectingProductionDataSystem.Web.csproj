@@ -213,6 +213,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Layout.bg.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\Layout.bg1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Layout.bg.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\Layout.bg3.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -229,6 +234,7 @@
     <Compile Include="Areas\Administration\Controllers\EventsController.cs" />
     <Compile Include="Areas\Administration\Controllers\UserStatisticsController.cs" />
     <Compile Include="Areas\Administration\ViewModels\EventViewModel.cs" />
+    <Compile Include="Areas\Administration\ViewModels\LoggedUserViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\UserPieViewModel.cs" />
     <Compile Include="Areas\NomManagement\Controllers\IkunkController.cs" />
     <Compile Include="Areas\NomManagement\Controllers\MeasuringPointConfigController.cs" />
@@ -1713,6 +1719,7 @@
     <EmbeddedResource Include="App_GlobalResources\Layout.bg.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <CustomToolNamespace>App_GlobalResources.Resources</CustomToolNamespace>
+      <LastGenOutput>Layout.bg1.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Layout.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

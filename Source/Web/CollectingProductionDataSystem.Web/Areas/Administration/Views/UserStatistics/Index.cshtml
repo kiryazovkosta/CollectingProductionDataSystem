@@ -1,4 +1,5 @@
-﻿@using CollectingProductionDataSystem.Web.Areas.Administration.ViewModels;
+﻿@using CollectingProductionDataSystem.Models.Identity;
+@using CollectingProductionDataSystem.Web.Areas.Administration.ViewModels;
 @using CollectingProductionDataSystem.Web.ViewModels.Utility;
 @using Resources = App_GlobalResources.Resources
 
@@ -10,14 +11,17 @@
 </h2>
 
 @Html.AntiForgeryToken()
-
-@(Html.Kendo().Chart<PieViewModel>()
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-2">
+            @(Html.Kendo().Chart<PieViewModel>()
     .Name("logedin-users")
-    //.Title(Resources.Layout.CurrentlyLogedInUsers)
+    .ChartArea(cha => cha.Width(310).Height(230))
+                    //.Title(Resources.Layout.CurrentlyLogedInUsers)
     .Legend(legend => legend
                 .Visible(false)
             )
-                .HtmlAttributes(new { @class="pie"})
+                .HtmlAttributes(new { @class = "pie" })
     .DataSource(ds =>
     {
         ds.Read(read => read.Action("ReadPieLogedInUsers", "Ajax", new { area = "Administration" }).Data("sendAntiForgery"));
@@ -29,20 +33,104 @@
                  .Labels(labels => labels
                          .Visible(true)
                          .Template("#= category # - #= value#")
-                         .Align(ChartPieLabelsAlign.Column)
-                         .Distance(20)
-                         .Padding(10)
+                         .Align(ChartPieLabelsAlign.Circle)
+                         .Distance(15)
+                         .Font("0.7em Arial,Helvetica,sans-serif")
                          .Position(ChartPieLabelsPosition.OutsideEnd)
                      );
         })
 
-    //.Tooltip(tooltip => tooltip
-        //.Visible(true)
-        //.Format("{0:N0}")
-        //.Template("#= category # - #= value#")
-        //)
+        .Tooltip(tooltip => tooltip
+                .Visible(true)
+                .Format("{0:N0}")
+                .Template("#= category # - #= value#")
+                )
+            )
+        </div>
+        <div class="col-sm-10">
+            @(Html.Kendo().Chart<LogedInUser>()
+                    .Name("chart")
+                    .Legend(false)
+                    .ChartArea(cha=>cha.Height(230))
+                    .HtmlAttributes(new { @class = "char-ustat" })
+                    .DataSource(ds => ds.Read(read => read.Action("ReadLogedStatistics", "Ajax", new { area = "Administration" }).Data("sendAntiForgery")))
+                    .SeriesDefaults(seriesDefaults =>
+                        seriesDefaults.Line().Style(ChartLineStyle.Smooth)
+                    )
+                    .Series(series =>
+                    {
+                        series.Line(model => model.LogedUsersCount);
+                        series.Column(model => model.LogedUsersCount).Color("blue");
+                    })
+                    .CategoryAxis(axis => axis
+                        .Categories(model => model.TimeStamp)
+                        .Date()
+                        .BaseUnit(ChartAxisBaseUnit.Hours)
+                        .MajorGridLines(lines => lines.Visible(false))
+                        .Labels(labels => labels.Format("{0:HH ч.}").Rotation(-90))
+                        .MajorGridLines(lines => lines.Visible(false))
+                    )
+                     .ValueAxis(axis => axis
+                                    .Numeric()
+                                    .Line(line => line.Visible(false))
+                     )
+
+                    .Tooltip(tooltip => tooltip
+                        .Visible(true)
+                        .Format("{0:N0}")
+                    )
+                    .Pannable(pannable => pannable
+                        .Lock(ChartAxisLock.Y)
+                    )
+                    .Zoomable(zoomable => zoomable
+                        .Mousewheel(mousewheel => mousewheel.Lock(ChartAxisLock.Y))
+                        .Selection(selection => selection.Lock(ChartAxisLock.Y))
+                    )
+            )
+
+        </div>
+    </div>
+</div>
+<br/>
+<br />
+@(Html.Kendo()
+              .Grid<LoggedUserViewModel>()
+          .Name("users")
+          .Columns(
+               columns =>
+               {
+                   columns.Bound(c => c.UserChangedPassword).Width(40)
+                       .ClientTemplate("<img src='#:data.UserChangedPassword? '/Content/Images/PNG/32x32/OKShield.png':'/Content/Images/PNG/32x32/ErrorCircle.png'#' class='grid-icon'/>");
+                   columns.Bound(c => c.Id).Width(45);
+                   columns.Bound(c => c.UserName);
+                   columns.Bound(c => c.Email);
+                   columns.Bound(c => c.FullName);
+                   columns.Bound(c => c.Occupation);
+                   columns.Bound(c => c.LastLogedIn).Format("{0:dd.MM.yyyy HH:mm:ss.fff}");
+                   columns.Bound(c => c.IsUserLoggedIn);
+               })
+          .Pageable(pageable => pageable
+                .Refresh(true)
+                .PageSizes(new[] { 20, 50, 100 })
+                .ButtonCount(5))
+          .Sortable()
+          .Scrollable(scr => scr.Height(350))
+          .Filterable()
+          .DataSource(dataSource => dataSource
+                .Ajax()
+                .PageSize(20)
+                .ServerOperation(true)
+                    .Read(read => read.Action("GetAllLogedUsers", "Ajax", new { area = "Administration" }).Data("sendAntiForgery"))
+                                        .Events(events => events.Error("kendoAdditional.ErrorHandler"))
+                        .Model(model =>
+                        {
+                            model.Id(p => p.Id);
+                        })
+                        
+            )
 )
 
 @section scripts{
     @Scripts.Render("~/Scripts/custom/sendAntiForgery.js");
+    @Scripts.Render("~/Scripts/custom/kendoAdditional.js");
 }

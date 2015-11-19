@@ -1,13 +1,18 @@
-﻿(function () {
+﻿/*jslint browser: true*/
+/*global window */
+/*global $, jQuery*/
+
+(function ($) {
     'use strict';
     var elementSelectors = [
-           { selector: "#factories", controlType: "kendoDropDownList" },
-           { selector: "#processunits", controlType: "kendoDropDownList" },
-           { selector: "#factoriesD", controlType: "kendoDropDownList" },
-           { selector: "#processunitsD", controlType: "kendoDropDownList" },
-           { selector: "#areas", controlType: "kendoDropDownList" },
-           { selector: "#parks", controlType: "kendoDropDownList" },
-           { selector: "#directions", controlType: "kendoDropDownList" }];
+        {selector: "#factories", controlType: "kendoDropDownList"},
+        {selector: "#processunits", controlType: "kendoDropDownList"},
+        {selector: "#factoriesD", controlType: "kendoDropDownList"},
+        {selector: "#processunitsD", controlType: "kendoDropDownList"},
+        {selector: "#areas", controlType: "kendoDropDownList"},
+        {selector: "#parks", controlType: "kendoDropDownList"},
+        {selector: "#directions", controlType: "kendoDropDownList"}
+    ];
 
     $(window).unload(function () {
         elementSelectors.forEach(function (element) {
@@ -21,6 +26,16 @@
         });
     });
 
+    function setSelection(ev) {
+        var kendoElement = ev.sender;
+        kendoElement.ns = kendoElement.ns || "";
+        if (kendoElement.ns === ".kendoDropDownList") {
+            var selected = JSON.parse(localStorage.getItem(kendoElement.element.attr("id") + "_" + $("#user").val()));
+            kendoElement.dataSource.select = selected;
+            kendoElement.value(selected);
+        }
+    }
+
     $(document).ready(function () {
         elementSelectors.forEach(function (element) {
             var domElement = $(element.selector);
@@ -32,16 +47,6 @@
             }
         });
     });
-
-    function setSelection() {
-        var kendoElement = this;
-        kendoElement.ns = kendoElement.ns || "";
-        if (kendoElement.ns === ".kendoDropDownList") {
-            var selected = JSON.parse(localStorage.getItem(kendoElement.element.attr("id") + "_" + $("#user").val()))
-            kendoElement.dataSource.select = selected;
-            kendoElement.value(selected);
-        }
-    }
-}());
+}(jQuery));
 
 

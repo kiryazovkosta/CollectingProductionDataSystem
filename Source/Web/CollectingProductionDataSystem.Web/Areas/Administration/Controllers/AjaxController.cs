@@ -58,7 +58,7 @@
                 UserRoles = rolsStore.Where(rol => rol.Users.Any(x => x.UserId == u.Id)).Select(x => new RoleViewModel { Id = x.Id, Name = x.Name, Description = x.Description }),
                 ProcessUnits = processUnitsStore.Where(proc => proc.ApplicationUserProcessUnits.Any(x => x.ApplicationUserId == u.Id)).Select(x => new ProcessUnitViewModel { Id = x.Id, Name = x.FullName }),
                 Parks = parksStore.Where(park => park.ApplicationUserParks.Any(x => x.ApplicationUserId == u.Id)).Select(x => new ParkViewModel { Id = x.Id, Name = x.Name }),
-                //u.Parks.Select(x => new ParkViewModel { Id = x.Id, Name = x.Name }),
+
             })).ToListAsync();
             return Json(users.ToDataSourceResult(request, ModelState));
         }
@@ -67,7 +67,11 @@
         [ValidateAntiForgeryToken]
         public JsonResult GetAllLogedUsers([DataSourceRequest]DataSourceRequest request)
         {
-            return Json(userService.GetAllLogedUsers().ToDataSourceResult(request, ModelState, Mapper.Map<EditUserViewModel>));
+            var rolsStore = data.Roles.All();
+            var parksStore = data.Parks.All();
+            var processUnitsStore = data.ProcessUnits.All();
+            var result = userService.GetAllLogedUsers().ToList();
+            return Json(result.ToDataSourceResult(request, ModelState, Mapper.Map<LoggedUserViewModel>));
         }
 
         [HttpPost]
@@ -82,6 +86,16 @@
                 new PieViewModel(){ Category = Resources.Layout.NotLoggedInUsers, Value = usersCount - usersIn, Color="red"},
             };
 
+            return Json(result);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public JsonResult ReadLogedStatistics(DateTime? beginTime = null, DateTime? endTime = null)
+        {
+            beginTime = beginTime ?? DateTime.Now.AddDays(-1);
+            endTime = endTime ?? DateTime.Now;
+            var result = data.LogedInUsers.All().Where(x => beginTime.Value <= x.TimeStamp && x.TimeStamp <= endTime.Value).ToList();
             return Json(result);
         }
 
