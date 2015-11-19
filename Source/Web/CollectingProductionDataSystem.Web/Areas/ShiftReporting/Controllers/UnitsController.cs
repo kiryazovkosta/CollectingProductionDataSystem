@@ -430,7 +430,10 @@ using CollectingProductionDataSystem.Infrastructure.Contracts;
             if (errors.Count > 0)
             {
                 result.SetErrors(errors);
-                logger.Error("", this, new Exception(), new string[] { "", "", "" });
+                foreach (var error in errors)
+	            {
+		            logger.Error(error.ErrorMessage, this, new Exception(), error.ErrorMessage.Split(new char[]{'\n'} ));
+	            }
             }
 
             return result;
