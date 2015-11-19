@@ -87,6 +87,9 @@
                 case "G7":
                     result = FormulaG7(arguments);
                     break;
+                case "G7a":
+                    result = FormulaG7a(arguments);
+                    break;
                 case "R10":
                     result = FormulaR10(arguments);
                     break;
@@ -104,6 +107,9 @@
                     break;
                 case "I17":
                     result = FormulaI17(arguments);
+                    break;
+                case "I17a":
+                    result = FormulaI17a(arguments);
                     break;
                 case "R18":
                     result = FormulaR18(arguments);
@@ -853,6 +859,45 @@
         }
 
         /// <summary>
+        /// 9917) G7 ;НЕФТОЗАВОДСКИ ГАЗ И ВОДОРОД НОРМАЛНИ КУБИЧНИ МЕТРИ
+        /// </summary>
+        private double FormulaG7a(FormulaArguments args)
+        {
+            if (!args.InputValue.HasValue)
+            {
+                throw new ArgumentNullException("The value of CounterIndication(PL) is not allowed to be null");
+            }
+            if (!args.MaximumFlow.HasValue)
+            {
+                throw new ArgumentNullException("The value of MaximumFlow(D2) is not allowed to be null");
+            }
+            if (!args.EstimatedDensity.HasValue)
+            {
+                throw new ArgumentNullException("The value of EstimatedDensity(D4) is not allowed to be null");
+            }
+            if (!args.Density.HasValue)
+            {
+                args.Density = args.EstimatedDensity.Value;
+            }
+
+            double pl = args.InputValue.Value;
+            double d = args.Density.Value;
+            double d2 = args.MaximumFlow.Value;
+            double d4 = args.EstimatedDensity.Value;
+            double df = d;
+
+            double f = (((d2 * pl) / 100) * 8) * d4;
+            f = (f * df) / 1000;
+
+            var inputParams = new Dictionary<string, double>();
+            inputParams.Add("f", f);
+
+            string expr = @"par.f";
+            var result = calculator.Calculate(expr, "par", 1, inputParams);
+            return result;
+        }
+
+        /// <summary>
         /// 20) R10 ;ПРИРОДЕН ГАЗ :: X A7,F S Q=Q/1000 Q
         /// </summary>
         private double FormulaR10(FormulaArguments args)
@@ -1013,6 +1058,31 @@
 
             string expr = @"par.f";
             double result = calculator.Calculate(expr, "par", 1, inputParams);
+            return result;
+        }
+
+        /// <summary>
+        /// 9931) I17a ;ВЪЗДУХ, АЗОТ, КИСЛОРОД ОТ НОРМАЛНИ КУБИЧНИ МЕТРИ
+        /// </summary>
+        private double FormulaI17a(FormulaArguments args)
+        {
+            if (!args.InputValue.HasValue)
+            {
+                throw new ArgumentNullException("The value of CounterIndication(PL) is not allowed to be null");
+            }
+            if (!args.MaximumFlow.HasValue)
+            {
+                throw new ArgumentNullException("The value of MaximumFlow(D2) is not allowed to be null");
+            }
+
+            double pl = args.InputValue.Value;
+            double d2 = args.MaximumFlow.Value;
+            double f = ((d2 * pl) / 100) * 8;
+            
+            var inputParams = new Dictionary<string, double>();
+            inputParams.Add("f", f);
+            string expr = @"par.f";
+            var result = calculator.Calculate(expr, "par", 1, inputParams);
             return result;
         }
 
