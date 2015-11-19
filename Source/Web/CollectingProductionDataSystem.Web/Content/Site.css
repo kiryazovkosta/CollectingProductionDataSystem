@@ -663,3 +663,9 @@ td[role=gridcell] ul {
 .pie {
     width:40% ;    
 }
+
+.char-ustat {
+    max-width:98%;
+    margin-left:auto;
+    margin-right:auto;
+}

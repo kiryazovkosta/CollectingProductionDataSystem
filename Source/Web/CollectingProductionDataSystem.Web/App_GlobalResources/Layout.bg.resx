@@ -1254,4 +1254,10 @@
   <data name="UserStatistics" xml:space="preserve">
     <value>Статистика за потребителите</value>
   </data>
+  <data name="IsUserLoggedIn" xml:space="preserve">
+    <value>Брой сесии</value>
+  </data>
+  <data name="LastLogedIn" xml:space="preserve">
+    <value>Последно влизане</value>
+  </data>
 </root>

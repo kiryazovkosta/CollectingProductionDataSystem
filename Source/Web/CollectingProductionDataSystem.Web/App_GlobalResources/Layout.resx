@@ -1251,4 +1251,10 @@
   <data name="UserStatistics" xml:space="preserve">
     <value>User Statistics</value>
   </data>
+  <data name="IsUserLoggedIn" xml:space="preserve">
+    <value>User LogIns Count </value>
+  </data>
+  <data name="LastLogedIn" xml:space="preserve">
+    <value>Last Loged In</value>
+  </data>
 </root>

@@ -1474,11 +1474,29 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to User LogIns Count .
+        /// </summary>
+        public static string IsUserLoggedIn {
+            get {
+                return ResourceManager.GetString("IsUserLoggedIn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Jp Expedition&lt;br/&gt;[ton].
         /// </summary>
         public static string JpQuantity {
             get {
                 return ResourceManager.GetString("JpQuantity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Last Loged In.
+        /// </summary>
+        public static string LastLogedIn {
+            get {
+                return ResourceManager.GetString("LastLogedIn", resourceCulture);
             }
         }
         
