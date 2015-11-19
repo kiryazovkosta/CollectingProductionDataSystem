@@ -160,6 +160,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to All Users Coint.
+        /// </summary>
+        public static string AllUsersCount {
+            get {
+                return ResourceManager.GetString("AllUsersCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ApplicationLog.
         /// </summary>
         public static string ApplicationLog {
@@ -696,6 +705,15 @@ namespace App_GlobalResources.Resources {
         public static string CurrentInspectionDataTag {
             get {
                 return ResourceManager.GetString("CurrentInspectionDataTag", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Currently LogedIn Users.
+        /// </summary>
+        public static string CurrentlyLogedInUsers {
+            get {
+                return ResourceManager.GetString("CurrentlyLogedInUsers", resourceCulture);
             }
         }
         
@@ -1510,6 +1528,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to LogedIn Users Count.
+        /// </summary>
+        public static string LogedInUsers {
+            get {
+                return ResourceManager.GetString("LogedInUsers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to LogIn.
         /// </summary>
         public static string Login {
@@ -1821,6 +1848,15 @@ namespace App_GlobalResources.Resources {
         public static string Notes {
             get {
                 return ResourceManager.GetString("Notes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Offline Users Count.
+        /// </summary>
+        public static string NotLoggedInUsers {
+            get {
+                return ResourceManager.GetString("NotLoggedInUsers", resourceCulture);
             }
         }
         
@@ -3333,6 +3369,15 @@ namespace App_GlobalResources.Resources {
         public static string UsersAdministration {
             get {
                 return ResourceManager.GetString("UsersAdministration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User Statistics.
+        /// </summary>
+        public static string UserStatistics {
+            get {
+                return ResourceManager.GetString("UserStatistics", resourceCulture);
             }
         }
         

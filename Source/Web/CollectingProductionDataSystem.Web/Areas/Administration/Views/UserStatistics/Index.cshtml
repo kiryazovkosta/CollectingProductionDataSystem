@@ -1,0 +1,48 @@
+﻿@using CollectingProductionDataSystem.Web.Areas.Administration.ViewModels;
+@using CollectingProductionDataSystem.Web.ViewModels.Utility;
+@using Resources = App_GlobalResources.Resources
+
+@{
+    Layout = "~/Areas/Administration/Views/Shared/_KendoAdminLayout.cshtml";
+}
+<h2>
+    @Resources.Layout.UserStatistics
+</h2>
+
+@Html.AntiForgeryToken()
+
+@(Html.Kendo().Chart<PieViewModel>()
+    .Name("logedin-users")
+    //.Title(Resources.Layout.CurrentlyLogedInUsers)
+    .Legend(legend => legend
+                .Visible(false)
+            )
+                .HtmlAttributes(new { @class="pie"})
+    .DataSource(ds =>
+    {
+        ds.Read(read => read.Action("ReadPieLogedInUsers", "Ajax", new { area = "Administration" }).Data("sendAntiForgery"));
+    }
+    )
+        .Series(series =>
+        {
+            series.Pie(m => m.Value, m => m.Category, m => m.Color, m => m.Explode)
+                 .Labels(labels => labels
+                         .Visible(true)
+                         .Template("#= category # - #= value#")
+                         .Align(ChartPieLabelsAlign.Column)
+                         .Distance(20)
+                         .Padding(10)
+                         .Position(ChartPieLabelsPosition.OutsideEnd)
+                     );
+        })
+
+    //.Tooltip(tooltip => tooltip
+        //.Visible(true)
+        //.Format("{0:N0}")
+        //.Template("#= category # - #= value#")
+        //)
+)
+
+@section scripts{
+    @Scripts.Render("~/Scripts/custom/sendAntiForgery.js");
+}

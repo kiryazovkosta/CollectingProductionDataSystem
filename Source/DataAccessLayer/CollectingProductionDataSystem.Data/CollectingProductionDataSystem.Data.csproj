@@ -61,6 +61,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\DefaultTransactionOptions.cs" />
     <Compile Include="Common\EfStatus.cs" />
     <Compile Include="Contracts\IEfStatus.cs" />
     <Compile Include="Concrete\ApprovableEntityRepository.cs" />

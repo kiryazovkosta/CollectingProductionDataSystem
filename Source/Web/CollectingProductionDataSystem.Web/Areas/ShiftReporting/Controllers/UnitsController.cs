@@ -14,6 +14,7 @@
     using AutoMapper;
     using CollectingProductionDataSystem.Application.Contracts;
     using CollectingProductionDataSystem.Application.ProductionDataServices;
+    using CollectingProductionDataSystem.Data.Common;
     using CollectingProductionDataSystem.Data.Contracts;
     using CollectingProductionDataSystem.Infrastructure.Extentions;
     using CollectingProductionDataSystem.Models.Productions;
@@ -173,7 +174,7 @@ using CollectingProductionDataSystem.Infrastructure.Contracts;
 
                     IEnumerable<UnitsDailyData> dailyResult = new List<UnitsDailyData>();
 
-                    using (TransactionScope transaction = new TransactionScope())
+                    using (TransactionScope transaction = new TransactionScope(TransactionScopeOption.Required,DefaultTransactionOptions.Instance.TransactionOptions))
                     {
                         status = data.SaveChanges(this.UserProfile.UserName);
 
