@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Diagnostics;
 using System.Linq;
+using System.Web;
 using System.Web.Mvc;
 using AutoMapper;
 using CollectingProductionDataSystem.Constants;
@@ -13,6 +15,7 @@ using CollectingProductionDataSystem.Web.ViewModels.Tank;
 using CollectingProductionDataSystem.Web.ViewModels.Nomenclatures;
 using CollectingProductionDataSystem.Web.ViewModels.Units;
 using CollectingProductionDataSystem.Models.Nomenclatures;
+using Microsoft.AspNet.Identity;
 
 namespace CollectingProductionDataSystem.Web.Controllers
 {
@@ -84,7 +87,7 @@ namespace CollectingProductionDataSystem.Web.Controllers
         public JsonResult GetFactories()
         {
             IEnumerable<Factory> factories = new HashSet<Factory>();
-            
+
             if (IsPowerUser())
             {
                 factories = this.data.Factories.All().ToList();
@@ -117,24 +120,53 @@ namespace CollectingProductionDataSystem.Web.Controllers
             return Json(processUnitView, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult SaveGridState(string data) 
+        public ActionResult SaveGridState(string data)
         {
             Session["data"] = data;
             return new EmptyResult();
         }
 
-        public ActionResult LoadGridState() 
+        public ActionResult LoadGridState()
         {
             return Json(Session["data"], JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult GetDirections()
         {
-            var directions = this.data.Directions.All().Where(x=>x.Id <= 2).ToList();
+            var directions = this.data.Directions.All().Where(x => x.Id <= 2).ToList();
             var directionsView = Mapper.Map<IEnumerable<DirectionsViewModel>>(directions);
             return Json(directionsView, JsonRequestBehavior.AllowGet);
         }
-        
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult UserCloseWindow()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+               bool isLogOff = false;
+                var user = this.data.Users.All().FirstOrDefault(x => x.UserName == this.UserProfile.UserName);
+                if (user != null)
+                {
+                    user.IsUserLoggedIn -= 1;
+                }
+                if (user.IsUserLoggedIn <= 0)
+                {
+                    user.IsUserLoggedIn = 0;
+                    isLogOff = true;
+                }
+                this.data.Users.Update(user);
+                this.data.SaveChanges(this.UserProfile.UserName);
+                if (isLogOff)
+                {
+                    HttpContext.GetOwinContext().Authentication.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+                    Session["user"] = null;
+                }
+            }
+
+            return null;
+        }
+
         private bool IsPowerUser()
         {
             return UserProfile.UserRoles.Where(x => CommonConstants.PowerUsers.Any(y => y == x.Name)).Any();

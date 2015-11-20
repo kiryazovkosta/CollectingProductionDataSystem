@@ -1,52 +1,43 @@
-﻿@using CollectingProductionDataSystem.Web.Infrastructure.Helpers;
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Система за автоматизиране на процеса по събиране и съгласуване на първична информация за нуждите на производствената отчетност и материално-енергиен баланс в „ЛУКОЙЛ Нефтохим Бургас“ АД"</title>
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/modernizr")
-    @RenderSection("styles", required: false)
-    @Styles.Render("~/Content/css")
-
-</head>
-<body>
-   <input id="culture" type="hidden" value="@System.Threading.Thread.CurrentThread.CurrentCulture.Name" /> 
-    @Html.Partial("_MainNav")
-    <div id="page-wrapper" class="container-fluid">
-        <div class="sidebar-wtapper">
-            @* --- Side bar --- *@
-            <div class="sidebar">
-                <div class="sidebar-heading text-center"><p>Параметри на отчета</p></div><hr style="margin-top:0" />
-                <div class="container-fluid body-content">
-                    @RenderSection("sidebar", false)
-                </div>
+﻿@{
+    Layout = "~/Views/Shared/_BaseLayout.cshtml";
+}
+<input id="culture" type="hidden" value="@System.Threading.Thread.CurrentThread.CurrentCulture.Name" />
+@Html.Partial("_MainNav")
+<div id="page-wrapper" class="container-fluid">
+    <div class="sidebar-wtapper">
+        @* --- Side bar --- *@
+        <div class="sidebar">
+            <div class="sidebar-heading text-center"><p>Параметри на отчета</p></div><hr style="margin-top:0" />
+            <div class="container-fluid body-content">
+                @RenderSection("sidebar", false)
             </div>
-            <div class="sidebar-sidebaner">
-                <div class="sidebar-sidebaner-wrapper">
-                    <a id="slide" href="#" class="pull-right" aria-expanded="true"><span class="glyphicon glyphicon-chevron-up"></span></a>
-                    <div id="slide-text" class="pull-left"></div>
-                </div>
+        </div>
+        <div class="sidebar-sidebaner">
+            <div class="sidebar-sidebaner-wrapper">
+                <a id="slide" href="#" class="pull-right" aria-expanded="true"><span class="glyphicon glyphicon-chevron-up"></span></a>
+                <div id="slide-text" class="pull-left"></div>
             </div>
-            @* --- End of Side Bar --- *@
         </div>
-        <div id="content-wrapper" class="container-fluid">
-            @RenderBody()
-        </div>
+        @* --- End of Side Bar --- *@
+    </div>
+    <div id="content-wrapper" class="container-fluid">
+        @RenderBody()
+    </div>
 
-        <div class="nav navbar-fixed-bottom">
-            <div class="clearfix">
-                <div class="footer clerfix">
-                    <p>&copy; @DateTime.Now.Year - Бизнес Мениджмънт Системс ЕООД</p>
-                </div>
+    <div class="nav navbar-fixed-bottom">
+        <div class="clearfix">
+            <div class="footer clerfix">
+                <p>&copy; @DateTime.Now.Year - Бизнес Мениджмънт Системс ЕООД</p>
             </div>
         </div>
     </div>
-    @Html.Partial("_BootstrapModal")
-    @Scripts.Render("~/bundles/bootstrap")
+</div>
+
+@section styles{
+    @RenderSection("styles", required: false)
+}
+
+@section scripts{
     @RenderSection("scripts", required: false)
-    @* Renders scripts came from the partial views *@
-    @Html.PageScripts()
-</body>
-</html>
+}
+

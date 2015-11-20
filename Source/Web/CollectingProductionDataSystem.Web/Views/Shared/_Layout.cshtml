@@ -1,29 +1,23 @@
-﻿<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Система за автоматизиране на процеса по събиране и съгласуване на първична информация за нуждите на производствената отчетност и материално-енергиен баланс в „ЛУКОЙЛ Нефтохим Бургас“ АД"</title>
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/modernizr")
-    @Styles.Render("~/Content/css")
-    @RenderSection("styles", required: false)
-</head>
-<body>
-    <input id="culture" type="hidden" value="@System.Threading.Thread.CurrentThread.CurrentCulture.Name" />
-    @Html.Partial("_MainNav")
-    <div class="container-fluid body-content">
-        @RenderBody()
-    </div>
-    <div class="nav navbar-fixed-bottom">
-        <div class="clearfix">
-            <div class="footer clerfix">
-                <p>&copy; @DateTime.Now.Year - Бизнес Мениджмънт Системс ЕООД</p>
-            </div>
+﻿@{
+    Layout = "~/Views/Shared/_BaseLayout.cshtml";
+}
+<input id="culture" type="hidden" value="@System.Threading.Thread.CurrentThread.CurrentCulture.Name" />
+@Html.Partial("_MainNav")
+<div class="container-fluid body-content">
+    @RenderBody()
+</div>
+<div class="nav navbar-fixed-bottom">
+    <div class="clearfix">
+        <div class="footer clerfix">
+            <p>&copy; @DateTime.Now.Year - Бизнес Мениджмънт Системс ЕООД</p>
         </div>
     </div>
-    @Html.Partial("_BootstrapModal")
-    @Scripts.Render("~/bundles/bootstrap")
+</div>
+
+@section styles{
+    @RenderSection("styles", required: false)
+}
+
+@section scripts{
     @RenderSection("scripts", required: false)
-</body>
-</html>
+}

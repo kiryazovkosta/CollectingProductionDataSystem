@@ -1,0 +1,26 @@
+﻿@{
+    Layout = null;
+}
+@using CollectingProductionDataSystem.Web.Infrastructure.Helpers;
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Система за автоматизиране на процеса по събиране и съгласуване на първична информация за нуждите на производствената отчетност и материално-енергиен баланс в „ЛУКОЙЛ Нефтохим Бургас“ АД"</title>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/modernizr")
+    @RenderSection("styles", required: false)
+    @Styles.Render("~/Content/css")
+
+</head>
+<body>
+    @RenderBody()
+    @Html.Partial("_BootstrapModal")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+    @* Renders scripts came from the partial views *@
+    @Html.PageScripts()
+    @Scripts.Render("~/Scripts/custom/windowUnload.min.js")
+</body>
+</html>

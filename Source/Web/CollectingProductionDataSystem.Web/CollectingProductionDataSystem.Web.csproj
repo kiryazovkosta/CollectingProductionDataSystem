@@ -197,6 +197,7 @@
     <Compile Include="AppStart\Startup.Auth.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="AppStart\StartUpUsersConfiguration.cs" />
     <Compile Include="AppStart\ViewEnginesConfig.cs" />
     <Compile Include="App_GlobalResources\ErrorMessages.bg1.designer.cs">
       <AutoGen>True</AutoGen>
@@ -335,6 +336,7 @@
     <Compile Include="Infrastructure\CustomLogEvents\CustomExceptionEvent.cs" />
     <Compile Include="Infrastructure\Extentions\IEfStatusExtentions.cs" />
     <Compile Include="Infrastructure\Filters\AuthorizeFactoryAttribute.cs" />
+    <Compile Include="Infrastructure\Filters\CheckUserSessionAttribute.cs" />
     <Compile Include="Infrastructure\Filters\GlobalErrorFilterAttribute.cs" />
     <Compile Include="Infrastructure\Filters\HandleAntiforgeryTokenErrorAttribute.cs" />
     <Compile Include="Infrastructure\Helpers\AuthorizeActionLinkAjaxHelper.cs" />
@@ -788,6 +790,7 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\custom\bootstrapAdditional.js" />
+    <Content Include="Scripts\custom\browserclosurenotice.js" />
     <Content Include="Scripts\custom\jquery-kendo-globalize.js" />
     <Content Include="Scripts\custom\kendoAdditional.js" />
     <Content Include="Scripts\custom\kendoGridState.js" />
@@ -891,6 +894,9 @@
       <DependentUpon>sendArea.min.js</DependentUpon>
     </Content>
     <None Include="Properties\PublishProfiles\Productive.pubxml" />
+    <Content Include="Scripts\custom\windowUnload.min.js.map">
+      <DependentUpon>windowUnload.min.js</DependentUpon>
+    </Content>
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\custom\sendFactory.min.js">
       <DependentUpon>sendFactory.js</DependentUpon>
@@ -898,6 +904,10 @@
     <Content Include="Scripts\custom\sidebar.js" />
     <Content Include="Scripts\custom\unitGridsData.js" />
     <Content Include="Scripts\custom\uploadNom.js" />
+    <Content Include="Scripts\custom\windowUnload.js" />
+    <Content Include="Scripts\custom\windowUnload.min.js">
+      <DependentUpon>windowUnload.js</DependentUpon>
+    </Content>
     <Content Include="Scripts\jquery-2.1.4.js" />
     <Content Include="Scripts\jquery-2.1.4.min.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
@@ -1523,6 +1533,7 @@
     <Content Include="Views\Shared\_MeasurementsPointsSideBar.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\ShowHistory.cshtml" />
     <Content Include="Views\Shared\_BootstrapModal.cshtml" />
+    <Content Include="Views\Shared\_BaseLayout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1543,14 +1554,6 @@
     <Folder Include="Areas\ShiftReporting\Views\Ajax\" />
     <Folder Include="Areas\ShiftReporting\Views\AreaBase\" />
     <Folder Include="Areas\ShiftReporting\Views\Shared\" />
-    <Folder Include="Views\Ajax\" />
-    <Folder Include="Views\Events\" />
-    <Folder Include="Views\Factory\" />
-    <Folder Include="Views\Plant\" />
-    <Folder Include="Views\ProcessUnit\" />
-    <Folder Include="Views\Test\" />
-    <Folder Include="Views\UnitConfig\" />
-    <Folder Include="Views\UnitsDailyConfig\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

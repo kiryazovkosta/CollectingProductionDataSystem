@@ -105,6 +105,7 @@
             switch (result)
             {
                 case SignInStatus.Success:
+                    Session["user"] = this.UserProfile ;
                     DocumentUserLogIn(model.UserName, true);
                     if (userProfile.IsChangePasswordRequired)
                     {
@@ -167,6 +168,7 @@
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
             DocumentUserLogIn(this.UserProfile.UserName, false);
+            Session["user"] = null;
             return RedirectToAction("Index", "Home");
         }
 
