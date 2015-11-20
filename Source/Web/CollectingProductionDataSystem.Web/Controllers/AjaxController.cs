@@ -164,7 +164,7 @@ namespace CollectingProductionDataSystem.Web.Controllers
                 }
             }
 
-            return null;
+            return Content(string.Empty);
         }
 
         private bool IsPowerUser()

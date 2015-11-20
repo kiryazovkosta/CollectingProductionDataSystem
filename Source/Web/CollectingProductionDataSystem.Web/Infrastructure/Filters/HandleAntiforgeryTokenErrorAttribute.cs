@@ -23,7 +23,7 @@
                 filterContext.ExceptionHandled = true;
                 logger.AuthenticationError("Handled AntiforgeryTokenError", this, filterContext.HttpContext.User.Identity.Name);
                 filterContext.Result = new RedirectToRouteResult(
-                    new RouteValueDictionary(new { action = "Login", controller = "Account", area = string.Empty}));
+                    new RouteValueDictionary(new { action = "Login", controller = "Account"}));
 
                 //clear client-site cookies to prevents unauthorized access
 

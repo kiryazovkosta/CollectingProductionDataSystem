@@ -24,13 +24,14 @@ namespace CollectingProductionDataSystem.Web.Infrastructure.Filters
                 && uri != "home/index"
                 && filterContext.HttpContext.Session["user"] == null)
             {
+
                 filterContext.Result = new RedirectToRouteResult(
                     new RouteValueDictionary(new { action = "Login", controller = "Account", area = string.Empty }));
+
                 return;
             }
 
             base.OnActionExecuting(filterContext);
-
         }
     }
 }

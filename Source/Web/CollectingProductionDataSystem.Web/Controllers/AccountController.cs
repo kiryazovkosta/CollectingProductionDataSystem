@@ -70,7 +70,7 @@
         public ActionResult Login(string returnUrl)
         {
             ViewBag.Title = Resources.Layout.Login;
-            ViewBag.ReturnUrl = returnUrl;
+            ViewBag.ReturnUrl = returnUrl ?? Url.Action("Index", "Home", new { area = string.Empty});
             return View();
         }
 
