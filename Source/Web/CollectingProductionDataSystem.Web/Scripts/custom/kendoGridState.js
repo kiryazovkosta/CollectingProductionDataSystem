@@ -12,7 +12,7 @@
         var gridElement = $(".k-widget.k-grid");
         if (gridElement) {
             var grid = gridElement.data("kendoGrid");
-            var state = localStorage.getItem(gridElement.attr("id")+"_"+ $("#user").val());
+            var state = localStorage.getItem(gridElement.attr("id") + "_" + $("#user").val());
             if (state) {
                 state = JSON.parse(state);
                 grid.setOptions(state.options);
@@ -30,7 +30,7 @@
                 options: grid.getOptions(),
                 height: $(".k-grid-content").css("height")
             };
-            localStorage.setItem(gridElement.attr("id") + "_"+ $("#user").val(), JSON.stringify(state))
+            localStorage.setItem(gridElement.attr("id") + "_" + $("#user").val(), JSON.stringify(state));
         }
     });
 }(jQuery));
