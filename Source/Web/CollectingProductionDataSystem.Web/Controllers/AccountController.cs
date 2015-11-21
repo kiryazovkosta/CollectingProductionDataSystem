@@ -79,7 +79,7 @@
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
+        public ActionResult Login(LoginViewModel model, string returnUrl)
         {
             if (!ModelState.IsValid)
             {
@@ -96,7 +96,7 @@
                 ModelState.AddModelError("", Resources.ErrorMessages.InvalidLogin);
                 return View(model);
             }
-            var result = await SignInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, shouldLockout: false);
+            var result = SignInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, shouldLockout: false).Result;
             if (result != SignInStatus.Success)
             {
                 logger.AuthenticationError("Invalid Attempt to Login", this, model.UserName);
@@ -105,6 +105,12 @@
             switch (result)
             {
                 case SignInStatus.Success:
+                    if (this.UserProfile == null)
+                    {
+                        this.RenewApplicationUser(
+                            model.UserName,
+                            this.HttpContext.Request.RequestContext);
+                    }
                     Session["user"] = this.UserProfile ;
                     DocumentUserLogIn(model.UserName, true);
                     if (userProfile.IsChangePasswordRequired)
@@ -228,7 +234,7 @@
             var user = this.data.Users.All().FirstOrDefault(x => x.UserName == userName);
             if (user != null)
             {
-                user.IsUserLoggedIn += isOperationLogIn ? 1 : -1;
+                user.IsUserLoggedIn += isOperationLogIn ? 1 : -user.IsUserLoggedIn;
 
                 if (user.IsUserLoggedIn < 0)
                 {

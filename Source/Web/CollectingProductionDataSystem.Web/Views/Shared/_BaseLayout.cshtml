@@ -12,9 +12,9 @@
     @Scripts.Render("~/bundles/modernizr")
     @RenderSection("styles", required: false)
     @Styles.Render("~/Content/css")
-
 </head>
 <body>
+    @Html.Hidden("expiration-interval", 60 * 30)
     @RenderBody()
     @Html.Partial("_BootstrapModal")
     @Scripts.Render("~/bundles/bootstrap")
@@ -22,5 +22,6 @@
     @* Renders scripts came from the partial views *@
     @Html.PageScripts()
     @Scripts.Render("~/Scripts/custom/windowUnload.min.js")
+    @Scripts.Render("~/Scripts/custom/windowExpirationTime.min.js")
 </body>
 </html>

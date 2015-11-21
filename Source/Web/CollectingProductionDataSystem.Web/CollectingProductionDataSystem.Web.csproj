@@ -894,8 +894,15 @@
       <DependentUpon>sendArea.min.js</DependentUpon>
     </Content>
     <None Include="Properties\PublishProfiles\Productive.pubxml" />
+    <Content Include="Scripts\custom\windowExpirationTime.js" />
+    <Content Include="Scripts\custom\windowExpirationTime.min.js">
+      <DependentUpon>windowExpirationTime.js</DependentUpon>
+    </Content>
     <Content Include="Scripts\custom\windowUnload.min.js.map">
       <DependentUpon>windowUnload.min.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\custom\windowExpirationTime.min.js.map">
+      <DependentUpon>windowExpirationTime.min.js</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\custom\sendFactory.min.js">
