@@ -7,6 +7,7 @@
     using System.Web;
     using System.Web.Mvc;
     using System.Web.Routing;
+    using Microsoft.AspNet.Identity;
 
     public class CheckUserSessionAttribute : ActionFilterAttribute
     {
@@ -37,7 +38,29 @@
                 return;
             }
 
+            if (uri == "home/index"
+                && filterContext.HttpContext.User.Identity.IsAuthenticated
+                && filterContext.HttpContext.Session["user"] == null)
+            {
+                filterContext.HttpContext.GetOwinContext().Authentication.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+
+                ClearCookies(filterContext);
+            }
+
             base.OnActionExecuting(filterContext);
+        }
+
+        private void ClearCookies(ActionExecutingContext filterContext)
+        {
+            //clear client-site cookies to prevents unauthorized access
+
+            var requestCookyKeys = filterContext.HttpContext.Request.Cookies.AllKeys;
+
+            filterContext.HttpContext.Response.Cookies.Clear();
+            foreach (var key in requestCookyKeys)
+            {
+                filterContext.HttpContext.Response.Cookies.Add(new HttpCookie(key) { Expires = DateTime.Now.AddDays(-1) });
+            }
         }
 
         /// <summary>

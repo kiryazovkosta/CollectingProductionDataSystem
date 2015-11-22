@@ -30,6 +30,7 @@ var validNavigation = false;
                     type: 'POST',
                     data: addAntiForgeryToken({})
                 });
+                window.location.replace("/Home/Index");
                 return;
             }
         });

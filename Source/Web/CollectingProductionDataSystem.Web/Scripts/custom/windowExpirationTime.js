@@ -2,8 +2,9 @@
     'use strict';
     var interval = 0;
     var expirationInterval = parseInt($('#expiration-interval').val()) || 30;
+    var myInterval;
     $(document).ready(function () {
-        setInterval(function () {
+        myInterval = setInterval(function () {
             interval += 1;
             $('#counter').html("<h3>" + interval + "</h3>");
             if (interval >= expirationInterval) {
