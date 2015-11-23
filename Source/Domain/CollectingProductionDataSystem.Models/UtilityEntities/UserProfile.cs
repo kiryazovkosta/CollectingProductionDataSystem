@@ -11,6 +11,7 @@ using CollectingProductionDataSystem.Models.Productions;
 
 namespace CollectingProductionDataSystem.Models.UtilityEntities
 {
+    [Serializable]
     public class UserProfile : IMapFrom<ApplicationUser>, IHaveCustomMappings
     {
         public int Id { get; set; }
@@ -82,6 +83,7 @@ namespace CollectingProductionDataSystem.Models.UtilityEntities
     /// <summary>
     /// 
     /// </summary>
+    [Serializable]
     public class ParkModel : IMapFrom<Park>
     {
         public int Id { get; set; }
@@ -92,6 +94,7 @@ namespace CollectingProductionDataSystem.Models.UtilityEntities
     /// <summary>
     /// 
     /// </summary>
+    [Serializable]
     public class AreaModel : IMapFrom<Area>
     {
         public int Id { get; set; }
@@ -101,6 +104,7 @@ namespace CollectingProductionDataSystem.Models.UtilityEntities
     /// <summary>
     /// 
     /// </summary>
+    [Serializable]
     public class ProcessUnitModel : IMapFrom<ProcessUnit>
     {
         public int Id { get; set; }
@@ -114,6 +118,7 @@ namespace CollectingProductionDataSystem.Models.UtilityEntities
     /// <summary>
     /// 
     /// </summary>
+    [Serializable]
     public class FactoryModel : IMapFrom<Factory>
     {
         public int Id { get; set; }
@@ -121,6 +126,7 @@ namespace CollectingProductionDataSystem.Models.UtilityEntities
         public string FullName { get; set; }
     }
 
+    [Serializable]
     public class RoleModel : IMapFrom<ApplicationRole>
     {
         public int Id { get; set; }

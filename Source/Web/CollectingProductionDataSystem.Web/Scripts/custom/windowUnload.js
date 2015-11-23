@@ -2,9 +2,9 @@
 /*global window, document */
 /*global $, jQuery*/
 
-var validNavigation = false;
 (function ($) {
     'use strict';
+    var validNavigation = false;
     function addAntiForgeryToken(data) {
         data.__RequestVerificationToken = $('input[name=__RequestVerificationToken]').val();
         return data;
@@ -12,15 +12,12 @@ var validNavigation = false;
 
     $(document).ready(function () {
 
-        // block back and forward buttons
+        // block back and forward buttons from logoff
+        bajb_backdetect.OnBack  = function () {
+            validNavigation = true;
+        };
 
-        if (window.history && window.history.pushState) {
-
-            $(window).on('popstate', function () {
-                validNavigation = false;
-            });
-
-        }
+        bajb_backdetect
 
         $(window).bind("beforeunload", function closingCode() {
             if (!validNavigation) {
@@ -58,7 +55,7 @@ var validNavigation = false;
 
         $(document.body).on("unload", this, function (event) {
             if (!(event.keyCode === 116)) {
-                validNavigation = false;
+                validNavigation = true;
             }
         });
     });

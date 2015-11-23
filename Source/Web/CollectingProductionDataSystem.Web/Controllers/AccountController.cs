@@ -70,7 +70,7 @@
         public ActionResult Login(string returnUrl)
         {
             ViewBag.Title = Resources.Layout.Login;
-            ViewBag.ReturnUrl = returnUrl ?? Url.Action("Index", "Home", new { area = string.Empty});
+            ViewBag.ReturnUrl = returnUrl ?? Url.Action("Index", "Home", new { area = string.Empty });
             return View();
         }
 
@@ -111,7 +111,7 @@
                             model.UserName,
                             this.HttpContext.Request.RequestContext);
                     }
-                    Session["user"] = this.UserProfile ;
+                    Session["user"] = this.UserProfile;
                     DocumentUserLogIn(model.UserName, true);
                     if (userProfile.IsChangePasswordRequired)
                     {

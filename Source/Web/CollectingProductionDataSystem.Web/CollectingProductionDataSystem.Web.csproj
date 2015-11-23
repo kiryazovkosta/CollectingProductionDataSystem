@@ -337,6 +337,7 @@
     <Compile Include="Infrastructure\Extentions\IEfStatusExtentions.cs" />
     <Compile Include="Infrastructure\Filters\AuthorizeFactoryAttribute.cs" />
     <Compile Include="Infrastructure\Filters\CheckUserSessionAttribute.cs" />
+    <Compile Include="Infrastructure\Filters\CompressFilterAttribute.cs" />
     <Compile Include="Infrastructure\Filters\GlobalErrorFilterAttribute.cs" />
     <Compile Include="Infrastructure\Filters\HandleAntiforgeryTokenErrorAttribute.cs" />
     <Compile Include="Infrastructure\Helpers\AuthorizeActionLinkAjaxHelper.cs" />
@@ -789,6 +790,7 @@
     <Content Include="Content\kendo\images\kendoui.woff" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\custom\backfix.min.js" />
     <Content Include="Scripts\custom\bootstrapAdditional.js" />
     <Content Include="Scripts\custom\browserclosurenotice.js" />
     <Content Include="Scripts\custom\jquery-kendo-globalize.js" />

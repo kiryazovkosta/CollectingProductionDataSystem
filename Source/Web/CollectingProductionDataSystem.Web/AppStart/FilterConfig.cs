@@ -16,6 +16,7 @@ namespace CollectingProductionDataSystem.Web.AppStart
             handleAntiforgeryTokenError.ExceptionType = typeof(HttpAntiForgeryException);
             filters.Add(handleAntiforgeryTokenError);
             filters.Add(new CheckUserSessionAttribute());
+            //filters.Add(new CompressFilterAttribute());
         }
     }
 }

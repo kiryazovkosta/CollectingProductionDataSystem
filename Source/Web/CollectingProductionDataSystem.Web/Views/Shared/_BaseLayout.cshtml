@@ -21,7 +21,8 @@
     @RenderSection("scripts", required: false)
     @* Renders scripts came from the partial views *@
     @Html.PageScripts()
-    @Scripts.Render("~/Scripts/custom/windowUnload.min.js")
+    @Scripts.Render("~/Scripts/custom/backfix.min.js")
+    @Scripts.Render("~/Scripts/custom/windowUnload.js")
     @Scripts.Render("~/Scripts/custom/windowExpirationTime.min.js")
 </body>
 </html>
