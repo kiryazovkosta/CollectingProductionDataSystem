@@ -64,7 +64,7 @@
         /// <summary>
         /// Renews the application user.
         /// </summary>
-        private void RenewApplicationUser(string userName , RequestContext context)
+        internal void RenewApplicationUser(string userName , RequestContext context)
         {
             var rolsStore = data.Roles.All();
                 var user = this.data.Users.All()

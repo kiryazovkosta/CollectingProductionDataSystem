@@ -4,12 +4,15 @@
 <input id="culture" type="hidden" value="@System.Threading.Thread.CurrentThread.CurrentCulture.Name" />
 @Html.Partial("_MainNav")
 <div class="container-fluid body-content">
-    @RenderBody()
+     @RenderBody()
 </div>
 <div class="nav navbar-fixed-bottom">
     <div class="clearfix">
         <div class="footer clerfix">
-            <p>&copy; @DateTime.Now.Year - Бизнес Мениджмънт Системс ЕООД</p>
+            <p>
+                &copy; @DateTime.Now.Year - Бизнес Мениджмънт Системс ЕООД
+                @if (User.IsInRole("Administrator")){<span class="pull-right" id="counter"></span>}
+            </p>
         </div>
     </div>
 </div>

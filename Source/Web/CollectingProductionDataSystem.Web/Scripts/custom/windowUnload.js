@@ -1,7 +1,17 @@
-﻿var validNavigation = false;
+﻿/*jslint browser: true*/
+/*global window, document */
+/*global $, jQuery*/
+
+var validNavigation = false;
 (function ($) {
+    'use strict';
+    function addAntiForgeryToken(data) {
+        data.__RequestVerificationToken = $('input[name=__RequestVerificationToken]').val();
+        return data;
+    }
+
     $(document).ready(function () {
-        
+
         // block back and forward buttons
 
         if (window.history && window.history.pushState) {
@@ -12,14 +22,15 @@
 
         }
 
-
-        $(window).bind("beforeunload",function closingCode() {
+        $(window).bind("beforeunload", function closingCode() {
             if (!validNavigation) {
+                event.preventDefault();
                 $.ajax({
                     url: '/Ajax/UserCloseWindow',
                     type: 'POST',
                     data: addAntiForgeryToken({})
                 });
+                window.location.replace("/Home/Index");
                 return;
             }
         });
@@ -40,23 +51,15 @@
         });
 
         $(document.body).on("keydown", this, function (event) {
-            if (event.keyCode == 116) {
+            if (event.keyCode === 116) {
                 validNavigation = true;
             }
         });
 
         $(document.body).on("unload", this, function (event) {
-            if (!(event.keyCode == 116)) {
+            if (!(event.keyCode === 116)) {
                 validNavigation = false;
             }
         });
-
     });
-
-    function addAntiForgeryToken(data) {
-        data.__RequestVerificationToken = $('input[name=__RequestVerificationToken]').val();
-        return data;
-    };
-
-    
 }(jQuery));
