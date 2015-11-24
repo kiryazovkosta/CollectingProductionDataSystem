@@ -671,3 +671,8 @@ td[role=gridcell] ul {
     margin-left:auto;
     margin-right:auto;
 }
+
+.modal-custom-title {
+    font-size:1.4em;
+    font-weight:bold;
+}

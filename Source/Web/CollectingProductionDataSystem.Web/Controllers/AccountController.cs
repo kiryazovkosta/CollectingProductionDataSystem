@@ -132,8 +132,14 @@
         // GET: /Account/ChangePassword
         public ActionResult ChangePassword()
         {
+            var model = this.data.Users.All()
+                .Where(x => x.Id == this.UserProfile.Id)
+                .Select(x => new ChangePasswordViewModel() { 
+                    UserMustChangePassword = x.IsChangePasswordRequired 
+                }).FirstOrDefault();
+
             ViewBag.Title = Resources.Layout.ChangePassword;
-            return View();
+            return View(model);
         }
 
         // POST: /Account/ChangePassword
@@ -144,6 +150,7 @@
         {
             if (!ModelState.IsValid)
             {
+                ViewBag.Title = Resources.Layout.ChangePassword;
                 return View(model);
             }
             var result = ClearIsChangePasswordRequired();
@@ -164,6 +171,7 @@
                 return RedirectToAction("Index", "Home", new { Message = ManageMessageId.ChangePasswordSuccess });
             }
             AddErrors(result);
+            ViewBag.Title = Resources.Layout.ChangePassword;
             return View(model);
         }
 

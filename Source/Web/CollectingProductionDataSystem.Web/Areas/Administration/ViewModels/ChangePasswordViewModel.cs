@@ -24,6 +24,8 @@ namespace CollectingProductionDataSystem.Web.Areas.Administration.ViewModels
         [Display(Name = "ConfirmPassword", ResourceType = typeof(Resources.Layout))]
         [System.ComponentModel.DataAnnotations.Compare("NewPassword", ErrorMessageResourceName = "ConfirmPassword", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
         public string ConfirmPassword { get; set; }
+
+        public bool UserMustChangePassword { get; set; }
     }
 }
 
