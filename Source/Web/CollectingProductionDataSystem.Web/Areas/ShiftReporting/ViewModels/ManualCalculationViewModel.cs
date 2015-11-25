@@ -29,6 +29,6 @@
 
         [Required]
         [UIHint("Hidden")]
-        public string MeasurementCode{ get; set; }
+        public string EnteredMeasurementCode{ get; set; }
     }
 }

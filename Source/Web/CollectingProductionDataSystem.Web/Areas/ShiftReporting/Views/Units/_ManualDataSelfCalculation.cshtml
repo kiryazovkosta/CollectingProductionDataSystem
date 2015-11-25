@@ -14,7 +14,7 @@
 @using (Ajax.BeginForm("SelfCalculateManualEntry", "Units", null, new AjaxOptions() { HttpMethod = "POST", UpdateTargetId = "modal-dialog-body", OnSuccess = "unitGridsData.SuccessCalculateManualEntry", OnFailure = "unitGridsData.ManualEntryFailure" }, new { area = "ShiftReporting", @class = "form-horizontal" }))
 {
     @Html.HiddenFor(m=>m.UnitDataId)
-    @Html.HiddenFor(m=>m.MeasurementCode)
+    @Html.HiddenFor(m => m.EnteredMeasurementCode)
     @Html.HiddenFor(m=>m.EditorScreenHeading)
     <div class="modal-body">
         <div class="container-fluid">
@@ -24,7 +24,7 @@
                 <div class="col-sm-4">
                     <div class="input-group">
                         @Html.EditorFor(m => m.Value, new { htmlAttributes = new { @class = "form-control" } })
-                        <div class="input-group-addon">Процент</div>
+                        <div class="input-group-addon">@Model.EnteredMeasurementCode</div>
                     </div>
                 </div>
                 <div class="col-sm-4">

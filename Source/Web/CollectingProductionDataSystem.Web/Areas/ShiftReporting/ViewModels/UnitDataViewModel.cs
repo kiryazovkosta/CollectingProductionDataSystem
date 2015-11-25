@@ -81,6 +81,9 @@
         public int MeasureUnitId { get; set; }
         public MeasureUnitUnitDataViewModel MeasureUnit { get; set; }
 
+        public int? EnteredMeasureUnitId { get; set; }
+        public MeasureUnitUnitDataViewModel EnteredMeasureUnit { get; set; }
+
         [UIHint("Hidden")]
         public int ShiftProductTypeId { get; set; }
         public ShiftProductTypeViewModel ShiftProductType { get; set; }

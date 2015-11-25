@@ -251,7 +251,7 @@ using CollectingProductionDataSystem.Infrastructure.Contracts;
                 {
                     IsOldValueAvailableForEditing = startupValue == decimal.MinValue,
                     OldValue = startupValue == decimal.MinValue ? 0 : startupValue,
-                    MeasurementCode = model.UnitConfig.MeasureUnit.Code,
+                    EnteredMeasurementCode = model.UnitConfig.EnteredMeasureUnit.Code??string.Empty,
                     UnitDataId = model.Id,
                     EditorScreenHeading = string.Format(Resources.Layout.EditValueFor, model.UnitConfig.Name)
                 };
@@ -305,7 +305,7 @@ using CollectingProductionDataSystem.Infrastructure.Contracts;
             {
                 var manualSelfCalculationModel = new ManualSelfCalculationViewModel()
                 {
-                    MeasurementCode = model.UnitConfig.MeasureUnit.Code,
+                    EnteredMeasurementCode = model.UnitConfig.EnteredMeasureUnit.Code ?? string.Empty,
                     UnitDataId = model.Id,
                     EditorScreenHeading = string.Format(Resources.Layout.EditValueFor, string.Format("{0} {1}", model.UnitConfig.Position, model.UnitConfig.Name))
                 };
@@ -351,7 +351,7 @@ using CollectingProductionDataSystem.Infrastructure.Contracts;
             {
                 var manualWithRelatedCalculationModel = new ManualCalculationWithRelatedViewModel()
                 {
-                    MeasurementCode = model.UnitConfig.MeasureUnit.Code,
+                    EnteredMeasurementCode = model.UnitConfig.EnteredMeasureUnit.Code ?? string.Empty,
                     UnitDataId = model.Id,
                     EditorScreenHeading = string.Format(Resources.Layout.EditValueFor, string.Format("{0} {1}", model.UnitConfig.Position, model.UnitConfig.Name))
                 };

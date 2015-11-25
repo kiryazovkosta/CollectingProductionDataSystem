@@ -81,5 +81,10 @@ namespace CollectingProductionDataSystem.Models.Productions
         public decimal? StartupValue { get; set; }
 
         public bool IsMemberOfShiftsReport { get; set; }
+
+
+
+        public int? EnteredMeasureUnitId { get; set; }
+        public virtual MeasureUnit EnteredMeasureUnit { get; set; }
     }
 }
