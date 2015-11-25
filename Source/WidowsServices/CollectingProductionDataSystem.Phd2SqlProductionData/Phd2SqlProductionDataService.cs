@@ -72,6 +72,7 @@ namespace CollectingProductionDataSystem.Phd2SqlProductionData
         {
             lock (lockObjectPrimaryData)
             {
+                DateTime beginDateTime = DateTime.Now;
                 try
                 {
                     Utility.SetRegionalSettings();
@@ -84,8 +85,12 @@ namespace CollectingProductionDataSystem.Phd2SqlProductionData
                 }
                 finally
                 {
-                    this.primaryDataTimer.Change(Convert.ToInt64(Properties.Settings.Default.IDLE_TIMER_PRIMARY.TotalMilliseconds), 
-                        System.Threading.Timeout.Infinite);
+                    DateTime endDateTime = DateTime.Now;
+                    var operationTimeout = Convert.ToInt64((endDateTime - beginDateTime).TotalMilliseconds);
+                    logger.InfoFormat("operationTimeout {0}", operationTimeout);
+                    var callbackTimeout = Convert.ToInt64(Properties.Settings.Default.IDLE_TIMER_PRIMARY.TotalMilliseconds);
+                    logger.InfoFormat("callbackTimeout {0}", callbackTimeout);
+                    this.primaryDataTimer.Change(callbackTimeout - operationTimeout, Timeout.Infinite);
                 }
             }
         }
