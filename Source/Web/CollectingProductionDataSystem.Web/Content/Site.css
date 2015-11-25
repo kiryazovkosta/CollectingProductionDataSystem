@@ -676,3 +676,11 @@ td[role=gridcell] ul {
     font-size:1.4em;
     font-weight:bold;
 }
+
+h4.modal-title {
+    font-weight:bold; 
+}
+
+DIV.modal-header {
+    text-align:center;
+}

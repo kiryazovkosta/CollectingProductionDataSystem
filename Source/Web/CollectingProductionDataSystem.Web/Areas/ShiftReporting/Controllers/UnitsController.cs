@@ -273,13 +273,28 @@ using CollectingProductionDataSystem.Infrastructure.Contracts;
                 return PartialView("_ManualDataCalculation", model);
             }
 
-            var status = this.productionDataCalculator.CalculateByUnitData(model.UnitDataId, this.UserProfile.UserName, model.NewValue, model.OldValue);
-            if (!status.IsValid)
+            if (model.NewValue < model.OldValue)
             {
-                status.ToModelStateErrors(this.ModelState);
+                this.ModelState.AddModelError("", "Въведената стойност за брояч не може да бъде по-малка от последно въведената стойност");
+            }
+            else
+            {
+                var status = this.productionDataCalculator.CalculateByUnitData(model.UnitDataId, this.UserProfile.UserName, model.NewValue, model.OldValue);
+                if (!status.IsValid)
+                {
+                    status.ToModelStateErrors(this.ModelState);
+                }
             }
 
-            return Json("success");
+            if (this.ModelState.IsValid)
+            {
+                return Json("success"); 
+            }
+            else
+            {
+               return PartialView("_ManualDataCalculation", model);
+            }
+            
         }
 
         [HttpPost]
@@ -318,7 +333,14 @@ using CollectingProductionDataSystem.Infrastructure.Contracts;
                 status.ToModelStateErrors(this.ModelState);
             }
 
-            return Json("success");
+            if (this.ModelState.IsValid)
+            {
+                return Json("success"); 
+            }
+            else
+            {
+               return PartialView("_ManualDataSelfCalculation", model);
+            }
         }
 
         [HttpPost]
@@ -357,7 +379,14 @@ using CollectingProductionDataSystem.Infrastructure.Contracts;
                 status.ToModelStateErrors(this.ModelState);
             }
 
-            return Json("success");
+            if (this.ModelState.IsValid)
+            {
+                return Json("success"); 
+            }
+            else
+            {
+               return PartialView("_ManualDataWithRelatedCalculation", model);
+            }
         }
 
         private IEfStatus UpdateRelatedUnitConfig(int unitConfigId, UnitDataViewModel model)

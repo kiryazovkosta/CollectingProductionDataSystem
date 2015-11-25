@@ -175,8 +175,8 @@ var unitGridsData = (function () {
         }).done(function (data) {
             if (data.success === undefined) {
                 $("#modal-dialog-body").html(data);
-                prepareValidationScripts();
                 showRecordHistoriModal();
+                prepareValidationScripts();
             } else {
                 if (data.success === false) {
                     manualEntryDoneErrorHandler(data.errors);
