@@ -18,6 +18,7 @@
           columns.Bound(c => c.Position).Width(150);
           columns.Bound(c => c.Name).Width(200);
           columns.Bound(c => c.CollectingDataMechanism).Width(100);
+          columns.Bound(c => c.CalculatedFormula).Width(100);
           columns.Bound(c => c.AggregateGroup).Width(100);
           columns.Bound(c => c.AggregationMembers).Width(100);
           columns.Bound(c => c.RelatedUnitConfigs).Width(300).ClientTemplate("#=territoriesTemplate(RelatedUnitConfigs)#");

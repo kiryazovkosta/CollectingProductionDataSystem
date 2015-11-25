@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Data.Entity;
 using System.Transactions;
+using CollectingProductionDataSystem.Data.Common;
 using CollectingProductionDataSystem.Models.Inventories;
 using CollectingProductionDataSystem.Models.Nomenclatures;
 using CollectingProductionDataSystem.Models.UtilityEntities;
@@ -23,7 +24,7 @@ namespace CollectingProductionDataSystem.Data.Tests
         [TestInitialize]
         public void InitializeTest()
         {
-            tranScope = new TransactionScope();
+            tranScope = new TransactionScope(TransactionScopeOption.Required, DefaultTransactionOptions.Instance.TransactionOptions);
         }
 
         [TestCleanup]
