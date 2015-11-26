@@ -25,6 +25,8 @@
             if (uri != "account/login"
                 && uri != "account/getgreetingmessage"
                 && uri != "home/index"
+                && uri != "account/logoff"
+                && uri != "ajax/userclosewindow"
                 && filterContext.HttpContext.Session["user"] == null)
             {
                 filterContext.Result = new RedirectToRouteResult(
