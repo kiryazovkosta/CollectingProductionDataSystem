@@ -275,7 +275,7 @@ using CollectingProductionDataSystem.Infrastructure.Contracts;
 
             if (model.NewValue < model.OldValue)
             {
-                this.ModelState.AddModelError("", "Въведената стойност за брояч не може да бъде по-малка от последно въведената стойност");
+                //this.ModelState.AddModelError("", "Въведената стойност за брояч не може да бъде по-малка от последно въведената стойност");
             }
             else
             {
