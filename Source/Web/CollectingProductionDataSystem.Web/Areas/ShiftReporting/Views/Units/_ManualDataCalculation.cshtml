@@ -13,38 +13,46 @@
 @Html.ValidationSummary(true)
 @using (Ajax.BeginForm("CalculateManualEntry", "Units", null, new AjaxOptions() { HttpMethod = "POST", UpdateTargetId = "modal-dialog-body", OnSuccess = "unitGridsData.SuccessCalculateManualEntry", OnFailure = "unitGridsData.ManualEntryFailure" }, new { area = "ShiftReporting", @class = "form-horizontal" }))
 {
-    @Html.HiddenFor(m=>m.UnitDataId)
+    @Html.HiddenFor(m => m.UnitDataId)
     @Html.HiddenFor(m => m.EnteredMeasurementCode)
-    @Html.HiddenFor(m=>m.EditorScreenHeading)
-    if (Model.OldValue > 0)
-    {
-        @Html.HiddenFor(m=>m.OldValue)
-    }
+    @Html.HiddenFor(m => m.EditorScreenHeading)
+
     <div class="modal-body">
         <div class="container-fluid">
             @Html.AntiForgeryToken()
             <div class="form-group">
-                @Html.LabelFor(m => m.OldValue, new { @class = "col-sm-3 control-label" })
+                @Html.LabelFor(m => m.OldValue, new { @class = "col-sm-4 control-label" })
                 <div class="col-sm-4">
                     <div class="input-group">
                         @Html.EditorFor(m => m.OldValue, new { htmlAttributes = new { @class = "form-control" } })
                         <div class="input-group-addon">@Model.EnteredMeasurementCode</div>
                     </div>
                 </div>
-                <div class="col-sm-4">
+                <div class="col-sm-3">
                     @Html.ValidationMessageFor(m => m.OldValue)
                 </div>
             </div>
             <div class="form-group">
-                @Html.LabelFor(m => m.NewValue, new { @class = "col-sm-3 control-label" })
+                @Html.LabelFor(m => m.NewValue, new { @class = "col-sm-4 control-label" })
                 <div class="col-sm-4">
                     <div class="input-group">
                         @Html.EditorFor(m => m.NewValue, new { htmlAttributes = new { @class = "form-control" } })
                         <div class="input-group-addon">@Model.EnteredMeasurementCode</div>
                     </div>
                 </div>
-                <div class="col-sm-4">
+                <div class="col-sm-3">
                     @Html.ValidationMessageFor(m => m.NewValue)
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.IsValueOfCounterReseted, new { @class = "col-sm-4 control-label" })
+                <div class="col-sm-4">
+                    <div class="input-group">
+                        @Html.CheckBoxFor(m => m.IsValueOfCounterReseted, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    @Html.ValidationMessageFor(m => m.IsValueOfCounterReseted)
                 </div>
             </div>
         </div>

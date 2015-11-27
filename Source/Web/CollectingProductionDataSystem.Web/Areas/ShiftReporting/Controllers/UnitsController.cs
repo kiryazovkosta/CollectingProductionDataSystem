@@ -275,7 +275,21 @@ using CollectingProductionDataSystem.Infrastructure.Contracts;
 
             if (model.NewValue < model.OldValue)
             {
-                //this.ModelState.AddModelError("", "Въведената стойност за брояч не може да бъде по-малка от последно въведената стойност");
+                if (model.IsValueOfCounterReseted)
+                {
+                    var totalizerMaximumValue = this.data.UnitsData.All().Include(x => x.UnitConfig).Where(x => x.Id == model.UnitDataId).Select(x => x.UnitConfig.EstimatedCompressibilityFactor).FirstOrDefault();
+                    var diff = totalizerMaximumValue.Value - model.OldValue + model.NewValue;
+                    model.OldValue = model.NewValue - diff;
+                    var status = this.productionDataCalculator.CalculateByUnitData(model.UnitDataId, this.UserProfile.UserName, model.NewValue, model.OldValue);
+                    if (!status.IsValid)
+                    {
+                        status.ToModelStateErrors(this.ModelState);
+                    }
+                }
+                else
+                {
+                    this.ModelState.AddModelError("", "Въведената стойност за брояч не може да бъде по-малка от последно въведената стойност");
+                }
             }
             else
             {
@@ -600,7 +614,7 @@ using CollectingProductionDataSystem.Infrastructure.Contracts;
         {
             var startupValue = decimal.MinValue;
 
-            var lastEnteredData = data.UnitEnteredForCalculationDatas.All().Where(x => x.UnitsData.UnitConfigId == model.UnitConfigId).OrderByDescending(x => x.Id).FirstOrDefault();
+            var lastEnteredData = data.UnitEnteredForCalculationDatas.All().Where(x => x.UnitsData.UnitConfigId == model.UnitConfigId).OrderByDescending(x => x.CreatedOn).FirstOrDefault();
             if (lastEnteredData == null)
             {
                 var unitConfig = data.UnitConfigs.All().Where(x => x.Id == model.UnitConfigId).FirstOrDefault();
