@@ -308,7 +308,6 @@ using CollectingProductionDataSystem.Infrastructure.Contracts;
             {
                return PartialView("_ManualDataCalculation", model);
             }
-            
         }
 
         [HttpPost]
@@ -614,8 +613,29 @@ using CollectingProductionDataSystem.Infrastructure.Contracts;
         {
             var startupValue = decimal.MinValue;
 
-            var lastEnteredData = data.UnitEnteredForCalculationDatas.All().Where(x => x.UnitsData.UnitConfigId == model.UnitConfigId).OrderByDescending(x => x.CreatedOn).FirstOrDefault();
-            if (lastEnteredData == null)
+            var lastCreatedData = data.UnitEnteredForCalculationDatas.All().Where(x => x.UnitsData.UnitConfigId == model.UnitConfigId).OrderByDescending(x => x.CreatedOn).FirstOrDefault();
+            var lastModifiedData = data.UnitEnteredForCalculationDatas.All().Where(x => x.UnitsData.UnitConfigId == model.UnitConfigId).OrderByDescending(x => x.ModifiedOn).FirstOrDefault();
+
+            if (lastCreatedData != null && lastModifiedData != null)
+            {
+                if (lastCreatedData.CreatedOn > lastModifiedData.ModifiedOn)
+                {
+                    startupValue = lastCreatedData.NewValue;
+                }
+                else 
+                {
+                    startupValue = lastModifiedData.NewValue;
+                }
+            }
+            else if (lastCreatedData != null && lastModifiedData == null)
+	        {
+		        startupValue = lastCreatedData.NewValue;
+	        }
+            else if (lastModifiedData != null && lastCreatedData == null) 
+            { 
+                startupValue = lastModifiedData.NewValue;
+            }
+            else
             {
                 var unitConfig = data.UnitConfigs.All().Where(x => x.Id == model.UnitConfigId).FirstOrDefault();
                 if (unitConfig.StartupValue.HasValue)
@@ -623,10 +643,7 @@ using CollectingProductionDataSystem.Infrastructure.Contracts;
                     startupValue = unitConfig.StartupValue.Value;
                 }
             }
-            else
-            {
-                startupValue = lastEnteredData.NewValue;
-            }
+
             return startupValue;
         }
 
