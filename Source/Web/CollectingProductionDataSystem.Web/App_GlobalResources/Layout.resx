@@ -1257,4 +1257,7 @@
   <data name="LastLogedIn" xml:space="preserve">
     <value>Last Loged In</value>
   </data>
+  <data name="IsValueOfCounterReseted" xml:space="preserve">
+    <value>IsValueOfCounterReseted</value>
+  </data>
 </root>
