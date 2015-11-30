@@ -147,7 +147,7 @@ var unitGridsData = (function () {
         });
 
         $(targetSelector).data("kendoGrid").bind("excelExport", function (e) {
-            e.workbook.fileName = "Grid.xlsx";
+           // e.workbook.fileName = "Grid.xlsx";
         });
     }
 

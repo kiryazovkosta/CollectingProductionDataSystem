@@ -1,0 +1,40 @@
+﻿@using Resources = App_GlobalResources.Resources
+@model System.Int32
+@(Html.Kendo()
+      .DropDownListFor(m => m)
+      .OptionLabel(Resources.Layout.ChooseProduct)
+      .DataTextField("Name")
+      .DataValueField("Id")
+      .Height(520)
+          .DataSource(source =>
+          {
+              source.Custom()
+                  .ServerFiltering(true)
+                  .ServerPaging(true)
+                  .PageSize(80)
+                  .Type("aspnetmvc-ajax") //Set this type if you want to use DataSourceRequest and ToDataSourceResult instances
+                  .Transport(transport =>
+                  {
+                      transport.Read(read =>
+                        {
+                            read.Action("Read", "Product", new { area = "NomManagement" }).Data("sendAntiForgery");
+                        });
+                  })
+                  .Schema(schema =>
+                  {
+                      schema.Data("Data") //define the [data](http://docs.telerik.com/kendo-ui/api/javascript/data/datasource#configuration-schema.data) option
+                            .Total("Total"); //define the [total](http://docs.telerik.com/kendo-ui/api/javascript/data/datasource#configuration-schema.total) option
+                  });
+          })
+                  .Virtual(v => v.ItemHeight(26).ValueMapper("kendoAdditional.ValueMapper"))
+              .Filter(FilterType.Contains)
+          .HeaderTemplate("<div class=\"dropdown-header\">" +
+                        "<div class=\"k-widget k-header k-code-header\">"+Resources.Layout.Code +"</div>" +
+                                "<div class=\"k-widget k-header k-name-header\">" + Resources.Layout.Name + "</div>" +
+                    "</div>")
+              .Template("<div class=\"k-state-default k-code\">#:data.Code#</div>" +
+                            "<div class=\"k-state-default k-name\">#: data.Name #</div>")
+
+)
+
+
