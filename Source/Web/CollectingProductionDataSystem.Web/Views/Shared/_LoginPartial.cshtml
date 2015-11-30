@@ -11,6 +11,7 @@
 
             </li>
             <li><a href="javascript:document.getElementById('logoutForm').submit()">@Resources.Layout.Logoff</a></li>
+            <li><a href="/Documentation/Help" class="btn-help"><img src="~/Content/Images/PNG/Help.png" alt="Help" class="btn-help"/></a></li>
         </ul>
     }
 }
@@ -18,5 +19,7 @@ else
 {
     <ul class="nav navbar-nav navbar-right">
         <li>@Html.ActionLink(@Resources.Layout.Login, "Login", "Account", routeValues: new { area = "" }, htmlAttributes: new { id = "loginLink" })</li>
+        <li><a href="/Documentation/Help" class="btn-help"><img src="~/Content/Images/PNG/Help.png" alt="Help" class="btn-help" /></a></li>
     </ul>
 }
+

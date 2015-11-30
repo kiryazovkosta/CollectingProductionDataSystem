@@ -145,7 +145,12 @@ var unitGridsData = (function () {
         $(buttonSelector).click(function () {
             $(targetSelector).data("kendoGrid").saveAsExcel();
         });
+
+        $(targetSelector).data("kendoGrid").bind("excelExport", function (e) {
+            e.workbook.fileName = "Grid.xlsx";
+        });
     }
+
 
     function nameGridCommancolumn() {
         var grid = $("#units").data("kendoGrid");

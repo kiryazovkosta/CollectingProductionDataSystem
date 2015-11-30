@@ -500,6 +500,7 @@
     <Content Include="Content\Images\PNG\64x64\Search.png" />
     <Content Include="Content\Images\PNG\64x64\Search2.png" />
     <Content Include="Content\Images\PNG\64x64\Wait.png" />
+    <Content Include="Content\Images\PNG\Help.png" />
     <Content Include="Content\Images\ShiftData\butonPrilogi.png" />
     <Content Include="Content\Images\ShiftData\edit.png" />
     <Content Include="Content\Images\ShiftData\erase.png" />

@@ -168,6 +168,14 @@ namespace CollectingProductionDataSystem.Web.Controllers
             return Content(string.Empty);
         }
 
+        [HttpPost]
+        public ActionResult Excel_Export_Save(string contentType, string base64, string fileName)
+        {
+            var fileContents = Convert.FromBase64String(base64);
+
+            return File(fileContents, contentType, fileName);
+        }
+
         private bool IsPowerUser()
         {
             return UserProfile.UserRoles.Where(x => CommonConstants.PowerUsers.Any(y => y == x.Name)).Any();

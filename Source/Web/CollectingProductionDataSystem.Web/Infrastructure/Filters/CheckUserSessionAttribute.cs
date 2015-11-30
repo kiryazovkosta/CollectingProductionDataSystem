@@ -17,36 +17,43 @@
         /// <param name="filterContext">The filter context.</param>
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            var controllerName = filterContext.ActionDescriptor.ControllerDescriptor.ControllerName.Trim();
-            var actionName = filterContext.ActionDescriptor.ActionName.Trim();
-            var uri = string.Format("{0}/{1}", controllerName.ToLower(), actionName.ToLower());
-            var returnUrl = ConstructReturnUrl(filterContext);
+            bool hasAuthorizeAttribute = filterContext.ActionDescriptor
+                                        .GetCustomAttributes(typeof(AuthorizeAttribute), false)
+                                        .Any();
 
-            if (uri != "account/login"
-                && uri != "account/getgreetingmessage"
-                && uri != "home/index"
-                && uri != "account/logoff"
-                && uri != "ajax/userclosewindow"
-                && filterContext.HttpContext.Session["user"] == null)
+            if (hasAuthorizeAttribute)
             {
-                filterContext.Result = new RedirectToRouteResult(
-                    new RouteValueDictionary(new
-                    {
-                        action = "Login",
-                        controller = "Account",
-                        area = string.Empty,
-                        returnUrl = returnUrl
-                    }));
-                return;
-            }
+                var controllerName = filterContext.ActionDescriptor.ControllerDescriptor.ControllerName.Trim();
+                var actionName = filterContext.ActionDescriptor.ActionName.Trim();
+                var uri = string.Format("{0}/{1}", controllerName.ToLower(), actionName.ToLower());
+                var returnUrl = ConstructReturnUrl(filterContext);
 
-            if (uri == "home/index"
-                && filterContext.HttpContext.User.Identity.IsAuthenticated
-                && filterContext.HttpContext.Session["user"] == null)
-            {
-                filterContext.HttpContext.GetOwinContext().Authentication.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+                if (uri != "account/login"
+                    && uri != "account/getgreetingmessage"
+                    && uri != "home/index"
+                    && uri != "account/logoff"
+                    && uri != "ajax/userclosewindow"
+                    && filterContext.HttpContext.Session["user"] == null)
+                {
+                    filterContext.Result = new RedirectToRouteResult(
+                        new RouteValueDictionary(new
+                        {
+                            action = "Login",
+                            controller = "Account",
+                            area = string.Empty,
+                            returnUrl = returnUrl
+                        }));
+                    return;
+                }
 
-                ClearCookies(filterContext);
+                if (uri == "home/index"
+                    && filterContext.HttpContext.User.Identity.IsAuthenticated
+                    && filterContext.HttpContext.Session["user"] == null)
+                {
+                    filterContext.HttpContext.GetOwinContext().Authentication.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+
+                    ClearCookies(filterContext);
+                }
             }
 
             base.OnActionExecuting(filterContext);

@@ -45,7 +45,7 @@
     .Excel(excel => excel
         .FileName(@Resources.Layout.UnitsData + "_" + string.Format("{0:yyyy-mm-dd}", DateTime.Now) + ".xlsx")
         .Filterable(true)
-        .ProxyURL(Url.Action("Excel_Export_Save", "Tests", new { area = "" }))
+        .ProxyURL(Url.Action("Excel_Export_Save", "Ajax", new { area = "" }))
         .AllPages(true)
     )
     .Scrollable(scr => scr.Height(640))

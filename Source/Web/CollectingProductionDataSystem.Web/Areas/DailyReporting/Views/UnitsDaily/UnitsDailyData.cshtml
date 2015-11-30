@@ -102,7 +102,7 @@
                                                              .Excel(excel => excel
                                                                 .FileName(@Resources.Layout.UnitsDailyData + "_" + DateTime.Now + ".xlsx")
                                                                 .Filterable(true)
-                                                                .ProxyURL(Url.Action("Excel_Export_Save", "Tests", new { area = "" }))
+                                                                .ProxyURL(Url.Action("Excel_Export_Save", "Ajax", new { area = "" }))
                                                                 .AllPages(true))
                                                                 .Events(ev => ev.DataBound("unitGridsData.DataBound"))
                                                                 .Scrollable(scr => scr.Height(640))
