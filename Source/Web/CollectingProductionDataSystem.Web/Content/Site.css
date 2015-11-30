@@ -684,3 +684,7 @@ h4.modal-title {
 DIV.modal-header {
     text-align:center;
 }
+
+.k-item.k-state-selected.k-state-focused {
+    background-color: #428bca !important;
+}
