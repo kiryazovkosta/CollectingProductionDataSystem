@@ -1260,4 +1260,7 @@
   <data name="LastLogedIn" xml:space="preserve">
     <value>Последно влизане</value>
   </data>
+  <data name="IsValueOfCounterReseted" xml:space="preserve">
+    <value>Зануляване показание на брояч?</value>
+  </data>
 </root>
