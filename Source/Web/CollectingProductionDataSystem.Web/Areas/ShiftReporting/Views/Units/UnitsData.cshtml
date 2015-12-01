@@ -32,9 +32,9 @@
         {
             columns.Bound(c => c.UnitConfig.Code)
                           .ClientTemplate(
-                Ajax.AuthorizedAjaxActionLinkOrText("#=data.UnitConfig.Code#", "Index", "History", 
-                                                new AjaxOptions() { HttpMethod = "Get", OnSuccess="showRecordHistoriModal"},
-                                                new { area = "RecordsHistory", id = "#=data.id#", entityName = "UnitsData" }, 
+                Ajax.AuthorizedAjaxActionLinkOrText("#=data.UnitConfig.Code#", "Index", "History",
+                                                new AjaxOptions() { HttpMethod = "Get", OnSuccess = "showRecordHistoriModal" },
+                                                new { area = "RecordsHistory", id = "#=data.id#", entityName = "UnitsData" },
                                                 new { data_ajax_mode = "replace", data_ajax_update = @"\#modal-dialog-body" })
                                                 .ToHtmlString())
                 .Width(77);
@@ -56,6 +56,7 @@
             .ClientTemplate("<div class=row><div class='col-xs-2 no-horisontal-padding'><div class='#:UnitsManualData.EditReason.Id == 0? 'bg-ok':'bg-warning'#'></div></div><div class='col-xs-9 no-horisontal-padding reason'>#:UnitsManualData.EditReason.Name#</div></div>");
             columns.Bound(c => c.IsEditable).Visible(false);
             columns.Command(c => c.Edit()).Width(180);
+
         })
     .Pageable(pageable => pageable
         .Refresh(true)
@@ -100,7 +101,7 @@
             events.RequestEnd("unitGridsData.DataSave");
         })
     )
-    .Events(ev=>ev
+    .Events(ev => ev
     .DataBound("unitGridsData.DataBound")
         )
 )

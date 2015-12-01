@@ -91,6 +91,10 @@ var unitGridsData = (function () {
         return { "parkId": $('input[name=parks]').val() }
     }
 
+    function sendAreaId() {
+        return { "areaId": $('input[name=areas]').val() }
+    }
+
     function sendShiftsOffset() {
         return { "shiftMinutesOffset": $('input[name=shifts]').val() }
     }
@@ -261,6 +265,7 @@ var unitGridsData = (function () {
         var result = { "date": $('input[name=date]').val() };
         $.extend(result, sendZoneId());
         $.extend(result, sendShift());
+        $.extend(result, sendAreaId());
         $.extend(result, sendAntiForgery());
         return result;
     }
