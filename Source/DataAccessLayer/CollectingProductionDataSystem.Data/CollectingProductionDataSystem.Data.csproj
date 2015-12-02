@@ -95,6 +95,7 @@
     <Compile Include="Mappings\FactoryMap.cs" />
     <Compile Include="Mappings\IkunkMap.cs" />
     <Compile Include="Mappings\LogedInUserMap.cs" />
+    <Compile Include="Mappings\MathExpressionMap.cs" />
     <Compile Include="Mappings\MaxAsoMeasuringPointDataSequenceNumberMap.cs" />
     <Compile Include="Mappings\MeasurementPointsProductsDataMap.cs" />
     <Compile Include="Mappings\MeasuringPointConfigMap.cs" />
@@ -102,6 +103,7 @@
     <Compile Include="Mappings\MeasuringPointProductsConfigMap.cs" />
     <Compile Include="Mappings\ParkMap.cs" />
     <Compile Include="Mappings\ProductionPlanConfigMap.cs" />
+    <Compile Include="Mappings\ProductionPlanDataMap.cs" />
     <Compile Include="Mappings\RelatedMeasuringPointConfigsMap.cs" />
     <Compile Include="Mappings\RelatedTankConfigsMap.cs" />
     <Compile Include="Mappings\RelatedUnitConfigsMap.cs" />

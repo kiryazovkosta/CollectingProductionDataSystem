@@ -337,6 +337,22 @@
             }
         }
 
+        public IDeletableEntityRepository<ProductionPlanData> ProductionPlanDatas
+        {
+            get
+            {
+                return this.GetDeletableEntityRepository<ProductionPlanData>();
+            }
+        }
+
+        public IDeletableEntityRepository<MathExpression> MathExpressions
+        {
+            get
+            {
+                return this.GetDeletableEntityRepository<MathExpression>();
+            }
+        }
+
         public IRepository<AuditLogRecord> AuditLogRecords
         {
             get

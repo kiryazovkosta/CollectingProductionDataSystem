@@ -55,6 +55,8 @@
             modelBuilder.Configurations.Add(new MeasuringPointProductsConfigMap());
             modelBuilder.Configurations.Add(new EventMap());
             modelBuilder.Configurations.Add(new LogedInUserMap());
+            modelBuilder.Configurations.Add(new ProductionPlanDataMap());
+            modelBuilder.Configurations.Add(new MathExpressionMap());
         }
     }
 }

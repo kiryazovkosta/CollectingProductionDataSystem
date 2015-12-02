@@ -80,9 +80,10 @@
                 {
                     Id = productionPlan.Id,
                     Name = productionPlan.Name,
-                    Percentages = productionPlan.Percentages,
+                    PercentagesPlan = productionPlan.Percentages,
                     QuantityPlan = (decimal)planValue,
-                    QuantityFact = (decimal)factValue
+                    QuantityFact = (decimal)factValue,
+                    PercentagesFact = (decimal)((factValue * 100) / dailyData.Where(x => x.UnitsDailyConfig.Code == productionPlan.QuantityPlanMembers).FirstOrDefault().RealValue)
                 });
             }
 

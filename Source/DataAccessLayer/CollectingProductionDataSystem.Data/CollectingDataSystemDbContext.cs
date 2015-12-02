@@ -136,6 +136,10 @@
 
         public IDbSet<LogedInUser> LogedInUsers { get; set; }
 
+        public IDbSet<ProductionPlanData> ProductionPlanDatas { get; set; }
+
+        public IDbSet<MathExpression> MathExpressions { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             ModelBingConfig.RegisterMappings(modelBuilder);

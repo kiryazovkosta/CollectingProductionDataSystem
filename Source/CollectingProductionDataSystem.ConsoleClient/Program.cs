@@ -269,7 +269,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
 
                 foreach (var item in result)
                 {
-                    Console.WriteLine("{0} {1} {2} {3} {4} {5}", item.TimeStamp, item.UnitName, item.Shift1, item.Shift2, item.Shift3.RealValue, item.TotalQuantityValue);
+                    Console.WriteLine("{0} {1} {2} {3} {4} {5}", item.TimeStamp, item.UnitName, item.Shift1, item.Shift2, item.Shift3.RealValue/*,item.TotalQuantityValue*/);
                 }
 
                 Console.WriteLine("Estimated Time For Action: {0}", timer.Elapsed);

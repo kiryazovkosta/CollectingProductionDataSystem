@@ -81,6 +81,7 @@
     <Compile Include="Inventories\Area.cs" />
     <Compile Include="Inventories\TankData.cs" />
     <Compile Include="Nomenclatures\EditReason.cs" />
+    <Compile Include="Nomenclatures\MathExpression.cs" />
     <Compile Include="Nomenclatures\MeasureUnit.cs" />
     <Compile Include="Nomenclatures\Shift.cs" />
     <Compile Include="Nomenclatures\ShiftProductType.cs" />
@@ -97,6 +98,7 @@
     <Compile Include="Nomenclatures\ProductType.cs" />
     <Compile Include="Productions\ProcessUnit.cs" />
     <Compile Include="Productions\ProductionPlanConfig.cs" />
+    <Compile Include="Productions\ProductionPlanData.cs" />
     <Compile Include="Productions\Qpt\Density2FactorAlpha.cs" />
     <Compile Include="Productions\Qpt\PressureAndTemperature2CompressibilityFactor.cs" />
     <Compile Include="Productions\Qpt\PressureAndTemperature2EtilenDensity.cs" />

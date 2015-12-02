@@ -13,8 +13,9 @@ namespace CollectingProductionDataSystem.Web.ViewModels.Units
         [Display(Name = "№")]
         public int Id { get; set; }
         public string Name { get; set; }
-        public decimal Percentages { get; set; }
+        public decimal PercentagesPlan { get; set; }
         public decimal QuantityPlan { get; set; }
         public decimal QuantityFact { get; set; }
+        public decimal PercentagesFact { get; set; }
     }
 }

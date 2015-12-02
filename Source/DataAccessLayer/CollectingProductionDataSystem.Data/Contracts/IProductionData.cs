@@ -102,6 +102,10 @@
 
         IRepository<LogedInUser> LogedInUsers { get; }
 
+        IDeletableEntityRepository<ProductionPlanData> ProductionPlanDatas { get; }
+
+        IDeletableEntityRepository<MathExpression> MathExpressions { get; }
+
         IDbContext DbContext { get; }
 
         IEfStatus SaveChanges(string userName);
