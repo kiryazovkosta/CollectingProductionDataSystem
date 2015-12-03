@@ -1260,4 +1260,22 @@
   <data name="IsValueOfCounterReseted" xml:space="preserve">
     <value>IsValueOfCounterReseted</value>
   </data>
+  <data name="SummaryReports" xml:space="preserve">
+    <value>Summary Reports</value>
+  </data>
+  <data name="UnitsDailyReportData" xml:space="preserve">
+    <value>Units Daily Report Data</value>
+  </data>
+  <data name="AllAreas" xml:space="preserve">
+    <value>All Areas</value>
+  </data>
+  <data name="AllFactories" xml:space="preserve">
+    <value>All Factories</value>
+  </data>
+  <data name="AllParks" xml:space="preserve">
+    <value>Аll Parks</value>
+  </data>
+  <data name="AllProcessUnits" xml:space="preserve">
+    <value>All ProcessUnits</value>
+  </data>
 </root>

@@ -5,7 +5,7 @@
     <label for="areas">@Resources.Layout.Area</label>
     @(Html.Kendo().DropDownList()
         .Name("areas")
-        .OptionLabel(Resources.Layout.ChooseArea)
+        .OptionLabel(Resources.Layout.AllAreas)
         .HtmlAttributes(new { style = "width:95%" })
         .DataTextField("Name")
         .DataValueField("Id")
@@ -23,7 +23,7 @@
     <label for="parks">@Resources.Layout.Parks</label>
     @(Html.Kendo().DropDownList()
         .Name("parks")
-                .OptionLabel(Resources.Layout.ChooseParks)
+        .OptionLabel(Resources.Layout.AllParks)
         .HtmlAttributes(new { style = "width:95%" })
         .DataTextField("Name")
         .DataValueField("Id")

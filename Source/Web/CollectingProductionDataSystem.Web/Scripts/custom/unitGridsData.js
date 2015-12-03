@@ -95,6 +95,10 @@ var unitGridsData = (function () {
         return { "areaId": $('input[name=areas]').val() }
     }
 
+    function sendFactoryId() {
+        return { "factoryId": $('input[name=factories]').val() || $('input[name=factoriesD]').val() }
+    }
+
     function sendShiftsOffset() {
         return { "shiftMinutesOffset": $('input[name=shifts]').val() }
     }
@@ -258,6 +262,7 @@ var unitGridsData = (function () {
             $.extend(result, sendShift());
         }
         $.extend(result, sendAntiForgery());
+        $.extend(result, sendFactoryId());
         return result;
     }
 

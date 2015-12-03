@@ -2,24 +2,16 @@
 {
     using System;
     using System.Data.Entity;
-    using System.Data.Entity.Core.Objects;
     using System.Diagnostics;
     using System.Linq;
-    using System.Security.Principal;
-    using System.Web;
+    using System.Web.Caching;
     using System.Web.Mvc;
     using System.Web.Routing;
     using AutoMapper;
     using CollectingProductionDataSystem.Data.Contracts;
-    using CollectingProductionDataSystem.Models;
     using CollectingProductionDataSystem.Models.Identity;
     using CollectingProductionDataSystem.Models.UtilityEntities;
-    using CollectingProductionDataSystem.Web.Areas.Administration.ViewModels;
-    using CollectingProductionDataSystem.Web.ViewModels.Tank;
-    using CollectingProductionDataSystem.Web.ViewModels.Units;
-    using Microsoft.AspNet.Identity.EntityFramework;
-    using Microsoft.AspNet.Identity.Owin;
-    using System.Web.Caching;
+    using CollectingProductionDataSystem.Web.Infrastructure.Filters;
 
     public abstract class BaseController : Controller
     {
