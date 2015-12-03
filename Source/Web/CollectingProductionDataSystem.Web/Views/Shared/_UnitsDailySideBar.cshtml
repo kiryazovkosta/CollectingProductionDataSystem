@@ -4,6 +4,7 @@
 @Html.Hidden("user", User.Identity.Name)
 <div class="form-group">
     <label for="factories">@Resources.Layout.Factory</label>
+
     @(Html.Kendo().DropDownList()
         .Name("factoriesD")
         .OptionLabel(Resources.Layout.ChooseFactory)

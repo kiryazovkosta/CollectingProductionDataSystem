@@ -239,6 +239,7 @@
     <Compile Include="Areas\Administration\ViewModels\UserPieViewModel.cs" />
     <Compile Include="Areas\Documentation\DocumentationAreaRegistration.cs" />
     <Compile Include="Areas\Documentation\Controllers\HelpController.cs" />
+    <Compile Include="Areas\SummaryReporting\Controllers\SummaryReportsController.cs" />
     <Compile Include="Areas\NomManagement\Controllers\IkunkController.cs" />
     <Compile Include="Areas\NomManagement\Controllers\MeasuringPointConfigController.cs" />
     <Compile Include="Areas\NomManagement\Controllers\ZoneController.cs" />
@@ -323,6 +324,8 @@
     <Compile Include="Areas\ShiftReporting\ViewModels\ManualSelfCalculationViewModel.cs" />
     <Compile Include="Areas\ShiftReporting\ViewModels\ManualCalculationViewModel.cs" />
     <Compile Include="Areas\DailyReporting\ViewModels\UnitsReportsDataViewModel.cs" />
+    <Compile Include="Areas\SummaryReporting\Controllers\AreaBaseController.cs" />
+    <Compile Include="Areas\SummaryReporting\SummaryReportingAreaRegistration.cs" />
     <Compile Include="Controllers\AccountController.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -986,6 +989,11 @@
     <Content Include="Areas\Documentation\Views\Help\DailyData.cshtml" />
     <Content Include="Areas\Documentation\Views\Shared\_DocumentationLayout.cshtml" />
     <Content Include="Areas\Documentation\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\SummaryReporting\Views\web.config" />
+    <Content Include="Areas\SummaryReporting\Views\SummaryReports\UnitsReportsData.cshtml" />
+    <Content Include="Areas\SummaryReporting\Views\SummaryReports\TanksData.cshtml" />
+    <Content Include="Areas\SummaryReporting\Views\Shared\_UnitsDailySideBar.cshtml" />
+    <Content Include="Areas\SummaryReporting\Views\Shared\_TanksSideBar.cshtml" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <None Include="Properties\PublishProfiles\Home.pubxml" />
     <Content Include="Scripts\custom\sendArea.js" />
@@ -1000,6 +1008,7 @@
       <DependentUpon>sendArea.min.js</DependentUpon>
     </Content>
     <None Include="Properties\PublishProfiles\Productive.pubxml" />
+    <Content Include="Scripts\custom\usersStatisticsRefresh.js" />
     <Content Include="Scripts\custom\windowExpirationTime.js" />
     <Content Include="Scripts\custom\windowExpirationTime.min.js">
       <DependentUpon>windowExpirationTime.js</DependentUpon>
@@ -1668,6 +1677,7 @@
     <Folder Include="Areas\ShiftReporting\Views\Ajax\" />
     <Folder Include="Areas\ShiftReporting\Views\AreaBase\" />
     <Folder Include="Areas\ShiftReporting\Views\Shared\" />
+    <Folder Include="Areas\SummaryReporting\Models\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

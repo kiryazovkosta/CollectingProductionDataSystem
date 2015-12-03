@@ -1263,4 +1263,22 @@
   <data name="IsValueOfCounterReseted" xml:space="preserve">
     <value>Зануляване показание на брояч?</value>
   </data>
+  <data name="SummaryReports" xml:space="preserve">
+    <value>Сводни отчети</value>
+  </data>
+  <data name="UnitsDailyReportData" xml:space="preserve">
+    <value>Дневни данни за измервателни позиции - отчет</value>
+  </data>
+  <data name="AllAreas" xml:space="preserve">
+    <value>Всички области</value>
+  </data>
+  <data name="AllFactories" xml:space="preserve">
+    <value>Всички производства</value>
+  </data>
+  <data name="AllParks" xml:space="preserve">
+    <value>Всички паркове</value>
+  </data>
+  <data name="AllProcessUnits" xml:space="preserve">
+    <value>Всички инсталации</value>
+  </data>
 </root>

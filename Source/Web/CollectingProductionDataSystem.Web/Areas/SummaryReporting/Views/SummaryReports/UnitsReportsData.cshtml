@@ -1,0 +1,78 @@
+﻿@using System.Web.Optimization;
+@using CollectingProductionDataSystem.Web.Areas.DailyReporting.ViewModels;
+@using Resources = App_GlobalResources.Resources;
+
+@model UnitsReportsDataViewModel
+@{
+    Layout = "~/Views/Shared/_KendoLayoutWithSideBar.cshtml";
+}
+<div class="row">
+    <div class="col-md-10">
+        <h2>@Resources.Layout.UnitsReportData</h2>
+    </div>
+    <div class="col-md-2">
+        <button id="excel-export" class="k-button k-button-icontext k-grid-excel pull-right head-button"><span class="k-icon k-i-excel"></span>Експорт в Excel</button>
+    </div>
+</div>
+@Html.ValidationSummary()
+@Html.AntiForgeryToken()
+@(Html.Kendo()
+    .Grid<UnitsReportsDataViewModel>()
+    .Name("units")
+    .AutoBind(false)
+    .Columns(
+        columns =>
+        {
+            columns.Bound(c => c.TimeStamp).Format("{0:yyyy-MM-dd}").Width(100);
+            columns.Bound(c => c.Factory).Width(80);
+            columns.Bound(c => c.ProcessUnit).Width(80);
+            columns.Bound(c => c.Code).Width(80);
+            columns.Bound(c => c.Position).Width(140);
+            columns.Bound(c => c.UnitName);
+            columns.Bound(c => c.MeasureUnit).Width(140);
+            columns.Bound(c => c.Shift1QuantityValue).Format("{0:n2}").Width(200);
+            columns.Bound(c => c.Shift2QuantityValue).Format("{0:n2}").Width(200);
+            columns.Bound(c => c.Shift3QuantityValue).Format("{0:n2}").Width(200);
+        })
+    .Pageable(pageable => pageable
+        .Refresh(true)
+        .PageSizes(new[] { 10, 20, 50, 100 })
+        .ButtonCount(5)
+    )
+    .Sortable()
+    .Excel(excel => excel
+        .FileName(@Resources.Layout.UnitsData + "_" + string.Format("{0:yyyy-mm-dd}", DateTime.Now) + ".xlsx")
+        .Filterable(true)
+        .ProxyURL(Url.Action("Excel_Export_Save", "Ajax", new { area = "" }))
+        .AllPages(true)
+    )
+    .Scrollable(scr => scr.Height(640))
+    .Filterable()
+    .DataSource(dataSource => dataSource
+        .Ajax()
+        .PageSize(100)
+        .ServerOperation(true)
+        .Read(read => read.Action("ReadUnitsReportsData", "SummaryReports", new { area = "SummaryReporting" }).Data("unitGridsData.SendDate"))
+        .Events(events =>
+        {
+            events.Error("kendoAdditional.ErrorHandler");
+        })
+    )
+        .Events(ev => ev.DataBound("unitGridsData.DataBound"))
+)
+@* //Error window for kendo grid error event handler *@
+<div id="err-window" style="display:none">@Html.Partial("_KendoGridErrorWindow")</div>
+@* //Error window for kendo grid error event handler *@
+<div id="success-window" style="display:none">@Html.Partial("_SuccessWindow")</div>
+
+@section scripts{
+    @Scripts.Render("~/bundles/custom/kendoadditional")
+    @Scripts.Render("~/bundles/custom/unitGrids")
+}
+@section sidebar{
+    @Html.Partial("_UnitsDailySideBar")
+}
+
+
+
+

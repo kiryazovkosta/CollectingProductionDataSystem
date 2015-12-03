@@ -1,20 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO.Compression;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-
-namespace CollectingProductionDataSystem.Web.Infrastructure.Filters
+﻿namespace CollectingProductionDataSystem.Web.Infrastructure.Filters
 {
+    using System.IO.Compression;
+    using System.Web;
+    using System.Web.Mvc;
+
     public class CompressFilterAttribute : ActionFilterAttribute
     {
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             HttpRequestBase request = filterContext.HttpContext.Request;
+
             string acceptEncoding = request.Headers["Accept-Encoding"];
+
             if (string.IsNullOrEmpty(acceptEncoding)) return;
+
             acceptEncoding = acceptEncoding.ToUpperInvariant();
+
             HttpResponseBase response = filterContext.HttpContext.Response;
             if (response.Filter != null)
             {
