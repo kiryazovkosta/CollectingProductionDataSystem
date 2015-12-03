@@ -92,6 +92,8 @@
 
         IRepository<RelatedUnitConfigs> RelatedUnitConfigs { get; }
 
+        IRepository<RelatedUnitDailyConfigs> RelatedUnitDailyConfigs { get; }
+
         IDeletableEntityRepository<UnitEnteredForCalculationData> UnitEnteredForCalculationDatas { get; }
 
         IDeletableEntityRepository<MeasuringPointProductsConfig> MeasuringPointProductsConfigs { get; }

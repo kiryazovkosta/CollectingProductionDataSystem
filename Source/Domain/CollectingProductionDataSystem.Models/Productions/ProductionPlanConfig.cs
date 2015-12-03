@@ -32,6 +32,8 @@
 
         public int ProcessUnitId { get; set; }
 
+        public int Position { get; set; }
+
         public virtual ProcessUnit ProcessUnit { get; set; }
 
         public virtual ICollection<UnitDailyConfig> UnitsDailyConfigsFact 

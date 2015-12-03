@@ -25,9 +25,22 @@
                 .HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("ix_production_plan_data", 1)))
                 .IsRequired();
 
-            this.Property(u => u.ProductionPlanConfigId)
+            this.Property(u => u.FactoryId)
                 .HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("ix_production_plan_data", 2)))
                 .IsRequired();
+
+            this.Property(u => u.ProcessUnitId)
+                .HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("ix_production_plan_data", 3)))
+                .IsRequired();
+
+            this.Property(u => u.ProductionPlanConfigId)
+                .HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("ix_production_plan_data", 4)))
+                .IsRequired();
+
+            this.Property(u => u.Name)
+                .HasMaxLength(80)
+                .IsRequired();
+
 
             // Table & Column Mappings
             this.ToTable("ProductionPlanDatas");

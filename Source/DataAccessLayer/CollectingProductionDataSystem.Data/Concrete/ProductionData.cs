@@ -382,6 +382,14 @@
             }
         }
 
+        public IRepository<RelatedUnitDailyConfigs> RelatedUnitDailyConfigs
+        {
+            get
+            {
+                return this.GetRepository<RelatedUnitDailyConfigs>();
+            }
+        }
+
         public IDeletableEntityRepository<UnitEnteredForCalculationData> UnitEnteredForCalculationDatas
         {
             get
