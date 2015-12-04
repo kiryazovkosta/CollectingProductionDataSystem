@@ -23,6 +23,7 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
         private readonly IProductionData data;
         private readonly IKernel kernel;
         private readonly ICalculatorService calculator;
+
         public UnitDailyDataService(IProductionData dataParam, IKernel kernelParam, ICalculatorService calculatorParam)
         {
             this.data = dataParam;

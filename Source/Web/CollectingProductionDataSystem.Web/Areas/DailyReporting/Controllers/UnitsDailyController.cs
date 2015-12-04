@@ -10,6 +10,7 @@
     using System.Linq;
     using System.Web.Mvc;
     using CollectingProductionDataSystem.Application.Contracts;
+    using CollectingProductionDataSystem.Application.ProductionPlanDataServices;
     using CollectingProductionDataSystem.Data.Contracts;
     using CollectingProductionDataSystem.Models.Productions;
     using CollectingProductionDataSystem.Web.Infrastructure.Extentions;
@@ -24,12 +25,15 @@
     {
         private readonly IUnitsDataService unitsData;
         private readonly IUnitDailyDataService dailyService;
+        private readonly IProductionPlanDataService productionPlanData;
 
-        public UnitsDailyController(IProductionData dataParam, IUnitsDataService unitsDataParam, IUnitDailyDataService dailyServiceParam)
+        public UnitsDailyController(IProductionData dataParam, IUnitsDataService unitsDataParam, IUnitDailyDataService dailyServiceParam,
+            IProductionPlanDataService productionPlanDataParam)
             : base(dataParam)
         {
             this.unitsData = unitsDataParam;
             this.dailyService = dailyServiceParam;
+            this.productionPlanData = productionPlanDataParam;
         }
 
         [HttpGet]
@@ -126,7 +130,8 @@
 
         private void RecalculateData(UnitDailyDataViewModel model)
         {
-            // get all records in which this record is formula's member. Nice ;)
+            // TODO: Need to get all related units data and recalculate only them
+
             var uc = this.data.UnitsDailyConfigs.All().Where(x => x.ProcessUnitId == model.UnitsDailyConfig.ProcessUnitId && x.AggregationCurrentLevel == true).ToList();
             var ud = this.data.UnitsDailyDatas.All().Where(x => x.RecordTimestamp == model.RecordTimestamp && x.UnitsDailyConfig.ProcessUnitId == model.UnitsDailyConfig.ProcessUnitId).ToList();
             var calculator = new CalculatorService();
@@ -167,12 +172,13 @@
                     var existNewManualRecord = this.data.UnitsManualDailyDatas.All().FirstOrDefault(x => x.Id == newNewManualRecord.Id);
                     if (existNewManualRecord == null)
                     {
+                        existNewManualRecord.EditReasonId = 0;
                         this.data.UnitsManualDailyDatas.Add(newNewManualRecord);
                     }
                     else
                     {
-                        existNewManualRecord.Value = newNewManualRecord.Value;
                         existNewManualRecord.EditReasonId = model.UnitsManualDailyData.EditReason.Id;
+                        existNewManualRecord.Value = newNewManualRecord.Value;
                         this.data.UnitsManualDailyDatas.Update(existNewManualRecord);
                     }
                 }
@@ -233,6 +239,17 @@
                             ProcessUnitId = processUnitId.Value,
                             Approved = true
                         });
+
+                    // Get all process plan data and save it
+                    IEnumerable<ProductionPlanData> dbResult = this.productionPlanData.ReadProductionPlanData(date, processUnitId);
+                    if (dbResult.Count() > 0)
+	                {
+                        foreach (var item in dbResult)
+	                    {
+                            this.data.ProductionPlanDatas.Add(item);
+	                    }
+	                }
+
                     var result = this.data.SaveChanges(this.UserProfile.UserName);
                     return Json(new { IsConfirmed = result.IsValid }, JsonRequestBehavior.AllowGet);
                 }

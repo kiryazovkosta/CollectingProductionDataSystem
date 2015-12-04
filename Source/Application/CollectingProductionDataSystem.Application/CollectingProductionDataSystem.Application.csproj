@@ -126,6 +126,8 @@
     <Compile Include="ProductionDataServices\Functions.cs" />
     <Compile Include="Contracts\IProductionDataCalculatorService.cs" />
     <Compile Include="ProductionDataServices\ProductionDataCalculatorService.cs" />
+    <Compile Include="ProductionPlanDataServices\IProductionPlanDataService.cs" />
+    <Compile Include="ProductionPlanDataServices\ProductionPlanDataService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>

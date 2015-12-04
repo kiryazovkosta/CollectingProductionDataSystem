@@ -132,6 +132,9 @@
                 case "G26":
                     result = FormulaG26(arguments);
                     break;
+                case "G26a":
+                    result = FormulaG26a(arguments);
+                    break;
                 case "P26":
                     result = FormulaP26(arguments);
                     break;
@@ -1302,6 +1305,32 @@
             double pl = args.InputValue.Value;
             double d = args.EstimatedDensity.Value;           
             double q = pl * d;
+
+            var inputParams = new Dictionary<string, double>();
+            inputParams.Add("q", q);
+
+            string expr = @"par.q";
+            double result = calculator.Calculate(expr, "par", 1, inputParams);
+            return result;
+        }
+
+                /// <summary>
+        /// 62) G26 ;ПРЕВРЪЩАНЕ ДИМЕНСИЯТА ОТ "Н.CM.КУБ." В "ТОНОВЕ" :: S Q=PL*D Q
+        /// </summary>
+        private double FormulaG26a(FormulaArguments args)
+        {
+            if (!args.InputValue.HasValue)
+            {
+                throw new ArgumentNullException("The value of CounterIndication(PL) is not allowed to be null");
+            }
+            if (!args.EstimatedDensity.HasValue)
+            {
+                throw new ArgumentNullException("The value of Density(D) is not allowed to be null");
+            }
+
+            double pl = args.InputValue.Value;
+            double d = args.EstimatedDensity.Value;           
+            double q = (pl * d)/1000;
 
             var inputParams = new Dictionary<string, double>();
             inputParams.Add("q", q);
