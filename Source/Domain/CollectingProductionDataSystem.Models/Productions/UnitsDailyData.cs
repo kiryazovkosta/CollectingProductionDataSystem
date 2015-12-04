@@ -16,6 +16,7 @@
         public bool HasManualData { get; set; }
         public virtual UnitDailyConfig UnitsDailyConfig { get; set; }
         public virtual UnitsManualDailyData UnitsManualDailyData { get; set; }
+        public decimal TotalMonthQuantity { get; set; }
 
         [NotMapped]
         public double RealValue 
