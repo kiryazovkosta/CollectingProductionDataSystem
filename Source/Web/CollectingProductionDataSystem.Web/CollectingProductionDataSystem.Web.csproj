@@ -239,6 +239,7 @@
     <Compile Include="Areas\Administration\ViewModels\UserPieViewModel.cs" />
     <Compile Include="Areas\Documentation\DocumentationAreaRegistration.cs" />
     <Compile Include="Areas\Documentation\Controllers\HelpController.cs" />
+    <Compile Include="Areas\SummaryReporting\Controllers\AjaxController.cs" />
     <Compile Include="Areas\SummaryReporting\Controllers\SummaryReportsController.cs" />
     <Compile Include="Areas\NomManagement\Controllers\IkunkController.cs" />
     <Compile Include="Areas\NomManagement\Controllers\MeasuringPointConfigController.cs" />
@@ -326,6 +327,8 @@
     <Compile Include="Areas\DailyReporting\ViewModels\UnitsReportsDataViewModel.cs" />
     <Compile Include="Areas\SummaryReporting\Controllers\AreaBaseController.cs" />
     <Compile Include="Areas\SummaryReporting\SummaryReportingAreaRegistration.cs" />
+    <Compile Include="Areas\SummaryReporting\ViewModels\DailyConfirmationViewModel.cs" />
+    <Compile Include="Areas\SummaryReporting\ViewModels\DataConfirmationViewModel.cs" />
     <Compile Include="Controllers\AccountController.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -546,6 +549,9 @@
     <Content Include="Content\Images\ShiftData\smenni2.png" />
     <Content Include="Content\Images\ShiftData\smenni_danni.png" />
     <Content Include="Content\Images\tanks.png" />
+    <Content Include="Content\Images\TrafficLights\green_light.png" />
+    <Content Include="Content\Images\TrafficLights\red_light.png" />
+    <Content Include="Content\Images\TrafficLights\yellow_light.png" />
     <Content Include="Content\Images\warning.png" />
     <Content Include="Content\kendo\Black\editor.png" />
     <Content Include="Content\kendo\Black\imagebrowser.png" />
@@ -889,6 +895,10 @@
     <Content Include="Scripts\custom\backfix.min.js" />
     <Content Include="Scripts\custom\bootstrapAdditional.js" />
     <Content Include="Scripts\custom\browserclosurenotice.js" />
+    <Content Include="Scripts\custom\confirmationRefresh.js" />
+    <Content Include="Scripts\custom\confirmationRefresh.min.js">
+      <DependentUpon>confirmationRefresh.js</DependentUpon>
+    </Content>
     <Content Include="Scripts\custom\jquery-kendo-globalize.js" />
     <Content Include="Scripts\custom\kendoAdditional.js" />
     <Content Include="Scripts\custom\kendoGridState.js" />
@@ -994,6 +1004,8 @@
     <Content Include="Areas\SummaryReporting\Views\SummaryReports\TanksData.cshtml" />
     <Content Include="Areas\SummaryReporting\Views\Shared\_UnitsDailySideBar.cshtml" />
     <Content Include="Areas\SummaryReporting\Views\Shared\_TanksSideBar.cshtml" />
+    <Content Include="Areas\SummaryReporting\Views\SummaryReports\UnitsDailyReportsData.cshtml" />
+    <Content Include="Areas\SummaryReporting\Views\SummaryReports\DataConfirmation.cshtml" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <None Include="Properties\PublishProfiles\Home.pubxml" />
     <Content Include="Scripts\custom\sendArea.js" />
@@ -1018,6 +1030,9 @@
     </Content>
     <Content Include="Scripts\custom\windowUnload.min.js.map">
       <DependentUpon>windowUnload.min.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\custom\confirmationRefresh.min.js.map">
+      <DependentUpon>confirmationRefresh.min.js</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\custom\sendFactory.min.js">
@@ -1677,7 +1692,7 @@
     <Folder Include="Areas\ShiftReporting\Views\Ajax\" />
     <Folder Include="Areas\ShiftReporting\Views\AreaBase\" />
     <Folder Include="Areas\ShiftReporting\Views\Shared\" />
-    <Folder Include="Areas\SummaryReporting\Models\" />
+    <Folder Include="Areas\SummaryReporting\Views\Ajax\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

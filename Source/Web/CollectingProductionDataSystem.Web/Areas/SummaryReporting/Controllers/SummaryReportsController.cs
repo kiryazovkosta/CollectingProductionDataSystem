@@ -8,6 +8,8 @@
     using System.Data.Entity;
     using System.Web.UI;
     using CollectingProductionDataSystem.Data.Contracts;
+    using CollectingProductionDataSystem.Web.Areas.SummaryReporting.ViewModels;
+    using CollectingProductionDataSystem.Web.Infrastructure.Extentions;
     using Kendo.Mvc.UI;
     using Kendo.Mvc.Extensions;
     using AutoMapper;
@@ -18,15 +20,19 @@
     using CollectingProductionDataSystem.Models.Productions;
     using CollectingProductionDataSystem.Web.Areas.DailyReporting.ViewModels;
     using System.Diagnostics;
+    using CollectingProductionDataSystem.Web.Infrastructure.Filters;
+    using CollectingProductionDataSystem.Web.ViewModels.Units;
     public class SummaryReportsController : AreaBaseController
     {
-        private readonly IUnitsDataService unitsData;
         private const int HalfAnHour = 60 * 30;
+        private readonly IUnitsDataService unitsData;
+        private readonly IUnitDailyDataService dailyService;
 
-        public SummaryReportsController(IProductionData dataParam, IUnitsDataService unitsDataParam)
+        public SummaryReportsController(IProductionData dataParam, IUnitsDataService unitsDataParam, IUnitDailyDataService dailyServiceParam)
             :base(dataParam)
         {
             this.unitsData = unitsDataParam;
+            this.dailyService = dailyServiceParam;
         }
 
         [HttpGet]
@@ -37,7 +43,7 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [OutputCache(Duration = HalfAnHour, Location = OutputCacheLocation.ServerAndClient, VaryByParam = "date;parkId;shiftId;areaId")]
+        [OutputCache(Duration = HalfAnHour, Location = OutputCacheLocation.ServerAndClient, VaryByParam = "*")]
         public ActionResult ReadTanksData([DataSourceRequest]DataSourceRequest request, DateTime? date, int? parkId, int? shiftId, int? areaId)
         {
             ValidateTanksInputModel(date, parkId, shiftId);
@@ -87,7 +93,7 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [OutputCache(Duration = HalfAnHour, Location = OutputCacheLocation.ServerAndClient, VaryByParam = "date;processUnitId;factoryId")]
+        [OutputCache(Duration = HalfAnHour, Location = OutputCacheLocation.ServerAndClient, VaryByParam = "*")]
         public JsonResult ReadUnitsReportsData([DataSourceRequest]
                                         DataSourceRequest request, DateTime? date, int? processUnitId, int? factoryId)
         {
@@ -134,6 +140,14 @@
             }
         }
 
+        [HttpGet]
+        public ActionResult UnitsDailyReportsData() 
+        {
+            return View();
+        }
+
+
+
         /// <summary>
         /// Validates the state of the model.
         /// </summary>
@@ -147,6 +161,111 @@
             }
 
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [AuthorizeFactory]
+        [OutputCache(Duration = HalfAnHour, Location = OutputCacheLocation.ServerAndClient, VaryByParam = "*")]
+        public JsonResult ReadDailyUnitsData([DataSourceRequest]DataSourceRequest request, DateTime? date, int? processUnitId, int? factoryId)
+        {
+            ValidateDailyModelState(date);
+            if (ModelState.IsValid)
+            {
+                var kendoResult = new DataSourceResult();
+                if (ModelState.IsValid)
+                {
+                    var dbResult = unitsData.GetUnitsDailyDataForDateTime(date, processUnitId);
+                    dbResult.Where(x => x.UnitsDailyConfig.ProcessUnit.FactoryId == (factoryId ?? x.UnitsDailyConfig.ProcessUnit.FactoryId));
+                    var kendoPreparedResult = Mapper.Map<IEnumerable<UnitsDailyData>, IEnumerable<UnitDailyDataViewModel>>(dbResult);
+                    kendoResult = kendoPreparedResult.ToDataSourceResult(request, ModelState);
+
+                }
+
+                return Json(kendoResult);
+            }
+            else
+            {
+                var kendoResult = new List<UnitDailyDataViewModel>().ToDataSourceResult(request, ModelState);
+                return Json(kendoResult);
+            }
+        }
+
+        [HttpGet]
+        public ActionResult DataConfirmation() 
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ReadConfirmationData([DataSourceRequest]DataSourceRequest request, DateTime? date, int? processUnitId, int? factoryId)
+        {
+            ValidateDailyModelState(date);
+            if (!ModelState.IsValid)
+            {
+                var kendoResult = new List<UnitDailyDataViewModel>().ToDataSourceResult(request, ModelState);
+                return Json(kendoResult);
+            }
+
+            var SelectedFactories = data.ProcessUnits.All().Include(x => x.Factory)
+                .Where(x => x.Id == (processUnitId ?? x.Id)
+                && x.Factory.Id == (factoryId ?? x.Factory.Id)).Select(x => new DataConfirmationViewModel() {
+                    FactoryId = x.FactoryId,
+                    FactoryName = x.Factory.ShortName,
+                    ProcessUnitId = x.Id,
+                    ProcessUnitName = x.ShortName
+                }).ToList();
+            var targetProcessUnitIds = SelectedFactories.Select(x => x.ProcessUnitId);
+            var beginOfMonth = new DateTime(date.Value.Year, date.Value.Month, 1);
+            var targetDate = date.Value.Date;
+            var ConfirmedRecords = data.UnitsApprovedDatas.All().Where(x => x.RecordDate == targetDate && targetProcessUnitIds.Any(y => x.ProcessUnitId == y)).ToList();
+            var ConfirmedDailyRecord = data.UnitsApprovedDailyDatas.All()
+                .Where(x => beginOfMonth <= x.RecordDate
+                    && x.RecordDate <= targetDate
+                    && targetProcessUnitIds.Any(y => x.ProcessUnitId == y)).ToList();
+                    
+
+            for (int i = 0; i < SelectedFactories.Count; i++)
+            {
+                    var confirmationFirstShift = ConfirmedRecords.FirstOrDefault(x => x.ProcessUnitId == SelectedFactories[i].ProcessUnitId && x.ShiftId == (int)ShiftType.First);
+                    var confirmationSecondShift = ConfirmedRecords.FirstOrDefault(x => x.ProcessUnitId == SelectedFactories[i].ProcessUnitId && x.ShiftId == (int)ShiftType.Second);
+                    var confirmationThirdShift = ConfirmedRecords.FirstOrDefault(x => x.ProcessUnitId == SelectedFactories[i].ProcessUnitId && x.ShiftId == (int)ShiftType.Third);
+                    var confirmationOfDay = ConfirmedDailyRecord.FirstOrDefault(x => x.RecordDate == targetDate && x.ProcessUnitId == SelectedFactories[i].ProcessUnitId);
+                    var confirmationUntilTheDay = ConfirmedDailyRecord.Select(x => new DailyConfirmationViewModel()
+                    {
+                        Day = x.RecordDate,
+                        IsConfirmed = x.Approved,
+                    }).ToList();
+
+                    SelectedFactories[i].Shift1Confirmed = (confirmationFirstShift == null) ? false : confirmationFirstShift.Approved;
+                    SelectedFactories[i].Shift2Confirmed = (confirmationSecondShift == null) ? false : confirmationSecondShift.Approved;
+                    SelectedFactories[i].Shift3Confirmed = (confirmationThirdShift == null) ? false : confirmationThirdShift.Approved;
+                    SelectedFactories[i].DayConfirmed = (confirmationOfDay == null) ? false : confirmationOfDay.Approved;
+                    SelectedFactories[i].ConfirmedDaysUntilTheDay = confirmationUntilTheDay ?? new List<DailyConfirmationViewModel>();
+            }
+
+            return Json(SelectedFactories.ToDataSourceResult(request, ModelState));
+           
+        }
+
+        private void ValidateDailyModelState(DateTime? date)
+        {
+            if (date == null)
+            {
+                this.ModelState.AddModelError("date", string.Format(Resources.ErrorMessages.Required, Resources.Layout.UnitsDateSelector));
+            }
+        }
+
+        private List<string> GetErrorListFromModelState(ModelStateDictionary modelState)
+        {
+            var query = from state in modelState.Values
+                        from error in state.Errors
+                        select error.ErrorMessage;
+
+            var errorList = query.ToList();
+            return errorList;
+        }
+
 
 
     }

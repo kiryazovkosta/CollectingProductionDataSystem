@@ -11,8 +11,9 @@ namespace CollectingProductionDataSystem.Web.Areas.Documentation.Controllers
     public class HelpController : Controller
     {
         // GET: Documentation/Documentation
-        public ActionResult Index()
+        public ActionResult Index(string nextAction)
         {
+            ViewBag.NextAction = nextAction;
             return View();
         }
         public PartialViewResult ShiftData()

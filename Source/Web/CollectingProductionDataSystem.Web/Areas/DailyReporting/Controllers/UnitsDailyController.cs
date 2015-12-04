@@ -20,7 +20,6 @@
     using Resources = App_GlobalResources.Resources;
     using System.Net;
 
-    [Authorize]
     public class UnitsDailyController : AreaBaseController
     {
         private readonly IUnitsDataService unitsData;
@@ -59,6 +58,7 @@
                         {
                             dailyService.CheckIfShiftsAreReady(date.Value, processUnitId.Value).ToModelStateErrors(this.ModelState);
                         }
+     
                         kendoResult = kendoPreparedResult.ToDataSourceResult(request, ModelState);
                     }
                     catch (Exception ex1)

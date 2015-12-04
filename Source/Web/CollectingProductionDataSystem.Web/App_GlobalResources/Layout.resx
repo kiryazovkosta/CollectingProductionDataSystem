@@ -1278,4 +1278,19 @@
   <data name="AllProcessUnits" xml:space="preserve">
     <value>All ProcessUnits</value>
   </data>
+  <data name="ConfirmedDataReport" xml:space="preserve">
+    <value>Data Confirmation Report</value>
+  </data>
+  <data name="DayConfirmed" xml:space="preserve">
+    <value>Daily Data</value>
+  </data>
+  <data name="Shift1Confirmed" xml:space="preserve">
+    <value>First Shift</value>
+  </data>
+  <data name="Shift2Confirmed" xml:space="preserve">
+    <value>Second Shift</value>
+  </data>
+  <data name="Shift3Confirmed" xml:space="preserve">
+    <value>Third Shift</value>
+  </data>
 </root>

@@ -673,6 +673,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Data Confirmation Report.
+        /// </summary>
+        public static string ConfirmedDataReport {
+            get {
+                return ResourceManager.GetString("ConfirmedDataReport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Confirm Password.
         /// </summary>
         public static string ConfirmPassword {
@@ -795,6 +804,15 @@ namespace App_GlobalResources.Resources {
         public static string Date {
             get {
                 return ResourceManager.GetString("Date", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Daily Data.
+        /// </summary>
+        public static string DayConfirmed {
+            get {
+                return ResourceManager.GetString("DayConfirmed", resourceCulture);
             }
         }
         
@@ -2599,6 +2617,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to First Shift.
+        /// </summary>
+        public static string Shift1Confirmed {
+            get {
+                return ResourceManager.GetString("Shift1Confirmed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Shift1 Quantity Value.
         /// </summary>
         public static string Shift1QuantityValue {
@@ -2608,11 +2635,29 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Second Shift.
+        /// </summary>
+        public static string Shift2Confirmed {
+            get {
+                return ResourceManager.GetString("Shift2Confirmed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Shift2 QuantityValue.
         /// </summary>
         public static string Shift2QuantityValue {
             get {
                 return ResourceManager.GetString("Shift2QuantityValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Third Shift.
+        /// </summary>
+        public static string Shift3Confirmed {
+            get {
+                return ResourceManager.GetString("Shift3Confirmed", resourceCulture);
             }
         }
         

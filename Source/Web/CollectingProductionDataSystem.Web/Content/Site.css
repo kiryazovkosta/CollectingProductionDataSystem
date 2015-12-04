@@ -619,8 +619,8 @@ td[role=gridcell] ul {
         border: 1px solid black;
         border-radius: 4px;
         margin: 2px;
-        padding-left:4px;
-        padding-right:4px;
+        padding-left: 4px;
+        padding-right: 4px;
     }
 
 /*Small*/
@@ -646,43 +646,43 @@ td[role=gridcell] ul {
 }
 
 #events {
-    font-size:12px;
+    font-size: 12px;
 }
 
 #Details {
-    height:680px;
-    max-width:100%;
-    width:100%;
-    padding:10px;
+    height: 680px;
+    max-width: 100%;
+    width: 100%;
+    padding: 10px;
 }
 
 .grid-icon {
-    margin-left:-4px;
-    width:32px;
-    height:32px;
+    margin-left: -4px;
+    width: 32px;
+    height: 32px;
 }
 
 .pie {
-    width:40% ;    
+    width: 40%;
 }
 
 .char-ustat {
-    max-width:98%;
-    margin-left:auto;
-    margin-right:auto;
+    max-width: 98%;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .modal-custom-title {
-    font-size:1.4em;
-    font-weight:bold;
+    font-size: 1.4em;
+    font-weight: bold;
 }
 
 h4.modal-title {
-    font-weight:bold; 
+    font-weight: bold;
 }
 
 div.modal-header {
-    text-align:center;
+    text-align: center;
 }
 
 .k-item.k-state-selected.k-state-focused {
@@ -690,11 +690,37 @@ div.modal-header {
 }
 
 img.btn-help {
-    width:32px;    
-    margin-top:8px;
+    width: 32px;
+    margin-top: 8px;
 }
 
 a.btn-help {
-    padding-top : 0 !important;
-    padding-bottom:0 !important;   
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+div.red-light, div.yellow-light, div.green-light {
+    height: 34px;
+    width: 34px;
+    display:block;
+    margin-left:auto;
+    margin-right:auto;
+    background-size: 32px 32px;
+    background-repeat: no-repeat;
+}
+
+div.red-light {
+    background-image: url("../Content/Images/TrafficLights/red_light.png");
+}
+
+div.green-light {
+    background-image: url("../Content/Images/TrafficLights/green_light.png");
+}
+
+div.yellow-light {
+    background-image: url("../Content/Images/TrafficLights/yellow_light.png");
+}
+
+div.width100 {
+    width: 100%;
 }

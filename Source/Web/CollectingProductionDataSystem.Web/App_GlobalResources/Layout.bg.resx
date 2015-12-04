@@ -1281,4 +1281,19 @@
   <data name="AllProcessUnits" xml:space="preserve">
     <value>Всички инсталации</value>
   </data>
+  <data name="ConfirmedDataReport" xml:space="preserve">
+    <value>Отчет за потвърждение на данните</value>
+  </data>
+  <data name="DayConfirmed" xml:space="preserve">
+    <value>Днeвни Данни</value>
+  </data>
+  <data name="Shift1Confirmed" xml:space="preserve">
+    <value>Първа смяна</value>
+  </data>
+  <data name="Shift2Confirmed" xml:space="preserve">
+    <value>Втора смяна</value>
+  </data>
+  <data name="Shift3Confirmed" xml:space="preserve">
+    <value>Трета Смяна</value>
+  </data>
 </root>

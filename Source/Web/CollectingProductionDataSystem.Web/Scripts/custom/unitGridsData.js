@@ -14,6 +14,10 @@ var unitGridsData = (function () {
                 kendoAdditional.RefreshGrid("#tanks");
             }
 
+            if ($("#confirmation")) {
+                kendoAdditional.RefreshGrid("#confirmation");
+            }
+
             checkConfirmedStatus();
         });
 
@@ -261,8 +265,8 @@ var unitGridsData = (function () {
         if ($('input[name=shifts]')) {
             $.extend(result, sendShift());
         }
-        $.extend(result, sendAntiForgery());
         $.extend(result, sendFactoryId());
+        $.extend(result, sendAntiForgery());
         return result;
     }
 
