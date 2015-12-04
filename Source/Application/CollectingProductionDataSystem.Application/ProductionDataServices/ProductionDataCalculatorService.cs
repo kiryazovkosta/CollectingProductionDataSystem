@@ -1380,5 +1380,31 @@
             double result = calculator.Calculate(expr, "par", 1, inputParams);
             return result;
         }
+
+                /// <summary>
+        /// 25) N14 ;ТЕЧНИ НЕФТОПРОДУКТИ И ВТЕЧНЕНИ ГАЗОВЕ :: X A10 Q
+        /// </summary>
+        public double FormulaCUF1(FormulaArguments args)            
+        {
+            if (!args.InputValue.HasValue)
+            {
+                throw new ArgumentNullException("The value of CounterIndication(PL) is not allowed to be null");
+            }
+            if (!args.MaximumFlow.HasValue)
+            {
+                throw new ArgumentNullException("The value of MaximumFlow(D2) is not allowed to be null");
+            }
+
+            var pl = args.InputValue.Value;
+            var d2 = args.MaximumFlow.Value;
+            var q = Functions.GetValueFormulaA10(pl, d2);
+
+            var inputParams = new Dictionary<string, double>();
+            inputParams.Add("q", q);
+
+            string expr = @"par.q";
+            var result = calculator.Calculate(expr, "par", 1, inputParams);
+            return result;
+        }
     }
 }
