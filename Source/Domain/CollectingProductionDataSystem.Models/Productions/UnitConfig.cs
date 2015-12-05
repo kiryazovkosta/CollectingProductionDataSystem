@@ -85,6 +85,6 @@ namespace CollectingProductionDataSystem.Models.Productions
         public int? EnteredMeasureUnitId { get; set; }
         public virtual MeasureUnit EnteredMeasureUnit { get; set; }
 
-        public double? CalculationPercentage { get; set; }
+        public decimal? CalculationPercentage { get; set; }
     }
 }

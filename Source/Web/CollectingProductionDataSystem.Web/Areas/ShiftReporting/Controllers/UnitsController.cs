@@ -489,6 +489,7 @@ using CollectingProductionDataSystem.Infrastructure.Contracts;
             arguments.EstimatedPressure = (double?)unitConfig.EstimatedPressure;
             arguments.EstimatedTemperature = (double?)unitConfig.EstimatedTemperature;
             arguments.EstimatedCompressibilityFactor = (double?)unitConfig.EstimatedCompressibilityFactor;
+            arguments.CalculationPercentage = (double?)unitConfig.CalculationPercentage;
             return arguments;
         }
 
@@ -513,7 +514,8 @@ using CollectingProductionDataSystem.Infrastructure.Contracts;
 
                 if (parameterType == "I")
                 {
-                    arguments.InputValue = inputValue;
+                    var exsistingValue = arguments.InputValue.HasValue ? arguments.InputValue.Value : 0.0;
+                    arguments.InputValue = exsistingValue + inputValue;
                 }
                 else if (parameterType == "T")
                 {
@@ -556,7 +558,8 @@ using CollectingProductionDataSystem.Infrastructure.Contracts;
                             .RealValue;
                     if (parameterType == "I")
                     {
-                        arguments.InputValue = inputValue;
+                        var exsistingValue = arguments.InputValue.HasValue ? arguments.InputValue.Value : 0.0;
+                        arguments.InputValue = exsistingValue + inputValue;
                     }
                     else if (parameterType == "T")
                     {

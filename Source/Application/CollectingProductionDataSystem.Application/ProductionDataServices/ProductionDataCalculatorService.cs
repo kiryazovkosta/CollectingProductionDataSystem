@@ -141,6 +141,9 @@
                 case "N42":
                     result = FormulaN42(arguments);
                     break;
+                case "C1":
+                    result = FormulaC1(arguments);
+                    break;
                 default:
                     throw new ArgumentException("The entered value of the formula code is invalid!");
                     break;
@@ -1381,26 +1384,30 @@
             return result;
         }
 
-                /// <summary>
-        /// 25) N14 ;ТЕЧНИ НЕФТОПРОДУКТИ И ВТЕЧНЕНИ ГАЗОВЕ :: X A10 Q
+        /// <summary>
+        /// UCF1 - зчисляване на колко е стойността на % от число
         /// </summary>
-        public double FormulaCUF1(FormulaArguments args)            
+        public double FormulaC1(FormulaArguments args)            
         {
             if (!args.InputValue.HasValue)
             {
                 throw new ArgumentNullException("The value of CounterIndication(PL) is not allowed to be null");
             }
-            if (!args.MaximumFlow.HasValue)
+            if (!args.CalculationPercentage.HasValue)
             {
-                throw new ArgumentNullException("The value of MaximumFlow(D2) is not allowed to be null");
+                throw new ArgumentNullException("The value of Calculation percentage is not allowed to be null");
+            }
+            if (0 < args.CalculationPercentage.Value && args.CalculationPercentage.Value > 100 )
+            {
+                throw new ArgumentOutOfRangeException("The value of Calculation percentage must be a double number between 0 and 100");
             }
 
             var pl = args.InputValue.Value;
-            var d2 = args.MaximumFlow.Value;
-            var q = Functions.GetValueFormulaA10(pl, d2);
+            var c = args.CalculationPercentage.Value;
+            var r = (c / 100.00) * pl;
 
             var inputParams = new Dictionary<string, double>();
-            inputParams.Add("q", q);
+            inputParams.Add("q", r);
 
             string expr = @"par.q";
             var result = calculator.Calculate(expr, "par", 1, inputParams);
