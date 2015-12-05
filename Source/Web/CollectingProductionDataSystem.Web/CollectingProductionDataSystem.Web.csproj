@@ -327,6 +327,7 @@
     <Compile Include="Areas\DailyReporting\ViewModels\UnitsReportsDataViewModel.cs" />
     <Compile Include="Areas\SummaryReporting\Controllers\AreaBaseController.cs" />
     <Compile Include="Areas\SummaryReporting\SummaryReportingAreaRegistration.cs" />
+    <Compile Include="Areas\SummaryReporting\ViewModels\DailyConfirmationComparer.cs" />
     <Compile Include="Areas\SummaryReporting\ViewModels\DailyConfirmationViewModel.cs" />
     <Compile Include="Areas\SummaryReporting\ViewModels\DataConfirmationViewModel.cs" />
     <Compile Include="Controllers\AccountController.cs">
@@ -1693,6 +1694,7 @@
     <Folder Include="Areas\ShiftReporting\Views\AreaBase\" />
     <Folder Include="Areas\ShiftReporting\Views\Shared\" />
     <Folder Include="Areas\SummaryReporting\Views\Ajax\" />
+    <Folder Include="Areas\SummaryReporting\Views\Shared\DisplayTemplates\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

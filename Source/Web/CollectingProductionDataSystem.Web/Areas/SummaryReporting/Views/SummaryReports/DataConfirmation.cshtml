@@ -5,7 +5,7 @@
 @using CollectingProductionDataSystem.Web.ViewModels.Units;
 @using Resources = App_GlobalResources.Resources;
 
-@model UnitDailyDataViewModel
+@model DataConfirmationViewModel
 @{
     Layout = "~/Views/Shared/_KendoLayoutWithSideBar.cshtml";
 }
@@ -34,7 +34,8 @@
             columns.Bound(c => c.Shift2Confirmed).ClientTemplate("<div class='text-center width100'><div class='#:data.Shift2Confirmed ? 'green-light':'red-light'#'></div></div>");
             columns.Bound(c => c.Shift3Confirmed).ClientTemplate("<div class='text-center width100'><div class='#:data.Shift3Confirmed ? 'green-light':'red-light'#'></div></div>");
             columns.Bound(c => c.DayConfirmed).ClientTemplate("<div class='text-center width100'><div class='#:data.DayConfirmed ? 'green-light':'red-light'#'></div></div>");
-                          
+            columns.Bound(c => c.ConfirmedDaysUntilTheDay).Title("").ClientTemplate("<div id='calendar_#=data.ProcessUnitId#' class='calendar' data-json='#= data.ConfirmedDaysUntilTheDay #'></div>");
+
         })
         .Pageable(pageable => pageable
             .Refresh(true)
@@ -43,12 +44,12 @@
         )
                 .Editable(editable => editable.Mode(GridEditMode.InLine))
         .Sortable()
-            //.Excel(excel => excel
-            //.FileName(@Resources.Layout.UnitsDailyData + "_" + DateTime.Now + ".xlsx")
-            //.Filterable(true)
-            //.ProxyURL(Url.Action("Excel_Export_Save", "Ajax", new { area = "" }))
-            //.AllPages(true))
-            .Events(ev => ev.DataBound("unitGridsData.DataBound"))
+        //.Excel(excel => excel
+        //.FileName(@Resources.Layout.UnitsDailyData + "_" + DateTime.Now + ".xlsx")
+        //.Filterable(true)
+        //.ProxyURL(Url.Action("Excel_Export_Save", "Ajax", new { area = "" }))
+        //.AllPages(true))
+            .Events(ev => ev.DataBound("unitGridsData.ConfirmationDataBound"))
             .Scrollable(scr => scr.Height(640))
             .Filterable()
             .DataSource(dataSource => dataSource
@@ -59,15 +60,16 @@
                     {
                         group.Add(c => c.FactoryName);
                     })
-                .Model(model=>{
+                .Model(model =>
+                {
                     model.Id("ProcessUnitId");
                 })
                 .Read(read => read.Action("ReadConfirmationData", "SummaryReports", new { area = "SummaryReporting" }).Data("unitGridsData.SendDate"))
-                                                                
+
             .Events(events =>
             {
                 events.Error("kendoAdditional.ErrorHandler");
-                                                                
+
             })
         )
 )
@@ -76,6 +78,17 @@
 <div id="err-window" style="display:none">@Html.Partial("_KendoGridErrorWindow")</div>
 @* //Error window for kendo grid error event handler *@
 <div id="success-window" style="display:none">@Html.Partial("_SuccessWindow")</div>
+@{var id = 0;}
+<script type="text/kendo" id="customeTemplate">
+    @(Html.Kendo()
+    .Calendar()
+    .Name("calendar_" + id++)
+    .Value(DateTime.Today)
+    .MonthTemplate(month => month.Content("<div class='small-red-light'>" + "\\#=value\\#" + "</div>"))
+    .ToClientTemplate()
+    )
+</script>
+
 @section scripts{
     @Scripts.Render("~/bundles/custom/kendoadditional")
     @Scripts.Render("~/bundles/custom/unitGrids")
@@ -84,3 +97,4 @@
 @section sidebar{
     @Html.Partial("_UnitsDailySideBar")
 }
+

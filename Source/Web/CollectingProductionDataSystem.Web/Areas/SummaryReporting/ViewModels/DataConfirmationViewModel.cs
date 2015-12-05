@@ -41,6 +41,7 @@ namespace CollectingProductionDataSystem.Web.Areas.SummaryReporting.ViewModels
         [Display(Name = "DayConfirmed", ResourceType = typeof(App_GlobalResources.Resources.Layout))]
         public bool DayConfirmed { get; set; }
 
-        public IEnumerable<DailyConfirmationViewModel> ConfirmedDaysUntilTheDay { get; set; }
+        [UIHint("DailyConfirmationViewModel")]
+        public string ConfirmedDaysUntilTheDay { get; set; }
     }
 }

@@ -15,6 +15,7 @@
     using AutoMapper;
     using CollectingProductionDataSystem.Models.Inventories;
     using CollectingProductionDataSystem.Web.ViewModels.Tank;
+    using Newtonsoft.Json;
     using Resources = App_GlobalResources.Resources;
     using CollectingProductionDataSystem.Application.Contracts;
     using CollectingProductionDataSystem.Models.Productions;
@@ -22,6 +23,7 @@
     using System.Diagnostics;
     using CollectingProductionDataSystem.Web.Infrastructure.Filters;
     using CollectingProductionDataSystem.Web.ViewModels.Units;
+
     public class SummaryReportsController : AreaBaseController
     {
         private const int HalfAnHour = 60 * 30;
@@ -29,7 +31,7 @@
         private readonly IUnitDailyDataService dailyService;
 
         public SummaryReportsController(IProductionData dataParam, IUnitsDataService unitsDataParam, IUnitDailyDataService dailyServiceParam)
-            :base(dataParam)
+            : base(dataParam)
         {
             this.unitsData = unitsDataParam;
             this.dailyService = dailyServiceParam;
@@ -84,7 +86,6 @@
             }
         }
 
-
         [HttpGet]
         public ActionResult UnitsReportsData()
         {
@@ -112,7 +113,7 @@
                     Factory = x.UnitConfig.ProcessUnit.Factory.ShortName,
                     ProcessUnit = x.UnitConfig.ProcessUnit.ShortName,
                     Code = x.UnitConfig.Code,
-                    Position = x.UnitConfig.Position,   
+                    Position = x.UnitConfig.Position,
                     MeasureUnit = x.UnitConfig.MeasureUnit.Code,
                     UnitConfigId = x.UnitConfigId,
                     UnitName = x.UnitConfig.Name,
@@ -141,12 +142,10 @@
         }
 
         [HttpGet]
-        public ActionResult UnitsDailyReportsData() 
+        public ActionResult UnitsDailyReportsData()
         {
             return View();
         }
-
-
 
         /// <summary>
         /// Validates the state of the model.
@@ -191,7 +190,7 @@
         }
 
         [HttpGet]
-        public ActionResult DataConfirmation() 
+        public ActionResult DataConfirmation()
         {
             return View();
         }
@@ -209,7 +208,8 @@
 
             var SelectedFactories = data.ProcessUnits.All().Include(x => x.Factory)
                 .Where(x => x.Id == (processUnitId ?? x.Id)
-                && x.Factory.Id == (factoryId ?? x.Factory.Id)).Select(x => new DataConfirmationViewModel() {
+                && x.Factory.Id == (factoryId ?? x.Factory.Id)).Select(x => new DataConfirmationViewModel()
+                {
                     FactoryId = x.FactoryId,
                     FactoryName = x.Factory.ShortName,
                     ProcessUnitId = x.Id,
@@ -223,29 +223,29 @@
                 .Where(x => beginOfMonth <= x.RecordDate
                     && x.RecordDate <= targetDate
                     && targetProcessUnitIds.Any(y => x.ProcessUnitId == y)).ToList();
-                    
+
 
             for (int i = 0; i < SelectedFactories.Count; i++)
             {
-                    var confirmationFirstShift = ConfirmedRecords.FirstOrDefault(x => x.ProcessUnitId == SelectedFactories[i].ProcessUnitId && x.ShiftId == (int)ShiftType.First);
-                    var confirmationSecondShift = ConfirmedRecords.FirstOrDefault(x => x.ProcessUnitId == SelectedFactories[i].ProcessUnitId && x.ShiftId == (int)ShiftType.Second);
-                    var confirmationThirdShift = ConfirmedRecords.FirstOrDefault(x => x.ProcessUnitId == SelectedFactories[i].ProcessUnitId && x.ShiftId == (int)ShiftType.Third);
-                    var confirmationOfDay = ConfirmedDailyRecord.FirstOrDefault(x => x.RecordDate == targetDate && x.ProcessUnitId == SelectedFactories[i].ProcessUnitId);
-                    var confirmationUntilTheDay = ConfirmedDailyRecord.Select(x => new DailyConfirmationViewModel()
-                    {
-                        Day = x.RecordDate,
-                        IsConfirmed = x.Approved,
-                    }).ToList();
+                var confirmationFirstShift = ConfirmedRecords.FirstOrDefault(x => x.ProcessUnitId == SelectedFactories[i].ProcessUnitId && x.ShiftId == (int)ShiftType.First);
+                var confirmationSecondShift = ConfirmedRecords.FirstOrDefault(x => x.ProcessUnitId == SelectedFactories[i].ProcessUnitId && x.ShiftId == (int)ShiftType.Second);
+                var confirmationThirdShift = ConfirmedRecords.FirstOrDefault(x => x.ProcessUnitId == SelectedFactories[i].ProcessUnitId && x.ShiftId == (int)ShiftType.Third);
+                var confirmationOfDay = ConfirmedDailyRecord.FirstOrDefault(x => x.RecordDate == targetDate && x.ProcessUnitId == SelectedFactories[i].ProcessUnitId);
+                var confirmationUntilTheDay = ConfirmedDailyRecord.Where(x => x.ProcessUnitId == SelectedFactories[i].ProcessUnitId).Select(x => new DailyConfirmationViewModel()
+                {
+                    Day = x.RecordDate,
+                    IsConfirmed = x.Approved,
+                }).ToList();
 
-                    SelectedFactories[i].Shift1Confirmed = (confirmationFirstShift == null) ? false : confirmationFirstShift.Approved;
-                    SelectedFactories[i].Shift2Confirmed = (confirmationSecondShift == null) ? false : confirmationSecondShift.Approved;
-                    SelectedFactories[i].Shift3Confirmed = (confirmationThirdShift == null) ? false : confirmationThirdShift.Approved;
-                    SelectedFactories[i].DayConfirmed = (confirmationOfDay == null) ? false : confirmationOfDay.Approved;
-                    SelectedFactories[i].ConfirmedDaysUntilTheDay = confirmationUntilTheDay ?? new List<DailyConfirmationViewModel>();
+                SelectedFactories[i].Shift1Confirmed = (confirmationFirstShift == null) ? false : confirmationFirstShift.Approved;
+                SelectedFactories[i].Shift2Confirmed = (confirmationSecondShift == null) ? false : confirmationSecondShift.Approved;
+                SelectedFactories[i].Shift3Confirmed = (confirmationThirdShift == null) ? false : confirmationThirdShift.Approved;
+                SelectedFactories[i].DayConfirmed = (confirmationOfDay == null) ? false : confirmationOfDay.Approved;
+                SelectedFactories[i].ConfirmedDaysUntilTheDay = JsonConvert.SerializeObject(confirmationUntilTheDay ?? new List<DailyConfirmationViewModel>());
             }
 
             return Json(SelectedFactories.ToDataSourceResult(request, ModelState));
-           
+
         }
 
         private void ValidateDailyModelState(DateTime? date)
@@ -265,8 +265,5 @@
             var errorList = query.ToList();
             return errorList;
         }
-
-
-
     }
 }

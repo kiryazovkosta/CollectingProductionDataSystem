@@ -1,3 +1,5 @@
+var endDate;
+var beginDate;
 var unitGridsData = (function () {
 
     // ----------------- autorun function on document ready -------------------
@@ -34,7 +36,7 @@ var unitGridsData = (function () {
         }
 
         if ($("#confirm")) {
-            $("#confirm").click(function () {
+            $("#confirm").click(function () {               
                 var date = sendDate();
                 $.ajax({
                     url: 'Confirm',
@@ -279,6 +281,48 @@ var unitGridsData = (function () {
         return result;
     }
 
+    function ConfirmationDataBound() {
+        endDate = kendo.parseDate($('input[name=date]').val());
+        beginDate = kendo.parseDate($('input[name=date]').val());
+        beginDate.setDate(1);
+        $.each($(".calendar"), function (index, element) {
+           
+            var dates = JSON.parse($(element).attr('data-json'), function (key, val) {
+                if (key === 'Day') {
+                    return kendo.parseDate(val);
+                } else {
+                    return val;
+                }
+            });
+            
+            //construct calendar
+            $(element).kendoCalendar({
+                value: endDate,
+                dates: dates,
+                month: {
+                    content: 
+                    ' <div class="' + '# if (beginDate <= data.date && data.date <= endDate) { #'
+                                            + '#   var daily = $.grep(dates, function(e){ return e.Day.getDate() === data.date.getDate(); });#'
+                                            + '#if(daily[0] != undefined){#'
+                                            + '#if( daily[0].IsConfirmed){#'
+                                                + "small-green-light" 
+                                                +'#}else{#'
+                                                +"small-red-light" 
+                                                +'#}#'
+                                            +'#}else{#'
+                                            + "small-red-light"
+                                            + "# }#"
+                                            + "#}#"
+                                            + '">#= data.value #</div>'
+                },
+                footer: false,
+                header:false,
+            });
+        });
+
+        $('div.k-calendar table.k-content tbody tr td a.k-link').attr("style", "text-align:center;");
+    }
+
     function DataBound() {
         var dataView = this.dataSource.view();
         var manualIndicator = $('#manualIndicator').val();
@@ -358,5 +402,6 @@ var unitGridsData = (function () {
         DataSave: DataSave,
         ManualEntryFailure: ManualEntryFailure,
         SuccessCalculateManualEntry: SuccessCalculateManualEntry,
+        ConfirmationDataBound: ConfirmationDataBound
     };
 })();

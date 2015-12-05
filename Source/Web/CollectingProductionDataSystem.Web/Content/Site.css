@@ -724,3 +724,23 @@ div.yellow-light {
 div.width100 {
     width: 100%;
 }
+
+div.small-red-light, div.small-green-light, div.small-yellow-light{
+    height: 25px;
+    width: 25px;
+    background-size: 23px 23px;
+    background-position:center center;
+    background-repeat: no-repeat;
+}
+
+div.small-red-light {
+    background-image: url("../Content/Images/TrafficLights/red_light.png");
+}
+
+div.small-green-light {
+    background-image: url("../Content/Images/TrafficLights/green_light.png");
+}
+
+div.small-yellow-light {
+    background-image: url("../Content/Images/TrafficLights/yellow_light.png");
+}
