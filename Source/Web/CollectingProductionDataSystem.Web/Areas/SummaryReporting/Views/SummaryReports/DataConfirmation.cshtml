@@ -28,8 +28,8 @@
     .Columns(
         columns =>
         {
-            columns.Bound(c => c.FactoryName).Hidden().ClientGroupHeaderTemplate("Производство #=value#");
-            columns.Bound(c => c.ProcessUnitName);
+            columns.Bound(c => c.FactoryName).Hidden().ClientGroupHeaderTemplate("<span style = 'font-size:25px;font-weight:bold;'>Производство #=value#</span>");
+            columns.Bound(c => c.ProcessUnitName).HtmlAttributes(new{style="font-size:25px;"});
             columns.Bound(c => c.Shift1Confirmed).ClientTemplate("<div class='text-center width100'><div class='#:data.Shift1Confirmed ? 'green-light':'red-light'#'></div></div>");
             columns.Bound(c => c.Shift2Confirmed).ClientTemplate("<div class='text-center width100'><div class='#:data.Shift2Confirmed ? 'green-light':'red-light'#'></div></div>");
             columns.Bound(c => c.Shift3Confirmed).ClientTemplate("<div class='text-center width100'><div class='#:data.Shift3Confirmed ? 'green-light':'red-light'#'></div></div>");
@@ -50,7 +50,7 @@
         //.ProxyURL(Url.Action("Excel_Export_Save", "Ajax", new { area = "" }))
         //.AllPages(true))
             .Events(ev => ev.DataBound("unitGridsData.ConfirmationDataBound"))
-            .Scrollable(scr => scr.Height(640))
+            .Scrollable(scr => scr.Height(680))
             .Filterable()
             .DataSource(dataSource => dataSource
                 .Ajax()

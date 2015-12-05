@@ -551,8 +551,11 @@
     <Content Include="Content\Images\ShiftData\smenni_danni.png" />
     <Content Include="Content\Images\tanks.png" />
     <Content Include="Content\Images\TrafficLights\green_light.png" />
+    <Content Include="Content\Images\TrafficLights\green_light_big.png" />
     <Content Include="Content\Images\TrafficLights\red_light.png" />
+    <Content Include="Content\Images\TrafficLights\red_light_big.png" />
     <Content Include="Content\Images\TrafficLights\yellow_light.png" />
+    <Content Include="Content\Images\TrafficLights\yellow_light_big.png" />
     <Content Include="Content\Images\warning.png" />
     <Content Include="Content\kendo\Black\editor.png" />
     <Content Include="Content\kendo\Black\imagebrowser.png" />

@@ -700,25 +700,25 @@ a.btn-help {
 }
 
 div.red-light, div.yellow-light, div.green-light {
-    height: 34px;
-    width: 34px;
+    height: 100px;
+    width: 100px;
     display:block;
     margin-left:auto;
     margin-right:auto;
-    background-size: 32px 32px;
+    background-size: 98px 98px;
     background-repeat: no-repeat;
 }
 
 div.red-light {
-    background-image: url("../Content/Images/TrafficLights/red_light.png");
+    background-image: url("../Content/Images/TrafficLights/red_light_big.png");
 }
 
 div.green-light {
-    background-image: url("../Content/Images/TrafficLights/green_light.png");
+    background-image: url("../Content/Images/TrafficLights/green_light_big.png");
 }
 
 div.yellow-light {
-    background-image: url("../Content/Images/TrafficLights/yellow_light.png");
+    background-image: url("../Content/Images/TrafficLights/yellow_light_big.png");
 }
 
 div.width100 {

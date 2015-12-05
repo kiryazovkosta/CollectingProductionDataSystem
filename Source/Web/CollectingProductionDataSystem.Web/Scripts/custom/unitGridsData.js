@@ -321,6 +321,7 @@ var unitGridsData = (function () {
         });
 
         $('div.k-calendar table.k-content tbody tr td a.k-link').attr("style", "text-align:center;");
+        $('div.k-calendar div.k-header').attr("style", "display:none;")
     }
 
     function DataBound() {
