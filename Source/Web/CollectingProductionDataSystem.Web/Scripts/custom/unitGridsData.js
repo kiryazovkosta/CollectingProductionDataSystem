@@ -35,8 +35,15 @@ var unitGridsData = (function () {
             attachEventToExportBtn("#excel-export", "#tanks");
         }
 
+        var summaryGrid = $('#confirmation').data('kendoGrid');
+        if (summaryGrid) {
+            $('#pdf-export').click(function (ev) {
+                summaryGrid.saveAsPDF();
+            });
+        }
+
         if ($("#confirm")) {
-            $("#confirm").click(function () {               
+            $("#confirm").click(function () {
                 var date = sendDate();
                 $.ajax({
                     url: 'Confirm',
@@ -161,7 +168,7 @@ var unitGridsData = (function () {
         });
 
         $(targetSelector).data("kendoGrid").bind("excelExport", function (e) {
-           // e.workbook.fileName = "Grid.xlsx";
+            // e.workbook.fileName = "Grid.xlsx";
         });
     }
 
@@ -286,7 +293,7 @@ var unitGridsData = (function () {
         beginDate = kendo.parseDate($('input[name=date]').val());
         beginDate.setDate(1);
         $.each($(".calendar"), function (index, element) {
-           
+
             var dates = JSON.parse($(element).attr('data-json'), function (key, val) {
                 if (key === 'Day') {
                     return kendo.parseDate(val);
@@ -294,29 +301,29 @@ var unitGridsData = (function () {
                     return val;
                 }
             });
-            
+
             //construct calendar
             $(element).kendoCalendar({
                 value: endDate,
                 dates: dates,
                 month: {
-                    content: 
+                    content:
                     ' <div class="' + '# if (beginDate <= data.date && data.date <= endDate) { #'
                                             + '#   var daily = $.grep(dates, function(e){ return e.Day.getDate() === data.date.getDate(); });#'
                                             + '#if(daily[0] != undefined){#'
                                             + '#if( daily[0].IsConfirmed){#'
-                                                + "small-green-light" 
-                                                +'#}else{#'
-                                                +"small-red-light" 
-                                                +'#}#'
-                                            +'#}else{#'
+                                                + "small-green-light"
+                                                + '#}else{#'
+                                                + "small-red-light"
+                                                + '#}#'
+                                            + '#}else{#'
                                             + "small-red-light"
                                             + "# }#"
                                             + "#}#"
                                             + '">#= data.value #</div>'
                 },
                 footer: false,
-                header:false,
+                header: false,
             });
         });
 

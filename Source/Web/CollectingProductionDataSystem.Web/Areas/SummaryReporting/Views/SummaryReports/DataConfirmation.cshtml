@@ -15,7 +15,7 @@
         <h2>@Resources.Layout.ConfirmedDataReport</h2>
     </div>
     <div class="col-md-2">
-        <button id="excel-export" class="k-button k-button-icontext k-grid-excel pull-right head-button"><span class="k-icon k-i-excel"></span>Експорт в Excel</button>
+        <button id="pdf-export" class="k-button k-button-icontext k-grid-excel pull-right head-button"><span class="k-icon k-i-pdf"></span>Експорт в Pdf</button>
     </div>
 </div>
 @Html.ValidationSummary()
@@ -44,6 +44,14 @@
         )
                 .Editable(editable => editable.Mode(GridEditMode.InLine))
         .Sortable()
+        .Pdf(pdf => pdf
+            .AllPages()
+            .FileName(@Resources.Layout.ConfirmedDataReport + "_" + DateTime.Now + ".pdf")
+            .ProxyURL(Url.Action("Pdf_Export_Save", "Ajax", new { area = "" }))
+            .ForceProxy(true)
+            .PaperSize("A4")
+            .Title(@Resources.Layout.ConfirmedDataReport + " към " + DateTime.Now)
+        )
         //.Excel(excel => excel
         //.FileName(@Resources.Layout.UnitsDailyData + "_" + DateTime.Now + ".xlsx")
         //.Filterable(true)

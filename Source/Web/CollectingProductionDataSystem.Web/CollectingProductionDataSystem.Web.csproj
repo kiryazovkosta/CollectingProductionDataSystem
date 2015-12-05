@@ -451,6 +451,7 @@
     <Content Include="Content\Images\LukBlack.png" />
     <Content Include="Content\Images\LukTransparent.png" />
     <Content Include="Content\Images\ok.png" />
+    <Content Include="Content\Images\pdf-download.png" />
     <Content Include="Content\Images\PNG\128x128\Cancel2.png" />
     <Content Include="Content\Images\PNG\128x128\ErrorCircle.png" />
     <Content Include="Content\Images\PNG\128x128\Favorites.png" />
