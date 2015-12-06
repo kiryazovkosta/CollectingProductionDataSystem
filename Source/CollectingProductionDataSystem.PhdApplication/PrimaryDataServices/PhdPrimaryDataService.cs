@@ -6,10 +6,9 @@
     using System.Linq;
     using CollectingProductionDataSystem.Data.Contracts;
     using CollectingProductionDataSystem.Models.Productions;
-    using MathExpressions.Application;
     using Uniformance.PHD;
     using CollectingProductionDataSystem.PhdApplication.Contracts;
-    using System.Text;
+    using CollectingProductionDataSystem.Application.ProductionDataServices;
 
     public class PhdPrimaryDataService : IPrimaryDataService
     {
@@ -66,6 +65,7 @@
                     arguments.EstimatedPressure = (double?)unitConfig.EstimatedPressure;
                     arguments.EstimatedTemperature = (double?)unitConfig.EstimatedTemperature;
                     arguments.EstimatedCompressibilityFactor = (double?)unitConfig.EstimatedCompressibilityFactor;
+                    arguments.CalculationPercentage = (double?)unitConfig.CalculationPercentage;
 
                     var ruc = unitConfig.RelatedUnitConfigs.ToList();
                     foreach (var ru in ruc)
@@ -80,7 +80,8 @@
                                                 .RealValue;
                         if (parameterType == "I")
                         {
-                            arguments.InputValue = inputValue;   
+                            var exsistingValue = arguments.InputValue.HasValue ? arguments.InputValue.Value : 0.0;
+                            arguments.InputValue = exsistingValue + inputValue; 
                         }
                         else if (parameterType == "T")
                         {
@@ -96,7 +97,7 @@
                         }
                     }
 
-                    var result = ProductionDataCalculator.Calculate(formulaCode, arguments);
+                    var result = new ProductionDataCalculatorService(this.data).Calculate(formulaCode, arguments);
                     if (!unitsData.Where(x => x.RecordTimestamp == recordDataTime && x.ShiftId == shift && x.UnitConfigId == unitConfig.Id).Any())
                     {
                         this.data.UnitsData.Add(

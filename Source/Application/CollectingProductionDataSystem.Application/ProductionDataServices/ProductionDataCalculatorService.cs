@@ -184,6 +184,7 @@
             arguments.EstimatedPressure = (double?)unitConfig.EstimatedPressure;
             arguments.EstimatedTemperature = (double?)unitConfig.EstimatedTemperature;
             arguments.EstimatedCompressibilityFactor = (double?)unitConfig.EstimatedCompressibilityFactor;
+            arguments.CalculationPercentage = (double?)unitConfig.CalculationPercentage;
             if (arguments.EstimatedDensity.HasValue)
             {
                 var d = ((int)(arguments.EstimatedDensity.Value * 1000)) / 100;
@@ -1397,7 +1398,7 @@
             {
                 throw new ArgumentNullException("The value of Calculation percentage is not allowed to be null");
             }
-            if (0 < args.CalculationPercentage.Value && args.CalculationPercentage.Value > 100 )
+            if (args.CalculationPercentage.Value < 0d || args.CalculationPercentage.Value > 100d)
             {
                 throw new ArgumentOutOfRangeException("The value of Calculation percentage must be a double number between 0 and 100");
             }
