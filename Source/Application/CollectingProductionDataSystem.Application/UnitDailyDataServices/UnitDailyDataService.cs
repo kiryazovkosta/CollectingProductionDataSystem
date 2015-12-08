@@ -44,9 +44,27 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
                 .Include(x => x.UnitConfigUnitDailyConfigs)
                 .Where(x => x.ProcessUnitId == processUnitId).ToList();
             Dictionary<string, UnitsDailyData> resultDaily = CalculateDailyDataFromShiftData(targetUnitDailyRecordConfigs, targetDay, processUnitId);
-            GetRelatedData(processUnitId, targetDay, resultDaily);
+            Dictionary<string, UnitsDailyData> relatedRecords = GetRelatedData(processUnitId, targetDay);
+            if (relatedRecords.Count() > 0)
+            {
+                foreach (var item in relatedRecords)
+                {
+                    resultDaily.Add(item.Key, item.Value);  
+                }    
+            }
+
             CalculateDailyDataFromRelatedDailyData(resultDaily, processUnitId, targetDay);
             AppendTotalMonthQuantityToDailyRecords(resultDaily, processUnitId, targetDay);
+
+            //TODO: What is this ?!?!?!?!?!?!?!?
+            //if (relatedRecords.Count() > 0)
+            //{
+            //    foreach (var item in relatedRecords)
+            //    {
+            //        resultDaily.Remove(item.Key);  
+            //    }    
+            //}
+
             return resultDaily.Select(x => x.Value);
         }
 
@@ -309,8 +327,10 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
             return status;
         }
 
-        private void GetRelatedData(int processUnitId, DateTime targetDay, Dictionary<string, UnitsDailyData> resultDaily)
+        private Dictionary<string, UnitsDailyData> GetRelatedData(int processUnitId, DateTime targetDay)
         {
+            var relatedUnitsDailyData = new Dictionary<string, UnitsDailyData>();
+
             var relatedDailyDatasFromOtherProcessUnits = this.data.UnitsDailyConfigs
                 .All()
                 .Include(x => x.ProcessUnit)
@@ -325,9 +345,11 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
                 var relatedData = this.data.UnitsDailyDatas.All().Where(u => u.RecordTimestamp == targetDay && u.UnitsDailyConfigId == item.RelatedUnitsDailyConfigId).FirstOrDefault();
                 if (relatedData != null)
                 {
-                    resultDaily.Add(relatedData.UnitsDailyConfig.Code, relatedData);
+                    relatedUnitsDailyData.Add(relatedData.UnitsDailyConfig.Code, relatedData);
                 }
             }
+
+            return relatedUnitsDailyData;
         }
     }
 }
