@@ -10,6 +10,6 @@ namespace CollectingProductionDataSystem.Web.Areas.SummaryReporting.ViewModels
         [JsonProperty(ItemConverterType = typeof(JavaScriptDateTimeConverter))]
         public DateTime Day { get; set; }
 
-        public bool IsConfirmed { get; set; }
+        public bool IsConfirmed { get ; set; }
     }
 }

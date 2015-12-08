@@ -78,6 +78,7 @@
             columns.Bound(c => c.UnitsDailyConfig.ProcessUnit.ShortName).Width(100);
             columns.Bound(c => c.UnitsDailyConfig.Name);
             columns.Bound(c => c.UnitsDailyConfig.MeasureUnit.Code).Width(80);
+            columns.Bound(c => c.TotalMonthQuantity).Width(80);
             columns.Bound(c => c.Value).Width(100).Format("{0:n2}");
             columns.Bound(c => c.UnitsManualDailyData.Value)
                  .ClientTemplate(
@@ -124,6 +125,7 @@
                                                                     model.Field(p => p.UnitsDailyConfig.ProcessUnit.ShortName).Editable(false);
                                                                     model.Field(p => p.UnitsDailyConfig.Name).Editable(false);
                                                                     model.Field(p => p.UnitsDailyConfig.MeasureUnit.Code).Editable(false);
+                                                                    model.Field(p => p.TotalMonthQuantity).Editable(false);                                                                    
                                                                     model.Field(p => p.Value).Editable(false);
                                                                     model.Field(p => p.UnitsManualDailyData.Value).Editable(true);
                                                                     model.Field(p => p.UnitsManualDailyData.EditReason).Editable(true);

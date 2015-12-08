@@ -46,7 +46,42 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
             Dictionary<string, UnitsDailyData> resultDaily = CalculateDailyDataFromShiftData(targetUnitDailyRecordConfigs, targetDay, processUnitId);
             GetRelatedData(processUnitId, targetDay, resultDaily);
             CalculateDailyDataFromRelatedDailyData(resultDaily, processUnitId, targetDay);
+            AppendTotalMonthQuantityToDailyRecords(resultDaily, processUnitId, targetDay);
             return resultDaily.Select(x => x.Value);
+        }
+
+        /// <summary>
+        /// Appends the total month quantity to daily records.
+        /// </summary>
+        /// <param name="resultDaily">The result daily.</param>
+        /// <param name="processUnitId">The process unit id.</param>
+        /// <param name="targetDay">The target day.</param>
+        private void AppendTotalMonthQuantityToDailyRecords(Dictionary<string, UnitsDailyData> resultDaily, int processUnitId, DateTime targetDay)
+        {
+            var beginningOfMonth = new DateTime(targetDay.Year, targetDay.Month, 1);
+            var TotalMonthQuantities = data.UnitsDailyDatas.All().Include(x => x.UnitsDailyConfig)
+                .Join( data.UnitsApprovedDailyDatas.All(),
+                        units => new UnitDailyToApprove { ProcessUnitId = units.UnitsDailyConfig.ProcessUnitId, RecordDate = units.RecordTimestamp },
+                        appd => new UnitDailyToApprove { ProcessUnitId = appd.ProcessUnitId, RecordDate = appd.RecordDate },
+                        (units, appd) => new { Units = units, Appd = appd })
+                .Where(x => x.Units.UnitsDailyConfig.ProcessUnitId == processUnitId &&
+                        beginningOfMonth <= x.Units.RecordTimestamp &&
+                        x.Units.RecordTimestamp < targetDay &&
+                        x.Appd.Approved == true).GroupBy(x => x.Units.UnitsDailyConfig.Code).ToList()
+                        .Select(group => new { Code = group.Key, Value = group.Sum(x => x.Units.RealValue) }).ToDictionary(x => x.Code, x => x.Value);
+
+            foreach (var item in resultDaily)
+            {
+                if (TotalMonthQuantities.ContainsKey(item.Key))
+                {
+                    resultDaily[item.Key].TotalMonthQuantity = (decimal)TotalMonthQuantities[item.Key];
+                }
+                else 
+                {
+                    resultDaily[item.Key].TotalMonthQuantity = 0m;
+                }
+            }
+            Debug.WriteLine("finish");
         }
 
         /// <summary>

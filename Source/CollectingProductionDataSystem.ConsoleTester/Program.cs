@@ -14,21 +14,32 @@ namespace CollectingProductionDataSystem.ConsoleTester
     {
         static void Main(string[] args)
         {
-            //Console.BufferWidth = 190;
-            //Console.WindowWidth = 190;
-            var ninject = new NinjectConfig();
-            //var timer = new Stopwatch();
-            //timer.Start();
-            var kernel = ninject.Kernel;
+           // //Console.BufferWidth = 190;
+           // //Console.WindowWidth = 190;
+           // var ninject = new NinjectConfig();
+           // //var timer = new Stopwatch();
+           // //timer.Start();
+           // var kernel = ninject.Kernel;
 
-            var service = kernel.GetService(typeof(UnitDailyDataService)) as UnitDailyDataService;
-            var processUnitId = 2;
-            var timer = new Stopwatch();
-            timer.Start();
-            var result = service.CalculateDailyDataForProcessUnit(processUnitId, DateTime.Today.AddDays(-6));
-           // var result = service.CalculateAndSaveDailyData(processUnitId, DateTime.Today.AddDays(-5), "Test");
-            timer.Stop();
-            Console.WriteLine("Estimated time for action: {0}", timer.Elapsed);
+           // var service = kernel.GetService(typeof(UnitDailyDataService)) as UnitDailyDataService;
+           // var processUnitId = 2;
+           // var timer = new Stopwatch();
+           // timer.Start();
+           // var result = service.CalculateDailyDataForProcessUnit(processUnitId, DateTime.Today.AddDays(-6));
+           //// var result = service.CalculateAndSaveDailyData(processUnitId, DateTime.Today.AddDays(-5), "Test");
+           // timer.Stop();
+           // Console.WriteLine("Estimated time for action: {0}", timer.Elapsed);
+
+            double b = 0, c = 0;
+
+            double a = b / c;
+
+            if (double.IsNaN(a))
+            {
+                a = 0;
+            }
+
+            Console.WriteLine("The Result is : {0}",a);
         }
     }
 }

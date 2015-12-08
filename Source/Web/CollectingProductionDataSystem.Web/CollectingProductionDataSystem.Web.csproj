@@ -219,6 +219,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Layout.bg.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\Layout.bg2.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Layout.bg.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\Layout.bg3.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -327,7 +332,6 @@
     <Compile Include="Areas\DailyReporting\ViewModels\UnitsReportsDataViewModel.cs" />
     <Compile Include="Areas\SummaryReporting\Controllers\AreaBaseController.cs" />
     <Compile Include="Areas\SummaryReporting\SummaryReportingAreaRegistration.cs" />
-    <Compile Include="Areas\SummaryReporting\ViewModels\DailyConfirmationComparer.cs" />
     <Compile Include="Areas\SummaryReporting\ViewModels\DailyConfirmationViewModel.cs" />
     <Compile Include="Areas\SummaryReporting\ViewModels\DataConfirmationViewModel.cs" />
     <Compile Include="Controllers\AccountController.cs">
@@ -1867,7 +1871,7 @@
     <EmbeddedResource Include="App_GlobalResources\Layout.bg.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <CustomToolNamespace>App_GlobalResources.Resources</CustomToolNamespace>
-      <LastGenOutput>Layout.bg1.Designer.cs</LastGenOutput>
+      <LastGenOutput>Layout.bg2.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Layout.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

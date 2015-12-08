@@ -1293,4 +1293,7 @@
   <data name="Shift3Confirmed" xml:space="preserve">
     <value>Third Shift</value>
   </data>
+  <data name="TotalMonthQuantity" xml:space="preserve">
+    <value>Total Month Quantity</value>
+  </data>
 </root>

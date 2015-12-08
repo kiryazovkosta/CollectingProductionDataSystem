@@ -15,6 +15,7 @@
         public virtual UnitDailyConfig UnitsDailyConfig { get; set; }
         public virtual UnitDailyConfig RelatedUnitsDailyConfig { get; set; }
         public int Position { get; set; }
+
         [NotMapped]
         public int Id { get; set; }
     }

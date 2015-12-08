@@ -1296,4 +1296,7 @@
   <data name="Shift3Confirmed" xml:space="preserve">
     <value>Трета Смяна</value>
   </data>
+  <data name="TotalMonthQuantity" xml:space="preserve">
+    <value>До деня</value>
+  </data>
 </root>

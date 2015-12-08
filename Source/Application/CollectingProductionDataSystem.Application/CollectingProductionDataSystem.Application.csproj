@@ -139,6 +139,7 @@
     <Compile Include="Contracts\IUnitDailyDataService.cs" />
     <Compile Include="UnitDailyDataServices\UnitDailyDataService.cs" />
     <Compile Include="Contracts\IUnitsDataService.cs" />
+    <Compile Include="UnitDailyDataServices\UnitDailyToApprove.cs" />
     <Compile Include="UnitsDataServices\UnitsDataService.cs" />
     <Compile Include="UserServices\UserService.cs" />
   </ItemGroup>
