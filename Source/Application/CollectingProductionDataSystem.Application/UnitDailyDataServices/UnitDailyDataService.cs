@@ -44,6 +44,7 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
                 .Include(x => x.UnitConfigUnitDailyConfigs)
                 .Where(x => x.ProcessUnitId == processUnitId).ToList();
             Dictionary<string, UnitsDailyData> resultDaily = CalculateDailyDataFromShiftData(targetUnitDailyRecordConfigs, targetDay, processUnitId);
+            GetRelatedData(processUnitId, targetDay, resultDaily);
             CalculateDailyDataFromRelatedDailyData(resultDaily, processUnitId, targetDay);
             return resultDaily.Select(x => x.Value);
         }
@@ -271,6 +272,27 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
             }
 
             return status;
+        }
+
+        private void GetRelatedData(int processUnitId, DateTime targetDay, Dictionary<string, UnitsDailyData> resultDaily)
+        {
+            var relatedDailyDatasFromOtherProcessUnits = this.data.UnitsDailyConfigs
+                .All()
+                .Include(x => x.ProcessUnit)
+                .Include(x => x.RelatedUnitDailyConfigs)
+                .Where(x => x.ProcessUnitId == processUnitId && x.AggregationCurrentLevel == true)
+                .SelectMany(y => y.RelatedUnitDailyConfigs)
+                .Where(z => z.RelatedUnitsDailyConfig.ProcessUnitId != processUnitId)
+                .ToList();
+
+            foreach (var item in relatedDailyDatasFromOtherProcessUnits)
+            {
+                var relatedData = this.data.UnitsDailyDatas.All().Where(u => u.RecordTimestamp == targetDay && u.UnitsDailyConfigId == item.RelatedUnitsDailyConfigId).FirstOrDefault();
+                if (relatedData != null)
+                {
+                    resultDaily.Add(relatedData.UnitsDailyConfig.Code, relatedData);
+                }
+            }
         }
     }
 }

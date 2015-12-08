@@ -113,6 +113,9 @@
                 case "N42":
                     result = FormulaN42(arguments);
                     break;
+                case "C1":
+                    result = FormulaC1(arguments);
+                    break;
                 default:
                     throw new ArgumentException("The entered value of the formula code is invalid!");
                     break;
@@ -938,6 +941,36 @@
 
             string expr = @"par.q";
             double result = calculator.Calculate(expr, "par", 1, inputParams);
+            return result;
+        }
+
+        /// <summary>
+        /// UCF1 - зчисляване на колко е стойността на % от число
+        /// </summary>
+        public static double FormulaC1(FormulaArguments args)            
+        {
+            if (!args.InputValue.HasValue)
+            {
+                throw new ArgumentNullException("The value of CounterIndication(PL) is not allowed to be null");
+            }
+            if (!args.CalculationPercentage.HasValue)
+            {
+                 throw new ArgumentNullException("The value of Calculation percentage is not allowed to be null");
+            }
+            if (0 < args.CalculationPercentage.Value && args.CalculationPercentage.Value > 100 )
+            {
+                throw new ArgumentOutOfRangeException("The value of Calculation percentage must be a double number between 0 and 100");
+            }
+
+            var pl = args.InputValue.Value;
+            var c = args.CalculationPercentage.Value;
+            var r = (c / 100.00) * pl;
+
+            var inputParams = new Dictionary<string, double>();
+            inputParams.Add("q", r);
+
+            string expr = @"par.q";
+            var result = calculator.Calculate(expr, "par", 1, inputParams);
             return result;
         }
     }

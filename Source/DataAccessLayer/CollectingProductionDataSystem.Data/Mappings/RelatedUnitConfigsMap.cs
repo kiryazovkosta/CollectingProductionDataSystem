@@ -14,7 +14,7 @@
 
             this.HasRequired(p => p.RelatedUnitConfig).WithMany().WillCascadeOnDelete(false);
 
-            this.Property(x => x.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            //this.Property(x => x.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
         }
     }
 }

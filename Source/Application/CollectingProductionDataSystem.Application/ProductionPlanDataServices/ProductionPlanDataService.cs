@@ -50,7 +50,8 @@
                 var planValue = CalculatePlanValue(productionPlan, dailyData, this.calculator);
                 var factValue = CalculateFactValue(productionPlan, dailyData, this.calculator);
 
-                var factPercents = (decimal)((factValue * 100) / dailyData.Where(x => x.UnitsDailyConfig.Code == productionPlan.QuantityPlanMembers).FirstOrDefault().RealValue);
+                var realValue = dailyData.Where(x => x.UnitsDailyConfig.Code == productionPlan.QuantityPlanMembers).FirstOrDefault().RealValue;
+                var factPercents = (factValue * 100.00) / realValue;
 
                 var productionPlanData = new ProductionPlanData
                 {
@@ -58,7 +59,7 @@
                     RecordTimestamp = date.Value,
                     PercentagesPlan = productionPlan.Percentages,
                     QuanityPlan = (decimal)planValue,
-                    PercentagesFact = factPercents,
+                    PercentagesFact = double.IsNaN(factPercents) ? 0.0m : (decimal)factPercents,
                     QuantityFact = (decimal)factValue,
                     Name = productionPlan.Name,
                     FactoryId = productionPlan.ProcessUnit.FactoryId,

@@ -145,8 +145,6 @@ using CollectingProductionDataSystem.Infrastructure.Contracts;
                         return result;
                     }
                 }
-
-                //.data.SaveChanges(this.UserProfile.UserName);
             }
 
             return DependencyResolver.Current.GetService<IEfStatus>();
@@ -187,7 +185,11 @@ using CollectingProductionDataSystem.Infrastructure.Contracts;
                                     status = dailyServices.ClearUnitDailyDatas(model.date, model.processUnitId, this.UserProfile.UserName);
                                     if (status.IsValid)
                                     {
-                                        dailyResult = dailyServices.CalculateDailyDataForProcessUnit(model.processUnitId, model.date);
+                                        
+                                        if (IsRelatedDataExists(model))
+	                                    {
+                                            dailyResult = dailyServices.CalculateDailyDataForProcessUnit(model.processUnitId, model.date);
+	                                    }
                                     }
                                 }
                             }
@@ -195,12 +197,27 @@ using CollectingProductionDataSystem.Infrastructure.Contracts;
 
                         if (dailyResult.Count() > 0)
                         {
+                            //foreach (var item in dailyResult)
+                            //{
+                            //    this.data.UnitsDailyDatas.Add(item);    
+                            //}
                             this.data.UnitsDailyDatas.BulkInsert(dailyResult, this.UserProfile.UserName);
                             status = this.data.SaveChanges(this.UserProfile.UserName);
                         }
 
-                        transaction.Complete();
+                        if (status.IsValid && this.ModelState.IsValid)
+	                    {
+		                    transaction.Complete(); 
+	                    }
+
                     }
+
+                    if (!this.ModelState.IsValid)
+	                {
+                        Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                        var errors = GetErrorListFromModelState(ModelState);
+                        return Json(new { data = new { errors = errors } });
+	                }
 
                     return Json(new { IsConfirmed = status.IsValid });
                 }
@@ -218,6 +235,29 @@ using CollectingProductionDataSystem.Infrastructure.Contracts;
                 var errors = GetErrorListFromModelState(ModelState);
                 return Json(new { data = new { errors = errors } });
             }
+        }
+ 
+        private bool IsRelatedDataExists(ProcessUnitConfirmShiftInputModel model)
+        {
+            var relatedDailyDatasFromOtherProcessUnits = this.data.UnitsDailyConfigs
+                                                             .All()
+                                                             .Include(x => x.ProcessUnit)
+                                                             .Include(x => x.RelatedUnitDailyConfigs)
+                                                             .Where(x => x.ProcessUnitId == model.processUnitId && x.AggregationCurrentLevel == true)
+                                                             .SelectMany(y => y.RelatedUnitDailyConfigs)
+                                                             .Where(z => z.RelatedUnitsDailyConfig.ProcessUnitId != model.processUnitId)
+                                                             .ToList();
+
+            foreach (var item in relatedDailyDatasFromOtherProcessUnits)
+            {
+                var relatedData = this.data.UnitsDailyDatas.All().Where(u => u.RecordTimestamp == model.date && u.UnitsDailyConfigId == item.RelatedUnitsDailyConfigId).Any();
+                if (!relatedData)
+                {
+                    this.ModelState.AddModelError("shiftdata", string.Format("Не са налични дневни данни за позиция: {0}", item.UnitsDailyConfig.Name));
+                }
+            }
+
+            return this.ModelState.IsValid;
         }
 
         [HttpPost]
@@ -532,52 +572,52 @@ using CollectingProductionDataSystem.Infrastructure.Contracts;
             }
         }
 
-        private double CalculateValueByProductionDataFormula(UnitDataViewModel model)
-        {
-            var formulaCode = model.UnitConfig.CalculatedFormula ?? string.Empty;
-            var arguments = new FormulaArguments();
-            arguments.MaximumFlow = (double?)model.UnitConfig.MaximumFlow;
-            arguments.EstimatedDensity = (double?)model.UnitConfig.EstimatedDensity;
-            arguments.EstimatedPressure = (double?)model.UnitConfig.EstimatedPressure;
-            arguments.EstimatedTemperature = (double?)model.UnitConfig.EstimatedTemperature;
-            arguments.EstimatedCompressibilityFactor = (double?)model.UnitConfig.EstimatedCompressibilityFactor;
+        //private double CalculateValueByProductionDataFormula(UnitDataViewModel model)
+        //{
+        //    var formulaCode = model.UnitConfig.CalculatedFormula ?? string.Empty;
+        //    var arguments = new FormulaArguments();
+        //    arguments.MaximumFlow = (double?)model.UnitConfig.MaximumFlow;
+        //    arguments.EstimatedDensity = (double?)model.UnitConfig.EstimatedDensity;
+        //    arguments.EstimatedPressure = (double?)model.UnitConfig.EstimatedPressure;
+        //    arguments.EstimatedTemperature = (double?)model.UnitConfig.EstimatedTemperature;
+        //    arguments.EstimatedCompressibilityFactor = (double?)model.UnitConfig.EstimatedCompressibilityFactor;
 
-            var uc = this.data.UnitConfigs.GetById(model.UnitConfigId);
-            if (uc != null)
-            {
-                var ruc = uc.RelatedUnitConfigs.ToList();
-                foreach (var ru in ruc)
-                {
-                    var parameterType = ru.RelatedUnitConfig.AggregateGroup;
-                    var inputValue = data.UnitsData
-                            .All()
-                            .Where(x => x.RecordTimestamp == model.RecordTimestamp)
-                            .Where(x => x.ShiftId == model.Shift)
-                            .Where(x => x.UnitConfigId == ru.RelatedUnitConfigId)
-                            .FirstOrDefault()
-                            .RealValue;
-                    if (parameterType == "I")
-                    {
-                        var exsistingValue = arguments.InputValue.HasValue ? arguments.InputValue.Value : 0.0;
-                        arguments.InputValue = exsistingValue + inputValue;
-                    }
-                    else if (parameterType == "T")
-                    {
-                        arguments.Temperature = inputValue;
-                    }
-                    else if (parameterType == "P")
-                    {
-                        arguments.Pressure = inputValue;
-                    }
-                    else if (parameterType == "D")
-                    {
-                        arguments.Density = inputValue;
-                    }
-                }
-            }
+        //    var uc = this.data.UnitConfigs.GetById(model.UnitConfigId);
+        //    if (uc != null)
+        //    {
+        //        var ruc = uc.RelatedUnitConfigs.ToList();
+        //        foreach (var ru in ruc)
+        //        {
+        //            var parameterType = ru.RelatedUnitConfig.AggregateGroup;
+        //            var inputValue = data.UnitsData
+        //                    .All()
+        //                    .Where(x => x.RecordTimestamp == model.RecordTimestamp)
+        //                    .Where(x => x.ShiftId == model.Shift)
+        //                    .Where(x => x.UnitConfigId == ru.RelatedUnitConfigId)
+        //                    .FirstOrDefault()
+        //                    .RealValue;
+        //            if (parameterType == "I")
+        //            {
+        //                var exsistingValue = arguments.InputValue.HasValue ? arguments.InputValue.Value : 0.0;
+        //                arguments.InputValue = exsistingValue + inputValue;
+        //            }
+        //            else if (parameterType == "T")
+        //            {
+        //                arguments.Temperature = inputValue;
+        //            }
+        //            else if (parameterType == "P")
+        //            {
+        //                arguments.Pressure = inputValue;
+        //            }
+        //            else if (parameterType == "D")
+        //            {
+        //                arguments.Density = inputValue;
+        //            }
+        //        }
+        //    }
 
-            return this.productionDataCalculator.Calculate(formulaCode, arguments);
-        }
+        //    return this.productionDataCalculator.Calculate(formulaCode, arguments);
+        //}
 
         private void UpdateRecord(UnitsManualData existManualRecord, UnitDataViewModel model)
         {
