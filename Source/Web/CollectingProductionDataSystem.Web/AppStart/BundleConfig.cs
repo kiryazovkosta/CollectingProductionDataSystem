@@ -55,8 +55,7 @@ namespace CollectingProductionDataSystem.Web.AppStart
                 // "~/Scripts/kendo/kendo.timezones.min.js", // uncomment if using the Scheduler
             "~/Scripts/kendo/kendo.aspnetmvc.min.js",
             "~/Scripts/kendo/cultures/kendo.culture." + System.Threading.Thread.CurrentThread.CurrentCulture.Name + ".min.js",
-            "~/Scripts/kendo/jszip.min.js",
-            "~/Scripts/kendo/pako_deflate.min.js"));
+            "~/Scripts/kendo/jszip.min.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/custom/sidebar").Include(
                 "~/Scripts/custom/sidebar.js", 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Text;
 using System.Web;
 
 namespace CollectingProductionDataSystem.Web.Areas.SummaryReporting.ViewModels
@@ -22,6 +23,18 @@ namespace CollectingProductionDataSystem.Web.Areas.SummaryReporting.ViewModels
 
         [Display(Name = "Factory", ResourceType = typeof(App_GlobalResources.Resources.Layout))]
         public string FactoryName { get; set; }
+
+        public string FactorySortableName
+        {
+            get
+            {
+                var sb = new StringBuilder();
+                sb.Append(this.FactoryId.ToString("d2"));
+                sb.Append(" ");
+                sb.Append(this.FactoryName);
+                return  sb.ToString() ;
+            }
+        }
 
         [UIHint("Hidden")]
         public int ProcessUnitId { get; set; }

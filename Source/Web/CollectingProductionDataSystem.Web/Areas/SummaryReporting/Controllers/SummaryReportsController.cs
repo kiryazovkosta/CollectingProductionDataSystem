@@ -214,7 +214,7 @@
                     FactoryName = x.Factory.ShortName,
                     ProcessUnitId = x.Id,
                     ProcessUnitName = x.ShortName
-                }).ToList();
+                }).OrderBy(x => x.FactoryId).ToList();
             var targetProcessUnitIds = SelectedFactories.Select(x => x.ProcessUnitId);
             var beginOfMonth = new DateTime(date.Value.Year, date.Value.Month, 1);
             var targetDate = date.Value.Date;

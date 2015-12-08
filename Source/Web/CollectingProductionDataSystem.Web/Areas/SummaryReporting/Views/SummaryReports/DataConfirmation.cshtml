@@ -28,8 +28,8 @@
     .Columns(
         columns =>
         {
-            columns.Bound(c => c.FactoryName).Hidden().ClientGroupHeaderTemplate("<span style = 'font-size:25px;font-weight:bold;'>Производство #=value#</span>");
-            columns.Bound(c => c.ProcessUnitName).HtmlAttributes(new{style="font-size:25px;"});
+            columns.Bound(c => c.FactorySortableName).Hidden().ClientGroupHeaderTemplate("<span style = 'font-size:25px;font-weight:bold;'>Производство #=value.substr(3,value.length-3)#</span>");
+            columns.Bound(c => c.ProcessUnitName).HtmlAttributes(new { style = "font-size:25px;" });
             columns.Bound(c => c.Shift1Confirmed).ClientTemplate("<div class='text-center width100'><div class='#:data.Shift1Confirmed ? 'green-light':'red-light'#'></div></div>");
             columns.Bound(c => c.Shift2Confirmed).ClientTemplate("<div class='text-center width100'><div class='#:data.Shift2Confirmed ? 'green-light':'red-light'#'></div></div>");
             columns.Bound(c => c.Shift3Confirmed).ClientTemplate("<div class='text-center width100'><div class='#:data.Shift3Confirmed ? 'green-light':'red-light'#'></div></div>");
@@ -44,20 +44,23 @@
         )
                 .Editable(editable => editable.Mode(GridEditMode.InLine))
         .Sortable()
-        .Pdf(pdf => pdf
-            .AllPages()
-            .FileName(@Resources.Layout.ConfirmedDataReport + "_" + DateTime.Now + ".pdf")
-            .ProxyURL(Url.Action("Pdf_Export_Save", "Ajax", new { area = "" }))
-            .ForceProxy(true)
-            .PaperSize("A4")
-            .Title(@Resources.Layout.ConfirmedDataReport + " към " + DateTime.Now)
-        )
+        //.ToolBar(tb=>tb.Pdf())
+            .Pdf(pdf => pdf
+                .AllPages()
+                .Title(@Resources.Layout.ConfirmedDataReport + " към " + DateTime.Now)
+                .FileName(@Resources.Layout.ConfirmedDataReport + "_" + DateTime.Now + ".pdf")
+                .ProxyURL(Url.Action("Pdf_Export_Save", "Ajax", new { area = "" }))
+                .PaperSize("A4")
+                .Margin("1cm","1cm","1cm","1cm")
+                
+            )
         //.Excel(excel => excel
         //.FileName(@Resources.Layout.UnitsDailyData + "_" + DateTime.Now + ".xlsx")
         //.Filterable(true)
         //.ProxyURL(Url.Action("Excel_Export_Save", "Ajax", new { area = "" }))
         //.AllPages(true))
-            .Events(ev => ev.DataBound("unitGridsData.ConfirmationDataBound"))
+            .Events(ev => ev.DataBound("unitGridsData.ConfirmationDataBound")
+                            .PdfExport("unitGridsData.FormatGridToPdfExport"))
             .Scrollable(scr => scr.Height(680))
             .Filterable()
             .DataSource(dataSource => dataSource
@@ -66,7 +69,7 @@
                 .ServerOperation(true)
                     .Group(group =>
                     {
-                        group.Add(c => c.FactoryName);
+                        group.Add(c => c.FactorySortableName);
                     })
                 .Model(model =>
                 {
@@ -101,6 +104,7 @@
     @Scripts.Render("~/bundles/custom/kendoadditional")
     @Scripts.Render("~/bundles/custom/unitGrids")
     @Scripts.Render("~/Scripts/custom/confirmationRefresh.min.js")
+    <script src="~/Scripts/kendo/pako_deflate.min.js"></script>
 }
 @section sidebar{
     @Html.Partial("_UnitsDailySideBar")
