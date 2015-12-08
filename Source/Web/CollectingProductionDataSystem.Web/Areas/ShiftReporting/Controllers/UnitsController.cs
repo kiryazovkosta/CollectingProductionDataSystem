@@ -197,10 +197,6 @@ using CollectingProductionDataSystem.Infrastructure.Contracts;
 
                         if (dailyResult.Count() > 0)
                         {
-                            //foreach (var item in dailyResult)
-                            //{
-                            //    this.data.UnitsDailyDatas.Add(item);    
-                            //}
                             this.data.UnitsDailyDatas.BulkInsert(dailyResult, this.UserProfile.UserName);
                             status = this.data.SaveChanges(this.UserProfile.UserName);
                         }

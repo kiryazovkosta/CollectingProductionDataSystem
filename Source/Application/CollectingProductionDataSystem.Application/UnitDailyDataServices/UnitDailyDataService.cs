@@ -52,18 +52,16 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
                     resultDaily.Add(item.Key, item.Value);  
                 }    
             }
-
             CalculateDailyDataFromRelatedDailyData(resultDaily, processUnitId, targetDay);
             AppendTotalMonthQuantityToDailyRecords(resultDaily, processUnitId, targetDay);
 
-            //TODO: What is this ?!?!?!?!?!?!?!?
-            //if (relatedRecords.Count() > 0)
-            //{
-            //    foreach (var item in relatedRecords)
-            //    {
-            //        resultDaily.Remove(item.Key);  
-            //    }    
-            //}
+            if (relatedRecords.Count() > 0)
+            {
+                foreach (var item in relatedRecords)
+                {
+                    resultDaily.Remove(item.Key);  
+                }    
+            }
 
             return resultDaily.Select(x => x.Value);
         }

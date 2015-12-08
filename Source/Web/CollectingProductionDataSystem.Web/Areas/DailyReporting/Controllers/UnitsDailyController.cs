@@ -172,7 +172,6 @@
                     var existNewManualRecord = this.data.UnitsManualDailyDatas.All().FirstOrDefault(x => x.Id == newNewManualRecord.Id);
                     if (existNewManualRecord == null)
                     {
-                        existNewManualRecord.EditReasonId = 0;
                         this.data.UnitsManualDailyDatas.Add(newNewManualRecord);
                     }
                     else
