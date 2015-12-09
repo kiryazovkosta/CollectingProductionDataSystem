@@ -199,6 +199,11 @@
     </Compile>
     <Compile Include="AppStart\StartUpUsersConfiguration.cs" />
     <Compile Include="AppStart\ViewEnginesConfig.cs" />
+    <Compile Include="App_GlobalResources\ErrorMessages.bg.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ErrorMessages.bg.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\ErrorMessages.bg1.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -361,6 +366,7 @@
     <Compile Include="Infrastructure\ModelBinders\TimeSpanComponentAttribute.cs" />
     <Compile Include="Infrastructure\ModelBinders\TimeSpanModelBinder.cs" />
     <Compile Include="InputModels\EditReasonInputModel.cs" />
+    <Compile Include="InputModels\ProcessUnitConfirmDailyInputModel.cs" />
     <Compile Include="InputModels\ProcessUnitConfirmShiftInputModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -1680,6 +1686,7 @@
     <Content Include="Views\Shared\DisplayTemplates\ShowHistory.cshtml" />
     <Content Include="Views\Shared\_BootstrapModal.cshtml" />
     <Content Include="Views\Shared\_BaseLayout.cshtml" />
+    <Content Include="Views\Shared\_ControlParams.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1860,8 +1867,8 @@
   <ItemGroup>
     <EmbeddedResource Include="App_GlobalResources\ErrorMessages.bg.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>ErrorMessages.bg1.designer.cs</LastGenOutput>
       <CustomToolNamespace>App_GlobalResources.Resources</CustomToolNamespace>
+      <LastGenOutput>ErrorMessages.bg.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\ErrorMessages.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

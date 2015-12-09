@@ -1299,4 +1299,7 @@
   <data name="TotalMonthQuantity" xml:space="preserve">
     <value>До деня</value>
   </data>
+  <data name="IsConfirmed" xml:space="preserve">
+    <value>Потвърждение</value>
+  </data>
 </root>

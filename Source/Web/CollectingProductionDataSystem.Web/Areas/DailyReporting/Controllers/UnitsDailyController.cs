@@ -3,6 +3,7 @@
     using System.ComponentModel.DataAnnotations;
     using System.Data.Entity.Infrastructure;
     using System.Diagnostics;
+    using System.Text;
     using AutoMapper;
     using CollectingProductionDataSystem.Application.CalculatorService;
     using System;
@@ -18,8 +19,10 @@
     using Kendo.Mvc.Extensions;
     using Kendo.Mvc.UI;
     using CollectingProductionDataSystem.Web.Infrastructure.Filters;
+    using Newtonsoft.Json;
     using Resources = App_GlobalResources.Resources;
     using System.Net;
+    using CollectingProductionDataSystem.Web.InputModels;
 
     public class UnitsDailyController : AreaBaseController
     {
@@ -70,6 +73,17 @@
                         Debug.WriteLine(ex1.Message + "\n" + ex1.InnerException);
                     }
                 }
+
+                Session["reportParams"] = Convert.ToBase64String(Encoding.UTF8.GetBytes(
+                                                                   JsonConvert.SerializeObject(
+                                                                       new ProcessUnitConfirmShiftInputModel()
+                                                                       {
+                                                                           date = date.Value,
+                                                                           processUnitId = processUnitId.Value,
+                                                                       }
+                                                                   )
+                                                               )
+                                                           );
 
                 return Json(kendoResult);
             }
@@ -221,27 +235,27 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Confirm(DateTime? date, int? processUnitId)
+        public ActionResult Confirm(ProcessUnitConfirmDailyInputModel model)
         {
-            ValidateModelState(date, processUnitId);
+            ValidateModelState(model.date, model.processUnitId);
             if (ModelState.IsValid)
             {
                 var approvedShift = this.data.UnitsApprovedDailyDatas
                    .All()
-                   .Where(u => u.RecordDate == date && u.ProcessUnitId == processUnitId)
+                   .Where(u => u.RecordDate == model.date && u.ProcessUnitId == model.processUnitId)
                    .FirstOrDefault();
                 if (approvedShift == null)
                 {
                     this.data.UnitsApprovedDailyDatas.Add(
                         new UnitsApprovedDailyData
                         {
-                            RecordDate = date.Value,
-                            ProcessUnitId = processUnitId.Value,
+                            RecordDate = model.date,
+                            ProcessUnitId = model.processUnitId,
                             Approved = true
                         });
 
                     // Get all process plan data and save it
-                    IEnumerable<ProductionPlanData> dbResult = this.productionPlanData.ReadProductionPlanData(date, processUnitId);
+                    IEnumerable<ProductionPlanData> dbResult = this.productionPlanData.ReadProductionPlanData(model.date, model.processUnitId);
                     if (dbResult.Count() > 0)
 	                {
                         foreach (var item in dbResult)

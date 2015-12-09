@@ -1,6 +1,7 @@
 ﻿@using Resources = App_GlobalResources.Resources;
 @using CollectingProductionDataSystem.Web.Infrastructure.Helpers;
 @Html.Hidden("user", User.Identity.Name)
+@Html.Partial("_ControlParams")
 <div class="form-group">
     <label for="factories">@Resources.Layout.Factory</label>
     @(Html.Kendo().DropDownList()

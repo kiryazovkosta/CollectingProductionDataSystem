@@ -1296,4 +1296,7 @@
   <data name="TotalMonthQuantity" xml:space="preserve">
     <value>Total Month Quantity</value>
   </data>
+  <data name="IsConfirmed" xml:space="preserve">
+    <value>Confirmation</value>
+  </data>
 </root>

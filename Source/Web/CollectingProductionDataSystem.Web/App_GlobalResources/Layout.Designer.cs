@@ -1465,6 +1465,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Confirmation.
+        /// </summary>
+        public static string IsConfirmed {
+            get {
+                return ResourceManager.GetString("IsConfirmed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to IsEditable.
         /// </summary>
         public static string IsEditable {

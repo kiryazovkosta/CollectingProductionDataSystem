@@ -5,20 +5,34 @@ var unitGridsData = (function () {
     // ----------------- autorun function on document ready -------------------
     'use strict';
     $(document).ready(function () {
+        var ctrlParamsElement = $('#control-params');
         $("#apply").click(function () {
-            if ($("#units")) {
+            if ($("#units").val() !== undefined) {
+
+                if (ctrlParamsElement.val() !== undefined) {
+                    ctrlParamsElement.attr('data-params', JSON.stringify(sendDate()));
+                }
+
                 kendoAdditional.RefreshGrid("#units");
             }
-            if ($("#productionPlan")) {
+
+            if ($("#productionPlan").val() !== undefined) {
                 kendoAdditional.RefreshGrid("#productionPlan");
             }
-            if ($("#tanks")) {
+
+            if ($("#tanks").val() !== undefined) {
+
+                if (ctrlParamsElement.val() !== undefined) {
+                    ctrlParamsElement.attr('data-params', JSON.stringify(SendTanksData()));
+                }
+
                 kendoAdditional.RefreshGrid("#tanks");
             }
 
-            if ($("#confirmation")) {
+            if ($("#confirmation").val() !== undefined) {
                 kendoAdditional.RefreshGrid("#confirmation");
             }
+
             if ($('#confirm').val() === "") {
                 checkConfirmedStatus();
             }
@@ -56,50 +70,88 @@ var unitGridsData = (function () {
 
         if ($("#confirm")) {
             $("#confirm").click(function () {
-                var date = sendDate();
-                $.ajax({
-                    url: 'Confirm',
-                    type: 'POST',
-                    data: date,
-                    success: function (data) {
-                        var confirmed = data.IsConfirmed;
-                        if (confirmed === true) {
-                            hideCommandButtons();
-                            var message = "Вие потвърдихте отчета успешно."
-                            $('pre#succ-message').text(message);
-                            $('div#success-window').data("kendoWindow").open();
+                var dataParam = sendDate();
+                var controlData = getControlData();
+                var differences = checkEquals(dataParam, controlData)
+                if (differences.length === 0) {
+                    $.ajax({
+                        url: 'Confirm',
+                        type: 'POST',
+                        data: dataParam,
+                        success: function (data) {
+                            var confirmed = data.IsConfirmed;
+                            if (confirmed === true) {
+                                hideCommandButtons();
+                                var message = "Вие потвърдихте отчета успешно."
+                                $('pre#succ-message').text(message);
+                                $('div#success-window').data("kendoWindow").open();
 
-                        } else {
-                            if (data.errors) {
-                                var errorMessage = "";
-                                $.each(data.errors, function (key, value) {
-                                    if ('errors' in value) {
-                                        $.each(value.errors, function () {
-                                            errorMessage += this + "\n";
-                                        });
-                                    }
-                                });
-                                $('pre#err-message').text(errorMessage);
-                                $('div#err-window').data("kendoWindow").open();
+                            } else {
+                                if (data.errors) {
+                                    var errorMessage = "";
+                                    $.each(data.errors, function (key, value) {
+                                        if ('errors' in value) {
+                                            $.each(value.errors, function () {
+                                                errorMessage += this + "\n";
+                                            });
+                                        }
+                                    });
+                                    $('pre#err-message').text(errorMessage);
+                                    $('div#err-window').data("kendoWindow").open();
+                                }
+                                showCommandButtons();
                             }
-                            showCommandButtons();
+                        },
+                        error: function (data) {
+                            var errorMessage = "";
+                            var response = JSON.parse(data.responseText).data;
+                            $.each(response.errors, function (key, value) {
+                                errorMessage += this + "\n";
+                            });
+                            $('pre#err-message').text(errorMessage);
+                            $('div#err-window').data("kendoWindow").open();
                         }
-                    },
-                    error: function (data) {
-                        var errorMessage = "";
-                        var response = JSON.parse(data.responseText).data;
-                        $.each(response.errors, function (key, value) {
-                            errorMessage += this + "\n";
+                    });
+                } else {
+                        var errorMessage = "Има разлика между параметрите:\n";
+                        $.each(differences, function (key, value) {
+                            errorMessage += "\t\t -" + value + "\n";
                         });
+                        errorMessage += "за които е генериран отчета и тези, които се опитвате да потвърдите!"
                         $('pre#err-message').text(errorMessage);
                         $('div#err-window').data("kendoWindow").open();
-                    }
-                });
+                }
             });
         }
     });
 
     //------------------ private functions ------------------------------------
+
+    function getControlData() {
+        var controlParams = $('#control-params');
+        if (controlParams.val() !== undefined) {
+            return JSON.parse(controlParams.attr('data-params'));
+        } else {
+            return {};
+        }
+        
+    }
+
+    function checkEquals(dataParam, controlData) {
+        var result = [];
+        //for (var d in dataParam) {
+        //    if ((dataParam[d] || 0) !== (controlData[d] || 0)) {
+        //        var selector = d.replace('Id', 's').toLowerCase();
+        //        if (selector.charAt(selector.length - 2) === 'y') {
+        //            selector = selector.slice(0, selector.length - 2) + 'ies';
+        //        }
+        //        var fieldName = $('label[for=' + selector + ']').text() || d.replace('Id', 's');
+        //        result.push(fieldName);
+        //    }
+        //}
+
+        return result;
+    }
 
     function sendProcessUnit() {
         var value = $('input[name=processunits]').val() || $('input[name=processunitsD]').val();

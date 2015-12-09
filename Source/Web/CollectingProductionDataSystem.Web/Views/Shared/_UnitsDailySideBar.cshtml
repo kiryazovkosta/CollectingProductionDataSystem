@@ -2,6 +2,7 @@
 @using CollectingProductionDataSystem.Web.Infrastructure.Helpers;
 @using Resources = App_GlobalResources.Resources;
 @Html.Hidden("user", User.Identity.Name)
+@Html.Partial("_ControlParams")
 <div class="form-group">
     <label for="factories">@Resources.Layout.Factory</label>
 

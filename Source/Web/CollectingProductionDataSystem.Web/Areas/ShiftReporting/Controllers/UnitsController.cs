@@ -8,6 +8,7 @@
     using System.Diagnostics;
     using System.Linq;
     using System.Net;
+    using System.Text;
     using System.Threading.Tasks;
     using System.Transactions;
     using System.Web.Mvc;
@@ -24,8 +25,9 @@
     using CollectingProductionDataSystem.Web.InputModels;
     using Kendo.Mvc.Extensions;
     using Kendo.Mvc.UI;
+    using Newtonsoft.Json;
     using Resources = App_GlobalResources.Resources;
-using CollectingProductionDataSystem.Infrastructure.Contracts;
+    using CollectingProductionDataSystem.Infrastructure.Contracts;
 
     [Authorize]
     public class UnitsController : AreaBaseController
@@ -75,6 +77,17 @@ using CollectingProductionDataSystem.Infrastructure.Contracts;
                     Debug.WriteLine(ex1.Message + "\n" + ex1.InnerException);
                 }
 
+                Session["reportParams"] = Convert.ToBase64String(Encoding.UTF8.GetBytes(
+                                                                    JsonConvert.SerializeObject(
+                                                                        new ProcessUnitConfirmShiftInputModel()
+                                                                        {
+                                                                            date = date.Value,
+                                                                            processUnitId = processUnitId.Value,
+                                                                            shiftId = shiftId.Value
+                                                                        }
+                                                                    )
+                                                                )
+                                                            );
                 return Json(kendoResult);
             }
             else
@@ -154,6 +167,7 @@ using CollectingProductionDataSystem.Infrastructure.Contracts;
         [ValidateAntiForgeryToken]
         public ActionResult Confirm(ProcessUnitConfirmShiftInputModel model)
         {
+            ValidateModelAgainstReportPatameters(this.ModelState, model, Session["reportParams"]);
             ValidateModelState(model.date, model.processUnitId, model.shiftId);
 
             if (this.ModelState.IsValid)
@@ -172,7 +186,7 @@ using CollectingProductionDataSystem.Infrastructure.Contracts;
 
                     IEnumerable<UnitsDailyData> dailyResult = new List<UnitsDailyData>();
 
-                    using (TransactionScope transaction = new TransactionScope(TransactionScopeOption.Required,DefaultTransactionOptions.Instance.TransactionOptions))
+                    using (TransactionScope transaction = new TransactionScope(TransactionScopeOption.Required, DefaultTransactionOptions.Instance.TransactionOptions))
                     {
                         status = data.SaveChanges(this.UserProfile.UserName);
 
@@ -185,11 +199,11 @@ using CollectingProductionDataSystem.Infrastructure.Contracts;
                                     status = dailyServices.ClearUnitDailyDatas(model.date, model.processUnitId, this.UserProfile.UserName);
                                     if (status.IsValid)
                                     {
-                                        
+
                                         if (IsRelatedDataExists(model))
-	                                    {
+                                        {
                                             dailyResult = dailyServices.CalculateDailyDataForProcessUnit(model.processUnitId, model.date);
-	                                    }
+                                        }
                                     }
                                 }
                             }
@@ -206,18 +220,18 @@ using CollectingProductionDataSystem.Infrastructure.Contracts;
                         }
 
                         if (status.IsValid && this.ModelState.IsValid)
-	                    {
-		                    transaction.Complete(); 
-	                    }
+                        {
+                            transaction.Complete();
+                        }
 
                     }
 
                     if (!this.ModelState.IsValid)
-	                {
+                    {
                         Response.StatusCode = (int)HttpStatusCode.BadRequest;
                         var errors = GetErrorListFromModelState(ModelState);
                         return Json(new { data = new { errors = errors } });
-	                }
+                    }
 
                     return Json(new { IsConfirmed = status.IsValid });
                 }
@@ -236,7 +250,45 @@ using CollectingProductionDataSystem.Infrastructure.Contracts;
                 return Json(new { data = new { errors = errors } });
             }
         }
- 
+
+        /// <summary>
+        /// Validates the model against report patameters.
+        /// </summary>
+        /// <param name="modelState">State of the model.</param>
+        /// <param name="model">The model.</param>
+        /// <param name="session">The session.</param>
+        private void ValidateModelAgainstReportPatameters(ModelStateDictionary modelState, ProcessUnitConfirmShiftInputModel model, object inReportParams)
+        {
+            var inParamsString = (inReportParams ?? string.Empty).ToString();
+
+            if (string.IsNullOrEmpty(inParamsString))
+            {
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                var errors = GetErrorListFromModelState(ModelState);
+                modelState.AddModelError("", @Resources.ErrorMessages.InvalidReportParams);
+                return;
+            }
+
+            var decodedParamsString = System.Text.Encoding.UTF8.GetString(Convert.FromBase64String(inParamsString));
+            var reportParams = JsonConvert.DeserializeObject<ProcessUnitConfirmShiftInputModel>(decodedParamsString);
+
+            if (!model.Equals(reportParams))
+            {
+                var resultMessage = new StringBuilder();
+                resultMessage.AppendLine(@Resources.ErrorMessages.ParameterDifferencesHead);
+                if (model.date != reportParams.date) { resultMessage.AppendLine(string.Format("\t\t -{0}", @Resources.Layout.Date)); }
+                if (model.processUnitId != reportParams.processUnitId) { resultMessage.AppendLine(string.Format("\t\t -{0}", @Resources.Layout.ProcessUnit)); }
+                if (model.shiftId != reportParams.shiftId) { resultMessage.AppendLine(string.Format("\t\t -{0}", @Resources.Layout.Shift)); }
+                if (model.IsConfirmed != reportParams.IsConfirmed) { resultMessage.AppendLine(string.Format("\t\t -{0}", @Resources.Layout.IsConfirmed)); }
+                resultMessage.AppendLine(@Resources.ErrorMessages.ParametersDifferencesTrail);
+
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                var errors = GetErrorListFromModelState(ModelState);
+                modelState.AddModelError("", resultMessage.ToString());
+                return;
+            }
+        }
+
         private bool IsRelatedDataExists(ProcessUnitConfirmShiftInputModel model)
         {
             var relatedDailyDatasFromOtherProcessUnits = this.data.UnitsDailyConfigs
@@ -291,7 +343,7 @@ using CollectingProductionDataSystem.Infrastructure.Contracts;
                 {
                     IsOldValueAvailableForEditing = startupValue == decimal.MinValue,
                     OldValue = startupValue == decimal.MinValue ? 0 : startupValue,
-                    EnteredMeasurementCode = model.UnitConfig.EnteredMeasureUnit.Code??string.Empty,
+                    EnteredMeasurementCode = model.UnitConfig.EnteredMeasureUnit.Code ?? string.Empty,
                     UnitDataId = model.Id,
                     EditorScreenHeading = string.Format(Resources.Layout.EditValueFor, model.UnitConfig.Name)
                 };
@@ -342,11 +394,11 @@ using CollectingProductionDataSystem.Infrastructure.Contracts;
 
             if (this.ModelState.IsValid)
             {
-                return Json("success"); 
+                return Json("success");
             }
             else
             {
-               return PartialView("_ManualDataCalculation", model);
+                return PartialView("_ManualDataCalculation", model);
             }
         }
 
@@ -388,11 +440,11 @@ using CollectingProductionDataSystem.Infrastructure.Contracts;
 
             if (this.ModelState.IsValid)
             {
-                return Json("success"); 
+                return Json("success");
             }
             else
             {
-               return PartialView("_ManualDataSelfCalculation", model);
+                return PartialView("_ManualDataSelfCalculation", model);
             }
         }
 
@@ -434,11 +486,11 @@ using CollectingProductionDataSystem.Infrastructure.Contracts;
 
             if (this.ModelState.IsValid)
             {
-                return Json("success"); 
+                return Json("success");
             }
             else
             {
-               return PartialView("_ManualDataWithRelatedCalculation", model);
+                return PartialView("_ManualDataWithRelatedCalculation", model);
             }
         }
 
@@ -513,9 +565,9 @@ using CollectingProductionDataSystem.Infrastructure.Contracts;
             {
                 result.SetErrors(errors);
                 foreach (var error in errors)
-	            {
-		            logger.Error(error.ErrorMessage, this, new Exception(), error.ErrorMessage.Split(new char[]{'\n'} ));
-	            }
+                {
+                    logger.Error(error.ErrorMessage, this, new Exception(), error.ErrorMessage.Split(new char[] { '\n' }));
+                }
             }
 
             return result;
@@ -665,17 +717,17 @@ using CollectingProductionDataSystem.Infrastructure.Contracts;
                 {
                     startupValue = lastCreatedData.NewValue;
                 }
-                else 
+                else
                 {
                     startupValue = lastModifiedData.NewValue;
                 }
             }
             else if (lastCreatedData != null && lastModifiedData == null)
-	        {
-		        startupValue = lastCreatedData.NewValue;
-	        }
-            else if (lastModifiedData != null && lastCreatedData == null) 
-            { 
+            {
+                startupValue = lastCreatedData.NewValue;
+            }
+            else if (lastModifiedData != null && lastCreatedData == null)
+            {
                 startupValue = lastModifiedData.NewValue;
             }
             else
