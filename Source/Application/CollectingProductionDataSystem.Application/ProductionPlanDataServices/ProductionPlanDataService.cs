@@ -20,14 +20,9 @@
             this.unitData = unitData;
         }
 
-        public IEnumerable<ProductionPlanData> ReadProductionPlanData(DateTime? date, int? processUnitId)
+        public IEnumerable<ProductionPlanData> ReadProductionPlanData(DateTime date, int processUnitId)
         {
             var result = new HashSet<ProductionPlanData>();
-
-            if (!date.HasValue || !processUnitId.HasValue)
-            {
-                return result;
-            }
 
             var dailyData = unitData.GetUnitsDailyDataForDateTime(date, processUnitId).ToList();
             if (dailyData.Count == 0)
@@ -38,7 +33,7 @@
             var dbResult = this.data.ProductionPlanConfigs.All();
             if (processUnitId != null)
             {
-                dbResult = dbResult.Where(x => x.ProcessUnitId == processUnitId.Value);
+                dbResult = dbResult.Where(x => x.ProcessUnitId == processUnitId);
             }
 
             var productionPlans = dbResult
@@ -56,14 +51,14 @@
                 var productionPlanData = new ProductionPlanData
                 {
                     ProductionPlanConfigId = productionPlan.Id,
-                    RecordTimestamp = date.Value,
+                    RecordTimestamp = date,
                     PercentagesPlan = productionPlan.Percentages,
                     QuanityPlan = (decimal)planValue,
                     PercentagesFact = double.IsNaN(factPercents) ? 0.0m : (decimal)factPercents,
                     QuantityFact = (decimal)factValue,
                     Name = productionPlan.Name,
                     FactoryId = productionPlan.ProcessUnit.FactoryId,
-                    ProcessUnitId = processUnitId.Value,
+                    ProcessUnitId = processUnitId,
                 };
                 result.Add(productionPlanData);
             }

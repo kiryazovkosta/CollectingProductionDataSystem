@@ -1,28 +1,28 @@
 ﻿namespace CollectingProductionDataSystem.Web.Areas.DailyReporting.Controllers
 {
+    using System;
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.Data.Entity.Infrastructure;
     using System.Diagnostics;
+    using System.Linq;
+    using System.Net;
     using System.Text;
+    using System.Web.Mvc;
     using AutoMapper;
     using CollectingProductionDataSystem.Application.CalculatorService;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Web.Mvc;
     using CollectingProductionDataSystem.Application.Contracts;
     using CollectingProductionDataSystem.Application.ProductionPlanDataServices;
     using CollectingProductionDataSystem.Data.Contracts;
     using CollectingProductionDataSystem.Models.Productions;
     using CollectingProductionDataSystem.Web.Infrastructure.Extentions;
+    using CollectingProductionDataSystem.Web.Infrastructure.Filters;
+    using CollectingProductionDataSystem.Web.InputModels;
     using CollectingProductionDataSystem.Web.ViewModels.Units;
     using Kendo.Mvc.Extensions;
     using Kendo.Mvc.UI;
-    using CollectingProductionDataSystem.Web.Infrastructure.Filters;
     using Newtonsoft.Json;
     using Resources = App_GlobalResources.Resources;
-    using System.Net;
-    using CollectingProductionDataSystem.Web.InputModels;
 
     public class UnitsDailyController : AreaBaseController
     {
@@ -76,7 +76,7 @@
 
                 Session["reportParams"] = Convert.ToBase64String(Encoding.UTF8.GetBytes(
                                                                    JsonConvert.SerializeObject(
-                                                                       new ProcessUnitConfirmShiftInputModel()
+                                                                       new ProcessUnitConfirmDailyInputModel()
                                                                        {
                                                                            date = date.Value,
                                                                            processUnitId = processUnitId.Value,
@@ -236,6 +236,7 @@
         [ValidateAntiForgeryToken]
         public ActionResult Confirm(ProcessUnitConfirmDailyInputModel model)
         {
+            ValidateModelAgainstReportPatameters(this.ModelState, model, Session["reportParams"]);
             ValidateModelState(model.date, model.processUnitId);
             if (ModelState.IsValid)
             {
@@ -279,6 +280,43 @@
                 Response.StatusCode = (int)HttpStatusCode.BadRequest;
                 var errors = GetErrorListFromModelState(ModelState);
                 return Json(new { data = new { errors = errors } });
+            }
+        }
+ 
+        /// <summary>
+        /// Validates the model against report patameters.
+        /// </summary>
+        /// <param name="modelState">State of the model.</param>
+        /// <param name="model">The model.</param>
+        /// <param name="session">The session.</param>
+        private void ValidateModelAgainstReportPatameters(ModelStateDictionary modelState, ProcessUnitConfirmDailyInputModel model, object inReportParams)
+        {
+            var inParamsString = (inReportParams ?? string.Empty).ToString();
+
+            if (string.IsNullOrEmpty(inParamsString))
+            {
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                var errors = GetErrorListFromModelState(ModelState);
+                modelState.AddModelError("", @Resources.ErrorMessages.InvalidReportParams);
+                return;
+            }
+
+            var decodedParamsString = System.Text.Encoding.UTF8.GetString(Convert.FromBase64String(inParamsString));
+            var reportParams = JsonConvert.DeserializeObject<ProcessUnitConfirmDailyInputModel>(decodedParamsString);
+
+            if (!model.Equals(reportParams))
+            {
+                var resultMessage = new StringBuilder();
+                resultMessage.AppendLine(@Resources.ErrorMessages.ParameterDifferencesHead);
+                if (model.date != reportParams.date) { resultMessage.AppendLine(string.Format("\t\t -{0}", @Resources.Layout.Date)); }
+                if (model.processUnitId != reportParams.processUnitId) { resultMessage.AppendLine(string.Format("\t\t -{0}", @Resources.Layout.ProcessUnit)); }
+                if (model.IsConfirmed != reportParams.IsConfirmed) { resultMessage.AppendLine(string.Format("\t\t -{0}", @Resources.Layout.IsConfirmed)); }
+                resultMessage.AppendLine(@Resources.ErrorMessages.ParametersDifferencesTrail);
+
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                var errors = GetErrorListFromModelState(ModelState);
+                modelState.AddModelError("", resultMessage.ToString());
+                return;
             }
         }
 

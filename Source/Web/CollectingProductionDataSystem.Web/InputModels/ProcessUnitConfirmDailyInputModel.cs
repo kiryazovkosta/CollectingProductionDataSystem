@@ -5,7 +5,7 @@
     using System.Linq;
     using System.Web;
 
-    public class ProcessUnitConfirmDailyInputModel
+    public class ProcessUnitConfirmDailyInputModel : IEquatable<ProcessUnitConfirmDailyInputModel>
     {
         public DateTime date { get; set; }
         public int processUnitId { get; set; }
@@ -15,7 +15,7 @@
         /// </summary>
         /// <param name="other">The other.</param>
         /// <returns></returns>
-        public bool Equals(ProcessUnitConfirmShiftInputModel other)
+        public bool Equals(ProcessUnitConfirmDailyInputModel other)
         {
             return this.date == other.date
                 && this.processUnitId == other.processUnitId

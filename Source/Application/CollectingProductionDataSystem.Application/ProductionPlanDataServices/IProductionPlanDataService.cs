@@ -9,6 +9,6 @@ namespace CollectingProductionDataSystem.Application.ProductionPlanDataServices
 
     public interface IProductionPlanDataService
     {
-        IEnumerable<ProductionPlanData> ReadProductionPlanData(DateTime? date, int? processUnitId);
+        IEnumerable<ProductionPlanData> ReadProductionPlanData(DateTime date, int processUnitId);
     }
 }
