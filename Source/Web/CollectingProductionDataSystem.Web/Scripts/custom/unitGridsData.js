@@ -139,16 +139,16 @@ var unitGridsData = (function () {
 
     function checkEquals(dataParam, controlData) {
         var result = [];
-        //for (var d in dataParam) {
-        //    if ((dataParam[d] || 0) !== (controlData[d] || 0)) {
-        //        var selector = d.replace('Id', 's').toLowerCase();
-        //        if (selector.charAt(selector.length - 2) === 'y') {
-        //            selector = selector.slice(0, selector.length - 2) + 'ies';
-        //        }
-        //        var fieldName = $('label[for=' + selector + ']').text() || d.replace('Id', 's');
-        //        result.push(fieldName);
-        //    }
-        //}
+        for (var d in dataParam) {
+            if ((dataParam[d] || 0) !== (controlData[d] || 0)) {
+                var selector = d.replace('Id', 's').toLowerCase();
+                if (selector.charAt(selector.length - 2) === 'y') {
+                    selector = selector.slice(0, selector.length - 2) + 'ies';
+                }
+                var fieldName = $('label[for=' + selector + ']').text() || d.replace('Id', 's');
+                result.push(fieldName);
+            }
+        }
 
         return result;
     }

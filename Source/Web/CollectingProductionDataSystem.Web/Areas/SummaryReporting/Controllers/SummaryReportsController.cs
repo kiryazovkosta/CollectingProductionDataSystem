@@ -26,7 +26,7 @@
 
     public class SummaryReportsController : AreaBaseController
     {
-        private const int HalfAnHour = 60 * 30;
+        private const int HalfAnHour = 60 * 30 * 1000;
         private readonly IUnitsDataService unitsData;
         private readonly IUnitDailyDataService dailyService;
 

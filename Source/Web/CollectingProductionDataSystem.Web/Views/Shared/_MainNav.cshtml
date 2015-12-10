@@ -56,3 +56,12 @@
         </div>
     </div>
 </div>
+@if (!this.Server.MachineName.ToLower().Contains("s-api-1"))
+{
+    <div id="dev">
+        <div class="alert alert-danger alert-dismissable text-center">
+            @if(User.IsInRole("Administrator")){<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>}
+            <h2>Вие се намирате в системата за разработки!</h2> <br>За работа в продуктивната система моля използвайте линка: <a href="http:\\s-api-1.neftochim.bg" class="alert-link">"Продуктивна система"</a>.
+        </div>
+    </div>
+}
