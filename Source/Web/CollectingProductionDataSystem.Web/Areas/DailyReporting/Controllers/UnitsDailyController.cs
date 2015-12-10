@@ -146,22 +146,37 @@
         {
             // TODO: Need to get all related units data and recalculate only them
 
-            var uc = this.data.UnitsDailyConfigs.All().Where(x => x.ProcessUnitId == model.UnitsDailyConfig.ProcessUnitId && x.AggregationCurrentLevel == true).ToList();
-            var ud = this.data.UnitsDailyDatas.All().Where(x => x.RecordTimestamp == model.RecordTimestamp && x.UnitsDailyConfig.ProcessUnitId == model.UnitsDailyConfig.ProcessUnitId).ToList();
+            var unitDailyConfigs = this.data.UnitsDailyConfigs
+                .All()
+                .Where(x => x.ProcessUnitId == model.UnitsDailyConfig.ProcessUnitId && x.AggregationCurrentLevel == true)
+                .ToList();
+            var unitDailyDataByProcessUnit = this.data.UnitsDailyDatas
+                .All()
+                .Where(x => x.RecordTimestamp == model.RecordTimestamp && 
+                    x.UnitsDailyConfig.ProcessUnitId == model.UnitsDailyConfig.ProcessUnitId)
+                .ToList();
             var calculator = new CalculatorService();
             var splitter = new char[] { '@' };
 
-            foreach (var c in uc)
+            foreach (var unitDailyConfig in unitDailyConfigs)
             {
-                var tokens = c.AggregationMembers.Split(splitter, StringSplitOptions.RemoveEmptyEntries);
+                var relatedDailyData = unitDailyConfig.RelatedUnitDailyConfigs
+                    .Where(x => x.RelatedUnitsDailyConfig.ProcessUnitId != unitDailyConfig.ProcessUnitId)
+                    .Any();
+                if (relatedDailyData)
+                {
+                    continue;   
+                }
+
+                var tokens = unitDailyConfig.AggregationMembers.Split(splitter, StringSplitOptions.RemoveEmptyEntries);
                 var inputParamsValues = new List<double>();
                 foreach (var token in tokens)
                 {
-                    foreach (var d in ud)
+                    foreach (var unitDailyData in unitDailyDataByProcessUnit)
                     {
-                        if (d.UnitsDailyConfig.Code == token)
+                        if (unitDailyData.UnitsDailyConfig.Code == token)
                         {
-                            inputParamsValues.Add(d.RealValue);
+                            inputParamsValues.Add(unitDailyData.RealValue);
                             continue;
                         }
                     }
@@ -173,8 +188,8 @@
                     inputParams.Add(string.Format("p{0}", i), inputParamsValues[i]);
                 }
 
-                var value = calculator.Calculate(c.AggregationFormula, "p", inputParams.Count, inputParams);
-                var id = ud.Where(x => x.UnitsDailyConfig.Code == c.Code).FirstOrDefault();
+                var value = calculator.Calculate(unitDailyConfig.AggregationFormula, "p", inputParams.Count, inputParams);
+                var id = unitDailyDataByProcessUnit.Where(x => x.UnitsDailyConfig.Code == unitDailyConfig.Code).FirstOrDefault();
                 if (id != null)
                 {
                     var newNewManualRecord = new UnitsManualDailyData
