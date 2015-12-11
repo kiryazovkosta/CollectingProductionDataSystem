@@ -1082,9 +1082,9 @@
                 throw new ArgumentNullException("The value of MaximumFlow(D2) is not allowed to be null");
             }
 
-            double pl = args.InputValue.Value;
+            double pl = args.InputValue.Value; 
             double d2 = args.MaximumFlow.Value;
-            double f = ((d2 * pl) / 100) * 8;
+            double f = ((pl / 100.00) * d2) * 8.00;
             
             var inputParams = new Dictionary<string, double>();
             inputParams.Add("f", f);
