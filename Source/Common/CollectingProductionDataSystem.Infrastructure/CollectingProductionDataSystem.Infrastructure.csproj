@@ -60,6 +60,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Chart\ChartViewModel.cs" />
+    <Compile Include="Chart\DataSery.cs" />
+    <Compile Include="Chart\Pair.cs" />
     <Compile Include="Contracts\ILogger.cs" />
     <Compile Include="Extentions\DateTimeExtentions.cs" />
     <Compile Include="Extentions\ICollectionExtensions.cs" />

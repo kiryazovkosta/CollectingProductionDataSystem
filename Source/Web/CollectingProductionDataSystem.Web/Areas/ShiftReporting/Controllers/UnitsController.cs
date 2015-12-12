@@ -168,8 +168,7 @@
         public ActionResult Confirm(ProcessUnitConfirmShiftInputModel model)
         {
             ValidateModelAgainstReportPatameters(this.ModelState, model, Session["reportParams"]);
-            ValidateModelState(model.date, model.processUnitId, model.shiftId);
-
+            
             if (this.ModelState.IsValid)
             {
                 if (!this.shiftServices.IsShitApproved(model.date, model.processUnitId, model.shiftId))
@@ -182,10 +181,8 @@
                         Approved = true
                     });
 
-                    IEfStatus status;
-
                     IEnumerable<UnitsDailyData> dailyResult = new List<UnitsDailyData>();
-
+                    IEfStatus status;
                     using (TransactionScope transaction = new TransactionScope(TransactionScopeOption.Required, DefaultTransactionOptions.Instance.TransactionOptions))
                     {
                         status = data.SaveChanges(this.UserProfile.UserName);
@@ -199,6 +196,14 @@
                                     status = dailyServices.ClearUnitDailyDatas(model.date, model.processUnitId, this.UserProfile.UserName);
                                     if (status.IsValid)
                                     {
+                                        if (!Convert.ToBoolean(System.Configuration.ConfigurationManager.AppSettings["ComplitionCheckDeactivared"]))
+                                        {
+                                            status = this.dailyServices.CheckIfPreviousDaysAreReady(model.processUnitId, model.date);
+                                            if (!status.IsValid)
+                                            {
+                                                status.ToModelStateErrors(this.ModelState);
+                                            }
+                                        }
 
                                         if (IsRelatedDataExists(model))
                                         {

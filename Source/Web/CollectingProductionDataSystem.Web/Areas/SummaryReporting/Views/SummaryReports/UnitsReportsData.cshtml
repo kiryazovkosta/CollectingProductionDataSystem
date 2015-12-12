@@ -24,8 +24,8 @@
         columns =>
         {
             columns.Bound(c => c.TimeStamp).Format("{0:yyyy-MM-dd}").Width(100);
-            columns.Bound(c => c.Factory).Width(80);
-            columns.Bound(c => c.ProcessUnit).Width(80);
+            columns.Bound(c => c.Factory).Width(80).Hidden(true).ClientGroupHeaderTemplate("Производство #=value.substr(3,value.length-3)#");
+            columns.Bound(c => c.ProcessUnit).Width(80).Hidden(true).ClientGroupHeaderTemplate("Инсталация #=value.substr(3,value.length-3)#");
             columns.Bound(c => c.Code).Width(80);
             columns.Bound(c => c.Position).Width(140);
             columns.Bound(c => c.UnitName);
@@ -34,6 +34,7 @@
             columns.Bound(c => c.Shift2QuantityValue).Format("{0:n2}").Width(200);
             columns.Bound(c => c.Shift3QuantityValue).Format("{0:n2}").Width(200);
         })
+
     .Pageable(pageable => pageable
         .Refresh(true)
         .PageSizes(new[] { 10, 20, 50, 100 })
@@ -57,8 +58,13 @@
         {
             events.Error("kendoAdditional.ErrorHandler");
         })
+            .Group(group =>{
+                group.Add(c => c.Factory);
+                group.Add(c => c.ProcessUnit);
+            })
     )
         .Events(ev => ev.DataBound("unitGridsData.DataBound"))
+
 )
 @* //Error window for kendo grid error event handler *@
 <div id="err-window" style="display:none">@Html.Partial("_KendoGridErrorWindow")</div>

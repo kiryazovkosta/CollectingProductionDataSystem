@@ -1,0 +1,70 @@
+﻿@using System.Globalization;
+@using CollectingProductionDataSystem.Application.UnitDailyDataServices;
+@using CollectingProductionDataSystem.Infrastructure.Chart;
+@using CollectingProductionDataSystem.Models.UtilityEntities;
+@model ChartViewModel<DateTime, decimal>
+
+<div id="chart"></div>
+
+@if (Model.DataSeries.Count() > 0) {
+<script>
+   
+    function createChart() {
+        $("#chart").kendoChart({
+            theme: "bootstrap",
+            plotArea: {
+                height: 300
+            },
+            title: {
+                text: '@Model.Title'
+            },
+            legend: {
+                position: "bottom"
+            },
+            seriesDefaults: {
+                type: "line"
+            },
+            series: [
+                @foreach (var serie in Model.DataSeries)
+                {
+                    @:{
+                                                                        @: name: '@serie.Label',
+                                                                        @: type: '@serie.Type',
+                                                   // @: color: '@serie.Color',
+                                @: data: [
+                                                                    foreach (var item in serie.Values)
+                    {
+                        @item.Y.ToString(CultureInfo.InvariantCulture)@:,
+                                                                    }
+
+                    @:]},
+
+
+                }
+            ],
+            valueAxis: {
+                line: {
+                    visible: false
+                }
+            },
+            categoryAxis: {
+                categories: [
+                    @foreach (var item in Model.DataSeries.FirstOrDefault().Values)
+                {
+                          @Html.Raw("'" + item.X.Day + "',")
+        }],
+                majorGridLines: {
+                    visible: true
+                }
+            },
+            tooltip: {
+                visible: true,
+                format: "days",
+                template: "#= series.name #: #= value #"
+            }
+        });
+    }
+
+    $(document).ready(createChart);
+</script>
+}

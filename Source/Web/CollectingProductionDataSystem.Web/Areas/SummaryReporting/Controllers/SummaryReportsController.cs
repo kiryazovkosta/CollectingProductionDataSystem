@@ -26,7 +26,7 @@
 
     public class SummaryReportsController : AreaBaseController
     {
-        private const int HalfAnHour = 60 * 30 * 1000;
+        private const int HalfAnHour = 60 * 30 ;
         private readonly IUnitsDataService unitsData;
         private readonly IUnitDailyDataService dailyService;
 
@@ -110,8 +110,8 @@
                 var result = dbResult.Select(x => new MultiShift
                 {
                     TimeStamp = x.RecordTimestamp,
-                    Factory = x.UnitConfig.ProcessUnit.Factory.ShortName,
-                    ProcessUnit = x.UnitConfig.ProcessUnit.ShortName,
+                    Factory = string.Format ("{0:d2} {1}",x.UnitConfig.ProcessUnit.Factory.Id, x.UnitConfig.ProcessUnit.Factory.ShortName),
+                    ProcessUnit = string.Format("{0:d2} {1}", x.UnitConfig.ProcessUnit.Id, x.UnitConfig.ProcessUnit.ShortName),
                     Code = x.UnitConfig.Code,
                     Position = x.UnitConfig.Position,
                     MeasureUnit = x.UnitConfig.MeasureUnit.Code,
@@ -173,7 +173,7 @@
                 var kendoResult = new DataSourceResult();
                 if (ModelState.IsValid)
                 {
-                    var dbResult = unitsData.GetUnitsDailyDataForDateTime(date, processUnitId);
+                    var dbResult = unitsData.GetUnitsDailyDataForDateTime(date, processUnitId).Include(x=>x.UnitsDailyConfig.ProcessUnit.Factory);
                     dbResult.Where(x => x.UnitsDailyConfig.ProcessUnit.FactoryId == (factoryId ?? x.UnitsDailyConfig.ProcessUnit.FactoryId));
                     var kendoPreparedResult = Mapper.Map<IEnumerable<UnitsDailyData>, IEnumerable<UnitDailyDataViewModel>>(dbResult);
                     kendoResult = kendoPreparedResult.ToDataSourceResult(request, ModelState);

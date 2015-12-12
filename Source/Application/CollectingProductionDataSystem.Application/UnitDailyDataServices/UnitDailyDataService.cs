@@ -4,16 +4,14 @@
 namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.Data.Entity;
     using System.Diagnostics;
     using System.Linq;
-    using System.Threading.Tasks;
-    using System.Transactions;
     using CollectingProductionDataSystem.Application.Contracts;
     using CollectingProductionDataSystem.Data.Contracts;
+    using CollectingProductionDataSystem.Infrastructure.Chart;
     using CollectingProductionDataSystem.Models.Productions;
     using Ninject;
     using Resources = App_Resources;
@@ -49,18 +47,18 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
             {
                 foreach (var item in relatedRecords)
                 {
-                    resultDaily.Add(item.Key, item.Value);  
-                }    
+                    resultDaily.Add(item.Key, item.Value);
+                }
             }
 
             CalculateDailyDataFromRelatedDailyData(resultDaily, processUnitId, targetDay);
-            
+
             if (relatedRecords.Count() > 0)
             {
                 foreach (var item in relatedRecords)
                 {
-                    resultDaily.Remove(item.Key);  
-                }    
+                    resultDaily.Remove(item.Key);
+                }
             }
 
             AppendTotalMonthQuantityToDailyRecords(resultDaily, processUnitId, targetDay);
@@ -78,7 +76,7 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
         {
             var beginningOfMonth = new DateTime(targetDay.Year, targetDay.Month, 1);
             var TotalMonthQuantities = data.UnitsDailyDatas.All().Include(x => x.UnitsDailyConfig)
-                .Join( data.UnitsApprovedDailyDatas.All(),
+                .Join(data.UnitsApprovedDailyDatas.All(),
                         units => new UnitDailyToApprove { ProcessUnitId = units.UnitsDailyConfig.ProcessUnitId, RecordDate = units.RecordTimestamp },
                         appd => new UnitDailyToApprove { ProcessUnitId = appd.ProcessUnitId, RecordDate = appd.RecordDate },
                         (units, appd) => new { Units = units, Appd = appd })
@@ -94,7 +92,7 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
                 {
                     resultDaily[item.Key].TotalMonthQuantity = (decimal)TotalMonthQuantities[item.Key];
                 }
-                else 
+                else
                 {
                     resultDaily[item.Key].TotalMonthQuantity = 0m;
                 }
@@ -157,7 +155,6 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
             return targetUnitData.Where(x => targetUnitCongifs.Any(y => y == x.UnitConfigId)).ToList().GroupBy(z => (int)z.ShiftId);
         }
 
-
         /// <summary>
         /// Calculates the daily data from related daily data.
         /// </summary>
@@ -206,8 +203,6 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
 
             return result.Select(x => x.Value);
         }
-
-
 
         /// <summary>
         /// Gets the daily value.
@@ -264,7 +259,6 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
             return true;
         }
 
-
         /// <summary>
         /// Checks if day is approved.
         /// </summary>
@@ -276,7 +270,6 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
             return this.data.UnitsApprovedDailyDatas.All()
                 .Where(x => x.ProcessUnitId == processUnitId && x.RecordDate == targetDate).Any();
         }
-
 
         /// <summary>
         /// Clears the unit daily datas.
@@ -295,6 +288,45 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
             }
 
             return this.data.SaveChanges(userName);
+        }
+
+        /// <summary>
+        /// Checks if previous days are ready.
+        /// </summary>
+        /// <param name="processUnitId">The process unit identifier.</param>
+        /// <param name="targetDate">The target date.</param>
+        /// <returns></returns>
+        public IEfStatus CheckIfPreviousDaysAreReady(int processUnitId, DateTime targetDate)
+        {
+            var beginingOfTheMonth = new DateTime(targetDate.Year, targetDate.Month, 1);
+            var endOfObservedPeriod = targetDate.Date.AddDays(-1);
+
+            var approvedDays = data.UnitsApprovedDailyDatas.All()
+                                    .Where(x => x.ProcessUnitId == processUnitId
+                                            && beginingOfTheMonth <= x.RecordDate
+                                            && x.RecordDate <= endOfObservedPeriod)
+                                    .Select(x => x.RecordDate).ToDictionary(x => x);
+
+            int day = 0;
+            var validationResults = new List<ValidationResult>() { new ValidationResult(@Resources.ErrorMessages.PreviousDaysConfirmationError) };
+            while (day < endOfObservedPeriod.Day)
+            {
+                var checkedDay = beginingOfTheMonth.AddDays(day);
+                if (!approvedDays.ContainsKey(checkedDay))
+                {
+                    validationResults.Add(new ValidationResult(string.Format("\t\t- {0:dd.MM.yyyy г.}", checkedDay)));
+                }
+
+                day += 1;
+            }
+
+            var status = kernel.Get<IEfStatus>();
+            if (validationResults.Count > 1)
+            {
+                status.SetErrors(validationResults);
+            }
+
+            return status;
         }
 
         /// <summary>
@@ -351,5 +383,55 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
 
             return relatedUnitsDailyData;
         }
+
+        public ChartViewModel<DateTime, decimal> GetStatisticForProcessUnit(int processUnitId, DateTime targetDate)
+        {
+            var rnd = new Random();
+            var beginingOfTheMonth = new DateTime(targetDate.Year, targetDate.Month, 1);
+
+            var statistic = this.data.ProductionPlanDatas.All()
+                                .Where(x => beginingOfTheMonth <= x.RecordTimestamp && x.RecordTimestamp <= targetDate && x.ProcessUnitId == processUnitId)
+                                .GroupBy(x => x.ProductionPlanConfigId).ToList();
+            var charts = new List<DataSery<DateTime, decimal>>();
+
+            foreach (var parameter in statistic)
+            {
+                IEnumerable<DataSery<DateTime, decimal>> series = GetSeriesFromData(parameter, rnd.Next(10, 255), rnd.Next(100, 255));
+                charts.AddRange(series);
+            }
+
+            return new ChartViewModel<DateTime, decimal>() { DataSeries = charts };
+        }
+
+        /// <summary>
+        /// Gets the series from data.
+        /// </summary>
+        /// <param name="parameter">The parameter.</param>
+        /// <returns></returns>
+        private IEnumerable<DataSery<DateTime, decimal>> GetSeriesFromData(IGrouping<int, ProductionPlanData> parameter, int colorStart, int gama)
+        {
+            var model = parameter.First();
+            DataSery<DateTime, decimal> planPercent = new DataSery<DateTime, decimal>("area", string.Format("{0} план(%)", model.Name));
+            DataSery<DateTime, decimal> factPercent = new DataSery<DateTime, decimal>("line", string.Format("{0} факт(%)", model.Name));
+            DataSery<DateTime, decimal> plan = new DataSery<DateTime, decimal>("area", string.Format("{0} план(T)", model.Name));
+            DataSery<DateTime, decimal> fact = new DataSery<DateTime, decimal>("line", string.Format("{0} факт(T)", model.Name));
+
+            foreach (var record in parameter.OrderBy(x=>x.RecordTimestamp))
+            {
+                planPercent.Values.Add(new Pair<DateTime, decimal>(record.RecordTimestamp, record.PercentagesPlan));
+                factPercent.Values.Add(new Pair<DateTime, decimal>(record.RecordTimestamp, record.PercentagesFact));
+                plan.Values.Add(new Pair<DateTime, decimal>(record.RecordTimestamp, record.QuanityPlan));
+                fact.Values.Add(new Pair<DateTime, decimal>(record.RecordTimestamp, record.QuantityFact));
+            }
+
+            return new List<DataSery<DateTime, decimal>>() { planPercent, factPercent, plan, fact };
+        }
+
+
+
+
+
+
+
     }
 }

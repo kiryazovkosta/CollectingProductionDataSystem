@@ -43,6 +43,13 @@
             return dbResult;
         }
 
+        /// <summary>
+        /// Gets the units data for date time.
+        /// </summary>
+        /// <param name="dateParam">The date parameter.</param>
+        /// <param name="processUnitIdParam">The process unit identifier parameter.</param>
+        /// <param name="shiftIdParam">The shift identifier parameter.</param>
+        /// <returns></returns>
         public IQueryable<UnitsData> GetUnitsDataForDateTime(DateTime? dateParam, int? processUnitIdParam, int? shiftIdParam)
         {
             var dbResult = GetAllUnitDataIncludeRelations();

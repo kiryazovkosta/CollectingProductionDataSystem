@@ -5,6 +5,7 @@
     using System.Linq;
     using System.Web.Mvc;
     using AutoMapper;
+    using CollectingProductionDataSystem.Application.Contracts;
     using CollectingProductionDataSystem.Application.TankDataServices;
     using CollectingProductionDataSystem.Data.Contracts;
     using CollectingProductionDataSystem.Infrastructure.Contracts;
@@ -20,14 +21,17 @@
     {
         private readonly ITankDataKendoService tankData;
         private readonly ILogger logger;
-        public TestsController(IProductionData dataParam, ITankDataKendoService tankDataParam, ILogger loggerParam)
+        private readonly IUnitDailyDataService unitDaily;
+
+        public TestsController(IProductionData dataParam, ITankDataKendoService tankDataParam, ILogger loggerParam, IUnitDailyDataService unitDaily)
             : base(dataParam)
         {
             this.tankData = tankDataParam;
             this.logger = loggerParam;
+            this.unitDaily = unitDaily;
         }
 
-        public ActionResult Index()
+        public ActionResult Index(int pui = 1)
         {
             //var d = this.data.UnitsDailyConfigs.All().FirstOrDefault();
             //if (d != null)
@@ -41,13 +45,14 @@
             //}
             //try
             //{
-                InvokeException();
+               // InvokeException();
             //}
             //catch (Exception ex)
             //{
             //    logger.Error(ex.Message, this, ex, new List<string>{ "******************************", "****   some custom info   ****", "******************************" });
             //}
-            return View(this.UserProfile);
+            
+            return View(unitDaily.GetStatisticForProcessUnit(pui,DateTime.Now));
         }
 
         private void InvokeException()

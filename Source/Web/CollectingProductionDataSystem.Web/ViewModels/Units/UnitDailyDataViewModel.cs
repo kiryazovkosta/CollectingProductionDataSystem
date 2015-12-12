@@ -3,6 +3,7 @@
     using System;
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
+    using System.Text;
     using AutoMapper;
     using CollectingProductionDataSystem.Infrastructure.Mapping;
     using CollectingProductionDataSystem.Models.Nomenclatures;
@@ -125,7 +126,21 @@
 
         [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
         [Display(Name = "ProcessUnitName", ResourceType = typeof(Resources.Layout))]
-        public string ShortName { get; set; } 
+        public string ShortName { get; set; }
+
+        public string SortableShortName
+        {
+            get
+            {
+                var sb = new StringBuilder();
+                sb.Append(this.Id.ToString("d2"));
+                sb.Append(" ");
+                sb.Append(this.ShortName);
+                return sb.ToString();
+            }
+        }
+
+        public FactoryViewModel Factory { get; set; }
 
     }
 

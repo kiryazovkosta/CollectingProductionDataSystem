@@ -147,6 +147,9 @@
   <data name="InvaludUser" xml:space="preserve">
     <value>Потребителя който коригирате не съществува.</value>
   </data>
+  <data name="PreviousDaysConfirmationError" xml:space="preserve">
+    <value>Операцията по потвърждаване не може да бъде изпълнена докато    не бъдат потвърдени данните за следните дни:</value>
+  </data>
   <data name="ShiftNotReady" xml:space="preserve">
     <value>Данните за {0} не са потвърдени.</value>
   </data>

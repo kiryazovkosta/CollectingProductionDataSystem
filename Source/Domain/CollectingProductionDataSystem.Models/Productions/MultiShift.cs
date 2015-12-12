@@ -19,17 +19,6 @@
         public UnitsData Shift1 { get; set; }
         public UnitsData Shift2 { get; set; }
         public UnitsData Shift3 { get; set; }
-        //public double TotalQuantityValue
-        //{ 
-        //    get
-        //    {
-        //        double sum = 0;
-        //        sum += GetValue(Shift1);
-        //        sum += GetValue(Shift2);
-        //        sum += GetValue(Shift3);
-        //        return sum;
-        //    }
-        //}
 
         private double GetValue(UnitsData dataParam)
         {

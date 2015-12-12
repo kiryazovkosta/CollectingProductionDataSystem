@@ -30,16 +30,9 @@ namespace CollectingProductionDataSystem.ConsoleTester
            // timer.Stop();
            // Console.WriteLine("Estimated time for action: {0}", timer.Elapsed);
 
-            double b = 0, c = 0;
-
-            double a = b / c;
-
-            if (double.IsNaN(a))
-            {
-                a = 0;
-            }
-
-            Console.WriteLine("The Result is : {0}",a);
+            string str = "true";
+            var bl = Convert.ToBoolean(str);
+            Console.WriteLine(bl);
         }
     }
 }

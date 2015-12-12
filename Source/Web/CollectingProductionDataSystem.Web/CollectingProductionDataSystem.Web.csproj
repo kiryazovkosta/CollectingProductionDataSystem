@@ -250,6 +250,7 @@
     <Compile Include="Areas\Documentation\DocumentationAreaRegistration.cs" />
     <Compile Include="Areas\Documentation\Controllers\HelpController.cs" />
     <Compile Include="Areas\SummaryReporting\Controllers\AjaxController.cs" />
+    <Compile Include="Areas\SummaryReporting\Controllers\DashBoardController.cs" />
     <Compile Include="Areas\SummaryReporting\Controllers\SummaryReportsController.cs" />
     <Compile Include="Areas\NomManagement\Controllers\IkunkController.cs" />
     <Compile Include="Areas\NomManagement\Controllers\MeasuringPointConfigController.cs" />
@@ -917,6 +918,9 @@
     <Content Include="Scripts\custom\jquery-kendo-globalize.js" />
     <Content Include="Scripts\custom\kendoAdditional.js" />
     <Content Include="Scripts\custom\kendoGridState.js" />
+    <Content Include="Scripts\custom\renderDailyGraphic.min.js">
+      <DependentUpon>renderDailyGraphic.js</DependentUpon>
+    </Content>
     <Content Include="Scripts\custom\saveSiteBarStatus.js" />
     <Content Include="Scripts\custom\sendAntiForgery.js" />
     <Content Include="Areas\Administration\Views\Role\Create.cshtml" />
@@ -1021,6 +1025,8 @@
     <Content Include="Areas\SummaryReporting\Views\Shared\_TanksSideBar.cshtml" />
     <Content Include="Areas\SummaryReporting\Views\SummaryReports\UnitsDailyReportsData.cshtml" />
     <Content Include="Areas\SummaryReporting\Views\SummaryReports\DataConfirmation.cshtml" />
+    <Content Include="Areas\SummaryReporting\Views\DashBoard\Index.cshtml" />
+    <Content Include="Areas\DailyReporting\Views\UnitsDaily\DailyChart.cshtml" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <None Include="Properties\PublishProfiles\Home.pubxml" />
     <Content Include="Scripts\custom\sendArea.js" />
@@ -1048,6 +1054,9 @@
     </Content>
     <Content Include="Scripts\custom\confirmationRefresh.min.js.map">
       <DependentUpon>confirmationRefresh.min.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\custom\renderDailyGraphic.min.js.map">
+      <DependentUpon>renderDailyGraphic.min.js</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\custom\sendFactory.min.js">
@@ -1636,6 +1645,7 @@
     <Content Include="Scripts\kendo\messages\kendo.messages.zh-TW.min.js" />
     <Content Include="Scripts\kendo\pako_deflate.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\custom\renderDailyGraphic.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.min.js" />
@@ -1668,7 +1678,7 @@
     <Content Include="Views\Shared\DisplayTemplates\ApplicationRole.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\ApplicationUser.cshtml" />
     <Content Include="Views\Shared\_KendoLayout.cshtml" />
-    <Content Include="Views\Tests\Index.cshtml" />
+    <Content Include="Views\Tests\DailyChart.cshtml" />
     <Content Include="Views\Tests\TankChange.cshtml" />
     <Content Include="Views\Tests\TankData.cshtml" />
     <Content Include="Views\Tests\Test.cshtml" />

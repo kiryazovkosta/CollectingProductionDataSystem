@@ -35,8 +35,10 @@
                                                 new { data_ajax_mode = "replace", data_ajax_update = @"\#modal-dialog-body" })
                                                 .ToHtmlString())
                 .Width(77);
+            columns.Bound(c => c.UnitsDailyConfig.ProcessUnit.Factory.FactorySortableName).Hidden(true).ClientGroupHeaderTemplate("Производство #=value.substr(3,value.length-3)#");            
+            columns.Bound(c => c.UnitsDailyConfig.ProcessUnit.SortableShortName).Hidden(true).ClientGroupHeaderTemplate("Инсталация #=value.substr(3,value.length-3)#");
             columns.Bound(c => c.UnitsDailyConfig.DailyProductType.Sort).Hidden(true).ClientGroupHeaderTemplate("#=value#");
-            columns.Bound(c => c.UnitsDailyConfig.ProcessUnit.ShortName).Width(100).ClientGroupHeaderTemplate("Инсталация #=value#");
+            columns.Bound(c => c.UnitsDailyConfig.ProcessUnit.ShortName).Width(100);
             columns.Bound(c => c.UnitsDailyConfig.Name);
             columns.Bound(c => c.UnitsDailyConfig.MeasureUnit.Code).Width(80);
             columns.Bound(c => c.Value).Width(100).Format("{0:n2}");
@@ -49,13 +51,13 @@
                                                 .ToHtmlString())
                 .Width(100)
                 .Format("{0:n2}");
+            columns.Bound(c => c.TotalMonthQuantity).Width(100);
             columns.Bound(c => c.UnitsManualDailyData.EditReason).Width(180).ClientTemplate("#:UnitsManualDailyData.EditReason.Name#")
                 .ClientTemplate("<div class=row><div class='col-xs-2 no-horisontal-padding'><div class='#:UnitsManualDailyData.EditReason.Id == 0? 'bg-ok':'bg-warning'#'></div></div><div class='col-xs-9 no-horisontal-padding reason'>#:UnitsManualDailyData.EditReason.Name#</div></div>");
-            columns.Bound(c => c.IsEditable).Visible(false);
         })
                                                             .Pageable(pageable => pageable
                                                                 .Refresh(true)
-                                                                .PageSizes(new[] { 10, 20, 50, 100 })
+                                                                .PageSizes(new[] { 100, 200, 300 })
                                                                 .ButtonCount(5)
                                                             )
                                                                     .Editable(editable => editable.Mode(GridEditMode.InLine))
@@ -71,11 +73,12 @@
                                                                 .ClientDetailTemplateId("template")
                                                                 .DataSource(dataSource => dataSource
                                                                 .Ajax()
-                                                                .PageSize(50)
+                                                                .PageSize(300)
                                                                 .ServerOperation(true)
                                                                         .Group(group =>
                                                                         {
-                                                                            group.Add(c => c.UnitsDailyConfig.ProcessUnit.ShortName);
+                                                                            group.Add(c => c.UnitsDailyConfig.ProcessUnit.Factory.FactorySortableName);
+                                                                            group.Add(c => c.UnitsDailyConfig.ProcessUnit.SortableShortName);
                                                                             group.Add(c => c.UnitsDailyConfig.DailyProductType.Sort);
                                                                         })
                                                                 .Read(read => read.Action("ReadDailyUnitsData", "SummaryReports", new { area = "SummaryReporting" }).Data("unitGridsData.SendDate"))

@@ -252,7 +252,16 @@
         public ActionResult Confirm(ProcessUnitConfirmDailyInputModel model)
         {
             ValidateModelAgainstReportPatameters(this.ModelState, model, Session["reportParams"]);
-            ValidateModelState(model.date, model.processUnitId);
+
+            if (!Convert.ToBoolean(System.Configuration.ConfigurationManager.AppSettings["ComplitionCheckDeactivared"]))
+            {
+                var status = this.dailyService.CheckIfPreviousDaysAreReady(model.processUnitId, model.date);
+                if (!status.IsValid)
+                {
+                    status.ToModelStateErrors(this.ModelState);
+                }
+            }
+
             if (ModelState.IsValid)
             {
                 var approvedShift = this.data.UnitsApprovedDailyDatas
@@ -296,6 +305,12 @@
                 var errors = GetErrorListFromModelState(ModelState);
                 return Json(new { data = new { errors = errors } });
             }
+        }
+
+        [HttpGet]
+        public ActionResult DailyChart(int processUnitId)
+        {
+            return PartialView(this.dailyService.GetStatisticForProcessUnit(processUnitId, DateTime.Now));
         }
  
         /// <summary>
