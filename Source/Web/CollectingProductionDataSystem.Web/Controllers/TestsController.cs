@@ -41,7 +41,7 @@
             //}
             //try
             //{
-                InvokeException();
+            //    InvokeException();
             //}
             //catch (Exception ex)
             //{
