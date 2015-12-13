@@ -78,10 +78,15 @@
                                                 .Where(x => x.UnitConfigId == ru.RelatedUnitConfigId)
                                                 .FirstOrDefault()
                                                 .RealValue;
-                        if (parameterType == "I")
+                        if (parameterType == "I+")
                         {
                             var exsistingValue = arguments.InputValue.HasValue ? arguments.InputValue.Value : 0.0;
                             arguments.InputValue = exsistingValue + inputValue; 
+                        }
+                        if (parameterType == "I-")
+                        {
+                            var exsistingValue = arguments.InputValue.HasValue ? arguments.InputValue.Value : 0.0;
+                            arguments.InputValue = exsistingValue - inputValue; 
                         }
                         else if (parameterType == "T")
                         {

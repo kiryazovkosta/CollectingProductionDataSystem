@@ -375,24 +375,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_B277DD58DE2851B5542D3B8BA047E331"
-        "OwnerKey" = "8:_24E5AF2C9C6DC8A84100E21A5DF8909B"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_B277DD58DE2851B5542D3B8BA047E331"
-        "OwnerKey" = "8:_F9EEFD8527E7472EA29447E3B3244112"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_B277DD58DE2851B5542D3B8BA047E331"
-        "OwnerKey" = "8:_50FE85D8CFAAC5B8C1E7802AA34421B3"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_B6CA542D370C4D3F788C2F9E6C5930DA"
         "OwnerKey" = "8:_F9EEFD8527E7472EA29447E3B3244112"
         "MsmSig" = "8:_UNDEFINED"
@@ -447,8 +429,26 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_D89326B955530ED77E30254ABC3384C0"
+        "OwnerKey" = "8:_24E5AF2C9C6DC8A84100E21A5DF8909B"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_D89326B955530ED77E30254ABC3384C0"
+        "OwnerKey" = "8:_F9EEFD8527E7472EA29447E3B3244112"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_DEFA6DA6EE7DCCA4D7B79C8753F5E1DC"
         "OwnerKey" = "8:_F9EEFD8527E7472EA29447E3B3244112"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_DEFA6DA6EE7DCCA4D7B79C8753F5E1DC"
+        "OwnerKey" = "8:_50FE85D8CFAAC5B8C1E7802AA34421B3"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -514,7 +514,7 @@
         "Entry"
         {
         "MsmKey" = "8:_FE7267DF1B2FF1DACA22DA495A1A0246"
-        "OwnerKey" = "8:_B277DD58DE2851B5542D3B8BA047E331"
+        "OwnerKey" = "8:_D89326B955530ED77E30254ABC3384C0"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -586,7 +586,7 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_B277DD58DE2851B5542D3B8BA047E331"
+        "OwnerKey" = "8:_D89326B955530ED77E30254ABC3384C0"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -1425,37 +1425,6 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_B277DD58DE2851B5542D3B8BA047E331"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:MathExpressions.Application, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_B277DD58DE2851B5542D3B8BA047E331"
-                    {
-                    "Name" = "8:MathExpressions.Application.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:MathExpressions.Application.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_5A5EDB7EC9634905988C582CFFD051EE"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_B6CA542D370C4D3F788C2F9E6C5930DA"
             {
             "AssemblyRegister" = "3:1"
@@ -1532,6 +1501,37 @@
                     }
                 }
             "SourcePath" = "8:Owin.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_5A5EDB7EC9634905988C582CFFD051EE"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_D89326B955530ED77E30254ABC3384C0"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:MathExpressions.Application, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_D89326B955530ED77E30254ABC3384C0"
+                    {
+                    "Name" = "8:MathExpressions.Application.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:MathExpressions.Application.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_5A5EDB7EC9634905988C582CFFD051EE"
@@ -1729,15 +1729,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:CollectingProductionDataSystem.Phd2SqlProductionDataSetup"
-        "ProductCode" = "8:{ED1C044C-7A35-4B42-943C-B7CBBB6DAE12}"
-        "PackageCode" = "8:{E6287DEB-5369-40C3-8C08-A2E0DD46CD00}"
+        "ProductCode" = "8:{58BC1A28-143A-4025-951C-D5C30035A207}"
+        "PackageCode" = "8:{634D7029-FF4C-437B-A84C-0FB53917E8E9}"
         "UpgradeCode" = "8:{65F7F665-CA14-4FD7-8AF7-7F225A676E13}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:FALSE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:1.1.9"
+        "ProductVersion" = "8:1.2.0"
         "Manufacturer" = "8:Business Management Systems"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"

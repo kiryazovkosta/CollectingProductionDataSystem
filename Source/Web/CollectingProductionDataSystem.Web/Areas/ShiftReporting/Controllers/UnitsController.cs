@@ -542,10 +542,13 @@ using CollectingProductionDataSystem.Infrastructure.Contracts;
                 }
                 else
                 {
-                    inputValue = data.UnitsData.All()
+                    var dtExsists = data.UnitsData.All()
                         .Where(x => x.RecordTimestamp == model.RecordTimestamp && x.ShiftId == model.Shift && x.UnitConfigId == ru.RelatedUnitConfigId)
-                        .FirstOrDefault()
-                        .RealValue;
+                        .FirstOrDefault();
+                    if (dtExsists != null)
+	                {
+		                inputValue = dtExsists.RealValue;
+	                }
                 }
 
                 if (parameterType == "I+")

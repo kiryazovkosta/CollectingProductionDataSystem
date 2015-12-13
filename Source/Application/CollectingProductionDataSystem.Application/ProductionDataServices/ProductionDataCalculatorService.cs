@@ -2,11 +2,13 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Data.Entity;
     using System.Linq;
     using CollectingProductionDataSystem.Application.Contracts;
     using CollectingProductionDataSystem.Application.CalculatorService;
     using CollectingProductionDataSystem.Data.Common;
     using CollectingProductionDataSystem.Data.Contracts;
+    using CollectingProductionDataSystem.Models.Nomenclatures;
     using CollectingProductionDataSystem.Models.Productions;
     using System.ComponentModel.DataAnnotations;
 
@@ -144,6 +146,12 @@
                 case "C1":
                     result = FormulaC1(arguments);
                     break;
+                case "C2":
+                    result = FormulaC2(arguments);
+                    break;
+                case "C3":
+                    result = FormulaC3(arguments);
+                    break;
                 default:
                     throw new ArgumentException("The entered value of the formula code is invalid!");
                     break;
@@ -164,6 +172,26 @@
                 AddOrUpdateUnitEnteredForCalculationData(unitDataId, oldValue, newValue);
                 AddOrUpdateUnitsManualData(unitDataId, calculatedValue);
                 var status = this.data.SaveChanges(userName);
+
+                var relatdUnitConfigs = this.data.RelatedUnitConfigs.All().Where(x => x.RelatedUnitConfigId == unitConfig.Id).ToList();
+                if (relatdUnitConfigs.Count() > 0)
+                {
+                    foreach (var relatedUnitConfig in relatdUnitConfigs)
+                    {
+                        var rUnitConfig = this.data.UnitConfigs.GetById(relatedUnitConfig.UnitConfigId);
+                        if (rUnitConfig.IsCalculated)
+                        {
+                            var rFormulaCode = rUnitConfig.CalculatedFormula ?? string.Empty;
+                            var rArguments = PopulateFormulaTadaFromPassportData(rUnitConfig);
+                            PopulateFormulaDataFromRelatedUnitConfigs(rUnitConfig, rArguments, unitData.RecordTimestamp, unitData.ShiftId);
+                            var rNewValue = this.Calculate(rFormulaCode, rArguments);
+                            status = UpdateCalculatedUnitConfig(relatedUnitConfig.UnitConfigId, rNewValue, unitData.RecordTimestamp, unitData.ShiftId);
+                        }
+                    }
+
+                    status = this.data.SaveChanges(userName);
+                }
+
                 return status;
             }
             else
@@ -224,6 +252,91 @@
                 }
             }
             return arguments;
+        }
+
+        private FormulaArguments PopulateFormulaTadaFromPassportData(UnitConfig unitConfig)
+        {
+            var arguments = new FormulaArguments();
+            arguments.MaximumFlow = (double?)unitConfig.MaximumFlow;
+            arguments.EstimatedDensity = (double?)unitConfig.EstimatedDensity;
+            arguments.EstimatedPressure = (double?)unitConfig.EstimatedPressure;
+            arguments.EstimatedTemperature = (double?)unitConfig.EstimatedTemperature;
+            arguments.EstimatedCompressibilityFactor = (double?)unitConfig.EstimatedCompressibilityFactor;
+            arguments.CalculationPercentage = (double?)unitConfig.CalculationPercentage;
+            return arguments;
+        }
+
+        private void PopulateFormulaDataFromRelatedUnitConfigs(UnitConfig unitConfig, FormulaArguments arguments, DateTime recordDate, ShiftType shiftId)
+        {
+            var ruc = unitConfig.RelatedUnitConfigs.ToList();
+            foreach (var ru in ruc)
+            {
+                var parameterType = ru.RelatedUnitConfig.AggregateGroup;
+                var inputValue = 0.0;
+                //if (ru.RelatedUnitConfigId == model.UnitConfigId)
+                //{
+                //    inputValue = (double)model.UnitsManualData.Value;
+                //}
+                //else
+                //{
+                    var dtExists = data.UnitsData.All()
+                        .Where(x => x.RecordTimestamp == recordDate && x.ShiftId == shiftId && x.UnitConfigId == ru.RelatedUnitConfigId)
+                        .FirstOrDefault();
+
+                    inputValue = dtExists == null ? 0.0D : dtExists.RealValue;
+                //}
+
+                if (parameterType == "I+")
+                {
+                    var exsistingValue = arguments.InputValue.HasValue ? arguments.InputValue.Value : 0.0;
+                    arguments.InputValue = exsistingValue + inputValue;
+                }
+                else if (parameterType == "I-")
+                {
+                    var exsistingValue = arguments.InputValue.HasValue ? arguments.InputValue.Value : 0.0;
+                    arguments.InputValue = exsistingValue - inputValue;
+                }
+                else if (parameterType == "T")
+                {
+                    arguments.Temperature = inputValue;
+                }
+                else if (parameterType == "P")
+                {
+                    arguments.Pressure = inputValue;
+                }
+                else if (parameterType == "D")
+                {
+                    arguments.Density = inputValue;
+                }
+            }
+        }
+
+        private IEfStatus UpdateCalculatedUnitConfig(int unitConfigId, double newValue, DateTime recordDate, ShiftType shiftId)
+        {
+            var record = data.UnitsData
+                               .All().Include(x => x.UnitConfig)
+                               .Where(x => x.RecordTimestamp == recordDate && x.ShiftId == shiftId && x.UnitConfigId == unitConfigId)
+                               .FirstOrDefault();
+
+            IEfStatus result = new EfStatus();
+            var existManualRecord = this.data.UnitsManualData.All().FirstOrDefault(x => x.Id == record.Id);
+            if (existManualRecord == null)
+            {
+                this.data.UnitsManualData.Add(new UnitsManualData
+                {
+                    Id = record.Id,
+                    Value = (decimal)newValue,
+                    EditReasonId = this.data.EditReasons.All().Where(x => x.Name == "Калкулация").FirstOrDefault().Id
+                });
+            }
+            else
+            {
+                existManualRecord.Value = (decimal)newValue;
+                existManualRecord.EditReasonId = this.data.EditReasons.All().Where(x => x.Name == "Калкулация").FirstOrDefault().Id;
+                this.data.UnitsManualData.Update(existManualRecord);
+            }
+
+            return result;
         }
 
         private void AddOrUpdateUnitsManualData(int unitDataId, double calculatedValue)
@@ -1406,6 +1519,48 @@
             var pl = args.InputValue.Value;
             var c = args.CalculationPercentage.Value;
             var r = (c / 100.00) * pl;
+
+            var inputParams = new Dictionary<string, double>();
+            inputParams.Add("q", r);
+
+            string expr = @"par.q";
+            var result = calculator.Calculate(expr, "par", 1, inputParams);
+            return result;
+        }
+
+        /// <summary>
+        /// UCF2 - визуализира входното показание като резултат от формулата
+        /// </summary>
+        public double FormulaC2(FormulaArguments args)            
+        {
+            if (!args.InputValue.HasValue)
+            {
+                throw new ArgumentNullException("The value of CounterIndication(PL) is not allowed to be null");
+            }
+
+            var pl = args.InputValue.Value;
+            var r =  pl;
+
+            var inputParams = new Dictionary<string, double>();
+            inputParams.Add("q", r);
+
+            string expr = @"par.q";
+            var result = calculator.Calculate(expr, "par", 1, inputParams);
+            return result;
+        }
+
+        /// <summary>
+        /// UCF3 - калкулира  входното показание по броя на часовете в една смяна
+        /// </summary>
+        public double FormulaC3(FormulaArguments args)            
+        {
+            if (!args.InputValue.HasValue)
+            {
+                throw new ArgumentNullException("The value of CounterIndication(PL) is not allowed to be null");
+            }
+
+            var pl = args.InputValue.Value;
+            var r =  pl * 8;
 
             var inputParams = new Dictionary<string, double>();
             inputParams.Add("q", r);
