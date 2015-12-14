@@ -6,7 +6,7 @@
                 $.ajax({
                     url: '/DailyReporting/UnitsDaily/DailyChart',
                     method: 'GET',
-                    data:{'processUnitId':value}
+                    data: { 'processUnitId': value, 'date': $('input[name=date]').val()||Date().toLocaleString('bg') }
                 }).done(function (data) {
                     $('#chart-wrapper').html(data);
                 });

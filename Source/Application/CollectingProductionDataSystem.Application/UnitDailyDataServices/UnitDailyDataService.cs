@@ -386,18 +386,22 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
 
         public ChartViewModel<DateTime, decimal> GetStatisticForProcessUnit(int processUnitId, DateTime targetDate)
         {
-            var rnd = new Random();
             var beginingOfTheMonth = new DateTime(targetDate.Year, targetDate.Month, 1);
 
             var statistic = this.data.ProductionPlanDatas.All()
-                                .Where(x => beginingOfTheMonth <= x.RecordTimestamp && x.RecordTimestamp <= targetDate && x.ProcessUnitId == processUnitId)
+                                .Where(x => beginingOfTheMonth <= x.RecordTimestamp
+                                        && x.RecordTimestamp < targetDate
+                                        && x.ProcessUnitId == processUnitId)
                                 .GroupBy(x => x.ProductionPlanConfigId).ToList();
             var charts = new List<DataSery<DateTime, decimal>>();
 
             foreach (var parameter in statistic)
             {
-                IEnumerable<DataSery<DateTime, decimal>> series = GetSeriesFromData(parameter, rnd.Next(10, 255), rnd.Next(100, 255));
-                charts.AddRange(series);
+                if (parameter.Count() > 0)
+                {
+                    IEnumerable<DataSery<DateTime, decimal>> series = GetSeriesFromData(parameter, beginingOfTheMonth, targetDate);
+                    charts.AddRange(series);
+                }
             }
 
             return new ChartViewModel<DateTime, decimal>() { DataSeries = charts };
@@ -407,31 +411,45 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
         /// Gets the series from data.
         /// </summary>
         /// <param name="parameter">The parameter.</param>
+        /// <param name="beginingOfTheMonth">The begining of the month.</param>
+        /// <param name="targetDate">The target date.</param>
         /// <returns></returns>
-        private IEnumerable<DataSery<DateTime, decimal>> GetSeriesFromData(IGrouping<int, ProductionPlanData> parameter, int colorStart, int gama)
+        private IEnumerable<DataSery<DateTime, decimal>> GetSeriesFromData(IEnumerable<ProductionPlanData> parameter, DateTime beginDate, DateTime endDate)
         {
             var model = parameter.First();
+
+            var paramTransformed = parameter.ToDictionary(x => x.RecordTimestamp);
+
             DataSery<DateTime, decimal> planPercent = new DataSery<DateTime, decimal>("area", string.Format("{0} план(%)", model.Name));
             DataSery<DateTime, decimal> factPercent = new DataSery<DateTime, decimal>("line", string.Format("{0} факт(%)", model.Name));
             DataSery<DateTime, decimal> plan = new DataSery<DateTime, decimal>("area", string.Format("{0} план(T)", model.Name));
             DataSery<DateTime, decimal> fact = new DataSery<DateTime, decimal>("line", string.Format("{0} факт(T)", model.Name));
 
-            foreach (var record in parameter.OrderBy(x=>x.RecordTimestamp))
+            for (DateTime target = beginDate; target <= endDate; target = target.AddDays(1))
             {
-                planPercent.Values.Add(new Pair<DateTime, decimal>(record.RecordTimestamp, record.PercentagesPlan));
-                factPercent.Values.Add(new Pair<DateTime, decimal>(record.RecordTimestamp, record.PercentagesFact));
-                plan.Values.Add(new Pair<DateTime, decimal>(record.RecordTimestamp, record.QuanityPlan));
-                fact.Values.Add(new Pair<DateTime, decimal>(record.RecordTimestamp, record.QuantityFact));
+                if (paramTransformed.ContainsKey(target.Date))
+                {
+                    planPercent.Values.Add(new Pair<DateTime, decimal>(target.Date, paramTransformed[target.Date].PercentagesPlan));
+                    factPercent.Values.Add(new Pair<DateTime, decimal>(target.Date, paramTransformed[target.Date].PercentagesFact));
+                    plan.Values.Add(new Pair<DateTime, decimal>(target.Date, paramTransformed[target.Date].QuanityPlan));
+                    fact.Values.Add(new Pair<DateTime, decimal>(target.Date, paramTransformed[target.Date].QuantityFact));
+                }
+                else
+                {
+                    planPercent.Values.Add(new Pair<DateTime, decimal>(target.Date, 0m));
+                    factPercent.Values.Add(new Pair<DateTime, decimal>(target.Date, 0m));
+                    plan.Values.Add(new Pair<DateTime, decimal>(target.Date, 0m));
+                    fact.Values.Add(new Pair<DateTime, decimal>(target.Date, 0m));
+                }
             }
 
             return new List<DataSery<DateTime, decimal>>() { planPercent, factPercent, plan, fact };
         }
 
-
-
-
-
-
-
+        private class RecordsCollectionId
+        {
+            public DateTime RecordTimestamp { get; set; }
+            public int Id { get; set; }
+        }
     }
 }

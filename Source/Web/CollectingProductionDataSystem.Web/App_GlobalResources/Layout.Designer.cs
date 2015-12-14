@@ -772,6 +772,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Statistics for {0}.
+        /// </summary>
+        public static string DailyGraphicTitle {
+            get {
+                return ResourceManager.GetString("DailyGraphicTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Daily Product Type.
         /// </summary>
         public static string DailyProductType {

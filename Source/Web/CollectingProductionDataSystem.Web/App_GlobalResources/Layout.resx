@@ -1299,4 +1299,7 @@
   <data name="IsConfirmed" xml:space="preserve">
     <value>Confirmation</value>
   </data>
+  <data name="DailyGraphicTitle" xml:space="preserve">
+    <value>Statistics for {0}</value>
+  </data>
 </root>

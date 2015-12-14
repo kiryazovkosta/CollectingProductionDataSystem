@@ -10,13 +10,17 @@
 <h2>Test</h2>
 
 @model ChartViewModel<DateTime, decimal>
-
-<div id="chart" class="col-lg-4"></div>
-
+<div class="panel panel-default">
+    <div class="panel-heading">Хронологие на данни за отбори</div>
+    <div class="panel-body">
+        <div id="chart" class="col-lg-4"></div>
+    </div>
+</div>
 
 <script>
     function createChart() {
         $("#chart").kendoChart({
+
             title: {
                 text: '@Model.Title'
             },
@@ -63,7 +67,18 @@
             visible: true,
             format: "days",
             template: "#= series.name #: #= value #"
-    }
+    },
+            pannable: {
+            lock: "y"
+            },
+        zoomable: {
+                mousewheel: {
+                    lock: "y"
+                },
+            selection: {
+                    lock: "y"
+            }
+        }
     });
     }
 

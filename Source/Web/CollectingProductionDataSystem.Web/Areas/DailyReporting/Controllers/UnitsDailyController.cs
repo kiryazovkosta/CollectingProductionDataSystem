@@ -308,9 +308,12 @@
         }
 
         [HttpGet]
-        public ActionResult DailyChart(int processUnitId)
+        public ActionResult DailyChart(int processUnitId, DateTime? date)
         {
-            return PartialView(this.dailyService.GetStatisticForProcessUnit(processUnitId, DateTime.Now));
+            date = date ?? DateTime.Now.Date.AddDays(-2);
+            var result = this.dailyService.GetStatisticForProcessUnit(processUnitId, date.Value);
+            result.Title = string.Format(Resources.Layout.DailyGraphicTitle, this.data.ProcessUnits.GetById(processUnitId).ShortName);
+            return PartialView(result);
         }
  
         /// <summary>

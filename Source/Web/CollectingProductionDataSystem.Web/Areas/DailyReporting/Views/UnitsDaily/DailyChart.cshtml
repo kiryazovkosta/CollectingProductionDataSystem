@@ -4,19 +4,22 @@
 @using CollectingProductionDataSystem.Models.UtilityEntities;
 @model ChartViewModel<DateTime, decimal>
 
-<div id="chart"></div>
+<div class="panel panel-default">
+    <div class="panel-heading">@Model.Title<a href="#" id = "chart-fullscreen" role="button" class="pull-right"><span class="glyphicon glyphicon-fullscreen"></span></a></div>
+    <div class="panel-body">
+        <div id="chart"></div>
+    </div>
+</div>
 
-@if (Model.DataSeries.Count() > 0) {
-<script>
-   
-    function createChart() {
-        $("#chart").kendoChart({
+@if (Model.DataSeries.Count() > 0)
+{
+    <script>
+        function createChart(selector,width, height) {
+        $(selector).kendoChart({
             theme: "bootstrap",
-            plotArea: {
-                height: 300
-            },
-            title: {
-                text: '@Model.Title'
+            chartArea:{
+                width: width || $(selector).width(),
+                height:height||400,
             },
             legend: {
                 position: "bottom"
@@ -25,23 +28,21 @@
                 type: "line"
             },
             series: [
-                @foreach (var serie in Model.DataSeries)
+            @foreach (var serie in Model.DataSeries)
                 {
                     @:{
-                                                                        @: name: '@serie.Label',
-                                                                        @: type: '@serie.Type',
-                                                   // @: color: '@serie.Color',
-                                @: data: [
-                                                                    foreach (var item in serie.Values)
+                                                                                                                @: name: '@serie.Label',
+                                                                                                                @: type: '@serie.Type',
+                                                                                                                @: data: [
+                                                                                                                foreach (var item in serie.Values)
                     {
                         @item.Y.ToString(CultureInfo.InvariantCulture)@:,
-                                                                    }
+                                                                                                                }
 
                     @:]},
-
-
                 }
             ],
+
             valueAxis: {
                 line: {
                     visible: false
@@ -49,22 +50,50 @@
             },
             categoryAxis: {
                 categories: [
-                    @foreach (var item in Model.DataSeries.FirstOrDefault().Values)
+                @foreach (var item in Model.DataSeries.FirstOrDefault().Values)
                 {
                           @Html.Raw("'" + item.X.Day + "',")
-        }],
-                majorGridLines: {
+                }],
+                    majorGridLines: {
                     visible: true
-                }
+                    }
             },
             tooltip: {
-                visible: true,
-                format: "days",
-                template: "#= series.name #: #= value #"
+                    visible: true,
+                    format: "days",
+                    template: "#= series.name #: #= value #"
+            },
+            pannable: {
+                    lock: "y"
+            },
+            zoomable: {
+                    mousewheel: {
+                        lock: "y"
+                    },
+                selection: {
+                        lock: "y"
+                }
             }
         });
-    }
+        }
 
-    $(document).ready(createChart);
-</script>
+        $(document).ready(function () {
+            createChart("#chart");
+            $('#chart-fullscreen').click(function () {
+                var data = '<div class="modal-header">' +
+                                   '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>' +
+                                   '<h4 class="modal-title" id="record-history-label">' +
+                                       '@(Model.Title??"")' +
+                                   '</h4>' +
+                               '</div>' +
+                               '<div class="modal-body">' +
+                               '<div id="chart-fs" >'
+                '</div>' +
+                '</div>';
+                $("#modal-dialog-body").html(data);
+                createChart("#chart-fs", 868,650);
+                showRecordHistoriModal();
+            });
+        });
+    </script>
 }
