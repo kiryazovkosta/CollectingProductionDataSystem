@@ -14,7 +14,7 @@
 @if (Model.DataSeries.Count() > 0)
 {
     <script>
-        function createChart(selector,width, height) {
+        function createChart(selector, width, height) {
         $(selector).kendoChart({
             theme: "bootstrap",
             chartArea:{
@@ -31,18 +31,16 @@
             @foreach (var serie in Model.DataSeries)
                 {
                     @:{
-                                                                                                                @: name: '@serie.Label',
-                                                                                                                @: type: '@serie.Type',
-                                                                                                                @: data: [
-                                                                                                                foreach (var item in serie.Values)
+                    @: name: '@serie.Label',
+                    @: type: '@serie.Type',
+                    @: data: [
+                    foreach (var item in serie.Values)
                     {
                         @item.Y.ToString(CultureInfo.InvariantCulture)@:,
-                                                                                                                }
-
+                    }
                     @:]},
                 }
             ],
-
             valueAxis: {
                 line: {
                     visible: false
@@ -79,6 +77,7 @@
 
         $(document).ready(function () {
             createChart("#chart");
+            createModalChart();
             $('#chart-fullscreen').click(function () {
                 var data = '<div class="modal-header">' +
                                    '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>' +
@@ -90,10 +89,20 @@
                                '<div id="chart-fs" >'
                 '</div>' +
                 '</div>';
-                $("#modal-dialog-body").html(data);
-                createChart("#chart-fs", 868,650);
-                showRecordHistoriModal();
+                $("#modal-chart-dialog-body").html(data);
+                $('#modal-chart-dialog').modal('show');
+            });
+            $('#modal-chart-dialog').on('shown.bs.modal', function () {
+                var modalWidth = $('#modal-chart-plot-area').width() * 0.98;
+                createChart("#chart-fs", modalWidth, 650);
             });
         });
+
+        function createModalChart() {
+            if ($("modal-chart-dialog").val()===undefined) {
+                var modalChartHolderHtml = '<div class="modal fade" id="modal-chart-dialog" tabindex="-1" role="dialog" aria-labelledby="record-history-label" aria-hidden="true"><div id="modal-chart-plot-area" class="modal-dialog modal-lg"><div id="modal-chart-dialog-body" class="modal-content"></div></div></div>';
+                $('body').append(modalChartHolderHtml);
+            }
+        }
     </script>
 }

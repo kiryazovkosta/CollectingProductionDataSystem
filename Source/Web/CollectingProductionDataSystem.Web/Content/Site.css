@@ -751,3 +751,12 @@ div.small-green-light {
 div.small-yellow-light {
     background-image: url("../Content/Images/TrafficLights/yellow_light.png");
 }
+
+div#modal-chart-plot-area {
+    width:95%;
+}
+
+div#chart-wrapper div.panel.panel-default div.panel-body,
+div#modal-chart-dialog-body div.modal-body {
+    overflow:auto;
+}

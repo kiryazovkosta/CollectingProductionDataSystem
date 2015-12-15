@@ -599,16 +599,24 @@
                 }
                 else
                 {
-                    inputValue = data.UnitsData.All()
+                    var dtExsists = data.UnitsData.All()
                         .Where(x => x.RecordTimestamp == model.RecordTimestamp && x.ShiftId == model.Shift && x.UnitConfigId == ru.RelatedUnitConfigId)
-                        .FirstOrDefault()
-                        .RealValue;
+                        .FirstOrDefault();
+                    if (dtExsists != null)
+	                {
+		                inputValue = dtExsists.RealValue;
+	                }
                 }
 
-                if (parameterType == "I")
+                if (parameterType == "I+")
                 {
                     var exsistingValue = arguments.InputValue.HasValue ? arguments.InputValue.Value : 0.0;
                     arguments.InputValue = exsistingValue + inputValue;
+                }
+                else if (parameterType == "I-")
+                {
+                    var exsistingValue = arguments.InputValue.HasValue ? arguments.InputValue.Value : 0.0;
+                    arguments.InputValue = exsistingValue - inputValue;
                 }
                 else if (parameterType == "T")
                 {

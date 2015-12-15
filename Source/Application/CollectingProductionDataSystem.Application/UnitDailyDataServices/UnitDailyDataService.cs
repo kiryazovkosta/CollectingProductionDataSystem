@@ -126,11 +126,15 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
                     UnitsDailyConfigId = targetUnitDailyRecordConfig.Id
                 };
 
+                var positionDictionary = targetUnitDailyRecordConfig.UnitConfigUnitDailyConfigs
+                                        .Select(x => new { Id = x.UnitConfigId, Position = x.Position }).Distinct()
+                                        .ToDictionary(x => x.Id, x => x.Position);
+
                 var unitDatasByShift = GetUnitDatasForDailyData(targetUnitDailyRecordConfig, targetUnitDatas);
 
                 foreach (var shift in unitDatasByShift)
                 {
-                    var shiftValue = GetShiftValue(shift, targetUnitDailyRecordConfig);
+                    var shiftValue = GetShiftValue(shift, targetUnitDailyRecordConfig, positionDictionary);
                     dailyValue += shiftValue;
                 }
 
@@ -169,8 +173,12 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
 
             foreach (var targetUnitDailyRecordConfig in targetRecords)
             {
+                var positionDictionary = targetUnitDailyRecordConfig.RelatedUnitDailyConfigs
+                                       .Select(x => new { Id = x.RelatedUnitsDailyConfigId, Position = x.Position }).Distinct()
+                                       .ToDictionary(x => x.Id, x => x.Position);
+
                 var unitDailyDatasForPosition = GetUnitDatasForRelatedDailyData(targetUnitDailyRecordConfig, resultDaily);
-                double dailyValue = GetDailyValue(unitDailyDatasForPosition, targetUnitDailyRecordConfig);
+                double dailyValue = GetDailyValue(unitDailyDatasForPosition, targetUnitDailyRecordConfig, positionDictionary);
 
                 var dailyRecord = new UnitsDailyData()
                 {
@@ -210,14 +218,14 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
         /// <param name="unitDailyDatasForPosition">The unit daily datas for position.</param>
         /// <param name="targetUnitDailyRecordConfig">The target unit daily record config.</param>
         /// <returns></returns>
-        private double GetDailyValue(IEnumerable<UnitsDailyData> unitDailyDatasForPosition, UnitDailyConfig unitDailyConfig)
+        private double GetDailyValue(IEnumerable<UnitsDailyData> unitDailyDatasForPosition, UnitDailyConfig unitDailyConfig, Dictionary<int, int> positionDictionary)
         {
             var inputDictionary = new Dictionary<string, double>();
-            var ix = 0;
 
             foreach (var unit in unitDailyDatasForPosition)
             {
-                inputDictionary.Add(string.Format("p{0}", ix++), unit.RealValue);
+                int currentIndex = positionDictionary[unit.UnitsDailyConfigId];
+                inputDictionary.Add(string.Format("p{0}", currentIndex - 1), unit.RealValue);
             }
 
             return calculator.Calculate(unitDailyConfig.AggregationFormula, "p", inputDictionary.Count, inputDictionary);
@@ -228,14 +236,13 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
         /// </summary>
         /// <param name="shift">The shift.</param>
         /// <returns></returns>
-        private double GetShiftValue(IGrouping<int, UnitsData> shift, UnitDailyConfig unitDailyConfig)
+        private double GetShiftValue(IGrouping<int, UnitsData> shift, UnitDailyConfig unitDailyConfig, Dictionary<int, int> positionDictionary)
         {
             var inputDictionary = new Dictionary<string, double>();
-            var ix = 0;
-
             foreach (var unit in shift)
             {
-                inputDictionary.Add(string.Format("p{0}", ix++), unit.RealValue);
+                int currentIndex = positionDictionary[unit.UnitConfigId];
+                inputDictionary.Add(string.Format("p{0}", currentIndex-1), unit.RealValue);
             }
 
             return calculator.Calculate(unitDailyConfig.AggregationFormula, "p", inputDictionary.Count, inputDictionary);
