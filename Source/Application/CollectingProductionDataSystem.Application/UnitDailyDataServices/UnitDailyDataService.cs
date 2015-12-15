@@ -141,8 +141,6 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
                 dailyRecord.Value = (decimal)dailyValue;
                 dailyRecord.HasManualData = unitDatasByShift.SelectMany(x => x).Any(y => y.IsManual);
                 result.Add(targetUnitDailyRecordConfig.Code, dailyRecord);
-
-                //Console.WriteLine("{0}\t\t{2}\t\t{1}", targetUnitDailyRecordConfig.Code, targetUnitDailyRecordConfig.Name, dailyRecord.Value);
             }
             return result;
         }
@@ -188,8 +186,6 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
                 };
 
                 resultDaily.Add(targetUnitDailyRecordConfig.Code, dailyRecord);
-
-                //Console.WriteLine("{0}\t\t{2}\t\t{1}", targetUnitDailyRecordConfig.Code, targetUnitDailyRecordConfig.Name, dailyRecord.Value);
             }
         }
 
@@ -242,7 +238,7 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
             foreach (var unit in shift)
             {
                 int currentIndex = positionDictionary[unit.UnitConfigId];
-                inputDictionary.Add(string.Format("p{0}", currentIndex-1), unit.RealValue);
+                inputDictionary.Add(string.Format("p{0}", currentIndex - 1), unit.RealValue);
             }
 
             return calculator.Calculate(unitDailyConfig.AggregationFormula, "p", inputDictionary.Count, inputDictionary);
@@ -320,32 +316,35 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
         /// <returns></returns>
         public IEfStatus CheckIfPreviousDaysAreReady(int processUnitId, DateTime targetDate)
         {
-            var beginingOfTheMonth = new DateTime(targetDate.Year, targetDate.Month, 1);
-            var endOfObservedPeriod = targetDate.Date.AddDays(-1);
-
-            var approvedDays = data.UnitsApprovedDailyDatas.All()
-                                    .Where(x => x.ProcessUnitId == processUnitId
-                                            && beginingOfTheMonth <= x.RecordDate
-                                            && x.RecordDate <= endOfObservedPeriod)
-                                    .Select(x => x.RecordDate).ToDictionary(x => x);
-
-            int day = 0;
-            var validationResults = new List<ValidationResult>() { new ValidationResult(@Resources.ErrorMessages.PreviousDaysConfirmationError) };
-            while (day < endOfObservedPeriod.Day)
+            var status = kernel.Get<IEfStatus>();
+            if (targetDate.Day > 1)
             {
-                var checkedDay = beginingOfTheMonth.AddDays(day);
-                if (!approvedDays.ContainsKey(checkedDay))
+                var beginingOfTheMonth = new DateTime(targetDate.Year, targetDate.Month, 1);
+                var endOfObservedPeriod = targetDate.Date.AddDays(-1);
+
+                var approvedDays = data.UnitsApprovedDailyDatas.All()
+                                        .Where(x => x.ProcessUnitId == processUnitId
+                                                && beginingOfTheMonth <= x.RecordDate
+                                                && x.RecordDate <= endOfObservedPeriod)
+                                        .Select(x => x.RecordDate).ToDictionary(x => x);
+
+                int day = 0;
+                var validationResults = new List<ValidationResult>() { new ValidationResult(@Resources.ErrorMessages.PreviousDaysConfirmationError) };
+                while (day < endOfObservedPeriod.Day)
                 {
-                    validationResults.Add(new ValidationResult(string.Format("\t\t- {0:dd.MM.yyyy г.}", checkedDay)));
+                    var checkedDay = beginingOfTheMonth.AddDays(day);
+                    if (!approvedDays.ContainsKey(checkedDay))
+                    {
+                        validationResults.Add(new ValidationResult(string.Format("\t\t- {0:dd.MM.yyyy г.}", checkedDay)));
+                    }
+
+                    day += 1;
                 }
 
-                day += 1;
-            }
-
-            var status = kernel.Get<IEfStatus>();
-            if (validationResults.Count > 1)
-            {
-                status.SetErrors(validationResults);
+                if (validationResults.Count > 1)
+                {
+                    status.SetErrors(validationResults);
+                }
             }
 
             return status;
