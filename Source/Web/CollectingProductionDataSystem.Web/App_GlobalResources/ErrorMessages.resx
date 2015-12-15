@@ -150,6 +150,9 @@
   <data name="Message" xml:space="preserve">
     <value>There was an error in application</value>
   </data>
+  <data name="NoDataWasFound" xml:space="preserve">
+    <value>No data was found for the specified criterias</value>
+  </data>
   <data name="ParameterDifferencesHead" xml:space="preserve">
     <value>There is difference between parameters: \n</value>
   </data>

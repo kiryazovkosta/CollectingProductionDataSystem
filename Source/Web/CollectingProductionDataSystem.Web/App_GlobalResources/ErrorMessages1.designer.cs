@@ -160,6 +160,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No data was found for the specified criterias.
+        /// </summary>
+        public static string NoDataWasFound {
+            get {
+                return ResourceManager.GetString("NoDataWasFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to There is difference between parameters: \n.
         /// </summary>
         public static string ParameterDifferencesHead {

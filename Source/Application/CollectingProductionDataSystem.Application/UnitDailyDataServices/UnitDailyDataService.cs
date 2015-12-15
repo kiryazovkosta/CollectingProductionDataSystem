@@ -297,6 +297,21 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
             return this.data.SaveChanges(userName);
         }
 
+
+        /// <summary>
+        /// Checks the exists unit daily datas.
+        /// </summary>
+        /// <param name="targetDate">The target date.</param>
+        /// <param name="processUnitId">The process unit identifier.</param>
+        /// <param name="userName">Name of the user.</param>
+        /// <returns></returns>
+        public bool CheckExistsUnitDailyDatas(DateTime targetDate, int processUnitId)
+        {
+            var unitDailyDatas = this.data.UnitsDailyDatas.All().Include(x => x.UnitsDailyConfig)
+                .Where(y => y.RecordTimestamp == targetDate && y.UnitsDailyConfig.ProcessUnitId == processUnitId).Any();
+            return unitDailyDatas;
+        }
+
         /// <summary>
         /// Checks if previous days are ready.
         /// </summary>

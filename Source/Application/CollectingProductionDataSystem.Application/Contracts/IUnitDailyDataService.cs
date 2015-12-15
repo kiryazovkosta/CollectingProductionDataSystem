@@ -12,6 +12,7 @@ namespace CollectingProductionDataSystem.Application.Contracts
         IEnumerable<UnitsDailyData> CalculateDailyDataForProcessUnit(int processUnitId, DateTime targetDay);
         bool CheckIfAllShiftsAreReady(DateTime targetDate, int processUnitId);
         bool CheckIfDayIsApproved(DateTime targetDate, int processUnitId);
+        bool CheckExistsUnitDailyDatas(DateTime targetDate, int processUnitId);
         IEfStatus ClearUnitDailyDatas(DateTime targetDate, int processUnitId, string userName);
         IEfStatus CheckIfShiftsAreReady(DateTime targetDate, int processUnitId);
         IEfStatus CheckIfPreviousDaysAreReady(int processUnitId, DateTime targetDate);

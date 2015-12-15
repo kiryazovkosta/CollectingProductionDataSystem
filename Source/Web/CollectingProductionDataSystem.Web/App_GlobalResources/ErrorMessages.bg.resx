@@ -150,6 +150,9 @@
   <data name="Message" xml:space="preserve">
     <value>Възникна грешка в приложението</value>
   </data>
+  <data name="NoDataWasFound" xml:space="preserve">
+    <value>Не са намерени данни по посочените критерии</value>
+  </data>
   <data name="ParameterDifferencesHead" xml:space="preserve">
     <value>Има разлика между параметрите:</value>
   </data>

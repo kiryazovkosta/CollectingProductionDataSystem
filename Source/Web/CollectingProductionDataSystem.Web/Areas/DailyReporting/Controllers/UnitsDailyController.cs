@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     using System.Diagnostics;
     using System.Linq;
@@ -51,6 +52,14 @@
         public JsonResult ReadDailyUnitsData([DataSourceRequest]DataSourceRequest request, DateTime? date, int? processUnitId)
         {
             ValidateModelState(date, processUnitId);
+
+            var status = CalculateDailyDataIfNotAvailable(date.Value, processUnitId.Value);
+
+            if (!status.IsValid)
+            {
+                status.ToModelStateErrors(this.ModelState);
+            }
+
             if (ModelState.IsValid)
             {
                 var kendoResult = new DataSourceResult();
@@ -65,7 +74,7 @@
                         {
                             dailyService.CheckIfShiftsAreReady(date.Value, processUnitId.Value).ToModelStateErrors(this.ModelState);
                         }
-     
+
                         kendoResult = kendoPreparedResult.ToDataSourceResult(request, ModelState);
                     }
                     catch (Exception ex1)
@@ -92,6 +101,49 @@
                 var kendoResult = new List<UnitDailyDataViewModel>().ToDataSourceResult(request, ModelState);
                 return Json(kendoResult);
             }
+        }
+
+        /// <summary>
+        /// Calculates the daily data if not available.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <param name="processUnitId">The process unit id.</param>
+        private IEfStatus CalculateDailyDataIfNotAvailable(DateTime date, int processUnitId)
+        {
+            IEfStatus status = DependencyResolver.Current.GetService<IEfStatus>();
+
+            if (!this.dailyService.CheckIfDayIsApproved(date, processUnitId)
+                && !this.dailyService.CheckExistsUnitDailyDatas(date, processUnitId))
+            {
+                IEnumerable<UnitsDailyData> dailyResult = new List<UnitsDailyData>();
+                status = dailyService.CheckIfShiftsAreReady(date, processUnitId);
+
+                if (status.IsValid)
+                {
+                    if (!Convert.ToBoolean(System.Configuration.ConfigurationManager.AppSettings["ComplitionCheckDeactivared"]))
+                    {
+                        status = this.dailyService.CheckIfPreviousDaysAreReady(processUnitId, date);
+                    }
+
+                    if (status.IsValid)
+                    {
+                        status = IsRelatedDataExists(date, processUnitId);
+
+                        if (status.IsValid)
+                        {
+                            dailyResult = this.dailyService.CalculateDailyDataForProcessUnit(processUnitId, date);
+
+                            if (dailyResult.Count() > 0)
+                            {
+                                this.data.UnitsDailyDatas.BulkInsert(dailyResult, this.UserProfile.UserName);
+                                status = this.data.SaveChanges(this.UserProfile.UserName);
+                            }
+                        }
+                    }
+                }
+            }
+
+            return status;
         }
 
         [HttpPost]
@@ -152,7 +204,7 @@
                 .ToList();
             var unitDailyDataByProcessUnit = this.data.UnitsDailyDatas
                 .All()
-                .Where(x => x.RecordTimestamp == model.RecordTimestamp && 
+                .Where(x => x.RecordTimestamp == model.RecordTimestamp &&
                     x.UnitsDailyConfig.ProcessUnitId == model.UnitsDailyConfig.ProcessUnitId)
                 .ToList();
             var calculator = new CalculatorService();
@@ -165,7 +217,7 @@
                     .Any();
                 if (relatedDailyData)
                 {
-                    continue;   
+                    continue;
                 }
 
                 var tokens = unitDailyConfig.AggregationMembers.Split(splitter, StringSplitOptions.RemoveEmptyEntries);
@@ -281,12 +333,12 @@
                     // Get all process plan data and save it
                     IEnumerable<ProductionPlanData> dbResult = this.productionPlanData.ReadProductionPlanData(model.date, model.processUnitId);
                     if (dbResult.Count() > 0)
-	                {
+                    {
                         foreach (var item in dbResult)
-	                    {
+                        {
                             this.data.ProductionPlanDatas.Add(item);
-	                    }
-	                }
+                        }
+                    }
 
                     var result = this.data.SaveChanges(this.UserProfile.UserName);
                     return Json(new { IsConfirmed = result.IsValid }, JsonRequestBehavior.AllowGet);
@@ -315,7 +367,7 @@
             result.Title = string.Format(Resources.Layout.DailyGraphicTitle, this.data.ProcessUnits.GetById(processUnitId).ShortName);
             return PartialView(result);
         }
- 
+
         /// <summary>
         /// Validates the model against report patameters.
         /// </summary>
@@ -373,6 +425,45 @@
 
             var errorList = query.ToList();
             return errorList;
+        }
+
+        private IEfStatus IsRelatedDataExists(DateTime date, int processUnitId)
+        {
+            var validationResult = new List<ValidationResult>();
+
+            var relatedDailyDatasFromOtherProcessUnits = this.data.UnitsDailyConfigs
+                                                             .All()
+                                                             .Include(x => x.ProcessUnit)
+                                                             .Include(x => x.RelatedUnitDailyConfigs)
+                                                             .Where(x => x.ProcessUnitId == processUnitId && x.AggregationCurrentLevel == true)
+                                                             .SelectMany(y => y.RelatedUnitDailyConfigs)
+                                                             .Where(z => z.RelatedUnitsDailyConfig.ProcessUnitId != processUnitId)
+                                                             .ToList();
+
+            foreach (var item in relatedDailyDatasFromOtherProcessUnits)
+            {
+                var relatedData = this.data.UnitsDailyDatas.All()
+                                            .Where(u => u.RecordTimestamp == date
+                                                    && u.UnitsDailyConfigId == item.RelatedUnitsDailyConfigId)
+                                            .Any();
+
+                if (!relatedData)
+                {
+                    validationResult.Add(new ValidationResult(
+                        "shiftdata", new string[] {
+                            string.Format("Не са налични дневни данни за позиция: {0}", item.UnitsDailyConfig.Name) 
+                        }));
+                }
+            }
+
+            var status = DependencyResolver.Current.GetService<IEfStatus>();
+
+            if (validationResult.Count() > 0)
+            {
+                status.SetErrors(validationResult);
+            }
+
+            return status;
         }
     }
 }

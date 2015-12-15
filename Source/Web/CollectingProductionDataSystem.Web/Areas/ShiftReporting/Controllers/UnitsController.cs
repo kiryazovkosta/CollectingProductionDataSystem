@@ -181,52 +181,12 @@
                         Approved = true
                     });
 
-                    IEnumerable<UnitsDailyData> dailyResult = new List<UnitsDailyData>();
-                    IEfStatus status;
-                    using (TransactionScope transaction = new TransactionScope(TransactionScopeOption.Required, DefaultTransactionOptions.Instance.TransactionOptions))
+                    IEfStatus status = data.SaveChanges(this.UserProfile.UserName);
+                    if (!status.IsValid)
                     {
-                        status = data.SaveChanges(this.UserProfile.UserName);
-
-                        if (status.IsValid)
-                        {
-                            if (dailyServices.CheckIfAllShiftsAreReady(model.date, model.processUnitId))
-                            {
-                                if (!dailyServices.CheckIfDayIsApproved(model.date, model.processUnitId))
-                                {
-                                    status = dailyServices.ClearUnitDailyDatas(model.date, model.processUnitId, this.UserProfile.UserName);
-                                    if (status.IsValid)
-                                    {
-                                        if (!Convert.ToBoolean(System.Configuration.ConfigurationManager.AppSettings["ComplitionCheckDeactivared"]))
-                                        {
-                                            status = this.dailyServices.CheckIfPreviousDaysAreReady(model.processUnitId, model.date);
-                                            if (!status.IsValid)
-                                            {
-                                                status.ToModelStateErrors(this.ModelState);
-                                            }
-                                        }
-
-                                        if (IsRelatedDataExists(model))
-                                        {
-                                            dailyResult = dailyServices.CalculateDailyDataForProcessUnit(model.processUnitId, model.date);
-                                        }
-                                    }
-                                }
-                            }
-                        }
-
-                        if (dailyResult.Count() > 0)
-                        {
-                            this.data.UnitsDailyDatas.BulkInsert(dailyResult, this.UserProfile.UserName);
-                            status = this.data.SaveChanges(this.UserProfile.UserName);
-                        }
-
-                        if (status.IsValid && this.ModelState.IsValid)
-                        {
-                            transaction.Complete();
-                        }
-
+                        status.ToModelStateErrors(this.ModelState);
                     }
-
+                    
                     if (!this.ModelState.IsValid)
                     {
                         Response.StatusCode = (int)HttpStatusCode.BadRequest;
@@ -288,29 +248,6 @@
                 modelState.AddModelError("", resultMessage.ToString());
                 return;
             }
-        }
-
-        private bool IsRelatedDataExists(ProcessUnitConfirmShiftInputModel model)
-        {
-            var relatedDailyDatasFromOtherProcessUnits = this.data.UnitsDailyConfigs
-                                                             .All()
-                                                             .Include(x => x.ProcessUnit)
-                                                             .Include(x => x.RelatedUnitDailyConfigs)
-                                                             .Where(x => x.ProcessUnitId == model.processUnitId && x.AggregationCurrentLevel == true)
-                                                             .SelectMany(y => y.RelatedUnitDailyConfigs)
-                                                             .Where(z => z.RelatedUnitsDailyConfig.ProcessUnitId != model.processUnitId)
-                                                             .ToList();
-
-            foreach (var item in relatedDailyDatasFromOtherProcessUnits)
-            {
-                var relatedData = this.data.UnitsDailyDatas.All().Where(u => u.RecordTimestamp == model.date && u.UnitsDailyConfigId == item.RelatedUnitsDailyConfigId).Any();
-                if (!relatedData)
-                {
-                    this.ModelState.AddModelError("shiftdata", string.Format("Не са налични дневни данни за позиция: {0}", item.UnitsDailyConfig.Name));
-                }
-            }
-
-            return this.ModelState.IsValid;
         }
 
         [HttpPost]
