@@ -17,6 +17,7 @@
     using CollectingProductionDataSystem.Application.ProductionPlanDataServices;
     using CollectingProductionDataSystem.Data.Common;
     using CollectingProductionDataSystem.Data.Contracts;
+    using CollectingProductionDataSystem.Infrastructure.Contracts;
     using CollectingProductionDataSystem.Models.Productions;
     using CollectingProductionDataSystem.Web.Infrastructure.Extentions;
     using CollectingProductionDataSystem.Web.Infrastructure.Filters;
@@ -32,16 +33,18 @@
         private readonly IUnitsDataService unitsData;
         private readonly IUnitDailyDataService dailyService;
         private readonly IProductionPlanDataService productionPlanData;
-        private TransactionOptions transantionOption;
+        private readonly TransactionOptions transantionOption;
+        private readonly ILogger logger;
 
         public UnitsDailyController(IProductionData dataParam, IUnitsDataService unitsDataParam, IUnitDailyDataService dailyServiceParam,
-            IProductionPlanDataService productionPlanDataParam)
+            IProductionPlanDataService productionPlanDataParam, ILogger loggerParam)
             : base(dataParam)
         {
             this.unitsData = unitsDataParam;
             this.dailyService = dailyServiceParam;
             this.productionPlanData = productionPlanDataParam;
             this.transantionOption = DefaultTransactionOptions.Instance.TransactionOptions;
+            this.logger = loggerParam;
         }
 
         [HttpGet]
@@ -196,6 +199,7 @@
                         if (!status.IsValid)
                         {
                             status.ToModelStateErrors(this.ModelState);
+                            //logger.Error()
                         }
                         else
                         {
