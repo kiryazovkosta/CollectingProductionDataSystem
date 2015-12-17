@@ -77,7 +77,7 @@
     </script>
 
     @section scripts{
-        <script src="~/Scripts/custom/sendAntiForgery.js"></script>
+        @Scripts.Render("~/Scripts/custom/sendAntiForgery.js")
         <script>
             $(document).ready(function () {
                 var successMessage = $('#success-message');

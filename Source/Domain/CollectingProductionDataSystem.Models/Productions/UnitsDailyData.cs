@@ -19,8 +19,8 @@
         public decimal TotalMonthQuantity { get; set; }
 
         [NotMapped]
-        public double RealValue 
-        { 
+        public double RealValue
+        {
             get
             {
                 if (this.UnitsManualDailyData != null)
@@ -31,6 +31,15 @@
                 {
                     return (double)this.Value;
                 }
+            }
+        }
+
+        [NotMapped]
+        public bool GotManualData
+        {
+            get
+            {
+                return this.UnitsManualDailyData != null;
             }
         }
     }

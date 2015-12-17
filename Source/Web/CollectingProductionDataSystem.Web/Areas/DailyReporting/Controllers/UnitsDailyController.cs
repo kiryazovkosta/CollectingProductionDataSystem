@@ -1,4 +1,4 @@
-﻿namespace CollectingProductionDataSystem.Web.Areas.DailyReporting.Controllers
+﻿    namespace CollectingProductionDataSystem.Web.Areas.DailyReporting.Controllers
 {
     using System;
     using System.Collections.Generic;
@@ -9,11 +9,13 @@
     using System.Linq;
     using System.Net;
     using System.Text;
+    using System.Transactions;
     using System.Web.Mvc;
     using AutoMapper;
     using CollectingProductionDataSystem.Application.CalculatorService;
     using CollectingProductionDataSystem.Application.Contracts;
     using CollectingProductionDataSystem.Application.ProductionPlanDataServices;
+    using CollectingProductionDataSystem.Data.Common;
     using CollectingProductionDataSystem.Data.Contracts;
     using CollectingProductionDataSystem.Models.Productions;
     using CollectingProductionDataSystem.Web.Infrastructure.Extentions;
@@ -30,6 +32,7 @@
         private readonly IUnitsDataService unitsData;
         private readonly IUnitDailyDataService dailyService;
         private readonly IProductionPlanDataService productionPlanData;
+        private TransactionOptions transantionOption;
 
         public UnitsDailyController(IProductionData dataParam, IUnitsDataService unitsDataParam, IUnitDailyDataService dailyServiceParam,
             IProductionPlanDataService productionPlanDataParam)
@@ -38,6 +41,7 @@
             this.unitsData = unitsDataParam;
             this.dailyService = dailyServiceParam;
             this.productionPlanData = productionPlanDataParam;
+            this.transantionOption = DefaultTransactionOptions.Instance.TransactionOptions;
         }
 
         [HttpGet]
@@ -52,6 +56,11 @@
         public JsonResult ReadDailyUnitsData([DataSourceRequest]DataSourceRequest request, DateTime? date, int? processUnitId)
         {
             ValidateModelState(date, processUnitId);
+            if (!this.ModelState.IsValid)
+            {
+                var kendoResult = new List<UnitDailyDataViewModel>().ToDataSourceResult(request, ModelState);
+                return Json(kendoResult);
+            }
 
             var status = CalculateDailyDataIfNotAvailable(date.Value, processUnitId.Value);
 
@@ -168,17 +177,29 @@
                 {
                     UpdateRecord(existManualRecord, model);
                 }
-
-                RecalculateData(model);
-
                 try
                 {
-                    var result = this.data.SaveChanges(UserProfile.UserName);
-                    if (!result.IsValid)
+                    using (var transaction = new TransactionScope(TransactionScopeOption.Required, this.transantionOption))
                     {
-                        foreach (ValidationResult error in result.EfErrors)
+                        var result = this.data.SaveChanges(UserProfile.UserName);
+                        if (!result.IsValid)
                         {
-                            this.ModelState.AddModelError(error.MemberNames.ToList()[0], error.ErrorMessage);
+                            foreach (ValidationResult error in result.EfErrors)
+                            {
+                                this.ModelState.AddModelError(error.MemberNames.ToList()[0], error.ErrorMessage);
+                            }
+                        }
+
+                        var updatedRecords = this.dailyService.CalculateDailyDataForProcessUnit(model.UnitsDailyConfig.ProcessUnitId, model.RecordTimestamp, isRecalculate: true);
+                        var status = UpdateResultRecords(updatedRecords, model.UnitsManualDailyData.EditReason.Id);
+
+                        if (!status.IsValid)
+                        {
+                            status.ToModelStateErrors(this.ModelState);
+                        }
+                        else
+                        {
+                            transaction.Complete();
                         }
                     }
                 }
@@ -186,84 +207,97 @@
                 {
                     this.ModelState.AddModelError("ManualValue", "Записът не можа да бъде осъществен. Моля опитайте на ново!");
                 }
-                finally
-                {
-                }
             }
 
             return Json(new[] { model }.ToDataSourceResult(request, ModelState));
         }
-
-        private void RecalculateData(UnitDailyDataViewModel model)
+ 
+        /// <summary>
+        /// Updates the result records.
+        /// </summary>
+        /// <param name="updatedRecords">The updated records.</param>
+        private IEfStatus UpdateResultRecords(IEnumerable<UnitsDailyData> updatedRecords, int editReasonId)
         {
-            // TODO: Need to get all related units data and recalculate only them
-
-            var unitDailyConfigs = this.data.UnitsDailyConfigs
-                .All()
-                .Where(x => x.ProcessUnitId == model.UnitsDailyConfig.ProcessUnitId && x.AggregationCurrentLevel == true)
-                .ToList();
-            var unitDailyDataByProcessUnit = this.data.UnitsDailyDatas
-                .All()
-                .Where(x => x.RecordTimestamp == model.RecordTimestamp &&
-                    x.UnitsDailyConfig.ProcessUnitId == model.UnitsDailyConfig.ProcessUnitId)
-                .ToList();
-            var calculator = new CalculatorService();
-            var splitter = new char[] { '@' };
-
-            foreach (var unitDailyConfig in unitDailyConfigs)
+            foreach (var record in updatedRecords)
             {
-                var relatedDailyData = unitDailyConfig.RelatedUnitDailyConfigs
-                    .Where(x => x.RelatedUnitsDailyConfig.ProcessUnitId != unitDailyConfig.ProcessUnitId)
-                    .Any();
-                if (relatedDailyData)
+                if (record.GotManualData)
                 {
-                    continue;
+                    var manualRecord = this.data.UnitsManualDailyDatas.GetById(record.Id);
+                    manualRecord.Value = (decimal)record.RealValue;
+                    this.data.UnitsManualDailyDatas.Update(manualRecord);
                 }
-
-                var tokens = unitDailyConfig.AggregationMembers.Split(splitter, StringSplitOptions.RemoveEmptyEntries);
-                var inputParamsValues = new List<double>();
-                foreach (var token in tokens)
+                else 
                 {
-                    foreach (var unitDailyData in unitDailyDataByProcessUnit)
-                    {
-                        if (unitDailyData.UnitsDailyConfig.Code == token)
-                        {
-                            inputParamsValues.Add(unitDailyData.RealValue);
-                            continue;
-                        }
-                    }
-                }
-
-                var inputParams = new Dictionary<string, double>();
-                for (int i = 0; i < inputParamsValues.Count(); i++)
-                {
-                    inputParams.Add(string.Format("p{0}", i), inputParamsValues[i]);
-                }
-
-                var value = calculator.Calculate(unitDailyConfig.AggregationFormula, "p", inputParams.Count, inputParams);
-                var id = unitDailyDataByProcessUnit.Where(x => x.UnitsDailyConfig.Code == unitDailyConfig.Code).FirstOrDefault();
-                if (id != null)
-                {
-                    var newNewManualRecord = new UnitsManualDailyData
-                    {
-                        Id = id.Id,
-                        Value = (decimal)value,
-                        EditReasonId = model.UnitsManualDailyData.EditReason.Id
-                    };
-                    var existNewManualRecord = this.data.UnitsManualDailyDatas.All().FirstOrDefault(x => x.Id == newNewManualRecord.Id);
-                    if (existNewManualRecord == null)
-                    {
-                        this.data.UnitsManualDailyDatas.Add(newNewManualRecord);
-                    }
-                    else
-                    {
-                        existNewManualRecord.EditReasonId = model.UnitsManualDailyData.EditReason.Id;
-                        existNewManualRecord.Value = newNewManualRecord.Value;
-                        this.data.UnitsManualDailyDatas.Update(existNewManualRecord);
-                    }
+                    this.data.UnitsManualDailyDatas.Add(new UnitsManualDailyData { Id = record.Id, Value = (decimal)record.RealValue, EditReasonId = editReasonId });
                 }
             }
+
+            return this.data.SaveChanges(this.UserProfile.UserName);
         }
+
+        //private void RecalculateData(UnitDailyDataViewModel model)
+        //{
+        //    // TODO: Need to get all related units data and recalculate only them
+
+        //    var unitDailyConfigs = this.data.UnitsDailyConfigs
+        //        .All()
+        //        .Where(x => x.ProcessUnitId == model.UnitsDailyConfig.ProcessUnitId && x.AggregationCurrentLevel == true)
+        //        .ToList();
+        //    var unitDailyDataByProcessUnit = this.data.UnitsDailyDatas
+        //        .All()
+        //        .Where(x => x.RecordTimestamp == model.RecordTimestamp &&
+        //            x.UnitsDailyConfig.ProcessUnitId == model.UnitsDailyConfig.ProcessUnitId)
+        //        .ToList();
+        //    var calculator = new CalculatorService();
+        //    var splitter = new char[] { '@' };
+
+        //    foreach (var unitDailyConfig in unitDailyConfigs)
+        //    {
+        //        var relatedDailyData = unitDailyConfig.RelatedUnitDailyConfigs
+        //            .Where(x => x.RelatedUnitsDailyConfig.ProcessUnitId != unitDailyConfig.ProcessUnitId)
+        //            .Any();
+        //        if (relatedDailyData)
+        //        {
+        //            continue;
+        //        }
+
+        //        var tokens = unitDailyConfig.AggregationMembers.Split(splitter, StringSplitOptions.RemoveEmptyEntries);
+        //        var inputParamsValues = new List<double>();
+        //        foreach (var token in tokens)
+        //        {
+        //            inputParamsValues.Add(unitDailyDataByProcessUnit.FirstOrDefault(x => x.UnitsDailyConfig.Code == token).RealValue);
+        //        }
+
+        //        var inputParams = new Dictionary<string, double>();
+        //        for (int i = 0; i < inputParamsValues.Count(); i++)
+        //        {
+        //            inputParams.Add(string.Format("p{0}", i), inputParamsValues[i]);
+        //        }
+
+        //        var value = calculator.Calculate(unitDailyConfig.AggregationFormula, "p", inputParams.Count, inputParams);
+        //        var id = unitDailyDataByProcessUnit.Where(x => x.UnitsDailyConfig.Code == unitDailyConfig.Code).FirstOrDefault();
+        //        if (id != null)
+        //        {
+        //            var newNewManualRecord = new UnitsManualDailyData
+        //            {
+        //                Id = id.Id,
+        //                Value = (decimal)value,
+        //                EditReasonId = model.UnitsManualDailyData.EditReason.Id
+        //            };
+        //            var existNewManualRecord = this.data.UnitsManualDailyDatas.All().FirstOrDefault(x => x.Id == newNewManualRecord.Id);
+        //            if (existNewManualRecord == null)
+        //            {
+        //                this.data.UnitsManualDailyDatas.Add(newNewManualRecord);
+        //            }
+        //            else
+        //            {
+        //                existNewManualRecord.EditReasonId = model.UnitsManualDailyData.EditReason.Id;
+        //                existNewManualRecord.Value = newNewManualRecord.Value;
+        //                this.data.UnitsManualDailyDatas.Update(existNewManualRecord);
+        //            }
+        //        }
+        //    }
+        //}
 
         private void UpdateRecord(UnitsManualDailyData existManualRecord, UnitDailyDataViewModel model)
         {
@@ -450,9 +484,7 @@
                 if (!relatedData)
                 {
                     validationResult.Add(new ValidationResult(
-                        "shiftdata", new string[] {
-                            string.Format("Не са налични дневни данни за позиция: {0}", item.UnitsDailyConfig.Name) 
-                        }));
+                        string.Format("Не са налични дневни данни за позиция: {0}", item.UnitsDailyConfig.Name)));
                 }
             }
 

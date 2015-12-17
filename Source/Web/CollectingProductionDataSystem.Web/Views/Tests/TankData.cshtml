@@ -49,7 +49,7 @@
 )
 
 @section scripts{
-    <script src="~/Scripts/custom/sendAntiForgery.js"></script>
+    @Scripts.Render("~/Scripts/custom/sendAntiForgery.js")
     <script>
         kendo.culture("@System.Threading.Thread.CurrentThread.CurrentCulture.Name");
 

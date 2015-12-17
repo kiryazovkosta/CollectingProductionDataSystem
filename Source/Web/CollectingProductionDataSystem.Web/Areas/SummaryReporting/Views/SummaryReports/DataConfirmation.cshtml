@@ -104,7 +104,7 @@
     @Scripts.Render("~/bundles/custom/kendoadditional")
     @Scripts.Render("~/bundles/custom/unitGrids")
     @Scripts.Render("~/Scripts/custom/confirmationRefresh.min.js")
-    <script src="~/Scripts/kendo/pako_deflate.min.js"></script>
+    @Scripts.Render("~/Scripts/kendo/pako_deflate.min.js")
 }
 @section sidebar{
     @Html.Partial("_UnitsDailySideBar")

@@ -12,6 +12,7 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
     using CollectingProductionDataSystem.Application.Contracts;
     using CollectingProductionDataSystem.Data.Contracts;
     using CollectingProductionDataSystem.Infrastructure.Chart;
+    using CollectingProductionDataSystem.Infrastructure.Extentions;
     using CollectingProductionDataSystem.Models.Productions;
     using Ninject;
     using Resources = App_Resources;
@@ -29,7 +30,7 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
             this.calculator = calculatorParam;
         }
 
-        public IEnumerable<UnitsDailyData> CalculateDailyDataForProcessUnit(int processUnitId, DateTime targetDay)
+        public IEnumerable<UnitsDailyData> CalculateDailyDataForProcessUnit(int processUnitId, DateTime targetDay, bool isRecalculate=false)
         {
             if (processUnitId < 1)
             {
@@ -41,7 +42,16 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
             var targetUnitDailyRecordConfigs = data.UnitsDailyConfigs.All()
                 .Include(x => x.UnitConfigUnitDailyConfigs)
                 .Where(x => x.ProcessUnitId == processUnitId).ToList();
-            Dictionary<string, UnitsDailyData> resultDaily = CalculateDailyDataFromShiftData(targetUnitDailyRecordConfigs, targetDay, processUnitId);
+            Dictionary<string, UnitsDailyData> resultDaily = new Dictionary<string,UnitsDailyData>();
+
+            if (!isRecalculate)
+            {
+                resultDaily = CalculateDailyDataFromShiftData(targetUnitDailyRecordConfigs, targetDay, processUnitId);
+            }
+            else 
+            {
+                resultDaily = GetDailyDataFromShiftData(targetDay, processUnitId);
+            }
             Dictionary<string, UnitsDailyData> relatedRecords = GetRelatedData(processUnitId, targetDay);
             if (relatedRecords.Count() > 0)
             {
@@ -51,7 +61,7 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
                 }
             }
 
-            CalculateDailyDataFromRelatedDailyData(resultDaily, processUnitId, targetDay);
+            CalculateDailyDataFromRelatedDailyData(ref resultDaily, processUnitId, targetDay, isRecalculate);
 
             if (relatedRecords.Count() > 0)
             {
@@ -64,6 +74,24 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
             AppendTotalMonthQuantityToDailyRecords(resultDaily, processUnitId, targetDay);
 
             return resultDaily.Select(x => x.Value);
+        }
+ 
+        /// <summary>
+        /// Gets the daily data from shift data.
+        /// </summary>
+        /// <param name="targetUnitDailyRecordConfigs">The target unit daily record configs.</param>
+        /// <param name="targetDay">The target day.</param>
+        /// <param name="processUnitId">The process unit id.</param>
+        /// <returns></returns>
+        private Dictionary<string, UnitsDailyData> GetDailyDataFromShiftData(DateTime targetDay, int processUnitId)
+        {
+            return this.data.UnitsDailyDatas.All()
+                        .Include(x => x.UnitsDailyConfig)
+                        .Include(x => x.UnitsManualDailyData)
+                        .Where(x => x.RecordTimestamp == targetDay
+                                && x.UnitsDailyConfig.ProcessUnitId == processUnitId
+                                && x.UnitsDailyConfig.AggregationCurrentLevel == false)
+                                .ToDictionary(x=>x.UnitsDailyConfig.Code);
         }
 
         /// <summary>
@@ -163,11 +191,23 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
         /// <param name="targetRecords">The target records.</param>
         /// <param name="resultDaily">The result daily.</param>
         /// <param name="targetDay">The target day.</param>
-        private void CalculateDailyDataFromRelatedDailyData(Dictionary<string, UnitsDailyData> resultDaily, int targetPtocessUnitId, DateTime targetDay)
+        private void CalculateDailyDataFromRelatedDailyData(ref Dictionary<string, UnitsDailyData> resultDaily, int targetPtocessUnitId, DateTime targetDay, bool isRecalculate)
         {
+            Dictionary<string, UnitsDailyData> calculationResult = new Dictionary<string, UnitsDailyData>();
+
             var targetRecords = data.UnitsDailyConfigs.All()
                 .Include(x => x.RelatedUnitDailyConfigs)
                 .Where(x => x.ProcessUnitId == targetPtocessUnitId && x.AggregationCurrentLevel == true).ToList();
+
+            Dictionary<string, UnitsDailyData> targetUnitDailyRecords=new Dictionary<string, UnitsDailyData>();
+
+            if (isRecalculate)
+            {
+                targetUnitDailyRecords = data.UnitsDailyDatas.All()
+                  .Include(x => x.UnitsDailyConfig)
+                  .Include(x=>x.UnitsManualDailyData)
+                  .Where(x => x.RecordTimestamp == targetDay && x.UnitsDailyConfig.ProcessUnitId == targetPtocessUnitId).ToDictionary(x=>x.UnitsDailyConfig.Code);
+            }
 
             foreach (var targetUnitDailyRecordConfig in targetRecords)
             {
@@ -180,12 +220,22 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
 
                 var dailyRecord = new UnitsDailyData()
                 {
+                    Id = (isRecalculate && targetUnitDailyRecords.ContainsKey(targetUnitDailyRecordConfig.Code)) ? targetUnitDailyRecords[targetUnitDailyRecordConfig.Code].Id : 0,
                     RecordTimestamp = targetDay,
                     UnitsDailyConfigId = targetUnitDailyRecordConfig.Id,
-                    Value = (decimal)dailyValue
+                    Value = (decimal)dailyValue,
+                    UnitsManualDailyData = (isRecalculate && targetUnitDailyRecords.ContainsKey(targetUnitDailyRecordConfig.Code)) ? targetUnitDailyRecords[targetUnitDailyRecordConfig.Code].UnitsManualDailyData : null
                 };
-
                 resultDaily.Add(targetUnitDailyRecordConfig.Code, dailyRecord);
+                if (isRecalculate)
+                {
+                    calculationResult.Add(targetUnitDailyRecordConfig.Code, dailyRecord);
+                }
+            }
+
+            if (isRecalculate)
+            {
+                resultDaily = calculationResult;
             }
         }
 

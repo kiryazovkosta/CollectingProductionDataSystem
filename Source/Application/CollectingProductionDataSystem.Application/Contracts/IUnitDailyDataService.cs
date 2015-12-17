@@ -9,7 +9,7 @@ namespace CollectingProductionDataSystem.Application.Contracts
 {
     public interface IUnitDailyDataService
     {
-        IEnumerable<UnitsDailyData> CalculateDailyDataForProcessUnit(int processUnitId, DateTime targetDay);
+        IEnumerable<UnitsDailyData> CalculateDailyDataForProcessUnit(int processUnitId, DateTime targetDay, bool isRecalculate=false);
         bool CheckIfAllShiftsAreReady(DateTime targetDate, int processUnitId);
         bool CheckIfDayIsApproved(DateTime targetDate, int processUnitId);
         bool CheckExistsUnitDailyDatas(DateTime targetDate, int processUnitId);

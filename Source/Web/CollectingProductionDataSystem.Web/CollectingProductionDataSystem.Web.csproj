@@ -246,6 +246,7 @@
     <Compile Include="Areas\Administration\Controllers\UserStatisticsController.cs" />
     <Compile Include="Areas\Administration\ViewModels\EventViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\LoggedUserViewModel.cs" />
+    <Compile Include="Areas\Administration\ViewModels\RolePresentationViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\UserPieViewModel.cs" />
     <Compile Include="Areas\Documentation\DocumentationAreaRegistration.cs" />
     <Compile Include="Areas\Documentation\Controllers\HelpController.cs" />

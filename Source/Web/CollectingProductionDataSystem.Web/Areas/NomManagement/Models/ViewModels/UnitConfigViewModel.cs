@@ -150,9 +150,11 @@
                 .ForMember(p => p.ModifiedFrom, opt => opt.Ignore())
                 .ForMember(p => p.UnitConfigUnitDailyConfigs, opt => opt.Ignore())
                 .ForMember(p => p.IsConverted, opt => opt.Ignore())
-                .ForMember(p=>p.StartupValue,opt=>opt.Ignore())
+                .ForMember(p => p.StartupValue, opt => opt.Ignore())
+                .ForMember(p => p.EnteredMeasureUnitId, opt => opt.Ignore())
+                .ForMember(p => p.EnteredMeasureUnit, opt => opt.Ignore())
+                .ForMember(p => p.CalculationPercentage, opt => opt.Ignore())
                 .ForMember(p => p.IsMemberOfShiftsReport, opt=>opt.Ignore());
-                
         }
     }
 }

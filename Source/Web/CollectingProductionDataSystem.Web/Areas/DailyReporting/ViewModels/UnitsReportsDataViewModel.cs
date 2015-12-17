@@ -60,12 +60,14 @@
         [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
         [Display(Name = "TotalQuantityValue", ResourceType = typeof(Resources.Layout))]
         public double TotalQuantityValue { get; set; }
+
         public void CreateMappings(IConfiguration configuration)
         {
             configuration.CreateMap<MultiShift, UnitsReportsDataViewModel>()
                 .ForMember(p => p.Shift1QuantityValue, opt => opt.MapFrom(p => (p.Shift1 != null) ? p.Shift1.RealValue : 0))
                 .ForMember(p => p.Shift2QuantityValue, opt => opt.MapFrom(p => (p.Shift2 != null) ? p.Shift2.RealValue : 0))
-                .ForMember(p => p.Shift3QuantityValue, opt => opt.MapFrom(p => (p.Shift3 != null) ? p.Shift3.RealValue : 0));
+                .ForMember(p => p.Shift3QuantityValue, opt => opt.MapFrom(p => (p.Shift3 != null) ? p.Shift3.RealValue : 0))
+                .ForMember(p=> p.TotalQuantityValue, opt=>opt.Ignore());
         }
     }
 }

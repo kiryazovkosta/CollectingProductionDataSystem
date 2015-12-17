@@ -5,6 +5,7 @@ using System.Transactions;
 using CollectingProductionDataSystem.Data.Common;
 using CollectingProductionDataSystem.Models.Inventories;
 using CollectingProductionDataSystem.Models.Nomenclatures;
+using CollectingProductionDataSystem.Models.Productions;
 using CollectingProductionDataSystem.Models.UtilityEntities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -42,7 +43,7 @@ namespace CollectingProductionDataSystem.Data.Tests
             this.dbContext.SaveChanges("TestUser");
 
             var auditRecordsCount = this.dbContext.Set<AuditLogRecord>().CountAsync().Result;
-            
+
             //Act
             var newProduct = new Product { Name = "Test Product", ProductTypeId = testProductType.Id };
             this.dbContext.Products.Add(newProduct);
@@ -161,6 +162,24 @@ namespace CollectingProductionDataSystem.Data.Tests
 
             Assert.AreEqual("", auditRecords.OldValue);
             Assert.AreEqual("1.2", auditRecords.NewValue);
+        }
+
+        [TestMethod]
+        public void TestIfCreatedNewDailyRecordGotNoManualDailyRecord()
+        {
+            //Arrange
+            var unitDailyDataRecord = new UnitsDailyData { UnitsDailyConfigId = 1, Value = 0, RecordTimestamp = DateTime.Now };
+            this.dbContext.UnitsDailyDatas.Add(unitDailyDataRecord);
+            this.dbContext.SaveChanges("TestUser");
+            //read new record from database
+            var readedUnitDailyRecord = dbContext.UnitsDailyDatas.FirstOrDefault(x => x.Id == unitDailyDataRecord.Id); 
+
+            //Act
+            var actual = readedUnitDailyRecord.GotManualData;
+            var expected = true;
+
+            //Assert
+            Assert.AreEqual(expected, actual);
         }
     }
 }

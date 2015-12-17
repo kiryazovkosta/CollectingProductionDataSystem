@@ -11,6 +11,7 @@
     using CollectingProductionDataSystem.Application.IdentityInfrastructure;
     using CollectingProductionDataSystem.Data.Contracts;
     using CollectingProductionDataSystem.Models.Identity;
+    using CollectingProductionDataSystem.Web.Areas.Administration.ViewModels;
     using CollectingProductionDataSystem.Web.ViewModels.Identity;
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.Owin;
@@ -23,7 +24,15 @@
         }
         public ActionResult Index()
         {
-            return View(RoleManager.Roles);
+            var roles = Mapper.Map<IEnumerable<RolePresentationViewModel>>(data.Roles.All());
+            var users = data.Users.All();
+
+            foreach (var role in roles)
+            {
+                role.Users = users.Where(x => x.Roles.Any(y => y.RoleId == role.Id)).Select(x => x.UserName);
+            }
+
+            return View(roles);
         }
 
         public ActionResult Create()
