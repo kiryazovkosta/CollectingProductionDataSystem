@@ -176,7 +176,7 @@ namespace CollectingProductionDataSystem.Data.Tests
 
             //Act
             var actual = readedUnitDailyRecord.GotManualData;
-            var expected = true;
+            var expected = false;
 
             //Assert
             Assert.AreEqual(expected, actual);
