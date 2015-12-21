@@ -1303,6 +1303,6 @@
     <value>Потвърждение</value>
   </data>
   <data name="DailyGraphicTitle" xml:space="preserve">
-    <value>Хронология на данни за отбори за инаталация {0}</value>
+    <value>Хронология на данни за отбори за инсталация {0}</value>
   </data>
 </root>

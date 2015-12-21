@@ -30,7 +30,7 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
             this.calculator = calculatorParam;
         }
 
-        public IEnumerable<UnitsDailyData> CalculateDailyDataForProcessUnit(int processUnitId, DateTime targetDay, bool isRecalculate=false)
+        public IEnumerable<UnitsDailyData> CalculateDailyDataForProcessUnit(int processUnitId, DateTime targetDay, bool isRecalculate = false, int editReasonId = 0)
         {
             if (processUnitId < 1)
             {
@@ -42,27 +42,60 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
             var targetUnitDailyRecordConfigs = data.UnitsDailyConfigs.All()
                 .Include(x => x.UnitConfigUnitDailyConfigs)
                 .Where(x => x.ProcessUnitId == processUnitId).ToList();
-            Dictionary<string, UnitsDailyData> resultDaily = new Dictionary<string,UnitsDailyData>();
+            Dictionary<string, UnitsDailyData> resultDaily = new Dictionary<string, UnitsDailyData>();
+            Dictionary<string, UnitsDailyData> wholeDayResult = new Dictionary<string, UnitsDailyData>();
 
             if (!isRecalculate)
             {
                 resultDaily = CalculateDailyDataFromShiftData(targetUnitDailyRecordConfigs, targetDay, processUnitId);
             }
-            else 
+            else
             {
-                resultDaily = GetDailyDataFromShiftData(targetDay, processUnitId);
+                wholeDayResult = GetDailyDataFromDailyData(targetDay, processUnitId);
+                resultDaily = wholeDayResult.Where(x => x.Value.UnitsDailyConfig.AggregationCurrentLevel == false).ToDictionary(x => x.Key, x => x.Value);
             }
+
             Dictionary<string, UnitsDailyData> relatedRecords = GetRelatedData(processUnitId, targetDay);
-            if (relatedRecords.Count() > 0)
+            AppendRelatedRecords(relatedRecords, resultDaily);
+
+            CalculateDailyDataFromRelatedDailyData(ref resultDaily, processUnitId, targetDay, isRecalculate, editReasonId);
+
+            ClearRelatedRecords(relatedRecords, resultDaily);
+
+            ClearUnModifiedRecords(resultDaily, wholeDayResult);
+            
+            if (!isRecalculate)
             {
-                foreach (var item in relatedRecords)
+                AppendTotalMonthQuantityToDailyRecords(resultDaily, processUnitId, targetDay);
+            }
+
+            return resultDaily.Select(x => x.Value);
+        }
+
+        /// <summary>
+        /// Clears the un modified records.
+        /// </summary>
+        /// <param name="resultDaily">The result daily.</param>
+        /// <param name="wholeDayResult">The whole day result.</param>
+        private void ClearUnModifiedRecords(Dictionary<string, UnitsDailyData> resultDaily, Dictionary<string, UnitsDailyData> wholeDayResult)
+        {
+            foreach (var item in wholeDayResult)
+            {
+                if (resultDaily.ContainsKey(item.Key))
                 {
-                    resultDaily.Add(item.Key, item.Value);
+                    if (item.Value.RealValue == resultDaily[item.Key].RealValue
+                        && resultDaily[item.Key].UnitsManualDailyData != null
+                        && item.Value.UnitsManualDailyData != null
+                        && item.Value.UnitsManualDailyData.EditReasonId == resultDaily[item.Key].UnitsManualDailyData.EditReasonId)
+                    {
+                        resultDaily.Remove(item.Key);
+                    }
                 }
             }
+        }
 
-            CalculateDailyDataFromRelatedDailyData(ref resultDaily, processUnitId, targetDay, isRecalculate);
-
+        private void ClearRelatedRecords(Dictionary<string, UnitsDailyData> relatedRecords, Dictionary<string, UnitsDailyData> resultDaily)
+        {
             if (relatedRecords.Count() > 0)
             {
                 foreach (var item in relatedRecords)
@@ -70,12 +103,19 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
                     resultDaily.Remove(item.Key);
                 }
             }
-
-            AppendTotalMonthQuantityToDailyRecords(resultDaily, processUnitId, targetDay);
-
-            return resultDaily.Select(x => x.Value);
         }
- 
+
+        private void AppendRelatedRecords(Dictionary<string, UnitsDailyData> relatedRecords, Dictionary<string, UnitsDailyData> resultDaily)
+        {
+            if (relatedRecords.Count() > 0)
+            {
+                foreach (var item in relatedRecords)
+                {
+                    resultDaily.Add(item.Key, item.Value);
+                }
+            }
+        }
+
         /// <summary>
         /// Gets the daily data from shift data.
         /// </summary>
@@ -83,15 +123,15 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
         /// <param name="targetDay">The target day.</param>
         /// <param name="processUnitId">The process unit id.</param>
         /// <returns></returns>
-        private Dictionary<string, UnitsDailyData> GetDailyDataFromShiftData(DateTime targetDay, int processUnitId)
+        private Dictionary<string, UnitsDailyData> GetDailyDataFromDailyData(DateTime targetDay, int processUnitId)
         {
             return this.data.UnitsDailyDatas.All()
                         .Include(x => x.UnitsDailyConfig)
                         .Include(x => x.UnitsManualDailyData)
                         .Where(x => x.RecordTimestamp == targetDay
                                 && x.UnitsDailyConfig.ProcessUnitId == processUnitId
-                                && x.UnitsDailyConfig.AggregationCurrentLevel == false)
-                                .ToDictionary(x=>x.UnitsDailyConfig.Code);
+                                )
+                                .ToDictionary(x => x.UnitsDailyConfig.Code);
         }
 
         /// <summary>
@@ -191,7 +231,7 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
         /// <param name="targetRecords">The target records.</param>
         /// <param name="resultDaily">The result daily.</param>
         /// <param name="targetDay">The target day.</param>
-        private void CalculateDailyDataFromRelatedDailyData(ref Dictionary<string, UnitsDailyData> resultDaily, int targetPtocessUnitId, DateTime targetDay, bool isRecalculate)
+        private void CalculateDailyDataFromRelatedDailyData(ref Dictionary<string, UnitsDailyData> resultDaily, int targetPtocessUnitId, DateTime targetDay, bool isRecalculate, int editReasonId)
         {
             Dictionary<string, UnitsDailyData> calculationResult = new Dictionary<string, UnitsDailyData>();
 
@@ -199,14 +239,14 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
                 .Include(x => x.RelatedUnitDailyConfigs)
                 .Where(x => x.ProcessUnitId == targetPtocessUnitId && x.AggregationCurrentLevel == true).ToList();
 
-            Dictionary<string, UnitsDailyData> targetUnitDailyRecords=new Dictionary<string, UnitsDailyData>();
+            Dictionary<string, UnitsDailyData> targetUnitDailyRecords = new Dictionary<string, UnitsDailyData>();
 
             if (isRecalculate)
             {
                 targetUnitDailyRecords = data.UnitsDailyDatas.All()
                   .Include(x => x.UnitsDailyConfig)
-                  .Include(x=>x.UnitsManualDailyData)
-                  .Where(x => x.RecordTimestamp == targetDay && x.UnitsDailyConfig.ProcessUnitId == targetPtocessUnitId).ToDictionary(x=>x.UnitsDailyConfig.Code);
+                  .Include(x => x.UnitsManualDailyData)
+                  .Where(x => x.RecordTimestamp == targetDay && x.UnitsDailyConfig.ProcessUnitId == targetPtocessUnitId).ToDictionary(x => x.UnitsDailyConfig.Code);
             }
 
             foreach (var targetUnitDailyRecordConfig in targetRecords)
@@ -223,9 +263,31 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
                     Id = (isRecalculate && targetUnitDailyRecords.ContainsKey(targetUnitDailyRecordConfig.Code)) ? targetUnitDailyRecords[targetUnitDailyRecordConfig.Code].Id : 0,
                     RecordTimestamp = targetDay,
                     UnitsDailyConfigId = targetUnitDailyRecordConfig.Id,
-                    Value = (decimal)dailyValue,
                     UnitsManualDailyData = (isRecalculate && targetUnitDailyRecords.ContainsKey(targetUnitDailyRecordConfig.Code)) ? targetUnitDailyRecords[targetUnitDailyRecordConfig.Code].UnitsManualDailyData : null
                 };
+
+                if (isRecalculate)
+                {
+                    if (dailyRecord.UnitsManualDailyData == null)
+                    {
+                        dailyRecord.UnitsManualDailyData = new UnitsManualDailyData
+                        {
+                            Id = dailyRecord.Id,
+                            Value = (decimal)dailyValue,
+                            EditReasonId = editReasonId
+                        };
+                    }
+                    else
+                    {
+                        dailyRecord.UnitsManualDailyData.Value = (decimal)dailyValue;
+                        dailyRecord.UnitsManualDailyData.EditReasonId = editReasonId;
+                    }
+                }
+                else
+                {
+                    dailyRecord.Value = (decimal)dailyValue;
+                }
+
                 resultDaily.Add(targetUnitDailyRecordConfig.Code, dailyRecord);
                 if (isRecalculate)
                 {

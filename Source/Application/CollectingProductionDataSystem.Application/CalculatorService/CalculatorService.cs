@@ -21,6 +21,7 @@
             var reg = new TypeRegistry();
             reg.RegisterType(expressionArgumentName+"s", inputObject.GetType());
             reg.RegisterSymbol(expressionArgumentName, inputObject);
+            reg.RegisterType("DateTime", typeof(DateTime));
             reg.RegisterType("Math", typeof(Math));
             reg.RegisterType("Convert", typeof(Convert));
             var p = new CompiledExpression(expression) { TypeRegistry = reg };

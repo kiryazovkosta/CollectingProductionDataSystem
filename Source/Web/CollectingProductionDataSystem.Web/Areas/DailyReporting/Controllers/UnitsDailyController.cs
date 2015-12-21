@@ -193,7 +193,7 @@
                             }
                         }
 
-                        var updatedRecords = this.dailyService.CalculateDailyDataForProcessUnit(model.UnitsDailyConfig.ProcessUnitId, model.RecordTimestamp, isRecalculate: true);
+                        var updatedRecords = this.dailyService.CalculateDailyDataForProcessUnit(model.UnitsDailyConfig.ProcessUnitId, model.RecordTimestamp, isRecalculate: true, editReasonId: model.UnitsManualDailyData.EditReason.Id);
                         var status = UpdateResultRecords(updatedRecords, model.UnitsManualDailyData.EditReason.Id);
 
                         if (!status.IsValid)
@@ -224,9 +224,9 @@
         {
             foreach (var record in updatedRecords)
             {
-                if (record.GotManualData)
+                var manualRecord = this.data.UnitsManualDailyDatas.GetById(record.Id);
+                if (manualRecord!= null)
                 {
-                    var manualRecord = this.data.UnitsManualDailyDatas.GetById(record.Id);
                     manualRecord.Value = (decimal)record.RealValue;
                     this.data.UnitsManualDailyDatas.Update(manualRecord);
                 }
