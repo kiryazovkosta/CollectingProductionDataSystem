@@ -96,6 +96,7 @@
     <Compile Include="Productions\Plant.cs" />
     <Compile Include="Nomenclatures\Product.cs" />
     <Compile Include="Nomenclatures\ProductType.cs" />
+    <Compile Include="Productions\PrimaryDataSourceType.cs" />
     <Compile Include="Productions\ProcessUnit.cs" />
     <Compile Include="Productions\ProductionPlanConfig.cs" />
     <Compile Include="Productions\ProductionPlanData.cs" />

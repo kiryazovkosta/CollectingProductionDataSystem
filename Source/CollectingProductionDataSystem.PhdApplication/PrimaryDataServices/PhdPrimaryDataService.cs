@@ -30,7 +30,7 @@
 
             using (PHDHistorian oPhd = new PHDHistorian())
             {
-                using (PHDServer defaultServer = new PHDServer("srv-vm-mes-phd"))
+                using (PHDServer defaultServer = new PHDServer(Properties.Settings.Default.PHD_HOST))
                 {
                     var hours = Math.Truncate((now - record).TotalHours);
                     SetPhdConnectionSettings(oPhd, defaultServer, hours);
@@ -160,14 +160,14 @@
 
         private static void SetPhdConnectionSettings(PHDHistorian oPhd, PHDServer defaultServer, double offsetInHours)
         {
-            defaultServer.Port = 3150;
-            defaultServer.APIVersion = Uniformance.PHD.SERVERVERSION.RAPI200;
+            defaultServer.Port = Properties.Settings.Default.PHD_PORT;
+            defaultServer.APIVersion = Properties.Settings.Default.PHD_API_VERSION;
             oPhd.DefaultServer = defaultServer;
             oPhd.StartTime = string.Format("NOW - {0}H2M", offsetInHours);
             oPhd.EndTime = string.Format("NOW - {0}H2M", offsetInHours);
             oPhd.Sampletype = SAMPLETYPE.Snapshot;
-            oPhd.MinimumConfidence = 49;
-            oPhd.MaximumRows = 1;
+            oPhd.MinimumConfidence = Properties.Settings.Default.PHD_DATA_MIN_CONFIDENCE;
+            oPhd.MaximumRows = Properties.Settings.Default.PHD_DATA_MAX_ROWS;
         }
 
         private void SetDefaultValue(DateTime recordDataTime, ShiftType shift, List<UnitsData> unitsData, UnitConfig unitConfig)

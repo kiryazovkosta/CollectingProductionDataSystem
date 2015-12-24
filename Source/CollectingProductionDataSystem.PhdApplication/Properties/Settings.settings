@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="PHD_HOST" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">srv-vm-mes-phd.neftochim.bg</Value>
+      <Value Profile="(Default)">srv-vm-mes-phd</Value>
     </Setting>
     <Setting Name="PHD_PORT" Type="System.Int32" Scope="Application">
       <Value Profile="(Default)">3150</Value>
