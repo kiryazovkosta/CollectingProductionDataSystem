@@ -1,5 +1,6 @@
 ﻿namespace CollectingProductionDataSystem.PhdApplication.PrimaryDataServices
 {
+    using System.Configuration;
     using System.Data;
     using System;
     using System.Collections.Generic;
@@ -9,6 +10,7 @@
     using Uniformance.PHD;
     using CollectingProductionDataSystem.PhdApplication.Contracts;
     using CollectingProductionDataSystem.Application.ProductionDataServices;
+    using System.Reflection;
 
     public class PhdPrimaryDataService : IPrimaryDataService
     {
@@ -19,7 +21,7 @@
             this.data = dataParam;
         }
 
-        public int ReadAndSaveUnitsDataForShift(DateTime currentDateTime, int offsetInHours)
+        public int ReadAndSaveUnitsDataForShift(DateTime currentDateTime, int offsetInHours, PrimaryDataSourceType dataSource)
         {
             var totalInsertedRecords = 0;
 
@@ -28,17 +30,26 @@
             var shift = GetShift(record);
             var recordDataTime = GetRecordTimestamp(record);
 
+            var exeFileName = Assembly.GetEntryAssembly().Location;
+            Configuration configuration = ConfigurationManager.OpenExeConfiguration(exeFileName);
+            ConfigurationSectionGroup appSettingsGroup = configuration.GetSectionGroup("applicationSettings");
+            ConfigurationSection appSettingsSection = appSettingsGroup.Sections[0];
+            ClientSettingsSection settings = appSettingsSection as ClientSettingsSection;
+
             using (PHDHistorian oPhd = new PHDHistorian())
             {
-                using (PHDServer defaultServer = new PHDServer(Properties.Settings.Default.PHD_HOST))
+                using (PHDServer defaultServer = new PHDServer(settings.Settings.Get("PHD_HOST").Value.ValueXml.InnerText))
                 {
                     var hours = Math.Truncate((now - record).TotalHours);
                     SetPhdConnectionSettings(oPhd, defaultServer, hours);
 
-                    var unitsConfigsList = this.data.UnitConfigs.All().ToList();
+                    var unitsConfigsList = this.data.UnitConfigs.All().Where(x=>x.DataSource == dataSource).ToList();
                     var unitsData = this.data.UnitsData.All().Where(x => x.RecordTimestamp == recordDataTime && x.ShiftId == shift).ToList();
 
                     ProcessAutomaticUnits(unitsConfigsList, unitsData, oPhd, recordDataTime, shift);
+                    totalInsertedRecords += this.data.SaveChanges("Phd2SqlLoader").ResultRecordsCount;
+
+                    ProcessAutomaticDeltaUnits(unitsConfigsList, unitsData, oPhd, recordDataTime, shift);
                     totalInsertedRecords += this.data.SaveChanges("Phd2SqlLoader").ResultRecordsCount;
 
                     ProcessManualUnits(unitsConfigsList, recordDataTime, shift, unitsData);
@@ -141,7 +152,7 @@
                 if (!unitsData.Where(x => x.UnitConfigId == unitConfig.Id).Any())
                 {
                     var unitData = GetUnitData(unitConfig, oPhd, recordDataTime, out confidence);
-                    if (confidence > Properties.Settings.Default.PHD_DATA_MIN_CONFIDENCE && unitData.RecordTimestamp != null)
+                    if (confidence >= Properties.Settings.Default.PHD_DATA_MIN_CONFIDENCE && unitData.RecordTimestamp != null)
                     {
                         if (!unitsData.Where(x => x.RecordTimestamp == unitData.RecordTimestamp && x.ShiftId == shift && x.UnitConfigId == unitConfig.Id).Any())
                         {
@@ -158,16 +169,66 @@
             }
         }
 
+        private void ProcessAutomaticDeltaUnits(List<UnitConfig> unitsConfigsList, List<UnitsData> unitsData, PHDHistorian oPhd, DateTime recordDataTime, ShiftType shift)
+        {
+            foreach (var unitConfig in unitsConfigsList.Where(x => x.CollectingDataMechanism == "AA"))
+            {
+                //var confidence = 0;
+                if (!unitsData.Where(x => x.UnitConfigId == unitConfig.Id).Any())
+                {
+                    var shiftData = this.data.Shifts.GetById((int)shift);
+                    if (shiftData != null)
+                    {
+                        var end = recordDataTime.AddTicks(shiftData.EndTicks);
+                        var begin = end.AddHours(-8);
+
+                        var endTimestamp = DateTime.Now - end;
+                        var beginTimestamp = DateTime.Now - begin;
+
+                        var endPhdTimestamp = string.Format("NOW-{0}H{1}M", Math.Truncate(endTimestamp.TotalHours), endTimestamp.Minutes);
+                        var beginPhdTimestamp = string.Format("NOW-{0}H{1}M", Math.Truncate(beginTimestamp.TotalHours), beginTimestamp.Minutes);
+
+                        oPhd.StartTime = endPhdTimestamp;
+                        oPhd.EndTime = endPhdTimestamp;
+                        var result = oPhd.FetchRowData(unitConfig.PreviousShiftTag);
+                        var row = result.Tables[0].Rows[0];
+                        var endValue = Convert.ToInt64(row["Value"]);
+
+                        oPhd.StartTime = beginPhdTimestamp;
+                        oPhd.EndTime = beginPhdTimestamp;
+                        result = oPhd.FetchRowData(unitConfig.PreviousShiftTag);
+                        row = result.Tables[0].Rows[0];
+                        var beginValue = Convert.ToInt64(row["Value"]);
+
+                        this.data.UnitsData.Add(
+                            new UnitsData
+                            {
+                                UnitConfigId = unitConfig.Id,
+                                Value = (endValue - beginValue)/1000m,
+                                ShiftId = shift,
+                                RecordTimestamp = recordDataTime,
+                            });
+                    }
+                }
+            }
+        }
+
         private static void SetPhdConnectionSettings(PHDHistorian oPhd, PHDServer defaultServer, double offsetInHours)
         {
-            defaultServer.Port = Properties.Settings.Default.PHD_PORT;
-            defaultServer.APIVersion = Properties.Settings.Default.PHD_API_VERSION;
+            var exeFileName = Assembly.GetEntryAssembly().Location;
+            Configuration configuration = ConfigurationManager.OpenExeConfiguration(exeFileName);
+            ConfigurationSectionGroup appSettingsGroup = configuration.GetSectionGroup("applicationSettings");
+            ConfigurationSection appSettingsSection = appSettingsGroup.Sections[0];
+            ClientSettingsSection settings = appSettingsSection as ClientSettingsSection;
+
+            defaultServer.Port = Convert.ToInt32(settings.Settings.Get("PHD_PORT").Value.ValueXml.InnerText);
+            defaultServer.APIVersion = SERVERVERSION.RAPI200;
             oPhd.DefaultServer = defaultServer;
             oPhd.StartTime = string.Format("NOW - {0}H2M", offsetInHours);
             oPhd.EndTime = string.Format("NOW - {0}H2M", offsetInHours);
             oPhd.Sampletype = SAMPLETYPE.Snapshot;
-            oPhd.MinimumConfidence = Properties.Settings.Default.PHD_DATA_MIN_CONFIDENCE;
-            oPhd.MaximumRows = Properties.Settings.Default.PHD_DATA_MAX_ROWS;
+            oPhd.MinimumConfidence = Convert.ToInt32(settings.Settings.Get("PHD_DATA_MIN_CONFIDENCE").Value.ValueXml.InnerText);
+            oPhd.MaximumRows = Convert.ToUInt32(settings.Settings.Get("PHD_DATA_MAX_ROWS").Value.ValueXml.InnerText);
         }
 
         private void SetDefaultValue(DateTime recordDataTime, ShiftType shift, List<UnitsData> unitsData, UnitConfig unitConfig)

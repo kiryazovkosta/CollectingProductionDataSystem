@@ -52,7 +52,7 @@ using CollectingProductionDataSystem.Application.ProductionPlanDataServices;
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AuthorizeFactory]
-        public JsonResult ReadProductionPlanData([DataSourceRequest]DataSourceRequest request, DateTime date, int processUnitId)
+        public JsonResult ReadProductionPlanData([DataSourceRequest]DataSourceRequest request, DateTime? date, int? processUnitId)
         {
             IEnumerable<ProductionPlanData> dbResult = this.productionPlanData.ReadProductionPlanData(date, processUnitId);
             if (dbResult.Count() == 0)

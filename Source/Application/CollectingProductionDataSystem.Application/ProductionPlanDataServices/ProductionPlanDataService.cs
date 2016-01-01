@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Data.Entity;
     using System.Linq;
     using CollectingProductionDataSystem.Application.Contracts;
     using CollectingProductionDataSystem.Models.Productions;
@@ -20,7 +21,7 @@
             this.unitData = unitData;
         }
 
-        public IEnumerable<ProductionPlanData> ReadProductionPlanData(DateTime date, int processUnitId)
+        public IEnumerable<ProductionPlanData> ReadProductionPlanData(DateTime? date, int? processUnitId)
         {
             var result = new HashSet<ProductionPlanData>();
 
@@ -40,6 +41,10 @@
                 .OrderBy(x => x.ProcessUnitId)
                 .ThenBy(x=>x.Position)
                 .ToList();
+
+            var currentMonthQuantity = AppendTotalMonthQuantityToDailyProductionPlanRecords(processUnitId.Value, date.Value);
+            var totallyQuantity = GetSumOfTottallyProcessing(processUnitId.Value, date.Value);
+
             foreach (ProductionPlanConfig productionPlan in productionPlans)
             {
                 var planValue = CalculatePlanValue(productionPlan, dailyData, this.calculator);
@@ -51,14 +56,15 @@
                 var productionPlanData = new ProductionPlanData
                 {
                     ProductionPlanConfigId = productionPlan.Id,
-                    RecordTimestamp = date,
+                    RecordTimestamp = date.Value,
                     PercentagesPlan = productionPlan.Percentages,
                     QuanityPlan = (decimal)planValue,
                     PercentagesFact = double.IsNaN(factPercents) ? 0.0m : (decimal)factPercents,
-                    QuantityFact = (decimal)factValue,
+                    QuantityFact = double.IsNaN(factValue) ? 0.0m : (decimal)factValue,
                     Name = productionPlan.Name,
                     FactoryId = productionPlan.ProcessUnit.FactoryId,
-                    ProcessUnitId = processUnitId,
+                    ProcessUnitId = processUnitId.Value,
+                    QuanityFactCurrentMonth = currentMonthQuantity.ContainsKey(productionPlan.Name) == true ?  currentMonthQuantity[productionPlan.Name] : 0.00m,
                 };
                 result.Add(productionPlanData);
             }
@@ -119,6 +125,38 @@
 
             var planValue = calculator.Calculate(productionPlan.QuantityPlanFormula, "p", planInputParams.Count, planInputParams);
             return planValue;
+        }
+
+        private Dictionary<string, decimal>  AppendTotalMonthQuantityToDailyProductionPlanRecords(int processUnitId, DateTime targetDay)
+        {
+            var beginningOfMonth = new DateTime(targetDay.Year, targetDay.Month, 1);
+            var totalMonthProductionPlanQuantities = data.ProductionPlanDatas.All().Include(x => x.ProductionPlanConfig)
+                .Where(x => x.ProductionPlanConfig.ProcessUnitId == processUnitId &&
+                        beginningOfMonth <= x.RecordTimestamp &&
+                        x.RecordTimestamp < targetDay).GroupBy(x => x.ProductionPlanConfig.Name).ToList()
+                        .Select(group => new { Name = group.Key, Value = group.Sum(x => x.QuantityFact) }).ToDictionary(x => x.Name, x => x.Value);
+
+            return totalMonthProductionPlanQuantities;
+        }
+
+        private  Dictionary<string, decimal> GetSumOfTottallyProcessing(int processUnitId, DateTime targetDay)
+        {
+            var beginningOfMonth = new DateTime(targetDay.Year, targetDay.Month, 1);
+            var totalsRecords = data.ProductionPlanDatas.All()
+                .Include(x => x.ProductionPlanConfig)
+                .Where(x => x.ProductionPlanConfig.ProcessUnitId == processUnitId &&
+                    x.ProductionPlanConfig.IsSummaryOfProcessing == true &&
+                    beginningOfMonth <= x.RecordTimestamp && x.RecordTimestamp <= targetDay)
+                .GroupBy(x => x.ProductionPlanConfig.Name)
+                .ToList()
+                .Select(group => new 
+                { 
+                    Name = group.Key, 
+                    Value = group.Sum(x => x.QuantityFact) 
+                })
+                .ToDictionary(x => x.Name, x => x.Value);
+
+            return totalsRecords;
         }
     }
 }

@@ -33,6 +33,8 @@
                 columns.Bound("QuantityPlan").Title("Колич. (план T)").Format("{0:n2}").Width(90);
                 columns.Bound("QuantityFact").Title("Колич. (факт T)").Format("{0:n2}").Width(90);
                 columns.Bound("PercentagesFact").Title("% факт").Format("{0:n2}").Width(90);
+                columns.Bound("TotalMonthQuantityFact").Title("Колич. (факт T) до деня").Format("{0:n2}").Width(90);
+                columns.Bound("TotalMonthPercentagesFact").Title("% факт  до деня").Format("{0:n2}").Width(90);
             })
     .Scrollable(scr => scr.Height(300))
     .DataSource(dataSource => dataSource

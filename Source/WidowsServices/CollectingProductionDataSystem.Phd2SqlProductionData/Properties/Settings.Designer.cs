@@ -52,7 +52,7 @@ namespace CollectingProductionDataSystem.Phd2SqlProductionData.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("00:15:00")]
+        [global::System.Configuration.DefaultSettingValueAttribute("00:20:00")]
         public global::System.TimeSpan IDLE_TIMER_INVENTORY {
             get {
                 return ((global::System.TimeSpan)(this["IDLE_TIMER_INVENTORY"]));
@@ -151,7 +151,7 @@ namespace CollectingProductionDataSystem.Phd2SqlProductionData.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("113")]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
         public int SYNC_PRIMARY_HOURS_OFFSET {
             get {
                 return ((int)(this["SYNC_PRIMARY_HOURS_OFFSET"]));
@@ -160,10 +160,46 @@ namespace CollectingProductionDataSystem.Phd2SqlProductionData.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("srv-vm-mes-phd.neftochim.bg")]
+        [global::System.Configuration.DefaultSettingValueAttribute("srv-vm-mes-phd")]
         public string PHD_HOST {
             get {
                 return ((string)(this["PHD_HOST"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Snapshot")]
+        public string PHD_SAMPLETYPE {
+            get {
+                return ((string)(this["PHD_SAMPLETYPE"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("RAPI200")]
+        public string PHD_API_VERSION {
+            get {
+                return ((string)(this["PHD_API_VERSION"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("49")]
+        public string PHD_DATA_MIN_CONFIDENCE {
+            get {
+                return ((string)(this["PHD_DATA_MIN_CONFIDENCE"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public string PHD_DATA_MAX_ROWS {
+            get {
+                return ((string)(this["PHD_DATA_MAX_ROWS"]));
             }
         }
     }

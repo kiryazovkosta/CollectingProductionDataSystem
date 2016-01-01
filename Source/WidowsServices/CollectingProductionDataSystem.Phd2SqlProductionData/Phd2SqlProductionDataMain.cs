@@ -16,6 +16,7 @@
     using CollectingProductionDataSystem.PhdApplication.PrimaryDataServices;
     using Uniformance.PHD;
     using log4net;
+    using CollectingProductionDataSystem.Models.Productions;
 
     static class Phd2SqlProductionDataMain
     {
@@ -40,7 +41,7 @@
             ServiceBase.Run(servicesToRun);
         }
 
-        internal static void ProcessPrimaryProductionData()
+        internal static void ProcessPrimaryProductionData(PrimaryDataSourceType dataSource)
         {
             try
             {
@@ -50,7 +51,7 @@
                 for (int offsetInHours = 0; offsetInHours < Properties.Settings.Default.SYNC_PRIMARY_HOURS_OFFSET; offsetInHours += 8)
                 {
                     var offset = offsetInHours == 0 ? offsetInHours : offsetInHours * -1;
-                    var recordsDates = service.ReadAndSaveUnitsDataForShift(DateTime.Now, offset);
+                    var recordsDates = service.ReadAndSaveUnitsDataForShift(DateTime.Now, offset, dataSource);
                     logger.InfoFormat("Successfully added {0} UnitsData records to CollectingPrimaryDataSystem", recordsDates);
                 }
                 logger.Info("Sync primary data finished!");

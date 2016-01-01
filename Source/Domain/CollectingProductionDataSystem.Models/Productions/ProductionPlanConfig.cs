@@ -48,5 +48,6 @@
             set { this.productionPlanDatas = value; }
         }
 
+        public bool IsSummaryOfProcessing { get; set; }
     }
 }

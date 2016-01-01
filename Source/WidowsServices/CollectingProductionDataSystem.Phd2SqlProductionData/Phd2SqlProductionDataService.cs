@@ -2,6 +2,7 @@
 
 namespace CollectingProductionDataSystem.Phd2SqlProductionData
 {
+    using CollectingProductionDataSystem.Models.Productions;
     using log4net;
     using System;
     using System.ServiceProcess;
@@ -77,7 +78,7 @@ namespace CollectingProductionDataSystem.Phd2SqlProductionData
                 {
                     Utility.SetRegionalSettings();
                     this.primaryDataTimer.Change(Timeout.Infinite, Timeout.Infinite);
-                    Phd2SqlProductionDataMain.ProcessPrimaryProductionData();
+                    Phd2SqlProductionDataMain.ProcessPrimaryProductionData(PrimaryDataSourceType.SrvVmMesPhd);
                 }
                 catch (Exception ex)
                 {
