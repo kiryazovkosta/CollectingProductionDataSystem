@@ -65,5 +65,10 @@
         /// </summary>
         public double? CalculationPercentage { get; set; }
 
+        /// <summary>
+        /// Стойност въведена от потребителя
+        /// </summary>
+        public double? SelfEnteredValue { get; set; }
+
     }
 }

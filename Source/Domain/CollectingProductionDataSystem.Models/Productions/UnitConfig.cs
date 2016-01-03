@@ -87,5 +87,7 @@ namespace CollectingProductionDataSystem.Models.Productions
 
         public decimal? CalculationPercentage { get; set; }
         public PrimaryDataSourceType? DataSource { get; set; }
+
+        public string ProcessUnitAlias { get; set; }
     }
 }
