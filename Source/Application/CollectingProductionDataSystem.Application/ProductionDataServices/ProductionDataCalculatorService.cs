@@ -235,10 +235,18 @@
                         .All()
                         .Where(x => x.RecordTimestamp == unitData.RecordTimestamp)
                         .Where(x => x.ShiftId == unitData.ShiftId)
-                        .Where(x => x.UnitConfigId == unitConfig.Id)
+                        .Where(x => x.UnitConfigId == relatedUnitConfig.RelatedUnitConfig.Id)
                         .FirstOrDefault()
                         .RealValue;
-                if (parameterType == "T")
+                if (parameterType == "I+")
+                {
+                    arguments.InputValue += inputValue;    
+                }
+                else if (parameterType == "I-")
+                {
+                    arguments.InputValue -= inputValue;    
+                }
+                else if (parameterType == "T")
                 {
                     arguments.Temperature = inputValue;
                 }
