@@ -28,13 +28,13 @@
         .Columns(
             columns =>
             {
-                columns.Bound("Name").Title("Продукт");
-                columns.Bound("PercentagesPlan").Title("% план").Format("{0:n2}").Width(65);
-                columns.Bound("QuantityPlan").Title("Колич. (план T)").Format("{0:n2}").Width(90);
-                columns.Bound("QuantityFact").Title("Колич. (факт T)").Format("{0:n2}").Width(90);
-                columns.Bound("PercentagesFact").Title("% факт").Format("{0:n2}").Width(90);
-                columns.Bound("TotalMonthQuantityFact").Title("Колич. (факт T) до деня").Format("{0:n2}").Width(90);
-                columns.Bound("TotalMonthPercentagesFact").Title("% факт  до деня").Format("{0:n2}").Width(90);
+                columns.Bound("Name").Title("Продукт").Width(100);
+                columns.Bound("PercentagesPlan").Title("% план").Format("{0:n2}");//.Width(50);
+                columns.Bound("PercentagesFact").Title("% факт").Format("{0:n2}");//.Width(60);
+                columns.Bound("QuantityPlan").Title("Колич. (план T)").Format("{0:n2}");//.Width(60);
+                columns.Bound("QuantityFact").Title("Колич. (факт T)").Format("{0:n2}");//.Width(60);
+                columns.Bound("TotalMonthQuantityFact").Title("До деня (факт T)").Format("{0:n2}").Width(70);
+                columns.Bound("TotalMonthPercentagesFact").Title("До деня (факт %)").Format("{0:n2}");//.Width(60);
             })
     .Scrollable(scr => scr.Height(300))
     .DataSource(dataSource => dataSource

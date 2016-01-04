@@ -760,3 +760,8 @@ div#chart-wrapper div.panel.panel-default div.panel-body,
 div#modal-chart-dialog-body div.modal-body {
     overflow:auto;
 }
+
+div#productionPlan {
+    font-size:11px;
+}
+

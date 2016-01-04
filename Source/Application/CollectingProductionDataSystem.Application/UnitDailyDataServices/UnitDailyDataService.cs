@@ -383,7 +383,7 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
         public bool CheckIfDayIsApproved(DateTime targetDate, int processUnitId)
         {
             return this.data.UnitsApprovedDailyDatas.All()
-                .Where(x => x.ProcessUnitId == processUnitId && x.RecordDate == targetDate).Any();
+                .Where(x => x.RecordDate == targetDate && x.ProcessUnitId == processUnitId ).Any();
         }
 
         /// <summary>
