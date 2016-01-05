@@ -539,14 +539,6 @@
             {
                 throw new ArgumentNullException("The value of CounterIndication(PL) is not allowed to be null");
             }
-            if (!args.Pressure.HasValue)
-            {
-                throw new ArgumentNullException("The value of Pressure(P) is not allowed to be null");
-            }
-            if (!args.Temperature.HasValue)
-            {
-                throw new ArgumentNullException("The value of Temperature(T) is not allowed to be null");
-            }
             if (!args.MaximumFlow.HasValue)
             {
                 throw new ArgumentNullException("The value of MaximumFlow(D2) is not allowed to be null");
@@ -558,6 +550,14 @@
             if (!args.EstimatedTemperature.HasValue)
             {
                 throw new ArgumentNullException("The value of EstimatedTemperature(D6) is not allowed to be null");
+            }
+            if (!args.Pressure.HasValue)
+            {
+                args.Pressure = args.EstimatedPressure;
+            }
+            if (!args.Temperature.HasValue)
+            {
+                args.Temperature = args.EstimatedTemperature;
             }
             
             double pl = args.InputValue.Value;
@@ -621,13 +621,21 @@
             {
                 throw new ArgumentNullException("The value of CounterIndication(PL) is not allowed to be null");
             }
-            if (!args.Pressure.HasValue)
+            if (!args.EstimatedPressure.HasValue)
             {
                 throw new ArgumentNullException("The value of Pressure(P) is not allowed to be null");
             }
-            if (!args.Temperature.HasValue)
+            if (!args.EstimatedTemperature.HasValue)
             {
                 throw new ArgumentNullException("The value of Temperature(T) is not allowed to be null");
+            }
+            if (!args.Pressure.HasValue)
+            {
+                args.Pressure = args.EstimatedPressure;
+            }
+            if (!args.Temperature.HasValue)
+            {
+                args.Temperature = args.EstimatedTemperature;
             }
 
             double pl = args.InputValue.Value;
@@ -649,9 +657,6 @@
         /// </summary>
         private double FormulaN2(FormulaArguments args)
         {
-            double c = 0;
-            double a2 = 0;
-            double f = 0;
             double p = 15;
             double t = 40;
             double pl = 20;
@@ -666,9 +671,10 @@
             {
                 d = 0.5;
             }
-            c = Functions.GetValueFormulaC(t, d, al);
-            a2 = Functions.GetValueFormulaA2(p, t, c, d4, d5, d6);
-            f = Functions.GetValueFormulaF(d2, pl, a2);
+
+            double c = Functions.GetValueFormulaC(t, d, al);
+            double a2 = Functions.GetValueFormulaA2(p, t, c, d4, d5, d6);
+            double f = Functions.GetValueFormulaF(d2, pl, a2);
 
             var inputParams = new Dictionary<string, double>();
             inputParams.Add("f", f);
@@ -1238,9 +1244,22 @@
         /// </summary>
         private double FormulaZZ52(FormulaArguments args)
         {
-            double pl = 20;
-            double pl1 = 10;
-            double d2 = 15;
+            if (!args.InputValue.HasValue)
+            {
+                throw new ArgumentNullException("The value of CounterIndication(PL) is not allowed to be null");
+            }
+            if (!args.OldValue.HasValue)
+            {
+                throw new ArgumentNullException("The value of Old CounterIndication(PL-1) is not allowed to be null");
+            }
+            if (!args.MaximumFlow.HasValue)
+            {
+                throw new ArgumentNullException("The value of MaximumFlow(D2) is not allowed to be null");
+            }
+
+            double pl = args.InputValue.Value;
+            double pl1 = args.OldValue.Value;
+            double d2 = args.MaximumFlow.Value;
 
             double q = Functions.GetValueFormulaA11(pl, pl1, d2);
 
