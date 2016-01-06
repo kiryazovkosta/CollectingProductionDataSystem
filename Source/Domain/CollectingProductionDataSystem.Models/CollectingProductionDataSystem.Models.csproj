@@ -70,6 +70,7 @@
     <Compile Include="Contracts\IEntity.cs" />
     <Compile Include="Identity\ApplicationUserPark.cs" />
     <Compile Include="Identity\ApplicationUserProcessUnit.cs" />
+    <Compile Include="Identity\LogedInUser.cs" />
     <Compile Include="Identity\UserClaimIntPk.cs" />
     <Compile Include="Identity\UserLoginIntPk.cs" />
     <Compile Include="Identity\UserRoleIntPk.cs" />
@@ -80,6 +81,7 @@
     <Compile Include="Inventories\Area.cs" />
     <Compile Include="Inventories\TankData.cs" />
     <Compile Include="Nomenclatures\EditReason.cs" />
+    <Compile Include="Nomenclatures\MathExpression.cs" />
     <Compile Include="Nomenclatures\MeasureUnit.cs" />
     <Compile Include="Nomenclatures\Shift.cs" />
     <Compile Include="Nomenclatures\ShiftProductType.cs" />
@@ -94,8 +96,10 @@
     <Compile Include="Productions\Plant.cs" />
     <Compile Include="Nomenclatures\Product.cs" />
     <Compile Include="Nomenclatures\ProductType.cs" />
+    <Compile Include="Productions\PrimaryDataSourceType.cs" />
     <Compile Include="Productions\ProcessUnit.cs" />
     <Compile Include="Productions\ProductionPlanConfig.cs" />
+    <Compile Include="Productions\ProductionPlanData.cs" />
     <Compile Include="Productions\Qpt\Density2FactorAlpha.cs" />
     <Compile Include="Productions\Qpt\PressureAndTemperature2CompressibilityFactor.cs" />
     <Compile Include="Productions\Qpt\PressureAndTemperature2EtilenDensity.cs" />

@@ -57,6 +57,10 @@ namespace CollectingProductionDataSystem.Data.Mappings
             this.HasMany(t => t.UnitConfigUnitDailyConfigs)
                 .WithRequired()
                 .HasForeignKey(x=>x.UnitConfigId);
+
+            this.HasOptional(t => t.EnteredMeasureUnit)
+                .WithMany(t => t.EnteredUnitConfigs)
+                .HasForeignKey(d => d.EnteredMeasureUnitId);
         }
     }
 }

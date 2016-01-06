@@ -4,6 +4,8 @@
     using CollectingProductionDataSystem.Data.Common;
     using CollectingProductionDataSystem.Data.Concrete;
     using CollectingProductionDataSystem.Data.Contracts;
+    using CollectingProductionDataSystem.Infrastructure.Contracts;
+    using CollectingProductionDataSystem.Infrastructure.Log;
     using Ninject;
     using System;
     using System.Data.Entity;
@@ -21,7 +23,7 @@
             kernel.Bind<IProductionData>().To<ProductionData>();
             kernel.Bind<IPersister>().To<AuditablePersister>();
             kernel.Bind<IEfStatus>().To<EfStatus>();
-            
+            kernel.Bind<ILogger>().To<Logger>();
         }
 
         /// <summary>

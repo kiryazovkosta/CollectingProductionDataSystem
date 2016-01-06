@@ -16,10 +16,11 @@
         public bool HasManualData { get; set; }
         public virtual UnitDailyConfig UnitsDailyConfig { get; set; }
         public virtual UnitsManualDailyData UnitsManualDailyData { get; set; }
+        public decimal TotalMonthQuantity { get; set; }
 
         [NotMapped]
-        public double RealValue 
-        { 
+        public double RealValue
+        {
             get
             {
                 if (this.UnitsManualDailyData != null)
@@ -30,6 +31,15 @@
                 {
                     return (double)this.Value;
                 }
+            }
+        }
+
+        [NotMapped]
+        public bool GotManualData
+        {
+            get
+            {
+                return this.UnitsManualDailyData != null;
             }
         }
     }

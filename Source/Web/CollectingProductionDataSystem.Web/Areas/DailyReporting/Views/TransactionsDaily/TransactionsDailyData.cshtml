@@ -40,7 +40,7 @@
         .Excel(excel => excel
                     .FileName(@Resources.Layout.MeasuringPointsData + "_" + DateTime.Now + ".xlsx")
             .Filterable(true)
-            .ProxyURL(Url.Action("Excel_Export_Save", "Tests", new { area = "" }))
+            .ProxyURL(Url.Action("Excel_Export_Save", "Ajax", new { area = "" }))
             .AllPages(true)
         )
         .Scrollable(scr => scr.Height(660))
@@ -66,7 +66,7 @@
 
 @section scripts{
     @Scripts.Render("~/bundles/custom/kendoadditional") 
-    <script src="~/Scripts/custom/sendAntiForgery.js"></script>
+    @Scripts.Render("~/Scripts/custom/sendAntiForgery.js")
     <script>
         kendo.culture("@System.Threading.Thread.CurrentThread.CurrentCulture.Name");
 

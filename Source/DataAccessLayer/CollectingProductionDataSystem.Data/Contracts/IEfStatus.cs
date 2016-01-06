@@ -5,6 +5,9 @@
     using System.ComponentModel.DataAnnotations;
     using System.Data.Entity.Validation;
 
+    /// <summary>
+    /// Status of current operation
+    /// </summary>
     public interface IEfStatus
     {
         IReadOnlyList<ValidationResult> EfErrors { get; }

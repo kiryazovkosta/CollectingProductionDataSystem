@@ -340,7 +340,7 @@ span.k-icon.k-cancel {
 
     span.k-icon.k-cancel:before {
         color: black;
-        content: "\e066" !important;
+        content: "\e066" !important;        
     }
 
 span.k-icon.k-i-excel {
@@ -349,7 +349,14 @@ span.k-icon.k-i-excel {
     background-size: 18px;
     background-position: 0 !important;
 }
-/* ---------- End Kendo buttons for grid ---------- */
+
+span.k-icon.k-i-pdf {
+    background-image: url("Images/pdf-download.png");
+    background-repeat: no-repeat;
+    background-size: 20px 20px;
+    background-position: 0 !important;
+}
+/* ---------- End Kendo buttons for grid ---------- */  
 /*--------------Administration side bar -----------------*/
 .well.sidebar-nav {
     padding-left: 0;
@@ -619,8 +626,8 @@ td[role=gridcell] ul {
         border: 1px solid black;
         border-radius: 4px;
         margin: 2px;
-        padding-left:4px;
-        padding-right:4px;
+        padding-left: 4px;
+        padding-right: 4px;
     }
 
 /*Small*/
@@ -646,12 +653,115 @@ td[role=gridcell] ul {
 }
 
 #events {
-    font-size:12px;
+    font-size: 12px;
 }
 
 #Details {
-    height:680px;
-    max-width:100%;
-    width:100%;
-    padding:10px;
+    height: 680px;
+    max-width: 100%;
+    width: 100%;
+    padding: 10px;
 }
+
+.grid-icon {
+    margin-left: -4px;
+    width: 32px;
+    height: 32px;
+}
+
+.pie {
+    width: 40%;
+}
+
+.char-ustat {
+    max-width: 98%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.modal-custom-title {
+    font-size: 1.4em;
+    font-weight: bold;
+}
+
+h4.modal-title {
+    font-weight: bold;
+}
+
+div.modal-header {
+    text-align: center;
+}
+
+.k-item.k-state-selected.k-state-focused {
+    background-color: #428bca !important;
+}
+
+img.btn-help {
+    width: 32px;
+    margin-top: 8px;
+}
+
+a.btn-help {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+div.red-light, div.yellow-light, div.green-light {
+    height: 100px;
+    width: 100px;
+    display:block;
+    margin-left:auto;
+    margin-right:auto;
+    background-size: 98px 98px;
+    background-repeat: no-repeat;
+}
+
+div.red-light {
+    background-image: url("../Content/Images/TrafficLights/red_light_big.png");
+}
+
+div.green-light {
+    background-image: url("../Content/Images/TrafficLights/green_light_big.png");
+}
+
+div.yellow-light {
+    background-image: url("../Content/Images/TrafficLights/yellow_light_big.png");
+}
+
+div.width100 {
+    width: 100%;
+}
+
+div.small-red-light, div.small-green-light, div.small-yellow-light{
+    height: 25px;
+    width: 25px;
+    background-size: 23px 23px;
+    background-position:center center;
+    background-repeat: no-repeat;
+}
+
+div.small-red-light {
+    background-image: url("../Content/Images/TrafficLights/red_light.png");
+}
+
+div.small-green-light {
+    background-image: url("../Content/Images/TrafficLights/green_light.png");
+}
+
+div.small-yellow-light {
+    background-image: url("../Content/Images/TrafficLights/yellow_light.png");
+}
+
+div#modal-chart-plot-area {
+    width:95%;
+}
+
+div#chart-wrapper div.panel.panel-default div.panel-body,
+div#modal-chart-dialog-body div.modal-body {
+    overflow:auto;
+}
+
+div#productionPlan {
+    font-size:11px;
+}
+

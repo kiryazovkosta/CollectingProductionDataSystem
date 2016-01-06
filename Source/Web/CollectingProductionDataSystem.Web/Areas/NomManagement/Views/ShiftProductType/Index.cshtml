@@ -1,4 +1,4 @@
-﻿@(Html.Kendo().Grid<CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewModels.ShiftProductTypeViewModel>()
+@(Html.Kendo().Grid<CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewModels.ShiftProductTypeViewModel>()
       .Name("grid")
       .Columns(columns =>
       {
@@ -41,4 +41,3 @@
             })
               ).Events(ev => ev.DataBound("kendoAdditional.DeletableDataBound"))
 )
-

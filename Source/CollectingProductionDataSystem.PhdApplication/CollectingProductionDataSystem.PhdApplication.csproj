@@ -34,6 +34,7 @@
       <HintPath>..\ExternalLibraries\Uniformance\phdapinet.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -55,14 +56,6 @@
     <ProjectReference Include="..\Application\CollectingProductionDataSystem.Application\CollectingProductionDataSystem.Application.csproj">
       <Project>{3a125de9-28b9-4004-a1d9-bebde62ac786}</Project>
       <Name>CollectingProductionDataSystem.Application</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Application\CollectingProductionDataSystem.MathExpressions\CollectingProductionDataSystem.MathExpressions.csproj">
-      <Project>{34672323-163b-48f2-9425-b4b55b33d144}</Project>
-      <Name>CollectingProductionDataSystem.MathExpressions</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Common\CollectingProductionDataSystem.Contracts\CollectingProductionDataSystem.Contracts.csproj">
-      <Project>{8dd67abb-5bfb-4a28-82df-7bfe8ca483a6}</Project>
-      <Name>CollectingProductionDataSystem.Contracts</Name>
     </ProjectReference>
     <ProjectReference Include="..\Constants\CollectingProductionDataSystem.Constants\CollectingProductionDataSystem.Constants.csproj">
       <Project>{21b90cc4-73cc-4c1a-a2e3-fb6c7278beb9}</Project>

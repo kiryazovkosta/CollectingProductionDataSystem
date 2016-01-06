@@ -147,6 +147,9 @@
   <data name="InvalidUserNameModification" xml:space="preserve">
     <value>Modification of UserName is not permitted</value>
   </data>
+  <data name="PreviousDaysConfirmationError" xml:space="preserve">
+    <value>You cannot continue confirmation until completes confitmation of the days:\n</value>
+  </data>
   <data name="ShiftNotReady" xml:space="preserve">
     <value>The data for {0} are not approved.</value>
   </data>

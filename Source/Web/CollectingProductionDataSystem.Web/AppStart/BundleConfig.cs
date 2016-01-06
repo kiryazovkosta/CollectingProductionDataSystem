@@ -58,7 +58,8 @@ namespace CollectingProductionDataSystem.Web.AppStart
             "~/Scripts/kendo/jszip.min.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/custom/sidebar").Include(
-                "~/Scripts/custom/sidebar.js"));
+                "~/Scripts/custom/sidebar.js", 
+                "~/Scripts/custom/saveSiteBarStatus.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/custom/unitGrids").Include(          
                 "~/Scripts/custom/unitGridsData.js"

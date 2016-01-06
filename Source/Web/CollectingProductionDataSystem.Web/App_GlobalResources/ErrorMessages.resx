@@ -138,6 +138,9 @@
   <data name="InvalidRecordUpdate" xml:space="preserve">
     <value>Cannot find record Id {0} for update.</value>
   </data>
+  <data name="InvalidReportParams" xml:space="preserve">
+    <value>Invalid Report Parameters</value>
+  </data>
   <data name="LengthError" xml:space="preserve">
     <value>The {0} must be at least {2} characters long.</value>
   </data>
@@ -146,6 +149,15 @@
   </data>
   <data name="Message" xml:space="preserve">
     <value>There was an error in application</value>
+  </data>
+  <data name="NoDataWasFound" xml:space="preserve">
+    <value>No data was found for the specified criterias</value>
+  </data>
+  <data name="ParameterDifferencesHead" xml:space="preserve">
+    <value>There is difference between parameters: \n</value>
+  </data>
+  <data name="ParametersDifferencesTrail" xml:space="preserve">
+    <value>from report and parameters which you want to confirm! </value>
   </data>
   <data name="Password" xml:space="preserve">
     <value>The {0} must be at least {2} characters long.</value>

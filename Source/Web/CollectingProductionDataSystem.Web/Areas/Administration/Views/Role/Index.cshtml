@@ -1,8 +1,9 @@
 ﻿@using CollectingProductionDataSystem.Models.Identity;
+@using CollectingProductionDataSystem.Web.Areas.Administration.ViewModels;
 @using CollectingProductionDataSystem.Web.Infrastructure.Helpers;
 @using Resources = App_GlobalResources.Resources;
 
-@model IEnumerable<ApplicationRole>
+@model IEnumerable<RolePresentationViewModel>
 @{
     ViewBag.Title = "Роли";
     Layout = "~/Areas/Administration/Views/Shared/_KendoAdminLayout.cshtml";
@@ -27,22 +28,21 @@
             }
             else
             {
-                foreach (ApplicationRole role in Model)
+                foreach (RolePresentationViewModel role in Model)
                 {
                     <tr>
                         <td>@Html.DisplayFor(m => role.Id)</td>
                         <td>@Html.DisplayFor(m => role.Name)</td>
                         <td>@Html.DisplayFor(m => role.Description)</td>
                         <td>
-                            @if (role.Users == null || role.Users.Count == 0)
+                            @if (role.Users == null || role.Users.Count() == 0)
                             {
                                 @:Няма потребители асоциирани с тази роля
                             }
                             else
                             {
                                 <p>
-                                    @string.Join(", ", role.Users.Select(x =>
-                                  Html.GetUserName(x.UserId)))
+                                    @string.Join(", ", role.Users)
                                 </p>
                             }
                         </td>

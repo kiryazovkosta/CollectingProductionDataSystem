@@ -30,8 +30,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Telerik", "Telerik", "{4FDD
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Application", "Application", "{1BA91924-D5E6-467D-8DB6-584D54F00F4F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CollectingProductionDataSystem.Contracts", "Common\CollectingProductionDataSystem.Contracts\CollectingProductionDataSystem.Contracts.csproj", "{8DD67ABB-5BFB-4A28-82DF-7BFE8CA483A6}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CollectingProductionDataSystem.Enumerations", "Common\CollectingProductionDataSystem.Enumerations\CollectingProductionDataSystem.Enumerations.csproj", "{D39275E1-1997-41C3-99CC-FF1B7502E93F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CollectingProductionDataSystem.Infrastructure", "Common\CollectingProductionDataSystem.Infrastructure\CollectingProductionDataSystem.Infrastructure.csproj", "{69DEBDE6-B1BA-4A55-9570-AE7E6ABB5F98}"
@@ -84,14 +82,6 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{8DD67ABB-5BFB-4A28-82DF-7BFE8CA483A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8DD67ABB-5BFB-4A28-82DF-7BFE8CA483A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8DD67ABB-5BFB-4A28-82DF-7BFE8CA483A6}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{8DD67ABB-5BFB-4A28-82DF-7BFE8CA483A6}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{8DD67ABB-5BFB-4A28-82DF-7BFE8CA483A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8DD67ABB-5BFB-4A28-82DF-7BFE8CA483A6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8DD67ABB-5BFB-4A28-82DF-7BFE8CA483A6}.Release|x64.ActiveCfg = Release|Any CPU
-		{8DD67ABB-5BFB-4A28-82DF-7BFE8CA483A6}.Release|x86.ActiveCfg = Release|Any CPU
 		{D39275E1-1997-41C3-99CC-FF1B7502E93F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D39275E1-1997-41C3-99CC-FF1B7502E93F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D39275E1-1997-41C3-99CC-FF1B7502E93F}.Debug|x64.ActiveCfg = Debug|Any CPU
@@ -273,7 +263,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{9D1D8F40-FA10-4DB6-9D9A-FB1719F283B3} = {531AE365-A584-4724-94B8-926C7BA3189A}
 		{4FDDB73E-113D-4F91-8F87-F8BB5FC92115} = {531AE365-A584-4724-94B8-926C7BA3189A}
-		{8DD67ABB-5BFB-4A28-82DF-7BFE8CA483A6} = {FB80A9DF-FEA9-4BF6-9B55-8FBF333CCA49}
 		{D39275E1-1997-41C3-99CC-FF1B7502E93F} = {FB80A9DF-FEA9-4BF6-9B55-8FBF333CCA49}
 		{69DEBDE6-B1BA-4A55-9570-AE7E6ABB5F98} = {FB80A9DF-FEA9-4BF6-9B55-8FBF333CCA49}
 		{3A125DE9-28B9-4004-A1D9-BEBDE62AC786} = {1BA91924-D5E6-467D-8DB6-584D54F00F4F}

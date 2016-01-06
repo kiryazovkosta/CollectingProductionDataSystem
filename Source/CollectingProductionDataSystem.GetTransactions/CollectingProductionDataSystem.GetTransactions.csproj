@@ -123,6 +123,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Common\CollectingProductionDataSystem.Infrastructure\CollectingProductionDataSystem.Infrastructure.csproj">
+      <Project>{69DEBDE6-B1BA-4A55-9570-AE7E6ABB5F98}</Project>
+      <Name>CollectingProductionDataSystem.Infrastructure</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DataAccessLayer\CollectingProductionDataSystem.Data\CollectingProductionDataSystem.Data.csproj">
       <Project>{59ca4923-fd5f-4087-a7ee-5623f1dd8ca9}</Project>
       <Name>CollectingProductionDataSystem.Data</Name>

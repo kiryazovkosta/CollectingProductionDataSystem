@@ -21,6 +21,7 @@ namespace CollectingProductionDataSystem.Models.Nomenclatures
         {
             this.UnitsConfigs = new HashSet<UnitConfig>();
             this.UnitsDailyConfigs = new HashSet<UnitDailyConfig>();
+            this.EnteredUnitConfigs = new HashSet<UnitConfig>();
         }
 
         /// <summary>
@@ -46,5 +47,7 @@ namespace CollectingProductionDataSystem.Models.Nomenclatures
         /// The units daily configs.
         /// </value>
         public virtual ICollection<UnitDailyConfig> UnitsDailyConfigs { get; set; }
+
+        public virtual ICollection<UnitConfig> EnteredUnitConfigs { get; set; }
     }
 }

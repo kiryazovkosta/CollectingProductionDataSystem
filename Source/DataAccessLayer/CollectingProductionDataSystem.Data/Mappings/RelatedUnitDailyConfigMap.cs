@@ -4,6 +4,7 @@
     using System.Data.Entity.ModelConfiguration;
     using System.Linq;
     using CollectingProductionDataSystem.Models.Productions;
+    using System.ComponentModel.DataAnnotations.Schema;
 
     class RelatedUnitDailyConfigMap : EntityTypeConfiguration<RelatedUnitDailyConfigs>
     {
@@ -12,6 +13,8 @@
             this.HasKey(t => new { t.UnitsDailyConfigId, t.RelatedUnitsDailyConfigId });
 
             this.HasRequired(p => p.RelatedUnitsDailyConfig).WithMany().WillCascadeOnDelete(false);
+
+            //this.Property(x => x.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
         }
     }
 }

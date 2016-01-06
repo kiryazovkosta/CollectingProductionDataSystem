@@ -160,6 +160,51 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to All Areas.
+        /// </summary>
+        public static string AllAreas {
+            get {
+                return ResourceManager.GetString("AllAreas", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to All Factories.
+        /// </summary>
+        public static string AllFactories {
+            get {
+                return ResourceManager.GetString("AllFactories", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Аll Parks.
+        /// </summary>
+        public static string AllParks {
+            get {
+                return ResourceManager.GetString("AllParks", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to All ProcessUnits.
+        /// </summary>
+        public static string AllProcessUnits {
+            get {
+                return ResourceManager.GetString("AllProcessUnits", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to All Users Coint.
+        /// </summary>
+        public static string AllUsersCount {
+            get {
+                return ResourceManager.GetString("AllUsersCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ApplicationLog.
         /// </summary>
         public static string ApplicationLog {
@@ -628,6 +673,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Data Confirmation Report.
+        /// </summary>
+        public static string ConfirmedDataReport {
+            get {
+                return ResourceManager.GetString("ConfirmedDataReport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Confirm Password.
         /// </summary>
         public static string ConfirmPassword {
@@ -700,11 +754,29 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Currently LogedIn Users.
+        /// </summary>
+        public static string CurrentlyLogedInUsers {
+            get {
+                return ResourceManager.GetString("CurrentlyLogedInUsers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Daily Data.
         /// </summary>
         public static string DailyData {
             get {
                 return ResourceManager.GetString("DailyData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Statistics for {0}.
+        /// </summary>
+        public static string DailyGraphicTitle {
+            get {
+                return ResourceManager.GetString("DailyGraphicTitle", resourceCulture);
             }
         }
         
@@ -741,6 +813,15 @@ namespace App_GlobalResources.Resources {
         public static string Date {
             get {
                 return ResourceManager.GetString("Date", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Daily Data.
+        /// </summary>
+        public static string DayConfirmed {
+            get {
+                return ResourceManager.GetString("DayConfirmed", resourceCulture);
             }
         }
         
@@ -1393,6 +1474,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Confirmation.
+        /// </summary>
+        public static string IsConfirmed {
+            get {
+                return ResourceManager.GetString("IsConfirmed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to IsEditable.
         /// </summary>
         public static string IsEditable {
@@ -1456,11 +1546,38 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to User LogIns Count .
+        /// </summary>
+        public static string IsUserLoggedIn {
+            get {
+                return ResourceManager.GetString("IsUserLoggedIn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to IsValueOfCounterReseted.
+        /// </summary>
+        public static string IsValueOfCounterReseted {
+            get {
+                return ResourceManager.GetString("IsValueOfCounterReseted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Jp Expedition&lt;br/&gt;[ton].
         /// </summary>
         public static string JpQuantity {
             get {
                 return ResourceManager.GetString("JpQuantity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Last Loged In.
+        /// </summary>
+        public static string LastLogedIn {
+            get {
+                return ResourceManager.GetString("LastLogedIn", resourceCulture);
             }
         }
         
@@ -1506,6 +1623,15 @@ namespace App_GlobalResources.Resources {
         public static string LiquidLevelLowExtreme {
             get {
                 return ResourceManager.GetString("LiquidLevelLowExtreme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to LogedIn Users Count.
+        /// </summary>
+        public static string LogedInUsers {
+            get {
+                return ResourceManager.GetString("LogedInUsers", resourceCulture);
             }
         }
         
@@ -1821,6 +1947,15 @@ namespace App_GlobalResources.Resources {
         public static string Notes {
             get {
                 return ResourceManager.GetString("Notes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Offline Users Count.
+        /// </summary>
+        public static string NotLoggedInUsers {
+            get {
+                return ResourceManager.GetString("NotLoggedInUsers", resourceCulture);
             }
         }
         
@@ -2500,6 +2635,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to First Shift.
+        /// </summary>
+        public static string Shift1Confirmed {
+            get {
+                return ResourceManager.GetString("Shift1Confirmed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Shift1 Quantity Value.
         /// </summary>
         public static string Shift1QuantityValue {
@@ -2509,11 +2653,29 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Second Shift.
+        /// </summary>
+        public static string Shift2Confirmed {
+            get {
+                return ResourceManager.GetString("Shift2Confirmed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Shift2 QuantityValue.
         /// </summary>
         public static string Shift2QuantityValue {
             get {
                 return ResourceManager.GetString("Shift2QuantityValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Third Shift.
+        /// </summary>
+        public static string Shift3Confirmed {
+            get {
+                return ResourceManager.GetString("Shift3Confirmed", resourceCulture);
             }
         }
         
@@ -2586,6 +2748,15 @@ namespace App_GlobalResources.Resources {
         public static string SlectRoles {
             get {
                 return ResourceManager.GetString("SlectRoles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Summary Reports.
+        /// </summary>
+        public static string SummaryReports {
+            get {
+                return ResourceManager.GetString("SummaryReports", resourceCulture);
             }
         }
         
@@ -3112,6 +3283,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Total Month Quantity.
+        /// </summary>
+        public static string TotalMonthQuantity {
+            get {
+                return ResourceManager.GetString("TotalMonthQuantity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to TotalObservableVolumeHighExtreme.
         /// </summary>
         public static string TotalObservableVolumeHighExtreme {
@@ -3238,6 +3418,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Units Daily Report Data.
+        /// </summary>
+        public static string UnitsDailyReportData {
+            get {
+                return ResourceManager.GetString("UnitsDailyReportData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Units Data.
         /// </summary>
         public static string UnitsData {
@@ -3301,6 +3490,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to PasswordChanged.
+        /// </summary>
+        public static string UserChangedPassword {
+            get {
+                return ResourceManager.GetString("UserChangedPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to User.
         /// </summary>
         public static string UserChanger {
@@ -3324,6 +3522,15 @@ namespace App_GlobalResources.Resources {
         public static string UsersAdministration {
             get {
                 return ResourceManager.GetString("UsersAdministration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User Statistics.
+        /// </summary>
+        public static string UserStatistics {
+            get {
+                return ResourceManager.GetString("UserStatistics", resourceCulture);
             }
         }
         

@@ -1,7 +1,7 @@
 ﻿(function () {
     sendFactory = function () {
         return {
-            factoryId: $("#factories").val()
+            factoryId: $('#factories').val() || $('#factoriesD').val()
         };
     }
-})();
+}());

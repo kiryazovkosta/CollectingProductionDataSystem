@@ -3,6 +3,7 @@
     using System;
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
+    using System.Text;
     using AutoMapper;
     using CollectingProductionDataSystem.Infrastructure.Mapping;
     using CollectingProductionDataSystem.Models.Nomenclatures;
@@ -23,6 +24,9 @@
         [Display(Name = "RecordTimestamp", ResourceType = typeof(Resources.Layout))]
         public DateTime RecordTimestamp { get; set; }
 
+        [Display(Name = "TotalMonthQuantity", ResourceType = typeof(Resources.Layout))]
+        public decimal TotalMonthQuantity { get; set; }
+
         public int UnitsDailyConfigId { get; set; }
 
         public UnitsDailyConfigDataViewModel UnitsDailyConfig { get; set; }
@@ -36,7 +40,10 @@
         {
             configuration.CreateMap<UnitsDailyData, UnitDailyDataViewModel>()
                 .ForMember(p => p.UnitsManualDailyData, opt => opt.MapFrom(p => p.UnitsManualDailyData ?? new UnitsManualDailyData() { Value = p.Value }))
-                .ForMember(p=>p.IsEditable, opt=>opt.MapFrom(p=>p.UnitsDailyConfig.IsEditable));
+                .ForMember(p=>p.IsEditable, opt=>opt.MapFrom(p=>p.UnitsDailyConfig.IsEditable))
+                .ForMember(p=>p.TotalMonthQuantity, opt=>opt.MapFrom(p=>p.TotalMonthQuantity + (decimal)p.RealValue));
+            configuration.CreateMap<UnitDailyDataViewModel, UnitsDailyData>()
+                .ForMember(p => p.TotalMonthQuantity, opt => opt.Ignore());
         }
 
         public bool HasManualData { get; set; }
@@ -119,7 +126,21 @@
 
         [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
         [Display(Name = "ProcessUnitName", ResourceType = typeof(Resources.Layout))]
-        public string ShortName { get; set; } 
+        public string ShortName { get; set; }
+
+        public string SortableShortName
+        {
+            get
+            {
+                var sb = new StringBuilder();
+                sb.Append(this.Id.ToString("d2"));
+                sb.Append(" ");
+                sb.Append(this.ShortName);
+                return sb.ToString();
+            }
+        }
+
+        public FactoryViewModel Factory { get; set; }
 
     }
 

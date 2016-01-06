@@ -12,7 +12,9 @@
     using CollectingProductionDataSystem.Data.Contracts;
     using CollectingProductionDataSystem.Data.Mappings.Configuration;
     using CollectingProductionDataSystem.Data.Migrations;
+    using CollectingProductionDataSystem.Infrastructure.Contracts;
     using CollectingProductionDataSystem.Infrastructure.Extentions;
+    using CollectingProductionDataSystem.Infrastructure.Log;
     using CollectingProductionDataSystem.Models.Contracts;
     using CollectingProductionDataSystem.Models.Identity;
     using CollectingProductionDataSystem.Models.Inventories;
@@ -29,6 +31,8 @@
         UserLoginIntPk, UserRoleIntPk, UserClaimIntPk>, IAuditableDbContext
     {
         private readonly IPersister persister;
+        private ILogger logger;
+        private TransactionOptions transantionOption;
 
         static CollectingDataSystemDbContext()
         {
@@ -36,15 +40,16 @@
         }
 
         public CollectingDataSystemDbContext()
-            : base("CollectingPrimaryDataSystemConnection")
+            : this(new AuditablePersister(),new Logger())
         {
-            this.persister = new AuditablePersister();
         }
 
-        public CollectingDataSystemDbContext(IPersister param)
+        public CollectingDataSystemDbContext(IPersister param, ILogger loggerParam)
             : base("CollectingPrimaryDataSystemConnection")
         {
             this.persister = param;
+            this.logger = loggerParam;
+            this.transantionOption = DefaultTransactionOptions.Instance.TransactionOptions;
         }
 
         public IDbSet<Product> Products { get; set; }
@@ -129,6 +134,12 @@
 
         public IDbSet<Event> Events{ get; set; }
 
+        public IDbSet<LogedInUser> LogedInUsers { get; set; }
+
+        public IDbSet<ProductionPlanData> ProductionPlanDatas { get; set; }
+
+        public IDbSet<MathExpression> MathExpressions { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             ModelBingConfig.RegisterMappings(modelBuilder);
@@ -162,7 +173,7 @@
 
         public int SaveChanges(string userName)
         {
-            using (var transaction = new TransactionScope(TransactionScopeOption.Required, new TimeSpan(0, 0, 30)))
+            using (var transaction = new TransactionScope(TransactionScopeOption.Required, this.transantionOption))
             {
                 if (userName == null)
                 {
@@ -193,6 +204,7 @@
             }
             catch (DbEntityValidationException ex)
             {
+                logger.Error(ex.Message, this, ex);
                 return result.SetErrors(ex.EntityValidationErrors);
             }
             //else it isn't an exception we understand so it throws in the normal way

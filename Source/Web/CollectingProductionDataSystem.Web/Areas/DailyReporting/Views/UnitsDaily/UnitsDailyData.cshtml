@@ -28,13 +28,15 @@
         .Columns(
             columns =>
             {
-                columns.Bound("Name").Title("Продукт");
-                columns.Bound("Percentages").Title("%").Format("{0:n2}").Width(65);
-                columns.Bound("QuantityPlan").Title("Колич. (план T)").Format("{0:n2}").Width(90);
-                columns.Bound("QuantityFact").Title("Колич. (факт T)").Format("{0:n2}").Width(90);
-
+                columns.Bound("Name").Title("Продукт").Width(100);
+                columns.Bound("PercentagesPlan").Title("% план").Format("{0:n2}");//.Width(50);
+                columns.Bound("PercentagesFact").Title("% факт").Format("{0:n2}");//.Width(60);
+                columns.Bound("QuantityPlan").Title("Колич. (план T)").Format("{0:n2}");//.Width(60);
+                columns.Bound("QuantityFact").Title("Колич. (факт T)").Format("{0:n2}");//.Width(60);
+                columns.Bound("TotalMonthQuantityFact").Title("До деня (факт T)").Format("{0:n2}").Width(70);
+                columns.Bound("TotalMonthPercentagesFact").Title("До деня (факт %)").Format("{0:n2}");//.Width(60);
             })
-    .Scrollable(scr => scr.Height(350))
+    .Scrollable(scr => scr.Height(300))
     .DataSource(dataSource => dataSource
         .Ajax()
         .ServerOperation(true)
@@ -44,9 +46,10 @@
         {
             model.Id(p => p.Id);
             model.Field(p => p.Name).Editable(false);
-            model.Field(p => p.Percentages).Editable(false);
+            model.Field(p => p.PercentagesPlan).Editable(false);
             model.Field(p => p.QuantityPlan).Editable(false);
             model.Field(p => p.QuantityFact).Editable(false);
+            model.Field(p => p.PercentagesFact).Editable(false);
         })
         .Events(events =>
         {
@@ -55,6 +58,8 @@
         )
        .Events(ev => ev.DataBound("unitGridsData.DataBound"))
         )
+        <br/>
+        <div id="chart-wrapper"></div>
     </div>
 
     <div class="col-lg-8 col-lg-pull-4">
@@ -74,9 +79,10 @@
                                                 .ToHtmlString())
                 .Width(77);
             columns.Bound(c => c.UnitsDailyConfig.DailyProductType.Sort).Hidden(true).ClientGroupHeaderTemplate("#=value#");
-            columns.Bound(c => c.UnitsDailyConfig.ProcessUnit.ShortName).Width(100);
+            //columns.Bound(c => c.UnitsDailyConfig.ProcessUnit.ShortName).Width(100);
             columns.Bound(c => c.UnitsDailyConfig.Name);
             columns.Bound(c => c.UnitsDailyConfig.MeasureUnit.Code).Width(80);
+            columns.Bound(c => c.TotalMonthQuantity).Width(80);
             columns.Bound(c => c.Value).Width(100).Format("{0:n2}");
             columns.Bound(c => c.UnitsManualDailyData.Value)
                  .ClientTemplate(
@@ -102,7 +108,7 @@
                                                              .Excel(excel => excel
                                                                 .FileName(@Resources.Layout.UnitsDailyData + "_" + DateTime.Now + ".xlsx")
                                                                 .Filterable(true)
-                                                                .ProxyURL(Url.Action("Excel_Export_Save", "Tests", new { area = "" }))
+                                                                .ProxyURL(Url.Action("Excel_Export_Save", "Ajax", new { area = "" }))
                                                                 .AllPages(true))
                                                                 .Events(ev => ev.DataBound("unitGridsData.DataBound"))
                                                                 .Scrollable(scr => scr.Height(640))
@@ -123,6 +129,7 @@
                                                                     model.Field(p => p.UnitsDailyConfig.ProcessUnit.ShortName).Editable(false);
                                                                     model.Field(p => p.UnitsDailyConfig.Name).Editable(false);
                                                                     model.Field(p => p.UnitsDailyConfig.MeasureUnit.Code).Editable(false);
+                                                                    model.Field(p => p.TotalMonthQuantity).Editable(false);                                                                    
                                                                     model.Field(p => p.Value).Editable(false);
                                                                     model.Field(p => p.UnitsManualDailyData.Value).Editable(true);
                                                                     model.Field(p => p.UnitsManualDailyData.EditReason).Editable(true);
@@ -190,6 +197,7 @@
 @section scripts{
     @Scripts.Render("~/bundles/custom/kendoadditional")
     @Scripts.Render("~/bundles/custom/unitGrids")
+    @Scripts.Render("~/Scripts/custom/renderDailyGraphic.min.js")
     @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.min.js")
 }
 @section sidebar{

@@ -6,6 +6,7 @@
     using System.ServiceProcess;
     using CollectingProductionDataSystem.Data;
     using CollectingProductionDataSystem.Data.Concrete;
+    using CollectingProductionDataSystem.Infrastructure.Log;
     using CollectingProductionDataSystem.Models.Transactions;
     using Uniformance.PHD;
     using log4net;
@@ -40,7 +41,7 @@
             {
                 logger.Info("Begin synchronization!");
                 
-                using (var context = new ProductionData(new CollectingDataSystemDbContext(new AuditablePersister())))
+                using (var context = new ProductionData(new CollectingDataSystemDbContext(new AuditablePersister(),new Logger())))
                 {
                     var max = context.MaxAsoMeasuringPointDataSequenceNumberMap.All().FirstOrDefault();
                     if (max != null)
@@ -309,7 +310,7 @@
                 var ts = now - fiveOClock;
                 if(ts.TotalMinutes > 2 && ts.Hours == 0)
                 {
-                    using (var context = new ProductionData(new CollectingDataSystemDbContext(new AuditablePersister())))
+                    using (var context = new ProductionData(new CollectingDataSystemDbContext(new AuditablePersister(),new Logger())))
                     {
                         var currentDate = today.AddDays(-1);
                         var existsActiveTransactionData = context.ActiveTransactionsDatas.All().Where(x => x.RecordTimestamp == currentDate).Any();
@@ -451,7 +452,6 @@
             oPhd.MaximumRows = 1;
         }
 
-
         internal static void ProcessScaleTransactionsData()
         {
             try
@@ -469,7 +469,7 @@
                     {
                         var phdValues = new Dictionary<int, long>();
 
-                        using (var context = new ProductionData(new CollectingDataSystemDbContext(new AuditablePersister())))
+                        using (var context = new ProductionData(new CollectingDataSystemDbContext(new AuditablePersister(),new Logger())))
                         {
                             if (!context.MeasuringPointsConfigsDatas.All().Where(x => x.TransactionNumber >= today.Ticks).Any())
                             {
@@ -497,7 +497,7 @@
                                             var row = result.Tables[0].Rows[0];
                                             var value = Convert.ToInt64(row["Value"]);
                                             phdValues.Add(scaleMeasuringPointProduct.Id, value);
-                                            logger.InfoFormat("Processing data for {0} {1} {2}", scaleMeasuringPointProduct.PhdProductTotalizerTag, currentPhdTimestamp, value);
+                                            //logger.InfoFormat("Processing data for {0} {1} {2}", scaleMeasuringPointProduct.PhdProductTotalizerTag, currentPhdTimestamp, value);
                                         }
                                     }
                                 }
@@ -513,7 +513,7 @@
                                             var row = result.Tables[0].Rows[0];
                                             var value = Convert.ToInt64(row["Value"]);
                                             phdValues[scaleMeasuringPointProduct.Id] = phdValues[scaleMeasuringPointProduct.Id] - value;
-                                            logger.InfoFormat("Processing data for {0} {1} {2} {3}", scaleMeasuringPointProduct.PhdProductTotalizerTag, currentPhdTimestamp, value, phdValues[scaleMeasuringPointProduct.Id]);
+                                            //logger.InfoFormat("Processing data for {0} {1} {2} {3}", scaleMeasuringPointProduct.PhdProductTotalizerTag, currentPhdTimestamp, value, phdValues[scaleMeasuringPointProduct.Id]);
                                         }
                                     }
                                 }
@@ -523,7 +523,6 @@
                                     if (entry.Value > 0)
                                     {
                                         var scaleProduct = scaleMeasuringPointProducts.FirstOrDefault(x => x.Id == entry.Key);
-                                        logger.InfoFormat("Processing virtual transaction for {0} {1} {2} {3}", entry.Key, scaleProduct.PhdProductTotalizerTag, entry.Value, scaleProduct.Direction.Name);
 
                                         decimal? mass = null;
                                         decimal? revMass = null;
@@ -559,7 +558,7 @@
                                             InsertTimestamp = DateTime.Now,
                                             MeasuringPointId = scaleProduct.MeasuringPointConfigId,
                                             ZoneId = scaleProduct.MeasuringPointConfig.Zone.Id,
-                                            ProductId = scaleProduct.Product.Code,
+                                            ProductId = scaleProduct.ProductId,
                                             ProductNumber = scaleProduct.Product.Code,
                                             ProductName = scaleProduct.Product.Name,
                                             ProductType = scaleProduct.Product.ProductType.Id,
@@ -568,6 +567,7 @@
                                             BaseProductType = scaleProduct.Product.ProductType.Id,
                                             FlowDirection = scaleProduct.DirectionId
                                         };
+                                        logger.InfoFormat("Processing virtual transaction for {0} {1} {2} {3}", entry.Key, scaleProduct.PhdProductTotalizerTag, entry.Value, scaleProduct.Direction.Name);
                                         context.MeasuringPointsConfigsDatas.Add(measuringPointConfigData);
                                     }
                                 }

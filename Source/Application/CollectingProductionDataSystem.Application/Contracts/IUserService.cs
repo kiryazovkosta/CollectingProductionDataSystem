@@ -1,6 +1,7 @@
 ﻿namespace CollectingProductionDataSystem.Application.Contracts
 {
     using System;
+    using System.Linq;
     using System.Threading.Tasks;
     using CollectingProductionDataSystem.Application.IdentityInfrastructure;
     using CollectingProductionDataSystem.Data.Contracts;
@@ -9,7 +10,13 @@
 
     public interface IUserService
     {
-        Task<IEfStatus> CreateUserAsync( ApplicationUser user, UserProfile creator, ApplicationUserManager manager);
-        Task<IEfStatus> UpdateUserAsync( ApplicationUser user, UserProfile creator, ApplicationUserManager manager);
+        /// <summary>
+        /// Gets all loged users.
+        /// </summary>
+        IQueryable<ApplicationUser> GetAllLogedUsers();
+
+        Task<IEfStatus> CreateUserAsync(ApplicationUser user, UserProfile creator, ApplicationUserManager manager);
+
+        Task<IEfStatus> UpdateUserAsync(ApplicationUser user, UserProfile creator, ApplicationUserManager manager);
     }
 }

@@ -50,5 +50,20 @@
         /// </summary>
         public double? EstimatedCompressibilityFactor { get; set; }
 
+        /// <summary>
+        /// PL1 - СТАРО ПОКАЗАНИЕ НА БРОЯЧА
+        /// </summary>
+        public double? OldValue { get; set; }
+
+        /// <summary>
+        /// Коригиращ фактор алфа
+        /// </summary>
+        public double? FactorAlpha { get; set; }
+
+        /// <summary>
+        /// Процент калкулация за изчисление по формула
+        /// </summary>
+        public double? CalculationPercentage { get; set; }
+
     }
 }

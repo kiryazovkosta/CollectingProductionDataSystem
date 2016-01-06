@@ -3,6 +3,7 @@ using CollectingProductionDataSystem.Application.FileServices;
 using CollectingProductionDataSystem.Data;
 using CollectingProductionDataSystem.Data.Concrete;
 using CollectingProductionDataSystem.Data.Contracts;
+using CollectingProductionDataSystem.Infrastructure.Log;
 using CollectingProductionDataSystem.Models.Contracts;
 using CollectingProductionDataSystem.Models.Productions;
 using System;
@@ -243,7 +244,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
 
         private static void TreeShiftsReports(DateTime dateParam, int processUnitIdParam)
         {
-            using (var context = new ProductionData(new CollectingDataSystemDbContext(new AuditablePersister())))
+            using (var context = new ProductionData(new CollectingDataSystemDbContext(new AuditablePersister(),new Logger())))
             {
                 var timer = new Stopwatch();
                 timer.Start();
@@ -268,7 +269,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
 
                 foreach (var item in result)
                 {
-                    Console.WriteLine("{0} {1} {2} {3} {4} {5}", item.TimeStamp, item.UnitName, item.Shift1, item.Shift2, item.Shift3.RealValue, item.TotalQuantityValue);
+                    Console.WriteLine("{0} {1} {2} {3} {4} {5}", item.TimeStamp, item.UnitName, item.Shift1, item.Shift2, item.Shift3.RealValue/*,item.TotalQuantityValue*/);
                 }
 
                 Console.WriteLine("Estimated Time For Action: {0}", timer.Elapsed);

@@ -9,12 +9,14 @@
     using System.ServiceProcess;
     using CollectingProductionDataSystem.Data;
     using CollectingProductionDataSystem.Data.Concrete;
+    using CollectingProductionDataSystem.Infrastructure.Log;
     using CollectingProductionDataSystem.Models.Inventories;
     using CollectingProductionDataSystem.Models.Transactions;
     using CollectingProductionDataSystem.Phd2SqlProductionData.Models;
     using CollectingProductionDataSystem.PhdApplication.PrimaryDataServices;
     using Uniformance.PHD;
     using log4net;
+    using CollectingProductionDataSystem.Models.Productions;
 
     static class Phd2SqlProductionDataMain
     {
@@ -39,7 +41,7 @@
             ServiceBase.Run(servicesToRun);
         }
 
-        internal static void ProcessPrimaryProductionData()
+        internal static void ProcessPrimaryProductionData(PrimaryDataSourceType dataSource)
         {
             try
             {
@@ -49,7 +51,7 @@
                 for (int offsetInHours = 0; offsetInHours < Properties.Settings.Default.SYNC_PRIMARY_HOURS_OFFSET; offsetInHours += 8)
                 {
                     var offset = offsetInHours == 0 ? offsetInHours : offsetInHours * -1;
-                    var recordsDates = service.ReadAndSaveUnitsDataForShift(DateTime.Now, offset);
+                    var recordsDates = service.ReadAndSaveUnitsDataForShift(DateTime.Now, offset, dataSource);
                     logger.InfoFormat("Successfully added {0} UnitsData records to CollectingPrimaryDataSystem", recordsDates);
                 }
                 logger.Info("Sync primary data finished!");
@@ -90,7 +92,7 @@
                 logger.Info("Sync inventory tanks data started!");
                 var now = DateTime.Now;
 
-                using (var context = new ProductionData(new CollectingDataSystemDbContext(new AuditablePersister())))
+                using (var context = new ProductionData(new CollectingDataSystemDbContext(new AuditablePersister(), new Logger())))
                 {
                     DateTime recordTime = new DateTime(now.Year, now.Month, now.Day, now.Hour, 0, 0);
                     var tanks = context.Tanks.All().Select(t => new Tank()
@@ -250,13 +252,7 @@
                                 }
                             }
                         }
-
-                        //ProcessInventoryTankForSpecificDateTime(checkedDateTime);
                     }
-
-                    
-
-                    
 
                     logger.Info("Sync inventory tanks data finished!");
                 }
@@ -273,103 +269,138 @@
 
         internal static void ProcessMeasuringPointsData()
         {
-            try
-            {
-                logger.Info("Sync measurements points data started!");
-                var now = DateTime.Now;
-                var today = DateTime.Today;
-                var fiveOClock = today.AddHours(5);
+            //try
+            //{
+            //    logger.Info("Sync measurements points data started!");
+            //    //var now = DateTime.Now;
+            //    //var today = DateTime.Today;
+            //    //var fiveOClock = today.AddHours(5);
                 
-                var ts = now - fiveOClock;
-                if (ts.TotalMinutes > 2 && ts.Hours == 0)
-                {
-                    using (var context = new ProductionData(new CollectingDataSystemDbContext(new AuditablePersister())))
-                    {
-                        var currentDate = today.AddDays(-1);
-                        if (context.MeasurementPointsProductsDatas.All().Where(x => x.RecordTimestamp == currentDate).Any())
-                        {
-                            logger.InfoFormat("There is already an active transaction data for {0}", currentDate);
-                            logger.Info("Sync measurements points data finished!");
-                            return;
-                        }
+            //    //var ts = now - fiveOClock;
+            //    //if (ts.TotalMinutes > 2 && ts.Hours == 0)
+            //    {
+            //        using (var context = new ProductionData(new CollectingDataSystemDbContext(new AuditablePersister(),new Logger())))
+            //        {
+            //            var measuringPoints = context.MeasuringPointConfigs.All().Where(x => !string.IsNullOrEmpty(x.TotalizerCurrentValueTag));
 
-                        var measuringPoints = context.MeasuringPointConfigs.All().Where(x => !string.IsNullOrEmpty(x.TotalizerCurrentValueTag));
+            //            if (measuringPoints.Count() > 0)
+            //            {
+            //                using(PHDHistorian oPhd = new PHDHistorian())
+            //                { 
+            //                    using(PHDServer defaultServer = new PHDServer("srv-vm-mes-phd"))
+            //                    {
+            //                        defaultServer.Port = 3150;
+            //                        defaultServer.APIVersion = Uniformance.PHD.SERVERVERSION.RAPI200;
+            //                        oPhd.DefaultServer = defaultServer;
+            //                        oPhd.StartTime = "NOW - 2M";
+            //                        oPhd.EndTime = "NOW - 2M";
+            //                        oPhd.Sampletype = SAMPLETYPE.Snapshot;
+            //                        oPhd.MinimumConfidence = 49;
+            //                        oPhd.ReductionType = REDUCTIONTYPE.Average;
+            //                        oPhd.MaximumRows = 1;
+                            
+            //                        foreach (var item in measuringPoints)
+            //                        {
+            //                            var measurementPointData = new MeasuringPointProductsData();
+            //                            measurementPointData.MeasuringPointConfigId = item.Id;
+            //                            DataSet dsGrid = oPhd.FetchRowData(item.TotalizerCurrentValueTag);
+            //                            foreach (DataRow row in dsGrid.Tables[0].Rows)
+            //                            {
+            //                                foreach (DataColumn dc in dsGrid.Tables[0].Columns)
+            //                                {
+            //                                    if (dc.ColumnName.Equals("Tolerance") || dc.ColumnName.Equals("HostName"))
+            //                                    {
+            //                                        continue;
+            //                                    }
+            //                                    else if (dc.ColumnName.Equals("Value"))
+            //                                    {
+            //                                        if (!string.IsNullOrWhiteSpace(row[dc].ToString()))
+            //                                        {
+            //                                            measurementPointData.Value = Convert.ToDecimal(row[dc]);
+            //                                            logger.InfoFormat("Value: {0}", measurementPointData.Value ?? 0);
+            //                                        }
+            //                                    }
+            //                                }
+            //                            }
+            //                        }
+            //                    }
+            //                }
+                            
+                            
+            //                //using (PHDHistorian oPhd = new PHDHistorian())
+            //                //{
+            //                //    using (PHDServer oPhd = new PHDServer("srv-vm-mes-phd""))
+            //                //    {
+            //                //        oPhd.Port = 3150;
+            //                //        defaultServer.APIVersion = Uniformance.PHD.SERVERVERSION.RAPI200;
+            //                //        oPhd.DefaultServer = defaultServer;
+            //                //        oPhd.StartTime = "NOW - 2M";
+            //                //        oPhd.EndTime = "NOW - 2M";
+            //                //        oPhd.Sampletype = SAMPLETYPE.Snapshot;
+            //                //        oPhd.MinimumConfidence = 49;
+            //                //        oPhd.ReductionType = REDUCTIONTYPE.Average;
+            //                //        oPhd.MaximumRows = 1;
 
-                        if (measuringPoints.Count() > 0)
-                        {
-                            using (PHDHistorian oPhd = new PHDHistorian())
-                            {
-                                using (PHDServer defaultServer = new PHDServer(Properties.Settings.Default.PHD_HOST))
-                                {
-                                    defaultServer.Port = Properties.Settings.Default.PHD_PORT;
-                                    defaultServer.APIVersion = Uniformance.PHD.SERVERVERSION.RAPI200;
-                                    oPhd.DefaultServer = defaultServer;
-                                    oPhd.StartTime = "NOW - 2M";
-                                    oPhd.EndTime = "NOW - 2M";
-                                    oPhd.Sampletype = Properties.Settings.Default.INSPECTION_DATA_SAMPLETYPE;
-                                    oPhd.MinimumConfidence = Properties.Settings.Default.INSPECTION_DATA_MINIMUM_CONFIDENCE;
-                                    oPhd.MaximumRows = Properties.Settings.Default.INSPECTION_DATA_MAX_ROWS;
+            //                //        foreach (var item in measuringPoints)
+            //                //        {
+            //                //            var measurementPointData = new MeasuringPointProductsData();
+            //                //            measurementPointData.MeasuringPointConfigId = item.Id;
+            //                //            DataSet dsGrid = oPhd.FetchRowData(item.TotalizerCurrentValueTag);
+            //                //            var confidence = 100;
+            //                //            foreach (DataRow row in dsGrid.Tables[0].Rows)
+            //                //            {
+            //                //                foreach (DataColumn dc in dsGrid.Tables[0].Columns)
+            //                //                {
+            //                //                    if (dc.ColumnName.Equals("Tolerance") || dc.ColumnName.Equals("HostName"))
+            //                //                    {
+            //                //                        continue;
+            //                //                    }
+            //                //                    else if (dc.ColumnName.Equals("Confidence"))
+            //                //                    {
+            //                //                        if (!string.IsNullOrWhiteSpace(row[dc].ToString()))
+            //                //                        {
+            //                //                            confidence = Convert.ToInt32(row[dc]);
+            //                //                        }
+            //                //                        else
+            //                //                        {
+            //                //                            confidence = 0;
+            //                //                            break;
+            //                //                        }
+            //                //                    }
+            //                //                    else if (dc.ColumnName.Equals("Value"))
+            //                //                    {
+            //                //                        if (!string.IsNullOrWhiteSpace(row[dc].ToString()))
+            //                //                        {
+            //                //                            measurementPointData.Value = Convert.ToDecimal(row[dc]);
+            //                //                        }
+            //                //                    }
+            //                //                }
+            //                //            }
+            //                //            if (confidence > Properties.Settings.Default.INSPECTION_DATA_MINIMUM_CONFIDENCE &&
+            //                //                measurementPointData.RecordTimestamp != null)
+            //                //            {
+            //                //                measurementPointData.RecordTimestamp = currentDate;
+            //                //                context.MeasurementPointsProductsDatas.Add(measurementPointData);
+            //                //            }
+            //                //        }
 
-                                    foreach (var item in measuringPoints)
-                                    {
-                                        var measurementPointData = new MeasuringPointProductsData();
-                                        measurementPointData.MeasuringPointConfigId = item.Id;
-                                        DataSet dsGrid = oPhd.FetchRowData(item.TotalizerCurrentValueTag);
-                                        var confidence = 100;
-                                        foreach (DataRow row in dsGrid.Tables[0].Rows)
-                                        {
-                                            foreach (DataColumn dc in dsGrid.Tables[0].Columns)
-                                            {
-                                                if (dc.ColumnName.Equals("Tolerance") || dc.ColumnName.Equals("HostName"))
-                                                {
-                                                    continue;
-                                                }
-                                                else if (dc.ColumnName.Equals("Confidence"))
-                                                {
-                                                    if (!string.IsNullOrWhiteSpace(row[dc].ToString()))
-                                                    {
-                                                        confidence = Convert.ToInt32(row[dc]);
-                                                    }
-                                                    else
-                                                    {
-                                                        confidence = 0;
-                                                        break;
-                                                    }
-                                                }
-                                                else if (dc.ColumnName.Equals("Value"))
-                                                {
-                                                    if (!string.IsNullOrWhiteSpace(row[dc].ToString()))
-                                                    {
-                                                        measurementPointData.Value = Convert.ToDecimal(row[dc]);
-                                                    }
-                                                }
-                                            }
-                                        }
-                                        if (confidence > Properties.Settings.Default.INSPECTION_DATA_MINIMUM_CONFIDENCE &&
-                                            measurementPointData.RecordTimestamp != null)
-                                        {
-                                            measurementPointData.RecordTimestamp = currentDate;
-                                            context.MeasurementPointsProductsDatas.Add(measurementPointData);
-                                        }
-                                    }
+            //                //        //context.SaveChanges("Phd2Sql");
+            //                //    }
+            //                //}
+            //            }
+            //        }
+            //    }
 
-                                    context.SaveChanges("Phd2Sql");
-                                }
-                            }
-                        }
-                    }
-                }
-
-                logger.Info("Sync measurements points data finished!");
-            }
-            catch (DataException validationException)
-            {
-                LogValidationDataException(validationException);
-            }
-            catch (Exception ex)
-            {
-                logger.Error(ex);
-            }
+            //    logger.Info("Sync measurements points data finished!");
+            //}
+            //catch (DataException validationException)
+            //{
+            //    LogValidationDataException(validationException);
+            //}
+            //catch (Exception ex)
+            //{
+            //    logger.Error(ex);
+            //}
         }
  
         private static void SetPhdTag(string tagName, Tags tags)

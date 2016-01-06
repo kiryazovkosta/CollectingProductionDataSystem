@@ -1265,5 +1265,23 @@
             Assert.AreEqual(Convert.ToDecimal(expected), Convert.ToDecimal(actual));
         }
 
+        [TestMethod]
+        public void TestForIntNumberInFormulaString()
+        {
+            //Arrange
+            double a = 100;
+
+            var inputParams = new Dictionary<string, double>();
+            inputParams.Add("a", a);
+            double expected = 2;
+
+            string expr = @"(2d/100)*p.a";
+            //Act
+            double actual = calculator.Calculate(expr, "p", 1, inputParams);
+            //Assert
+            //.4
+            Assert.AreEqual(Convert.ToDecimal(expected), Convert.ToDecimal(actual));
+        }
+
     }
 }

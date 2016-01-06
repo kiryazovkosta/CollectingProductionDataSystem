@@ -1,0 +1,112 @@
+﻿@using System.Web.Optimization;
+@using CollectingProductionDataSystem.Web.Areas.ShiftReporting.ViewModels;
+@using CollectingProductionDataSystem.Web.Areas.SummaryReporting.ViewModels;
+@using CollectingProductionDataSystem.Web.Infrastructure.Helpers;
+@using CollectingProductionDataSystem.Web.ViewModels.Units;
+@using Resources = App_GlobalResources.Resources;
+
+@model DataConfirmationViewModel
+@{
+    Layout = "~/Views/Shared/_KendoLayoutWithSideBar.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-10">
+        <h2>@Resources.Layout.ConfirmedDataReport</h2>
+    </div>
+    <div class="col-md-2">
+        <button id="pdf-export" class="k-button k-button-icontext k-grid-excel pull-right head-button"><span class="k-icon k-i-pdf"></span>Експорт в Pdf</button>
+    </div>
+</div>
+@Html.ValidationSummary()
+@Html.AntiForgeryToken()
+
+@(Html.Kendo()
+    .Grid<DataConfirmationViewModel>()
+    .Name("confirmation")
+    .AutoBind(false)
+    .Columns(
+        columns =>
+        {
+            columns.Bound(c => c.FactorySortableName).Hidden().ClientGroupHeaderTemplate("<span style = 'font-size:25px;font-weight:bold;'>Производство #=value.substr(3,value.length-3)#</span>");
+            columns.Bound(c => c.ProcessUnitName).HtmlAttributes(new { style = "font-size:25px;" });
+            columns.Bound(c => c.Shift1Confirmed).ClientTemplate("<div class='text-center width100'><div class='#:data.Shift1Confirmed ? 'green-light':'red-light'#'></div></div>");
+            columns.Bound(c => c.Shift2Confirmed).ClientTemplate("<div class='text-center width100'><div class='#:data.Shift2Confirmed ? 'green-light':'red-light'#'></div></div>");
+            columns.Bound(c => c.Shift3Confirmed).ClientTemplate("<div class='text-center width100'><div class='#:data.Shift3Confirmed ? 'green-light':'red-light'#'></div></div>");
+            columns.Bound(c => c.DayConfirmed).ClientTemplate("<div class='text-center width100'><div class='#:data.DayConfirmed ? 'green-light':'red-light'#'></div></div>");
+            columns.Bound(c => c.ConfirmedDaysUntilTheDay).Title("").ClientTemplate("<div id='calendar_#=data.ProcessUnitId#' class='calendar' data-json='#= data.ConfirmedDaysUntilTheDay #'></div>");
+
+        })
+        .Pageable(pageable => pageable
+            .Refresh(true)
+            .PageSizes(new[] { 10, 20, 50, 100 })
+            .ButtonCount(5)
+        )
+                .Editable(editable => editable.Mode(GridEditMode.InLine))
+        .Sortable()
+        //.ToolBar(tb=>tb.Pdf())
+            .Pdf(pdf => pdf
+                .AllPages()
+                .Title(@Resources.Layout.ConfirmedDataReport + " към " + DateTime.Now)
+                .FileName(@Resources.Layout.ConfirmedDataReport + "_" + DateTime.Now + ".pdf")
+                .ProxyURL(Url.Action("Pdf_Export_Save", "Ajax", new { area = "" }))
+                .PaperSize("A4")
+                .Margin("1cm","1cm","1cm","1cm")
+                
+            )
+        //.Excel(excel => excel
+        //.FileName(@Resources.Layout.UnitsDailyData + "_" + DateTime.Now + ".xlsx")
+        //.Filterable(true)
+        //.ProxyURL(Url.Action("Excel_Export_Save", "Ajax", new { area = "" }))
+        //.AllPages(true))
+            .Events(ev => ev.DataBound("unitGridsData.ConfirmationDataBound")
+                            .PdfExport("unitGridsData.FormatGridToPdfExport"))
+            .Scrollable(scr => scr.Height(680))
+            .Filterable()
+            .DataSource(dataSource => dataSource
+                .Ajax()
+                .PageSize(50)
+                .ServerOperation(true)
+                    .Group(group =>
+                    {
+                        group.Add(c => c.FactorySortableName);
+                    })
+                .Model(model =>
+                {
+                    model.Id("ProcessUnitId");
+                })
+                .Read(read => read.Action("ReadConfirmationData", "SummaryReports", new { area = "SummaryReporting" }).Data("unitGridsData.SendDate"))
+
+            .Events(events =>
+            {
+                events.Error("kendoAdditional.ErrorHandler");
+
+            })
+        )
+)
+
+@* //Error window for kendo grid error event handler *@
+<div id="err-window" style="display:none">@Html.Partial("_KendoGridErrorWindow")</div>
+@* //Error window for kendo grid error event handler *@
+<div id="success-window" style="display:none">@Html.Partial("_SuccessWindow")</div>
+@{var id = 0;}
+<script type="text/kendo" id="customeTemplate">
+    @(Html.Kendo()
+    .Calendar()
+    .Name("calendar_" + id++)
+    .Value(DateTime.Today)
+    .MonthTemplate(month => month.Content("<div class='small-red-light'>" + "\\#=value\\#" + "</div>"))
+    .ToClientTemplate()
+    )
+</script>
+
+@section scripts{
+    @Scripts.Render("~/bundles/custom/kendoadditional")
+    @Scripts.Render("~/bundles/custom/unitGrids")
+    @Scripts.Render("~/Scripts/custom/confirmationRefresh.min.js")
+    @Scripts.Render("~/Scripts/kendo/pako_deflate.min.js")
+}
+@section sidebar{
+    @Html.Partial("_UnitsDailySideBar")
+}
+

@@ -8,10 +8,12 @@
     public class ProductionPlanConfig : DeletableEntity, IEntity
     {
         private ICollection<UnitDailyConfig> unitsDailyConfigs;
+        private ICollection<ProductionPlanData> productionPlanDatas;
 
         public ProductionPlanConfig()
         {
             this.unitsDailyConfigs = new HashSet<UnitDailyConfig>();
+            this.productionPlanDatas = new HashSet<ProductionPlanData>();
         }
 
         public int Id { get; set; }
@@ -30,6 +32,8 @@
 
         public int ProcessUnitId { get; set; }
 
+        public int Position { get; set; }
+
         public virtual ProcessUnit ProcessUnit { get; set; }
 
         public virtual ICollection<UnitDailyConfig> UnitsDailyConfigsFact 
@@ -38,5 +42,12 @@
             set { this.unitsDailyConfigs = value; } 
         }
 
+        public virtual ICollection<ProductionPlanData> ProductionPlanDatas
+        {
+            get { return this.productionPlanDatas; }
+            set { this.productionPlanDatas = value; }
+        }
+
+        public bool IsSummaryOfProcessing { get; set; }
     }
 }

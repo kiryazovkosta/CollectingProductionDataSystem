@@ -10,7 +10,7 @@
     using CollectingProductionDataSystem.Infrastructure.Mapping;
     using CollectingProductionDataSystem.Models.Contracts;
     using CollectingProductionDataSystem.Models.Nomenclatures;
-    using CollectingProductionDataSystem.Web.Infrastructure.MadelBinders;
+    using CollectingProductionDataSystem.Web.Infrastructure.ModelBinders;
     using Resources = App_GlobalResources.Resources;
 
     [Bind(Exclude = "BeginTime, EndTime, ReadOffset, ReadPollTimeSlot, ShiftDuration")]

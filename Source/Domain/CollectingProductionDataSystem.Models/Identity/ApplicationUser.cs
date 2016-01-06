@@ -101,6 +101,10 @@
 
         public bool IsChangePasswordRequired { get; set; }
 
+        public int IsUserLoggedIn { get; set; }
+
+        public DateTime? LastLogedIn { get; set; }
+
         public virtual ICollection<ApplicationUserProcessUnit> ApplicationUserProcessUnits
         {
             get { return this.applicationUserProcessUnits; }

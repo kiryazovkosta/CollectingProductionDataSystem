@@ -6,10 +6,13 @@
     using System.Linq;
     using System.Security.Claims;
     using System.Threading.Tasks;
+    using System.Transactions;
     using System.Web;
     using System.Web.Mvc;
     using CollectingProductionDataSystem.Application.IdentityInfrastructure;
     using CollectingProductionDataSystem.Data.Contracts;
+    using CollectingProductionDataSystem.Infrastructure.Contracts;
+    using CollectingProductionDataSystem.Models.Identity;
     using CollectingProductionDataSystem.Web.Areas.Administration.ViewModels;
     using Resources = App_GlobalResources.Resources;
     using Microsoft.AspNet.Identity;
@@ -20,30 +23,32 @@
     [Authorize]
     public class AccountController : BaseController
     {
-        private ApplicationSignInManager _signInManager;
-        private ApplicationUserManager _userManager;
+        private ApplicationSignInManager signInManager;
+        private ApplicationUserManager userManager;
+        private ILogger logger;
 
-        public AccountController(IProductionData dataParam)
+        public AccountController(IProductionData dataParam, ILogger loggerParam)
             : base(dataParam)
         {
+            this.logger = loggerParam;
         }
 
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager, IProductionData dataParam)
-            : this(dataParam)
+        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager, IProductionData dataParam, ILogger loggerParam)
+            : this(dataParam, loggerParam)
         {
-            UserManager = userManager;
-            SignInManager = signInManager;
+            this.userManager = userManager;
+            this.signInManager = signInManager;
         }
 
         public ApplicationSignInManager SignInManager
         {
             get
             {
-                return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
+                return signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
             }
             private set
             {
-                _signInManager = value;
+                signInManager = value;
             }
         }
 
@@ -51,11 +56,11 @@
         {
             get
             {
-                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+                return userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
             }
             private set
             {
-                _userManager = value;
+                userManager = value;
             }
         }
 
@@ -65,7 +70,7 @@
         public ActionResult Login(string returnUrl)
         {
             ViewBag.Title = Resources.Layout.Login;
-            ViewBag.ReturnUrl = returnUrl;
+            ViewBag.ReturnUrl = returnUrl ?? Url.Action("Index", "Home", new { area = string.Empty });
             return View();
         }
 
@@ -74,7 +79,7 @@
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
+        public ActionResult Login(LoginViewModel model, string returnUrl)
         {
             if (!ModelState.IsValid)
             {
@@ -91,10 +96,23 @@
                 ModelState.AddModelError("", Resources.ErrorMessages.InvalidLogin);
                 return View(model);
             }
-            var result = await SignInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, shouldLockout: false);
+            var result = SignInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, shouldLockout: false).Result;
+            if (result != SignInStatus.Success)
+            {
+                logger.AuthenticationError("Invalid Attempt to Login", this, model.UserName);
+            }
+
             switch (result)
             {
                 case SignInStatus.Success:
+                    if (this.UserProfile == null)
+                    {
+                        this.RenewApplicationUser(
+                            model.UserName,
+                            this.HttpContext.Request.RequestContext);
+                    }
+                    Session["user"] = this.UserProfile;
+                    DocumentUserLogIn(model.UserName, true);
                     if (userProfile.IsChangePasswordRequired)
                     {
                         return RedirectToAction("ChangePassword");
@@ -111,12 +129,17 @@
             }
         }
 
-
         // GET: /Account/ChangePassword
         public ActionResult ChangePassword()
         {
+            var model = this.data.Users.All()
+                .Where(x => x.Id == this.UserProfile.Id)
+                .Select(x => new ChangePasswordViewModel() { 
+                    UserMustChangePassword = x.IsChangePasswordRequired 
+                }).FirstOrDefault();
+
             ViewBag.Title = Resources.Layout.ChangePassword;
-            return View();
+            return View(model);
         }
 
         // POST: /Account/ChangePassword
@@ -127,6 +150,7 @@
         {
             if (!ModelState.IsValid)
             {
+                ViewBag.Title = Resources.Layout.ChangePassword;
                 return View(model);
             }
             var result = ClearIsChangePasswordRequired();
@@ -147,6 +171,7 @@
                 return RedirectToAction("Index", "Home", new { Message = ManageMessageId.ChangePasswordSuccess });
             }
             AddErrors(result);
+            ViewBag.Title = Resources.Layout.ChangePassword;
             return View(model);
         }
 
@@ -155,7 +180,9 @@
         [ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
-            AuthenticationManager.SignOut();
+            AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+            DocumentUserLogIn(this.UserProfile.UserName, false);
+            Session["user"] = null;
             return RedirectToAction("Index", "Home");
         }
 
@@ -170,16 +197,16 @@
         {
             if (disposing)
             {
-                if (_userManager != null)
+                if (userManager != null)
                 {
-                    _userManager.Dispose();
-                    _userManager = null;
+                    userManager.Dispose();
+                    userManager = null;
                 }
 
-                if (_signInManager != null)
+                if (signInManager != null)
                 {
-                    _signInManager.Dispose();
-                    _signInManager = null;
+                    signInManager.Dispose();
+                    signInManager = null;
                 }
             }
 
@@ -205,6 +232,55 @@
                 ModelState.AddModelError("", error);
             }
         }
+
+        /// <summary>
+        /// Documents the user log in.
+        /// </summary>
+        /// <param name="model">The model.</param>
+        private void DocumentUserLogIn(string userName, bool isOperationLogIn)
+        {
+            var user = this.data.Users.All().FirstOrDefault(x => x.UserName == userName);
+            if (user != null)
+            {
+                user.IsUserLoggedIn += isOperationLogIn ? 1 : -user.IsUserLoggedIn;
+
+                if (user.IsUserLoggedIn < 0)
+                {
+                    user.IsUserLoggedIn = 0;
+                }
+
+                if (isOperationLogIn)
+                {
+                    user.LastLogedIn = DateTime.Now;
+                }
+
+                this.data.Users.Update(user);
+
+                try
+                {
+                    var result = this.data.SaveChanges(userName);
+                    if (!result.IsValid)
+                    {
+                        logger.Error("Cannot persist user LogIn", this, new AccessViolationException(), result.EfErrors.Select(x => x.ErrorMessage));
+                    }
+
+                    var numberLogedInUsers = this.data.Users.All().Count(x => x.IsUserLoggedIn > 0);
+                    var logedInUsers = new LogedInUser() { LogedUsersCount = numberLogedInUsers };
+                    this.data.LogedInUsers.Add(logedInUsers);
+                    result = this.data.SaveChanges("System");
+
+                    if (!result.IsValid)
+                    {
+                        logger.Error("Cannot persist user LogIn", this, new AccessViolationException(), result.EfErrors.Select(x => x.ErrorMessage));
+                    }
+                }
+                catch (Exception ex)
+                {
+                    logger.Error(ex.Message, this, ex);
+                }
+            }
+        }
+
 
         private ActionResult RedirectToLocal(string returnUrl)
         {

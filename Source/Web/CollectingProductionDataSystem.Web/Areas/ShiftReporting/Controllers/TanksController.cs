@@ -29,7 +29,7 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult ReadTanksData([DataSourceRequest]DataSourceRequest request, DateTime? date, int? parkId, int? shiftId)
+        public ActionResult ReadTanksData([DataSourceRequest]DataSourceRequest request, DateTime? date, int? parkId, int? shiftId, int? areaId)
         {
             ValidateInputModel(date, parkId, shiftId);
 
@@ -40,8 +40,9 @@
                 var dbResult = this.data.TanksData.All()
                     .Include(t => t.TankConfig)
                     .Include(t => t.TankConfig.Park)
-                    .Where(t => t.RecordTimestamp == date)
-                    .Where(t => t.ParkId == parkId);
+                    .Where(t => t.RecordTimestamp == date
+                        && t.TankConfig.Park.AreaId == (areaId ?? t.TankConfig.Park.AreaId)
+                        && t.ParkId == (parkId ?? t.ParkId));
 
 
                 var kendoResult = dbResult.ToDataSourceResult(request, ModelState);
@@ -61,9 +62,12 @@
             {
                 this.ModelState.AddModelError("date", string.Format(Resources.ErrorMessages.Required, Resources.Layout.TanksDateSelector));
             }
-            if (parkId == null)
+            if (!User.IsInRole("Administrator") && !User.IsInRole("AllParksReporter"))
             {
-                this.ModelState.AddModelError("parks", string.Format(Resources.ErrorMessages.Required, Resources.Layout.TanksParkSelector));
+                if (parkId == null)
+                {
+                    this.ModelState.AddModelError("parks", string.Format(Resources.ErrorMessages.Required, Resources.Layout.TanksParkSelector));
+                }
             }
             if (shiftId == null)
             {

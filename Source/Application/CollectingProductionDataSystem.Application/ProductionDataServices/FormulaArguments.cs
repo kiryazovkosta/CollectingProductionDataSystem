@@ -60,5 +60,10 @@
         /// </summary>
         public double? FactorAlpha { get; set; }
 
+        /// <summary>
+        /// Процент калкулация за изчисление по формула
+        /// </summary>
+        public double? CalculationPercentage { get; set; }
+
     }
 }

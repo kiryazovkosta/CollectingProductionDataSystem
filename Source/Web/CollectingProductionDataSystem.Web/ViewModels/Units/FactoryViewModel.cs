@@ -1,4 +1,5 @@
-﻿using CollectingProductionDataSystem.Infrastructure.Mapping;
+﻿using System.Text;
+using CollectingProductionDataSystem.Infrastructure.Mapping;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,18 @@ namespace CollectingProductionDataSystem.Web.ViewModels.Units
         public int Id { get; set; }
         public string Name { get; set; }
         public string  FullName { get; set; }
+
+        public string FactorySortableName
+        {
+            get
+            {
+                var sb = new StringBuilder();
+                sb.Append(this.Id.ToString("d2"));
+                sb.Append(" ");
+                sb.Append(this.Name);
+                return sb.ToString();
+            }
+        }
 
         public void CreateMappings(AutoMapper.IConfiguration configuration)
         {

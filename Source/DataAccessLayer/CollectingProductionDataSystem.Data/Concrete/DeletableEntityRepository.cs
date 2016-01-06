@@ -28,7 +28,9 @@
         public override void Delete(T entity)
         {
             var entry = this.Context.Entry(entity);
-            entry.State = EntityState.Deleted;
+            entity.DeletedOn = DateTime.Now;
+            entity.IsDeleted = true;
+            entry.State = EntityState.Modified;
         }
     }
 }

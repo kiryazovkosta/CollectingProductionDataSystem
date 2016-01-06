@@ -57,6 +57,7 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -76,10 +77,6 @@
     <ProjectReference Include="..\Application\CollectingProductionDataSystem.Application\CollectingProductionDataSystem.Application.csproj">
       <Project>{3a125de9-28b9-4004-a1d9-bebde62ac786}</Project>
       <Name>CollectingProductionDataSystem.Application</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Common\CollectingProductionDataSystem.Contracts\CollectingProductionDataSystem.Contracts.csproj">
-      <Project>{8dd67abb-5bfb-4a28-82df-7bfe8ca483a6}</Project>
-      <Name>CollectingProductionDataSystem.Contracts</Name>
     </ProjectReference>
     <ProjectReference Include="..\DataAccessLayer\CollectingProductionDataSystem.Data\CollectingProductionDataSystem.Data.csproj">
       <Project>{59ca4923-fd5f-4087-a7ee-5623f1dd8ca9}</Project>

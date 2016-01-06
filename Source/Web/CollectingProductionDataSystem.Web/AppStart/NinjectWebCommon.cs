@@ -14,7 +14,9 @@ namespace CollectingProductionDataSystem.Web.AppStart
     using CollectingProductionDataSystem.Application.UserServices;
     using CollectingProductionDataSystem.Data.Common;
     using CollectingProductionDataSystem.Data.Contracts;
-    using CollectingProductionDataSystem.Web.Infrastructure.MadelBinders;
+    using CollectingProductionDataSystem.Infrastructure.Contracts;
+    using CollectingProductionDataSystem.Infrastructure.Log;
+    using CollectingProductionDataSystem.Web.Infrastructure.ModelBinders;
     using Microsoft.Web.Infrastructure.DynamicModuleHelper;
     using Ninject;
     using Ninject.Web.Common;
@@ -22,6 +24,7 @@ namespace CollectingProductionDataSystem.Web.AppStart
     using CollectingProductionDataSystem.Data;
     using CollectingProductionDataSystem.Data.Concrete;
     using CollectingProductionDataSystem.Application.UnitsDataServices;
+    using CollectingProductionDataSystem.Application.ProductionPlanDataServices;
 
 
     public static class NinjectWebCommon 
@@ -88,6 +91,8 @@ namespace CollectingProductionDataSystem.Web.AppStart
             kernel.Bind<ICalculatorService>().To<CalculatorService>();
             kernel.Bind<IUnitDailyDataService>().To<UnitDailyDataService>();
             kernel.Bind<IProductionDataCalculatorService>().To<ProductionDataCalculatorService>();
+            kernel.Bind<ILogger>().To<Logger>();
+            kernel.Bind<IProductionPlanDataService>().To<ProductionPlanDataService>();
         }        
     }
 }

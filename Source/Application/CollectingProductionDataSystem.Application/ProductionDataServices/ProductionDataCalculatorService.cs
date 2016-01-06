@@ -2,11 +2,13 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Data.Entity;
     using System.Linq;
     using CollectingProductionDataSystem.Application.Contracts;
     using CollectingProductionDataSystem.Application.CalculatorService;
     using CollectingProductionDataSystem.Data.Common;
     using CollectingProductionDataSystem.Data.Contracts;
+    using CollectingProductionDataSystem.Models.Nomenclatures;
     using CollectingProductionDataSystem.Models.Productions;
     using System.ComponentModel.DataAnnotations;
 
@@ -87,11 +89,17 @@
                 case "G7":
                     result = FormulaG7(arguments);
                     break;
+                case "G7a":
+                    result = FormulaG7a(arguments);
+                    break;
                 case "R10":
                     result = FormulaR10(arguments);
                     break;
                 case "O13":
                     result = FormulaO13(arguments);
+                    break;
+                case "O18":
+                    result = FormulaO18(arguments);
                     break;
                 case "V14":
                     result = FormulaV14(arguments);
@@ -101,6 +109,9 @@
                     break;
                 case "I17":
                     result = FormulaI17(arguments);
+                    break;
+                case "I17a":
+                    result = FormulaI17a(arguments);
                     break;
                 case "R18":
                     result = FormulaR18(arguments);
@@ -123,11 +134,23 @@
                 case "G26":
                     result = FormulaG26(arguments);
                     break;
+                case "G26a":
+                    result = FormulaG26a(arguments);
+                    break;
                 case "P26":
                     result = FormulaP26(arguments);
                     break;
                 case "N42":
                     result = FormulaN42(arguments);
+                    break;
+                case "C1":
+                    result = FormulaC1(arguments);
+                    break;
+                case "C2":
+                    result = FormulaC2(arguments);
+                    break;
+                case "C3":
+                    result = FormulaC3(arguments);
                     break;
                 default:
                     throw new ArgumentException("The entered value of the formula code is invalid!");
@@ -149,6 +172,26 @@
                 AddOrUpdateUnitEnteredForCalculationData(unitDataId, oldValue, newValue);
                 AddOrUpdateUnitsManualData(unitDataId, calculatedValue);
                 var status = this.data.SaveChanges(userName);
+
+                var relatdUnitConfigs = this.data.RelatedUnitConfigs.All().Where(x => x.RelatedUnitConfigId == unitConfig.Id).ToList();
+                if (relatdUnitConfigs.Count() > 0)
+                {
+                    foreach (var relatedUnitConfig in relatdUnitConfigs)
+                    {
+                        var rUnitConfig = this.data.UnitConfigs.GetById(relatedUnitConfig.UnitConfigId);
+                        if (rUnitConfig.IsCalculated)
+                        {
+                            var rFormulaCode = rUnitConfig.CalculatedFormula ?? string.Empty;
+                            var rArguments = PopulateFormulaTadaFromPassportData(rUnitConfig);
+                            PopulateFormulaDataFromRelatedUnitConfigs(rUnitConfig, rArguments, unitData.RecordTimestamp, unitData.ShiftId);
+                            var rNewValue = this.Calculate(rFormulaCode, rArguments);
+                            status = UpdateCalculatedUnitConfig(relatedUnitConfig.UnitConfigId, rNewValue, unitData.RecordTimestamp, unitData.ShiftId);
+                        }
+                    }
+
+                    status = this.data.SaveChanges(userName);
+                }
+
                 return status;
             }
             else
@@ -169,6 +212,7 @@
             arguments.EstimatedPressure = (double?)unitConfig.EstimatedPressure;
             arguments.EstimatedTemperature = (double?)unitConfig.EstimatedTemperature;
             arguments.EstimatedCompressibilityFactor = (double?)unitConfig.EstimatedCompressibilityFactor;
+            arguments.CalculationPercentage = (double?)unitConfig.CalculationPercentage;
             if (arguments.EstimatedDensity.HasValue)
             {
                 var d = ((int)(arguments.EstimatedDensity.Value * 1000)) / 100;
@@ -191,10 +235,18 @@
                         .All()
                         .Where(x => x.RecordTimestamp == unitData.RecordTimestamp)
                         .Where(x => x.ShiftId == unitData.ShiftId)
-                        .Where(x => x.UnitConfigId == unitConfig.Id)
+                        .Where(x => x.UnitConfigId == relatedUnitConfig.RelatedUnitConfig.Id)
                         .FirstOrDefault()
                         .RealValue;
-                if (parameterType == "T")
+                if (parameterType == "I+")
+                {
+                    arguments.InputValue += inputValue;    
+                }
+                else if (parameterType == "I-")
+                {
+                    arguments.InputValue -= inputValue;    
+                }
+                else if (parameterType == "T")
                 {
                     arguments.Temperature = inputValue;
                 }
@@ -208,6 +260,91 @@
                 }
             }
             return arguments;
+        }
+
+        private FormulaArguments PopulateFormulaTadaFromPassportData(UnitConfig unitConfig)
+        {
+            var arguments = new FormulaArguments();
+            arguments.MaximumFlow = (double?)unitConfig.MaximumFlow;
+            arguments.EstimatedDensity = (double?)unitConfig.EstimatedDensity;
+            arguments.EstimatedPressure = (double?)unitConfig.EstimatedPressure;
+            arguments.EstimatedTemperature = (double?)unitConfig.EstimatedTemperature;
+            arguments.EstimatedCompressibilityFactor = (double?)unitConfig.EstimatedCompressibilityFactor;
+            arguments.CalculationPercentage = (double?)unitConfig.CalculationPercentage;
+            return arguments;
+        }
+
+        private void PopulateFormulaDataFromRelatedUnitConfigs(UnitConfig unitConfig, FormulaArguments arguments, DateTime recordDate, ShiftType shiftId)
+        {
+            var ruc = unitConfig.RelatedUnitConfigs.ToList();
+            foreach (var ru in ruc)
+            {
+                var parameterType = ru.RelatedUnitConfig.AggregateGroup;
+                var inputValue = 0.0;
+                //if (ru.RelatedUnitConfigId == model.UnitConfigId)
+                //{
+                //    inputValue = (double)model.UnitsManualData.Value;
+                //}
+                //else
+                //{
+                    var dtExists = data.UnitsData.All()
+                        .Where(x => x.RecordTimestamp == recordDate && x.ShiftId == shiftId && x.UnitConfigId == ru.RelatedUnitConfigId)
+                        .FirstOrDefault();
+
+                    inputValue = dtExists == null ? 0.0D : dtExists.RealValue;
+                //}
+
+                if (parameterType == "I+")
+                {
+                    var exsistingValue = arguments.InputValue.HasValue ? arguments.InputValue.Value : 0.0;
+                    arguments.InputValue = exsistingValue + inputValue;
+                }
+                else if (parameterType == "I-")
+                {
+                    var exsistingValue = arguments.InputValue.HasValue ? arguments.InputValue.Value : 0.0;
+                    arguments.InputValue = exsistingValue - inputValue;
+                }
+                else if (parameterType == "T")
+                {
+                    arguments.Temperature = inputValue;
+                }
+                else if (parameterType == "P")
+                {
+                    arguments.Pressure = inputValue;
+                }
+                else if (parameterType == "D")
+                {
+                    arguments.Density = inputValue;
+                }
+            }
+        }
+
+        private IEfStatus UpdateCalculatedUnitConfig(int unitConfigId, double newValue, DateTime recordDate, ShiftType shiftId)
+        {
+            var record = data.UnitsData
+                               .All().Include(x => x.UnitConfig)
+                               .Where(x => x.RecordTimestamp == recordDate && x.ShiftId == shiftId && x.UnitConfigId == unitConfigId)
+                               .FirstOrDefault();
+
+            IEfStatus result = new EfStatus();
+            var existManualRecord = this.data.UnitsManualData.All().FirstOrDefault(x => x.Id == record.Id);
+            if (existManualRecord == null)
+            {
+                this.data.UnitsManualData.Add(new UnitsManualData
+                {
+                    Id = record.Id,
+                    Value = (decimal)newValue,
+                    EditReasonId = this.data.EditReasons.All().Where(x => x.Name == "Калкулация").FirstOrDefault().Id
+                });
+            }
+            else
+            {
+                existManualRecord.Value = (decimal)newValue;
+                existManualRecord.EditReasonId = this.data.EditReasons.All().Where(x => x.Name == "Калкулация").FirstOrDefault().Id;
+                this.data.UnitsManualData.Update(existManualRecord);
+            }
+
+            return result;
         }
 
         private void AddOrUpdateUnitsManualData(int unitDataId, double calculatedValue)
@@ -303,12 +440,38 @@
         /// </summary>
         private double FormulaPP1(FormulaArguments args)
         {
-            double p = 20;
-            double t = 20;
-            double d2 = 15;
-            double pl = 20;
-            double d5 = 2;
-            double d6 = 2;
+            if (!args.InputValue.HasValue)
+            {
+                throw new ArgumentNullException("The value of CounterIndication(PL) is not allowed to be null");
+            }
+            if (!args.MaximumFlow.HasValue)
+            {
+                throw new ArgumentNullException("The value of MaximumFlow(D2) is not allowed to be null");
+            }
+            if (!args.EstimatedPressure.HasValue)
+            {
+                throw new ArgumentNullException("The value of EstimatedPressure(D5) is not allowed to be null");
+            }
+            if (!args.Pressure.HasValue)
+            {
+                args.Pressure = args.EstimatedPressure.Value;
+            }
+            if (!args.EstimatedTemperature.HasValue)
+            {
+                throw new ArgumentNullException("The value of EstimatedTemperature(D6) is not allowed to be null");
+            }
+            if (!args.Temperature.HasValue)
+            {
+                args.Temperature = args.EstimatedTemperature.Value;
+            }
+
+            double pl = args.InputValue.Value;
+            double d2 = args.MaximumFlow.Value;
+            double p = args.Pressure.Value;
+            double t = args.Temperature.Value;
+            double d5 = args.EstimatedPressure.Value;
+            double d6 = args.EstimatedTemperature.Value;
+
             double a1 = Functions.GetValueFormulaA1(p, t, d5, d6);
             double f = Functions.GetValueFormulaF(d2, pl, a1);
 
@@ -376,14 +539,6 @@
             {
                 throw new ArgumentNullException("The value of CounterIndication(PL) is not allowed to be null");
             }
-            if (!args.Pressure.HasValue)
-            {
-                throw new ArgumentNullException("The value of Pressure(P) is not allowed to be null");
-            }
-            if (!args.Temperature.HasValue)
-            {
-                throw new ArgumentNullException("The value of Temperature(T) is not allowed to be null");
-            }
             if (!args.MaximumFlow.HasValue)
             {
                 throw new ArgumentNullException("The value of MaximumFlow(D2) is not allowed to be null");
@@ -395,6 +550,14 @@
             if (!args.EstimatedTemperature.HasValue)
             {
                 throw new ArgumentNullException("The value of EstimatedTemperature(D6) is not allowed to be null");
+            }
+            if (!args.Pressure.HasValue)
+            {
+                args.Pressure = args.EstimatedPressure;
+            }
+            if (!args.Temperature.HasValue)
+            {
+                args.Temperature = args.EstimatedTemperature;
             }
             
             double pl = args.InputValue.Value;
@@ -435,7 +598,7 @@
             }
 
             double pl = args.InputValue.Value;
-            double p = args.Pressure.Value > 0 ? args.Pressure.Value : args.EstimatedTemperature.Value;
+            double p = args.Pressure.Value > 0 ? args.Pressure.Value : args.EstimatedPressure.Value;
             double t = args.Temperature.Value > 0 ? args.Temperature.Value : args.EstimatedTemperature.Value;
 
             double ent = Functions.GetValueFormulaEN(t, p);
@@ -458,17 +621,25 @@
             {
                 throw new ArgumentNullException("The value of CounterIndication(PL) is not allowed to be null");
             }
-            if (!args.Pressure.HasValue)
+            if (!args.EstimatedPressure.HasValue)
             {
                 throw new ArgumentNullException("The value of Pressure(P) is not allowed to be null");
             }
-            if (!args.Temperature.HasValue)
+            if (!args.EstimatedTemperature.HasValue)
             {
                 throw new ArgumentNullException("The value of Temperature(T) is not allowed to be null");
             }
+            if (!args.Pressure.HasValue)
+            {
+                args.Pressure = args.EstimatedPressure;
+            }
+            if (!args.Temperature.HasValue)
+            {
+                args.Temperature = args.EstimatedTemperature;
+            }
 
             double pl = args.InputValue.Value;
-            double p = args.Pressure.Value > 0 ? args.Pressure.Value : args.EstimatedTemperature.Value;
+            double p = args.Pressure.Value > 0 ? args.Pressure.Value : args.EstimatedPressure.Value;
             double t = args.Temperature.Value > 0 ? args.Temperature.Value : args.EstimatedTemperature.Value;
             double ent = Functions.GetValueFormulaEN(t, p);
 
@@ -486,9 +657,6 @@
         /// </summary>
         private double FormulaN2(FormulaArguments args)
         {
-            double c = 0;
-            double a2 = 0;
-            double f = 0;
             double p = 15;
             double t = 40;
             double pl = 20;
@@ -503,9 +671,10 @@
             {
                 d = 0.5;
             }
-            c = Functions.GetValueFormulaC(t, d, al);
-            a2 = Functions.GetValueFormulaA2(p, t, c, d4, d5, d6);
-            f = Functions.GetValueFormulaF(d2, pl, a2);
+
+            double c = Functions.GetValueFormulaC(t, d, al);
+            double a2 = Functions.GetValueFormulaA2(p, t, c, d4, d5, d6);
+            double f = Functions.GetValueFormulaF(d2, pl, a2);
 
             var inputParams = new Dictionary<string, double>();
             inputParams.Add("f", f);
@@ -767,14 +936,48 @@
         /// </summary>
         private double FormulaG7(FormulaArguments args)
         {
-            double p = 15;
-            double t = 40;
-            double pl = 20;
-            double d2 = 15;
-            double d4 = 5;
-            double d5 = 10;
-            double d6 = 50;
-            double d = 50;
+            if (!args.InputValue.HasValue)
+            {
+                throw new ArgumentNullException("The value of CounterIndication(PL) is not allowed to be null");
+            }
+            if (!args.MaximumFlow.HasValue)
+            {
+                throw new ArgumentNullException("The value of MaximumFlow(D2) is not allowed to be null");
+            }
+            if (!args.EstimatedDensity.HasValue)
+            {
+                throw new ArgumentNullException("The value of EstimatedDensity(D4) is not allowed to be null");
+            }
+            if (!args.Density.HasValue)
+            {
+                args.Density = args.EstimatedDensity.Value;
+            }
+            if (!args.EstimatedPressure.HasValue)
+            {
+                throw new ArgumentNullException("The value of EstimatedPressure(D5) is not allowed to be null");
+            }
+            if (!args.Pressure.HasValue)
+            {
+                args.Pressure = args.EstimatedPressure.Value;
+            }
+
+            if (!args.EstimatedTemperature.HasValue)
+            {
+                throw new ArgumentNullException("The value of EstimatedTemperature(D6) is not allowed to be null");
+            }
+            if (!args.Temperature.HasValue)
+            {
+                args.Temperature = args.EstimatedTemperature.Value;
+            }
+
+            double pl = args.InputValue.Value;
+            double p = args.Pressure.Value;
+            double t = args.Temperature.Value;
+            double d = args.Density.Value;
+            double d2 = args.MaximumFlow.Value;
+            double d4 = args.EstimatedDensity.Value;
+            double d5 = args.EstimatedPressure.Value;
+            double d6 = args.EstimatedTemperature.Value;
             double df = d;
 
             double a7 = Functions.GetValueFormulaA7(p, t, d, d4, d5, d6);
@@ -785,7 +988,46 @@
             inputParams.Add("f", f);
 
             string expr = @"par.f";
-            double result = calculator.Calculate(expr, "par", 1, inputParams);
+            var result = calculator.Calculate(expr, "par", 1, inputParams);
+            return result;
+        }
+
+        /// <summary>
+        /// 9917) G7 ;НЕФТОЗАВОДСКИ ГАЗ И ВОДОРОД НОРМАЛНИ КУБИЧНИ МЕТРИ
+        /// </summary>
+        private double FormulaG7a(FormulaArguments args)
+        {
+            if (!args.InputValue.HasValue)
+            {
+                throw new ArgumentNullException("The value of CounterIndication(PL) is not allowed to be null");
+            }
+            if (!args.MaximumFlow.HasValue)
+            {
+                throw new ArgumentNullException("The value of MaximumFlow(D2) is not allowed to be null");
+            }
+            if (!args.EstimatedDensity.HasValue)
+            {
+                throw new ArgumentNullException("The value of EstimatedDensity(D4) is not allowed to be null");
+            }
+            if (!args.Density.HasValue)
+            {
+                args.Density = args.EstimatedDensity.Value;
+            }
+
+            double pl = args.InputValue.Value;
+            double d = args.Density.Value;
+            double d2 = args.MaximumFlow.Value;
+            double d4 = args.EstimatedDensity.Value;
+            double df = d;
+
+            double f = (((d2 * pl) / 100) * 8) * d4;
+            f = (f * df) / 1000;
+
+            var inputParams = new Dictionary<string, double>();
+            inputParams.Add("f", f);
+
+            string expr = @"par.f";
+            var result = calculator.Calculate(expr, "par", 1, inputParams);
             return result;
         }
 
@@ -840,6 +1082,38 @@
 
             string expr = @"par.q";
             double result = calculator.Calculate(expr, "par", 1, inputParams);
+            return result;
+        }
+
+        /// <summary>
+        /// 36) O18 ;;БРОЯЧИ ЗА ВОДИ :: X A11 Q
+        /// </summary>
+        private double FormulaO18(FormulaArguments args)              
+        {
+            if (!args.InputValue.HasValue)
+            {
+                throw new ArgumentNullException("The value of CounterIndication(PL) is not allowed to be null");
+            }
+            if (!args.OldValue.HasValue)
+            {
+                throw new ArgumentNullException("The value of Old CounterIndication(PL-1) is not allowed to be null");
+            }
+            if (!args.MaximumFlow.HasValue)
+            {
+                throw new ArgumentNullException("The value of MaximumFlow(D2) is not allowed to be null");
+            }
+
+            double pl = args.InputValue.Value;
+            double pl1 = args.OldValue.Value;
+            double d2 = args.MaximumFlow.Value;
+
+            double q = Functions.GetValueFormulaA11(pl, pl1, d2);
+
+            var inputParams = new Dictionary<string, double>();
+            inputParams.Add("q", q);
+
+            string expr = @"par.q";
+            var result = calculator.Calculate(expr, "par", 1, inputParams);
             return result;
         }
 
@@ -922,6 +1196,31 @@
         }
 
         /// <summary>
+        /// 9931) I17a ;ВЪЗДУХ, АЗОТ, КИСЛОРОД ОТ НОРМАЛНИ КУБИЧНИ МЕТРИ
+        /// </summary>
+        private double FormulaI17a(FormulaArguments args)
+        {
+            if (!args.InputValue.HasValue)
+            {
+                throw new ArgumentNullException("The value of CounterIndication(PL) is not allowed to be null");
+            }
+            if (!args.MaximumFlow.HasValue)
+            {
+                throw new ArgumentNullException("The value of MaximumFlow(D2) is not allowed to be null");
+            }
+
+            double pl = args.InputValue.Value; 
+            double d2 = args.MaximumFlow.Value;
+            double f = ((pl / 100.00) * d2) * 8.00;
+            
+            var inputParams = new Dictionary<string, double>();
+            inputParams.Add("f", f);
+            string expr = @"par.f";
+            var result = calculator.Calculate(expr, "par", 1, inputParams);
+            return result;
+        }
+
+        /// <summary>
         /// 32) R18 ;БРОЯЧИ ЗА ПРИРОДЕН ГАЗ :: X A11 Q
         /// </summary>
         private double FormulaR18(FormulaArguments args)
@@ -945,9 +1244,22 @@
         /// </summary>
         private double FormulaZZ52(FormulaArguments args)
         {
-            double pl = 20;
-            double pl1 = 10;
-            double d2 = 15;
+            if (!args.InputValue.HasValue)
+            {
+                throw new ArgumentNullException("The value of CounterIndication(PL) is not allowed to be null");
+            }
+            if (!args.OldValue.HasValue)
+            {
+                throw new ArgumentNullException("The value of Old CounterIndication(PL-1) is not allowed to be null");
+            }
+            if (!args.MaximumFlow.HasValue)
+            {
+                throw new ArgumentNullException("The value of MaximumFlow(D2) is not allowed to be null");
+            }
+
+            double pl = args.InputValue.Value;
+            double pl1 = args.OldValue.Value;
+            double d2 = args.MaximumFlow.Value;
 
             double q = Functions.GetValueFormulaA11(pl, pl1, d2);
 
@@ -978,6 +1290,32 @@
 
             string expr = @"(par.q)";
             double result = calculator.Calculate(expr, "par", 1, inputParams);
+            return result;
+        }
+
+        /// <summary>
+        /// 25) N14 ;ТЕЧНИ НЕФТОПРОДУКТИ И ВТЕЧНЕНИ ГАЗОВЕ :: X A10 Q
+        /// </summary>
+        public double FormulaN14(FormulaArguments args)            
+        {
+            if (!args.InputValue.HasValue)
+            {
+                throw new ArgumentNullException("The value of CounterIndication(PL) is not allowed to be null");
+            }
+            if (!args.MaximumFlow.HasValue)
+            {
+                throw new ArgumentNullException("The value of MaximumFlow(D2) is not allowed to be null");
+            }
+
+            var pl = args.InputValue.Value;
+            var d2 = args.MaximumFlow.Value;
+            var q = Functions.GetValueFormulaA10(pl, d2);
+
+            var inputParams = new Dictionary<string, double>();
+            inputParams.Add("q", q);
+
+            string expr = @"par.q";
+            var result = calculator.Calculate(expr, "par", 1, inputParams);
             return result;
         }
 
@@ -1120,6 +1458,32 @@
             return result;
         }
 
+                /// <summary>
+        /// 62) G26 ;ПРЕВРЪЩАНЕ ДИМЕНСИЯТА ОТ "Н.CM.КУБ." В "ТОНОВЕ" :: S Q=PL*D Q
+        /// </summary>
+        private double FormulaG26a(FormulaArguments args)
+        {
+            if (!args.InputValue.HasValue)
+            {
+                throw new ArgumentNullException("The value of CounterIndication(PL) is not allowed to be null");
+            }
+            if (!args.EstimatedDensity.HasValue)
+            {
+                throw new ArgumentNullException("The value of Density(D) is not allowed to be null");
+            }
+
+            double pl = args.InputValue.Value;
+            double d = args.EstimatedDensity.Value;           
+            double q = (pl * d)/1000;
+
+            var inputParams = new Dictionary<string, double>();
+            inputParams.Add("q", q);
+
+            string expr = @"par.q";
+            double result = calculator.Calculate(expr, "par", 1, inputParams);
+            return result;
+        }
+
         /// <summary>
         /// 63) P26 ;ПРЕВРЪЩАНЕ ДИМЕНСИЯТА ОТ "M.КУБ." В "ТОНОВЕ" :: S Q=PL*D Q
         /// </summary>
@@ -1158,6 +1522,78 @@
 
             string expr = @"par.q";
             double result = calculator.Calculate(expr, "par", 1, inputParams);
+            return result;
+        }
+
+        /// <summary>
+        /// UCF1 - зчисляване на колко е стойността на % от число
+        /// </summary>
+        public double FormulaC1(FormulaArguments args)            
+        {
+            if (!args.InputValue.HasValue)
+            {
+                throw new ArgumentNullException("The value of CounterIndication(PL) is not allowed to be null");
+            }
+            if (!args.CalculationPercentage.HasValue)
+            {
+                throw new ArgumentNullException("The value of Calculation percentage is not allowed to be null");
+            }
+            if (args.CalculationPercentage.Value < 0d || args.CalculationPercentage.Value > 100d)
+            {
+                throw new ArgumentOutOfRangeException("The value of Calculation percentage must be a double number between 0 and 100");
+            }
+
+            var pl = args.InputValue.Value;
+            var c = args.CalculationPercentage.Value;
+            var r = (c / 100.00) * pl;
+
+            var inputParams = new Dictionary<string, double>();
+            inputParams.Add("q", r);
+
+            string expr = @"par.q";
+            var result = calculator.Calculate(expr, "par", 1, inputParams);
+            return result;
+        }
+
+        /// <summary>
+        /// UCF2 - визуализира входното показание като резултат от формулата
+        /// </summary>
+        public double FormulaC2(FormulaArguments args)            
+        {
+            if (!args.InputValue.HasValue)
+            {
+                throw new ArgumentNullException("The value of CounterIndication(PL) is not allowed to be null");
+            }
+
+            var pl = args.InputValue.Value;
+            var r =  pl;
+
+            var inputParams = new Dictionary<string, double>();
+            inputParams.Add("q", r);
+
+            string expr = @"par.q";
+            var result = calculator.Calculate(expr, "par", 1, inputParams);
+            return result;
+        }
+
+        /// <summary>
+        /// UCF3 - калкулира  входното показание по броя на часовете в една смяна
+        /// </summary>
+        public double FormulaC3(FormulaArguments args)            
+        {
+            if (!args.InputValue.HasValue)
+            {
+                throw new ArgumentNullException("The value of CounterIndication(PL) is not allowed to be null");
+            }
+
+            var pl = args.InputValue.Value;
+            var r =  pl * 8;
+
+            var inputParams = new Dictionary<string, double>();
+            inputParams.Add("q", r);
+
+            string expr = @"par.q";
+            var result = calculator.Calculate(expr, "par", 1, inputParams);
             return result;
         }
     }

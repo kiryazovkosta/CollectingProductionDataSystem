@@ -9,7 +9,7 @@
       <Value Profile="(Default)">3150</Value>
     </Setting>
     <Setting Name="PHD_DATA_MIN_CONFIDENCE" Type="System.Int32" Scope="Application">
-      <Value Profile="(Default)">49</Value>
+      <Value Profile="(Default)">50</Value>
     </Setting>
     <Setting Name="PHD_API_VERSION" Type="Uniformance.PHD.SERVERVERSION" Scope="Application">
       <Value Profile="(Default)">RAPI200</Value>

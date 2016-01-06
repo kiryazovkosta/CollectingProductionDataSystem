@@ -1,5 +1,6 @@
 ﻿namespace CollectingProductionDataSystem.Models.Productions
 {
+    using System.ComponentModel.DataAnnotations.Schema;
     using CollectingProductionDataSystem.Models.Contracts;
     using System;
     using System.Linq;
@@ -16,6 +17,7 @@
 
         public int Position { get; set; }
 
+        [NotMapped]
         public int Id { get; set; }
     }
 }

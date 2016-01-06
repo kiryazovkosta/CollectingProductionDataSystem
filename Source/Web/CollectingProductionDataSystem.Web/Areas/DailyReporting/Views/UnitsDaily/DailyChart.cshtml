@@ -1,0 +1,108 @@
+﻿@using System.Globalization;
+@using CollectingProductionDataSystem.Application.UnitDailyDataServices;
+@using CollectingProductionDataSystem.Infrastructure.Chart;
+@using CollectingProductionDataSystem.Models.UtilityEntities;
+@model ChartViewModel<DateTime, decimal>
+
+<div class="panel panel-default">
+    <div class="panel-heading">@Model.Title<a href="#" id = "chart-fullscreen" role="button" class="pull-right"><span class="glyphicon glyphicon-fullscreen"></span></a></div>
+    <div class="panel-body">
+        <div id="chart"></div>
+    </div>
+</div>
+
+@if (Model.DataSeries.Count() > 0)
+{
+    <script>
+        function createChart(selector, width, height) {
+        $(selector).kendoChart({
+            theme: "bootstrap",
+            chartArea:{
+                width: width || $(selector).width(),
+                height:height||400,
+            },
+            legend: {
+                position: "bottom"
+            },
+            seriesDefaults: {
+                type: "line"
+            },
+            series: [
+            @foreach (var serie in Model.DataSeries)
+                {
+                    @:{
+                    @: name: '@serie.Label',
+                    @: type: '@serie.Type',
+                    @: data: [
+                    foreach (var item in serie.Values)
+                    {
+                        @item.Y.ToString(CultureInfo.InvariantCulture)@:,
+                    }
+                    @:]},
+                }
+            ],
+            valueAxis: {
+                line: {
+                    visible: false
+                }
+            },
+            categoryAxis: {
+                categories: [
+                @foreach (var item in Model.DataSeries.FirstOrDefault().Values)
+                {
+                          @Html.Raw("'" + item.X.Day + "',")
+                }],
+                    majorGridLines: {
+                    visible: true
+                    }
+            },
+            tooltip: {
+                    visible: true,
+                    format: "days",
+                    template: "#= series.name #: #= value #"
+            },
+            pannable: {
+                    lock: "y"
+            },
+            zoomable: {
+                    mousewheel: {
+                        lock: "y"
+                    },
+                selection: {
+                        lock: "y"
+                }
+            }
+        });
+        }
+
+        $(document).ready(function () {
+            createChart("#chart");
+            createModalChart();
+            $('#chart-fullscreen').click(function () {
+                var data = '<div class="modal-header">' +
+                                   '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>' +
+                                   '<h4 class="modal-title" id="record-history-label">' +
+                                       '@(Model.Title??"")' +
+                                   '</h4>' +
+                               '</div>' +
+                               '<div class="modal-body">' +
+                               '<div id="chart-fs" >'
+                '</div>' +
+                '</div>';
+                $("#modal-chart-dialog-body").html(data);
+                $('#modal-chart-dialog').modal('show');
+            });
+            $('#modal-chart-dialog').on('shown.bs.modal', function () {
+                var modalWidth = $('#modal-chart-plot-area').width() * 0.98;
+                createChart("#chart-fs", modalWidth, 650);
+            });
+        });
+
+        function createModalChart() {
+            if ($("modal-chart-dialog").val()===undefined) {
+                var modalChartHolderHtml = '<div class="modal fade" id="modal-chart-dialog" tabindex="-1" role="dialog" aria-labelledby="record-history-label" aria-hidden="true"><div id="modal-chart-plot-area" class="modal-dialog modal-lg"><div id="modal-chart-dialog-body" class="modal-content"></div></div></div>';
+                $('body').append(modalChartHolderHtml);
+            }
+        }
+    </script>
+}

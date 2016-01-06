@@ -33,6 +33,15 @@ namespace CollectingProductionDataSystem.Application.UserServices
             this.kernel = kernelParam;
         }
 
+        /// <summary>
+        /// Gets all loged users.
+        /// </summary>
+        /// <returns></returns>
+        public IQueryable<ApplicationUser> GetAllLogedUsers()
+        {
+            return this.data.Users.All().Where(x => x.IsUserLoggedIn > 0);
+        }
+
         public async Task<IEfStatus> CreateUserAsync(ApplicationUser user, UserProfile creator, ApplicationUserManager manager)
         {
             user.PasswordHash = new PasswordHasher().HashPassword(CommonConstants.StandartPassword);
@@ -40,7 +49,6 @@ namespace CollectingProductionDataSystem.Application.UserServices
             user.SecurityStamp = Guid.NewGuid().ToString();
 
             var userValidationResult = await ValidateUserAsync(user, manager, Operation.Create);
-
 
             if (userValidationResult.Count() > 0)
             {

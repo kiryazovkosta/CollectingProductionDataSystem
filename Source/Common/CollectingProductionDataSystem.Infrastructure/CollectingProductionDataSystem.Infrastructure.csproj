@@ -60,10 +60,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Chart\ChartViewModel.cs" />
+    <Compile Include="Chart\DataSery.cs" />
+    <Compile Include="Chart\Pair.cs" />
+    <Compile Include="Contracts\ILogger.cs" />
     <Compile Include="Extentions\DateTimeExtentions.cs" />
     <Compile Include="Extentions\ICollectionExtensions.cs" />
     <Compile Include="Extentions\IEnumerableExtensions.cs" />
     <Compile Include="Extentions\ObjectExtensions.cs" />
+    <Compile Include="Log\CustomWebAuthenticationFailureAuditEvent.cs" />
+    <Compile Include="Log\CustomWebErrorEvent.cs" />
+    <Compile Include="Log\Logger.cs" />
     <Compile Include="Mapping\AutoMapperConfig.cs" />
     <Compile Include="Mapping\IHaveCustomMappings.cs" />
     <Compile Include="Mapping\IMapFrom.cs" />

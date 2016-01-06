@@ -1236,4 +1236,73 @@
   <data name="DetailsForEvent" xml:space="preserve">
     <value>Детайли за събитие</value>
   </data>
+  <data name="UserChangedPassword" xml:space="preserve">
+    <value>Сменена парола</value>
+  </data>
+  <data name="AllUsersCount" xml:space="preserve">
+    <value>Общ брой потребители</value>
+  </data>
+  <data name="CurrentlyLogedInUsers" xml:space="preserve">
+    <value>Потребители в системата</value>
+  </data>
+  <data name="LogedInUsers" xml:space="preserve">
+    <value>Брой потребители\n в системата</value>
+  </data>
+  <data name="NotLoggedInUsers" xml:space="preserve">
+    <value>Брой потребители\n извън системата</value>
+  </data>
+  <data name="UserStatistics" xml:space="preserve">
+    <value>Статистика за потребителите</value>
+  </data>
+  <data name="IsUserLoggedIn" xml:space="preserve">
+    <value>Брой сесии</value>
+  </data>
+  <data name="LastLogedIn" xml:space="preserve">
+    <value>Последно влизане</value>
+  </data>
+  <data name="IsValueOfCounterReseted" xml:space="preserve">
+    <value>Зануляване показание на брояч?</value>
+  </data>
+  <data name="SummaryReports" xml:space="preserve">
+    <value>Сводни отчети</value>
+  </data>
+  <data name="UnitsDailyReportData" xml:space="preserve">
+    <value>Дневни данни за измервателни позиции - отчет</value>
+  </data>
+  <data name="AllAreas" xml:space="preserve">
+    <value>Всички области</value>
+  </data>
+  <data name="AllFactories" xml:space="preserve">
+    <value>Всички производства</value>
+  </data>
+  <data name="AllParks" xml:space="preserve">
+    <value>Всички паркове</value>
+  </data>
+  <data name="AllProcessUnits" xml:space="preserve">
+    <value>Всички инсталации</value>
+  </data>
+  <data name="ConfirmedDataReport" xml:space="preserve">
+    <value>Отчет за потвърждение на данните</value>
+  </data>
+  <data name="DayConfirmed" xml:space="preserve">
+    <value>Днeвни Данни</value>
+  </data>
+  <data name="Shift1Confirmed" xml:space="preserve">
+    <value>Първа смяна</value>
+  </data>
+  <data name="Shift2Confirmed" xml:space="preserve">
+    <value>Втора смяна</value>
+  </data>
+  <data name="Shift3Confirmed" xml:space="preserve">
+    <value>Трета Смяна</value>
+  </data>
+  <data name="TotalMonthQuantity" xml:space="preserve">
+    <value>До деня</value>
+  </data>
+  <data name="IsConfirmed" xml:space="preserve">
+    <value>Потвърждение</value>
+  </data>
+  <data name="DailyGraphicTitle" xml:space="preserve">
+    <value>Хронология на данни за отбори за инсталация {0}</value>
+  </data>
 </root>

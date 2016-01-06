@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Data.Entity;
     using System.Diagnostics;
     using System.Linq;
     using System.Web;
@@ -17,15 +18,18 @@
     using Kendo.Mvc.UI;
     using CollectingProductionDataSystem.Web.Infrastructure.Filters;
     using Resources = App_GlobalResources.Resources;
+using CollectingProductionDataSystem.Application.ProductionPlanDataServices;
 
     public class AjaxController : AreaBaseController
     {
         private readonly IUnitsDataService unitsData;
+        private readonly IProductionPlanDataService productionPlanData;
 
-        public AjaxController(IProductionData dataParam, IUnitsDataService unitsDataParam)
+        public AjaxController(IProductionData dataParam, IUnitsDataService unitsDataParam, IProductionPlanDataService productionPlanDataParam)
             : base(dataParam)
         {
             this.unitsData = unitsDataParam;
+            this.productionPlanData = productionPlanDataParam;
         }
 
         public ActionResult ReadDetails([DataSourceRequest]
@@ -50,45 +54,17 @@
         [AuthorizeFactory]
         public JsonResult ReadProductionPlanData([DataSourceRequest]DataSourceRequest request, DateTime? date, int? processUnitId)
         {
-            if (!date.HasValue)
-            {
-                return Json(string.Empty);
-            }
-
-            var dailyData = unitsData.GetUnitsDailyDataForDateTime(date, processUnitId).ToList();
-            if (dailyData.Count == 0)
-            {
-                return Json(string.Empty);
-            }
-
-            var dbResult = this.data.ProductionPlanConfigs.All();
-            if (processUnitId != null)
-            {
-                dbResult = dbResult.Where(x => x.ProcessUnitId == processUnitId.Value);
-            }
-
-            var productionPlans = dbResult.ToList();
-            var calculator = new CalculatorService();
-            var result = new HashSet<ProductionPlanViewModel>();
-            foreach (ProductionPlanConfig productionPlan in productionPlans)
-            {
-                var planValue = CalculatePlanValue(productionPlan, dailyData, calculator);
-                var factValue = CalculateFactValue(productionPlan, dailyData, calculator);
-
-                result.Add(new ProductionPlanViewModel
-                {
-                    Id = productionPlan.Id,
-                    Name = productionPlan.Name,
-                    Percentages = productionPlan.Percentages,
-                    QuantityPlan = (decimal)planValue,
-                    QuantityFact = (decimal)factValue
-                });
-            }
+            IEnumerable<ProductionPlanData> dbResult = this.productionPlanData.ReadProductionPlanData(date, processUnitId);
+            if (dbResult.Count() == 0)
+	        {
+		         return Json(string.Empty);
+	        }
 
             var kendoResult = new DataSourceResult();
+            var kendoPreparedResult = Mapper.Map<IEnumerable<ProductionPlanData>, IEnumerable<ProductionPlanViewModel>>(dbResult);
             try
             {
-                kendoResult = result.ToDataSourceResult(request, ModelState);
+                kendoResult = kendoPreparedResult.ToDataSourceResult(request, ModelState);
             }
             catch (Exception ex1)
             {
@@ -96,62 +72,6 @@
             }
 
             return Json(kendoResult);
-        }
-
- 
-        private double CalculateFactValue(ProductionPlanConfig productionPlan, List<UnitsDailyData> dailyData, CalculatorService calculator)
-        {
-            var splitter = new char[] { '@' };
-
-            var factTokens = productionPlan.QuantityFactMembers.Split(splitter, StringSplitOptions.RemoveEmptyEntries);
-            var factInputParamsValues = new List<double>();
-            foreach (var token in factTokens)
-            {
-                foreach (var item in dailyData)
-                {
-                    if (item.UnitsDailyConfig.Code == token)
-                    {
-                        factInputParamsValues.Add((double)item.RealValue);
-                        break;
-                    }
-                }
-            }
-
-            var factInputParams = new Dictionary<string, double>();
-            for (int i = 0; i < factInputParamsValues.Count(); i++)
-            {
-                factInputParams.Add(string.Format("p{0}", i), factInputParamsValues[i]);  
-            }
-                
-            var factValue = calculator.Calculate(productionPlan.QuantityFactFormula, "p", factInputParams.Count, factInputParams);
-            return factValue;
-        }
- 
-        private double CalculatePlanValue(ProductionPlanConfig productionPlan, List<UnitsDailyData> dailyData, CalculatorService calculator)
-        {
-            var splitter = new char[] { '@' };
-
-            var planTokens = productionPlan.QuantityPlanMembers.Split(splitter, StringSplitOptions.RemoveEmptyEntries);
-            var planInputParamsValues = new List<double>();
-            foreach (var token in planTokens)
-            {
-                foreach (var item in dailyData)
-                {
-                    if (item.UnitsDailyConfig.Code == token)
-                    {
-                        planInputParamsValues.Add((double)item.RealValue);
-                    }
-                }
-            }
-
-            var planInputParams = new Dictionary<string, double>();
-            for (int i = 0; i < planInputParamsValues.Count(); i++)
-            {
-                planInputParams.Add(string.Format("p{0}", i), planInputParamsValues[i]);  
-            }
-
-            var planValue = calculator.Calculate(productionPlan.QuantityPlanFormula, "p", planInputParams.Count, planInputParams);
-            return planValue;
         }
     }
 }

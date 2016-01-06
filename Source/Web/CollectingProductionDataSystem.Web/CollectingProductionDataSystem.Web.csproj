@@ -197,7 +197,13 @@
     <Compile Include="AppStart\Startup.Auth.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="AppStart\StartUpUsersConfiguration.cs" />
     <Compile Include="AppStart\ViewEnginesConfig.cs" />
+    <Compile Include="App_GlobalResources\ErrorMessages.bg.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ErrorMessages.bg.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\ErrorMessages.bg1.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -209,6 +215,16 @@
       <DependentUpon>ErrorMessages.resx</DependentUpon>
     </Compile>
     <Compile Include="App_GlobalResources\Layout.bg.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Layout.bg.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Layout.bg1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Layout.bg.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Layout.bg2.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Layout.bg.resx</DependentUpon>
@@ -227,7 +243,16 @@
     <Compile Include="Areas\Administration\Controllers\AjaxController.cs" />
     <Compile Include="Areas\Administration\Controllers\AreaBaseController.cs" />
     <Compile Include="Areas\Administration\Controllers\EventsController.cs" />
+    <Compile Include="Areas\Administration\Controllers\UserStatisticsController.cs" />
     <Compile Include="Areas\Administration\ViewModels\EventViewModel.cs" />
+    <Compile Include="Areas\Administration\ViewModels\LoggedUserViewModel.cs" />
+    <Compile Include="Areas\Administration\ViewModels\RolePresentationViewModel.cs" />
+    <Compile Include="Areas\Administration\ViewModels\UserPieViewModel.cs" />
+    <Compile Include="Areas\Documentation\DocumentationAreaRegistration.cs" />
+    <Compile Include="Areas\Documentation\Controllers\HelpController.cs" />
+    <Compile Include="Areas\SummaryReporting\Controllers\AjaxController.cs" />
+    <Compile Include="Areas\SummaryReporting\Controllers\DashBoardController.cs" />
+    <Compile Include="Areas\SummaryReporting\Controllers\SummaryReportsController.cs" />
     <Compile Include="Areas\NomManagement\Controllers\IkunkController.cs" />
     <Compile Include="Areas\NomManagement\Controllers\MeasuringPointConfigController.cs" />
     <Compile Include="Areas\NomManagement\Controllers\ZoneController.cs" />
@@ -312,6 +337,10 @@
     <Compile Include="Areas\ShiftReporting\ViewModels\ManualSelfCalculationViewModel.cs" />
     <Compile Include="Areas\ShiftReporting\ViewModels\ManualCalculationViewModel.cs" />
     <Compile Include="Areas\DailyReporting\ViewModels\UnitsReportsDataViewModel.cs" />
+    <Compile Include="Areas\SummaryReporting\Controllers\AreaBaseController.cs" />
+    <Compile Include="Areas\SummaryReporting\SummaryReportingAreaRegistration.cs" />
+    <Compile Include="Areas\SummaryReporting\ViewModels\DailyConfirmationViewModel.cs" />
+    <Compile Include="Areas\SummaryReporting\ViewModels\DataConfirmationViewModel.cs" />
     <Compile Include="Controllers\AccountController.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -324,17 +353,22 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Infrastructure\CustomLogEvents\CustomExceptionEvent.cs" />
     <Compile Include="Infrastructure\Extentions\IEfStatusExtentions.cs" />
     <Compile Include="Infrastructure\Filters\AuthorizeFactoryAttribute.cs" />
+    <Compile Include="Infrastructure\Filters\CheckUserSessionAttribute.cs" />
+    <Compile Include="Infrastructure\Filters\CompressFilterAttribute.cs" />
     <Compile Include="Infrastructure\Filters\GlobalErrorFilterAttribute.cs" />
+    <Compile Include="Infrastructure\Filters\HandleAntiforgeryTokenErrorAttribute.cs" />
     <Compile Include="Infrastructure\Helpers\AuthorizeActionLinkAjaxHelper.cs" />
     <Compile Include="Infrastructure\Helpers\AuthorizedActionLinkHtmlHelper.cs" />
     <Compile Include="Infrastructure\Helpers\IdentityHelpers.cs" />
     <Compile Include="Infrastructure\Helpers\HtmlPartialViewHelpers.cs" />
-    <Compile Include="Infrastructure\MadelBinders\EditUserViewModelBinder.cs" />
-    <Compile Include="Infrastructure\MadelBinders\TimeSpanComponentAttribute.cs" />
-    <Compile Include="Infrastructure\MadelBinders\TimeSpanModelBinder.cs" />
+    <Compile Include="Infrastructure\ModelBinders\EditUserViewModelBinder.cs" />
+    <Compile Include="Infrastructure\ModelBinders\TimeSpanComponentAttribute.cs" />
+    <Compile Include="Infrastructure\ModelBinders\TimeSpanModelBinder.cs" />
     <Compile Include="InputModels\EditReasonInputModel.cs" />
+    <Compile Include="InputModels\ProcessUnitConfirmDailyInputModel.cs" />
     <Compile Include="InputModels\ProcessUnitConfirmShiftInputModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -362,6 +396,7 @@
     <Compile Include="ViewModels\Units\ProductionPlanViewModel.cs" />
     <Compile Include="ViewModels\Units\UnitDailyDataViewModel.cs" />
     <Compile Include="Areas\ShiftReporting\ViewModels\UnitDataViewModel.cs" />
+    <Compile Include="ViewModels\Utility\PieViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
@@ -369,17 +404,171 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\custom\slidebar.css" />
+    <Content Include="Content\custom\documentation.css" />
     <Content Include="Content\ErrorPage\error.css" />
     <Content Include="Content\ErrorPage\Error.html" />
     <Content Include="Content\Images\center.png" />
+    <Content Include="Content\Images\DailyData\Add.png" />
+    <Content Include="Content\Images\DailyData\butonPrilogi.png" />
+    <Content Include="Content\Images\DailyData\Change_password.png" />
+    <Content Include="Content\Images\DailyData\create.png" />
+    <Content Include="Content\Images\DailyData\dnevni1.png" />
+    <Content Include="Content\Images\DailyData\dnevni2.png" />
+    <Content Include="Content\Images\DailyData\dnevni3.png" />
+    <Content Include="Content\Images\DailyData\Export.png" />
+    <Content Include="Content\Images\DailyData\Figura31.png" />
+    <Content Include="Content\Images\DailyData\Figura31A.png" />
+    <Content Include="Content\Images\DailyData\figura32.png" />
+    <Content Include="Content\Images\DailyData\Figura32A.png" />
+    <Content Include="Content\Images\DailyData\figura33.png" />
+    <Content Include="Content\Images\DailyData\Figura35.png" />
+    <Content Include="Content\Images\DailyData\Figura36.png" />
+    <Content Include="Content\Images\DailyData\Figura39.png" />
+    <Content Include="Content\Images\DailyData\figura4.png" />
+    <Content Include="Content\Images\DailyData\Figura41.png" />
+    <Content Include="Content\Images\DailyData\Figura41A.png" />
+    <Content Include="Content\Images\DailyData\figura42.png" />
+    <Content Include="Content\Images\DailyData\figura43.png" />
+    <Content Include="Content\Images\DailyData\Figura43A.png" />
+    <Content Include="Content\Images\DailyData\figura44.png" />
+    <Content Include="Content\Images\DailyData\Figura44Б.png" />
+    <Content Include="Content\Images\DailyData\figura46.png" />
+    <Content Include="Content\Images\DailyData\figura47.png" />
+    <Content Include="Content\Images\DailyData\Figura47A.png" />
+    <Content Include="Content\Images\DailyData\Figura48.png" />
+    <Content Include="Content\Images\DailyData\Figura49.png" />
+    <Content Include="Content\Images\DailyData\Figura50.png" />
+    <Content Include="Content\Images\DailyData\figura51.png" />
+    <Content Include="Content\Images\DailyData\figura53.png" />
+    <Content Include="Content\Images\DailyData\Figura55.png" />
+    <Content Include="Content\Images\DailyData\Figura55A.png" />
+    <Content Include="Content\Images\DailyData\figura56.png" />
+    <Content Include="Content\Images\DailyData\Figura57.png" />
+    <Content Include="Content\Images\DailyData\Figura57_Посока.png" />
+    <Content Include="Content\Images\DailyData\Figura58.png" />
+    <Content Include="Content\Images\DailyData\Figura59.png" />
+    <Content Include="Content\Images\DailyData\Figura60.png" />
+    <Content Include="Content\Images\DailyData\Figura63.png" />
+    <Content Include="Content\Images\DailyData\figura64.png" />
+    <Content Include="Content\Images\DailyData\Figura66.png" />
+    <Content Include="Content\Images\DailyData\figura68a.png" />
+    <Content Include="Content\Images\DailyData\lenta.png" />
+    <Content Include="Content\Images\DailyData\nFigura53.png" />
+    <Content Include="Content\Images\DailyData\Дневни_данни_чисто.png" />
     <Content Include="Content\Images\danger.png" />
     <Content Include="Content\Images\error.png" />
     <Content Include="Content\Images\Excel-icon.png" />
     <Content Include="Content\Images\factory.png" />
+    <Content Include="Content\Images\loading.gif" />
     <Content Include="Content\Images\LukBlack.png" />
     <Content Include="Content\Images\LukTransparent.png" />
     <Content Include="Content\Images\ok.png" />
+    <Content Include="Content\Images\pdf-download.png" />
+    <Content Include="Content\Images\PNG\128x128\Cancel2.png" />
+    <Content Include="Content\Images\PNG\128x128\ErrorCircle.png" />
+    <Content Include="Content\Images\PNG\128x128\Favorites.png" />
+    <Content Include="Content\Images\PNG\128x128\InfoBox.png" />
+    <Content Include="Content\Images\PNG\128x128\OKShield.png" />
+    <Content Include="Content\Images\PNG\128x128\Search.png" />
+    <Content Include="Content\Images\PNG\128x128\Search2.png" />
+    <Content Include="Content\Images\PNG\128x128\Wait.png" />
+    <Content Include="Content\Images\PNG\16x16\Cancel2.png" />
+    <Content Include="Content\Images\PNG\16x16\ErrorCircle.png" />
+    <Content Include="Content\Images\PNG\16x16\Favorites.png" />
+    <Content Include="Content\Images\PNG\16x16\InfoBox.png" />
+    <Content Include="Content\Images\PNG\16x16\OKShield.png" />
+    <Content Include="Content\Images\PNG\16x16\Search.png" />
+    <Content Include="Content\Images\PNG\16x16\Search2.png" />
+    <Content Include="Content\Images\PNG\16x16\Wait.png" />
+    <Content Include="Content\Images\PNG\24x24\Cancel2.png" />
+    <Content Include="Content\Images\PNG\24x24\ErrorCircle.png" />
+    <Content Include="Content\Images\PNG\24x24\Favorites.png" />
+    <Content Include="Content\Images\PNG\24x24\InfoBox.png" />
+    <Content Include="Content\Images\PNG\24x24\OKShield.png" />
+    <Content Include="Content\Images\PNG\24x24\Search.png" />
+    <Content Include="Content\Images\PNG\24x24\Search2.png" />
+    <Content Include="Content\Images\PNG\24x24\Wait.png" />
+    <Content Include="Content\Images\PNG\256x256\Cancel2.png" />
+    <Content Include="Content\Images\PNG\256x256\ErrorCircle.png" />
+    <Content Include="Content\Images\PNG\256x256\Favorites.png" />
+    <Content Include="Content\Images\PNG\256x256\InfoBox.png" />
+    <Content Include="Content\Images\PNG\256x256\OKShield.png" />
+    <Content Include="Content\Images\PNG\256x256\Search.png" />
+    <Content Include="Content\Images\PNG\256x256\Search2.png" />
+    <Content Include="Content\Images\PNG\256x256\Wait.png" />
+    <Content Include="Content\Images\PNG\32x32\Cancel2.png" />
+    <Content Include="Content\Images\PNG\32x32\ErrorCircle.png" />
+    <Content Include="Content\Images\PNG\32x32\Favorites.png" />
+    <Content Include="Content\Images\PNG\32x32\InfoBox.png" />
+    <Content Include="Content\Images\PNG\32x32\OKShield.png" />
+    <Content Include="Content\Images\PNG\32x32\Search.png" />
+    <Content Include="Content\Images\PNG\32x32\Search2.png" />
+    <Content Include="Content\Images\PNG\32x32\Wait.png" />
+    <Content Include="Content\Images\PNG\48x48\Cancel2.png" />
+    <Content Include="Content\Images\PNG\48x48\ErrorCircle.png" />
+    <Content Include="Content\Images\PNG\48x48\Favorites.png" />
+    <Content Include="Content\Images\PNG\48x48\InfoBox.png" />
+    <Content Include="Content\Images\PNG\48x48\OKShield.png" />
+    <Content Include="Content\Images\PNG\48x48\Search.png" />
+    <Content Include="Content\Images\PNG\48x48\Search2.png" />
+    <Content Include="Content\Images\PNG\48x48\Wait.png" />
+    <Content Include="Content\Images\PNG\64x64\Cancel2.png" />
+    <Content Include="Content\Images\PNG\64x64\ErrorCircle.png" />
+    <Content Include="Content\Images\PNG\64x64\Favorites.png" />
+    <Content Include="Content\Images\PNG\64x64\InfoBox.png" />
+    <Content Include="Content\Images\PNG\64x64\OKShield.png" />
+    <Content Include="Content\Images\PNG\64x64\Search.png" />
+    <Content Include="Content\Images\PNG\64x64\Search2.png" />
+    <Content Include="Content\Images\PNG\64x64\Wait.png" />
+    <Content Include="Content\Images\PNG\Help.png" />
+    <Content Include="Content\Images\ShiftData\butonPrilogi.png" />
+    <Content Include="Content\Images\ShiftData\edit.png" />
+    <Content Include="Content\Images\ShiftData\erase.png" />
+    <Content Include="Content\Images\ShiftData\error_data_smeni3.png" />
+    <Content Include="Content\Images\ShiftData\Export.png" />
+    <Content Include="Content\Images\ShiftData\Fig4A.png" />
+    <Content Include="Content\Images\ShiftData\figura1.png" />
+    <Content Include="Content\Images\ShiftData\figura11.png" />
+    <Content Include="Content\Images\ShiftData\figura12.png" />
+    <Content Include="Content\Images\ShiftData\figura13.png" />
+    <Content Include="Content\Images\ShiftData\figura14.png" />
+    <Content Include="Content\Images\ShiftData\figura14A.png" />
+    <Content Include="Content\Images\ShiftData\Figura15.png" />
+    <Content Include="Content\Images\ShiftData\Figura15A.png" />
+    <Content Include="Content\Images\ShiftData\figura16.png" />
+    <Content Include="Content\Images\ShiftData\figura16A.png" />
+    <Content Include="Content\Images\ShiftData\Figura18.png" />
+    <Content Include="Content\Images\ShiftData\Figura20.png" />
+    <Content Include="Content\Images\ShiftData\Figura21.png" />
+    <Content Include="Content\Images\ShiftData\figura22.png" />
+    <Content Include="Content\Images\ShiftData\Figura22A.png" />
+    <Content Include="Content\Images\ShiftData\figura23.png" />
+    <Content Include="Content\Images\ShiftData\Figura23A.png" />
+    <Content Include="Content\Images\ShiftData\figura24.png" />
+    <Content Include="Content\Images\ShiftData\Figura25.png" />
+    <Content Include="Content\Images\ShiftData\Figura27.png" />
+    <Content Include="Content\Images\ShiftData\figura28.png" />
+    <Content Include="Content\Images\ShiftData\figura5.png" />
+    <Content Include="Content\Images\ShiftData\Figura58.png" />
+    <Content Include="Content\Images\ShiftData\figura6.png" />
+    <Content Include="Content\Images\ShiftData\figura61.png" />
+    <Content Include="Content\Images\ShiftData\Figura63.png" />
+    <Content Include="Content\Images\ShiftData\figura7.png" />
+    <Content Include="Content\Images\ShiftData\figura7a.png" />
+    <Content Include="Content\Images\ShiftData\figura8.png" />
+    <Content Include="Content\Images\ShiftData\figura9.png" />
+    <Content Include="Content\Images\ShiftData\Figura_20.png" />
+    <Content Include="Content\Images\ShiftData\save.png" />
+    <Content Include="Content\Images\ShiftData\smenni1.png" />
+    <Content Include="Content\Images\ShiftData\smenni2.png" />
+    <Content Include="Content\Images\ShiftData\smenni_danni.png" />
     <Content Include="Content\Images\tanks.png" />
+    <Content Include="Content\Images\TrafficLights\green_light.png" />
+    <Content Include="Content\Images\TrafficLights\green_light_big.png" />
+    <Content Include="Content\Images\TrafficLights\red_light.png" />
+    <Content Include="Content\Images\TrafficLights\red_light_big.png" />
+    <Content Include="Content\Images\TrafficLights\yellow_light.png" />
+    <Content Include="Content\Images\TrafficLights\yellow_light_big.png" />
     <Content Include="Content\Images\warning.png" />
     <Content Include="Content\kendo\Black\editor.png" />
     <Content Include="Content\kendo\Black\imagebrowser.png" />
@@ -720,9 +909,20 @@
     <Content Include="Content\kendo\images\kendoui.woff" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\custom\backfix.min.js" />
     <Content Include="Scripts\custom\bootstrapAdditional.js" />
+    <Content Include="Scripts\custom\browserclosurenotice.js" />
+    <Content Include="Scripts\custom\confirmationRefresh.js" />
+    <Content Include="Scripts\custom\confirmationRefresh.min.js">
+      <DependentUpon>confirmationRefresh.js</DependentUpon>
+    </Content>
     <Content Include="Scripts\custom\jquery-kendo-globalize.js" />
     <Content Include="Scripts\custom\kendoAdditional.js" />
+    <Content Include="Scripts\custom\kendoGridState.js" />
+    <Content Include="Scripts\custom\renderDailyGraphic.min.js">
+      <DependentUpon>renderDailyGraphic.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\custom\saveSiteBarStatus.js" />
     <Content Include="Scripts\custom\sendAntiForgery.js" />
     <Content Include="Areas\Administration\Views\Role\Create.cshtml" />
     <Content Include="Areas\Administration\Views\Role\Edit.cshtml" />
@@ -807,6 +1007,27 @@
     <Content Include="Areas\ShiftReporting\Views\Units\_ManualDataWithRelatedCalculation.cshtml" />
     <Content Include="Areas\Administration\Views\Events\Index.cshtml" />
     <Content Include="Areas\Administration\Views\Events\Details.cshtml" />
+    <Content Include="Areas\Administration\Views\UserStatistics\Index.cshtml" />
+    <Content Include="Areas\Documentation\Views\web.config" />
+    <Content Include="Areas\Documentation\Views\Help\Index.cshtml" />
+    <Content Include="Areas\Documentation\Views\Help\DailyDataExpedition.cshtml" />
+    <Content Include="Areas\Documentation\Views\Help\DailyDataMeasuringPosition.cshtml" />
+    <Content Include="Areas\Documentation\Views\Help\ShiftDataMeasuringPosition.cshtml" />
+    <Content Include="Areas\Documentation\Views\Help\ShiftDataMeasuringPositionReport.cshtml" />
+    <Content Include="Areas\Documentation\Views\Help\ShiftDataTank.cshtml" />
+    <Content Include="Areas\Documentation\Views\Help\ShiftData.cshtml" />
+    <Content Include="Areas\Documentation\Views\Help\DailyData.cshtml" />
+    <Content Include="Areas\Documentation\Views\Shared\_DocumentationLayout.cshtml" />
+    <Content Include="Areas\Documentation\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\SummaryReporting\Views\web.config" />
+    <Content Include="Areas\SummaryReporting\Views\SummaryReports\UnitsReportsData.cshtml" />
+    <Content Include="Areas\SummaryReporting\Views\SummaryReports\TanksData.cshtml" />
+    <Content Include="Areas\SummaryReporting\Views\Shared\_UnitsDailySideBar.cshtml" />
+    <Content Include="Areas\SummaryReporting\Views\Shared\_TanksSideBar.cshtml" />
+    <Content Include="Areas\SummaryReporting\Views\SummaryReports\UnitsDailyReportsData.cshtml" />
+    <Content Include="Areas\SummaryReporting\Views\SummaryReports\DataConfirmation.cshtml" />
+    <Content Include="Areas\SummaryReporting\Views\DashBoard\Index.cshtml" />
+    <Content Include="Areas\DailyReporting\Views\UnitsDaily\DailyChart.cshtml" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <None Include="Properties\PublishProfiles\Home.pubxml" />
     <Content Include="Scripts\custom\sendArea.js" />
@@ -821,6 +1042,23 @@
       <DependentUpon>sendArea.min.js</DependentUpon>
     </Content>
     <None Include="Properties\PublishProfiles\Productive.pubxml" />
+    <Content Include="Scripts\custom\usersStatisticsRefresh.js" />
+    <Content Include="Scripts\custom\windowExpirationTime.js" />
+    <Content Include="Scripts\custom\windowExpirationTime.min.js">
+      <DependentUpon>windowExpirationTime.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\custom\windowExpirationTime.min.js.map">
+      <DependentUpon>windowExpirationTime.min.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\custom\windowUnload.min.js.map">
+      <DependentUpon>windowUnload.min.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\custom\confirmationRefresh.min.js.map">
+      <DependentUpon>confirmationRefresh.min.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\custom\renderDailyGraphic.min.js.map">
+      <DependentUpon>renderDailyGraphic.min.js</DependentUpon>
+    </Content>
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\custom\sendFactory.min.js">
       <DependentUpon>sendFactory.js</DependentUpon>
@@ -828,6 +1066,10 @@
     <Content Include="Scripts\custom\sidebar.js" />
     <Content Include="Scripts\custom\unitGridsData.js" />
     <Content Include="Scripts\custom\uploadNom.js" />
+    <Content Include="Scripts\custom\windowUnload.js" />
+    <Content Include="Scripts\custom\windowUnload.min.js">
+      <DependentUpon>windowUnload.js</DependentUpon>
+    </Content>
     <Content Include="Scripts\jquery-2.1.4.js" />
     <Content Include="Scripts\jquery-2.1.4.min.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
@@ -1404,6 +1646,7 @@
     <Content Include="Scripts\kendo\messages\kendo.messages.zh-TW.min.js" />
     <Content Include="Scripts\kendo\pako_deflate.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\custom\renderDailyGraphic.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.min.js" />
@@ -1436,7 +1679,7 @@
     <Content Include="Views\Shared\DisplayTemplates\ApplicationRole.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\ApplicationUser.cshtml" />
     <Content Include="Views\Shared\_KendoLayout.cshtml" />
-    <Content Include="Views\Tests\Index.cshtml" />
+    <Content Include="Views\Tests\DailyChart.cshtml" />
     <Content Include="Views\Tests\TankChange.cshtml" />
     <Content Include="Views\Tests\TankData.cshtml" />
     <Content Include="Views\Tests\Test.cshtml" />
@@ -1453,6 +1696,8 @@
     <Content Include="Views\Shared\_MeasurementsPointsSideBar.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\ShowHistory.cshtml" />
     <Content Include="Views\Shared\_BootstrapModal.cshtml" />
+    <Content Include="Views\Shared\_BaseLayout.cshtml" />
+    <Content Include="Views\Shared\_ControlParams.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1462,6 +1707,7 @@
     <Folder Include="Areas\DailyReporting\Views\Ajax\" />
     <Folder Include="Areas\DailyReporting\Views\AreaBase\" />
     <Folder Include="Areas\DailyReporting\Views\Shared\" />
+    <Folder Include="Areas\Documentation\Models\" />
     <Folder Include="Areas\MonthlyReporting\Models\" />
     <Folder Include="Areas\MonthlyReporting\Views\AreaBase\" />
     <Folder Include="Areas\MonthlyReporting\Views\Shared\" />
@@ -1473,14 +1719,8 @@
     <Folder Include="Areas\ShiftReporting\Views\Ajax\" />
     <Folder Include="Areas\ShiftReporting\Views\AreaBase\" />
     <Folder Include="Areas\ShiftReporting\Views\Shared\" />
-    <Folder Include="Views\Ajax\" />
-    <Folder Include="Views\Events\" />
-    <Folder Include="Views\Factory\" />
-    <Folder Include="Views\Plant\" />
-    <Folder Include="Views\ProcessUnit\" />
-    <Folder Include="Views\Test\" />
-    <Folder Include="Views\UnitConfig\" />
-    <Folder Include="Views\UnitsDailyConfig\" />
+    <Folder Include="Areas\SummaryReporting\Views\Ajax\" />
+    <Folder Include="Areas\SummaryReporting\Views\Shared\DisplayTemplates\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -1614,10 +1854,6 @@
       <Project>{3a125de9-28b9-4004-a1d9-bebde62ac786}</Project>
       <Name>CollectingProductionDataSystem.Application</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Common\CollectingProductionDataSystem.Contracts\CollectingProductionDataSystem.Contracts.csproj">
-      <Project>{8dd67abb-5bfb-4a28-82df-7bfe8ca483a6}</Project>
-      <Name>CollectingProductionDataSystem.Contracts</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Common\CollectingProductionDataSystem.Enumerations\CollectingProductionDataSystem.Enumerations.csproj">
       <Project>{d39275e1-1997-41c3-99cc-ff1b7502e93f}</Project>
       <Name>CollectingProductionDataSystem.Enumerations</Name>
@@ -1642,8 +1878,8 @@
   <ItemGroup>
     <EmbeddedResource Include="App_GlobalResources\ErrorMessages.bg.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>ErrorMessages.bg1.designer.cs</LastGenOutput>
       <CustomToolNamespace>App_GlobalResources.Resources</CustomToolNamespace>
+      <LastGenOutput>ErrorMessages.bg.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\ErrorMessages.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -1653,7 +1889,7 @@
     <EmbeddedResource Include="App_GlobalResources\Layout.bg.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <CustomToolNamespace>App_GlobalResources.Resources</CustomToolNamespace>
-      <LastGenOutput>Layout.bg3.Designer.cs</LastGenOutput>
+      <LastGenOutput>Layout.bg2.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Layout.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

@@ -60,5 +60,7 @@
             get { return this.unitConfigUnitDailyConfig; }
             set { this.unitConfigUnitDailyConfig = value; }
         }
+
+        public string ProcessUnitAlias { get; set; }
     }
 }

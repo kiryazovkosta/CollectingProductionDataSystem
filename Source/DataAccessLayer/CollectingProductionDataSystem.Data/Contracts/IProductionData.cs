@@ -92,6 +92,8 @@
 
         IRepository<RelatedUnitConfigs> RelatedUnitConfigs { get; }
 
+        IRepository<RelatedUnitDailyConfigs> RelatedUnitDailyConfigs { get; }
+
         IDeletableEntityRepository<UnitEnteredForCalculationData> UnitEnteredForCalculationDatas { get; }
 
         IDeletableEntityRepository<MeasuringPointProductsConfig> MeasuringPointProductsConfigs { get; }
@@ -99,6 +101,12 @@
         IDeletableEntityRepository<Density2FactorAlpha> Density2FactorAlphas { get; }
 
         IRepository<Event> Events { get; }
+
+        IRepository<LogedInUser> LogedInUsers { get; }
+
+        IDeletableEntityRepository<ProductionPlanData> ProductionPlanDatas { get; }
+
+        IDeletableEntityRepository<MathExpression> MathExpressions { get; }
 
         IDbContext DbContext { get; }
 

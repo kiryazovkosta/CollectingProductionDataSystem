@@ -16,6 +16,8 @@
         /// </summary>
         /// <param name="addedRecords">The added records.</param>
         /// <returns></returns>
+        private const string deletableEntityInterfase = "CollectingProductionDataSystem.Models.Contracts.IDeletableEntity";
+
         public IEnumerable<AuditLogRecord> GetAddedEntityes(IEnumerable<DbEntityEntry> addedRecords, IDbSet<AuditLogRecord> auditRecords)
         {
             List<AuditLogRecord> changes = new List<AuditLogRecord>();
@@ -68,6 +70,13 @@
                          e =>
                              e.Entity is IAuditInfo && ((e.State == EntityState.Added) || (e.State == EntityState.Modified))))
             {
+                // Remove deleted entities
+                if (entry.Entity.GetType().GetInterface(deletableEntityInterfase) != null
+                    && (((IDeletableEntity)entry.Entity).IsDeleted == true))
+                {
+                    continue;
+                }
+
                 var entity = (IAuditInfo)entry.Entity;
                 if (entry.State == EntityState.Added)
                 {
@@ -125,12 +134,12 @@
                 var entry in
                 data.DbContext.ChangeTracker
                     .Entries()
-                    .Where(e => e.Entity is IDeletableEntity && (e.State == EntityState.Deleted)))
+                    .Where(e => (e.Entity is IDeletableEntity &&
+                           ((e.State == EntityState.Modified) && (((IDeletableEntity)e.Entity)).IsDeleted == true))
+                        || (e.Entity is IDeletableEntity && e.State == EntityState.Deleted)))
             {
                 var entity = (IDeletableEntity)entry.Entity;
                 data.AuditLogRecords.Add(GetDeletedEntities(entry, userName));
-                entity.DeletedOn = DateTime.Now;
-                entity.IsDeleted = true;
                 entity.DeletedFrom = userName;
                 entry.State = EntityState.Modified;
             }

@@ -124,6 +124,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid Report Parameters.
+        /// </summary>
+        public static string InvalidReportParams {
+            get {
+                return ResourceManager.GetString("InvalidReportParams", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The {0} must be at least {2} characters long..
         /// </summary>
         public static string LengthError {
@@ -147,6 +156,33 @@ namespace App_GlobalResources.Resources {
         public static string Message {
             get {
                 return ResourceManager.GetString("Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No data was found for the specified criterias.
+        /// </summary>
+        public static string NoDataWasFound {
+            get {
+                return ResourceManager.GetString("NoDataWasFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There is difference between parameters: \n.
+        /// </summary>
+        public static string ParameterDifferencesHead {
+            get {
+                return ResourceManager.GetString("ParameterDifferencesHead", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to from report and parameters which you want to confirm! .
+        /// </summary>
+        public static string ParametersDifferencesTrail {
+            get {
+                return ResourceManager.GetString("ParametersDifferencesTrail", resourceCulture);
             }
         }
         

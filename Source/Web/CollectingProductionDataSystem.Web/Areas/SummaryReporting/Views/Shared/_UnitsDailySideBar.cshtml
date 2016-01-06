@@ -1,0 +1,58 @@
+﻿@using Resources = App_GlobalResources.Resources;
+@using CollectingProductionDataSystem.Web.Infrastructure.Helpers;
+@using Resources = App_GlobalResources.Resources;
+@Html.Hidden("user", User.Identity.Name)
+<div class="form-group">
+    <label for="factories">@Resources.Layout.Factory</label>
+    @(Html.Kendo().DropDownList()
+        .Name("factoriesD")
+                .OptionLabel(Resources.Layout.AllFactories)
+        .HtmlAttributes(new { style = "width:95%" })
+        .DataTextField("Name")
+        .DataValueField("Id")
+        .DataSource(source =>
+        {
+            source.Read(read =>
+            {
+                read.Action("GetFactories", "Ajax", new { area = "" });
+            });
+        })
+    )
+</div>
+<div class="form-group">
+    <label for="processunits">@Resources.Layout.ProcessUnit</label>
+
+    @(Html.Kendo().DropDownList()
+        .Name("processunitsD")
+        .OptionLabel(Resources.Layout.AllProcessUnits)
+        .HtmlAttributes(new { style = "width:95%" })
+        .DataTextField("Name")
+        .DataValueField("Id")
+        .DataSource(source =>
+        {
+            source.Read(read =>
+            {
+                read.Action("GetProcessUnits", "Ajax", new { area = "" }).Data("sendFactory");
+            })
+            .ServerFiltering(true);
+        })
+        .Enable(false)
+        .AutoBind(false)
+        .CascadeFrom("factoriesD")
+    )
+
+</div>
+<div class="form-group">
+    <label for="date">@Resources.Layout.Date</label>
+    @Html.Kendo().DatePicker().Name("date").Culture("bg-BG").HtmlAttributes(new { style = "width:95%" }).Value(DateTime.Today.AddDays(-1))
+</div>
+<hr />
+<div class="form-group">
+    <button id="apply" type="button" class="btn btn-primary" style="width:95%">@Resources.Layout.Apply</button>
+</div>
+<hr />
+
+@using (Html.BeginScripts())
+{
+    <script src="~/Scripts/custom/sendFactory.min.js"></script>
+}

@@ -1,0 +1,14 @@
+﻿@Html.Hidden("next-action", (object)ViewBag.NextAction)
+
+@section scripts{
+    <script>
+        (function () {
+            $(document).ready(function () {
+                var nextAction = $('#next-action').val();
+                if (nextAction !=="") {
+                    $("[href='" + nextAction + "']").trigger('click');
+                }
+            })
+        }());
+    </script>
+}

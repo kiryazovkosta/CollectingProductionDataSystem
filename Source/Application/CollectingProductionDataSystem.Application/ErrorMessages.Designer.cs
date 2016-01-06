@@ -151,6 +151,15 @@ namespace App_Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You cannot continue confirmation until completes confitmation of the days:\n.
+        /// </summary>
+        public static string PreviousDaysConfirmationError {
+            get {
+                return ResourceManager.GetString("PreviousDaysConfirmationError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The data for {0} are not approved..
         /// </summary>
         public static string ShiftNotReady {

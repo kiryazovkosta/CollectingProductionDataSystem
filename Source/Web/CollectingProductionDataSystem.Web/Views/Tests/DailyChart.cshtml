@@ -1,0 +1,86 @@
+﻿@using System.Globalization;
+@using CollectingProductionDataSystem.Application.UnitDailyDataServices;
+@using CollectingProductionDataSystem.Infrastructure.Chart;
+@using CollectingProductionDataSystem.Models.UtilityEntities;
+
+@{
+    Layout = "~/Views/Shared/_KendoLayout.cshtml";
+}
+
+<h2>Test</h2>
+
+@model ChartViewModel<DateTime, decimal>
+<div class="panel panel-default">
+    <div class="panel-heading">Хронологие на данни за отбори</div>
+    <div class="panel-body">
+        <div id="chart" class="col-lg-4"></div>
+    </div>
+</div>
+
+<script>
+    function createChart() {
+        $("#chart").kendoChart({
+
+            title: {
+                text: '@Model.Title'
+            },
+            legend: {
+                position: "bottom"
+            },
+            seriesDefaults: {
+                type: "line"
+            },
+            series: [
+                @foreach (var serie in Model.DataSeries)
+                {
+                    @:{
+                                                    @: name: '@serie.Label',
+                                                    @: type: '@serie.Type',
+                                @: color: '@serie.Color',
+                                @: data: [
+                                                foreach (var item in serie.Values)
+                    {
+                        @item.Y.ToString(CultureInfo.InvariantCulture)@:,
+                                                }
+
+                    @:]},
+
+
+                }
+    ],
+    valueAxis: {
+            line: {
+                visible: false
+            }
+    },
+    categoryAxis: {
+            categories: [
+                @foreach (var item in Model.DataSeries.First().Values)
+                {
+                          @Html.Raw("'" + item.X.Day + "',")
+        }],
+            majorGridLines: {
+            visible: true
+            }
+    },
+    tooltip: {
+            visible: true,
+            format: "days",
+            template: "#= series.name #: #= value #"
+    },
+            pannable: {
+            lock: "y"
+            },
+        zoomable: {
+                mousewheel: {
+                    lock: "y"
+                },
+            selection: {
+                    lock: "y"
+            }
+        }
+    });
+    }
+
+    $(document).ready(createChart);
+</script>

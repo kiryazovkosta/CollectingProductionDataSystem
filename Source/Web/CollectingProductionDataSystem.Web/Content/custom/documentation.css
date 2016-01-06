@@ -1,0 +1,83 @@
+﻿
+/*Huge*/
+@media only screen and (min-device-width: 1900px) {
+    aside.documentation, article.documentation {
+        height: 825px;
+        margin-bottom: -20px;
+        overflow-y: auto;
+    }
+
+    #inprogress {
+        position: absolute;
+        top: 400px;
+    }
+}
+
+/*Desktop*/
+@media only screen and (min-device-width: 1300px) and (max-width: 1899px) {
+    aside.documentation, article.documentation {
+        height: 575px;
+        margin-bottom: -20px;
+        overflow-y: auto;
+    }
+
+    #inprogress {
+        position: absolute;
+        top: 300px;
+    }
+}
+
+/*Small*/
+@media only screen and (min-device-width: 800px) and (max-width: 1299px) {
+    aside.documentation, article.documentation {
+        height: 450px;
+        margin-bottom: -20px;
+        overflow-y: auto;
+    }
+
+    #inprogress {
+        position: absolute;
+        top: 150px;
+    }
+}
+
+
+/*Extra Small*/
+@media only screen and (min-device-width: 400px) and (max-width: 799px) {
+    aside.documentation, article.documentation {
+        height: 100%;
+        margin-bottom: -20px;
+        overflow-y: auto;
+    }
+
+    #inprogress {
+        position: absolute;
+        top: 150px;
+    }
+}
+
+#inprogress {
+    width: 95%;
+}
+
+
+    #inprogress > img {
+        width: 50px;
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+    }
+
+aside.documentation {
+    background-color: #f8f8f8;
+    margin-top:-10px;
+    margin-left:-15px;
+}
+
+img.myWidth102 {
+    max-width: 98%;
+}
+
+nav {
+    margin-top:15px;
+}

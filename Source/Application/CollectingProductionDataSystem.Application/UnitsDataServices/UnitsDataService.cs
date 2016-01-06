@@ -8,7 +8,7 @@
     using CollectingProductionDataSystem.Application.Contracts;
     using CollectingProductionDataSystem.Data.Contracts;
     using CollectingProductionDataSystem.Models.Productions;
-using CollectingProductionDataSystem.Data.Common;
+    using CollectingProductionDataSystem.Data.Common;
 
     public class UnitsDataService : IUnitsDataService
     {
@@ -26,20 +26,30 @@ using CollectingProductionDataSystem.Data.Common;
         /// <returns></returns>
         public IEnumerable<UnitsData> GetUnitsDataForDailyRecord(int unitDailyDataId)
         {
-            //var dbResult = GetAllUnitDataIncludeRelations()
-            //    .Where(x =>
-            //        (x.UnitConfig.UnitConfigUnitDailyConfigs.Select(y => y.UnitDailyConfig))
-            //        .Any(z=>z.UnitsDailyDatas.Any(w=>w.Id == unitDailyDataId)));
 
             var unitDailyData = this.data.UnitsDailyDatas.GetById(unitDailyDataId);
 
-            var dbResult = this.data.UnitsDailyDatas.GetById(unitDailyDataId).UnitsDailyConfig.UnitConfigUnitDailyConfigs
+            var dbResult = this.data.UnitsDailyDatas.All()
+                            .Include(x => x.UnitsDailyConfig)
+                            .Include(x => x.UnitsDailyConfig.UnitConfigUnitDailyConfigs.Select(y => y.UnitConfig).Select(z => z.UnitsDatas.Select(w => w.UnitsManualData).Select(r => r.EditReason)))
+                            .Include(x => x.UnitsDailyConfig.UnitConfigUnitDailyConfigs.Select(y => y.UnitConfig).Select(z => z.ShiftProductType))
+                            .Include(x => x.UnitsDailyConfig.UnitConfigUnitDailyConfigs.Select(y => y.UnitConfig).Select(z => z.MeasureUnit))
+                            .Include(x => x.UnitsDailyConfig.UnitConfigUnitDailyConfigs.Select(y => y.UnitConfig).Select(z => z.ProcessUnit))
+                            .FirstOrDefault(x => x.Id == unitDailyDataId)
+                            .UnitsDailyConfig.UnitConfigUnitDailyConfigs
                             .SelectMany(x => x.UnitConfig.UnitsDatas)
                             .Where(y => y.RecordTimestamp == unitDailyData.RecordTimestamp);
 
             return dbResult;
         }
 
+        /// <summary>
+        /// Gets the units data for date time.
+        /// </summary>
+        /// <param name="dateParam">The date parameter.</param>
+        /// <param name="processUnitIdParam">The process unit identifier parameter.</param>
+        /// <param name="shiftIdParam">The shift identifier parameter.</param>
+        /// <returns></returns>
         public IQueryable<UnitsData> GetUnitsDataForDateTime(DateTime? dateParam, int? processUnitIdParam, int? shiftIdParam)
         {
             var dbResult = GetAllUnitDataIncludeRelations();
@@ -74,7 +84,7 @@ using CollectingProductionDataSystem.Data.Common;
                                .Include(x => x.UnitConfig.MeasureUnit)
                                .Include(x => x.UnitsManualData)
                                .Include(x => x.UnitsManualData.EditReason)
-                               .Include(x => x.UnitConfig.UnitConfigUnitDailyConfigs.Select(y=>y.UnitDailyConfig).Select(z=>z.UnitsDailyDatas));
+                               .Include(x => x.UnitConfig.UnitConfigUnitDailyConfigs.Select(y => y.UnitDailyConfig).Select(z => z.UnitsDailyDatas));
             return dbResult;
         }
 
@@ -83,8 +93,11 @@ using CollectingProductionDataSystem.Data.Common;
             var dbResult = this.data.UnitsDailyDatas
                 .All()
                 .Include(u => u.UnitsDailyConfig)
+                .Include(u => u.UnitsDailyConfig.ProcessUnit)
+                .Include(u => u.UnitsDailyConfig.DailyProductType)
                 .Include(u => u.UnitsDailyConfig.MeasureUnit)
-                .Include(u => u.UnitsDailyConfig.Product);
+                .Include(u => u.UnitsDailyConfig.Product)
+                .Include(u => u.UnitsManualDailyData);
 
             if (date.HasValue)
             {
@@ -100,13 +113,13 @@ using CollectingProductionDataSystem.Data.Common;
             return dbResult;
         }
 
-        public async Task<bool> IsShitApproved(DateTime date, int processUnitId, int shiftId ) 
+        public bool IsShitApproved(DateTime date, int processUnitId, int shiftId)
         {
-           return await this.data.UnitsApprovedDatas
-                    .All()
-                    .Where(u => u.RecordDate == date &&
-                        u.ProcessUnitId == processUnitId &&
-                        u.ShiftId == shiftId).AnyAsync();
+            return this.data.UnitsApprovedDatas
+                     .All()
+                     .Where(u => u.RecordDate == date &&
+                         u.ProcessUnitId == processUnitId &&
+                         u.ShiftId == shiftId).Any();
         }
     }
 }
