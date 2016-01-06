@@ -9,6 +9,7 @@
                                                 new { area = "RecordsHistory", id = "#=data.id#", entityName = "MaterialType" },
                                                 new { data_ajax_mode = "replace", data_ajax_update = @"\#modal-dialog-body" })
                                                 .ToHtmlString());
+          columns.Bound(c => c.IsDetailRequired);
           columns.Command(command => { command.Edit(); command.Destroy(); }).Width(230);
       })
       .ToolBar(toolbar =>

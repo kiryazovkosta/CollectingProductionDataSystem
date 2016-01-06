@@ -1302,4 +1302,13 @@
   <data name="DailyGraphicTitle" xml:space="preserve">
     <value>Statistics for {0}</value>
   </data>
+  <data name="MaterialDetailType" xml:space="preserve">
+    <value>Material Detail Type</value>
+  </data>
+  <data name="IsDetailRequired" xml:space="preserve">
+    <value>IsDetailRequired</value>
+  </data>
+  <data name="ChooseMaterialDetailType" xml:space="preserve">
+    <value>Choose Material Detail Type...</value>
+  </data>
 </root>

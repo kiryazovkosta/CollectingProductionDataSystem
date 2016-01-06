@@ -28,6 +28,12 @@ namespace CollectingProductionDataSystem.Data.Mappings
                 .IsRequired()
                 .HasMaxLength(2048);
 
+            this.Property(t => t.MaterialTypeId)
+                .IsOptional();
+
+            this.Property(t => t.MaterialDetailTypeId)
+                .IsOptional();
+
             // Table & Column Mappings
             this.ToTable("UnitDailyConfigs");
 

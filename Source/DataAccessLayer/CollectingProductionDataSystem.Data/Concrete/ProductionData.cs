@@ -24,7 +24,7 @@
         private readonly Dictionary<Type, object> repositories = new Dictionary<Type, object>();
 
         public ProductionData(IPersister persisterParam, ILogger loggerParam)
-            : this(new CollectingDataSystemDbContext(persisterParam,loggerParam))
+            : this(new CollectingDataSystemDbContext(persisterParam, loggerParam))
         {
         }
 
@@ -318,6 +318,14 @@
             get
             {
                 return this.GetDeletableEntityRepository<ActiveTransactionsData>();
+            }
+        }
+
+        public IDeletableEntityRepository<MaterialDetailType> MaterialDetailTypes
+        {
+            get
+            {
+                return this.GetDeletableEntityRepository<MaterialDetailType>();
             }
         }
 

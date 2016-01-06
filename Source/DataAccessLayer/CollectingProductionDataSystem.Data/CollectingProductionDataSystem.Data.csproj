@@ -95,6 +95,7 @@
     <Compile Include="Mappings\FactoryMap.cs" />
     <Compile Include="Mappings\IkunkMap.cs" />
     <Compile Include="Mappings\LogedInUserMap.cs" />
+    <Compile Include="Mappings\MaterialDetailTypeMap.cs" />
     <Compile Include="Mappings\MathExpressionMap.cs" />
     <Compile Include="Mappings\MaxAsoMeasuringPointDataSequenceNumberMap.cs" />
     <Compile Include="Mappings\MeasurementPointsProductsDataMap.cs" />

@@ -53,7 +53,7 @@
         array.forEach(function (element, index, array) {
             if ($.isPlainObject(element)) {
                 var elementKeys = Object.keys(element);
-                elementKeys.forEach(function (property,ix,arr) {
+                elementKeys.forEach(function (property, ix, arr) {
                     result[prefix + "[" + index + "]." + property] = element[property];
                 });
             } else {
@@ -83,21 +83,26 @@
     //------------------ public functions ------------------------------------
 
     function ErrorHandler(e) {
-        if (this.data) {
-            this.data([]);
-        }
-        if (e.errors) {
-            var message = "";
-            $.each(e.errors, function (key, value) {
-                if ('errors' in value) {
-                    $.each(value.errors, function () {
-                        message += this + "\n";
-                    });
-                }
-            });
-            $('pre#err-message').text(message);
-            $('div#err-window').data("kendoWindow").open();
-        }
+        var grid = e.sender;
+        grid.one("dataBinding", function (e) {
+            e.preventDefault();
+        });
+            if (this.data) {
+                this.data([]);
+            }
+            if (e.errors) {
+                var message = "";
+                $.each(e.errors, function (key, value) {
+                    if ('errors' in value) {
+                        $.each(value.errors, function () {
+                            message += this + "\n";
+                        });
+                    }
+                });
+                $('pre#err-message').text(message);
+                $('div#err-window').data("kendoWindow").open();
+            }
+        
     }
 
     function CloseWindow(selector) {

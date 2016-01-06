@@ -1,5 +1,7 @@
 ﻿namespace CollectingProductionDataSystem.Models.Productions
 {
+    using System;
+    using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using CollectingProductionDataSystem.Models.Abstract;
     using CollectingProductionDataSystem.Models.Contracts;
@@ -7,7 +9,7 @@
     using System.Collections.Generic;
     using System.ComponentModel;
 
-    public partial class UnitDailyConfig : DeletableEntity, IEntity, IAggregatable, IConvertable
+    public partial class UnitDailyConfig : DeletableEntity, IEntity, IAggregatable, IConvertable, IValidatableObject
     {
         private ICollection<UnitsDailyData> unitsDailyDatas;
         private ICollection<RelatedUnitDailyConfigs> relatedUnitDailyConfigs;
@@ -23,7 +25,6 @@
         public int Id { get; set; }
         public string Name { get; set; }
         public string Code { get; set; }
-
         public int ProcessUnitId { get; set; }
 
         public int ProductId { get; set; }
@@ -43,13 +44,13 @@
 
         public bool IsConverted { get; set; }
 
-        public virtual ICollection<UnitsDailyData> UnitsDailyDatas 
+        public virtual ICollection<UnitsDailyData> UnitsDailyDatas
         {
             get { return this.unitsDailyDatas; }
             set { this.unitsDailyDatas = value; }
         }
 
-        public virtual ICollection<RelatedUnitDailyConfigs> RelatedUnitDailyConfigs 
+        public virtual ICollection<RelatedUnitDailyConfigs> RelatedUnitDailyConfigs
         {
             get { return this.relatedUnitDailyConfigs; }
             set { this.relatedUnitDailyConfigs = value; }
@@ -62,5 +63,33 @@
         }
 
         public string ProcessUnitAlias { get; set; }
+
+        public int? MaterialTypeId { get; set; }
+
+        public virtual MaterialType MaterialType { get; set; }
+
+        public int? MaterialDetailTypeId { get; set; }
+        public virtual MaterialDetailType MaterialDetailType { get; set; }
+
+        /// <summary>
+        /// Determines whether the specified object is valid.
+        /// </summary>
+        /// <param name="validationContext">The validation context.</param>
+        /// <returns>A collection that holds failed-validation information.</returns>
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            var validationObject = validationContext.ObjectInstance as UnitDailyConfig;
+            if (validationObject.MaterialType != null)
+            {
+                if (validationObject.MaterialType.IsDetailRequired && (validationObject.MaterialDetailTypeId == null || validationObject.MaterialDetailTypeId == 0))
+                {
+                    yield return new ValidationResult(string.Format(Resources.ModelErrors.Required, Resources.ModelErrors.MaterialDetailType), new string[]{ "MaterialDetailTypeId" });
+                }
+            }
+            else 
+            {
+                yield return new ValidationResult(string.Format(Resources.ModelErrors.Required, Resources.ModelErrors.MaterialType), new string[]{ "MaterialTypeId" });
+            }
+        }
     }
 }

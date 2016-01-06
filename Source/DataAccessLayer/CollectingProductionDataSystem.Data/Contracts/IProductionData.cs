@@ -82,6 +82,8 @@
 
         IDeletableEntityRepository<MeasureUnit> MeasureUnits { get; }
 
+        IDeletableEntityRepository<MaterialDetailType> MaterialDetailTypes { get; }
+
         IDeletableEntityRepository<ActiveTransactionsData> ActiveTransactionsDatas { get; }
 
         IRepository<UnitConfigUnitDailyConfig> UnitConfigUnitDailyConfigs { get; }

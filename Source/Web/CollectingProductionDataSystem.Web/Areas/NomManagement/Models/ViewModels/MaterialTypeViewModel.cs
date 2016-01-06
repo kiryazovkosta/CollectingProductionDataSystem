@@ -20,6 +20,10 @@ namespace CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewMode
         [Display(Name = "Name", ResourceType = typeof(Resources.Layout))]
         public string Name { get; set; }
 
+        [Required]
+        [Display(Name = "IsDetailRequired", ResourceType = typeof(Resources.Layout))]
+        public bool IsDetailRequired { get; set; }
+
         [UIHint("Hidden")]
         [Editable(false)]
         public bool IsDeleted { get; set; }

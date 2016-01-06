@@ -61,6 +61,33 @@ namespace CollectingProductionDataSystem.Models.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to MaterialDetailType.
+        /// </summary>
+        public static string MaterialDetailType {
+            get {
+                return ResourceManager.GetString("MaterialDetailType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Material Type.
+        /// </summary>
+        public static string MaterialType {
+            get {
+                return ResourceManager.GetString("MaterialType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The field {0} is required!.
+        /// </summary>
+        public static string Required {
+            get {
+                return ResourceManager.GetString("Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The Field Id is Required.
         /// </summary>
         public static string UnitsManualData_Id {

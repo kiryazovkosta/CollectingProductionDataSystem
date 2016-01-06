@@ -45,6 +45,13 @@
         [Display(Name = "MeasureUnit", ResourceType = typeof(Resources.Layout))]
         public int MeasureUnitId { get; set; }
 
+        [Required]
+        [Display(Name = "MaterialType", ResourceType = typeof(Resources.Layout))]
+        public int MaterialTypeId { get; set; }
+
+        [Display(Name = "MaterialDetailType", ResourceType = typeof(Resources.Layout))]
+        public int MaterialDetailTypeId { get; set; }
+
         [Display(Name = "AggregationFormula", ResourceType = typeof(Resources.Layout))]
         public string AggregationFormula { get; set; }
 
@@ -65,6 +72,8 @@
         [Display(Name = "RelatedUnitDailyConfigs", ResourceType = typeof(Resources.Layout))]
         public ICollection<RelatedUnitDailyConfigsViewModel> RelatedUnitDailyConfigs { get; set; }
 
+
+
         [UIHint("Hidden")]
         [Editable(false)]
         public bool IsDeleted { get; set; }
@@ -77,18 +86,21 @@
         {
             configuration.CreateMap<UnitDailyConfig, UnitsDailyConfigViewModel>()
                     .ForMember(p => p.DailyProductTypeId, opt => opt.MapFrom(p => p.DailyProductTypeId == null ? 0 : (int)p.DailyProductTypeId))
+                //.ForMember(p => p.MaterialTypeId, opt => opt.MapFrom(p => p.MaterialTypeId == null ? 0 : p.MaterialTypeId))
+                    .ForMember(p => p.MaterialDetailTypeId, opt => opt.MapFrom(p => p.MaterialDetailTypeId == null ? 0 : p.MaterialDetailTypeId))
                     .ForMember(p => p.UnitConfigUnitDailyConfigs, opt => opt.MapFrom(p => p.UnitConfigUnitDailyConfigs.OrderBy(x => x.Position)))
                     .ForMember(p => p.RelatedUnitDailyConfigs, opt => opt.MapFrom(p => p.RelatedUnitDailyConfigs.OrderBy(x => x.Position)));
-                   
+
 
             configuration.CreateMap<UnitsDailyConfigViewModel, UnitDailyConfig>()
                  .ForMember(p => p.DailyProductTypeId, opt => opt.MapFrom(p => p.DailyProductTypeId == 0 ? null : (Nullable<int>)p.DailyProductTypeId))
                  .ForMember(p => p.UnitConfigUnitDailyConfigs, opt => opt.MapFrom(p => p.UnitConfigUnitDailyConfigs != null ?
-                    p.UnitConfigUnitDailyConfigs.Select((x, ixc) => new UnitConfigUnitDailyConfig() { UnitConfigId = x.UnitConfigId, UnitDailyConfigId = p.Id, Position = ixc + 1 }) :
+                    p.UnitConfigUnitDailyConfigs.Select((x, ixc) => new UnitConfigUnitDailyConfig() { UnitConfigId = x.UnitConfigId, UnitDailyConfigId = p.Id, Position = ixc + 1, }) :
                     new List<UnitConfigUnitDailyConfig>()))
                  .ForMember(p => p.RelatedUnitDailyConfigs, opt => opt.MapFrom(p => p.RelatedUnitDailyConfigs != null ?
                     p.RelatedUnitDailyConfigs.Select((x, ixc) => new RelatedUnitDailyConfigs() { UnitsDailyConfigId = p.Id, RelatedUnitsDailyConfigId = x.Id, Position = ixc + 1 }) :
                     new List<RelatedUnitDailyConfigs>()))
+                    .ForMember(p => p.MaterialDetailTypeId, opt => opt.MapFrom(p => p.MaterialDetailTypeId == 0 ? null : (int?)p.MaterialDetailTypeId))
                   .ForMember(p => p.IsConverted, opt => opt.Ignore());
         }
     }

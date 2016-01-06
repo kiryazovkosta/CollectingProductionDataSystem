@@ -1,9 +1,9 @@
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Data.Entity.ModelConfiguration;
-using CollectingProductionDataSystem.Models.Nomenclatures;
-
 namespace CollectingProductionDataSystem.Data.Mappings
 {
+    using System.ComponentModel.DataAnnotations.Schema;
+    using System.Data.Entity.ModelConfiguration;
+    using CollectingProductionDataSystem.Models.Nomenclatures;
+
     public class MaterialTypeMap : EntityTypeConfiguration<MaterialType>
     {
         public MaterialTypeMap()
@@ -11,11 +11,19 @@ namespace CollectingProductionDataSystem.Data.Mappings
             // Primary Key
             this.HasKey(t => t.Id);
 
+            //Relations
+            this.HasMany(x => x.UnitDailyConfigs)
+                .WithOptional(x => x.MaterialType)
+                .HasForeignKey(y => y.MaterialTypeId);
+
+            this.HasMany(x => x.MaterialDetailTypes)
+                .WithOptional()
+                .HasForeignKey(y => y.MaterialTypeId);
+
             // Properties
             // Table & Column Mappings
             this.ToTable("MaterialTypes");
             this.Property(t => t.Id).HasColumnName("Id");
- 
         }
     }
 }

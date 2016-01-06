@@ -117,6 +117,15 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="MaterialDetailType" xml:space="preserve">
+    <value>MaterialDetailType</value>
+  </data>
+  <data name="MaterialType" xml:space="preserve">
+    <value>Material Type</value>
+  </data>
+  <data name="Required" xml:space="preserve">
+    <value>The field {0} is required!</value>
+  </data>
   <data name="UnitsManualData_Id" xml:space="preserve">
     <value>The Field Id is Required</value>
   </data>

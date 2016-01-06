@@ -81,6 +81,7 @@
     <Compile Include="Inventories\Area.cs" />
     <Compile Include="Inventories\TankData.cs" />
     <Compile Include="Nomenclatures\EditReason.cs" />
+    <Compile Include="Nomenclatures\MaterialDetailType.cs" />
     <Compile Include="Nomenclatures\MathExpression.cs" />
     <Compile Include="Nomenclatures\MeasureUnit.cs" />
     <Compile Include="Nomenclatures\Shift.cs" />

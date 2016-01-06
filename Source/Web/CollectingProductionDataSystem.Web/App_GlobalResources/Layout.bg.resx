@@ -1305,4 +1305,13 @@
   <data name="DailyGraphicTitle" xml:space="preserve">
     <value>Хронология на данни за отбори за инсталация {0}</value>
   </data>
+  <data name="MaterialDetailType" xml:space="preserve">
+    <value>Вид материал</value>
+  </data>
+  <data name="IsDetailRequired" xml:space="preserve">
+    <value>Задължително детайлизиране</value>
+  </data>
+  <data name="ChooseMaterialDetailType" xml:space="preserve">
+    <value>Изберете вид на материала...</value>
+  </data>
 </root>

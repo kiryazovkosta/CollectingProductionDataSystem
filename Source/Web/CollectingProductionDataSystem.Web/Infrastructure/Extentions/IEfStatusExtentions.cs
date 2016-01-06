@@ -13,7 +13,7 @@ namespace CollectingProductionDataSystem.Web.Infrastructure.Extentions
         {
             foreach (var error in status.EfErrors) 
             {
-                modelState.AddModelError(string.Empty, error.ErrorMessage);
+                modelState.AddModelError(error.MemberNames.FirstOrDefault()?? string.Empty, error.ErrorMessage);
             }
         }
     }

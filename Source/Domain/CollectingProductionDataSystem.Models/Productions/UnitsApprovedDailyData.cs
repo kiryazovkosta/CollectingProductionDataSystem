@@ -10,5 +10,6 @@
         public DateTime RecordDate { get; set; }
         public int ProcessUnitId { get; set; }
         public bool Approved { get; set; }
+        public bool EnergyApproved { get; set; }
     }
 }

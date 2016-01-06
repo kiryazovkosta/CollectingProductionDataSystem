@@ -396,28 +396,28 @@ namespace CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewMode
         [Display(Name = "RelatedMeasuringPointConfigs", ResourceType = typeof(Resources.Layout))]
         public virtual ICollection<RelatedMeasuringPointConfigsViewModel> RelatedMeasuringPointConfigs { get; set; }
 
-        /// <summary>
-        /// Creates the mappings.
-        /// </summary>
-        /// <param name="configuration">The configuration.</param>
-        ///<param name="configuration">The configuration.</param>
-        public void CreateMappings(IConfiguration configuration)
-        {
-            configuration.CreateMap<MeasuringPointConfig, MeasuringPointConfigViewModel>()
-                    //.ForMember(p => p.DailyProductTypeId, opt => opt.MapFrom(p => p.DailyProductTypeId == null ? 0 : (int)p.DailyProductTypeId))
-                    //.ForMember(p => p.UnitConfigUnitDailyConfigs, opt => opt.MapFrom(p => p.UnitConfigUnitDailyConfigs.OrderBy(x => x.Position)))
-                    .ForMember(p => p.RelatedMeasuringPointConfigs, opt => opt.MapFrom(p => p.RelatedMeasuringPointConfigs.OrderBy(x => x.Position)));
+            /// <summary>
+            /// Creates the mappings.
+            /// </summary>
+            /// <param name="configuration">The configuration.</param>
+            ///<param name="configuration">The configuration.</param>
+            public void CreateMappings(IConfiguration configuration)
+            {
+                configuration.CreateMap<MeasuringPointConfig, MeasuringPointConfigViewModel>()
+                        //.ForMember(p => p.DailyProductTypeId, opt => opt.MapFrom(p => p.DailyProductTypeId == null ? 0 : (int)p.DailyProductTypeId))
+                        //.ForMember(p => p.UnitConfigUnitDailyConfigs, opt => opt.MapFrom(p => p.UnitConfigUnitDailyConfigs.OrderBy(x => x.Position)))
+                        .ForMember(p => p.RelatedMeasuringPointConfigs, opt => opt.MapFrom(p => p.RelatedMeasuringPointConfigs.OrderBy(x => x.Position)));
 
 
-            configuration.CreateMap<MeasuringPointConfigViewModel, MeasuringPointConfig>()
-                 //.ForMember(p => p.FlowDirection, opt => opt.MapFrom(p => p.FlowDirectionId == 0 ? null : (Nullable<int>)p.DailyProductTypeId))
-                 //.ForMember(p => p.UnitConfigUnitDailyConfigs, opt => opt.MapFrom(p => p.UnitConfigUnitDailyConfigs != null ?
-                 //   p.UnitConfigUnitDailyConfigs.Select((x, ixc) => new UnitConfigUnitDailyConfig() { UnitConfigId = x.UnitConfigId, UnitDailyConfigId = p.Id, Position = ixc + 1 }) :
-                 //   new List<UnitConfigUnitDailyConfig>()))
-                 .ForMember(p => p.RelatedMeasuringPointConfigs, opt => opt.MapFrom(p => p.RelatedMeasuringPointConfigs != null ?
-                    p.RelatedMeasuringPointConfigs.Select((x, ixc) => new RelatedMeasuringPointConfigs() { MeasuringPointConfigId = p.Id, RelatedMeasuringPointConfigId = x.Id, Position = ixc + 1 }) :
-                    new List<RelatedMeasuringPointConfigs>()));
-        }
+                configuration.CreateMap<MeasuringPointConfigViewModel, MeasuringPointConfig>()
+                     //.ForMember(p => p.FlowDirection, opt => opt.MapFrom(p => p.FlowDirectionId == 0 ? null : (Nullable<int>)p.DailyProductTypeId))
+                     //.ForMember(p => p.UnitConfigUnitDailyConfigs, opt => opt.MapFrom(p => p.UnitConfigUnitDailyConfigs != null ?
+                     //   p.UnitConfigUnitDailyConfigs.Select((x, ixc) => new UnitConfigUnitDailyConfig() { UnitConfigId = x.UnitConfigId, UnitDailyConfigId = p.Id, Position = ixc + 1 }) :
+                     //   new List<UnitConfigUnitDailyConfig>()))
+                     .ForMember(p => p.RelatedMeasuringPointConfigs, opt => opt.MapFrom(p => p.RelatedMeasuringPointConfigs != null ?
+                        p.RelatedMeasuringPointConfigs.Select((x, ixc) => new RelatedMeasuringPointConfigs() { MeasuringPointConfigId = p.Id, RelatedMeasuringPointConfigId = x.Id, Position = ixc + 1 }) :
+                        new List<RelatedMeasuringPointConfigs>()));
+            }
 
     }
 }

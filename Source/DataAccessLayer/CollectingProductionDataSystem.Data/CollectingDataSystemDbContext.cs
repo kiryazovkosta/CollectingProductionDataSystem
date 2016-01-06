@@ -1,11 +1,15 @@
 ﻿namespace CollectingProductionDataSystem.Data
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     using System.Data.Entity;
+    using System.Data.Entity.Infrastructure;
     using System.Data.Entity.Validation;
     using System.Diagnostics;
     using System.Linq;
+    using System.Reflection;
     using System.Transactions;
     using CollectingProductionDataSystem.Data.Common;
     using CollectingProductionDataSystem.Data.Concrete;
@@ -40,7 +44,7 @@
         }
 
         public CollectingDataSystemDbContext()
-            : this(new AuditablePersister(),new Logger())
+            : this(new AuditablePersister(), new Logger())
         {
         }
 
@@ -132,7 +136,7 @@
 
         public IDbSet<Density2FactorAlpha> Density2FactorAlphas { get; set; }
 
-        public IDbSet<Event> Events{ get; set; }
+        public IDbSet<Event> Events { get; set; }
 
         public IDbSet<LogedInUser> LogedInUsers { get; set; }
 
@@ -140,13 +144,15 @@
 
         public IDbSet<MathExpression> MathExpressions { get; set; }
 
+        public IDbSet<MaterialDetailType> MaterialDetailTypes { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             ModelBingConfig.RegisterMappings(modelBuilder);
             base.OnModelCreating(modelBuilder);
-//#if DEBUG
+            //#if DEBUG
             this.Database.Log = (c) => { Debug.WriteLine(c); };
-//#endif
+            //#endif
         }
 
         public static CollectingDataSystemDbContext Create()
@@ -192,7 +198,7 @@
                 }
                 transaction.Complete();
                 return returnValue;
-            } 
+            }
         }
 
         public IEfStatus SaveChangesWithValidation(string userName)
@@ -229,6 +235,43 @@
         public new IDbSet<T> Set<T>() where T : class
         {
             return base.Set<T>();
+        }
+
+        protected override DbEntityValidationResult ValidateEntity(System.Data.Entity.Infrastructure.DbEntityEntry entityEntry, IDictionary<object, object> items)
+        {
+            if (typeof(System.ComponentModel.DataAnnotations.IValidatableObject).IsAssignableFrom(entityEntry.Entity.GetType()))
+            {
+                MethodInfo method = this.GetType().GetMethod("GetNavigationProperties");
+                MethodInfo generic = method.MakeGenericMethod(entityEntry.Entity.GetType().BaseType);
+                var navigationProperties = generic.Invoke(this, new object[] { entityEntry.Entity }) as List<PropertyInfo>;
+
+                foreach (var property in navigationProperties)
+                {
+                    if (typeof(System.Collections.IEnumerable).IsAssignableFrom(property.PropertyType))
+                    {
+                        this.Entry(entityEntry.Entity).Collection(property.Name);
+                    }
+                    else
+                    {
+                        this.Entry(entityEntry.Entity).Reference(property.Name);
+                    }
+                }
+
+                var result = new DbEntityValidationResult(entityEntry, ((IValidatableObject)entityEntry.Entity).Validate(new System.ComponentModel.DataAnnotations.ValidationContext(entityEntry.Entity)).Select(x => new DbValidationError(x.MemberNames.FirstOrDefault(), x.ErrorMessage)));
+                if (!result.IsValid)
+                {
+                    return result;
+                }
+            }
+
+            return base.ValidateEntity(entityEntry, items);
+        }
+
+        public List<PropertyInfo> GetNavigationProperties<T>(T entity) where T : class
+        {
+            var entityType = typeof(T);
+            var elementType = ((IObjectContextAdapter)this).ObjectContext.CreateObjectSet<T>().EntitySet.ElementType;
+            return elementType.NavigationProperties.Select(property => entityType.GetProperty(property.Name)).ToList();
         }
     }
 }

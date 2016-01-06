@@ -529,6 +529,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Choose Material Detail Type....
+        /// </summary>
+        public static string ChooseMaterialDetailType {
+            get {
+                return ResourceManager.GetString("ChooseMaterialDetailType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Choose Material Type....
         /// </summary>
         public static string ChooseMaterialType {
@@ -1483,6 +1492,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to IsDetailRequired.
+        /// </summary>
+        public static string IsDetailRequired {
+            get {
+                return ResourceManager.GetString("IsDetailRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to IsEditable.
         /// </summary>
         public static string IsEditable {
@@ -1722,6 +1740,15 @@ namespace App_GlobalResources.Resources {
         public static string MassReverseLowExtreme {
             get {
                 return ResourceManager.GetString("MassReverseLowExtreme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Material Detail Type.
+        /// </summary>
+        public static string MaterialDetailType {
+            get {
+                return ResourceManager.GetString("MaterialDetailType", resourceCulture);
             }
         }
         

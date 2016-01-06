@@ -57,6 +57,7 @@
             modelBuilder.Configurations.Add(new LogedInUserMap());
             modelBuilder.Configurations.Add(new ProductionPlanDataMap());
             modelBuilder.Configurations.Add(new MathExpressionMap());
+            modelBuilder.Configurations.Add(new MaterialDetailTypeMap());
         }
     }
 }
