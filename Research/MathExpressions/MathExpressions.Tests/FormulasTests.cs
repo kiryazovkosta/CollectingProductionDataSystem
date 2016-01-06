@@ -1284,6 +1284,30 @@ namespace MathExpressions.Tests
             Assert.AreEqual(Convert.ToDecimal(expected), Convert.ToDecimal(actual));
         }
 
+        [TestMethod]
+        public void FormulaI19()              // 52) I19 ;БРОЯЧИ ЗА ВЪЗДУХ, АЗОТ, КИСЛОРОД :: S DF=D X A11 S Q=Q*DF Q
+        {
+            //Arrange
+            double pl = 20;
+            double pl1 = 10;
+            double d = 50;
+            double d2 = 15;
+            double df = d;
+
+            double q = GetValueFormulaA11(pl, pl1, d2);
+            q = q * df;
+
+            var inputParams = new Dictionary<string, double>();
+            inputParams.Add("q", q);
+            double expected = 7500;
+
+            string expr = @"par.q";
+            //Act
+            double actual = calculator.Calculate(expr, "par", 1, inputParams);
+            //Assert
+            //7500.0
+            Assert.AreEqual(Convert.ToDecimal(expected), Convert.ToDecimal(actual));
+        }
 
         [TestMethod]
         public void FormulaG26()              // 62) G26 ;ПРЕВРЪЩАНЕ ДИМЕНСИЯТА ОТ "Н.M.КУБ." В "ТОНОВЕ" :: S Q=PL*D Q
@@ -1322,6 +1346,93 @@ namespace MathExpressions.Tests
             double actual = calculator.Calculate(expr, "par", 1, inputParams);
             //Assert
             //1000.0
+            Assert.AreEqual(Convert.ToDecimal(expected), Convert.ToDecimal(actual));
+        }
+
+        [TestMethod]
+        public void FormulaPP36()              // 79) PP36 ;МРЕЖ.ВОДА КАТО ПАРА /ТОН/ :: S Q=PL*T*D(2)/73500 Q
+        {
+            //Arrange
+            double pl = 20;
+            double t = 40;
+            double d2 = 15;
+            double q = pl * t * d2 / 73500;
+
+            var inputParams = new Dictionary<string, double>();
+            inputParams.Add("q", q);
+            double expected = .16326530612244897;
+
+            string expr = @"par.q";
+            //Act
+            double actual = calculator.Calculate(expr, "par", 1, inputParams);
+            //Assert
+            //0.16326530612244897
+            Assert.AreEqual(Convert.ToDecimal(expected), Convert.ToDecimal(actual));
+        }
+
+        [TestMethod]
+        public void FormulaZZ36()              // 80) ZZ36 ;МРЕЖ.ВOДА КАТО ПАРА [MWH] :: S Q=PL*T*D(2)/86000 Q
+        {
+            //Arrange
+            double pl = 20;
+            double t = 40;
+            double d2 = 15;
+            double q = pl * t * d2 / 86000;
+
+            var inputParams = new Dictionary<string, double>();
+            inputParams.Add("q", q);
+            double expected = .13953488372093023;
+
+            string expr = @"par.q";
+            //Act
+            double actual = calculator.Calculate(expr, "par", 1, inputParams);
+            //Assert
+            //0.13953488372093023
+            Assert.AreEqual(Convert.ToDecimal(expected), Convert.ToDecimal(actual));
+        }
+
+        [TestMethod]
+        public void FormulaZZ38()              // 82) ZZ38 ;СТОКОВ КОНДЕНЗАТ-ТОПЛОЕНЕРГИЯ /Х.КВТЧ./ :: S Q=PL/0.860 Q
+        {
+            //Arrange
+            double pl = 1720;
+            double q = pl / 860;
+
+            var inputParams = new Dictionary<string, double>();
+            inputParams.Add("q", q);
+            double expected = 2;
+
+            string expr = @"par.q";
+            //Act
+            double actual = calculator.Calculate(expr, "par", 1, inputParams);
+            //Assert
+            //2.0
+            Assert.AreEqual(Convert.ToDecimal(expected), Convert.ToDecimal(actual));
+        }
+
+        [TestMethod]
+        public void FormulaZZ39()              // 84) ZZ39 ;КОНДЕНЗАТ-ТОПЛОЕНЕРГИЯ /Х.КВТЧ/ :: S DF=D X A11 S Q=Q*DF*T/860 Q
+        {
+            //Arrange
+            double pl = 20;
+            double pl1 = 10;
+            double t = 40;
+            double d = 50;
+            double d2 = 15;
+            double df = d;
+
+            double q = GetValueFormulaA11(pl, pl1, d2);
+            q = q * df * (t/860);
+
+            var inputParams = new Dictionary<string, double>();
+            inputParams.Add("q", q);
+            double expected = 348.83720930232558;
+
+            string expr = @"par.q";
+            //Act
+            double actual = calculator.Calculate(expr, "par", 1, inputParams);
+            //Assert
+            //348.83720930232556
             Assert.AreEqual(Convert.ToDecimal(expected), Convert.ToDecimal(actual));
         }
 
