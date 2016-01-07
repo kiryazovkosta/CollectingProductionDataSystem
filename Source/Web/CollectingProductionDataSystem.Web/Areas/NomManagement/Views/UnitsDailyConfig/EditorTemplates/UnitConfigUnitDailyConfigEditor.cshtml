@@ -5,7 +5,7 @@
 @(Html.Kendo()
     .MultiSelectFor(m => m)
     .AutoClose(false)
-        .BindTo((IEnumerable<UnitConfigUnitDailyConfigViewModel>)ViewData["relatedUnitConfigs"])
+    .BindTo((IEnumerable<UnitConfigUnitDailyConfigViewModel>)ViewData["relatedUnitConfigs"])
     .DataTextField("Code")
     .DataValueField("UnitConfigId")
     .ItemTemplate("<span class=\"order-id\">#= Code #</span> #= Name #")

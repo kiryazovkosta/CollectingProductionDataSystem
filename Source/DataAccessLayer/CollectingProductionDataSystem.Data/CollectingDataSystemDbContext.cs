@@ -239,32 +239,48 @@
 
         protected override DbEntityValidationResult ValidateEntity(System.Data.Entity.Infrastructure.DbEntityEntry entityEntry, IDictionary<object, object> items)
         {
-            //if (typeof(System.ComponentModel.DataAnnotations.IValidatableObject).IsAssignableFrom(entityEntry.Entity.GetType()))
-            //{
-            //    MethodInfo method = this.GetType().GetMethod("GetNavigationProperties");
-            //    MethodInfo generic = method.MakeGenericMethod(entityEntry.Entity.GetType().BaseType);
-            //    var navigationProperties = generic.Invoke(this, new object[] { entityEntry.Entity }) as List<PropertyInfo>;
+            if (typeof(System.ComponentModel.DataAnnotations.IValidatableObject).IsAssignableFrom(entityEntry.Entity.GetType()))
+            {
+                var type = entityEntry.Entity.GetType();
+                if(IsProxy(type))
+                {
+                    type = entityEntry.Entity.GetType().BaseType;
+                }
 
-            //    foreach (var property in navigationProperties)
-            //    {
-            //        if (typeof(System.Collections.IEnumerable).IsAssignableFrom(property.PropertyType))
-            //        {
-            //            this.Entry(entityEntry.Entity).Collection(property.Name);
-            //        }
-            //        else
-            //        {
-            //            this.Entry(entityEntry.Entity).Reference(property.Name);
-            //        }
-            //    }
+                MethodInfo method = this.GetType().GetMethod("GetNavigationProperties");
+                MethodInfo generic = method.MakeGenericMethod(type);
+                var navigationProperties = generic.Invoke(this, new object[] { entityEntry.Entity }) as List<PropertyInfo>;
 
-            //    var result = new DbEntityValidationResult(entityEntry, ((IValidatableObject)entityEntry.Entity).Validate(new System.ComponentModel.DataAnnotations.ValidationContext(entityEntry.Entity)).Select(x => new DbValidationError(x.MemberNames.FirstOrDefault(), x.ErrorMessage)));
-            //    if (!result.IsValid)
-            //    {
-            //        return result;
-            //    }
-            //}
+                foreach (var property in navigationProperties)
+                {
+                    if (typeof(System.Collections.IEnumerable).IsAssignableFrom(property.PropertyType))
+                    {
+                        this.Entry(entityEntry.Entity).Collection(property.Name);
+                    }
+                    else
+                    {
+                        this.Entry(entityEntry.Entity).Reference(property.Name);
+                    }
+                }
+
+                var result = new DbEntityValidationResult(entityEntry, ((IValidatableObject)entityEntry.Entity).Validate(new System.ComponentModel.DataAnnotations.ValidationContext(entityEntry.Entity)).Select(x => new DbValidationError(x.MemberNames.FirstOrDefault(), x.ErrorMessage)));
+                if (!result.IsValid)
+                {
+                    return result;
+                }
+            }
 
             return base.ValidateEntity(entityEntry, items);
+        }
+ 
+        /// <summary>
+        /// Determines whether the specified type is proxy.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <returns></returns>
+        private bool IsProxy(Type type)
+        {
+            return type != null && System.Data.Entity.Core.Objects.ObjectContext.GetObjectType(type) != type;
         }
 
         public List<PropertyInfo> GetNavigationProperties<T>(T entity) where T : class
