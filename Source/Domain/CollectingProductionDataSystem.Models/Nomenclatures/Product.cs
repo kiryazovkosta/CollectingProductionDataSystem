@@ -6,6 +6,7 @@ namespace CollectingProductionDataSystem.Models.Nomenclatures
     using CollectingProductionDataSystem.Models.Contracts;
     using CollectingProductionDataSystem.Models.Inventories;
     using CollectingProductionDataSystem.Models.Productions;
+    using CollectingProductionDataSystem.Models.Productions.HighwayPipelines;
     using CollectingProductionDataSystem.Models.Transactions;
 
     public partial class Product: DeletableEntity, IEntity
@@ -15,6 +16,7 @@ namespace CollectingProductionDataSystem.Models.Nomenclatures
         private ICollection<UnitDailyConfig> unitsDailyConfigs;
         private ICollection<MeasuringPointsConfigsData> measuringPointsConfigsDatas;
         private ICollection<MeasuringPointProductsConfig> measuringPointProductsConfigs;
+        private ICollection<HighwayPipelineConfig> highwayPipelineConfigs;
 
         public Product()
         {
@@ -23,6 +25,7 @@ namespace CollectingProductionDataSystem.Models.Nomenclatures
             this.unitsDailyConfigs = new HashSet<UnitDailyConfig>();
             this.measuringPointsConfigsDatas = new HashSet<MeasuringPointsConfigsData>();
             this.measuringPointProductsConfigs = new HashSet<MeasuringPointProductsConfig>();
+            this.highwayPipelineConfigs = new HashSet<HighwayPipelineConfig>();
         }
 
         public int Id { get; set; }
@@ -60,6 +63,12 @@ namespace CollectingProductionDataSystem.Models.Nomenclatures
         {
             get { return this.measuringPointProductsConfigs; }
             set { this.measuringPointProductsConfigs = value; }
+        }
+
+        public virtual ICollection<HighwayPipelineConfig> HighwayPipelineConfigs 
+        {
+            get { return this.highwayPipelineConfigs; }
+            set { this.highwayPipelineConfigs = value; }
         }
     }
 }

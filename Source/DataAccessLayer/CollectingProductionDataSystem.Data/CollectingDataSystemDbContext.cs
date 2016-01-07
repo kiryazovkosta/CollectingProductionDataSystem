@@ -24,6 +24,7 @@
     using CollectingProductionDataSystem.Models.Inventories;
     using CollectingProductionDataSystem.Models.Nomenclatures;
     using CollectingProductionDataSystem.Models.Productions;
+    using CollectingProductionDataSystem.Models.Productions.HighwayPipelines;
     using CollectingProductionDataSystem.Models.Productions.Qpt;
     using CollectingProductionDataSystem.Models.SystemLog;
     using CollectingProductionDataSystem.Models.Transactions;
@@ -145,6 +146,14 @@
         public IDbSet<MathExpression> MathExpressions { get; set; }
 
         public IDbSet<MaterialDetailType> MaterialDetailTypes { get; set; }
+
+        public IDbSet<HighwayPipelineConfig> HighwayPipelineConfigs { get; set; }
+
+        public IDbSet<HighwayPipelineData> HighwayPipelineDatas { get; set; }
+
+        public IDbSet<HighwayPipelineManualData> HighwayPipelineManualDatas { get; set; }
+
+        public IDbSet<HighwayPipelineApprovedData> HighwayPipelineApprovedDatas { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

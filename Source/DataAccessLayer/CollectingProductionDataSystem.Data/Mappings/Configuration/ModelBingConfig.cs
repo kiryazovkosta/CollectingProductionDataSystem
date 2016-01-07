@@ -58,6 +58,10 @@
             modelBuilder.Configurations.Add(new ProductionPlanDataMap());
             modelBuilder.Configurations.Add(new MathExpressionMap());
             modelBuilder.Configurations.Add(new MaterialDetailTypeMap());
+            modelBuilder.Configurations.Add(new HighwayPipelineConfigMap());
+            modelBuilder.Configurations.Add(new HighwayPipelineDataMap());
+            modelBuilder.Configurations.Add(new HighwayPipelineManualDataMap());
+            modelBuilder.Configurations.Add(new HighwayPipelineApprovedDataMap());
         }
     }
 }

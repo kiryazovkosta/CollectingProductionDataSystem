@@ -5,7 +5,7 @@
     using CollectingProductionDataSystem.Models.Contracts;
     using System;
 
-    public partial class UnitsApprovedData  : DeletableEntity, IEntity
+    public partial class UnitsApprovedData : DeletableEntity, IEntity
     {
         public int Id { get; set; }
         public DateTime RecordDate { get; set; }

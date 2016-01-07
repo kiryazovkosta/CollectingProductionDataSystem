@@ -1,14 +1,14 @@
 ﻿namespace CollectingProductionDataSystem.Data.Mappings
 {
-    using CollectingProductionDataSystem.Models.Productions;
     using System;
-    using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.ModelConfiguration;
     using System.Linq;
+    using CollectingProductionDataSystem.Models.Productions.HighwayPipelines;
+    using System.ComponentModel.DataAnnotations.Schema;
 
-    public class UnitsManualDataMap : EntityTypeConfiguration<UnitsManualData>
+    public class HighwayPipelineManualDataMap : EntityTypeConfiguration<HighwayPipelineManualData>
     {
-        public UnitsManualDataMap()
+        public HighwayPipelineManualDataMap()
         {
             // Primary Key
             this.HasKey(t => t.Id);
@@ -17,13 +17,8 @@
             this.Property(t => t.Id)
                 .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
 
-
             // Table & Column Mappings
-            this.ToTable("UnitsManualDatas");
-
-            this.HasRequired(u => u.EditReason)
-                .WithMany()
-                .HasForeignKey(d => d.EditReasonId);
+            this.ToTable("HighwayPipelineManualDatas");
         }
     }
 }

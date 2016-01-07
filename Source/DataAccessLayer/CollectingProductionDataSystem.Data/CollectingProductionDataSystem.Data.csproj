@@ -93,6 +93,10 @@
     <Compile Include="Mappings\EditReasonMap.cs" />
     <Compile Include="Mappings\EventMap.cs" />
     <Compile Include="Mappings\FactoryMap.cs" />
+    <Compile Include="Mappings\HighwayPipelineApprovedDataMap.cs" />
+    <Compile Include="Mappings\HighwayPipelineConfigMap.cs" />
+    <Compile Include="Mappings\HighwayPipelineDataMap.cs" />
+    <Compile Include="Mappings\HighwayPipelineManualDataMap.cs" />
     <Compile Include="Mappings\IkunkMap.cs" />
     <Compile Include="Mappings\LogedInUserMap.cs" />
     <Compile Include="Mappings\MaterialDetailTypeMap.cs" />

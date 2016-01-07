@@ -202,5 +202,14 @@ namespace CollectingProductionDataSystem.Phd2SqlProductionData.Properties {
                 return ((string)(this["PHD_DATA_MAX_ROWS"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public int PHD_DATA_SOURCE {
+            get {
+                return ((int)(this["PHD_DATA_SOURCE"]));
+            }
+        }
     }
 }

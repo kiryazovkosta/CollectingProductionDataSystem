@@ -78,7 +78,9 @@ namespace CollectingProductionDataSystem.Phd2SqlProductionData
                 {
                     Utility.SetRegionalSettings();
                     this.primaryDataTimer.Change(Timeout.Infinite, Timeout.Infinite);
-                    Phd2SqlProductionDataMain.ProcessPrimaryProductionData(PrimaryDataSourceType.SrvVmMesPhd);
+                    var dataSourceId = Properties.Settings.Default.PHD_DATA_SOURCE;
+                    PrimaryDataSourceType dataSource = (PrimaryDataSourceType)Enum.ToObject(typeof(PrimaryDataSourceType) , dataSourceId);
+                    Phd2SqlProductionDataMain.ProcessPrimaryProductionData(dataSource);
                 }
                 catch (Exception ex)
                 {

@@ -12,6 +12,7 @@
     using CollectingProductionDataSystem.Models.Inventories;
     using CollectingProductionDataSystem.Models.Nomenclatures;
     using CollectingProductionDataSystem.Models.Productions;
+    using CollectingProductionDataSystem.Models.Productions.HighwayPipelines;
     using CollectingProductionDataSystem.Models.Productions.Qpt;
     using CollectingProductionDataSystem.Models.SystemLog;
     using CollectingProductionDataSystem.Models.Transactions;
@@ -358,6 +359,38 @@
             get
             {
                 return this.GetDeletableEntityRepository<MathExpression>();
+            }
+        }
+
+        public IDeletableEntityRepository<HighwayPipelineConfig> HighwayPipelineConfigs
+        {
+            get
+            {
+                return this.GetDeletableEntityRepository<HighwayPipelineConfig>();
+            }
+        }
+
+        public IApprovableEntityRepository<HighwayPipelineData> HighwayPipelineDatas
+        {
+            get
+            {
+                return this.GetApprovableEntityRepository<HighwayPipelineData>();
+            }
+        }
+
+        public IDeletableEntityRepository<HighwayPipelineManualData> HighwayPipelineManualDatas
+        {
+            get
+            {
+                return this.GetDeletableEntityRepository<HighwayPipelineManualData>();
+            }
+        }
+
+        public IDeletableEntityRepository<HighwayPipelineApprovedData> HighwayPipelineApprovedDatas
+        {
+            get
+            {
+                return this.GetDeletableEntityRepository<HighwayPipelineApprovedData>();
             }
         }
 

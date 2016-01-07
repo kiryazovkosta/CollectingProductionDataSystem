@@ -5,6 +5,7 @@
     using CollectingProductionDataSystem.Models.Inventories;
     using CollectingProductionDataSystem.Models.Nomenclatures;
     using CollectingProductionDataSystem.Models.Productions;
+    using CollectingProductionDataSystem.Models.Productions.HighwayPipelines;
     using CollectingProductionDataSystem.Models.Productions.Qpt;
     using CollectingProductionDataSystem.Models.SystemLog;
     using CollectingProductionDataSystem.Models.Transactions;
@@ -109,6 +110,14 @@
         IDeletableEntityRepository<ProductionPlanData> ProductionPlanDatas { get; }
 
         IDeletableEntityRepository<MathExpression> MathExpressions { get; }
+
+        IDeletableEntityRepository<HighwayPipelineConfig> HighwayPipelineConfigs { get; }
+
+        IApprovableEntityRepository<HighwayPipelineData> HighwayPipelineDatas { get; }
+
+        IDeletableEntityRepository<HighwayPipelineManualData> HighwayPipelineManualDatas { get; }
+
+        IDeletableEntityRepository<HighwayPipelineApprovedData> HighwayPipelineApprovedDatas { get; }
 
         IDbContext DbContext { get; }
 
