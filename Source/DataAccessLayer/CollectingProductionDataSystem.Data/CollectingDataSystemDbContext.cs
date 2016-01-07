@@ -241,8 +241,14 @@
         {
             if (typeof(System.ComponentModel.DataAnnotations.IValidatableObject).IsAssignableFrom(entityEntry.Entity.GetType()))
             {
+                var type = entityEntry.Entity.GetType();
+                if(IsProxy(type))
+                {
+                    type = entityEntry.Entity.GetType().BaseType;
+                }
+
                 MethodInfo method = this.GetType().GetMethod("GetNavigationProperties");
-                MethodInfo generic = method.MakeGenericMethod(entityEntry.Entity.GetType().BaseType);
+                MethodInfo generic = method.MakeGenericMethod(type);
                 var navigationProperties = generic.Invoke(this, new object[] { entityEntry.Entity }) as List<PropertyInfo>;
 
                 foreach (var property in navigationProperties)
@@ -265,6 +271,16 @@
             }
 
             return base.ValidateEntity(entityEntry, items);
+        }
+ 
+        /// <summary>
+        /// Determines whether the specified type is proxy.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <returns></returns>
+        private bool IsProxy(Type type)
+        {
+            return type != null && System.Data.Entity.Core.Objects.ObjectContext.GetObjectType(type) != type;
         }
 
         public List<PropertyInfo> GetNavigationProperties<T>(T entity) where T : class

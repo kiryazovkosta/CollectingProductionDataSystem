@@ -83,10 +83,6 @@
     //------------------ public functions ------------------------------------
 
     function ErrorHandler(e) {
-        var grid = e.sender;
-        grid.one("dataBinding", function (e) {
-            e.preventDefault();
-        });
             if (this.data) {
                 this.data([]);
             }
@@ -149,12 +145,19 @@
         }
     }
 
+    function afterterNomGridValidation(ev) {
+        if (ev.type === 'update') {
+            RefreshGrid('#grid');
+        }
+    }
+
     return {
         ErrorHandler: ErrorHandler,
         CloseWindow: CloseWindow,
         RefreshGrid: RefreshGrid,
         ValueMapper: ValueMapper,
         SendHistoryData: SendHistoryData,
-        DeletableDataBound: DeletableDataBound
+        DeletableDataBound: DeletableDataBound,
+        AfterterNomGridValidation:afterterNomGridValidation
     }
 })();

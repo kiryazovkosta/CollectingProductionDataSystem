@@ -1,14 +1,17 @@
-﻿@(Html.Kendo()
+﻿@using CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewModels;
+
+@(Html.Kendo()
       .Grid<CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewModels.UnitsDailyConfigViewModel>()
       .Name("grid")
-      .Columns(columns => {
+      .Columns(columns =>
+      {
           columns.Bound(c => c.Code)
           .ClientTemplate(
-                Ajax.AuthorizedAjaxActionLinkOrText("#=data.Code#", "Index", "History",
-                                                new AjaxOptions() { HttpMethod = "Get", OnSuccess = "showRecordHistoriModal" },
-                                                new { area = "RecordsHistory", id = "#=data.id#", entityName = "UnitConfig" },
-                                                new { data_ajax_mode = "replace", data_ajax_update = @"\#modal-dialog-body" })
-                                                .ToHtmlString())
+          Ajax.AuthorizedAjaxActionLinkOrText("#=data.Code#", "Index", "History",
+          new AjaxOptions() { HttpMethod = "Get", OnSuccess = "showRecordHistoriModal" },
+          new { area = "RecordsHistory", id = "#=data.id#", entityName = "UnitConfig" },
+          new { data_ajax_mode = "replace", data_ajax_update = @"\#modal-dialog-body" })
+          .ToHtmlString())
           .Width(100);
           columns.Bound(c => c.Name).Width(200);
           columns.ForeignKey(c => c.ProcessUnitId, (System.Collections.IEnumerable)ViewData["processUnits"], "Id", "FullName").EditorTemplateName("ProcessUnitViewModel").Width(280);
@@ -25,39 +28,46 @@
           columns.Bound(c => c.IsEditable).Width(100);
           columns.Command(command => { command.Edit(); command.Destroy(); }).Width(230);
       })
-      .Resizable(res=>res.Columns(true))
+      .Resizable(res => res.Columns(true))
       .ToolBar(toolbar =>
-      {
-          toolbar.Create();
-          toolbar.Excel();
-      })
+{
+    toolbar.Create();
+    toolbar.Excel();
+})
       .Editable(editable => editable.Mode(GridEditMode.InLine))
-          .Pageable(pageable => pageable
-              .Refresh(true)
-              .PageSizes(new[] { 20, 50, 100 })
-              .ButtonCount(5)
-          )
-          .Sortable(sortable =>
-          {
-              sortable.SortMode(GridSortMode.SingleColumn);
-          })
-          .Filterable()
-          .Scrollable(scrol => scrol.Height(620))
+      .Pageable(pageable => pageable
+.Refresh(true)
+.PageSizes(new[] { 20, 50, 100 })
+.ButtonCount(5)
+)
+      .Sortable(sortable =>
+{
+    sortable.SortMode(GridSortMode.SingleColumn);
+})
+      .Filterable()
+      .Scrollable(scrol => scrol.Height(620))
       .Scrollable()
       .DataSource(dataSource => dataSource
-          .Ajax()
-          .PageSize(20)
-          .Model(model => model.Id(p => p.Id))
-              .Read(read => read.Action("Read", "UnitsDailyConfig", new { area = "NomManagement" }).Data("sendAntiForgery"))
-              .Create(create => create.Action("Create", "UnitsDailyConfig", new { area = "NomManagement" }).Data("sendAntiForgery"))
-              .Update(update => update.Action("Update", "UnitsDailyConfig", new { area = "NomManagement" }).Data("sendAntiForgery"))
-              .Destroy(destroy => destroy.Action("Destroy", "UnitsDailyConfig", new { area = "NomManagement" }).Data("sendAntiForgery"))
-          .Events(events =>
-                {
-                    events.Error("kendoAdditional.ErrorHandler");
-                })
-          )
-              .Events(ev => ev.DataBound("kendoAdditional.DeletableDataBound"))
+.Ajax()
+.PageSize(20)
+.Model(model =>
+{
+    model.Id(p => p.Id);
+    model.Field(p => p.UnitConfigUnitDailyConfigs).DefaultValue(new HashSet<UnitConfigUnitDailyConfigViewModel>() { new UnitConfigUnitDailyConfigViewModel() }).Editable(true);
+    model.Field(p => p.RelatedUnitDailyConfigs).DefaultValue(new HashSet<RelatedUnitDailyConfigsViewModel>() { new RelatedUnitDailyConfigsViewModel() }).Editable(true);
+
+})
+.Read(read => read.Action("Read", "UnitsDailyConfig", new { area = "NomManagement" }).Data("sendAntiForgery"))
+.Create(create => create.Action("Create", "UnitsDailyConfig", new { area = "NomManagement" }).Data("sendAntiForgery"))
+.Update(update => update.Action("Update", "UnitsDailyConfig", new { area = "NomManagement" }).Data("sendAntiForgery"))
+.Destroy(destroy => destroy.Action("Destroy", "UnitsDailyConfig", new { area = "NomManagement" }).Data("sendAntiForgery"))
+.Events(events =>
+{
+    events.Error("kendoAdditional.ErrorHandler");
+    events.RequestEnd("kendoAdditional.AfterterNomGridValidation");
+})
+)
+      .Events(ev => ev.DataBound("kendoAdditional.DeletableDataBound"))
 )
 
 <script type="text/kendo" id="unitConfigTemplate">
