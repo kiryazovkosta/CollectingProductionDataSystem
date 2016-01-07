@@ -63,12 +63,12 @@
             catch (DataException validationException)
             {
                 LogValidationDataException(validationException);
-                SendEmail("Kosta.Kiryzov@bmsys.eu", "SAPO - ERROR", validationException.ToString()); 
+                SendEmail("Kosta.Kiryzov@bmsys.eu", "SAPO - ERROR", validationException.Message); 
             }
             catch (Exception ex)
             {
                 logger.Error(ex);
-                SendEmail("Kosta.Kiryzov@bmsys.eu", "SAPO - ERROR", ex.ToString());  
+                SendEmail("Kosta.Kiryzov@bmsys.eu", "SAPO - ERROR", ex.Message);  
             }
         }
 
