@@ -239,30 +239,30 @@
 
         protected override DbEntityValidationResult ValidateEntity(System.Data.Entity.Infrastructure.DbEntityEntry entityEntry, IDictionary<object, object> items)
         {
-            if (typeof(System.ComponentModel.DataAnnotations.IValidatableObject).IsAssignableFrom(entityEntry.Entity.GetType()))
-            {
-                MethodInfo method = this.GetType().GetMethod("GetNavigationProperties");
-                MethodInfo generic = method.MakeGenericMethod(entityEntry.Entity.GetType().BaseType);
-                var navigationProperties = generic.Invoke(this, new object[] { entityEntry.Entity }) as List<PropertyInfo>;
+            //if (typeof(System.ComponentModel.DataAnnotations.IValidatableObject).IsAssignableFrom(entityEntry.Entity.GetType()))
+            //{
+            //    MethodInfo method = this.GetType().GetMethod("GetNavigationProperties");
+            //    MethodInfo generic = method.MakeGenericMethod(entityEntry.Entity.GetType().BaseType);
+            //    var navigationProperties = generic.Invoke(this, new object[] { entityEntry.Entity }) as List<PropertyInfo>;
 
-                foreach (var property in navigationProperties)
-                {
-                    if (typeof(System.Collections.IEnumerable).IsAssignableFrom(property.PropertyType))
-                    {
-                        this.Entry(entityEntry.Entity).Collection(property.Name);
-                    }
-                    else
-                    {
-                        this.Entry(entityEntry.Entity).Reference(property.Name);
-                    }
-                }
+            //    foreach (var property in navigationProperties)
+            //    {
+            //        if (typeof(System.Collections.IEnumerable).IsAssignableFrom(property.PropertyType))
+            //        {
+            //            this.Entry(entityEntry.Entity).Collection(property.Name);
+            //        }
+            //        else
+            //        {
+            //            this.Entry(entityEntry.Entity).Reference(property.Name);
+            //        }
+            //    }
 
-                var result = new DbEntityValidationResult(entityEntry, ((IValidatableObject)entityEntry.Entity).Validate(new System.ComponentModel.DataAnnotations.ValidationContext(entityEntry.Entity)).Select(x => new DbValidationError(x.MemberNames.FirstOrDefault(), x.ErrorMessage)));
-                if (!result.IsValid)
-                {
-                    return result;
-                }
-            }
+            //    var result = new DbEntityValidationResult(entityEntry, ((IValidatableObject)entityEntry.Entity).Validate(new System.ComponentModel.DataAnnotations.ValidationContext(entityEntry.Entity)).Select(x => new DbValidationError(x.MemberNames.FirstOrDefault(), x.ErrorMessage)));
+            //    if (!result.IsValid)
+            //    {
+            //        return result;
+            //    }
+            //}
 
             return base.ValidateEntity(entityEntry, items);
         }

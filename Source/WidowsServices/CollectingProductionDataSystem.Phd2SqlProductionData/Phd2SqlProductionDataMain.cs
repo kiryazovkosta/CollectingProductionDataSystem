@@ -51,18 +51,24 @@
                 for (int offsetInHours = 0; offsetInHours < Properties.Settings.Default.SYNC_PRIMARY_HOURS_OFFSET; offsetInHours += 8)
                 {
                     var offset = offsetInHours == 0 ? offsetInHours : offsetInHours * -1;
-                    var recordsDates = service.ReadAndSaveUnitsDataForShift(DateTime.Now, offset, dataSource);
-                    logger.InfoFormat("Successfully added {0} UnitsData records to CollectingPrimaryDataSystem", recordsDates);
+                    var insertedRecords = service.ReadAndSaveUnitsDataForShift(DateTime.Now, offset, dataSource);
+                    logger.InfoFormat("Successfully added {0} UnitsData records to CollectingPrimaryDataSystem", insertedRecords);
+                    if (insertedRecords > 0)
+                    {
+                        SendEmail("Kosta.Kiryzov@bmsys.eu", "SAPO - Shift data", string.Format("Successfully added {0} recorts to database", insertedRecords));  
+                    }
                 }
                 logger.Info("Sync primary data finished!");
             }
             catch (DataException validationException)
             {
                 LogValidationDataException(validationException);
+                SendEmail("Kosta.Kiryzov@bmsys.eu", "SAPO - ERROR", validationException.ToString()); 
             }
             catch (Exception ex)
             {
                 logger.Error(ex);
+                SendEmail("Kosta.Kiryzov@bmsys.eu", "SAPO - ERROR", ex.ToString());  
             }
         }
 

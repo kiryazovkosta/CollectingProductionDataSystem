@@ -134,6 +134,10 @@
                     {
                         this.ModelState.AddModelError("ManualValue", "Записът не можа да бъде осъществен. Моля опитайте на ново!");
                     }
+                    catch(Exception ex)
+                    {
+                        this.ModelState.AddModelError("ManualValue", ex.ToString());
+                    }
                 }
                 else
                 {
