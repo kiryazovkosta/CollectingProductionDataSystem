@@ -31,10 +31,14 @@
         [Display(Name = "ProductCode", ResourceType = typeof(Resources.Layout))]
         public int ProductCode { get; set; }
 
+        [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
         [Display(Name = "Volume", ResourceType = typeof(Resources.Layout))]
+         [Range(0, double.MaxValue, ErrorMessageResourceName = "Volume", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
         public decimal Volume { get; set; }
 
+        [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
         [Display(Name = "Mass", ResourceType = typeof(Resources.Layout))]
+        [Range(0, double.MaxValue, ErrorMessageResourceName = "Mass", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
         public decimal Mass { get; set; }
 
         public void CreateMappings(AutoMapper.IConfiguration configuration)
@@ -42,6 +46,14 @@
             configuration.CreateMap<HighwayPipelineData, HighwayPipelinesDataViewModel>()
                 .ForMember(p => p.HighwayPipelineConfigName, opt => opt.MapFrom(p => p.HighwayPipelineConfig.Name))
                 .ForMember(p => p.PipeNumber, opt => opt.MapFrom(p => p.HighwayPipelineConfig.PipeNumber));
+        }
+
+        public string Sort 
+        { 
+            get
+            {
+                return this.PipeNumber.ToString().PadLeft(2,'0')+ " " + this.HighwayPipelineConfigName;
+            }
         }
     }
 }

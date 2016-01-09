@@ -113,7 +113,7 @@
 
         IDeletableEntityRepository<HighwayPipelineConfig> HighwayPipelineConfigs { get; }
 
-        IApprovableEntityRepository<HighwayPipelineData> HighwayPipelineDatas { get; }
+        IDeletableEntityRepository<HighwayPipelineData> HighwayPipelineDatas { get; }
 
         IDeletableEntityRepository<HighwayPipelineManualData> HighwayPipelineManualDatas { get; }
 

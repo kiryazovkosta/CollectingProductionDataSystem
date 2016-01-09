@@ -147,6 +147,9 @@
   <data name="ManualValue" xml:space="preserve">
     <value>The value of the field {0} must be between {1} and {2}. </value>
   </data>
+  <data name="Mass" xml:space="preserve">
+    <value>Invalid mass</value>
+  </data>
   <data name="Message" xml:space="preserve">
     <value>There was an error in application</value>
   </data>
@@ -170,5 +173,8 @@
   </data>
   <data name="UserName" xml:space="preserve">
     <value>The {0} must be at least {2} characters long.</value>
+  </data>
+  <data name="Volume" xml:space="preserve">
+    <value>Invalid volume</value>
   </data>
 </root>

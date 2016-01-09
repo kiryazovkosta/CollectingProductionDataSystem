@@ -10,13 +10,17 @@
     using System.Web.Mvc;
     using CollectingProductionDataSystem.Models.Transactions.HighwayPipelines;
     using CollectingProductionDataSystem.Web.Areas.DailyReporting.ViewModels;
+    using CollectingProductionDataSystem.Web.Infrastructure.Extentions;
     using Kendo.Mvc.Extensions;
     using Kendo.Mvc.UI;
     using System.Diagnostics;
+    using System.Data.Entity.Infrastructure;
+    using Resources = App_GlobalResources.Resources;
 
     public class HighwayPipelinesController : AreaBaseController
     {
-        public HighwayPipelinesController(IProductionData dataParam) : base(dataParam)
+        public HighwayPipelinesController(IProductionData dataParam) 
+            : base(dataParam)
         {
 
         }
@@ -28,10 +32,12 @@
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public JsonResult ReadHighwayPipelinesData([DataSourceRequest]DataSourceRequest request, DateTime? date)
         {
-            var kendoResult = new DataSourceResult();
-            try
+            ValidateModelState(date);
+
+            if (this.ModelState.IsValid)
             {
                 if ( !this.data.HighwayPipelineDatas.All().Where(x => x.RecordTimestamp == date).Any())
                 {
@@ -51,71 +57,61 @@
 
                     this.data.SaveChanges(this.UserProfile.UserName);
                 }
-                var highwayPipesData = this.data.HighwayPipelineDatas.All().Include(x => x.HighwayPipelineConfig).Where(x => x.RecordTimestamp == date).ToList();
+                var highwayPipesData = this.data.HighwayPipelineDatas
+                    .All()
+                    .Include(x => x.HighwayPipelineConfig)
+                    .Where(x => x.RecordTimestamp == date)
+                    .ToList();
+                    
                 var kendoPreparedResult = Mapper.Map<IEnumerable<HighwayPipelineData>, IEnumerable<HighwayPipelinesDataViewModel>>(highwayPipesData);
-                kendoResult = kendoPreparedResult.ToDataSourceResult(request, ModelState);
+                var kendoResult = kendoPreparedResult.ToDataSourceResult(request, ModelState);
+                return Json(kendoResult);
             }
-            catch (Exception ex1)
+            else
             {
-                Debug.WriteLine(ex1.Message + "\n" + ex1.InnerException);
+                var kendoResult = new List<HighwayPipelinesDataViewModel>().ToDataSourceResult(request, ModelState);
+                return Json(kendoResult);
             }
-
-            return Json(kendoResult);
+        }
+ 
+        private void ValidateModelState(DateTime? date)
+        {
+            if (date == null)
+            {
+                this.ModelState.AddModelError("date", string.Format(Resources.ErrorMessages.Required, Resources.Layout.UnitsDateSelector));
+            }
+            if (date.HasValue && date.Value.CompareTo(DateTime.Today) > 0)
+            {
+                this.ModelState.AddModelError("date", Resources.Layout.UnitsDateSelectorFuture);
+            }
         }
 
-                [HttpPost]
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([DataSourceRequest]DataSourceRequest request, HighwayPipelinesDataViewModel model)
         {
             if (ModelState.IsValid)
             {
-                //var newManualRecord = new HighwayPipelineData
-                //{
-                //    Id = model.Id,
-                //    Value = model.UnitsManualDailyData.Value,
-                //    EditReasonId = model.UnitsManualDailyData.EditReason.Id
-                //};
-
-                //var existRecord = this.data.UnitsManualDailyDatas.All().FirstOrDefault(x => x.Id == newManualRecord.Id);
-                //if (existRecord == null)
-                //{
-                //    this.data.UnitsManualDailyDatas.Add(newManualRecord);
-                //}
-                //else
-                //{
-                //    UpdateRecord(existManualRecord, model);
-                //}
-                //try
-                //{
-                //    using (var transaction = new TransactionScope(TransactionScopeOption.Required, this.transantionOption))
-                //    {
-                //        var result = this.data.SaveChanges(UserProfile.UserName);
-                //        if (!result.IsValid)
-                //        {
-                //            foreach (ValidationResult error in result.EfErrors)
-                //            {
-                //                this.ModelState.AddModelError(error.MemberNames.ToList()[0], error.ErrorMessage);
-                //            }
-                //        }
-
-                //        var updatedRecords = this.dailyService.CalculateDailyDataForProcessUnit(model.UnitsDailyConfig.ProcessUnitId, model.RecordTimestamp, isRecalculate: true, editReasonId: model.UnitsManualDailyData.EditReason.Id);
-                //        var status = UpdateResultRecords(updatedRecords, model.UnitsManualDailyData.EditReason.Id);
-
-                //        if (!status.IsValid)
-                //        {
-                //            status.ToModelStateErrors(this.ModelState);
-                //            //logger.Error()
-                //        }
-                //        else
-                //        {
-                //            transaction.Complete();
-                //        }
-                //    }
-                //}
-                //catch (DbUpdateException)
-                //{
-                //    this.ModelState.AddModelError("ManualValue", "Записът не можа да бъде осъществен. Моля опитайте на ново!");
-                //}
+                var exsistRecord = this.data.HighwayPipelineDatas.All().Where(x => x.Id == model.Id).First();
+                exsistRecord.Volume = model.Volume;
+                exsistRecord.Mass = model.Mass;
+                this.data.HighwayPipelineDatas.Update(exsistRecord);
+                try
+                    {
+                        IEfStatus result = this.data.SaveChanges(UserProfile.UserName);
+                        if (!result.IsValid)
+                        {
+                            result.ToModelStateErrors(this.ModelState);
+                        }
+                    }
+                    catch (DbUpdateException)
+                    {
+                        this.ModelState.AddModelError("", "Записът не можа да бъде осъществен. Моля опитайте на ново!");
+                    }
+                    catch(Exception ex)
+                    {
+                        this.ModelState.AddModelError("", ex.ToString());
+                    }
             }
 
             return Json(new[] { model }.ToDataSourceResult(request, ModelState));

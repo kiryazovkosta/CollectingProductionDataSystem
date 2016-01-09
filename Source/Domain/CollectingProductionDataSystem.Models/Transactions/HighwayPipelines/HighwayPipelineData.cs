@@ -4,9 +4,10 @@
     using System.ComponentModel.DataAnnotations.Schema;
     using CollectingProductionDataSystem.Models.Abstract;
     using CollectingProductionDataSystem.Models.Contracts;
-    using CollectingProductionDataSystem.Models.Transactions.HighwayPipelines;
+    using System.ComponentModel.DataAnnotations;
+    using System.Collections.Generic;
 
-    public partial class HighwayPipelineData : AuditInfo, IApprovableEntity, IEntity
+    public partial class HighwayPipelineData : DeletableEntity, IEntity, IValidatableObject
     {
         public int Id { get; set; }
         public DateTime RecordTimestamp { get; set; }
@@ -62,6 +63,19 @@
                         return default(decimal);
                     }
                 }
+            }
+        }
+
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            if (this.Volume < 0.0M || this.Volume > decimal.MaxValue) 
+            {
+                yield return new ValidationResult(string.Format(Resources.ModelErrors.UnitsManualData_Value_Range, 0.0M, decimal.MaxValue), new string[] { "Volume" });
+            }
+
+            if (this.Mass < 0.0M || this.Mass > decimal.MaxValue) 
+            {
+                yield return new ValidationResult(string.Format(Resources.ModelErrors.UnitsManualData_Value_Range, 0.0M, decimal.MaxValue), new string[] { "Mass" });
             }
         }
     }

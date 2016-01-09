@@ -3472,6 +3472,24 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to UnitsDailyDataEnergy.
+        /// </summary>
+        public static string UnitsDailyDataEnergy {
+            get {
+                return ResourceManager.GetString("UnitsDailyDataEnergy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to UnitsDailyDataMaterial.
+        /// </summary>
+        public static string UnitsDailyDataMaterial {
+            get {
+                return ResourceManager.GetString("UnitsDailyDataMaterial", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Units Daily Report Data.
         /// </summary>
         public static string UnitsDailyReportData {
@@ -3495,6 +3513,15 @@ namespace App_GlobalResources.Resources {
         public static string UnitsDateSelector {
             get {
                 return ResourceManager.GetString("UnitsDateSelector", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Report Date Is In The Future.
+        /// </summary>
+        public static string UnitsDateSelectorFuture {
+            get {
+                return ResourceManager.GetString("UnitsDateSelectorFuture", resourceCulture);
             }
         }
         

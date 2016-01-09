@@ -370,11 +370,11 @@
             }
         }
 
-        public IApprovableEntityRepository<HighwayPipelineData> HighwayPipelineDatas
+        public IDeletableEntityRepository<HighwayPipelineData> HighwayPipelineDatas
         {
             get
             {
-                return this.GetApprovableEntityRepository<HighwayPipelineData>();
+                return this.GetDeletableEntityRepository<HighwayPipelineData>();
             }
         }
 

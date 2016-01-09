@@ -29,6 +29,15 @@ var unitGridsData = (function () {
                 kendoAdditional.RefreshGrid("#tanks");
             }
 
+            if ($("#measuringpoints").val() !== undefined) {
+
+                if (ctrlParamsElement.val() !== undefined) {
+                    ctrlParamsElement.attr('data-params', JSON.stringify(sendOnlyDate()));
+                }
+
+                kendoAdditional.RefreshGrid("#measuringpoints");
+            }
+
             if ($("#confirmation").val() !== undefined) {
                 kendoAdditional.RefreshGrid("#confirmation");
             }
@@ -348,6 +357,12 @@ var unitGridsData = (function () {
         $.extend(result, sendZoneId());
         $.extend(result, sendShift());
         $.extend(result, sendAreaId());
+        $.extend(result, sendAntiForgery());
+        return result;
+    }
+
+    function sendOnlyDate() {
+        var result = { "date": $('input[name=date]').val() };
         $.extend(result, sendAntiForgery());
         return result;
     }

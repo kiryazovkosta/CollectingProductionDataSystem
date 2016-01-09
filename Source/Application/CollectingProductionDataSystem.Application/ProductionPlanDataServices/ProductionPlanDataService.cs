@@ -43,19 +43,14 @@
                 .ThenBy(x=>x.Position)
                 .ToList();
 
-            var productionPlansData = this.data.ProductionPlanDatas
-                .All()
-                .Where(x => x.RecordTimestamp == date.Value && x.ProcessUnitId == processUnitId.Value)
-                .ToDictionary(x => x.ProductionPlanConfigId, x => x);
-
             var currentMonthQuantity = AppendTotalMonthQuantityToDailyProductionPlanRecords(processUnitId.Value, date.Value);
             var totallyQuantity = GetSumOfTottallyProcessing(processUnitId.Value, date.Value);
+            var totallyQuantityAs = 0m;
 
             foreach (ProductionPlanConfig productionPlan in productionPlans)
             {
                 var planValue = CalculatePlanValue(productionPlan, dailyData, this.calculator);
                 var factValue = CalculateFactValue(productionPlan, dailyData, this.calculator);
-
                 var realValue = dailyData.Where(x => x.UnitsDailyConfig.Code == productionPlan.QuantityPlanMembers).FirstOrDefault().RealValue;
                 var factPercents = (factValue * 100.00) / realValue;
 
@@ -72,15 +67,19 @@
                     ProcessUnitId = processUnitId.Value,
                     QuanityFactCurrentMonth = currentMonthQuantity.ContainsKey(productionPlan.Name) == true ?  currentMonthQuantity[productionPlan.Name] : 0.00m,
                 };
-                if (!productionPlansData.ContainsKey(productionPlan.Id))
-                {
-                    result.Add(productionPlanData);    
-                }
-                else
-                {
-                    int x = 0;
-                }
-                
+
+                if (productionPlan.Name == totallyQuantity.First().Key)
+	            {
+                    totallyQuantityAs = totallyQuantity[productionPlan.Name] + productionPlanData.QuantityFact;  
+	            }
+
+                result.Add(productionPlanData);
+            }
+
+            foreach (var item in result)
+            {
+                var percs = (((double)item.QuanityFactCurrentMonth + (double)item.QuantityFact) * 100.00) / (double)totallyQuantityAs;
+                item.PercentagesFactCurrentMonth = double.IsNaN(percs) ? 0.0m : (decimal)percs;
             }
 
             return result;
@@ -153,14 +152,14 @@
             return totalMonthProductionPlanQuantities;
         }
 
-        private  Dictionary<string, decimal> GetSumOfTottallyProcessing(int processUnitId, DateTime targetDay)
+        private Dictionary<string, decimal> GetSumOfTottallyProcessing(int processUnitId, DateTime targetDay)
         {
             var beginningOfMonth = new DateTime(targetDay.Year, targetDay.Month, 1);
             var totalsRecords = data.ProductionPlanDatas.All()
                 .Include(x => x.ProductionPlanConfig)
                 .Where(x => x.ProductionPlanConfig.ProcessUnitId == processUnitId &&
                     x.ProductionPlanConfig.IsSummaryOfProcessing == true &&
-                    beginningOfMonth <= x.RecordTimestamp && x.RecordTimestamp <= targetDay)
+                    (beginningOfMonth <= x.RecordTimestamp && x.RecordTimestamp <= targetDay))
                 .GroupBy(x => x.ProductionPlanConfig.Name)
                 .ToList()
                 .Select(group => new 
@@ -169,6 +168,22 @@
                     Value = group.Sum(x => x.QuantityFact) 
                 })
                 .ToDictionary(x => x.Name, x => x.Value);
+
+            if (totalsRecords.Count == 0)
+            {
+                var summaryProductionPlanConfig = this.data.ProductionPlanConfigs
+                    .All()
+                    .Where(x => x.ProcessUnitId == processUnitId && x.IsSummaryOfProcessing == true)
+                    .FirstOrDefault();
+                if (summaryProductionPlanConfig == null)
+                {
+                    totalsRecords.Add("Сума преработка", 0m);
+                }
+                else
+                {
+                    totalsRecords.Add(summaryProductionPlanConfig.Name, 0m);
+                }
+            }
 
             return totalsRecords;
         }

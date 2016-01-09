@@ -1326,4 +1326,13 @@
   <data name="ProductCode" xml:space="preserve">
     <value>Код на продукт</value>
   </data>
+  <data name="UnitsDailyDataEnergy" xml:space="preserve">
+    <value>Дневни данни за измервателни позиции - Eнергийни потоци</value>
+  </data>
+  <data name="UnitsDailyDataMaterial" xml:space="preserve">
+    <value>Дневни данни за измервателни позиции - Mатериални потоци</value>
+  </data>
+  <data name="UnitsDateSelectorFuture" xml:space="preserve">
+    <value>Дата на отчета не е валидна. Изберете дата до днес.</value>
+  </data>
 </root>

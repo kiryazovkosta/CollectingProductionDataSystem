@@ -1323,4 +1323,13 @@
   <data name="ProductCode" xml:space="preserve">
     <value>ProductCode</value>
   </data>
+  <data name="UnitsDailyDataEnergy" xml:space="preserve">
+    <value>UnitsDailyDataEnergy</value>
+  </data>
+  <data name="UnitsDailyDataMaterial" xml:space="preserve">
+    <value>UnitsDailyDataMaterial</value>
+  </data>
+  <data name="UnitsDateSelectorFuture" xml:space="preserve">
+    <value>Report Date Is In The Future</value>
+  </data>
 </root>

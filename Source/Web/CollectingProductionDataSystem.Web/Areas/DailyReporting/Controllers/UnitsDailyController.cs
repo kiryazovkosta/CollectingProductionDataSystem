@@ -407,6 +407,17 @@
                         });
 
                     // Get all process plan data and save it
+                    var productionPlansDatas = this.data.ProductionPlanDatas
+                        .All()
+                        .Where(x => x.RecordTimestamp == model.date && x.ProcessUnitId == model.processUnitId)
+                        .ToList();
+                    if (productionPlansDatas.Count > 0)
+                    {
+                        foreach (var productionPlansData in productionPlansDatas)
+	                    {
+                            this.data.ProductionPlanDatas.Delete(productionPlansData);
+	                    }
+                    }
                     IEnumerable<ProductionPlanData> dbResult = this.productionPlanData.ReadProductionPlanData(model.date, model.processUnitId);
                     if (dbResult.Count() > 0)
                     {
