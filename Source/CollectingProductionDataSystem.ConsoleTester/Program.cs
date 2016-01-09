@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 using System.Transactions;
 using CollectingProductionDataSystem.Application.CalculatorService;
 using CollectingProductionDataSystem.Application.Contracts;
@@ -26,6 +27,7 @@ namespace CollectingProductionDataSystem.ConsoleTester
         private static TransactionOptions transantionOption = DefaultTransactionOptions.Instance.TransactionOptions;
         private static NinjectConfig ninject;
         private static IKernel kernel;
+        private static ITestUnitDailyCalculationService testUnitDailyCalculationService;
 
         static Program()
         {
@@ -33,42 +35,99 @@ namespace CollectingProductionDataSystem.ConsoleTester
             kernel = ninject.Kernel;
             dailyService = new UnitDailyDataService(data, kernel, new CalculatorService());
             data = new ProductionData(new CollectingDataSystemDbContext());
+            testUnitDailyCalculationService = kernel.Get<ITestUnitDailyCalculationService>();
         }
 
         static void Main(string[] args)
         {
-            using (var transaction = new TransactionScope(TransactionScopeOption.Required, transantionOption))
+            //using (var transaction = new TransactionScope(TransactionScopeOption.Required, transantionOption))
+            //{
+            //    CalculateDailyDataIfNotAvailable(new DateTime(2015, 12, 4), 7);
+            //}
+            Thread thread1 = new Thread(new ThreadStart(Calculate));
+            Thread thread2 = new Thread(new ThreadStart(Calculate));
+            thread1.Start();
+            thread2.Start();
+            thread1.Join();
+            thread2.Join();
+            Console.WriteLine("CalculationOver");
+        }
+
+        private static void Calculate() 
+        {
+             using (var transaction = new TransactionScope(TransactionScopeOption.Required, transantionOption))
             {
-                CalculateDailyDataIfNotAvailable(new DateTime(2015, 12, 4), 7);
+                CalculateDailyDataIfNotAvailable(new DateTime(2016, 1, 1), 5);
             }
         }
 
         private static IEfStatus CalculateDailyDataIfNotAvailable(DateTime date, int processUnitId)
         {
             IEfStatus status = new EfStatus();
+            testUnitDailyCalculationService = kernel.Get<ITestUnitDailyCalculationService>();
              dailyService = new UnitDailyDataService(data, kernel, new CalculatorService());
-            if (!dailyService.CheckIfDayIsApproved(date, processUnitId)
-                && !dailyService.CheckExistsUnitDailyDatas(date, processUnitId))
+            if //(!dailyService.CheckIfDayIsApproved(date, processUnitId)
+            //    && !dailyService.CheckExistsUnitDailyDatas(date, processUnitId) 
+            //    && 
+                (testUnitDailyCalculationService.TryBeginCalculation(new UnitDailyCalculationIndicator(date, processUnitId)))
             {
-                IEnumerable<UnitsDailyData> dailyResult = new List<UnitsDailyData>();
-                status = dailyService.CheckIfShiftsAreReady(date, processUnitId);
-
-                if (status.IsValid)
+                  Exception exc = null;
+                try
                 {
+                    IEnumerable<UnitsDailyData> dailyResult = new List<UnitsDailyData>();
+                    status = dailyService.CheckIfShiftsAreReady(date, processUnitId);
+
                     if (status.IsValid)
                     {
-                        status = IsRelatedDataExists(date, processUnitId);
+                       
+                            status = dailyService.CheckIfPreviousDaysAreReady(processUnitId, date);
+                      
 
                         if (status.IsValid)
                         {
-                            dailyResult = dailyService.CalculateDailyDataForProcessUnit(processUnitId, date);
+                            status = IsRelatedDataExists(date, processUnitId);
 
-                            if (dailyResult.Count() > 0)
+                            if (status.IsValid)
                             {
-                                data.UnitsDailyDatas.BulkInsert(dailyResult, "Test");
-                                status = data.SaveChanges("Test");
+                                dailyResult = dailyService.CalculateDailyDataForProcessUnit(processUnitId, date);
+
+                                if (dailyResult.Count() > 0)
+                                {
+                                    data.UnitsDailyDatas.BulkInsert(dailyResult, "Test");
+                                    status = data.SaveChanges("Test");
+                                }
                             }
                         }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    exc = ex;
+                    //string str = exc.Message + "\nWe were here!!!" ;
+                    ////foreach (var records in this.testUnitDailyCalculationService.Dictionary)
+                    ////{
+                    ////    str += records + "\n";
+                    ////}
+
+                    //exc = new InvalidOperationException(str,exc) ;
+                }
+                finally 
+                {
+                    int ix = 0;
+                    while (!(testUnitDailyCalculationService.EndCalculation(new UnitDailyCalculationIndicator(date, processUnitId)) || ix == 10)) 
+                    {
+                        ix++;
+                    }
+
+                    if (ix >= 10)
+                    {
+                        string message = string.Format("Cannot clear record for begun Process Unit Calculation For ProcessUnitId {0} and Date {1}", processUnitId,date);
+                        exc = new InvalidOperationException();
+                    }
+
+                    if (exc != null)
+                    {
+                        throw exc;   
                     }
                 }
             }

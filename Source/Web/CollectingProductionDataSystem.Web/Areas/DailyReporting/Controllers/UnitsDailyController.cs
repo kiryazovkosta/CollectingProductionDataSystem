@@ -15,6 +15,7 @@
     using CollectingProductionDataSystem.Application.CalculatorService;
     using CollectingProductionDataSystem.Application.Contracts;
     using CollectingProductionDataSystem.Application.ProductionPlanDataServices;
+    using CollectingProductionDataSystem.Application.UnitDailyDataServices;
     using CollectingProductionDataSystem.Data.Common;
     using CollectingProductionDataSystem.Data.Contracts;
     using CollectingProductionDataSystem.Infrastructure.Contracts;
@@ -35,9 +36,10 @@
         private readonly IProductionPlanDataService productionPlanData;
         private readonly TransactionOptions transantionOption;
         private readonly ILogger logger;
+        private readonly ITestUnitDailyCalculationService testUnitDailyCalculationService;
 
         public UnitsDailyController(IProductionData dataParam, IUnitsDataService unitsDataParam, IUnitDailyDataService dailyServiceParam,
-            IProductionPlanDataService productionPlanDataParam, ILogger loggerParam)
+            IProductionPlanDataService productionPlanDataParam, ILogger loggerParam, ITestUnitDailyCalculationService testUnitDailyCalculationServiceParam)
             : base(dataParam)
         {
             this.unitsData = unitsDataParam;
@@ -45,6 +47,7 @@
             this.productionPlanData = productionPlanDataParam;
             this.transantionOption = DefaultTransactionOptions.Instance.TransactionOptions;
             this.logger = loggerParam;
+            this.testUnitDailyCalculationService = testUnitDailyCalculationServiceParam;
         }
 
         [HttpGet]
@@ -125,32 +128,67 @@
             IEfStatus status = DependencyResolver.Current.GetService<IEfStatus>();
 
             if (!this.dailyService.CheckIfDayIsApproved(date, processUnitId)
-                && !this.dailyService.CheckExistsUnitDailyDatas(date, processUnitId))
+                && !this.dailyService.CheckExistsUnitDailyDatas(date, processUnitId)
+                && this.testUnitDailyCalculationService.TryBeginCalculation(new UnitDailyCalculationIndicator(date, processUnitId)))
             {
-                IEnumerable<UnitsDailyData> dailyResult = new List<UnitsDailyData>();
-                status = dailyService.CheckIfShiftsAreReady(date, processUnitId);
-
-                if (status.IsValid)
+                 Exception exc = null;
+                try
                 {
-                    if (!Convert.ToBoolean(System.Configuration.ConfigurationManager.AppSettings["ComplitionCheckDeactivared"]))
-                    {
-                        status = this.dailyService.CheckIfPreviousDaysAreReady(processUnitId, date);
-                    }
+                    IEnumerable<UnitsDailyData> dailyResult = new List<UnitsDailyData>();
+                    status = dailyService.CheckIfShiftsAreReady(date, processUnitId);
 
                     if (status.IsValid)
                     {
-                        status = IsRelatedDataExists(date, processUnitId);
+                        if (!Convert.ToBoolean(System.Configuration.ConfigurationManager.AppSettings["ComplitionCheckDeactivared"]))
+                        {
+                            status = this.dailyService.CheckIfPreviousDaysAreReady(processUnitId, date);
+                        }
 
                         if (status.IsValid)
                         {
-                            dailyResult = this.dailyService.CalculateDailyDataForProcessUnit(processUnitId, date);
+                            status = IsRelatedDataExists(date, processUnitId);
 
-                            if (dailyResult.Count() > 0)
+                            if (status.IsValid)
                             {
-                                this.data.UnitsDailyDatas.BulkInsert(dailyResult, this.UserProfile.UserName);
-                                status = this.data.SaveChanges(this.UserProfile.UserName);
+                                dailyResult = this.dailyService.CalculateDailyDataForProcessUnit(processUnitId, date);
+
+                                if (dailyResult.Count() > 0)
+                                {
+                                    this.data.UnitsDailyDatas.BulkInsert(dailyResult, this.UserProfile.UserName);
+                                    status = this.data.SaveChanges(this.UserProfile.UserName);
+                                }
                             }
                         }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    exc = ex;
+                    string str = exc.Message + "\nWe were here!!!" ;
+                    //foreach (var records in this.testUnitDailyCalculationService.Dictionary)
+                    //{
+                    //    str += records + "\n";
+                    //}
+
+                    exc = new InvalidOperationException(str,exc) ;
+                }
+                finally 
+                {
+                    int ix = 0;
+                    while (!(this.testUnitDailyCalculationService.EndCalculation(new UnitDailyCalculationIndicator(date, processUnitId)) || ix == 10)) 
+                    {
+                        ix++;
+                    }
+
+                    if (ix >= 10)
+                    {
+                        string message = string.Format("Cannot clear record for begun Process Unit Calculation For ProcessUnitId {0} and Date {1}", processUnitId,date);
+                        exc = new InvalidOperationException();
+                    }
+
+                    if (exc != null)
+                    {
+                        throw exc;   
                     }
                 }
             }
