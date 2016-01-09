@@ -4,6 +4,7 @@
     using CollectingProductionDataSystem.Application.Contracts;
     using CollectingProductionDataSystem.Application.FileServices;
     using CollectingProductionDataSystem.Application.TankDataServices;
+    using CollectingProductionDataSystem.Application.UnitDailyDataServices;
     using CollectingProductionDataSystem.Application.UnitsDataServices;
     using CollectingProductionDataSystem.Application.UserServices;
     using CollectingProductionDataSystem.Data;
@@ -32,7 +33,7 @@
             kernel.Bind<IEfStatus>().To<EfStatus>();
             kernel.Bind<IFileUploadService>().To<FileUploadService>();
             kernel.Bind<ICalculatorService>().To<CalculatorService>();
-            
+            kernel.Bind<ITestUnitDailyCalculationService>().ToMethod(context => TestUnitDailyCalculationService.GetInstance()).InSingletonScope();
         }
 
         /// <summary>

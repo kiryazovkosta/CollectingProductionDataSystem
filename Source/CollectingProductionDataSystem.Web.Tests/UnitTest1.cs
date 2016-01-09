@@ -1,16 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using AutoMapper;
+using CollectingProductionDataSystem.Application.Contracts;
+using CollectingProductionDataSystem.Application.UnitDailyDataServices;
 using CollectingProductionDataSystem.Models.Identity;
 using CollectingProductionDataSystem.Models.Nomenclatures;
 using CollectingProductionDataSystem.Models.Productions;
 using CollectingProductionDataSystem.Models.SystemLog;
+using CollectingProductionDataSystem.Web.AppStart;
 using CollectingProductionDataSystem.Web.Areas.Administration.ViewModels;
 using CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewModels;
 using CollectingProductionDataSystem.Web.Areas.ShiftReporting.ViewModels;
 using CollectingProductionDataSystem.Web.ViewModels.Identity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using CollectingProductionDataSystem.Web.Areas.DailyReporting.ViewModels;
+using Ninject;
 
 namespace CollectingProductionDataSystem.Web.Tests
 {
@@ -90,6 +94,21 @@ namespace CollectingProductionDataSystem.Web.Tests
             //mapper.CreateMappings(Mapper.Configuration);
 
             Mapper.AssertConfigurationIsValid();
+        }
+
+        [TestMethod]
+        public void Check_If_Injected_ITestUnitDailyCalculationService_IsSingleton_Model()
+        {
+            // Arrange 
+            IKernel kernel = new Ninject.StandardKernel();
+            kernel.Bind<ITestUnitDailyCalculationService>().ToMethod(context => TestUnitDailyCalculationService.GetInstance()).InSingletonScope();
+
+            // Act
+            var test1 = kernel.Get<ITestUnitDailyCalculationService>();
+            var test2 = kernel.Get<ITestUnitDailyCalculationService>();
+
+            // Assert
+            Assert.AreSame(test1,test2);
         }
     }
 }

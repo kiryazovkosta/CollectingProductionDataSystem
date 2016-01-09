@@ -154,7 +154,9 @@
                 .ForMember(p => p.EnteredMeasureUnitId, opt => opt.Ignore())
                 .ForMember(p => p.EnteredMeasureUnit, opt => opt.Ignore())
                 .ForMember(p => p.CalculationPercentage, opt => opt.Ignore())
-                .ForMember(p => p.IsMemberOfShiftsReport, opt=>opt.Ignore());
+                .ForMember(p => p.IsMemberOfShiftsReport, opt=>opt.Ignore())
+                .ForMember(p=>p.DataSource, opt=>opt.Ignore())
+                .ForMember(p=>p.ProcessUnitAlias, opt=>opt.Ignore());
         }
     }
 }

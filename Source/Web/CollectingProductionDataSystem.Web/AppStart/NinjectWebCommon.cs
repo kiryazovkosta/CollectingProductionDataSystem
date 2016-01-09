@@ -93,6 +93,7 @@ namespace CollectingProductionDataSystem.Web.AppStart
             kernel.Bind<IProductionDataCalculatorService>().To<ProductionDataCalculatorService>();
             kernel.Bind<ILogger>().To<Logger>();
             kernel.Bind<IProductionPlanDataService>().To<ProductionPlanDataService>();
+            kernel.Bind<ITestUnitDailyCalculationService>().ToMethod(context => TestUnitDailyCalculationService.GetInstance()).InSingletonScope();
         }        
     }
 }
