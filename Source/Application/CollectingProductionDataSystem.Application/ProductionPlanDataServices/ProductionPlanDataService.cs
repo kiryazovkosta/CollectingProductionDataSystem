@@ -23,9 +23,10 @@
 
         public IEnumerable<ProductionPlanData> ReadProductionPlanData(DateTime? date, int? processUnitId)
         {
+            var materialTypeId = 1;
             var result = new HashSet<ProductionPlanData>();
 
-            var dailyData = unitData.GetUnitsDailyDataForDateTime(date, processUnitId).ToList();
+            var dailyData = unitData.GetUnitsDailyDataForDateTime(date, processUnitId, materialTypeId).ToList();
             if (dailyData.Count == 0)
             {
                 return result;
@@ -41,6 +42,11 @@
                 .OrderBy(x => x.ProcessUnitId)
                 .ThenBy(x=>x.Position)
                 .ToList();
+
+            var productionPlansData = this.data.ProductionPlanDatas
+                .All()
+                .Where(x => x.RecordTimestamp == date.Value && x.ProcessUnitId == processUnitId.Value)
+                .ToDictionary(x => x.ProductionPlanConfigId, x => x);
 
             var currentMonthQuantity = AppendTotalMonthQuantityToDailyProductionPlanRecords(processUnitId.Value, date.Value);
             var totallyQuantity = GetSumOfTottallyProcessing(processUnitId.Value, date.Value);
@@ -66,7 +72,15 @@
                     ProcessUnitId = processUnitId.Value,
                     QuanityFactCurrentMonth = currentMonthQuantity.ContainsKey(productionPlan.Name) == true ?  currentMonthQuantity[productionPlan.Name] : 0.00m,
                 };
-                result.Add(productionPlanData);
+                if (!productionPlansData.ContainsKey(productionPlan.Id))
+                {
+                    result.Add(productionPlanData);    
+                }
+                else
+                {
+                    int x = 0;
+                }
+                
             }
 
             return result;

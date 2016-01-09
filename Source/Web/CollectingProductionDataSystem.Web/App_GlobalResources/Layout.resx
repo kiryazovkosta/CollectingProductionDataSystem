@@ -1311,4 +1311,16 @@
   <data name="ChooseMaterialDetailType" xml:space="preserve">
     <value>Choose Material Detail Type...</value>
   </data>
+  <data name="HighwayPipelinesData" xml:space="preserve">
+    <value>HighwayPipelinesData</value>
+  </data>
+  <data name="Mass" xml:space="preserve">
+    <value>Mass</value>
+  </data>
+  <data name="Volume" xml:space="preserve">
+    <value>Volume</value>
+  </data>
+  <data name="ProductCode" xml:space="preserve">
+    <value>ProductCode</value>
+  </data>
 </root>

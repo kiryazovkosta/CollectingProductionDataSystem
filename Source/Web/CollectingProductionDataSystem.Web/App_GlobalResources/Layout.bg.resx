@@ -1314,4 +1314,16 @@
   <data name="ChooseMaterialDetailType" xml:space="preserve">
     <value>Изберете вид на материала...</value>
   </data>
+  <data name="HighwayPipelinesData" xml:space="preserve">
+    <value>Количества продукти в магистрални тръбопроводи</value>
+  </data>
+  <data name="Mass" xml:space="preserve">
+    <value>Маса на продукта &lt;br&gt;[Тон]</value>
+  </data>
+  <data name="Volume" xml:space="preserve">
+    <value>Обем на продукта &lt;br/&gt;[м3]</value>
+  </data>
+  <data name="ProductCode" xml:space="preserve">
+    <value>Код на продукт</value>
+  </data>
 </root>

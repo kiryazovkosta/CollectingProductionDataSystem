@@ -12,10 +12,10 @@
     using CollectingProductionDataSystem.Models.Inventories;
     using CollectingProductionDataSystem.Models.Nomenclatures;
     using CollectingProductionDataSystem.Models.Productions;
-    using CollectingProductionDataSystem.Models.Productions.HighwayPipelines;
     using CollectingProductionDataSystem.Models.Productions.Qpt;
     using CollectingProductionDataSystem.Models.SystemLog;
     using CollectingProductionDataSystem.Models.Transactions;
+    using CollectingProductionDataSystem.Models.Transactions.HighwayPipelines;
     using CollectingProductionDataSystem.Models.UtilityEntities;
 
     public class ProductionData : IProductionData

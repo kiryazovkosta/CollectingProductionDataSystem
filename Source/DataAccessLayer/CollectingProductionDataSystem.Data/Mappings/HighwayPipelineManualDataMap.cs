@@ -3,8 +3,8 @@
     using System;
     using System.Data.Entity.ModelConfiguration;
     using System.Linq;
-    using CollectingProductionDataSystem.Models.Productions.HighwayPipelines;
     using System.ComponentModel.DataAnnotations.Schema;
+    using CollectingProductionDataSystem.Models.Transactions.HighwayPipelines;
 
     public class HighwayPipelineManualDataMap : EntityTypeConfiguration<HighwayPipelineManualData>
     {

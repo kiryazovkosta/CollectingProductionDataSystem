@@ -1,9 +1,10 @@
-﻿namespace CollectingProductionDataSystem.Models.Productions.HighwayPipelines
+﻿namespace CollectingProductionDataSystem.Models.Transactions.HighwayPipelines
 {
     using System;
     using System.ComponentModel.DataAnnotations.Schema;
     using CollectingProductionDataSystem.Models.Abstract;
     using CollectingProductionDataSystem.Models.Contracts;
+    using CollectingProductionDataSystem.Models.Transactions.HighwayPipelines;
 
     public partial class HighwayPipelineData : AuditInfo, IApprovableEntity, IEntity
     {
@@ -12,29 +13,53 @@
         public int HighwayPipelineConfigId { get; set; } 
         public string ProductName { get; set; }
         public int ProductCode { get; set; }
-        public decimal? Value { get; set; }
+        public decimal? Volume { get; set; }
+        public decimal? Mass { get; set; }
         public bool IsApproved { get; set; }
         public virtual HighwayPipelineConfig HighwayPipelineConfig { get; set; }
         public virtual HighwayPipelineManualData HighwayPipelineManualData { get; set; }
 
         [NotMapped]
-        public double RealValue 
+        public decimal RealVolume
         { 
             get
             {
                 if (this.HighwayPipelineManualData != null)
                 {
-                    return (double)this.HighwayPipelineManualData.Value;
+                    return this.HighwayPipelineManualData.Volume;
                 }
                 else
                 {
-                    if (this.Value.HasValue)
+                    if (this.Volume.HasValue)
                     {
-                        return (double)this.Value.Value;
+                        return this.Volume.Value;
                     }
                     else
                     {
-                        return default(double);
+                        return default(decimal);
+                    }
+                }
+            }
+        }
+
+        [NotMapped]
+        public decimal RealMass
+        { 
+            get
+            {
+                if (this.HighwayPipelineManualData != null)
+                {
+                    return this.HighwayPipelineManualData.Mass;
+                }
+                else
+                {
+                    if (this.Mass.HasValue)
+                    {
+                        return this.Mass.Value;
+                    }
+                    else
+                    {
+                        return default(decimal);
                     }
                 }
             }

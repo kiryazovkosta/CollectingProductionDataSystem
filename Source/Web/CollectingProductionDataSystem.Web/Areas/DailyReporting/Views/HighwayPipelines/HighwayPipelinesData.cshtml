@@ -1,0 +1,179 @@
+﻿@using CollectingProductionDataSystem.Web.Areas.DailyReporting.ViewModels;
+@using Resources = App_GlobalResources.Resources;
+@model HighwayPipelinesDataViewModel
+@{
+    Layout = "~/Views/Shared/_KendoLayoutWithSideBar.cshtml";
+}
+<div class="row">
+    <div class="col-md-10">
+        <h2>@Resources.Layout.MeasuringPointsData</h2>
+    </div>
+    <div class="col-md-2">
+        <button id="excel-export" class="k-button k-button-icontext k-grid-excel pull-right head-button"><span class="k-icon k-i-excel"></span>Експорт в Excel</button>
+    </div>
+</div>
+@Html.ValidationSummary()
+@Html.AntiForgeryToken()
+<div class="row">
+    <div class="col-lg-12 col">
+        @(Html.Kendo().Grid<HighwayPipelinesDataViewModel>()
+        .Name("measuringpoints")
+        .AutoBind(false)
+        .Columns(columns =>
+            {
+                columns.Bound(c => c.HighwayPipelineConfigName);
+                columns.Bound(c => c.ProductName);
+                columns.Bound(c => c.ProductCode).Format("{0:000}");
+                columns.Bound(c => c.Volume).Format("{0:n2}");
+                columns.Bound(c => c.Mass).Format("{0:n2}");
+                columns.Command(c => c.Edit()).Width(170);
+            })
+        .Pageable(pageable => pageable
+        .Refresh(true)
+        .PageSizes(new[] { 20, 50, 100 })
+        .ButtonCount(5))
+        .Sortable()
+        .Editable(editable => editable.Mode(GridEditMode.InLine))
+        .Excel(excel => excel
+            .FileName(@Resources.Layout.MeasuringPointsData + "_" + DateTime.Now + ".xlsx")
+            .Filterable(true)
+            .ProxyURL(Url.Action("Excel_Export_Save", "Ajax", new { area = "" }))
+            .AllPages(true)
+        )
+        .Scrollable(scr => scr.Height(660))
+        .Filterable()
+        .DataSource(dataSource => dataSource
+            .Ajax()
+            .PageSize(50)
+            .ServerOperation(true)
+            .Group(group => group.Add(c => c.PipeNumber))
+            .Read(read => read.Action("ReadHighwayPipelinesData", "HighwayPipelines", new { area = "DailyReporting" }).Data("sendDate"))
+            .Update(update => update.Action("Edit", "HighwayPipelines", new { area = "DailyReporting" }).Data("sendAntiForgery"))
+            .Model(model =>
+            {
+                model.Id(p => p.Id);
+                model.Field(p => p.HighwayPipelineConfigName).Editable(false);
+                model.Field(p => p.ProductName).Editable(false);
+                model.Field(p => p.ProductCode).Editable(false);
+                model.Field(p => p.Volume);
+                model.Field(p => p.Mass);
+            })
+        .Events(events =>
+        {
+            events.Error("kendoAdditional.ErrorHandler");
+        }))
+
+        )
+    </div>
+</div>
+@* //Error window for kendo grid error event handler *@
+<div id="err-window" style="display:none">@Html.Partial("_KendoGridErrorWindow")</div>
+@* //Error window for kendo grid error event handler *@
+<div id="success-window" style="display:none">@Html.Partial("_SuccessWindow")</div>
+@section scripts{
+    @Scripts.Render("~/bundles/custom/kendoadditional")
+    @Scripts.Render("~/Scripts/custom/sendAntiForgery.js")
+    <script>
+        kendo.culture("@System.Threading.Thread.CurrentThread.CurrentCulture.Name");
+
+        function sendAntiForgery() {
+            return { "__RequestVerificationToken": $('input[name=__RequestVerificationToken]').val() }
+        }
+
+        var sendDate = function () {
+            var result = { "date": $('input[name=date]').val() };
+            $.extend(result, sendAntiForgery());
+            return result;
+        }
+
+        function error_handler(e) {
+            if (e.errors) {
+                var message = "";
+                $.each(e.errors, function (key, value) {
+                    if ('errors' in value) {
+                        $.each(value.errors, function () {
+                            message += this + "\n";
+                        });
+                    }
+                });
+                $('pre#err-message').text(message);
+                $('div#err-window').data("kendoWindow").open();
+            }
+        }
+
+        function closeWindow(selector) {
+            $(selector).data("kendoWindow").close();
+        }
+
+        function recordTimeStampFilter(element) {
+            element.kendoDateTimePicker();
+        }
+
+        $(document).ready(function () {
+            $("#apply").click(function () {
+                var grid = $("#measuringpoints").data("kendoGrid");
+                grid.dataSource.read();
+                grid.refresh();
+            });
+
+            prepareWindow();
+            prepareSuccessWindow();
+            AttachEventToExportBtn("#excel-export", "#measuringpoints");
+        });
+
+        function prepareWindow() {
+            var window = $('div#err-window')
+            window.kendoWindow({
+                width: "650px",
+                title: "Възникна грешка в приложението",
+                actions: ["Close"],
+                modal: true,
+                position: {
+                    top: "30%", // or "100px"
+                    left: "30%"
+                },
+                minHeight: 100,
+                maxHeight: 350
+            });
+        }
+
+        function prepareSuccessWindow() {
+            var window = $('div#success-window')
+            window.kendoWindow({
+                width: "650px",
+                title: "Успешна операция",
+                actions: ["Close"],
+                modal: true,
+                position: {
+                    top: "30%", // or "100px"
+                    left: "30%"
+                },
+                minHeight: 100,
+                maxHeight: 350
+            });
+        }
+
+        function AttachEventToExportBtn(buttonSelector, targetSelector) {
+            $(buttonSelector).click(function () {
+                $(targetSelector).data("kendoGrid").saveAsExcel();
+            });
+        }
+
+        var dataBound = function () {
+            dataView = this.dataSource.view();
+            for (var i = 0; i < dataView.length; i++) {
+                for (var j = 0; j < dataView[i].items.length; j++) {
+
+                    if (dataView[i].items[j].HasManualData === true) {
+                        var uid = dataView[i].items[j].uid;
+                        $("#" + $(this.element).attr('id') + " tbody").find("tr[data-uid=" + uid + "]").addClass("bg-danger");
+                    }
+                }
+            }
+        }
+
+    </script>
+}
+@section sidebar{
+    @Html.Partial("_HighwayPipelinesSideBar")
+}

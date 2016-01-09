@@ -6,6 +6,7 @@ namespace CollectingProductionDataSystem.Application.Contracts
     using System.Threading.Tasks;
     using CollectingProductionDataSystem.Models.Productions;
     using CollectingProductionDataSystem.Data.Contracts;
+using CollectingProductionDataSystem.Models.Nomenclatures;
 
     public interface IUnitsDataService
     {
@@ -18,7 +19,7 @@ namespace CollectingProductionDataSystem.Application.Contracts
 
         IQueryable<UnitsData> GetUnitsDataForDateTime(DateTime? date, int? processUnitId, int? shiftId);
 
-        IQueryable<UnitsDailyData> GetUnitsDailyDataForDateTime(DateTime? date, int? processUnitId);
+        IQueryable<UnitsDailyData> GetUnitsDailyDataForDateTime(DateTime? date, int? processUnitId, int? materialType);
 
         bool IsShitApproved(DateTime date, int processUnitId, int shiftId);
     }

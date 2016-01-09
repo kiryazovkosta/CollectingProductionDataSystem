@@ -163,6 +163,9 @@
                 case "C3":
                     result = FormulaC3(arguments);
                     break;
+                case "C4":
+                    result = FormulaC4(arguments);
+                    break;
                 default:
                     throw new ArgumentException("The entered value of the formula code is invalid!");
                     break;
@@ -1880,6 +1883,27 @@
 
             var pl = args.InputValue.Value;
             var r =  pl * 8;
+
+            var inputParams = new Dictionary<string, double>();
+            inputParams.Add("q", r);
+
+            string expr = @"par.q";
+            var result = calculator.Calculate(expr, "par", 1, inputParams);
+            return result;
+        }
+
+        /// <summary>
+        /// UCF4 - калкулира  входното показание по броя разделено на 1000 т.е. килограми в тонове
+        /// </summary>
+        public double FormulaC4(FormulaArguments args)            
+        {
+            if (!args.InputValue.HasValue)
+            {
+                throw new ArgumentNullException("The value of CounterIndication(PL) is not allowed to be null");
+            }
+
+            var pl = args.InputValue.Value;
+            var r =  pl / 1000.00d;
 
             var inputParams = new Dictionary<string, double>();
             inputParams.Add("q", r);

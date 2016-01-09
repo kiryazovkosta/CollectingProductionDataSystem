@@ -173,7 +173,7 @@
                 var kendoResult = new DataSourceResult();
                 if (ModelState.IsValid)
                 {
-                    var dbResult = unitsData.GetUnitsDailyDataForDateTime(date, processUnitId).Include(x=>x.UnitsDailyConfig.ProcessUnit.Factory);
+                    var dbResult = unitsData.GetUnitsDailyDataForDateTime(date, processUnitId, null).Include(x=>x.UnitsDailyConfig.ProcessUnit.Factory);
                     dbResult.Where(x => x.UnitsDailyConfig.ProcessUnit.FactoryId == (factoryId ?? x.UnitsDailyConfig.ProcessUnit.FactoryId));
                     var kendoPreparedResult = Mapper.Map<IEnumerable<UnitsDailyData>, IEnumerable<UnitDailyDataViewModel>>(dbResult);
                     kendoResult = kendoPreparedResult.ToDataSourceResult(request, ModelState);

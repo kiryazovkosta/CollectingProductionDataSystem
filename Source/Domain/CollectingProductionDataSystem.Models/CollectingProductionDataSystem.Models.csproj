@@ -93,10 +93,10 @@
     <Compile Include="Nomenclatures\MaterialType.cs" />
     <Compile Include="Contracts\IAggregatable.cs" />
     <Compile Include="Contracts\IConvertable.cs" />
-    <Compile Include="Productions\HighwayPipelines\HighwayPipelineApprovedData.cs" />
-    <Compile Include="Productions\HighwayPipelines\HighwayPipelineConfig.cs" />
-    <Compile Include="Productions\HighwayPipelines\HighwayPipelineData.cs" />
-    <Compile Include="Productions\HighwayPipelines\HighwayPipelineManualData.cs" />
+    <Compile Include="Transactions\HighwayPipelines\HighwayPipelineApprovedData.cs" />
+    <Compile Include="Transactions\HighwayPipelines\HighwayPipelineConfig.cs" />
+    <Compile Include="Transactions\HighwayPipelines\HighwayPipelineData.cs" />
+    <Compile Include="Transactions\HighwayPipelines\HighwayPipelineManualData.cs" />
     <Compile Include="Productions\MultiShift.cs" />
     <Compile Include="Productions\Plant.cs" />
     <Compile Include="Nomenclatures\Product.cs" />

@@ -6,8 +6,8 @@ namespace CollectingProductionDataSystem.Models.Nomenclatures
     using CollectingProductionDataSystem.Models.Contracts;
     using CollectingProductionDataSystem.Models.Inventories;
     using CollectingProductionDataSystem.Models.Productions;
-    using CollectingProductionDataSystem.Models.Productions.HighwayPipelines;
     using CollectingProductionDataSystem.Models.Transactions;
+    using CollectingProductionDataSystem.Models.Transactions.HighwayPipelines;
 
     public partial class Product: DeletableEntity, IEntity
     {

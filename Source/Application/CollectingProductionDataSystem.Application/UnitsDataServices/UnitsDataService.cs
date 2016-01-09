@@ -88,7 +88,7 @@
             return dbResult;
         }
 
-        public IQueryable<UnitsDailyData> GetUnitsDailyDataForDateTime(DateTime? date, int? processUnitId)
+        public IQueryable<UnitsDailyData> GetUnitsDailyDataForDateTime(DateTime? date, int? processUnitId, int? materialType)
         {
             var dbResult = this.data.UnitsDailyDatas
                 .All()
@@ -107,6 +107,11 @@
             if (processUnitId.HasValue)
             {
                 dbResult = dbResult.Where(u => u.UnitsDailyConfig.ProcessUnitId == processUnitId);
+            }
+
+            if (materialType.HasValue)
+            {
+                dbResult = dbResult.Where(u => u.UnitsDailyConfig.MaterialTypeId == materialType);    
             }
 
             dbResult = dbResult.OrderBy(x => x.UnitsDailyConfig.Code);

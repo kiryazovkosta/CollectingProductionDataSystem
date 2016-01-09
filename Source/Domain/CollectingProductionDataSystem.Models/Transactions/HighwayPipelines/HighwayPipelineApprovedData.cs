@@ -1,4 +1,4 @@
-﻿namespace CollectingProductionDataSystem.Models.Productions.HighwayPipelines
+﻿namespace CollectingProductionDataSystem.Models.Transactions.HighwayPipelines
 {
     using System;
     using System.Linq;
