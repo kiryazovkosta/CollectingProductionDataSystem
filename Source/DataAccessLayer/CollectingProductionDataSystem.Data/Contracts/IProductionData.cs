@@ -119,6 +119,10 @@
 
         IDeletableEntityRepository<HighwayPipelineApprovedData> HighwayPipelineApprovedDatas { get; }
 
+        IDeletableEntityRepository<InnerPipelineData> InnerPipelineDatas { get; }
+
+        IDeletableEntityRepository<InProcessUnitData> InProcessUnitDatas { get; } 
+
         IDbContext DbContext { get; }
 
         IEfStatus SaveChanges(string userName);

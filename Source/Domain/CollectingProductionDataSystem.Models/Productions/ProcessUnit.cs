@@ -1,21 +1,26 @@
 namespace CollectingProductionDataSystem.Models.Productions
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
     using CollectingProductionDataSystem.Models.Abstract;
     using CollectingProductionDataSystem.Models.Contracts;
     using CollectingProductionDataSystem.Models.Identity;
+    using CollectingProductionDataSystem.Models.Inventories;
 
     public partial class ProcessUnit : DeletableEntity, IEntity
     {
         private ICollection<ApplicationUserProcessUnit> applicationUserProcessUnits;
         private ICollection<ProductionPlanConfig> productionPlanConfigs;
+        private ICollection<InProcessUnitData> inProcessUnitDatas;
+
         public ProcessUnit()
         {
             this.applicationUserProcessUnits = new HashSet<ApplicationUserProcessUnit>();
             this.UnitsConfigs = new HashSet<UnitConfig>();
             this.UnitsDailyConfigs = new HashSet<UnitDailyConfig>();
             this.productionPlanConfigs = new HashSet<ProductionPlanConfig>();
+            this.inProcessUnitDatas = new HashSet<InProcessUnitData>();
         }
 
         public int Id { get; set; }
@@ -34,6 +39,11 @@ namespace CollectingProductionDataSystem.Models.Productions
         {
             get { return this.productionPlanConfigs; }
             set { this.productionPlanConfigs = value; }
+        }
+        public virtual ICollection<InProcessUnitData> InProcessUnitDatas 
+        {
+            get { return this.inProcessUnitDatas; } 
+            set { this.inProcessUnitDatas = value; } 
         }
     }
 }

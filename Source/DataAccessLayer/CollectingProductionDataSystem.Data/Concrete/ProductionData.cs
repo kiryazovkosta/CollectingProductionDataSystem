@@ -394,6 +394,22 @@
             }
         }
 
+        public IDeletableEntityRepository<InnerPipelineData> InnerPipelineDatas
+        {
+            get
+            {
+                return this.GetDeletableEntityRepository<InnerPipelineData>();
+            }
+        }
+
+        public IDeletableEntityRepository<InProcessUnitData> InProcessUnitDatas
+        {
+            get
+            {
+                return this.GetDeletableEntityRepository<InProcessUnitData>();
+            }
+        }
+
         public IRepository<AuditLogRecord> AuditLogRecords
         {
             get

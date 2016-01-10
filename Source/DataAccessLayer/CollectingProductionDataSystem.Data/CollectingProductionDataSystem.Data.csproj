@@ -98,6 +98,8 @@
     <Compile Include="Mappings\HighwayPipelineDataMap.cs" />
     <Compile Include="Mappings\HighwayPipelineManualDataMap.cs" />
     <Compile Include="Mappings\IkunkMap.cs" />
+    <Compile Include="Mappings\InnerPipelineDataMap.cs" />
+    <Compile Include="Mappings\InProcessUnitDataMap.cs" />
     <Compile Include="Mappings\LogedInUserMap.cs" />
     <Compile Include="Mappings\MaterialDetailTypeMap.cs" />
     <Compile Include="Mappings\MathExpressionMap.cs" />

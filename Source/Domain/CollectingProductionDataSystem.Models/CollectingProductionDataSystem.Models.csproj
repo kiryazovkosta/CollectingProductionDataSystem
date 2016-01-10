@@ -74,6 +74,8 @@
     <Compile Include="Identity\UserClaimIntPk.cs" />
     <Compile Include="Identity\UserLoginIntPk.cs" />
     <Compile Include="Identity\UserRoleIntPk.cs" />
+    <Compile Include="Inventories\InnerPipelineData.cs" />
+    <Compile Include="Inventories\InProcessUnitData.cs" />
     <Compile Include="Inventories\RelatedTankConfigs.cs" />
     <Compile Include="Inventories\TankMasterProduct.cs" />
     <Compile Include="Nomenclatures\DailyProductType.cs" />

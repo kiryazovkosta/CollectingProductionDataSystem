@@ -1,0 +1,17 @@
+﻿namespace CollectingProductionDataSystem.Models.Inventories
+{
+    using System;
+    using CollectingProductionDataSystem.Models.Abstract;
+    using CollectingProductionDataSystem.Models.Contracts;
+    using CollectingProductionDataSystem.Models.Nomenclatures;
+
+    public partial class InnerPipelineData : DeletableEntity, IEntity
+    {
+        public int Id { get; set; }
+        public DateTime Recordimestamp { get; set; }
+        public int ProductId { get; set; }
+        public decimal Volume { get; set; }
+        public decimal Mass { get; set; }
+        public virtual Product Product { get; set; }
+    }
+}

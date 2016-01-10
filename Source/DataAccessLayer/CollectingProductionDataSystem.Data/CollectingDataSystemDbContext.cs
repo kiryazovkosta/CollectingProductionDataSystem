@@ -155,6 +155,10 @@
 
         public IDbSet<HighwayPipelineApprovedData> HighwayPipelineApprovedDatas { get; set; }
 
+        public IDbSet<InnerPipelineData> InnerPipelineDatas { get; set; }
+
+        public IDbSet<InProcessUnitData> InProcessUnitDatas { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             ModelBingConfig.RegisterMappings(modelBuilder);
