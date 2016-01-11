@@ -1,12 +1,14 @@
-﻿@using CollectingProductionDataSystem.Web.Areas.DailyReporting.ViewModels;
+﻿@using System.Web.Optimization;
+@using CollectingProductionDataSystem.Web.Areas.MonthlyReporting.ViewModels;
 @using Resources = App_GlobalResources.Resources;
-@model HighwayPipelinesDataViewModel
+
+@model InnerPipelinesDataViewModel
 @{
     Layout = "~/Views/Shared/_KendoLayoutWithSideBar.cshtml";
 }
 <div class="row">
     <div class="col-md-10">
-        <h2>@Resources.Layout.HighwayPipelinesData</h2>
+        <h2>@Resources.Layout.InnerPipelinesData</h2>
     </div>
     <div class="col-md-2">
         <button id="excel-export" class="k-button k-button-icontext k-grid-excel pull-right head-button"><span class="k-icon k-i-excel"></span>Експорт в Excel</button>
@@ -16,26 +18,31 @@
 @Html.AntiForgeryToken()
 <div class="row">
     <div class="col-lg-12 col">
-        @(Html.Kendo().Grid<HighwayPipelinesDataViewModel>()
+        @(Html.Kendo().Grid<InnerPipelinesDataViewModel>()
         .Name("measuringpoints")
         .AutoBind(false)
         .Columns(columns =>
             {
-                columns.Bound(c => c.HighwayPipelineConfigName);
-                columns.Bound(c => c.ProductName);
-                columns.Bound(c => c.ProductCode).Format("{0:000}");
+                //columns.Bound(c => c.Id);
+                columns.Bound(c => c.RecordTimestamp).Format("{0:MMMM yyyy}");
+                //columns.ForeignKey(c => c.ProductId, (System.Collections.IEnumerable)ViewData["products"], "Id", "Name").EditorTemplateName("ProductViewModel").Width(280);
                 columns.Bound(c => c.Volume).Format("{0:n2}");
                 columns.Bound(c => c.Mass).Format("{0:n2}");
-                columns.Command(c => c.Edit()).Width(170);
+                //columns.Command(command => { command.Edit(); command.Destroy(); }).Width(230);
             })
+        //.ToolBar(toolbar =>
+        //{
+        //    toolbar.Create();
+        //})
+        .Editable(editable => editable.Mode(GridEditMode.InLine))
         .Pageable(pageable => pageable
         .Refresh(true)
         .PageSizes(new[] { 10, 20, 50, 100 })
         .ButtonCount(5))
         .Sortable()
-        .Editable(editable => editable.Mode(GridEditMode.InLine))
+        //.Editable(editable => editable.Mode(GridEditMode.InLine))
         .Excel(excel => excel
-            .FileName(@Resources.Layout.HighwayPipelinesData + "_" + DateTime.Now + ".xlsx")
+            .FileName(@Resources.Layout.InnerPipelinesData + "_" + DateTime.Now + ".xlsx")
             .Filterable(true)
             .ProxyURL(Url.Action("Excel_Export_Save", "Ajax", new { area = "" }))
             .AllPages(true)
@@ -46,23 +53,21 @@
             .Ajax()
             .PageSize(50)
             .ServerOperation(true)
-            .Group(group => group.Add(c => c.Sort))
-                    .Read(read => read.Action("ReadHighwayPipelinesData", "HighwayPipelines", new { area = "DailyReporting" }).Data("unitGridsData.SendDate"))
-            .Update(update => update.Action("Edit", "HighwayPipelines", new { area = "DailyReporting" }).Data("sendAntiForgery"))
+            .Read(read => read.Action("InnerPipelinesData", "InnerPipelines", new { area = "MonthlyReporting" }).Data("unitGridsData.SendDate"))
+            //.Create(create => create.Action("Create", "InnerPipelines", new { area = "MonthlyReporting" }).Data("sendAntiForgery"))
+            //.Update(update => update.Action("Update", "InnerPipelines", new { area = "MonthlyReporting" }).Data("sendAntiForgery"))
+            //.Destroy(destroy => destroy.Action("Destroy", "InnerPipelines", new { area = "MonthlyReporting" }).Data("sendAntiForgery"))
             .Model(model =>
             {
                 model.Id(p => p.Id);
-                model.Field(p => p.HighwayPipelineConfigName).Editable(false);
-                model.Field(p => p.ProductName).Editable(false);
-                model.Field(p => p.ProductCode).Editable(false);
-                model.Field(p => p.Volume);
-                model.Field(p => p.Mass);
+                model.Field(p => p.RecordTimestamp).Editable(false);
+                //model.Field(p => p.ProductId);
             })
         .Events(events =>
         {
             events.Error("kendoAdditional.ErrorHandler");
         }))
-
+        .Events(ev => ev.DataBound("kendoAdditional.DeletableDataBound"))
         )
     </div>
 </div>
@@ -77,7 +82,7 @@
     @Scripts.Render("~/bundles/custom/unitGrids")
     @Scripts.Render("~/Scripts/custom/renderDailyGraphic.min.js")
     @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.min.js")
-    }
+}
 @section sidebar{
-    @Html.Partial("_HighwayPipelinesSideBar")
+    @Html.Partial("_MonthSelectorSideBar")
 }

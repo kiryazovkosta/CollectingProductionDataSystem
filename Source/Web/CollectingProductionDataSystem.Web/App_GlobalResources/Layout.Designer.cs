@@ -1474,6 +1474,24 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to InnerPipelines Data.
+        /// </summary>
+        public static string InnerPipelinesData {
+            get {
+                return ResourceManager.GetString("InnerPipelinesData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to In ProcessUnits Data.
+        /// </summary>
+        public static string InProcessUnitsData {
+            get {
+                return ResourceManager.GetString("InProcessUnitsData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Inventories.
         /// </summary>
         public static string Inventories {
@@ -1911,6 +1929,24 @@ namespace App_GlobalResources.Resources {
         public static string Minutes {
             get {
                 return ResourceManager.GetString("Minutes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Month.
+        /// </summary>
+        public static string Month {
+            get {
+                return ResourceManager.GetString("Month", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MonthData.
+        /// </summary>
+        public static string MonthData {
+            get {
+                return ResourceManager.GetString("MonthData", resourceCulture);
             }
         }
         

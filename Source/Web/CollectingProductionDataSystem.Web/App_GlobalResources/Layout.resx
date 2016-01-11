@@ -1332,4 +1332,16 @@
   <data name="UnitsDateSelectorFuture" xml:space="preserve">
     <value>Report Date Is In The Future</value>
   </data>
+  <data name="InnerPipelinesData" xml:space="preserve">
+    <value>InnerPipelines Data</value>
+  </data>
+  <data name="InProcessUnitsData" xml:space="preserve">
+    <value>In ProcessUnits Data</value>
+  </data>
+  <data name="Month" xml:space="preserve">
+    <value>Month</value>
+  </data>
+  <data name="MonthData" xml:space="preserve">
+    <value>MonthData</value>
+  </data>
 </root>

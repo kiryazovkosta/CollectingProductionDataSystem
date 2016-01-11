@@ -11,7 +11,7 @@
         public InnerPipelineDataMap()
         {
             // Primary Key
-            this.HasKey(t => new { t.Recordimestamp, t.ProductId });
+            this.HasKey(t => new { t.RecordTimestamp, t.ProductId });
 
             // Properties
             this.Property(t => t.Id)

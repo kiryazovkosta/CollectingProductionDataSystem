@@ -8,7 +8,7 @@
     public partial class InnerPipelineData : DeletableEntity, IEntity
     {
         public int Id { get; set; }
-        public DateTime Recordimestamp { get; set; }
+        public DateTime RecordTimestamp { get; set; }
         public int ProductId { get; set; }
         public decimal Volume { get; set; }
         public decimal Mass { get; set; }

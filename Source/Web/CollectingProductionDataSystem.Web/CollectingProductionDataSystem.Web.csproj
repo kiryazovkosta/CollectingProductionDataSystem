@@ -252,6 +252,10 @@
     <Compile Include="Areas\DailyReporting\ViewModels\HighwayPipelinesDataViewModel.cs" />
     <Compile Include="Areas\Documentation\DocumentationAreaRegistration.cs" />
     <Compile Include="Areas\Documentation\Controllers\HelpController.cs" />
+    <Compile Include="Areas\MonthlyReporting\Controllers\InnerPipelinesController.cs" />
+    <Compile Include="Areas\MonthlyReporting\Controllers\InProcessUnitsController.cs" />
+    <Compile Include="Areas\MonthlyReporting\ViewModels\InnerPipelinesDataViewModel.cs" />
+    <Compile Include="Areas\MonthlyReporting\ViewModels\InProcessUnitsViewModel.cs" />
     <Compile Include="Areas\NomManagement\Controllers\MaterialDetailTypeController.cs" />
     <Compile Include="Areas\NomManagement\Models\ViewModels\MaterialDetailTypeViewModel.cs" />
     <Compile Include="Areas\SummaryReporting\Controllers\AjaxController.cs" />
@@ -1036,6 +1040,8 @@
     <Content Include="Areas\NomManagement\Views\MaterialDetailType\Index.cshtml" />
     <Content Include="Areas\NomManagement\Views\Shared\EditorTemplates\MaterialDetailTypeViewModel.cshtml" />
     <Content Include="Areas\DailyReporting\Views\HighwayPipelines\HighwayPipelinesData.cshtml" />
+    <Content Include="Areas\MonthlyReporting\Views\InnerPipelines\InnerPipelinesData.cshtml" />
+    <Content Include="Areas\MonthlyReporting\Views\InProcessUnits\InProcessUnitsData.cshtml" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <None Include="Properties\PublishProfiles\Home.pubxml" />
     <Content Include="Scripts\custom\sendArea.js" />
@@ -1707,6 +1713,7 @@
     <Content Include="Views\Shared\_BaseLayout.cshtml" />
     <Content Include="Views\Shared\_ControlParams.cshtml" />
     <Content Include="Views\Shared\_HighwayPipelinesSideBar.cshtml" />
+    <Content Include="Views\Shared\_MonthSelectorSideBar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

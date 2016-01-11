@@ -36,6 +36,17 @@
                     </li>
                 }
                 
+                @if (Html.ActionIsAccessibleToUser("InnerPipelinesData", "InnerPipelines", "MonthlyReporting"))
+                {
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">@Resources.Layout.MonthData<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li>@Html.AuthorizedActionLink(@Resources.Layout.InnerPipelinesData, "InnerPipelinesData", "InnerPipelines", new { area = "MonthlyReporting" }, null)</li>
+                            <li>@Html.AuthorizedActionLink(@Resources.Layout.InProcessUnitsData, "InProcessUnitsData", "InProcessUnits", new { area = "MonthlyReporting" }, null)</li>
+                        </ul>
+                    </li>
+                }
+                
                 @if (Html.ActionIsAccessibleToUser("UnitsReportsData", "SummaryReports", "SummaryReporting"))
                 {
                     <li class="dropdown">

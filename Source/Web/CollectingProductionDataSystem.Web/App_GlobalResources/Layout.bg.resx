@@ -1335,4 +1335,16 @@
   <data name="UnitsDateSelectorFuture" xml:space="preserve">
     <value>Дата на отчета не е валидна. Изберете дата до днес.</value>
   </data>
+  <data name="InnerPipelinesData" xml:space="preserve">
+    <value>Количества продукти във вътрешни тръбопроводи</value>
+  </data>
+  <data name="InProcessUnitsData" xml:space="preserve">
+    <value>Количества продукти в технологични инсталации</value>
+  </data>
+  <data name="Month" xml:space="preserve">
+    <value>Месец</value>
+  </data>
+  <data name="MonthData" xml:space="preserve">
+    <value>Месечни данни</value>
+  </data>
 </root>

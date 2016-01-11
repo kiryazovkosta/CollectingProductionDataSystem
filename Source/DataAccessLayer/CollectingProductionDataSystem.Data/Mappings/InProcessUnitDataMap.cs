@@ -14,7 +14,7 @@
         public InProcessUnitDataMap()
         {
             // Primary Key
-            this.HasKey(t => new { t.Recordimestamp, t.ProcessUnitId, t.ProductId });
+            this.HasKey(t => new { t.RecordTimestamp, t.ProcessUnitId, t.ProductId });
 
             // Properties
             this.Property(t => t.Id)
