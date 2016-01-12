@@ -470,6 +470,14 @@
                 return this.GetDeletableEntityRepository<Density2FactorAlpha>();
             }
         }
+
+        public MessageRepository Messages
+        {
+            get
+            {
+                return this.GetMessageRepository();
+            }
+        }
         public IRepository<Event> Events
         {
             get
@@ -504,6 +512,17 @@
             return (IRepository<T>)this.repositories[typeof(T)];
         }
 
+
+         private MessageRepository GetMessageRepository() 
+        {
+            if (!this.repositories.ContainsKey(typeof(MessageRepository)))
+            {
+                var type = typeof(MessageRepository);
+                this.repositories.Add(typeof(MessageRepository), Activator.CreateInstance(type, this.context));
+            }
+
+            return (MessageRepository)this.repositories[typeof(MessageRepository)];
+        }
 
         private IDeletableEntityRepository<T> GetDeletableEntityRepository<T>() where T : class, IEntity, IDeletableEntity
         {

@@ -13,15 +13,14 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
 
     public class TestUnitDailyCalculationService : ITestUnitDailyCalculationService
     {
-        private static ConcurrentDictionary<UnitDailyCalculationIndicator,int> processUnitInCalculation = new ConcurrentDictionary<UnitDailyCalculationIndicator,int>(new UnitDailyCalculationIndicatorComparer());
+        private static ConcurrentDictionary<UnitDailyCalculationIndicator,int> processUnitInCalculation = 
+            new ConcurrentDictionary<UnitDailyCalculationIndicator,int>(new UnitDailyCalculationIndicatorComparer());
         private static object myLock = new object();
         private static volatile TestUnitDailyCalculationService testUnitDailyCalculationService = null;
 
         private TestUnitDailyCalculationService()
         {
         }
-
-        //TODO:Remove this bullshed
         public ConcurrentDictionary<UnitDailyCalculationIndicator,int> Dictionary { get{return processUnitInCalculation;} }
 
         public static TestUnitDailyCalculationService GetInstance()

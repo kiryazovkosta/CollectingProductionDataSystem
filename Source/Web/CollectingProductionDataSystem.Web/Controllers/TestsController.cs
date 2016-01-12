@@ -11,6 +11,9 @@
     using CollectingProductionDataSystem.Models.Identity;
     using CollectingProductionDataSystem.Models.Inventories;
     using CollectingProductionDataSystem.Models.Nomenclatures;
+    using CollectingProductionDataSystem.Models.UtilityEntities;
+    using CollectingProductionDataSystem.Web.Hubs;
+    using CollectingProductionDataSystem.Web.Infrastructure.HubAuthomation;
     using CollectingProductionDataSystem.Web.ViewModels.Tank;
     using Kendo.Mvc.Extensions;
     using Kendo.Mvc.UI;
@@ -20,11 +23,13 @@
     {
         private readonly ITankDataKendoService tankData;
         private readonly ILogger logger;
+        private readonly MessagesPublisher messanger;
         public TestsController(IProductionData dataParam, ITankDataKendoService tankDataParam, ILogger loggerParam)
             : base(dataParam)
         {
             this.tankData = tankDataParam;
             this.logger = loggerParam;
+            this.messanger = MessagesPublisher.GetInstance(dataParam);
         }
 
         public ActionResult Index()
@@ -142,6 +147,43 @@
                 return Content(string.Join("\n", result.EfErrors.Select(x => x.ErrorMessage)));
             }
         }
+
+
+        public ActionResult MessageTest() 
+        {
+            return View();
+        }
+
+        public ActionResult GetMessages() 
+        {
+            var result = data.Messages.All().Where(x => x.ValidUntill >= DateTime.Now).Select(x=>x.MessageText);
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public ActionResult PublishMessage() 
+        {
+            return View(new Message() { ValidUntill= DateTime.Now.AddHours(1) });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult PublishMessage(Message message)
+        {
+            if (ModelState.IsValid)
+            {
+                message.ValidUntill = message.ValidUntill <= DateTime.Now ? DateTime.Now.AddHours(1) : message.ValidUntill;
+                this.data.Messages.Add(message);
+                this.data.SaveChanges("Test");
+                MessagesHub.DisplayNewMessage(message.MessageText);
+                return View(new Message() { ValidUntill = DateTime.Now.AddHours(1) });
+            }
+            else 
+            {
+                return View(message);
+            }
+        }
+
 
     }
 }

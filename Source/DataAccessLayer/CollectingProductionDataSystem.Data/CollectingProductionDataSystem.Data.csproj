@@ -63,6 +63,7 @@
   <ItemGroup>
     <Compile Include="Common\DefaultTransactionOptions.cs" />
     <Compile Include="Common\EfStatus.cs" />
+    <Compile Include="Concrete\MessageRepository.cs" />
     <Compile Include="Contracts\IEfStatus.cs" />
     <Compile Include="Concrete\ApprovableEntityRepository.cs" />
     <Compile Include="Concrete\AuditablePersister.cs" />
@@ -108,6 +109,7 @@
     <Compile Include="Mappings\MeasuringPointConfigMap.cs" />
     <Compile Include="Mappings\MeasuringPointConfigsDataMap.cs" />
     <Compile Include="Mappings\MeasuringPointProductsConfigMap.cs" />
+    <Compile Include="Mappings\MessageMap.cs" />
     <Compile Include="Mappings\ParkMap.cs" />
     <Compile Include="Mappings\ProductionPlanConfigMap.cs" />
     <Compile Include="Mappings\ProductionPlanDataMap.cs" />
