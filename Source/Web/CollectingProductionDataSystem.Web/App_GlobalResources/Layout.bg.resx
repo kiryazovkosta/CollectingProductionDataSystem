@@ -1347,4 +1347,7 @@
   <data name="MonthData" xml:space="preserve">
     <value>Месечни данни</value>
   </data>
+  <data name="Messages" xml:space="preserve">
+    <value>Активни съобщения в системата</value>
+  </data>
 </root>

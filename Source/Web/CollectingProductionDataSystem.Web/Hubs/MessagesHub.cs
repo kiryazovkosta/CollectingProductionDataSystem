@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Web;
+    using CollectingProductionDataSystem.Models.UtilityEntities;
     using Microsoft.AspNet.SignalR;
 
     public class MessagesHub : Hub
@@ -14,7 +15,7 @@
             context.Clients.All.displayStatus();
         }
 
-        public static void DisplayNewMessage(string message)
+        public static void DisplayNewMessage(Message message)
         {
             IHubContext context = GlobalHost.ConnectionManager.GetHubContext<MessagesHub>();
             context.Clients.All.displayNewMessage(message);

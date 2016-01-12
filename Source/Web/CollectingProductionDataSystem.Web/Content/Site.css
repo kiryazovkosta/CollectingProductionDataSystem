@@ -83,7 +83,7 @@ textarea {
     width: 20px;
 }
 
-.bg-warning {
+.bg-edited {
     margin-left: 10px;
     background: url('Images/warning.png');
     background-repeat: no-repeat;
@@ -776,5 +776,37 @@ div#productionPlan {
 
 .popover-content {
     overflow-x:auto;
+}
+
+.popover-title-danger {
+    background-image: -webkit-linear-gradient(top,#f2dede 0,#e7c3c3 100%) !important;
+    background-image: -o-linear-gradient(top,#f2dede 0,#e7c3c3 100%) !important;
+    background-image: -webkit-gradient(linear,left top,left bottom,from(#f2dede),to(#e7c3c3)) !important;
+    background-image: linear-gradient(to bottom,#f2dede 0,#e7c3c3 100%) !important;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fff2dede', endColorstr='#ffe7c3c3', GradientType=0) !important;
+    background-repeat: repeat-x !important;
+    border-color: #dca7a7 !important;
+    color:#a94442 !important;
+}
+
+.popover-title-warning {
+    background-image: -webkit-linear-gradient(top,#fcf8e3 0,#f8efc0 100%) !important;
+    background-image: -o-linear-gradient(top,#fcf8e3 0,#f8efc0 100%) !important;
+    background-image: -webkit-gradient(linear,left top,left bottom,from(#fcf8e3),to(#f8efc0)) !important;
+    background-image: linear-gradient(to bottom,#fcf8e3 0,#f8efc0 100%) !important;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fffcf8e3', endColorstr='#fff8efc0', GradientType=0) !important;
+    background-repeat: repeat-x  !important;
+    border-color: #f5e79e !important;
+    color:#8a6d3b !important;
+}
+
+.popover-title-info {
+    background-image: -webkit-linear-gradient(top,#337ab7 0,#2e6da4 100%) !important;
+    background-image: -o-linear-gradient(top,#337ab7 0,#2e6da4 100%) !important;
+    background-image: -webkit-gradient(linear,left top,left bottom,from(#337ab7),to(#2e6da4)) !important;
+    background-image: linear-gradient(to bottom,#337ab7 0,#2e6da4 100%) !important ;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff337ab7', endColorstr='#ff2e6da4', GradientType=0) !important;
+    background-repeat: repeat-x !important;
+    color:#fff !important;
 }
 

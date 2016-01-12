@@ -21,7 +21,7 @@
             return View();
         }
 
-        public ActionResult About() 
+        public ActionResult ShowMessagesGrid() 
         {
             return View();
         }

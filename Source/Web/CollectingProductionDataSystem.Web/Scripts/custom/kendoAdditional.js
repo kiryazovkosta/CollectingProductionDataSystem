@@ -83,22 +83,22 @@
     //------------------ public functions ------------------------------------
 
     function ErrorHandler(e) {
-            if (this.data) {
-                this.data([]);
-            }
-            if (e.errors) {
-                var message = "";
-                $.each(e.errors, function (key, value) {
-                    if ('errors' in value) {
-                        $.each(value.errors, function () {
-                            message += this + "\n";
-                        });
-                    }
-                });
-                $('pre#err-message').text(message);
-                $('div#err-window').data("kendoWindow").open();
-            }
-        
+        if (this.data) {
+            this.data([]);
+        }
+        if (e.errors) {
+            var message = "";
+            $.each(e.errors, function (key, value) {
+                if ('errors' in value) {
+                    $.each(value.errors, function () {
+                        message += this + "\n";
+                    });
+                }
+            });
+            $('pre#err-message').text(message);
+            $('div#err-window').data("kendoWindow").open();
+        }
+
     }
 
     function CloseWindow(selector) {
@@ -151,6 +151,23 @@
         }
     }
 
+    function messageBound() {
+        var dataView = this.dataSource.view();
+        var sender = this;
+        $.each(dataView, function (key, row) {
+            var uid = row.uid;
+            if (row.MessageType === 1) {
+                $("#" + $(sender.element).attr('id') + " tbody").find("tr[data-uid=" + uid + "]").addClass("bg-info");
+            }
+            if (row.MessageType === 2) {
+                $("#" + $(sender.element).attr('id') + " tbody").find("tr[data-uid=" + uid + "]").addClass("bg-warning");
+            }
+            if (row.MessageType === 3) {
+                $("#" + $(sender.element).attr('id') + " tbody").find("tr[data-uid=" + uid + "]").addClass("bg-danger");
+            }
+        });
+    }
+
     return {
         ErrorHandler: ErrorHandler,
         CloseWindow: CloseWindow,
@@ -158,6 +175,7 @@
         ValueMapper: ValueMapper,
         SendHistoryData: SendHistoryData,
         DeletableDataBound: DeletableDataBound,
-        AfterterNomGridValidation:afterterNomGridValidation
+        AfterterNomGridValidation: afterterNomGridValidation,
+        MessageBound: messageBound
     }
 })();
