@@ -52,19 +52,10 @@ namespace CollectingProductionDataSystem.Phd2SqlProductionData.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("00:20:00")]
+        [global::System.Configuration.DefaultSettingValueAttribute("01:00:00")]
         public global::System.TimeSpan IDLE_TIMER_INVENTORY {
             get {
                 return ((global::System.TimeSpan)(this["IDLE_TIMER_INVENTORY"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool SYNC_INVENTORY {
-            get {
-                return ((bool)(this["SYNC_INVENTORY"]));
             }
         }
         
@@ -160,15 +151,6 @@ namespace CollectingProductionDataSystem.Phd2SqlProductionData.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("srv-vm-mes-phd")]
-        public string PHD_HOST {
-            get {
-                return ((string)(this["PHD_HOST"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Snapshot")]
         public string PHD_SAMPLETYPE {
             get {
@@ -200,6 +182,24 @@ namespace CollectingProductionDataSystem.Phd2SqlProductionData.Properties {
         public string PHD_DATA_MAX_ROWS {
             get {
                 return ((string)(this["PHD_DATA_MAX_ROWS"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool SYNC_INVENTORY {
+            get {
+                return ((bool)(this["SYNC_INVENTORY"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("srv-vm-mes-phd")]
+        public string PHD_HOST {
+            get {
+                return ((string)(this["PHD_HOST"]));
             }
         }
         

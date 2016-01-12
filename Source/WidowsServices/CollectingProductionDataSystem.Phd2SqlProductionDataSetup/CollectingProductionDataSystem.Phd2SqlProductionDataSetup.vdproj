@@ -261,18 +261,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_4E92F74FACB8BA04127C62875603FBB0"
-        "OwnerKey" = "8:_50FE85D8CFAAC5B8C1E7802AA34421B3"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_4E92F74FACB8BA04127C62875603FBB0"
-        "OwnerKey" = "8:_F9EEFD8527E7472EA29447E3B3244112"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_50FE85D8CFAAC5B8C1E7802AA34421B3"
         "OwnerKey" = "8:_F9EEFD8527E7472EA29447E3B3244112"
         "MsmSig" = "8:_UNDEFINED"
@@ -287,6 +275,18 @@
         {
         "MsmKey" = "8:_521B87648D550FB7C7B1A26C60888775"
         "OwnerKey" = "8:_F9EEFD8527E7472EA29447E3B3244112"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_698F557290E495ED4E55B3634693AF77"
+        "OwnerKey" = "8:_F9EEFD8527E7472EA29447E3B3244112"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_698F557290E495ED4E55B3634693AF77"
+        "OwnerKey" = "8:_50FE85D8CFAAC5B8C1E7802AA34421B3"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -550,12 +550,6 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_4E92F74FACB8BA04127C62875603FBB0"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_DEFA6DA6EE7DCCA4D7B79C8753F5E1DC"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -683,6 +677,12 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_B6DCADF2D26CD4C397A6B4BADD749CC6"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_698F557290E495ED4E55B3634693AF77"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -1177,37 +1177,6 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_4E92F74FACB8BA04127C62875603FBB0"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:PHDAPINET, Version=300.1.0.1, Culture=neutral, PublicKeyToken=5c915cbb2b8fbc32, processorArchitecture=x86"
-                "ScatterAssemblies"
-                {
-                    "_4E92F74FACB8BA04127C62875603FBB0"
-                    {
-                    "Name" = "8:phdapinet.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:phdapinet.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_5A5EDB7EC9634905988C582CFFD051EE"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_50FE85D8CFAAC5B8C1E7802AA34421B3"
             {
             "AssemblyRegister" = "3:1"
@@ -1253,6 +1222,37 @@
                     }
                 }
             "SourcePath" = "8:Ninject.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_5A5EDB7EC9634905988C582CFFD051EE"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_698F557290E495ED4E55B3634693AF77"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:PHDAPINET, Version=300.1.0.1, Culture=neutral, PublicKeyToken=5c915cbb2b8fbc32, processorArchitecture=x86"
+                "ScatterAssemblies"
+                {
+                    "_698F557290E495ED4E55B3634693AF77"
+                    {
+                    "Name" = "8:phdapinet.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:phdapinet.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_5A5EDB7EC9634905988C582CFFD051EE"
@@ -1729,15 +1729,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:CollectingProductionDataSystem.Phd2SqlProductionDataSetup"
-        "ProductCode" = "8:{681D92C9-28E5-4DA6-B366-4C6287975FB5}"
-        "PackageCode" = "8:{8993BE79-EE4D-4CD1-908B-F1643B245C83}"
+        "ProductCode" = "8:{8975DC51-2012-46C1-A732-DF7F2A4C2AAE}"
+        "PackageCode" = "8:{C64D257E-E377-445F-A91B-F35CFC6D0FB2}"
         "UpgradeCode" = "8:{65F7F665-CA14-4FD7-8AF7-7F225A676E13}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:FALSE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:1.3.1"
+        "ProductVersion" = "8:1.3.3"
         "Manufacturer" = "8:Business Management Systems"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"

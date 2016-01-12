@@ -17,6 +17,7 @@
     using Uniformance.PHD;
     using log4net;
     using CollectingProductionDataSystem.Models.Productions;
+    using System.Text;
 
     static class Phd2SqlProductionDataMain
     {
@@ -433,6 +434,7 @@
             }
             catch (Exception ex)
             {
+                logger.Error(ex.Message, ex);
             } 
         }
     }

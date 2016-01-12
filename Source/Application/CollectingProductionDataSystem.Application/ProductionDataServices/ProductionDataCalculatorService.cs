@@ -166,6 +166,9 @@
                 case "C4":
                     result = FormulaC4(arguments);
                     break;
+                case "C5":
+                    result = FormulaC5(arguments);
+                    break;
                 default:
                     throw new ArgumentException("The entered value of the formula code is invalid!");
                     break;
@@ -1904,6 +1907,32 @@
 
             var pl = args.InputValue.Value;
             var r =  pl / 1000.00d;
+
+            var inputParams = new Dictionary<string, double>();
+            inputParams.Add("q", r);
+
+            string expr = @"par.q";
+            var result = calculator.Calculate(expr, "par", 1, inputParams);
+            return result;
+        }
+
+        /// <summary>
+        /// UCF1 - изчислява въведената стойност по стойност записана в колоната за процент
+        /// </summary>
+        public double FormulaC5(FormulaArguments args)            
+        {
+            if (!args.InputValue.HasValue)
+            {
+                throw new ArgumentNullException("The value of CounterIndication(PL) is not allowed to be null");
+            }
+            if (!args.CalculationPercentage.HasValue)
+            {
+                throw new ArgumentNullException("The value of Calculation percentage is not allowed to be null");
+            }
+
+            var pl = args.InputValue.Value;
+            var c = args.CalculationPercentage.Value;
+            var r = pl * c;
 
             var inputParams = new Dictionary<string, double>();
             inputParams.Add("q", r);
