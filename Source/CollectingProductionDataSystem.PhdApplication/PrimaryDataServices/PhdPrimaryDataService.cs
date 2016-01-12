@@ -30,21 +30,18 @@
             var shift = GetShift(record);
             var recordDataTime = GetRecordTimestamp(record);
 
+            var exeFileName = Assembly.GetEntryAssembly().Location;
+            Configuration configuration = ConfigurationManager.OpenExeConfiguration(exeFileName);
+            ConfigurationSectionGroup appSettingsGroup = configuration.GetSectionGroup("applicationSettings");
+            ConfigurationSection appSettingsSection = appSettingsGroup.Sections[0];
+            ClientSettingsSection settings = appSettingsSection as ClientSettingsSection;
+
             using (PHDHistorian oPhd = new PHDHistorian())
             {
-                using (PHDServer defaultServer = new PHDServer("PHD-L35-1"))
+                using (PHDServer defaultServer = new PHDServer(settings.Settings.Get("PHD_HOST").Value.ValueXml.InnerText))
                 {
                     var hours = Math.Truncate((now - record).TotalHours);
-                    //SetPhdConnectionSettings(oPhd, defaultServer, hours);
-                     defaultServer.Port = 3150;
-                    defaultServer.APIVersion = Uniformance.PHD.SERVERVERSION.RAPI200;
-                    oPhd.DefaultServer = defaultServer;
-                    oPhd.StartTime = string.Format("NOW - {0}H2M", hours);
-                    oPhd.EndTime = string.Format("NOW - {0}H2M", hours);
-                    oPhd.Sampletype = SAMPLETYPE.Snapshot;
-                    oPhd.MinimumConfidence = 49;
-                    oPhd.ReductionType = REDUCTIONTYPE.Average;
-                    oPhd.MaximumRows = 1;
+                    SetPhdConnectionSettings(oPhd, defaultServer, hours);
 
                     var unitsConfigsList = this.data.UnitConfigs.All().Where(x=>x.DataSource == dataSource).ToList();
                     var unitsData = this.data.UnitsData.All().Where(x => x.RecordTimestamp == recordDataTime && x.ShiftId == shift).ToList();
@@ -218,20 +215,20 @@
 
         private static void SetPhdConnectionSettings(PHDHistorian oPhd, PHDServer defaultServer, double offsetInHours)
         {
-            //var exeFileName = Assembly.GetEntryAssembly().Location;
-            //Configuration configuration = ConfigurationManager.OpenExeConfiguration(exeFileName);
-            //ConfigurationSectionGroup appSettingsGroup = configuration.GetSectionGroup("applicationSettings");
-            //ConfigurationSection appSettingsSection = appSettingsGroup.Sections[0];
-            //ClientSettingsSection settings = appSettingsSection as ClientSettingsSection;
+            var exeFileName = Assembly.GetEntryAssembly().Location;
+            Configuration configuration = ConfigurationManager.OpenExeConfiguration(exeFileName);
+            ConfigurationSectionGroup appSettingsGroup = configuration.GetSectionGroup("applicationSettings");
+            ConfigurationSection appSettingsSection = appSettingsGroup.Sections[0];
+            ClientSettingsSection settings = appSettingsSection as ClientSettingsSection;
 
-            defaultServer.Port = 3150; // Convert.ToInt32(settings.Settings.Get("PHD_PORT").Value.ValueXml.InnerText);
+            defaultServer.Port = Convert.ToInt32(settings.Settings.Get("PHD_PORT").Value.ValueXml.InnerText);
             defaultServer.APIVersion = SERVERVERSION.RAPI200;
             oPhd.DefaultServer = defaultServer;
             oPhd.StartTime = string.Format("NOW - {0}H2M", offsetInHours);
             oPhd.EndTime = string.Format("NOW - {0}H2M", offsetInHours);
             oPhd.Sampletype = SAMPLETYPE.Snapshot;
-            oPhd.MinimumConfidence = 49; // Convert.ToInt32(settings.Settings.Get("PHD_DATA_MIN_CONFIDENCE").Value.ValueXml.InnerText);
-            oPhd.MaximumRows = 1; // Convert.ToUInt32(settings.Settings.Get("PHD_DATA_MAX_ROWS").Value.ValueXml.InnerText);
+            oPhd.MinimumConfidence = Convert.ToInt32(settings.Settings.Get("PHD_DATA_MIN_CONFIDENCE").Value.ValueXml.InnerText);
+            oPhd.MaximumRows = Convert.ToUInt32(settings.Settings.Get("PHD_DATA_MAX_ROWS").Value.ValueXml.InnerText);
         }
 
         private void SetDefaultValue(DateTime recordDataTime, ShiftType shift, List<UnitsData> unitsData, UnitConfig unitConfig)

@@ -166,6 +166,9 @@
                 case "C4":
                     result = FormulaC4(arguments);
                     break;
+                case "C5":
+                    result = FormulaC5(arguments);
+                    break;
                 default:
                     throw new ArgumentException("The entered value of the formula code is invalid!");
                     break;
