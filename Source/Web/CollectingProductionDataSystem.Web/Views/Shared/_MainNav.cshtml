@@ -22,7 +22,6 @@
                         </ul>
                     </li>
                 }
-
                 @if (Html.ActionIsAccessibleToUser("UnitsDailyData", "UnitsDaily", "DailyReporting"))
                 {
                     <li class="dropdown">
@@ -35,7 +34,7 @@
                         </ul>
                     </li>
                 }
-                
+
                 @if (Html.ActionIsAccessibleToUser("InnerPipelinesData", "InnerPipelines", "MonthlyReporting"))
                 {
                     <li class="dropdown">
@@ -46,7 +45,7 @@
                         </ul>
                     </li>
                 }
-                
+
                 @if (Html.ActionIsAccessibleToUser("UnitsReportsData", "SummaryReports", "SummaryReporting"))
                 {
                     <li class="dropdown">
@@ -60,9 +59,18 @@
                     </li>
                 }
 
-
                 <li>@Html.AuthorizedActionLink(@Resources.Layout.Administration, "Index", "User", new { area = "Administration" }, null)</li>
-                <li>@Html.AuthorizedActionLink(@Resources.Layout.Nomenclatures, "Index", "Nomenclatures", new { area = "NomManagement" }, null)</li>
+
+                @if (Html.ActionIsAccessibleToUser("Index", "Nomenclatures", "NomManagement"))
+                {
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">@Resources.Layout.Nomenclatures<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li>@Html.AuthorizedActionLink(@Resources.Layout.Nomenclatures, "Index", "Nomenclatures", new { area = "NomManagement" }, null)</li>
+                            <li>@Html.AuthorizedActionLink(@Resources.Layout.NomUploadTitle, "Index", "UploadNom", new { area = "NomManagement" }, null)</li>
+                        </ul>
+                    </li>
+                }
             </ul>
             @Html.Partial("_LoginPartial")
         </div>

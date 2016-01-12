@@ -17,6 +17,7 @@
     using Uniformance.PHD;
     using log4net;
     using CollectingProductionDataSystem.Models.Productions;
+    using System.Text;
 
     static class Phd2SqlProductionDataMain
     {
@@ -46,18 +47,76 @@
             try
             {
                 logger.Info("Sync primary data started!");
-                var kernel = ninject.Kernel;
-                var service = kernel.GetService(typeof(PhdPrimaryDataService)) as PhdPrimaryDataService;
-                for (int offsetInHours = 0; offsetInHours < Properties.Settings.Default.SYNC_PRIMARY_HOURS_OFFSET; offsetInHours += 8)
-                {
-                    var offset = offsetInHours == 0 ? offsetInHours : offsetInHours * -1;
-                    var insertedRecords = service.ReadAndSaveUnitsDataForShift(DateTime.Now, offset, dataSource);
-                    logger.InfoFormat("Successfully added {0} UnitsData records to CollectingPrimaryDataSystem", insertedRecords);
-                    if (insertedRecords > 0)
+                //var kernel = ninject.Kernel;
+                //var service = kernel.GetService(typeof(PhdPrimaryDataService)) as PhdPrimaryDataService;
+                //for (int offsetInHours = 0; offsetInHours < Properties.Settings.Default.SYNC_PRIMARY_HOURS_OFFSET; offsetInHours += 8)
+                //{
+                    PHDHistorian oPhd = new PHDHistorian();
+                    PHDServer defaultServer = new PHDServer("PHD-L35-1");
+                    defaultServer.Port = 3150;
+                    defaultServer.APIVersion = Uniformance.PHD.SERVERVERSION.RAPI200;
+                    oPhd.DefaultServer = defaultServer;
+                    oPhd.StartTime = "NOW - 2M";
+                    oPhd.EndTime = "NOW - 2M";
+                    oPhd.Sampletype = SAMPLETYPE.Snapshot;
+                    oPhd.MinimumConfidence = 49;
+                    oPhd.ReductionType = REDUCTIONTYPE.Average;
+                    oPhd.MaximumRows = 1;
+                    logger.Info(oPhd.DefaultServer.HostName);
+                    Tags tags = new Tags();
+                    tags.Add(new Tag("SU400SIPM601B.PV"));
+                    tags.Add(new Tag("SU400JIPM601B.PV"));
+                    tags.Add(new Tag("SU400SIM601C.PV"));
+                    tags.Add(new Tag("SU400JIM601C.PV"));
+                    tags.Add(new Tag("SU400SIPM601C.PV"));
+                    tags.Add(new Tag("SU400JIPM601C.PV"));
+                    tags.Add(new Tag("SU400SAL602A.PV"));
+                    tags.Add(new Tag("SU400SAL601A.PV"));
+                    tags.Add(new Tag("SU400UV603A.PV"));
+                    tags.Add(new Tag("SU400UV602A.PV"));
+                    tags.Add(new Tag("SU400LSL604A.PV"));
+                    tags.Add(new Tag("SU400LSH605A.PV"));
+                    tags.Add(new Tag("SU400LSH603.PV"));
+                    logger.Info(tags.Count);
+                    try
                     {
-                        SendEmail("Kosta.Kiryzov@bmsys.eu", "SAPO - Shift data", string.Format("Successfully added {0} recorts to database", insertedRecords));  
+                        DataSet dsGrid = oPhd.FetchRowData(tags);
+                        foreach (DataRow row in dsGrid.Tables[0].Rows)
+                        {
+                            StringBuilder sb = new StringBuilder();
+
+                            foreach (DataColumn dc in dsGrid.Tables[0].Columns)
+                            {
+                                if (dc.ColumnName.Equals("Tolerance") || dc.ColumnName.Equals("HostName") || dc.ColumnName.Equals("Tolerance"))
+                                {
+                                    continue;  
+                                }
+                                var field1 = row[dc].ToString();
+                                sb.Append(dc.ColumnName+ ":" +field1 + "  ");
+                            }
+
+                            logger.Info(sb.ToString());
+                        }
+
                     }
-                }
+                    catch (PHDErrorException ex)
+                    {
+                        logger.Error(ex.Message);
+                    }
+                    finally
+                    {
+                        defaultServer.Dispose();
+                        oPhd.Dispose();
+                    }
+
+                    //var offset = offsetInHours == 0 ? offsetInHours : offsetInHours * -1;
+                    //var insertedRecords = service.ReadAndSaveUnitsDataForShift(DateTime.Now, offset, dataSource);
+                    //logger.InfoFormat("Successfully added {0} UnitsData records to CollectingPrimaryDataSystem", insertedRecords);
+                    //if (insertedRecords > 0)
+                    //{
+                    //    SendEmail("Kosta.Kiryzov@bmsys.eu", "SAPO - Shift data", string.Format("Successfully added {0} recorts to database", insertedRecords));  
+                    //}
+                //}
                 logger.Info("Sync primary data finished!");
             }
             catch (DataException validationException)

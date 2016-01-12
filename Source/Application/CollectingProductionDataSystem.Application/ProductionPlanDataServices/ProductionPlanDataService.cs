@@ -70,7 +70,21 @@
 
                 if (productionPlan.Name == totallyQuantity.First().Key)
 	            {
-                    totallyQuantityAs = totallyQuantity[productionPlan.Name] + productionPlanData.QuantityFact;  
+                    if (totallyQuantity[productionPlan.Name] == 0)
+                    {
+                        totallyQuantityAs = productionPlanData.QuantityFact;   
+                    }
+                    else 
+                    {
+                        if (totallyQuantity[productionPlan.Name] == productionPlanData.QuanityFactCurrentMonth + productionPlanData.QuantityFact)
+                        {
+                            totallyQuantityAs = totallyQuantity[productionPlan.Name];   
+                        }
+                        else
+                        {
+                            totallyQuantityAs = productionPlanData.QuanityFactCurrentMonth + productionPlanData.QuantityFact;
+                        }
+                    }
 	            }
 
                 result.Add(productionPlanData);
@@ -79,7 +93,7 @@
             foreach (var item in result)
             {
                 var percs = (((double)item.QuanityFactCurrentMonth + (double)item.QuantityFact) * 100.00) / (double)totallyQuantityAs;
-                item.PercentagesFactCurrentMonth = double.IsNaN(percs) ? 0.0m : (decimal)percs;
+                item.PercentagesFactCurrentMonth = double.IsNaN(percs) || double.IsInfinity(percs) ? 0.0m : (decimal)percs;
             }
 
             return result;
