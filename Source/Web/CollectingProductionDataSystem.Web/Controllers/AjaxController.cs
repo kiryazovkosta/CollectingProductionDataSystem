@@ -184,6 +184,14 @@ namespace CollectingProductionDataSystem.Web.Controllers
             return File(fileContents, contentType, fileName);
         }
 
+        [HttpGet]
+        [AllowAnonymous]
+        public ActionResult GetMessagesCount() 
+        {
+            var result = data.Messages.All().Where(x => x.ValidUntill >= DateTime.Now).Select(x=>x.MessageText).Count();
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
         private bool IsPowerUser()
         {
             return UserProfile.UserRoles.Where(x => CommonConstants.PowerUsers.Any(y => y == x.Name)).Any();

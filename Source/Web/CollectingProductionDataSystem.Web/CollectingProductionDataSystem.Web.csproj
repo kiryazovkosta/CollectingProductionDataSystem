@@ -72,6 +72,18 @@
       <HintPath>..\..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.1\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.Core, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.SignalR.Core.1.1.3\lib\net40\Microsoft.AspNet.SignalR.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.Owin, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.SignalR.Owin.1.1.3\lib\net45\Microsoft.AspNet.SignalR.Owin.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.SystemWeb, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.SignalR.SystemWeb.1.1.3\lib\net45\Microsoft.AspNet.SignalR.SystemWeb.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.QualityTools.Testing.Fakes, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Ninject">
@@ -361,6 +373,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Hubs\MessagesHub.cs" />
     <Compile Include="Infrastructure\CustomLogEvents\CustomExceptionEvent.cs" />
     <Compile Include="Infrastructure\Extentions\IEfStatusExtentions.cs" />
     <Compile Include="Infrastructure\Filters\AuthorizeFactoryAttribute.cs" />
@@ -372,6 +385,7 @@
     <Compile Include="Infrastructure\Helpers\AuthorizedActionLinkHtmlHelper.cs" />
     <Compile Include="Infrastructure\Helpers\IdentityHelpers.cs" />
     <Compile Include="Infrastructure\Helpers\HtmlPartialViewHelpers.cs" />
+    <Compile Include="Infrastructure\HubAuthomation\MessagesPublisher.cs" />
     <Compile Include="Infrastructure\ModelBinders\EditUserViewModelBinder.cs" />
     <Compile Include="Infrastructure\ModelBinders\TimeSpanComponentAttribute.cs" />
     <Compile Include="Infrastructure\ModelBinders\TimeSpanModelBinder.cs" />
@@ -1056,6 +1070,10 @@
       <DependentUpon>sendArea.min.js</DependentUpon>
     </Content>
     <None Include="Properties\PublishProfiles\Productive.pubxml" />
+    <Content Include="Scripts\custom\signalR.js" />
+    <Content Include="Scripts\custom\signalR.min.js">
+      <DependentUpon>signalR.js</DependentUpon>
+    </Content>
     <Content Include="Scripts\custom\usersStatisticsRefresh.js" />
     <Content Include="Scripts\custom\windowExpirationTime.js" />
     <Content Include="Scripts\custom\windowExpirationTime.min.js">
@@ -1073,6 +1091,9 @@
     <Content Include="Scripts\custom\renderDailyGraphic.min.js.map">
       <DependentUpon>renderDailyGraphic.min.js</DependentUpon>
     </Content>
+    <Content Include="Scripts\custom\signalR.min.js.map">
+      <DependentUpon>signalR.min.js</DependentUpon>
+    </Content>
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\custom\sendFactory.min.js">
       <DependentUpon>sendFactory.js</DependentUpon>
@@ -1086,6 +1107,8 @@
     </Content>
     <Content Include="Scripts\jquery-2.1.4.js" />
     <Content Include="Scripts\jquery-2.1.4.min.js" />
+    <Content Include="Scripts\jquery.signalR-1.1.3.js" />
+    <Content Include="Scripts\jquery.signalR-1.1.3.min.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
@@ -1714,6 +1737,8 @@
     <Content Include="Views\Shared\_ControlParams.cshtml" />
     <Content Include="Views\Shared\_HighwayPipelinesSideBar.cshtml" />
     <Content Include="Views\Shared\_MonthSelectorSideBar.cshtml" />
+    <Content Include="Views\Tests\MessageTest.cshtml" />
+    <Content Include="Views\Tests\PublishMessage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

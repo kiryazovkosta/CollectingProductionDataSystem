@@ -1,6 +1,8 @@
 ﻿namespace CollectingProductionDataSystem.Web
 {
     using System;
+    using System.Configuration;
+    using System.Data.SqlClient;
     using System.Web;
     using System.Web.Helpers;
     using System.Web.Mvc;
@@ -8,8 +10,11 @@
     using System.Web.Routing;
     using CollectingProductionDataSystem.Data.Contracts;
     using CollectingProductionDataSystem.Infrastructure.Mapping;
+    using CollectingProductionDataSystem.Models.UtilityEntities;
     using CollectingProductionDataSystem.Web.AppStart;
     using CollectingProductionDataSystem.Web.Areas.Administration.ViewModels;
+    using CollectingProductionDataSystem.Web.Hubs;
+    using CollectingProductionDataSystem.Web.Infrastructure.HubAuthomation;
 
     public class MvcApplication : HttpApplication
     {
@@ -18,6 +23,7 @@
         protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();
+            RouteTable.Routes.MapHubs();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);

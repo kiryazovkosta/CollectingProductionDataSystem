@@ -159,6 +159,8 @@
 
         public IDbSet<InProcessUnitData> InProcessUnitDatas { get; set; }
 
+        public IDbSet<Message> Messages { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             ModelBingConfig.RegisterMappings(modelBuilder);

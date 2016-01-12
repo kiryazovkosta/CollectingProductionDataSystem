@@ -64,6 +64,7 @@
             modelBuilder.Configurations.Add(new HighwayPipelineApprovedDataMap());
             modelBuilder.Configurations.Add(new InnerPipelineDataMap());
             modelBuilder.Configurations.Add(new InProcessUnitDataMap());
+            modelBuilder.Configurations.Add(new MessageMap());
         }
     }
 }

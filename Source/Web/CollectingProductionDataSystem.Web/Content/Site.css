@@ -765,3 +765,16 @@ div#productionPlan {
     font-size:11px;
 }
 
+.label-as-badge {
+    border-radius: 1em;
+    vertical-align: super;
+}
+
+.popover {
+    min-width:400px;
+}
+
+.popover-content {
+    overflow-x:auto;
+}
+

@@ -1,6 +1,7 @@
 ﻿namespace CollectingProductionDataSystem.Data.Contracts
 {
     using System;
+    using CollectingProductionDataSystem.Data.Concrete;
     using CollectingProductionDataSystem.Models.Identity;
     using CollectingProductionDataSystem.Models.Inventories;
     using CollectingProductionDataSystem.Models.Nomenclatures;
@@ -102,6 +103,8 @@
         IDeletableEntityRepository<MeasuringPointProductsConfig> MeasuringPointProductsConfigs { get; }
 
         IDeletableEntityRepository<Density2FactorAlpha> Density2FactorAlphas { get; }
+        
+        MessageRepository Messages { get; }
 
         IRepository<Event> Events { get; }
 

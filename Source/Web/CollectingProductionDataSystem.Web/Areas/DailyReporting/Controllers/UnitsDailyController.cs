@@ -164,13 +164,6 @@
                 catch (Exception ex)
                 {
                     exc = ex;
-                    string str = exc.Message + "\nWe were here!!!" ;
-                    //foreach (var records in this.testUnitDailyCalculationService.Dictionary)
-                    //{
-                    //    str += records + "\n";
-                    //}
-
-                    exc = new InvalidOperationException(str,exc) ;
                 }
                 finally 
                 {
