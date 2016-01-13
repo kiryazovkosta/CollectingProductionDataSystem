@@ -30,6 +30,6 @@ namespace CollectingProductionDataSystem.Models.UtilityEntities
     {
         Info = 1,
         Warning = 2,
-        Error = 3
+        Critical = 3
     }
 }

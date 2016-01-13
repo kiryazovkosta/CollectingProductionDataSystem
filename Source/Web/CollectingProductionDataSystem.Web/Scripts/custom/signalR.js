@@ -15,12 +15,12 @@
     });
 
     function displayMessage(message) {
-        var template = '<div class="popover" role="tooltip"><div class="arrow"></div><h3 class="popover-title popover-title-info"></h3><div class="popover-content"></div></div>';//info
+        var template = '<div class="popover"><div class="arrow"></div><div class="popover-icon col-xs-2"><img src="/Content/Images/PNG/64x64/Info.png" alt="Info" width="55px" height="55px"></div><pre class="popover-content col-xs-10"></pre></div>';//info
         if (message.MessageType===2) {
-            template = '<div class="popover" role="tooltip"><div class="arrow"></div><h3 class="popover-title popover-title-warning"></h3><div class="popover-content"></div></div>';//warning
+            template = '<div class="popover"><div class="arrow"></div><div class="popover-icon col-xs-2"><img src="/Content/Images/PNG/64x64/Warning.png" alt="Info" width="55px" height="55px"></div><pre class="popover-content col-xs-10"></pre></div>';//warning
         }
         if (message.MessageType===3) {
-            template = '<div class="popover" role="tooltip"><div class="arrow"></div><h3 class="popover-title popover-title-danger"></h3><div class="popover-content"></div></div>';//danger
+            template = '<div class="popover"><div class="arrow"></div><div class="popover-icon col-xs-2"><img src="/Content/Images/PNG/64x64/ErrorCircle.png" alt="Info" width="55px" height="55px"></div><pre class="popover-content col-xs-10"></pre></div>';//danger
         }
         $('#messages').popover({
             'content': message.MessageText,

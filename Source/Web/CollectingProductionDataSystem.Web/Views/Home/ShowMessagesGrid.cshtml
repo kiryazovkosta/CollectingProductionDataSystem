@@ -1,4 +1,5 @@
 ﻿@using CollectingProductionDataSystem.Models.UtilityEntities;
+@using CollectingProductionDataSystem.Web.ViewModels.Utility;
 @using Resources = App_GlobalResources.Resources
 
 @{
@@ -8,13 +9,13 @@
     <h1>@Resources.Layout.Messages</h1>
     @Html.AntiForgeryToken()
     @(Html.Kendo()
-    .Grid<Message>()
+    .Grid<MessageViewModel>()
     .Name("messages-list")
     .Columns(
         columns =>
         {
-            columns.Bound(c => c.Id);
-            columns.Bound(c => c.MessageText);
+            columns.Bound(c => c.MessageType).Width(140).ClientTemplate("<div class='message-type-icon'><img src='#:data.MessageType == 3 ? '/Content/Images/PNG/64x64/ErrorCircle.png' : data.MessageType == 2 ?'/Content/Images/PNG/128x128/Warning.png' : '/Content/Images/PNG/128x128/Info.png' #' alt='#:MessageType#' width=80px height=80px /></div>");
+            columns.Bound(c => c.MessageText).ClientTemplate("<pre class='message-list-text'>#:data.MessageText#</pre>");
         })
         .Pageable(pageable => pageable
             .Refresh(true)
@@ -22,7 +23,7 @@
             .ButtonCount(5)
         )
         .Sortable()
-            .Events(ev => ev.DataBound("kendoAdditional.MessageBound"))
+            //.Events(ev => ev.DataBound("kendoAdditional.MessageBound"))
             .Scrollable(scr => scr.Height(640))
             .Filterable()
             .DataSource(dataSource => dataSource
@@ -30,17 +31,19 @@
                     .PageSize(20)
                     .ServerOperation(true)
                      .Read(read => read.Action("GetMessages", "Ajax", new { area = "" }).Data("sendAntiForgery"))
-                     .Events(events => {
-                                            events.Error("kendoAdditional.ErrorHandler");
-                                       })
+                     .Events(events =>
+                     {
+                         events.Error("kendoAdditional.ErrorHandler");
+                     })
         )
     )
 </div>
 
-    @* //Error window for kendo grid error event handler *@
-    <div id="err-window" style="display:none">@Html.Partial("_KendoGridErrorWindow")</div>
+@* //Error window for kendo grid error event handler *@
+<div id="err-window" style="display:none">@Html.Partial("_KendoGridErrorWindow")</div>
 
-    @section scripts{
-        @Scripts.Render("~/bundles/custom/kendoadditional")
-        @Scripts.Render("~/bundles/custom/unitGrids")
-    }
+@section scripts{
+    @Scripts.Render("~/bundles/custom/kendoadditional")
+    @Scripts.Render("~/bundles/custom/unitGrids")
+
+}

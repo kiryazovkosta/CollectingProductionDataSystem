@@ -1347,4 +1347,22 @@
   <data name="Messages" xml:space="preserve">
     <value>List of active messages in the system</value>
   </data>
+  <data name="MessageText" xml:space="preserve">
+    <value>Message</value>
+  </data>
+  <data name="MessageType" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="ValidUntill" xml:space="preserve">
+    <value>Valid Untill</value>
+  </data>
+  <data name="MessageTextInput" xml:space="preserve">
+    <value>Text</value>
+  </data>
+  <data name="MessageTypeInput" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="MessagesPublishing" xml:space="preserve">
+    <value>Massages Publishing</value>
+  </data>
 </root>
