@@ -116,18 +116,18 @@ namespace CollectingProductionDataSystem.Phd2SqlProductionData.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool SYNC_MEASUREMENTS_POINTS {
+        public bool SYNC_PRIMARY_SECOND {
             get {
-                return ((bool)(this["SYNC_MEASUREMENTS_POINTS"]));
+                return ((bool)(this["SYNC_PRIMARY_SECOND"]));
             }
         }
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("01:00:00")]
-        public global::System.TimeSpan IDLE_TIMER_MEASUREMENTS_POINTS {
+        public global::System.TimeSpan IDLE_TIMER_PRIMARY_SECOND {
             get {
-                return ((global::System.TimeSpan)(this["IDLE_TIMER_MEASUREMENTS_POINTS"]));
+                return ((global::System.TimeSpan)(this["IDLE_TIMER_PRIMARY_SECOND"]));
             }
         }
         
@@ -209,6 +209,42 @@ namespace CollectingProductionDataSystem.Phd2SqlProductionData.Properties {
         public int PHD_DATA_SOURCE {
             get {
                 return ((int)(this["PHD_DATA_SOURCE"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("101.101.101.101")]
+        public string SMTP_SERVER {
+            get {
+                return ((string)(this["SMTP_SERVER"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("from@example.com")]
+        public string SMTP_FROM {
+            get {
+                return ((string)(this["SMTP_FROM"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("to@example.com")]
+        public string SMTP_TO {
+            get {
+                return ((string)(this["SMTP_TO"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("2")]
+        public int PHD_DATA_SOURCE_SECOND {
+            get {
+                return ((int)(this["PHD_DATA_SOURCE_SECOND"]));
             }
         }
     }

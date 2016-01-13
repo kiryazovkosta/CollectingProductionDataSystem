@@ -421,11 +421,11 @@
         private static void SendEmail(string toParam, string titleParam, string bodyParam)
         {
             string to = @toParam;
-            string from = "mes@bmsys.eu";
+            string from = Properties.Settings.Default.SMTP_FROM;
             MailMessage message = new MailMessage(from, to);
             message.Subject = @titleParam;
             message.Body = @bodyParam;
-            SmtpClient client = new SmtpClient("192.168.7.195");
+            SmtpClient client = new SmtpClient(Properties.Settings.Default.SMTP_SERVER);
             client.UseDefaultCredentials = true;
 
             try

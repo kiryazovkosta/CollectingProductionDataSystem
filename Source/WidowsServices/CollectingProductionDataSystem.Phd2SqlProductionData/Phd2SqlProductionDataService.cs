@@ -45,7 +45,7 @@ namespace CollectingProductionDataSystem.Phd2SqlProductionData
                     this.inventoryDataTimer = new Timer(TimerHandlerInventory, null, 0, Timeout.Infinite);
                 }
 
-                if (Properties.Settings.Default.SYNC_MEASUREMENTS_POINTS)
+                if (Properties.Settings.Default.SYNC_PRIMARY_SECOND)
                 {
                     this.measurementDataTimer = new Timer(TimerHandlerMeasurement, null, 0, Timeout.Infinite); 
                 }
@@ -80,7 +80,6 @@ namespace CollectingProductionDataSystem.Phd2SqlProductionData
                     this.primaryDataTimer.Change(Timeout.Infinite, Timeout.Infinite);
                     var dataSourceId = Properties.Settings.Default.PHD_DATA_SOURCE;
                     PrimaryDataSourceType dataSource = (PrimaryDataSourceType)Enum.ToObject(typeof(PrimaryDataSourceType) , dataSourceId);
-                    logger.Info(dataSource);
                     Phd2SqlProductionDataMain.ProcessPrimaryProductionData(dataSource);
                 }
                 catch (Exception ex)
@@ -91,9 +90,7 @@ namespace CollectingProductionDataSystem.Phd2SqlProductionData
                 {
                     DateTime endDateTime = DateTime.Now;
                     var operationTimeout = Convert.ToInt64((endDateTime - beginDateTime).TotalMilliseconds);
-                    logger.InfoFormat("operationTimeout {0}", operationTimeout);
                     var callbackTimeout = Convert.ToInt64(Properties.Settings.Default.IDLE_TIMER_PRIMARY.TotalMilliseconds);
-                    logger.InfoFormat("callbackTimeout {0}", callbackTimeout);
                     this.primaryDataTimer.Change(callbackTimeout - operationTimeout, Timeout.Infinite);
                 }
             }
@@ -125,11 +122,14 @@ namespace CollectingProductionDataSystem.Phd2SqlProductionData
         {
             lock (lockObjectMeasurementData)
             {
+                DateTime beginDateTime = DateTime.Now;
                 try
                 {
                     Utility.SetRegionalSettings();
                     this.measurementDataTimer.Change(Timeout.Infinite, Timeout.Infinite);
-                    Phd2SqlProductionDataMain.ProcessMeasuringPointsData();
+                    var dataSourceId = Properties.Settings.Default.PHD_DATA_SOURCE_SECOND;
+                    PrimaryDataSourceType dataSource = (PrimaryDataSourceType)Enum.ToObject(typeof(PrimaryDataSourceType) , dataSourceId);
+                    Phd2SqlProductionDataMain.ProcessPrimaryProductionData(dataSource);
                 }
                 catch (Exception ex)
                 {
@@ -137,8 +137,10 @@ namespace CollectingProductionDataSystem.Phd2SqlProductionData
                 }
                 finally
                 {
-                    this.measurementDataTimer.Change(Convert.ToInt64(Properties.Settings.Default.IDLE_TIMER_MEASUREMENTS_POINTS.TotalMilliseconds), 
-                        System.Threading.Timeout.Infinite);
+                    DateTime endDateTime = DateTime.Now;
+                    var operationTimeout = Convert.ToInt64((endDateTime - beginDateTime).TotalMilliseconds);
+                    var callbackTimeout = Convert.ToInt64(Properties.Settings.Default.IDLE_TIMER_PRIMARY_SECOND.TotalMilliseconds);
+                    this.measurementDataTimer.Change(callbackTimeout - operationTimeout, Timeout.Infinite);
                 }
             }
         }

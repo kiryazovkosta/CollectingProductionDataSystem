@@ -169,6 +169,9 @@
                 case "C5":
                     result = FormulaC5(arguments);
                     break;
+                case "C6":
+                    result = FormulaC6(arguments);
+                    break;
                 default:
                     throw new ArgumentException("The entered value of the formula code is invalid!");
                     break;
@@ -1917,7 +1920,7 @@
         }
 
         /// <summary>
-        /// UCF1 - изчислява въведената стойност по стойност записана в колоната за процент
+        /// UCF5 - изчислява въведената стойност по стойност записана в колоната за процент
         /// </summary>
         public double FormulaC5(FormulaArguments args)            
         {
@@ -1936,6 +1939,26 @@
 
             var inputParams = new Dictionary<string, double>();
             inputParams.Add("q", r);
+
+            string expr = @"par.q";
+            var result = calculator.Calculate(expr, "par", 1, inputParams);
+            return result;
+        }
+
+        /// <summary>
+        /// UCF6 - коефициента от конфигурационната таблица като стойност на формулата.
+        /// </summary>
+        public double FormulaC6(FormulaArguments args)            
+        {
+            if (!args.CalculationPercentage.HasValue)
+            {
+                throw new ArgumentNullException("The value of Calculation percentage is not allowed to be null");
+            }
+
+            var c = args.CalculationPercentage.Value;
+
+            var inputParams = new Dictionary<string, double>();
+            inputParams.Add("q", c);
 
             string expr = @"par.q";
             var result = calculator.Calculate(expr, "par", 1, inputParams);
