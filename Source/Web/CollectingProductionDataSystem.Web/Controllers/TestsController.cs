@@ -175,7 +175,7 @@
                 message.ValidUntill = message.ValidUntill <= DateTime.Now ? DateTime.Now.AddHours(1) : message.ValidUntill;
                 this.data.Messages.Add(message);
                 this.data.SaveChanges("Test");
-                MessagesHub.DisplayNewMessage(message.MessageText);
+                MessagesHub.DisplayNewMessage(message);
                 return View(new Message() { ValidUntill = DateTime.Now.AddHours(1) });
             }
             else 

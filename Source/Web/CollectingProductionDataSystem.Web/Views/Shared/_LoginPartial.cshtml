@@ -11,6 +11,7 @@
 
             </li>
             <li><a href="javascript:document.getElementById('logoutForm').submit()">@Resources.Layout.Logoff</a></li>
+            <li><a href='@Url.Action("ShowMessagesGrid", "Home", new { aria = "" })' id="messages" role="button" data-toggle="popover" data-trigger="focus" title="@Resources.Layout.Message" data-content=""><span class="glyphicon glyphicon-envelope"><span class="label label-danger label-as-badge" id="message-counter"></span></span></a></li>
             <li><a href="/Documentation/Help" class="btn-help"><img src="~/Content/Images/PNG/Help.png" alt="Help" class="btn-help"/></a></li>
         </ul>
     }
@@ -19,7 +20,7 @@ else
 {
     <ul class="nav navbar-nav navbar-right">
         <li>@Html.ActionLink(@Resources.Layout.Login, "Login", "Account", routeValues: new { area = "" }, htmlAttributes: new { id = "loginLink" })</li>
-        <li><a href="#" id="messages" role="button" data-toggle="popover" data-trigger="focus" title="@Resources.Layout.Message" data-content=""><span class="glyphicon glyphicon-envelope"><span class="label label-danger label-as-badge" id="message-counter"></span></span></a></li>
+        <li><a href="@Url.Action("ShowMessagesGrid", "Home", new { aria = "" })" id="messages" role="button" data-toggle="popover" data-trigger="focus" title="@Resources.Layout.Message" data-content=""><span class="glyphicon glyphicon-envelope"><span class="label label-danger label-as-badge" id="message-counter"></span></span></a></li>
         <li><a href="/Documentation/Help" class="btn-help"><img src="~/Content/Images/PNG/Help.png" alt="Help" class="btn-help" /></a></li>
     </ul>
 }

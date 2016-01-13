@@ -1739,6 +1739,7 @@
     <Content Include="Views\Shared\_MonthSelectorSideBar.cshtml" />
     <Content Include="Views\Tests\MessageTest.cshtml" />
     <Content Include="Views\Tests\PublishMessage.cshtml" />
+    <Content Include="Views\Home\ShowMessagesGrid.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,0 +1,46 @@
+﻿@using CollectingProductionDataSystem.Models.UtilityEntities;
+@using Resources = App_GlobalResources.Resources
+
+@{
+    Layout = "~/Views/Shared/_KendoLayout.cshtml";
+}
+<div class="container text-center">
+    <h1>@Resources.Layout.Messages</h1>
+    @Html.AntiForgeryToken()
+    @(Html.Kendo()
+    .Grid<Message>()
+    .Name("messages-list")
+    .Columns(
+        columns =>
+        {
+            columns.Bound(c => c.Id);
+            columns.Bound(c => c.MessageText);
+        })
+        .Pageable(pageable => pageable
+            .Refresh(true)
+            .PageSizes(new[] { 10, 20, 50, 100 })
+            .ButtonCount(5)
+        )
+        .Sortable()
+            .Events(ev => ev.DataBound("kendoAdditional.MessageBound"))
+            .Scrollable(scr => scr.Height(640))
+            .Filterable()
+            .DataSource(dataSource => dataSource
+                    .Ajax()
+                    .PageSize(20)
+                    .ServerOperation(true)
+                     .Read(read => read.Action("GetMessages", "Ajax", new { area = "" }).Data("sendAntiForgery"))
+                     .Events(events => {
+                                            events.Error("kendoAdditional.ErrorHandler");
+                                       })
+        )
+    )
+</div>
+
+    @* //Error window for kendo grid error event handler *@
+    <div id="err-window" style="display:none">@Html.Partial("_KendoGridErrorWindow")</div>
+
+    @section scripts{
+        @Scripts.Render("~/bundles/custom/kendoadditional")
+        @Scripts.Render("~/bundles/custom/unitGrids")
+    }

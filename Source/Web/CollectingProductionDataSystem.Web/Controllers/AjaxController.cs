@@ -16,6 +16,8 @@ using CollectingProductionDataSystem.Web.ViewModels.Tank;
 using CollectingProductionDataSystem.Web.ViewModels.Nomenclatures;
 using CollectingProductionDataSystem.Web.ViewModels.Units;
 using CollectingProductionDataSystem.Models.Nomenclatures;
+using Kendo.Mvc.UI;
+using Kendo.Mvc.Extensions;
 using Microsoft.AspNet.Identity;
 
 namespace CollectingProductionDataSystem.Web.Controllers
@@ -190,6 +192,15 @@ namespace CollectingProductionDataSystem.Web.Controllers
         {
             var result = data.Messages.All().Where(x => x.ValidUntill >= DateTime.Now).Select(x=>x.MessageText).Count();
             return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public ActionResult GetMessages([DataSourceRequest] DataSourceRequest request) 
+        {
+            var result = data.Messages.All().Where(x => x.ValidUntill >= DateTime.Now);
+            return Json(result.ToDataSourceResult(request, ModelState), JsonRequestBehavior.AllowGet);
         }
 
         private bool IsPowerUser()

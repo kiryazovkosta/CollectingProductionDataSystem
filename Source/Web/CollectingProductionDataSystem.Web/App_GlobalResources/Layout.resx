@@ -1344,4 +1344,7 @@
   <data name="MonthData" xml:space="preserve">
     <value>MonthData</value>
   </data>
+  <data name="Messages" xml:space="preserve">
+    <value>List of active messages in the system</value>
+  </data>
 </root>
