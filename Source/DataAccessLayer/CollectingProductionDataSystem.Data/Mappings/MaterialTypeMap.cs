@@ -20,6 +20,10 @@ namespace CollectingProductionDataSystem.Data.Mappings
                 .WithOptional()
                 .HasForeignKey(y => y.MaterialTypeId);
 
+            this.HasMany(x => x.ProductionPlanConfigs)
+                .WithOptional(x => x.MaterialType)
+                .HasForeignKey(y => y.MaterialTypeId);
+
             // Properties
             // Table & Column Mappings
             this.ToTable("MaterialTypes");

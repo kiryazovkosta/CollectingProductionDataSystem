@@ -261,6 +261,7 @@
     <Compile Include="Areas\Administration\ViewModels\RolePresentationViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\UserPieViewModel.cs" />
     <Compile Include="Areas\DailyReporting\Controllers\HighwayPipelinesController.cs" />
+    <Compile Include="Areas\DailyReporting\Controllers\EnergyDailyController.cs" />
     <Compile Include="Areas\DailyReporting\ViewModels\HighwayPipelinesDataViewModel.cs" />
     <Compile Include="Areas\Documentation\DocumentationAreaRegistration.cs" />
     <Compile Include="Areas\Documentation\Controllers\HelpController.cs" />
@@ -1056,6 +1057,7 @@
     <Content Include="Areas\DailyReporting\Views\HighwayPipelines\HighwayPipelinesData.cshtml" />
     <Content Include="Areas\MonthlyReporting\Views\InnerPipelines\InnerPipelinesData.cshtml" />
     <Content Include="Areas\MonthlyReporting\Views\InProcessUnits\InProcessUnitsData.cshtml" />
+    <Content Include="Areas\DailyReporting\Views\EnergyDaily\EnergyDailyData.cshtml" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <None Include="Properties\PublishProfiles\Home.pubxml" />
     <Content Include="Scripts\custom\sendArea.js" />

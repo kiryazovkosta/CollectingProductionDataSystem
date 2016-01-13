@@ -4,6 +4,7 @@
     using System;
     using CollectingProductionDataSystem.Models.Contracts;
     using System.Collections.Generic;
+    using CollectingProductionDataSystem.Models.Nomenclatures;
 
     public class ProductionPlanConfig : DeletableEntity, IEntity
     {
@@ -49,5 +50,9 @@
         }
 
         public bool IsSummaryOfProcessing { get; set; }
+
+        public int? MaterialTypeId { get; set; }
+
+        public virtual MaterialType MaterialType { get; set; }
     }
 }

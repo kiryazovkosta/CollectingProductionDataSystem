@@ -56,7 +56,7 @@
                     logger.InfoFormat("Successfully added {0} UnitsData records to CollectingPrimaryDataSystem", insertedRecords);
                     if (insertedRecords > 0)
                     {
-                        SendEmail("Kosta.Kiryzov@bmsys.eu", "SAPO - Shift data", string.Format("Successfully added {0} recorts to database", insertedRecords));  
+                        SendEmail("SAPO - Shift data", string.Format("Successfully added {0} recorts to database", insertedRecords));  
                     }
                 }
                 logger.Info("Sync primary data finished!");
@@ -64,12 +64,12 @@
             catch (DataException validationException)
             {
                 LogValidationDataException(validationException);
-                SendEmail("Kosta.Kiryzov@bmsys.eu", "SAPO - ERROR", validationException.Message); 
+                SendEmail("SAPO - ERROR", validationException.Message); 
             }
             catch (Exception ex)
             {
                 logger.Error(ex);
-                SendEmail("Kosta.Kiryzov@bmsys.eu", "SAPO - ERROR", ex.Message);  
+                SendEmail("SAPO - ERROR", ex.Message);  
             }
         }
 
@@ -207,14 +207,14 @@
                                                     else
                                                     {
                                                         tankData.ProductName = "N/A";
-                                                        SendEmail("kosta.kiryazov@bmsys.eu", "Phd2Sql Inventory", "There is a product with unknown id in TankMaster configuration");
+                                                        SendEmail("Phd2Sql Inventory", "There is a product with unknown id in TankMaster configuration");
                                                     }
                                                 }
                                                 else 
                                                 { 
                                                     tankData.ProductId = Convert.ToInt32(tagValue);
                                                     tankData.ProductName = "N/A";
-                                                    SendEmail("kosta.kiryazov@bmsys.eu", "Phd2Sql Inventory", "There is a product with unknown id in TankMaster configuration");
+                                                    SendEmail("Phd2Sql Inventory", "There is a product with unknown id in TankMaster configuration");
                                                 }
                                             }
                                             else if (tagName.EndsWith(".LL") || tagName.EndsWith(".LEVEL_MM"))
@@ -418,9 +418,9 @@
             }
         }
 
-        private static void SendEmail(string toParam, string titleParam, string bodyParam)
+        private static void SendEmail(string titleParam, string bodyParam)
         {
-            string to = @toParam;
+            string to = Properties.Settings.Default.SMTP_TO;
             string from = Properties.Settings.Default.SMTP_FROM;
             MailMessage message = new MailMessage(from, to);
             message.Subject = @titleParam;

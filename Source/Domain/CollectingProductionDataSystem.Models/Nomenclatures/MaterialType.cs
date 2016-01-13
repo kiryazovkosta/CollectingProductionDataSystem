@@ -10,12 +10,14 @@ namespace CollectingProductionDataSystem.Models.Nomenclatures
     {
         private ICollection<UnitDailyConfig> unitDailyConfigs;
         private ICollection<MaterialDetailType> materialDetailTypes;
+        private ICollection<ProductionPlanConfig> productionPlanConfigs;
 
         public MaterialType()
         {
             this.Units = new HashSet<UnitConfig>();
             this.unitDailyConfigs = new HashSet<UnitDailyConfig>();
             this.materialDetailTypes = new HashSet<MaterialDetailType>();
+            this.productionPlanConfigs = new HashSet<ProductionPlanConfig>();
         }
 
         public int Id { get; set; }
@@ -34,6 +36,12 @@ namespace CollectingProductionDataSystem.Models.Nomenclatures
         {
             get { return this.materialDetailTypes; }
             set { this.materialDetailTypes = value; }
+        }
+
+        public virtual ICollection<ProductionPlanConfig> ProductionPlanConfigs 
+        {
+            get { return this.productionPlanConfigs; }
+            set { this.productionPlanConfigs = value; }
         }
     }
 }

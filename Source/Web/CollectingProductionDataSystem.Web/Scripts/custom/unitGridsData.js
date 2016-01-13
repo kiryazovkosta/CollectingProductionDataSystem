@@ -189,6 +189,10 @@ var unitGridsData = (function () {
         return { "shiftMinutesOffset": $('input[name=shifts]').val() }
     }
 
+    function sendMaterialTypeId() {
+        return { "materialTypeId": $('input#materialTypeId').val() }
+    }
+
     function hideCommandButtons() {
         var confirmButton = $("#confirm");
         if (confirmButton) {
@@ -346,6 +350,9 @@ var unitGridsData = (function () {
         $.extend(result, sendProcessUnit());
         if ($('input[name=shifts]')) {
             $.extend(result, sendShift());
+        }
+        if ($('input#materialTypeId')) {
+            $.extend(result, sendMaterialTypeId());
         }
         $.extend(result, sendFactoryId());
         $.extend(result, sendAntiForgery());

@@ -21,9 +21,8 @@
             this.unitData = unitData;
         }
 
-        public IEnumerable<ProductionPlanData> ReadProductionPlanData(DateTime? date, int? processUnitId)
+        public IEnumerable<ProductionPlanData> ReadProductionPlanData(DateTime? date, int? processUnitId, int? materialTypeId)
         {
-            var materialTypeId = 1;
             var result = new HashSet<ProductionPlanData>();
 
             var dailyData = unitData.GetUnitsDailyDataForDateTime(date, processUnitId, materialTypeId).ToList();
@@ -36,6 +35,10 @@
             if (processUnitId != null)
             {
                 dbResult = dbResult.Where(x => x.ProcessUnitId == processUnitId);
+            }
+            if (materialTypeId != null)
+            {
+                dbResult = dbResult.Where(x => x.MaterialTypeId == materialTypeId);
             }
 
             var productionPlans = dbResult

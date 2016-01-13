@@ -172,6 +172,9 @@
                 case "C6":
                     result = FormulaC6(arguments);
                     break;
+                case "C7":
+                    result = FormulaC7(arguments);
+                    break;
                 default:
                     throw new ArgumentException("The entered value of the formula code is invalid!");
                     break;
@@ -278,6 +281,14 @@
                 {
                     arguments.Density = inputValue;
                 }
+                else if (parameterType == "I/")
+                {
+                    arguments.CalculationPercentage = inputValue;
+                }
+                else if (parameterType == "I*")
+                {
+                    arguments.CalculationPercentage = inputValue;
+                }
             }
             return arguments;
         }
@@ -335,6 +346,14 @@
                 else if (parameterType == "D")
                 {
                     arguments.Density = inputValue;
+                }
+                else if (parameterType == "I/")
+                {
+                    arguments.CalculationPercentage = inputValue;
+                }
+                else if (parameterType == "I*")
+                {
+                    arguments.CalculationPercentage = inputValue;
                 }
             }
         }
@@ -1920,7 +1939,7 @@
         }
 
         /// <summary>
-        /// UCF5 - изчислява въведената стойност по стойност записана в колоната за процент
+        /// UCF5 - изчислява въведената стойност умножена по стойност записана в колоната за процент
         /// </summary>
         public double FormulaC5(FormulaArguments args)            
         {
@@ -1962,6 +1981,36 @@
 
             string expr = @"par.q";
             var result = calculator.Calculate(expr, "par", 1, inputParams);
+            return result;
+        }
+
+        /// <summary>
+        /// UCF7 - изчислява въведената стойност разделена по стойност записана в колоната за процент
+        /// </summary>
+        public double FormulaC7(FormulaArguments args)            
+        {
+            if (!args.InputValue.HasValue)
+            {
+                throw new ArgumentNullException("The value of CounterIndication(PL) is not allowed to be null");
+            }
+            if (!args.CalculationPercentage.HasValue)
+            {
+                throw new ArgumentNullException("The value of Calculation percentage is not allowed to be null");
+            }
+
+            var x = args.InputValue.Value;
+            var y = args.CalculationPercentage.Value;
+            var d = x / y;
+
+            var inputParams = new Dictionary<string, double>();
+            inputParams.Add("q", d);
+
+            string expr = @"par.q";
+            var result = calculator.Calculate(expr, "par", 1, inputParams);
+            if (double.IsInfinity(result) || double.IsNaN(result))
+            {
+                result = 0.0;
+            }
             return result;
         }
     }

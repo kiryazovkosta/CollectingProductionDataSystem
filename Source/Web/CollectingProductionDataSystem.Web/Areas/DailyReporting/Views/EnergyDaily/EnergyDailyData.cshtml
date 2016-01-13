@@ -3,15 +3,13 @@
 @using CollectingProductionDataSystem.Web.Infrastructure.Helpers;
 @using CollectingProductionDataSystem.Web.ViewModels.Units;
 @using Resources = App_GlobalResources.Resources;
-
 @model UnitDailyDataViewModel
 @{
     Layout = "~/Views/Shared/_KendoLayoutWithSideBar.cshtml";
 }
-
 <div class="row">
     <div class="col-md-10">
-        <h2>@Resources.Layout.UnitsDailyData</h2>
+        <h2>@Resources.Layout.UnitsDailyDataEnergy</h2>
     </div>
     <div class="col-md-2">
         <button id="excel-export" class="k-button k-button-icontext k-grid-excel pull-right head-button"><span class="k-icon k-i-excel"></span>Експорт в Excel</button>
@@ -19,7 +17,7 @@
 </div>
 @Html.ValidationSummary()
 @Html.AntiForgeryToken()
-<input type="hidden" id="materialTypeId" name="materialTypeId" value="1" />
+<input type="hidden" id="materialTypeId" name="materialTypeId" value="2" />
 <div class="row">
     <div class="col-lg-4 col-lg-push-8">
         @(Html.Kendo()
@@ -41,7 +39,6 @@
     .DataSource(dataSource => dataSource
         .Ajax()
         .ServerOperation(true)
-        //    .Group(group => group.Add(c => c.UnitsDailyConfig.ProductType.Sort))
         .Read(read => read.Action("ReadProductionPlanData", "Ajax", new { area = "DailyReporting" }).Data("unitGridsData.SendDate"))
         .Model(model =>
         {
@@ -59,12 +56,11 @@
         )
        .Events(ev => ev.DataBound("unitGridsData.DataBound"))
         )
-        <br/>
+        <br />
         <div id="chart-wrapper"></div>
     </div>
-
     <div class="col-lg-8 col-lg-pull-4">
-        @(Html.Kendo()
+    @(Html.Kendo()
     .Grid<UnitDailyDataViewModel>()
     .Name("units")
     .AutoBind(false)
@@ -120,8 +116,8 @@
                                                                 .PageSize(50)
                                                                 .ServerOperation(true)
                                                                 .Group(group => group.Add(c => c.UnitsDailyConfig.DailyProductType.Sort))
-                                                                        .Read(read => read.Action("ReadDailyUnitsData", "UnitsDaily", new { area = "DailyReporting" }).Data("unitGridsData.SendDate"))
-                                                                .Update(update => update.Action("Edit", "UnitsDaily", new { area = "DailyReporting" }).Data("sendAntiForgery"))
+                                                                            .Read(read => read.Action("ReadEnergyDailyData", "EnergyDaily", new { area = "DailyReporting" }).Data("unitGridsData.SendDate"))
+                                                                        .Update(update => update.Action("Edit", "EnergyDaily", new { area = "DailyReporting" }).Data("sendAntiForgery"))
                                                                 .Model(model =>
                                                                 {
                                                                     model.Id(p => p.Id);
@@ -130,7 +126,7 @@
                                                                     model.Field(p => p.UnitsDailyConfig.ProcessUnit.ShortName).Editable(false);
                                                                     model.Field(p => p.UnitsDailyConfig.Name).Editable(false);
                                                                     model.Field(p => p.UnitsDailyConfig.MeasureUnit.Code).Editable(false);
-                                                                    model.Field(p => p.TotalMonthQuantity).Editable(false);                                                                    
+                                                                    model.Field(p => p.TotalMonthQuantity).Editable(false);
                                                                     model.Field(p => p.Value).Editable(false);
                                                                     model.Field(p => p.UnitsManualDailyData.Value).Editable(true);
                                                                     model.Field(p => p.UnitsManualDailyData.EditReason).Editable(true);
@@ -141,17 +137,14 @@
                                                                     events.RequestEnd("unitGridsData.DataSave");
                                                                 })
                                                             )
-)
+        )
     </div>
 </div>
-
-
 
 @* //Error window for kendo grid error event handler *@
 <div id="err-window" style="display:none">@Html.Partial("_KendoGridErrorWindow")</div>
 @* //Error window for kendo grid error event handler *@
 <div id="success-window" style="display:none">@Html.Partial("_SuccessWindow")</div>
-
 <script id="template" type="text/kendo-tmpl">
     @(Html.Kendo().Grid<UnitDataViewModel>()
             .Name("details_#=Id#") // template expression, to be evaluated in the master context
@@ -194,7 +187,6 @@
                 .ToClientTemplate()
     )
 </script>
-
 @section scripts{
     @Scripts.Render("~/bundles/custom/kendoadditional")
     @Scripts.Render("~/bundles/custom/unitGrids")

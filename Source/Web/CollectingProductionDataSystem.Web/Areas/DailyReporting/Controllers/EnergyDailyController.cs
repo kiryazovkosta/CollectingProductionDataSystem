@@ -29,16 +29,14 @@
     using Newtonsoft.Json;
     using Resources = App_GlobalResources.Resources;
 
-    public class UnitsDailyController : AreaBaseController
+    public class EnergyDailyController : AreaBaseController 
     {
         private readonly IUnitsDataService unitsData;
         private readonly IUnitDailyDataService dailyService;
         private readonly IProductionPlanDataService productionPlanData;
         private readonly TransactionOptions transantionOption;
-        private readonly ILogger logger;
-        private readonly ITestUnitDailyCalculationService testUnitDailyCalculationService;
 
-        public UnitsDailyController(IProductionData dataParam, IUnitsDataService unitsDataParam, IUnitDailyDataService dailyServiceParam,
+        public EnergyDailyController(IProductionData dataParam, IUnitsDataService unitsDataParam, IUnitDailyDataService dailyServiceParam,
             IProductionPlanDataService productionPlanDataParam, ILogger loggerParam, ITestUnitDailyCalculationService testUnitDailyCalculationServiceParam)
             : base(dataParam)
         {
@@ -46,12 +44,10 @@
             this.dailyService = dailyServiceParam;
             this.productionPlanData = productionPlanDataParam;
             this.transantionOption = DefaultTransactionOptions.Instance.TransactionOptions;
-            this.logger = loggerParam;
-            this.testUnitDailyCalculationService = testUnitDailyCalculationServiceParam;
         }
 
         [HttpGet]
-        public ActionResult UnitsDailyData()
+        public ActionResult EnergyDailyData()
         {
             return View();
         }
@@ -59,20 +55,13 @@
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AuthorizeFactory]
-        public JsonResult ReadDailyUnitsData([DataSourceRequest]DataSourceRequest request, DateTime? date, int? processUnitId, int? materialTypeId)
+        public JsonResult ReadEnergyDailyData([DataSourceRequest]DataSourceRequest request, DateTime? date, int? processUnitId, int? materialTypeId)
         {
             ValidateModelState(date, processUnitId);
             if (!this.ModelState.IsValid)
             {
                 var kendoResult = new List<UnitDailyDataViewModel>().ToDataSourceResult(request, ModelState);
                 return Json(kendoResult);
-            }
-
-            var status = CalculateDailyDataIfNotAvailable(date.Value, processUnitId.Value);
-
-            if (!status.IsValid)
-            {
-                status.ToModelStateErrors(this.ModelState);
             }
 
             if (ModelState.IsValid)
@@ -87,7 +76,7 @@
                     {
                         if (date != null && processUnitId != null)
                         {
-                            dailyService.CheckIfShiftsAreReady(date.Value, processUnitId.Value).ToModelStateErrors(this.ModelState);
+                            // TODO: Check daily data for materials is ready
                         }
 
                         kendoResult = kendoPreparedResult.ToDataSourceResult(request, ModelState);
@@ -116,77 +105,6 @@
                 var kendoResult = new List<UnitDailyDataViewModel>().ToDataSourceResult(request, ModelState);
                 return Json(kendoResult);
             }
-        }
-
-        /// <summary>
-        /// Calculates the daily data if not available.
-        /// </summary>
-        /// <param name="value">The value.</param>
-        /// <param name="processUnitId">The process unit id.</param>
-        private IEfStatus CalculateDailyDataIfNotAvailable(DateTime date, int processUnitId)
-        {
-            IEfStatus status = DependencyResolver.Current.GetService<IEfStatus>();
-
-            if (!this.dailyService.CheckIfDayIsApproved(date, processUnitId)
-                && !this.dailyService.CheckExistsUnitDailyDatas(date, processUnitId)
-                && this.testUnitDailyCalculationService.TryBeginCalculation(new UnitDailyCalculationIndicator(date, processUnitId)))
-            {
-                 Exception exc = null;
-                try
-                {
-                    IEnumerable<UnitsDailyData> dailyResult = new List<UnitsDailyData>();
-                    status = dailyService.CheckIfShiftsAreReady(date, processUnitId);
-
-                    if (status.IsValid)
-                    {
-                        if (!Convert.ToBoolean(System.Configuration.ConfigurationManager.AppSettings["ComplitionCheckDeactivared"]))
-                        {
-                            status = this.dailyService.CheckIfPreviousDaysAreReady(processUnitId, date);
-                        }
-
-                        if (status.IsValid)
-                        {
-                            status = IsRelatedDataExists(date, processUnitId);
-
-                            if (status.IsValid)
-                            {
-                                dailyResult = this.dailyService.CalculateDailyDataForProcessUnit(processUnitId, date);
-
-                                if (dailyResult.Count() > 0)
-                                {
-                                    this.data.UnitsDailyDatas.BulkInsert(dailyResult, this.UserProfile.UserName);
-                                    status = this.data.SaveChanges(this.UserProfile.UserName);
-                                }
-                            }
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    exc = ex;
-                }
-                finally 
-                {
-                    int ix = 0;
-                    while (!(this.testUnitDailyCalculationService.EndCalculation(new UnitDailyCalculationIndicator(date, processUnitId)) || ix == 10)) 
-                    {
-                        ix++;
-                    }
-
-                    if (ix >= 10)
-                    {
-                        string message = string.Format("Cannot clear record for begun Process Unit Calculation For ProcessUnitId {0} and Date {1}", processUnitId,date);
-                        exc = new InvalidOperationException();
-                    }
-
-                    if (exc != null)
-                    {
-                        throw exc;   
-                    }
-                }
-            }
-
-            return status;
         }
 
         [HttpPost]
@@ -230,7 +148,6 @@
                         if (!status.IsValid)
                         {
                             status.ToModelStateErrors(this.ModelState);
-                            //logger.Error()
                         }
                         else
                         {
@@ -287,11 +204,13 @@
             {
                 var approvedShift = this.data.UnitsApprovedDailyDatas
                     .All()
-                    .Where(u => u.RecordDate == date && u.ProcessUnitId == processUnitId)
+                    .Where(u => u.RecordDate == date && u.ProcessUnitId == processUnitId && u.EnergyApproved == true)
                     .FirstOrDefault();
                 if (approvedShift == null)
                 {
-                    if (this.data.UnitsDailyDatas.All().Where(x => x.RecordTimestamp == date && x.UnitsDailyConfig.ProcessUnitId == processUnitId).Any())
+                    if (this.data.UnitsDailyDatas.All().Where(x => x.RecordTimestamp == date && 
+                        x.UnitsDailyConfig.ProcessUnitId == processUnitId && 
+                        x.UnitsDailyConfig.MaterialTypeId == 2).Any())
                     {
                         return Json(new { IsConfirmed = false });
                     }
@@ -347,7 +266,7 @@
                             this.data.ProductionPlanDatas.Delete(productionPlansData);
 	                    }
                     }
-                    IEnumerable<ProductionPlanData> dbResult = this.productionPlanData.ReadProductionPlanData(model.date, model.processUnitId, 1);
+                    IEnumerable<ProductionPlanData> dbResult = this.productionPlanData.ReadProductionPlanData(model.date, model.processUnitId, 2);
                     if (dbResult.Count() > 0)
                     {
                         foreach (var item in dbResult)
