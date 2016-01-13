@@ -255,9 +255,11 @@
     <Compile Include="Areas\Administration\Controllers\AjaxController.cs" />
     <Compile Include="Areas\Administration\Controllers\AreaBaseController.cs" />
     <Compile Include="Areas\Administration\Controllers\EventsController.cs" />
+    <Compile Include="Areas\Administration\Controllers\MessageController.cs" />
     <Compile Include="Areas\Administration\Controllers\UserStatisticsController.cs" />
     <Compile Include="Areas\Administration\ViewModels\EventViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\LoggedUserViewModel.cs" />
+    <Compile Include="Areas\Administration\ViewModels\MessageInputModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\RolePresentationViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\UserPieViewModel.cs" />
     <Compile Include="Areas\DailyReporting\Controllers\HighwayPipelinesController.cs" />
@@ -419,6 +421,7 @@
     <Compile Include="ViewModels\Units\ProductionPlanViewModel.cs" />
     <Compile Include="ViewModels\Units\UnitDailyDataViewModel.cs" />
     <Compile Include="Areas\ShiftReporting\ViewModels\UnitDataViewModel.cs" />
+    <Compile Include="ViewModels\Utility\MessageViewModel.cs" />
     <Compile Include="ViewModels\Utility\PieViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -490,11 +493,13 @@
     <Content Include="Content\Images\PNG\128x128\Cancel2.png" />
     <Content Include="Content\Images\PNG\128x128\ErrorCircle.png" />
     <Content Include="Content\Images\PNG\128x128\Favorites.png" />
+    <Content Include="Content\Images\PNG\128x128\Info.png" />
     <Content Include="Content\Images\PNG\128x128\InfoBox.png" />
     <Content Include="Content\Images\PNG\128x128\OKShield.png" />
     <Content Include="Content\Images\PNG\128x128\Search.png" />
     <Content Include="Content\Images\PNG\128x128\Search2.png" />
     <Content Include="Content\Images\PNG\128x128\Wait.png" />
+    <Content Include="Content\Images\PNG\128x128\Warning.png" />
     <Content Include="Content\Images\PNG\16x16\Cancel2.png" />
     <Content Include="Content\Images\PNG\16x16\ErrorCircle.png" />
     <Content Include="Content\Images\PNG\16x16\Favorites.png" />
@@ -522,11 +527,13 @@
     <Content Include="Content\Images\PNG\32x32\Cancel2.png" />
     <Content Include="Content\Images\PNG\32x32\ErrorCircle.png" />
     <Content Include="Content\Images\PNG\32x32\Favorites.png" />
+    <Content Include="Content\Images\PNG\32x32\Info.png" />
     <Content Include="Content\Images\PNG\32x32\InfoBox.png" />
     <Content Include="Content\Images\PNG\32x32\OKShield.png" />
     <Content Include="Content\Images\PNG\32x32\Search.png" />
     <Content Include="Content\Images\PNG\32x32\Search2.png" />
     <Content Include="Content\Images\PNG\32x32\Wait.png" />
+    <Content Include="Content\Images\PNG\32x32\Warning.png" />
     <Content Include="Content\Images\PNG\48x48\Cancel2.png" />
     <Content Include="Content\Images\PNG\48x48\ErrorCircle.png" />
     <Content Include="Content\Images\PNG\48x48\Favorites.png" />
@@ -538,11 +545,13 @@
     <Content Include="Content\Images\PNG\64x64\Cancel2.png" />
     <Content Include="Content\Images\PNG\64x64\ErrorCircle.png" />
     <Content Include="Content\Images\PNG\64x64\Favorites.png" />
+    <Content Include="Content\Images\PNG\64x64\Info.png" />
     <Content Include="Content\Images\PNG\64x64\InfoBox.png" />
     <Content Include="Content\Images\PNG\64x64\OKShield.png" />
     <Content Include="Content\Images\PNG\64x64\Search.png" />
     <Content Include="Content\Images\PNG\64x64\Search2.png" />
     <Content Include="Content\Images\PNG\64x64\Wait.png" />
+    <Content Include="Content\Images\PNG\64x64\Warning.png" />
     <Content Include="Content\Images\PNG\Help.png" />
     <Content Include="Content\Images\ShiftData\butonPrilogi.png" />
     <Content Include="Content\Images\ShiftData\edit.png" />
@@ -1057,6 +1066,10 @@
     <Content Include="Areas\DailyReporting\Views\HighwayPipelines\HighwayPipelinesData.cshtml" />
     <Content Include="Areas\MonthlyReporting\Views\InnerPipelines\InnerPipelinesData.cshtml" />
     <Content Include="Areas\MonthlyReporting\Views\InProcessUnits\InProcessUnitsData.cshtml" />
+    <Content Include="Areas\Administration\Views\Message\EditorTemplates\MessageTextInput.cshtml" />
+    <Content Include="Areas\Administration\Views\Message\EditorTemplates\MessageTypeInput.cshtml" />
+    <Content Include="Areas\Administration\Views\Message\EditorTemplates\MessageValidUntillInput.cshtml" />
+    <Content Include="Areas\Administration\Views\Message\PublishMessage.cshtml" />
     <Content Include="Areas\DailyReporting\Views\EnergyDaily\EnergyDailyData.cshtml" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <None Include="Properties\PublishProfiles\Home.pubxml" />
@@ -1742,6 +1755,7 @@
     <Content Include="Views\Tests\MessageTest.cshtml" />
     <Content Include="Views\Tests\PublishMessage.cshtml" />
     <Content Include="Views\Home\ShowMessagesGrid.cshtml" />
+    <Content Include="Views\Shared\MessageTypeView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

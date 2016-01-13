@@ -1,0 +1,20 @@
+﻿@model CollectingProductionDataSystem.Models.UtilityEntities.MessageType
+@{
+    string iconPath = "";
+    switch (Model)
+    {
+        case CollectingProductionDataSystem.Models.UtilityEntities.MessageType.Info:
+            iconPath = "~/Content/Images/PNG/128x128/Info.png";
+            break;
+        case CollectingProductionDataSystem.Models.UtilityEntities.MessageType.Warning:
+            iconPath = "~/Content/Images/PNG/128x128/Warning.png";
+            break;
+        case CollectingProductionDataSystem.Models.UtilityEntities.MessageType.Critical:
+            iconPath = "~/Content/Images/PNG/128x128/ErrorCircle.png";
+            break;
+        default:
+            iconPath = "~/Content/Images/PNG/128x128/Info.png";
+            break;
+    }
+}
+<div class="message-type-icon"><img src="@iconPath" alt="@Model.ToString()" width=128px height=128px /></div>

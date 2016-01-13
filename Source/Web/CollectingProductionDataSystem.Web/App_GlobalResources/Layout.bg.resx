@@ -1350,4 +1350,16 @@
   <data name="Messages" xml:space="preserve">
     <value>Активни съобщения в системата</value>
   </data>
+  <data name="MessageText" xml:space="preserve">
+    <value>Съобщение</value>
+  </data>
+  <data name="MessageType" xml:space="preserve">
+    <value>Тип</value>
+  </data>
+  <data name="ValidUntill" xml:space="preserve">
+    <value>Валидно до</value>
+  </data>
+  <data name="MessagesPublishing" xml:space="preserve">
+    <value>Публикуване на съобщения</value>
+  </data>
 </root>

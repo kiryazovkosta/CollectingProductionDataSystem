@@ -1,0 +1,6 @@
+﻿@model CollectingProductionDataSystem.Models.UtilityEntities.MessageType
+
+@(Html.Kendo()
+    .DropDownListFor(m => Model)
+    .BindTo(EnumHelper.GetSelectList(typeof(CollectingProductionDataSystem.Models.UtilityEntities.MessageType)))
+ )

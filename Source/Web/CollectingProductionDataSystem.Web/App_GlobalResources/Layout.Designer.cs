@@ -1924,6 +1924,51 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Massages Publishing.
+        /// </summary>
+        public static string MessagesPublishing {
+            get {
+                return ResourceManager.GetString("MessagesPublishing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Message.
+        /// </summary>
+        public static string MessageText {
+            get {
+                return ResourceManager.GetString("MessageText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Text.
+        /// </summary>
+        public static string MessageTextInput {
+            get {
+                return ResourceManager.GetString("MessageTextInput", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Type.
+        /// </summary>
+        public static string MessageType {
+            get {
+                return ResourceManager.GetString("MessageType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Type.
+        /// </summary>
+        public static string MessageTypeInput {
+            get {
+                return ResourceManager.GetString("MessageTypeInput", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Middle Name.
         /// </summary>
         public static string MiddleName {
@@ -3657,6 +3702,15 @@ namespace App_GlobalResources.Resources {
         public static string UserStatistics {
             get {
                 return ResourceManager.GetString("UserStatistics", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Valid Untill.
+        /// </summary>
+        public static string ValidUntill {
+            get {
+                return ResourceManager.GetString("ValidUntill", resourceCulture);
             }
         }
         

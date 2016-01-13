@@ -1,0 +1,62 @@
+﻿@using CollectingProductionDataSystem.Web.Areas.Administration.ViewModels;
+@using Resources = App_GlobalResources.Resources;
+@{
+    Layout = "~/Areas/Administration/Views/Shared/_KendoAdminLayout.cshtml";
+}
+
+<div class="container-fluid text-center">
+    <h2>@Resources.Layout.MessagesPublishing</h2>
+</div>
+
+@(Html.Kendo()
+      .Grid<MessageInputModel>()
+      .Name("grid")
+      .Columns(columns => {
+          columns.Bound(c => c.MessageType).Width(140)
+              .ClientTemplate("<div class='message-type-icon'><img src='#:data.MessageType == 3 ? '/Content/Images/PNG/64x64/ErrorCircle.png' : data.MessageType == 2 ?'/Content/Images/PNG/128x128/Warning.png' : '/Content/Images/PNG/128x128/Info.png' #' alt='#:MessageType#' width=80px height=80px /></div>")
+              .EditorTemplateName("MessageTypeInput");              
+          columns.Bound(c => c.MessageText).Width(500).ClientTemplate("<pre class='message-list-text'>#:data.MessageText#</pre>")
+              .EditorTemplateName("MessageTextInput");
+          columns.Bound(c => c.ValidUntill).Format("{0:dd.MM.yyyy HH:mm}").Width(120)
+              .EditorTemplateName("MessageValidUntillInput");
+          columns.Command(command => { command.Edit(); command.Destroy(); }).Width(230);
+})
+      .ToolBar(toolbar =>
+{
+toolbar.Create();
+toolbar.Excel();
+})
+      .Editable(editable => editable.Mode(GridEditMode.InLine))
+      .Pageable(pageable => pageable
+.Refresh(true)
+.PageSizes(new[] { 20, 50, 100 })
+.ButtonCount(5)
+)
+      .Sortable(sortable =>
+{
+sortable.SortMode(GridSortMode.SingleColumn);
+})
+      .Filterable()
+      .Scrollable(scrol => scrol.Height(620))
+      .Scrollable()
+      .DataSource(dataSource => dataSource
+                    .Ajax()
+                    .PageSize(20)
+                    .Model(model => model.Id(p => p.Id))
+                    .Read(read => read.Action("Read", "Message", new { area = "Administration" }).Data("sendAntiForgery"))
+                    .Create(create => create.Action("Create", "Message", new { area = "Administration" }).Data("sendAntiForgery"))
+                    .Update(update => update.Action("Update", "Message", new { area = "Administration" }).Data("sendAntiForgery"))
+                    .Destroy(destroy => destroy.Action("Destroy", "Message", new { area = "Administration" }).Data("sendAntiForgery"))
+                    .Events(events =>
+                            {
+                                events.Error("kendoAdditional.ErrorHandler");
+                            })
+                )
+    .Events(ev => ev.DataBound("kendoAdditional.DeletableDataBound"))
+)
+
+@section scripts{
+    @Scripts.Render("~/bundles/custom/kendoadditional")
+    @Scripts.Render("~/bundles/custom/unitGrids")
+    @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.min.js")
+}
