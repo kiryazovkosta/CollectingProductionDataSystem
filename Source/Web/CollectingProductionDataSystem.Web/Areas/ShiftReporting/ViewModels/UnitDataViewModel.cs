@@ -89,6 +89,10 @@
         public int ShiftProductTypeId { get; set; }
         public ShiftProductTypeViewModel ShiftProductType { get; set; }
 
+        [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
+        [Display(Name = "ProcessUnit", ResourceType = typeof(Resources.Layout))]
+        public string ProcessUnitAlias { get; set; }
+
     }
 
     public class ShiftProductTypeViewModel : IMapFrom<ShiftProductType>
