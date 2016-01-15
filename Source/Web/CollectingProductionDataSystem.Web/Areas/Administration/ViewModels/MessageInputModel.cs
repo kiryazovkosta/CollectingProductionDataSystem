@@ -29,6 +29,10 @@
         [Display(Name = "ValidUntill", ResourceType = typeof(Resources.Layout))]
         public DateTime ValidUntill { get; set; }
 
+        public bool IsDeleted { get; set; }
+
+        public bool IsExpired { get { return this.ValidUntill < DateTime.Now; } set { } }
+
         
     }
 }

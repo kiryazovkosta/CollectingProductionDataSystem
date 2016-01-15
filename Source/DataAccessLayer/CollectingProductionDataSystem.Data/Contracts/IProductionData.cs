@@ -105,6 +105,7 @@
         IDeletableEntityRepository<Density2FactorAlpha> Density2FactorAlphas { get; }
         
         MessageRepository Messages { get; }
+        //IDeletableEntityRepository<Message> Messages { get; }
 
         IRepository<Event> Events { get; }
 

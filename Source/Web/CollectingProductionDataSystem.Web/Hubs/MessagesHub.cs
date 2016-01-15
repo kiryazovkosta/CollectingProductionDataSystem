@@ -9,16 +9,16 @@
 
     public class MessagesHub : Hub
     {
-        public static void Show()
-        {
-            IHubContext context = GlobalHost.ConnectionManager.GetHubContext<MessagesHub>();
-            context.Clients.All.displayStatus();
-        }
-
         public static void DisplayNewMessage(Message message)
         {
             IHubContext context = GlobalHost.ConnectionManager.GetHubContext<MessagesHub>();
             context.Clients.All.displayNewMessage(message);
+        }
+
+        public static void GetActualMessagesCount() 
+        {
+            IHubContext context = GlobalHost.ConnectionManager.GetHubContext<MessagesHub>();
+            context.Clients.All.getMessagesCount();
         }
     }
 }

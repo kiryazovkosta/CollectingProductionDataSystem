@@ -168,6 +168,33 @@
         });
     }
 
+    function MessagesDataBound(ev) {
+        var dataView = this.dataSource.view();
+        var table = ev.sender.element;
+        if (dataView.length > 0) {
+            $.each(dataView, function (key, row) {
+                var currentUid = row.uid;
+                var currenRow = table.find("tr[data-uid='" + currentUid + "']");
+                if (row.IsDeleted) {
+                    var editButton = $(currenRow).find(".k-grid-edit");
+                    if (typeof editButton !== 'undefined') {
+                        editButton.attr("style", "display:none !important");
+                    }
+                    var deleteButton = $(currenRow).find(".k-grid-delete");
+                    if (typeof deleteButton !== 'undefined') {
+                        deleteButton.attr("style", "display:none !important");
+                    }
+
+                    table.find("tr[data-uid=" + currentUid + "]").addClass("bg-danger");
+                } else {
+                    if (row.IsExpired) {
+                        table.find("tr[data-uid=" + currentUid + "]").addClass("bg-disabled");
+                    }
+                }
+            });
+        }
+    }
+
     return {
         ErrorHandler: ErrorHandler,
         CloseWindow: CloseWindow,
@@ -176,6 +203,7 @@
         SendHistoryData: SendHistoryData,
         DeletableDataBound: DeletableDataBound,
         AfterterNomGridValidation: afterterNomGridValidation,
-        MessageBound: messageBound
+        MessageBound: messageBound,
+        MessagesDataBound: MessagesDataBound
     }
 })();
