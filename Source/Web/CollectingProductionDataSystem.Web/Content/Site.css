@@ -839,3 +839,23 @@ pre.popover-content {
     white-space:pre-wrap;
     text-align:justify;
 }
+
+td pre {
+    -ms-word-wrap: break-word;
+    word-wrap: break-word;
+    -ms-word-break: normal;
+    word-break: normal;
+    white-space:pre-wrap;
+    text-align:justify;
+}
+
+.bg-disabled, .bg-disabled pre{
+    color:#ccc;
+}
+
+.bg-disabled div {
+    display: inherit;
+    z-index:-1;
+    background-color:#ccc;
+    opacity:0.5;
+}

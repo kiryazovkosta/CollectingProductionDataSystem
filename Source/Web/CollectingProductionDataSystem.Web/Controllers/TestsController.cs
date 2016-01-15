@@ -29,7 +29,7 @@
         {
             this.tankData = tankDataParam;
             this.logger = loggerParam;
-            this.messanger = MessagesPublisher.GetInstance(dataParam);
+            this.messanger = new MessagesPublisher(dataParam);
         }
 
         public ActionResult Index()

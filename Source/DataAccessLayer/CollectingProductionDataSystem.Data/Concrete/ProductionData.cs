@@ -478,6 +478,15 @@
                 return this.GetMessageRepository();
             }
         }
+
+        //public IDeletableEntityRepository<Message> Messages
+        //{
+        //    get
+        //    {
+        //        return this.GetDeletableEntityRepository<Message>();
+        //    }
+        //}
+
         public IRepository<Event> Events
         {
             get
@@ -513,7 +522,7 @@
         }
 
 
-         private MessageRepository GetMessageRepository() 
+        private MessageRepository GetMessageRepository()
         {
             if (!this.repositories.ContainsKey(typeof(MessageRepository)))
             {

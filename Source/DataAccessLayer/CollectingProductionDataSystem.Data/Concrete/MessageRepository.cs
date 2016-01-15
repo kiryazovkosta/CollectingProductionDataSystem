@@ -11,17 +11,19 @@ namespace CollectingProductionDataSystem.Data.Concrete
     using CollectingProductionDataSystem.Data.Contracts;
     using CollectingProductionDataSystem.Models.UtilityEntities;
 
-    public delegate void OnMessageUpdateDelegate(Message message);
-
     public class MessageRepository:DeletableEntityRepository<Message>
     {
         public MessageRepository(IDbContext context)
             : base(context)
         {
-            this.OnMessageUpdate = new OnMessageUpdateDelegate(MessageUpdate);
+
         }
 
-        public OnMessageUpdateDelegate OnMessageUpdate { get; set; }
+        public delegate void OnMessageUpdateDelegate(Message message);
+
+        public OnMessageUpdateDelegate OnMessageUpdate;
+
+        public OnMessageUpdateDelegate OnMessageDelete;
 
         public override void Add(Message entity)
         {
@@ -35,6 +37,16 @@ namespace CollectingProductionDataSystem.Data.Concrete
             base.Update(entity);
         }
 
-        private void MessageUpdate(Message message){}
+        public override void Delete(object id)
+        {
+            this.OnMessageDelete(this.GetById(id));
+            base.Delete(id);
+        }
+
+        public override void Delete(Message entity)
+        {
+            this.OnMessageDelete(entity);
+            base.Delete(entity);
+        }
     }
 }
