@@ -950,6 +950,7 @@
       <DependentUpon>confirmationRefresh.js</DependentUpon>
     </Content>
     <Content Include="Scripts\custom\jquery-kendo-globalize.js" />
+    <Content Include="Scripts\custom\json2.js" />
     <Content Include="Scripts\custom\kendoAdditional.js" />
     <Content Include="Scripts\custom\kendoGridState.js" />
     <Content Include="Scripts\custom\renderDailyGraphic.min.js">

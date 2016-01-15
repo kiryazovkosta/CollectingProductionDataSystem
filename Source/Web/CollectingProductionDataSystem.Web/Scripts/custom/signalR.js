@@ -15,7 +15,7 @@
         }
 
         // Start the connection
-        $.connection.hub.start();
+        $.connection.hub.start({ transport: ['webSockets', 'serverSentEvents', 'longPolling'] });
         getMessagesCount();
     });
 
@@ -61,6 +61,7 @@
         $.ajax({
             url: '/Ajax/GetMessagesCount',
             type: 'GET',
+            cache: false,
             datatype: 'json',
             success: function (data) {
                 if (typeof data !=='undefined') {
