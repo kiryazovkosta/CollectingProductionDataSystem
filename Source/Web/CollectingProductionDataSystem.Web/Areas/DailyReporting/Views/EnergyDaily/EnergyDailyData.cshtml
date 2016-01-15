@@ -27,13 +27,12 @@
         .Columns(
             columns =>
             {
-                columns.Bound("Name").Title("Продукт").Width(100);
-                columns.Bound("PercentagesPlan").Title("% план").Format("{0:n2}");//.Width(50);
-                columns.Bound("PercentagesFact").Title("% факт").Format("{0:n2}");//.Width(60);
-                columns.Bound("QuantityPlan").Title("Колич. (план T)").Format("{0:n2}");//.Width(60);
-                columns.Bound("QuantityFact").Title("Колич. (факт T)").Format("{0:n2}");//.Width(60);
-                columns.Bound("TotalMonthQuantityFact").Title("До деня (факт T)").Format("{0:n2}").Width(70);
-                columns.Bound("TotalMonthPercentagesFact").Title("До деня (факт %)").Format("{0:n2}");//.Width(60);
+                columns.Bound("Name").Title("Енергиен Продукт").Width(100);
+                columns.Bound("PercentagesPlan").Title("РН план").Format("{0:n2}");
+                columns.Bound("PercentagesFact").Title("РН факт").Format("{0:n2}");
+                columns.Bound("QuantityPlan").Title("Количество (план)").Format("{0:n2}");
+                columns.Bound("QuantityFact").Title("Количество (факт)").Format("{0:n2}");
+                columns.Bound("TotalMonthQuantityFact").Title("До деня (факт)").Format("{0:n2}").Width(70);
             })
     .Scrollable(scr => scr.Height(300))
     .DataSource(dataSource => dataSource
@@ -57,7 +56,7 @@
        .Events(ev => ev.DataBound("unitGridsData.DataBound"))
         )
         <br />
-        <div id="chart-wrapper"></div>
+        @*<div id="chart-wrapper"></div>*@
     </div>
     <div class="col-lg-8 col-lg-pull-4">
     @(Html.Kendo()

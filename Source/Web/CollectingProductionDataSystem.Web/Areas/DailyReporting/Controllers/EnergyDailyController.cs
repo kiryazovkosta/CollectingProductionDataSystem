@@ -61,7 +61,7 @@
             if (!this.ModelState.IsValid)
             {
                 var kendoResult = new List<UnitDailyDataViewModel>().ToDataSourceResult(request, ModelState);
-                return Json(kendoResult);
+                return Json(kendoResult); 
             }
 
             if (ModelState.IsValid)
@@ -76,7 +76,13 @@
                     {
                         if (date != null && processUnitId != null)
                         {
-                            // TODO: Check daily data for materials is ready
+                            var materialDataIsReady = this.data.UnitsApprovedDailyDatas.All().Where(x => x.RecordDate == date && x.ProcessUnitId == processUnitId).FirstOrDefault();
+                            if (materialDataIsReady == null)
+                            {
+                                this.ModelState.AddModelError("", "Дневните данни за материални потоци не са потвърдени!");
+                                kendoResult = new List<UnitDailyDataViewModel>().ToDataSourceResult(request, ModelState);
+                                return Json(kendoResult);
+                            }
                         }
 
                         kendoResult = kendoPreparedResult.ToDataSourceResult(request, ModelState);
@@ -229,43 +235,33 @@
         {
             ValidateModelAgainstReportPatameters(this.ModelState, model, Session["reportParams"]);
 
-            if (!Convert.ToBoolean(System.Configuration.ConfigurationManager.AppSettings["ComplitionCheckDeactivared"]))
-            {
-                var status = this.dailyService.CheckIfPreviousDaysAreReady(model.processUnitId, model.date);
-                if (!status.IsValid)
-                {
-                    status.ToModelStateErrors(this.ModelState);
-                }
-            }
+            //if (!Convert.ToBoolean(System.Configuration.ConfigurationManager.AppSettings["ComplitionCheckDeactivared"]))
+            //{
+            //    var status = this.dailyService.CheckIfPreviousDaysAreReady(model.processUnitId, model.date);
+            //    if (!status.IsValid)
+            //    {
+            //        status.ToModelStateErrors(this.ModelState);
+            //    }
+            //}
 
             if (ModelState.IsValid)
             {
                 var approvedShift = this.data.UnitsApprovedDailyDatas
                    .All()
-                   .Where(u => u.RecordDate == model.date && u.ProcessUnitId == model.processUnitId)
+                   .Where(u => u.RecordDate == model.date && u.ProcessUnitId == model.processUnitId && u.EnergyApproved == false)
                    .FirstOrDefault();
-                if (approvedShift == null)
+                if (approvedShift != null)
                 {
                     this.data.UnitsApprovedDailyDatas.Add(
                         new UnitsApprovedDailyData
                         {
                             RecordDate = model.date,
                             ProcessUnitId = model.processUnitId,
-                            Approved = true
+                            Approved = true,
+                            EnergyApproved = true
                         });
 
                     // Get all process plan data and save it
-                    var productionPlansDatas = this.data.ProductionPlanDatas
-                        .All()
-                        .Where(x => x.RecordTimestamp == model.date && x.ProcessUnitId == model.processUnitId)
-                        .ToList();
-                    if (productionPlansDatas.Count > 0)
-                    {
-                        foreach (var productionPlansData in productionPlansDatas)
-	                    {
-                            this.data.ProductionPlanDatas.Delete(productionPlansData);
-	                    }
-                    }
                     IEnumerable<ProductionPlanData> dbResult = this.productionPlanData.ReadProductionPlanData(model.date, model.processUnitId, 2);
                     if (dbResult.Count() > 0)
                     {

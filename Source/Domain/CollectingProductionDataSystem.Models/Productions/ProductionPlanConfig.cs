@@ -54,5 +54,9 @@
         public int? MaterialTypeId { get; set; }
 
         public virtual MaterialType MaterialType { get; set; }
+
+        public string UsageRateFormula { get; set; }
+
+        public string UsageRateMembers { get; set; }
     }
 }

@@ -25,7 +25,7 @@
         {
             var result = new HashSet<ProductionPlanData>();
 
-            var dailyData = unitData.GetUnitsDailyDataForDateTime(date, processUnitId, materialTypeId).ToList();
+            var dailyData = unitData.GetUnitsDailyDataForDateTime(date, processUnitId, null).ToList();
             if (dailyData.Count == 0)
             {
                 return result;
@@ -54,8 +54,18 @@
             {
                 var planValue = CalculatePlanValue(productionPlan, dailyData, this.calculator);
                 var factValue = CalculateFactValue(productionPlan, dailyData, this.calculator);
-                var realValue = dailyData.Where(x => x.UnitsDailyConfig.Code == productionPlan.QuantityPlanMembers).FirstOrDefault().RealValue;
-                var factPercents = (factValue * 100.00) / realValue;
+
+                var factPercents = 0.0;
+                if (materialTypeId == 1)
+                {
+                    var realValue = dailyData.Where(x => x.UnitsDailyConfig.Code == productionPlan.QuantityPlanMembers).FirstOrDefault().RealValue;
+                    factPercents = (factValue * 100.00) / realValue;   
+                }
+                else 
+                { 
+                    factPercents = CalculateUsageRateValue(productionPlan, dailyData, this.calculator);   
+                }
+
 
                 var productionPlanData = new ProductionPlanData
                 {
@@ -63,8 +73,8 @@
                     RecordTimestamp = date.Value,
                     PercentagesPlan = productionPlan.Percentages,
                     QuanityPlan = (decimal)planValue,
-                    PercentagesFact = double.IsNaN(factPercents) ? 0.0m : (decimal)factPercents,
-                    QuantityFact = double.IsNaN(factValue) ? 0.0m : (decimal)factValue,
+                    PercentagesFact = GetValidValueOrZero(factPercents),
+                    QuantityFact = GetValidValueOrZero(factValue),
                     Name = productionPlan.Name,
                     FactoryId = productionPlan.ProcessUnit.FactoryId,
                     ProcessUnitId = processUnitId.Value,
@@ -96,10 +106,37 @@
             foreach (var item in result)
             {
                 var percs = (((double)item.QuanityFactCurrentMonth + (double)item.QuantityFact) * 100.00) / (double)totallyQuantityAs;
-                item.PercentagesFactCurrentMonth = double.IsNaN(percs) || double.IsInfinity(percs) ? 0.0m : (decimal)percs;
+                item.PercentagesFactCurrentMonth = GetValidValueOrZero(percs);
             }
 
             return result;
+        }
+
+        private double CalculateUsageRateValue(ProductionPlanConfig productionPlan, List<UnitsDailyData> dailyData, ICalculatorService calculatorService)
+        {
+            var splitter = new char[] { '@' };
+
+            var planTokens = productionPlan.UsageRateMembers.Split(splitter, StringSplitOptions.RemoveEmptyEntries);
+            var planInputParamsValues = new List<double>();
+            foreach (var token in planTokens)
+            {
+                foreach (var item in dailyData)
+                {
+                    if (item.UnitsDailyConfig.Code == token)
+                    {
+                        planInputParamsValues.Add((double)item.RealValue);
+                    }
+                }
+            }
+
+            var planInputParams = new Dictionary<string, double>();
+            for (int i = 0; i < planInputParamsValues.Count(); i++)
+            {
+                planInputParams.Add(string.Format("p{0}", i), planInputParamsValues[i]);  
+            }
+
+            var planValue = calculator.Calculate(productionPlan.UsageRateFormula, "p", planInputParams.Count, planInputParams);
+            return planValue;
         }
 
         private double CalculateFactValue(ProductionPlanConfig productionPlan, List<UnitsDailyData> dailyData, ICalculatorService calculator)
@@ -203,6 +240,16 @@
             }
 
             return totalsRecords;
+        }
+
+        private decimal GetValidValueOrZero(double value)
+        {
+            if (double.IsInfinity(value) || double.IsNaN(value))
+            {
+                return 0.0m;
+            }
+
+            return (decimal)value;
         }
     }
 }

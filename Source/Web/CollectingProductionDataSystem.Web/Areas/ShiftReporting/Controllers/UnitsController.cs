@@ -571,55 +571,20 @@
                 {
                     arguments.Density = inputValue;
                 }
+                else if (parameterType == "D")
+                {
+                    arguments.Density = inputValue;
+                }
+                else if (parameterType == "I/")
+                {
+                    arguments.CalculationPercentage = inputValue;
+                }
+                else if (parameterType == "I*")
+                {
+                    arguments.CalculationPercentage = inputValue;
+                }
             }
         }
-
-        //private double CalculateValueByProductionDataFormula(UnitDataViewModel model)
-        //{
-        //    var formulaCode = model.UnitConfig.CalculatedFormula ?? string.Empty;
-        //    var arguments = new FormulaArguments();
-        //    arguments.MaximumFlow = (double?)model.UnitConfig.MaximumFlow;
-        //    arguments.EstimatedDensity = (double?)model.UnitConfig.EstimatedDensity;
-        //    arguments.EstimatedPressure = (double?)model.UnitConfig.EstimatedPressure;
-        //    arguments.EstimatedTemperature = (double?)model.UnitConfig.EstimatedTemperature;
-        //    arguments.EstimatedCompressibilityFactor = (double?)model.UnitConfig.EstimatedCompressibilityFactor;
-
-        //    var uc = this.data.UnitConfigs.GetById(model.UnitConfigId);
-        //    if (uc != null)
-        //    {
-        //        var ruc = uc.RelatedUnitConfigs.ToList();
-        //        foreach (var ru in ruc)
-        //        {
-        //            var parameterType = ru.RelatedUnitConfig.AggregateGroup;
-        //            var inputValue = data.UnitsData
-        //                    .All()
-        //                    .Where(x => x.RecordTimestamp == model.RecordTimestamp)
-        //                    .Where(x => x.ShiftId == model.Shift)
-        //                    .Where(x => x.UnitConfigId == ru.RelatedUnitConfigId)
-        //                    .FirstOrDefault()
-        //                    .RealValue;
-        //            if (parameterType == "I")
-        //            {
-        //                var exsistingValue = arguments.InputValue.HasValue ? arguments.InputValue.Value : 0.0;
-        //                arguments.InputValue = exsistingValue + inputValue;
-        //            }
-        //            else if (parameterType == "T")
-        //            {
-        //                arguments.Temperature = inputValue;
-        //            }
-        //            else if (parameterType == "P")
-        //            {
-        //                arguments.Pressure = inputValue;
-        //            }
-        //            else if (parameterType == "D")
-        //            {
-        //                arguments.Density = inputValue;
-        //            }
-        //        }
-        //    }
-
-        //    return this.productionDataCalculator.Calculate(formulaCode, arguments);
-        //}
 
         private void UpdateRecord(UnitsManualData existManualRecord, UnitDataViewModel model)
         {
