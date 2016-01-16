@@ -951,6 +951,9 @@
     </Content>
     <Content Include="Scripts\custom\jquery-kendo-globalize.js" />
     <Content Include="Scripts\custom\json2.js" />
+    <Content Include="Scripts\custom\json2.min.js">
+      <DependentUpon>json2.js</DependentUpon>
+    </Content>
     <Content Include="Scripts\custom\kendoAdditional.js" />
     <Content Include="Scripts\custom\kendoGridState.js" />
     <Content Include="Scripts\custom\renderDailyGraphic.min.js">
@@ -1109,6 +1112,9 @@
     </Content>
     <Content Include="Scripts\custom\signalR.min.js.map">
       <DependentUpon>signalR.min.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\custom\json2.min.js.map">
+      <DependentUpon>json2.min.js</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\custom\sendFactory.min.js">
