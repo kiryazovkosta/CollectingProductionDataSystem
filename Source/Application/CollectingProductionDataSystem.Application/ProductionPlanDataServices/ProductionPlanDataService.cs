@@ -125,6 +125,7 @@
                     if (item.UnitsDailyConfig.Code == token)
                     {
                         planInputParamsValues.Add((double)item.RealValue);
+                        break;
                     }
                 }
             }
@@ -136,6 +137,10 @@
             }
 
             var planValue = calculator.Calculate(productionPlan.UsageRateFormula, "p", planInputParams.Count, planInputParams);
+            if (double.IsNaN(planValue) || double.IsInfinity(planValue))
+            {
+                planValue = 0.0;
+            }
             return planValue;
         }
 
@@ -180,6 +185,7 @@
                     if (item.UnitsDailyConfig.Code == token)
                     {
                         planInputParamsValues.Add((double)item.RealValue);
+                        break;
                     }
                 }
             }
