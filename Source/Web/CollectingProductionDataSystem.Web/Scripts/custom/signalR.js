@@ -17,9 +17,17 @@
         // Start the connection
         $.connection.hub.start({ transport: ['webSockets', 'serverSentEvents', 'longPolling'] });
         getMessagesCount();
+        if (sessionStorage.getItem('firstTime') === null ) {
+            getLastMessage();
+            sessionStorage.setItem('firstTime', 'false');
+        }
+        
     });
 
     function displayMessage(message) {
+        if (typeof message === 'undefined') {
+            return;
+        }
         var template = '<div class="popover"><div class="arrow"></div><div class="popover-icon col-xs-2"><img src="/Content/Images/PNG/64x64/Info.png" alt="Info" width="55px" height="55px"></div><pre class="popover-content col-xs-10"></pre></div>';//info
         if (message.MessageType===2) {
             template = '<div class="popover"><div class="arrow"></div><div class="popover-icon col-xs-2"><img src="/Content/Images/PNG/64x64/Warning.png" alt="Warning" width="55px" height="55px"></div><pre class="popover-content col-xs-10"></pre></div>';//warning
@@ -78,6 +86,20 @@
                         counter.html('');
                     }
                 }
+            }
+        });
+    }
+
+
+    function getLastMessage()
+    {
+        $.ajax({
+            url: '/Ajax/GetLastMessage',
+            type: 'GET',
+            cache: false,
+            datatype: 'json',
+            success: function (message) {
+                displayMessage(message);
             }
         });
     }

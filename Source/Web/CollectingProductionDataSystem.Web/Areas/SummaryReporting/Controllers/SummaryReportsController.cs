@@ -45,7 +45,7 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [OutputCache(Duration = HalfAnHour, Location = OutputCacheLocation.ServerAndClient, VaryByParam = "*")]
+        [OutputCache(Duration = HalfAnHour, Location = OutputCacheLocation.Server, VaryByParam = "*")]
         public ActionResult ReadTanksData([DataSourceRequest]DataSourceRequest request, DateTime? date, int? parkId, int? shiftId, int? areaId)
         {
             ValidateTanksInputModel(date, parkId, shiftId);
@@ -94,7 +94,7 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [OutputCache(Duration = HalfAnHour, Location = OutputCacheLocation.ServerAndClient, VaryByParam = "*")]
+        [OutputCache(Duration = HalfAnHour, Location = OutputCacheLocation.Server, VaryByParam = "*")]
         public JsonResult ReadUnitsReportsData([DataSourceRequest]
                                         DataSourceRequest request, DateTime? date, int? processUnitId, int? factoryId)
         {
@@ -164,7 +164,7 @@
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AuthorizeFactory]
-        [OutputCache(Duration = HalfAnHour, Location = OutputCacheLocation.ServerAndClient, VaryByParam = "*")]
+        [OutputCache(Duration = HalfAnHour, Location = OutputCacheLocation.Server, VaryByParam = "*")]
         public JsonResult ReadDailyUnitsData([DataSourceRequest]DataSourceRequest request, DateTime? date, int? processUnitId, int? factoryId)
         {
             ValidateDailyModelState(date);

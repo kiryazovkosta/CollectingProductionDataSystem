@@ -204,6 +204,14 @@ namespace CollectingProductionDataSystem.Web.Controllers
             return Json(result.ToDataSourceResult(request, ModelState,Mapper.Map<MessageViewModel>));
         }
 
+        [HttpGet]
+        [AllowAnonymous]
+        public ActionResult GetLastMessage() 
+        {
+            var result = data.Messages.All().Where(x => x.ValidUntill >= DateTime.Now).OrderByDescending(x=>x.CreatedOn).FirstOrDefault();
+            return Json(result,JsonRequestBehavior.AllowGet);
+        }
+
         private bool IsPowerUser()
         {
             return UserProfile.UserRoles.Where(x => CommonConstants.PowerUsers.Any(y => y == x.Name)).Any();

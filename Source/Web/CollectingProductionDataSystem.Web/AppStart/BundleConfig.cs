@@ -68,6 +68,9 @@ namespace CollectingProductionDataSystem.Web.AppStart
             bundles.Add(new ScriptBundle("~/bundles/custom/kendoadditional").Include(
                 "~/Scripts/custom/kendoAdditional.js",
                 "~/Scripts/custom/sendAntiForgery.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/custom/signalrR").Include(
+                "~/Scripts/custom/signalR.js"));
         }
 
         public static void AddDefaultIgnorePatterns(IgnoreList ignoreList)
