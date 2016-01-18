@@ -52,6 +52,9 @@
                     ProcessAutomaticDeltaUnits(unitsConfigsList, unitsData, oPhd, recordDataTime, shift);
                     totalInsertedRecords += this.data.SaveChanges("Phd2SqlLoader").ResultRecordsCount;
 
+                    ProcessAutomaticCalulatedUnits(unitsConfigsList, unitsData, oPhd, recordDataTime, shift);
+                    totalInsertedRecords += this.data.SaveChanges("Phd2SqlLoader").ResultRecordsCount;
+
                     ProcessManualUnits(unitsConfigsList, recordDataTime, shift, unitsData);
                     totalInsertedRecords += this.data.SaveChanges("Phd2SqlLoader").ResultRecordsCount;
 
@@ -293,6 +296,56 @@
                             {
                                 UnitConfigId = unitConfig.Id,
                                 Value = (endValue - beginValue)/1000m,
+                                ShiftId = shift,
+                                RecordTimestamp = recordDataTime,
+                            });
+                    }
+                }
+            }
+        }
+
+        private void ProcessAutomaticCalulatedUnits(List<UnitConfig> unitsConfigsList, List<UnitsData> unitsData, PHDHistorian oPhd, DateTime recordDataTime, ShiftType shift)
+        {
+            foreach (var unitConfig in unitsConfigsList.Where(x => x.CollectingDataMechanism == "AC")) 
+            {
+                //var confidence = 0;
+                if (!unitsData.Where(x => x.UnitConfigId == unitConfig.Id).Any())
+                {
+                    var shiftData = this.data.Shifts.GetById((int)shift);
+                    if (shiftData != null)
+                    {
+                        var tags = unitConfig.PreviousShiftTag.Split('@');
+
+                        var end = recordDataTime.AddTicks(shiftData.EndTicks);
+                        var begin = end.AddHours(-8);
+
+                        var endTimestamp = DateTime.Now - end;
+                        var beginTimestamp = DateTime.Now - begin;
+
+                        var endPhdTimestamp = string.Format("NOW-{0}H{1}M", Math.Truncate(endTimestamp.TotalHours), endTimestamp.Minutes);
+                        var beginPhdTimestamp = string.Format("NOW-{0}H{1}M", Math.Truncate(beginTimestamp.TotalHours), beginTimestamp.Minutes);
+
+                        oPhd.StartTime = endPhdTimestamp;
+                        oPhd.EndTime = endPhdTimestamp;
+                        var result = oPhd.FetchRowData(tags[0]);
+                        var row = result.Tables[0].Rows[0];
+                        var endValue = Convert.ToInt64(row["Value"]);
+
+                        result = oPhd.FetchRowData(tags[1]);
+                        row = result.Tables[0].Rows[0];
+                        var pressure = Convert.ToDecimal(row["Value"]);
+
+                        oPhd.StartTime = beginPhdTimestamp;
+                        oPhd.EndTime = beginPhdTimestamp;
+                        result = oPhd.FetchRowData(tags[0]);
+                        row = result.Tables[0].Rows[0];
+                        var beginValue = Convert.ToInt64(row["Value"]);
+
+                        this.data.UnitsData.Add(
+                            new UnitsData
+                            {
+                                UnitConfigId = unitConfig.Id,
+                                Value = ((endValue - beginValue)*pressure)/Convert.ToDecimal(tags[2]),
                                 ShiftId = shift,
                                 RecordTimestamp = recordDataTime,
                             });
