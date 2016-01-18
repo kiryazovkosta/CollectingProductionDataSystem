@@ -26,7 +26,7 @@
 
     public class SummaryReportsController : AreaBaseController
     {
-        private const int HalfAnHour = 60 * 30 ;
+        private const int HalfAnHour = 60 * 30;
         private readonly IUnitsDataService unitsData;
         private readonly IUnitDailyDataService dailyService;
 
@@ -92,9 +92,9 @@
             return View();
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [OutputCache(Duration = HalfAnHour, Location = OutputCacheLocation.Server, VaryByParam = "*")]
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        [OutputCache(Duration = HalfAnHour, Location = OutputCacheLocation.ServerAndClient, VaryByParam = "*")]
         public JsonResult ReadUnitsReportsData([DataSourceRequest]
                                         DataSourceRequest request, DateTime? date, int? processUnitId, int? factoryId)
         {
@@ -110,7 +110,7 @@
                 var result = dbResult.Select(x => new MultiShift
                 {
                     TimeStamp = x.RecordTimestamp,
-                    Factory = string.Format ("{0:d2} {1}",x.UnitConfig.ProcessUnit.Factory.Id, x.UnitConfig.ProcessUnit.Factory.ShortName),
+                    Factory = string.Format("{0:d2} {1}", x.UnitConfig.ProcessUnit.Factory.Id, x.UnitConfig.ProcessUnit.Factory.ShortName),
                     ProcessUnit = string.Format("{0:d2} {1}", x.UnitConfig.ProcessUnit.Id, x.UnitConfig.ProcessUnit.ShortName),
                     Code = x.UnitConfig.Code,
                     Position = x.UnitConfig.Position,
@@ -133,11 +133,11 @@
                     Debug.WriteLine(ex1.Message + "\n" + ex1.InnerException);
                 }
 
-                return Json(kendoResult);
+                return Json(kendoResult, JsonRequestBehavior.AllowGet);
             }
             else
             {
-                return Json(new[] { new object() }.ToDataSourceResult(request, ModelState));
+                return Json(new[] { new object() }.ToDataSourceResult(request, ModelState), JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -161,8 +161,8 @@
 
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
         [AuthorizeFactory]
         [OutputCache(Duration = HalfAnHour, Location = OutputCacheLocation.Server, VaryByParam = "*")]
         public JsonResult ReadDailyUnitsData([DataSourceRequest]DataSourceRequest request, DateTime? date, int? processUnitId, int? factoryId)
@@ -173,19 +173,19 @@
                 var kendoResult = new DataSourceResult();
                 if (ModelState.IsValid)
                 {
-                    var dbResult = unitsData.GetUnitsDailyDataForDateTime(date, processUnitId, null).Include(x=>x.UnitsDailyConfig.ProcessUnit.Factory);
+                    var dbResult = unitsData.GetUnitsDailyDataForDateTime(date, processUnitId, null).Include(x => x.UnitsDailyConfig.ProcessUnit.Factory);
                     dbResult.Where(x => x.UnitsDailyConfig.ProcessUnit.FactoryId == (factoryId ?? x.UnitsDailyConfig.ProcessUnit.FactoryId));
                     var kendoPreparedResult = Mapper.Map<IEnumerable<UnitsDailyData>, IEnumerable<UnitDailyDataViewModel>>(dbResult);
                     kendoResult = kendoPreparedResult.ToDataSourceResult(request, ModelState);
 
                 }
 
-                return Json(kendoResult);
+                return Json(kendoResult, JsonRequestBehavior.AllowGet);
             }
             else
             {
                 var kendoResult = new List<UnitDailyDataViewModel>().ToDataSourceResult(request, ModelState);
-                return Json(kendoResult);
+                return Json(kendoResult, JsonRequestBehavior.AllowGet);
             }
         }
 

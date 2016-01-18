@@ -24,8 +24,8 @@
             this.unitsData = unitsDataParam;
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
         [OutputCache(Duration = HalfAnHour, Location = OutputCacheLocation.ServerAndClient, VaryByParam = "*")]
         public ActionResult ReadDetails([DataSourceRequest]
                                         DataSourceRequest request, int recordId)
@@ -36,11 +36,11 @@
                 var kendoPreparedResult = Mapper.Map<IEnumerable<UnitsData>, IEnumerable<UnitDataViewModel>>(dbResult);
                 var kendoResult = new DataSourceResult();
                 kendoResult = kendoPreparedResult.ToDataSourceResult(request, ModelState);
-                return Json(kendoResult);
+                return Json(kendoResult,JsonRequestBehavior.AllowGet);
             }
             else
             {
-                return Json(new[] { recordId }.ToDataSourceResult(request, ModelState));
+                return Json(new[] { recordId }.ToDataSourceResult(request, ModelState),JsonRequestBehavior.AllowGet);
             }
         }
     }

@@ -122,13 +122,13 @@ var unitGridsData = (function () {
                         }
                     });
                 } else {
-                        var errorMessage = "Има разлика между параметрите:\n";
-                        $.each(differences, function (key, value) {
-                            errorMessage += "\t\t -" + value + "\n";
-                        });
-                        errorMessage += "за които е генериран отчета и тези, които се опитвате да потвърдите!"
-                        $('pre#err-message').text(errorMessage);
-                        $('div#err-window').data("kendoWindow").open();
+                    var errorMessage = "Има разлика между параметрите:\n";
+                    $.each(differences, function (key, value) {
+                        errorMessage += "\t\t -" + value + "\n";
+                    });
+                    errorMessage += "за които е генериран отчета и тези, които се опитвате да потвърдите!"
+                    $('pre#err-message').text(errorMessage);
+                    $('div#err-window').data("kendoWindow").open();
                 }
             });
         }
@@ -143,7 +143,7 @@ var unitGridsData = (function () {
         } else {
             return {};
         }
-        
+
     }
 
     function checkEquals(dataParam, controlData) {
@@ -567,7 +567,20 @@ var unitGridsData = (function () {
           }
         );
     }
-    // ---------------- pdf page Setup end
+
+    function sendDateForSummaryReports() {
+        var result = { "date": kendo.parseDate($('input[name=date]').val()).toISOString()};
+        $.extend(result, sendProcessUnit());
+        if ($('input[name=shifts]')) {
+            $.extend(result, sendShift());
+        }
+        if ($('input#materialTypeId')) {
+            $.extend(result, sendMaterialTypeId());
+        }
+        $.extend(result, sendFactoryId());
+        $.extend(result, sendAntiForgery());
+        return result;
+    }
 
     return {
         SendDate: sendDate,
@@ -577,6 +590,7 @@ var unitGridsData = (function () {
         ManualEntryFailure: ManualEntryFailure,
         SuccessCalculateManualEntry: SuccessCalculateManualEntry,
         ConfirmationDataBound: ConfirmationDataBound,
-        FormatGridToPdfExport: FormatGridToPdfExport
+        FormatGridToPdfExport: FormatGridToPdfExport,
+        SendDateForSummaryReports: sendDateForSummaryReports
     };
 })();
