@@ -66,7 +66,6 @@
                     factPercents = CalculateUsageRateValue(productionPlan, dailyData, this.calculator);   
                 }
 
-
                 var productionPlanData = new ProductionPlanData
                 {
                     ProductionPlanConfigId = productionPlan.Id,
