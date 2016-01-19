@@ -16,7 +16,8 @@ namespace CollectingProductionDataSystem.Application.Contracts
         IEfStatus ClearUnitDailyDatas(DateTime targetDate, int processUnitId, string userName);
         IEfStatus CheckIfShiftsAreReady(DateTime targetDate, int processUnitId);
         IEfStatus CheckIfPreviousDaysAreReady(int processUnitId, DateTime targetDate);
-        ChartViewModel<DateTime, decimal> GetStatisticForProcessUnit(int processUnitId, DateTime targetDate);
+        ChartViewModel<DateTime, decimal> GetStatisticForProcessUnit(int processUnitId, DateTime targetDate, int? materialTypeId = null);
+
 
     }
 }

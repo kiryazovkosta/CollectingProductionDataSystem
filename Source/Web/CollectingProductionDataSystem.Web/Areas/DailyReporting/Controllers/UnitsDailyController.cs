@@ -1,4 +1,4 @@
-﻿    namespace CollectingProductionDataSystem.Web.Areas.DailyReporting.Controllers
+﻿namespace CollectingProductionDataSystem.Web.Areas.DailyReporting.Controllers
 {
     using System;
     using System.Collections.Generic;
@@ -131,7 +131,7 @@
                 && !this.dailyService.CheckExistsUnitDailyDatas(date, processUnitId)
                 && this.testUnitDailyCalculationService.TryBeginCalculation(new UnitDailyCalculationIndicator(date, processUnitId)))
             {
-                 Exception exc = null;
+                Exception exc = null;
                 try
                 {
                     IEnumerable<UnitsDailyData> dailyResult = new List<UnitsDailyData>();
@@ -165,23 +165,23 @@
                 {
                     exc = ex;
                 }
-                finally 
+                finally
                 {
                     int ix = 0;
-                    while (!(this.testUnitDailyCalculationService.EndCalculation(new UnitDailyCalculationIndicator(date, processUnitId)) || ix == 10)) 
+                    while (!(this.testUnitDailyCalculationService.EndCalculation(new UnitDailyCalculationIndicator(date, processUnitId)) || ix == 10))
                     {
                         ix++;
                     }
 
                     if (ix >= 10)
                     {
-                        string message = string.Format("Cannot clear record for begun Process Unit Calculation For ProcessUnitId {0} and Date {1}", processUnitId,date);
+                        string message = string.Format("Cannot clear record for begun Process Unit Calculation For ProcessUnitId {0} and Date {1}", processUnitId, date);
                         exc = new InvalidOperationException();
                     }
 
                     if (exc != null)
                     {
-                        throw exc;   
+                        throw exc;
                     }
                 }
             }
@@ -246,7 +246,7 @@
 
             return Json(new[] { model }.ToDataSourceResult(request, ModelState));
         }
- 
+
         /// <summary>
         /// Updates the result records.
         /// </summary>
@@ -256,12 +256,12 @@
             foreach (var record in updatedRecords)
             {
                 var manualRecord = this.data.UnitsManualDailyDatas.GetById(record.Id);
-                if (manualRecord!= null)
+                if (manualRecord != null)
                 {
                     manualRecord.Value = (decimal)record.RealValue;
                     this.data.UnitsManualDailyDatas.Update(manualRecord);
                 }
-                else 
+                else
                 {
                     this.data.UnitsManualDailyDatas.Add(new UnitsManualDailyData { Id = record.Id, Value = (decimal)record.RealValue, EditReasonId = editReasonId });
                 }
@@ -343,9 +343,9 @@
                     if (productionPlansDatas.Count > 0)
                     {
                         foreach (var productionPlansData in productionPlansDatas)
-	                    {
+                        {
                             this.data.ProductionPlanDatas.Delete(productionPlansData);
-	                    }
+                        }
                     }
                     IEnumerable<ProductionPlanData> dbResult = this.productionPlanData.ReadProductionPlanData(model.date, model.processUnitId, 1);
                     if (dbResult.Count() > 0)
@@ -376,12 +376,13 @@
         }
 
         [HttpGet]
-        public ActionResult DailyChart(int processUnitId, DateTime? date)
+        public ActionResult DailyMaterialChart(int processUnitId, DateTime? date)
         {
+            const int material = 1;
             date = date ?? DateTime.Now.Date.AddDays(-2);
-            var result = this.dailyService.GetStatisticForProcessUnit(processUnitId, date.Value);
+            var result = this.dailyService.GetStatisticForProcessUnit(processUnitId, date.Value, material);
             result.Title = string.Format(Resources.Layout.DailyGraphicTitle, this.data.ProcessUnits.GetById(processUnitId).ShortName);
-            return PartialView(result);
+            return PartialView("DailyChart",result);
         }
 
         /// <summary>

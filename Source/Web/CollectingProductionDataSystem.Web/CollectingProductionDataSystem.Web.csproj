@@ -957,7 +957,7 @@
     <Content Include="Scripts\custom\kendoAdditional.js" />
     <Content Include="Scripts\custom\kendoGridState.js" />
     <Content Include="Scripts\custom\renderDailyGraphic.min.js">
-      <DependentUpon>renderDailyGraphic.js</DependentUpon>
+      <DependentUpon>renderDailyMaterialGraphic.js</DependentUpon>
     </Content>
     <Content Include="Scripts\custom\saveSiteBarStatus.js" />
     <Content Include="Scripts\custom\sendAntiForgery.js" />
@@ -1705,7 +1705,7 @@
     <Content Include="Scripts\kendo\messages\kendo.messages.zh-TW.min.js" />
     <Content Include="Scripts\kendo\pako_deflate.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
-    <Content Include="Scripts\custom\renderDailyGraphic.js" />
+    <Content Include="Scripts\custom\renderDailyMaterialGraphic.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.min.js" />

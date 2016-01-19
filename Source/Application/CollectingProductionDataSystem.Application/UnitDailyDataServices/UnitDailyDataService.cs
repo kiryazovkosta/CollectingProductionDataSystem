@@ -63,7 +63,7 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
             ClearRelatedRecords(relatedRecords, resultDaily);
 
             ClearUnModifiedRecords(resultDaily, wholeDayResult);
-            
+
             if (!isRecalculate)
             {
                 AppendTotalMonthQuantityToDailyRecords(resultDaily, processUnitId, targetDay);
@@ -383,7 +383,7 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
         public bool CheckIfDayIsApproved(DateTime targetDate, int processUnitId)
         {
             return this.data.UnitsApprovedDailyDatas.All()
-                .Where(x => x.RecordDate == targetDate && x.ProcessUnitId == processUnitId ).Any();
+                .Where(x => x.RecordDate == targetDate && x.ProcessUnitId == processUnitId).Any();
         }
 
         /// <summary>
@@ -517,14 +517,15 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
             return relatedUnitsDailyData;
         }
 
-        public ChartViewModel<DateTime, decimal> GetStatisticForProcessUnit(int processUnitId, DateTime targetDate)
+        public ChartViewModel<DateTime, decimal> GetStatisticForProcessUnit(int processUnitId, DateTime targetDate, int? materialTypeId = null)
         {
             var beginingOfTheMonth = new DateTime(targetDate.Year, targetDate.Month, 1);
 
-            var statistic = this.data.ProductionPlanDatas.All()
+            var statistic = this.data.ProductionPlanDatas.All().Include(x=>x.ProductionPlanConfig)
                                 .Where(x => beginingOfTheMonth <= x.RecordTimestamp
                                         && x.RecordTimestamp < targetDate
-                                        && x.ProcessUnitId == processUnitId)
+                                        && x.ProcessUnitId == processUnitId
+                                        && x.ProductionPlanConfig.MaterialTypeId == (materialTypeId ?? x.ProductionPlanConfig.MaterialTypeId))
                                 .GroupBy(x => x.ProductionPlanConfigId).ToList();
             var charts = new List<DataSery<DateTime, decimal>>();
 

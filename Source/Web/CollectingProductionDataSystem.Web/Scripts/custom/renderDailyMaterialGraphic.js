@@ -5,7 +5,7 @@
             var date = kendo.format("{0:u}", $('#date').data('kendoDatePicker').value());
             if (value) {
                 $.ajax({
-                    url: '/DailyReporting/UnitsDaily/DailyChart',
+                    url: '/DailyReporting/UnitsDaily/DailyMaterialChart',
                     method: 'GET',
                     data: { 'processUnitId': value, 'date': date || Date() }
                 }).done(function (data) {

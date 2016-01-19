@@ -71,6 +71,8 @@ namespace CollectingProductionDataSystem.Web.AppStart
 
             bundles.Add(new ScriptBundle("~/bundles/custom/signalrR").Include(
                 "~/Scripts/custom/signalR.js"));
+            bundles.Add(new ScriptBundle("~/bundles/custom/renderMaterialGraphic")
+                .Include("~/Scripts/custom/renderDailyMaterialGraphic.js"));
         }
 
         public static void AddDefaultIgnorePatterns(IgnoreList ignoreList)
