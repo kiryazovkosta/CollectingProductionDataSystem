@@ -1,5 +1,6 @@
 ﻿@using Resources = App_GlobalResources.Resources
-@model Nullable<System.Int32>
+@*@model Nullable<System.Int32>*@
+@model System.Int32
 @(Html.Kendo()
       .DropDownListFor(m => m)
       //.OptionLabel(Resources.Layout.ChooseMaterialDetailType)
@@ -32,5 +33,3 @@
                       .Filter(FilterType.Contains)
 
 )
-
-

@@ -28,8 +28,8 @@
             columns =>
             {
                 columns.Bound("Name").Title("Енергиен Продукт").Width(100);
-                columns.Bound("PercentagesPlan").Title("РН план").Format("{0:n2}");
-                columns.Bound("PercentagesFact").Title("РН факт").Format("{0:n2}");
+                columns.Bound("PercentagesPlan").Title("РН план").Format("{0:n5}");
+                columns.Bound("PercentagesFact").Title("РН факт").Format("{0:n5}");
                 columns.Bound("QuantityPlan").Title("Количество (план)").Format("{0:n2}");
                 columns.Bound("QuantityFact").Title("Количество (факт)").Format("{0:n2}");
                 columns.Bound("TotalMonthQuantityFact").Title("До деня (факт)").Format("{0:n2}").Width(70);
@@ -56,10 +56,10 @@
        .Events(ev => ev.DataBound("unitGridsData.DataBound"))
         )
         <br />
-        @*<div id="chart-wrapper"></div>*@
+        <div id="chart-wrapper"></div>
     </div>
     <div class="col-lg-8 col-lg-pull-4">
-    @(Html.Kendo()
+        @(Html.Kendo()
     .Grid<UnitDailyDataViewModel>()
     .Name("units")
     .AutoBind(false)
@@ -76,7 +76,7 @@
                 .Width(77);
             columns.Bound(c => c.UnitsDailyConfig.DailyProductType.Sort).Hidden(true).ClientGroupHeaderTemplate("#=value#");
             //columns.Bound(c => c.UnitsDailyConfig.ProcessUnit.ShortName).Width(100);
-            columns.Bound(c => c.UnitsDailyConfig.Name);
+            columns.Bound(c => c.UnitsDailyConfig.Name).Width(180);
             columns.Bound(c => c.UnitsDailyConfig.MeasureUnit.Code).Width(80);
             columns.Bound(c => c.TotalMonthQuantity).Width(80);
             columns.Bound(c => c.Value).Width(100).Format("{0:n2}");
@@ -189,7 +189,7 @@
 @section scripts{
     @Scripts.Render("~/bundles/custom/kendoadditional")
     @Scripts.Render("~/bundles/custom/unitGrids")
-    @Scripts.Render("~/Scripts/custom/renderDailyGraphic.min.js")
+    @Scripts.Render("~/bundles/custom/renderEnergyGraphic")
     @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.min.js")
 }
 @section sidebar{

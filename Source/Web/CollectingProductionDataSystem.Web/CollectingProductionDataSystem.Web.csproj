@@ -956,6 +956,7 @@
     </Content>
     <Content Include="Scripts\custom\kendoAdditional.js" />
     <Content Include="Scripts\custom\kendoGridState.js" />
+    <Content Include="Scripts\custom\renderDailyEnergyGraphic.js" />
     <Content Include="Scripts\custom\renderDailyGraphic.min.js">
       <DependentUpon>renderDailyMaterialGraphic.js</DependentUpon>
     </Content>
@@ -1064,7 +1065,7 @@
     <Content Include="Areas\SummaryReporting\Views\SummaryReports\UnitsDailyReportsData.cshtml" />
     <Content Include="Areas\SummaryReporting\Views\SummaryReports\DataConfirmation.cshtml" />
     <Content Include="Areas\SummaryReporting\Views\DashBoard\Index.cshtml" />
-    <Content Include="Areas\DailyReporting\Views\UnitsDaily\DailyChart.cshtml" />
+    <Content Include="Areas\DailyReporting\Views\Shared\DailyChart.cshtml" />
     <Content Include="Areas\NomManagement\Views\MaterialDetailType\Index.cshtml" />
     <Content Include="Areas\NomManagement\Views\Shared\EditorTemplates\MaterialDetailTypeViewModel.cshtml" />
     <Content Include="Areas\DailyReporting\Views\HighwayPipelines\HighwayPipelinesData.cshtml" />
@@ -1771,7 +1772,6 @@
     <Folder Include="Areas\DailyReporting\Models\" />
     <Folder Include="Areas\DailyReporting\Views\Ajax\" />
     <Folder Include="Areas\DailyReporting\Views\AreaBase\" />
-    <Folder Include="Areas\DailyReporting\Views\Shared\" />
     <Folder Include="Areas\Documentation\Models\" />
     <Folder Include="Areas\MonthlyReporting\Models\" />
     <Folder Include="Areas\MonthlyReporting\Views\AreaBase\" />

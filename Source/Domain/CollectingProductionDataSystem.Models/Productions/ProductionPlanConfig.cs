@@ -1,12 +1,13 @@
 ﻿namespace CollectingProductionDataSystem.Models.Productions
 {
+    using System.ComponentModel.DataAnnotations;
     using CollectingProductionDataSystem.Models.Abstract;
     using System;
     using CollectingProductionDataSystem.Models.Contracts;
     using System.Collections.Generic;
     using CollectingProductionDataSystem.Models.Nomenclatures;
 
-    public class ProductionPlanConfig : DeletableEntity, IEntity
+    public class ProductionPlanConfig : DeletableEntity, IEntity, IValidatableObject
     {
         private ICollection<UnitDailyConfig> unitsDailyConfigs;
         private ICollection<ProductionPlanData> productionPlanDatas;
@@ -51,12 +52,36 @@
 
         public bool IsSummaryOfProcessing { get; set; }
 
+        public string UsageRateFormula { get; set; }
+
+        public string UsageRateMembers { get; set; }
+
         public int? MaterialTypeId { get; set; }
 
         public virtual MaterialType MaterialType { get; set; }
 
-        public string UsageRateFormula { get; set; }
+        public int? MaterialDetailTypeId { get; set; }
+        public virtual MaterialDetailType MaterialDetailType { get; set; }
 
-        public string UsageRateMembers { get; set; }
+        /// <summary>
+        /// Determines whether the specified object is valid.
+        /// </summary>
+        /// <param name="validationContext">The validation context.</param>
+        /// <returns>A collection that holds failed-validation information.</returns>
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            var validationObject = validationContext.ObjectInstance as ProductionPlanConfig;
+            if (validationObject.MaterialType != null)
+            {
+                if (validationObject.MaterialType.IsDetailRequired && (validationObject.MaterialDetailTypeId == null || validationObject.MaterialDetailTypeId == 0))
+                {
+                    yield return new ValidationResult(string.Format(Resources.ModelErrors.Required, Resources.ModelErrors.MaterialDetailType), new string[]{ "MaterialDetailTypeId" });
+                }
+            }
+            else 
+            {
+                yield return new ValidationResult(string.Format(Resources.ModelErrors.Required, Resources.ModelErrors.MaterialType), new string[]{ "MaterialTypeId" });
+            }
+        }
     }
 }

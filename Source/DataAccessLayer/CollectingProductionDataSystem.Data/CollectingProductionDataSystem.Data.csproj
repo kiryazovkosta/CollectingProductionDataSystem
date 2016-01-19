@@ -82,6 +82,7 @@
     <Compile Include="Mappings\ActiveTransactionsDataMap.cs" />
     <Compile Include="Mappings\ApplicationUserParkMap.cs" />
     <Compile Include="Mappings\ApplicationUserProcessUnitMap.cs" />
+    <Compile Include="Mappings\Configuration\GlobalTypeMappingConfig.cs" />
     <Compile Include="Mappings\DailyProductTypeMap.cs" />
     <Compile Include="Identity\RoleStoreIntPk.cs" />
     <Compile Include="Identity\UserStoreIntPk.cs" />

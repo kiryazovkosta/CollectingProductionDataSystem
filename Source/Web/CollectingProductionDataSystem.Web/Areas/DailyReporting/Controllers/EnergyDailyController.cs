@@ -281,12 +281,13 @@
         }
 
         [HttpGet]
-        public ActionResult DailyChart(int processUnitId, DateTime? date)
+        public ActionResult DailyEnergyChart(int processUnitId, DateTime? date)
         {
+            const int energy = 2;
             date = date ?? DateTime.Now.Date.AddDays(-2);
-            var result = this.dailyService.GetStatisticForProcessUnit(processUnitId, date.Value);
+            var result = this.dailyService.GetStatisticForProcessUnit(processUnitId, date.Value, energy);
             result.Title = string.Format(Resources.Layout.DailyGraphicTitle, this.data.ProcessUnits.GetById(processUnitId).ShortName);
-            return PartialView(result);
+            return PartialView("DailyChart",result);
         }
 
         /// <summary>

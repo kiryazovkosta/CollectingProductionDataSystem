@@ -10,6 +10,7 @@
         internal static void RegisterMappings(DbModelBuilder modelBuilder)
         {
             modelBuilder.Conventions.Remove<ManyToManyCascadeDeleteConvention>();
+            modelBuilder.Conventions.Add(new GlobalTypeMappingConfig());
             modelBuilder.Configurations.Add(new AreaMap());
             modelBuilder.Configurations.Add(new AuditLogRecordMap());
             modelBuilder.Configurations.Add(new DirectionMap());

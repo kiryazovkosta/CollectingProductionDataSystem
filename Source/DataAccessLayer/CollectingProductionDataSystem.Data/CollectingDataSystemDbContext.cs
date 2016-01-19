@@ -203,8 +203,8 @@
                 }
 
                 var addedRecords = persister.PrepareSaveChanges(this, userName);
-                var returnValue = base.SaveChanges();
-
+                int returnValue = 0;
+                returnValue = base.SaveChanges();
                 //Append added records with their Ids into audit log
                 if (addedRecords != null && addedRecords.Count() > 0)
                 {
