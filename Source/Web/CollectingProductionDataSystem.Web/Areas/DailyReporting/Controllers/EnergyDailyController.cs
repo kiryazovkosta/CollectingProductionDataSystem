@@ -214,11 +214,16 @@
                     .FirstOrDefault();
                 if (approvedShift == null)
                 {
-                    if (this.data.UnitsDailyDatas.All().Where(x => x.RecordTimestamp == date && 
-                        x.UnitsDailyConfig.ProcessUnitId == processUnitId && 
-                        x.UnitsDailyConfig.MaterialTypeId == 2).Any())
+                    if (this.data.UnitsDailyDatas.All().Where(x => x.RecordTimestamp == date && x.UnitsDailyConfig.ProcessUnitId == processUnitId && x.UnitsDailyConfig.MaterialTypeId == 2).Any())
                     {
-                        return Json(new { IsConfirmed = false });
+                        var approvedShiftMaterial = this.data.UnitsApprovedDailyDatas
+                            .All()
+                            .Where(u => u.RecordDate == date && u.ProcessUnitId == processUnitId && u.EnergyApproved == false)
+                            .FirstOrDefault();
+                        if (approvedShiftMaterial != null)
+                        {
+                            return Json(new { IsConfirmed = false });
+                        }
                     }
                 }
                 return Json(new { IsConfirmed = true });
@@ -235,15 +240,6 @@
         {
             ValidateModelAgainstReportPatameters(this.ModelState, model, Session["reportParams"]);
 
-            //if (!Convert.ToBoolean(System.Configuration.ConfigurationManager.AppSettings["ComplitionCheckDeactivared"]))
-            //{
-            //    var status = this.dailyService.CheckIfPreviousDaysAreReady(model.processUnitId, model.date);
-            //    if (!status.IsValid)
-            //    {
-            //        status.ToModelStateErrors(this.ModelState);
-            //    }
-            //}
-
             if (ModelState.IsValid)
             {
                 var approvedShift = this.data.UnitsApprovedDailyDatas
@@ -252,14 +248,8 @@
                    .FirstOrDefault();
                 if (approvedShift != null)
                 {
-                    this.data.UnitsApprovedDailyDatas.Add(
-                        new UnitsApprovedDailyData
-                        {
-                            RecordDate = model.date,
-                            ProcessUnitId = model.processUnitId,
-                            Approved = true,
-                            EnergyApproved = true
-                        });
+                    approvedShift.EnergyApproved = true;
+                    this.data.UnitsApprovedDailyDatas.Update(approvedShift);
 
                     // Get all process plan data and save it
                     IEnumerable<ProductionPlanData> dbResult = this.productionPlanData.ReadProductionPlanData(model.date, model.processUnitId, 2);

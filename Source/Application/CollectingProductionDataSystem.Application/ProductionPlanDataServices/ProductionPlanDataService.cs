@@ -24,7 +24,6 @@
         public IEnumerable<ProductionPlanData> ReadProductionPlanData(DateTime? date, int? processUnitId, int? materialTypeId)
         {
             var result = new HashSet<ProductionPlanData>();
-
             var dailyData = unitData.GetUnitsDailyDataForDateTime(date, processUnitId, null).ToList();
             if (dailyData.Count == 0)
             {

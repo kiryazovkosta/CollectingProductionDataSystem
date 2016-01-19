@@ -230,7 +230,6 @@
                         if (!status.IsValid)
                         {
                             status.ToModelStateErrors(this.ModelState);
-                            //logger.Error()
                         }
                         else
                         {
@@ -336,6 +335,7 @@
                         });
 
                     // Get all process plan data and save it
+                    /*
                     var productionPlansDatas = this.data.ProductionPlanDatas
                         .All()
                         .Where(x => x.RecordTimestamp == model.date && x.ProcessUnitId == model.processUnitId)
@@ -355,6 +355,7 @@
                             this.data.ProductionPlanDatas.Add(item);
                         }
                     }
+                    */
 
                     var result = this.data.SaveChanges(this.UserProfile.UserName);
                     return Json(new { IsConfirmed = result.IsValid }, JsonRequestBehavior.AllowGet);
