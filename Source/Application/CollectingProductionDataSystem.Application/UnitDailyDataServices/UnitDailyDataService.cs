@@ -180,7 +180,7 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
             var targetUnitDatas = data.UnitsData.All()
                   .Include(x => x.UnitConfig)
                   .Include(x => x.UnitsManualData)
-                  .Where(x => x.RecordTimestamp == targetDay && x.UnitConfig.ProcessUnitId == processUnitId).ToList();
+                  .Where(x => x.RecordTimestamp == targetDay /*&& x.UnitConfig.ProcessUnitId == processUnitId*/).ToList();
 
             Dictionary<string, UnitsDailyData> result = new Dictionary<string, UnitsDailyData>();
 

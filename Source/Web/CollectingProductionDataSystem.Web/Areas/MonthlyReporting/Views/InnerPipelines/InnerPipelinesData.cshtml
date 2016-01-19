@@ -23,17 +23,17 @@
         .AutoBind(false)
         .Columns(columns =>
             {
-                //columns.Bound(c => c.Id);
+                columns.Bound(c => c.Id);
                 columns.Bound(c => c.RecordTimestamp).Format("{0:MMMM yyyy}");
-                //columns.ForeignKey(c => c.ProductId, (System.Collections.IEnumerable)ViewData["products"], "Id", "Name").EditorTemplateName("ProductViewModel").Width(280);
+                columns.ForeignKey(c => c.ProductId, (System.Collections.IEnumerable)ViewData["products"], "Id", "Name").EditorTemplateName("ProductViewModel").Width(280);
                 columns.Bound(c => c.Volume).Format("{0:n2}");
                 columns.Bound(c => c.Mass).Format("{0:n2}");
-                //columns.Command(command => { command.Edit(); command.Destroy(); }).Width(230);
+                columns.Command(command => { command.Edit(); command.Destroy(); }).Width(230);
             })
-        //.ToolBar(toolbar =>
-        //{
-        //    toolbar.Create();
-        //})
+        .ToolBar(toolbar =>
+        {
+            toolbar.Create();
+        })
         .Editable(editable => editable.Mode(GridEditMode.InLine))
         .Pageable(pageable => pageable
         .Refresh(true)
@@ -54,9 +54,9 @@
             .PageSize(50)
             .ServerOperation(true)
             .Read(read => read.Action("InnerPipelinesData", "InnerPipelines", new { area = "MonthlyReporting" }).Data("unitGridsData.SendDate"))
-            //.Create(create => create.Action("Create", "InnerPipelines", new { area = "MonthlyReporting" }).Data("sendAntiForgery"))
-            //.Update(update => update.Action("Update", "InnerPipelines", new { area = "MonthlyReporting" }).Data("sendAntiForgery"))
-            //.Destroy(destroy => destroy.Action("Destroy", "InnerPipelines", new { area = "MonthlyReporting" }).Data("sendAntiForgery"))
+            .Create(create => create.Action("Create", "InnerPipelines", new { area = "MonthlyReporting" }).Data("sendAntiForgery"))
+            .Update(update => update.Action("Update", "InnerPipelines", new { area = "MonthlyReporting" }).Data("sendAntiForgery"))
+            .Destroy(destroy => destroy.Action("Destroy", "InnerPipelines", new { area = "MonthlyReporting" }).Data("sendAntiForgery"))
             .Model(model =>
             {
                 model.Id(p => p.Id);
