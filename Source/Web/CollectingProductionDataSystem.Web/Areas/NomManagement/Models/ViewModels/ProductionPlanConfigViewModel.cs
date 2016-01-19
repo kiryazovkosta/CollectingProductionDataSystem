@@ -49,7 +49,6 @@ namespace CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewMode
         [Display(Name = "MaterialType", ResourceType = typeof(Resources.Layout))]
         public int MaterialTypeId { get; set; }
 
-        [Required]
         [Display(Name = "MaterialDetailType", ResourceType = typeof(Resources.Layout))]
         public int MaterialDetailTypeId { get; set; }
 

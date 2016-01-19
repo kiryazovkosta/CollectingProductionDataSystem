@@ -13,8 +13,8 @@
           columns.Bound(c => c.QuantityPlanMembers);
           columns.Bound(c => c.QuantityFactFormula);
           columns.Bound(c => c.QuantityFactMembers);
-          columns.ForeignKey(c => c.MaterialTypeId, (System.Collections.IEnumerable)ViewData["materialTypes"], "Id", "Name").EditorTemplateName("MaterialTypeViewModel").Width(200);
-          columns.ForeignKey(c => c.MaterialDetailTypeId, (System.Collections.IEnumerable)ViewData["materialDetailTypes"], "Id", "Name").EditorTemplateName("MaterialDetailTypeViewModel").Width(200);
+          columns.ForeignKey(c => c.MaterialTypeId, (System.Collections.IEnumerable)ViewData["materialTypes"], "Id", "Name").EditorTemplateName("MaterialTypeViewModel");
+          columns.ForeignKey(c => c.MaterialDetailTypeId, (System.Collections.IEnumerable)ViewData["materialDetailTypes"], "Id", "Name").EditorTemplateName("MaterialDetailTypeViewModel");
           columns.ForeignKey(c => c.ProcessUnitId,(System.Collections.IEnumerable)ViewData["processUnits"], "Id", "FullName").EditorTemplateName("ProcessUnitViewModel");
           columns.Command(command => { command.Edit(); command.Destroy(); }).Width(230);
       })
@@ -41,7 +41,6 @@
           .PageSize(20)
               .Model(model => {
                   model.Id(p => p.Id);
-                  model.Field(p=>p.MaterialDetailTypeId).DefaultValue(0);
               })
           .Read(read => read.Action("Read", "ProductionPlanConfig", new { area = "NomManagement" }).Data("sendAntiForgery"))
           .Create(create => create.Action("Create", "ProductionPlanConfig", new { area = "NomManagement" }).Data("sendAntiForgery"))
