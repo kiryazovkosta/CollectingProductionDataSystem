@@ -1362,4 +1362,10 @@
   <data name="MessagesPublishing" xml:space="preserve">
     <value>Публикуване на съобщения</value>
   </data>
+  <data name="DayEnergyConfirmed" xml:space="preserve">
+    <value>Дневни енергийни потоци</value>
+  </data>
+  <data name="DayMaterialConfirmed" xml:space="preserve">
+    <value>Дневни материални потоци</value>
+  </data>
 </root>

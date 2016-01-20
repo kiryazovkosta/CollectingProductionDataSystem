@@ -231,7 +231,7 @@
                 var confirmationSecondShift = ConfirmedRecords.FirstOrDefault(x => x.ProcessUnitId == SelectedFactories[i].ProcessUnitId && x.ShiftId == (int)ShiftType.Second);
                 var confirmationThirdShift = ConfirmedRecords.FirstOrDefault(x => x.ProcessUnitId == SelectedFactories[i].ProcessUnitId && x.ShiftId == (int)ShiftType.Third);
                 var confirmationOfDay = ConfirmedDailyRecord.FirstOrDefault(x => x.RecordDate == targetDate && x.ProcessUnitId == SelectedFactories[i].ProcessUnitId);
-                var confirmationUntilTheDay = ConfirmedDailyRecord.Where(x => x.ProcessUnitId == SelectedFactories[i].ProcessUnitId).Select(x => new DailyConfirmationViewModel()
+                var confirmationUntilTheDay = ConfirmedDailyRecord.Where(x => x.ProcessUnitId == SelectedFactories[i].ProcessUnitId && x.EnergyApproved).Select(x => new DailyConfirmationViewModel()
                 {
                     Day = x.RecordDate,
                     IsConfirmed = x.Approved,
@@ -240,7 +240,9 @@
                 SelectedFactories[i].Shift1Confirmed = (confirmationFirstShift == null) ? false : confirmationFirstShift.Approved;
                 SelectedFactories[i].Shift2Confirmed = (confirmationSecondShift == null) ? false : confirmationSecondShift.Approved;
                 SelectedFactories[i].Shift3Confirmed = (confirmationThirdShift == null) ? false : confirmationThirdShift.Approved;
-                SelectedFactories[i].DayConfirmed = (confirmationOfDay == null) ? false : confirmationOfDay.Approved;
+                SelectedFactories[i].DayMaterialConfirmed = (confirmationOfDay == null) ? false : confirmationOfDay.Approved;
+                SelectedFactories[i].DayEnergyConfirmed = (confirmationOfDay == null) ? false : confirmationOfDay.EnergyApproved;
+                SelectedFactories[i].DayConfirmed = (confirmationOfDay == null) ? false : confirmationOfDay.Approved && confirmationOfDay.EnergyApproved;
                 SelectedFactories[i].ConfirmedDaysUntilTheDay = JsonConvert.SerializeObject(confirmationUntilTheDay ?? new List<DailyConfirmationViewModel>());
             }
 

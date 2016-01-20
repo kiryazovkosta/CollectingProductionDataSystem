@@ -1365,4 +1365,10 @@
   <data name="MessagesPublishing" xml:space="preserve">
     <value>Massages Publishing</value>
   </data>
+  <data name="DayEnergyConfirmed" xml:space="preserve">
+    <value>Daily Energy Data</value>
+  </data>
+  <data name="DayMaterialConfirmed" xml:space="preserve">
+    <value>Daily Material Data</value>
+  </data>
 </root>

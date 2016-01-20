@@ -835,6 +835,24 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Daily Energy Data.
+        /// </summary>
+        public static string DayEnergyConfirmed {
+            get {
+                return ResourceManager.GetString("DayEnergyConfirmed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Daily Material Data.
+        /// </summary>
+        public static string DayMaterialConfirmed {
+            get {
+                return ResourceManager.GetString("DayMaterialConfirmed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Days.
         /// </summary>
         public static string Days {
