@@ -23,8 +23,18 @@
 
         public IEnumerable<ProductionPlanData> ReadProductionPlanData(DateTime? date, int? processUnitId, int? materialTypeId)
         {
+            var energyId = 2;
             var result = new HashSet<ProductionPlanData>();
-            var dailyData = unitData.GetUnitsDailyDataForDateTime(date, processUnitId, null).ToList();
+            var dailyData = new List<UnitsDailyData>();
+            if (materialTypeId.HasValue && materialTypeId.Value == energyId)
+            {
+                dailyData = unitData.GetUnitsDailyDataForDateTime(date, null, null).ToList();    
+            }
+            else
+            {
+                dailyData = unitData.GetUnitsDailyDataForDateTime(date, processUnitId, null).ToList();
+            }
+
             if (dailyData.Count == 0)
             {
                 return result;

@@ -41,7 +41,6 @@
                 .HasMaxLength(80)
                 .IsRequired();
 
-
             // Table & Column Mappings
             this.ToTable("ProductionPlanDatas");
 

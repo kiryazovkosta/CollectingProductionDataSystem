@@ -1456,6 +1456,7 @@
             double pl = 20;
             double pl1 = 10;
             double d2 = 15;
+
             double a11 = Functions.GetValueFormulaA11(pl, pl1, d2);
             double ent = Functions.GetValueFormulaEN(t, p);
             double q = (a11 * ent) / 0.860;
