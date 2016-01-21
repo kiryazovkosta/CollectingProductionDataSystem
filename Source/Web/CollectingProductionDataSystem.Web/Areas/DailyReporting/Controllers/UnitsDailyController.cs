@@ -16,6 +16,7 @@
     using CollectingProductionDataSystem.Application.Contracts;
     using CollectingProductionDataSystem.Application.ProductionPlanDataServices;
     using CollectingProductionDataSystem.Application.UnitDailyDataServices;
+    using CollectingProductionDataSystem.Constants;
     using CollectingProductionDataSystem.Data.Common;
     using CollectingProductionDataSystem.Data.Contracts;
     using CollectingProductionDataSystem.Infrastructure.Contracts;
@@ -59,8 +60,9 @@
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AuthorizeFactory]
-        public JsonResult ReadDailyUnitsData([DataSourceRequest]DataSourceRequest request, DateTime? date, int? processUnitId, int? materialTypeId)
+        public JsonResult ReadDailyUnitsData([DataSourceRequest]DataSourceRequest request, DateTime? date, int? processUnitId)
         {
+            
             ValidateModelState(date, processUnitId);
             if (!this.ModelState.IsValid)
             {
@@ -80,22 +82,9 @@
                 var kendoResult = new DataSourceResult();
                 if (ModelState.IsValid)
                 {
-                    var dbResult = unitsData.GetUnitsDailyDataForDateTime(date, processUnitId, materialTypeId);
+                    var dbResult = unitsData.GetUnitsDailyDataForDateTime(date, processUnitId, CommonConstants.MaterialType);
                     var kendoPreparedResult = Mapper.Map<IEnumerable<UnitsDailyData>, IEnumerable<UnitDailyDataViewModel>>(dbResult);
-
-                    try
-                    {
-                        if (date != null && processUnitId != null)
-                        {
-                            dailyService.CheckIfShiftsAreReady(date.Value, processUnitId.Value).ToModelStateErrors(this.ModelState);
-                        }
-
-                        kendoResult = kendoPreparedResult.ToDataSourceResult(request, ModelState);
-                    }
-                    catch (Exception ex1)
-                    {
-                        Debug.WriteLine(ex1.Message + "\n" + ex1.InnerException);
-                    }
+                    kendoResult = kendoPreparedResult.ToDataSourceResult(request, ModelState);
                 }
 
                 Session["reportParams"] = Convert.ToBase64String(Encoding.UTF8.GetBytes(
@@ -125,23 +114,23 @@
         /// <param name="processUnitId">The process unit id.</param>
         private IEfStatus CalculateDailyDataIfNotAvailable(DateTime date, int processUnitId)
         {
-            IEfStatus status = DependencyResolver.Current.GetService<IEfStatus>();
+            IEfStatus status = dailyService.CheckIfShiftsAreReady(date, processUnitId);
 
-            if (!this.dailyService.CheckIfDayIsApproved(date, processUnitId)
-                && !this.dailyService.CheckExistsUnitDailyDatas(date, processUnitId)
+            if (status.IsValid 
+                &&(!this.dailyService.CheckIfDayIsApproved(date, processUnitId))
+                && (!this.dailyService.CheckExistsUnitDailyDatas(date, processUnitId,CommonConstants.MaterialType))
                 && this.testUnitDailyCalculationService.TryBeginCalculation(new UnitDailyCalculationIndicator(date, processUnitId)))
             {
                 Exception exc = null;
                 try
                 {
                     IEnumerable<UnitsDailyData> dailyResult = new List<UnitsDailyData>();
-                    status = dailyService.CheckIfShiftsAreReady(date, processUnitId);
 
                     if (status.IsValid)
                     {
                         if (!Convert.ToBoolean(System.Configuration.ConfigurationManager.AppSettings["ComplitionCheckDeactivared"]))
                         {
-                            status = this.dailyService.CheckIfPreviousDaysAreReady(processUnitId, date);
+                            status = this.dailyService.CheckIfPreviousDaysAreReady(processUnitId, date, CommonConstants.MaterialType);
                         }
 
                         if (status.IsValid)
@@ -150,7 +139,7 @@
 
                             if (status.IsValid)
                             {
-                                dailyResult = this.dailyService.CalculateDailyDataForProcessUnit(processUnitId, date);
+                                dailyResult = this.dailyService.CalculateDailyDataForProcessUnit(processUnitId, date, materialTypeId: CommonConstants.MaterialType);
 
                                 if (dailyResult.Count() > 0)
                                 {
@@ -224,7 +213,7 @@
                             }
                         }
 
-                        var updatedRecords = this.dailyService.CalculateDailyDataForProcessUnit(model.UnitsDailyConfig.ProcessUnitId, model.RecordTimestamp, isRecalculate: true, editReasonId: model.UnitsManualDailyData.EditReason.Id);
+                        var updatedRecords = this.dailyService.CalculateDailyDataForProcessUnit(model.UnitsDailyConfig.ProcessUnitId, model.RecordTimestamp, isRecalculate: true, editReasonId: model.UnitsManualDailyData.EditReason.Id, materialTypeId: CommonConstants.MaterialType);
                         var status = UpdateResultRecords(updatedRecords, model.UnitsManualDailyData.EditReason.Id);
 
                         if (!status.IsValid)
@@ -311,7 +300,7 @@
 
             if (!Convert.ToBoolean(System.Configuration.ConfigurationManager.AppSettings["ComplitionCheckDeactivared"]))
             {
-                var status = this.dailyService.CheckIfPreviousDaysAreReady(model.processUnitId, model.date);
+                var status = this.dailyService.CheckIfPreviousDaysAreReady(model.processUnitId, model.date, CommonConstants.MaterialType);
                 if (!status.IsValid)
                 {
                     status.ToModelStateErrors(this.ModelState);
@@ -335,7 +324,7 @@
                         });
 
                     // Get all process plan data and save it
-                    /*
+                    
                     var productionPlansDatas = this.data.ProductionPlanDatas
                         .All()
                         .Where(x => x.RecordTimestamp == model.date && x.ProcessUnitId == model.processUnitId)
@@ -355,7 +344,6 @@
                             this.data.ProductionPlanDatas.Add(item);
                         }
                     }
-                    */
 
                     var result = this.data.SaveChanges(this.UserProfile.UserName);
                     return Json(new { IsConfirmed = result.IsValid }, JsonRequestBehavior.AllowGet);

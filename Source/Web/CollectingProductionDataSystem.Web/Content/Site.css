@@ -840,7 +840,7 @@ pre.popover-content {
     text-align:justify;
 }
 
-td pre {
+td pre, #err-message {
     -ms-word-wrap: break-word;
     word-wrap: break-word;
     -ms-word-break: normal;

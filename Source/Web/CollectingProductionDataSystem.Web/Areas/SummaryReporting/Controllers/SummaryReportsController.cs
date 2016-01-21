@@ -224,6 +224,7 @@
                     && x.RecordDate <= targetDate
                     && targetProcessUnitIds.Any(y => x.ProcessUnitId == y)).ToList();
 
+            var IsEnergyCheckOff = Convert.ToBoolean(System.Configuration.ConfigurationManager.AppSettings["ComplitionEnergyCheckDeactivared"]);
 
             for (int i = 0; i < SelectedFactories.Count; i++)
             {
@@ -231,7 +232,7 @@
                 var confirmationSecondShift = ConfirmedRecords.FirstOrDefault(x => x.ProcessUnitId == SelectedFactories[i].ProcessUnitId && x.ShiftId == (int)ShiftType.Second);
                 var confirmationThirdShift = ConfirmedRecords.FirstOrDefault(x => x.ProcessUnitId == SelectedFactories[i].ProcessUnitId && x.ShiftId == (int)ShiftType.Third);
                 var confirmationOfDay = ConfirmedDailyRecord.FirstOrDefault(x => x.RecordDate == targetDate && x.ProcessUnitId == SelectedFactories[i].ProcessUnitId);
-                var confirmationUntilTheDay = ConfirmedDailyRecord.Where(x => x.ProcessUnitId == SelectedFactories[i].ProcessUnitId && x.EnergyApproved).Select(x => new DailyConfirmationViewModel()
+                var confirmationUntilTheDay = ConfirmedDailyRecord.Where(x => x.ProcessUnitId == SelectedFactories[i].ProcessUnitId && (x.EnergyApproved || IsEnergyCheckOff)).Select(x => new DailyConfirmationViewModel()
                 {
                     Day = x.RecordDate,
                     IsConfirmed = x.Approved,

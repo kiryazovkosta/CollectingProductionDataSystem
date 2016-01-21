@@ -10,6 +10,7 @@ using System.Transactions;
 using CollectingProductionDataSystem.Application.CalculatorService;
 using CollectingProductionDataSystem.Application.Contracts;
 using CollectingProductionDataSystem.Application.UnitDailyDataServices;
+using CollectingProductionDataSystem.Constants;
 using CollectingProductionDataSystem.Data.Common;
 using CollectingProductionDataSystem.Data.Contracts;
 using CollectingProductionDataSystem.Models.Productions;
@@ -80,7 +81,7 @@ namespace CollectingProductionDataSystem.ConsoleTester
                     if (status.IsValid)
                     {
                        
-                            status = dailyService.CheckIfPreviousDaysAreReady(processUnitId, date);
+                            status = dailyService.CheckIfPreviousDaysAreReady(processUnitId, date, CommonConstants.MaterialType);
                       
 
                         if (status.IsValid)

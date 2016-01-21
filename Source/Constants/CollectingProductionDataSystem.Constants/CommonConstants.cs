@@ -14,10 +14,18 @@ namespace CollectingProductionDataSystem.Constants
 
         private static readonly string loadingUser = "Initial Loading";
 
+        private static readonly int materialType = 1;
+
+        private static readonly int energyType = 2;
+
         public static string StandartPassword { get { return standartPassword; } }
 
         public static string[] PowerUsers { get { return powerUsers; } }
 
         public static string LoadingUser { get { return loadingUser; } }
+
+        public static int MaterialType { get { return materialType;} }
+
+        public static int EnergyType { get { return energyType; } }
     }
 }

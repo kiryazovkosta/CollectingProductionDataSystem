@@ -147,11 +147,17 @@
   <data name="InvalidUserNameModification" xml:space="preserve">
     <value>Modification of UserName is not permitted</value>
   </data>
-  <data name="PreviousDaysConfirmationError" xml:space="preserve">
-    <value>You cannot continue confirmation until completes confitmation of the days:\n</value>
+  <data name="PreviousDaysEnergyConfirmationError" xml:space="preserve">
+    <value>You cannot continue confirmation until completes confitmation of energy data for the days:\n</value>
+  </data>
+  <data name="PreviousDaysMaterialConfirmationError" xml:space="preserve">
+    <value>You cannot continue confirmation until completes confitmation of material data for the days:\n</value>
   </data>
   <data name="ShiftNotReady" xml:space="preserve">
     <value>The data for {0} are not approved.</value>
+  </data>
+  <data name="UnitDailyNotApproved" xml:space="preserve">
+    <value>Daily positions ase not approved</value>
   </data>
   <data name="UserAllreadyExists" xml:space="preserve">
     <value>The user {0} cannot be created. The user with the same UserName allready exists.</value>
