@@ -10,6 +10,7 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
     using System.Diagnostics;
     using System.Linq;
     using CollectingProductionDataSystem.Application.Contracts;
+    using CollectingProductionDataSystem.Constants;
     using CollectingProductionDataSystem.Data.Contracts;
     using CollectingProductionDataSystem.Infrastructure.Chart;
     using CollectingProductionDataSystem.Infrastructure.Extentions;
@@ -30,7 +31,7 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
             this.calculator = calculatorParam;
         }
 
-        public IEnumerable<UnitsDailyData> CalculateDailyDataForProcessUnit(int processUnitId, DateTime targetDay, bool isRecalculate = false, int editReasonId = 0)
+        public IEnumerable<UnitsDailyData> CalculateDailyDataForProcessUnit(int processUnitId, DateTime targetDay, bool isRecalculate = false, int editReasonId = 0, int materialTypeId = 0)
         {
             if (processUnitId < 1)
             {
@@ -38,10 +39,17 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
                 throw new ArgumentException(string.Format(message, "processUnitId", 1, int.MaxValue));
             }
 
+            if (materialTypeId < 1)
+            {
+                string message = App_Resources.ErrorMessages.InvalidParameter;
+                throw new ArgumentException(string.Format(message, "materialTypeId", 1, int.MaxValue));
+            }
+
             // Day is ready and calculations begin
             var targetUnitDailyRecordConfigs = data.UnitsDailyConfigs.All()
                 .Include(x => x.UnitConfigUnitDailyConfigs)
-                .Where(x => x.ProcessUnitId == processUnitId).ToList();
+                .Where(x => x.ProcessUnitId == processUnitId
+                            && x.MaterialTypeId == materialTypeId).ToList();
             Dictionary<string, UnitsDailyData> resultDaily = new Dictionary<string, UnitsDailyData>();
             Dictionary<string, UnitsDailyData> wholeDayResult = new Dictionary<string, UnitsDailyData>();
 
@@ -58,7 +66,7 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
             Dictionary<string, UnitsDailyData> relatedRecords = GetRelatedData(processUnitId, targetDay);
             AppendRelatedRecords(relatedRecords, resultDaily);
 
-            CalculateDailyDataFromRelatedDailyData(ref resultDaily, processUnitId, targetDay, isRecalculate, editReasonId);
+            CalculateDailyDataFromRelatedDailyData(ref resultDaily, processUnitId, targetDay, isRecalculate, editReasonId, materialTypeId);
 
             ClearRelatedRecords(relatedRecords, resultDaily);
 
@@ -231,13 +239,15 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
         /// <param name="targetRecords">The target records.</param>
         /// <param name="resultDaily">The result daily.</param>
         /// <param name="targetDay">The target day.</param>
-        private void CalculateDailyDataFromRelatedDailyData(ref Dictionary<string, UnitsDailyData> resultDaily, int targetPtocessUnitId, DateTime targetDay, bool isRecalculate, int editReasonId)
+        private void CalculateDailyDataFromRelatedDailyData(ref Dictionary<string, UnitsDailyData> resultDaily, int targetPtocessUnitId, DateTime targetDay, bool isRecalculate, int editReasonId, int materialTypeId)
         {
             Dictionary<string, UnitsDailyData> calculationResult = new Dictionary<string, UnitsDailyData>();
 
             var targetRecords = data.UnitsDailyConfigs.All()
                 .Include(x => x.RelatedUnitDailyConfigs)
-                .Where(x => x.ProcessUnitId == targetPtocessUnitId && x.AggregationCurrentLevel == true).ToList();
+                .Where(x => x.ProcessUnitId == targetPtocessUnitId
+                        && x.AggregationCurrentLevel == true
+                        && x.MaterialTypeId == materialTypeId).ToList();
 
             Dictionary<string, UnitsDailyData> targetUnitDailyRecords = new Dictionary<string, UnitsDailyData>();
 
@@ -413,10 +423,12 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
         /// <param name="processUnitId">The process unit identifier.</param>
         /// <param name="userName">Name of the user.</param>
         /// <returns></returns>
-        public bool CheckExistsUnitDailyDatas(DateTime targetDate, int processUnitId)
+        public bool CheckExistsUnitDailyDatas(DateTime targetDate, int processUnitId, int materialTypeId)
         {
             var unitDailyDatas = this.data.UnitsDailyDatas.All().Include(x => x.UnitsDailyConfig)
-                .Where(y => y.RecordTimestamp == targetDate && y.UnitsDailyConfig.ProcessUnitId == processUnitId).Any();
+                .Where(y => y.RecordTimestamp == targetDate
+                    && y.UnitsDailyConfig.ProcessUnitId == processUnitId
+                    && y.UnitsDailyConfig.MaterialTypeId == materialTypeId).Any();
             return unitDailyDatas;
         }
 
@@ -426,7 +438,7 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
         /// <param name="processUnitId">The process unit identifier.</param>
         /// <param name="targetDate">The target date.</param>
         /// <returns></returns>
-        public IEfStatus CheckIfPreviousDaysAreReady(int processUnitId, DateTime targetDate)
+        public IEfStatus CheckIfPreviousDaysAreReady(int processUnitId, DateTime targetDate, int materialTypeId)
         {
             var status = kernel.Get<IEfStatus>();
             if (targetDate.Day > 1)
@@ -437,23 +449,45 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
                 var approvedDays = data.UnitsApprovedDailyDatas.All()
                                         .Where(x => x.ProcessUnitId == processUnitId
                                                 && beginingOfTheMonth <= x.RecordDate
-                                                && x.RecordDate <= endOfObservedPeriod)
-                                        .Select(x => x.RecordDate).ToDictionary(x => x);
+                                                && x.RecordDate <= endOfObservedPeriod
+                                                && x.Approved == true).ToDictionary(x => x.RecordDate);
 
                 int day = 0;
-                var validationResults = new List<ValidationResult>() { new ValidationResult(@Resources.ErrorMessages.PreviousDaysConfirmationError) };
+                var validationMaterialResults = new List<ValidationResult>() { new ValidationResult(@Resources.ErrorMessages.PreviousDaysMaterialConfirmationError) };
+                var validationEnergyResults = new List<ValidationResult>() { new ValidationResult(@Resources.ErrorMessages.PreviousDaysEnergyConfirmationError) };
+
                 while (day < endOfObservedPeriod.Day)
                 {
                     var checkedDay = beginingOfTheMonth.AddDays(day);
                     if (!approvedDays.ContainsKey(checkedDay))
                     {
-                        validationResults.Add(new ValidationResult(string.Format("\t\t- {0:dd.MM.yyyy г.}", checkedDay)));
+                        validationMaterialResults.Add(new ValidationResult(string.Format("\t\t- {0:dd.MM.yyyy г.}", checkedDay)));
+                    }
+                    else if ((!approvedDays[checkedDay].EnergyApproved) 
+                        && materialTypeId == CommonConstants.EnergyType
+                        && (!Convert.ToBoolean(System.Configuration.ConfigurationManager.AppSettings["ComplitionEnergyCheckDeactivared"])))
+                    {
+                        validationEnergyResults.Add(new ValidationResult(string.Format("\t\t- {0:dd.MM.yyyy г.}", checkedDay)));
                     }
 
                     day += 1;
                 }
 
-                if (validationResults.Count > 1)
+                var validationResults = new List<ValidationResult>();
+
+                if (validationMaterialResults.Count > 1)
+                {
+                    validationMaterialResults.Add(new ValidationResult(string.Empty));
+
+                    validationResults.AddRange(validationMaterialResults);
+                }
+
+                if (validationEnergyResults.Count > 1)
+                {
+                    validationResults.AddRange(validationEnergyResults);
+                }
+
+                if (validationResults.Count > 0)
                 {
                     status.SetErrors(validationResults);
                 }
@@ -521,7 +555,7 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
         {
             var beginingOfTheMonth = new DateTime(targetDate.Year, targetDate.Month, 1);
 
-            var statistic = this.data.ProductionPlanDatas.All().Include(x=>x.ProductionPlanConfig)
+            var statistic = this.data.ProductionPlanDatas.All().Include(x => x.ProductionPlanConfig)
                                 .Where(x => beginingOfTheMonth <= x.RecordTimestamp
                                         && x.RecordTimestamp < targetDate
                                         && x.ProcessUnitId == processUnitId
@@ -578,6 +612,26 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
             }
 
             return new List<DataSery<DateTime, decimal>>() { planPercent, factPercent, plan, fact };
+        }
+
+        public IEfStatus CheckIfDayIsApprovedButEnergyNot(DateTime date, int processUnitId, out bool readyForCalculation)
+        {
+            var status = kernel.Get<IEfStatus>();
+            readyForCalculation = false;
+            var approvedRecord = this.data.UnitsApprovedDailyDatas.All().Where(x => x.RecordDate == date && x.ProcessUnitId == processUnitId).FirstOrDefault();
+
+            if (approvedRecord == null)
+            {
+                status.SetErrors(new List<ValidationResult> { new ValidationResult(Resources.ErrorMessages.UnitDailyNotApproved) });
+                return status;
+            }
+
+            if (!approvedRecord.EnergyApproved)
+            {
+                readyForCalculation = true;
+            }
+
+            return status;
         }
 
         private class RecordsCollectionId

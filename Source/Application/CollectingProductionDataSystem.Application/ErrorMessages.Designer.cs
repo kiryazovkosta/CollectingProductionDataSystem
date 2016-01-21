@@ -151,11 +151,20 @@ namespace App_Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You cannot continue confirmation until completes confitmation of the days:\n.
+        ///   Looks up a localized string similar to You cannot continue confirmation until completes confitmation of energy data for the days:\n.
         /// </summary>
-        public static string PreviousDaysConfirmationError {
+        public static string PreviousDaysEnergyConfirmationError {
             get {
-                return ResourceManager.GetString("PreviousDaysConfirmationError", resourceCulture);
+                return ResourceManager.GetString("PreviousDaysEnergyConfirmationError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You cannot continue confirmation until completes confitmation of material data for the days:\n.
+        /// </summary>
+        public static string PreviousDaysMaterialConfirmationError {
+            get {
+                return ResourceManager.GetString("PreviousDaysMaterialConfirmationError", resourceCulture);
             }
         }
         
@@ -165,6 +174,15 @@ namespace App_Resources {
         public static string ShiftNotReady {
             get {
                 return ResourceManager.GetString("ShiftNotReady", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Daily positions ase not approved.
+        /// </summary>
+        public static string UnitDailyNotApproved {
+            get {
+                return ResourceManager.GetString("UnitDailyNotApproved", resourceCulture);
             }
         }
         

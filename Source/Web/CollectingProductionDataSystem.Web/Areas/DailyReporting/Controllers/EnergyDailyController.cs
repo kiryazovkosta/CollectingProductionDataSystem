@@ -1,4 +1,4 @@
-﻿    namespace CollectingProductionDataSystem.Web.Areas.DailyReporting.Controllers
+﻿namespace CollectingProductionDataSystem.Web.Areas.DailyReporting.Controllers
 {
     using System;
     using System.Collections.Generic;
@@ -16,6 +16,7 @@
     using CollectingProductionDataSystem.Application.Contracts;
     using CollectingProductionDataSystem.Application.ProductionPlanDataServices;
     using CollectingProductionDataSystem.Application.UnitDailyDataServices;
+    using CollectingProductionDataSystem.Constants;
     using CollectingProductionDataSystem.Data.Common;
     using CollectingProductionDataSystem.Data.Contracts;
     using CollectingProductionDataSystem.Infrastructure.Contracts;
@@ -29,21 +30,27 @@
     using Newtonsoft.Json;
     using Resources = App_GlobalResources.Resources;
 
-    public class EnergyDailyController : AreaBaseController 
+    public class EnergyDailyController : AreaBaseController
     {
         private readonly IUnitsDataService unitsData;
         private readonly IUnitDailyDataService dailyService;
         private readonly IProductionPlanDataService productionPlanData;
         private readonly TransactionOptions transantionOption;
+        private readonly ITestUnitDailyCalculationService testUnitDailyCalculationService;
 
-        public EnergyDailyController(IProductionData dataParam, IUnitsDataService unitsDataParam, IUnitDailyDataService dailyServiceParam,
-            IProductionPlanDataService productionPlanDataParam, ILogger loggerParam, ITestUnitDailyCalculationService testUnitDailyCalculationServiceParam)
+        public EnergyDailyController(IProductionData dataParam,
+            IUnitsDataService unitsDataParam,
+            IUnitDailyDataService dailyServiceParam,
+            IProductionPlanDataService productionPlanDataParam,
+            ILogger loggerParam,
+            ITestUnitDailyCalculationService testUnitDailyCalculationServiceParam)
             : base(dataParam)
         {
             this.unitsData = unitsDataParam;
             this.dailyService = dailyServiceParam;
             this.productionPlanData = productionPlanDataParam;
             this.transantionOption = DefaultTransactionOptions.Instance.TransactionOptions;
+            this.testUnitDailyCalculationService = testUnitDailyCalculationServiceParam;
         }
 
         [HttpGet]
@@ -61,7 +68,14 @@
             if (!this.ModelState.IsValid)
             {
                 var kendoResult = new List<UnitDailyDataViewModel>().ToDataSourceResult(request, ModelState);
-                return Json(kendoResult); 
+                return Json(kendoResult);
+            }
+
+            var status = CalculateDailyDataIfNotAvailable(date.Value, processUnitId.Value);
+
+            if (!status.IsValid)
+            {
+                status.ToModelStateErrors(this.ModelState);
             }
 
             if (ModelState.IsValid)
@@ -69,28 +83,9 @@
                 var kendoResult = new DataSourceResult();
                 if (ModelState.IsValid)
                 {
-                    var dbResult = unitsData.GetUnitsDailyDataForDateTime(date, processUnitId, materialTypeId);
+                    var dbResult = unitsData.GetUnitsDailyDataForDateTime(date, processUnitId, CommonConstants.EnergyType);
                     var kendoPreparedResult = Mapper.Map<IEnumerable<UnitsDailyData>, IEnumerable<UnitDailyDataViewModel>>(dbResult);
-
-                    try
-                    {
-                        if (date != null && processUnitId != null)
-                        {
-                            var materialDataIsReady = this.data.UnitsApprovedDailyDatas.All().Where(x => x.RecordDate == date && x.ProcessUnitId == processUnitId).FirstOrDefault();
-                            if (materialDataIsReady == null)
-                            {
-                                this.ModelState.AddModelError("", "Дневните данни за материални потоци не са потвърдени!");
-                                kendoResult = new List<UnitDailyDataViewModel>().ToDataSourceResult(request, ModelState);
-                                return Json(kendoResult);
-                            }
-                        }
-
-                        kendoResult = kendoPreparedResult.ToDataSourceResult(request, ModelState);
-                    }
-                    catch (Exception ex1)
-                    {
-                        Debug.WriteLine(ex1.Message + "\n" + ex1.InnerException);
-                    }
+                    kendoResult = kendoPreparedResult.ToDataSourceResult(request, ModelState);
                 }
 
                 Session["reportParams"] = Convert.ToBase64String(Encoding.UTF8.GetBytes(
@@ -148,7 +143,7 @@
                             }
                         }
 
-                        var updatedRecords = this.dailyService.CalculateDailyDataForProcessUnit(model.UnitsDailyConfig.ProcessUnitId, model.RecordTimestamp, isRecalculate: true, editReasonId: model.UnitsManualDailyData.EditReason.Id);
+                        var updatedRecords = this.dailyService.CalculateDailyDataForProcessUnit(model.UnitsDailyConfig.ProcessUnitId, model.RecordTimestamp, isRecalculate: true, editReasonId: model.UnitsManualDailyData.EditReason.Id, materialTypeId:CommonConstants.EnergyType);
                         var status = UpdateResultRecords(updatedRecords, model.UnitsManualDailyData.EditReason.Id);
 
                         if (!status.IsValid)
@@ -169,7 +164,7 @@
 
             return Json(new[] { model }.ToDataSourceResult(request, ModelState));
         }
- 
+
         /// <summary>
         /// Updates the result records.
         /// </summary>
@@ -179,12 +174,12 @@
             foreach (var record in updatedRecords)
             {
                 var manualRecord = this.data.UnitsManualDailyDatas.GetById(record.Id);
-                if (manualRecord!= null)
+                if (manualRecord != null)
                 {
                     manualRecord.Value = (decimal)record.RealValue;
                     this.data.UnitsManualDailyDatas.Update(manualRecord);
                 }
-                else 
+                else
                 {
                     this.data.UnitsManualDailyDatas.Add(new UnitsManualDailyData { Id = record.Id, Value = (decimal)record.RealValue, EditReasonId = editReasonId });
                 }
@@ -252,7 +247,7 @@
                     this.data.UnitsApprovedDailyDatas.Update(approvedShift);
 
                     // Get all process plan data and save it
-                    IEnumerable<ProductionPlanData> dbResult = this.productionPlanData.ReadProductionPlanData(model.date, model.processUnitId, 2);
+                    IEnumerable<ProductionPlanData> dbResult = this.productionPlanData.ReadProductionPlanData(model.date, model.processUnitId, CommonConstants.EnergyType);
                     if (dbResult.Count() > 0)
                     {
                         foreach (var item in dbResult)
@@ -287,7 +282,7 @@
             date = date ?? DateTime.Now.Date.AddDays(-2);
             var result = this.dailyService.GetStatisticForProcessUnit(processUnitId, date.Value, energy);
             result.Title = string.Format(Resources.Layout.DailyGraphicTitle, this.data.ProcessUnits.GetById(processUnitId).ShortName);
-            return PartialView("DailyChart",result);
+            return PartialView("DailyChart", result);
         }
 
         /// <summary>
@@ -381,6 +376,79 @@
             if (validationResult.Count() > 0)
             {
                 status.SetErrors(validationResult);
+            }
+
+            return status;
+        }
+
+        /// <summary>
+        /// Calculates the daily data if not available.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <param name="processUnitId">The process unit id.</param>
+        private IEfStatus CalculateDailyDataIfNotAvailable(DateTime date, int processUnitId)
+        {
+            bool readyForCalculation;
+
+            IEfStatus status = this.dailyService.CheckIfDayIsApprovedButEnergyNot(date, processUnitId, out readyForCalculation);
+
+            if (status.IsValid
+                && readyForCalculation
+                && !this.dailyService.CheckExistsUnitDailyDatas(date, processUnitId, CommonConstants.EnergyType)
+                && this.testUnitDailyCalculationService.TryBeginCalculation(new UnitDailyCalculationIndicator(date, processUnitId)))
+            {
+                Exception exc = null;
+                try
+                {
+                    IEnumerable<UnitsDailyData> dailyResult = new List<UnitsDailyData>();
+
+                    if (status.IsValid)
+                    {
+                        if (!Convert.ToBoolean(System.Configuration.ConfigurationManager.AppSettings["ComplitionCheckDeactivared"]))
+                        {
+                            status = this.dailyService.CheckIfPreviousDaysAreReady(processUnitId, date, CommonConstants.EnergyType);
+                        }
+
+                        if (status.IsValid)
+                        {
+                            status = IsRelatedDataExists(date, processUnitId);
+
+                            if (status.IsValid)
+                            {
+                                dailyResult = this.dailyService.CalculateDailyDataForProcessUnit(processUnitId, date, materialTypeId: CommonConstants.EnergyType);
+
+                                if (dailyResult.Count() > 0)
+                                {
+                                    this.data.UnitsDailyDatas.BulkInsert(dailyResult, this.UserProfile.UserName);
+                                    status = this.data.SaveChanges(this.UserProfile.UserName);
+                                }
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    exc = ex;
+                }
+                finally
+                {
+                    int ix = 0;
+                    while (!(this.testUnitDailyCalculationService.EndCalculation(new UnitDailyCalculationIndicator(date, processUnitId)) || ix == 10))
+                    {
+                        ix++;
+                    }
+
+                    if (ix >= 10)
+                    {
+                        string message = string.Format("Cannot clear record for begun Process Unit Calculation For ProcessUnitId {0} and Date {1}", processUnitId, date);
+                        exc = new InvalidOperationException();
+                    }
+
+                    if (exc != null)
+                    {
+                        throw exc;
+                    }
+                }
             }
 
             return status;

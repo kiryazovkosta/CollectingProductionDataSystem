@@ -14,7 +14,7 @@ namespace CollectingProductionDataSystem.Web.Areas.SummaryReporting.ViewModels
             this.Shift1Confirmed = false;
             this.Shift2Confirmed = false;
             this.Shift3Confirmed = false;
-            this.DayConfirmed = false;
+            this.DayMaterialConfirmed = false;
 
         }
 
@@ -50,6 +50,13 @@ namespace CollectingProductionDataSystem.Web.Areas.SummaryReporting.ViewModels
 
         [Display(Name = "Shift3Confirmed", ResourceType = typeof(App_GlobalResources.Resources.Layout))]
         public bool Shift3Confirmed { get; set; }
+
+        [Display(Name = "DayMaterialConfirmed", ResourceType = typeof(App_GlobalResources.Resources.Layout))]
+        public bool DayMaterialConfirmed { get; set; }
+
+        [Display(Name = "DayEnergyConfirmed", ResourceType = typeof(App_GlobalResources.Resources.Layout))]
+        public bool DayEnergyConfirmed { get; set; }
+
 
         [Display(Name = "DayConfirmed", ResourceType = typeof(App_GlobalResources.Resources.Layout))]
         public bool DayConfirmed { get; set; }

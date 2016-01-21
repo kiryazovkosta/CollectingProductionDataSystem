@@ -19,7 +19,7 @@
 </div>
 @Html.ValidationSummary()
 @Html.AntiForgeryToken()
-<input type="hidden" id="materialTypeId" name="materialTypeId" value="1" />
+@Html.Hidden("materialTypeId", 1)
 <div class="row">
     <div class="col-lg-4 col-lg-push-8">
         @(Html.Kendo()
@@ -57,9 +57,8 @@
             events.Error("kendoAdditional.ErrorHandler");
         })
         )
-       .Events(ev => ev.DataBound("unitGridsData.DataBound"))
         )
-        <br/>
+        <br />
         <div id="chart-wrapper"></div>
     </div>
 
@@ -130,7 +129,7 @@
                                                                     model.Field(p => p.UnitsDailyConfig.ProcessUnit.ShortName).Editable(false);
                                                                     model.Field(p => p.UnitsDailyConfig.Name).Editable(false);
                                                                     model.Field(p => p.UnitsDailyConfig.MeasureUnit.Code).Editable(false);
-                                                                    model.Field(p => p.TotalMonthQuantity).Editable(false);                                                                    
+                                                                    model.Field(p => p.TotalMonthQuantity).Editable(false);
                                                                     model.Field(p => p.Value).Editable(false);
                                                                     model.Field(p => p.UnitsManualDailyData.Value).Editable(true);
                                                                     model.Field(p => p.UnitsManualDailyData.EditReason).Editable(true);
@@ -141,7 +140,7 @@
                                                                     events.RequestEnd("unitGridsData.DataSave");
                                                                 })
                                                             )
-)
+        )
     </div>
 </div>
 

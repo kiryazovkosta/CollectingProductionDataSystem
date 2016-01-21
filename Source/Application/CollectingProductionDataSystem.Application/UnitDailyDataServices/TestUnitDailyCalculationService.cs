@@ -10,6 +10,7 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
     using System.Text;
     using System.Threading.Tasks;
     using CollectingProductionDataSystem.Application.Contracts;
+    using CollectingProductionDataSystem.Data.Contracts;
 
     public class TestUnitDailyCalculationService : ITestUnitDailyCalculationService
     {
@@ -44,7 +45,7 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
             return processUnitInCalculation.TryAdd(calculation, 1);
         }
 
-        public bool EndCalculation(UnitDailyCalculationIndicator calculation) 
+        public bool EndCalculation(UnitDailyCalculationIndicator calculation)
         {
             int value;
             return processUnitInCalculation.TryRemove(calculation, out value);

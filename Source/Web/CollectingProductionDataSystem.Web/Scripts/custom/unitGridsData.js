@@ -16,9 +16,7 @@ var unitGridsData = (function () {
                 kendoAdditional.RefreshGrid("#units");
             }
 
-            if ($("#productionPlan").val() !== undefined) {
-                kendoAdditional.RefreshGrid("#productionPlan");
-            }
+           
 
             if ($("#tanks").val() !== undefined) {
 
@@ -42,9 +40,6 @@ var unitGridsData = (function () {
                 kendoAdditional.RefreshGrid("#confirmation");
             }
 
-            if ($('#confirm').val() === "") {
-                checkConfirmedStatus();
-            }
         });
 
         nameGridCommancolumn();
@@ -466,12 +461,21 @@ var unitGridsData = (function () {
                 }
             }
         }
+
+        if ($('#confirm').val() === "") {
+            checkConfirmedStatus();
+        }
+
+        if ($("#productionPlan").val() !== undefined) {
+            kendoAdditional.RefreshGrid("#productionPlan");
+        }
+
     }
 
     function DataSave(ev) {
         if (ev.type === 'update') {
             kendoAdditional.RefreshGrid('#units');
-            kendoAdditional.RefreshGrid('#productionPlan');
+            //kendoAdditional.RefreshGrid('#productionPlan');
         }
     }
 

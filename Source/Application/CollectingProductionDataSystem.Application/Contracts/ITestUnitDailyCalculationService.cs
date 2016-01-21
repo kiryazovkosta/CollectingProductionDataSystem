@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using CollectingProductionDataSystem.Application.UnitDailyDataServices;
+using CollectingProductionDataSystem.Data.Contracts;
 
 namespace CollectingProductionDataSystem.Application.Contracts
 {
