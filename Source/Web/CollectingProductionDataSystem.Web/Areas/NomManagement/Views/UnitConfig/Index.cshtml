@@ -7,6 +7,7 @@
       .AutoBind(true)
       .Columns(columns =>
       {
+          columns.Command(command => { command.Edit(); command.Destroy(); }).Width(230);
           columns.Bound(c => c.Code)
                .ClientTemplate(
                 Ajax.AuthorizedAjaxActionLinkOrText("#=data.Code#", "Index", "History",
@@ -31,6 +32,7 @@
           columns.Bound(c => c.EstimatedTemperature).Width(100);
           columns.Bound(c => c.EstimatedCompressibilityFactor).Width(100);
           columns.Bound(c => c.IsEditable).Width(100);
+          columns.Bound(c => c.IsMemberOfShiftsReport);
           columns.ForeignKey(c => c.MaterialTypeId, (System.Collections.IEnumerable)ViewData["materialTypes"], "Id", "Name").EditorTemplateName("MaterialTypeViewModel").Width(280);
           columns.ForeignKey(c => c.ProcessUnitId, (System.Collections.IEnumerable)ViewData["processUnits"], "Id", "FullName").EditorTemplateName("ProcessUnitViewModel").Width(280);
           columns.ForeignKey(c => c.ProductId, (System.Collections.IEnumerable)ViewData["products"], "Id", "Name").EditorTemplateName("ProductViewModel").Width(280);

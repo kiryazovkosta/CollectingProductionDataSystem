@@ -127,6 +127,9 @@
                 case "ZZ39":
                     result = FormulaZZ39(arguments);
                     break;
+                case "ZZ39a":
+                    result = FormulaZZ39a(arguments);
+                    break;
                 case "Z18":
                     result = FormulaZ18(arguments);
                     break;
@@ -1383,10 +1386,15 @@
             {
                 throw new ArgumentNullException("The value of MaximumFlow(D2) is not allowed to be null");
             }
+            if (!args.CalculationPercentage.HasValue)
+            {
+                 throw new ArgumentNullException("The value of CalculationPercentage is not allowed to be null");   
+            }
 
             double pl = args.InputValue.Value; 
             double d2 = args.MaximumFlow.Value;
-            double f = ((pl / 100.00) * d2) * 8.00;
+            double c = args.CalculationPercentage.Value;
+            double f = ((pl / 100.00) * d2) * c;
             
             var inputParams = new Dictionary<string, double>();
             inputParams.Add("f", f);
@@ -1813,6 +1821,47 @@
 
             double q = Functions.GetValueFormulaA11(pl, pl1, d2);
             q = q * df * (t/860);
+
+            var inputParams = new Dictionary<string, double>();
+            inputParams.Add("q", q);
+
+            string expr = @"par.q";
+            var result = calculator.Calculate(expr, "par", 1, inputParams);
+            return result;
+        }
+
+        /// <summary>
+        /// 84) ZZ39 ;КОНДЕНЗАТ-ТОПЛОЕНЕРГИЯ /Х.КВТЧ/ :: S DF=D X A11 S Q=Q*DF*T/860 Q
+        /// </summary>
+        public double FormulaZZ39a(FormulaArguments args)
+        {
+            if (!args.InputValue.HasValue)
+            {
+                throw new ArgumentNullException("The value of CounterIndication(PL) is not allowed to be null");
+            }
+            if (!args.EstimatedDensity.HasValue)
+            {
+                throw new ArgumentNullException("The value of EstimatedDensity(D4) is not allowed to be null");
+            }
+            if (!args.Density.HasValue)
+            {
+                args.Density = args.EstimatedDensity;
+            }
+            if (!args.EstimatedTemperature.HasValue)
+            {
+                throw new ArgumentNullException("The value of EstimatedTemperature(D6) is not allowed to be null");
+            }
+            if (!args.Temperature.HasValue)
+            {
+                args.Temperature = args.EstimatedTemperature;
+            }
+
+            double pl = args.InputValue.Value;
+            double t = args.Temperature.Value;
+            double d = args.Density.Value;
+            double df = d;
+
+            double q = pl * df * (t/860);
 
             var inputParams = new Dictionary<string, double>();
             inputParams.Add("q", q);

@@ -113,6 +113,9 @@
         [Display(Name = "IsMemberOfShiftReport", ResourceType = typeof(Resources.Layout))]
         public bool IsMemberOfShiftsReport { get; set; }
 
+        //[Display(Name = "AggregationMembers", ResourceType = typeof(Resources.Layout))]
+        //public string AggregationMembers { get; set; }
+
         /// <summary>
         /// Creates the mappings.
         /// </summary>
