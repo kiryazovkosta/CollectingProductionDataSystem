@@ -24,7 +24,7 @@
           columns.Bound(c => c.AggregationMembers).Width(100);
           columns.Bound(c => c.RelatedUnitConfigs).Width(300).ClientTemplate("#=territoriesTemplate(RelatedUnitConfigs)#");
           columns.Bound(c => c.IsCalculated).Width(100);
-          columns.Bound(c => c.PreviousShiftTag).Width(100);
+          columns.Bound(c => c.PreviousShiftTag).Width(300);
           columns.Bound(c => c.Notes).Width(100);
           columns.Bound(c => c.MaximumFlow).Width(100);
           columns.Bound(c => c.EstimatedDensity).Width(100);
@@ -33,6 +33,10 @@
           columns.Bound(c => c.EstimatedCompressibilityFactor).Width(100);
           columns.Bound(c => c.IsEditable).Width(100);
           columns.Bound(c => c.IsMemberOfShiftsReport);
+          columns.Bound(c => c.CalculationPercentage);
+          //columns.ForeignKey(c => c.EnteredMeasureUnitId, (System.Collections.IEnumerable)ViewData["measureUnits"], "Id", "Name").EditorTemplateName("MeasureUnitViewModel").Width(280);
+          columns.Bound(c => c.DataSource);
+          columns.Bound(c => c.ProcessUnitAlias);
           columns.ForeignKey(c => c.MaterialTypeId, (System.Collections.IEnumerable)ViewData["materialTypes"], "Id", "Name").EditorTemplateName("MaterialTypeViewModel").Width(280);
           columns.ForeignKey(c => c.ProcessUnitId, (System.Collections.IEnumerable)ViewData["processUnits"], "Id", "FullName").EditorTemplateName("ProcessUnitViewModel").Width(280);
           columns.ForeignKey(c => c.ProductId, (System.Collections.IEnumerable)ViewData["products"], "Id", "Name").EditorTemplateName("ProductViewModel").Width(280);

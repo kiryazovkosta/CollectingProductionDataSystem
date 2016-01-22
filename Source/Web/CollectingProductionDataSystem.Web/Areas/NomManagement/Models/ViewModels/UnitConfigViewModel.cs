@@ -43,6 +43,9 @@
         // TODO: Check this out
         public int ProcessUnitId { get; set; }
 
+        //[Display(Name = "EnteredMeasureUnit", ResourceType = typeof(Resources.Layout))]
+        //public int? EnteredMeasureUnitId { get; set; }
+
         [Required]
         [Display(Name = "Direction", ResourceType = typeof(Resources.Layout))]
         public int DirectionId { get; set; }
@@ -113,8 +116,14 @@
         [Display(Name = "IsMemberOfShiftReport", ResourceType = typeof(Resources.Layout))]
         public bool IsMemberOfShiftsReport { get; set; }
 
-        //[Display(Name = "AggregationMembers", ResourceType = typeof(Resources.Layout))]
-        //public string AggregationMembers { get; set; }
+        [Display(Name = "CalculationPercentage", ResourceType = typeof(Resources.Layout))]
+        public decimal? CalculationPercentage { get; set; }
+
+        [Display(Name = "DataSource", ResourceType = typeof(Resources.Layout))]
+        public int? DataSource { get; set; }
+
+        [Display(Name = "ProcessUnitAlias", ResourceType = typeof(Resources.Layout))]
+        public string ProcessUnitAlias { get; set; }
 
         /// <summary>
         /// Creates the mappings.

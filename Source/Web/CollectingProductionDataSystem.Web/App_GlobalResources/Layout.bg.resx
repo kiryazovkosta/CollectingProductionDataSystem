@@ -1368,4 +1368,22 @@
   <data name="DayMaterialConfirmed" xml:space="preserve">
     <value>Дневни материални потоци</value>
   </data>
+  <data name="CalculationPercentage" xml:space="preserve">
+    <value>Процент за формула или друг коефициент</value>
+  </data>
+  <data name="DataSource" xml:space="preserve">
+    <value>Източник на първична информация</value>
+  </data>
+  <data name="EnteredMeasureUnit" xml:space="preserve">
+    <value>Мерна единица за въвеждане</value>
+  </data>
+  <data name="ProcessUnitAlias" xml:space="preserve">
+    <value>Съкратено изписване на инсталация</value>
+  </data>
+  <data name="UsageRateFormula" xml:space="preserve">
+    <value>Формула РН по факт</value>
+  </data>
+  <data name="UsageRateMembers" xml:space="preserve">
+    <value>Формула РН по факт - позиции</value>
+  </data>
 </root>

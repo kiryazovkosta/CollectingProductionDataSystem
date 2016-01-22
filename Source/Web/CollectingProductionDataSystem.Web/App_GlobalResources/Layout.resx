@@ -1371,4 +1371,22 @@
   <data name="DayMaterialConfirmed" xml:space="preserve">
     <value>Daily Material Data</value>
   </data>
+  <data name="CalculationPercentage" xml:space="preserve">
+    <value>Calculation Percentage</value>
+  </data>
+  <data name="DataSource" xml:space="preserve">
+    <value>DataSource</value>
+  </data>
+  <data name="EnteredMeasureUnit" xml:space="preserve">
+    <value>EnteredMeasureUnit</value>
+  </data>
+  <data name="ProcessUnitAlias" xml:space="preserve">
+    <value>ProcessUnitAlias</value>
+  </data>
+  <data name="UsageRateFormula" xml:space="preserve">
+    <value>UsageRateFormula</value>
+  </data>
+  <data name="UsageRateMembers" xml:space="preserve">
+    <value>UsageRateMembers</value>
+  </data>
 </root>

@@ -41,6 +41,12 @@ namespace CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewMode
         [Display(Name = "QuantityFactMembers", ResourceType = typeof(Resources.Layout))]
         public string QuantityFactMembers { get; set; }
 
+        [Display(Name = "UsageRateFormula", ResourceType = typeof(Resources.Layout))]
+        public string UsageRateFormula { get; set; }
+
+        [Display(Name = "UsageRateMembers", ResourceType = typeof(Resources.Layout))]
+        public string UsageRateMembers { get; set; }
+
         [Required]
         [Display(Name = "ProcessUnit", ResourceType = typeof(Resources.Layout))]
         public int ProcessUnitId { get; set; }
