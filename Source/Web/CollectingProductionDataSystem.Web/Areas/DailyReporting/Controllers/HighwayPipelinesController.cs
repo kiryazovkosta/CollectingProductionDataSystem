@@ -2,6 +2,7 @@
 {
     using System.Data.Entity;
     using System.Net;
+    using System.Text;
     using AutoMapper;
     using CollectingProductionDataSystem.Data.Contracts;
     using System;
@@ -17,13 +18,16 @@
     using System.Diagnostics;
     using System.Data.Entity.Infrastructure;
     using Resources = App_GlobalResources.Resources;
+using CollectingProductionDataSystem.Application.HighwayPipelinesDataServices;
 
     public class HighwayPipelinesController : AreaBaseController
     {
-        public HighwayPipelinesController(IProductionData dataParam) 
+        private readonly IHighwayPipelinesDataService highwayPipelinesData;
+
+        public HighwayPipelinesController(IProductionData dataParam, IHighwayPipelinesDataService highwayPipelinesDataServiceParam) 
             : base(dataParam)
         {
-
+            this.highwayPipelinesData = highwayPipelinesDataServiceParam;
         }
 
         [HttpGet]
@@ -63,41 +67,50 @@
                 }
                 else
                 {
-                    // check all previous days are approved
-
-                    // get data for last day
-                    if ( !this.data.HighwayPipelineDatas.All().Where(x => x.RecordTimestamp == date).Any())
+                    var status = highwayPipelinesData.CheckIfPreviousDaysAreReady(date.Value);
+                    if (status.IsValid)
                     {
-                        var previousDay = date.Value.AddDays(-1);
-                        var highwayData = this.data.HighwayPipelineDatas.All().Where(x => x.RecordTimestamp == previousDay).ToList();
-                        var pipelinesConfigs = this.data.HighwayPipelineConfigs.All().ToList();
-                        foreach (var pipelinesConfig in pipelinesConfigs)
+                        if (!this.data.HighwayPipelineDatas.All().Where(x => x.RecordTimestamp == date).Any())
                         {
-                            var item = highwayData.Where(x=>x.HighwayPipelineConfigId == pipelinesConfig.Id).FirstOrDefault();
-                            this.data.HighwayPipelineDatas.Add(new HighwayPipelineData
+                            var previousDay = date.Value.AddDays(-1);
+                            var highwayData = this.data.HighwayPipelineDatas.All().Where(x => x.RecordTimestamp == previousDay).ToList();
+                            var pipelinesConfigs = this.data.HighwayPipelineConfigs.All().ToList();
+                            foreach (var pipelinesConfig in pipelinesConfigs)
                             {
-                                RecordTimestamp = date.Value,
-                                HighwayPipelineConfigId = pipelinesConfig.Id,
-                                ProductName = pipelinesConfig.Product.Name,
-                                ProductCode = pipelinesConfig.Product.Code,
-                                Volume = item.RealVolume,
-                                Mass = item.RealMass
-                            });   
-                        }
+                                var item = highwayData.Where(x => x.HighwayPipelineConfigId == pipelinesConfig.Id).FirstOrDefault();
+                                this.data.HighwayPipelineDatas.Add(new HighwayPipelineData
+                                {
+                                    RecordTimestamp = date.Value,
+                                    HighwayPipelineConfigId = pipelinesConfig.Id,
+                                    ProductName = pipelinesConfig.Product.Name,
+                                    ProductCode = pipelinesConfig.Product.Code,
+                                    Volume = item.RealVolume,
+                                    Mass = item.RealMass
+                                });
+                            }
 
-                        this.data.SaveChanges(this.UserProfile.UserName);
+                            this.data.SaveChanges(this.UserProfile.UserName);
+                        }
+                    }
+                    else
+                    {
+                        status.ToModelStateErrors(this.ModelState);
                     }
                 }
 
-                var highwayPipesData = this.data.HighwayPipelineDatas
-                    .All()
-                    .Include(x => x.HighwayPipelineConfig)
-                    .Where(x => x.RecordTimestamp == date)
-                    .ToList();
+                if (this.ModelState.IsValid)
+                {
+                    var highwayPipesData = this.data.HighwayPipelineDatas.All().Include(x => x.HighwayPipelineConfig).Where(x => x.RecordTimestamp == date).ToList();
                     
-                var kendoPreparedResult = Mapper.Map<IEnumerable<HighwayPipelineData>, IEnumerable<HighwayPipelinesDataViewModel>>(highwayPipesData);
-                var kendoResult = kendoPreparedResult.ToDataSourceResult(request, ModelState);
-                return Json(kendoResult);
+                    var kendoPreparedResult = Mapper.Map<IEnumerable<HighwayPipelineData>, IEnumerable<HighwayPipelinesDataViewModel>>(highwayPipesData);
+                    var kendoResult = kendoPreparedResult.ToDataSourceResult(request, ModelState);
+                    return Json(kendoResult);  
+                }
+                else
+                {
+                    var kendoResult = new List<HighwayPipelinesDataViewModel>().ToDataSourceResult(request, ModelState);
+                    return Json(kendoResult);
+                }
             }
             else
             {
@@ -170,6 +183,11 @@
                     .FirstOrDefault();
                 if (approvedDay == null)
                 {
+                    var status = highwayPipelinesData.CheckIfPreviousDaysAreReady(date.Value);
+                    if (!status.IsValid)
+                    {
+                        return Json(new { IsConfirmed = true });    
+                    }
                     return Json(new { IsConfirmed = false });
                 }
                 return Json(new { IsConfirmed = true });

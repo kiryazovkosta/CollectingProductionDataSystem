@@ -71,6 +71,8 @@
         public int? MaterialDetailTypeId { get; set; }
         public virtual MaterialDetailType MaterialDetailType { get; set; }
 
+        public bool NotATotalizedPosition { get; set; }
+
         /// <summary>
         /// Determines whether the specified object is valid.
         /// </summary>

@@ -89,5 +89,7 @@ namespace CollectingProductionDataSystem.Models.Productions
         public PrimaryDataSourceType? DataSource { get; set; }
 
         public string ProcessUnitAlias { get; set; }
+
+        public bool NotATotalizedPosition { get; set; }
     }
 }

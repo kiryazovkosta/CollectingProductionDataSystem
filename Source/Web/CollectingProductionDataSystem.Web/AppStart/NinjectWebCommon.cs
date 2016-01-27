@@ -8,6 +8,7 @@ namespace CollectingProductionDataSystem.Web.AppStart
     using CollectingProductionDataSystem.Application.CalculatorService;
     using CollectingProductionDataSystem.Application.Contracts;
     using CollectingProductionDataSystem.Application.FileServices;
+    using CollectingProductionDataSystem.Application.HighwayPipelinesDataServices;
     using CollectingProductionDataSystem.Application.ProductionDataServices;
     using CollectingProductionDataSystem.Application.TankDataServices;
     using CollectingProductionDataSystem.Application.UnitDailyDataServices;
@@ -93,6 +94,7 @@ namespace CollectingProductionDataSystem.Web.AppStart
             kernel.Bind<IProductionDataCalculatorService>().To<ProductionDataCalculatorService>();
             kernel.Bind<ILogger>().To<Logger>();
             kernel.Bind<IProductionPlanDataService>().To<ProductionPlanDataService>();
+            kernel.Bind<IHighwayPipelinesDataService>().To<HighwayPipelinesDataService>();
             kernel.Bind<ITestUnitDailyCalculationService>().ToMethod(context => TestUnitDailyCalculationService.GetInstance()).InSingletonScope();
         }        
     }
