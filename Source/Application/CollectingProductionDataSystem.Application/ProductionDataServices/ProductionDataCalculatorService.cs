@@ -186,6 +186,12 @@
             return result;
         }
 
+        public double Calculate(string expression, string param, Dictionary<string, double> inputParams)
+        {
+            var result = calculator.Calculate(expression, param, inputParams.Count, inputParams);
+            return result;
+        }
+
         public IEfStatus CalculateByUnitData(int unitDataId, string userName, decimal newValue, decimal oldValue = 0)
         {
             var unitData = this.data.UnitsData.GetById(unitDataId);

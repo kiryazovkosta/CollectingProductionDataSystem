@@ -58,76 +58,47 @@
                     ProcessManualUnits(unitsConfigsList, recordDataTime, shift, unitsData);
                     totalInsertedRecords += this.data.SaveChanges("Phd2SqlLoader").ResultRecordsCount;
 
-                    ProcessCalculatedUnits(unitsConfigsList, recordDataTime, shift, unitsData);
+                    ProcessCalculatedByAutomaticUnits(unitsConfigsList, oPhd, recordDataTime, shift, unitsData);
                     totalInsertedRecords += this.data.SaveChanges("Phd2SqlLoader").ResultRecordsCount;
 
-                    //ProcessRelatedCalculatedUnits(unitsConfigsList, recordDataTime, shift, unitsData);
-                    //totalInsertedRecords += this.data.SaveChanges("Phd2SqlLoader").ResultRecordsCount;
+                    unitsData.Clear();
+                    unitsData = this.data.UnitsData.All().Where(x => x.RecordTimestamp == recordDataTime && x.ShiftId == shift).ToList();
+
+                    ProcessCalculatedUnits(unitsConfigsList, recordDataTime, shift, unitsData);
+                    totalInsertedRecords += this.data.SaveChanges("Phd2SqlLoader").ResultRecordsCount;
                 }
             }
 
             return totalInsertedRecords;
         }
 
-        private void ProcessRelatedCalculatedUnits(List<UnitConfig> unitsConfigsList, DateTime recordDataTime, ShiftType shift, List<UnitsData> unitsData)
+        private void ProcessCalculatedByAutomaticUnits(List<UnitConfig> unitsConfigsList, PHDHistorian oPhd, DateTime recordDataTime, ShiftType shift, List<UnitsData> unitsData)
         {
-            foreach (var unitConfig in unitsConfigsList.Where(x => x.CollectingDataMechanism == "AC"))
+            oPhd.StartTime = "NOW-1M";
+            oPhd.EndTime = "NOW-1M";
+
+            foreach (var unitConfig in unitsConfigsList.Where(x => x.CollectingDataMechanism == "CC"))
             {
                 try
                 {
-                    var formulaCode = unitConfig.CalculatedFormula ?? string.Empty;
-                    var arguments = new FormulaArguments();
-                    arguments.MaximumFlow = (double?)unitConfig.MaximumFlow;
-                    arguments.EstimatedDensity = (double?)unitConfig.EstimatedDensity;
-                    arguments.EstimatedPressure = (double?)unitConfig.EstimatedPressure;
-                    arguments.EstimatedTemperature = (double?)unitConfig.EstimatedTemperature;
-                    arguments.EstimatedCompressibilityFactor = (double?)unitConfig.EstimatedCompressibilityFactor;
-                    arguments.CalculationPercentage = (double?)unitConfig.CalculationPercentage;
-
-                    var ruc = unitConfig.RelatedUnitConfigs.ToList();
-                    foreach (var ru in ruc)
+                    var inputParams = new Dictionary<string, double>();
+                    var formula = unitConfig.CalculatedFormula;
+                    var arguments = unitConfig.PreviousShiftTag.Split(new char[]{'@'});
+                    var argumentIndex = 0;
+                    foreach (var item in arguments)
                     {
-                        var parameterType = ru.RelatedUnitConfig.AggregateGroup;
-                        var inputValue = data.UnitsData
-                                                .All()
-                                                .Where(x => x.RecordTimestamp == recordDataTime)
-                                                .Where(x => x.ShiftId == shift)
-                                                .Where(x => x.UnitConfigId == ru.RelatedUnitConfigId)
-                                                .FirstOrDefault()
-                                                .RealValue;
-                        if (parameterType == "I+")
-                        {
-                            var exsistingValue = arguments.InputValue.HasValue ? arguments.InputValue.Value : 0.0;
-                            arguments.InputValue = exsistingValue + inputValue;
-                        }
-                        if (parameterType == "I-")
-                        {
-                            var exsistingValue = arguments.InputValue.HasValue ? arguments.InputValue.Value : 0.0;
-                            arguments.InputValue = exsistingValue - inputValue;
-                        }
-                        else if (parameterType == "T")
-                        {
-                            arguments.Temperature = inputValue;
-                        }
-                        else if (parameterType == "P")
-                        {
-                            arguments.Pressure = inputValue;
-                        }
-                        else if (parameterType == "D")
-                        {
-                            arguments.Density = inputValue;
-                        }
-                        else if (parameterType == "I/")
-                        {
-                            arguments.CalculationPercentage = inputValue;
-                        }
-                        else if (parameterType == "I*")
-                        {
-                            arguments.CalculationPercentage = inputValue;
-                        }
+                        var row = oPhd.FetchRowData(item).Tables[0].Rows[0];
+                        var val = Convert.ToDouble(row["Value"]);
+                        inputParams.Add(string.Format("p{0}", argumentIndex), val);
+                        argumentIndex++;
                     }
 
-                    var result = new ProductionDataCalculatorService(this.data).Calculate(formulaCode, arguments);
+                    if (unitConfig.CalculationPercentage.HasValue)
+                    {
+                        inputParams.Add(string.Format("p{0}", argumentIndex), (double)unitConfig.CalculationPercentage.Value);    
+                    }
+
+                    var result = new ProductionDataCalculatorService(this.data).Calculate(formula, "p", inputParams);
                     if (!unitsData.Where(x => x.RecordTimestamp == recordDataTime && x.ShiftId == shift && x.UnitConfigId == unitConfig.Id).Any())
                     {
                         this.data.UnitsData.Add(
@@ -136,7 +107,7 @@
                                 UnitConfigId = unitConfig.Id,
                                 RecordTimestamp = recordDataTime,
                                 ShiftId = shift,
-                                Value = (decimal)result
+                                Value = (double.IsNaN(result)||double.IsInfinity(result)) ? 0.0m : (decimal)result
                             });
                     }
                 }
@@ -204,6 +175,7 @@
                             arguments.CalculationPercentage = inputValue;
                         }
                     }
+
                     var result = new ProductionDataCalculatorService(this.data).Calculate(formulaCode, arguments);
                     if (!unitsData.Where(x => x.RecordTimestamp == recordDataTime && x.ShiftId == shift && x.UnitConfigId == unitConfig.Id).Any())
                     {
@@ -367,7 +339,7 @@
             oPhd.DefaultServer = defaultServer;
             oPhd.StartTime = string.Format("NOW - {0}H2M", offsetInHours);
             oPhd.EndTime = string.Format("NOW - {0}H2M", offsetInHours);
-            oPhd.Sampletype = SAMPLETYPE.Snapshot;
+            oPhd.Sampletype = SAMPLETYPE.Raw;
             oPhd.MinimumConfidence = Convert.ToInt32(settings.Settings.Get("PHD_DATA_MIN_CONFIDENCE").Value.ValueXml.InnerText);
             oPhd.MaximumRows = Convert.ToUInt32(settings.Settings.Get("PHD_DATA_MAX_ROWS").Value.ValueXml.InnerText);
         }

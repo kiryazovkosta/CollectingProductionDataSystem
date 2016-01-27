@@ -17,7 +17,7 @@
 <div class="row">
     <div class="col-lg-12 col">
         @(Html.Kendo().Grid<HighwayPipelinesDataViewModel>()
-        .Name("measuringpoints")
+        .Name("units")
         .AutoBind(false)
         .Columns(columns =>
             {
@@ -41,13 +41,14 @@
             .AllPages(true)
         )
         .Scrollable(scr => scr.Height(660))
+        .Events(ev => ev.DataBound("unitGridsData.DataBound"))
         .Filterable()
         .DataSource(dataSource => dataSource
             .Ajax()
             .PageSize(50)
             .ServerOperation(true)
             .Group(group => group.Add(c => c.Sort))
-                    .Read(read => read.Action("ReadHighwayPipelinesData", "HighwayPipelines", new { area = "DailyReporting" }).Data("unitGridsData.SendDate"))
+            .Read(read => read.Action("ReadHighwayPipelinesData", "HighwayPipelines", new { area = "DailyReporting" }).Data("unitGridsData.SendDate"))
             .Update(update => update.Action("Edit", "HighwayPipelines", new { area = "DailyReporting" }).Data("sendAntiForgery"))
             .Model(model =>
             {

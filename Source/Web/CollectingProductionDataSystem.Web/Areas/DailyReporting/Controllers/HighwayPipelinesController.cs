@@ -1,6 +1,7 @@
 ﻿namespace CollectingProductionDataSystem.Web.Areas.DailyReporting.Controllers
 {
     using System.Data.Entity;
+    using System.Net;
     using AutoMapper;
     using CollectingProductionDataSystem.Data.Contracts;
     using System;
@@ -39,24 +40,55 @@
 
             if (this.ModelState.IsValid)
             {
-                if ( !this.data.HighwayPipelineDatas.All().Where(x => x.RecordTimestamp == date).Any())
+                if (date.Value.Day == 1)
                 {
-                    var pipelinesConfigs = this.data.HighwayPipelineConfigs.All().ToList();
-                    foreach (var pipelinesConfig in pipelinesConfigs)
+                    if ( !this.data.HighwayPipelineDatas.All().Where(x => x.RecordTimestamp == date).Any())
                     {
-                        this.data.HighwayPipelineDatas.Add(new HighwayPipelineData
+                        var pipelinesConfigs = this.data.HighwayPipelineConfigs.All().ToList();
+                        foreach (var pipelinesConfig in pipelinesConfigs)
                         {
-                            RecordTimestamp = date.Value,
-                            HighwayPipelineConfigId = pipelinesConfig.Id,
-                            ProductName = pipelinesConfig.Product.Name,
-                            ProductCode = pipelinesConfig.Product.Code,
-                            Volume = 0,
-                            Mass = 0,
-                        });   
-                    }
+                            this.data.HighwayPipelineDatas.Add(new HighwayPipelineData
+                            {
+                                RecordTimestamp = date.Value,
+                                HighwayPipelineConfigId = pipelinesConfig.Id,
+                                ProductName = pipelinesConfig.Product.Name,
+                                ProductCode = pipelinesConfig.Product.Code,
+                                Volume = 0,
+                                Mass = 0,
+                            });   
+                        }
 
-                    this.data.SaveChanges(this.UserProfile.UserName);
+                        this.data.SaveChanges(this.UserProfile.UserName);
+                    }
                 }
+                else
+                {
+                    // check all previous days are approved
+
+                    // get data for last day
+                    if ( !this.data.HighwayPipelineDatas.All().Where(x => x.RecordTimestamp == date).Any())
+                    {
+                        var previousDay = date.Value.AddDays(-1);
+                        var highwayData = this.data.HighwayPipelineDatas.All().Where(x => x.RecordTimestamp == previousDay).ToList();
+                        var pipelinesConfigs = this.data.HighwayPipelineConfigs.All().ToList();
+                        foreach (var pipelinesConfig in pipelinesConfigs)
+                        {
+                            var item = highwayData.Where(x=>x.HighwayPipelineConfigId == pipelinesConfig.Id).FirstOrDefault();
+                            this.data.HighwayPipelineDatas.Add(new HighwayPipelineData
+                            {
+                                RecordTimestamp = date.Value,
+                                HighwayPipelineConfigId = pipelinesConfig.Id,
+                                ProductName = pipelinesConfig.Product.Name,
+                                ProductCode = pipelinesConfig.Product.Code,
+                                Volume = item.RealVolume,
+                                Mass = item.RealMass
+                            });   
+                        }
+
+                        this.data.SaveChanges(this.UserProfile.UserName);
+                    }
+                }
+
                 var highwayPipesData = this.data.HighwayPipelineDatas
                     .All()
                     .Include(x => x.HighwayPipelineConfig)
@@ -83,6 +115,13 @@
             if (date.HasValue && date.Value.CompareTo(DateTime.Today) > 0)
             {
                 this.ModelState.AddModelError("date", Resources.Layout.UnitsDateSelectorFuture);
+            }
+            if (date != null && DateTime.Today.AddDays(1) < date.Value)
+            {
+                if (date == null)
+                {
+                    this.ModelState.AddModelError("date", string.Format(Resources.ErrorMessages.Required, Resources.Layout.UnitsDateSelector));
+                }
             }
         }
 
@@ -115,6 +154,89 @@
             }
 
             return Json(new[] { model }.ToDataSourceResult(request, ModelState));
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult IsConfirmed([DataSourceRequest]DataSourceRequest request, DateTime? date)
+        {
+            ValidateModelState(date);
+
+            if (this.ModelState.IsValid)
+            {
+                var approvedDay = this.data.HighwayPipelineApprovedDatas
+                    .All()
+                    .Where(u => u.RecordDate == date)
+                    .FirstOrDefault();
+                if (approvedDay == null)
+                {
+                    return Json(new { IsConfirmed = false });
+                }
+                return Json(new { IsConfirmed = true });
+            }
+            else
+            {
+                return Json(new { IsConfirmed = true });
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Confirm(DateTime date)
+        {
+            //ValidateModelAgainstReportPatameters(this.ModelState, model, Session["reportParams"]);
+
+            if (!Convert.ToBoolean(System.Configuration.ConfigurationManager.AppSettings["ComplitionCheckHighwayPipelineDeactivared"]))
+            {
+                //var status = this.dailyService.CheckIfPreviousDaysAreReady(model.processUnitId, model.date, CommonConstants.MaterialType);
+                //if (!status.IsValid)
+                //{
+                //    status.ToModelStateErrors(this.ModelState);
+                //}
+            }
+
+            if (ModelState.IsValid)
+            {
+                var confirmedDay = this.data.HighwayPipelineApprovedDatas
+                   .All()
+                   .Where(u => u.RecordDate == date)
+                   .FirstOrDefault();
+                if (confirmedDay == null)
+                {
+                    this.data.HighwayPipelineApprovedDatas.Add(
+                        new HighwayPipelineApprovedData
+                        {
+                            RecordDate = date,
+                            Approved = true
+                        });
+
+                    var result = this.data.SaveChanges(this.UserProfile.UserName);
+                    return Json(new { IsConfirmed = result.IsValid }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    ModelState.AddModelError("unitsapproveddata", "Дневните данни вече са потвърдени");
+                    Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                    var errors = GetErrorListFromModelState(ModelState);
+                    return Json(new { data = new { errors = errors } });
+                }
+            }
+            else
+            {
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                var errors = GetErrorListFromModelState(ModelState);
+                return Json(new { data = new { errors = errors } });
+            }
+        }
+
+        private List<string> GetErrorListFromModelState(ModelStateDictionary modelState)
+        {
+            var query = from state in modelState.Values
+                        from error in state.Errors
+                        select error.ErrorMessage;
+
+            var errorList = query.ToList();
+            return errorList;
         }
     }
 }

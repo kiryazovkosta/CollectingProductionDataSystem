@@ -43,8 +43,8 @@
         // TODO: Check this out
         public int ProcessUnitId { get; set; }
 
-        //[Display(Name = "EnteredMeasureUnit", ResourceType = typeof(Resources.Layout))]
-        //public int? EnteredMeasureUnitId { get; set; }
+        [Display(Name = "EnteredMeasureUnit", ResourceType = typeof(Resources.Layout))]
+        public int? EnteredMeasureUnitId { get; set; }
 
         [Required]
         [Display(Name = "Direction", ResourceType = typeof(Resources.Layout))]
@@ -120,7 +120,7 @@
         public decimal? CalculationPercentage { get; set; }
 
         [Display(Name = "DataSource", ResourceType = typeof(Resources.Layout))]
-        public int? DataSource { get; set; }
+        public PrimaryDataSourceType? DataSource { get; set; }
 
         [Display(Name = "ProcessUnitAlias", ResourceType = typeof(Resources.Layout))]
         public string ProcessUnitAlias { get; set; }
@@ -133,6 +133,7 @@
         {
             configuration.CreateMap<UnitConfig, UnitConfigViewModel>()
                 .ForMember(p => p.ShiftProductTypeId, opt => opt.MapFrom(p => p.ShiftProductTypeId == null ? 0 : (int)p.ShiftProductTypeId))
+                .ForMember(p => p.DataSource, opt => opt.MapFrom(p => p.DataSource == null ? 0 : (int)p.DataSource.Value))
                 .ForMember(p => p.RelatedUnitConfigs, opt => opt.MapFrom(p => p.RelatedUnitConfigs.OrderBy(x => x.Position)));
                 
                 //.ForMember(p => p.RelatedUnitConfigs, opt => opt.MapFrom(
@@ -143,7 +144,7 @@
             configuration.CreateMap<UnitConfigViewModel, UnitConfig>()
                 .ForMember(p => p.ShiftProductTypeId, opt => opt.MapFrom(p => p.ShiftProductTypeId == 0 ? null : (Nullable<int>)p.ShiftProductTypeId))
                 .ForMember(p => p.RelatedUnitConfigs, opt => opt.MapFrom(p => p.RelatedUnitConfigs != null ?
-                    p.RelatedUnitConfigs.Select((x,ixd) => new RelatedUnitConfigs() { UnitConfigId = p.Id, RelatedUnitConfigId = x.Id, Position=ixd+1 }) :
+                    p.RelatedUnitConfigs.Select((x, ixd) => new RelatedUnitConfigs() { UnitConfigId = p.Id, RelatedUnitConfigId = x.Id, Position = ixd + 1 }) :
                     new List<RelatedUnitConfigs>()))
                 .ForMember(p => p.Direction, opt => opt.Ignore())
                 .ForMember(p => p.MaterialType, opt => opt.Ignore())
@@ -163,12 +164,12 @@
                 .ForMember(p => p.UnitConfigUnitDailyConfigs, opt => opt.Ignore())
                 .ForMember(p => p.IsConverted, opt => opt.Ignore())
                 .ForMember(p => p.StartupValue, opt => opt.Ignore())
-                .ForMember(p => p.EnteredMeasureUnitId, opt => opt.Ignore())
-                .ForMember(p => p.EnteredMeasureUnit, opt => opt.Ignore())
-                .ForMember(p => p.CalculationPercentage, opt => opt.Ignore())
-                .ForMember(p => p.IsMemberOfShiftsReport, opt=>opt.Ignore())
-                .ForMember(p=>p.DataSource, opt=>opt.Ignore())
-                .ForMember(p=>p.ProcessUnitAlias, opt=>opt.Ignore());
+                //.ForMember(p => p.EnteredMeasureUnitId, opt => opt.Ignore())
+                .ForMember(p => p.EnteredMeasureUnit, opt => opt.Ignore());
+                //.ForMember(p => p.CalculationPercentage, opt => opt.Ignore())
+                //.ForMember(p => p.IsMemberOfShiftsReport, opt=>opt.Ignore())
+                //.ForMember(p=>p.DataSource, opt=>opt.Ignore())
+                //.ForMember(p=>p.ProcessUnitAlias, opt=>opt.Ignore());
         }
     }
 }

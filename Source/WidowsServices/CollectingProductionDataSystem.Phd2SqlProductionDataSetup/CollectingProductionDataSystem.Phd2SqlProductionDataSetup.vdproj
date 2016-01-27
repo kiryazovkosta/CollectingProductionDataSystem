@@ -520,13 +520,13 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_698F557290E495ED4E55B3634693AF77"
+        "OwnerKey" = "8:_F9EEFD8527E7472EA29447E3B3244112"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_0EE6779571BD9032319C766520A790FE"
+        "OwnerKey" = "8:_698F557290E495ED4E55B3634693AF77"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -682,7 +682,7 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_F9EEFD8527E7472EA29447E3B3244112"
+        "OwnerKey" = "8:_0EE6779571BD9032319C766520A790FE"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -1599,15 +1599,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:CollectingProductionDataSystem.Phd2SqlProductionDataSetup"
-        "ProductCode" = "8:{A865A583-1C69-4BCC-9542-37CAF2860646}"
-        "PackageCode" = "8:{30BED5E5-887B-4AB7-A830-AA87F05106FF}"
+        "ProductCode" = "8:{1A882B26-BE9E-461B-A8D2-28D900B092E3}"
+        "PackageCode" = "8:{08A6E722-581A-43D7-90AC-FB1910D29B2D}"
         "UpgradeCode" = "8:{65F7F665-CA14-4FD7-8AF7-7F225A676E13}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:FALSE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:1.3.5"
+        "ProductVersion" = "8:1.3.7"
         "Manufacturer" = "8:Business Management Systems"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"

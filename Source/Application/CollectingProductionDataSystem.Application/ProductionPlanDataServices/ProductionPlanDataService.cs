@@ -13,12 +13,14 @@
         private readonly IProductionData data;
         private readonly ICalculatorService calculator;
         private readonly IUnitsDataService unitData;
+        private readonly IUnitDailyDataService dailyData;
 
-        public ProductionPlanDataService(ICalculatorService calculatorParam, IProductionData dataParam, IUnitsDataService unitData)
+        public ProductionPlanDataService(ICalculatorService calculatorParam, IProductionData dataParam, IUnitsDataService unitData, IUnitDailyDataService dailyDataParam)
         {
             this.data = dataParam;
             this.calculator = calculatorParam;
             this.unitData = unitData;
+            this.dailyData = dailyDataParam;
         }
 
         public IEnumerable<ProductionPlanData> ReadProductionPlanData(DateTime? date, int? processUnitId, int? materialTypeId)
@@ -26,7 +28,17 @@
             var energyId = 2;
             var result = new HashSet<ProductionPlanData>();
             var dailyData = new List<UnitsDailyData>();
-            if (materialTypeId.HasValue && materialTypeId.Value == energyId)
+
+            if (materialTypeId.HasValue && 
+                materialTypeId.Value == energyId &&
+                !this.dailyData.CheckIfDayIsApproved(date.Value, processUnitId.Value))
+            {
+                return result;
+            }
+
+
+            if (materialTypeId.HasValue && 
+                materialTypeId.Value == energyId)
             {
                 dailyData = unitData.GetUnitsDailyDataForDateTime(date, null, null).ToList();    
             }

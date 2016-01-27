@@ -254,9 +254,11 @@
     <Compile Include="Areas\Administration\AdministrationAreaRegistration.cs" />
     <Compile Include="Areas\Administration\Controllers\AjaxController.cs" />
     <Compile Include="Areas\Administration\Controllers\AreaBaseController.cs" />
+    <Compile Include="Areas\Administration\Controllers\EnteredByUserValuesController.cs" />
     <Compile Include="Areas\Administration\Controllers\EventsController.cs" />
     <Compile Include="Areas\Administration\Controllers\MessageController.cs" />
     <Compile Include="Areas\Administration\Controllers\UserStatisticsController.cs" />
+    <Compile Include="Areas\Administration\ViewModels\EnteredByUserValueViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\EventViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\LoggedUserViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\MessageInputModel.cs" />
@@ -1076,6 +1078,7 @@
     <Content Include="Areas\Administration\Views\Message\EditorTemplates\MessageValidUntillInput.cshtml" />
     <Content Include="Areas\Administration\Views\Message\PublishMessage.cshtml" />
     <Content Include="Areas\DailyReporting\Views\EnergyDaily\EnergyDailyData.cshtml" />
+    <Content Include="Areas\Administration\Views\EnteredByUserValues\Index.cshtml" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <None Include="Properties\PublishProfiles\Home.pubxml" />
     <Content Include="Scripts\custom\sendArea.js" />
