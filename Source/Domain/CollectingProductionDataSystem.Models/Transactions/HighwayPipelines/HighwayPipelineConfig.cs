@@ -18,6 +18,9 @@
         public int PipeNumber { get; set; }
         public string Name { get; set; }
         public int ProductId { get; set; }
+
+        public bool ForbitEdit { get; set; }
+
         public virtual Product Product { get; set; }
         public virtual ICollection<HighwayPipelineData> HighwayPipelineDatas 
         {

@@ -41,11 +41,14 @@
         [Range(0, double.MaxValue, ErrorMessageResourceName = "Mass", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
         public decimal Mass { get; set; }
 
+        public bool IsEditable { get; set; }
+
         public void CreateMappings(AutoMapper.IConfiguration configuration)
         {
             configuration.CreateMap<HighwayPipelineData, HighwayPipelinesDataViewModel>()
                 .ForMember(p => p.HighwayPipelineConfigName, opt => opt.MapFrom(p => p.HighwayPipelineConfig.Name))
-                .ForMember(p => p.PipeNumber, opt => opt.MapFrom(p => p.HighwayPipelineConfig.PipeNumber));
+                .ForMember(p => p.PipeNumber, opt => opt.MapFrom(p => p.HighwayPipelineConfig.PipeNumber))
+                .ForMember(p=>p.IsEditable, opt=>opt.MapFrom(p=>!p.HighwayPipelineConfig.ForbitEdit));
         }
 
         public string Sort 
