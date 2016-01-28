@@ -90,6 +90,7 @@
     <Compile Include="Mappings\AreaMap.cs" />
     <Compile Include="Mappings\AuditLogRecordMap.cs" />
     <Compile Include="Mappings\Configuration\ModelBingConfig.cs" />
+    <Compile Include="Mappings\DeletableEntityMapping.cs" />
     <Compile Include="Mappings\Density2FactorAlphaMap.cs" />
     <Compile Include="Mappings\DirectionMap.cs" />
     <Compile Include="Mappings\EditReasonMap.cs" />

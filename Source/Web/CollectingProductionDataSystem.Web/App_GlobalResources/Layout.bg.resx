@@ -1386,4 +1386,37 @@
   <data name="UsageRateMembers" xml:space="preserve">
     <value>Формула РН по факт - позиции</value>
   </data>
+  <data name="Name1" xml:space="preserve">
+    <value>Продукт</value>
+  </data>
+  <data name="PercentagesFact" xml:space="preserve">
+    <value>% факт</value>
+  </data>
+  <data name="PercentagesPlan" xml:space="preserve">
+    <value>% план</value>
+  </data>
+  <data name="QuantityFact" xml:space="preserve">
+    <value>Колич. &lt;br/&gt;(факт T)</value>
+  </data>
+  <data name="QuantityPlan" xml:space="preserve">
+    <value>Колич. &lt;br/&gt;(план T)</value>
+  </data>
+  <data name="TotalMonthPercentagesFact" xml:space="preserve">
+    <value>До деня &lt;br/&gt;(факт %)</value>
+  </data>
+  <data name="TotalMonthQuantityFact" xml:space="preserve">
+    <value>До деня &lt;br/&gt;(факт T)</value>
+  </data>
+  <data name="ProductionPlanReport" xml:space="preserve">
+    <value>Своден отчет по отбори</value>
+  </data>
+  <data name="RelativeDifference" xml:space="preserve">
+    <value>Относителна разлика до деня</value>
+  </data>
+  <data name="TotalMonthPercentagesPlan" xml:space="preserve">
+    <value>До деня &lt;br/&gt;(план %)</value>
+  </data>
+  <data name="TotalMonthQuantityPlan" xml:space="preserve">
+    <value>До деня &lt;br/&gt;(план T)</value>
+  </data>
 </root>
