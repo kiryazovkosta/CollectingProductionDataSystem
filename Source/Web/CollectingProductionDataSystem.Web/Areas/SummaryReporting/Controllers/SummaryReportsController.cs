@@ -251,6 +251,44 @@
 
         }
 
+        [HttpGet]
+        public ActionResult ProductionPlanReport() 
+        {
+            return View();
+        }
+
+        [AuthorizeFactory]
+        [OutputCache(Duration = HalfAnHour, Location = OutputCacheLocation.Server, VaryByParam = "*")]
+        public JsonResult ReadProductionPlanData([DataSourceRequest]DataSourceRequest request, DateTime? date, int? processUnitId, int? factoryId)
+        {
+            ValidateDailyModelState(date);
+            if (ModelState.IsValid)
+            {
+                var kendoResult = new DataSourceResult();
+                if (ModelState.IsValid)
+                {
+                    var dbResult = data.ProductionPlanDatas.All()
+                        .Include(x=>x.ProductionPlanConfig)
+                        .Include(x=>x.ProductionPlanConfig.ProcessUnit)
+                        .Include(x=>x.ProductionPlanConfig.ProcessUnit.Factory)
+                        .Where(x =>
+                            x.RecordTimestamp == date
+                            && x.FactoryId == (factoryId ?? x.FactoryId)
+                            && x.ProcessUnitId == (processUnitId ?? x.ProcessUnitId)
+                        );
+
+                    kendoResult = dbResult.ToDataSourceResult(request, ModelState, Mapper.Map<SummaryProductionPlanViewModel>);
+                }
+
+                return Json(kendoResult, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                var kendoResult = new List<UnitDailyDataViewModel>().ToDataSourceResult(request, ModelState);
+                return Json(kendoResult, JsonRequestBehavior.AllowGet);
+            }
+        }
+
         private void ValidateDailyModelState(DateTime? date)
         {
             if (date == null)

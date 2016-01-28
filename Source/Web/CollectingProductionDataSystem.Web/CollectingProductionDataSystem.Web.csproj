@@ -366,6 +366,7 @@
     <Compile Include="Areas\SummaryReporting\SummaryReportingAreaRegistration.cs" />
     <Compile Include="Areas\SummaryReporting\ViewModels\DailyConfirmationViewModel.cs" />
     <Compile Include="Areas\SummaryReporting\ViewModels\DataConfirmationViewModel.cs" />
+    <Compile Include="Areas\SummaryReporting\ViewModels\SummaryProductionPlanViewModel.cs" />
     <Compile Include="Controllers\AccountController.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -1079,6 +1080,7 @@
     <Content Include="Areas\Administration\Views\Message\PublishMessage.cshtml" />
     <Content Include="Areas\DailyReporting\Views\EnergyDaily\EnergyDailyData.cshtml" />
     <Content Include="Areas\Administration\Views\EnteredByUserValues\Index.cshtml" />
+    <Content Include="Areas\SummaryReporting\Views\SummaryReports\ProductionPlanReport.cshtml" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <None Include="Properties\PublishProfiles\Home.pubxml" />
     <Content Include="Scripts\custom\sendArea.js" />

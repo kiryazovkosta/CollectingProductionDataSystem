@@ -1,0 +1,87 @@
+﻿@using System.Web.Optimization;
+@using CollectingProductionDataSystem.Web.Areas.SummaryReporting.ViewModels;
+@using Resources = App_GlobalResources.Resources;
+
+@model SummaryProductionPlanViewModel
+@{
+    Layout = "~/Views/Shared/_KendoLayoutWithSideBar.cshtml";
+}
+<div class="row">
+    <div class="col-md-10">
+        <h2>@Resources.Layout.ProductionPlanReport</h2>
+    </div>
+    <div class="col-md-2">
+        <button id="excel-export" class="k-button k-button-icontext k-grid-excel pull-right head-button"><span class="k-icon k-i-excel"></span>Експорт в Excel</button>
+    </div>
+</div>
+@Html.ValidationSummary()
+@Html.AntiForgeryToken()
+@(Html.Kendo()
+    .Grid<SummaryProductionPlanViewModel>()
+    .Name("units")
+             .AutoBind(false)
+        .Columns(
+            columns =>
+            {
+                columns.Bound(c => c.Name).Width(230);
+                columns.Bound(c => c.FactoryName).Hidden(true).ClientGroupHeaderTemplate("Производство #=value.substr(3,value.length-3)#");
+                columns.Bound(c => c.ProcessUnitName).Hidden(true).ClientGroupHeaderTemplate("Инсталация #=value.substr(3,value.length-3)#");
+                columns.Bound(c => c.PercentagesPlan).ClientTemplate("<div style='text-align:right;'>#=kendo.toString(data.PercentagesPlan, 'n2') #</div>");
+                columns.Bound(c => c.PercentagesFact).ClientTemplate("<div style='text-align:right;'>#=kendo.toString(data.PercentagesFact, 'n2') #</div>");
+                columns.Bound(c => c.TotalMonthPercentagesFact).ClientTemplate("<div style='text-align:right;'>#=kendo.toString(data.TotalMonthPercentagesFact, 'n2') #</div>");
+                columns.Bound(c => c.QuantityPlan).ClientTemplate("<div style='text-align:right;'>#=kendo.toString(data.QuantityPlan, 'n2') #</div>");
+                columns.Bound(c => c.QuantityFact).ClientTemplate("<div style='text-align:right;'>#=kendo.toString(data.QuantityFact, 'n2') #</div>");
+                columns.Bound(c => c.TotalMonthQuantityPlan).ClientTemplate("<div style='text-align:right;'>#=kendo.toString(data.TotalMonthQuantityPlan, 'n2') #</div>");
+                columns.Bound(c => c.TotalMonthQuantityFact).ClientTemplate("<div style='text-align:right;'>#=kendo.toString(data.TotalMonthQuantityFact, 'n2') #</div>");
+                columns.Bound(c => c.RelativeDifference).ClientTemplate("<div style='text-align:right;'>#=kendo.toString(data.RelativeDifference, 'n2') # %</div>");
+            })
+    .Pageable(pageable => pageable
+        .Refresh(true)
+        .PageSizes(new[] { 20, 50, 100, 200, 300 })
+        .ButtonCount(5)
+    )
+    .Sortable()
+    .Excel(excel => excel
+        .FileName(@Resources.Layout.UnitsData + "_" + string.Format("{0:yyyy-mm-dd}", DateTime.Now) + ".xlsx")
+        .Filterable(true)
+        .ProxyURL(Url.Action("Excel_Export_Save", "Ajax", new { area = "" }))
+        .AllPages(true)
+    )
+    .Scrollable(scr => scr.Height(640))
+    .Filterable()
+    .DataSource(dataSource => dataSource
+        .Ajax()
+        .PageSize(300)
+        .ServerOperation(false)
+                    .Read(read => read.Action("ReadProductionPlanData", "SummaryReports", new { area = "SummaryReporting" }).Type(HttpVerbs.Get).Data("unitGridsData.SendDateForSummaryReports"))
+            .Events(events =>
+            {
+                events.Error("kendoAdditional.ErrorHandler");
+            })
+                    .Group(group =>
+                    {
+                        group.Add(c => c.FactoryName);
+                        group.Add(c => c.ProcessUnitName);
+                    })
+    )
+        .Events(ev => ev.DataBound("unitGridsData.DataBound"))
+
+)
+@* //Error window for kendo grid error event handler *@
+<div id="err-window" style="display:none">@Html.Partial("_KendoGridErrorWindow")</div>
+@* //Error window for kendo grid error event handler *@
+<div id="success-window" style="display:none">@Html.Partial("_SuccessWindow")</div>
+
+@section scripts{
+    @Scripts.Render("~/bundles/custom/kendoadditional")
+    @Scripts.Render("~/bundles/custom/unitGrids")
+}
+@section sidebar{
+    @Html.Partial("_UnitsDailySideBar")
+}
+
+
+
+
+
+
