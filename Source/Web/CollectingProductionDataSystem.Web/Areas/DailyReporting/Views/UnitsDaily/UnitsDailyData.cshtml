@@ -83,7 +83,7 @@
             columns.Bound(c => c.UnitsDailyConfig.Name);
             columns.Bound(c => c.UnitsDailyConfig.MeasureUnit.Code).Width(80);
             columns.Bound(c => c.TotalMonthQuantity).Width(80);
-            columns.Bound(c => c.Value).Width(100).Format("{0:n2}");
+            columns.Bound(c => c.Value).Width(100).Format("{0:n3}");
             columns.Bound(c => c.UnitsManualDailyData.Value)
                  .ClientTemplate(
                 Ajax.AuthorizedAjaxActionLinkOrText("#=data.UnitsManualDailyData.Value.toLocaleString(kendo.culture().name)#", "Index", "History",

@@ -7,6 +7,7 @@
     using CollectingProductionDataSystem.Application.Contracts;
     using CollectingProductionDataSystem.Models.Productions;
     using CollectingProductionDataSystem.Data.Contracts;
+    using CollectingProductionDataSystem.Constants;
 
     public class ProductionPlanDataService : IProductionPlanDataService
     {
@@ -25,7 +26,7 @@
 
         public IEnumerable<ProductionPlanData> ReadProductionPlanData(DateTime? date, int? processUnitId, int? materialTypeId)
         {
-            var energyId = 2;
+            var energyId = CommonConstants.EnergyType;
             var result = new HashSet<ProductionPlanData>();
             var dailyData = new List<UnitsDailyData>();
 
@@ -75,17 +76,26 @@
             {
                 var planValue = CalculatePlanValue(productionPlan, dailyData, this.calculator);
                 var factValue = CalculateFactValue(productionPlan, dailyData, this.calculator);
+                var factPercents = CalculateUsageRateValue(productionPlan, dailyData, this.calculator); 
 
-                var factPercents = 0.0;
-                if (materialTypeId == 1)
-                {
-                    var realValue = dailyData.Where(x => x.UnitsDailyConfig.Code == productionPlan.QuantityPlanMembers).FirstOrDefault().RealValue;
-                    factPercents = (factValue * 100.00) / realValue;   
-                }
-                else 
-                { 
-                    factPercents = CalculateUsageRateValue(productionPlan, dailyData, this.calculator);   
-                }
+                //// full of ...
+                //var factPercents = 0.0;
+                //if (materialTypeId == CommonConstants.MaterialType)
+                //{
+                //    if (!string.IsNullOrEmpty(productionPlan.UsageRateFormula) && !string.IsNullOrEmpty(productionPlan.UsageRateMembers))
+                //    {
+                //        factPercents = CalculateUsageRateValue(productionPlan, dailyData, this.calculator);    
+                //    }
+                //    else
+                //    {
+                //        var realValue = dailyData.Where(x => x.UnitsDailyConfig.Code == productionPlan.QuantityPlanMembers).FirstOrDefault().RealValue;
+                //        factPercents = (factValue * 100.00) / realValue;
+                //    }
+                //}
+                //else 
+                //{ 
+                //    factPercents = CalculateUsageRateValue(productionPlan, dailyData, this.calculator);   
+                //}
 
                 var productionPlanData = new ProductionPlanData
                 {

@@ -30,9 +30,9 @@
                 columns.Bound("Name").Title("Енергиен Продукт").Width(100);
                 columns.Bound("PercentagesPlan").Title("РН план").Format("{0:n5}");
                 columns.Bound("PercentagesFact").Title("РН факт").Format("{0:n5}");
-                columns.Bound("QuantityPlan").Title("Количество (план)").Format("{0:n2}");
-                columns.Bound("QuantityFact").Title("Количество (факт)").Format("{0:n2}");
-                columns.Bound("TotalMonthQuantityFact").Title("До деня (факт)").Format("{0:n2}").Width(70);
+                columns.Bound("QuantityPlan").Title("Количество (план)").Format("{0:n3}");
+                columns.Bound("QuantityFact").Title("Количество (факт)").Format("{0:n3}");
+                columns.Bound("TotalMonthQuantityFact").Title("До деня (факт)").Format("{0:n3}").Width(70);
             })
     .Scrollable(scr => scr.Height(300))
     .DataSource(dataSource => dataSource
@@ -79,7 +79,7 @@
             columns.Bound(c => c.UnitsDailyConfig.Name).Width(180);
             columns.Bound(c => c.UnitsDailyConfig.MeasureUnit.Code).Width(80);
             columns.Bound(c => c.TotalMonthQuantity).Width(80);
-            columns.Bound(c => c.Value).Width(100).Format("{0:n2}");
+            columns.Bound(c => c.Value).Width(100).Format("{0:n3}");
             columns.Bound(c => c.UnitsManualDailyData.Value)
                  .ClientTemplate(
                 Ajax.AuthorizedAjaxActionLinkOrText("#=data.UnitsManualDailyData.Value.toLocaleString(kendo.culture().name)#", "Index", "History",

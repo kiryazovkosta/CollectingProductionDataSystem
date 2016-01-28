@@ -339,7 +339,7 @@
             oPhd.DefaultServer = defaultServer;
             oPhd.StartTime = string.Format("NOW - {0}H2M", offsetInHours);
             oPhd.EndTime = string.Format("NOW - {0}H2M", offsetInHours);
-            oPhd.Sampletype = SAMPLETYPE.Raw;
+            oPhd.Sampletype = SAMPLETYPE.Snapshot;
             oPhd.MinimumConfidence = Convert.ToInt32(settings.Settings.Get("PHD_DATA_MIN_CONFIDENCE").Value.ValueXml.InnerText);
             oPhd.MaximumRows = Convert.ToUInt32(settings.Settings.Get("PHD_DATA_MAX_ROWS").Value.ValueXml.InnerText);
         }
