@@ -21,18 +21,18 @@
 <div class="row">
     <div class="col-lg-4 col-lg-push-8">
         @(Html.Kendo()
-        .Grid<ProductionPlanViewModel>()
+        .Grid<ProductionPlanEnergyViewModel>()
         .Name("productionPlan")
         .AutoBind(false)
         .Columns(
             columns =>
             {
-                columns.Bound("Name").Title("Енергиен Продукт").Width(100);
-                columns.Bound("PercentagesPlan").Title("РН план").Format("{0:n5}");
-                columns.Bound("PercentagesFact").Title("РН факт").Format("{0:n5}");
-                columns.Bound("QuantityPlan").Title("Количество (план)").Format("{0:n3}");
-                columns.Bound("QuantityFact").Title("Количество (факт)").Format("{0:n3}");
-                columns.Bound("TotalMonthQuantityFact").Title("До деня (факт)").Format("{0:n3}").Width(70);
+                columns.Bound("Name");//.Title("Енергиен Продукт").Width(100);
+                columns.Bound("PercentagesPlan").ClientTemplate("<div style='text-align:right;'>#=data.PercentagesPlan==null?'':kendo.toString(data.PercentagesPlan)#</div>");
+                columns.Bound("PercentagesFact").ClientTemplate("<div style='text-align:right;'>#=data.PercentagesFact==null?'':kendo.toString(data.PercentagesFact, 'n5')#</div>");
+                columns.Bound("QuantityPlan").ClientTemplate("<div style='text-align:right;'>#=data.QuantityPlan==null?'':kendo.toString(data.QuantityPlan, 'n3')#</div>");
+                columns.Bound("QuantityFact").ClientTemplate("<div style='text-align:right;'>#=data.QuantityFact==null?'':kendo.toString(data.QuantityFact, 'n3')#</div>");
+                columns.Bound("TotalMonthQuantityFact").ClientTemplate("<div style='text-align:right;'>#=data.TotalMonthQuantityFact==null?'':kendo.toString(data.TotalMonthQuantityFact, 'n3')#</div>");
             })
     .Scrollable(scr => scr.Height(300))
     .DataSource(dataSource => dataSource
@@ -81,12 +81,12 @@
             columns.Bound(c => c.TotalMonthQuantity).ClientTemplate("<div style='text-align:right;'>#=data.Value==null?'':kendo.toString(data.TotalMonthQuantity, '\\#\\#.\\#\\#\\#\\#\\#')#</div>");//Width(80);
             columns.Bound(c => c.Value).ClientTemplate("<div style='text-align:right;'>#=data.Value==null?'':kendo.toString(data.Value, '\\#\\#.\\#\\#\\#\\#\\#')#</div>");//Width(100);
             columns.Bound(c => c.UnitsManualDailyData.Value)
-                 .ClientTemplate(
+                 .ClientTemplate(string.Format("{0}{2}{1}", "<div style='text-align:right;'>", "</div>",
                 Ajax.AuthorizedAjaxActionLinkOrText("#=kendo.toString(data.UnitsManualDailyData.Value,'\\#\\#.\\#\\#\\#\\#\\#')#", "Index", "History",
                                                 new AjaxOptions() { HttpMethod = "Get", OnSuccess = "showRecordHistoriModal" },
                                                 new { area = "RecordsHistory", id = "#=data.id#", entityName = "UnitsManualDailyData" },
                                                 new { data_ajax_mode = "replace", data_ajax_update = @"\#modal-dialog-body" })
-                                                .ToHtmlString());
+                                                .ToHtmlString()));
                 //.Width(100);
             columns.Bound(c => c.UnitsManualDailyData.EditReason).Width(180).ClientTemplate("#:UnitsManualDailyData.EditReason.Name#")
                 .ClientTemplate("<div class=row><div class='col-xs-2 no-horisontal-padding'><div class='#:UnitsManualDailyData.EditReason.Id == 0? 'bg-ok':'bg-edited'#'></div></div><div class='col-xs-9 no-horisontal-padding reason'>#:UnitsManualDailyData.EditReason.Name#</div></div>");

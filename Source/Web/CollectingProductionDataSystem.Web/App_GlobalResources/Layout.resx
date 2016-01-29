@@ -1422,4 +1422,22 @@
   <data name="TotalMonthQuantityPlan" xml:space="preserve">
     <value>Total Month Plan (T)</value>
   </data>
+  <data name="UsageRateFact" xml:space="preserve">
+    <value>UsageRateFact</value>
+  </data>
+  <data name="UsageRateName" xml:space="preserve">
+    <value>UsageRateName</value>
+  </data>
+  <data name="UsageRatePlan" xml:space="preserve">
+    <value>UsageRatePlan</value>
+  </data>
+  <data name="UsageRateQuantityFact" xml:space="preserve">
+    <value>UsageRateQuantityFact</value>
+  </data>
+  <data name="UsageRateQuantityPlan" xml:space="preserve">
+    <value>UsageRateQuantityPlan</value>
+  </data>
+  <data name="UsageRateTotalMonthQuantityFact" xml:space="preserve">
+    <value>UsageRateTotalMonthQuantityFact</value>
+  </data>
 </root>

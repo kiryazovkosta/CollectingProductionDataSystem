@@ -40,22 +40,22 @@
                 .Width(77);
             columns.Bound(c => c.UnitConfig.ShiftProductType.Sort).Hidden(true).ClientGroupHeaderTemplate("#=value#");
             //columns.Bound(c => c.UnitConfig.ProcessUnit.ShortName).Width(100);
-            columns.Bound(c => c.UnitConfig.ProcessUnitAlias).Width(100);
-            columns.Bound(c => c.UnitConfig.Name).Width(310);
-            columns.Bound(c => c.UnitConfig.Position).Width(140);
-            columns.Bound(c => c.UnitConfig.MeasureUnit.Code).Width(100);
-            columns.Bound(c => c.UnitConfig.CollectingDataMechanism).Width(40).Title(string.Empty);
+            columns.Bound(c => c.UnitConfig.ProcessUnitAlias);//.Width(100);
+            columns.Bound(c => c.UnitConfig.Name);//.Width(310);
+            columns.Bound(c => c.UnitConfig.Position);//.Width(140);
+            columns.Bound(c => c.UnitConfig.MeasureUnit.Code);//.Width(100);
+            columns.Bound(c => c.UnitConfig.CollectingDataMechanism).Title(string.Empty);//.Width(40);
             //columns.Bound(c => c.Value).Width(100).ClientTemplate("<div>#=data.Value==null?'':data.Value.toLocaleString(kendo.culture().name)#</div>");            
             columns.Bound(c => c.Value).Width(100).ClientTemplate("<div style='text-align:right;'>#=data.Value==null?'':kendo.toString(data.Value,'\\#\\#.\\#\\#\\#\\#\\#')#</div>");
-            columns.Bound(c => c.UnitsManualData.Value).Width(100)
-                .ClientTemplate(
+            columns.Bound(c => c.UnitsManualData.Value)//.Width(100)
+                .ClientTemplate(string.Format("{0}{2}{1}", "<div style='text-align:right;'>", "</div>",
                 Ajax.AuthorizedAjaxActionLinkOrText("#=kendo.toString(data.UnitsManualData.Value,'\\#\\#.\\#\\#\\#\\#\\#')#", "Index", "History",
                                                 new AjaxOptions() { HttpMethod = "Get", OnSuccess = "showRecordHistoriModal" },
                                                 new { area = "RecordsHistory", id = "#=data.id#", entityName = "UnitsManualData" },
                                                 new { data_ajax_mode = "replace", data_ajax_update = @"\#modal-dialog-body" })
-                                                .ToHtmlString());
+                                                .ToHtmlString()));
             columns.Bound(c => c.UnitsManualData.EditReason).Width(200).ClientTemplate("#:UnitsManualData.EditReason.Name#")
-            .ClientTemplate("<div class=row><div class='col-xs-2 no-horisontal-padding'><div class='#:UnitsManualData.EditReason.Id == 0? 'bg-ok':'bg-edited'#'></div></div><div class='col-xs-9 no-horisontal-padding reason'>#:UnitsManualData.EditReason.Name#</div></div>");
+                .ClientTemplate("<div class=row><div class='col-xs-2 no-horisontal-padding'><div class='#:UnitsManualData.EditReason.Id == 0? 'bg-ok':'bg-edited'#'></div></div><div class='col-xs-9 no-horisontal-padding reason'>#:UnitsManualData.EditReason.Name#</div></div>");
             columns.Bound(c => c.IsEditable).Visible(false);
             columns.Command(c => c.Edit()).Width(180);
 
