@@ -7,6 +7,7 @@
     using System.Web.Mvc;
     using System.Data.Entity;
     using System.Web.UI;
+    using CollectingProductionDataSystem.Constants;
     using CollectingProductionDataSystem.Data.Contracts;
     using CollectingProductionDataSystem.Web.Areas.SummaryReporting.ViewModels;
     using CollectingProductionDataSystem.Web.Infrastructure.Extentions;
@@ -275,6 +276,7 @@
                             x.RecordTimestamp == date
                             && x.FactoryId == (factoryId ?? x.FactoryId)
                             && x.ProcessUnitId == (processUnitId ?? x.ProcessUnitId)
+                            && x.ProductionPlanConfig.MaterialTypeId == CommonConstants.MaterialType
                         );
 
                     kendoResult = dbResult.ToDataSourceResult(request, ModelState, Mapper.Map<SummaryProductionPlanViewModel>);

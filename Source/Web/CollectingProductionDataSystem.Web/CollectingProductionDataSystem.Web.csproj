@@ -366,6 +366,7 @@
     <Compile Include="Areas\SummaryReporting\SummaryReportingAreaRegistration.cs" />
     <Compile Include="Areas\SummaryReporting\ViewModels\DailyConfirmationViewModel.cs" />
     <Compile Include="Areas\SummaryReporting\ViewModels\DataConfirmationViewModel.cs" />
+    <Compile Include="Areas\SummaryReporting\ViewModels\EnergyProductionPlanDataViewModel.cs" />
     <Compile Include="Areas\SummaryReporting\ViewModels\SummaryProductionPlanViewModel.cs" />
     <Compile Include="Controllers\AccountController.cs">
       <SubType>Code</SubType>
