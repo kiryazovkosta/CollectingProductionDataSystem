@@ -45,10 +45,11 @@
             columns.Bound(c => c.UnitConfig.Position).Width(140);
             columns.Bound(c => c.UnitConfig.MeasureUnit.Code).Width(100);
             columns.Bound(c => c.UnitConfig.CollectingDataMechanism).Width(40).Title(string.Empty);
-            columns.Bound(c => c.Value).Width(100).Format("{0:n2}");
-            columns.Bound(c => c.UnitsManualData.Value).Width(100).Format("{0:n3}")
+            //columns.Bound(c => c.Value).Width(100).ClientTemplate("<div>#=data.Value==null?'':data.Value.toLocaleString(kendo.culture().name)#</div>");            
+            columns.Bound(c => c.Value).Width(100).ClientTemplate("<div>#=data.Value==null?'':kendo.toString(data.Value,'\\#\\#.\\#\\#\\#\\#\\#')#</div>");
+            columns.Bound(c => c.UnitsManualData.Value).Width(100)
                 .ClientTemplate(
-                Ajax.AuthorizedAjaxActionLinkOrText("#=data.UnitsManualData.Value.toLocaleString(kendo.culture().name)#", "Index", "History",
+                Ajax.AuthorizedAjaxActionLinkOrText("#=kendo.toString(data.UnitsManualData.Value,'\\#\\#.\\#\\#\\#\\#\\#')#", "Index", "History",
                                                 new AjaxOptions() { HttpMethod = "Get", OnSuccess = "showRecordHistoriModal" },
                                                 new { area = "RecordsHistory", id = "#=data.id#", entityName = "UnitsManualData" },
                                                 new { data_ajax_mode = "replace", data_ajax_update = @"\#modal-dialog-body" })
