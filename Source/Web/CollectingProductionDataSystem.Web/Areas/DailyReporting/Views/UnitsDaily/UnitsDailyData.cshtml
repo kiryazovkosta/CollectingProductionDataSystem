@@ -82,8 +82,8 @@
             //columns.Bound(c => c.UnitsDailyConfig.ProcessUnit.ShortName).Width(100);
             columns.Bound(c => c.UnitsDailyConfig.Name);
             columns.Bound(c => c.UnitsDailyConfig.MeasureUnit.Code).Width(80);
-            columns.Bound(c => c.TotalMonthQuantity).Width(80);
-            columns.Bound(c => c.Value).Width(100).ClientTemplate("<div>#=data.Value==null?'':kendo.toString(data.Value, '\\#\\#.\\#\\#\\#\\#\\#')#</div>");
+            columns.Bound(c => c.TotalMonthQuantity).Width(80).ClientTemplate("<div style='text-align:right;'>#=data.Value==null?'':kendo.toString(data.TotalMonthQuantity, '\\#\\#.\\#\\#\\#\\#\\#')#</div>");
+            columns.Bound(c => c.Value).Width(100).ClientTemplate("<div style='text-align:right;'>#=data.Value==null?'':kendo.toString(data.Value, '\\#\\#.\\#\\#\\#\\#\\#')#</div>");
             columns.Bound(c => c.UnitsManualDailyData.Value)
                  .ClientTemplate(
                 Ajax.AuthorizedAjaxActionLinkOrText("#=kendo.toString(data.UnitsManualDailyData.Value,'\\#\\#.\\#\\#\\#\\#\\#')#", "Index", "History",
