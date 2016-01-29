@@ -1419,4 +1419,22 @@
   <data name="TotalMonthQuantityPlan" xml:space="preserve">
     <value>До деня &lt;br/&gt;(план T)</value>
   </data>
+  <data name="UsageRateFact" xml:space="preserve">
+    <value>РН факт</value>
+  </data>
+  <data name="UsageRateName" xml:space="preserve">
+    <value>Енергиен Продукт</value>
+  </data>
+  <data name="UsageRatePlan" xml:space="preserve">
+    <value>РН план</value>
+  </data>
+  <data name="UsageRateQuantityFact" xml:space="preserve">
+    <value>Количество (факт)</value>
+  </data>
+  <data name="UsageRateQuantityPlan" xml:space="preserve">
+    <value>Количество (план)</value>
+  </data>
+  <data name="UsageRateTotalMonthQuantityFact" xml:space="preserve">
+    <value>До деня (факт)</value>
+  </data>
 </root>

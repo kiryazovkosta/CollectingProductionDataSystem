@@ -536,13 +536,13 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
                 .Include(x => x.RelatedUnitDailyConfigs)
                 .Where(x => x.ProcessUnitId == processUnitId && x.AggregationCurrentLevel == true)
                 .SelectMany(y => y.RelatedUnitDailyConfigs)
-                .Where(z => z.RelatedUnitsDailyConfig.ProcessUnitId != processUnitId)
+                //.Where(z => z.RelatedUnitsDailyConfig.ProcessUnitId != processUnitId)
                 .ToList();
 
             foreach (var item in relatedDailyDatasFromOtherProcessUnits)
             {
                 var relatedData = this.data.UnitsDailyDatas.All().Where(u => u.RecordTimestamp == targetDay && u.UnitsDailyConfigId == item.RelatedUnitsDailyConfigId).FirstOrDefault();
-                if (relatedData != null)
+                if (relatedData != null && !relatedUnitsDailyData.ContainsKey(relatedData.UnitsDailyConfig.Code))
                 {
                     relatedUnitsDailyData.Add(relatedData.UnitsDailyConfig.Code, relatedData);
                 }

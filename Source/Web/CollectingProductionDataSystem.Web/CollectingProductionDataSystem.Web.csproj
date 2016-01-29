@@ -401,6 +401,7 @@
     <Compile Include="InputModels\ProcessUnitConfirmShiftInputModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="ViewModels\Units\ProductionPlanEnergyViewModel.cs" />
     <Compile Include="ViewModels\Utility\ErrorScreenViewModel.cs" />
     <Compile Include="ViewModels\Utility\HistoryLink.cs" />
     <Compile Include="ViewModels\Home\IndexInventoryTanksViewModel.cs" />
