@@ -68,8 +68,8 @@ namespace CollectingProductionDataSystem.Web.Areas.SummaryReporting.ViewModels
                 .ForMember(p => p.TotalMonthQuantityPlan, opt => opt.MapFrom(p => p.RecordTimestamp.Day * p.QuanityPlan))
                 .ForMember(p => p.RelativeDifference, opt => opt.Ignore())
                 .ForMember(p => p.FactoryName, opt => opt.MapFrom(p => string.Format("{0:d2} {1}", p.FactoryId, p.ProductionPlanConfig.ProcessUnit.Factory.ShortName)))
-                .ForMember(p => p.ProcessUnitName, opt => opt.MapFrom(p => string.Format("{0:d2} {1}", p.ProcessUnitId, p.ProductionPlanConfig.ProcessUnit.ShortName)));
-                //.ForMember(p=>p.MeasurementUnit, opt=>opt.MapFrom(p=>p.ProductionPlanConfig.ProcessUnit.));
+                .ForMember(p => p.ProcessUnitName, opt => opt.MapFrom(p => string.Format("{0:d2} {1}", p.ProcessUnitId, p.ProductionPlanConfig.ProcessUnit.ShortName)))
+                .ForMember(p=>p.MeasurementUnit, opt=>opt.MapFrom(p=>p.ProductionPlanConfig.MeasureUnit.Code));
         }
     }
 }

@@ -291,6 +291,46 @@
             }
         }
 
+        [HttpGet]
+        public ActionResult ProductionPlanEnergyReport() 
+        {
+            return View();
+        }
+
+        [AuthorizeFactory]
+        [OutputCache(Duration = HalfAnHour, Location = OutputCacheLocation.Server, VaryByParam = "*")]
+        public JsonResult ReadProductionPlanEnergyData([DataSourceRequest]DataSourceRequest request, DateTime? date, int? processUnitId, int? factoryId)
+        {
+            ValidateDailyModelState(date);
+            if (ModelState.IsValid)
+            {
+                var kendoResult = new DataSourceResult();
+                if (ModelState.IsValid)
+                {
+                    var dbResult = data.ProductionPlanDatas.All()
+                        .Include(x=>x.ProductionPlanConfig)
+                        .Include(x=>x.ProductionPlanConfig.ProcessUnit)
+                        .Include(x=>x.ProductionPlanConfig.MeasureUnit)
+                        .Include(x=>x.ProductionPlanConfig.ProcessUnit.Factory)
+                        .Where(x =>
+                            x.RecordTimestamp == date
+                            && x.FactoryId == (factoryId ?? x.FactoryId)
+                            && x.ProcessUnitId == (processUnitId ?? x.ProcessUnitId)
+                            && x.ProductionPlanConfig.MaterialTypeId == CommonConstants.EnergyType
+                        ).ToList();
+
+                    kendoResult = dbResult.ToDataSourceResult(request, ModelState, Mapper.Map<EnergyProductionPlanDataViewModel>);
+                }
+
+                return Json(kendoResult, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                var kendoResult = new List<UnitDailyDataViewModel>().ToDataSourceResult(request, ModelState);
+                return Json(kendoResult, JsonRequestBehavior.AllowGet);
+            }
+        }
+
         private void ValidateDailyModelState(DateTime? date)
         {
             if (date == null)

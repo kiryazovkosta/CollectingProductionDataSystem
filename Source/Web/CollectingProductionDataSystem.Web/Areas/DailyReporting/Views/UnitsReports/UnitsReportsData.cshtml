@@ -33,7 +33,7 @@
             columns.Bound(c => c.Shift1QuantityValue).Format("{0:n2}").Width(200);
             columns.Bound(c => c.Shift2QuantityValue).Format("{0:n2}").Width(200);
             columns.Bound(c => c.Shift3QuantityValue).Format("{0:n2}").Width(200);
-            //columns.Bound(c => c.TotalQuantityValue).Format("{0:n2}").Width(200);
+            columns.Bound(c => c.TotalQuantityValue).Format("{0:n2}").Width(200);
 
         })
     .Pageable(pageable => pageable

@@ -22,6 +22,7 @@ namespace CollectingProductionDataSystem.Models.Nomenclatures
             this.UnitsConfigs = new HashSet<UnitConfig>();
             this.UnitsDailyConfigs = new HashSet<UnitDailyConfig>();
             this.EnteredUnitConfigs = new HashSet<UnitConfig>();
+            this.ProductionPlanConfigs = new HashSet<ProductionPlanConfig>();
         }
 
         /// <summary>
@@ -40,6 +41,8 @@ namespace CollectingProductionDataSystem.Models.Nomenclatures
         public string Name { get; set; }
         public string Code { get; set; }
         public virtual ICollection<UnitConfig> UnitsConfigs { get; set; }
+
+        public virtual ICollection<ProductionPlanConfig> ProductionPlanConfigs{ get; set; }
         /// <summary>
         /// Gets or sets the units daily configs.
         /// </summary>

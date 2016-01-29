@@ -33,6 +33,7 @@
             columns.Bound(c => c.Shift1QuantityValue).Format("{0:n2}").Width(200);
             columns.Bound(c => c.Shift2QuantityValue).Format("{0:n2}").Width(200);
             columns.Bound(c => c.Shift3QuantityValue).Format("{0:n2}").Width(200);
+            columns.Bound(c => c.TotalQuantityValue).Format("{0:n2}").Width(200);
         })
 
     .Pageable(pageable => pageable
@@ -58,7 +59,8 @@
         {
             events.Error("kendoAdditional.ErrorHandler");
         })
-            .Group(group =>{
+            .Group(group =>
+            {
                 group.Add(c => c.Factory);
                 group.Add(c => c.ProcessUnit);
             })

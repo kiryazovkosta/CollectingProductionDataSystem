@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CollectingProductionDataSystem.Models.Productions;
 
 namespace CollectingProductionDataSystem.PrPlMeasureUnitMigration
 {
@@ -12,19 +13,31 @@ namespace CollectingProductionDataSystem.PrPlMeasureUnitMigration
     {
         static void Main(string[] args)
         {
+            var productionPlanConfigsErrors = new List<string>();
             using (var data = new CollectingDataSystemDbContext())
             {
-                var planConfigs = data.ProductionPlanConfigs;
+                var planConfigs = data.ProductionPlanConfigs.Where(x => x.IsDeleted == false);
                 foreach (var planConfig in planConfigs)
                 {
                     string code = planConfig.QuantityFactMembers.Split('@').FirstOrDefault();
-                    var dailyMeasureUnitId = data.UnitDailyConfigs.FirstOrDefault(x => x.Code == code).MeasureUnitId;
-                    if (dailyMeasureUnitId > 0)
+                    var unitDailyConfig = data.UnitDailyConfigs.FirstOrDefault(x => x.Code == code);
+                    if (unitDailyConfig == null)
                     {
-                        planConfig.MeasureUnitId = dailyMeasureUnitId;
+                        Console.WriteLine(string.Format("Id: {0} | code: {1}", planConfig.Id, code));
+                    }
+                    else
+                    {
+                        var dailyMeasureUnitId = unitDailyConfig.MeasureUnitId;
+                        if (dailyMeasureUnitId > 0)
+                        {
+                            planConfig.MeasureUnitId = dailyMeasureUnitId;
+                            if (planConfig.MaterialTypeId>1 && planConfig.MaterialDetailTypeId==null)
+                            {
+                                planConfig.MaterialDetailTypeId=1;
+                            }
+                        }
                     }
                 }
-
                 data.SaveChanges();
             }
         }
