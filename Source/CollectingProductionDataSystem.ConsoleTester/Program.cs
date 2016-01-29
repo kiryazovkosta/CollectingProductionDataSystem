@@ -45,13 +45,15 @@ namespace CollectingProductionDataSystem.ConsoleTester
             //{
             //    CalculateDailyDataIfNotAvailable(new DateTime(2015, 12, 4), 7);
             //}
-            Thread thread1 = new Thread(new ThreadStart(Calculate));
-            Thread thread2 = new Thread(new ThreadStart(Calculate));
-            thread1.Start();
-            thread2.Start();
-            thread1.Join();
-            thread2.Join();
-            Console.WriteLine("CalculationOver");
+            //Thread thread1 = new Thread(new ThreadStart(Calculate));
+            //Thread thread2 = new Thread(new ThreadStart(Calculate));
+            //thread1.Start();
+            //thread2.Start();
+            //thread1.Join();
+            //thread2.Join();
+            //Console.WriteLine("CalculationOver");
+            var str = string.Format("Some formula * {0}", (2.34).ToString(System.Globalization.CultureInfo.InvariantCulture));
+            Console.WriteLine(str);
         }
 
         private static void Calculate() 

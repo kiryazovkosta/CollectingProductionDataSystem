@@ -83,16 +83,15 @@
             columns.Bound(c => c.UnitsDailyConfig.Name);
             columns.Bound(c => c.UnitsDailyConfig.MeasureUnit.Code).Width(80);
             columns.Bound(c => c.TotalMonthQuantity).Width(80);
-            columns.Bound(c => c.Value).Width(100).Format("{0:n3}");
-            columns.Bound(c => c.UnitsManualDailyData.Value).Format("{0:n3}")
+            columns.Bound(c => c.Value).Width(100).ClientTemplate("<div>#=data.Value==null?'':kendo.toString(data.Value, '\\#\\#.\\#\\#\\#\\#\\#')#</div>");
+            columns.Bound(c => c.UnitsManualDailyData.Value)
                  .ClientTemplate(
-                Ajax.AuthorizedAjaxActionLinkOrText("#=data.UnitsManualDailyData.Value.toLocaleString(kendo.culture().name)#", "Index", "History",
+                Ajax.AuthorizedAjaxActionLinkOrText("#=kendo.toString(data.UnitsManualDailyData.Value,'\\#\\#.\\#\\#\\#\\#\\#')#", "Index", "History",
                                                 new AjaxOptions() { HttpMethod = "Get", OnSuccess = "showRecordHistoriModal" },
                                                 new { area = "RecordsHistory", id = "#=data.id#", entityName = "UnitsManualDailyData" },
                                                 new { data_ajax_mode = "replace", data_ajax_update = @"\#modal-dialog-body" })
                                                 .ToHtmlString())
-                .Width(100)
-                .Format("{0:n2}");
+                .Width(100);
             columns.Bound(c => c.UnitsManualDailyData.EditReason).Width(180).ClientTemplate("#:UnitsManualDailyData.EditReason.Name#")
                 .ClientTemplate("<div class=row><div class='col-xs-2 no-horisontal-padding'><div class='#:UnitsManualDailyData.EditReason.Id == 0? 'bg-ok':'bg-edited'#'></div></div><div class='col-xs-9 no-horisontal-padding reason'>#:UnitsManualDailyData.EditReason.Name#</div></div>");
             columns.Bound(c => c.IsEditable).Visible(false);
