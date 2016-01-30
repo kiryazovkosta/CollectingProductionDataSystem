@@ -72,22 +72,22 @@
                                                 new AjaxOptions() { HttpMethod = "Get", OnSuccess = "showRecordHistoriModal" },
                                                 new { area = "RecordsHistory", id = "#=data.id#", entityName = "UnitsDailyData" },
                                                 new { data_ajax_mode = "replace", data_ajax_update = @"\#modal-dialog-body" })
-                                                .ToHtmlString());
-                //.Width(77);
+                                                .ToHtmlString())
+                .Width(78);
             columns.Bound(c => c.UnitsDailyConfig.DailyProductType.Sort).Hidden(true).ClientGroupHeaderTemplate("#=value#");
             //columns.Bound(c => c.UnitsDailyConfig.ProcessUnit.ShortName).Width(100);
             columns.Bound(c => c.UnitsDailyConfig.Name);//.Width(180);
-            columns.Bound(c => c.UnitsDailyConfig.MeasureUnit.Code);//.Width(80);
-            columns.Bound(c => c.TotalMonthQuantity).ClientTemplate("<div style='text-align:right;'>#=data.Value==null?'':kendo.toString(data.TotalMonthQuantity, '\\#\\#.\\#\\#\\#\\#\\#')#</div>");//Width(80);
-            columns.Bound(c => c.Value).ClientTemplate("<div style='text-align:right;'>#=data.Value==null?'':kendo.toString(data.Value, '\\#\\#.\\#\\#\\#\\#\\#')#</div>");//Width(100);
+            columns.Bound(c => c.UnitsDailyConfig.MeasureUnit.Code).Width(80);
+            columns.Bound(c => c.TotalMonthQuantity).ClientTemplate("<div style='text-align:right;'>#=data.Value==null?'':kendo.toString(data.TotalMonthQuantity, '\\#\\#.\\#\\#\\#')#</div>").Width(100);
+            columns.Bound(c => c.Value).ClientTemplate("<div style='text-align:right;'>#=data.Value==null?'':kendo.toString(data.Value, '\\#\\#.\\#\\#\\#')#</div>").Width(120);
             columns.Bound(c => c.UnitsManualDailyData.Value)
                  .ClientTemplate(string.Format("{0}{2}{1}", "<div style='text-align:right;'>", "</div>",
-                Ajax.AuthorizedAjaxActionLinkOrText("#=kendo.toString(data.UnitsManualDailyData.Value,'\\#\\#.\\#\\#\\#\\#\\#')#", "Index", "History",
+                Ajax.AuthorizedAjaxActionLinkOrText("#=kendo.toString(data.UnitsManualDailyData.Value,'\\#\\#.\\#\\#\\#')#", "Index", "History",
                                                 new AjaxOptions() { HttpMethod = "Get", OnSuccess = "showRecordHistoriModal" },
                                                 new { area = "RecordsHistory", id = "#=data.id#", entityName = "UnitsManualDailyData" },
                                                 new { data_ajax_mode = "replace", data_ajax_update = @"\#modal-dialog-body" })
-                                                .ToHtmlString()));
-                //.Width(100);
+                                                .ToHtmlString()))
+                .Width(100);
             columns.Bound(c => c.UnitsManualDailyData.EditReason).Width(180).ClientTemplate("#:UnitsManualDailyData.EditReason.Name#")
                 .ClientTemplate("<div class=row><div class='col-xs-2 no-horisontal-padding'><div class='#:UnitsManualDailyData.EditReason.Id == 0? 'bg-ok':'bg-edited'#'></div></div><div class='col-xs-9 no-horisontal-padding reason'>#:UnitsManualDailyData.EditReason.Name#</div></div>");
             columns.Bound(c => c.IsEditable).Visible(false);

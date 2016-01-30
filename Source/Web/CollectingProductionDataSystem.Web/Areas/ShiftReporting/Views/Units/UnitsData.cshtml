@@ -37,19 +37,19 @@
                                                 new { area = "RecordsHistory", id = "#=data.id#", entityName = "UnitsData" },
                                                 new { data_ajax_mode = "replace", data_ajax_update = @"\#modal-dialog-body" })
                                                 .ToHtmlString())
-                .Width(77);
+                .Width(78);
             columns.Bound(c => c.UnitConfig.ShiftProductType.Sort).Hidden(true).ClientGroupHeaderTemplate("#=value#");
             //columns.Bound(c => c.UnitConfig.ProcessUnit.ShortName).Width(100);
-            columns.Bound(c => c.UnitConfig.ProcessUnitAlias);//.Width(100);
+            columns.Bound(c => c.UnitConfig.ProcessUnitAlias).Width(100);
             columns.Bound(c => c.UnitConfig.Name);//.Width(310);
-            columns.Bound(c => c.UnitConfig.Position);//.Width(140);
-            columns.Bound(c => c.UnitConfig.MeasureUnit.Code);//.Width(100);
-            columns.Bound(c => c.UnitConfig.CollectingDataMechanism).Title(string.Empty);//.Width(40);
+            columns.Bound(c => c.UnitConfig.Position).Width(140);
+            columns.Bound(c => c.UnitConfig.MeasureUnit.Code).Width(80);
+            columns.Bound(c => c.UnitConfig.CollectingDataMechanism).Title(string.Empty).Width(40);
             //columns.Bound(c => c.Value).Width(100).ClientTemplate("<div>#=data.Value==null?'':data.Value.toLocaleString(kendo.culture().name)#</div>");            
-            columns.Bound(c => c.Value).Width(100).ClientTemplate("<div style='text-align:right;'>#=data.Value==null?'':kendo.toString(data.Value,'\\#\\#.\\#\\#\\#\\#\\#')#</div>");
-            columns.Bound(c => c.UnitsManualData.Value)//.Width(100)
+            columns.Bound(c => c.Value).Width(100).ClientTemplate("<div style='text-align:right;'>#=data.Value==null?'':kendo.toString(data.Value,'\\#\\#.\\#\\#\\#')#</div>");
+            columns.Bound(c => c.UnitsManualData.Value).Width(100)
                 .ClientTemplate(string.Format("{0}{2}{1}", "<div style='text-align:right;'>", "</div>",
-                Ajax.AuthorizedAjaxActionLinkOrText("#=kendo.toString(data.UnitsManualData.Value,'\\#\\#.\\#\\#\\#\\#\\#')#", "Index", "History",
+                Ajax.AuthorizedAjaxActionLinkOrText("#=kendo.toString(data.UnitsManualData.Value,'\\#\\#.\\#\\#\\#')#", "Index", "History",
                                                 new AjaxOptions() { HttpMethod = "Get", OnSuccess = "showRecordHistoriModal" },
                                                 new { area = "RecordsHistory", id = "#=data.id#", entityName = "UnitsManualData" },
                                                 new { data_ajax_mode = "replace", data_ajax_update = @"\#modal-dialog-body" })
