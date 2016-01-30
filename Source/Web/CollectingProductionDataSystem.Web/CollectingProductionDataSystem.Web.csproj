@@ -1083,6 +1083,7 @@
     <Content Include="Areas\DailyReporting\Views\EnergyDaily\EnergyDailyData.cshtml" />
     <Content Include="Areas\Administration\Views\EnteredByUserValues\Index.cshtml" />
     <Content Include="Areas\SummaryReporting\Views\SummaryReports\ProductionPlanReport.cshtml" />
+    <Content Include="Areas\SummaryReporting\Views\SummaryReports\ProductionPlanEnergyReport.cshtml" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <None Include="Properties\PublishProfiles\Home.pubxml" />
     <Content Include="Scripts\custom\sendArea.js" />

@@ -28,6 +28,10 @@
             this.HasRequired(t => t.ProcessUnit)
                 .WithMany(t => t.ProductionPlanConfigs)
                 .HasForeignKey(d => d.ProcessUnitId);
+
+            this.HasOptional(t => t.MeasureUnit)
+                .WithMany(t => t.ProductionPlanConfigs)
+                .HasForeignKey(x => x.MeasureUnitId);
         }
     }
 }

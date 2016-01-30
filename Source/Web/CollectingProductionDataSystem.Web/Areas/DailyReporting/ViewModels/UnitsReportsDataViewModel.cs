@@ -16,7 +16,7 @@
 
         [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
         [Display(Name = "RecordTimestamp", ResourceType = typeof(Resources.Layout))]
-        public DateTime TimeStamp{get;set;}
+        public DateTime TimeStamp { get; set; }
 
         [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
         [Display(Name = "Factory", ResourceType = typeof(Resources.Layout))]
@@ -59,7 +59,15 @@
 
         [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
         [Display(Name = "TotalQuantityValue", ResourceType = typeof(Resources.Layout))]
-        public double TotalQuantityValue { get; set; }
+        public decimal TotalQuantityValue
+        {
+            get
+            {
+                return this.Shift1QuantityValue
+                    + this.Shift2QuantityValue
+                    + this.Shift3QuantityValue;
+            }
+        }
 
         public void CreateMappings(IConfiguration configuration)
         {
@@ -67,7 +75,7 @@
                 .ForMember(p => p.Shift1QuantityValue, opt => opt.MapFrom(p => (p.Shift1 != null) ? p.Shift1.RealValue : 0))
                 .ForMember(p => p.Shift2QuantityValue, opt => opt.MapFrom(p => (p.Shift2 != null) ? p.Shift2.RealValue : 0))
                 .ForMember(p => p.Shift3QuantityValue, opt => opt.MapFrom(p => (p.Shift3 != null) ? p.Shift3.RealValue : 0))
-                .ForMember(p=> p.TotalQuantityValue, opt=>opt.Ignore());
+                .ForMember(p => p.TotalQuantityValue, opt => opt.Ignore());
         }
     }
 }
