@@ -58,6 +58,10 @@ namespace CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewMode
         [Display(Name = "MaterialDetailType", ResourceType = typeof(Resources.Layout))]
         public int MaterialDetailTypeId { get; set; }
 
+        [Required]
+        [Display(Name = "MeasureUnit", ResourceType = typeof(Resources.Layout))]
+        public int MeasureUnitId { get; set; }
+
         [UIHint("Hidden")]
         [Editable(false)]
         public bool IsDeleted { get; set; }

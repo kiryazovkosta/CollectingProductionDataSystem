@@ -102,10 +102,10 @@
             ValidateUnitsReportModelState(date);
             if (ModelState.IsValid)
             {
-                IEnumerable<UnitsData>dbResult = this.unitsData.GetUnitsDataForDateTime(date, processUnitId, null)
-                    .Where(x => x.UnitConfig.IsMemberOfShiftsReport//);
-                    && (factoryId == null || x.UnitConfig.ProcessUnit.FactoryId == factoryId))
-                    //.OrderBy(x => x.UnitConfig.Code)
+                IEnumerable<UnitsData> dbResult = this.unitsData.GetUnitsDataForDateTime(date, processUnitId,null)
+                    .Where(x =>
+                        x.UnitConfig.IsMemberOfShiftsReport
+                        && (factoryId == null || x.UnitConfig.ProcessUnit.FactoryId == factoryId))
                     .ToList();
 
                 var result = dbResult.Select(x => new MultiShift
@@ -253,7 +253,7 @@
         }
 
         [HttpGet]
-        public ActionResult ProductionPlanReport() 
+        public ActionResult ProductionPlanReport()
         {
             return View();
         }
@@ -269,9 +269,9 @@
                 if (ModelState.IsValid)
                 {
                     var dbResult = data.ProductionPlanDatas.All()
-                        .Include(x=>x.ProductionPlanConfig)
-                        .Include(x=>x.ProductionPlanConfig.ProcessUnit)
-                        .Include(x=>x.ProductionPlanConfig.ProcessUnit.Factory)
+                        .Include(x => x.ProductionPlanConfig)
+                        .Include(x => x.ProductionPlanConfig.ProcessUnit)
+                        .Include(x => x.ProductionPlanConfig.ProcessUnit.Factory)
                         .Where(x =>
                             x.RecordTimestamp == date
                             && x.FactoryId == (factoryId ?? x.FactoryId)
@@ -292,7 +292,7 @@
         }
 
         [HttpGet]
-        public ActionResult ProductionPlanEnergyReport() 
+        public ActionResult ProductionPlanEnergyReport()
         {
             return View();
         }
@@ -308,10 +308,10 @@
                 if (ModelState.IsValid)
                 {
                     var dbResult = data.ProductionPlanDatas.All()
-                        .Include(x=>x.ProductionPlanConfig)
-                        .Include(x=>x.ProductionPlanConfig.ProcessUnit)
-                        .Include(x=>x.ProductionPlanConfig.MeasureUnit)
-                        .Include(x=>x.ProductionPlanConfig.ProcessUnit.Factory)
+                        .Include(x => x.ProductionPlanConfig)
+                        .Include(x => x.ProductionPlanConfig.ProcessUnit)
+                        .Include(x => x.ProductionPlanConfig.MeasureUnit)
+                        .Include(x => x.ProductionPlanConfig.ProcessUnit.Factory)
                         .Where(x =>
                             x.RecordTimestamp == date
                             && x.FactoryId == (factoryId ?? x.FactoryId)

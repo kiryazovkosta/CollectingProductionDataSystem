@@ -819,8 +819,8 @@ div.popover-icon {
     /*margin-left: 5px;
     margin-right:5px;*/
     margin-top: 10px;
-    padding-left:5px;
-    padding-right:5px;
+    padding-left: 5px;
+    padding-right: 5px;
 }
 
 pre.popover-content {
@@ -836,8 +836,8 @@ pre.popover-content {
     border-left: 2px double lightgrey;
     overflow-x: hidden;
     overflow-y: auto;
-    white-space:pre-wrap;
-    text-align:justify;
+    white-space: pre-wrap;
+    text-align: justify;
 }
 
 td pre, #err-message {
@@ -845,17 +845,21 @@ td pre, #err-message {
     word-wrap: break-word;
     -ms-word-break: normal;
     word-break: normal;
-    white-space:pre-wrap;
-    text-align:justify;
+    white-space: pre-wrap;
+    text-align: justify;
 }
 
-.bg-disabled, .bg-disabled pre{
-    color:#ccc;
+.bg-disabled, .bg-disabled pre {
+    color: #ccc;
 }
 
-.bg-disabled div {
-    display: inherit;
-    z-index:-1;
-    background-color:#ccc;
-    opacity:0.5;
+    .bg-disabled div {
+        display: inherit;
+        z-index: -1;
+        background-color: #ccc;
+        opacity: 0.5;
+    }
+
+#MeasureUnitId-list {
+    width: 280px !important;
 }

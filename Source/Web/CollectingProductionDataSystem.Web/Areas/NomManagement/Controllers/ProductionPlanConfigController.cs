@@ -23,6 +23,7 @@ namespace CollectingProductionDataSystem.Web.Areas.NomManagement.Controllers
             this.ViewData["materialTypes"] = Mapper.Map<IEnumerable<MaterialTypeViewModel>>(this.data.MaterialTypes.All()).ToList();
             this.ViewData["materialDetailTypes"] = Mapper.Map<IEnumerable<MaterialDetailTypeViewModel>>(this.data.MaterialDetailTypes.All()).ToList();
             this.ViewData["processUnits"] = data.ProcessUnits.All().ToList();
+            this.ViewData["measureUnits"] = data.MeasureUnits.All().ToList();
             return base.Index();
         }
     }
