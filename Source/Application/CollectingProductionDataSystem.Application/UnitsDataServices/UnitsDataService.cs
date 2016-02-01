@@ -52,24 +52,12 @@
         /// <returns></returns>
         public IQueryable<UnitsData> GetUnitsDataForDateTime(DateTime? dateParam, int? processUnitIdParam, int? shiftIdParam)
         {
-            var dbResult = GetAllUnitDataIncludeRelations();
-
-            if (dateParam != null)
-            {
-                dbResult = dbResult.Where(u => u.RecordTimestamp == dateParam.Value);
-            }
-
-            if (shiftIdParam != null)
-            {
-                dbResult = dbResult.Where(u => u.ShiftId == (ShiftType)shiftIdParam.Value);
-            }
-
-            if (processUnitIdParam != null)
-            {
-                dbResult = dbResult.Where(x => x.UnitConfig.ProcessUnitId == processUnitIdParam.Value);
-            }
-
-            dbResult = dbResult.OrderBy(x => x.UnitConfig.Code);
+            var dbResult = GetAllUnitDataIncludeRelations()
+                .Where(x=>
+                (dateParam == null || x.RecordTimestamp == dateParam.Value)
+                &&(processUnitIdParam == null || x.UnitConfig.ProcessUnitId == processUnitIdParam.Value)
+                &&(shiftIdParam == null || x.ShiftId == (ShiftType)shiftIdParam.Value)
+                ).OrderBy(x => x.UnitConfig.Code);
             return dbResult;
         }
 

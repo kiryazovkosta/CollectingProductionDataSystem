@@ -43,7 +43,7 @@
             {
                 var dbResult = this.unitsData.GetUnitsDataForDateTime(date, processUnitId, null)
                     .Where(x => x.UnitConfig.IsMemberOfShiftsReport)
-                    .OrderBy(x => x.UnitConfig.Code)
+                    //.OrderBy(x => x.UnitConfig.Code)
                     .ToList();
 
                 var result = dbResult.Select(x => new MultiShift

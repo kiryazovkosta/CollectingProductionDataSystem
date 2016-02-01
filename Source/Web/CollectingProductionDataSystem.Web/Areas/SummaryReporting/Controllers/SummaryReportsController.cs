@@ -102,10 +102,10 @@
             ValidateUnitsReportModelState(date);
             if (ModelState.IsValid)
             {
-                var dbResult = this.unitsData.GetUnitsDataForDateTime(date, processUnitId, null)
-                    .Where(x => x.UnitConfig.IsMemberOfShiftsReport
-                    && x.UnitConfig.ProcessUnit.FactoryId == (factoryId ?? x.UnitConfig.ProcessUnit.FactoryId))
-                    .OrderBy(x => x.UnitConfig.Code)
+                IEnumerable<UnitsData>dbResult = this.unitsData.GetUnitsDataForDateTime(date, processUnitId, null)
+                    .Where(x => x.UnitConfig.IsMemberOfShiftsReport//);
+                    && (factoryId == null || x.UnitConfig.ProcessUnit.FactoryId == factoryId))
+                    //.OrderBy(x => x.UnitConfig.Code)
                     .ToList();
 
                 var result = dbResult.Select(x => new MultiShift

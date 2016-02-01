@@ -49,6 +49,7 @@ namespace CollectingProductionDataSystem.Web.Areas.SummaryReporting.ViewModels
             }
         }
 
+        [Display(Name = "MeasureUnit", ResourceType = typeof(App_GlobalResources.Resources.Layout))]
         public string MeasurementUnit { get; set; }
 
         public string FactoryName { get; set; }
