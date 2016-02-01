@@ -80,6 +80,11 @@
 
             if (ModelState.IsValid)
             {
+                ValidateProductionPlanRelatedData(processUnitId, materialTypeId, date);
+            }
+
+            if (ModelState.IsValid)
+            {
                 var kendoResult = new DataSourceResult();
                 if (ModelState.IsValid)
                 {
@@ -105,6 +110,55 @@
             {
                 var kendoResult = new List<UnitDailyDataViewModel>().ToDataSourceResult(request, ModelState);
                 return Json(kendoResult);
+            }
+        }
+ 
+        private void ValidateProductionPlanRelatedData(int? processUnitId, int? materialTypeId, DateTime? date)
+        {
+            var productionPalnsData = this.data.ProductionPlanConfigs.All().Where(x => x.ProcessUnitId == processUnitId && x.MaterialTypeId == materialTypeId).ToList();
+            var dailyPositionsCodeList = new List<string>();
+            foreach (var item in productionPalnsData)
+            {
+                var list = item.QuantityPlanMembers.Split('@');
+                foreach (var subItem in list)
+                {
+                    if (!dailyPositionsCodeList.Contains(subItem))
+                    {
+                        dailyPositionsCodeList.Add(subItem);    
+                    }
+                }
+
+                list = item.QuantityFactMembers.Split('@');
+                foreach (var subItem in list)
+                {
+                    if (!dailyPositionsCodeList.Contains(subItem))
+                    {
+                        dailyPositionsCodeList.Add(subItem);    
+                    }
+                }
+
+                list = item.UsageRateMembers.Split('@');
+                foreach (var subItem in list)
+                {
+                    if (!dailyPositionsCodeList.Contains(subItem))
+                    {
+                        dailyPositionsCodeList.Add(subItem);    
+                    }
+                }
+            }
+
+            foreach (var item in dailyPositionsCodeList)
+            {
+                var unitDailyDataExists = this.data.UnitsDailyDatas.All()
+                                              .Include(x => x.UnitsDailyConfig)
+                                              .Where(x => x.RecordTimestamp == date && x.UnitsDailyConfig.Code == item)
+                                              .FirstOrDefault();
+                if (unitDailyDataExists == null)
+                {
+                    var unitConfig = this.data.UnitsDailyConfigs.All().Include(y => y.ProcessUnit).Where(y => y.Code == item).First();
+                    this.ModelState.AddModelError("", 
+                        string.Format("Не са налични дневни данни за: {0} {1} {2}", unitConfig.ProcessUnit.ShortName, unitConfig.Code, unitConfig.Name));  
+                }
             }
         }
 

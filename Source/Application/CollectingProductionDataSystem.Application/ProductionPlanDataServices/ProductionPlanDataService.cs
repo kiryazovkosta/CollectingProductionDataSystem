@@ -78,25 +78,6 @@
                 var factValue = CalculateFactValue(productionPlan, dailyData, this.calculator);
                 var factPercents = CalculateUsageRateValue(productionPlan, dailyData, this.calculator); 
 
-                //// full of ...
-                //var factPercents = 0.0;
-                //if (materialTypeId == CommonConstants.MaterialType)
-                //{
-                //    if (!string.IsNullOrEmpty(productionPlan.UsageRateFormula) && !string.IsNullOrEmpty(productionPlan.UsageRateMembers))
-                //    {
-                //        factPercents = CalculateUsageRateValue(productionPlan, dailyData, this.calculator);    
-                //    }
-                //    else
-                //    {
-                //        var realValue = dailyData.Where(x => x.UnitsDailyConfig.Code == productionPlan.QuantityPlanMembers).FirstOrDefault().RealValue;
-                //        factPercents = (factValue * 100.00) / realValue;
-                //    }
-                //}
-                //else 
-                //{ 
-                //    factPercents = CalculateUsageRateValue(productionPlan, dailyData, this.calculator);   
-                //}
-
                 var productionPlanData = new ProductionPlanData
                 {
                     ProductionPlanConfigId = productionPlan.Id,
