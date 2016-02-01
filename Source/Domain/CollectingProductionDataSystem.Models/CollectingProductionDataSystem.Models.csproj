@@ -78,6 +78,8 @@
     <Compile Include="Inventories\InProcessUnitData.cs" />
     <Compile Include="Inventories\RelatedTankConfigs.cs" />
     <Compile Include="Inventories\TankMasterProduct.cs" />
+    <Compile Include="Inventories\TankReportConfig.cs" />
+    <Compile Include="Inventories\TankReportConfigData.cs" />
     <Compile Include="Nomenclatures\DailyProductType.cs" />
     <Compile Include="Nomenclatures\Direction.cs" />
     <Compile Include="Inventories\Area.cs" />

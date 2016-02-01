@@ -1482,11 +1482,40 @@
         /// </summary>
         private double FormulaZ18(FormulaArguments args)
         {
-            double p = 15;
-            double t = 40;
-            double pl = 20;
-            double pl1 = 10;
-            double d2 = 15;
+            if (!args.InputValue.HasValue)
+            {
+                throw new ArgumentNullException("The value of CounterIndication(PL) is not allowed to be null");
+            }
+            if (!args.OldValue.HasValue)
+            {
+                throw new ArgumentNullException("The value of OldValue(PL1) is not allowed to be null");
+            }
+            if (!args.MaximumFlow.HasValue)
+            {
+                throw new ArgumentNullException("The value of MaximumFlow(D2) is not allowed to be null");
+            }
+            if (!args.EstimatedPressure.HasValue)
+            {
+                throw new ArgumentNullException("The value of EstimatedPressure(D5) is not allowed to be null");
+            }
+            if (!args.Pressure.HasValue)
+            {
+                args.Pressure = args.EstimatedPressure;
+            }
+            if (!args.EstimatedTemperature.HasValue)
+            {
+                throw new ArgumentNullException("The value of EstimatedTemperature(D6) is not allowed to be null");
+            }
+            if (!args.Temperature.HasValue)
+            {
+                args.Temperature = args.EstimatedTemperature;
+            }
+
+            double pl = args.InputValue.Value;
+            double pl1 = args.OldValue.Value;
+            double d2 = args.MaximumFlow.Value;
+            double p = args.Pressure.Value;
+            double t = args.Temperature.Value;
 
             double a11 = Functions.GetValueFormulaA11(pl, pl1, d2);
             double ent = Functions.GetValueFormulaEN(t, p);
