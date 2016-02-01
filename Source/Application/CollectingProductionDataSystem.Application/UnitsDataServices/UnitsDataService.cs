@@ -71,8 +71,8 @@
                                .Include(x => x.UnitConfig.ProcessUnit.Factory)
                                .Include(x => x.UnitConfig.MeasureUnit)
                                .Include(x => x.UnitsManualData)
-                               .Include(x => x.UnitsManualData.EditReason)
-                               .Include(x => x.UnitConfig.UnitConfigUnitDailyConfigs.Select(y => y.UnitDailyConfig).Select(z => z.UnitsDailyDatas));
+                               .Include(x => x.UnitsManualData.EditReason);
+                               //.Include(x => x.UnitConfig.UnitConfigUnitDailyConfigs.Select(y => y.UnitDailyConfig).Select(z => z.UnitsDailyDatas));
             return dbResult;
         }
 
