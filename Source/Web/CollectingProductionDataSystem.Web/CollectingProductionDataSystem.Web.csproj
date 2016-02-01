@@ -363,6 +363,7 @@
     <Compile Include="Areas\ShiftReporting\ViewModels\ManualCalculationViewModel.cs" />
     <Compile Include="Areas\DailyReporting\ViewModels\UnitsReportsDataViewModel.cs" />
     <Compile Include="Areas\SummaryReporting\Controllers\AreaBaseController.cs" />
+    <Compile Include="Areas\SummaryReporting\Controllers\TransactionsDailyController.cs" />
     <Compile Include="Areas\SummaryReporting\SummaryReportingAreaRegistration.cs" />
     <Compile Include="Areas\SummaryReporting\ViewModels\DailyConfirmationViewModel.cs" />
     <Compile Include="Areas\SummaryReporting\ViewModels\DataConfirmationViewModel.cs" />
@@ -1084,6 +1085,7 @@
     <Content Include="Areas\Administration\Views\EnteredByUserValues\Index.cshtml" />
     <Content Include="Areas\SummaryReporting\Views\SummaryReports\ProductionPlanReport.cshtml" />
     <Content Include="Areas\SummaryReporting\Views\SummaryReports\ProductionPlanEnergyReport.cshtml" />
+    <Content Include="Areas\SummaryReporting\Views\TransactionsDaily\TransactionsDailyData.cshtml" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <None Include="Properties\PublishProfiles\Home.pubxml" />
     <Content Include="Scripts\custom\sendArea.js" />

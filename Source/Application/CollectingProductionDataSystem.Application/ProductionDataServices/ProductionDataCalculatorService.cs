@@ -218,6 +218,23 @@
                             PopulateFormulaDataFromRelatedUnitConfigs(rUnitConfig, rArguments, unitData.RecordTimestamp, unitData.ShiftId);
                             var rNewValue = this.Calculate(rFormulaCode, rArguments);
                             status = UpdateCalculatedUnitConfig(relatedUnitConfig.UnitConfigId, rNewValue, unitData.RecordTimestamp, unitData.ShiftId);
+
+                            var subRelatdUnitConfigs = this.data.RelatedUnitConfigs.All().Where(x => x.RelatedUnitConfigId == relatedUnitConfig.UnitConfigId).ToList();
+                            if (subRelatdUnitConfigs.Count() > 0)
+                            {
+                                foreach (var subRelatdUnitConfig in subRelatdUnitConfigs)
+                                {
+                                    var subRUnitConfig = this.data.UnitConfigs.GetById(subRelatdUnitConfig.UnitConfigId);
+                                    if (subRUnitConfig.IsCalculated)
+                                    {
+                                        var subRFormulaCode = subRUnitConfig.CalculatedFormula ?? string.Empty;
+                                        var subRArguments = PopulateFormulaTadaFromPassportData(subRUnitConfig);
+                                        PopulateFormulaDataFromRelatedUnitConfigs(subRUnitConfig, subRArguments, unitData.RecordTimestamp, unitData.ShiftId);
+                                        var subRNewValue = this.Calculate(subRFormulaCode, subRArguments);
+                                        status = UpdateCalculatedUnitConfig(subRelatdUnitConfig.UnitConfigId, subRNewValue, unitData.RecordTimestamp, unitData.ShiftId);   
+                                    }
+                                }    
+                            }
                         }
                     }
 

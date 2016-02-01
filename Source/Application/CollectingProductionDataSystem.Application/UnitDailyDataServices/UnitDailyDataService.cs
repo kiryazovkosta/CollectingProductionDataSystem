@@ -63,7 +63,7 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
                 resultDaily = wholeDayResult.Where(x => x.Value.UnitsDailyConfig.AggregationCurrentLevel == false).ToDictionary(x => x.Key, x => x.Value);
             }
 
-            Dictionary<string, UnitsDailyData> relatedRecords = GetRelatedData(processUnitId, targetDay);
+            Dictionary<string, UnitsDailyData> relatedRecords = GetRelatedData(processUnitId, targetDay, materialTypeId);
             AppendRelatedRecords(relatedRecords, resultDaily);
 
             CalculateDailyDataFromRelatedDailyData(ref resultDaily, processUnitId, targetDay, isRecalculate, editReasonId, materialTypeId);
@@ -119,7 +119,10 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
             {
                 foreach (var item in relatedRecords)
                 {
-                    resultDaily.Add(item.Key, item.Value);
+                    if (!resultDaily.ContainsKey(item.Key))
+                    {
+                        resultDaily.Add(item.Key, item.Value); 
+                    }
                 }
             }
         }
@@ -526,7 +529,7 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
             return status;
         }
 
-        private Dictionary<string, UnitsDailyData> GetRelatedData(int processUnitId, DateTime targetDay)
+        private Dictionary<string, UnitsDailyData> GetRelatedData(int processUnitId, DateTime targetDay, int materialTypeId)
         {
             var relatedUnitsDailyData = new Dictionary<string, UnitsDailyData>();
 
@@ -535,11 +538,16 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
                 .Include(x => x.ProcessUnit)
                 .Include(x => x.RelatedUnitDailyConfigs)
                 .Where(x => x.ProcessUnitId == processUnitId && x.AggregationCurrentLevel == true)
-                .SelectMany(y => y.RelatedUnitDailyConfigs)
-                //.Where(z => z.RelatedUnitsDailyConfig.ProcessUnitId != processUnitId)
-                .ToList();
+                .SelectMany(y => y.RelatedUnitDailyConfigs);
+            if (materialTypeId == CommonConstants.MaterialType)
+	        {
+		        relatedDailyDatasFromOtherProcessUnits = relatedDailyDatasFromOtherProcessUnits
+                    .Where(z => z.RelatedUnitsDailyConfig.ProcessUnitId != processUnitId);
+	        }
+               
+            var relatedDailyDatasFromOtherProcessUnitsList = relatedDailyDatasFromOtherProcessUnits.ToList();
 
-            foreach (var item in relatedDailyDatasFromOtherProcessUnits)
+            foreach (var item in relatedDailyDatasFromOtherProcessUnitsList)
             {
                 var relatedData = this.data.UnitsDailyDatas.All().Where(u => u.RecordTimestamp == targetDay && u.UnitsDailyConfigId == item.RelatedUnitsDailyConfigId).FirstOrDefault();
                 if (relatedData != null && !relatedUnitsDailyData.ContainsKey(relatedData.UnitsDailyConfig.Code))
