@@ -28,13 +28,17 @@
                     columns.ForeignKey(c => c.ProductId, (System.Collections.IEnumerable)ViewData["products"], "Id", "Name").EditorTemplateName("ProductViewModel").Width(400);
                     columns.Bound(c => c.Mass).Format("{0:n3}");
                     columns.Bound(c => c.Volume).Format("{0:n3}");
-                    columns.Command(c => c.Edit()).Width(180);
+                    columns.Command(command => { command.Edit(); command.Destroy(); }).Width(230);
                 })
             .Pageable(pageable => pageable
                 .Refresh(true)
                 .PageSizes(new[] { 10, 20, 50, 100 })
                 .ButtonCount(5)
             )
+            .ToolBar(toolbar =>
+              {
+                  toolbar.Create();
+              })
             .Editable(editable => editable.Mode(GridEditMode.InLine))
             .Sortable()
             .Excel(excel => excel

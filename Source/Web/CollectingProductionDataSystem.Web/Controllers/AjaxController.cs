@@ -220,9 +220,31 @@ namespace CollectingProductionDataSystem.Web.Controllers
         [ValidateAntiForgeryToken]
         public JsonResult GetAllProducts([DataSourceRequest] DataSourceRequest request) 
         {
-            var products = data.Products.All();
+            var products = data.Products.All().ToList();
 
             return Json(products.ToDataSourceResult(request, this.ModelState, Mapper.Map<ProductViewModel>));
+        }
+
+         public ActionResult ValueMapper(int[] values)
+        {
+            var indices = new List<int>();
+
+            if (values != null && values.Any())
+            {
+                var index = 0;
+
+                foreach (var item in this.data.Products.All())
+                {
+                    if (values.Contains(item.Id))
+                    {
+                        indices.Add(index);
+                    }
+
+                    index += 1;
+                }
+            }
+
+            return Json(indices, JsonRequestBehavior.AllowGet);
         }
 
     }

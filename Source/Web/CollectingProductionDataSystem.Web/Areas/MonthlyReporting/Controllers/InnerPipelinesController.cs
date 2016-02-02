@@ -6,6 +6,7 @@
     using System.Web.Mvc;
     using CollectingProductionDataSystem.Data.Contracts;
     using CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewModels;
+    using CollectingProductionDataSystem.Web.Infrastructure.Extentions;
     using Kendo.Mvc.Extensions;
     using Kendo.Mvc.UI;
     using Resources = App_GlobalResources.Resources;
@@ -70,25 +71,23 @@
         {
             if (ModelState.IsValid)
             {
-                //try
-                //{
-                //    var entity = Mapper.Map<TModel>(inputViewModel);
+                try
+                {
+                    var entity = Mapper.Map<InnerPipelineData>(inputViewModel);
+                    this.data.InnerPipelineDatas.Add(entity);
+                    var result = data.SaveChanges(this.UserProfile.UserName);
 
-                //    this.repository.Add(entity);
+                    if (!result.IsValid)
+                    {
+                        result.ToModelStateErrors(ModelState);
+                    }
 
-                //    var result = data.SaveChanges(this.UserProfile.UserName);
-
-                //    if (!result.IsValid)
-                //    {
-                //        result.ToModelStateErrors(ModelState);
-                //    }
-
-                //    inputViewModel.Id = entity.Id;
-                //}
-                //catch (Exception ex)
-                //{
-                //    ModelState.AddModelError("", ex.Message + ex.StackTrace);
-                //}
+                    inputViewModel.Id = entity.Id;
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("", ex.Message + ex.StackTrace);
+                }
             }
 
             return Json(new[] { inputViewModel }.ToDataSourceResult(request, ModelState));
@@ -100,26 +99,21 @@
         {
             if (ModelState.IsValid)
             {
-
-                //var dbEntity = this.repository.GetById(inputViewModel.Id);
-
-                //if (dbEntity == null)
-                //{
-                //    ModelState.AddModelError("", string.Format(Resources.ErrorMessages.InvalidRecordUpdate, inputViewModel.Id));
-                //}
-                //else
-                //{
-                //    Mapper.Map(inputViewModel, dbEntity);
-
-                //    this.repository.Update(dbEntity);
-
-                //    var result = data.SaveChanges(this.UserProfile.UserName);
-
-                //    if (!result.IsValid)
-                //    {
-                //        result.ToModelStateErrors(ModelState);
-                //    }
-                //}
+                var dbEntity = this.data.InnerPipelineDatas.All().Where(x => x.Id == inputViewModel.Id).FirstOrDefault();
+                if(dbEntity == null)
+                {
+                    ModelState.AddModelError("", string.Format(Resources.ErrorMessages.InvalidRecordUpdate, inputViewModel.Id));
+                }
+                else
+                {
+                    Mapper.Map(inputViewModel, dbEntity);
+                    this.data.InnerPipelineDatas.Update(dbEntity);
+                    var result = this.data.SaveChanges(this.UserProfile.UserName);
+                    if (!result.IsValid)
+                    {
+                        result.ToModelStateErrors(ModelState);
+                    }
+                }
             }
 
             return Json(new[] { inputViewModel }.ToDataSourceResult(request, ModelState));
@@ -131,13 +125,18 @@
         {
             if (ModelState.IsValid)
             {
-                //this.repository.Delete(inputViewModel.Id);
-                //var result = data.SaveChanges(this.UserProfile.UserName);
+                var dbEntity = this.data.InnerPipelineDatas.All().Where(x => x.Id == inputViewModel.Id).FirstOrDefault();
+                if(dbEntity == null)
+                {
+                    ModelState.AddModelError("", string.Format(Resources.ErrorMessages.InvalidRecordUpdate, inputViewModel.Id));
+                }
 
-                //if (!result.IsValid)
-                //{
-                //    result.ToModelStateErrors(ModelState);
-                //}
+                this.data.InnerPipelineDatas.Delete(dbEntity);
+                var result = data.SaveChanges(this.UserProfile.UserName);
+                if (!result.IsValid)
+                {
+                    result.ToModelStateErrors(ModelState);
+                }
             }
 
             return Json(new[] { inputViewModel }.ToDataSourceResult(request, ModelState));
