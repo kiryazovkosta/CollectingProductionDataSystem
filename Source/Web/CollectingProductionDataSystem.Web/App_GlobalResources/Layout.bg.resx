@@ -1408,7 +1408,7 @@
     <value>До деня &lt;br/&gt;(факт T)</value>
   </data>
   <data name="ProductionPlanReport" xml:space="preserve">
-    <value>Своден отчет по отбори</value>
+    <value>Своден отчет по отбори (материали)</value>
   </data>
   <data name="RelativeDifference" xml:space="preserve">
     <value>Относителна разлика до деня</value>
@@ -1436,5 +1436,20 @@
   </data>
   <data name="UsageRateTotalMonthQuantityFact" xml:space="preserve">
     <value>До деня (факт)</value>
+  </data>
+  <data name="QuantityFactEnergy" xml:space="preserve">
+    <value>Количeство &lt;br/&gt;факт</value>
+  </data>
+  <data name="QuantityPlanEnergy" xml:space="preserve">
+    <value>Количeство &lt;br/&gt;план</value>
+  </data>
+  <data name="TotalMonthQuantityFactEnergy" xml:space="preserve">
+    <value>До деня &lt;br/&gt;факт</value>
+  </data>
+  <data name="TotalMonthQuantityPlanEnergy" xml:space="preserve">
+    <value>До деня &lt;br/&gt;план</value>
+  </data>
+  <data name="ProductionPlanReportEnergy" xml:space="preserve">
+    <value>Своден отчет по отбори (енергийни)</value>
   </data>
 </root>

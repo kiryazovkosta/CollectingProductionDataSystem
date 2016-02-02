@@ -3,15 +3,8 @@
 /// </summary>
 namespace CollectingProductionDataSystem.Models.Productions
 {
-    using System;
-    using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-    using CollectingProductionDataSystem.Models.Abstract;
     using CollectingProductionDataSystem.Models.Contracts;
+    using System.ComponentModel.DataAnnotations.Schema;
 
     public class UnitConfigUnitDailyConfig : IEntity
     {
