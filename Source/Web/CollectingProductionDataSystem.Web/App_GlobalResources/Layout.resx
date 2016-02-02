@@ -1440,4 +1440,19 @@
   <data name="UsageRateTotalMonthQuantityFact" xml:space="preserve">
     <value>UsageRateTotalMonthQuantityFact</value>
   </data>
+  <data name="QuantityFactEnergy" xml:space="preserve">
+    <value>Quantity Fact</value>
+  </data>
+  <data name="QuantityPlanEnergy" xml:space="preserve">
+    <value>Quantity Plan</value>
+  </data>
+  <data name="TotalMonthQuantityFactEnergy" xml:space="preserve">
+    <value>Total Month Quantity Fact</value>
+  </data>
+  <data name="TotalMonthQuantityPlanEnergy" xml:space="preserve">
+    <value>Total Month Plan</value>
+  </data>
+  <data name="ProductionPlanReportEnergy" xml:space="preserve">
+    <value>Production Plan Report (Energy)</value>
+  </data>
 </root>

@@ -6,6 +6,7 @@
     using CollectingProductionDataSystem.Models.Abstract;
     using CollectingProductionDataSystem.Models.Contracts;
     using CollectingProductionDataSystem.Models.Productions;
+    using CollectingProductionDataSystem.Models.Productions.Mounthly;
 
     public partial class DailyProductType : DeletableEntity, IEntity
     {
@@ -18,4 +19,5 @@
         public string Name { get; set; }
         public virtual ICollection<UnitDailyConfig> UnitsDailyConfigs { get; set; }
     }
+
 }

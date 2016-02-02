@@ -20,10 +20,10 @@ namespace CollectingProductionDataSystem.Web.Areas.SummaryReporting.ViewModels
         [Display(Name = "PercentagesPlan", ResourceType = typeof(App_GlobalResources.Resources.Layout))]
         public decimal PercentagesPlan { get; set; }
 
-        [Display(Name = "QuantityPlan", ResourceType = typeof(App_GlobalResources.Resources.Layout))]
+        [Display(Name = "QuantityPlanEnergy", ResourceType = typeof(App_GlobalResources.Resources.Layout))]
         public decimal QuantityPlan { get; set; }
 
-        [Display(Name = "QuantityFact", ResourceType = typeof(App_GlobalResources.Resources.Layout))]
+        [Display(Name = "QuantityFactEnergy", ResourceType = typeof(App_GlobalResources.Resources.Layout))]
         public decimal QuantityFact { get; set; }
 
         [Display(Name = "PercentagesFact", ResourceType = typeof(App_GlobalResources.Resources.Layout))]
@@ -32,10 +32,10 @@ namespace CollectingProductionDataSystem.Web.Areas.SummaryReporting.ViewModels
         [Display(Name = "TotalMonthPercentagesFact", ResourceType = typeof(App_GlobalResources.Resources.Layout))]
         public decimal TotalMonthPercentagesFact { get; set; }
 
-        [Display(Name = "TotalMonthQuantityFact", ResourceType = typeof(App_GlobalResources.Resources.Layout))]
+        [Display(Name = "TotalMonthQuantityFactEnergy", ResourceType = typeof(App_GlobalResources.Resources.Layout))]
         public decimal TotalMonthQuantityFact { get; set; }
 
-        [Display(Name = "TotalMonthQuantityPlan", ResourceType = typeof(App_GlobalResources.Resources.Layout))]
+        [Display(Name = "TotalMonthQuantityPlanEnergy", ResourceType = typeof(App_GlobalResources.Resources.Layout))]
         public decimal TotalMonthQuantityPlan { get; set; }
 
         [Display(Name = "RelativeDifference", ResourceType = typeof(App_GlobalResources.Resources.Layout))]

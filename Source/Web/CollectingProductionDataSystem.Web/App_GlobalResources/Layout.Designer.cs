@@ -2581,6 +2581,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Production Plan Report (Energy).
+        /// </summary>
+        public static string ProductionPlanReportEnergy {
+            get {
+                return ResourceManager.GetString("ProductionPlanReportEnergy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Productions.
         /// </summary>
         public static string Productions {
@@ -2689,6 +2698,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Quantity Fact.
+        /// </summary>
+        public static string QuantityFactEnergy {
+            get {
+                return ResourceManager.GetString("QuantityFactEnergy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to QuantityFactFormula.
         /// </summary>
         public static string QuantityFactFormula {
@@ -2712,6 +2730,15 @@ namespace App_GlobalResources.Resources {
         public static string QuantityPlan {
             get {
                 return ResourceManager.GetString("QuantityPlan", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Quantity Plan.
+        /// </summary>
+        public static string QuantityPlanEnergy {
+            get {
+                return ResourceManager.GetString("QuantityPlanEnergy", resourceCulture);
             }
         }
         
@@ -3580,11 +3607,29 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Total Month Quantity Fact.
+        /// </summary>
+        public static string TotalMonthQuantityFactEnergy {
+            get {
+                return ResourceManager.GetString("TotalMonthQuantityFactEnergy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Total Month Plan (T).
         /// </summary>
         public static string TotalMonthQuantityPlan {
             get {
                 return ResourceManager.GetString("TotalMonthQuantityPlan", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total Month Plan.
+        /// </summary>
+        public static string TotalMonthQuantityPlanEnergy {
+            get {
+                return ResourceManager.GetString("TotalMonthQuantityPlanEnergy", resourceCulture);
             }
         }
         
