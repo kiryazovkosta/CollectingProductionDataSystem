@@ -410,6 +410,30 @@
             }
         }
 
+        public IDeletableEntityRepository<TankReportConfig> TankReportConfigs
+        {
+            get
+            {
+                return this.GetDeletableEntityRepository<TankReportConfig>();
+            }
+        }
+
+        public IDeletableEntityRepository<InnerPipelinesApprovedDate> InnerPipelinesApprovedDates
+        {
+            get
+            {
+                 return this.GetDeletableEntityRepository<InnerPipelinesApprovedDate>();
+            }
+        }
+
+        public IDeletableEntityRepository<InProcessUnitsApprovedDate> InProcessUnitsApprovedDates
+        {
+            get
+            {
+                return this.GetDeletableEntityRepository<InProcessUnitsApprovedDate>();
+            }
+        }
+
         public IRepository<AuditLogRecord> AuditLogRecords
         {
             get

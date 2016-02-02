@@ -102,7 +102,9 @@
     <Compile Include="Mappings\HighwayPipelineManualDataMap.cs" />
     <Compile Include="Mappings\IkunkMap.cs" />
     <Compile Include="Mappings\InnerPipelineDataMap.cs" />
+    <Compile Include="Mappings\InnerPipelinesApprovedDateMap.cs" />
     <Compile Include="Mappings\InProcessUnitDataMap.cs" />
+    <Compile Include="Mappings\InProcessUnitsApprovedDateMap.cs" />
     <Compile Include="Mappings\LogedInUserMap.cs" />
     <Compile Include="Mappings\MaterialDetailTypeMap.cs" />
     <Compile Include="Mappings\MathExpressionMap.cs" />
@@ -129,6 +131,7 @@
     <Compile Include="Mappings\ProductMap.cs" />
     <Compile Include="Mappings\ProductTypeMap.cs" />
     <Compile Include="Mappings\TankMasterProductMap.cs" />
+    <Compile Include="Mappings\TankReportConfigMap.cs" />
     <Compile Include="Mappings\TransportTypeMap.cs" />
     <Compile Include="Mappings\UnitConfigMap.cs" />
     <Compile Include="Mappings\UnitConfigUnitDailyConfigMap.cs" />

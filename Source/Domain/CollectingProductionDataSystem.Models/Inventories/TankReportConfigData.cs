@@ -14,9 +14,9 @@
 
         public DateTime RecordTimestamp { get; set; }
 
-        public int TankReportConfigId { get; set; }
+        //public int TankReportConfigId { get; set; }
 
-        public virtual TankReportConfig TankReportConfig { get; set; }
+        //public virtual TankReportConfig TankReportConfig { get; set; }
 
         public bool IsExpediotion { get; set; }
 
