@@ -16,61 +16,62 @@
 </div>
 @Html.ValidationSummary()
 @Html.AntiForgeryToken()
-<div class="row">
-    <div class="col-lg-12 col">
-        @(Html.Kendo().Grid<InnerPipelinesDataViewModel>()
-        .Name("measuringpoints")
-        .AutoBind(false)
-        .Columns(columns =>
-            {
-                columns.Bound(c => c.Id);
-                columns.Bound(c => c.RecordTimestamp).Format("{0:MMMM yyyy}");
-                columns.ForeignKey(c => c.ProductId, (System.Collections.IEnumerable)ViewData["products"], "Id", "Name").EditorTemplateName("ProductViewModel").Width(280);
-                columns.Bound(c => c.Volume).Format("{0:n2}");
-                columns.Bound(c => c.Mass).Format("{0:n2}");
-                columns.Command(command => { command.Edit(); command.Destroy(); }).Width(230);
-            })
-        .ToolBar(toolbar =>
-        {
-            toolbar.Create();
-        })
-        .Editable(editable => editable.Mode(GridEditMode.InLine))
-        .Pageable(pageable => pageable
-        .Refresh(true)
-        .PageSizes(new[] { 10, 20, 50, 100 })
-        .ButtonCount(5))
-        .Sortable()
-        //.Editable(editable => editable.Mode(GridEditMode.InLine))
-        .Excel(excel => excel
-            .FileName(@Resources.Layout.InnerPipelinesData + "_" + DateTime.Now + ".xlsx")
-            .Filterable(true)
-            .ProxyURL(Url.Action("Excel_Export_Save", "Ajax", new { area = "" }))
-            .AllPages(true)
+        @(Html.Kendo()
+            .Grid<InnerPipelinesDataViewModel>()
+            .Name("measuringpoints")
+            .AutoBind(false)
+            .Columns(
+                columns =>
+                {
+                    //columns.Bound(c => c.Id).Width(100);
+                    columns.Bound(c => c.RecordTimestamp).Width(200).Format("{0:MMMM yyyy}");
+                    columns.ForeignKey(c => c.ProductId, (System.Collections.IEnumerable)ViewData["products"], "Id", "Name").EditorTemplateName("ProductViewModel").Width(400);
+                    columns.Bound(c => c.Mass).Format("{0:n3}");
+                    columns.Bound(c => c.Volume).Format("{0:n3}");
+                    columns.Command(c => c.Edit()).Width(180);
+                })
+            .Pageable(pageable => pageable
+                .Refresh(true)
+                .PageSizes(new[] { 10, 20, 50, 100 })
+                .ButtonCount(5)
+            )
+            .Editable(editable => editable.Mode(GridEditMode.InLine))
+            .Sortable()
+            .Excel(excel => excel
+                .FileName(@Resources.Layout.UnitsData + "_" + DateTime.Now + ".xlsx")
+                .Filterable(true)
+                .ProxyURL(Url.Action("Excel_Export_Save", "Ajax", new { area = "" }))
+                .AllPages(true)
+            )
+            .Editable(editable => editable.Mode(GridEditMode.InLine))
+            .Scrollable(scr => scr.Height(640))
+            .Filterable()
+            .DataSource(dataSource => dataSource
+                .Ajax()
+                .PageSize(100)
+                .ServerOperation(true)
+                .Read(read => read.Action("ReadInnerPipelinesData", "InnerPipelines", new { area = "MonthlyReporting" }).Data("unitGridsData.SendDate"))
+                .Create(create => create.Action("Create", "InnerPipelines", new { area = "MonthlyReporting" }).Data("sendAntiForgery"))
+                .Update(update => update.Action("Update", "InnerPipelines", new { area = "MonthlyReporting" }).Data("sendAntiForgery"))
+                .Destroy(destroy => destroy.Action("Destroy", "InnerPipelines", new { area = "MonthlyReporting" }).Data("sendAntiForgery"))
+                .Model(model =>
+                {
+                    model.Id(p => p.Id);
+                    model.Field(p => p.RecordTimestamp).Editable(false);
+                    model.Field(p => p.ProductId).Editable(true);
+                    model.Field(p => p.Mass).Editable(true);
+                    model.Field(p => p.Volume).Editable(true);
+                })
+                .Events(events =>
+                {
+                    events.Error("kendoAdditional.ErrorHandler");
+                    events.RequestEnd("unitGridsData.DataSave");
+                })
+            )
+            .Events(ev => ev
+                .DataBound("unitGridsData.DataBound")
+            )
         )
-        .Scrollable(scr => scr.Height(660))
-        .Filterable()
-        .DataSource(dataSource => dataSource
-            .Ajax()
-            .PageSize(50)
-            .ServerOperation(true)
-            .Read(read => read.Action("InnerPipelinesData", "InnerPipelines", new { area = "MonthlyReporting" }).Data("unitGridsData.SendDate"))
-            .Create(create => create.Action("Create", "InnerPipelines", new { area = "MonthlyReporting" }).Data("sendAntiForgery"))
-            .Update(update => update.Action("Update", "InnerPipelines", new { area = "MonthlyReporting" }).Data("sendAntiForgery"))
-            .Destroy(destroy => destroy.Action("Destroy", "InnerPipelines", new { area = "MonthlyReporting" }).Data("sendAntiForgery"))
-            .Model(model =>
-            {
-                model.Id(p => p.Id);
-                model.Field(p => p.RecordTimestamp).Editable(false);
-                //model.Field(p => p.ProductId);
-            })
-        .Events(events =>
-        {
-            events.Error("kendoAdditional.ErrorHandler");
-        }))
-        .Events(ev => ev.DataBound("kendoAdditional.DeletableDataBound"))
-        )
-    </div>
-</div>
 
 @* //Error window for kendo grid error event handler *@
 <div id="err-window" style="display:none">@Html.Partial("_KendoGridErrorWindow")</div>

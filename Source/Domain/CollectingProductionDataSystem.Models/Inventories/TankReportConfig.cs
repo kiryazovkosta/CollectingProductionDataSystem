@@ -12,9 +12,9 @@ namespace CollectingProductionDataSystem.Models.Inventories
     {
         public int Id { get; set; }
 
-        public int TankConfigId { get; set; }
+        //public int TankConfigId { get; set; }
 
-        public virtual TankConfig TankConfig { get; set; }
+        //public virtual TankConfig TankConfig { get; set; }
 
         public bool IsExpediotion { get; set; }
 

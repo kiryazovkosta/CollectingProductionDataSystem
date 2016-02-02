@@ -82,7 +82,7 @@ namespace CollectingProductionDataSystem.Models.Inventories
             set { this.relatedTankConfigs = value; }
         }
 
-        public int TankReportConfigId { get; set; }
-        public virtual TankReportConfig TankReportConfig { get; set; }
+        //public int TankReportConfigId { get; set; }
+        //public virtual TankReportConfig TankReportConfig { get; set; }
     }
 }

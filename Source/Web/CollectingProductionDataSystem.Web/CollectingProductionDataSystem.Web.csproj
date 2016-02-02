@@ -402,6 +402,7 @@
     <Compile Include="InputModels\ProcessUnitConfirmShiftInputModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="ViewModels\Nomenclatures\ProductViewModel.cs" />
     <Compile Include="ViewModels\Units\ProductionPlanEnergyViewModel.cs" />
     <Compile Include="ViewModels\Utility\ErrorScreenViewModel.cs" />
     <Compile Include="ViewModels\Utility\HistoryLink.cs" />
@@ -1086,6 +1087,7 @@
     <Content Include="Areas\SummaryReporting\Views\SummaryReports\ProductionPlanReport.cshtml" />
     <Content Include="Areas\SummaryReporting\Views\SummaryReports\ProductionPlanEnergyReport.cshtml" />
     <Content Include="Areas\SummaryReporting\Views\TransactionsDaily\TransactionsDailyData.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\ProductViewModel.cshtml" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <None Include="Properties\PublishProfiles\Home.pubxml" />
     <Content Include="Scripts\custom\sendArea.js" />

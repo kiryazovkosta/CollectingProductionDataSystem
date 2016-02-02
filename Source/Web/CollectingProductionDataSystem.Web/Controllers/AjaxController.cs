@@ -15,7 +15,6 @@ using CollectingProductionDataSystem.Web.InputModels;
 using CollectingProductionDataSystem.Web.ViewModels.Tank;
 using CollectingProductionDataSystem.Web.ViewModels.Nomenclatures;
 using CollectingProductionDataSystem.Web.ViewModels.Units;
-using CollectingProductionDataSystem.Models.Nomenclatures;
 using CollectingProductionDataSystem.Web.ViewModels.Utility;
 using Kendo.Mvc.UI;
 using Kendo.Mvc.Extensions;
@@ -215,6 +214,15 @@ namespace CollectingProductionDataSystem.Web.Controllers
         private bool IsPowerUser()
         {
             return UserProfile.UserRoles.Where(x => CommonConstants.PowerUsers.Any(y => y == x.Name)).Any();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public JsonResult GetAllProducts([DataSourceRequest] DataSourceRequest request) 
+        {
+            var products = data.Products.All();
+
+            return Json(products.ToDataSourceResult(request, this.ModelState, Mapper.Map<ProductViewModel>));
         }
 
     }
