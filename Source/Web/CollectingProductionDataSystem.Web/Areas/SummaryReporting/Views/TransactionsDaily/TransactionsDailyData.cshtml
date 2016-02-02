@@ -50,7 +50,7 @@
             .Ajax()
             .PageSize(50)
             .ServerOperation(true)
-                    .Read(read => read.Action("ReadTransactionsDailyData", "TransactionsDaily", new { area = "DailyReporting" }).Data("sendDate"))
+                            .Read(read => read.Action("ReadTransactionsDailyData", "TransactionsDaily", new { area = "SummaryReporting" }).Data("sendDate"))
         .Events(events =>
         {
             events.Error("kendoAdditional.ErrorHandler");

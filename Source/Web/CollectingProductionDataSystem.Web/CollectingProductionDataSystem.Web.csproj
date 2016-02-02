@@ -277,6 +277,7 @@
     <Compile Include="Areas\NomManagement\Models\ViewModels\MaterialDetailTypeViewModel.cs" />
     <Compile Include="Areas\SummaryReporting\Controllers\AjaxController.cs" />
     <Compile Include="Areas\SummaryReporting\Controllers\DashBoardController.cs" />
+    <Compile Include="Areas\SummaryReporting\Controllers\HighwayPipelinesReportController.cs" />
     <Compile Include="Areas\SummaryReporting\Controllers\SummaryReportsController.cs" />
     <Compile Include="Areas\NomManagement\Controllers\IkunkController.cs" />
     <Compile Include="Areas\NomManagement\Controllers\MeasuringPointConfigController.cs" />
@@ -1088,6 +1089,7 @@
     <Content Include="Areas\SummaryReporting\Views\SummaryReports\ProductionPlanEnergyReport.cshtml" />
     <Content Include="Areas\SummaryReporting\Views\TransactionsDaily\TransactionsDailyData.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\ProductViewModel.cshtml" />
+    <Content Include="Areas\SummaryReporting\Views\HighwayPipelinesReport\HighwayPipelinesData.cshtml" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <None Include="Properties\PublishProfiles\Home.pubxml" />
     <Content Include="Scripts\custom\sendArea.js" />
@@ -1777,6 +1779,7 @@
     <Content Include="Views\Home\ShowMessagesGrid.cshtml" />
     <Content Include="Views\Shared\MessageTypeView.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\ProcessUnitViewModel.cshtml" />
+    <Content Include="Views\Shared\_HighwayPipelinesReportSideBar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
