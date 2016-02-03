@@ -1,5 +1,6 @@
-﻿@using CollectingProductionDataSystem.Web.Areas.DailyReporting.ViewModels;
+﻿@using CollectingProductionDataSystem.Web.Areas.ShiftReporting.ViewModels;
 @using Resources = App_GlobalResources.Resources;
+
 @model HighwayPipelinesDataViewModel
 @{
     Layout = "~/Views/Shared/_KendoLayoutWithSideBar.cshtml";
@@ -25,8 +26,8 @@
                 columns.Bound(c => c.ProductName);
                 columns.Bound(c => c.Sort).ClientGroupHeaderTemplate("#=value.substr(3,value.length-3)#");
                 columns.Bound(c => c.ProductCode).Format("{0:000}");
-                columns.Bound(c => c.Volume).Format("{0:n2}");
-                columns.Bound(c => c.Mass).Format("{0:n2}");
+                columns.Bound(c => c.Volume).Format("{0:n3}");
+                columns.Bound(c => c.Mass).Format("{0:n3}");
                 columns.Command(c => c.Edit()).Width(170);
             })
         .Pageable(pageable => pageable
@@ -49,8 +50,8 @@
             .PageSize(50)
             .ServerOperation(true)
             .Group(group => group.Add(c => c.Sort))
-            .Read(read => read.Action("ReadHighwayPipelinesData", "HighwayPipelines", new { area = "DailyReporting" }).Data("unitGridsData.SendDate"))
-            .Update(update => update.Action("Edit", "HighwayPipelines", new { area = "DailyReporting" }).Data("sendAntiForgery"))
+            .Read(read => read.Action("ReadHighwayPipelinesData", "HighwayPipelines", new { area = "ShiftReporting" }).Data("unitGridsData.SendDate"))
+            .Update(update => update.Action("Edit", "HighwayPipelines", new { area = "ShiftReporting" }).Data("sendAntiForgery"))
             .Model(model =>
             {
                 model.Id(p => p.Id);

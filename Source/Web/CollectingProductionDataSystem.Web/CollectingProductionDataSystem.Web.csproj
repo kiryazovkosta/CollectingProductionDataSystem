@@ -264,9 +264,9 @@
     <Compile Include="Areas\Administration\ViewModels\MessageInputModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\RolePresentationViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\UserPieViewModel.cs" />
-    <Compile Include="Areas\DailyReporting\Controllers\HighwayPipelinesController.cs" />
+    <Compile Include="Areas\ShiftReporting\Controllers\HighwayPipelinesController.cs" />
     <Compile Include="Areas\DailyReporting\Controllers\EnergyDailyController.cs" />
-    <Compile Include="Areas\DailyReporting\ViewModels\HighwayPipelinesDataViewModel.cs" />
+    <Compile Include="Areas\ShiftReporting\ViewModels\HighwayPipelinesDataViewModel.cs" />
     <Compile Include="Areas\Documentation\DocumentationAreaRegistration.cs" />
     <Compile Include="Areas\Documentation\Controllers\HelpController.cs" />
     <Compile Include="Areas\MonthlyReporting\Controllers\InnerPipelinesController.cs" />
@@ -279,6 +279,7 @@
     <Compile Include="Areas\NomManagement\Models\ViewModels\MonthlyProductTypeViewModel.cs" />
     <Compile Include="Areas\SummaryReporting\Controllers\AjaxController.cs" />
     <Compile Include="Areas\SummaryReporting\Controllers\DashBoardController.cs" />
+    <Compile Include="Areas\SummaryReporting\Controllers\HighwayPipelinesReportController.cs" />
     <Compile Include="Areas\SummaryReporting\Controllers\SummaryReportsController.cs" />
     <Compile Include="Areas\NomManagement\Controllers\IkunkController.cs" />
     <Compile Include="Areas\NomManagement\Controllers\MeasuringPointConfigController.cs" />
@@ -1077,7 +1078,7 @@
     <Content Include="Areas\DailyReporting\Views\Shared\DailyChart.cshtml" />
     <Content Include="Areas\NomManagement\Views\MaterialDetailType\Index.cshtml" />
     <Content Include="Areas\NomManagement\Views\Shared\EditorTemplates\MaterialDetailTypeViewModel.cshtml" />
-    <Content Include="Areas\DailyReporting\Views\HighwayPipelines\HighwayPipelinesData.cshtml" />
+    <Content Include="Areas\ShiftReporting\Views\HighwayPipelines\HighwayPipelinesData.cshtml" />
     <Content Include="Areas\MonthlyReporting\Views\InnerPipelines\InnerPipelinesData.cshtml" />
     <Content Include="Areas\MonthlyReporting\Views\InProcessUnits\InProcessUnitsData.cshtml" />
     <Content Include="Areas\Administration\Views\Message\EditorTemplates\MessageTextInput.cshtml" />
@@ -1091,6 +1092,7 @@
     <Content Include="Areas\SummaryReporting\Views\TransactionsDaily\TransactionsDailyData.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\ProductViewModel.cshtml" />
     <Content Include="Areas\NomManagement\Views\MonthlyProductType\Index.cshtml" />
+    <Content Include="Areas\SummaryReporting\Views\HighwayPipelinesReport\HighwayPipelinesData.cshtml" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <None Include="Properties\PublishProfiles\Home.pubxml" />
     <Content Include="Scripts\custom\sendArea.js" />
@@ -1779,6 +1781,8 @@
     <Content Include="Views\Tests\PublishMessage.cshtml" />
     <Content Include="Views\Home\ShowMessagesGrid.cshtml" />
     <Content Include="Views\Shared\MessageTypeView.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\ProcessUnitViewModel.cshtml" />
+    <Content Include="Views\Shared\_HighwayPipelinesReportSideBar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

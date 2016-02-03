@@ -130,6 +130,12 @@
 
         IDeletableEntityRepository<InProcessUnitData> InProcessUnitDatas { get; }
 
+        IDeletableEntityRepository<TankReportConfig> TankReportConfigs { get; }
+
+        IDeletableEntityRepository<InnerPipelinesApprovedDate> InnerPipelinesApprovedDates { get; }
+
+        IDeletableEntityRepository<InProcessUnitsApprovedDate> InProcessUnitsApprovedDates { get; }
+
         IDbContext DbContext { get; }
 
         IEfStatus SaveChanges(string userName);

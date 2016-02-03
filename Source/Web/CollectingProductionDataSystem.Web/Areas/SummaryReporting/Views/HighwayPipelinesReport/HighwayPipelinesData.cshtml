@@ -1,0 +1,81 @@
+﻿@using CollectingProductionDataSystem.Web.Areas.ShiftReporting.ViewModels;
+@using System.Web.Optimization;
+@using Resources = App_GlobalResources.Resources;
+
+@model HighwayPipelinesDataViewModel
+@{
+    Layout = "~/Views/Shared/_KendoLayoutWithSideBar.cshtml";
+}
+<div class="row">
+    <div class="col-md-10">
+        <h2>@Resources.Layout.HighwayPipelinesData</h2>
+    </div>
+    <div class="col-md-2">
+        <button id="excel-export" class="k-button k-button-icontext k-grid-excel pull-right head-button"><span class="k-icon k-i-excel"></span>Експорт в Excel</button>
+    </div>
+</div>
+@Html.ValidationSummary()
+@Html.AntiForgeryToken()
+<div class="row">
+    <div class="col-lg-12 col">
+        @(Html.Kendo().Grid<HighwayPipelinesDataViewModel>()
+        .Name("units")
+        .AutoBind(false)
+        .Columns(columns =>
+            {
+                columns.Bound(c => c.HighwayPipelineConfigName);
+                columns.Bound(c => c.ProductName);
+                columns.Bound(c => c.ProductCode).Format("{0:000}");
+                columns.Bound(c => c.Volume).ClientTemplate("<div style='text-align:right;'>#=data.Volume==null?'':kendo.toString(data.Volume,'n3')#</div>");
+                columns.Bound(c => c.Mass).ClientTemplate("<div style='text-align:right;'>#=data.Mass==null?'':kendo.toString(data.Mass,'n3')#</div>");
+            })
+        .Pageable(pageable => pageable
+        .Refresh(true)
+        .PageSizes(new[] { 10, 20, 50, 100 })
+        .ButtonCount(5))
+        .Sortable()
+        .Excel(excel => excel
+            .FileName(@Resources.Layout.HighwayPipelinesData + "_" + DateTime.Now + ".xlsx")
+            .Filterable(true)
+            .ProxyURL(Url.Action("Excel_Export_Save", "Ajax", new { area = "" }))
+            .AllPages(true)
+        )
+        .Scrollable(scr => scr.Height(660))
+        .Events(ev => ev.DataBound("unitGridsData.DataBound"))
+        .Filterable()
+        .DataSource(dataSource => dataSource
+            .Ajax()
+            .PageSize(50)
+            .ServerOperation(true)
+            .Group(group => group.Add(c => c.Sort))
+            .Read(read => read.Action("ReadHighwayPipelinesData", "HighwayPipelinesReport", new { area = "SummaryReporting" }).Data("unitGridsData.SendDate"))
+            .Model(model =>
+            {
+                model.Id(p => p.Id);
+                model.Field(p => p.HighwayPipelineConfigName).Editable(false);
+                model.Field(p => p.ProductName).Editable(false);
+                model.Field(p => p.ProductCode).Editable(false);
+                model.Field(p => p.Volume).Editable(false);
+                model.Field(p => p.Mass).Editable(false);
+            })
+        .Events(events =>
+        {
+            events.Error("kendoAdditional.ErrorHandler");
+        }))
+
+        )
+    </div>
+</div>
+@* //Error window for kendo grid error event handler *@
+<div id="err-window" style="display:none">@Html.Partial("_KendoGridErrorWindow")</div>
+@* //Error window for kendo grid error event handler *@
+<div id="success-window" style="display:none">@Html.Partial("_SuccessWindow")</div>
+@section scripts{
+    @Scripts.Render("~/bundles/custom/kendoadditional")
+    @Scripts.Render("~/bundles/custom/unitGrids")
+    @Scripts.Render("~/Scripts/custom/renderDailyGraphic.min.js")
+    @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.min.js")
+}
+@section sidebar{
+    @Html.Partial("_HighwayPipelinesReportSideBar")
+}

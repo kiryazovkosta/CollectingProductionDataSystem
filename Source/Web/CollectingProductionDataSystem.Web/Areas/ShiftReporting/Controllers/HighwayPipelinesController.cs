@@ -1,4 +1,4 @@
-﻿namespace CollectingProductionDataSystem.Web.Areas.DailyReporting.Controllers
+﻿namespace CollectingProductionDataSystem.Web.Areas.ShiftReporting.Controllers
 {
     using System.Data.Entity;
     using System.Net;
@@ -11,15 +11,17 @@
     using System.Web;
     using System.Web.Mvc;
     using CollectingProductionDataSystem.Models.Transactions.HighwayPipelines;
-    using CollectingProductionDataSystem.Web.Areas.DailyReporting.ViewModels;
+    using CollectingProductionDataSystem.Web.Areas.DailyReporting.Controllers;
+    using CollectingProductionDataSystem.Web.Areas.ShiftReporting.ViewModels;
     using CollectingProductionDataSystem.Web.Infrastructure.Extentions;
     using Kendo.Mvc.Extensions;
     using Kendo.Mvc.UI;
     using System.Diagnostics;
     using System.Data.Entity.Infrastructure;
     using Resources = App_GlobalResources.Resources;
-using CollectingProductionDataSystem.Application.HighwayPipelinesDataServices;
+    using CollectingProductionDataSystem.Application.HighwayPipelinesDataServices;
 
+    [Authorize(Roles="HighwayPipelines")]
     public class HighwayPipelinesController : AreaBaseController
     {
         private readonly IHighwayPipelinesDataService highwayPipelinesData;

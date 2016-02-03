@@ -23,17 +23,21 @@
         .AutoBind(false)
         .Columns(columns =>
             {
-                columns.Bound(c => c.Id);
-                //columns.Bound(c => c.ProductName);
-                //columns.Bound(c => c.ProductCode).Format("{0:000}");
-                //columns.Bound(c => c.Volume).Format("{0:n2}");
-                //columns.Bound(c => c.Mass).Format("{0:n2}");
-                //columns.Command(c => c.Edit()).Width(170);
+                //columns.Bound(c => c.Id);
+                columns.Bound(c => c.RecordTimestamp).Width(200).Format("{0:MMMM yyyy}");
+                columns.ForeignKey(c => c.ProcessUnitId, (System.Collections.IEnumerable)ViewData["processunits"], "Id", "FullName").EditorTemplateName("ProcessUnitViewModel").Width(300);
+                columns.ForeignKey(c => c.ProductId, (System.Collections.IEnumerable)ViewData["products"], "Id", "Name").EditorTemplateName("ProductViewModel").Width(400);
+                columns.Bound(c => c.Mass).Format("{0:n3}");
+                columns.Command(command => { command.Edit(); command.Destroy(); }).Width(230);
             })
         .Pageable(pageable => pageable
-        .Refresh(true)
-        .PageSizes(new[] { 10, 20, 50, 100 })
-        .ButtonCount(5))
+            .Refresh(true)
+            .PageSizes(new[] { 10, 20, 50, 100 })
+            .ButtonCount(5))
+        .ToolBar(toolbar =>
+            {
+                toolbar.Create();
+            })
         .Sortable()
         .Editable(editable => editable.Mode(GridEditMode.InLine))
         .Excel(excel => excel
@@ -48,17 +52,17 @@
             .Ajax()
             .PageSize(50)
             .ServerOperation(true)
-            //.Group(group => group.Add(c => c.Sort))
             .Read(read => read.Action("ReadInProcessUnitsData", "InProcessUnits", new { area = "MonthlyReporting" }).Data("unitGridsData.SendDate"))
-            //.Update(update => update.Action("Edit", "HighwayPipelines", new { area = "DailyReporting" }).Data("sendAntiForgery"))
+            .Create(create => create.Action("Create", "InProcessUnits", new { area = "MonthlyReporting" }).Data("sendAntiForgery"))
+            .Update(update => update.Action("Update", "InProcessUnits", new { area = "MonthlyReporting" }).Data("sendAntiForgery"))
+            .Destroy(destroy => destroy.Action("Destroy", "InProcessUnits", new { area = "MonthlyReporting" }).Data("sendAntiForgery"))
             .Model(model =>
             {
                 model.Id(p => p.Id);
-                //model.Field(p => p.HighwayPipelineConfigName).Editable(false);
-                //model.Field(p => p.ProductName).Editable(false);
-                //model.Field(p => p.ProductCode).Editable(false);
-                //model.Field(p => p.Volume);
-                //model.Field(p => p.Mass);
+                model.Field(p => p.RecordTimestamp).Editable(false);
+                model.Field(p => p.ProcessUnitId).Editable(true);
+                model.Field(p => p.ProductId).Editable(true);
+                model.Field(p => p.Mass).Editable(true);
             })
         .Events(events =>
         {

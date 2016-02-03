@@ -7,7 +7,6 @@
     using CollectingProductionDataSystem.Models.Inventories;
     using Resources = App_GlobalResources.Resources;
     using CollectingProductionDataSystem.Models.Contracts;
-    using CollectingProductionDataSystem.Models.Nomenclatures;
 
     public class InnerPipelinesDataViewModel : IMapFrom<InnerPipelineData>, IEntity
     {

@@ -21,6 +21,9 @@ namespace CollectingProductionDataSystem.Data.Mappings
                 .HasForeignKey(d => d.ParkId);
 
             this.HasMany(t => t.RelatedTankConfigs);
+
+            this.HasRequired(t => t.TankReportConfig)
+                .WithRequiredPrincipal(t => t.TankConfig);
         }
     }
 }

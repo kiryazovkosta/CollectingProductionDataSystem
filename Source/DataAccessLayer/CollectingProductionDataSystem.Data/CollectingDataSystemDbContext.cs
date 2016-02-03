@@ -159,7 +159,13 @@
 
         public IDbSet<InnerPipelineData> InnerPipelineDatas { get; set; }
 
+        public IDbSet<InnerPipelinesApprovedDate> InnerPipelinesApprovedDates { get; set; }
+
         public IDbSet<InProcessUnitData> InProcessUnitDatas { get; set; }
+
+        public IDbSet<InProcessUnitsApprovedDate> InProcessUnitsApprovedDates { get; set; }
+
+        public IDbSet<TankReportConfig> TankReportConfigs { get; set; }
 
         public IDbSet<Message> Messages { get; set; }
 
