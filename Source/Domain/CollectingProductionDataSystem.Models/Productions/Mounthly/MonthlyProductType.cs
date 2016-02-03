@@ -6,9 +6,11 @@ namespace CollectingProductionDataSystem.Models.Productions.Mounthly
 
     public class MonthlyProductType : DeletableEntity, IEntity
     {
+
         public MonthlyProductType()
         {
             this.UnitMonthlyConfigs = new HashSet<UnitMonthlyConfig>();
+            this.UnitApprovedMonthlyDatas = new HashSet<UnitApprovedMonthlyData>();
         }
 
         public int Id { get; set; }
@@ -16,5 +18,7 @@ namespace CollectingProductionDataSystem.Models.Productions.Mounthly
         public string Name { get; set; }
 
         public virtual ICollection<UnitMonthlyConfig> UnitMonthlyConfigs { get; set; }
+
+        public virtual ICollection<UnitApprovedMonthlyData> UnitApprovedMonthlyDatas { get; set; }
     }
 }

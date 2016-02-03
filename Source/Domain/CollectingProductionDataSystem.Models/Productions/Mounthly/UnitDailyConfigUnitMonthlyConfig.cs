@@ -13,9 +13,9 @@ namespace CollectingProductionDataSystem.Models.Productions.Mounthly
 
         public int UnitMonthlyConfigId { get; set; }
 
-        public virtual UnitDailyConfig UnitConfig { get; set; }
+        public virtual UnitDailyConfig UnitDailyConfig { get; set; }
 
-        public virtual UnitMonthlyConfig UnitDailyConfig { get; set; }
+        public virtual UnitMonthlyConfig UnitMonthlyConfig { get; set; }
 
         public int Position { get; set; }
     }

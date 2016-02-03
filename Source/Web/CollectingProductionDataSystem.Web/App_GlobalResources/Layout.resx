@@ -1455,4 +1455,10 @@
   <data name="ProductionPlanReportEnergy" xml:space="preserve">
     <value>Production Plan Report (Energy)</value>
   </data>
+  <data name="MonthlyProductType" xml:space="preserve">
+    <value>Monthly Product Type</value>
+  </data>
+  <data name="MothlyFormsReports" xml:space="preserve">
+    <value>Mothly Forms &amp; Reports</value>
+  </data>
 </root>

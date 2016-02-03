@@ -6,6 +6,7 @@
     using CollectingProductionDataSystem.Models.Inventories;
     using CollectingProductionDataSystem.Models.Nomenclatures;
     using CollectingProductionDataSystem.Models.Productions;
+    using CollectingProductionDataSystem.Models.Productions.Mounthly;
     using CollectingProductionDataSystem.Models.Productions.Qpt;
     using CollectingProductionDataSystem.Models.SystemLog;
     using CollectingProductionDataSystem.Models.Transactions;
@@ -86,11 +87,13 @@
 
         IDeletableEntityRepository<MaterialDetailType> MaterialDetailTypes { get; }
 
+        IDeletableEntityRepository<MonthlyProductType> MonthlyProductTypes { get; }
+
         IDeletableEntityRepository<ActiveTransactionsData> ActiveTransactionsDatas { get; }
 
         IRepository<UnitConfigUnitDailyConfig> UnitConfigUnitDailyConfigs { get; }
 
-        IRepository<AuditLogRecord> AuditLogRecords{get;}
+        IRepository<AuditLogRecord> AuditLogRecords { get; }
 
         IDeletableEntityRepository<Shift> Shifts { get; }
 
@@ -103,7 +106,7 @@
         IDeletableEntityRepository<MeasuringPointProductsConfig> MeasuringPointProductsConfigs { get; }
 
         IDeletableEntityRepository<Density2FactorAlpha> Density2FactorAlphas { get; }
-        
+
         MessageRepository Messages { get; }
         //IDeletableEntityRepository<Message> Messages { get; }
 
@@ -125,7 +128,7 @@
 
         IDeletableEntityRepository<InnerPipelineData> InnerPipelineDatas { get; }
 
-        IDeletableEntityRepository<InProcessUnitData> InProcessUnitDatas { get; } 
+        IDeletableEntityRepository<InProcessUnitData> InProcessUnitDatas { get; }
 
         IDbContext DbContext { get; }
 

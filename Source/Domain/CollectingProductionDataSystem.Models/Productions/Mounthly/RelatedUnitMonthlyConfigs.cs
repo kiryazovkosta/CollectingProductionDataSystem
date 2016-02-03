@@ -5,13 +5,13 @@ namespace CollectingProductionDataSystem.Models.Productions.Mounthly
 
     public class RelatedUnitMonthlyConfigs : IEntity
     {
-        public int UnitsMonthlyConfigId { get; set; }
+        public int UnitMonthlyConfigId { get; set; }
 
-        public int RelatedUnitsMonthlyConfigId { get; set; }
+        public int RelatedUnitMonthlyConfigId { get; set; }
 
-        public virtual UnitMonthlyConfig UnitsMonthlyConfig { get; set; }
+        public virtual UnitMonthlyConfig UnitMonthlyConfig { get; set; }
 
-        public virtual UnitMonthlyConfig RelatedUnitsMonthlyConfig { get; set; }
+        public virtual UnitMonthlyConfig RelatedUnitMonthlyConfig { get; set; }
 
         public int Position { get; set; }
 
