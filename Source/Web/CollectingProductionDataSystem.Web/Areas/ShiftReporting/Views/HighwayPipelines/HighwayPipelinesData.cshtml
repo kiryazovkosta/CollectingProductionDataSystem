@@ -26,8 +26,8 @@
                 columns.Bound(c => c.ProductName);
                 columns.Bound(c => c.Sort).ClientGroupHeaderTemplate("#=value.substr(3,value.length-3)#");
                 columns.Bound(c => c.ProductCode).Format("{0:000}");
-                columns.Bound(c => c.Volume).Format("{0:n2}");
-                columns.Bound(c => c.Mass).Format("{0:n2}");
+                columns.Bound(c => c.Volume).Format("{0:n3}");
+                columns.Bound(c => c.Mass).Format("{0:n3}");
                 columns.Command(c => c.Edit()).Width(170);
             })
         .Pageable(pageable => pageable

@@ -26,8 +26,8 @@
                 columns.Bound(c => c.HighwayPipelineConfigName);
                 columns.Bound(c => c.ProductName);
                 columns.Bound(c => c.ProductCode).Format("{0:000}");
-                columns.Bound(c => c.Volume).Format("{0:n2}");
-                columns.Bound(c => c.Mass).Format("{0:n2}");
+                columns.Bound(c => c.Volume).ClientTemplate("<div style='text-align:right;'>#=data.Volume==null?'':kendo.toString(data.Volume,'n3')#</div>");
+                columns.Bound(c => c.Mass).ClientTemplate("<div style='text-align:right;'>#=data.Mass==null?'':kendo.toString(data.Mass,'n3')#</div>");
             })
         .Pageable(pageable => pageable
         .Refresh(true)
