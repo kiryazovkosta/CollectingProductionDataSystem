@@ -94,7 +94,7 @@
     <Compile Include="Nomenclatures\Shift.cs" />
     <Compile Include="Nomenclatures\ShiftProductType.cs" />
     <Compile Include="Nomenclatures\TransportType.cs" />
-    <Compile Include="Productions\Mounthly\UnitApprovedMothlyData.cs" />
+    <Compile Include="Productions\Mounthly\UnitApprovedMonthlyData.cs" />
     <Compile Include="Productions\Factory.cs" />
     <Compile Include="Inventories\Park.cs" />
     <Compile Include="Inventories\TankConfig.cs" />

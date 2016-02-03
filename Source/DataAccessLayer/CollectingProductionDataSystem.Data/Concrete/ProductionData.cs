@@ -12,6 +12,7 @@
     using CollectingProductionDataSystem.Models.Inventories;
     using CollectingProductionDataSystem.Models.Nomenclatures;
     using CollectingProductionDataSystem.Models.Productions;
+    using CollectingProductionDataSystem.Models.Productions.Mounthly;
     using CollectingProductionDataSystem.Models.Productions.Qpt;
     using CollectingProductionDataSystem.Models.SystemLog;
     using CollectingProductionDataSystem.Models.Transactions;
@@ -327,6 +328,14 @@
             get
             {
                 return this.GetDeletableEntityRepository<MaterialDetailType>();
+            }
+        }
+
+        public IDeletableEntityRepository<MonthlyProductType> MonthlyProductTypes
+        {
+            get
+            {
+                return this.GetDeletableEntityRepository<MonthlyProductType>();
             }
         }
 

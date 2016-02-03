@@ -14,6 +14,7 @@
     using CollectingProductionDataSystem.Data.Common;
     using CollectingProductionDataSystem.Data.Concrete;
     using CollectingProductionDataSystem.Data.Contracts;
+    using CollectingProductionDataSystem.Data.Mappings;
     using CollectingProductionDataSystem.Data.Mappings.Configuration;
     using CollectingProductionDataSystem.Data.Migrations;
     using CollectingProductionDataSystem.Infrastructure.Contracts;
@@ -24,6 +25,7 @@
     using CollectingProductionDataSystem.Models.Inventories;
     using CollectingProductionDataSystem.Models.Nomenclatures;
     using CollectingProductionDataSystem.Models.Productions;
+    using CollectingProductionDataSystem.Models.Productions.Mounthly;
     using CollectingProductionDataSystem.Models.Productions.Qpt;
     using CollectingProductionDataSystem.Models.SystemLog;
     using CollectingProductionDataSystem.Models.Transactions;
@@ -166,6 +168,8 @@
         public IDbSet<TankReportConfig> TankReportConfigs { get; set; }
 
         public IDbSet<Message> Messages { get; set; }
+
+        public IDbSet<MonthlyProductType> MonthlyProductTypes { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

@@ -1,12 +1,11 @@
-﻿
-namespace CollectingProductionDataSystem.Data.Mappings
+﻿namespace CollectingProductionDataSystem.Data.Mappings
 {
     using System.Data.Entity.ModelConfiguration;
     using CollectingProductionDataSystem.Models.Productions;
 
-    public class UnitsDailyConfigMap : EntityTypeConfiguration<UnitDailyConfig>
+    public class UnitDailyConfigMap : EntityTypeConfiguration<UnitDailyConfig>
     {
-        public UnitsDailyConfigMap()
+        public UnitDailyConfigMap()
         {
             // Primary Key
             this.HasKey(t => t.Id);
@@ -57,7 +56,7 @@ namespace CollectingProductionDataSystem.Data.Mappings
 
             this.HasMany(t => t.UnitConfigUnitDailyConfigs)
                 .WithRequired()
-                .HasForeignKey(x=>x.UnitDailyConfigId);
+                .HasForeignKey(x => x.UnitDailyConfigId);
 
         }
     }

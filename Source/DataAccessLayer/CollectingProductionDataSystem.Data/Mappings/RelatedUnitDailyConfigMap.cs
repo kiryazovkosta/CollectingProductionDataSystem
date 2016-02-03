@@ -6,7 +6,7 @@
     using CollectingProductionDataSystem.Models.Productions;
     using System.ComponentModel.DataAnnotations.Schema;
 
-    class RelatedUnitDailyConfigMap : EntityTypeConfiguration<RelatedUnitDailyConfigs>
+    public class RelatedUnitDailyConfigMap : EntityTypeConfiguration<RelatedUnitDailyConfigs>
     {
         public RelatedUnitDailyConfigMap()
         {

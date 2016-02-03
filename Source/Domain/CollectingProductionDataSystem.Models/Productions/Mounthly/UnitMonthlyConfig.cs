@@ -10,13 +10,13 @@ namespace CollectingProductionDataSystem.Models.Productions.Mounthly
 
     public class UnitMonthlyConfig : DeletableEntity, IEntity, IValidatableObject
     {
-        private ICollection<UnitMonthlyData> unitsMonthlyDatas;
+        private ICollection<UnitMonthlyData> unitMonthlyDatas;
         private ICollection<RelatedUnitMonthlyConfigs> relatedUnitMonthlyConfigs;
         private ICollection<UnitDailyConfigUnitMonthlyConfig> unitDailyConfigUnitMonthlyConfig;
 
         public UnitMonthlyConfig()
         {
-            this.unitsMonthlyDatas = new HashSet<UnitMonthlyData>();
+            this.unitMonthlyDatas = new HashSet<UnitMonthlyData>();
             this.relatedUnitMonthlyConfigs = new HashSet<RelatedUnitMonthlyConfigs>();
             this.unitDailyConfigUnitMonthlyConfig = new HashSet<UnitDailyConfigUnitMonthlyConfig>();
         }
@@ -39,7 +39,7 @@ namespace CollectingProductionDataSystem.Models.Productions.Mounthly
 
         public bool AggregationCurrentLevel { get; set; }
 
-        public string AggregationMembers { get; set; }
+        //public string AggregationMembers { get; set; }
 
         [DefaultValue(true)]
         public bool IsEditable { get; set; }
@@ -54,19 +54,19 @@ namespace CollectingProductionDataSystem.Models.Productions.Mounthly
 
         public bool IsConverted { get; set; }
 
-        public virtual ICollection<UnitMonthlyData> UnitsDailyDatas
+        public virtual ICollection<UnitMonthlyData> UnitMonthlyDatas
         {
             get
             {
-                return this.unitsMonthlyDatas;
+                return this.unitMonthlyDatas;
             }
             set
             {
-                this.unitsMonthlyDatas = value;
+                this.unitMonthlyDatas = value;
             }
         }
 
-        public virtual ICollection<RelatedUnitMonthlyConfigs> RelatedUnitDailyConfigs
+        public virtual ICollection<RelatedUnitMonthlyConfigs> RelatedUnitMonthlyConfigs
         {
             get
             {

@@ -274,7 +274,9 @@
     <Compile Include="Areas\MonthlyReporting\ViewModels\InnerPipelinesDataViewModel.cs" />
     <Compile Include="Areas\MonthlyReporting\ViewModels\InProcessUnitsViewModel.cs" />
     <Compile Include="Areas\NomManagement\Controllers\MaterialDetailTypeController.cs" />
+    <Compile Include="Areas\NomManagement\Controllers\MonthlyProductTypeController.cs" />
     <Compile Include="Areas\NomManagement\Models\ViewModels\MaterialDetailTypeViewModel.cs" />
+    <Compile Include="Areas\NomManagement\Models\ViewModels\MonthlyProductTypeViewModel.cs" />
     <Compile Include="Areas\SummaryReporting\Controllers\AjaxController.cs" />
     <Compile Include="Areas\SummaryReporting\Controllers\DashBoardController.cs" />
     <Compile Include="Areas\SummaryReporting\Controllers\HighwayPipelinesReportController.cs" />
@@ -1089,6 +1091,7 @@
     <Content Include="Areas\SummaryReporting\Views\SummaryReports\ProductionPlanEnergyReport.cshtml" />
     <Content Include="Areas\SummaryReporting\Views\TransactionsDaily\TransactionsDailyData.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\ProductViewModel.cshtml" />
+    <Content Include="Areas\NomManagement\Views\MonthlyProductType\Index.cshtml" />
     <Content Include="Areas\SummaryReporting\Views\HighwayPipelinesReport\HighwayPipelinesData.cshtml" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <None Include="Properties\PublishProfiles\Home.pubxml" />

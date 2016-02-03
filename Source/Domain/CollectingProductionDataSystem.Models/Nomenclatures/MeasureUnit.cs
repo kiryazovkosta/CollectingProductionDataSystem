@@ -8,6 +8,7 @@ namespace CollectingProductionDataSystem.Models.Nomenclatures
     using CollectingProductionDataSystem.Models.Abstract;
     using CollectingProductionDataSystem.Models.Contracts;
     using CollectingProductionDataSystem.Models.Productions;
+    using CollectingProductionDataSystem.Models.Productions.Mounthly;
 
     /// <summary>
     /// 
@@ -23,6 +24,7 @@ namespace CollectingProductionDataSystem.Models.Nomenclatures
             this.UnitsDailyConfigs = new HashSet<UnitDailyConfig>();
             this.EnteredUnitConfigs = new HashSet<UnitConfig>();
             this.ProductionPlanConfigs = new HashSet<ProductionPlanConfig>();
+            this.UnitsMonthlyConfigs = new HashSet<UnitMonthlyConfig>();
         }
 
         /// <summary>
@@ -52,5 +54,8 @@ namespace CollectingProductionDataSystem.Models.Nomenclatures
         public virtual ICollection<UnitDailyConfig> UnitsDailyConfigs { get; set; }
 
         public virtual ICollection<UnitConfig> EnteredUnitConfigs { get; set; }
+
+        public virtual ICollection<UnitMonthlyConfig> UnitsMonthlyConfigs{get;set;}
+
     }
 }

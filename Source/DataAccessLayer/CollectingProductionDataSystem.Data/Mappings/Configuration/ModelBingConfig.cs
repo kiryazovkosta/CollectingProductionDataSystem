@@ -31,7 +31,7 @@
             modelBuilder.Configurations.Add(new IkunkMap());
             modelBuilder.Configurations.Add(new ZoneMap());
             modelBuilder.Configurations.Add(new TransportTypeMap());
-            modelBuilder.Configurations.Add(new UnitsDailyConfigMap());
+            modelBuilder.Configurations.Add(new UnitDailyConfigMap());
             modelBuilder.Configurations.Add(new TankMasterProductMap());
             modelBuilder.Configurations.Add(new UnitsDailyDataMap());
             modelBuilder.Configurations.Add(new UnitsManualDailyDataMap());
@@ -69,6 +69,14 @@
             modelBuilder.Configurations.Add(new TankReportConfigMap());
             modelBuilder.Configurations.Add(new InnerPipelinesApprovedDateMap());
             modelBuilder.Configurations.Add(new InProcessUnitsApprovedDateMap());
+            modelBuilder.Configurations.Add(new MonthlyProductTypeMap());
+            modelBuilder.Configurations.Add(new RelatedUnitMonthlyConfigMap());
+            modelBuilder.Configurations.Add(new UnitApprovedMonthlyDataMap());
+            modelBuilder.Configurations.Add(new UnitDailyConfigUnitMonthlyConfigMap());
+            modelBuilder.Configurations.Add(new UnitManualMonthlyDataMap());
+            modelBuilder.Configurations.Add(new UnitMonthlyConfigMap());
+            modelBuilder.Configurations.Add(new UnitMonthlyDataMap());
+
         }
     }
 }

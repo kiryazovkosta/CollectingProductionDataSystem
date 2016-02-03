@@ -11,7 +11,7 @@ namespace CollectingProductionDataSystem.Models.Productions.Mounthly
 
         public DateTime RecordTimestamp { get; set; }
 
-        public int UnitsMonthlyConfigId { get; set; }
+        public int UnitMonthlyConfigId { get; set; }
 
         public decimal Value { get; set; }
 
@@ -19,9 +19,9 @@ namespace CollectingProductionDataSystem.Models.Productions.Mounthly
 
         public bool HasManualData { get; set; }
 
-        public virtual UnitMonthlyConfig UnitsMonthlyConfig { get; set; }
+        public virtual UnitMonthlyConfig UnitMonthlyConfig { get; set; }
 
-        public virtual UnitManualMonthlyData UnitsManualMonthlyData { get; set; }
+        public virtual UnitManualMonthlyData UnitManualMonthlyData { get; set; }
 
         public decimal TotalMonthQuantity { get; set; }
 
@@ -30,9 +30,9 @@ namespace CollectingProductionDataSystem.Models.Productions.Mounthly
         {
             get
             {
-                if (this.UnitsManualMonthlyData != null)
+                if (this.UnitManualMonthlyData != null)
                 {
-                    return (double)this.UnitsManualMonthlyData.Value;
+                    return (double)this.UnitManualMonthlyData.Value;
                 }
                 else
                 {
@@ -46,7 +46,7 @@ namespace CollectingProductionDataSystem.Models.Productions.Mounthly
         {
             get
             {
-                return this.UnitsManualMonthlyData != null;
+                return this.UnitManualMonthlyData != null;
             }
         }
     }

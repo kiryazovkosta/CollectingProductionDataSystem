@@ -7,12 +7,14 @@ namespace CollectingProductionDataSystem.Models.Productions
     using CollectingProductionDataSystem.Models.Contracts;
     using CollectingProductionDataSystem.Models.Identity;
     using CollectingProductionDataSystem.Models.Inventories;
+    using CollectingProductionDataSystem.Models.Productions.Mounthly;
 
     public partial class ProcessUnit : DeletableEntity, IEntity
     {
         private ICollection<ApplicationUserProcessUnit> applicationUserProcessUnits;
         private ICollection<ProductionPlanConfig> productionPlanConfigs;
         private ICollection<InProcessUnitData> inProcessUnitDatas;
+        private ICollection<UnitMonthlyConfig> unitMonthlyConfigs;
 
         public ProcessUnit()
         {
@@ -21,6 +23,7 @@ namespace CollectingProductionDataSystem.Models.Productions
             this.UnitsDailyConfigs = new HashSet<UnitDailyConfig>();
             this.productionPlanConfigs = new HashSet<ProductionPlanConfig>();
             this.inProcessUnitDatas = new HashSet<InProcessUnitData>();
+            this.unitMonthlyConfigs = new HashSet<UnitMonthlyConfig>();
         }
 
         public int Id { get; set; }
@@ -44,6 +47,11 @@ namespace CollectingProductionDataSystem.Models.Productions
         {
             get { return this.inProcessUnitDatas; } 
             set { this.inProcessUnitDatas = value; } 
+        }
+        public virtual ICollection<UnitMonthlyConfig> UnitMonthlyConfigs 
+        {
+            get { return this.unitMonthlyConfigs; } 
+            set { this.unitMonthlyConfigs = value; } 
         }
     }
 }

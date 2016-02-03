@@ -82,6 +82,7 @@
     <Compile Include="Mappings\ActiveTransactionsDataMap.cs" />
     <Compile Include="Mappings\ApplicationUserParkMap.cs" />
     <Compile Include="Mappings\ApplicationUserProcessUnitMap.cs" />
+    <Compile Include="Mappings\UnitMonthlyConfigMap.cs" />
     <Compile Include="Mappings\Configuration\GlobalTypeMappingConfig.cs" />
     <Compile Include="Mappings\DailyProductTypeMap.cs" />
     <Compile Include="Identity\RoleStoreIntPk.cs" />
@@ -114,6 +115,7 @@
     <Compile Include="Mappings\MeasuringPointConfigsDataMap.cs" />
     <Compile Include="Mappings\MeasuringPointProductsConfigMap.cs" />
     <Compile Include="Mappings\MessageMap.cs" />
+    <Compile Include="Mappings\MonthlyProductTypeMap.cs" />
     <Compile Include="Mappings\ParkMap.cs" />
     <Compile Include="Mappings\ProductionPlanConfigMap.cs" />
     <Compile Include="Mappings\ProductionPlanDataMap.cs" />
@@ -121,6 +123,7 @@
     <Compile Include="Mappings\RelatedTankConfigsMap.cs" />
     <Compile Include="Mappings\RelatedUnitConfigsMap.cs" />
     <Compile Include="Mappings\RelatedUnitDailyConfigMap.cs" />
+    <Compile Include="Mappings\RelatedUnitMonthlyConfigMap.cs" />
     <Compile Include="Mappings\ShiftMap.cs" />
     <Compile Include="Mappings\TankConfigMap.cs" />
     <Compile Include="Mappings\TankDataMap.cs" />
@@ -135,14 +138,18 @@
     <Compile Include="Mappings\TransportTypeMap.cs" />
     <Compile Include="Mappings\UnitConfigMap.cs" />
     <Compile Include="Mappings\UnitConfigUnitDailyConfigMap.cs" />
+    <Compile Include="Mappings\UnitDailyConfigUnitMonthlyConfigMap.cs" />
     <Compile Include="Mappings\UnitEnteredForCalculationDataMap.cs" />
+    <Compile Include="Mappings\UnitManualMonthlyDataMap.cs" />
     <Compile Include="Mappings\UnitsApprovedDailyDataMap.cs" />
-    <Compile Include="Mappings\UnitsDailyConfigMap.cs" />
+    <Compile Include="Mappings\UnitApprovedMonthlyDataMap.cs" />
+    <Compile Include="Mappings\UnitDailyConfigMap.cs" />
     <Compile Include="Mappings\UnitsApprovedDataMap.cs" />
     <Compile Include="Mappings\UnitsDailyDataMap.cs" />
     <Compile Include="Mappings\UnitsDataMap.cs" />
     <Compile Include="Mappings\UnitsManualDailyDataMap.cs" />
     <Compile Include="Mappings\UnitsManualDataMap.cs" />
+    <Compile Include="Mappings\UnitMonthlyDataMap.cs" />
     <Compile Include="Mappings\ZoneMap.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Concrete\ProductionData.cs" />

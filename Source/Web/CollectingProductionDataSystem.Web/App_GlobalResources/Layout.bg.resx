@@ -1408,7 +1408,7 @@
     <value>До деня &lt;br/&gt;(факт T)</value>
   </data>
   <data name="ProductionPlanReport" xml:space="preserve">
-    <value>Своден отчет по отбори (материали)</value>
+    <value>Своден отчет по отбори (въглеводороди)</value>
   </data>
   <data name="RelativeDifference" xml:space="preserve">
     <value>Относителна разлика до деня</value>
@@ -1451,5 +1451,11 @@
   </data>
   <data name="ProductionPlanReportEnergy" xml:space="preserve">
     <value>Своден отчет по отбори (енергийни)</value>
+  </data>
+  <data name="MonthlyProductType" xml:space="preserve">
+    <value>Месечни типове на продукти</value>
+  </data>
+  <data name="MothlyFormsReports" xml:space="preserve">
+    <value>Месечни форми &amp; отчети</value>
   </data>
 </root>

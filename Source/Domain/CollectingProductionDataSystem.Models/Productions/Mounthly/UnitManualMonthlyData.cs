@@ -13,11 +13,7 @@ namespace CollectingProductionDataSystem.Models.Productions.Mounthly
 
         public decimal Value { get; set; }
 
-        public virtual UnitMonthlyData UnitsMonthlyData { get; set; }
-
-        public int EditReasonId { get; set; }
-
-        public virtual EditReason EditReason { get; set; }
+        public virtual UnitMonthlyData UnitMonthlyData { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
@@ -29,11 +25,6 @@ namespace CollectingProductionDataSystem.Models.Productions.Mounthly
             if (/*this.Value < 0.0M || */this.Value > decimal.MaxValue) 
             {
                 yield return new ValidationResult(string.Format(Resources.ModelErrors.UnitsManualData_Value_Range, 0.01M, decimal.MaxValue), new string[] { "ManualValue" });
-            }
-
-            if (this.EditReasonId < 1)
-            {
-                yield return new ValidationResult(Resources.ModelErrors.UnitsManualData_InvalidEditReason, new string[] { "EditReason" });
             }
         }
     }
