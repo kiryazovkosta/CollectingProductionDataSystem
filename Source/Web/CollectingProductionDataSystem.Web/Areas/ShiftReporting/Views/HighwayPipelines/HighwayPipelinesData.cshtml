@@ -1,6 +1,6 @@
 ﻿@using CollectingProductionDataSystem.Web.Areas.ShiftReporting.ViewModels;
+@using CollectingProductionDataSystem.Web.Infrastructure.Helpers;
 @using Resources = App_GlobalResources.Resources;
-
 @model HighwayPipelinesDataViewModel
 @{
     Layout = "~/Views/Shared/_KendoLayoutWithSideBar.cshtml";
@@ -26,8 +26,20 @@
                 columns.Bound(c => c.ProductName);
                 columns.Bound(c => c.Sort).ClientGroupHeaderTemplate("#=value.substr(3,value.length-3)#");
                 columns.Bound(c => c.ProductCode).Format("{0:000}");
-                columns.Bound(c => c.Volume).Format("{0:n3}");
-                columns.Bound(c => c.Mass).Format("{0:n3}");
+                columns.Bound(c => c.Volume)
+                    .ClientTemplate(string.Format("{0}{2}{1}", "<div style='text-align:right;'>", "</div>",
+                        Ajax.AuthorizedAjaxActionLinkOrText("#=kendo.toString(data.Volume,'n3')#", "Index", "History",
+                                                new AjaxOptions() { HttpMethod = "Get", OnSuccess = "showRecordHistoriModal" },
+                                                new { area = "RecordsHistory", id = "#=data.id#", entityName = "HighwayPipelineData" },
+                                                new { data_ajax_mode = "replace", data_ajax_update = @"\#modal-dialog-body" })
+                                                .ToHtmlString()));
+                columns.Bound(c => c.Mass)
+                    .ClientTemplate(string.Format("{0}{2}{1}", "<div style='text-align:right;'>", "</div>",
+                        Ajax.AuthorizedAjaxActionLinkOrText("#=kendo.toString(data.Mass,'n3')#", "Index", "History",
+                                                new AjaxOptions() { HttpMethod = "Get", OnSuccess = "showRecordHistoriModal" },
+                                                new { area = "RecordsHistory", id = "#=data.id#", entityName = "HighwayPipelineData" },
+                                                new { data_ajax_mode = "replace", data_ajax_update = @"\#modal-dialog-body" })
+                                                .ToHtmlString()));
                 columns.Command(c => c.Edit()).Width(170);
             })
         .Pageable(pageable => pageable
@@ -69,18 +81,16 @@
         )
     </div>
 </div>
-
 @* //Error window for kendo grid error event handler *@
 <div id="err-window" style="display:none">@Html.Partial("_KendoGridErrorWindow")</div>
 @* //Error window for kendo grid error event handler *@
 <div id="success-window" style="display:none">@Html.Partial("_SuccessWindow")</div>
-
 @section scripts{
     @Scripts.Render("~/bundles/custom/kendoadditional")
     @Scripts.Render("~/bundles/custom/unitGrids")
     @Scripts.Render("~/Scripts/custom/renderDailyGraphic.min.js")
     @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.min.js")
-    }
+}
 @section sidebar{
     @Html.Partial("_HighwayPipelinesSideBar")
 }

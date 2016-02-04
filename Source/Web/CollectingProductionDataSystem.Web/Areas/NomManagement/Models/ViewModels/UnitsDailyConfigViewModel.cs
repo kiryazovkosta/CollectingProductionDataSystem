@@ -64,6 +64,8 @@
         [Display(Name = "IsEditable", ResourceType = typeof(Resources.Layout))]
         public bool IsEditable { get; set; }
 
+        public bool NotATotalizedPosition { get; set; }
+
         [UIHint("UnitConfigUnitDailyConfigEditor")]
         [Display(Name = "UnitConfigUnitDailyConfig", ResourceType = typeof(Resources.Layout))]
         public ICollection<UnitConfigUnitDailyConfigViewModel> UnitConfigUnitDailyConfigs { get; set; }
