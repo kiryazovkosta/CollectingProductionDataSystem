@@ -41,7 +41,8 @@
             configuration.CreateMap<UnitsDailyData, UnitDailyDataViewModel>()
                 .ForMember(p => p.UnitsManualDailyData, opt => opt.MapFrom(p => p.UnitsManualDailyData ?? new UnitsManualDailyData() { Value = p.Value }))
                 .ForMember(p=>p.IsEditable, opt=>opt.MapFrom(p=>p.UnitsDailyConfig.IsEditable))
-                .ForMember(p=>p.TotalMonthQuantity, opt=>opt.MapFrom(p=>p.TotalMonthQuantity + (decimal)p.RealValue));
+                .ForMember(p => p.TotalMonthQuantity, opt => opt.MapFrom(p => p.UnitsDailyConfig.NotATotalizedPosition ? (decimal)p.RealValue : (p.TotalMonthQuantity + (decimal)p.RealValue)));
+                //.ForMember(p=>p.TotalMonthQuantity, opt=>opt.MapFrom(p=>p.TotalMonthQuantity + (decimal)p.RealValue));
             configuration.CreateMap<UnitDailyDataViewModel, UnitsDailyData>()
                 .ForMember(p => p.TotalMonthQuantity, opt => opt.Ignore());
         }

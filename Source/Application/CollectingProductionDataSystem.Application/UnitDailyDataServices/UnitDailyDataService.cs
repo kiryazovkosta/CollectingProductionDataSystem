@@ -154,12 +154,13 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
         private void AppendTotalMonthQuantityToDailyRecords(Dictionary<string, UnitsDailyData> resultDaily, int processUnitId, DateTime targetDay)
         {
             var beginningOfMonth = new DateTime(targetDay.Year, targetDay.Month, 1);
-            var TotalMonthQuantities = data.UnitsDailyDatas.All().Include(x => x.UnitsDailyConfig)
+            var totalMonthQuantities = data.UnitsDailyDatas.All().Include(x => x.UnitsDailyConfig)
                 .Join(data.UnitsApprovedDailyDatas.All(),
                         units => new UnitDailyToApprove { ProcessUnitId = units.UnitsDailyConfig.ProcessUnitId, RecordDate = units.RecordTimestamp },
                         appd => new UnitDailyToApprove { ProcessUnitId = appd.ProcessUnitId, RecordDate = appd.RecordDate },
                         (units, appd) => new { Units = units, Appd = appd })
                 .Where(x => x.Units.UnitsDailyConfig.ProcessUnitId == processUnitId &&
+                        !x.Units.UnitsDailyConfig.NotATotalizedPosition &&
                         beginningOfMonth <= x.Units.RecordTimestamp &&
                         x.Units.RecordTimestamp < targetDay &&
                         x.Appd.Approved == true).GroupBy(x => x.Units.UnitsDailyConfig.Code).ToList()
@@ -167,9 +168,9 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
 
             foreach (var item in resultDaily)
             {
-                if (TotalMonthQuantities.ContainsKey(item.Key))
+                if (totalMonthQuantities.ContainsKey(item.Key))
                 {
-                    resultDaily[item.Key].TotalMonthQuantity = (decimal)TotalMonthQuantities[item.Key];
+                    resultDaily[item.Key].TotalMonthQuantity = (decimal)totalMonthQuantities[item.Key];
                 }
                 else
                 {
