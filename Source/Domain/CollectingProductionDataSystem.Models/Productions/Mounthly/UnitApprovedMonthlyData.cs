@@ -12,9 +12,9 @@ namespace CollectingProductionDataSystem.Models.Productions.Mounthly
 
         // Todo: Decide about Criteria
 
-        public int MonthlyProductTypeId { get; set; }
+        public int MonthlyReportTypeId { get; set; }
         
-        public virtual MonthlyProductType MonthlyProductType { get; set; }
+        public virtual MonthlyReportType MonthlyReportType { get; set; }
 
         public bool Approved { get; set; }
 

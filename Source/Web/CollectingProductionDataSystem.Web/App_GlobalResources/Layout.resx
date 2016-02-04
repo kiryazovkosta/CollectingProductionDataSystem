@@ -826,7 +826,7 @@
     <value>Related Unit Daily Configs</value>
   </data>
   <data name="UnitConfigUnitDailyConfig" xml:space="preserve">
-    <value>Related Dhift Unit Config</value>
+    <value>Related Shift Unit Config</value>
   </data>
   <data name="IsTotal" xml:space="preserve">
     <value>IsTotal</value>
@@ -1460,5 +1460,17 @@
   </data>
   <data name="MothlyFormsReports" xml:space="preserve">
     <value>Mothly Forms &amp; Reports</value>
+  </data>
+  <data name="RelatedUnitMonthlyConfigs" xml:space="preserve">
+    <value>Related Shift Monthly Config</value>
+  </data>
+  <data name="UnitDailyConfigUnitMonthlyConfig" xml:space="preserve">
+    <value>Related Shift Daily Config</value>
+  </data>
+  <data name="MonthlyReportType" xml:space="preserve">
+    <value>Monthly Report Type</value>
+  </data>
+  <data name="UnitsMonthlyConfig" xml:space="preserve">
+    <value>UnitsMonthlyConfig</value>
   </data>
 </root>

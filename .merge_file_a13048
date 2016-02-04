@@ -6,7 +6,6 @@
     using CollectingProductionDataSystem.Models.Inventories;
     using CollectingProductionDataSystem.Models.Nomenclatures;
     using CollectingProductionDataSystem.Models.Productions;
-    using CollectingProductionDataSystem.Models.Productions.Mounthly;
     using CollectingProductionDataSystem.Models.Productions.Qpt;
     using CollectingProductionDataSystem.Models.SystemLog;
     using CollectingProductionDataSystem.Models.Transactions;
@@ -31,12 +30,7 @@
 
         IApprovableEntityRepository<UnitsDailyData> UnitsDailyDatas { get; }
 
-        IApprovableEntityRepository<UnitMonthlyData> UnitMonthlyDatas { get; }
-
         IDeletableEntityRepository<UnitsManualDailyData> UnitsManualDailyDatas { get; }
-
-        IDeletableEntityRepository<UnitManualMonthlyData> UnitManualMonthlyDatas { get; }
-
 
         IDeletableEntityRepository<Area> Areas { get; }
 
@@ -45,8 +39,6 @@
         IDeletableEntityRepository<TankConfig> Tanks { get; }
 
         IDeletableEntityRepository<UnitDailyConfig> UnitsDailyConfigs { get; }
-
-        IDeletableEntityRepository<UnitMonthlyConfig> UnitMonthlyConfigs { get; }
 
         IApprovableEntityRepository<TankData> TanksData { get; }
 
@@ -78,9 +70,6 @@
 
         IDeletableEntityRepository<UnitsApprovedDailyData> UnitsApprovedDailyDatas { get; }
 
-        IDeletableEntityRepository<UnitApprovedMonthlyData> UnitApprovedMonthlyDatas { get; }
-
-
         IDeletableEntityRepository<ProductionPlanConfig> ProductionPlanConfigs { get; }
 
         IDeletableEntityRepository<MeasuringPointConfig> MeasuringPointConfigs { get; }
@@ -97,16 +86,11 @@
 
         IDeletableEntityRepository<MaterialDetailType> MaterialDetailTypes { get; }
 
-        IDeletableEntityRepository<MonthlyReportType> MonthlyReportTypes { get; }
-
         IDeletableEntityRepository<ActiveTransactionsData> ActiveTransactionsDatas { get; }
 
         IRepository<UnitConfigUnitDailyConfig> UnitConfigUnitDailyConfigs { get; }
 
-        IRepository<UnitDailyConfigUnitMonthlyConfig> UnitDailyConfigUnitMonthlyConfigs { get; }
-
-
-        IRepository<AuditLogRecord> AuditLogRecords { get; }
+        IRepository<AuditLogRecord> AuditLogRecords{get;}
 
         IDeletableEntityRepository<Shift> Shifts { get; }
 
@@ -114,16 +98,14 @@
 
         IRepository<RelatedUnitDailyConfigs> RelatedUnitDailyConfigs { get; }
 
-        IRepository<RelatedUnitMonthlyConfigs> RelatedUnitMonthlyConfigs { get; }
-
-
         IDeletableEntityRepository<UnitEnteredForCalculationData> UnitEnteredForCalculationDatas { get; }
 
         IDeletableEntityRepository<MeasuringPointProductsConfig> MeasuringPointProductsConfigs { get; }
 
         IDeletableEntityRepository<Density2FactorAlpha> Density2FactorAlphas { get; }
-
+        
         MessageRepository Messages { get; }
+        //IDeletableEntityRepository<Message> Messages { get; }
 
         IRepository<Event> Events { get; }
 

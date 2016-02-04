@@ -4,6 +4,7 @@ namespace CollectingProductionDataSystem.Models.Nomenclatures
     using CollectingProductionDataSystem.Models.Abstract;
     using CollectingProductionDataSystem.Models.Contracts;
     using CollectingProductionDataSystem.Models.Productions;
+    using CollectingProductionDataSystem.Models.Productions.Mounthly;
 
     public class MaterialDetailType : DeletableEntity, IEntity
     {

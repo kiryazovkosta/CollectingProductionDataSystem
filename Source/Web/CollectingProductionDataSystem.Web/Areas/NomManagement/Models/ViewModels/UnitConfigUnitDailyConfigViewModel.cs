@@ -1,14 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using AutoMapper;
-using CollectingProductionDataSystem.Infrastructure.Mapping;
-using CollectingProductionDataSystem.Models.Productions;
-
-namespace CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewModels
+﻿namespace CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewModels
 {
-    public class UnitConfigUnitDailyConfigViewModel : IMapFrom<UnitConfigUnitDailyConfig>,IMapFrom<UnitConfig>, IHaveCustomMappings
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Web;
+    using AutoMapper;
+    using CollectingProductionDataSystem.Infrastructure.Mapping;
+    using CollectingProductionDataSystem.Models.Productions;
+
+    public class UnitConfigUnitDailyConfigViewModel : IMapFrom<UnitConfigUnitDailyConfig>, IMapFrom<UnitConfig>, IHaveCustomMappings
     {
         public int UnitConfigId { get; set; }
 

@@ -8,7 +8,7 @@ namespace CollectingProductionDataSystem.Models.Productions.Mounthly
     using CollectingProductionDataSystem.Models.Nomenclatures;
     using CollectingProductionDataSystem.Models.Productions;
 
-    public class UnitMonthlyConfig : DeletableEntity, IEntity, IValidatableObject
+    public class UnitMonthlyConfig : DeletableEntity, IEntity
     {
         private ICollection<UnitMonthlyData> unitMonthlyDatas;
         private ICollection<RelatedUnitMonthlyConfigs> relatedUnitMonthlyConfigs;
@@ -31,9 +31,11 @@ namespace CollectingProductionDataSystem.Models.Productions.Mounthly
 
         public int ProductId { get; set; }
 
-        public int MonthlyProductTypeId { get; set; }
+        public int MonthlyReportTypeId { get; set; }
 
         public int MeasureUnitId { get; set; }
+
+        public int ProductTypeId { get; set; }
 
         public string AggregationFormula { get; set; }
 
@@ -50,7 +52,9 @@ namespace CollectingProductionDataSystem.Models.Productions.Mounthly
 
         public virtual Product Product { get; set; }
 
-        public virtual MonthlyProductType MonthlyProductType { get; set; }
+        public virtual MonthlyReportType MonthlyReportType { get; set; }
+
+        public virtual DailyProductType ProductType { get; set; }
 
         public bool IsConverted { get; set; }
 
@@ -92,35 +96,15 @@ namespace CollectingProductionDataSystem.Models.Productions.Mounthly
 
         public string ProcessUnitAlias { get; set; }
 
-        public int? MaterialTypeId { get; set; }
+        //public int? MaterialTypeId { get; set; }
 
-        public virtual MaterialType MaterialType { get; set; }
+        //public virtual MaterialType MaterialType { get; set; }
 
-        public int? MaterialDetailTypeId { get; set; }
+        //public int? MaterialDetailTypeId { get; set; }
 
-        public virtual MaterialDetailType MaterialDetailType { get; set; }
+        //public virtual MaterialDetailType MaterialDetailType { get; set; }
 
         public bool NotATotalizedPosition { get; set; }
 
-        /// <summary>
-        /// Determines whether the specified object is valid.
-        /// </summary>
-        /// <param name="validationContext">The validation context.</param>
-        /// <returns>A collection that holds failed-validation information.</returns>
-        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
-        {
-            var validationObject = validationContext.ObjectInstance as UnitDailyConfig;
-            if (validationObject.MaterialType != null)
-            {
-                if (validationObject.MaterialType.IsDetailRequired && (validationObject.MaterialDetailTypeId == null || validationObject.MaterialDetailTypeId == 0))
-                {
-                    yield return new ValidationResult(string.Format(Resources.ModelErrors.Required, Resources.ModelErrors.MaterialDetailType), new string[] { "MaterialDetailTypeId" });
-                }
-            }
-            else 
-            {
-                yield return new ValidationResult(string.Format(Resources.ModelErrors.Required, Resources.ModelErrors.MaterialType), new string[] { "MaterialTypeId" });
-            }
-        }
     }
 }

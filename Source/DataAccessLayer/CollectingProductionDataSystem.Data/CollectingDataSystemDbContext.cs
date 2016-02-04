@@ -169,7 +169,20 @@
 
         public IDbSet<Message> Messages { get; set; }
 
-        public IDbSet<MonthlyProductType> MonthlyProductTypes { get; set; }
+        public IDbSet<MonthlyReportType> MonthlyProductTypes { get; set; }
+
+        public IDbSet<RelatedUnitMonthlyConfigs> RelatedUnitMonthlyConfigs { get; set; }
+
+        public IDbSet<UnitApprovedMonthlyData> UnitApprovedMonthlyDatas { get; set; }
+
+        public IDbSet<UnitDailyConfigUnitMonthlyConfig> UnitDailyConfigUnitMonthlyConfigs { get; set; }
+
+        public IDbSet<UnitManualMonthlyData> UnitManualMonthlyDatas { get; set; }
+
+        public IDbSet<UnitMonthlyConfig> UnitMonthlyConfigs { get; set; }
+
+        public IDbSet<UnitMonthlyData> UnitMonthlyDatas { get; set; }
+
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

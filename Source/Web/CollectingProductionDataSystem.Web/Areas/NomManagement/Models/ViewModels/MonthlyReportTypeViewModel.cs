@@ -6,7 +6,7 @@ namespace CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewMode
     using CollectingProductionDataSystem.Models.Productions.Mounthly;
     using Resources = App_GlobalResources.Resources;
 
-    public class MonthlyProductTypeViewModel : IMapFrom<MonthlyProductType>, IEntity
+    public class MonthlyReportTypeViewModel : IMapFrom<MonthlyReportType>, IEntity
     {
         [Required]
         [UIHint("Hidden")]

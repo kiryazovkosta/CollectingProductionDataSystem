@@ -2059,6 +2059,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Monthly Report Type.
+        /// </summary>
+        public static string MonthlyReportType {
+            get {
+                return ResourceManager.GetString("MonthlyReportType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Mothly Forms &amp; Reports.
         /// </summary>
         public static string MothlyFormsReports {
@@ -2856,6 +2865,15 @@ namespace App_GlobalResources.Resources {
         public static string RelatedUnitDailyConfigs {
             get {
                 return ResourceManager.GetString("RelatedUnitDailyConfigs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Related Shift Monthly Config.
+        /// </summary>
+        public static string RelatedUnitMonthlyConfigs {
+            get {
+                return ResourceManager.GetString("RelatedUnitMonthlyConfigs", resourceCulture);
             }
         }
         
@@ -3724,11 +3742,20 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Related Dhift Unit Config.
+        ///   Looks up a localized string similar to Related Shift Unit Config.
         /// </summary>
         public static string UnitConfigUnitDailyConfig {
             get {
                 return ResourceManager.GetString("UnitConfigUnitDailyConfig", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Related Shift Daily Config.
+        /// </summary>
+        public static string UnitDailyConfigUnitMonthlyConfig {
+            get {
+                return ResourceManager.GetString("UnitDailyConfigUnitMonthlyConfig", resourceCulture);
             }
         }
         
@@ -3828,6 +3855,15 @@ namespace App_GlobalResources.Resources {
         public static string UnitsDateSelectorFuture {
             get {
                 return ResourceManager.GetString("UnitsDateSelectorFuture", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to UnitsMonthlyConfig.
+        /// </summary>
+        public static string UnitsMonthlyConfig {
+            get {
+                return ResourceManager.GetString("UnitsMonthlyConfig", resourceCulture);
             }
         }
         

@@ -9,9 +9,9 @@ using CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewModels;
 
 namespace CollectingProductionDataSystem.Web.Areas.NomManagement.Controllers
 {
-    public class MonthlyProductTypeController : GenericNomController<MonthlyProductType, MonthlyProductTypeViewModel>
+    public class MonthlyReportTypeController : GenericNomController<MonthlyReportType, MonthlyReportTypeViewModel>
     {
-        public MonthlyProductTypeController(IProductionData dataParam) 
+        public MonthlyReportTypeController(IProductionData dataParam) 
         :base(dataParam)
         { }
     }

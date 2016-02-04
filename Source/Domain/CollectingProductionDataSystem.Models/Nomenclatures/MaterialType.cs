@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using CollectingProductionDataSystem.Models.Abstract;
 using CollectingProductionDataSystem.Models.Contracts;
 using CollectingProductionDataSystem.Models.Productions;
+using CollectingProductionDataSystem.Models.Productions.Mounthly;
 
 namespace CollectingProductionDataSystem.Models.Nomenclatures
 {
@@ -11,6 +12,7 @@ namespace CollectingProductionDataSystem.Models.Nomenclatures
         private ICollection<UnitDailyConfig> unitDailyConfigs;
         private ICollection<MaterialDetailType> materialDetailTypes;
         private ICollection<ProductionPlanConfig> productionPlanConfigs;
+        private ICollection<UnitMonthlyConfig> unitMonthlyConfigs = new HashSet<UnitMonthlyConfig>();
 
         public MaterialType()
         {
@@ -38,7 +40,7 @@ namespace CollectingProductionDataSystem.Models.Nomenclatures
             set { this.materialDetailTypes = value; }
         }
 
-        public virtual ICollection<ProductionPlanConfig> ProductionPlanConfigs 
+        public virtual ICollection<ProductionPlanConfig> ProductionPlanConfigs
         {
             get { return this.productionPlanConfigs; }
             set { this.productionPlanConfigs = value; }

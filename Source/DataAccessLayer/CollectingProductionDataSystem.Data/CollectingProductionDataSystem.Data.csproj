@@ -115,7 +115,7 @@
     <Compile Include="Mappings\MeasuringPointConfigsDataMap.cs" />
     <Compile Include="Mappings\MeasuringPointProductsConfigMap.cs" />
     <Compile Include="Mappings\MessageMap.cs" />
-    <Compile Include="Mappings\MonthlyProductTypeMap.cs" />
+    <Compile Include="Mappings\MonthlyReportTypeMap.cs" />
     <Compile Include="Mappings\ParkMap.cs" />
     <Compile Include="Mappings\ProductionPlanConfigMap.cs" />
     <Compile Include="Mappings\ProductionPlanDataMap.cs" />

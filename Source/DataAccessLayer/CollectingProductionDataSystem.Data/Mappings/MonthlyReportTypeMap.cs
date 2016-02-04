@@ -5,9 +5,9 @@ namespace CollectingProductionDataSystem.Data.Mappings
     using System.Data.Entity.ModelConfiguration;
     using CollectingProductionDataSystem.Models.Productions.Mounthly;
 
-    public class MonthlyProductTypeMap : EntityTypeConfiguration<MonthlyProductType>
+    public class MonthlyReportTypeMap : EntityTypeConfiguration<MonthlyReportType>
     {
-        public MonthlyProductTypeMap()
+        public MonthlyReportTypeMap()
         {
             // Primary Key
             this.HasKey(t => t.Id);
@@ -18,7 +18,7 @@ namespace CollectingProductionDataSystem.Data.Mappings
                 .HasMaxLength(150);
 
             // Table & Column Mappings
-            this.ToTable("MonthlyProductTypes");
+            this.ToTable("MonthlyReportTypes");
         }
     }
 }

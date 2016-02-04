@@ -69,7 +69,7 @@
             modelBuilder.Configurations.Add(new TankReportConfigMap());
             modelBuilder.Configurations.Add(new InnerPipelinesApprovedDateMap());
             modelBuilder.Configurations.Add(new InProcessUnitsApprovedDateMap());
-            modelBuilder.Configurations.Add(new MonthlyProductTypeMap());
+            modelBuilder.Configurations.Add(new MonthlyReportTypeMap());
             modelBuilder.Configurations.Add(new RelatedUnitMonthlyConfigMap());
             modelBuilder.Configurations.Add(new UnitApprovedMonthlyDataMap());
             modelBuilder.Configurations.Add(new UnitDailyConfigUnitMonthlyConfigMap());

@@ -1,0 +1,13 @@
+﻿@using CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewModels;
+@using Resources = App_GlobalResources.Resources;
+
+@model IEnumerable<RelatedUnitMonthlyConfigsViewModel>
+@(Html.Kendo()
+    .MultiSelectFor(m => m)
+    .AutoClose(false)
+    .BindTo((IEnumerable<RelatedUnitMonthlyConfigsViewModel>)ViewData["relatedMonthlyConfigs"])
+    .DataTextField("Code")
+    .DataValueField("Id")
+    .ItemTemplate("<span class=\"order-id\">#= Code #</span> #= Name #")
+    .Filter(FilterType.Contains)
+)

@@ -99,11 +99,35 @@
             }
         }
 
+        /// <summary>
+        /// Gets or sets the unit monthly datas.
+        /// </summary>
+        /// <value>The unit monthly datas.</value>
+        public IApprovableEntityRepository<UnitMonthlyData> UnitMonthlyDatas
+        {
+            get
+            {
+                return this.GetApprovableEntityRepository<UnitMonthlyData>();
+            }
+        }
+
         public IDeletableEntityRepository<UnitsManualDailyData> UnitsManualDailyDatas
         {
             get
             {
                 return this.GetDeletableEntityRepository<UnitsManualDailyData>();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the unit manual monthly datas.
+        /// </summary>
+        /// <value>The unit manual monthly datas.</value>
+        public IDeletableEntityRepository<UnitManualMonthlyData> UnitManualMonthlyDatas
+        {
+            get
+            {
+                return this.GetDeletableEntityRepository<UnitManualMonthlyData>();
             }
         }
 
@@ -136,6 +160,18 @@
             get
             {
                 return this.GetDeletableEntityRepository<UnitDailyConfig>();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the unit monthly configs.
+        /// </summary>
+        /// <value>The unit monthly configs.</value>
+        public IDeletableEntityRepository<UnitMonthlyConfig> UnitMonthlyConfigs
+        {
+            get
+            {
+                return this.GetDeletableEntityRepository<UnitMonthlyConfig>();
             }
         }
 
@@ -259,6 +295,19 @@
             }
         }
 
+        /// <summary>
+        /// Gets or sets the unit approved monthly datas.
+        /// </summary>
+        /// <value>The unit approved monthly datas.</value>
+        public IDeletableEntityRepository<UnitApprovedMonthlyData> UnitApprovedMonthlyDatas
+        {
+            get
+            {
+                return this.GetDeletableEntityRepository<UnitApprovedMonthlyData>();
+
+            }
+        }
+
         public IDeletableEntityRepository<ProductionPlanConfig> ProductionPlanConfigs
         {
             get
@@ -331,11 +380,11 @@
             }
         }
 
-        public IDeletableEntityRepository<MonthlyProductType> MonthlyProductTypes
+        public IDeletableEntityRepository<MonthlyReportType> MonthlyReportTypes
         {
             get
             {
-                return this.GetDeletableEntityRepository<MonthlyProductType>();
+                return this.GetDeletableEntityRepository<MonthlyReportType>();
             }
         }
 
@@ -344,6 +393,18 @@
             get
             {
                 return this.GetRepository<UnitConfigUnitDailyConfig>();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the unit daily config unit monthly configs.
+        /// </summary>
+        /// <value>The unit daily config unit monthly configs.</value>
+        public IRepository<UnitDailyConfigUnitMonthlyConfig> UnitDailyConfigUnitMonthlyConfigs
+        {
+            get
+            {
+                return this.GetRepository<UnitDailyConfigUnitMonthlyConfig>();
             }
         }
 
@@ -431,7 +492,7 @@
         {
             get
             {
-                 return this.GetDeletableEntityRepository<InnerPipelinesApprovedDate>();
+                return this.GetDeletableEntityRepository<InnerPipelinesApprovedDate>();
             }
         }
 
@@ -477,6 +538,18 @@
             get
             {
                 return this.GetRepository<RelatedUnitDailyConfigs>();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the related unit monthly configs.
+        /// </summary>
+        /// <value>The related unit monthly configs.</value>
+        public IRepository<RelatedUnitMonthlyConfigs> RelatedUnitMonthlyConfigs
+        {
+            get
+            {
+                return this.GetRepository<RelatedUnitMonthlyConfigs>();
             }
         }
 

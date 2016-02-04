@@ -4,10 +4,10 @@ namespace CollectingProductionDataSystem.Models.Productions.Mounthly
     using CollectingProductionDataSystem.Models.Abstract;
     using CollectingProductionDataSystem.Models.Contracts;
 
-    public class MonthlyProductType : DeletableEntity, IEntity
+    public class MonthlyReportType : DeletableEntity, IEntity
     {
 
-        public MonthlyProductType()
+        public MonthlyReportType()
         {
             this.UnitMonthlyConfigs = new HashSet<UnitMonthlyConfig>();
             this.UnitApprovedMonthlyDatas = new HashSet<UnitApprovedMonthlyData>();

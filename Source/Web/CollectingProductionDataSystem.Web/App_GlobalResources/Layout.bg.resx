@@ -1458,4 +1458,16 @@
   <data name="MothlyFormsReports" xml:space="preserve">
     <value>Месечни форми &amp; отчети</value>
   </data>
+  <data name="RelatedUnitMonthlyConfigs" xml:space="preserve">
+    <value>Свързани месечни позиции</value>
+  </data>
+  <data name="UnitDailyConfigUnitMonthlyConfig" xml:space="preserve">
+    <value>Свързани дневни позиции</value>
+  </data>
+  <data name="MonthlyReportType" xml:space="preserve">
+    <value>Тип месечен отчет</value>
+  </data>
+  <data name="UnitsMonthlyConfig" xml:space="preserve">
+    <value>Месечни измервателни позиции</value>
+  </data>
 </root>

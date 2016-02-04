@@ -17,7 +17,7 @@ namespace CollectingProductionDataSystem.Data.Mappings
                 .HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("ix_units_confirmed__monthly_data", 1)))
                 .IsRequired();
 
-            this.Property(t => t.MonthlyProductTypeId)
+            this.Property(t => t.MonthlyReportTypeId)
                 .HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("ix_units_confirmed__monthly_data", 2)))
                 .IsRequired();
 
@@ -29,9 +29,9 @@ namespace CollectingProductionDataSystem.Data.Mappings
 
             //Relations
 
-            this.HasRequired(p => p.MonthlyProductType)
+            this.HasRequired(p => p.MonthlyReportType)
                 .WithMany(p => p.UnitApprovedMonthlyDatas)
-                .HasForeignKey(p => p.MonthlyProductTypeId);
+                .HasForeignKey(p => p.MonthlyReportTypeId);
         }
     }
 }

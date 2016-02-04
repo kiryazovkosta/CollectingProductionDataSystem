@@ -30,11 +30,11 @@ namespace CollectingProductionDataSystem.Data.Mappings
             //    .IsRequired()
             //    .HasMaxLength(2048);
 
-            this.Property(t => t.MaterialTypeId)
-                .IsOptional();
+            //this.Property(t => t.MaterialTypeId)
+            //    .IsOptional();
 
-            this.Property(t => t.MaterialDetailTypeId)
-                .IsOptional();
+            //this.Property(t => t.MaterialDetailTypeId)
+            //    .IsOptional();
 
             // Table & Column Mappings
             this.ToTable("UnitMonthlyConfigs");
@@ -48,9 +48,13 @@ namespace CollectingProductionDataSystem.Data.Mappings
                 .WithMany(t => t.UnitMonthlyConfigs)
                 .HasForeignKey(d => d.ProcessUnitId);
 
-            this.HasRequired(t => t.MonthlyProductType)
+            this.HasRequired(t => t.MonthlyReportType)
                 .WithMany(t => t.UnitMonthlyConfigs)
-                .HasForeignKey(d => d.MonthlyProductTypeId);
+                .HasForeignKey(d => d.MonthlyReportTypeId);
+
+            this.HasRequired(t => t.ProductType)
+                .WithMany(t => t.UnitsMonthlyConfigs)
+                .HasForeignKey(d => d.ProductTypeId);
 
             this.HasMany(t => t.RelatedUnitMonthlyConfigs);
 
