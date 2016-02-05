@@ -124,6 +124,18 @@
         });
     }
 
+    function ProductsValueMapper(options) {
+        var url = this.dataSource.options.transport.read.url.replace("GetAllProducts", "ValueMapper");
+
+        $.ajax({
+            url: url,
+            data: convertValues(options.value),
+            success: function (data) {
+                options.success(data);
+            }
+        });
+    }
+
     var SendHistoryData = function () {
         var result = { 'id': $('input[name=id]').val(), 'entityName': $('input[name=entityName]').val() };
         $.extend(result, sendAntiForgery());
@@ -204,6 +216,7 @@
         DeletableDataBound: DeletableDataBound,
         AfterterNomGridValidation: afterterNomGridValidation,
         MessageBound: messageBound,
-        MessagesDataBound: MessagesDataBound
+        MessagesDataBound: MessagesDataBound,
+        ProductsValueMapper: ProductsValueMapper
     }
 })();
