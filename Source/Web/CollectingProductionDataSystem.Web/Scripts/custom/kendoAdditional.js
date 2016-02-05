@@ -113,7 +113,10 @@
     }
 
     function ValueMapper(options) {
-        var url = this.dataSource.options.transport.read.url.replace("Read", "ValueMapper");
+
+        var splitUrl = this.dataSource.options.transport.read.url.split('/');
+        var actionName = splitUrl[splitUrl.length - 1];
+        var url = this.dataSource.options.transport.read.url.replace(actionName, "ValueMapper");
 
         $.ajax({
             url: url,
@@ -124,17 +127,6 @@
         });
     }
 
-    function ProductsValueMapper(options) {
-        var url = this.dataSource.options.transport.read.url.replace("GetAllProducts", "ValueMapper");
-
-        $.ajax({
-            url: url,
-            data: convertValues(options.value),
-            success: function (data) {
-                options.success(data);
-            }
-        });
-    }
 
     var SendHistoryData = function () {
         var result = { 'id': $('input[name=id]').val(), 'entityName': $('input[name=entityName]').val() };
@@ -217,6 +209,5 @@
         AfterterNomGridValidation: afterterNomGridValidation,
         MessageBound: messageBound,
         MessagesDataBound: MessagesDataBound,
-        ProductsValueMapper: ProductsValueMapper
     }
 })();
