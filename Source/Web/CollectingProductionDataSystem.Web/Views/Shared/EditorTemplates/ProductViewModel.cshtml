@@ -2,8 +2,9 @@
 @model System.Int32
 @(Html.Kendo()
       .DropDownListFor(m => m)
+      .AutoBind(false)
       .OptionLabel(Resources.Layout.ChooseProduct)
-        .DataTextField("Name")
+      .DataTextField("Name")
       .DataValueField("Id")
       .Height(520)
           .DataSource(source =>
@@ -26,7 +27,7 @@
                             .Total("Total"); //define the [total](http://docs.telerik.com/kendo-ui/api/javascript/data/datasource#configuration-schema.total) option
                   });
           })
-                  .Virtual(v => v.ItemHeight(26).ValueMapper("kendoAdditional.ValueMapper"))
+                      .Virtual(v => v.ItemHeight(26).ValueMapper("kendoAdditional.ProductsValueMapper"))
               .Filter(FilterType.Contains)
           .HeaderTemplate("<div class=\"dropdown-header\">" +
                         "<div class=\"k-widget k-header k-code-header\">" + Resources.Layout.Code + "</div>" +

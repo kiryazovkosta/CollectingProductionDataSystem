@@ -221,7 +221,6 @@ namespace CollectingProductionDataSystem.Web.Controllers
         public JsonResult GetAllProducts([DataSourceRequest] DataSourceRequest request) 
         {
             var products = data.Products.All().ToList();
-
             return Json(products.ToDataSourceResult(request, this.ModelState, Mapper.Map<ProductViewModel>));
         }
 
