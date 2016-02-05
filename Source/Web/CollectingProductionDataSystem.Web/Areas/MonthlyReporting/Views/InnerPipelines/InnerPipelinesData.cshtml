@@ -55,9 +55,9 @@
                 .PageSize(100)
                 .ServerOperation(true)
                 .Read(read => read.Action("ReadInnerPipelinesData", "InnerPipelines", new { area = "MonthlyReporting" }).Data("unitGridsData.SendDate"))
-                .Create(create => create.Action("Create", "InnerPipelines", new { area = "MonthlyReporting" }).Data("sendAntiForgery"))
-                .Update(update => update.Action("Update", "InnerPipelines", new { area = "MonthlyReporting" }).Data("sendAntiForgery"))
-                .Destroy(destroy => destroy.Action("Destroy", "InnerPipelines", new { area = "MonthlyReporting" }).Data("sendAntiForgery"))
+                        .Create(create => create.Action("Create", "InnerPipelines", new { area = "MonthlyReporting" }).Data("unitGridsData.sendAntiForgery"))
+                        .Update(update => update.Action("Update", "InnerPipelines", new { area = "MonthlyReporting" }).Data("unitGridsData.sendAntiForgery"))
+                        .Destroy(destroy => destroy.Action("Destroy", "InnerPipelines", new { area = "MonthlyReporting" }).Data("unitGridsData.sendAntiForgery"))
                 .Model(model =>
                 {
                     model.Id(p => p.Id);
