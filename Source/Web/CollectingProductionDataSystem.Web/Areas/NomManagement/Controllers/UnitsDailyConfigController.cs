@@ -8,6 +8,8 @@ using CollectingProductionDataSystem.Data.Contracts;
 using CollectingProductionDataSystem.Models.Nomenclatures;
 using CollectingProductionDataSystem.Models.Productions;
 using CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewModels;
+using Kendo.Mvc.Extensions;
+using Kendo.Mvc.UI;
 
 namespace CollectingProductionDataSystem.Web.Areas.NomManagement.Controllers
 {
@@ -30,5 +32,29 @@ namespace CollectingProductionDataSystem.Web.Areas.NomManagement.Controllers
             this.ViewData["relatedDailyUnits"] = Mapper.Map<IEnumerable<UnitDailyConfig>, IEnumerable<RelatedUnitDailyConfigsViewModel>>(this.data.UnitsDailyConfigs.All()).ToList();
             return base.Index();
         }
+
+         [HttpPost]
+         [ValidateAntiForgeryToken]
+         public override ActionResult Create([DataSourceRequest]DataSourceRequest request, UnitsDailyConfigViewModel inputViewModel) 
+         {
+             if (!ModelState.IsValid)
+             {
+                  return Json(new[] { inputViewModel }.ToDataSourceResult(request, ModelState));
+             }
+
+              if (inputViewModel.UnitConfigUnitDailyConfigs.Count == 1
+                 && inputViewModel.UnitConfigUnitDailyConfigs.FirstOrDefault().UnitConfigId==0)
+             {
+                 inputViewModel.UnitConfigUnitDailyConfigs.Clear();
+             }
+
+             if (inputViewModel.RelatedUnitDailyConfigs.Count == 1
+                 && inputViewModel.RelatedUnitDailyConfigs.FirstOrDefault().Id==0)
+             {
+                 inputViewModel.RelatedUnitDailyConfigs.Clear();
+             }
+
+             return base.Create(request, inputViewModel);
+         }
     }
 }

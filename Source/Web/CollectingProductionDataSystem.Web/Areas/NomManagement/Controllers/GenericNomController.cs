@@ -67,10 +67,10 @@ namespace CollectingProductionDataSystem.Web.Areas.NomManagement.Controllers
             {
                 try
                 {
-                     var entity = Mapper.Map<TModel>(inputViewModel);
+                    //var entity = Mapper.Map<TModel>(inputViewModel);
                     // this way we create proxy object associated with database which can
                     // update navigation properties during change of the foreign keys
-                    //var entity = this.data.DbContext.DbContext.Set<TModel>().Create();
+                    var entity = this.data.DbContext.DbContext.Set<TModel>().Create();
 
                     Mapper.Map(inputViewModel, entity);
 

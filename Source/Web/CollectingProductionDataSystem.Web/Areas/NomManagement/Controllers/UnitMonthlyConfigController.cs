@@ -8,6 +8,7 @@ using CollectingProductionDataSystem.Data.Contracts;
 using CollectingProductionDataSystem.Models.Productions;
 using CollectingProductionDataSystem.Models.Productions.Mounthly;
 using CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewModels;
+using Kendo.Mvc.Extensions;
 using Kendo.Mvc.UI;
 
 namespace CollectingProductionDataSystem.Web.Areas.NomManagement.Controllers
@@ -26,8 +27,6 @@ namespace CollectingProductionDataSystem.Web.Areas.NomManagement.Controllers
             this.ViewData["measureUnits"] = Mapper.Map<IEnumerable<MeasureUnitViewModel>>(this.data.MeasureUnits.All().ToList());
             this.ViewData["monthlyReportTypes"] = Mapper.Map<IEnumerable<MonthlyReportTypeViewModel>>(this.data.MonthlyReportTypes.All().ToList());
             this.ViewData["dailyProductTypes"] = Mapper.Map<IEnumerable<DailyProductTypeViewModel>>(this.data.DailyProductTypes.All().ToList());
-            this.ViewData["materialTypes"] = Mapper.Map<IEnumerable<MaterialTypeViewModel>>(this.data.MaterialTypes.All()).ToList();
-            this.ViewData["materialDetailTypes"] = Mapper.Map<IEnumerable<MaterialDetailTypeViewModel>>(this.data.MaterialDetailTypes.All()).ToList();
             this.ViewData["relatedDailyUnits"]  = Mapper.Map<IEnumerable<UnitDailyConfig>, IEnumerable<UnitDailyConfigUnitMonthlyConfigViewModel>>(this.data.UnitsDailyConfigs.All()).ToList();
             this.ViewData["relatedMonthlyConfigs"] = Mapper.Map<IEnumerable<UnitMonthlyConfig>, IEnumerable<RelatedUnitMonthlyConfigsViewModel>>(this.data.UnitMonthlyConfigs.All()).ToList();
 
@@ -38,10 +37,23 @@ namespace CollectingProductionDataSystem.Web.Areas.NomManagement.Controllers
          [ValidateAntiForgeryToken]
          public override ActionResult Create([DataSourceRequest]DataSourceRequest request, UnitMonthlyConfigViewModel inputViewModel) 
          {
-             if (inputViewModel.RelatedUnitMonthlyConfigs.Count == 1)
+             if (!ModelState.IsValid)
              {
-                 
+                  return Json(new[] { inputViewModel }.ToDataSourceResult(request, ModelState));
              }
+
+              if (inputViewModel.UnitDailyConfigUnitMonthlyConfigs.Count == 1
+                 && inputViewModel.UnitDailyConfigUnitMonthlyConfigs.FirstOrDefault().UnitDailyConfigId==0)
+             {
+                 inputViewModel.UnitDailyConfigUnitMonthlyConfigs.Clear();
+             }
+
+             if (inputViewModel.RelatedUnitMonthlyConfigs.Count == 1
+                 && inputViewModel.RelatedUnitMonthlyConfigs.FirstOrDefault().Id==0)
+             {
+                 inputViewModel.RelatedUnitMonthlyConfigs.Clear();
+             }
+
              return base.Create(request, inputViewModel);
          }
     }
