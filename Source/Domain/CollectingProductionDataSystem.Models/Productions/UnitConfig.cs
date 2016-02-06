@@ -91,5 +91,7 @@ namespace CollectingProductionDataSystem.Models.Productions
         public string ProcessUnitAlias { get; set; }
 
         public bool NotATotalizedPosition { get; set; }
+
+        public int NeedToGetOnlyLastShiftValue { get; set; }
     }
 }

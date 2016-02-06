@@ -73,6 +73,8 @@
 
         public bool NotATotalizedPosition { get; set; }
 
+        public bool IsMemberOfDilyReport { get; set; }
+
         /// <summary>
         /// Determines whether the specified object is valid.
         /// </summary>
