@@ -42,11 +42,13 @@
         [ValidateAntiForgeryToken]
         public JsonResult ReadHighwayPipelinesData([DataSourceRequest]DataSourceRequest request, DateTime? date)
         {
+            var firstDayInMonth = 1;
+
             ValidateModelState(date);
 
             if (this.ModelState.IsValid)
             {
-                if (date.Value.Day == 1)
+                if (date.Value.Day == firstDayInMonth)
                 {
                     if ( !this.data.HighwayPipelineDatas.All().Where(x => x.RecordTimestamp == date).Any())
                     {
@@ -69,13 +71,20 @@
                 }
                 else
                 {
-                    var status = highwayPipelinesData.CheckIfPreviousDaysAreReady(date.Value);
-                    if (status.IsValid)
                     {
                         if (!this.data.HighwayPipelineDatas.All().Where(x => x.RecordTimestamp == date).Any())
                         {
-                            var previousDay = date.Value.AddDays(-1);
-                            var highwayData = this.data.HighwayPipelineDatas.All().Where(x => x.RecordTimestamp == previousDay).ToList();
+                            var firstDay = new DateTime(date.Value.Year, date.Value.Month, 1, 0, 0, 0);
+                            var lastDay = new DateTime(date.Value.Year, date.Value.Month, DateTime.DaysInMonth(date.Value.Year, date.Value.Month), 23, 59, 59); 
+                            var highwayData = this.data.HighwayPipelineDatas
+                                .All()
+                                .Where(x => x.RecordTimestamp >= firstDay &&
+                                    x.RecordTimestamp <= lastDay)
+                                .OrderByDescending(t => t.RecordTimestamp)
+                                .GroupBy(x => x.HighwayPipelineConfigId)
+                                .SelectMany(x => x.Where(b => b.RecordTimestamp == x.Max(c => c.RecordTimestamp)))
+                                .ToList();
+
                             var pipelinesConfigs = this.data.HighwayPipelineConfigs.All().ToList();
                             foreach (var pipelinesConfig in pipelinesConfigs)
                             {
@@ -94,16 +103,11 @@
                             this.data.SaveChanges(this.UserProfile.UserName);
                         }
                     }
-                    else
-                    {
-                        status.ToModelStateErrors(this.ModelState);
-                    }
                 }
 
                 if (this.ModelState.IsValid)
                 {
                     var highwayPipesData = this.data.HighwayPipelineDatas.All().Include(x => x.HighwayPipelineConfig).Where(x => x.RecordTimestamp == date).ToList();
-                    
                     var kendoPreparedResult = Mapper.Map<IEnumerable<HighwayPipelineData>, IEnumerable<HighwayPipelinesDataViewModel>>(highwayPipesData);
                     var kendoResult = kendoPreparedResult.ToDataSourceResult(request, ModelState);
                     return Json(kendoResult);  

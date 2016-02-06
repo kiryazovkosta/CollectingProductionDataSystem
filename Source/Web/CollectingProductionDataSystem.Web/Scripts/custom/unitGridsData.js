@@ -40,6 +40,11 @@ var unitGridsData = (function () {
                 kendoAdditional.RefreshGrid("#confirmation");
             }
 
+            if ($("#highwaypipelines").val() !== undefined) {
+
+                kendoAdditional.RefreshGrid("#highwaypipelines");
+            }
+
         });
 
         nameGridCommancolumn();

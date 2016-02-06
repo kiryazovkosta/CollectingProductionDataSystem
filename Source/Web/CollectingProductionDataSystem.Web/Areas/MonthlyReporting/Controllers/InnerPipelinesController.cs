@@ -14,6 +14,7 @@
     using System.Collections.Generic;
     using CollectingProductionDataSystem.Models.Inventories;
     using CollectingProductionDataSystem.Web.Areas.MonthlyReporting.ViewModels;
+    using CollectingProductionDataSystem.Web.Infrastructure.Filters;
 
     public class InnerPipelinesController : AreaBaseController
     {
@@ -31,6 +32,7 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AuthorizeFactory]
         public ActionResult ReadInnerPipelinesData([DataSourceRequest]DataSourceRequest request, DateTime? date)
         {
             ValidateModelState(date);

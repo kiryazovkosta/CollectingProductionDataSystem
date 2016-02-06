@@ -221,7 +221,8 @@ namespace CollectingProductionDataSystem.Web.Controllers
         public JsonResult GetAllProducts([DataSourceRequest] DataSourceRequest request) 
         {
             var products = data.Products.All().ToList();
-            return Json(products.ToDataSourceResult(request, this.ModelState, Mapper.Map<ProductViewModel>));
+            var productsView = Mapper.Map<IEnumerable<ProductViewModel>>(products);
+            return Json(productsView.ToDataSourceResult(request, this.ModelState));
         }
 
          public ActionResult ValueMapper(int[] values)
