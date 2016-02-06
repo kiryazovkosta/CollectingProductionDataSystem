@@ -102,7 +102,7 @@
             ValidateUnitsReportModelState(date);
             if (ModelState.IsValid)
             {
-                IEnumerable<UnitsData> dbResult = this.unitsData.GetUnitsDataForDateTime(date, processUnitId,null)
+                IEnumerable<UnitsData> dbResult = this.unitsData.GetUnitsDataForDateTime(date, processUnitId, null)
                     .Where(x =>
                         x.UnitConfig.IsMemberOfShiftsReport
                         && (factoryId == null || x.UnitConfig.ProcessUnit.FactoryId == factoryId))
@@ -225,6 +225,8 @@
                     && x.RecordDate <= targetDate
                     && targetProcessUnitIds.Any(y => x.ProcessUnitId == y)).ToList();
 
+            var isProcessUnitEnergyPreApproved = GetIsProcessUnitEnergyPreApproved();
+
             var IsEnergyCheckOff = Convert.ToBoolean(System.Configuration.ConfigurationManager.AppSettings["ComplitionEnergyCheckDeactivared"]);
 
             for (int i = 0; i < SelectedFactories.Count; i++)
@@ -233,23 +235,43 @@
                 var confirmationSecondShift = ConfirmedRecords.FirstOrDefault(x => x.ProcessUnitId == SelectedFactories[i].ProcessUnitId && x.ShiftId == (int)ShiftType.Second);
                 var confirmationThirdShift = ConfirmedRecords.FirstOrDefault(x => x.ProcessUnitId == SelectedFactories[i].ProcessUnitId && x.ShiftId == (int)ShiftType.Third);
                 var confirmationOfDay = ConfirmedDailyRecord.FirstOrDefault(x => x.RecordDate == targetDate && x.ProcessUnitId == SelectedFactories[i].ProcessUnitId);
-                var confirmationUntilTheDay = ConfirmedDailyRecord.Where(x => x.ProcessUnitId == SelectedFactories[i].ProcessUnitId && (x.EnergyApproved || IsEnergyCheckOff)).Select(x => new DailyConfirmationViewModel()
-                {
-                    Day = x.RecordDate,
-                    IsConfirmed = x.Approved,
-                }).ToList();
+                var confirmationUntilTheDay = ConfirmedDailyRecord.Where(x => x.ProcessUnitId == SelectedFactories[i].ProcessUnitId
+                                                                          && (x.EnergyApproved || IsEnergyCheckOff || isProcessUnitEnergyPreApproved[SelectedFactories[i].ProcessUnitId]))
+                                                                          .Select(x => new DailyConfirmationViewModel()
+                                                                            {
+                                                                                Day = x.RecordDate,
+                                                                                IsConfirmed = x.Approved,
+                                                                            }).ToList();
 
                 SelectedFactories[i].Shift1Confirmed = (confirmationFirstShift == null) ? false : confirmationFirstShift.Approved;
                 SelectedFactories[i].Shift2Confirmed = (confirmationSecondShift == null) ? false : confirmationSecondShift.Approved;
                 SelectedFactories[i].Shift3Confirmed = (confirmationThirdShift == null) ? false : confirmationThirdShift.Approved;
                 SelectedFactories[i].DayMaterialConfirmed = (confirmationOfDay == null) ? false : confirmationOfDay.Approved;
-                SelectedFactories[i].DayEnergyConfirmed = (confirmationOfDay == null) ? false : confirmationOfDay.EnergyApproved;
-                SelectedFactories[i].DayConfirmed = (confirmationOfDay == null) ? false : confirmationOfDay.Approved && confirmationOfDay.EnergyApproved;
+                SelectedFactories[i].DayEnergyConfirmed = ((confirmationOfDay == null) ? false : confirmationOfDay.EnergyApproved)
+                    || (isProcessUnitEnergyPreApproved.ContainsKey(SelectedFactories[i].ProcessUnitId) ? isProcessUnitEnergyPreApproved[SelectedFactories[i].ProcessUnitId] : false);
+                SelectedFactories[i].DayConfirmed = (confirmationOfDay == null) ? false : confirmationOfDay.Approved && (confirmationOfDay.EnergyApproved || isProcessUnitEnergyPreApproved[SelectedFactories[i].ProcessUnitId]);
                 SelectedFactories[i].ConfirmedDaysUntilTheDay = JsonConvert.SerializeObject(confirmationUntilTheDay ?? new List<DailyConfirmationViewModel>());
             }
 
             return Json(SelectedFactories.ToDataSourceResult(request, ModelState));
+        }
 
+        /// <summary>
+        /// Gets the is process unit energy approvable.
+        /// </summary>
+        /// <param name="processUnitId">The process unit id.</param>
+        /// <returns></returns>
+        private Dictionary<int, bool> GetIsProcessUnitEnergyPreApproved()
+        {
+            var processUnits = this.data.UnitsDailyConfigs.All()
+                .GroupBy(x => x.ProcessUnitId)
+                .Select(x => new
+                {
+                    Id = x.Key,
+                    NoEnergyPosition = !x.Any(y => y.MaterialType.Id == CommonConstants.EnergyType)
+                }).ToDictionary(x => x.Id, x => x.NoEnergyPosition);
+
+            return processUnits;
         }
 
         [HttpGet]
