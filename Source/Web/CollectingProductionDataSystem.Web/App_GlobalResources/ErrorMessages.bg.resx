@@ -129,6 +129,12 @@
   <data name="ErrorContacts" xml:space="preserve">
     <value>Моля регистрирайте инцидент в системата или се обърнете към служба "Сервис Деск " на телефон 37-11!</value>
   </data>
+  <data name="InnerPipelineDataDublicatedRecords" xml:space="preserve">
+    <value>Съществува запис от {0} за продукт {1}!</value>
+  </data>
+  <data name="InProcessUnitDatasDublicatedRecords" xml:space="preserve">
+    <value>Съществува запис от {0} в производство {1} за продукт {2} !</value>
+  </data>
   <data name="InvalidChangePassword" xml:space="preserve">
     <value>Неуспешен опит за смяна на паролата</value>
   </data>

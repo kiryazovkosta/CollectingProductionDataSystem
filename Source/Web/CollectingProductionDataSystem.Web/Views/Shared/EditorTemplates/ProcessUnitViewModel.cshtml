@@ -2,31 +2,17 @@
 @model System.Int32
 @(Html.Kendo()
     .DropDownListFor(m => m)
-    .OptionLabel(Resources.Layout.ProcessUnit)
+    .OptionLabel(Resources.Layout.ChooseProcessUnit)
     .DataTextField("Name")
     .DataValueField("Id")
     .Height(520)
     .DataSource(source =>
     {
-        source.Custom()
-            .ServerFiltering(true)
-            .ServerPaging(true)
-            .PageSize(80)
-            .Type("aspnetmvc-ajax")
-            .Transport(transport =>
-            {
-                transport.Read(read =>
-                {
-                    read.Action("GetProcessUnits", "Ajax", new { area = "" }).Data("sendAntiForgery");
-                });
-            })
-            .Schema(schema =>
-            {
-                schema.Data("Data") //define the [data](http://docs.telerik.com/kendo-ui/api/javascript/data/datasource#configuration-schema.data) option
-                    .Total("Total"); //define the [total](http://docs.telerik.com/kendo-ui/api/javascript/data/datasource#configuration-schema.total) option
-            });
+              source.Read(read =>
+              {
+                  read.Action("GetAllProcessUnits", "Ajax", new { area = "" }).Data("sendAntiForgery").Type(HttpVerbs.Post);
+              }); 
     })
-    .Virtual(v => v.ItemHeight(26).ValueMapper("kendoAdditional.ValueMapper"))
     .Filter(FilterType.Contains)
           //.HeaderTemplate("<div class=\"dropdown-header\">" +
           //              "<div class=\"k-widget k-header k-code-header\">" + Resources.Layout.Code + "</div>" +

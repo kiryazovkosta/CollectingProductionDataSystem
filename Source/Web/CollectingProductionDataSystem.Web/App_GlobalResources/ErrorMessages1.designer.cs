@@ -97,6 +97,24 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The record with timestamp {0} for product {1} alleady exists!!.
+        /// </summary>
+        public static string InnerPipelineDataDublicatedRecords {
+            get {
+                return ResourceManager.GetString("InnerPipelineDataDublicatedRecords", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The record with timestamp {0} for process unit {1} and product {2} alleady exists!!.
+        /// </summary>
+        public static string InProcessUnitDatasDublicatedRecords {
+            get {
+                return ResourceManager.GetString("InProcessUnitDatasDublicatedRecords", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ivalid attempt to change password..
         /// </summary>
         public static string InvalidChangePassword {

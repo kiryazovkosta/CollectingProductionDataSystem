@@ -225,7 +225,7 @@ namespace CollectingProductionDataSystem.Web.Controllers
             return Json(productsView.ToDataSourceResult(request, this.ModelState));
         }
 
-         public ActionResult ValueMapper(int[] values)
+        public ActionResult ValueMapper(int[] values)
         {
             var indices = new List<int>();
 
@@ -234,6 +234,37 @@ namespace CollectingProductionDataSystem.Web.Controllers
                 var index = 0;
 
                 foreach (var item in this.data.Products.All())
+                {
+                    if (values.Contains(item.Id))
+                    {
+                        indices.Add(index);
+                    }
+
+                    index += 1;
+                }
+            }
+
+            return Json(indices, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public JsonResult GetAllProcessUnits() 
+        {
+            var products = data.ProcessUnits.All().ToList();
+            var productsView = Mapper.Map<IEnumerable<ProcessUnitViewModel>>(products);
+            return Json(productsView);
+        }
+
+        public ActionResult ProcessUnitValueMapper(int[] values)
+        {
+            var indices = new List<int>();
+
+            if (values != null && values.Any())
+            {
+                var index = 0;
+
+                foreach (var item in this.data.ProcessUnits.All())
                 {
                     if (values.Contains(item.Id))
                     {

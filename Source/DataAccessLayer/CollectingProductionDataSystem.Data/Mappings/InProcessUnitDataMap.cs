@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Data.Entity.Infrastructure.Annotations;
     using System.Data.Entity.ModelConfiguration;
     using System.Linq;
     using System.Text;
@@ -14,11 +15,23 @@
         public InProcessUnitDataMap()
         {
             // Primary Key
-            this.HasKey(t => new { t.RecordTimestamp, t.ProcessUnitId, t.ProductId });
+            this.HasKey(t => t.Id);
 
             // Properties
             this.Property(t => t.Id)
                 .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+
+            //index
+            this.Property(t => t.RecordTimestamp)
+              .HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("ix_timestamp_processUnit_productId", 1) { IsUnique = true }))
+              .IsRequired();
+
+            this.Property(t => t.ProcessUnitId)
+                .HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("ix_timestamp_processUnit_productId", 2) { IsUnique = true }))
+                .IsRequired();
+            this.Property(t => t.ProductId)
+                .HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("ix_timestamp_processUnit_productId", 3) { IsUnique = true }))
+                .IsRequired();
 
             // Table & Column Mappings
             this.ToTable("InProcessUnitDatas");

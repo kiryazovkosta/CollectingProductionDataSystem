@@ -346,7 +346,15 @@ var unitGridsData = (function () {
     //------------------ public functions ------------------------------------
 
     function sendDate() {
-        var result = { "date": $('input[name=date]').val() };
+
+        var datePicker = $('input[name=date]').data('kendoDatePicker');
+        if (datePicker !== undefined) {
+            var date = datePicker.value();
+        } else {
+            return;
+        }
+
+        var result = { "date": date.toLocaleString(kendo.culture().name) };
         $.extend(result, sendProcessUnit());
         if ($('input[name=shifts]')) {
             $.extend(result, sendShift());
