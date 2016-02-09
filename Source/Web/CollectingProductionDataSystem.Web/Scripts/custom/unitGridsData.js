@@ -354,7 +354,7 @@ var unitGridsData = (function () {
             return;
         }
 
-        var result = { "date": date.toLocaleString(kendo.culture().name) };
+        var result = { "date": date.toISOString(kendo.culture().name) };
         $.extend(result, sendProcessUnit());
         if ($('input[name=shifts]')) {
             $.extend(result, sendShift());
