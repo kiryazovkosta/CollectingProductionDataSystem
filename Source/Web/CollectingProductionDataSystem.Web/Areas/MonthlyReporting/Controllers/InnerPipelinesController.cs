@@ -84,7 +84,7 @@
                                                 && x.ProductId == inputViewModel.ProductId);
                     if (entity != null)
                     {
-                        ModelState.AddModelError("", string.Format(Resources.ErrorMessages.InnerPipelineDataDublicatedRecords, entity.RecordTimestamp, entity.Product.Name));
+                        ModelState.AddModelError("", string.Format(Resources.ErrorMessages.InnerPipelineDataDublicatedRecords, entity.RecordTimestamp.ToString("dd.MM.yyyy"), entity.Product.Name));
                     }
                     else 
                     {
