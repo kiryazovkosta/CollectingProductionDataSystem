@@ -83,9 +83,8 @@
     //------------------ public functions ------------------------------------
 
     function ErrorHandler(e) {
-        if (this.data) {
-            this.data([]);
-        }
+        var grid = e.sender;
+
         if (e.errors) {
             var message = "";
             $.each(e.errors, function (key, value) {
@@ -99,10 +98,7 @@
             $('div#err-window').data("kendoWindow").open();
         }
 
-        // Cancel the changes
-        var grid = $("#grid").data("kendoGrid");
         grid.cancelChanges();
-
     }
 
     function CloseWindow(selector) {

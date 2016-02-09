@@ -490,6 +490,10 @@ var unitGridsData = (function () {
             kendoAdditional.RefreshGrid('#units');
             //kendoAdditional.RefreshGrid('#productionPlan');
         }
+
+        if (ev.type === 'read' && ev.response.Errors !== null) {
+            ev.sender.data([]);
+        }
     }
 
     function ManualEntryFailure(data) {
