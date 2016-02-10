@@ -16,7 +16,7 @@ var unitGridsData = (function () {
                 kendoAdditional.RefreshGrid("#units");
             }
 
-           
+
 
             if ($("#tanks").val() !== undefined) {
 
@@ -491,8 +491,11 @@ var unitGridsData = (function () {
             //kendoAdditional.RefreshGrid('#productionPlan');
         }
 
-        if (ev.type === 'read' && ev.response.Errors !== null) {
-            ev.sender.data([]);
+        if (ev.response !== undefined) {
+
+            if (ev.type === 'read' && ev.response.Errors !== null) {
+                ev.sender.data([]);
+            }
         }
     }
 
@@ -590,7 +593,7 @@ var unitGridsData = (function () {
     }
 
     function sendDateForSummaryReports() {
-        var result = { "date": kendo.parseDate($('input[name=date]').val()).toISOString()};
+        var result = { "date": kendo.parseDate($('input[name=date]').val()).toISOString() };
         $.extend(result, sendProcessUnit());
         if ($('input[name=shifts]')) {
             $.extend(result, sendShift());
