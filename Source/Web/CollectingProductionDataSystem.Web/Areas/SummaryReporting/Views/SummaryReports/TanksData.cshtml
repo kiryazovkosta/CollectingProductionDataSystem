@@ -49,7 +49,7 @@
             .Ajax()
             .PageSize(20)
             .ServerOperation(true)
-                .Read(read => read.Action("ReadTanksData", "SummaryReports", new { area = "SummaryReporting" }).Data("unitGridsData.SendTanksData"))
+            .Read(read => read.Action("ReadTanksData", "SummaryReports", new { area = "SummaryReporting" }).Data("unitGridsData.SendTanksData"))
         .Events(events =>
         {
             events.Error("kendoAdditional.ErrorHandler");
@@ -68,5 +68,5 @@
 }
 
 @section sidebar{
-    @Html.Partial("_TanksSideBar")
+    @Html.Partial("_TanksSideBarByDateTime")
 }

@@ -1790,6 +1790,7 @@
     <Content Include="Views\Home\ShowMessagesGrid.cshtml" />
     <Content Include="Views\Shared\MessageTypeView.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\ProcessUnitViewModel.cshtml" />
+    <Content Include="Views\Shared\_TanksSideBarByDateTime.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
