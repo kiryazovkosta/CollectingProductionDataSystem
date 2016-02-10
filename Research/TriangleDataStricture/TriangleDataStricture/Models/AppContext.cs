@@ -14,7 +14,7 @@ namespace ManyToManySelfRelation.Models
         }
 
         public AppContext()
-            : base("Name=TestSelfRelationManyToManyContext")
+            : base("Name=Default")
         {
             this.Database.Log = System.Console.WriteLine;
         }
