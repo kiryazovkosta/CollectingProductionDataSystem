@@ -53,29 +53,12 @@
 
             if (this.ModelState.IsValid)
             {
-
-                //var dbResult = this.data.TanksData.All()
-                //    .Include(t => t.TankConfig)
-                //    .Include(t => t.TankConfig.Park)
-                //    .Where(t => t.RecordTimestamp == date
-                //        && t.TankConfig.Park.AreaId == (areaId ?? t.TankConfig.Park.AreaId)
-                //        && t.ParkId == (parkId ?? t.ParkId));
-
-
                 var dbResult = this.data.TanksData.All()
                     .Include(t => t.TankConfig)
                     .Include(t => t.TankConfig.Park)
-                    .Where(t => t.RecordTimestamp == date);
-                
-                if (areaId != null)
-	            {
-                    dbResult = dbResult.Where(x => x.TankConfig.Park.AreaId == areaId);   
-	            }
-
-                if (parkId != null)
-	            {
-                    dbResult = dbResult.Where(x => x.TankConfig.ParkId == parkId);   
-	            }
+                    .Where(t => t.RecordTimestamp == date
+                        && t.TankConfig.Park.AreaId == (areaId ?? t.TankConfig.Park.AreaId)
+                        && t.ParkId == (parkId ?? t.ParkId));
 
                 var kendoResult = dbResult.ToDataSourceResult(request, ModelState);
                 kendoResult.Data = Mapper.Map<IEnumerable<TankData>, IEnumerable<TankDataViewModel>>((IEnumerable<TankData>)kendoResult.Data);

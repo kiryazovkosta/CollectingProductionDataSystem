@@ -264,6 +264,8 @@
     <Compile Include="Areas\Administration\ViewModels\MessageInputModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\RolePresentationViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\UserPieViewModel.cs" />
+    <Compile Include="Areas\DailyReporting\Controllers\TanksStatusesController.cs" />
+    <Compile Include="Areas\DailyReporting\ViewModels\TanksStatusesViewModel.cs" />
     <Compile Include="Areas\NomManagement\Controllers\UnitMonthlyConfigController.cs" />
     <Compile Include="Areas\NomManagement\Models\ViewModels\RelatedUnitMonthlyConfigsViewModel.cs" />
     <Compile Include="Areas\NomManagement\Models\ViewModels\UnitDailyConfigUnitMonthlyConfigViewModel.cs" />
@@ -1101,6 +1103,7 @@
     <Content Include="Areas\NomManagement\Views\UnitMonthlyConfig\EditorTemplates\RelatedUnitMonthlyConfigsEditor.cshtml" />
     <Content Include="Areas\NomManagement\Views\UnitMonthlyConfig\EditorTemplates\UnitDailyConfigUnitMonthlyConfigEditor.cshtml" />
     <Content Include="Areas\NomManagement\Views\Shared\EditorTemplates\MonthlyReportTypeViewModel.cshtml" />
+    <Content Include="Areas\DailyReporting\Views\TanksStatuses\TanksStatusesData.cshtml" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <None Include="Properties\PublishProfiles\Home.pubxml" />
     <Content Include="Scripts\custom\sendArea.js" />

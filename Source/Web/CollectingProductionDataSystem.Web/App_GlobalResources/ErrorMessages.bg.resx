@@ -142,13 +142,13 @@
     <value>Неуспешен опит за регистрация.</value>
   </data>
   <data name="InvalidRecordUpdate" xml:space="preserve">
-    <value>Запис с Id {0} не е намерен. Промяната не може да буде извършена.</value>
+    <value>Запис с Id {0} не е намерен. Промяната не може да бъде извършена.</value>
   </data>
   <data name="InvalidReportParams" xml:space="preserve">
     <value>Невалидни параметри за потвърждаване на отчета.</value>
   </data>
   <data name="LengthError" xml:space="preserve">
-    <value>Полето {0} трябва да бъде дългo поне {2} синвола.</value>
+    <value>Полето {0} трябва да бъде дългo поне {2} символа.</value>
   </data>
   <data name="ManualValue" xml:space="preserve">
     <value>Стойността в полето {0} трябва да бъде между {1} и {2}. </value>
@@ -169,7 +169,7 @@
     <value>за които е генериран отчета и тези, които се опитвате да потвърдите!</value>
   </data>
   <data name="Password" xml:space="preserve">
-    <value>Полето {0} трябва да бъде дългo поне {2} синвола.</value>
+    <value>Полето {0} трябва да бъде дългo поне {2} символа.</value>
   </data>
   <data name="Required" xml:space="preserve">
     <value>Въвеждането в полето {0} е задължително.</value>
@@ -178,7 +178,7 @@
     <value>Вие не сте оторизиран за изпълняваното действие.</value>
   </data>
   <data name="UserName" xml:space="preserve">
-    <value>Потребителското име трябва да бъде дълго поне {2} синвола.</value>
+    <value>Потребителското име трябва да бъде дълго поне {2} символа.</value>
   </data>
   <data name="Volume" xml:space="preserve">
     <value>Невалиден обем</value>
