@@ -10,11 +10,13 @@ namespace CollectingProductionDataSystem.Models.Inventories
     {
         private ICollection<TankData> tankDatas;
         private ICollection<RelatedTankConfigs> relatedTankConfigs;
+        private ICollection<TankStatusData> tankStatusDatas;
 
         public TankConfig()
         {
             this.tankDatas = new HashSet<TankData>();
             this.relatedTankConfigs = new HashSet<RelatedTankConfigs>();
+            this.tankStatusDatas = new HashSet<TankStatusData>();
         }
 
         public int Id { get; set; }
@@ -81,8 +83,10 @@ namespace CollectingProductionDataSystem.Models.Inventories
             get { return this.relatedTankConfigs; }
             set { this.relatedTankConfigs = value; }
         }
-
-        public int TankReportConfigId { get; set; }
-        public virtual TankReportConfig TankReportConfig { get; set; }
+        public virtual ICollection<TankStatusData> TankStatusDatas
+        {
+            get { return this.tankStatusDatas; }
+            set { this.tankStatusDatas = value; }
+        }
     }
 }

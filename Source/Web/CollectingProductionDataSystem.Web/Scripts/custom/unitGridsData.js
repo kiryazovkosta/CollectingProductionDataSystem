@@ -399,7 +399,9 @@ var unitGridsData = (function () {
     function SendTanksData() {
         var result = { "date": $('input[name=date]').val() };
         $.extend(result, sendZoneId());
-        $.extend(result, sendShift());
+        if ($('input#shifts')) {
+            $.extend(result, sendShift());
+        }
         $.extend(result, sendAreaId());
         $.extend(result, sendAntiForgery());
         return result;

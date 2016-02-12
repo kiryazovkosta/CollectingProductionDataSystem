@@ -82,6 +82,8 @@
     <Compile Include="Mappings\ActiveTransactionsDataMap.cs" />
     <Compile Include="Mappings\ApplicationUserParkMap.cs" />
     <Compile Include="Mappings\ApplicationUserProcessUnitMap.cs" />
+    <Compile Include="Mappings\TankStatusDataMap.cs" />
+    <Compile Include="Mappings\TankStatusMap.cs" />
     <Compile Include="Mappings\UnitMonthlyConfigMap.cs" />
     <Compile Include="Mappings\Configuration\GlobalTypeMappingConfig.cs" />
     <Compile Include="Mappings\DailyProductTypeMap.cs" />
@@ -134,7 +136,6 @@
     <Compile Include="Mappings\ProductMap.cs" />
     <Compile Include="Mappings\ProductTypeMap.cs" />
     <Compile Include="Mappings\TankMasterProductMap.cs" />
-    <Compile Include="Mappings\TankReportConfigMap.cs" />
     <Compile Include="Mappings\TransportTypeMap.cs" />
     <Compile Include="Mappings\UnitConfigMap.cs" />
     <Compile Include="Mappings\UnitConfigUnitDailyConfigMap.cs" />

@@ -46,7 +46,7 @@
             var jInput = $(input);
             var role = jInput.data().role;
             if (role) {//kendo input
-                if (role == 'datepicker') {
+                if (role == 'datepicker' || role === 'datetimepicker') {
                     text += '<span class="gothic">' + esc(jInput.val()) + '</span>' + '&nbsp;&nbsp;<strong> | </strong>&nbsp;&nbsp;';
                 } else {
                     var objectKeys = $.map(jInput.data(), function (value, key) {
