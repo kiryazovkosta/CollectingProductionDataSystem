@@ -1794,6 +1794,7 @@
     <Content Include="Views\Shared\MessageTypeView.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\ProcessUnitViewModel.cshtml" />
     <Content Include="Views\Shared\_TanksSideBarByDateTime.cshtml" />
+    <Content Include="Views\Shared\_TanksSideBarByDate.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

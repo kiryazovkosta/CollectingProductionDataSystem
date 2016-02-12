@@ -1470,4 +1470,7 @@
   <data name="UnitsMonthlyConfig" xml:space="preserve">
     <value>Месечни измервателни позиции</value>
   </data>
+  <data name="TanksStatusesData" xml:space="preserve">
+    <value>Текущ статус на резервоарите</value>
+  </data>
 </root>

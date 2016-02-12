@@ -18,6 +18,8 @@ namespace CollectingProductionDataSystem.Constants
 
         private static readonly int energyType = 2;
 
+        private static readonly int firstDayInMonth = 1;
+
         public static string StandartPassword { get { return standartPassword; } }
 
         public static string[] PowerUsers { get { return powerUsers; } }
@@ -27,5 +29,7 @@ namespace CollectingProductionDataSystem.Constants
         public static int MaterialType { get { return materialType;} }
 
         public static int EnergyType { get { return energyType; } }
+
+        public static int FirstDayInMonth { get { return firstDayInMonth; } }
     }
 }

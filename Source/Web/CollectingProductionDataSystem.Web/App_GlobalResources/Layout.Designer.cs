@@ -3157,6 +3157,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to TanksStatusesData.
+        /// </summary>
+        public static string TanksStatusesData {
+            get {
+                return ResourceManager.GetString("TanksStatusesData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Timestamp.
         /// </summary>
         public static string TimeStamp {
