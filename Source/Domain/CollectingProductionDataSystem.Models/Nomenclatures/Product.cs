@@ -35,8 +35,13 @@ namespace CollectingProductionDataSystem.Models.Nomenclatures
         public int Id { get; set; }
         public int Code { get; set; }
         public string Name { get; set; }
+
+        public bool IsAvailableForInnerPipeLine { get; set; }
+
         public int ProductTypeId { get; set; }
+
         public virtual TankMasterProduct TankMasterProduct { get; set; }
+
         public virtual ProductType ProductType { get; set; }
         public virtual ICollection<TankData> TanksDatas 
         {

@@ -7,8 +7,8 @@
     <ProjectGuid>{DFDFBDF5-313C-4CD3-BBEE-CB61FAA7D6C5}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ManyToManySelfRelation</RootNamespace>
-    <AssemblyName>ManyToManySelfRelation</AssemblyName>
+    <RootNamespace>TriangleDataStricture</RootNamespace>
+    <AssemblyName>TriangleDataStricture</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -52,16 +52,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="Models\Mapping\RecordMap.cs" />
-    <Compile Include="Models\Mapping\RelatedRecordsMap.cs" />
-    <Compile Include="Models\Record.cs" />
-    <Compile Include="Models\RelatedRecords.cs" />
+    <Compile Include="Models\Mapping\FuelMap.cs" />
+    <Compile Include="Models\Mapping\QuantityRecordMap.cs" />
+    <Compile Include="Models\Fuel.cs" />
+    <Compile Include="Models\QuantityRecord.cs" />
     <Compile Include="Models\AppContext.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="ClassDiagram1.cd" />
     <None Include="packages.config" />
   </ItemGroup>

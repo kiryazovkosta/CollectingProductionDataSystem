@@ -209,6 +209,22 @@
         }
     }
 
+    function onPipeChange(ev) {
+        if (ev.action === 'itemchange') {
+            var addedRecord = ev.items[0];
+            if (addedRecord !== null) {
+                var targetDate = $('input[name=date]').data('kendoDatePicker').value();
+                addedRecord.RecordTimestamp = targetDate;
+            }
+        }
+    }
+
+    function оnRequestEnd(ev) {
+        if (ev.type === "destroy") {
+            RefreshGrid('#inner-pipes');
+        }
+    }
+
     return {
         ErrorHandler: ErrorHandler,
         CloseWindow: CloseWindow,
@@ -219,6 +235,8 @@
         AfterterNomGridValidation: afterterNomGridValidation,
         MessageBound: messageBound,
         MessagesDataBound: MessagesDataBound,
-        OnChange: onChange
+        OnChange: onChange,
+        OnPipeChange: onPipeChange,
+        OnRequestEnd: оnRequestEnd
     }
 })();

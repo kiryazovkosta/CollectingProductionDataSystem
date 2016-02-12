@@ -46,13 +46,4 @@
         public int FlagValue { get; set; }
         public string Name { get; set; }
     }
-
-        public class StatusOfTankViewModel
-    {
-        public int Id { get; set; }
-        public string TankName { get; set; }
-        public string ParkName { get; set; }
-        public DateTime RecordTimestamp { get; set; }
-        public TankStatus Status { get; set; }
-    }
 }

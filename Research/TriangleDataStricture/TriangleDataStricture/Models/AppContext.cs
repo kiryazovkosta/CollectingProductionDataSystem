@@ -1,10 +1,10 @@
-using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
-using ManyToManySelfRelation.Models.Mapping;
-using ManyToManySelfRelation.Migrations;
 
-namespace ManyToManySelfRelation.Models
+namespace TriangleDataStricture.Models
 {
+    using System.Data.Entity;
+    using TriangleDataStricture.Migrations;
+    using TriangleDataStricture.Models.Mapping;
+
     public partial class AppContext : DbContext
     {
 
@@ -16,17 +16,17 @@ namespace ManyToManySelfRelation.Models
         public AppContext()
             : base("Name=Default")
         {
-            this.Database.Log = System.Console.WriteLine;
+            //this.Database.Log = System.Console.WriteLine;
         }
 
-        public DbSet<Record> Records { get; set; }
+        public DbSet<Fuel> Fuels { get; set; }
 
-        public DbSet<RelatedRecords> RelatedRecords { get; set; }
+        public DbSet<QuantityRecord> QuantityRecords { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Configurations.Add(new RecordMap());
-            modelBuilder.Configurations.Add(new RelatedRecordsMap());
+            modelBuilder.Configurations.Add(new FuelMap());
+            modelBuilder.Configurations.Add(new QuantityRecordMap());
 
         }
     }

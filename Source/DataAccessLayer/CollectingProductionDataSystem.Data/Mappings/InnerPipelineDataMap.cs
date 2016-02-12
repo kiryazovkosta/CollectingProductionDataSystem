@@ -12,16 +12,7 @@
         public InnerPipelineDataMap()
         {
             // Primary Key
-            this.HasKey(t => t.Id);
-
-            //Index
-            this.Property(t => t.RecordTimestamp)
-              .HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("ix_timestamp_productId", 1) { IsUnique = true }))
-              .IsRequired();
-
-            this.Property(t => t.ProductId)
-                .HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("ix_timestamp_productId", 2) { IsUnique = true }))
-                .IsRequired();
+            this.HasKey(t => new { t.ProductId, t.RecordTimestamp, t.Id });
 
             // Properties
             this.Property(t => t.Id)

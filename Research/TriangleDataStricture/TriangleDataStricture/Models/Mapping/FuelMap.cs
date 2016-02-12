@@ -1,11 +1,11 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.ModelConfiguration;
 
-namespace ManyToManySelfRelation.Models.Mapping
+namespace TriangleDataStricture.Models.Mapping
 {
-    public class RecordMap : EntityTypeConfiguration<Record>
+    public class FuelMap : EntityTypeConfiguration<Fuel>
     {
-        public RecordMap()
+        public FuelMap()
         {
             // Primary Key
             this.HasKey(t => t.Id);
@@ -20,7 +20,7 @@ namespace ManyToManySelfRelation.Models.Mapping
             this.Property(t => t.Id).HasColumnName("Id");
             this.Property(t => t.Name).HasColumnName("Name");
 
-            this.HasMany(t => t.RelatedRecords);
+            this.HasMany(t => t.QuantityRecords);
         }
     }
 }

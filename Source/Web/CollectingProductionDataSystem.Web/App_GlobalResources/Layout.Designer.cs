@@ -1546,6 +1546,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to IsAvailableForInnerPipeLine.
+        /// </summary>
+        public static string IsAvailableForInnerPipeLine {
+            get {
+                return ResourceManager.GetString("IsAvailableForInnerPipeLine", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to IsCalculated.
         /// </summary>
         public static string IsCalculated {

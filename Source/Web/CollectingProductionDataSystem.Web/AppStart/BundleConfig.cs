@@ -70,7 +70,8 @@ namespace CollectingProductionDataSystem.Web.AppStart
                 "~/Scripts/custom/sendAntiForgery.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/custom/signalrR").Include(
-                "~/Scripts/custom/signalR.js"));
+                "~/Scripts/custom/signalR.js",
+                "~/Scripts/custom/logoff.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/custom/renderMaterialGraphic")
                 .Include("~/Scripts/custom/renderDailyMaterialGraphic.js"));

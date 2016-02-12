@@ -37,7 +37,6 @@
                 return result;
             }
 
-
             if (materialTypeId.HasValue && 
                 materialTypeId.Value == energyId)
             {

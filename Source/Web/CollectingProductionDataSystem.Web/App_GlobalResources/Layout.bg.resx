@@ -1473,4 +1473,7 @@
   <data name="TanksStatusesData" xml:space="preserve">
     <value>Текущ статус на резервоарите</value>
   </data>
+  <data name="IsAvailableForInnerPipeLine" xml:space="preserve">
+    <value>Визуализация МЦК</value>
+  </data>
 </root>
