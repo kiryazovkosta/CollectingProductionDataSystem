@@ -22,6 +22,7 @@
         $(window).bind("beforeunload", function closingCode() {
             if (!validNavigation) {
                 event.preventDefault();
+                $.connection.hub.stop();
                 $.ajax({
                     url: '/Ajax/UserCloseWindow',
                     type: 'POST',

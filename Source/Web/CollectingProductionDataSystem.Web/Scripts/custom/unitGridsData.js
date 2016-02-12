@@ -36,6 +36,15 @@ var unitGridsData = (function () {
                 kendoAdditional.RefreshGrid("#measuringpoints");
             }
 
+            if ($("#inner-pipes").val() !== undefined) {
+
+                if (ctrlParamsElement.val() !== undefined) {
+                    ctrlParamsElement.attr('data-params', JSON.stringify(sendOnlyDate()));
+                }
+
+                kendoAdditional.RefreshGrid("#inner-pipes");
+            }
+
             if ($("#confirmation").val() !== undefined) {
                 kendoAdditional.RefreshGrid("#confirmation");
             }
@@ -49,6 +58,7 @@ var unitGridsData = (function () {
 
         nameGridCommancolumn();
         hideCommandButtons();
+        attachCallendatEvents();
         var unitsGrid = $('#units').data('kendoGrid');
         if (unitsGrid) {
             attachEventToExportBtn("#excel-export", "#units");
@@ -341,6 +351,25 @@ var unitGridsData = (function () {
         form.removeData("validator");
         $.validator.unobtrusive.parse(document);
         form.executed = true;
+    }
+
+    function attachCallendatEvents() {
+        var ctrlParamsElement = $('#control-params');
+        var dateElement = $('#date');
+        if (dateElement.val()!== undefined) {
+            var datePicker = dateElement.data('kendoDatePicker');
+
+            datePicker.bind("change", function () {
+                if ($("#inner-pipes").val() !== undefined) {
+
+                    if (ctrlParamsElement.val() !== undefined) {
+                        ctrlParamsElement.attr('data-params', JSON.stringify(sendOnlyDate()));
+                    }
+
+                    kendoAdditional.RefreshGrid("#inner-pipes");
+                }
+            });
+        }
     }
 
     //------------------ public functions ------------------------------------

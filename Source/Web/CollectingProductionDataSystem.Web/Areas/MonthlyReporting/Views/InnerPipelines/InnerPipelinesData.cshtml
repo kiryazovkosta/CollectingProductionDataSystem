@@ -19,27 +19,25 @@
 @Html.AntiForgeryToken()
 @(Html.Kendo()
             .Grid<InnerPipelinesDataViewModel>()
-            .Name("measuringpoints")
+            .Name("inner-pipes")
             .AutoBind(false)
             .Columns(
                 columns =>
                 {
-                    //columns.Bound(c => c.Id).Width(100);
-                    columns.Bound(c => c.RecordTimestamp).Width(200).Format("{0:MMMM yyyy}");
-                    columns.ForeignKey(c => c.ProductId, (System.Collections.IEnumerable)ViewData["products"], "Id", "Name").EditorTemplateName("ProductViewModel").Width(400);
+                    columns.Bound(c => c.Id).Width(100);
+                    columns.Bound(c => c.RecordTimestamp).Width(200).Format("{0:dd.MM.yyyy}");
+                    columns.Bound(c => c.Product.ProductType.SortableName).Hidden(true).ClientGroupHeaderTemplate("#=value.substr(4,value.length-4)#");
+                    columns.ForeignKey(c => c.ProductId, (System.Collections.IEnumerable)ViewData["products"], "Id", "Name").EditorTemplateName("ProductViewModel").Width(500);
                     columns.Bound(c => c.Mass).Format("{0:n3}");
                     columns.Bound(c => c.Volume).Format("{0:n3}");
                     columns.Command(command => { command.Edit(); command.Destroy(); }).Width(230);
                 })
             .Pageable(pageable => pageable
                 .Refresh(true)
-                .PageSizes(new[] { 10, 20, 50, 100 })
-                .ButtonCount(5)
+                //.PageSizes(new[] { 50, 100, 300 })
+                //.ButtonCount(5)
             )
-            .ToolBar(toolbar =>
-              {
-                  toolbar.Create();
-              })
+
             .Editable(editable => editable.Mode(GridEditMode.InLine))
             .Sortable()
             .Excel(excel => excel
@@ -52,29 +50,36 @@
             .Filterable()
             .DataSource(dataSource => dataSource
                 .Ajax()
-                .PageSize(100)
-                .ServerOperation(true)
+                        .PageSize(600)
+                        .ServerOperation(false)
                         .Read(read => read.Action("ReadInnerPipelinesData", "InnerPipelines", new { area = "MonthlyReporting" }).Data("unitGridsData.SendDate"))
-                        .Create(create => create.Action("Create", "InnerPipelines", new { area = "MonthlyReporting" }).Data("sendAntiForgery"))
+                
                         .Update(update => update.Action("Update", "InnerPipelines", new { area = "MonthlyReporting" }).Data("sendAntiForgery"))
                         .Destroy(destroy => destroy.Action("Destroy", "InnerPipelines", new { area = "MonthlyReporting" }).Data("sendAntiForgery"))
+                        
+                .Group(group =>
+                {
+                    group.Add(c => c.Product.ProductType.SortableName);
+                })
+                .Sort(sort=>sort.Add(c=>c.Id))
+                
                 .Model(model =>
                 {
                     model.Id(p => p.Id);
-                    model.Field(p => p.RecordTimestamp).Editable(false).DefaultValue(new DateTime(now.Year, now.Month, 1));
-                    model.Field(p => p.ProductId).Editable(true);
+                    model.Field(p => p.Id).Editable(false);
+                    model.Field(p => p.RecordTimestamp).Editable(false);
+                    model.Field(p => p.ProductId).Editable(false);
+                    model.Field(p => p.Product).Editable(false);
+                    model.Field(p => p.Product.ProductType).Editable(false);
                     model.Field(p => p.Mass).Editable(true);
                     model.Field(p => p.Volume).Editable(true);
                 })
                 .Events(events =>
                 {
                     events.Error("kendoAdditional.ErrorHandler");
-                    events.Change("kendoAdditional.OnChange");
-                    events.RequestEnd("unitGridsData.DataSave");
+                    events.Change("kendoAdditional.OnPipeChange");
+                    events.RequestEnd("kendoAdditional.OnRequestEnd");
                 })
-            )
-            .Events(ev => ev
-                .DataBound("unitGridsData.DataBound")
             )
 )
 

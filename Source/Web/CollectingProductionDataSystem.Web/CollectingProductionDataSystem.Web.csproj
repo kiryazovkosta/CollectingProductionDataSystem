@@ -970,6 +970,7 @@
     </Content>
     <Content Include="Scripts\custom\kendoAdditional.js" />
     <Content Include="Scripts\custom\kendoGridState.js" />
+    <Content Include="Scripts\custom\logoff.js" />
     <Content Include="Scripts\custom\renderDailyEnergyGraphic.js" />
     <Content Include="Scripts\custom\renderDailyGraphic.min.js">
       <DependentUpon>renderDailyMaterialGraphic.js</DependentUpon>

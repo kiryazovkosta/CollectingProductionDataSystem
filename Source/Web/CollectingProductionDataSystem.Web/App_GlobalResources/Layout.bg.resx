@@ -1470,4 +1470,7 @@
   <data name="UnitsMonthlyConfig" xml:space="preserve">
     <value>Месечни измервателни позиции</value>
   </data>
+  <data name="IsAvailableForInnerPipeLine" xml:space="preserve">
+    <value>Визуализация МЦК</value>
+  </data>
 </root>

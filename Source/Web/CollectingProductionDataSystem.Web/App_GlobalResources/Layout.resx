@@ -1473,4 +1473,7 @@
   <data name="UnitsMonthlyConfig" xml:space="preserve">
     <value>UnitsMonthlyConfig</value>
   </data>
+  <data name="IsAvailableForInnerPipeLine" xml:space="preserve">
+    <value>IsAvailableForInnerPipeLine</value>
+  </data>
 </root>

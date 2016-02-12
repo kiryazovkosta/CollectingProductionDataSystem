@@ -10,7 +10,7 @@
                 @Html.Action("GetGreetingMessage", "Account", new { area = string.Empty})
 
             </li>
-            <li><a href="javascript:document.getElementById('logoutForm').submit()">@Resources.Layout.Logoff</a></li>
+            <li><a href="#" id="logoff">@Resources.Layout.Logoff</a></li>
             <li><a href='@Url.Action("ShowMessagesGrid", "Home", new { area = "" })' id="messages"><span class="glyphicon glyphicon-envelope"><span class="label label-danger label-as-badge" id="message-counter"></span></span></a></li>
             <li><a href="/Documentation/Help" class="btn-help"><img src="~/Content/Images/PNG/Help.png" alt="Help" class="btn-help"/></a></li>
         </ul>
