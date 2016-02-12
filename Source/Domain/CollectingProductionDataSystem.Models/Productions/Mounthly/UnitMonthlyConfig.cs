@@ -1,5 +1,6 @@
 namespace CollectingProductionDataSystem.Models.Productions.Mounthly
 {
+    using System;
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
@@ -8,7 +9,7 @@ namespace CollectingProductionDataSystem.Models.Productions.Mounthly
     using CollectingProductionDataSystem.Models.Nomenclatures;
     using CollectingProductionDataSystem.Models.Productions;
 
-    public class UnitMonthlyConfig : DeletableEntity, IEntity
+    public class UnitMonthlyConfig : DeletableEntity, IEntity, IValidatableObject
     {
         private ICollection<UnitMonthlyData> unitMonthlyDatas;
         private ICollection<RelatedUnitMonthlyConfigs> relatedUnitMonthlyConfigs;
@@ -105,6 +106,23 @@ namespace CollectingProductionDataSystem.Models.Productions.Mounthly
         //public virtual MaterialDetailType MaterialDetailType { get; set; }
 
         public bool NotATotalizedPosition { get; set; }
+
+        public bool IsManualEntry { get; set; }
+
+
+         /// <summary>
+        /// Determines whether the specified object is valid.
+        /// </summary>
+        /// <param name="validationContext">The validation context.</param>
+        /// <returns>A collection that holds failed-validation information.</returns>
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            var currentObject = validationContext.ObjectInstance as UnitMonthlyConfig;
+            if (currentObject.IsManualEntry == false && string.IsNullOrEmpty(currentObject.AggregationFormula))
+            {
+                yield return new ValidationResult(string.Format(Resources.ModelErrors.Required, "AggregationFormula"));
+            }
+        }
 
     }
 }

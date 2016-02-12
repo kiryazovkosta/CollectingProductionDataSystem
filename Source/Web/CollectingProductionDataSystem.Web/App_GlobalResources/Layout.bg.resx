@@ -1473,4 +1473,7 @@
   <data name="IsAvailableForInnerPipeLine" xml:space="preserve">
     <value>Визуализация МЦК</value>
   </data>
+  <data name="IsManualEntry" xml:space="preserve">
+    <value>Ръчна позиция</value>
+  </data>
 </root>

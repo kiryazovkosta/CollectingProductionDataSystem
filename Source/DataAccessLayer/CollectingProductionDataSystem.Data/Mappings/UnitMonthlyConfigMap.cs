@@ -23,7 +23,7 @@ namespace CollectingProductionDataSystem.Data.Mappings
                 .HasMaxLength(20);
 
             this.Property(t => t.AggregationFormula)
-                .IsRequired()
+                //.IsRequired()
                 .HasMaxLength(2048);
 
             //this.Property(t => t.AggregationMembers)
