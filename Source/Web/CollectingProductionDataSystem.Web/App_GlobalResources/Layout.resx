@@ -1479,4 +1479,7 @@
   <data name="IsAvailableForInnerPipeLine" xml:space="preserve">
     <value>IsAvailableForInnerPipeLine</value>
   </data>
+  <data name="IsManualEntry" xml:space="preserve">
+    <value>IsManualEntry</value>
+  </data>
 </root>

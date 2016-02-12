@@ -1618,6 +1618,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to IsManualEntry.
+        /// </summary>
+        public static string IsManualEntry {
+            get {
+                return ResourceManager.GetString("IsManualEntry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to IsMaterial.
         /// </summary>
         public static string IsMaterial {

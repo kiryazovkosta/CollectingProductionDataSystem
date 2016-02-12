@@ -25,6 +25,7 @@
           columns.Bound(c => c.UnitDailyConfigUnitMonthlyConfigs).Width(300).ClientTemplate("#=unitConfigTemplate(UnitDailyConfigUnitMonthlyConfigs)#");
           columns.Bound(c => c.RelatedUnitMonthlyConfigs).Width(300).ClientTemplate("#=unitConfigTemplate(RelatedUnitMonthlyConfigs)#");
           columns.Bound(c => c.IsEditable).Width(100);
+          columns.Bound(c => c.IsManualEntry).Width(100);
           columns.Command(command => { command.Edit(); command.Destroy(); }).Width(230);
       })
       .Resizable(res => res.Columns(true))
