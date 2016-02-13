@@ -11,7 +11,7 @@ namespace CollectingProductionDataSystem.Application.TankDataServices
     {
         private TankStatusData tankStatusData = new TankStatusData
         {
-            TankStatusId = 0
+            TankStatusId = 5
         };
 
         public int Id { get { return this.Quantity.Id; } }
@@ -33,7 +33,7 @@ namespace CollectingProductionDataSystem.Application.TankDataServices
                 return this.tankStatusData ?? new TankStatusData
                 {
                     Id = 0,
-                    TankStatusId = 0
+                    TankStatusId = 5
                 };
             }
             set

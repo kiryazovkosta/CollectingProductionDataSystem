@@ -45,6 +45,15 @@ var unitGridsData = (function () {
                 kendoAdditional.RefreshGrid("#inner-pipes");
             }
 
+            if ($("#tanks-statuses").val() !== undefined) {
+
+                if (ctrlParamsElement.val() !== undefined) {
+                    ctrlParamsElement.attr('data-params', JSON.stringify(SendTanksData()));
+                }
+
+                kendoAdditional.RefreshGrid("#tanks-statuses");
+            }
+
             if ($("#confirmation").val() !== undefined) {
                 kendoAdditional.RefreshGrid("#confirmation");
             }

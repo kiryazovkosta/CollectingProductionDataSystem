@@ -98,6 +98,7 @@ namespace CollectingProductionDataSystem.Web.AppStart
             kernel.Bind<IHighwayPipelinesDataService>().To<HighwayPipelinesDataService>();
             kernel.Bind<ITestUnitDailyCalculationService>().ToMethod(context => TestUnitDailyCalculationService.GetInstance()).InSingletonScope();
             kernel.Bind<IPipelineServices>().To<PipelineServices>();
+            kernel.Bind<IInventoryTanksService>().To<InventoryTanksService>();
         }        
     }
 }

@@ -222,6 +222,7 @@
     function оnRequestEnd(ev) {
         if (ev.type === "destroy") {
             RefreshGrid('#inner-pipes');
+            RefreshGrid('#tanks-statuses');
         }
     }
 
