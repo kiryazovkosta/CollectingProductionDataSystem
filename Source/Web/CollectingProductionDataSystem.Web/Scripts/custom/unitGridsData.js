@@ -367,17 +367,18 @@ var unitGridsData = (function () {
         var dateElement = $('#date');
         if (dateElement.val()!== undefined) {
             var datePicker = dateElement.data('kendoDatePicker');
+            if (datePicker !== undefined) {
+                datePicker.bind("change", function () {
+                    if ($("#inner-pipes").val() !== undefined) {
 
-            datePicker.bind("change", function () {
-                if ($("#inner-pipes").val() !== undefined) {
+                        if (ctrlParamsElement.val() !== undefined) {
+                            ctrlParamsElement.attr('data-params', JSON.stringify(sendOnlyDate()));
+                        }
 
-                    if (ctrlParamsElement.val() !== undefined) {
-                        ctrlParamsElement.attr('data-params', JSON.stringify(sendOnlyDate()));
+                        kendoAdditional.RefreshGrid("#inner-pipes");
                     }
-
-                    kendoAdditional.RefreshGrid("#inner-pipes");
-                }
-            });
+                });
+            }
         }
     }
 

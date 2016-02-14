@@ -125,11 +125,11 @@
                     var percs = (((double)item.QuanityFactCurrentMonth + (double)item.QuantityFact) * 100.00) / (double)totallyQuantityAs;
                     item.PercentagesFactCurrentMonth = GetValidValueOrZero(percs);  
                 }
-                else if (materialTypeId == CommonConstants.EnergyType)
-                {
-                    var percs = (double)(item.QuanityFactCurrentMonth + item.QuantityFact) / (double)totallyQuantityAs;
-                    item.PercentagesFactCurrentMonth = GetValidValueOrZero(percs); 
-                }
+                //else if (materialTypeId == CommonConstants.EnergyType)
+                //{
+                //    var percs = (double)(item.QuanityFactCurrentMonth + item.QuantityFact) / (double)totallyQuantityAs;
+                //    item.PercentagesFactCurrentMonth = GetValidValueOrZero(percs); 
+                //}
 
             }
 
