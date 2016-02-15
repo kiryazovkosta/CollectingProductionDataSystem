@@ -516,6 +516,20 @@ var unitGridsData = (function () {
 
     }
 
+    var convertYourLevel = false;
+
+    function ConvertGridRows(dataCollection){
+        if (dataCollection.items == undefined) {
+            convertYourLevel = true;
+            return;
+        }
+
+
+        if (convertYourLevel) {
+            $.each(dataCollection.Items, function (key, value) { })
+        }
+    }
+
     function DataSave(ev) {
         if (ev.type === 'update') {
             kendoAdditional.RefreshGrid('#units');

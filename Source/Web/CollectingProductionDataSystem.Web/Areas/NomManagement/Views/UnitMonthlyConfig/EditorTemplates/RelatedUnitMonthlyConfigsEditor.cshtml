@@ -7,29 +7,19 @@
     .AutoClose(false)
     .DataTextField("Code")
     .DataValueField("Id")
+    .BindTo(Model)
     .ItemTemplate("<span class=\"order-id\">#= Code #</span> #= Name #")
     .Filter(FilterType.Contains)
 
         .DataSource(source =>
         {
             source.Custom()
-                .ServerFiltering(true)
-                .ServerPaging(true)
-                .PageSize(80)
-                .Type("aspnetmvc-ajax") //Set this type if you want to use DataSourceRequest and ToDataSourceResult instances
                 .Transport(transport =>
                 {
                     transport.Read(read =>
                     {
-                        read.Action("Read", "UnitMonthlyConfig", new { area = "NomManagement" }).Data("sendAntiForgery");
+                        read.Action("GetRelatedMonthly", "UnitMonthlyConfig", new { area = "NomManagement" }).Data("sendAntiForgery");
                     });
-                })
-                .Schema(schema =>
-                {
-                    schema.Data("Data") //define the [data](http://docs.telerik.com/kendo-ui/api/javascript/data/datasource#configuration-schema.data) option
-                          .Total("Total"); //define the [total](http://docs.telerik.com/kendo-ui/api/javascript/data/datasource#configuration-schema.total) option
                 });
         })
-                  .Virtual(v => v.ItemHeight(26).ValueMapper("kendoAdditional.ValueMapper"))
-                          .Filter(FilterType.Contains)
 )
