@@ -115,6 +115,9 @@
                 case "R18":
                     result = FormulaR18(arguments);
                     break;
+                case "P18":
+                    result = FormulaP18(arguments);
+                    break;
                 case "ZZ52":
                     result = FormulaZZ52(arguments);
                     break;
@@ -1431,12 +1434,57 @@
         /// </summary>
         private double FormulaR18(FormulaArguments args)
         {
-            double pl = 20;
-            double pl1 = 10;
-            double d2 = 15;
+            if (!args.InputValue.HasValue)
+            {
+                throw new ArgumentNullException("The value of CounterIndication(PL) is not allowed to be null");
+            }
+            if (!args.OldValue.HasValue)
+            {
+                throw new ArgumentNullException("The value of Old CounterIndication(PL-1) is not allowed to be null");
+            }
+            if (!args.MaximumFlow.HasValue)
+            {
+                throw new ArgumentNullException("The value of MaximumFlow(D2) is not allowed to be null");
+            }
+
+            double pl = args.InputValue.Value;
+            double pl1 = args.OldValue.Value;
+            double d2 = args.MaximumFlow.Value;
 
             double q = Functions.GetValueFormulaA11(pl, pl1, d2);
             
+            var inputParams = new Dictionary<string, double>();
+            inputParams.Add("q", q);
+
+            string expr = @"par.q";
+            double result = calculator.Calculate(expr, "par", 1, inputParams);
+            return result;
+        }
+
+        /// <summary>
+        /// 39) P18 ;;БРОЯЧИ ЗА ПАРА :: X A11 Q
+        /// </summary>
+        private double FormulaP18(FormulaArguments args)
+        {
+            if (!args.InputValue.HasValue)
+            {
+                throw new ArgumentNullException("The value of CounterIndication(PL) is not allowed to be null");
+            }
+            if (!args.OldValue.HasValue)
+            {
+                throw new ArgumentNullException("The value of Old CounterIndication(PL-1) is not allowed to be null");
+            }
+            if (!args.MaximumFlow.HasValue)
+            {
+                throw new ArgumentNullException("The value of MaximumFlow(D2) is not allowed to be null");
+            }
+
+            double pl = args.InputValue.Value;
+            double pl1 = args.OldValue.Value;
+            double d2 = args.MaximumFlow.Value;
+
+            double q = Functions.GetValueFormulaA11(pl, pl1, d2);
+
             var inputParams = new Dictionary<string, double>();
             inputParams.Add("q", q);
 

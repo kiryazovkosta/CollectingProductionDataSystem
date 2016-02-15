@@ -66,6 +66,12 @@
         [Display(Name = "ParkName", ResourceType = typeof(Resources.Layout))]
         public string ParkName { get; set; }
 
+        [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
+        [Display(Name = "TankStatus", ResourceType = typeof(Resources.Layout))]
+        public string StatusOfTank { get; set; }
+
+        public int TankId { get; set; }
+
         /// <summary>
         /// Creates the mappings.
         /// </summary>
@@ -73,6 +79,7 @@
         public void CreateMappings(IConfiguration configuration)
         {
             configuration.CreateMap<TankData, TankDataViewModel>()
+                .ForMember(p => p.TankId, opt => opt.MapFrom(p => p.TankConfigId))
                 .ForMember(p => p.TankName, opt => opt.MapFrom(p => p.TankConfig.TankName))
                 .ForMember(p => p.ParkName, opt => opt.MapFrom(p => p.TankConfig.Park.Name))
                 .ForMember(p => p.LiquidLevel, opt => opt.MapFrom(p => p.CorrectedLiquidLevel))
