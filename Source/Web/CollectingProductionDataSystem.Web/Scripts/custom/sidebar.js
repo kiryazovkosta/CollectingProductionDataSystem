@@ -69,15 +69,18 @@
     }
 
     function attachToPipelineDatePickerIfDefined() {
-        var dateElement = $('#date');
+        $grid = $('#inner-pipes').data('kendoGrid');
+        if ($grid !== null) {
+            var dateElement = $('#date');
 
-        if (dateElement.val() !== undefined) {
-            var datePicker = dateElement.data('kendoDatePicker');
-            datePicker.bind("change", function () {
-                if ($("#inner-pipes").val() !== undefined) {
-                    rewriteSideBarBanner();
-                }
-            });
+            if (dateElement.val() !== undefined) {
+                var datePicker = dateElement.data('kendoDatePicker');
+                datePicker.bind("change", function () {
+                    if ($("#inner-pipes").val() !== undefined) {
+                        rewriteSideBarBanner();
+                    }
+                });
+            }
         }
     }
 })();

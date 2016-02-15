@@ -1,0 +1,18 @@
+﻿@using Resources = App_GlobalResources.Resources
+@model System.Int32
+@(Html.Kendo()
+    .DropDownListFor(m => m)
+    .OptionLabel(Resources.Layout.ChooseTankStatus)
+    .DataTextField("Name")
+    .DataValueField("Id")
+    .Height(520)
+    .DataSource(source =>
+    {
+        source.Read(read =>
+        {
+            read.Action("GetAllTankStatuses", "Ajax", new { area = "" }).Data("sendAntiForgery").Type(HttpVerbs.Post);
+        });
+    })
+    .Filter(FilterType.Contains)
+
+)

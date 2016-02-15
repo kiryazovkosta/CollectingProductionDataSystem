@@ -1470,10 +1470,25 @@
   <data name="UnitsMonthlyConfig" xml:space="preserve">
     <value>Месечни измервателни позиции</value>
   </data>
+  <data name="TanksStatusesData" xml:space="preserve">
+    <value>Статус на резервоарите</value>
+  </data>
   <data name="IsAvailableForInnerPipeLine" xml:space="preserve">
     <value>Визуализация МЦК</value>
   </data>
   <data name="IsManualEntry" xml:space="preserve">
     <value>Ръчна позиция</value>
+  </data>
+  <data name="ChooseTankStatus" xml:space="preserve">
+    <value>Изберете статус</value>
+  </data>
+  <data name="TankStatus" xml:space="preserve">
+    <value>Статус на резервоар</value>
+  </data>
+  <data name="FlagValue" xml:space="preserve">
+    <value>Флаг за групиране</value>
+  </data>
+  <data name="UsageRateTotalMonthPercentagesFact" xml:space="preserve">
+    <value>РН до деня (факт)</value>
   </data>
 </root>

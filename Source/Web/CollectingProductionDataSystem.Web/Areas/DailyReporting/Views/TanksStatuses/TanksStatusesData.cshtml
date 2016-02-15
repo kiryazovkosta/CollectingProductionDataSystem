@@ -1,14 +1,13 @@
 ﻿@using System.Web.Optimization;
-@using CollectingProductionDataSystem.Web.Infrastructure.Helpers;
 @using CollectingProductionDataSystem.Web.Areas.DailyReporting.ViewModels;
 @using Resources = App_GlobalResources.Resources;
-@model TanksStatusesViewModel
+@model TanksStatusDataViewModel
 @{
     Layout = "~/Views/Shared/_KendoLayoutWithSideBar.cshtml";
 }
 <div class="row">
     <div class="col-md-10">
-        <h2>@Resources.Layout.UnitsDailyData</h2>
+        <h2>@Resources.Layout.TanksStatusesData</h2>
     </div>
     <div class="col-md-2">
         <button id="excel-export" class="k-button k-button-icontext k-grid-excel pull-right head-button"><span class="k-icon k-i-excel"></span>Експорт в Excel</button>
@@ -18,47 +17,54 @@
 @Html.AntiForgeryToken()
 
 @(Html.Kendo()
-    .Grid<TanksStatusesViewModel>()
-    .Name("units")
+    .Grid<TanksStatusDataViewModel>()
+    .Name("tanks-statuses")
     .AutoBind(false)
     .Columns(
         columns =>
         {
-            columns.Bound(c => c.Id);
-            columns.Bound(c => c.Park.Name).Width(150);
-            columns.Bound(c => c.TankName).Width(50);
+            columns.Bound(c => c.Id).Visible(false);
+            columns.Bound(c => c.RecordTimestamp).Format("{0:dd.MM.yyyy}");
+            columns.Bound(c => c.ParkName);
+            columns.Bound(c => c.ControlPoint);
+            columns.Bound(c => c.TankName);
+            columns.ForeignKey(c => c.TankStatusId, (System.Collections.IEnumerable)ViewData["tankStatuses"], "Id", "Name").EditorTemplateName("TankStatusViewModel").Width(300);
+            columns.Command(command => { command.Edit(); command.Destroy(); }).Width(230);
         })
         .Pageable(pageable => pageable
             .Refresh(true)
-            .PageSizes(new[] { 10, 20, 50, 100 })
-            .ButtonCount(5)
         )
-                .Editable(editable => editable.Mode(GridEditMode.InLine))
+        .Editable(editable => editable.Mode(GridEditMode.InLine))
         .Sortable()
         .Excel(excel => excel
-        .FileName(@Resources.Layout.UnitsDailyData + "_" + DateTime.Now + ".xlsx")
+            .FileName(@Resources.Layout.TanksStatusesData + "_" + DateTime.Now + ".xlsx")
         .Filterable(true)
         .ProxyURL(Url.Action("Excel_Export_Save", "Ajax", new { area = "" }))
         .AllPages(true))
         .Events(ev => ev.DataBound("unitGridsData.DataBound"))
         .Scrollable(scr => scr.Height(640))
         .Filterable()
-        .ClientDetailTemplateId("template")
         .DataSource(dataSource => dataSource
             .Ajax()
             .PageSize(50)
             .ServerOperation(true)
             .Read(read => read.Action("ReadTanksStatusesData", "TanksStatuses", new { area = "DailyReporting" }).Data("unitGridsData.SendTanksData"))
+            .Update(update => update.Action("Update", "TanksStatuses", new { area = "DailyReporting" }).Data("sendAntiForgery"))
+            .Destroy(destroy => destroy.Action("Destroy", "TanksStatuses", new { area = "DailyReporting" }).Data("sendAntiForgery"))
             .Model(model =>
             {
                 model.Id(p => p.Id);
-                model.Field(p => p.Park.Name).Editable(false);
+                model.Field(p => p.Id).Editable(false);
+                model.Field(p => p.RecordTimestamp).Editable(false);
+                model.Field(p => p.ParkName).Editable(false);
                 model.Field(p => p.TankName).Editable(false);
+                model.Field(p => p.ControlPoint).Editable(false);
+                model.Field(p => p.TankStatusId).Editable(true);
             })
             .Events(events =>
             {
                 events.Error("kendoAdditional.ErrorHandler");
-                events.RequestEnd("unitGridsData.DataSave");
+                events.Change("kendoAdditional.OnPipeChange");
             })
         )
     )
@@ -75,5 +81,5 @@
     @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.min.js")
 }
 @section sidebar{
-    @Html.Partial("_TanksSideBarByDateTime")
+    @Html.Partial("_TanksSideBarByDate")
 }

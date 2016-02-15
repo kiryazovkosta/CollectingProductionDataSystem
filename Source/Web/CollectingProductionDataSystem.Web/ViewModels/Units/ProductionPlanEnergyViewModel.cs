@@ -33,7 +33,7 @@ namespace CollectingProductionDataSystem.Web.ViewModels.Units
          [Display(Name = "UsageRateTotalMonthQuantityFact", ResourceType = typeof(App_GlobalResources.Resources.Layout))]
         public decimal TotalMonthQuantityFact { get; set; }
 
-        [Display(Name = "TotalMonthPercentagesFact", ResourceType = typeof(App_GlobalResources.Resources.Layout))]
+        [Display(Name = "UsageRateTotalMonthPercentagesFact", ResourceType = typeof(App_GlobalResources.Resources.Layout))]
         public decimal TotalMonthPercentagesFact { get; set; }
         public void CreateMappings(IConfiguration configuration)
         {

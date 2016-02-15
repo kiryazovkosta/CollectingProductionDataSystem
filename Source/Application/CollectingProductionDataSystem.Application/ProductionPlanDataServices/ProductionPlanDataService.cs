@@ -37,7 +37,6 @@
                 return result;
             }
 
-
             if (materialTypeId.HasValue && 
                 materialTypeId.Value == energyId)
             {
@@ -114,10 +113,24 @@
                 result.Add(productionPlanData);
             }
 
+            if (materialTypeId == CommonConstants.EnergyType && totallyQuantity.Count == 1)
+            {
+                totallyQuantityAs = totallyQuantity.First().Value;  
+            }
+
             foreach (var item in result)
             {
-                var percs = (((double)item.QuanityFactCurrentMonth + (double)item.QuantityFact) * 100.00) / (double)totallyQuantityAs;
-                item.PercentagesFactCurrentMonth = GetValidValueOrZero(percs);
+                if (materialTypeId == CommonConstants.MaterialType)
+                {
+                    var percs = (((double)item.QuanityFactCurrentMonth + (double)item.QuantityFact) * 100.00) / (double)totallyQuantityAs;
+                    item.PercentagesFactCurrentMonth = GetValidValueOrZero(percs);  
+                }
+                //else if (materialTypeId == CommonConstants.EnergyType)
+                //{
+                //    var percs = (double)(item.QuanityFactCurrentMonth + item.QuantityFact) / (double)totallyQuantityAs;
+                //    item.PercentagesFactCurrentMonth = GetValidValueOrZero(percs); 
+                //}
+
             }
 
             return result;

@@ -265,9 +265,11 @@
     <Compile Include="Areas\Administration\ViewModels\RolePresentationViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\UserPieViewModel.cs" />
     <Compile Include="Areas\DailyReporting\Controllers\TanksStatusesController.cs" />
-    <Compile Include="Areas\DailyReporting\ViewModels\TanksStatusesViewModel.cs" />
+    <Compile Include="Areas\DailyReporting\ViewModels\TanksStatusDataViewModel.cs" />
+    <Compile Include="Areas\NomManagement\Controllers\TankStatusController.cs" />
     <Compile Include="Areas\NomManagement\Controllers\UnitMonthlyConfigController.cs" />
     <Compile Include="Areas\NomManagement\Models\ViewModels\RelatedUnitMonthlyConfigsViewModel.cs" />
+    <Compile Include="Areas\NomManagement\Models\ViewModels\TankStatusViewModel.cs" />
     <Compile Include="Areas\NomManagement\Models\ViewModels\UnitDailyConfigUnitMonthlyConfigViewModel.cs" />
     <Compile Include="Areas\NomManagement\Models\ViewModels\UnitMonthlyConfigViewModel.cs" />
     <Compile Include="Areas\ShiftReporting\Controllers\HighwayPipelinesController.cs" />
@@ -412,6 +414,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\Nomenclatures\ProductViewModel.cs" />
+    <Compile Include="ViewModels\Tank\TankStatusViewModel.cs" />
     <Compile Include="ViewModels\Units\ProductionPlanEnergyViewModel.cs" />
     <Compile Include="ViewModels\Utility\ErrorScreenViewModel.cs" />
     <Compile Include="ViewModels\Utility\HistoryLink.cs" />
@@ -1105,6 +1108,7 @@
     <Content Include="Areas\NomManagement\Views\UnitMonthlyConfig\EditorTemplates\UnitDailyConfigUnitMonthlyConfigEditor.cshtml" />
     <Content Include="Areas\NomManagement\Views\Shared\EditorTemplates\MonthlyReportTypeViewModel.cshtml" />
     <Content Include="Areas\DailyReporting\Views\TanksStatuses\TanksStatusesData.cshtml" />
+    <Content Include="Areas\NomManagement\Views\TankStatus\Index.cshtml" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <None Include="Properties\PublishProfiles\Home.pubxml" />
     <Content Include="Scripts\custom\sendArea.js" />
@@ -1795,6 +1799,8 @@
     <Content Include="Views\Shared\MessageTypeView.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\ProcessUnitViewModel.cshtml" />
     <Content Include="Views\Shared\_TanksSideBarByDateTime.cshtml" />
+    <Content Include="Views\Shared\_TanksSideBarByDate.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\TankStatusViewModel.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

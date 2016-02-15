@@ -277,6 +277,36 @@ namespace CollectingProductionDataSystem.Web.Controllers
 
             return Json(indices, JsonRequestBehavior.AllowGet);
         }
+        
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public JsonResult GetAllTankStatuses() 
+        {
+            var statuses = data.TankStatuses.All().ToList();
+            var statusesView = Mapper.Map<IEnumerable<TankStatusViewModel>>(statuses);
+            return Json(statusesView);
+        }
 
+        public ActionResult TankStatusesValueMapper(int[] values)
+        {
+            var indices = new List<int>();
+
+            if (values != null && values.Any())
+            {
+                var index = 0;
+
+                foreach (var item in this.data.TankStatuses.All())
+                {
+                    if (values.Contains(item.Id))
+                    {
+                        indices.Add(index);
+                    }
+
+                    index += 1;
+                }
+            }
+
+            return Json(indices, JsonRequestBehavior.AllowGet);
+        }
     }
 }

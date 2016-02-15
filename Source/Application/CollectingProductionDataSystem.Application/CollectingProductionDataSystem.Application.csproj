@@ -140,7 +140,10 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="Contracts\IInventoryTanksService.cs" />
+    <Compile Include="TankDataServices\InventoryTanksService.cs" />
     <Compile Include="TankDataServices\ITankDataKendoService.cs" />
+    <Compile Include="TankDataServices\StatusOfTankDto.cs" />
     <Compile Include="TankDataServices\TankDataKendoService.cs" />
     <Compile Include="Contracts\IUnitDailyDataService.cs" />
     <Compile Include="Contracts\ITestUnitDailyCalculationService.cs" />
