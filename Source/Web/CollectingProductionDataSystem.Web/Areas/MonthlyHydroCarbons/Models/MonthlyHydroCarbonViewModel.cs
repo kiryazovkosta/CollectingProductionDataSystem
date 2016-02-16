@@ -14,7 +14,7 @@
     using CollectingProductionDataSystem.Web.ViewModels.Units;
     using Resources = App_GlobalResources.Resources;
 
-    public class MonthlyHydroCarbonViewModel : IMapFrom<UnitMonthlyData> , IHaveCustomMappings
+    public class MonthlyHydroCarbonViewModel : IMapFrom<UnitMonthlyData>, IHaveCustomMappings
     {
         [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
         [Display(Name = "№")]

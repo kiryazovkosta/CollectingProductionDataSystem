@@ -59,7 +59,7 @@ namespace CollectingProductionDataSystem.Application.MonthlyServices
             //Dictionary<string, UnitsDailyData> relatedRecords = GetRelatedData(processUnitId, targetDay, materialTypeId);
             //AppendRelatedRecords(relatedRecords, resultDaily);
 
-            //CalculateDailyDataFromRelatedDailyData(ref resultMonthly, targetMonth, isRecalculate, ReportTypeId);
+            CalculateDailyDataFromRelatedDailyData(ref resultMonthly, targetMonth, isRecalculate, ReportTypeId);
 
             //ClearRelatedRecords(relatedRecords, resultDaily);
 
@@ -210,6 +210,18 @@ namespace CollectingProductionDataSystem.Application.MonthlyServices
                 monthlyRecord.HasManualData = unitDailyDatasByMontlyData.Any(y => y.IsManual == true);
                 result.Add(targetUnitMonthlyRecordConfig.Code, monthlyRecord);
             }
+
+            // append manual records
+            foreach (var targetUnitMonthlyRecordConfig in targetUnitMonthlyRecordConfigs.Where(x => x.IsManualEntry == true))
+            {
+                var monthlyRecord = new UnitMonthlyData()
+                                           {
+                                               RecordTimestamp = targetMonth,
+                                               UnitMonthlyConfigId = targetUnitMonthlyRecordConfig.Id
+                                           };
+
+                result.Add(targetUnitMonthlyRecordConfig.Code, monthlyRecord);
+            }
             return result;
         }
 
@@ -265,7 +277,7 @@ namespace CollectingProductionDataSystem.Application.MonthlyServices
                     Id = (isRecalculate && targetUnitMonthlyRecords.ContainsKey(targetUnitMonthlyRecordConfig.Code)) ? targetUnitMonthlyRecords[targetUnitMonthlyRecordConfig.Code].Id : 0,
                     RecordTimestamp = targetMonth,
                     UnitMonthlyConfigId = targetUnitMonthlyRecordConfig.Id,
-                    UnitManualMonthlyData = (isRecalculate && targetUnitMonthlyRecords.ContainsKey(targetUnitMonthlyRecordConfig.Code)) ? targetUnitMonthlyRecords[targetUnitMonthlyRecordConfig.Code].UnitManualMonthlyData: null
+                    UnitManualMonthlyData = (isRecalculate && targetUnitMonthlyRecords.ContainsKey(targetUnitMonthlyRecordConfig.Code)) ? targetUnitMonthlyRecords[targetUnitMonthlyRecordConfig.Code].UnitManualMonthlyData : null
                 };
 
                 if (isRecalculate)
