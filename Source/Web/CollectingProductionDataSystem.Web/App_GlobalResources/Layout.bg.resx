@@ -1491,4 +1491,7 @@
   <data name="UsageRateTotalMonthPercentagesFact" xml:space="preserve">
     <value>РН до деня (факт)</value>
   </data>
+  <data name="MeasuredValue" xml:space="preserve">
+    <value>Измерено</value>
+  </data>
 </root>

@@ -1494,4 +1494,7 @@
   <data name="UsageRateTotalMonthPercentagesFact" xml:space="preserve">
     <value>UsageRateTotalMonthPercentagesFact</value>
   </data>
+  <data name="MeasuredValue" xml:space="preserve">
+    <value>MeasuredValue</value>
+  </data>
 </root>

@@ -9,6 +9,7 @@ using System.Threading;
 using System.Transactions;
 using CollectingProductionDataSystem.Application.CalculatorService;
 using CollectingProductionDataSystem.Application.Contracts;
+using CollectingProductionDataSystem.Application.MonthlyServices;
 using CollectingProductionDataSystem.Application.UnitDailyDataServices;
 using CollectingProductionDataSystem.Constants;
 using CollectingProductionDataSystem.Data.Common;
@@ -41,19 +42,22 @@ namespace CollectingProductionDataSystem.ConsoleTester
 
         static void Main(string[] args)
         {
-            //using (var transaction = new TransactionScope(TransactionScopeOption.Required, transantionOption))
-            //{
-            //    CalculateDailyDataIfNotAvailable(new DateTime(2015, 12, 4), 7);
-            //}
-            //Thread thread1 = new Thread(new ThreadStart(Calculate));
-            //Thread thread2 = new Thread(new ThreadStart(Calculate));
-            //thread1.Start();
-            //thread2.Start();
-            //thread1.Join();
-            //thread2.Join();
-            //Console.WriteLine("CalculationOver");
-            var str = string.Format("Some formula * {0}", (2.34).ToString(System.Globalization.CultureInfo.InvariantCulture));
-            Console.WriteLine(str);
+            ////using (var transaction = new TransactionScope(TransactionScopeOption.Required, transantionOption))
+            ////{
+            ////    CalculateDailyDataIfNotAvailable(new DateTime(2015, 12, 4), 7);
+            ////}
+            ////Thread thread1 = new Thread(new ThreadStart(Calculate));
+            ////Thread thread2 = new Thread(new ThreadStart(Calculate));
+            ////thread1.Start();
+            ////thread2.Start();
+            ////thread1.Join();
+            ////thread2.Join();
+            ////Console.WriteLine("CalculationOver");
+            //var str = string.Format("Some formula * {0}", (2.34).ToString(System.Globalization.CultureInfo.InvariantCulture));
+            //Console.WriteLine(str);
+            var service = kernel.Get<UnitMothlyDataService>();
+            var result = service.CalculateMonthlyDataForReportType(new DateTime(2016, 1, 1), false, 1);
+            Console.WriteLine("Ready");
         }
 
         private static void Calculate() 

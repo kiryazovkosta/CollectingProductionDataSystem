@@ -23,7 +23,7 @@ namespace CollectingProductionDataSystem.Models.Productions.Mounthly
 
         public virtual UnitManualMonthlyData UnitManualMonthlyData { get; set; }
 
-        public decimal TotalMonthQuantity { get; set; }
+        //public decimal TotalMonthQuantity { get; set; }
 
         [NotMapped]
         public double RealValue

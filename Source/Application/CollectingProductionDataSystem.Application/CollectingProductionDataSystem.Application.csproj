@@ -128,6 +128,7 @@
     <Compile Include="Contracts\IPipelineServices.cs" />
     <Compile Include="MonthlyServices\InnerPipelineDto.cs" />
     <Compile Include="MonthlyServices\PipelineServices.cs" />
+    <Compile Include="MonthlyServices\UnitMothlyDataService.cs" />
     <Compile Include="ProductionDataServices\FormulaArguments.cs" />
     <Compile Include="ProductionDataServices\Functions.cs" />
     <Compile Include="Contracts\IProductionDataCalculatorService.cs" />
