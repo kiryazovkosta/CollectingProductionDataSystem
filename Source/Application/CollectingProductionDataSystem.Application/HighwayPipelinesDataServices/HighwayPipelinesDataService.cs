@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Data.Entity;
 using CollectingProductionDataSystem.Data.Contracts;
 using System;
 using System.Collections.Generic;
@@ -54,6 +55,21 @@ namespace CollectingProductionDataSystem.Application.HighwayPipelinesDataService
             }
 
             return status;
+        }
+
+        public IEnumerable<HighwayPipelineDto> ReadDataForDay(DateTime targetDay)
+        {
+            return this.data.HighwayPipelineConfigs.All()
+                .Include(x => x.Product)
+                .Include(x => x.HighwayPipelineDatas)
+                .Select(x => new HighwayPipelineDto
+                {
+                    HighwayPipeline = x,
+                    Quantity = x.HighwayPipelineDatas
+                            .Where(z => z.RecordTimestamp <= targetDay && z.IsDeleted == false)
+                            .OrderByDescending(y => y.RecordTimestamp)
+                            .FirstOrDefault()
+                });
         }
     }
 }

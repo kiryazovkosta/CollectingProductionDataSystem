@@ -1,35 +1,32 @@
 ﻿namespace CollectingProductionDataSystem.Web.Areas.ShiftReporting.Controllers
 {
-    using System.Data.Entity;
-    using System.Net;
-    using System.Text;
-    using AutoMapper;
-    using CollectingProductionDataSystem.Data.Contracts;
     using System;
     using System.Collections.Generic;
+    using System.Data.Entity;
+    using System.Data.Entity.Infrastructure;
     using System.Linq;
-    using System.Web;
+    using System.Net;
     using System.Web.Mvc;
+    using AutoMapper;
+    using CollectingProductionDataSystem.Application.HighwayPipelinesDataServices;
+    using CollectingProductionDataSystem.Constants;
+    using CollectingProductionDataSystem.Data.Contracts;
     using CollectingProductionDataSystem.Models.Transactions.HighwayPipelines;
-    using CollectingProductionDataSystem.Web.Areas.DailyReporting.Controllers;
     using CollectingProductionDataSystem.Web.Areas.ShiftReporting.ViewModels;
     using CollectingProductionDataSystem.Web.Infrastructure.Extentions;
     using Kendo.Mvc.Extensions;
     using Kendo.Mvc.UI;
-    using System.Diagnostics;
-    using System.Data.Entity.Infrastructure;
     using Resources = App_GlobalResources.Resources;
-    using CollectingProductionDataSystem.Application.HighwayPipelinesDataServices;
 
-    [Authorize(Roles="HighwayPipelines")]
+    [Authorize(Roles = "HighwayPipelines")]
     public class HighwayPipelinesController : AreaBaseController
     {
-        private readonly IHighwayPipelinesDataService highwayPipelinesData;
+        private readonly IHighwayPipelinesDataService highwayPipelinesService;
 
         public HighwayPipelinesController(IProductionData dataParam, IHighwayPipelinesDataService highwayPipelinesDataServiceParam) 
             : base(dataParam)
         {
-            this.highwayPipelinesData = highwayPipelinesDataServiceParam;
+            this.highwayPipelinesService = highwayPipelinesDataServiceParam;
         }
 
         [HttpGet]
@@ -42,13 +39,11 @@
         [ValidateAntiForgeryToken]
         public JsonResult ReadHighwayPipelinesData([DataSourceRequest]DataSourceRequest request, DateTime? date)
         {
-            var firstDayInMonth = 1;
-
-            ValidateModelState(date);
+             ValidateModelState(date);
 
             if (this.ModelState.IsValid)
             {
-                if (date.Value.Day == firstDayInMonth)
+                if (date.Value.Day == CommonConstants.FirstDayInMonth)
                 {
                     if ( !this.data.HighwayPipelineDatas.All().Where(x => x.RecordTimestamp == date).Any())
                     {
@@ -74,30 +69,18 @@
                     {
                         if (!this.data.HighwayPipelineDatas.All().Where(x => x.RecordTimestamp == date).Any())
                         {
-                            var firstDay = new DateTime(date.Value.Year, date.Value.Month, 1, 0, 0, 0);
-                            var lastDay = new DateTime(date.Value.Year, date.Value.Month, DateTime.DaysInMonth(date.Value.Year, date.Value.Month), 23, 59, 59); 
-                            var highwayData = this.data.HighwayPipelineDatas
-                                .All()
-                                .Where(x => x.RecordTimestamp >= firstDay &&
-                                    x.RecordTimestamp <= lastDay)
-                                .OrderByDescending(t => t.RecordTimestamp)
-                                .GroupBy(x => x.HighwayPipelineConfigId)
-                                .SelectMany(x => x.Where(b => b.RecordTimestamp == x.Max(c => c.RecordTimestamp)))
-                                .ToList();
-
-                            var pipelinesConfigs = this.data.HighwayPipelineConfigs.All().ToList();
-                            foreach (var pipelinesConfig in pipelinesConfigs)
+                            var highwayPipelinesLastData = this.highwayPipelinesService.ReadDataForDay(date.Value);
+                            foreach (var item in highwayPipelinesLastData)
                             {
-                                var item = highwayData.Where(x => x.HighwayPipelineConfigId == pipelinesConfig.Id).FirstOrDefault();
                                 this.data.HighwayPipelineDatas.Add(new HighwayPipelineData
                                 {
                                     RecordTimestamp = date.Value,
-                                    HighwayPipelineConfigId = pipelinesConfig.Id,
-                                    ProductName = pipelinesConfig.Product.Name,
-                                    ProductCode = pipelinesConfig.Product.Code,
-                                    Volume = item.RealVolume,
-                                    Mass = item.RealMass
-                                });
+                                    HighwayPipelineConfigId = item.HighwayPipeline.Id,
+                                    ProductName = item.Quantity.ProductName,
+                                    ProductCode = item.Quantity.ProductCode,
+                                    Volume = item.Quantity.Volume,
+                                    Mass = item.Quantity.Mass,
+                                });    
                             }
 
                             this.data.SaveChanges(this.UserProfile.UserName);
@@ -189,7 +172,7 @@
                     .FirstOrDefault();
                 if (approvedDay == null)
                 {
-                    var status = highwayPipelinesData.CheckIfPreviousDaysAreReady(date.Value);
+                    var status = this.highwayPipelinesService.CheckIfPreviousDaysAreReady(date.Value);
                     if (!status.IsValid)
                     {
                         return Json(new { IsConfirmed = true });    

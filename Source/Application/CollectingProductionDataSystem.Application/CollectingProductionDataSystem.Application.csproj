@@ -118,6 +118,7 @@
     </Compile>
     <Compile Include="FileServices\FileUploadService.cs" />
     <Compile Include="Contracts\IFileUploadService.cs" />
+    <Compile Include="HighwayPipelinesDataServices\HighwayPipelineDto.cs" />
     <Compile Include="HighwayPipelinesDataServices\HighwayPipelinesDataService.cs" />
     <Compile Include="HighwayPipelinesDataServices\IHighwayPipelinesDataService.cs" />
     <Compile Include="IdentityInfrastructure\ApplicationRoleManager.cs" />

@@ -27,7 +27,18 @@ namespace CollectingProductionDataSystem.ConsoleClient
 
             var data = kernel.GetService(typeof(IProductionData)) as IProductionData;
 
-            ConvertProductsForInternalPipes(data);
+            var shiftData = data.UnitsData.All().Where(x => x.ShiftId == ShiftType.Second 
+                && x.RecordTimestamp == new DateTime(2016, 2, 1, 0, 0, 0) 
+                && x.UnitConfig.ProcessUnitId == 50).ToList();
+            foreach (var item in shiftData)
+            {
+                item.ShiftId = ShiftType.First;
+                data.UnitsData.Add(item);
+            }
+
+            var status = data.SaveChanges("kosta");
+
+            //ConvertProductsForInternalPipes(data);
 
             //TransformUnitDailyConfigTable(data);
             //TransformUnitConfigTable(data);
