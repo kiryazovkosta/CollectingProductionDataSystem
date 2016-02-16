@@ -87,6 +87,11 @@ var unitGridsData = (function () {
             attachEventToExportBtn("#excel-export", "#tanks");
         }
 
+        var monthlyHCGrid = $('#monthly-hc-units').data('kendoGrid');
+        if (monthlyHCGrid) {
+            attachEventToExportBtn("#excel-export", "#monthly-hc-units");
+        }
+
         var summaryGrid = $('#confirmation').data('kendoGrid');
         if (summaryGrid) {
             $('#pdf-export').click(function (ev) {

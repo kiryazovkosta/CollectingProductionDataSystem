@@ -1497,4 +1497,7 @@
   <data name="MeasuredValue" xml:space="preserve">
     <value>MeasuredValue</value>
   </data>
+  <data name="UnitMonthlyHCData" xml:space="preserve">
+    <value>UnitMonthlyHCDataReport</value>
+  </data>
 </root>

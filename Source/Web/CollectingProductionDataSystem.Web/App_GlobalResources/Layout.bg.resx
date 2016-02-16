@@ -1494,4 +1494,7 @@
   <data name="MeasuredValue" xml:space="preserve">
     <value>Измерено</value>
   </data>
+  <data name="UnitMonthlyHCData" xml:space="preserve">
+    <value>Месечен отчет за въглеводороди</value>
+  </data>
 </root>

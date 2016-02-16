@@ -1,5 +1,4 @@
-﻿
-/*Huge*/
+﻿/*Huge*/
 @media only screen and (min-device-width: 1900px) {
     aside.documentation, article.documentation {
         height: 825px;
@@ -41,7 +40,6 @@
     }
 }
 
-
 /*Extra Small*/
 @media only screen and (min-device-width: 400px) and (max-width: 799px) {
     aside.documentation, article.documentation {
@@ -59,7 +57,6 @@
 #inprogress {
     width: 95%;
 }
-
 
     #inprogress > img {
         width: 50px;
@@ -80,4 +77,55 @@ img.myWidth102 {
 
 nav {
     margin-top:15px;
+}
+
+li.mylist-group-item > a,div.mypanel-heading>h4 >a{
+  display:block; 
+   width:230px ;
+   line-height:25px;
+   height:45px !important;
+   text-decoration:none;
+    color:black;
+}
+ div.mypanel-heading {
+      display:block; 
+   width:100%;
+   line-height:25px;
+   /*height:45px !important;*/
+   text-decoration:none;
+    color:black;
+ }
+ div.mypanel-heading>h4 >a{
+     font-weight:bold;
+ }
+li.mylist-group-item:hover,div.mypanel-heading:hover,li.mylist-group-item > a:hover,div.mypanel-heading > h4>a:hover{
+    background-color:#b6acac;
+    color:white ;
+ }
+li.mylist-group-item,div.mypanel-heading > h4{
+    padding-right:0;
+    margin-right:0;
+    padding-bottom:0;
+    margin-bottom:0;
+    padding-top:0;
+    margin-top:0;
+}
+img.btnApply{
+    width:8%;
+    box-shadow: 5px 5px 5px #888888;
+}
+p.summaryReport{
+    list-style-type:decimal;
+    font-size:20px;
+    font-weight:bold;
+}
+li.list-group-item.mylist-group-item.activeLi{
+    color:white;
+    background-color:#b6acac;
+}
+.panel.panel-primary.mypanel-primary{
+    width:279px;
+}
+aside.col-sm-2.documentation{
+    overflow-x:hidden;
 }

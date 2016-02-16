@@ -9,7 +9,7 @@
 }
 <div class="row">
     <div class="col-md-10">
-        <h2>@Resources.Layout.InnerPipelinesData</h2>
+        <h2>@Resources.Layout.UnitMonthlyHCData</h2>
     </div>
     <div class="col-md-2">
         <button id="excel-export" class="k-button k-button-icontext k-grid-excel pull-right head-button"><span class="k-icon k-i-excel"></span>Експорт в Excel</button>
@@ -34,22 +34,21 @@
                                                 .ToHtmlString())
                 .Width(75);
 
-            columns.Bound(c => c.UnitMonthlyConfig.ProcessUnit.Factory.FactorySortableName).Hidden(true).ClientGroupHeaderTemplate("#=value#");
-            
-            columns.Bound(c => c.UnitMonthlyConfig.ProcessUnit.SortableName).Hidden(true).ClientGroupHeaderTemplate("#=value#");
-            
-            columns.Bound(c => c.UnitMonthlyConfig.ProductType.SortableName).Hidden(true).ClientGroupHeaderTemplate("#=value#");
-            columns.Bound(c => c.UnitMonthlyConfig.Name).Width(150);
+            columns.Bound(c => c.UnitMonthlyConfig.ProcessUnit.Factory.FactorySortableName).Hidden(true).ClientGroupHeaderTemplate("Производство #=value.substr(3,value.length-3)#");
+            columns.Bound(c => c.UnitMonthlyConfig.ProcessUnit.SortableName).Hidden(true).ClientGroupHeaderTemplate("Инсталация #=value.substr(3,value.length-3)#");
+            columns.Bound(c => c.UnitMonthlyConfig.ProductType.SortableName).Hidden(true).ClientGroupHeaderTemplate("#=value.substr(3,value.length-3)#");
+            columns.Bound(c => c.UnitMonthlyConfig.Name).Width(250);
             columns.Bound(c => c.UnitMonthlyConfig.MeasureUnit.Code).Width(50);
             columns.Bound(c => c.Value).ClientTemplate("<div style='text-align:right;'>#=data.Value==null?'':kendo.toString(data.Value, '\\#\\#.\\#\\#\\#')#</div>").Width(80);
             columns.Bound(c => c.UnitManualMonthlyData.Value)
                 .ClientTemplate(string.Format("{0}{2}{1}", "<div style='text-align:right;'>", "</div>",
-                    Ajax.AuthorizedAjaxActionLinkOrText("#=kendo.toString(data.UnitsManualDailyData.Value,'\\#\\#.\\#\\#\\#')#", "Index", "History",
+                    Ajax.AuthorizedAjaxActionLinkOrText("#=kendo.toString(data.UnitManualMonthlyData.Value,'\\#\\#.\\#\\#\\#')#", "Index", "History",
                                                 new AjaxOptions() { HttpMethod = "Get", OnSuccess = "showRecordHistoriModal" },
                                                 new { area = "RecordsHistory", id = "#=data.id#", entityName = "UnitManualMonthlyData" },
                                                 new { data_ajax_mode = "replace", data_ajax_update = @"\#modal-dialog-body" })
                                                 .ToHtmlString()))
                 .Width(80);
+            columns.Bound(c => c.RelativeDifference).Width(80).ClientTemplate("<div style='text-align:right;'>#=data.RelativeDifference==null?'':kendo.toString(data.RelativeDifference, '\\#\\#.\\#\\#\\#')#%</div>");
             columns.Bound(c => c.IsEditable).Visible(false);
             columns.Command(c => c.Edit()).Width(170);
         })
@@ -61,14 +60,14 @@
                                                                    .Editable(editable => editable.Mode(GridEditMode.InLine))
                                                             .Sortable()
                                                              .Excel(excel => excel
-                                                                .FileName(@Resources.Layout.UnitsDailyData + "_" + DateTime.Now + ".xlsx")
+                                                                .FileName(@Resources.Layout.UnitMonthlyHCData + "_" + DateTime.Now + ".xlsx")
                                                                 .Filterable(true)
                                                                 .ProxyURL(Url.Action("Excel_Export_Save", "Ajax", new { area = "" }))
                                                                 .AllPages(true))
                                                                 .Events(ev => ev.DataBound("unitGridsData.DataBound"))
                                                                 .Scrollable(scr => scr.Height(640))
                                                                 .Filterable()
-                                                            //    .ClientDetailTemplateId("template")
+                                                                //.ClientDetailTemplateId("template")
                                                                 .DataSource(dataSource => dataSource
                                                                 .Ajax()
                                                                 .PageSize(50)

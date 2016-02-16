@@ -120,6 +120,10 @@
             prepareWindow();
             prepareSuccessWindow();
             AttachEventToExportBtn("#excel-export", "#measuringpoints");
+
+            if ($('#monthly-hc-units').val() !== undefined) {
+                AttachEventToExportBtn("#excel-export", "#monthly-hc-units");
+            }
         });
 
         function setGridColumnsHeaderText() {
