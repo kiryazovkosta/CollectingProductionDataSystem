@@ -30,12 +30,15 @@
         private const int HalfAnHour = 60 * 30;
         private readonly IUnitsDataService unitsData;
         private readonly IUnitDailyDataService dailyService;
+        private readonly IInventoryTanksService tanksService;
 
-        public SummaryReportsController(IProductionData dataParam, IUnitsDataService unitsDataParam, IUnitDailyDataService dailyServiceParam)
+        public SummaryReportsController(IProductionData dataParam, IUnitsDataService unitsDataParam, IUnitDailyDataService dailyServiceParam, 
+            IInventoryTanksService tanksParam)
             : base(dataParam)
         {
             this.unitsData = unitsDataParam;
             this.dailyService = dailyServiceParam;
+            this.tanksService = tanksParam;
         }
 
         [HttpGet]
@@ -53,6 +56,8 @@
 
             if (this.ModelState.IsValid)
             {
+                var statuses = this.tanksService.ReadDataForDay(date.Value, areaId, parkId).ToList();
+
                 var dbResult = this.data.TanksData.All()
                     .Include(t => t.TankConfig)
                     .Include(t => t.TankConfig.Park)
@@ -62,6 +67,16 @@
 
                 var kendoResult = dbResult.ToDataSourceResult(request, ModelState);
                 kendoResult.Data = Mapper.Map<IEnumerable<TankData>, IEnumerable<TankDataViewModel>>((IEnumerable<TankData>)kendoResult.Data);
+                foreach (var item in kendoResult.Data)
+                {
+                    var model = (TankDataViewModel)item;
+                    var status = statuses.Where(x => x.Tank.Id == model.TankId).FirstOrDefault();
+                    if (status != null && status.Quantity.TankStatus != null)
+                    {
+                        model.StatusOfTank = status.Quantity.TankStatus.Id.ToString();   
+                    }
+                }
+                
                 return Json(kendoResult);
             }
             else

@@ -31,6 +31,7 @@
                 columns.Bound(c => c.ReferenceDensity).Format("{0:n2}").Width(140);
                 columns.Bound(c => c.WeightInVacuum).Format("{0:n2}").Width(140);
                 columns.Bound(c => c.FreeWaterLevel).Format("{0:n2}").Width(120);
+                columns.Bound(c => c.StatusOfTank).Format("{0:n2}").Width(80);
             })
         .Pageable(pageable => pageable
         .Refresh(true)

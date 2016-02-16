@@ -6,6 +6,7 @@
     using System.Linq;
     using System.Web.Mvc;
     using AutoMapper;
+    using CollectingProductionDataSystem.Application.Contracts;
     using CollectingProductionDataSystem.Data.Contracts;
     using CollectingProductionDataSystem.Models.Inventories;
     using CollectingProductionDataSystem.Web.ViewModels.Tank;
@@ -16,9 +17,12 @@
     [Authorize]
     public class TanksController : AreaBaseController
     {
-        public TanksController(IProductionData dataParam)
+        private readonly IInventoryTanksService tanksService;
+
+        public TanksController(IProductionData dataParam, IInventoryTanksService tanksParam)
             : base(dataParam)
         {
+            this.tanksService = tanksParam;
         }
 
         [HttpGet]
@@ -35,6 +39,8 @@
 
             if (this.ModelState.IsValid)
             {
+                var statuses = this.tanksService.ReadDataForDay(date.Value, areaId, parkId).ToList();
+
                 var dbResult = this.data.TanksData.All()
                     .Include(t => t.TankConfig)
                     .Include(t => t.TankConfig.Park)
@@ -44,6 +50,17 @@
 
                 var kendoResult = dbResult.ToDataSourceResult(request, ModelState);
                 kendoResult.Data = Mapper.Map<IEnumerable<TankData>, IEnumerable<TankDataViewModel>>((IEnumerable<TankData>)kendoResult.Data);
+
+                foreach (var item in kendoResult.Data)
+                {
+                    var model = (TankDataViewModel)item;
+                    var status = statuses.Where(x => x.Tank.Id == model.TankId).FirstOrDefault();
+                    if (status != null && status.Quantity.TankStatus != null)
+                    {
+                        model.StatusOfTank = status.Quantity.TankStatus.Id.ToString();   
+                    }
+                }
+
                 return Json(kendoResult);
             }
             else
