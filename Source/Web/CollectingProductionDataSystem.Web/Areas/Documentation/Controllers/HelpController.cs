@@ -44,5 +44,29 @@ namespace CollectingProductionDataSystem.Web.Areas.Documentation.Controllers
         {
             return PartialView();
         }
+         public PartialViewResult SummaryReport()
+        {
+            return PartialView();
+        }
+     public PartialViewResult DailyDataPipeLines()
+        {
+            return PartialView();
+        }
+ public PartialViewResult MonthlyData()
+        {
+            return PartialView();
+        }
+         public PartialViewResult MonthlyDataIndoorPipeLines()
+        {
+            return PartialView();
+        }
+           public PartialViewResult MonthlyDataTechPlants()
+        {
+            return PartialView();
+        }
+	   public PartialViewResult DailyDataEnergyFlows()
+        {
+            return PartialView();
+        }
     }
 }

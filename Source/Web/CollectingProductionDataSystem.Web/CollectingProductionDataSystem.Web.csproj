@@ -448,8 +448,14 @@
     <Content Include="Content\ErrorPage\error.css" />
     <Content Include="Content\ErrorPage\Error.html" />
     <Content Include="Content\Images\center.png" />
+    <Content Include="Content\Images\DailyData\44Б.png" />
+    <Content Include="Content\Images\DailyData\44В.png" />
+    <Content Include="Content\Images\DailyData\44Г.png" />
+    <Content Include="Content\Images\DailyData\44Д.png" />
+    <Content Include="Content\Images\DailyData\44Е.png" />
     <Content Include="Content\Images\DailyData\Add.png" />
     <Content Include="Content\Images\DailyData\butonPrilogi.png" />
+    <Content Include="Content\Images\DailyData\Button_Zoom.png" />
     <Content Include="Content\Images\DailyData\Change_password.png" />
     <Content Include="Content\Images\DailyData\create.png" />
     <Content Include="Content\Images\DailyData\dnevni1.png" />
@@ -471,6 +477,8 @@
     <Content Include="Content\Images\DailyData\figura43.png" />
     <Content Include="Content\Images\DailyData\Figura43A.png" />
     <Content Include="Content\Images\DailyData\figura44.png" />
+    <Content Include="Content\Images\DailyData\Figura44A.png" />
+    <Content Include="Content\Images\DailyData\Figura44B.png" />
     <Content Include="Content\Images\DailyData\Figura44Б.png" />
     <Content Include="Content\Images\DailyData\figura46.png" />
     <Content Include="Content\Images\DailyData\figura47.png" />
@@ -495,6 +503,26 @@
     <Content Include="Content\Images\DailyData\lenta.png" />
     <Content Include="Content\Images\DailyData\nFigura53.png" />
     <Content Include="Content\Images\DailyData\Дневни_данни_чисто.png" />
+    <Content Include="Content\Images\DailyData\Фигура119.jpg" />
+    <Content Include="Content\Images\DailyData\Фигура120.jpg" />
+    <Content Include="Content\Images\DailyData\Фигура121.jpg" />
+    <Content Include="Content\Images\DailyData\Фигура122.jpg" />
+    <Content Include="Content\Images\DailyData\Фигура123.jpg" />
+    <Content Include="Content\Images\DailyData\Фигура124.jpg" />
+    <Content Include="Content\Images\DailyData\Фигура125.jpg" />
+    <Content Include="Content\Images\DailyData\Фигура126.jpg" />
+    <Content Include="Content\Images\DailyData\Фигура127.jpg" />
+    <Content Include="Content\Images\DailyData\Фигура128.jpg" />
+    <Content Include="Content\Images\DailyData\Фигура129.jpg" />
+    <Content Include="Content\Images\DailyData\Фигура90.jpg" />
+    <Content Include="Content\Images\DailyData\Фигура92.jpg" />
+    <Content Include="Content\Images\DailyData\Фигура93.jpg" />
+    <Content Include="Content\Images\DailyData\Фигура94.jpg" />
+    <Content Include="Content\Images\DailyData\Фигура95.jpg" />
+    <Content Include="Content\Images\DailyData\Фигура96.jpg" />
+    <Content Include="Content\Images\DailyData\Фигура97.jpg" />
+    <Content Include="Content\Images\DailyData\Фигура98.jpg" />
+    <Content Include="Content\Images\DailyData\Фигура99.jpg" />
     <Content Include="Content\Images\danger.png" />
     <Content Include="Content\Images\error.png" />
     <Content Include="Content\Images\Excel-icon.png" />
@@ -502,6 +530,7 @@
     <Content Include="Content\Images\loading.gif" />
     <Content Include="Content\Images\LukBlack.png" />
     <Content Include="Content\Images\LukTransparent.png" />
+    <Content Include="Content\Images\MonthlyData\Фигура105.jpg" />
     <Content Include="Content\Images\ok.png" />
     <Content Include="Content\Images\pdf-download.png" />
     <Content Include="Content\Images\PNG\128x128\Cancel2.png" />
@@ -608,6 +637,17 @@
     <Content Include="Content\Images\ShiftData\smenni1.png" />
     <Content Include="Content\Images\ShiftData\smenni2.png" />
     <Content Include="Content\Images\ShiftData\smenni_danni.png" />
+    <Content Include="Content\Images\SummaryReport\Fig75.png" />
+    <Content Include="Content\Images\SummaryReport\Fig77.png" />
+    <Content Include="Content\Images\SummaryReport\Fig79.png" />
+    <Content Include="Content\Images\SummaryReport\Fig81.png" />
+    <Content Include="Content\Images\SummaryReport\Фигура73.png" />
+    <Content Include="Content\Images\SummaryReport\Фигура74.png" />
+    <Content Include="Content\Images\SummaryReport\Фигура76.png" />
+    <Content Include="Content\Images\SummaryReport\Фигура78.png" />
+    <Content Include="Content\Images\SummaryReport\Фигура80.png" />
+    <Content Include="Content\Images\SummaryReport\Фигура82.png" />
+    <Content Include="Content\Images\SummaryReport\Фигура91.jpg" />
     <Content Include="Content\Images\tanks.png" />
     <Content Include="Content\Images\TrafficLights\green_light.png" />
     <Content Include="Content\Images\TrafficLights\green_light_big.png" />
@@ -963,6 +1003,7 @@
     <Content Include="Scripts\custom\confirmationRefresh.min.js">
       <DependentUpon>confirmationRefresh.js</DependentUpon>
     </Content>
+    <Content Include="Scripts\custom\documentation.js" />
     <Content Include="Scripts\custom\jquery-kendo-globalize.js" />
     <Content Include="Scripts\custom\json2.js" />
     <Content Include="Scripts\custom\json2.min.js">
@@ -1101,6 +1142,11 @@
     <Content Include="Areas\NomManagement\Views\UnitMonthlyConfig\EditorTemplates\RelatedUnitMonthlyConfigsEditor.cshtml" />
     <Content Include="Areas\NomManagement\Views\UnitMonthlyConfig\EditorTemplates\UnitDailyConfigUnitMonthlyConfigEditor.cshtml" />
     <Content Include="Areas\NomManagement\Views\Shared\EditorTemplates\MonthlyReportTypeViewModel.cshtml" />
+    <Content Include="Areas\Documentation\Views\Help\DailyDataEnergyFlows.cshtml" />
+    <Content Include="Areas\Documentation\Views\Help\MonthlyData.cshtml" />
+    <Content Include="Areas\Documentation\Views\Help\MonthlyDataIndoorPipeLines.cshtml" />
+    <Content Include="Areas\Documentation\Views\Help\MonthlyDataTechPlants.cshtml" />
+    <Content Include="Areas\Documentation\Views\Help\SummaryReport.cshtml" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <None Include="Properties\PublishProfiles\Home.pubxml" />
     <Content Include="Scripts\custom\sendArea.js" />
