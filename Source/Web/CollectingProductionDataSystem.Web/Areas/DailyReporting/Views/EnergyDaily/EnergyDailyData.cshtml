@@ -30,6 +30,7 @@
                 columns.Bound("Name");//.Title("Енергиен Продукт").Width(100);
                 columns.Bound("PercentagesPlan").ClientTemplate("<div style='text-align:right;'>#=data.PercentagesPlan==null?'':kendo.toString(data.PercentagesPlan)#</div>");
                 columns.Bound("PercentagesFact").ClientTemplate("<div style='text-align:right;'>#=data.PercentagesFact==null?'':kendo.toString(data.PercentagesFact, 'n5')#</div>");
+                columns.Bound("TotalMonthPercentagesFact").ClientTemplate("<div style='text-align:right;'>#=data.TotalMonthPercentagesFact==null?'':kendo.toString(data.TotalMonthPercentagesFact, 'n5')#</div>");
                 columns.Bound("QuantityPlan").ClientTemplate("<div style='text-align:right;'>#=data.QuantityPlan==null?'':kendo.toString(data.QuantityPlan, 'n3')#</div>");
                 columns.Bound("QuantityFact").ClientTemplate("<div style='text-align:right;'>#=data.QuantityFact==null?'':kendo.toString(data.QuantityFact, 'n3')#</div>");
                 columns.Bound("TotalMonthQuantityFact").ClientTemplate("<div style='text-align:right;'>#=data.TotalMonthQuantityFact==null?'':kendo.toString(data.TotalMonthQuantityFact, 'n3')#</div>");

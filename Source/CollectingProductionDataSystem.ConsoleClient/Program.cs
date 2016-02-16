@@ -26,8 +26,22 @@ namespace CollectingProductionDataSystem.ConsoleClient
             var kernel = ninject.Kernel;
 
             var data = kernel.GetService(typeof(IProductionData)) as IProductionData;
-            TransformUnitDailyConfigTable(data);
-            TransformUnitConfigTable(data);
+
+            var shiftData = data.UnitsData.All().Where(x => x.ShiftId == ShiftType.Second 
+                && x.RecordTimestamp == new DateTime(2016, 2, 1, 0, 0, 0) 
+                && x.UnitConfig.ProcessUnitId == 50).ToList();
+            foreach (var item in shiftData)
+            {
+                item.ShiftId = ShiftType.First;
+                data.UnitsData.Add(item);
+            }
+
+            var status = data.SaveChanges("kosta");
+
+            //ConvertProductsForInternalPipes(data);
+
+            //TransformUnitDailyConfigTable(data);
+            //TransformUnitConfigTable(data);
             //var fileName = @"d:\Proba\ХО-2-Конфигурация инсталации.csv";
             //var fileUploader = kernel.GetService(typeof(IFileUploadService)) as IFileUploadService;
             //timer.Stop();
@@ -49,6 +63,21 @@ namespace CollectingProductionDataSystem.ConsoleClient
             //}
             //TreeShiftsReports(DateTime.Today.AddDays(-2), 1);
             //SeedShiftsToDatabase(uow);
+        }
+
+        private static void ConvertProductsForInternalPipes(IProductionData data)
+        {
+            var products = data.Products.All();
+
+            List<int> exclusionProductTypeList = new List<int> { 61, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75 };
+
+            foreach (var product in products.Where(x => !exclusionProductTypeList.Contains(x.ProductTypeId)))
+            {
+                product.IsAvailableForInnerPipeLine = true;
+            }
+
+            data.SaveChanges("Initial Loading");
+
         }
 
         /// <summary>
@@ -244,7 +273,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
 
         private static void TreeShiftsReports(DateTime dateParam, int processUnitIdParam)
         {
-            using (var context = new ProductionData(new CollectingDataSystemDbContext(new AuditablePersister(),new Logger())))
+            using (var context = new ProductionData(new CollectingDataSystemDbContext(new AuditablePersister(), new Logger())))
             {
                 var timer = new Stopwatch();
                 timer.Start();

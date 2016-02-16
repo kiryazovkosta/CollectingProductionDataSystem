@@ -16,7 +16,7 @@ var unitGridsData = (function () {
                 kendoAdditional.RefreshGrid("#units");
             }
 
-           
+
 
             if ($("#tanks").val() !== undefined) {
 
@@ -36,6 +36,33 @@ var unitGridsData = (function () {
                 kendoAdditional.RefreshGrid("#measuringpoints");
             }
 
+            if ($("#inner-pipes").val() !== undefined) {
+
+                if (ctrlParamsElement.val() !== undefined) {
+                    ctrlParamsElement.attr('data-params', JSON.stringify(sendOnlyDate()));
+                }
+
+                kendoAdditional.RefreshGrid("#inner-pipes");
+            }
+
+            if ($("#monthly-hc-units").val() !== undefined) {
+
+                if (ctrlParamsElement.val() !== undefined) {
+                    ctrlParamsElement.attr('data-params', JSON.stringify(sendDate()));
+                }
+
+                kendoAdditional.RefreshGrid("#monthly-hc-units");
+            }
+
+            if ($("#tanks-statuses").val() !== undefined) {
+
+                if (ctrlParamsElement.val() !== undefined) {
+                    ctrlParamsElement.attr('data-params', JSON.stringify(SendTanksData()));
+                }
+
+                kendoAdditional.RefreshGrid("#tanks-statuses");
+            }
+
             if ($("#confirmation").val() !== undefined) {
                 kendoAdditional.RefreshGrid("#confirmation");
             }
@@ -49,6 +76,7 @@ var unitGridsData = (function () {
 
         nameGridCommancolumn();
         hideCommandButtons();
+        attachCallendatEvents();
         var unitsGrid = $('#units').data('kendoGrid');
         if (unitsGrid) {
             attachEventToExportBtn("#excel-export", "#units");
@@ -343,10 +371,38 @@ var unitGridsData = (function () {
         form.executed = true;
     }
 
+    function attachCallendatEvents() {
+        var ctrlParamsElement = $('#control-params');
+        var dateElement = $('#date');
+        if (dateElement.val() !== undefined) {
+            var datePicker = dateElement.data('kendoDatePicker');
+            if (datePicker !== undefined) {
+                datePicker.bind("change", function () {
+                    if ($("#inner-pipes").val() !== undefined) {
+
+                        if (ctrlParamsElement.val() !== undefined) {
+                            ctrlParamsElement.attr('data-params', JSON.stringify(sendOnlyDate()));
+                        }
+
+                        kendoAdditional.RefreshGrid("#inner-pipes");
+                    }
+                });
+            }
+        }
+    }
+
     //------------------ public functions ------------------------------------
 
     function sendDate() {
-        var result = { "date": $('input[name=date]').val() };
+
+        var datePicker = $('input[name=date]').data('kendoDatePicker');
+        if (datePicker !== undefined) {
+            var date = datePicker.value();
+        } else {
+            return;
+        }
+
+        var result = { "date": date.toISOString(kendo.culture().name) };
         $.extend(result, sendProcessUnit());
         if ($('input[name=shifts]')) {
             $.extend(result, sendShift());
@@ -362,7 +418,9 @@ var unitGridsData = (function () {
     function SendTanksData() {
         var result = { "date": $('input[name=date]').val() };
         $.extend(result, sendZoneId());
-        $.extend(result, sendShift());
+        if ($('input#shifts')) {
+            $.extend(result, sendShift());
+        }
         $.extend(result, sendAreaId());
         $.extend(result, sendAntiForgery());
         return result;
@@ -419,53 +477,62 @@ var unitGridsData = (function () {
 
     function DataBound() {
         var dataView = this.dataSource.view();
-        var manualIndicator = $('#manualIndicator').val();
-        var manualCalcumated = $('#manualCalcumated').val();
-        var manualSelfCalculated = $('#manualSelfCalculated').val();
-        var i, j;
-        var currentUid, currenRow, editButton
-        for (i = 0; i < dataView.length; i += 1) {
-            if (dataView[i].items) {
-                var recordLen = dataView[i].items.length;
-                if (recordLen) {
-                    for (j = 0; j < recordLen; j += 1) {
-                        if (!dataView[i].items[j].IsEditable) {
-                            currentUid = dataView[i].items[j].uid;
-                            currenRow = this.table.find("tr[data-uid='" + currentUid + "']");
-                            editButton = $(currenRow).find(".k-grid-edit");
-                            editButton.attr("style", "display:none !important");
-                        }
-                        if (dataView[i].items[j].HasManualData === true) {
-                            var uid = dataView[i].items[j].uid;
-                            $("#" + $(this.element).attr('id') + " tbody").find("tr[data-uid=" + uid + "]").addClass("bg-danger");
-                        }
 
-                        if (dataView[i].items[j].UnitConfig) {
-                            if (dataView[i].items[j].UnitConfig.CollectingDataMechanism === manualIndicator) {
-                                currentUid = dataView[i].items[j].uid;
-                                currenRow = this.table.find("tr[data-uid='" + currentUid + "']");
-                                editButton = $(currenRow).find(".k-grid-edit");
-                                editButton.click({ data: dataView[i].items[j], url: "/ShiftReporting/Units/ShowManualDataModal" }, manualEntry);
-                            }
+        //added
+        var grid = this;
+        var data = [].splice.call(dataView, [-1, 1]);
+        [].forEach.call(data, function (value) {
+            ConvertGridRows(value, grid);
+        });
 
-                            if (dataView[i].items[j].UnitConfig.CollectingDataMechanism === manualCalcumated) {
-                                currentUid = dataView[i].items[j].uid;
-                                currenRow = this.table.find("tr[data-uid='" + currentUid + "']");
-                                editButton = $(currenRow).find(".k-grid-edit");
-                                editButton.click({ data: dataView[i].items[j], url: "/ShiftReporting/Units/ShowManualCalculatedDataModal" }, manualEntry);
-                            }
+        //removed
+        //var manualIndicator = $('#manualIndicator').val();
+        //var manualCalcumated = $('#manualCalcumated').val();
+        //var manualSelfCalculated = $('#manualSelfCalculated').val();
+        //var i, j;
+        //var currentUid, currenRow, editButton
+        //for (i = 0; i < dataView.length; i += 1) {
+        //    if (dataView[i].items) {
+        //        var recordLen = dataView[i].items.length;
+        //        if (recordLen) {
+        //            for (j = 0; j < recordLen; j += 1) {
+        //                if (!dataView[i].items[j].IsEditable) {
+        //                    currentUid = dataView[i].items[j].uid;
+        //                    currenRow = this.table.find("tr[data-uid='" + currentUid + "']");
+        //                    editButton = $(currenRow).find(".k-grid-edit");
+        //                    editButton.attr("style", "display:none !important");
+        //                }
+        //                if (dataView[i].items[j].HasManualData === true) {
+        //                    var uid = dataView[i].items[j].uid;
+        //                    $("#" + $(this.element).attr('id') + " tbody").find("tr[data-uid=" + uid + "]").addClass("bg-danger");
+        //                }
 
-                            if (dataView[i].items[j].UnitConfig.CollectingDataMechanism === manualSelfCalculated) {
-                                currentUid = dataView[i].items[j].uid;
-                                currenRow = this.table.find("tr[data-uid='" + currentUid + "']");
-                                editButton = $(currenRow).find(".k-grid-edit");
-                                editButton.click({ data: dataView[i].items[j], url: "/ShiftReporting/Units/ShowManualSelfCalculatedDataModal" }, manualEntry);
-                            }
-                        }
-                    }
-                }
-            }
-        }
+        //                if (dataView[i].items[j].UnitConfig) {
+        //                    if (dataView[i].items[j].UnitConfig.CollectingDataMechanism === manualIndicator) {
+        //                        currentUid = dataView[i].items[j].uid;
+        //                        currenRow = this.table.find("tr[data-uid='" + currentUid + "']");
+        //                        editButton = $(currenRow).find(".k-grid-edit");
+        //                        editButton.click({ data: dataView[i].items[j], url: "/ShiftReporting/Units/ShowManualDataModal" }, manualEntry);
+        //                    }
+
+        //                    if (dataView[i].items[j].UnitConfig.CollectingDataMechanism === manualCalcumated) {
+        //                        currentUid = dataView[i].items[j].uid;
+        //                        currenRow = this.table.find("tr[data-uid='" + currentUid + "']");
+        //                        editButton = $(currenRow).find(".k-grid-edit");
+        //                        editButton.click({ data: dataView[i].items[j], url: "/ShiftReporting/Units/ShowManualCalculatedDataModal" }, manualEntry);
+        //                    }
+
+        //                    if (dataView[i].items[j].UnitConfig.CollectingDataMechanism === manualSelfCalculated) {
+        //                        currentUid = dataView[i].items[j].uid;
+        //                        currenRow = this.table.find("tr[data-uid='" + currentUid + "']");
+        //                        editButton = $(currenRow).find(".k-grid-edit");
+        //                        editButton.click({ data: dataView[i].items[j], url: "/ShiftReporting/Units/ShowManualSelfCalculatedDataModal" }, manualEntry);
+        //                    }
+        //                }
+        //            }
+        //        }
+        //    }
+        //}
 
         if ($('#confirm').val() === "") {
             checkConfirmedStatus();
@@ -477,10 +544,82 @@ var unitGridsData = (function () {
 
     }
 
+    var convertYourLevel = false;
+
+    function ConvertGridRows(dataCollection, grid) {
+        if (dataCollection.items == undefined) {
+            //stop recursion
+            return true;
+        } else {
+            //go dipper
+            $.each(dataCollection.items, function (key, value) {
+                if (ConvertGridRows(value, grid) === true) {
+                    modifyGridRow(value, grid);
+
+                }
+            })
+
+            return false;
+        }
+
+    }
+
+    function modifyGridRow(row, grid) {
+        //make grid changes
+
+        var manualIndicator = $('#manualIndicator').val();
+        var manualCalcumated = $('#manualCalcumated').val();
+        var manualSelfCalculated = $('#manualSelfCalculated').val();
+        var currentUid, currenRow, editButton
+        if (row) {
+            if (!row.IsEditable) {
+                currentUid = row.uid;
+                currenRow = grid.table.find("tr[data-uid='" + currentUid + "']");
+                editButton = $(currenRow).find(".k-grid-edit");
+                editButton.attr("style", "display:none !important");
+            }
+            if (row.HasManualData === true) {
+                var uid = row.uid;
+                $("#" + $(grid.element).attr('id') + " tbody").find("tr[data-uid=" + uid + "]").addClass("bg-danger");
+            }
+
+            if (row.UnitConfig) {
+                if (row.UnitConfig.CollectingDataMechanism === manualIndicator) {
+                    currentUid = row.uid;
+                    currenRow = grid.table.find("tr[data-uid='" + currentUid + "']");
+                    editButton = $(currenRow).find(".k-grid-edit");
+                    editButton.click({ data: row, url: "/ShiftReporting/Units/ShowManualDataModal" }, manualEntry);
+                }
+
+                if (row.UnitConfig.CollectingDataMechanism === manualCalcumated) {
+                    currentUid = row.uid;
+                    currenRow = grid.table.find("tr[data-uid='" + currentUid + "']");
+                    editButton = $(currenRow).find(".k-grid-edit");
+                    editButton.click({ data: row, url: "/ShiftReporting/Units/ShowManualCalculatedDataModal" }, manualEntry);
+                }
+
+                if (row.UnitConfig.CollectingDataMechanism === manualSelfCalculated) {
+                    currentUid = row.uid;
+                    currenRow = grid.table.find("tr[data-uid='" + currentUid + "']");
+                    editButton = $(currenRow).find(".k-grid-edit");
+                    editButton.click({ data: row, url: "/ShiftReporting/Units/ShowManualSelfCalculatedDataModal" }, manualEntry);
+                }
+            }
+        }
+    }
+
+
     function DataSave(ev) {
         if (ev.type === 'update') {
             kendoAdditional.RefreshGrid('#units');
             //kendoAdditional.RefreshGrid('#productionPlan');
+        }
+
+        if (ev.response !== undefined) {
+
+            if (ev.type === 'read' && ev.response.Errors !== null) {
+                ev.sender.data([]);
+            }
         }
     }
 
@@ -578,7 +717,7 @@ var unitGridsData = (function () {
     }
 
     function sendDateForSummaryReports() {
-        var result = { "date": kendo.parseDate($('input[name=date]').val()).toISOString()};
+        var result = { "date": kendo.parseDate($('input[name=date]').val()).toISOString() };
         $.extend(result, sendProcessUnit());
         if ($('input[name=shifts]')) {
             $.extend(result, sendShift());

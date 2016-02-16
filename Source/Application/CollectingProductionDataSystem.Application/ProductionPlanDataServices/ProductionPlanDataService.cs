@@ -37,7 +37,6 @@
                 return result;
             }
 
-
             if (materialTypeId.HasValue && 
                 materialTypeId.Value == energyId)
             {
@@ -92,6 +91,12 @@
                     QuanityFactCurrentMonth = currentMonthQuantity.ContainsKey(productionPlan.Name) == true ?  currentMonthQuantity[productionPlan.Name] : 0.00m,
                 };
 
+                if (materialTypeId == CommonConstants.EnergyType)
+                {
+                    var percs = CalculateUsageRateToTheDayValue(productionPlan, dailyData, this.calculator);
+                    productionPlanData.PercentagesFactCurrentMonth = GetValidValueOrZero(percs); 
+                }
+
                 if (productionPlan.Name == totallyQuantity.First().Key)
 	            {
                     if (totallyQuantity[productionPlan.Name] == 0)
@@ -114,10 +119,18 @@
                 result.Add(productionPlanData);
             }
 
+            if (materialTypeId == CommonConstants.EnergyType && totallyQuantity.Count == 1)
+            {
+                totallyQuantityAs = totallyQuantity.First().Value;  
+            }
+
             foreach (var item in result)
             {
-                var percs = (((double)item.QuanityFactCurrentMonth + (double)item.QuantityFact) * 100.00) / (double)totallyQuantityAs;
-                item.PercentagesFactCurrentMonth = GetValidValueOrZero(percs);
+                if (materialTypeId == CommonConstants.MaterialType)
+                {
+                    var percs = (((double)item.QuanityFactCurrentMonth + (double)item.QuantityFact) * 100.00) / (double)totallyQuantityAs;
+                    item.PercentagesFactCurrentMonth = GetValidValueOrZero(percs);  
+                }
             }
 
             return result;
@@ -136,6 +149,38 @@
                     if (item.UnitsDailyConfig.Code == token)
                     {
                         planInputParamsValues.Add((double)item.RealValue);
+                        break;
+                    }
+                }
+            }
+
+            var planInputParams = new Dictionary<string, double>();
+            for (int i = 0; i < planInputParamsValues.Count(); i++)
+            {
+                planInputParams.Add(string.Format("p{0}", i), planInputParamsValues[i]);  
+            }
+
+            var planValue = calculator.Calculate(productionPlan.UsageRateFormula, "p", planInputParams.Count, planInputParams);
+            if (double.IsNaN(planValue) || double.IsInfinity(planValue))
+            {
+                planValue = 0.0;
+            }
+            return planValue;
+        }
+
+        private double CalculateUsageRateToTheDayValue(ProductionPlanConfig productionPlan, List<UnitsDailyData> dailyData, ICalculatorService calculatorService)
+        {
+            var splitter = new char[] { '@' };
+
+            var planTokens = productionPlan.UsageRateMembers.Split(splitter, StringSplitOptions.RemoveEmptyEntries);
+            var planInputParamsValues = new List<double>();
+            foreach (var token in planTokens)
+            {
+                foreach (var item in dailyData)
+                {
+                    if (item.UnitsDailyConfig.Code == token)
+                    {
+                        planInputParamsValues.Add((double)item.RealValueTillDay + (double)item.RealValue);
                         break;
                     }
                 }

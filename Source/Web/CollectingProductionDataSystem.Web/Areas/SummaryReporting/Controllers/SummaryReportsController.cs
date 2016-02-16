@@ -30,12 +30,15 @@
         private const int HalfAnHour = 60 * 30;
         private readonly IUnitsDataService unitsData;
         private readonly IUnitDailyDataService dailyService;
+        private readonly IInventoryTanksService tanksService;
 
-        public SummaryReportsController(IProductionData dataParam, IUnitsDataService unitsDataParam, IUnitDailyDataService dailyServiceParam)
+        public SummaryReportsController(IProductionData dataParam, IUnitsDataService unitsDataParam, IUnitDailyDataService dailyServiceParam, 
+            IInventoryTanksService tanksParam)
             : base(dataParam)
         {
             this.unitsData = unitsDataParam;
             this.dailyService = dailyServiceParam;
+            this.tanksService = tanksParam;
         }
 
         [HttpGet]
@@ -47,13 +50,13 @@
         [HttpPost]
         [ValidateAntiForgeryToken]
         [OutputCache(Duration = HalfAnHour, Location = OutputCacheLocation.Server, VaryByParam = "*")]
-        public ActionResult ReadTanksData([DataSourceRequest]DataSourceRequest request, DateTime? date, int? parkId, int? shiftId, int? areaId)
+        public ActionResult ReadTanksData([DataSourceRequest]DataSourceRequest request, DateTime? date, int? parkId, int? areaId)
         {
-            ValidateTanksInputModel(date, parkId, shiftId);
+            ValidateTanksInputModel(date, parkId);
 
             if (this.ModelState.IsValid)
             {
-                date = date.Value.AddTicks(data.Shifts.GetById(shiftId).EndTicks);
+                var statuses = this.tanksService.ReadDataForDay(date.Value, areaId, parkId).ToList();
 
                 var dbResult = this.data.TanksData.All()
                     .Include(t => t.TankConfig)
@@ -62,9 +65,18 @@
                         && t.TankConfig.Park.AreaId == (areaId ?? t.TankConfig.Park.AreaId)
                         && t.ParkId == (parkId ?? t.ParkId));
 
-
                 var kendoResult = dbResult.ToDataSourceResult(request, ModelState);
                 kendoResult.Data = Mapper.Map<IEnumerable<TankData>, IEnumerable<TankDataViewModel>>((IEnumerable<TankData>)kendoResult.Data);
+                foreach (var item in kendoResult.Data)
+                {
+                    var model = (TankDataViewModel)item;
+                    var status = statuses.Where(x => x.Tank.Id == model.TankId).FirstOrDefault();
+                    if (status != null && status.Quantity.TankStatus != null)
+                    {
+                        model.StatusOfTank = status.Quantity.TankStatus.Id.ToString();   
+                    }
+                }
+                
                 return Json(kendoResult);
             }
             else
@@ -74,16 +86,11 @@
             }
         }
 
-        private void ValidateTanksInputModel(DateTime? date, int? parkId, int? shiftId)
+        private void ValidateTanksInputModel(DateTime? date, int? parkId)
         {
             if (date == null)
             {
                 this.ModelState.AddModelError("date", string.Format(Resources.ErrorMessages.Required, Resources.Layout.TanksDateSelector));
-            }
-
-            if (shiftId == null)
-            {
-                this.ModelState.AddModelError("shifts", string.Format(Resources.ErrorMessages.Required, Resources.Layout.TanksShiftMinutesOffsetSelector));
             }
         }
 

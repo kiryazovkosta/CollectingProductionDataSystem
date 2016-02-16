@@ -66,7 +66,6 @@
             modelBuilder.Configurations.Add(new InnerPipelineDataMap());
             modelBuilder.Configurations.Add(new InProcessUnitDataMap());
             modelBuilder.Configurations.Add(new MessageMap());
-            modelBuilder.Configurations.Add(new TankReportConfigMap());
             modelBuilder.Configurations.Add(new InnerPipelinesApprovedDateMap());
             modelBuilder.Configurations.Add(new InProcessUnitsApprovedDateMap());
             modelBuilder.Configurations.Add(new MonthlyReportTypeMap());
@@ -76,7 +75,8 @@
             modelBuilder.Configurations.Add(new UnitManualMonthlyDataMap());
             modelBuilder.Configurations.Add(new UnitMonthlyConfigMap());
             modelBuilder.Configurations.Add(new UnitMonthlyDataMap());
-
+            modelBuilder.Configurations.Add(new TankStatusMap());
+            modelBuilder.Configurations.Add(new TankStatusDataMap());
         }
     }
 }

@@ -83,9 +83,8 @@
     //------------------ public functions ------------------------------------
 
     function ErrorHandler(e) {
-        if (this.data) {
-            this.data([]);
-        }
+        var grid = e.sender;
+
         if (e.errors) {
             var message = "";
             $.each(e.errors, function (key, value) {
@@ -99,6 +98,7 @@
             $('div#err-window').data("kendoWindow").open();
         }
 
+        grid.cancelChanges();
     }
 
     function CloseWindow(selector) {
@@ -199,6 +199,33 @@
         }
     }
 
+    function onChange(ev) {
+        if (ev.action === 'add') {
+            var addedRecord = ev.items[0];
+            if (addedRecord !== null) {
+                var targetDate = $('input[name=date]').data('kendoDatePicker').value();
+                addedRecord.RecordTimestamp = targetDate;
+            }
+        }
+    }
+
+    function onPipeChange(ev) {
+        if (ev.action === 'itemchange') {
+            var addedRecord = ev.items[0];
+            if (addedRecord !== null) {
+                var targetDate = $('input[name=date]').data('kendoDatePicker').value();
+                addedRecord.RecordTimestamp = targetDate;
+            }
+        }
+    }
+
+    function оnRequestEnd(ev) {
+        if (ev.type === "destroy") {
+            RefreshGrid('#inner-pipes');
+            RefreshGrid('#tanks-statuses');
+        }
+    }
+
     return {
         ErrorHandler: ErrorHandler,
         CloseWindow: CloseWindow,
@@ -209,5 +236,8 @@
         AfterterNomGridValidation: afterterNomGridValidation,
         MessageBound: messageBound,
         MessagesDataBound: MessagesDataBound,
+        OnChange: onChange,
+        OnPipeChange: onPipeChange,
+        OnRequestEnd: оnRequestEnd
     }
 })();

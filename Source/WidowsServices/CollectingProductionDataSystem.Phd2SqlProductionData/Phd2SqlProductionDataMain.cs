@@ -56,7 +56,7 @@
                     logger.InfoFormat("Successfully added {0} UnitsData records to CollectingPrimaryDataSystem", insertedRecords);
                     if (insertedRecords > 0)
                     {
-                        SendEmail("SAPO - Shift data", string.Format("Successfully added {0} recorts to database", insertedRecords));  
+                        SendEmail("SAPO - Shift data", string.Format("Successfully added {0} recorts to database", insertedRecords));
                     }
                 }
                 logger.Info("Sync primary data finished!");
@@ -64,12 +64,12 @@
             catch (DataException validationException)
             {
                 LogValidationDataException(validationException);
-                SendEmail("SAPO - ERROR", validationException.Message); 
+                SendEmail("SAPO - ERROR", validationException.Message);
             }
             catch (Exception ex)
             {
                 logger.Error(ex);
-                SendEmail("SAPO - ERROR", ex.Message);  
+                SendEmail("SAPO - ERROR", ex.Message);
             }
         }
 
@@ -117,7 +117,7 @@
                         PhdTagWeightInAir = t.PhdTagWeightInAir,
                         PhdTagWeightInVaccum = t.PhdTagWeightInVacuum
                     });
-                    
+
                     // TODO: Mechanism to get all data for past period
                     for (int hours = Properties.Settings.Default.MIN_GET_INVENTORY_HOURS_INTERVAL; hours < Properties.Settings.Default.MAX_GET_INVENTORY_HOURS_INTERVAL; hours++)
                     {
@@ -150,111 +150,121 @@
 
                                     foreach (var t in tanks)
                                     {
-                                        var tankData = new TankData();
-                                        tankData.RecordTimestamp = checkedDateTime;
-                                        tankData.TankConfigId = t.TankId;
-                                        tankData.ParkId = t.ParkId;
-                                        tankData.NetStandardVolume = t.UnusableResidueLevel;
-
-                                        Tags tags = new Tags();
-                                        SetPhdTag(t.PhdTagProductId, tags);              
-                                        SetPhdTag(t.PhdTagLiquidLevel, tags);                   
-                                        SetPhdTag(t.PhdTagProductLevel, tags);                   
-                                        SetPhdTag(t.PhdTagFreeWaterLevel, tags);                              
-                                        SetPhdTag(t.PhdTagReferenceDensity, tags);   
-                                        SetPhdTag(t.PhdTagNetStandardVolume, tags);              
-                                        SetPhdTag(t.PhdTagWeightInAir, tags);
-                                        SetPhdTag(t.PhdTagWeightInVaccum, tags);
-    
-                                        DataSet dsGrid = oPhd.FetchRowData(tags);
-                                        foreach (DataRow row in dsGrid.Tables[0].Rows)
+                                        try
                                         {
-                                            var tagName = string.Empty;
-                                            var tagValue = 0m;
+                                            var tankData = new TankData();
+                                            tankData.RecordTimestamp = checkedDateTime;
+                                            tankData.TankConfigId = t.TankId;
+                                            tankData.ParkId = t.ParkId;
+                                            tankData.NetStandardVolume = t.UnusableResidueLevel;
 
-                                            foreach (DataColumn dc in dsGrid.Tables[0].Columns)
-                                            {
-                                                if (dc.ColumnName.Equals("Tolerance") || dc.ColumnName.Equals("HostName") || dc.ColumnName.Equals("Units"))
-                                                {
-                                                    continue;
-                                                }
-                                                else if (dc.ColumnName.Equals("Confidence") && !row[dc].ToString().Equals("100"))
-                                                {
-                                                    continue;    
-                                                }
-                                                else if (dc.ColumnName.Equals("TagName"))
-                                                {
-                                                    tagName = row[dc].ToString();
-                                                }
-                                                else if (dc.ColumnName.Equals("Value"))
-                                                {
-                                                    tagValue = Convert.ToDecimal(row[dc]);
-                                                }
-                                            }
+                                            Tags tags = new Tags();
+                                            SetPhdTag(t.PhdTagProductId, tags);
+                                            SetPhdTag(t.PhdTagLiquidLevel, tags);
+                                            SetPhdTag(t.PhdTagProductLevel, tags);
+                                            SetPhdTag(t.PhdTagFreeWaterLevel, tags);
+                                            SetPhdTag(t.PhdTagReferenceDensity, tags);
+                                            SetPhdTag(t.PhdTagNetStandardVolume, tags);
+                                            SetPhdTag(t.PhdTagWeightInAir, tags);
+                                            SetPhdTag(t.PhdTagWeightInVaccum, tags);
 
-                                            if (tagName.Contains(".PROD_ID"))
+                                            DataSet dsGrid = oPhd.FetchRowData(tags);
+                                            foreach (DataRow row in dsGrid.Tables[0].Rows)
                                             {
-                                                var prId = Convert.ToInt32(tagValue);
-                                                var product = context.TankMasterProducts.All().Where(x => x.TankMasterProductCode == prId).FirstOrDefault();
-                                                if (product != null)
+                                                var tagName = string.Empty;
+                                                var tagValue = 0m;
+
+                                                foreach (DataColumn dc in dsGrid.Tables[0].Columns)
                                                 {
-                                                    tankData.ProductId = product.Id;
-                                                    var pr = context.Products.All().Where(p => p.Id == product.Id).FirstOrDefault();
-                                                    if (pr != null)
+                                                    if (dc.ColumnName.Equals("Tolerance") || dc.ColumnName.Equals("HostName") || dc.ColumnName.Equals("Units"))
                                                     {
-                                                        tankData.ProductName = pr.Name;  
+                                                        continue;
+                                                    }
+                                                    else if (dc.ColumnName.Equals("Confidence") && !row[dc].ToString().Equals("100"))
+                                                    {
+                                                        continue;
+                                                    }
+                                                    else if (dc.ColumnName.Equals("TagName"))
+                                                    {
+                                                        tagName = row[dc].ToString();
+                                                    }
+                                                    else if (dc.ColumnName.Equals("Value"))
+                                                    {
+                                                        if (!row.IsNull("Value"))
+                                                        {
+                                                            tagValue = Convert.ToDecimal(row[dc]);
+                                                        }
+                                                    }
+                                                }
+
+                                                if (tagName.Contains(".PROD_ID"))
+                                                {
+                                                    var prId = Convert.ToInt32(tagValue);
+                                                    var product = context.TankMasterProducts.All().Where(x => x.TankMasterProductCode == prId).FirstOrDefault();
+                                                    if (product != null)
+                                                    {
+                                                        tankData.ProductId = product.Id;
+                                                        var pr = context.Products.All().Where(p => p.Id == product.Id).FirstOrDefault();
+                                                        if (pr != null)
+                                                        {
+                                                            tankData.ProductName = pr.Name;
+                                                        }
+                                                        else
+                                                        {
+                                                            tankData.ProductName = "N/A";
+                                                            SendEmail("Phd2Sql Inventory", "There is a product with unknown id in TankMaster configuration");
+                                                        }
                                                     }
                                                     else
                                                     {
+                                                        tankData.ProductId = Convert.ToInt32(tagValue);
                                                         tankData.ProductName = "N/A";
                                                         SendEmail("Phd2Sql Inventory", "There is a product with unknown id in TankMaster configuration");
                                                     }
                                                 }
-                                                else 
-                                                { 
-                                                    tankData.ProductId = Convert.ToInt32(tagValue);
-                                                    tankData.ProductName = "N/A";
-                                                    SendEmail("Phd2Sql Inventory", "There is a product with unknown id in TankMaster configuration");
+                                                else if (tagName.EndsWith(".LL") || tagName.EndsWith(".LEVEL_MM"))
+                                                {
+                                                    tankData.LiquidLevel = tagValue;
+                                                }
+                                                else if (tagName.EndsWith(".LL_FWL") || tagName.EndsWith(".LEVEL_FWL"))
+                                                {
+                                                    tankData.ProductLevel = tagValue;
+                                                }
+                                                else if (tagName.EndsWith(".FWL"))
+                                                {
+                                                    tankData.FreeWaterLevel = tagValue;
+                                                }
+                                                else if (tagName.EndsWith(".DREF") || tagName.EndsWith(".REF_DENS"))
+                                                {
+                                                    tankData.ReferenceDensity = tagValue;
+                                                }
+                                                else if (tagName.EndsWith(".NSV"))
+                                                {
+                                                    tankData.NetStandardVolume = tagValue;
+                                                }
+                                                else if (tagName.EndsWith(".WIA"))
+                                                {
+                                                    tankData.WeightInAir = tagValue;
+                                                }
+                                                else if (tagName.EndsWith(".WIV"))
+                                                {
+                                                    tankData.WeightInVacuum = tagValue;
                                                 }
                                             }
-                                            else if (tagName.EndsWith(".LL") || tagName.EndsWith(".LEVEL_MM"))
-                                            {
-                                                tankData.LiquidLevel = tagValue;
-                                            }
-                                            else if (tagName.EndsWith(".LL_FWL") || tagName.EndsWith(".LEVEL_FWL"))
-                                            {
-                                                tankData.ProductLevel = tagValue;
-                                            }
-                                            else if (tagName.EndsWith(".FWL"))
-                                            {
-                                                tankData.FreeWaterLevel = tagValue;  
-                                            }
-                                            else if (tagName.EndsWith(".DREF") || tagName.EndsWith(".REF_DENS"))
-                                            {
-                                                tankData.ReferenceDensity = tagValue;
-                                            }
-                                            else if (tagName.EndsWith(".NSV"))
-                                            {
-                                                tankData.NetStandardVolume = tagValue;
-                                            }
-                                            else if (tagName.EndsWith(".WIA"))
-                                            {
-                                                tankData.WeightInAir = tagValue;
-                                            }
-                                            else if (tagName.EndsWith(".WIV"))
-                                            {
-                                                tankData.WeightInVacuum = tagValue;
-                                            }
-                                        }
 
-                                        tanksDataList.Add(tankData);
+                                            tanksDataList.Add(tankData);
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            logger.ErrorFormat("Tank Id [{0}] Exception:\n\n\n", t.TankId, ex.ToString());
+                                        }
                                     }
 
                                     if (tanksDataList.Count > 0)
                                     {
                                         context.TanksData.BulkInsert(tanksDataList, "Phd2SqlLoading");
-                                        var status = context.SaveChanges("Phd2SqlLoading");
-                                        logger.InfoFormat("Successfully added {0} TanksData records for: {1:yyyy-MM-dd HH:ss:mm}!", status.ResultRecordsCount, checkedDateTime);
+                                        context.SaveChanges("Phd2SqlLoading");
+                                        logger.InfoFormat("Successfully added {0} TanksData records for: {1:yyyy-MM-dd HH:ss:mm}!", tanksDataList.Count, checkedDateTime);
                                     }
                                 }
                             }
@@ -282,7 +292,7 @@
             //    //var now = DateTime.Now;
             //    //var today = DateTime.Today;
             //    //var fiveOClock = today.AddHours(5);
-                
+
             //    //var ts = now - fiveOClock;
             //    //if (ts.TotalMinutes > 2 && ts.Hours == 0)
             //    {
@@ -305,7 +315,7 @@
             //                        oPhd.MinimumConfidence = 49;
             //                        oPhd.ReductionType = REDUCTIONTYPE.Average;
             //                        oPhd.MaximumRows = 1;
-                            
+
             //                        foreach (var item in measuringPoints)
             //                        {
             //                            var measurementPointData = new MeasuringPointProductsData();
@@ -332,8 +342,8 @@
             //                        }
             //                    }
             //                }
-                            
-                            
+
+
             //                //using (PHDHistorian oPhd = new PHDHistorian())
             //                //{
             //                //    using (PHDServer oPhd = new PHDServer("srv-vm-mes-phd""))
@@ -409,12 +419,12 @@
             //    logger.Error(ex);
             //}
         }
- 
+
         private static void SetPhdTag(string tagName, Tags tags)
         {
             if (!string.IsNullOrEmpty(tagName))
             {
-                tags.Add(new Tag(tagName));    
+                tags.Add(new Tag(tagName));
             }
         }
 
@@ -435,7 +445,7 @@
             catch (Exception ex)
             {
                 logger.Error(ex.Message, ex);
-            } 
+            }
         }
     }
 }

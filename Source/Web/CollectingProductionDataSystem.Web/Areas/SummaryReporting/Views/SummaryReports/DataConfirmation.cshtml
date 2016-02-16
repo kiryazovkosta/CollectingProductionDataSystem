@@ -36,7 +36,7 @@
             columns.Bound(c => c.DayMaterialConfirmed).ClientTemplate("<div class='text-center width100'><div class='#:data.DayMaterialConfirmed ? 'green-light':'red-light'#'></div></div>");
             columns.Bound(c => c.DayEnergyConfirmed).ClientTemplate("<div class='text-center width100'><div class='#:data.DayEnergyConfirmed ? 'green-light':'red-light'#'></div></div>");
             columns.Bound(c => c.DayConfirmed).ClientTemplate("<div class='text-center width100'><div class='#:data.DayConfirmed ? 'green-light':'red-light'#'></div></div>");
-            columns.Bound(c => c.ConfirmedDaysUntilTheDay).Title("").ClientTemplate("<div id='calendar_#=data.ProcessUnitId#' class='calendar' data-json='#= data.ConfirmedDaysUntilTheDay #'></div>");
+            columns.Bound(c => c.ConfirmedDaysUntilTheDay).Title("").ClientTemplate("<div id='calendar_#=data.ProcessUnitId#' class='calendar' data-json='#= data.ConfirmedDaysUntilTheDay #'></div>").Width(250);
 
         })
         .Pageable(pageable => pageable

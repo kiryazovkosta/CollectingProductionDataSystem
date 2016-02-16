@@ -165,8 +165,6 @@
 
         public IDbSet<InProcessUnitsApprovedDate> InProcessUnitsApprovedDates { get; set; }
 
-        public IDbSet<TankReportConfig> TankReportConfigs { get; set; }
-
         public IDbSet<Message> Messages { get; set; }
 
         public IDbSet<MonthlyReportType> MonthlyProductTypes { get; set; }
@@ -182,6 +180,10 @@
         public IDbSet<UnitMonthlyConfig> UnitMonthlyConfigs { get; set; }
 
         public IDbSet<UnitMonthlyData> UnitMonthlyDatas { get; set; }
+
+        public IDbSet<TankStatus> TankStatuses { get; set; }
+
+        public IDbSet<TankStatusData> TankStatusDatas { get; set; }
 
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

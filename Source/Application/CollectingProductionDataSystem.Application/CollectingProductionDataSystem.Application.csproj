@@ -118,6 +118,7 @@
     </Compile>
     <Compile Include="FileServices\FileUploadService.cs" />
     <Compile Include="Contracts\IFileUploadService.cs" />
+    <Compile Include="HighwayPipelinesDataServices\HighwayPipelineDto.cs" />
     <Compile Include="HighwayPipelinesDataServices\HighwayPipelinesDataService.cs" />
     <Compile Include="HighwayPipelinesDataServices\IHighwayPipelinesDataService.cs" />
     <Compile Include="IdentityInfrastructure\ApplicationRoleManager.cs" />
@@ -125,6 +126,10 @@
     <Compile Include="IdentityInfrastructure\ApplicationUserManager.cs" />
     <Compile Include="IdentityInfrastructure\EmailService.cs" />
     <Compile Include="IdentityInfrastructure\SmsService.cs" />
+    <Compile Include="Contracts\IPipelineServices.cs" />
+    <Compile Include="MonthlyServices\InnerPipelineDto.cs" />
+    <Compile Include="MonthlyServices\PipelineServices.cs" />
+    <Compile Include="MonthlyServices\UnitMothlyDataService.cs" />
     <Compile Include="ProductionDataServices\FormulaArguments.cs" />
     <Compile Include="ProductionDataServices\Functions.cs" />
     <Compile Include="Contracts\IProductionDataCalculatorService.cs" />
@@ -137,7 +142,10 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="Contracts\IInventoryTanksService.cs" />
+    <Compile Include="TankDataServices\InventoryTanksService.cs" />
     <Compile Include="TankDataServices\ITankDataKendoService.cs" />
+    <Compile Include="TankDataServices\StatusOfTankDto.cs" />
     <Compile Include="TankDataServices\TankDataKendoService.cs" />
     <Compile Include="Contracts\IUnitDailyDataService.cs" />
     <Compile Include="Contracts\ITestUnitDailyCalculationService.cs" />

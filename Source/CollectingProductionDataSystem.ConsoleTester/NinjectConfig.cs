@@ -11,6 +11,8 @@
     using CollectingProductionDataSystem.Data.Common;
     using CollectingProductionDataSystem.Data.Concrete;
     using CollectingProductionDataSystem.Data.Contracts;
+    using CollectingProductionDataSystem.Infrastructure.Contracts;
+    using CollectingProductionDataSystem.Infrastructure.Log;
     using Ninject;
     using System;
     using System.Data.Entity;
@@ -34,6 +36,7 @@
             kernel.Bind<IFileUploadService>().To<FileUploadService>();
             kernel.Bind<ICalculatorService>().To<CalculatorService>();
             kernel.Bind<ITestUnitDailyCalculationService>().ToMethod(context => TestUnitDailyCalculationService.GetInstance()).InSingletonScope();
+            kernel.Bind<ILogger>().To<Logger>();
         }
 
         /// <summary>

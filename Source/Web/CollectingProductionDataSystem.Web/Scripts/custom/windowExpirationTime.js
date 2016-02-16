@@ -8,6 +8,7 @@
                 interval += 1;
                 $('#counter').html("<h3>" + interval + "</h3>");
                 if (interval >= expirationInterval) {
+                    $.connection.hub.stop();
                     $.ajax({
                         url: '/Account/LogOff',
                         type: 'POST',

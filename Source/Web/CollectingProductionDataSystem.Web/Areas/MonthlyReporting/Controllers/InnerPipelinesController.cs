@@ -2,10 +2,11 @@
 {
     using System;
     using System.Data.Entity;
+    using System.Data.Entity.Infrastructure;
     using System.Linq;
     using System.Web.Mvc;
+    using CollectingProductionDataSystem.Application.Contracts;
     using CollectingProductionDataSystem.Data.Contracts;
-    using CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewModels;
     using CollectingProductionDataSystem.Web.Infrastructure.Extentions;
     using Kendo.Mvc.Extensions;
     using Kendo.Mvc.UI;
@@ -15,50 +16,36 @@
     using CollectingProductionDataSystem.Models.Inventories;
     using CollectingProductionDataSystem.Web.Areas.MonthlyReporting.ViewModels;
     using CollectingProductionDataSystem.Web.Infrastructure.Filters;
+    using CollectingProductionDataSystem.Web.ViewModels.Nomenclatures;
 
     public class InnerPipelinesController : AreaBaseController
     {
-        public InnerPipelinesController(IProductionData dataParam)
+        private readonly IPipelineServices pipes;
+        public InnerPipelinesController(IProductionData dataParam, IPipelineServices pipesParam)
             : base(dataParam)
         {
+            this.pipes = pipesParam;
         }
 
         [HttpGet]
         public ActionResult InnerPipelinesData()
         {
-            this.ViewData["products"] = Mapper.Map<IEnumerable<ProductViewModel>>(this.data.Products.All().ToList());
+            this.ViewData["products"] = Mapper.Map<IEnumerable<ProductViewModel>>(this.data.Products.All()).ToList();
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [AuthorizeFactory]
         public ActionResult ReadInnerPipelinesData([DataSourceRequest]DataSourceRequest request, DateTime? date)
         {
             ValidateModelState(date);
 
             if (this.ModelState.IsValid)
             {
-                var beginTimeStamp = new DateTime(date.Value.Year, date.Value.Month, 1, 0, 0, 0);
-                var endTimeStamp = new DateTime(date.Value.Year, date.Value.Month, DateTime.DaysInMonth(date.Value.Year, date.Value.Month));
+                var dbResult = this.pipes.ReadDataForMonth(date.Value).ToList();
 
-                var dbResult = this.data.InnerPipelineDatas
-                    .All()
-                    .Include(x => x.Product)
-                    .Where(x => x.RecordTimestamp >= beginTimeStamp && x.RecordTimestamp <= endTimeStamp)
-                    .ToList();
-                   
-                try
-                {
-                    var kendoPreparedResult = Mapper.Map<IEnumerable<InnerPipelineData>, IEnumerable<InnerPipelinesDataViewModel>>(dbResult);
-                    var kendoResult = kendoPreparedResult.ToDataSourceResult(request, ModelState);
-                    return Json(kendoResult);
-                }
-                catch (Exception ex)
-                {
-                    var kendoResult1 = new List<InnerPipelinesDataViewModel>().ToDataSourceResult(request, ModelState);
-                    return Json(kendoResult1);   
-                }
+                var kendoResult = dbResult.ToDataSourceResult(request, ModelState, Mapper.Map<InnerPipelinesDataViewModel>);
+                return Json(kendoResult);
             }
             else
             {
@@ -69,45 +56,15 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public virtual ActionResult Create([DataSourceRequest]DataSourceRequest request, InnerPipelinesDataViewModel inputViewModel)
+        public ActionResult Update([DataSourceRequest]DataSourceRequest request, InnerPipelinesDataViewModel inputViewModel)
         {
             if (ModelState.IsValid)
             {
-                try
-                {
-                    var entity = Mapper.Map<InnerPipelineData>(inputViewModel);
-                    this.data.InnerPipelineDatas.Add(entity);
-                    var result = data.SaveChanges(this.UserProfile.UserName);
+                var dbEntity = this.data.InnerPipelineDatas.All().Where(x => x.ProductId == inputViewModel.ProductId && x.RecordTimestamp == inputViewModel.RecordTimestamp).FirstOrDefault();
 
-                    if (!result.IsValid)
-                    {
-                        result.ToModelStateErrors(ModelState);
-                    }
-
-                    inputViewModel.Id = entity.Id;
-                }
-                catch (Exception ex)
+                if (dbEntity != null)
                 {
-                    ModelState.AddModelError("", ex.Message + ex.StackTrace);
-                }
-            }
-
-            return Json(new[] { inputViewModel }.ToDataSourceResult(request, ModelState));
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public virtual ActionResult Update([DataSourceRequest]DataSourceRequest request, InnerPipelinesDataViewModel inputViewModel)
-        {
-            if (ModelState.IsValid)
-            {
-                var dbEntity = this.data.InnerPipelineDatas.All().Where(x => x.Id == inputViewModel.Id).FirstOrDefault();
-                if(dbEntity == null)
-                {
-                    ModelState.AddModelError("", string.Format(Resources.ErrorMessages.InvalidRecordUpdate, inputViewModel.Id));
-                }
-                else
-                {
+                    // modify exist record
                     Mapper.Map(inputViewModel, dbEntity);
                     this.data.InnerPipelineDatas.Update(dbEntity);
                     var result = this.data.SaveChanges(this.UserProfile.UserName);
@@ -116,7 +73,23 @@
                         result.ToModelStateErrors(ModelState);
                     }
                 }
+                else
+                {
+                    // add new record
+                    var entity = Mapper.Map<InnerPipelineData>(inputViewModel);
+                    this.data.InnerPipelineDatas.Add(entity);
+                    var result = this.data.SaveChanges(this.UserProfile.UserName);
+                    if (!result.IsValid)
+                    {
+                        result.ToModelStateErrors(ModelState);
+                    }
+                    else 
+                    {
+                        inputViewModel.Id = entity.Product.Code;
+                    }
+                }
             }
+
 
             return Json(new[] { inputViewModel }.ToDataSourceResult(request, ModelState));
         }
@@ -127,8 +100,8 @@
         {
             if (ModelState.IsValid)
             {
-                var dbEntity = this.data.InnerPipelineDatas.All().Where(x => x.Id == inputViewModel.Id).FirstOrDefault();
-                if(dbEntity == null)
+                var dbEntity = this.data.InnerPipelineDatas.All().Where(x => x.ProductId == inputViewModel.ProductId && x.RecordTimestamp == inputViewModel.RecordTimestamp).FirstOrDefault();
+                if (dbEntity == null)
                 {
                     ModelState.AddModelError("", string.Format(Resources.ErrorMessages.InvalidRecordUpdate, inputViewModel.Id));
                 }
@@ -143,8 +116,6 @@
 
             return Json(new[] { inputViewModel }.ToDataSourceResult(request, ModelState));
         }
-
-            
 
         private void ValidateModelState(DateTime? date)
         {

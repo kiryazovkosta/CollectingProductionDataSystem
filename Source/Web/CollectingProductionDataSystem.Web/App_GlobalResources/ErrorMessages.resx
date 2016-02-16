@@ -129,6 +129,12 @@
   <data name="ErrorContacts" xml:space="preserve">
     <value>Pleace register incident in the system or call to our Service Desk on 37-11</value>
   </data>
+  <data name="InnerPipelineDataDublicatedRecords" xml:space="preserve">
+    <value>The record with timestamp {0} for product {1} alleady exists!!</value>
+  </data>
+  <data name="InProcessUnitDatasDublicatedRecords" xml:space="preserve">
+    <value>The record with timestamp {0} for process unit {1} and product {2} alleady exists!!</value>
+  </data>
   <data name="InvalidChangePassword" xml:space="preserve">
     <value>Ivalid attempt to change password.</value>
   </data>

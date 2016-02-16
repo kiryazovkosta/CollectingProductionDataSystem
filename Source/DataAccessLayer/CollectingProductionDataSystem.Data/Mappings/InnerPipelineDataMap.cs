@@ -2,6 +2,7 @@
 {
     using System;
     using System.ComponentModel.DataAnnotations.Schema;
+    using System.Data.Entity.Infrastructure.Annotations;
     using System.Data.Entity.ModelConfiguration;
     using System.Linq;
     using CollectingProductionDataSystem.Models.Inventories;
@@ -11,7 +12,7 @@
         public InnerPipelineDataMap()
         {
             // Primary Key
-            this.HasKey(t => new { t.RecordTimestamp, t.ProductId });
+            this.HasKey(t => new { t.ProductId, t.RecordTimestamp, t.Id });
 
             // Properties
             this.Property(t => t.Id)

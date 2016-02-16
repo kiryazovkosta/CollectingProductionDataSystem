@@ -11,5 +11,7 @@ namespace CollectingProductionDataSystem.Application.HighwayPipelinesDataService
     public interface IHighwayPipelinesDataService
     {
         IEfStatus CheckIfPreviousDaysAreReady(DateTime targetDate);
+
+        IEnumerable<HighwayPipelineDto> ReadDataForDay(DateTime targetDay);
     }
 }

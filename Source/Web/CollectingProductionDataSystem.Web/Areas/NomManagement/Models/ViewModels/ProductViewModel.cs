@@ -29,6 +29,11 @@
         [Display(Name = "ProductType", ResourceType = typeof(Resources.Layout))]
         public int ProductTypeId { get; set; }
 
+        [Required]
+        [Display(Name = "IsAvailableForInnerPipeLine", ResourceType = typeof(Resources.Layout))]
+        public bool IsAvailableForInnerPipeLine { get; set; }
+
+
         [UIHint("Hidden")]
         [Editable(false)]
         public bool IsDeleted { get; set; }

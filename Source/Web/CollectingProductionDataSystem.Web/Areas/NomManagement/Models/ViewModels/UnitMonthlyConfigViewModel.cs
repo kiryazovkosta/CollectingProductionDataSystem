@@ -74,6 +74,8 @@
         [Display(Name = "RelatedUnitMonthlyConfigs", ResourceType = typeof(Resources.Layout))]
         public ICollection<RelatedUnitMonthlyConfigsViewModel> RelatedUnitMonthlyConfigs { get; set; }
 
+        [Display(Name = "IsManualEntry", ResourceType = typeof(Resources.Layout))]
+        public bool IsManualEntry { get; set; }
 
 
         [UIHint("Hidden")]

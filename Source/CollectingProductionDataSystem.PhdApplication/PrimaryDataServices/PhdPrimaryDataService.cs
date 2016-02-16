@@ -211,23 +211,30 @@
         {
             foreach (var unitConfig in unitsConfigsList.Where(x => x.CollectingDataMechanism == "A"))
             {
-                var confidence = 0;
-                if (!unitsData.Where(x => x.UnitConfigId == unitConfig.Id).Any())
+                if (unitConfig.NeedToGetOnlyLastShiftValue == 1 && shift != ShiftType.Third)
                 {
-                    var unitData = GetUnitData(unitConfig, oPhd, recordDataTime, out confidence);
-                    if (confidence >= Properties.Settings.Default.PHD_DATA_MIN_CONFIDENCE && unitData.RecordTimestamp != null)
+                    SetDefaultValue(recordDataTime, shift, unitsData, unitConfig);   
+                }
+                else
+                {
+                    var confidence = 0;
+                    if (!unitsData.Where(x => x.UnitConfigId == unitConfig.Id).Any())
                     {
-                        if (!unitsData.Where(x => x.RecordTimestamp == unitData.RecordTimestamp && x.ShiftId == shift && x.UnitConfigId == unitConfig.Id).Any())
+                        var unitData = GetUnitData(unitConfig, oPhd, recordDataTime, out confidence);
+                        if (confidence >= Properties.Settings.Default.PHD_DATA_MIN_CONFIDENCE && unitData.RecordTimestamp != null)
                         {
-                            unitData.ShiftId = shift;
-                            unitData.RecordTimestamp = unitData.RecordTimestamp.Date;
-                            this.data.UnitsData.Add(unitData);
+                            if (!unitsData.Where(x => x.RecordTimestamp == unitData.RecordTimestamp && x.ShiftId == shift && x.UnitConfigId == unitConfig.Id).Any())
+                            {
+                                unitData.ShiftId = shift;
+                                unitData.RecordTimestamp = unitData.RecordTimestamp.Date;
+                                this.data.UnitsData.Add(unitData);
+                            }
                         }
-                    }
-                    else
-                    {
-                        SetDefaultValue(recordDataTime, shift, unitsData, unitConfig);
-                    }
+                        else
+                        {
+                            SetDefaultValue(recordDataTime, shift, unitsData, unitConfig);
+                        }
+                    } 
                 }
             }
         }

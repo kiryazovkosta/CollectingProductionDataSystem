@@ -145,11 +145,13 @@
 
         IDeletableEntityRepository<InProcessUnitData> InProcessUnitDatas { get; }
 
-        IDeletableEntityRepository<TankReportConfig> TankReportConfigs { get; }
-
         IDeletableEntityRepository<InnerPipelinesApprovedDate> InnerPipelinesApprovedDates { get; }
 
         IDeletableEntityRepository<InProcessUnitsApprovedDate> InProcessUnitsApprovedDates { get; }
+
+        IDeletableEntityRepository<TankStatus> TankStatuses { get; }
+
+        IDeletableEntityRepository<TankStatusData> TankStatusDatas { get; } 
 
         IDbContext DbContext { get; }
 

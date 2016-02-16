@@ -637,6 +637,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ChooseTankStatus.
+        /// </summary>
+        public static string ChooseTankStatus {
+            get {
+                return ResourceManager.GetString("ChooseTankStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Choose an Transport Type....
         /// </summary>
         public static string ChooseTransportType {
@@ -1267,6 +1276,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to FlagValue.
+        /// </summary>
+        public static string FlagValue {
+            get {
+                return ResourceManager.GetString("FlagValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to FlowDirection.
         /// </summary>
         public static string FlowDirection {
@@ -1546,6 +1564,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to IsAvailableForInnerPipeLine.
+        /// </summary>
+        public static string IsAvailableForInnerPipeLine {
+            get {
+                return ResourceManager.GetString("IsAvailableForInnerPipeLine", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to IsCalculated.
         /// </summary>
         public static string IsCalculated {
@@ -1605,6 +1632,15 @@ namespace App_GlobalResources.Resources {
         public static string IsInternalPoint {
             get {
                 return ResourceManager.GetString("IsInternalPoint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to IsManualEntry.
+        /// </summary>
+        public static string IsManualEntry {
+            get {
+                return ResourceManager.GetString("IsManualEntry", resourceCulture);
             }
         }
         
@@ -1884,6 +1920,15 @@ namespace App_GlobalResources.Resources {
         public static string MaxVolumeLowExtreme {
             get {
                 return ResourceManager.GetString("MaxVolumeLowExtreme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MeasuredValue.
+        /// </summary>
+        public static string MeasuredValue {
+            get {
+                return ResourceManager.GetString("MeasuredValue", resourceCulture);
             }
         }
         
@@ -3157,6 +3202,24 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to TanksStatusesData.
+        /// </summary>
+        public static string TanksStatusesData {
+            get {
+                return ResourceManager.GetString("TanksStatusesData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TankStatus.
+        /// </summary>
+        public static string TankStatus {
+            get {
+                return ResourceManager.GetString("TankStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Timestamp.
         /// </summary>
         public static string TimeStamp {
@@ -3963,6 +4026,15 @@ namespace App_GlobalResources.Resources {
         public static string UsageRateQuantityPlan {
             get {
                 return ResourceManager.GetString("UsageRateQuantityPlan", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to UsageRateTotalMonthPercentagesFact.
+        /// </summary>
+        public static string UsageRateTotalMonthPercentagesFact {
+            get {
+                return ResourceManager.GetString("UsageRateTotalMonthPercentagesFact", resourceCulture);
             }
         }
         

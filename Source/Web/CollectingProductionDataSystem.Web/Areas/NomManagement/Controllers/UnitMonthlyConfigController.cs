@@ -56,5 +56,12 @@ namespace CollectingProductionDataSystem.Web.Areas.NomManagement.Controllers
 
              return base.Create(request, inputViewModel);
          }
+
+        public JsonResult GetRelatedMonthly()
+        {
+            var result = Mapper.Map<IEnumerable<UnitMonthlyConfig>, IEnumerable<RelatedUnitMonthlyConfigsViewModel>>(this.data.UnitMonthlyConfigs.All()).ToList();
+
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
     }
 }

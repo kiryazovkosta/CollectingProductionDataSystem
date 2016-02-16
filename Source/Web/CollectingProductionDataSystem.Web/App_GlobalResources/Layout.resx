@@ -1473,4 +1473,28 @@
   <data name="UnitsMonthlyConfig" xml:space="preserve">
     <value>UnitsMonthlyConfig</value>
   </data>
+  <data name="TanksStatusesData" xml:space="preserve">
+    <value>TanksStatusesData</value>
+  </data>
+  <data name="IsAvailableForInnerPipeLine" xml:space="preserve">
+    <value>IsAvailableForInnerPipeLine</value>
+  </data>
+  <data name="IsManualEntry" xml:space="preserve">
+    <value>IsManualEntry</value>
+  </data>
+  <data name="ChooseTankStatus" xml:space="preserve">
+    <value>ChooseTankStatus</value>
+  </data>
+  <data name="TankStatus" xml:space="preserve">
+    <value>TankStatus</value>
+  </data>
+  <data name="FlagValue" xml:space="preserve">
+    <value>FlagValue</value>
+  </data>
+  <data name="UsageRateTotalMonthPercentagesFact" xml:space="preserve">
+    <value>UsageRateTotalMonthPercentagesFact</value>
+  </data>
+  <data name="MeasuredValue" xml:space="preserve">
+    <value>MeasuredValue</value>
+  </data>
 </root>

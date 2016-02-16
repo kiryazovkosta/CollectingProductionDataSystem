@@ -480,14 +480,6 @@
             }
         }
 
-        public IDeletableEntityRepository<TankReportConfig> TankReportConfigs
-        {
-            get
-            {
-                return this.GetDeletableEntityRepository<TankReportConfig>();
-            }
-        }
-
         public IDeletableEntityRepository<InnerPipelinesApprovedDate> InnerPipelinesApprovedDates
         {
             get
@@ -501,6 +493,22 @@
             get
             {
                 return this.GetDeletableEntityRepository<InProcessUnitsApprovedDate>();
+            }
+        }
+
+        public IDeletableEntityRepository<TankStatus> TankStatuses
+        {
+            get
+            {
+                return this.GetDeletableEntityRepository<TankStatus>();
+            }
+        }
+
+        public IDeletableEntityRepository<TankStatusData> TankStatusDatas
+        {
+            get
+            {
+                return this.GetDeletableEntityRepository<TankStatusData>();
             }
         }
 
