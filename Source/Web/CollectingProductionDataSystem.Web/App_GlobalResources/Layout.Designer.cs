@@ -1924,6 +1924,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to MeasuredValue.
+        /// </summary>
+        public static string MeasuredValue {
+            get {
+                return ResourceManager.GetString("MeasuredValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to MeasurementPointsProductsConfig.
         /// </summary>
         public static string MeasurementPointsProductsConfig {

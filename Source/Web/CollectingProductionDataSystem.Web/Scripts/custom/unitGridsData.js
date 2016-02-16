@@ -45,6 +45,15 @@ var unitGridsData = (function () {
                 kendoAdditional.RefreshGrid("#inner-pipes");
             }
 
+            if ($("#monthly-hc-units").val() !== undefined) {
+
+                if (ctrlParamsElement.val() !== undefined) {
+                    ctrlParamsElement.attr('data-params', JSON.stringify(sendDate()));
+                }
+
+                kendoAdditional.RefreshGrid("#monthly-hc-units");
+            }
+
             if ($("#tanks-statuses").val() !== undefined) {
 
                 if (ctrlParamsElement.val() !== undefined) {

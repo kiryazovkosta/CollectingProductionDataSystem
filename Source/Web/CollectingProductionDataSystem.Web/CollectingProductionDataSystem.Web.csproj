@@ -266,6 +266,10 @@
     <Compile Include="Areas\Administration\ViewModels\UserPieViewModel.cs" />
     <Compile Include="Areas\DailyReporting\Controllers\TanksStatusesController.cs" />
     <Compile Include="Areas\DailyReporting\ViewModels\TanksStatusDataViewModel.cs" />
+    <Compile Include="Areas\MonthlyHydroCarbons\Controllers\AreaBaseController.cs" />
+    <Compile Include="Areas\MonthlyHydroCarbons\Controllers\MonthlyHydroCarbonsController.cs" />
+    <Compile Include="Areas\MonthlyHydroCarbons\Models\MonthlyHydroCarbonViewModel.cs" />
+    <Compile Include="Areas\MonthlyHydroCarbons\MonthlyHydroCarbonsAreaRegistration.cs" />
     <Compile Include="Areas\NomManagement\Controllers\TankStatusController.cs" />
     <Compile Include="Areas\NomManagement\Controllers\UnitMonthlyConfigController.cs" />
     <Compile Include="Areas\NomManagement\Models\ViewModels\RelatedUnitMonthlyConfigsViewModel.cs" />
@@ -1109,6 +1113,10 @@
     <Content Include="Areas\NomManagement\Views\Shared\EditorTemplates\MonthlyReportTypeViewModel.cshtml" />
     <Content Include="Areas\DailyReporting\Views\TanksStatuses\TanksStatusesData.cshtml" />
     <Content Include="Areas\NomManagement\Views\TankStatus\Index.cshtml" />
+    <Content Include="Areas\MonthlyHydroCarbons\Views\web.config" />
+    <Content Include="Areas\MonthlyHydroCarbons\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\MonthlyHydroCarbons\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\MonthlyHydroCarbons\Views\MonthlyHydroCarbons\Index.cshtml" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <None Include="Properties\PublishProfiles\Home.pubxml" />
     <Content Include="Scripts\custom\sendArea.js" />
