@@ -65,5 +65,10 @@
         /// </summary>
         public double? CalculationPercentage { get; set; }
 
+        /// <summary>
+        /// Текст на формула, която се използва при калкулиране на потребителски вход
+        /// </summary>
+        public string CustomFormulaExpression { get; set; }
+
     }
 }

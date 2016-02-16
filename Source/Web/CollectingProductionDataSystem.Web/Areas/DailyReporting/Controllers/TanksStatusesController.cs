@@ -15,6 +15,7 @@
     using CollectingProductionDataSystem.Web.ViewModels.Tank;
     using CollectingProductionDataSystem.Models.Inventories;
 
+    [Authorize(Roles = "TanksStatusesReporter")]
     public class TanksStatusesController : AreaBaseController
     {
         private readonly IInventoryTanksService tanks;

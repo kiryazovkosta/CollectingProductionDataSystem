@@ -181,6 +181,9 @@
                 case "C7":
                     result = FormulaC7(arguments);
                     break;
+                case "C8":
+                    result = FormulaC8(arguments);
+                    break;
                 default:
                     throw new ArgumentException("The entered value of the formula code is invalid!");
                     break;
@@ -265,6 +268,7 @@
             arguments.EstimatedTemperature = (double?)unitConfig.EstimatedTemperature;
             arguments.EstimatedCompressibilityFactor = (double?)unitConfig.EstimatedCompressibilityFactor;
             arguments.CalculationPercentage = (double?)unitConfig.CalculationPercentage;
+            arguments.CustomFormulaExpression = unitConfig.CustomFormulaExpression;
             if (arguments.EstimatedDensity.HasValue)
             {
                 var d = ((int)(arguments.EstimatedDensity.Value * 1000)) / 100;
@@ -331,6 +335,7 @@
             arguments.EstimatedTemperature = (double?)unitConfig.EstimatedTemperature;
             arguments.EstimatedCompressibilityFactor = (double?)unitConfig.EstimatedCompressibilityFactor;
             arguments.CalculationPercentage = (double?)unitConfig.CalculationPercentage;
+            arguments.CustomFormulaExpression = unitConfig.CustomFormulaExpression;
             return arguments;
         }
 
@@ -1773,8 +1778,21 @@
         /// </summary>
         private double FormulaP26(FormulaArguments args)
         {
-            double pl = 20;
-            double d = 50;
+            if (!args.InputValue.HasValue)
+            {
+                throw new ArgumentNullException("The value of CounterIndication(PL) is not allowed to be null");
+            }
+            if (!args.EstimatedDensity.HasValue)
+            {
+                throw new ArgumentNullException("The value of Density(D) is not allowed to be null");
+            }
+            if (!args.Density.HasValue)
+            {
+                args.Density = args.EstimatedDensity;    
+            }
+
+            double pl = args.InputValue.Value;
+            double d = args.Density.Value;
             double q = pl * d;
 
             var inputParams = new Dictionary<string, double>();
@@ -2157,6 +2175,31 @@
 
             string expr = @"par.q";
             var result = calculator.Calculate(expr, "par", 1, inputParams);
+            if (double.IsInfinity(result) || double.IsNaN(result))
+            {
+                result = 0.0;
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// UCF7 - изчислява въведената стойност като аргумент на формула
+        /// </summary>
+        public double FormulaC8(FormulaArguments args)            
+        {
+            if (!args.InputValue.HasValue)
+            {
+                throw new ArgumentNullException("The value of CounterIndication(PL) is not allowed to be null");
+            }
+            if (String.IsNullOrEmpty(args.CustomFormulaExpression))
+            {
+                throw new ArgumentNullException("The value of CustomFormulaExpression is not allowed to be null");
+            }
+
+            var inputParams = new Dictionary<string, double>();
+            inputParams.Add("p0", args.InputValue.Value);
+            string expr = @args.CustomFormulaExpression;
+            var result = calculator.Calculate(expr, "p", 1, inputParams);
             if (double.IsInfinity(result) || double.IsNaN(result))
             {
                 result = 0.0;

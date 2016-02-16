@@ -132,6 +132,7 @@
                     arguments.EstimatedTemperature = (double?)unitConfig.EstimatedTemperature;
                     arguments.EstimatedCompressibilityFactor = (double?)unitConfig.EstimatedCompressibilityFactor;
                     arguments.CalculationPercentage = (double?)unitConfig.CalculationPercentage;
+                    arguments.CustomFormulaExpression = unitConfig.CustomFormulaExpression;
 
                     var ruc = unitConfig.RelatedUnitConfigs.ToList();
                     foreach (var ru in ruc)

@@ -39,6 +39,7 @@ namespace CollectingProductionDataSystem.Models.Productions
         public string CalculatedFormula { get; set; }
         public string AggregateGroup { get; set; }
         public string AggregationMembers { get; set; }
+        public string CustomFormulaExpression { get; set; }
         public bool IsCalculated { get; set; }
         public string PreviousShiftTag { get; set; }
         public string Notes { get; set; }

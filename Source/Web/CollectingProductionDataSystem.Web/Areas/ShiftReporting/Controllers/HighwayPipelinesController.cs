@@ -18,7 +18,7 @@
     using Kendo.Mvc.UI;
     using Resources = App_GlobalResources.Resources;
 
-    [Authorize(Roles = "HighwayPipelines")]
+    [Authorize(Roles = "HighwayPipelinesDataReporter")]
     public class HighwayPipelinesController : AreaBaseController
     {
         private readonly IHighwayPipelinesDataService highwayPipelinesService;

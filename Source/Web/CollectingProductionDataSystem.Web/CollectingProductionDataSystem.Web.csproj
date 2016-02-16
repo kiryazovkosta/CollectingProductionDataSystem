@@ -2000,6 +2000,7 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <CustomToolNamespace>App_GlobalResources.Resources</CustomToolNamespace>
       <LastGenOutput>Layout.bg2.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Layout.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
