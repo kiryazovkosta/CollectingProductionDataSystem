@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -39,7 +40,13 @@ namespace CollectingProductionDataSystem.Web.Areas.MonthlyHydroCarbons.Controlle
                 var result = service.CalculateMonthlyDataForReportType(date, false, 1);
                 data.UnitMonthlyDatas.BulkInsert(result, "Test");
                 data.SaveChanges("Test");
-                var dbResult = data.UnitMonthlyDatas.All().ToList();
+                var dbResult = data.UnitMonthlyDatas.All()
+                                .Include(x=>x.UnitMonthlyConfig)
+                                .Include(x=>x.UnitMonthlyConfig.MeasureUnit)
+                                .Include(x=>x.UnitMonthlyConfig.ProcessUnit)
+                                .Include(x=>x.UnitMonthlyConfig.ProcessUnit.Factory)
+                                .Include(x=>x.UnitMonthlyConfig.MeasureUnit)
+                                .ToList();
                 return Json(dbResult.ToDataSourceResult(request, ModelState,  Mapper.Map<MonthlyHydroCarbonViewModel>));
             }
             catch (Exception ex)

@@ -27,17 +27,33 @@ namespace CollectingProductionDataSystem.ConsoleClient
 
             var data = kernel.GetService(typeof(IProductionData)) as IProductionData;
 
-            var shiftData = data.UnitsData.All().Where(x => x.ShiftId == ShiftType.Second 
-                && x.RecordTimestamp == new DateTime(2016, 2, 1, 0, 0, 0) 
-                && x.UnitConfig.ProcessUnitId == 50).ToList();
-            foreach (var item in shiftData)
+            //var shiftData = data.UnitsData.All().Where(x => x.ShiftId == ShiftType.Second 
+            //    && x.RecordTimestamp == new DateTime(2016, 2, 1, 0, 0, 0) 
+            //    && x.UnitConfig.ProcessUnitId == 50).ToList();
+
+            int monthIndex = DateTime.Now.Month;
+            var lastDate = new DateTime(2016, 2, 16, 0, 0, 0);
+
+            var shiftData = data.UnitsData.All().Where(x => x.ShiftId == ShiftType.Second
+                && x.RecordTimestamp == lastDate
+                && x.UnitConfig.ProcessUnitId == 34).ToList();
+
+            var prevDay = lastDate.AddDays(-1);
+            while(prevDay.Month == monthIndex)
             {
-                item.ShiftId = ShiftType.First;
-                data.UnitsData.Add(item);
+                foreach (var item in shiftData)
+                {
+                    item.RecordTimestamp = prevDay;
+                    item.ShiftId = ShiftType.First;
+                    data.UnitsData.Add(item);
+                }
+
+                data.SaveChanges("Loader");
+                prevDay = prevDay.AddDays(-1);
             }
 
-            var status = data.SaveChanges("kosta");
 
+            System.Console.WriteLine("finished");
             //ConvertProductsForInternalPipes(data);
 
             //TransformUnitDailyConfigTable(data);

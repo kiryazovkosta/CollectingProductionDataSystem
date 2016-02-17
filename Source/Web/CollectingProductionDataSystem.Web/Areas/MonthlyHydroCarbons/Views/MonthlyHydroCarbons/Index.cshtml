@@ -78,6 +78,7 @@
                                                                         group.Add(c => c.UnitMonthlyConfig.ProcessUnit.SortableName); 
                                                                         group.Add(c => c.UnitMonthlyConfig.ProductType.SortableName); 
                                                                     })
+                                                                        .Sort(sort => { sort.Add(c => c.UnitMonthlyConfig.Code); })
                                                                 .Read(read => read.Action("ReadMonthlyUnitsData", "MonthlyHydroCarbons", new { area = "MonthlyHydroCarbons" }).Data("unitGridsData.SendDate").Type(HttpVerbs.Post))
                                                                 .Update(update => update.Action("Edit", "MonthlyHydroCarbons", new { area = "MonthlyHydroCarbons" }).Data("sendAntiForgery"))
                                                                 .Model(model =>

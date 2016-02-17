@@ -37,14 +37,6 @@
             {
                 yield return new ValidationResult(Resources.ModelErrors.UnitsManualData_InvalidEditReason, new string[] { "EditReason" });
             }
-
-            if (this.UnitsData.UnitConfig.MeasureUnitId == 20)
-            {
-                if (this.Value > 8M)
-                {
-                     yield return new ValidationResult(string.Format(Resources.ModelErrors.UnitsManualData_Value_Range, 0.0M, 8), new string[] { "ManualValue" });   
-                }
-            }
         }    
     }
 }
