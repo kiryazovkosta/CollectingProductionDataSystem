@@ -141,7 +141,9 @@
                     Debug.WriteLine(ex1.Message + "\n" + ex1.InnerException);
                 }
 
-                return Json(kendoResult, JsonRequestBehavior.AllowGet);
+                var output = Json(kendoResult, JsonRequestBehavior.AllowGet);
+                output.MaxJsonLength = int.MaxValue;
+                return output;
             }
             else
             {
@@ -188,7 +190,9 @@
 
                 }
 
-                return Json(kendoResult, JsonRequestBehavior.AllowGet);
+                var result = Json(kendoResult, JsonRequestBehavior.AllowGet);
+                result.MaxJsonLength = int.MaxValue;
+                return result;
             }
             else
             {
@@ -311,7 +315,9 @@
                     kendoResult = dbResult.ToDataSourceResult(request, ModelState, Mapper.Map<SummaryProductionPlanViewModel>);
                 }
 
-                return Json(kendoResult, JsonRequestBehavior.AllowGet);
+                var result = Json(kendoResult, JsonRequestBehavior.AllowGet);
+                result.MaxJsonLength = int.MaxValue;
+                return result;
             }
             else
             {
@@ -351,7 +357,9 @@
                     kendoResult = dbResult.ToDataSourceResult(request, ModelState, Mapper.Map<EnergyProductionPlanDataViewModel>);
                 }
 
-                return Json(kendoResult, JsonRequestBehavior.AllowGet);
+                var result = Json(kendoResult, JsonRequestBehavior.AllowGet);
+                result.MaxJsonLength = int.MaxValue;
+                return result;
             }
             else
             {

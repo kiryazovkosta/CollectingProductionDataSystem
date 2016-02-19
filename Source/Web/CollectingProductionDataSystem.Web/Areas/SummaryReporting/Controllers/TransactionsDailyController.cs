@@ -179,7 +179,7 @@ namespace CollectingProductionDataSystem.Web.Areas.SummaryReporting.Controllers
                     }
                     if (flowDirection == 1 && activeTransaction.Mass == 0)
                     {
-                        return null;
+                        continue;
                     }
                 }
 

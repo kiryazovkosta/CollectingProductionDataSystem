@@ -1497,4 +1497,7 @@
   <data name="UnitMonthlyHCData" xml:space="preserve">
     <value>Месечен отчет за въглеводороди</value>
   </data>
+  <data name="CustomFormulaExpression" xml:space="preserve">
+    <value>Изчисляем математически израз</value>
+  </data>
 </root>

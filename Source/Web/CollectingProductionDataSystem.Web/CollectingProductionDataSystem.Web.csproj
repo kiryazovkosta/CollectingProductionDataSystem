@@ -380,10 +380,10 @@
     <Compile Include="Areas\SummaryReporting\Controllers\AreaBaseController.cs" />
     <Compile Include="Areas\SummaryReporting\Controllers\TransactionsDailyController.cs" />
     <Compile Include="Areas\SummaryReporting\SummaryReportingAreaRegistration.cs" />
-    <Compile Include="Areas\SummaryReporting\ViewModels\DailyConfirmationViewModel.cs" />
-    <Compile Include="Areas\SummaryReporting\ViewModels\DataConfirmationViewModel.cs" />
-    <Compile Include="Areas\SummaryReporting\ViewModels\EnergyProductionPlanDataViewModel.cs" />
-    <Compile Include="Areas\SummaryReporting\ViewModels\SummaryProductionPlanViewModel.cs" />
+    <Compile Include="Areas\SummaryReporting\Controllers\ViewModels\DailyConfirmationViewModel.cs" />
+    <Compile Include="Areas\SummaryReporting\Controllers\ViewModels\DataConfirmationViewModel.cs" />
+    <Compile Include="Areas\SummaryReporting\Controllers\ViewModels\EnergyProductionPlanDataViewModel.cs" />
+    <Compile Include="Areas\SummaryReporting\Controllers\ViewModels\SummaryProductionPlanViewModel.cs" />
     <Compile Include="Controllers\AccountController.cs">
       <SubType>Code</SubType>
     </Compile>

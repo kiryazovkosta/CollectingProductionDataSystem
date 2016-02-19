@@ -29,6 +29,8 @@
 
         public int UnitsDailyConfigId { get; set; }
 
+        public string ProcessUnitName { get; set; }
+
         public UnitsDailyConfigDataViewModel UnitsDailyConfig { get; set; }
 
         public UnitManualDailyDataViewModel UnitsManualDailyData { get; set; }
@@ -40,7 +42,7 @@
         {
             configuration.CreateMap<UnitsDailyData, UnitDailyDataViewModel>()
                 .ForMember(p => p.UnitsManualDailyData, opt => opt.MapFrom(p => p.UnitsManualDailyData ?? new UnitsManualDailyData() { Value = p.Value }))
-                .ForMember(p=>p.IsEditable, opt=>opt.MapFrom(p=>p.UnitsDailyConfig.IsEditable))
+                .ForMember(p => p.IsEditable, opt => opt.MapFrom(p => p.UnitsDailyConfig.IsEditable))
                 .ForMember(p => p.TotalMonthQuantity, opt => opt.MapFrom(p => p.UnitsDailyConfig.NotATotalizedPosition ? (decimal)p.RealValue : (p.TotalMonthQuantity + (decimal)p.RealValue)));
                 //.ForMember(p=>p.TotalMonthQuantity, opt=>opt.MapFrom(p=>p.TotalMonthQuantity + (decimal)p.RealValue));
             configuration.CreateMap<UnitDailyDataViewModel, UnitsDailyData>()
@@ -62,6 +64,10 @@
         [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
         [Display(Name = "UnitName", ResourceType = typeof(Resources.Layout))]
         public string Name { get; set; }
+
+        [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
+        [Display(Name = "ProcessUnit", ResourceType = typeof(Resources.Layout))]
+        public string ProcessUnitAlias { get; set; }
 
         //[UIHint("Hidden")]
         //public int ProductId { get; set; }

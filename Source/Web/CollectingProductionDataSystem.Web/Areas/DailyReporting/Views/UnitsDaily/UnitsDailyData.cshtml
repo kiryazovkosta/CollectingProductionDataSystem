@@ -80,7 +80,8 @@
                 .Width(75);
             columns.Bound(c => c.UnitsDailyConfig.DailyProductType.Sort).Hidden(true).ClientGroupHeaderTemplate("#=value#");
             //columns.Bound(c => c.UnitsDailyConfig.ProcessUnit.ShortName).Width(100);
-            columns.Bound(c => c.UnitsDailyConfig.Name).Width(150);
+            columns.Bound(c => c.UnitsDailyConfig.ProcessUnitAlias).Width(100);
+            columns.Bound(c => c.UnitsDailyConfig.Name).Width(100);
             columns.Bound(c => c.UnitsDailyConfig.MeasureUnit.Code).Width(50);
             columns.Bound(c => c.TotalMonthQuantity).ClientTemplate("<div style='text-align:right;'>#=data.Value==null?'':kendo.toString(data.TotalMonthQuantity, '\\#\\#.\\#\\#\\#')#</div>").Width(90);
             columns.Bound(c => c.Value).ClientTemplate("<div style='text-align:right;'>#=data.Value==null?'':kendo.toString(data.Value, '\\#\\#.\\#\\#\\#')#</div>").Width(80);

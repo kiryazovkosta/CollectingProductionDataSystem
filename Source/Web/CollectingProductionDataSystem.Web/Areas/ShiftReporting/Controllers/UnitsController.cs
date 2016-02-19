@@ -283,7 +283,7 @@
                 var startupValue = GetUnitConfigStartupValue(model);
                 var manualCalculationModel = new ManualCalculationViewModel()
                 {
-                    IsOldValueAvailableForEditing = startupValue == decimal.MinValue,
+                    IsOldValueAvailableForEditing = (startupValue == decimal.MinValue),
                     OldValue = startupValue == decimal.MinValue ? 0 : startupValue,
                     EnteredMeasurementCode = model.UnitConfig.EnteredMeasureUnit.Code ?? string.Empty,
                     UnitDataId = model.Id,
@@ -629,7 +629,7 @@
 
             if (lastCreatedData != null && lastModifiedData != null)
             {
-                if (lastCreatedData.CreatedOn > lastModifiedData.ModifiedOn)
+                if (lastModifiedData.ModifiedOn == null || (lastCreatedData.CreatedOn > lastModifiedData.ModifiedOn))
                 {
                     startupValue = lastCreatedData.NewValue;
                 }

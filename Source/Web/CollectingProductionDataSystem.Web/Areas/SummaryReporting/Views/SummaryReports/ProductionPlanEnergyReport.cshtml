@@ -27,12 +27,12 @@
                 columns.Bound(c => c.MeasurementUnit).Width(80);
                 columns.Bound(c => c.FactoryName).Hidden(true).ClientGroupHeaderTemplate("Производство #=value.substr(3,value.length-3)#");
                 columns.Bound(c => c.ProcessUnitName).Hidden(true).ClientGroupHeaderTemplate("Инсталация #=value.substr(3,value.length-3)#");
-                columns.Bound(c => c.PercentagesPlan).ClientTemplate("<div style='text-align:right;'>#=kendo.toString(data.PercentagesPlan, 'n2') #</div>");
-                columns.Bound(c => c.PercentagesFact).ClientTemplate("<div style='text-align:right;'>#=kendo.toString(data.PercentagesFact, 'n2') #</div>");
-                columns.Bound(c => c.TotalMonthPercentagesFact).ClientTemplate("<div style='text-align:right;'>#=kendo.toString(data.TotalMonthPercentagesFact, 'n2') #</div>");
-                columns.Bound(c => c.QuantityPlan).ClientTemplate("<div style='text-align:right;'>#=kendo.toString(data.QuantityPlan, 'n2') #</div>");
-                columns.Bound(c => c.QuantityFact).ClientTemplate("<div style='text-align:right;'>#=kendo.toString(data.QuantityFact, 'n2') #</div>");
-                columns.Bound(c => c.TotalMonthQuantityPlan).ClientTemplate("<div style='text-align:right;'>#=kendo.toString(data.TotalMonthQuantityPlan, 'n2') #</div>");
+                columns.Bound(c => c.PercentagesPlan).ClientTemplate("<div style='text-align:right;'>#=kendo.toString(data.PercentagesPlan) #</div>");
+                columns.Bound(c => c.PercentagesFact).ClientTemplate("<div style='text-align:right;'>#=kendo.toString(data.PercentagesFact, 'n5') #</div>");
+                columns.Bound(c => c.TotalMonthPercentagesFact).ClientTemplate("<div style='text-align:right;'>#=kendo.toString(data.TotalMonthPercentagesFact, 'n5') #</div>");
+                columns.Bound(c => c.QuantityPlan).ClientTemplate("<div style='text-align:right;'>#=kendo.toString(data.QuantityPlan, 'n3') #</div>");
+                columns.Bound(c => c.QuantityFact).ClientTemplate("<div style='text-align:right;'>#=kendo.toString(data.QuantityFact, 'n3') #</div>");
+                columns.Bound(c => c.TotalMonthQuantityPlan).ClientTemplate("<div style='text-align:right;'>#=kendo.toString(data.TotalMonthQuantityPlan, 'n3') #</div>");
                 columns.Bound(c => c.TotalMonthQuantityFact).ClientTemplate("<div style='text-align:right;'>#=kendo.toString(data.TotalMonthQuantityFact, 'n2') #</div>");
                 columns.Bound(c => c.RelativeDifference).ClientTemplate("<div style='text-align:right;'>#=kendo.toString(data.RelativeDifference, 'n2') # %</div>");
             })

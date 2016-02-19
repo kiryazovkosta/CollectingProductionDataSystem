@@ -26,15 +26,6 @@ namespace CollectingProductionDataSystem.GetTransactions.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool SYNC_TRANSACTIONS {
-            get {
-                return ((bool)(this["SYNC_TRANSACTIONS"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool FORCE_REGIONAL_SETTINGS {
             get {
                 return ((bool)(this["FORCE_REGIONAL_SETTINGS"]));
@@ -61,49 +52,10 @@ namespace CollectingProductionDataSystem.GetTransactions.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=.\\SQLEXPRESS;Initial Catalog=AutomatedReportingSystem;Persist Securit" +
-            "y Info=True;User ID=arsbase;Password=@ut0r3p0rt!")]
-        public string AutomatedReportingSystemConnectionString {
-            get {
-                return ((string)(this["AutomatedReportingSystemConnectionString"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Dsn=ASO;uid=PHD2CACHE;pwd=synchronize")]
-        public string ScaleConnectionString {
-            get {
-                return ((string)(this["ScaleConnectionString"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool SYNC_SCALE {
-            get {
-                return ((bool)(this["SYNC_SCALE"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("00:10:00")]
         public global::System.TimeSpan IDLE_TIMER_SCALE_DATA {
             get {
                 return ((global::System.TimeSpan)(this["IDLE_TIMER_SCALE_DATA"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool SYNC_ACTIVE_TRANSACTIONS {
-            get {
-                return ((bool)(this["SYNC_ACTIVE_TRANSACTIONS"]));
             }
         }
         
@@ -131,6 +83,99 @@ namespace CollectingProductionDataSystem.GetTransactions.Properties {
         public int PHD_PORT {
             get {
                 return ((int)(this["PHD_PORT"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=.\\SQLEXPRESS;Initial Catalog=AutomatedReportingSystem;Persist Securit" +
+            "y Info=True;User ID=arsbase;Password=@ut0r3p0rt!")]
+        public string AutomatedReportingSystemConnectionString {
+            get {
+                return ((string)(this["AutomatedReportingSystemConnectionString"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
+        [global::System.Configuration.DefaultSettingValueAttribute("Dsn=ASO;uid=PHD2CACHE;pwd=synchronize")]
+        public string ScaleConnectionString {
+            get {
+                return ((string)(this["ScaleConnectionString"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("00:05:00")]
+        public global::System.TimeSpan IDLE_TIMER_PHD_TRANS_DATA {
+            get {
+                return ((global::System.TimeSpan)(this["IDLE_TIMER_PHD_TRANS_DATA"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Kosta.Kiryazov@gmail.com")]
+        public string SMTP_TO {
+            get {
+                return ((string)(this["SMTP_TO"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("CollectingProductionDataSystem@bmsys.eu")]
+        public string SMTP_FROM {
+            get {
+                return ((string)(this["SMTP_FROM"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("192.168.7.195")]
+        public string SMTP_SERVER {
+            get {
+                return ((string)(this["SMTP_SERVER"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool SYNC_SCALE {
+            get {
+                return ((bool)(this["SYNC_SCALE"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool SYNC_ACTIVE_TRANSACTIONS {
+            get {
+                return ((bool)(this["SYNC_ACTIVE_TRANSACTIONS"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool SYNC_TRANSACTIONS {
+            get {
+                return ((bool)(this["SYNC_TRANSACTIONS"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int ACTIVE_TRANS_OFFSET_IN_DAYS {
+            get {
+                return ((int)(this["ACTIVE_TRANS_OFFSET_IN_DAYS"]));
             }
         }
     }

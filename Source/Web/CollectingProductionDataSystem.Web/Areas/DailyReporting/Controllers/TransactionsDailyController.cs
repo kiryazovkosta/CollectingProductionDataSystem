@@ -148,7 +148,7 @@ namespace CollectingProductionDataSystem.Web.Areas.DailyReporting.Controllers
                     }
                     if (flowDirection == 1 && activeTransaction.Mass == 0)
                     {
-                        return null;
+                        continue;
                     }
                 }
 

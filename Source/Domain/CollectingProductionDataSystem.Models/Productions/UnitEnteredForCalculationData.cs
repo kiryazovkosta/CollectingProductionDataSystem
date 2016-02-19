@@ -12,6 +12,7 @@ namespace CollectingProductionDataSystem.Models.Productions
         public int Id { get; set; }
         public decimal OldValue { get; set; }
         public decimal NewValue { get; set; }
+        public int UnitDataId { get; set; }
         public virtual UnitsData UnitsData { get; set; }
     }
 }

@@ -2,9 +2,6 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="CollectingProductionDataSystem.GetTransactions.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="SYNC_TRANSACTIONS" Type="System.Boolean" Scope="Application">
-      <Value Profile="(Default)">True</Value>
-    </Setting>
     <Setting Name="FORCE_REGIONAL_SETTINGS" Type="System.Boolean" Scope="Application">
       <Value Profile="(Default)">True</Value>
     </Setting>
@@ -13,6 +10,18 @@
     </Setting>
     <Setting Name="IDLE_TIMER_TRANSDACTION_DATA" Type="System.TimeSpan" Scope="Application">
       <Value Profile="(Default)">00:05:00</Value>
+    </Setting>
+    <Setting Name="IDLE_TIMER_SCALE_DATA" Type="System.TimeSpan" Scope="Application">
+      <Value Profile="(Default)">00:10:00</Value>
+    </Setting>
+    <Setting Name="IDLE_TIMER_ACTIVE_TRANSACTIONS_DATA" Type="System.TimeSpan" Scope="Application">
+      <Value Profile="(Default)">00:10:00</Value>
+    </Setting>
+    <Setting Name="PHD_HOST" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">srv-vm-mes-phd.neftochim.bg</Value>
+    </Setting>
+    <Setting Name="PHD_PORT" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">3150</Value>
     </Setting>
     <Setting Name="AutomatedReportingSystemConnectionString" Type="(Connection string)" Scope="Application">
       <DesignTimeValue Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
@@ -30,23 +39,29 @@
 &lt;/SerializableConnectionString&gt;</DesignTimeValue>
       <Value Profile="(Default)">Dsn=ASO;uid=PHD2CACHE;pwd=synchronize</Value>
     </Setting>
+    <Setting Name="IDLE_TIMER_PHD_TRANS_DATA" Type="System.TimeSpan" Scope="Application">
+      <Value Profile="(Default)">00:05:00</Value>
+    </Setting>
+    <Setting Name="SMTP_TO" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Kosta.Kiryazov@gmail.com</Value>
+    </Setting>
+    <Setting Name="SMTP_FROM" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">CollectingProductionDataSystem@bmsys.eu</Value>
+    </Setting>
+    <Setting Name="SMTP_SERVER" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">192.168.7.195</Value>
+    </Setting>
     <Setting Name="SYNC_SCALE" Type="System.Boolean" Scope="Application">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="IDLE_TIMER_SCALE_DATA" Type="System.TimeSpan" Scope="Application">
-      <Value Profile="(Default)">00:10:00</Value>
-    </Setting>
     <Setting Name="SYNC_ACTIVE_TRANSACTIONS" Type="System.Boolean" Scope="Application">
-      <Value Profile="(Default)">False</Value>
+      <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="IDLE_TIMER_ACTIVE_TRANSACTIONS_DATA" Type="System.TimeSpan" Scope="Application">
-      <Value Profile="(Default)">00:10:00</Value>
+    <Setting Name="SYNC_TRANSACTIONS" Type="System.Boolean" Scope="Application">
+      <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="PHD_HOST" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">srv-vm-mes-phd.neftochim.bg</Value>
-    </Setting>
-    <Setting Name="PHD_PORT" Type="System.Int32" Scope="Application">
-      <Value Profile="(Default)">3150</Value>
+    <Setting Name="ACTIVE_TRANS_OFFSET_IN_DAYS" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">0</Value>
     </Setting>
   </Settings>
 </SettingsFile>

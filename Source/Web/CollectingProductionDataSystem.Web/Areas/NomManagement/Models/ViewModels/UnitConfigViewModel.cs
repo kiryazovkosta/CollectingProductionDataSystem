@@ -71,6 +71,9 @@
         [Display(Name = "AggregationMembers", ResourceType = typeof(Resources.Layout))]
         public string AggregationMembers { get; set; }
 
+        [Display(Name = "CustomFormulaExpression", ResourceType = typeof(Resources.Layout))]
+        public string CustomFormulaExpression { get; set; }
+
         [Required]
         [Display(Name = "IsCalculated", ResourceType = typeof(Resources.Layout))]
         public bool IsCalculated { get; set; }

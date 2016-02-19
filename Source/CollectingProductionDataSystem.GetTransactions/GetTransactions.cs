@@ -118,7 +118,7 @@
                 {
                     SetRegionalSettings();
                     this.activeTransactionsTimer.Change(Timeout.Infinite, Timeout.Infinite);
-                    GetTransactionsMain.ProcessActiveTransactionsData();
+                    GetTransactionsMain.ProcessActiveTransactionsData(Properties.Settings.Default.ACTIVE_TRANS_OFFSET_IN_DAYS);
                 }
                 catch (Exception ex)
                 {

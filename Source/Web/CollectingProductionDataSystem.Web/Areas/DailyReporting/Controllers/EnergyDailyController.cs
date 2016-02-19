@@ -115,11 +115,13 @@
  
         private void ValidateProductionPlanRelatedData(int? processUnitId, int? materialTypeId, DateTime? date)
         {
+            var splitPattern = new char[] { '@' };
+
             var productionPalnsData = this.data.ProductionPlanConfigs.All().Where(x => x.ProcessUnitId == processUnitId && x.MaterialTypeId == materialTypeId).ToList();
             var dailyPositionsCodeList = new List<string>();
             foreach (var item in productionPalnsData)
             {
-                var list = item.QuantityPlanMembers.Split('@');
+                var list = item.QuantityPlanMembers.Split(splitPattern, StringSplitOptions.RemoveEmptyEntries );
                 foreach (var subItem in list)
                 {
                     if (!dailyPositionsCodeList.Contains(subItem))
@@ -128,7 +130,7 @@
                     }
                 }
 
-                list = item.QuantityFactMembers.Split('@');
+                list = item.QuantityFactMembers.Split(splitPattern, StringSplitOptions.RemoveEmptyEntries );
                 foreach (var subItem in list)
                 {
                     if (!dailyPositionsCodeList.Contains(subItem))
@@ -137,7 +139,7 @@
                     }
                 }
 
-                list = item.UsageRateMembers.Split('@');
+                list = item.UsageRateMembers.Split(splitPattern, StringSplitOptions.RemoveEmptyEntries );
                 foreach (var subItem in list)
                 {
                     if (!dailyPositionsCodeList.Contains(subItem))

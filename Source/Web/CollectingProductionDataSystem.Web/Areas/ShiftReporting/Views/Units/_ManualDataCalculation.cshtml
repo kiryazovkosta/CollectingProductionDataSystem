@@ -2,7 +2,6 @@
 @using CollectingProductionDataSystem.Web.Areas.ShiftReporting.ViewModels;
 @using CollectingProductionDataSystem.Web.Infrastructure.Helpers;
 @using Resources = App_GlobalResources.Resources
-
 @model ManualCalculationViewModel
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -16,6 +15,7 @@
     @Html.HiddenFor(m => m.UnitDataId)
     @Html.HiddenFor(m => m.EnteredMeasurementCode)
     @Html.HiddenFor(m => m.EditorScreenHeading)
+    @Html.HiddenFor(m => m.OldValue)
 
     <div class="modal-body">
         <div class="container-fluid">
@@ -23,10 +23,20 @@
             <div class="form-group">
                 @Html.LabelFor(m => m.OldValue, new { @class = "col-sm-4 control-label" })
                 <div class="col-sm-4">
-                    <div class="input-group">
-                        @Html.EditorFor(m => m.OldValue, new { htmlAttributes = new { @class = "form-control" } })
-                        <div class="input-group-addon">@Model.EnteredMeasurementCode</div>
-                    </div>
+                    @if (Model.IsOldValueAvailableForEditing)
+                    {
+                        <div class="input-group">
+                            @Html.EditorFor(m => m.OldValue, new { htmlAttributes = new { @class = "form-control" } })
+                            <div class="input-group-addon">@Model.EnteredMeasurementCode</div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="input-group">
+                            @Html.TextBox("text", string.Format("{0:n2}", Model.OldValue), new { @class = "form-control disabled", disabled = "disabled" })
+                            <div class="input-group-addon">@Model.EnteredMeasurementCode</div>
+                        </div>
+                    }
                 </div>
                 <div class="col-sm-3">
                     @Html.ValidationMessageFor(m => m.OldValue)

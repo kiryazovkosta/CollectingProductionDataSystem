@@ -12,6 +12,7 @@
     using log4net;
     using System.Collections.Generic;
     using System.Data.Entity;
+    using System.Net.Mail;
 
     static class GetTransactionsMain
     {
@@ -46,13 +47,18 @@
                     var max = context.MaxAsoMeasuringPointDataSequenceNumberMap.All().FirstOrDefault();
                     if (max != null)
                     {
-                        GetTransactionsFromAso(max, context);
-                        var status = context.SaveChanges("Aso2Sql");
+                        var transactions = GetTransactionsFromAso(max, context);
+                        if (transactions.Count > 0)
+                        {
+                            context.MeasuringPointsConfigsDatas.BulkInsert(transactions, "Aso2Sql");
+                            context.SaveChanges("Aso2Sql");
+                            logger.InfoFormat("Successfully synchronization {0} records from Aso to Cpds", transactions.Count);
+                        }
+                        
                         max.LastTransactionsFetchingDateTime = DateTime.Now;
                         context.MaxAsoMeasuringPointDataSequenceNumberMap.Update(max);
                         context.SaveChanges("Aso2Sql");
-                        logger.InfoFormat("Successfully synchronization {0} records from Aso to Cpds", status.ResultRecordsCount);
-                        logger.InfoFormat("Last transactions fetching date-time was updated to {0}.", DateTime.Now);
+                        logger.InfoFormat("Last transactions fetching date-time was updated to {0}.", DateTime.Now);  
                     }
 
                     logger.Info("End synchronization");
@@ -61,11 +67,13 @@
             catch (Exception ex)
             {
                 logger.Error(ex.Message, ex);
+                SendEmail("ASO 2 SAPO Inerface", ex.ToString());
             }
         }
  
-        private static void GetTransactionsFromAso(MaxAsoMeasuringPointDataSequenceNumber max, ProductionData context)
+        private static List<MeasuringPointsConfigsData> GetTransactionsFromAso(MaxAsoMeasuringPointDataSequenceNumber max, ProductionData context)
         {
+            var transactions = new List<MeasuringPointsConfigsData>();
             logger.InfoFormat("Last transaction fetching date-time was {0}", max.LastTransactionsFetchingDateTime);
             var maxLastTransactionsFetchingDateTime = max.LastTransactionsFetchingDateTime;
             var adapter = new AsoDataSetTableAdapters.flow_MeasuringPointsDataTableAdapter();
@@ -77,8 +85,6 @@
 
                 foreach (AsoDataSet.flow_MeasuringPointsDataRow row in table.Rows)
                 {
-                    logger.InfoFormat("Processing transaction {0} from control point {1}", row.TransactionNumber, row.MeasuringPointId);
-
                     if (mesurinpPointsByTransactions.Contains(row.MeasuringPointId))
                     {
                         continue;
@@ -293,22 +299,24 @@
                     }
 
                     logger.InfoFormat("Processing sequence number {0}", row.SequenceNumber);
-                    context.MeasuringPointsConfigsDatas.Add(tr);
+                    transactions.Add(tr);
                 }
             }
+
+            return transactions;
         }
 
-        internal static void ProcessActiveTransactionsData()
+        internal static void ProcessActiveTransactionsData(int offsetInDays)
         { 
             try
             {
                 logger.Info("Begin active transactions synchronization!");
-                var now = DateTime.Now;
-                var today = DateTime.Today;
-                var fiveOClock = today.AddHours(5);
+                var now = DateTime.Now.AddDays(offsetInDays);
+                var today = DateTime.Today.AddDays(offsetInDays * -1);
+                var fiveOClock = new DateTime(today.Year, today.Month, today.Day, 4, 30, 0);
                 
                 var ts = now - fiveOClock;
-                if(ts.TotalMinutes > 2 && ts.Hours == 0)
+                if(ts.TotalMinutes > 4 && ts.Hours == 0)
                 {
                     using (var context = new ProductionData(new CollectingDataSystemDbContext(new AuditablePersister(),new Logger())))
                     {
@@ -331,7 +339,12 @@
                                             var activeTransactionData = ProcessMeasuringPoint(tagsList, item, oPhd, currentDate, context);
                                             if (activeTransactionData != null)
                                             {
-                                                context.ActiveTransactionsDatas.Add(activeTransactionData); 
+                                                context.ActiveTransactionsDatas.Add(activeTransactionData);
+                                                logger.InfoFormat("Active transaction processing TK [{0}] ProductId[{0}] Mass[{1}] MassReverse[{2}]",
+                                                    activeTransactionData.ProductId,
+                                                    activeTransactionData.Mass, 
+                                                    activeTransactionData.MassReverse,
+                                                    item.MeasuringPointName);
                                             }
                                         }
 
@@ -348,6 +361,7 @@
             catch(Exception ex)
             {
                 logger.Error(ex.Message, ex);
+                SendEmail("ASO 2 SAPO Inerface", ex.ToString());
             }
         }
  
@@ -433,8 +447,8 @@
             defaultServer.Port = Properties.Settings.Default.PHD_PORT;
             defaultServer.APIVersion = Uniformance.PHD.SERVERVERSION.RAPI200;
             oPhd.DefaultServer = defaultServer;
-            oPhd.StartTime = string.Format("NOW - {0}M", ts.Minutes - 2);
-            oPhd.EndTime = string.Format("NOW - {0}M", ts.Minutes - 2);
+            oPhd.StartTime = string.Format("NOW - {0}H{1}M", ts.Hours, ts.Minutes);
+            oPhd.EndTime = string.Format("NOW - {0}H{1}M", ts.Hours, ts.Minutes);
             oPhd.Sampletype = SAMPLETYPE.Snapshot;
             oPhd.MinimumConfidence = 100;
             oPhd.MaximumRows = 1;
@@ -460,12 +474,10 @@
                 {
                     var now = DateTime.Now;
                     var today = DateTime.Today;
-                    var fiveOClock = today.AddHours(5);
-
-                    logger.InfoFormat("Today.Ticks: {0}", today.Ticks);
+                    var fiveOClock = new DateTime(today.Year, today.Month, today.Day, 4, 30, 0);
                 
                     var ts = now - fiveOClock;
-                    if(ts.TotalMinutes > 2 && ts.Hours == 0)
+                    if(ts.TotalMinutes > 4 && ts.Hours == 0)
                     {
                         var phdValues = new Dictionary<int, long>();
 
@@ -581,6 +593,27 @@
                 logger.Info("End scale transactions synchronization!");
             }
             catch(Exception ex)
+            {
+                logger.Error(ex.Message, ex);
+                SendEmail("ASO 2 SAPO Inerface", ex.ToString());
+            }
+        }
+
+        private static void SendEmail(string titleParam, string bodyParam)
+        {
+            string to = Properties.Settings.Default.SMTP_TO;
+            string from = Properties.Settings.Default.SMTP_FROM;
+            MailMessage message = new MailMessage(from, to);
+            message.Subject = @titleParam;
+            message.Body = @bodyParam;
+            SmtpClient client = new SmtpClient(Properties.Settings.Default.SMTP_SERVER);
+            client.UseDefaultCredentials = true;
+
+            try
+            {
+                client.Send(message);
+            }
+            catch (Exception ex)
             {
                 logger.Error(ex.Message, ex);
             }

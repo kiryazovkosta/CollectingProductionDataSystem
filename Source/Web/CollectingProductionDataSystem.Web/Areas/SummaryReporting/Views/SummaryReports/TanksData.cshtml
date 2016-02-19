@@ -25,12 +25,12 @@
                 columns.Bound(c => c.ParkName).Width(140);
                 columns.Bound(c => c.TankName).Width(80);
                 columns.Bound(c => c.ProductName).Width(200);
-                columns.Bound(c => c.LiquidLevel).Format("{0:n2}").Width(140);
-                columns.Bound(c => c.ProductLevel).Format("{0:n2}").Width(140);
-                columns.Bound(c => c.NetStandardVolume).Format("{0:n2}").Width(140);
-                columns.Bound(c => c.ReferenceDensity).Format("{0:n2}").Width(140);
-                columns.Bound(c => c.WeightInVacuum).Format("{0:n2}").Width(120);
-                columns.Bound(c => c.FreeWaterLevel).Format("{0:n2}").Width(120);
+                columns.Bound(c => c.LiquidLevel).Format("{0:n2}").ClientTemplate("<div style='text-align:right;'>#=kendo.toString(data.LiquidLevel, 'n2') #</div>").Width(140);
+                columns.Bound(c => c.ProductLevel).Format("{0:n2}").ClientTemplate("<div style='text-align:right;'>#=kendo.toString(data.ProductLevel, 'n2') #</div>").Width(140);
+                columns.Bound(c => c.NetStandardVolume).Format("{0:n2}").ClientTemplate("<div style='text-align:right;'>#=kendo.toString(data.NetStandardVolume, 'n2') #</div>").Width(140);
+                columns.Bound(c => c.ReferenceDensity).Format("{0:n2}").ClientTemplate("<div style='text-align:right;'>#=kendo.toString(data.ReferenceDensity, 'n2') #</div>").Width(140);
+                columns.Bound(c => c.WeightInVacuum).Format("{0:n2}").ClientTemplate("<div style='text-align:right;'>#=kendo.toString(data.WeightInVacuum, 'n2') #</div>").Width(120);
+                //columns.Bound(c => c.FreeWaterLevel).Format("{0:n2}").Width(120);
                 columns.Bound(c => c.StatusOfTank).Width(80);
             })
         .Pageable(pageable => pageable

@@ -175,7 +175,9 @@ namespace CollectingProductionDataSystem.Web.Controllers
         {
             var fileContents = Convert.FromBase64String(base64);
 
-            return File(fileContents, contentType, fileName);
+            //return File(fileContents, contentType, fileName);
+            var result = File(fileContents, contentType, fileName);
+            return result;
         }
 
         [HttpPost]
