@@ -56,13 +56,49 @@ namespace CollectingProductionDataSystem.Web.Areas.DailyReporting.Controllers
                     {
                         dict[transactionData.ProductId] = measuringPointData;   
                     }
-
                 }
 
                 var actDict = GetActiveTransactionsData(date, flowDirection);
 
+                var monthTransactions = GetMeasurementPointsDataByDateAndDirection(date, flowDirection, true)
+                    .Select(t => new TransactionDataModel
+                {
+                    MeasuringPointId = t.MeasuringPointId,
+                    DirectionId = t.MeasuringPointConfig.FlowDirection.Value,
+                    TransportId = t.MeasuringPointConfig.TransportTypeId,
+                    ProductId = t.ProductNumber.Value,
+                    Mass = t.Mass,
+                    MassReverse = t.MassReverse,
+                    FlowDirection = t.MeasuringPointConfig.FlowDirection.Value,
+                });
 
-                var hs = PopulateAllMeaurementPointDatas(dict, actDict);
+                var totallyQuantityByProducts = new Dictionary<int, decimal>();
+                foreach (var item in monthTransactions)
+                {
+                    if (item.DirectionId == 3)
+                    {
+                        // data from Pt Rosenec
+                        if (flowDirection == 2 && (item.MassReverse.HasValue == false || item.MassReverse.Value == 0))
+                        {
+                            continue;
+                        }
+                        if (flowDirection == 1 && (item.Mass.HasValue == false || item.Mass.Value == 0))
+                        {
+                            continue;
+                        }
+                    }
+
+                    if (totallyQuantityByProducts.ContainsKey(item.ProductId))
+                    {
+                        totallyQuantityByProducts[item.ProductId] = totallyQuantityByProducts[item.ProductId] + item.RealMass;
+                    }
+                    else
+                    {
+                        totallyQuantityByProducts[item.ProductId] = item.RealMass;
+                    }
+                }
+
+                var hs = PopulateAllMeaurementPointDatas(dict, actDict, totallyQuantityByProducts);
                 kendoResult = hs.ToDataSourceResult(request, ModelState);
             }
             catch (Exception ex1)
@@ -73,15 +109,33 @@ namespace CollectingProductionDataSystem.Web.Areas.DailyReporting.Controllers
             return Json(kendoResult);
         }
  
-        private HashSet<MeasuringPointsDataViewModel> PopulateAllMeaurementPointDatas(SortedDictionary<int, MeasuringPointsDataViewModel> dict, Dictionary<int, decimal> actDict)
+        private HashSet<MeasuringPointsDataViewModel> PopulateAllMeaurementPointDatas(SortedDictionary<int, MeasuringPointsDataViewModel> dict, 
+            Dictionary<int, decimal> actDict, Dictionary<int, decimal> totallyQuantityByProducts)
         {
             var hs = new HashSet<MeasuringPointsDataViewModel>();
             foreach (var item in dict)
             {
-                var p = SetMeasuringPointsDataViewModel(item, actDict);
+                var p = SetMeasuringPointsDataViewModel(item, actDict, totallyQuantityByProducts);
                 if (p.TotalQuantity > 0)
                 {
                     hs.Add(p);   
+                }
+            }
+
+            if (totallyQuantityByProducts != null && totallyQuantityByProducts.Count > 0)
+            {
+                foreach (var item in totallyQuantityByProducts)
+                {
+                    var m = new MeasuringPointsDataViewModel();
+                    m.ProductId = item.Key;
+                    m.ProductName = this.data.Products.All().Where(x => x.Code == item.Key).FirstOrDefault().Name;
+                    m.TotalMonthQuantity = item.Value / 1000;
+                    if (actDict != null && actDict.ContainsKey(item.Key))
+                    {
+                        m.ActiveQuantity = actDict[item.Key] / 1000;
+                        actDict.Remove(item.Key);
+                    }
+                    hs.Add(m);
                 }
             }
 
@@ -96,10 +150,11 @@ namespace CollectingProductionDataSystem.Web.Areas.DailyReporting.Controllers
                     hs.Add(m);
                 }
             }
+
             return hs;
         }
  
-        private IQueryable<MeasuringPointsConfigsData> GetMeasurementPointsDataByDateAndDirection(DateTime? date, int? flowDirection)
+        private IQueryable<MeasuringPointsConfigsData> GetMeasurementPointsDataByDateAndDirection(DateTime? date, int? flowDirection, bool checkMonthData = false)
         {
             var transactions = this.data.MeasuringPointsConfigsDatas
                                    .All()
@@ -109,8 +164,18 @@ namespace CollectingProductionDataSystem.Web.Areas.DailyReporting.Controllers
 
             if (date.HasValue)
             {
-                var beginTimestamp = date.Value.AddMinutes(300);
-                var endTimestamp = beginTimestamp.AddMinutes(1440);
+                var beginTimestamp = new DateTime();
+                var endTimestamp = new DateTime();
+                if (!checkMonthData)
+                {
+                    beginTimestamp = date.Value.AddMinutes(270);
+                    endTimestamp = beginTimestamp.AddMinutes(1440);  
+                }
+                else
+                {
+                    beginTimestamp = new DateTime(date.Value.Year, date.Value.Month, 1, 4, 30, 0);
+                    endTimestamp = date.Value.AddMinutes(1710);
+                }
 
                 transactions = transactions.Where(x => x.TransactionEndTime >= beginTimestamp & x.TransactionEndTime < endTimestamp); 
             }
@@ -202,7 +267,8 @@ namespace CollectingProductionDataSystem.Web.Areas.DailyReporting.Controllers
             return actDict;
         }
  
-        private MeasuringPointsDataViewModel SetMeasuringPointsDataViewModel(KeyValuePair<int, MeasuringPointsDataViewModel> item, Dictionary<int, decimal> actDict)
+        private MeasuringPointsDataViewModel SetMeasuringPointsDataViewModel(KeyValuePair<int, MeasuringPointsDataViewModel> item, 
+            Dictionary<int, decimal> actDict, Dictionary<int, decimal> totallyQuantityByProducts)
         {
             var p = item.Value;
             p.ProductName = this.data.Products.All().Where(x => x.Code == p.ProductId).FirstOrDefault().Name;
@@ -210,6 +276,12 @@ namespace CollectingProductionDataSystem.Web.Areas.DailyReporting.Controllers
             {
                 p.ActiveQuantity = actDict[p.ProductId] / 1000;
                 actDict.Remove(p.ProductId);
+            }
+
+            if (totallyQuantityByProducts != null && totallyQuantityByProducts.ContainsKey(p.ProductId))
+            {
+                p.TotalMonthQuantity = totallyQuantityByProducts[p.ProductId] / 1000;
+                totallyQuantityByProducts.Remove(p.ProductId);
             }
 
             if (p.AvtoQuantity > 0)

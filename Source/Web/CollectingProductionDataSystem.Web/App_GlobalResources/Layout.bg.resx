@@ -1500,4 +1500,7 @@
   <data name="CustomFormulaExpression" xml:space="preserve">
     <value>Изчисляем математически израз</value>
   </data>
+  <data name="TotalMonthQuantityInTonnes" xml:space="preserve">
+    <value>Общо до деня&lt;br/&gt;[Тон]</value>
+  </data>
 </root>

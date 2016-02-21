@@ -43,6 +43,10 @@
         public decimal TotalQuantity { get; set; }
 
         [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
+        [Display(Name = "TotalMonthQuantityInTonnes", ResourceType = typeof(Resources.Layout))]
+        public decimal TotalMonthQuantity { get; set; }
+
+        [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
         [Display(Name = "ActiveQuantity", ResourceType = typeof(Resources.Layout))]
         public decimal ActiveQuantity { get; set; }
 

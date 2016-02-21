@@ -1,11 +1,9 @@
 ﻿@using CollectingProductionDataSystem.Web.ViewModels.Transactions;
 @using Resources = App_GlobalResources.Resources;
-
 @model MeasuringPointsDataViewModel
 @{
     Layout = "~/Views/Shared/_KendoLayoutWithSideBar.cshtml";
 }
-
 <div class="row">
     <div class="col-md-10">
         <h2>@Resources.Layout.MeasuringPointsData</h2>
@@ -25,20 +23,22 @@
             {
                 columns.Bound(c => c.ProductId).Width(100);
                 columns.Bound(c => c.ProductName);
-                columns.Bound(c => c.AvtoQuantity).Format("{0:n3}").Width(140);
-                columns.Bound(c => c.JpQuantity).Format("{0:n3}").Width(140);
-                columns.Bound(c => c.SeaQuantity).Format("{0:n3}").Width(140);
-                columns.Bound(c => c.PipeQuantity).Format("{0:n3}").Width(160);
-                columns.Bound(c => c.TotalQuantity).Format("{0:n3}").Width(140);
-                columns.Bound(c => c.ActiveQuantity).Format("{0:n3}").Width(140);
+                columns.Bound(c => c.AvtoQuantity).ClientTemplate("<div style='text-align:right;'>#=kendo.toString(data.AvtoQuantity, 'n3') #</div>").Width(140);
+                columns.Bound(c => c.JpQuantity).ClientTemplate("<div style='text-align:right;'>#=kendo.toString(data.JpQuantity, 'n3') #</div>").Width(140);
+                columns.Bound(c => c.SeaQuantity).ClientTemplate("<div style='text-align:right;'>#=kendo.toString(data.SeaQuantity, 'n3') #</div>").Width(140);
+                columns.Bound(c => c.PipeQuantity).ClientTemplate("<div style='text-align:right;'>#=kendo.toString(data.PipeQuantity, 'n3') #</div>").Width(140);
+                columns.Bound(c => c.TotalQuantity).ClientTemplate("<div style='text-align:right;'>#=kendo.toString(data.TotalQuantity, 'n3') #</div>").Width(140);
+                columns.Bound(c => c.TotalMonthQuantity).ClientTemplate("<div style='text-align:right;'>#=kendo.toString(data.TotalMonthQuantity, 'n3') #</div>").Width(140);
+                columns.Bound(c => c.ActiveQuantity).ClientTemplate("<div style='text-align:right;'>#=kendo.toString(data.ActiveQuantity, 'n3') #</div>").Width(140);
             })
         .Pageable(pageable => pageable
-        .Refresh(true)
-        .PageSizes(new[] { 20, 50, 100 })
-        .ButtonCount(5))
+            .Refresh(true)
+            .PageSizes(new[] { 100 })
+            .ButtonCount(5)
+        )
         .Sortable()
         .Excel(excel => excel
-                    .FileName(@Resources.Layout.MeasuringPointsData + "_" + DateTime.Now + ".xlsx")
+            .FileName(@Resources.Layout.MeasuringPointsData + "_" + DateTime.Now + ".xlsx")
             .Filterable(true)
             .ProxyURL(Url.Action("Excel_Export_Save", "Ajax", new { area = "" }))
             .AllPages(true)
@@ -58,14 +58,12 @@
         )
     </div>
 </div>
-
 @* //Error window for kendo grid error event handler *@
 <div id="err-window" style="display:none">@Html.Partial("_KendoGridErrorWindow")</div>
 @* //Error window for kendo grid error event handler *@
 <div id="success-window" style="display:none">@Html.Partial("_SuccessWindow")</div>
-
 @section scripts{
-    @Scripts.Render("~/bundles/custom/kendoadditional") 
+    @Scripts.Render("~/bundles/custom/kendoadditional")
     @Scripts.Render("~/Scripts/custom/sendAntiForgery.js")
     <script>
         kendo.culture("@System.Threading.Thread.CurrentThread.CurrentCulture.Name");
@@ -197,7 +195,6 @@
 
     </script>
 }
-
 @section sidebar{
     @Html.Partial("_MeasurementsPointsSideBar")
 }

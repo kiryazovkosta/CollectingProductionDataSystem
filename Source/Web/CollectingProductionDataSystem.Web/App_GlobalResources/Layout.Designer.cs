@@ -3724,6 +3724,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Total Month Quantity In Tonnes.
+        /// </summary>
+        public static string TotalMonthQuantityInTonnes {
+            get {
+                return ResourceManager.GetString("TotalMonthQuantityInTonnes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Total Month Plan (T).
         /// </summary>
         public static string TotalMonthQuantityPlan {
