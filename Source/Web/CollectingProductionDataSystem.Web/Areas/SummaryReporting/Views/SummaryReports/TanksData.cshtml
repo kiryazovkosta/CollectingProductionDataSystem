@@ -33,11 +33,11 @@
                 //columns.Bound(c => c.FreeWaterLevel).Format("{0:n2}").Width(120);
                 columns.Bound(c => c.StatusOfTank).Width(80);
             })
-        .Pageable(pageable => pageable
-            .Refresh(true)
-            //.PageSizes(new[] { 10, 20, 50, 100, 300 })
-            //.ButtonCount(5)
-        )
+        //.Pageable(pageable => pageable
+        //    .Refresh(true)
+        //    //.PageSizes(new[] { 10, 20, 50, 100, 300 })
+        //    //.ButtonCount(5)
+        //)
         .Sortable()
         .Excel(excel => excel
             .FileName(@Resources.Layout.TanksData + "_" + DateTime.Now + ".xlsx")
