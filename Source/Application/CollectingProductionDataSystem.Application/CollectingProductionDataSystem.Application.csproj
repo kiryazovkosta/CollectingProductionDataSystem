@@ -128,7 +128,11 @@
     <Compile Include="IdentityInfrastructure\SmsService.cs" />
     <Compile Include="Contracts\IPipelineServices.cs" />
     <Compile Include="MonthlyServices\InnerPipelineDto.cs" />
+    <Compile Include="Contracts\IUnitMothlyDataService.cs" />
+    <Compile Include="Contracts\ITestUnitMonthlyCalculationService.cs" />
     <Compile Include="MonthlyServices\PipelineServices.cs" />
+    <Compile Include="MonthlyServices\TestUnitMonthlyCalculationService.cs" />
+    <Compile Include="MonthlyServices\UnitMonthlyCalculationIndicator.cs" />
     <Compile Include="MonthlyServices\UnitMothlyDataService.cs" />
     <Compile Include="ProductionDataServices\FormulaArguments.cs" />
     <Compile Include="ProductionDataServices\Functions.cs" />

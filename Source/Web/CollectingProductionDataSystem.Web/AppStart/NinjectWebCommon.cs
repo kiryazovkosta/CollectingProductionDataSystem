@@ -97,8 +97,10 @@ namespace CollectingProductionDataSystem.Web.AppStart
             kernel.Bind<IProductionPlanDataService>().To<ProductionPlanDataService>();
             kernel.Bind<IHighwayPipelinesDataService>().To<HighwayPipelinesDataService>();
             kernel.Bind<ITestUnitDailyCalculationService>().ToMethod(context => TestUnitDailyCalculationService.GetInstance()).InSingletonScope();
+            kernel.Bind<ITestUnitMonthlyCalculationService>().ToMethod(context => TestUnitMonthlyCalculationService.GetInstance()).InSingletonScope();
             kernel.Bind<IPipelineServices>().To<PipelineServices>();
             kernel.Bind<IInventoryTanksService>().To<InventoryTanksService>();
+            kernel.Bind<IUnitMothlyDataService>().To<UnitMothlyDataService>();
         }        
     }
 }

@@ -21,6 +21,7 @@ namespace CollectingProductionDataSystem.Data.Mappings
                 .HasMaxLength(50);
 
             // Table & Column Mappings
+            this.Ignore(t => t.FactorySortableName);
             this.ToTable("Factories");
 
             // Relationships

@@ -18,6 +18,7 @@
                 .HasMaxLength(150);
 
             // Table & Column Mappings
+            this.Ignore(t=>t.SortableName);
             this.ToTable("DailyProductTypes");
         }
     }

@@ -226,6 +226,10 @@ var unitGridsData = (function () {
         return { "materialTypeId": $('input#materialTypeId').val() }
     }
 
+    function sendMonthlyReportTypeId() {
+        return { "monthlyReportTypeId": $('input#monthlyReportTypeId').val() }
+    }
+
     function hideCommandButtons() {
         var confirmButton = $("#confirm");
         if (confirmButton) {
@@ -250,7 +254,7 @@ var unitGridsData = (function () {
     }
 
     function checkConfirmedStatus() {
-        var grid = $("#units").data("kendoGrid");
+        var grid = $(".k-widget.k-grid").data("kendoGrid");
         if (grid) {
             var date = sendDate();
             $.ajax({
@@ -415,6 +419,9 @@ var unitGridsData = (function () {
         if ($('input#materialTypeId')) {
             $.extend(result, sendMaterialTypeId());
         }
+        if ($('input#monthlyReportTypeId')) {
+            $.extend(result, sendMonthlyReportTypeId());
+        }
         $.extend(result, sendFactoryId());
         $.extend(result, sendAntiForgery());
         return result;
@@ -490,55 +497,6 @@ var unitGridsData = (function () {
             ConvertGridRows(value, grid);
         });
 
-        //removed
-        //var manualIndicator = $('#manualIndicator').val();
-        //var manualCalcumated = $('#manualCalcumated').val();
-        //var manualSelfCalculated = $('#manualSelfCalculated').val();
-        //var i, j;
-        //var currentUid, currenRow, editButton
-        //for (i = 0; i < dataView.length; i += 1) {
-        //    if (dataView[i].items) {
-        //        var recordLen = dataView[i].items.length;
-        //        if (recordLen) {
-        //            for (j = 0; j < recordLen; j += 1) {
-        //                if (!dataView[i].items[j].IsEditable) {
-        //                    currentUid = dataView[i].items[j].uid;
-        //                    currenRow = this.table.find("tr[data-uid='" + currentUid + "']");
-        //                    editButton = $(currenRow).find(".k-grid-edit");
-        //                    editButton.attr("style", "display:none !important");
-        //                }
-        //                if (dataView[i].items[j].HasManualData === true) {
-        //                    var uid = dataView[i].items[j].uid;
-        //                    $("#" + $(this.element).attr('id') + " tbody").find("tr[data-uid=" + uid + "]").addClass("bg-danger");
-        //                }
-
-        //                if (dataView[i].items[j].UnitConfig) {
-        //                    if (dataView[i].items[j].UnitConfig.CollectingDataMechanism === manualIndicator) {
-        //                        currentUid = dataView[i].items[j].uid;
-        //                        currenRow = this.table.find("tr[data-uid='" + currentUid + "']");
-        //                        editButton = $(currenRow).find(".k-grid-edit");
-        //                        editButton.click({ data: dataView[i].items[j], url: "/ShiftReporting/Units/ShowManualDataModal" }, manualEntry);
-        //                    }
-
-        //                    if (dataView[i].items[j].UnitConfig.CollectingDataMechanism === manualCalcumated) {
-        //                        currentUid = dataView[i].items[j].uid;
-        //                        currenRow = this.table.find("tr[data-uid='" + currentUid + "']");
-        //                        editButton = $(currenRow).find(".k-grid-edit");
-        //                        editButton.click({ data: dataView[i].items[j], url: "/ShiftReporting/Units/ShowManualCalculatedDataModal" }, manualEntry);
-        //                    }
-
-        //                    if (dataView[i].items[j].UnitConfig.CollectingDataMechanism === manualSelfCalculated) {
-        //                        currentUid = dataView[i].items[j].uid;
-        //                        currenRow = this.table.find("tr[data-uid='" + currentUid + "']");
-        //                        editButton = $(currenRow).find(".k-grid-edit");
-        //                        editButton.click({ data: dataView[i].items[j], url: "/ShiftReporting/Units/ShowManualSelfCalculatedDataModal" }, manualEntry);
-        //                    }
-        //                }
-        //            }
-        //        }
-        //    }
-        //}
-
         if ($('#confirm').val() === "") {
             checkConfirmedStatus();
         }
@@ -546,10 +504,7 @@ var unitGridsData = (function () {
         if ($("#productionPlan").val() !== undefined) {
             kendoAdditional.RefreshGrid("#productionPlan");
         }
-
     }
-
-    var convertYourLevel = false;
 
     function ConvertGridRows(dataCollection, grid) {
         if (dataCollection.items == undefined) {
@@ -616,7 +571,8 @@ var unitGridsData = (function () {
 
     function DataSave(ev) {
         if (ev.type === 'update') {
-            kendoAdditional.RefreshGrid('#units');
+            ev.sender.read();
+            //kendoAdditional.RefreshGrid('#units');
             //kendoAdditional.RefreshGrid('#productionPlan');
         }
 

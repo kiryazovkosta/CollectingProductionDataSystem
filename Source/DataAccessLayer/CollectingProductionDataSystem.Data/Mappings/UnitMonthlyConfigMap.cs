@@ -3,6 +3,8 @@
 /// </summary>
 namespace CollectingProductionDataSystem.Data.Mappings
 {
+    using System.ComponentModel.DataAnnotations.Schema;
+    using System.Data.Entity.Infrastructure.Annotations;
     using System.Data.Entity.ModelConfiguration;
     using CollectingProductionDataSystem.Models.Productions.Mounthly;
 
@@ -12,6 +14,14 @@ namespace CollectingProductionDataSystem.Data.Mappings
         {
             // Primary Key
             this.HasKey(t => t.Id);
+            
+            //Index
+            this.Property(t => t.IsDeleted)
+                .HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("ix_units_monthly_config_data", 1)))
+                .IsRequired();
+            this.Property(t => t.MonthlyReportTypeId)
+                .HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("ix_units_monthly_config_data", 2)))
+                .IsRequired();
 
             // Properties
             this.Property(t => t.Name)

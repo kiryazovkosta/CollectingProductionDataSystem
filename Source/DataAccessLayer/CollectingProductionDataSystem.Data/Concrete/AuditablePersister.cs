@@ -101,6 +101,10 @@
         private void GetChangedProperties(DbEntityEntry entry, string userName, IDbSet<AuditLogRecord> auditRecords)
         {
             var entityName = entry.Entity.GetType().Name.Split('_')[0];
+            if (entry.Entity.GetType().FullName.Contains("System.Data.Entity.DynamicProxies"))            
+            {
+                entityName = entry.Entity.GetType().BaseType.Name;
+            }
             // List<AuditLogRecord> auditRecords = new List<AuditLogRecord>();
 
             var newValues = entry.CurrentValues.Clone();

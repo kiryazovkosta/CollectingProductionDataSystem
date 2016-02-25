@@ -20,16 +20,26 @@ namespace CollectingProductionDataSystem.Constants
 
         private static readonly int firstDayInMonth = 1;
 
-        public static string StandartPassword { get { return standartPassword; } }
+        private static readonly int hydroCarbons = 1;
+
+        public static string StandartPassword
+        {
+            get
+            {
+                return standartPassword;
+            }
+        }
 
         public static string[] PowerUsers { get { return powerUsers; } }
 
         public static string LoadingUser { get { return loadingUser; } }
 
-        public static int MaterialType { get { return materialType;} }
+        public static int MaterialType { get { return materialType; } }
 
         public static int EnergyType { get { return energyType; } }
 
         public static int FirstDayInMonth { get { return firstDayInMonth; } }
+
+        public static int HydroCarbons { get { return hydroCarbons; } }
     }
 }

@@ -863,3 +863,16 @@ td pre, #err-message {
 #MeasureUnitId-list {
     width: 280px !important;
 }
+
+li.divider-labeled {
+    overflow:initial !important;
+}
+
+li.divider-labeled.divider-top {
+    margin-top:-5px;
+}
+
+    li.divider-labeled span {
+        float:right !important;
+        font-weight:normal !important;
+    }
