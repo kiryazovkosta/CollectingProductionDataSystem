@@ -88,13 +88,16 @@ li.mylist-group-item > a,div.mypanel-heading>h4 >a{
     color:black;
 }
  div.mypanel-heading {
-      display:block; 
+       display:block; 
    width:100%;
    line-height:25px;
    /*height:45px !important;*/
    text-decoration:none;
     color:black;
- }
+    height:55px;
+    margin-bottom:-8px;
+    margin-top:-6px;
+}
  div.mypanel-heading>h4 >a{
      font-weight:bold;
  }

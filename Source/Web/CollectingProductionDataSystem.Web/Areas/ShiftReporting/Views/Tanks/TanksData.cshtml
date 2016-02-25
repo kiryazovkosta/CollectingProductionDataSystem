@@ -24,7 +24,7 @@
                 columns.Bound(c => c.RecordTimestamp).Format("{0:dd.MM.yyyy HH:mm}");
                 columns.Bound(c => c.ParkName).Width(120);
                 columns.Bound(c => c.TankName).Width(80);
-                columns.Bound(c => c.ProductName).Width(200);
+                columns.Bound(c => c.ProductName).Width(250);
                 columns.Bound(c => c.LiquidLevel).Format("{0:n2}").Width(140);
                 columns.Bound(c => c.ProductLevel).Format("{0:n2}").Width(140);
                 columns.Bound(c => c.NetStandardVolume).Format("{0:n2}").Width(140);
@@ -33,11 +33,15 @@
                 //columns.Bound(c => c.FreeWaterLevel).Format("{0:n2}").Width(120);
                 columns.Bound(c => c.StatusOfTank).Format("{0:n2}").Width(80);
             })
-        .Pageable(pageable => pageable
-        .Refresh(true)
-        .PageSizes(new[] { 10, 20, 50, 100, 300 })
-        .ButtonCount(5))
-        .Sortable()
+        //.Pageable(pageable => pageable
+        //.Refresh(true)
+        //.PageSizes(new[] { 10, 20, 50, 100, 300 })
+        //.ButtonCount(5))
+        .Sortable(
+            sortable => sortable
+                .AllowUnsort(true)
+                .SortMode(GridSortMode.MultipleColumn)
+        )
         .Excel(excel => excel
             .FileName(@Resources.Layout.TanksData + "_" + DateTime.Now + ".xlsx")
             .Filterable(true)
@@ -49,8 +53,13 @@
         .DataSource(dataSource => dataSource
             .Ajax()
             .PageSize(20)
-            .ServerOperation(true)
-                    .Read(read => read.Action("ReadTanksData", "Tanks", new { area = "ShiftReporting" }).Data("unitGridsData.SendTanksData"))
+            .ServerOperation(false)
+            .Group(group => group.Add(c => c.ParkId))
+            .Read(read => read.Action("ReadTanksData", "Tanks", new { area = "ShiftReporting" }).Data("unitGridsData.SendTanksData"))
+            .Model(model =>
+            {
+                model.Id(p => p.Id);
+            })
         .Events(events =>
         {
             events.Error("kendoAdditional.ErrorHandler");

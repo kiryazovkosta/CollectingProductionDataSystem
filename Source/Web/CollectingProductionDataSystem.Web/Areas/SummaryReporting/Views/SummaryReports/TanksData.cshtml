@@ -24,7 +24,7 @@
                 columns.Bound(c => c.RecordTimestamp).Format("{0:dd.MM.yyyy HH:mm}");
                 columns.Bound(c => c.ParkName).Width(140);
                 columns.Bound(c => c.TankName).Width(80);
-                columns.Bound(c => c.ProductName).Width(200);
+                columns.Bound(c => c.ProductName).Width(250);
                 columns.Bound(c => c.LiquidLevel).Format("{0:n2}").ClientTemplate("<div style='text-align:right;'>#=kendo.toString(data.LiquidLevel, 'n2') #</div>").Width(140);
                 columns.Bound(c => c.ProductLevel).Format("{0:n2}").ClientTemplate("<div style='text-align:right;'>#=kendo.toString(data.ProductLevel, 'n2') #</div>").Width(140);
                 columns.Bound(c => c.NetStandardVolume).Format("{0:n2}").ClientTemplate("<div style='text-align:right;'>#=kendo.toString(data.NetStandardVolume, 'n2') #</div>").Width(140);
@@ -33,11 +33,11 @@
                 //columns.Bound(c => c.FreeWaterLevel).Format("{0:n2}").Width(120);
                 columns.Bound(c => c.StatusOfTank).Width(80);
             })
-        .Pageable(pageable => pageable
-            .Refresh(true)
-            //.PageSizes(new[] { 10, 20, 50, 100, 300 })
-            //.ButtonCount(5)
-        )
+        //.Pageable(pageable => pageable
+        //    .Refresh(true)
+        //    //.PageSizes(new[] { 10, 20, 50, 100, 300 })
+        //    //.ButtonCount(5)
+        //)
         .Sortable()
         .Excel(excel => excel
             .FileName(@Resources.Layout.TanksData + "_" + DateTime.Now + ".xlsx")

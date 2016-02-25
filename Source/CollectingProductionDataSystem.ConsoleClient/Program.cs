@@ -65,7 +65,9 @@ namespace CollectingProductionDataSystem.ConsoleClient
             //    ProcessScaleTransactionsData(i);   
             //}
 
-            ProcessTransactionsData();
+            //ProcessTransactionsData();
+
+            DoCalculation();
 
             System.Console.WriteLine("finished");
             //ConvertProductsForInternalPipes(data);
@@ -894,6 +896,63 @@ namespace CollectingProductionDataSystem.ConsoleClient
             }
 
             return result;
+        }
+
+        internal static void DoCalculation()
+        {
+            using (PHDHistorian oPhd = new PHDHistorian())
+            {
+                using (PHDServer defaultServer = new PHDServer("srv-vm-mes-phd.neftochim.bg"))
+                {
+                    defaultServer.Port = 3150;
+                    defaultServer.APIVersion = Uniformance.PHD.SERVERVERSION.RAPI200;
+                    oPhd.DefaultServer = defaultServer;
+                    oPhd.Sampletype = SAMPLETYPE.Snapshot;
+                    oPhd.MinimumConfidence = 100;
+                    oPhd.MaximumRows = 1;
+
+                     var tags = "TSN_KT014009_QN_T.PV@TSN_KT014009_PD.PV@1000".Split('@');
+
+                    var recordDataTime = new DateTime(2016, 2, 23, 0, 0, 0);
+
+                    //468000000000
+                    //756000000000
+                    //1044000000000
+
+
+                    var end = recordDataTime.AddTicks(1044000000000);
+                    var begin = end.AddHours(-8);
+
+                    var endTimestamp = DateTime.Now - end;
+                    var beginTimestamp = DateTime.Now - begin;
+
+                    var endPhdTimestamp = string.Format("NOW-{0}H{1}M", Math.Truncate(endTimestamp.TotalHours), endTimestamp.Minutes);
+                    var beginPhdTimestamp = string.Format("NOW-{0}H{1}M", Math.Truncate(beginTimestamp.TotalHours), beginTimestamp.Minutes);
+
+                    oPhd.StartTime = endPhdTimestamp;
+                    oPhd.EndTime = endPhdTimestamp;
+                    var result = oPhd.FetchRowData(tags[0]);
+                    var row = result.Tables[0].Rows[0];
+                    var endValue = Convert.ToInt64(row["Value"]);
+
+                    result = oPhd.FetchRowData(tags[1]);
+                    row = result.Tables[0].Rows[0];
+                    var pressure = Convert.ToDecimal(row["Value"]);
+
+                    oPhd.StartTime = beginPhdTimestamp;
+                    oPhd.EndTime = beginPhdTimestamp;
+                    result = oPhd.FetchRowData(tags[0]);
+                    row = result.Tables[0].Rows[0];
+                    var beginValue = Convert.ToInt64(row["Value"]);
+
+                    var value = ((endValue - beginValue) * pressure) / Convert.ToDecimal(tags[2]);
+                    Console.WriteLine(value);
+                }
+            }
+
+
+
+           
         }
     }
 
