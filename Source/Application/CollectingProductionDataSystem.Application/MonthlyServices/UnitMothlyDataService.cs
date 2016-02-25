@@ -125,11 +125,12 @@ namespace CollectingProductionDataSystem.Application.MonthlyServices
             else
             {
                 wholeMonthResult = GetMonthlyDataForMonth(targetMonth);
-                resultMonthly = wholeMonthResult.Where(x => (x.Value.UnitMonthlyConfig.AggregationCurrentLevel == false) || (x.Value.UnitMonthlyConfig.IsManualEntry == true)).ToDictionary(x => x.Key, x => x.Value);
+                resultMonthly = wholeMonthResult.Where(x => 
+                    (x.Value.UnitMonthlyConfig.AggregationCurrentLevel == false) || (x.Value.UnitMonthlyConfig.IsManualEntry == true)).ToDictionary(x => x.Key, x => x.Value);
             }
 
             CalculateMonthlyDataFromRelatedMonthlyData(ref resultMonthly, targetMonth, isRecalculate, reportTypeId, changedRecordId);
-            ClearUnModifiedRecords(resultMonthly, wholeMonthResult);
+            //ClearUnModifiedRecords(resultMonthly, wholeMonthResult);
             return resultMonthly.Select(x => x.Value);
         }
 
@@ -159,7 +160,7 @@ namespace CollectingProductionDataSystem.Application.MonthlyServices
         /// </summary>
         /// <param name="targetMonth">The target month.</param>
         /// <returns></returns>
-        private Dictionary<string, UnitMonthlyData> GetMonthlyDataForMonth(DateTime targetMonth)
+        private Dictionary<string, UnitMonthlyData> GetMonthlyDataForMonth(DateTime targetMonth, int changedRecordId = 0)
         {
             return this.data.UnitMonthlyDatas.All()
                         .Include(x => x.UnitMonthlyConfig)
@@ -257,7 +258,7 @@ namespace CollectingProductionDataSystem.Application.MonthlyServices
                 targetUnitMonthlyRecords = data.UnitMonthlyDatas.All()
                   .Include(x => x.UnitMonthlyConfig)
                   .Include(x => x.UnitManualMonthlyData)
-                  .Where(x => x.RecordTimestamp == targetMonth).ToDictionary(x => x.UnitMonthlyConfig.Code);
+                  .Where(x => x.RecordTimestamp == targetMonth && x.UnitMonthlyConfig.MonthlyReportTypeId == reportTypeId).ToDictionary(x => x.UnitMonthlyConfig.Code);
             }
 
             foreach (var targetUnitMonthlyRecordConfig in targetRecords)
