@@ -471,6 +471,12 @@
     <Content Include="Content\Images\DailyData\dnevni2.png" />
     <Content Include="Content\Images\DailyData\dnevni3.png" />
     <Content Include="Content\Images\DailyData\Export.png" />
+    <Content Include="Content\Images\DailyData\Figura119.jpg" />
+    <Content Include="Content\Images\DailyData\Figura130.jpg" />
+    <Content Include="Content\Images\DailyData\Figura131.jpg" />
+    <Content Include="Content\Images\DailyData\Figura133.jpg" />
+    <Content Include="Content\Images\DailyData\Figura134.jpg" />
+    <Content Include="Content\Images\DailyData\Figura135.jpg" />
     <Content Include="Content\Images\DailyData\Figura31.png" />
     <Content Include="Content\Images\DailyData\Figura31A.png" />
     <Content Include="Content\Images\DailyData\figura32.png" />
@@ -509,6 +515,7 @@
     <Content Include="Content\Images\DailyData\figura64.png" />
     <Content Include="Content\Images\DailyData\Figura66.png" />
     <Content Include="Content\Images\DailyData\figura68a.png" />
+    <Content Include="Content\Images\DailyData\Figura_130.jpg" />
     <Content Include="Content\Images\DailyData\lenta.png" />
     <Content Include="Content\Images\DailyData\nFigura53.png" />
     <Content Include="Content\Images\DailyData\Дневни_данни_чисто.png" />
@@ -646,10 +653,17 @@
     <Content Include="Content\Images\ShiftData\smenni1.png" />
     <Content Include="Content\Images\ShiftData\smenni2.png" />
     <Content Include="Content\Images\ShiftData\smenni_danni.png" />
+    <Content Include="Content\Images\SummaryReport\dnevni2.jpg" />
+    <Content Include="Content\Images\SummaryReport\ExportPDF_button.png" />
     <Content Include="Content\Images\SummaryReport\Fig75.png" />
     <Content Include="Content\Images\SummaryReport\Fig77.png" />
     <Content Include="Content\Images\SummaryReport\Fig79.png" />
-    <Content Include="Content\Images\SummaryReport\Fig81.png" />
+    <Content Include="Content\Images\SummaryReport\Figura137.jpg" />
+    <Content Include="Content\Images\SummaryReport\Figura138.jpg" />
+    <Content Include="Content\Images\SummaryReport\Figura139.jpg" />
+    <Content Include="Content\Images\SummaryReport\Figura140.jpg" />
+    <Content Include="Content\Images\SummaryReport\Figura91.jpg" />
+    <Content Include="Content\Images\SummaryReport\Figura911.jpg" />
     <Content Include="Content\Images\SummaryReport\Фигура73.png" />
     <Content Include="Content\Images\SummaryReport\Фигура74.png" />
     <Content Include="Content\Images\SummaryReport\Фигура76.png" />
@@ -1111,7 +1125,9 @@
     <Content Include="Areas\Administration\Views\Events\Index.cshtml" />
     <Content Include="Areas\Administration\Views\Events\Details.cshtml" />
     <Content Include="Areas\Administration\Views\UserStatistics\Index.cshtml" />
-    <Content Include="Areas\Documentation\Views\web.config" />
+    <Content Include="Areas\Documentation\Views\web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Areas\Documentation\Views\Help\Index.cshtml" />
     <Content Include="Areas\Documentation\Views\Help\DailyDataExpedition.cshtml" />
     <Content Include="Areas\Documentation\Views\Help\DailyDataMeasuringPosition.cshtml" />
@@ -1158,6 +1174,12 @@
     <Content Include="Areas\MonthlyHydroCarbons\Views\_ViewStart.cshtml" />
     <Content Include="Areas\MonthlyHydroCarbons\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\MonthlyHydroCarbons\Views\MonthlyHydroCarbons\Index.cshtml" />
+    <Content Include="Areas\Documentation\Views\Help\MonthlyData.cshtml" />
+    <Content Include="Areas\Documentation\Views\Help\DailyDataEnergyFlows.cshtml" />
+    <Content Include="Areas\Documentation\Views\Help\MonthlyDataIndoorPipeLines.cshtml" />
+    <Content Include="Areas\Documentation\Views\Help\MonthlyDataTechPlants.cshtml" />
+    <Content Include="Areas\Documentation\Views\Help\SummaryReport.cshtml" />
+    <Content Include="Areas\Documentation\Views\Help\HelpNomenclature.cshtml" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <None Include="Properties\PublishProfiles\Home.pubxml" />
     <Content Include="Scripts\custom\sendArea.js" />

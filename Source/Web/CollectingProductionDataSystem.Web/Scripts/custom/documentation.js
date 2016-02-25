@@ -2,13 +2,15 @@
     var array = ['collapseListGroupHeading', 'collapseListGroup'];
     for (var k = 0; k < array.length; k++) {
         var mainStr = array[k];
-        for (var i = 11; i < 17; i++) {
+        for (var i = 11; i < 20; i++) {
             var anotherStr = mainStr.concat(i);
-            var el = document.getElementById(anotherStr).getElementsByTagName('a');
-            for (var j = 0; j < el.length; j++) {
-                el[j].innerHTML = "<span class='marker'>►</span>" + el[j].innerHTML
+            if (document.getElementById(anotherStr)) {
+                var el = document.getElementById(anotherStr).getElementsByTagName('a');
+                for (var j = 0; j < el.length; j++) {
+                    el[j].innerHTML = "<span class='marker'>►</span>" + el[j].innerHTML
+                }
             }
-        }
+       }
     }
 
     //-----------------------------------------------------------------------
