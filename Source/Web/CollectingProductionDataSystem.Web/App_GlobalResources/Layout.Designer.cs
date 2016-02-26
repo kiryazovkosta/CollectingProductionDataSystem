@@ -1195,6 +1195,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ExcelId.
+        /// </summary>
+        public static string ExcelId {
+            get {
+                return ResourceManager.GetString("ExcelId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ExceptionType.
         /// </summary>
         public static string ExceptionType {
@@ -3841,11 +3850,47 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Месечни данни за оборотна вода.
+        /// </summary>
+        public static string UnitMonthlyCWData {
+            get {
+                return ResourceManager.GetString("UnitMonthlyCWData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to UnitMonthlyFWData.
+        /// </summary>
+        public static string UnitMonthlyFWData {
+            get {
+                return ResourceManager.GetString("UnitMonthlyFWData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to UnitMonthlyHCDataReport.
         /// </summary>
         public static string UnitMonthlyHCData {
             get {
                 return ResourceManager.GetString("UnitMonthlyHCData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Месечни данни за топлоенергия.
+        /// </summary>
+        public static string UnitMonthlyHEData {
+            get {
+                return ResourceManager.GetString("UnitMonthlyHEData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Месечни данни за питейна вода.
+        /// </summary>
+        public static string UnitMonthlyPWData {
+            get {
+                return ResourceManager.GetString("UnitMonthlyPWData", resourceCulture);
             }
         }
         

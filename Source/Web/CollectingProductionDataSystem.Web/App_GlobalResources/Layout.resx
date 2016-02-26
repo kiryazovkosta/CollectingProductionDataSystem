@@ -1506,4 +1506,22 @@
   <data name="TotalMonthQuantityInTonnes" xml:space="preserve">
     <value>Total Month Quantity In Tonnes</value>
   </data>
+  <data name="ExcelId" xml:space="preserve">
+    <value>ExcelId</value>
+  </data>
+  <data name="UnitMonthlyCWData" xml:space="preserve">
+    <value>Месечни данни за оборотна вода</value>
+    <comment>circulating water</comment>
+  </data>
+  <data name="UnitMonthlyFWData" xml:space="preserve">
+    <value>UnitMonthlyFWData</value>
+  </data>
+  <data name="UnitMonthlyHEData" xml:space="preserve">
+    <value>Месечни данни за топлоенергия</value>
+    <comment>heat energy</comment>
+  </data>
+  <data name="UnitMonthlyPWData" xml:space="preserve">
+    <value>Месечни данни за питейна вода</value>
+    <comment>potable water</comment>
+  </data>
 </root>

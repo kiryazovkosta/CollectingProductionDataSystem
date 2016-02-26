@@ -64,8 +64,7 @@ namespace CollectingProductionDataSystem.ConsoleTester
             var result = service.CalculateMonthlyDataForReportType(
                             inTargetMonth:new DateTime(2016, 2, 2),
                             isRecalculate: true,
-                            reportTypeId: 1,
-                            changedRecordId:1
+                            reportTypeId: 1
                             );
             timer.Stop();
             Console.WriteLine("Ready!\n Estimated time per operation {0}", timer.Elapsed);

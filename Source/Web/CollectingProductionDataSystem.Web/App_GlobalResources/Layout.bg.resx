@@ -1495,12 +1495,31 @@
     <value>Измерено</value>
   </data>
   <data name="UnitMonthlyHCData" xml:space="preserve">
-    <value>Месечен отчет за въглеводороди</value>
+    <value>Месечни данни за въглеводороди</value>
   </data>
   <data name="CustomFormulaExpression" xml:space="preserve">
     <value>Изчисляем математически израз</value>
   </data>
   <data name="TotalMonthQuantityInTonnes" xml:space="preserve">
     <value>Общо до деня&lt;br/&gt;[Тон]</value>
+  </data>
+  <data name="ExcelId" xml:space="preserve">
+    <value>Excel &lt;br/&gt;индекс</value>
+  </data>
+  <data name="UnitMonthlyCWData" xml:space="preserve">
+    <value>Месечни данни за оборотна вода</value>
+    <comment>circulating water</comment>
+  </data>
+  <data name="UnitMonthlyFWData" xml:space="preserve">
+    <value>Месечни данни за свежа вода</value>
+    <comment>fresh water</comment>
+  </data>
+  <data name="UnitMonthlyHEData" xml:space="preserve">
+    <value>Месечни данни за топлоенергия</value>
+    <comment>heat energy</comment>
+  </data>
+  <data name="UnitMonthlyPWData" xml:space="preserve">
+    <value>Месечни данни за питейна вода</value>
+    <comment>potable water</comment>
   </data>
 </root>

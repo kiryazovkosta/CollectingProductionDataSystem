@@ -235,7 +235,7 @@ var unitGridsData = (function () {
         if (confirmButton) {
             confirmButton.hide();
         }
-        var unitsGrid = $("#units").data("kendoGrid");
+        var unitsGrid = $(".k-widget.k-grid").data("kendoGrid");
         if (unitsGrid) {
             unitsGrid.hideColumn('commands');
         }
@@ -247,7 +247,7 @@ var unitGridsData = (function () {
             confirmButton.show();
         }
 
-        var unitsGrid = $("#units").data("kendoGrid");
+        var unitsGrid = $(".k-widget.k-grid").data("kendoGrid");
         if (unitsGrid) {
             unitsGrid.showColumn('commands');
         }
@@ -288,7 +288,7 @@ var unitGridsData = (function () {
 
 
     function nameGridCommancolumn() {
-        var grid = $("#units").data("kendoGrid");
+        var grid = $(".k-widget.k-grid").data("kendoGrid");
         if (grid) {
             $.each(grid.columns, function (index, value) {
                 if (!this.field) {
@@ -485,6 +485,11 @@ var unitGridsData = (function () {
 
         $('div.k-calendar table.k-content tbody tr td a.k-link').attr("style", "text-align:center;");
         $('div.k-calendar div.k-header').attr("style", "display:none;")
+    }
+
+    function blinkDemo(){
+        var firstRowUid = this.dataSource.data()[0].items[0].uid;
+        $("#tanks" + " tbody").find("tr[data-uid=" + firstRowUid + "]").addClass("blink");
     }
 
     function DataBound() {
@@ -700,6 +705,7 @@ var unitGridsData = (function () {
         SuccessCalculateManualEntry: SuccessCalculateManualEntry,
         ConfirmationDataBound: ConfirmationDataBound,
         FormatGridToPdfExport: FormatGridToPdfExport,
-        SendDateForSummaryReports: sendDateForSummaryReports
+        SendDateForSummaryReports: sendDateForSummaryReports,
+        BlinkDemo: blinkDemo,
     };
 })();

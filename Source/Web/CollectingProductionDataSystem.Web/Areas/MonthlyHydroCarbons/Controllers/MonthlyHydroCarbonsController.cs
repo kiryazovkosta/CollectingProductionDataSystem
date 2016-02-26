@@ -41,7 +41,7 @@ namespace CollectingProductionDataSystem.Web.Areas.MonthlyHydroCarbons.Controlle
 
         // GET: MonthlyHydroCarbons/MonthlyHydroCarbons
         [HttpGet]
-        public ActionResult Index()
+        public ActionResult Report()
         {
             return View();
         }
@@ -128,8 +128,7 @@ namespace CollectingProductionDataSystem.Web.Areas.MonthlyHydroCarbons.Controlle
                         var updatedRecords = this.monthlyService.CalculateMonthlyDataForReportType(
                             inTargetMonth: model.RecordTimestamp,
                             isRecalculate: true,
-                            reportTypeId: this.reportType,
-                            changedRecordId:model.UnitMonthlyConfigId
+                            reportTypeId: this.reportType
                             );
                         var status = UpdateResultRecords(updatedRecords);
 

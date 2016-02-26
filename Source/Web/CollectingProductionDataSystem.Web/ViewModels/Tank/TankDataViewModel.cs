@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
+    using System.Text;
     using System.Web;
     using AutoMapper;
     using CollectingProductionDataSystem.Infrastructure.Mapping;
@@ -12,11 +13,14 @@
     using CollectingProductionDataSystem.Web.InputModels;
     using CollectingProductionDataSystem.Models.Nomenclatures;
 
-    public class TankDataViewModel:IMapFrom<TankData>, IHaveCustomMappings
+    public class TankDataViewModel : IMapFrom<TankData>, IHaveCustomMappings
     {
         [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
         [Display(Name = "№")]
         public int Id { get; set; }
+
+        [Display(Name = "ControlPoint", ResourceType = typeof(Resources.Layout))]
+        public string ControlPoint { get; set; }
 
         [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
         [Display(Name = "RecordTimestamp", ResourceType = typeof(Resources.Layout))]
@@ -64,6 +68,8 @@
         [Display(Name = "TankName", ResourceType = typeof(Resources.Layout))]
         public string TankName { get; set; }
 
+
+
         [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
         [Display(Name = "ParkName", ResourceType = typeof(Resources.Layout))]
         public string ParkName { get; set; }
@@ -73,6 +79,30 @@
         public string StatusOfTank { get; set; }
 
         public int TankId { get; set; }
+
+        public string SortableName
+        {
+            get
+            {
+                var sb = new StringBuilder();
+                sb.Append(this.ParkId.ToString("d2"));
+                sb.Append(" ");
+                sb.Append(this.ParkName);
+                return sb.ToString();
+            }
+        }
+
+
+        public int TankNumber
+        {
+            get
+            {
+                var numberString = new string(this.TankName.Where(x => Char.IsDigit(x)).ToArray());
+                numberString = string.IsNullOrEmpty(numberString) ? "0" : numberString;
+                return Int32.Parse(numberString);
+            }
+
+        }
 
         /// <summary>
         /// Creates the mappings.
@@ -86,7 +116,9 @@
                 .ForMember(p => p.ParkName, opt => opt.MapFrom(p => p.TankConfig.Park.Name))
                 .ForMember(p => p.LiquidLevel, opt => opt.MapFrom(p => p.CorrectedLiquidLevel))
                 .ForMember(p => p.ProductLevel, opt => opt.MapFrom(p => p.CorrectedProductLevel))
-                .ForMember(p => p.FreeWaterLevel, opt => opt.MapFrom(p => p.CorrectedFreeWaterLevel));
+                .ForMember(p => p.FreeWaterLevel, opt => opt.MapFrom(p => p.CorrectedFreeWaterLevel))
+                .ForMember(p => p.ControlPoint, opt => opt.MapFrom(p => p.TankConfig.ControlPoint == "n/a" ? string.Format("{0}{1}", p.TankConfig.Park.Name, p.TankConfig.TankName) : p.TankConfig.ControlPoint));
+
         }
     }
 

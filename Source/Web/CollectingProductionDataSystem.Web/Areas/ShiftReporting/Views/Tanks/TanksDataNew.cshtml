@@ -1,0 +1,87 @@
+﻿@using System.Web.Optimization;
+@using CollectingProductionDataSystem.Web.ViewModels.Tank;
+@using Resources = App_GlobalResources.Resources;
+@model TankDataViewModel
+@{
+    Layout = "~/Views/Shared/_KendoLayoutWithSideBar.cshtml";
+}
+<div class="row">
+    <div class="col-md-10">
+        <h2>@Resources.Layout.TanksData</h2>
+    </div>
+    <div class="col-md-2">
+        <button id="excel-export" class="k-button k-button-icontext k-grid-excel pull-right head-button"><span class="k-icon k-i-excel"></span>Експорт в Excel</button>
+    </div>
+</div>
+
+@Html.ValidationSummary()
+@Html.AntiForgeryToken()
+@(Html.Kendo().Grid<TankDataViewModel>()
+        .Name("tanks")
+        .AutoBind(false)
+        .Columns(columns =>
+            {
+                columns.Bound(c=>c.SortableName).Hidden(true).ClientGroupHeaderTemplate("Парк #=value.substr(3,value.length-3)#");
+                columns.Bound(c => c.RecordTimestamp).Format("{0:dd.MM.yyyy HH:mm}").Width(100);
+                columns.Bound(c => c.ControlPoint).Width(140);
+                columns.Bound(c => c.ParkName).Width(120);
+                columns.Bound(c => c.TankName).Width(80);
+                columns.Bound(c => c.ProductName).Width(250);
+                columns.Bound(c => c.LiquidLevel).Format("{0:n2}").Width(140);
+                columns.Bound(c => c.ProductLevel).Format("{0:n2}").Width(140);
+                columns.Bound(c => c.NetStandardVolume).Format("{0:n2}").Width(140);
+                columns.Bound(c => c.ReferenceDensity).Format("{0:n2}").Width(140);
+                columns.Bound(c => c.WeightInVacuum).Format("{0:n2}").Width(140);
+                //columns.Bound(c => c.FreeWaterLevel).Format("{0:n2}").Width(120);
+                columns.Bound(c => c.StatusOfTank).Format("{0:n2}").Width(80);
+            })
+            .Pageable(pageable => pageable
+                .Refresh(true)
+                .PageSizes(false)
+                .Numeric(false)
+                .PreviousNext(false)
+                )
+        .Sortable(
+            sortable => sortable
+                .AllowUnsort(true)
+                .SortMode(GridSortMode.MultipleColumn)
+        )
+        .Excel(excel => excel
+            .FileName(@Resources.Layout.TanksData + "_" + DateTime.Now + ".xlsx")
+            .Filterable(true)
+            .ProxyURL(Url.Action("Excel_Export_Save", "Ajax", new { area = "" }))
+            .AllPages(true)
+        )
+        .Scrollable(scr => scr.Height(640))
+        .Filterable()
+        .DataSource(dataSource => dataSource
+            .Ajax()
+            .PageSize(int.MaxValue)
+            .ServerOperation(true)
+            .Group(group => group.Add(c => c.SortableName))
+            .Read(read => read.Action("ReadTanksDataNew", "Tanks", new { area = "ShiftReporting" }).Data("unitGridsData.SendTanksData"))
+            .Model(model =>
+            {
+                model.Id(p => p.Id);
+            })
+        .Events(events =>
+        {
+            events.Error("kendoAdditional.ErrorHandler");
+        }))
+        .Events(ev => ev.DataBound("unitGridsData.BlinkDemo"))//"unitGridsData.DataBound")
+
+)
+
+@* //Error window for kendo grid error event handler *@
+<div id="err-window" style="display:none">@Html.Partial("_KendoGridErrorWindow")</div>
+@* //Error window for kendo grid error event handler *@
+<div id="success-window" style="display:none">@Html.Partial("_SuccessWindow")</div>
+
+@section scripts{
+    @Scripts.Render("~/bundles/custom/kendoadditional")
+    @Scripts.Render("~/bundles/custom/unitGrids")
+}
+
+@section sidebar{
+    @Html.Partial("_TanksSideBarByDateTime")
+}

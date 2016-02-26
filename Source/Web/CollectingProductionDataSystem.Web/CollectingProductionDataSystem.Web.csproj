@@ -1174,7 +1174,7 @@
     <Content Include="Areas\MonthlyHydroCarbons\Views\web.config" />
     <Content Include="Areas\MonthlyHydroCarbons\Views\_ViewStart.cshtml" />
     <Content Include="Areas\MonthlyHydroCarbons\Views\Shared\_Layout.cshtml" />
-    <Content Include="Areas\MonthlyHydroCarbons\Views\MonthlyHydroCarbons\Index.cshtml" />
+    <Content Include="Areas\MonthlyHydroCarbons\Views\MonthlyHydroCarbons\Report.cshtml" />
     <Content Include="Areas\SummaryReporting\Views\SummaryReports\UnitsDailyByShiftsReportsData.cshtml" />
     <Content Include="Areas\Documentation\Views\Help\MonthlyData.cshtml" />
     <Content Include="Areas\Documentation\Views\Help\DailyDataEnergyFlows.cshtml" />
@@ -1182,6 +1182,9 @@
     <Content Include="Areas\Documentation\Views\Help\MonthlyDataTechPlants.cshtml" />
     <Content Include="Areas\Documentation\Views\Help\SummaryReport.cshtml" />
     <Content Include="Areas\Documentation\Views\Help\HelpNomenclature.cshtml" />
+    <Content Include="Areas\ShiftReporting\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\ShiftReporting\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\ShiftReporting\Views\Tanks\TanksDataNew.cshtml" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <None Include="Properties\PublishProfiles\Home.pubxml" />
     <Content Include="Scripts\custom\sendArea.js" />
@@ -1894,7 +1897,6 @@
     <Folder Include="Areas\ShiftReporting\Models\" />
     <Folder Include="Areas\ShiftReporting\Views\Ajax\" />
     <Folder Include="Areas\ShiftReporting\Views\AreaBase\" />
-    <Folder Include="Areas\ShiftReporting\Views\Shared\" />
     <Folder Include="Areas\SummaryReporting\Views\Ajax\" />
     <Folder Include="Areas\SummaryReporting\Views\Shared\DisplayTemplates\" />
   </ItemGroup>

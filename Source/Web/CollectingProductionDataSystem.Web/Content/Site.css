@@ -876,3 +876,42 @@ li.divider-labeled.divider-top {
         float:right !important;
         font-weight:normal !important;
     }
+
+@-webkit-keyframes alarm {
+    0%   {background-color: lightyellow;}
+    25%  {background-color: pink;}
+    50%  {background-color: yellow;}
+    100% {background-color: red;}
+}
+
+/* Standard syntax */
+@-moz-keyframes alarm {
+    0%   {background-color: lightyellow;}
+    25%  {background-color: pink;}
+    50%  {background-color: yellow;}
+    100% {background-color: red;}
+}
+
+@keyframes alarm {
+    0%   {background-color: lightyellow;}
+    25%  {background-color: pink;}
+    50%  {background-color: yellow;}
+    100% {background-color: red;}
+}
+
+.blink {
+    -moz-animation-name: alarm;
+    -o-animation-name: alarm;
+    -webkit-animation-name: alarm;
+    animation-name: alarm;
+    -moz-animation-duration: 0.8s;
+    -o-animation-duration: 0.8s;
+    -webkit-animation-duration: 0.8s;
+    animation-duration: 0.8s;
+    -moz-animation-iteration-count: infinite;
+    -o-animation-iteration-count: infinite;
+    -webkit-animation-iteration-count: infinite;
+    animation-iteration-count: infinite;
+    font-weight: bold;
+    color:white;
+}

@@ -30,7 +30,7 @@ namespace CollectingProductionDataSystem.Application.Contracts
         /// <param name="isRecalculate">The is recalculate.</param>
         /// <param name="ReportTypeId">The report type id.</param>
         /// <returns></returns>
-        IEnumerable<UnitMonthlyData> CalculateMonthlyDataForReportType(DateTime inTargetMonth, bool isRecalculate, int reportTypeId, int changedRecordId = 0);
+        IEnumerable<UnitMonthlyData> CalculateMonthlyDataForReportType(DateTime inTargetMonth, bool isRecalculate, int reportTypeId);
 
         /// <summary>
         /// Checks if all shifts are ready.

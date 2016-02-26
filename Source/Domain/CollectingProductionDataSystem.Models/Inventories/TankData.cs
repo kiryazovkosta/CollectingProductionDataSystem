@@ -36,6 +36,7 @@ namespace CollectingProductionDataSystem.Models.Inventories
         public bool IsApproved { get; set; }
         public virtual TankConfig TankConfig { get; set; }
         public virtual Product Product { get; set; }
+        public int Confidence { get; set; }
 
         [NotMapped]
         public decimal? CorrectedLiquidLevel

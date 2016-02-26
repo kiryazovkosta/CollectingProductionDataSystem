@@ -47,7 +47,6 @@
                     .Where(t => t.RecordTimestamp == date
                         && (areaId == null || t.TankConfig.Park.AreaId == areaId)
                         && (parkId == null || t.ParkId == parkId))
-                    .OrderBy(t => t.TankConfigId)
                     .ToList();
 
                 //var kendoResult = dbResult.ToDataSourceResult(request, ModelState);
@@ -65,6 +64,53 @@
                 }
 
                 return Json(vmResult.ToDataSourceResult(request, this.ModelState));
+            }
+            else
+            {
+                var kendoResult = new List<TankDataViewModel>().ToDataSourceResult(request, ModelState);
+                return Json(kendoResult);
+            }
+        }
+
+        [HttpGet]
+        public ActionResult TanksDataNew()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ReadTanksDataNew([DataSourceRequest]DataSourceRequest request, DateTime? date, int? parkId, int? areaId)
+        {
+            ValidateInputModel(date, parkId);
+
+            if (this.ModelState.IsValid)
+            {
+                var statuses = this.tanksService.ReadDataForDay(date.Value, areaId, parkId).ToList();
+
+                var dbResult = this.data.TanksData.All()
+                    .Include(t => t.TankConfig)
+                    .Include(t => t.TankConfig.Park)
+                    .Where(t => t.RecordTimestamp == date
+                        && (areaId == null || t.TankConfig.Park.AreaId == areaId)
+                        && (parkId == null || t.ParkId == parkId))
+                    .ToList();
+
+                //var kendoResult = dbResult.ToDataSourceResult(request, ModelState);
+                //kendoResult.Data = Mapper.Map<IEnumerable<TankData>, IEnumerable<TankDataViewModel>>((IEnumerable<TankData>)kendoResult.Data);
+                var vmResult = Mapper.Map<IEnumerable<TankDataViewModel>>(dbResult);
+
+
+                foreach (var tank in vmResult)
+                {
+                    var status = statuses.Where(x => x.Tank.Id == tank.TankId).FirstOrDefault();
+                    if (status != null && status.Quantity.TankStatus != null)
+                    {
+                        tank.StatusOfTank = status.Quantity.TankStatus.Id.ToString();
+                    }
+                }
+
+                return Json(vmResult.OrderByDescending(x=>x.TankName[0]).ThenBy(x=>x.TankNumber).ToDataSourceResult(request, this.ModelState));
             }
             else
             {
