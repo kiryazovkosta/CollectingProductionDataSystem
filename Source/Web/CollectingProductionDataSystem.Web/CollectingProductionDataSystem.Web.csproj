@@ -1177,19 +1177,11 @@
     <Content Include="Areas\MonthlyHydroCarbons\Views\MonthlyHydroCarbons\Index.cshtml" />
     <Content Include="Areas\SummaryReporting\Views\SummaryReports\UnitsDailyByShiftsReportsData.cshtml" />
     <Content Include="Areas\Documentation\Views\Help\MonthlyData.cshtml" />
-<<<<<<< .mine
-
-
-
-
-
-=======
     <Content Include="Areas\Documentation\Views\Help\DailyDataEnergyFlows.cshtml" />
     <Content Include="Areas\Documentation\Views\Help\MonthlyDataIndoorPipeLines.cshtml" />
     <Content Include="Areas\Documentation\Views\Help\MonthlyDataTechPlants.cshtml" />
     <Content Include="Areas\Documentation\Views\Help\SummaryReport.cshtml" />
     <Content Include="Areas\Documentation\Views\Help\HelpNomenclature.cshtml" />
->>>>>>> .theirs
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <None Include="Properties\PublishProfiles\Home.pubxml" />
     <Content Include="Scripts\custom\sendArea.js" />
