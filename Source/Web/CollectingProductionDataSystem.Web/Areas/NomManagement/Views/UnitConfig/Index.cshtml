@@ -51,6 +51,7 @@
     toolbar.Excel();
 })
       .Editable(editable => editable.Mode(GridEditMode.InLine))
+      .Excel(excel => excel.AllPages(true))
       .Pageable(pageable => pageable
 .Refresh(true)
 .PageSizes(new[] { 20, 50, 100 })

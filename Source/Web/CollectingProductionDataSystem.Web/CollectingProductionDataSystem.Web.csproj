@@ -1158,6 +1158,7 @@
     <Content Include="Areas\MonthlyHydroCarbons\Views\_ViewStart.cshtml" />
     <Content Include="Areas\MonthlyHydroCarbons\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\MonthlyHydroCarbons\Views\MonthlyHydroCarbons\Index.cshtml" />
+    <Content Include="Areas\SummaryReporting\Views\SummaryReports\UnitsDailyByShiftsReportsData.cshtml" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <None Include="Properties\PublishProfiles\Home.pubxml" />
     <Content Include="Scripts\custom\sendArea.js" />

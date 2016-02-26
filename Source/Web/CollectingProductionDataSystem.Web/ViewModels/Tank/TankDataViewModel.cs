@@ -24,6 +24,8 @@
 
         public int ParkId { get; set; }
 
+        public ParkViewModel Park { get; set; }
+
         [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
         [Display(Name = "ProductName", ResourceType = typeof(Resources.Layout))]
         public string ProductName { get; set; }

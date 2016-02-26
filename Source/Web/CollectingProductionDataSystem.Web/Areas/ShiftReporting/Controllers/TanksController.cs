@@ -45,23 +45,26 @@
                     .Include(t => t.TankConfig)
                     .Include(t => t.TankConfig.Park)
                     .Where(t => t.RecordTimestamp == date
-                        && t.TankConfig.Park.AreaId == (areaId ?? t.TankConfig.Park.AreaId)
-                        && t.ParkId == (parkId ?? t.ParkId));
+                        && (areaId == null || t.TankConfig.Park.AreaId == areaId)
+                        && (parkId == null || t.ParkId == parkId))
+                    .OrderBy(t => t.TankConfigId)
+                    .ToList();
 
-                var kendoResult = dbResult.ToDataSourceResult(request, ModelState);
-                kendoResult.Data = Mapper.Map<IEnumerable<TankData>, IEnumerable<TankDataViewModel>>((IEnumerable<TankData>)kendoResult.Data);
+                //var kendoResult = dbResult.ToDataSourceResult(request, ModelState);
+                //kendoResult.Data = Mapper.Map<IEnumerable<TankData>, IEnumerable<TankDataViewModel>>((IEnumerable<TankData>)kendoResult.Data);
+                var vmResult = Mapper.Map<IEnumerable<TankDataViewModel>>(dbResult);
 
-                foreach (var item in kendoResult.Data)
+
+                foreach (var tank in vmResult)
                 {
-                    var model = (TankDataViewModel)item;
-                    var status = statuses.Where(x => x.Tank.Id == model.TankId).FirstOrDefault();
+                    var status = statuses.Where(x => x.Tank.Id == tank.TankId).FirstOrDefault();
                     if (status != null && status.Quantity.TankStatus != null)
                     {
-                        model.StatusOfTank = status.Quantity.TankStatus.Id.ToString();   
+                        tank.StatusOfTank = status.Quantity.TankStatus.Id.ToString();
                     }
                 }
 
-                return Json(kendoResult);
+                return Json(vmResult.ToDataSourceResult(request, this.ModelState));
             }
             else
             {
@@ -69,7 +72,7 @@
                 return Json(kendoResult);
             }
         }
- 
+
         private void ValidateInputModel(DateTime? date, int? parkId)
         {
             if (date == null)
