@@ -3,6 +3,7 @@
     using CollectingProductionDataSystem.Application.CalculatorService;
     using CollectingProductionDataSystem.Application.Contracts;
     using CollectingProductionDataSystem.Application.FileServices;
+    using CollectingProductionDataSystem.Application.MonthlyServices;
     using CollectingProductionDataSystem.Application.TankDataServices;
     using CollectingProductionDataSystem.Application.UnitDailyDataServices;
     using CollectingProductionDataSystem.Application.UnitsDataServices;
@@ -37,6 +38,7 @@
             kernel.Bind<ICalculatorService>().To<CalculatorService>();
             kernel.Bind<ITestUnitDailyCalculationService>().ToMethod(context => TestUnitDailyCalculationService.GetInstance()).InSingletonScope();
             kernel.Bind<ILogger>().To<Logger>();
+            kernel.Bind<ITestUnitMonthlyCalculationService>().ToMethod(context => TestUnitMonthlyCalculationService.GetInstance()).InSingletonScope();
         }
 
         /// <summary>

@@ -56,8 +56,19 @@ namespace CollectingProductionDataSystem.ConsoleTester
             //var str = string.Format("Some formula * {0}", (2.34).ToString(System.Globalization.CultureInfo.InvariantCulture));
             //Console.WriteLine(str);
             var service = kernel.Get<UnitMothlyDataService>();
-            var result = service.CalculateMonthlyDataForReportType(new DateTime(2016, 1, 1), false, 1);
-            Console.WriteLine("Ready");
+            var timer = new Stopwatch();
+
+            service.GetDataForMonth(DateTime.Now,1);
+
+            timer.Start(); 
+            var result = service.CalculateMonthlyDataForReportType(
+                            inTargetMonth:new DateTime(2016, 2, 2),
+                            isRecalculate: true,
+                            reportTypeId: 1,
+                            changedRecordId:1
+                            );
+            timer.Stop();
+            Console.WriteLine("Ready!\n Estimated time per operation {0}", timer.Elapsed);
         }
 
         private static void Calculate() 

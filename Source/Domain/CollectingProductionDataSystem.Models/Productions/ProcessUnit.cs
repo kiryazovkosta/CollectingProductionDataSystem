@@ -3,6 +3,7 @@ namespace CollectingProductionDataSystem.Models.Productions
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Text;
     using CollectingProductionDataSystem.Models.Abstract;
     using CollectingProductionDataSystem.Models.Contracts;
     using CollectingProductionDataSystem.Models.Identity;
@@ -33,7 +34,20 @@ namespace CollectingProductionDataSystem.Models.Productions
         public virtual Factory Factory { get; set; }
         public virtual ICollection<UnitConfig> UnitsConfigs { get; set; }
         public virtual ICollection<UnitDailyConfig> UnitsDailyConfigs { get; set; }
-        public virtual ICollection<ApplicationUserProcessUnit> ApplicationUserProcessUnits 
+
+        public string SortableName
+        {
+            get
+            {
+                var sb = new StringBuilder();
+                sb.Append(this.Id.ToString("d2"));
+                sb.Append(" ");
+                sb.Append(this.ShortName);
+                return sb.ToString();
+            }
+        }
+
+        public virtual ICollection<ApplicationUserProcessUnit> ApplicationUserProcessUnits
         {
             get { return applicationUserProcessUnits; }
             set { this.applicationUserProcessUnits = value; }
@@ -43,15 +57,15 @@ namespace CollectingProductionDataSystem.Models.Productions
             get { return this.productionPlanConfigs; }
             set { this.productionPlanConfigs = value; }
         }
-        public virtual ICollection<InProcessUnitData> InProcessUnitDatas 
+        public virtual ICollection<InProcessUnitData> InProcessUnitDatas
         {
-            get { return this.inProcessUnitDatas; } 
-            set { this.inProcessUnitDatas = value; } 
+            get { return this.inProcessUnitDatas; }
+            set { this.inProcessUnitDatas = value; }
         }
-        public virtual ICollection<UnitMonthlyConfig> UnitMonthlyConfigs 
+        public virtual ICollection<UnitMonthlyConfig> UnitMonthlyConfigs
         {
-            get { return this.unitMonthlyConfigs; } 
-            set { this.unitMonthlyConfigs = value; } 
+            get { return this.unitMonthlyConfigs; }
+            set { this.unitMonthlyConfigs = value; }
         }
     }
 }

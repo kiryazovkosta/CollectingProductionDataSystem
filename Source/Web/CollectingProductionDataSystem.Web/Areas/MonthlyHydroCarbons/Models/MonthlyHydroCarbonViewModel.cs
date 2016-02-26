@@ -27,7 +27,7 @@
         [Display(Name = "RecordTimestamp", ResourceType = typeof(Resources.Layout))]
         public DateTime RecordTimestamp { get; set; }
 
-        public int UnitsDailyConfigId { get; set; }
+        public int UnitMonthlyConfigId { get; set; }
 
         public UnitsMonthlyConfigDataViewModel UnitMonthlyConfig { get; set; }
 
@@ -63,10 +63,6 @@
             configuration.CreateMap<UnitMonthlyData, MonthlyHydroCarbonViewModel>()
                 .ForMember(p => p.UnitManualMonthlyData, opt => opt.MapFrom(p => p.UnitManualMonthlyData ?? new UnitManualMonthlyData() { Value = p.Value }))
                 .ForMember(p => p.IsEditable, opt => opt.MapFrom(p => p.UnitMonthlyConfig.IsEditable));
-            //.ForMember(p => p.TotalMonthQuantity, opt => opt.MapFrom(p => p.UnitsDailyConfig.NotATotalizedPosition ? (decimal)p.RealValue : (p.TotalMonthQuantity + (decimal)p.RealValue)));
-            //.ForMember(p=>p.TotalMonthQuantity, opt=>opt.MapFrom(p=>p.TotalMonthQuantity + (decimal)p.RealValue));
-            //configuration.CreateMap<MonthlyHydroCarbonViewModel, UnitMonthlyData>()
-            //    .ForMember(p => p.TotalMonthQuantity, opt => opt.Ignore());
         }
 
         public bool HasManualData { get; set; }
@@ -84,10 +80,6 @@
         [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
         [Display(Name = "UnitName", ResourceType = typeof(Resources.Layout))]
         public string Name { get; set; }
-
-        //[UIHint("Hidden")]
-        //public int ProductId { get; set; }
-        //public DailyProductViewModel Product { get; set; }
 
         public int ProcessUnitId { get; set; }
         public ProcessUnitUnitsMonthlyDataViewModel ProcessUnit { get; set; }
@@ -111,14 +103,7 @@
         [Display(Name = "ProductType", ResourceType = typeof(Resources.Layout))]
         public string Name { get; set; }
 
-
-        public string SortableName
-        {
-            get
-            {
-                return this.Id.ToString().PadLeft(2, '0') + " " + this.Name;
-            }
-        }
+        public string SortableName { get; set; }
 
     }
 
@@ -131,17 +116,7 @@
         [Display(Name = "ProcessUnitName", ResourceType = typeof(Resources.Layout))]
         public string ShortName { get; set; }
 
-        public string SortableName
-        {
-            get
-            {
-                var sb = new StringBuilder();
-                sb.Append(this.Id.ToString("d2"));
-                sb.Append(" ");
-                sb.Append(this.ShortName);
-                return sb.ToString();
-            }
-        }
+        public string SortableName { get; set; }
 
         public FactoryViewModel Factory { get; set; }
 
@@ -165,15 +140,5 @@
         [Display(Name = "ManualValue", ResourceType = typeof(Resources.Layout))]
         [Range(0, double.MaxValue, ErrorMessageResourceName = "ManualValue", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
         public decimal Value { get; set; }
-
-        /// <summary>
-        /// Creates the mappings.
-        /// </summary>
-        /// <param name="configuration">The configuration.</param>
-        //public void CreateMappings(IConfiguration configuration)
-        //{
-        //    configuration.CreateMap<UnitManualMonthlyData, UnitManualMonthlyDataViewModel>()
-        //        .ForMember(p => p.Value, opt => opt.MapFrom(p => p.Value)).AfterMap((p, v) => { if (v == null) { v = new UnitManualMonthlyDataViewModel() { Value = 0 }; } });
-        //}
     }
 }

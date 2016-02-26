@@ -10,8 +10,6 @@ namespace CollectingProductionDataSystem.Models.Productions.Mounthly
 
         public DateTime RecordDate { get; set; }
 
-        // Todo: Decide about Criteria
-
         public int MonthlyReportTypeId { get; set; }
         
         public virtual MonthlyReportType MonthlyReportType { get; set; }

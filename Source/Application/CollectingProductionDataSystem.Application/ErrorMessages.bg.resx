@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="DailyNotReady" xml:space="preserve">
+    <value>Данните от {0} за инсталация {1} не са потвърдени.</value>
+  </data>
   <data name="Email" xml:space="preserve">
     <value>Невалидна електронна поща</value>
   </data>

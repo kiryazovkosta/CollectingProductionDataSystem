@@ -45,7 +45,7 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
                 throw new ArgumentException(string.Format(message, "materialTypeId", 1, int.MaxValue));
             }
 
-            // Day is ready and calculations begin
+            // Month is ready and calculations begin
             var targetUnitDailyRecordConfigs = data.UnitsDailyConfigs.All()
                 .Include(x => x.UnitConfigUnitDailyConfigs)
                 .Where(x => x.ProcessUnitId == processUnitId
@@ -192,7 +192,7 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
             var targetUnitDatas = data.UnitsData.All()
                   .Include(x => x.UnitConfig)
                   .Include(x => x.UnitsManualData)
-                  .Where(x => x.RecordTimestamp == targetDay /*&& x.UnitConfig.ProcessUnitId == processUnitId*/).ToList();
+                  .Where(x => x.RecordTimestamp == targetDay).ToList();
 
             Dictionary<string, UnitsDailyData> result = new Dictionary<string, UnitsDailyData>();
 

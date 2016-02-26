@@ -1,5 +1,5 @@
 ﻿/// <summary>
-/// Summary description for UnitDailyCalculationIndicator
+/// Summary description for UnitMonthlyCalculationIndicator
 /// Class 
 /// </summary>
 namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
