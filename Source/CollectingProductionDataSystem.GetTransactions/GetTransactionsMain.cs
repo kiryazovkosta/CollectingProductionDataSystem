@@ -313,7 +313,7 @@
                 logger.Info("Begin active transactions synchronization!");
                 var now = DateTime.Now.AddDays(offsetInDays);
                 var today = DateTime.Today.AddDays(offsetInDays * -1);
-                var fiveOClock = new DateTime(today.Year, today.Month, today.Day, 4, 30, 0);
+                var fiveOClock = new DateTime(today.Year, today.Month, today.Day, 5, 0, 0);
                 
                 var ts = now - fiveOClock;
                 if(ts.TotalMinutes > 4 && ts.Hours == 0)
@@ -474,7 +474,7 @@
                 {
                     var now = DateTime.Now;
                     var today = DateTime.Today;
-                    var fiveOClock = new DateTime(today.Year, today.Month, today.Day, 4, 30, 0);
+                    var fiveOClock = new DateTime(today.Year, today.Month, today.Day, 5, 0, 0);
                 
                     var ts = now - fiveOClock;
                     if(ts.TotalMinutes > 4 && ts.Hours == 0)
