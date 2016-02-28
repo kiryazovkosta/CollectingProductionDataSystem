@@ -132,7 +132,7 @@
 	            {
                     if (unitConfig.CalculatedFormula.Equals("C9"))
                     {
-                        CalculateByMathExpression(unitConfig, recordDataTime, shift, unitsData);
+                        CalculateByMathExpression(unitConfig, recordDataTime, shift, unitsData, calculatedUnitsData);
                     }
                     else
                     {
@@ -219,7 +219,7 @@
             return calculatedUnitsData.Values.ToList();
         }
  
-        private void CalculateByMathExpression(UnitConfig unitConfig, DateTime recordDataTime, ShiftType shift, List<UnitsData> unitsData)
+        private void CalculateByMathExpression(UnitConfig unitConfig, DateTime recordDataTime, ShiftType shift, List<UnitsData> unitsData, Dictionary<int, UnitsData> calculatedUnitsData)
         {
             var inputParams = new Dictionary<string, double>();
             int indexCounter = 0;
@@ -235,6 +235,13 @@
                                   .Where(x => x.UnitConfigId == relatedunitConfig.RelatedUnitConfigId)
                                   .FirstOrDefault();
                 var inputValue = (element != null) ? element.RealValue : 0.0;
+                if (inputValue == 0.0)
+                {
+                    if (calculatedUnitsData.ContainsKey(relatedunitConfig.RelatedUnitConfigId))
+                    {
+                        inputValue = calculatedUnitsData[relatedunitConfig.RelatedUnitConfigId].RealValue;   
+                    }   
+                }
 
                 inputParams.Add(string.Format("p{0}", indexCounter), inputValue);
                 indexCounter++;
@@ -243,7 +250,8 @@
             double result = new ProductionDataCalculatorService(this.data).Calculate(mathExpression, "p", inputParams);
             if (!unitsData.Where(x => x.RecordTimestamp == recordDataTime && x.ShiftId == shift && x.UnitConfigId == unitConfig.Id).Any())
             {
-                this.data.UnitsData.Add(
+                calculatedUnitsData.Add(
+                    unitConfig.Id,
                     new UnitsData
                     {
                         UnitConfigId = unitConfig.Id,
