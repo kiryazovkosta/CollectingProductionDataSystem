@@ -21,6 +21,7 @@
         .AutoBind(false)
         .Columns(columns =>
             {
+                columns.Bound(c => c.SortableName).Hidden(true).ClientGroupHeaderTemplate("Парк #=value.substr(3,value.length-3)#");
                 columns.Bound(c => c.RecordTimestamp).Format("{0:dd.MM.yyyy HH:mm}");
                 columns.Bound(c => c.ParkName).Width(120);
                 columns.Bound(c => c.TankName).Width(80);
@@ -33,10 +34,12 @@
                 //columns.Bound(c => c.FreeWaterLevel).Format("{0:n2}").Width(120);
                 columns.Bound(c => c.StatusOfTank).Format("{0:n2}").Width(80);
             })
-        //.Pageable(pageable => pageable
-        //.Refresh(true)
-        //.PageSizes(new[] { 10, 20, 50, 100, 300 })
-        //.ButtonCount(5))
+            .Pageable(pageable => pageable
+                .Refresh(true)
+                .PageSizes(false)
+                .Numeric(false)
+                .PreviousNext(false)
+            )
         .Sortable(
             sortable => sortable
                 .AllowUnsort(true)
@@ -52,9 +55,9 @@
         .Filterable()
         .DataSource(dataSource => dataSource
             .Ajax()
-            .PageSize(20)
-            .ServerOperation(false)
-            .Group(group => group.Add(c => c.ParkId))
+            .PageSize(int.MaxValue)
+            .ServerOperation(true)
+            .Group(group => group.Add(c => c.SortableName))
             .Read(read => read.Action("ReadTanksData", "Tanks", new { area = "ShiftReporting" }).Data("unitGridsData.SendTanksData"))
             .Model(model =>
             {

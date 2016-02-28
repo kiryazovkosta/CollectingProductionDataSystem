@@ -64,8 +64,12 @@
                     unitsData.Clear();
                     unitsData = this.data.UnitsData.All().Where(x => x.RecordTimestamp == recordDataTime && x.ShiftId == shift).ToList();
 
-                    ProcessCalculatedUnits(unitsConfigsList, recordDataTime, shift, unitsData);
-                    totalInsertedRecords += this.data.SaveChanges("Phd2SqlLoader").ResultRecordsCount;
+                    var calculatedUnitDatas = ProcessCalculatedUnits(unitsConfigsList, recordDataTime, shift, unitsData);
+                    if (calculatedUnitDatas.Count > 0)
+                    {
+                        this.data.UnitsData.BulkInsert(calculatedUnitDatas, "Phd2SqlLoader");
+                        totalInsertedRecords += calculatedUnitDatas.Count;
+                    }
                 }
             }
 
@@ -118,8 +122,10 @@
             }
         }
  
-        private void ProcessCalculatedUnits(List<UnitConfig> unitsConfigsList, DateTime recordDataTime, ShiftType shift, List<UnitsData> unitsData)
+        private List<UnitsData> ProcessCalculatedUnits(List<UnitConfig> unitsConfigsList, DateTime recordDataTime, ShiftType shift, List<UnitsData> unitsData)
         {
+            var calculatedUnitsData = new Dictionary<int, UnitsData>();
+
             foreach (var unitConfig in unitsConfigsList.Where(x => x.CollectingDataMechanism == "C"))
             {
                 try 
@@ -150,6 +156,13 @@
                                 .Where(x => x.UnitConfigId == ru.RelatedUnitConfigId)
                                 .FirstOrDefault();
                             var inputValue = (element != null) ? element.RealValue : 0.0;
+                            if (inputValue == 0.0)
+                            {
+                                if (calculatedUnitsData.ContainsKey(ru.RelatedUnitConfigId))
+                                {
+                                    inputValue = calculatedUnitsData[ru.RelatedUnitConfigId].RealValue;   
+                                }   
+                            }
 
                             if (parameterType == "I+")
                             {
@@ -186,14 +199,14 @@
                         var result = new ProductionDataCalculatorService(this.data).Calculate(formulaCode, arguments);
                         if (!unitsData.Where(x => x.RecordTimestamp == recordDataTime && x.ShiftId == shift && x.UnitConfigId == unitConfig.Id).Any())
                         {
-                            this.data.UnitsData.Add(
-                                new UnitsData
-                                {
-                                    UnitConfigId = unitConfig.Id,
-                                    RecordTimestamp = recordDataTime,
-                                    ShiftId = shift,
-                                    Value = (double.IsNaN(result) || double.IsInfinity(result)) ? 0.0m : (decimal)result
-                                });
+                            calculatedUnitsData.Add(unitConfig.Id,
+                                                    new UnitsData
+                                                    {
+                                                        UnitConfigId = unitConfig.Id,
+                                                        RecordTimestamp = recordDataTime,
+                                                        ShiftId = shift,
+                                                        Value = (double.IsNaN(result) || double.IsInfinity(result)) ? 0.0m : (decimal)result
+                                                    });
                         }
                     }
 	            }
@@ -202,6 +215,8 @@
 		            throw new Exception(string.Format("UnitConfigId: {0} \n [{1} \n {2}]", unitConfig.Id, ex.Message, ex.ToString()), ex);
 	            }
             }
+
+            return calculatedUnitsData.Values.ToList();
         }
  
         private void CalculateByMathExpression(UnitConfig unitConfig, DateTime recordDataTime, ShiftType shift, List<UnitsData> unitsData)

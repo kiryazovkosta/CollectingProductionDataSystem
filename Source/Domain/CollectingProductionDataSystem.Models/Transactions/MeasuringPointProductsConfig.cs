@@ -16,5 +16,7 @@
         public virtual MeasuringPointConfig MeasuringPointConfig { get; set; }
         public virtual Product Product { get; set; }
         public virtual Direction Direction { get; set; }
+        public bool IsUsedInTradeReport { get; set; }
+        public bool IsUsedInProductionReport { get; set; }
     }
 }

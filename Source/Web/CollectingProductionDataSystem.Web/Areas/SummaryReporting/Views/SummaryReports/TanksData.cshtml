@@ -49,7 +49,7 @@
         .Filterable()
         .DataSource(dataSource => dataSource
             .Ajax()
-            .PageSize(20)
+            .PageSize(int.MaxValue)
             .ServerOperation(true)
             .Read(read => read.Action("ReadTanksData", "SummaryReports", new { area = "SummaryReporting" }).Data("unitGridsData.SendTanksData"))
         .Events(events =>
