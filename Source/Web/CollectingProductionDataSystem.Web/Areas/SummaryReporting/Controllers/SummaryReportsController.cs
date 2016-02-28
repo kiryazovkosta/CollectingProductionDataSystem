@@ -374,7 +374,7 @@
             return View();
         }
 
-         [OutputCache(Duration = HalfAnHour, Location = OutputCacheLocation.ServerAndClient, VaryByParam = "*")]
+        [OutputCache(Duration = HalfAnHour, Location = OutputCacheLocation.ServerAndClient, VaryByParam = "*")]
         public JsonResult ReadUnitsDailyByShiftsReportsData([DataSourceRequest]
                                         DataSourceRequest request, DateTime? date, int? processUnitId, int? factoryId)
         {

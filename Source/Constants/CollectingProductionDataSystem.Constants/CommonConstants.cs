@@ -22,6 +22,8 @@ namespace CollectingProductionDataSystem.Constants
 
         private static readonly int hydroCarbons = 1;
 
+        private static readonly int dailyInfoDailyInfoHydrocarbonsShiftTypeId = 52;
+
         public static string StandartPassword
         {
             get
@@ -41,5 +43,7 @@ namespace CollectingProductionDataSystem.Constants
         public static int FirstDayInMonth { get { return firstDayInMonth; } }
 
         public static int HydroCarbons { get { return hydroCarbons; } }
+
+        public static int DailyInfoDailyInfoHydrocarbonsShiftTypeId { get { return dailyInfoDailyInfoHydrocarbonsShiftTypeId; } }
     }
 }

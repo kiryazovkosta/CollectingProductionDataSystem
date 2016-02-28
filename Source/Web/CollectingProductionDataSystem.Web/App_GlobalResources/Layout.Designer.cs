@@ -817,6 +817,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to DailyInfoHydrocarbonsData.
+        /// </summary>
+        public static string DailyInfoHydrocarbonsData {
+            get {
+                return ResourceManager.GetString("DailyInfoHydrocarbonsData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Daily Product Type.
         /// </summary>
         public static string DailyProductType {

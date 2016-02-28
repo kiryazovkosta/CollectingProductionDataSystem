@@ -277,6 +277,7 @@
     <Compile Include="Areas\NomManagement\Models\ViewModels\TankStatusViewModel.cs" />
     <Compile Include="Areas\NomManagement\Models\ViewModels\UnitDailyConfigUnitMonthlyConfigViewModel.cs" />
     <Compile Include="Areas\NomManagement\Models\ViewModels\UnitMonthlyConfigViewModel.cs" />
+    <Compile Include="Areas\ShiftReporting\Controllers\DailyInfoHydrocarbonsController.cs" />
     <Compile Include="Areas\ShiftReporting\Controllers\HighwayPipelinesController.cs" />
     <Compile Include="Areas\DailyReporting\Controllers\EnergyDailyController.cs" />
     <Compile Include="Areas\ShiftReporting\ViewModels\HighwayPipelinesDataViewModel.cs" />
@@ -1185,6 +1186,7 @@
     <Content Include="Areas\ShiftReporting\Views\_ViewStart.cshtml" />
     <Content Include="Areas\ShiftReporting\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\ShiftReporting\Views\Tanks\TanksDataNew.cshtml" />
+    <Content Include="Areas\ShiftReporting\Views\DailyInfoHydrocarbons\DailyInfoHydrocarbonsData.cshtml" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <None Include="Properties\PublishProfiles\Home.pubxml" />
     <Content Include="Scripts\custom\sendArea.js" />
