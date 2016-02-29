@@ -112,8 +112,9 @@ namespace CollectingProductionDataSystem.Application.MonthlyServices
         public IEnumerable<UnitMonthlyData> CalculateMonthlyDataForReportType(DateTime inTargetMonth, bool isRecalculate, int reportTypeId, int changedMonthlyConfigId = 0)
         {
             DateTime targetMonth = GetTargetMonth(inTargetMonth);
-            var targetUnitDailyRecordConfigs = data.UnitMonthlyConfigs.All()
+            var targetUnitMonthlyRecordConfigs = data.UnitMonthlyConfigs.All()
                 .Include(x => x.UnitDailyConfigUnitMonthlyConfigs)
+                .Include(x => x.RelatedUnitMonthlyConfigs)
                 .Where(x => x.MonthlyReportTypeId == reportTypeId).ToList();
             Dictionary<string, UnitMonthlyData> resultMonthly = new Dictionary<string, UnitMonthlyData>();
             Dictionary<string, UnitMonthlyData> wholeMonthResult = new Dictionary<string, UnitMonthlyData>();
@@ -122,15 +123,15 @@ namespace CollectingProductionDataSystem.Application.MonthlyServices
 
             if (!isRecalculate)
             {
-                resultMonthly = CalculateMonthlyDataFromDailyData(targetUnitDailyRecordConfigs, targetMonth);
+                resultMonthly = CalculateMonthlyDataFromDailyData(targetUnitMonthlyRecordConfigs, targetMonth);
             }
             else
             {
                 wholeMonthResult = GetMonthlyDataForMonth(targetMonth);
-               
-                GetDependingRecords(targetUnitDailyRecordConfigs, changedMonthlyConfigId, ref changedRecords);
+
+                GetDependingRecords(targetUnitMonthlyRecordConfigs, changedMonthlyConfigId, ref changedRecords);
                 changedRecords = changedRecords.Select(x => x).Distinct().OrderBy(x => x).ToList();
-                
+
                 resultMonthly = wholeMonthResult.Where(x =>
                     (x.Value.UnitMonthlyConfig.AggregationCurrentLevel == false) || (x.Value.UnitMonthlyConfig.IsManualEntry == true)).ToDictionary(x => x.Key, x => x.Value);
             }
@@ -148,7 +149,7 @@ namespace CollectingProductionDataSystem.Application.MonthlyServices
         /// <returns></returns>
         private void GetDependingRecords(List<UnitMonthlyConfig> targetUnitDailyRecordConfigs, int changedMonthlyConfigId, ref List<string> codes)
         {
-            var dependingRecords = targetUnitDailyRecordConfigs.Where(x => x.RelatedUnitMonthlyConfigs.Any(y => y.RelatedUnitMonthlyConfigId == changedMonthlyConfigId));
+            var dependingRecords = targetUnitDailyRecordConfigs.Where(x => x.RelatedUnitMonthlyConfigs.Any(y => y.RelatedUnitMonthlyConfigId == changedMonthlyConfigId)).ToList();
             if (dependingRecords.Count() == 0)
             {
                 return;
@@ -289,6 +290,7 @@ namespace CollectingProductionDataSystem.Application.MonthlyServices
             {
                 targetUnitMonthlyRecords = data.UnitMonthlyDatas.All()
                   .Include(x => x.UnitMonthlyConfig)
+                  .Include(x => x.UnitMonthlyConfig.RelatedUnitMonthlyConfigs)
                   .Include(x => x.UnitManualMonthlyData)
                   .Where(x => x.RecordTimestamp == targetMonth && x.UnitMonthlyConfig.MonthlyReportTypeId == reportTypeId).ToDictionary(x => x.UnitMonthlyConfig.Code);
             }
@@ -361,9 +363,10 @@ namespace CollectingProductionDataSystem.Application.MonthlyServices
                     if (resultMonthly.ContainsKey(code))
                     {
                         result.Add(code, resultMonthly[code]);
-                    }else
+                    }
+                    else
                     {
-                        result.Add(code, wholeMonthResult[code]);                        
+                        result.Add(code, wholeMonthResult[code]);
                     }
                 }
                 else
@@ -434,9 +437,9 @@ namespace CollectingProductionDataSystem.Application.MonthlyServices
         {
             DateTime date = inTargetMonth.Date;
             DateTime targetMonth = new DateTime(date.Year, date.Month, DateTime.DaysInMonth(date.Year, date.Month));
-//#if DEBUG
+            //#if DEBUG
             targetMonth = new DateTime(inTargetMonth.Year, 2, 2);
-//#endif
+            //#endif
             return targetMonth;
         }
 

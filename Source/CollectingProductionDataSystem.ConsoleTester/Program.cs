@@ -33,6 +33,7 @@ namespace CollectingProductionDataSystem.ConsoleTester
         private static TransactionOptions transantionOption = DefaultTransactionOptions.Instance.TransactionOptions;
         private static NinjectConfig ninject;
         private static IKernel kernel;
+        private static UnitMothlyDataService service;
         private static ITestUnitDailyCalculationService testUnitDailyCalculationService;
 
         static Program()
@@ -42,6 +43,7 @@ namespace CollectingProductionDataSystem.ConsoleTester
             dailyService = new UnitDailyDataService(data, kernel, new CalculatorService());
             data = new ProductionData(new CollectingDataSystemDbContext());
             testUnitDailyCalculationService = kernel.Get<ITestUnitDailyCalculationService>();
+            service = kernel.Get<UnitMothlyDataService>();
         }
 
         static void Main(string[] args)
@@ -59,7 +61,8 @@ namespace CollectingProductionDataSystem.ConsoleTester
             ////Console.WriteLine("CalculationOver");
             //var str = string.Format("Some formula * {0}", (2.34).ToString(System.Globalization.CultureInfo.InvariantCulture));
             //Console.WriteLine(str);
-            var service = kernel.Get<UnitMothlyDataService>();
+
+
             var timer = new Stopwatch();
 
             //service.GetDataForMonth(DateTime.Now,1);
@@ -73,11 +76,11 @@ namespace CollectingProductionDataSystem.ConsoleTester
         private static void Update(UnitMothlyDataService monthlyService, string userName = "Test")
         {
             var ModelState = new ModelStateDictionary();
-            decimal value = 7000M;
+            decimal value = 5000M;
 
             var newManualRecord = new UnitManualMonthlyData
             {
-                Id = 2109,
+                Id = 5,
                 Value = value,
             };
 
@@ -104,10 +107,10 @@ namespace CollectingProductionDataSystem.ConsoleTester
                     }
 
                     var updatedRecords = monthlyService.CalculateMonthlyDataForReportType(
-                        inTargetMonth: new DateTime(2016,2,2),
+                        inTargetMonth: new DateTime(2016, 2, 2),
                         isRecalculate: true,
                         reportTypeId: 1,
-                        changedMonthlyConfigId:6
+                        changedMonthlyConfigId: 6
                         );
                     var status = UpdateResultRecords(updatedRecords, userName);
 
@@ -117,7 +120,7 @@ namespace CollectingProductionDataSystem.ConsoleTester
                     }
                     else
                     {
-                        transaction.Complete();
+                        //transaction.Complete();
                     }
                 }
             }
@@ -147,15 +150,15 @@ namespace CollectingProductionDataSystem.ConsoleTester
             return data.SaveChanges(userName);
         }
 
-        private static void UpdateRecord(UnitManualMonthlyData existManualRecord, decimal value )
+        private static void UpdateRecord(UnitManualMonthlyData existManualRecord, decimal value)
         {
             existManualRecord.Value = value;
             data.UnitManualMonthlyDatas.Update(existManualRecord);
         }
 
-        private static void Calculate() 
+        private static void Calculate()
         {
-             using (var transaction = new TransactionScope(TransactionScopeOption.Required, transantionOption))
+            using (var transaction = new TransactionScope(TransactionScopeOption.Required, transantionOption))
             {
                 CalculateDailyDataIfNotAvailable(new DateTime(2016, 1, 1), 5);
             }
@@ -165,13 +168,13 @@ namespace CollectingProductionDataSystem.ConsoleTester
         {
             IEfStatus status = new EfStatus();
             testUnitDailyCalculationService = kernel.Get<ITestUnitDailyCalculationService>();
-             dailyService = new UnitDailyDataService(data, kernel, new CalculatorService());
+            dailyService = new UnitDailyDataService(data, kernel, new CalculatorService());
             if //(!dailyService.CheckIfDayIsApproved(date, processUnitId)
-            //    && !dailyService.CheckExistsUnitDailyDatas(date, processUnitId) 
-            //    && 
+                //    && !dailyService.CheckExistsUnitDailyDatas(date, processUnitId) 
+                //    && 
                 (testUnitDailyCalculationService.TryBeginCalculation(new UnitDailyCalculationIndicator(date, processUnitId)))
             {
-                  Exception exc = null;
+                Exception exc = null;
                 try
                 {
                     IEnumerable<UnitsDailyData> dailyResult = new List<UnitsDailyData>();
@@ -179,9 +182,9 @@ namespace CollectingProductionDataSystem.ConsoleTester
 
                     if (status.IsValid)
                     {
-                       
-                            status = dailyService.CheckIfPreviousDaysAreReady(processUnitId, date, CommonConstants.MaterialType);
-                      
+
+                        status = dailyService.CheckIfPreviousDaysAreReady(processUnitId, date, CommonConstants.MaterialType);
+
 
                         if (status.IsValid)
                         {
@@ -211,23 +214,23 @@ namespace CollectingProductionDataSystem.ConsoleTester
 
                     //exc = new InvalidOperationException(str,exc) ;
                 }
-                finally 
+                finally
                 {
                     int ix = 0;
-                    while (!(testUnitDailyCalculationService.EndCalculation(new UnitDailyCalculationIndicator(date, processUnitId)) || ix == 10)) 
+                    while (!(testUnitDailyCalculationService.EndCalculation(new UnitDailyCalculationIndicator(date, processUnitId)) || ix == 10))
                     {
                         ix++;
                     }
 
                     if (ix >= 10)
                     {
-                        string message = string.Format("Cannot clear record for begun Process Unit Calculation For ProcessUnitId {0} and Date {1}", processUnitId,date);
+                        string message = string.Format("Cannot clear record for begun Process Unit Calculation For ProcessUnitId {0} and Date {1}", processUnitId, date);
                         exc = new InvalidOperationException();
                     }
 
                     if (exc != null)
                     {
-                        throw exc;   
+                        throw exc;
                     }
                 }
             }
@@ -235,7 +238,7 @@ namespace CollectingProductionDataSystem.ConsoleTester
             return status;
         }
 
-         private static IEfStatus IsRelatedDataExists(DateTime date, int processUnitId)
+        private static IEfStatus IsRelatedDataExists(DateTime date, int processUnitId)
         {
             var validationResult = new List<ValidationResult>();
 
