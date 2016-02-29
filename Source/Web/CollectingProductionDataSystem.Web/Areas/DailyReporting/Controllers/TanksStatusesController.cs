@@ -42,7 +42,8 @@
             if (this.ModelState.IsValid)
             {
                 var dbResult = this.tanks.ReadDataForDay(date.Value, areaId, parkId).ToList();
-                var kendoResult = dbResult.ToDataSourceResult(request, ModelState, Mapper.Map<TanksStatusDataViewModel>);
+                var vmResult = Mapper.Map<IEnumerable<TanksStatusDataViewModel>>(dbResult).OrderBy(x => x.ParkName).ThenBy(x => x.Id).OrderByDescending(x => x.TankName[0]).ThenBy(x => x.TankNumber);
+                var kendoResult = vmResult.ToDataSourceResult(request, ModelState);
                 return Json(kendoResult);
             }
             else
@@ -79,7 +80,7 @@
                     {
                         result.ToModelStateErrors(ModelState);
                     }
-                    else 
+                    else
                     {
                         inputViewModel.Id = entity.TankConfigId;
                     }

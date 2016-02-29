@@ -1,6 +1,10 @@
 var endDate;
 var beginDate;
 var unitGridsData = (function () {
+    //Exclusion list of grids without command button hiding
+    var exclusionList = ["#measuringpoints",
+                         "#inner-pipes",
+                         "#tanks-statuses"];
 
     // ----------------- autorun function on document ready -------------------
     'use strict';
@@ -231,17 +235,29 @@ var unitGridsData = (function () {
     }
 
     function hideCommandButtons() {
-        var confirmButton = $("#confirm");
-        if (confirmButton) {
-            confirmButton.hide();
-        }
-
-        //if (($("#tanks-statuses").val() === undefined) && ($("#inner-pipes").val() !== undefined)) {
-            var unitsGrid = $(".k-widget.k-grid").data("kendoGrid");
-            if (unitsGrid) {
-                unitsGrid.hideColumn('commands');
+        // skip if grid is excluded
+        var IsExcluded = false
+        exclusionList.forEach(function (value, index) {
+            if ($(value).val() !== undefined) {
+                IsExcluded = true;
             }
-        //}
+        });
+
+        if (!IsExcluded) {
+
+            var confirmButton = $("#confirm");
+            if (confirmButton) {
+                confirmButton.hide();
+            }
+
+            var unitsGrids = $(".k-widget.k-grid");
+            Array.prototype.forEach.call(unitsGrids, function (unitsGrid) {
+                unitsGrid = $(unitsGrid).data("kendoGrid");
+                if (unitsGrid) {
+                    unitsGrid.hideColumn('commands');
+                }
+            });
+        }
     }
 
     function showCommandButtons() {
@@ -250,10 +266,13 @@ var unitGridsData = (function () {
             confirmButton.show();
         }
 
-        var unitsGrid = $(".k-widget.k-grid").data("kendoGrid");
-        if (unitsGrid) {
-            unitsGrid.showColumn('commands');
-        }
+        var unitsGrids = $(".k-widget.k-grid");
+        Array.prototype.forEach.call(unitsGrids, function (unitsGrid) {
+            unitsGrid = $(unitsGrid).data("kendoGrid");
+            if (unitsGrid) {
+                unitsGrid.showColumn('commands');
+            }
+        });
     }
 
     function checkConfirmedStatus() {
@@ -289,16 +308,18 @@ var unitGridsData = (function () {
         });
     }
 
-
     function nameGridCommancolumn() {
-        var grid = $(".k-widget.k-grid").data("kendoGrid");
-        if (grid) {
-            $.each(grid.columns, function (index, value) {
-                if (!this.field) {
-                    this.field = "commands";
-                }
-            });
-        }
+        var grids = $(".k-widget.k-grid");
+        Array.prototype.forEach.call(grids, function (grid) {
+            grid = $(grid).data("kendoGrid");
+            if (grid) {
+                $.each(grid.columns, function (index, value) {
+                    if (!this.field) {
+                        this.field = "commands";
+                    }
+                });
+            }
+        });
     }
 
     function addAntiForgeryToken(data) {
@@ -490,7 +511,7 @@ var unitGridsData = (function () {
         $('div.k-calendar div.k-header').attr("style", "display:none;")
     }
 
-    function blinkDemo(){
+    function blinkDemo() {
         var firstRowUid = this.dataSource.data()[0].items[0].uid;
         $("#tanks" + " tbody").find("tr[data-uid=" + firstRowUid + "]").addClass("blink");
     }

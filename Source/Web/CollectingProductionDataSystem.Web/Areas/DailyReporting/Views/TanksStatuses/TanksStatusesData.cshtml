@@ -23,6 +23,7 @@
     .Columns(
         columns =>
         {
+            columns.Bound(c => c.SortableName).Hidden(true).ClientGroupHeaderTemplate("Парк #=value.substr(3,value.length-3)#");
             columns.Bound(c => c.Id).Visible(false);
             columns.Bound(c => c.RecordTimestamp).Format("{0:dd.MM.yyyy}");
             columns.Bound(c => c.ParkName);
@@ -31,9 +32,12 @@
             columns.ForeignKey(c => c.TankStatusId, (System.Collections.IEnumerable)ViewData["tankStatuses"], "Id", "Name").EditorTemplateName("TankStatusViewModel").Width(300);
             columns.Command(command => { command.Edit(); command.Destroy(); }).Width(230);
         })
-        .Pageable(pageable => pageable
-            .Refresh(true)
-        )
+             .Pageable(pageable => pageable
+                    .Refresh(true)
+                    .PageSizes(false)
+                    .Numeric(false)
+                    .PreviousNext(false)
+                    )
         .Editable(editable => editable.Mode(GridEditMode.InLine))
         .Sortable()
         .Excel(excel => excel
@@ -46,11 +50,12 @@
         .Filterable()
         .DataSource(dataSource => dataSource
             .Ajax()
-            .PageSize(50)
+            .PageSize(int.MaxValue)
             .ServerOperation(true)
             .Read(read => read.Action("ReadTanksStatusesData", "TanksStatuses", new { area = "DailyReporting" }).Data("unitGridsData.SendTanksData"))
             .Update(update => update.Action("Update", "TanksStatuses", new { area = "DailyReporting" }).Data("sendAntiForgery"))
             .Destroy(destroy => destroy.Action("Destroy", "TanksStatuses", new { area = "DailyReporting" }).Data("sendAntiForgery"))
+            .Group(group => group.Add(c => c.SortableName))
             .Model(model =>
             {
                 model.Id(p => p.Id);
@@ -68,7 +73,7 @@
                 events.RequestEnd("kendoAdditional.OnRequestEnd");
             })
         )
-    )
+)
 
 @* //Error window for kendo grid error event handler *@
 <div id="err-window" style="display:none">@Html.Partial("_KendoGridErrorWindow")</div>
