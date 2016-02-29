@@ -41,7 +41,7 @@
         [Range(0, double.MaxValue, ErrorMessageResourceName = "Mass", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
         public decimal Mass { get; set; }
 
-        public bool IsEditable { get; set; }
+        public bool IsEditable { get { return true; } }
 
         public void CreateMappings(AutoMapper.IConfiguration configuration)
         {

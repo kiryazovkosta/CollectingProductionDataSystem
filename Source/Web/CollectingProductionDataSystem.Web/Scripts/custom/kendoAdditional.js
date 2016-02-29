@@ -210,6 +210,9 @@
     }
 
     function onPipeChange(ev) {
+        //var grid = ev.sender;
+        //var currentDataItem = grid.dataItem(this.select());
+
         if (ev.action === 'itemchange') {
             var addedRecord = ev.items[0];
             if (addedRecord !== null) {
