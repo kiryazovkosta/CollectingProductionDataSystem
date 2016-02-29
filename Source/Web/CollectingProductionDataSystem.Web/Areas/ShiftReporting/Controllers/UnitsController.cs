@@ -157,6 +157,16 @@
                 foreach (var relatedUnitConfig in relatedUnitConfigs)
                 {
                     result = UpdateRelatedUnitConfig(relatedUnitConfig.UnitConfigId, model);
+
+                    var subRelatedUnitConfigs = this.data.RelatedUnitConfigs.All().Where(y => y.RelatedUnitConfigId == relatedUnitConfig.UnitConfigId).ToList();
+                    if (subRelatedUnitConfigs.Count > 0)
+                    {
+                        foreach (var subRelatedUnitConfig in subRelatedUnitConfigs)
+                        {
+                            result = UpdateRelatedUnitConfig(subRelatedUnitConfig.UnitConfigId, model);    
+                        }   
+                    }
+
                     if (!result.IsValid)
                     {
                         return result;

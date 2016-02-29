@@ -817,6 +817,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to DailyInfoHydrocarbonsData.
+        /// </summary>
+        public static string DailyInfoHydrocarbonsData {
+            get {
+                return ResourceManager.GetString("DailyInfoHydrocarbonsData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Daily Product Type.
         /// </summary>
         public static string DailyProductType {
@@ -2955,6 +2964,15 @@ namespace App_GlobalResources.Resources {
         public static string RememberMe {
             get {
                 return ResourceManager.GetString("RememberMe", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reports.
+        /// </summary>
+        public static string Reports {
+            get {
+                return ResourceManager.GetString("Reports", resourceCulture);
             }
         }
         

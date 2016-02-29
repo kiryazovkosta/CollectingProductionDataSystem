@@ -64,8 +64,12 @@
                     unitsData.Clear();
                     unitsData = this.data.UnitsData.All().Where(x => x.RecordTimestamp == recordDataTime && x.ShiftId == shift).ToList();
 
-                    ProcessCalculatedUnits(unitsConfigsList, recordDataTime, shift, unitsData);
-                    totalInsertedRecords += this.data.SaveChanges("Phd2SqlLoader").ResultRecordsCount;
+                    var calculatedUnitDatas = ProcessCalculatedUnits(unitsConfigsList, recordDataTime, shift, unitsData);
+                    if (calculatedUnitDatas.Count > 0)
+                    {
+                        this.data.UnitsData.BulkInsert(calculatedUnitDatas, "Phd2SqlLoader");
+                        totalInsertedRecords += calculatedUnitDatas.Count;
+                    }
                 }
             }
 
@@ -118,82 +122,143 @@
             }
         }
  
-        private void ProcessCalculatedUnits(List<UnitConfig> unitsConfigsList, DateTime recordDataTime, ShiftType shift, List<UnitsData> unitsData)
+        private List<UnitsData> ProcessCalculatedUnits(List<UnitConfig> unitsConfigsList, DateTime recordDataTime, ShiftType shift, List<UnitsData> unitsData)
         {
+            var calculatedUnitsData = new Dictionary<int, UnitsData>();
+
             foreach (var unitConfig in unitsConfigsList.Where(x => x.CollectingDataMechanism == "C"))
             {
                 try 
-	            {	        
-		            var formulaCode = unitConfig.CalculatedFormula ?? string.Empty;
-                    var arguments = new FormulaArguments();
-                    arguments.MaximumFlow = (double?)unitConfig.MaximumFlow;
-                    arguments.EstimatedDensity = (double?)unitConfig.EstimatedDensity;
-                    arguments.EstimatedPressure = (double?)unitConfig.EstimatedPressure;
-                    arguments.EstimatedTemperature = (double?)unitConfig.EstimatedTemperature;
-                    arguments.EstimatedCompressibilityFactor = (double?)unitConfig.EstimatedCompressibilityFactor;
-                    arguments.CalculationPercentage = (double?)unitConfig.CalculationPercentage;
-                    arguments.CustomFormulaExpression = unitConfig.CustomFormulaExpression;
-
-                    var ruc = unitConfig.RelatedUnitConfigs.ToList();
-                    foreach (var ru in ruc)
+	            {
+                    if (unitConfig.CalculatedFormula.Equals("C9"))
                     {
-                        var parameterType = ru.RelatedUnitConfig.AggregateGroup;
-                        var element = data.UnitsData.All()
-                            .Where(x => x.RecordTimestamp == recordDataTime)
-                            .Where(x => x.ShiftId == shift)
-                            .Where(x => x.UnitConfigId == ru.RelatedUnitConfigId)
-                            .FirstOrDefault();
-                        var inputValue = (element != null) ? element.RealValue : 0.0;
-
-                        if (parameterType == "I+")
-                        {
-                            var exsistingValue = arguments.InputValue.HasValue ? arguments.InputValue.Value : 0.0;
-                            arguments.InputValue = exsistingValue + inputValue; 
-                        }
-                        if (parameterType == "I-")
-                        {
-                            var exsistingValue = arguments.InputValue.HasValue ? arguments.InputValue.Value : 0.0;
-                            arguments.InputValue = exsistingValue - inputValue; 
-                        }
-                        else if (parameterType == "T")
-                        {
-                            arguments.Temperature = inputValue;
-                        }
-                        else if (parameterType == "P")
-                        {
-                            arguments.Pressure = inputValue;    
-                        }
-                        else if (parameterType == "D")
-                        {
-                            arguments.Density = inputValue;  
-                        }
-                        else if (parameterType == "I/")
-                        {
-                            arguments.CalculationPercentage = inputValue;
-                        }
-                        else if (parameterType == "I*")
-                        {
-                            arguments.CalculationPercentage = inputValue;
-                        }
+                        CalculateByMathExpression(unitConfig, recordDataTime, shift, unitsData, calculatedUnitsData);
                     }
-
-                    var result = new ProductionDataCalculatorService(this.data).Calculate(formulaCode, arguments);
-                    if (!unitsData.Where(x => x.RecordTimestamp == recordDataTime && x.ShiftId == shift && x.UnitConfigId == unitConfig.Id).Any())
+                    else
                     {
-                        this.data.UnitsData.Add(
-                            new UnitsData
+                        var formulaCode = unitConfig.CalculatedFormula ?? string.Empty;
+                        var arguments = new FormulaArguments();
+                        arguments.MaximumFlow = (double?)unitConfig.MaximumFlow;
+                        arguments.EstimatedDensity = (double?)unitConfig.EstimatedDensity;
+                        arguments.EstimatedPressure = (double?)unitConfig.EstimatedPressure;
+                        arguments.EstimatedTemperature = (double?)unitConfig.EstimatedTemperature;
+                        arguments.EstimatedCompressibilityFactor = (double?)unitConfig.EstimatedCompressibilityFactor;
+                        arguments.CalculationPercentage = (double?)unitConfig.CalculationPercentage;
+                        arguments.CustomFormulaExpression = unitConfig.CustomFormulaExpression;
+
+                        var ruc = unitConfig.RelatedUnitConfigs.ToList();
+                        foreach (var ru in ruc)
+                        {
+                            var parameterType = ru.RelatedUnitConfig.AggregateGroup;
+                            var element = data.UnitsData.All()
+                                .Where(x => x.RecordTimestamp == recordDataTime)
+                                .Where(x => x.ShiftId == shift)
+                                .Where(x => x.UnitConfigId == ru.RelatedUnitConfigId)
+                                .FirstOrDefault();
+                            var inputValue = (element != null) ? element.RealValue : 0.0;
+                            if (inputValue == 0.0)
                             {
-                                UnitConfigId = unitConfig.Id,
-                                RecordTimestamp = recordDataTime,
-                                ShiftId = shift,
-                                Value = (double.IsNaN(result)||double.IsInfinity(result)) ? 0.0m : (decimal)result
-                            });
+                                if (calculatedUnitsData.ContainsKey(ru.RelatedUnitConfigId))
+                                {
+                                    inputValue = calculatedUnitsData[ru.RelatedUnitConfigId].RealValue;   
+                                }   
+                            }
+
+                            if (parameterType == "I+")
+                            {
+                                var exsistingValue = arguments.InputValue.HasValue ? arguments.InputValue.Value : 0.0;
+                                arguments.InputValue = exsistingValue + inputValue;
+                            }
+                            if (parameterType == "I-")
+                            {
+                                var exsistingValue = arguments.InputValue.HasValue ? arguments.InputValue.Value : 0.0;
+                                arguments.InputValue = exsistingValue - inputValue;
+                            }
+                            else if (parameterType == "T")
+                            {
+                                arguments.Temperature = inputValue;
+                            }
+                            else if (parameterType == "P")
+                            {
+                                arguments.Pressure = inputValue;
+                            }
+                            else if (parameterType == "D")
+                            {
+                                arguments.Density = inputValue;
+                            }
+                            else if (parameterType == "I/")
+                            {
+                                arguments.CalculationPercentage = inputValue;
+                            }
+                            else if (parameterType == "I*")
+                            {
+                                arguments.CalculationPercentage = inputValue;
+                            }
+                        }
+
+                        var result = new ProductionDataCalculatorService(this.data).Calculate(formulaCode, arguments);
+                        if (!unitsData.Where(x => x.RecordTimestamp == recordDataTime && x.ShiftId == shift && x.UnitConfigId == unitConfig.Id).Any())
+                        {
+                            calculatedUnitsData.Add(unitConfig.Id,
+                                                    new UnitsData
+                                                    {
+                                                        UnitConfigId = unitConfig.Id,
+                                                        RecordTimestamp = recordDataTime,
+                                                        ShiftId = shift,
+                                                        Value = (double.IsNaN(result) || double.IsInfinity(result)) ? 0.0m : (decimal)result
+                                                    });
+                        }
                     }
 	            }
 	            catch (Exception ex)
 	            {
 		            throw new Exception(string.Format("UnitConfigId: {0} \n [{1} \n {2}]", unitConfig.Id, ex.Message, ex.ToString()), ex);
 	            }
+            }
+
+            return calculatedUnitsData.Values.ToList();
+        }
+ 
+        private void CalculateByMathExpression(UnitConfig unitConfig, DateTime recordDataTime, ShiftType shift, List<UnitsData> unitsData, Dictionary<int, UnitsData> calculatedUnitsData)
+        {
+            var inputParams = new Dictionary<string, double>();
+            int indexCounter = 0;
+
+            var mathExpression = unitConfig.CustomFormulaExpression;
+            var relatedunitConfigs = unitConfig.RelatedUnitConfigs.ToList();
+            foreach (var relatedunitConfig in relatedunitConfigs)
+            {
+                var element = data.UnitsData
+                                  .All()
+                                  .Where(x => x.RecordTimestamp == recordDataTime)
+                                  .Where(x => x.ShiftId == shift)
+                                  .Where(x => x.UnitConfigId == relatedunitConfig.RelatedUnitConfigId)
+                                  .FirstOrDefault();
+                var inputValue = (element != null) ? element.RealValue : 0.0;
+                if (inputValue == 0.0)
+                {
+                    if (calculatedUnitsData.ContainsKey(relatedunitConfig.RelatedUnitConfigId))
+                    {
+                        inputValue = calculatedUnitsData[relatedunitConfig.RelatedUnitConfigId].RealValue;   
+                    }   
+                }
+
+                inputParams.Add(string.Format("p{0}", indexCounter), inputValue);
+                indexCounter++;
+            }
+
+            double result = new ProductionDataCalculatorService(this.data).Calculate(mathExpression, "p", inputParams);
+            if (!unitsData.Where(x => x.RecordTimestamp == recordDataTime && x.ShiftId == shift && x.UnitConfigId == unitConfig.Id).Any())
+            {
+                calculatedUnitsData.Add(
+                    unitConfig.Id,
+                    new UnitsData
+                    {
+                        UnitConfigId = unitConfig.Id,
+                        RecordTimestamp = recordDataTime,
+                        ShiftId = shift,
+                        Value = (double.IsNaN(result) || double.IsInfinity(result)) ? 0.0m : (decimal)result
+                    });
             }
         }
 

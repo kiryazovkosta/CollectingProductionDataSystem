@@ -1,0 +1,81 @@
+﻿@using System.Web.Optimization;
+@using CollectingProductionDataSystem.Web.Areas.DailyReporting.ViewModels;
+@using Resources = App_GlobalResources.Resources;
+@model UnitsReportsDataViewModel
+@{
+    Layout = "~/Views/Shared/_KendoLayoutWithSideBar.cshtml";
+}
+<div class="row">
+    <div class="col-md-10">
+        <h2>@Resources.Layout.DailyInfoHydrocarbonsData</h2>
+    </div>
+    <div class="col-md-2">
+        <button id="excel-export" class="k-button k-button-icontext k-grid-excel pull-right head-button"><span class="k-icon k-i-excel"></span>Експорт в Excel</button>
+    </div>
+</div>
+@Html.ValidationSummary()
+@Html.AntiForgeryToken()
+@(Html.Kendo()
+    .Grid<UnitsReportsDataViewModel>()
+    .Name("units")
+    .AutoBind(false)
+    .Columns(
+        columns =>
+        {
+            columns.Bound(c => c.TimeStamp).Format("{0:yyyy-MM-dd}").Width(100);
+            columns.Bound(c => c.Factory).Width(80).Hidden(true).ClientGroupHeaderTemplate("Производство #=value.substr(3,value.length-3)#");
+            columns.Bound(c => c.ProcessUnit).Width(80).Hidden(true).ClientGroupHeaderTemplate("Инсталация #=value.substr(3,value.length-3)#");
+            columns.Bound(c => c.Code).Width(80);
+            columns.Bound(c => c.Position).Width(120);
+            columns.Bound(c => c.UnitName);
+            columns.Bound(c => c.MeasureUnit).Width(80);
+            columns.Bound(c => c.Shift1QuantityValue).ClientTemplate("<div style='text-align:right;'>#=kendo.toString(data.Shift1QuantityValue, 'n3') #</div>").Width(140);
+            columns.Bound(c => c.Shift2QuantityValue).ClientTemplate("<div style='text-align:right;'>#=kendo.toString(data.Shift2QuantityValue, 'n3') #</div>").Width(140);
+            columns.Bound(c => c.Shift3QuantityValue).ClientTemplate("<div style='text-align:right;'>#=kendo.toString(data.Shift3QuantityValue, 'n3') #</div>").Width(140);
+            columns.Bound(c => c.TotalQuantityValue).ClientTemplate("<div style='text-align:right;'>#=kendo.toString(data.TotalQuantityValue, 'n3') #</div>").Width(140);
+        })
+
+    .Pageable(pageable => pageable
+        .Refresh(true)
+        .PageSizes(new[] { 50, 100, 300, 500 })
+        .ButtonCount(5)
+    )
+    .Sortable()
+    .Excel(excel => excel
+        .FileName(@Resources.Layout.DailyInfoHydrocarbonsData + "_" + string.Format("{0:yyyy-mm-dd}", DateTime.Now) + ".xlsx")
+        .Filterable(true)
+        .ProxyURL(Url.Action("Excel_Export_Save", "Ajax", new { area = "" }))
+        .AllPages(true)
+    )
+    .Scrollable(scr => scr.Height(640))
+    .Filterable()
+    .DataSource(dataSource => dataSource
+        .Ajax()
+        .PageSize(300)
+        .ServerOperation(false)
+            .Read(read => read.Action("ReadDailyInfoHydrocarbonsData", "SummaryReports", new { area = "SummaryReporting" }).Type(HttpVerbs.Get).Data("unitGridsData.SendDateForSummaryReports"))
+        .Sort(sort => sort.Add(s => s.Code))
+        .Events(events =>
+        {
+            events.Error("kendoAdditional.ErrorHandler");
+        })
+            .Group(group =>
+            {
+                group.Add(c => c.Factory);
+                group.Add(c => c.ProcessUnit);
+            })
+        )
+        .Events(ev => ev.DataBound("unitGridsData.DataBound"))
+
+)
+@* //Error window for kendo grid error event handler *@
+<div id="err-window" style="display:none">@Html.Partial("_KendoGridErrorWindow")</div>
+@* //Error window for kendo grid error event handler *@
+<div id="success-window" style="display:none">@Html.Partial("_SuccessWindow")</div>
+@section scripts{
+    @Scripts.Render("~/bundles/custom/kendoadditional")
+    @Scripts.Render("~/bundles/custom/unitGrids")
+}
+@section sidebar{
+    @Html.Partial("_UnitsDailySideBar")
+}

@@ -119,12 +119,8 @@
         public string ActiveTransactionMassReverseTag { get; set; }
         public string MassCorrectionFactor { get; set; }
         public bool IsUsedPhdTotalizers { get; set; }
-        public string PhdActiveTransactionBeginYear { get; set; }
-        public string PhdActiveTransactionBeginMonth { get; set; }
-        public string PhdActiveTransactionBeginDay { get; set; }
-        public string PhdActiveTransactionBeginHour { get; set; }
-        public string PhdActiveTransactionBeginMinutes { get; set; }
-        public string PhdActiveTransactionBeginSeconds { get; set; }
+        public bool IsUsedInTradeReport { get; set; }
+        public bool IsUsedInProductionReport { get; set; }
 
         public virtual ICollection<ActiveTransactionsData> ActiveTransactionsDatas { get; set; }
         public virtual ICollection<RelatedMeasuringPointConfigs> RelatedMeasuringPointConfigs

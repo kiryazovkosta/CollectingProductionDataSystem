@@ -168,13 +168,13 @@ namespace CollectingProductionDataSystem.Web.Areas.DailyReporting.Controllers
                 var endTimestamp = new DateTime();
                 if (!checkMonthData)
                 {
-                    beginTimestamp = date.Value.AddMinutes(270);
+                    beginTimestamp = date.Value.AddMinutes(300);
                     endTimestamp = beginTimestamp.AddMinutes(1440);  
                 }
                 else
                 {
-                    beginTimestamp = new DateTime(date.Value.Year, date.Value.Month, 1, 4, 30, 0);
-                    endTimestamp = date.Value.AddMinutes(1710);
+                    beginTimestamp = new DateTime(date.Value.Year, date.Value.Month, 1, 5, 0, 0);
+                    endTimestamp = date.Value.AddMinutes(1740);
                 }
 
                 transactions = transactions.Where(x => x.TransactionEndTime >= beginTimestamp & x.TransactionEndTime < endTimestamp); 

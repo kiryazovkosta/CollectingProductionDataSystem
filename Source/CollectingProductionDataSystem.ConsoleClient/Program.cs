@@ -67,7 +67,9 @@ namespace CollectingProductionDataSystem.ConsoleClient
 
             //ProcessTransactionsData();
 
-            DoCalculation();
+            //DoCalculation();
+
+            ProcessProductionReportTransactionsData();
 
             System.Console.WriteLine("finished");
             //ConvertProductsForInternalPipes(data);
@@ -949,10 +951,116 @@ namespace CollectingProductionDataSystem.ConsoleClient
                     Console.WriteLine(value);
                 }
             }
-
-
-
            
+        }
+
+        internal static void ProcessProductionReportTransactionsData()
+        {
+            try
+            {
+                Console.WriteLine("Begin production report data synchronization!");
+                {
+                    var now = DateTime.Now;
+                    var today = DateTime.Today.AddDays(-3);
+                    var fiveOClock = new DateTime(today.Year, today.Month, today.Day, 4, 30, 0);
+                
+                    var ts = now - fiveOClock;
+                    //if(ts.TotalMinutes > 4 && ts.Hours == 0)
+                    {
+                        var phdValues = new Dictionary<int, long>();
+
+                        using (var context = new ProductionData(new CollectingDataSystemDbContext(new AuditablePersister(),new Logger())))
+                        {
+                            //if (!context.MeasurementPointsProductsDatas.All().Where(x => x.RecordTimestamp >= today).Any())
+                            {
+
+                                var currentPhdTimestamp = string.Format("NOW-{0}H{1}M", Math.Truncate(ts.TotalHours), ts.Minutes);
+                                var previousPhdTimestamp = string.Format("NOW-{0}H{1}M", Math.Truncate(ts.TotalHours) + 24, ts.Minutes);
+
+                                var scaleMeasuringPointProducts = context.MeasuringPointProductsConfigs
+                                    .All()
+                                    .Include(x => x.MeasuringPointConfig)
+                                    .Include(x => x.MeasuringPointConfig.Zone)
+                                    .Include(x => x.Product)
+                                    .Include(x => x.Product.ProductType)
+                                    .Include(x => x.Direction)
+                                    .Where(m => m.IsUsedInProductionReport == true)
+                                    .ToList();
+                                foreach (var scaleMeasuringPointProduct in scaleMeasuringPointProducts)
+                                {
+                                    using (PHDHistorian oPhd = new PHDHistorian())
+                                    {
+                                        using (PHDServer defaultServer = new PHDServer("srv-vm-mes-phd.neftochim.bg"))
+                                        {
+                                            defaultServer.Port = 3150;
+                                            defaultServer.APIVersion = Uniformance.PHD.SERVERVERSION.RAPI200;
+                                            oPhd.DefaultServer = defaultServer;
+                                            oPhd.StartTime = currentPhdTimestamp;
+                                            oPhd.EndTime = currentPhdTimestamp;
+                                            oPhd.Sampletype = SAMPLETYPE.Snapshot;
+                                            oPhd.MinimumConfidence = 100;
+                                            oPhd.MaximumRows = 1;
+                                            var result = oPhd.FetchRowData(scaleMeasuringPointProduct.PhdProductTotalizerTag);
+                                            var row = result.Tables[0].Rows[0];
+                                            var value = Convert.ToInt64(row["Value"]);
+                                            phdValues.Add(scaleMeasuringPointProduct.Id, value);
+                                        }
+                                    }
+                                }
+
+                                foreach (var scaleMeasuringPointProduct in scaleMeasuringPointProducts)
+                                {
+                                    using (PHDHistorian oPhd = new PHDHistorian())
+                                    {
+                                        using (PHDServer defaultServer = new PHDServer("srv-vm-mes-phd.neftochim.bg"))
+                                        {
+                                            defaultServer.Port = 3150;
+                                            defaultServer.APIVersion = Uniformance.PHD.SERVERVERSION.RAPI200;
+                                            oPhd.DefaultServer = defaultServer;
+                                            oPhd.StartTime = previousPhdTimestamp;
+                                            oPhd.EndTime = previousPhdTimestamp;
+                                            oPhd.Sampletype = SAMPLETYPE.Snapshot;
+                                            oPhd.MinimumConfidence = 100;
+                                            oPhd.MaximumRows = 1;
+                                            var result = oPhd.FetchRowData(scaleMeasuringPointProduct.PhdProductTotalizerTag);
+                                            var row = result.Tables[0].Rows[0];
+                                            var value = Convert.ToInt64(row["Value"]);
+                                            phdValues[scaleMeasuringPointProduct.Id] = phdValues[scaleMeasuringPointProduct.Id] - value;
+                                        }
+                                    }
+                                }
+
+                                foreach (KeyValuePair<int, long> entry in phdValues)
+                                {
+                                    if (entry.Value > 0)
+                                    {
+                                        var scaleProduct = scaleMeasuringPointProducts.FirstOrDefault(x => x.Id == entry.Key);
+                                        var measuringPointProductData = new MeasuringPointProductsData
+                                        {
+                                            MeasuringPointConfigId = scaleProduct.MeasuringPointConfigId,
+                                            RecordTimestamp = today,
+                                            Value = entry.Value,
+                                            ProductId = scaleProduct.ProductId,
+                                            DirectionId = scaleProduct.DirectionId
+                                        };
+
+                                        Console.WriteLine(string.Format("Processing virtual transaction for {0} {1} {2} {3}", entry.Key, scaleProduct.PhdProductTotalizerTag, entry.Value, scaleProduct.Direction.Name));
+                                        context.MeasurementPointsProductsDatas.Add(measuringPointProductData);
+                                    }
+                                }
+
+                                context.SaveChanges("Phd2SqlTotalizer");
+                            }
+                        }
+                    }
+                }
+
+                Console.WriteLine("End roduction report data synchronization!");
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
     }
 

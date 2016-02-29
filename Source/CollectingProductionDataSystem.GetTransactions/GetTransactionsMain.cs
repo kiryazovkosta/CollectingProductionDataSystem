@@ -40,7 +40,7 @@
         {
             try
             {
-                logger.Info("Begin synchronization!");
+                logger.Info("Begin aso2sapo data synchronization!");
                 
                 using (var context = new ProductionData(new CollectingDataSystemDbContext(new AuditablePersister(),new Logger())))
                 {
@@ -61,7 +61,7 @@
                         logger.InfoFormat("Last transactions fetching date-time was updated to {0}.", DateTime.Now);  
                     }
 
-                    logger.Info("End synchronization");
+                    logger.Info("End aso2sapo data synchronization");
                 }
             }
             catch (Exception ex)
@@ -310,10 +310,10 @@
         { 
             try
             {
-                logger.Info("Begin active transactions synchronization!");
+                logger.Info("Begin active transactions data synchronization!");
                 var now = DateTime.Now.AddDays(offsetInDays);
                 var today = DateTime.Today.AddDays(offsetInDays * -1);
-                var fiveOClock = new DateTime(today.Year, today.Month, today.Day, 4, 30, 0);
+                var fiveOClock = new DateTime(today.Year, today.Month, today.Day, 5, 0, 0);
                 
                 var ts = now - fiveOClock;
                 if(ts.TotalMinutes > 4 && ts.Hours == 0)
@@ -356,7 +356,7 @@
                     }
                 }
 
-                logger.Info("End active transactions synchronization!");
+                logger.Info("End active transactions data synchronization!");
             }
             catch(Exception ex)
             {
@@ -466,15 +466,15 @@
             oPhd.MaximumRows = 1;
         }
 
-        internal static void ProcessScaleTransactionsData()
+        internal static void ProcessTradeReportTransactionsData()
         {
             try
             {
-                logger.Info("Begin scale transactions synchronization!");
+                logger.Info("Begin trade report data synchronization!");
                 {
                     var now = DateTime.Now;
                     var today = DateTime.Today;
-                    var fiveOClock = new DateTime(today.Year, today.Month, today.Day, 4, 30, 0);
+                    var fiveOClock = new DateTime(today.Year, today.Month, today.Day, 5, 0, 0);
                 
                     var ts = now - fiveOClock;
                     if(ts.TotalMinutes > 4 && ts.Hours == 0)
@@ -496,6 +496,7 @@
                                     .Include(x => x.Product)
                                     .Include(x => x.Product.ProductType)
                                     .Include(x => x.Direction)
+                                    .Where(m => m.IsUsedInTradeReport == true)
                                     .ToList();
                                 foreach (var scaleMeasuringPointProduct in scaleMeasuringPointProducts)
                                 {
@@ -509,7 +510,6 @@
                                             var row = result.Tables[0].Rows[0];
                                             var value = Convert.ToInt64(row["Value"]);
                                             phdValues.Add(scaleMeasuringPointProduct.Id, value);
-                                            //logger.InfoFormat("Processing data for {0} {1} {2}", scaleMeasuringPointProduct.PhdProductTotalizerTag, currentPhdTimestamp, value);
                                         }
                                     }
                                 }
@@ -525,7 +525,6 @@
                                             var row = result.Tables[0].Rows[0];
                                             var value = Convert.ToInt64(row["Value"]);
                                             phdValues[scaleMeasuringPointProduct.Id] = phdValues[scaleMeasuringPointProduct.Id] - value;
-                                            //logger.InfoFormat("Processing data for {0} {1} {2} {3}", scaleMeasuringPointProduct.PhdProductTotalizerTag, currentPhdTimestamp, value, phdValues[scaleMeasuringPointProduct.Id]);
                                         }
                                     }
                                 }
@@ -590,7 +589,103 @@
                     }
                 }
 
-                logger.Info("End scale transactions synchronization!");
+                logger.Info("End trade report data synchronization!");
+            }
+            catch(Exception ex)
+            {
+                logger.Error(ex.Message, ex);
+                SendEmail("ASO 2 SAPO Inerface", ex.ToString());
+            }
+        }
+
+        internal static void ProcessProductionReportTransactionsData()
+        {
+            try
+            {
+                logger.Info("Begin production report data synchronization!");
+                {
+                    var now = DateTime.Now;
+                    var today = DateTime.Today;
+                    var fiveOClock = new DateTime(today.Year, today.Month, today.Day, 4, 30, 0);
+                
+                    var ts = now - fiveOClock;
+                    if(ts.TotalMinutes > 4 && ts.Hours == 0)
+                    {
+                        var phdValues = new Dictionary<int, long>();
+
+                        using (var context = new ProductionData(new CollectingDataSystemDbContext(new AuditablePersister(),new Logger())))
+                        {
+                            if (!context.MeasurementPointsProductsDatas.All().Where(x => x.RecordTimestamp >= today).Any())
+                            {
+
+                                var currentPhdTimestamp = string.Format("NOW-{0}H{1}M", Math.Truncate(ts.TotalHours), ts.Minutes);
+                                var previousPhdTimestamp = string.Format("NOW-{0}H{1}M", Math.Truncate(ts.TotalHours) + 24, ts.Minutes);
+
+                                var scaleMeasuringPointProducts = context.MeasuringPointProductsConfigs
+                                    .All()
+                                    .Include(x => x.MeasuringPointConfig)
+                                    .Include(x => x.MeasuringPointConfig.Zone)
+                                    .Include(x => x.Product)
+                                    .Include(x => x.Product.ProductType)
+                                    .Include(x => x.Direction)
+                                    .Where(m => m.IsUsedInProductionReport == true)
+                                    .ToList();
+                                foreach (var scaleMeasuringPointProduct in scaleMeasuringPointProducts)
+                                {
+                                    using (PHDHistorian oPhd = new PHDHistorian())
+                                    {
+                                        using (PHDServer defaultServer = new PHDServer(Properties.Settings.Default.PHD_HOST))
+                                        {
+                                            SetPhdConnectionSettings(defaultServer, oPhd, currentPhdTimestamp);
+                                            var result = oPhd.FetchRowData(scaleMeasuringPointProduct.PhdProductTotalizerTag);
+                                            var row = result.Tables[0].Rows[0];
+                                            var value = Convert.ToInt64(row["Value"]);
+                                            phdValues.Add(scaleMeasuringPointProduct.Id, value);
+                                        }
+                                    }
+                                }
+
+                                foreach (var scaleMeasuringPointProduct in scaleMeasuringPointProducts)
+                                {
+                                    using (PHDHistorian oPhd = new PHDHistorian())
+                                    {
+                                        using (PHDServer defaultServer = new PHDServer(Properties.Settings.Default.PHD_HOST))
+                                        {
+                                            SetPhdConnectionSettings(defaultServer, oPhd, previousPhdTimestamp);
+                                            var result = oPhd.FetchRowData(scaleMeasuringPointProduct.PhdProductTotalizerTag);
+                                            var row = result.Tables[0].Rows[0];
+                                            var value = Convert.ToInt64(row["Value"]);
+                                            phdValues[scaleMeasuringPointProduct.Id] = phdValues[scaleMeasuringPointProduct.Id] - value;
+                                        }
+                                    }
+                                }
+
+                                foreach (KeyValuePair<int, long> entry in phdValues)
+                                {
+                                    if (entry.Value > 0)
+                                    {
+                                        var scaleProduct = scaleMeasuringPointProducts.FirstOrDefault(x => x.Id == entry.Key);
+                                        var measuringPointProductData = new MeasuringPointProductsData
+                                        {
+                                            MeasuringPointConfigId = scaleProduct.MeasuringPointConfigId,
+                                            RecordTimestamp = today,
+                                            Value = entry.Value,
+                                            ProductId = scaleProduct.ProductId,
+                                            DirectionId = scaleProduct.DirectionId
+                                        };
+
+                                        logger.InfoFormat("Processing virtual transaction for {0} {1} {2} {3}", entry.Key, scaleProduct.PhdProductTotalizerTag, entry.Value, scaleProduct.Direction.Name);
+                                        context.MeasurementPointsProductsDatas.Add(measuringPointProductData);
+                                    }
+                                }
+
+                                context.SaveChanges("Phd2SqlTotalizer");
+                            }
+                        }
+                    }
+                }
+
+                logger.Info("End roduction report data synchronization!");
             }
             catch(Exception ex)
             {

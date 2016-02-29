@@ -11,7 +11,7 @@
     <Setting Name="IDLE_TIMER_TRANSDACTION_DATA" Type="System.TimeSpan" Scope="Application">
       <Value Profile="(Default)">00:05:00</Value>
     </Setting>
-    <Setting Name="IDLE_TIMER_SCALE_DATA" Type="System.TimeSpan" Scope="Application">
+    <Setting Name="IDLE_TIMER_TRADE_REPORT_DATA" Type="System.TimeSpan" Scope="Application">
       <Value Profile="(Default)">00:10:00</Value>
     </Setting>
     <Setting Name="IDLE_TIMER_ACTIVE_TRANSACTIONS_DATA" Type="System.TimeSpan" Scope="Application">
@@ -51,7 +51,7 @@
     <Setting Name="SMTP_SERVER" Type="System.String" Scope="Application">
       <Value Profile="(Default)">192.168.7.195</Value>
     </Setting>
-    <Setting Name="SYNC_SCALE" Type="System.Boolean" Scope="Application">
+    <Setting Name="SYNC_TRADE_REPORT_DATA" Type="System.Boolean" Scope="Application">
       <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="SYNC_ACTIVE_TRANSACTIONS" Type="System.Boolean" Scope="Application">
@@ -62,6 +62,12 @@
     </Setting>
     <Setting Name="ACTIVE_TRANS_OFFSET_IN_DAYS" Type="System.Int32" Scope="Application">
       <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="SYNC_PRODUCT_REPORT_DATA" Type="System.Boolean" Scope="Application">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="IDLE_TIMER_PRODUCTION_REPORT_DATA" Type="System.TimeSpan" Scope="Application">
+      <Value Profile="(Default)">00:10:00</Value>
     </Setting>
   </Settings>
 </SettingsFile>

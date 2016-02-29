@@ -53,9 +53,9 @@ namespace CollectingProductionDataSystem.GetTransactions.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("00:10:00")]
-        public global::System.TimeSpan IDLE_TIMER_SCALE_DATA {
+        public global::System.TimeSpan IDLE_TIMER_TRADE_REPORT_DATA {
             get {
-                return ((global::System.TimeSpan)(this["IDLE_TIMER_SCALE_DATA"]));
+                return ((global::System.TimeSpan)(this["IDLE_TIMER_TRADE_REPORT_DATA"]));
             }
         }
         
@@ -146,9 +146,9 @@ namespace CollectingProductionDataSystem.GetTransactions.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool SYNC_SCALE {
+        public bool SYNC_TRADE_REPORT_DATA {
             get {
-                return ((bool)(this["SYNC_SCALE"]));
+                return ((bool)(this["SYNC_TRADE_REPORT_DATA"]));
             }
         }
         
@@ -176,6 +176,24 @@ namespace CollectingProductionDataSystem.GetTransactions.Properties {
         public int ACTIVE_TRANS_OFFSET_IN_DAYS {
             get {
                 return ((int)(this["ACTIVE_TRANS_OFFSET_IN_DAYS"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool SYNC_PRODUCT_REPORT_DATA {
+            get {
+                return ((bool)(this["SYNC_PRODUCT_REPORT_DATA"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("00:10:00")]
+        public global::System.TimeSpan IDLE_TIMER_PRODUCTION_REPORT_DATA {
+            get {
+                return ((global::System.TimeSpan)(this["IDLE_TIMER_PRODUCTION_REPORT_DATA"]));
             }
         }
     }

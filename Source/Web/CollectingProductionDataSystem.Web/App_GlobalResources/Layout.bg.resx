@@ -1522,4 +1522,10 @@
     <value>Месечни данни за питейна вода</value>
     <comment>potable water</comment>
   </data>
+  <data name="DailyInfoHydrocarbonsData" xml:space="preserve">
+    <value>Ежедневно сведение (въглеводороди)</value>
+  </data>
+  <data name="Reports" xml:space="preserve">
+    <value>Отчети</value>
+  </data>
 </root>

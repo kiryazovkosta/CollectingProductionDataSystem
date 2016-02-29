@@ -10,11 +10,13 @@
     public partial class GetTransactions : ServiceBase
     {
         private Timer transactionsDataTimer = null;
-        private Timer scaleDateTimer = null;
+        private Timer tradeReportDateTimer = null;
+        private Timer productionReportDateTimer = null;
         private Timer activeTransactionsTimer = null;
 
         private static readonly object lockObjectTransactionsData = new object();
-        private static readonly object lockObjectScaleData = new object();
+        private static readonly object lockObjectTradeReportData = new object();
+        private static readonly object lockObjectProductionReportData = new object();
         private static readonly object lockObjectActiveTransactionsData = new object();
 
         private readonly ILog logger;
@@ -35,9 +37,14 @@
                     this.transactionsDataTimer = new Timer(TimerHandlerTransactionsData, null, 0, Timeout.Infinite);
                 }
 
-                if (Properties.Settings.Default.SYNC_SCALE)
+                if (Properties.Settings.Default.SYNC_TRADE_REPORT_DATA)
                 {
-                    this.scaleDateTimer = new Timer(TimerHandlerScalesData, null, 0, Timeout.Infinite);
+                    this.tradeReportDateTimer = new Timer(TimerHandlerTradeReportData, null, 0, Timeout.Infinite);
+                }
+
+                if (Properties.Settings.Default.SYNC_PRODUCT_REPORT_DATA)
+                {
+                    this.productionReportDateTimer = new Timer(TimerHandlerProductionReportData, null, 0, Timeout.Infinite);
                 }
 
                 if (Properties.Settings.Default.SYNC_ACTIVE_TRANSACTIONS)
@@ -87,15 +94,15 @@
             }
         }
 
-        private void TimerHandlerScalesData(object state)
+        private void TimerHandlerTradeReportData(object state)
         {
-            lock (lockObjectScaleData)
+            lock (lockObjectTradeReportData)
             {
                 try
                 {
                     SetRegionalSettings();
-                    this.scaleDateTimer.Change(Timeout.Infinite, Timeout.Infinite);
-                    GetTransactionsMain.ProcessScaleTransactionsData();
+                    this.tradeReportDateTimer.Change(Timeout.Infinite, Timeout.Infinite);
+                    GetTransactionsMain.ProcessTradeReportTransactionsData();
                 }
                 catch (Exception ex)
                 {
@@ -103,8 +110,31 @@
                 }
                 finally
                 {
-                    this.scaleDateTimer.Change(
-                        Convert.ToInt64(Properties.Settings.Default.IDLE_TIMER_SCALE_DATA.TotalMilliseconds), 
+                    this.tradeReportDateTimer.Change(
+                        Convert.ToInt64(Properties.Settings.Default.IDLE_TIMER_TRADE_REPORT_DATA.TotalMilliseconds), 
+                        System.Threading.Timeout.Infinite);
+                }
+            }
+        }
+
+        private void TimerHandlerProductionReportData(object state)
+        {
+            lock (lockObjectProductionReportData)
+            {
+                try
+                {
+                    SetRegionalSettings();
+                    this.productionReportDateTimer.Change(Timeout.Infinite, Timeout.Infinite);
+                    GetTransactionsMain.ProcessProductionReportTransactionsData();
+                }
+                catch (Exception ex)
+                {
+                    logger.Error(ex.Message, ex);
+                }
+                finally
+                {
+                    this.productionReportDateTimer.Change(
+                        Convert.ToInt64(Properties.Settings.Default.IDLE_TIMER_PRODUCTION_REPORT_DATA.TotalMilliseconds), 
                         System.Threading.Timeout.Infinite);
                 }
             }

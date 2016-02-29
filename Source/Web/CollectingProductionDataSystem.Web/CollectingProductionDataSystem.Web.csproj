@@ -277,6 +277,11 @@
     <Compile Include="Areas\NomManagement\Models\ViewModels\TankStatusViewModel.cs" />
     <Compile Include="Areas\NomManagement\Models\ViewModels\UnitDailyConfigUnitMonthlyConfigViewModel.cs" />
     <Compile Include="Areas\NomManagement\Models\ViewModels\UnitMonthlyConfigViewModel.cs" />
+    <Compile Include="Areas\OverseersReporting\Controllers\AjaxController.cs" />
+    <Compile Include="Areas\OverseersReporting\Controllers\AreaBaseController.cs" />
+    <Compile Include="Areas\OverseersReporting\Controllers\TransactionsDailyController.cs" />
+    <Compile Include="Areas\OverseersReporting\OverseersReportingAreaRegistration.cs" />
+    <Compile Include="Areas\ShiftReporting\Controllers\DailyInfoHydrocarbonsController.cs" />
     <Compile Include="Areas\ShiftReporting\Controllers\HighwayPipelinesController.cs" />
     <Compile Include="Areas\DailyReporting\Controllers\EnergyDailyController.cs" />
     <Compile Include="Areas\ShiftReporting\ViewModels\HighwayPipelinesDataViewModel.cs" />
@@ -1175,7 +1180,6 @@
     <Content Include="Areas\MonthlyHydroCarbons\Views\_ViewStart.cshtml" />
     <Content Include="Areas\MonthlyHydroCarbons\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\MonthlyHydroCarbons\Views\MonthlyHydroCarbons\Report.cshtml" />
-    <Content Include="Areas\SummaryReporting\Views\SummaryReports\UnitsDailyByShiftsReportsData.cshtml" />
     <Content Include="Areas\Documentation\Views\Help\MonthlyData.cshtml" />
     <Content Include="Areas\Documentation\Views\Help\DailyDataEnergyFlows.cshtml" />
     <Content Include="Areas\Documentation\Views\Help\MonthlyDataIndoorPipeLines.cshtml" />
@@ -1185,6 +1189,10 @@
     <Content Include="Areas\ShiftReporting\Views\_ViewStart.cshtml" />
     <Content Include="Areas\ShiftReporting\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\ShiftReporting\Views\Tanks\TanksDataNew.cshtml" />
+    <Content Include="Areas\ShiftReporting\Views\DailyInfoHydrocarbons\DailyInfoHydrocarbonsData.cshtml" />
+    <Content Include="Areas\OverseersReporting\Views\web.config" />
+    <Content Include="Areas\OverseersReporting\Views\TransactionsDaily\TransactionsDailyData.cshtml" />
+    <Content Include="Areas\SummaryReporting\Views\SummaryReports\DailyInfoHydrocarbonsData.cshtml" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <None Include="Properties\PublishProfiles\Home.pubxml" />
     <Content Include="Scripts\custom\sendArea.js" />
@@ -1893,6 +1901,10 @@
     <Folder Include="Areas\NomManagement\Models\InputModels\" />
     <Folder Include="Areas\NomManagement\Views\Ajax\" />
     <Folder Include="Areas\NomManagement\Views\RelatedUnitConfigs\" />
+    <Folder Include="Areas\OverseersReporting\Models\" />
+    <Folder Include="Areas\OverseersReporting\Views\Ajax\" />
+    <Folder Include="Areas\OverseersReporting\Views\AreaBase\" />
+    <Folder Include="Areas\OverseersReporting\Views\Shared\" />
     <Folder Include="Areas\RecordsHistory\Views\Shared\" />
     <Folder Include="Areas\ShiftReporting\Models\" />
     <Folder Include="Areas\ShiftReporting\Views\Ajax\" />
