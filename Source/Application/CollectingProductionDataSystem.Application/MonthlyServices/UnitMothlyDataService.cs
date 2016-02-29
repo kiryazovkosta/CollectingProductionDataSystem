@@ -109,7 +109,7 @@ namespace CollectingProductionDataSystem.Application.MonthlyServices
         /// <param name="isRecalculate">The is recalculate.</param>
         /// <param name="ReportTypeId">The report type id.</param>
         /// <returns></returns>
-        public IEnumerable<UnitMonthlyData> CalculateMonthlyDataForReportType(DateTime inTargetMonth, bool isRecalculate, int reportTypeId)
+        public IEnumerable<UnitMonthlyData> CalculateMonthlyDataForReportType(DateTime inTargetMonth, bool isRecalculate, int reportTypeId, int changedMonthlyConfigId = 0)
         {
             DateTime targetMonth = GetTargetMonth(inTargetMonth);
             var targetUnitDailyRecordConfigs = data.UnitMonthlyConfigs.All()
@@ -117,6 +117,8 @@ namespace CollectingProductionDataSystem.Application.MonthlyServices
                 .Where(x => x.MonthlyReportTypeId == reportTypeId).ToList();
             Dictionary<string, UnitMonthlyData> resultMonthly = new Dictionary<string, UnitMonthlyData>();
             Dictionary<string, UnitMonthlyData> wholeMonthResult = new Dictionary<string, UnitMonthlyData>();
+            Dictionary<string, double> compareValues = new Dictionary<string, double>();
+            List<string> changedRecords = new List<string>();
 
             if (!isRecalculate)
             {
@@ -125,31 +127,61 @@ namespace CollectingProductionDataSystem.Application.MonthlyServices
             else
             {
                 wholeMonthResult = GetMonthlyDataForMonth(targetMonth);
+               
+                GetDependingRecords(targetUnitDailyRecordConfigs, changedMonthlyConfigId, ref changedRecords);
+                changedRecords = changedRecords.Select(x => x).Distinct().OrderBy(x => x).ToList();
+                
                 resultMonthly = wholeMonthResult.Where(x =>
                     (x.Value.UnitMonthlyConfig.AggregationCurrentLevel == false) || (x.Value.UnitMonthlyConfig.IsManualEntry == true)).ToDictionary(x => x.Key, x => x.Value);
             }
 
-            CalculateMonthlyDataFromRelatedMonthlyData(ref resultMonthly, targetMonth, isRecalculate, reportTypeId);
-            ClearUnModifiedRecords(resultMonthly, wholeMonthResult);
-            return resultMonthly.Select(x => x.Value);
+            CalculateMonthlyDataFromRelatedMonthlyData(ref resultMonthly, targetMonth, isRecalculate, reportTypeId, changedRecords, wholeMonthResult);
+            var result = resultMonthly.Select(x => x.Value);
+            return result;
+        }
+
+        /// <summary>
+        /// Gets the depending records.
+        /// </summary>
+        /// <param name="targetUnitDailyRecordConfigs">The target unit daily record configs.</param>
+        /// <param name="changedMonthlyConfigId">The changed monthly config id.</param>
+        /// <returns></returns>
+        private void GetDependingRecords(List<UnitMonthlyConfig> targetUnitDailyRecordConfigs, int changedMonthlyConfigId, ref List<string> codes)
+        {
+            var dependingRecords = targetUnitDailyRecordConfigs.Where(x => x.RelatedUnitMonthlyConfigs.Any(y => y.RelatedUnitMonthlyConfigId == changedMonthlyConfigId));
+            if (dependingRecords.Count() == 0)
+            {
+                return;
+            }
+
+            foreach (var record in dependingRecords)
+            {
+                GetDependingRecords(targetUnitDailyRecordConfigs, record.Id, ref codes);
+                codes.Add(record.Code);
+            }
+
         }
 
         /// <summary>
         /// Clears the un modified records.
         /// </summary>
-        /// <param name="resultDaily">The result daily.</param>
+        /// <param name="resultMonthly">The result daily.</param>
         /// <param name="wholeMonthResult">The whole day result.</param>
-        private void ClearUnModifiedRecords(Dictionary<string, UnitMonthlyData> resultDaily, Dictionary<string, UnitMonthlyData> wholeMonthResult)
+        private void ClearUnModifiedRecords(Dictionary<string, UnitMonthlyData> resultMonthly, Dictionary<string, UnitMonthlyData> wholeMonthResult, Dictionary<string, double> compareValues)
         {
-            foreach (var item in wholeMonthResult)
+            foreach (var key in compareValues.Keys)
             {
-                if (resultDaily.ContainsKey(item.Key))
+                if (resultMonthly.ContainsKey(key))
                 {
-                    if (item.Value.RealValue == resultDaily[item.Key].RealValue
-                        && resultDaily[item.Key].UnitManualMonthlyData != null
-                        && item.Value.UnitManualMonthlyData != null)
+                    if (Math.Round(resultMonthly[key].RealValue, 5, MidpointRounding.ToEven) == compareValues[key])
+                    //&& resultMonthly[item.Key].UnitManualMonthlyData != null
+                    //&& item.Value.UnitManualMonthlyData != null)
                     {
-                        resultDaily.Remove(item.Key);
+                        resultMonthly.Remove(key);
+                    }
+                    else
+                    {
+                        Console.WriteLine();
                     }
                 }
             }
@@ -239,7 +271,7 @@ namespace CollectingProductionDataSystem.Application.MonthlyServices
         /// <param name="targetMonth">The target month.</param>
         /// <param name="isRecalculate">The is recalculate.</param>
         /// <param name="reportTypeId">The report type id.</param>
-        private void CalculateMonthlyDataFromRelatedMonthlyData(ref Dictionary<string, UnitMonthlyData> resultMonthly, DateTime targetMonth, bool isRecalculate, int reportTypeId)
+        private void CalculateMonthlyDataFromRelatedMonthlyData(ref Dictionary<string, UnitMonthlyData> resultMonthly, DateTime targetMonth, bool isRecalculate, int reportTypeId, List<string> changedRecords = null, Dictionary<string, UnitMonthlyData> wholeMonthResult = null)
         {
             Dictionary<string, UnitMonthlyData> calculationResult = new Dictionary<string, UnitMonthlyData>();
 
@@ -248,8 +280,8 @@ namespace CollectingProductionDataSystem.Application.MonthlyServices
                 .Where(x => x.AggregationCurrentLevel == true
                         && x.IsManualEntry == false
                         && x.MonthlyReportTypeId == reportTypeId
-                        //&& (changedRecordId == 0 || x.RelatedUnitMonthlyConfigs.Any(y => y.RelatedUnitMonthlyConfigId == changedRecordId))
-                       ).ToList();
+
+                       ).ToList().Where(x => changedRecords == null || changedRecords.Any(y => y == x.Code));
 
             Dictionary<string, UnitMonthlyData> targetUnitMonthlyRecords = new Dictionary<string, UnitMonthlyData>();
 
@@ -267,7 +299,7 @@ namespace CollectingProductionDataSystem.Application.MonthlyServices
                                        .Select(x => new { Id = x.RelatedUnitMonthlyConfigId, Position = x.Position }).Distinct()
                                        .ToDictionary(x => x.Id, x => x.Position);
 
-                var unitDailyDatasForPosition = GetUnitDatasForRelatedDailyData(targetUnitMonthlyRecordConfig, resultMonthly);
+                var unitDailyDatasForPosition = GetUnitDatasForRelatedDailyData(targetUnitMonthlyRecordConfig, resultMonthly, wholeMonthResult);
                 double monthlyValue = GetMonthlyValueFromRelatedMounthlyRecords(unitDailyDatasForPosition, targetUnitMonthlyRecordConfig, positionDictionary);
 
                 var monthlyRecord = new UnitMonthlyData()
@@ -315,16 +347,29 @@ namespace CollectingProductionDataSystem.Application.MonthlyServices
         /// Gets the unit datas for related daily data.
         /// </summary>
         /// <param name="targetUnitMonRecordConfig">The target unit mon record config.</param>
-        /// <param name="resultDaily">The result daily.</param>
+        /// <param name="resultMonthly">The result daily.</param>
         /// <returns></returns>
-        private IEnumerable<UnitMonthlyData> GetUnitDatasForRelatedDailyData(UnitMonthlyConfig targetUnitMonRecordConfig, Dictionary<string, UnitMonthlyData> resultDaily)
+        private IEnumerable<UnitMonthlyData> GetUnitDatasForRelatedDailyData(UnitMonthlyConfig targetUnitMonRecordConfig, Dictionary<string, UnitMonthlyData> resultMonthly, Dictionary<string, UnitMonthlyData> wholeMonthResult = null)
         {
             var targetCodes = targetUnitMonRecordConfig.RelatedUnitMonthlyConfigs.OrderBy(x => x.Position).Select(x => x.RelatedUnitMonthlyConfig.Code);
             var result = new Dictionary<string, UnitMonthlyData>();
 
             foreach (var code in targetCodes)
             {
-                result.Add(code, resultDaily[code]);
+                if (wholeMonthResult != null)
+                {
+                    if (resultMonthly.ContainsKey(code))
+                    {
+                        result.Add(code, resultMonthly[code]);
+                    }else
+                    {
+                        result.Add(code, wholeMonthResult[code]);                        
+                    }
+                }
+                else
+                {
+                    result.Add(code, resultMonthly[code]);
+                }
             }
 
             return result.Select(x => x.Value);

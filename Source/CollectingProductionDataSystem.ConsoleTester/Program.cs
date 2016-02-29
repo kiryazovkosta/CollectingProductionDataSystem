@@ -3,10 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Transactions;
+using System.Web.ModelBinding;
 using CollectingProductionDataSystem.Application.CalculatorService;
 using CollectingProductionDataSystem.Application.Contracts;
 using CollectingProductionDataSystem.Application.MonthlyServices;
@@ -18,6 +20,8 @@ using CollectingProductionDataSystem.Models.Productions;
 using CollectingProductionDataSystem.Application.UnitsDataServices;
 using CollectingProductionDataSystem.Data.Concrete;
 using CollectingProductionDataSystem.Data;
+using CollectingProductionDataSystem.Models.Productions.Mounthly;
+using CollectingProductionDataSystem.Web.Areas.MonthlyHydroCarbons.Models;
 using Ninject;
 
 namespace CollectingProductionDataSystem.ConsoleTester
@@ -58,16 +62,95 @@ namespace CollectingProductionDataSystem.ConsoleTester
             var service = kernel.Get<UnitMothlyDataService>();
             var timer = new Stopwatch();
 
-            service.GetDataForMonth(DateTime.Now,1);
+            //service.GetDataForMonth(DateTime.Now,1);
 
-            timer.Start(); 
-            var result = service.CalculateMonthlyDataForReportType(
-                            inTargetMonth:new DateTime(2016, 2, 2),
-                            isRecalculate: true,
-                            reportTypeId: 1
-                            );
+            timer.Start();
+            Update(service);
             timer.Stop();
             Console.WriteLine("Ready!\n Estimated time per operation {0}", timer.Elapsed);
+        }
+
+        private static void Update(UnitMothlyDataService monthlyService, string userName = "Test")
+        {
+            var ModelState = new ModelStateDictionary();
+            decimal value = 7000M;
+
+            var newManualRecord = new UnitManualMonthlyData
+            {
+                Id = 2109,
+                Value = value,
+            };
+
+            var existManualRecord = data.UnitManualMonthlyDatas.GetById(newManualRecord.Id);
+            if (existManualRecord == null)
+            {
+                data.UnitManualMonthlyDatas.Add(newManualRecord);
+            }
+            else
+            {
+                UpdateRecord(existManualRecord, value);
+            }
+            try
+            {
+                using (var transaction = new TransactionScope(TransactionScopeOption.Required, transantionOption))
+                {
+                    var result = data.SaveChanges(userName);
+                    if (!result.IsValid)
+                    {
+                        foreach (ValidationResult error in result.EfErrors)
+                        {
+                            ModelState.AddModelError(error.MemberNames.ToList()[0], error.ErrorMessage);
+                        }
+                    }
+
+                    var updatedRecords = monthlyService.CalculateMonthlyDataForReportType(
+                        inTargetMonth: new DateTime(2016,2,2),
+                        isRecalculate: true,
+                        reportTypeId: 1,
+                        changedMonthlyConfigId:6
+                        );
+                    var status = UpdateResultRecords(updatedRecords, userName);
+
+                    if (!status.IsValid)
+                    {
+                        status.ToModelStateErrors(ModelState);
+                    }
+                    else
+                    {
+                        transaction.Complete();
+                    }
+                }
+            }
+            catch (DbUpdateException)
+            {
+                ModelState.AddModelError("ManualValue", "Записът не можа да бъде осъществен. Моля опитайте на ново!");
+            }
+        }
+
+        private static IEfStatus UpdateResultRecords(IEnumerable<UnitMonthlyData> updatedRecords, string userName)
+        {
+            foreach (var record in updatedRecords)
+            {
+                var manualRecord = data.UnitManualMonthlyDatas.GetById(record.Id);
+                if (manualRecord != null)
+                {
+                    manualRecord.Value = (decimal)record.RealValue;
+                    data.UnitManualMonthlyDatas.Update(manualRecord);
+                }
+                else
+                {
+                    data.UnitManualMonthlyDatas.Add(new UnitManualMonthlyData { Id = record.Id, Value = (decimal)record.RealValue });
+                }
+            }
+            var changesCount = data.DbContext.DbContext.ChangeTracker.Entries().Where(
+                         e => (e.State == EntityState.Modified)).Count();
+            return data.SaveChanges(userName);
+        }
+
+        private static void UpdateRecord(UnitManualMonthlyData existManualRecord, decimal value )
+        {
+            existManualRecord.Value = value;
+            data.UnitManualMonthlyDatas.Update(existManualRecord);
         }
 
         private static void Calculate() 
