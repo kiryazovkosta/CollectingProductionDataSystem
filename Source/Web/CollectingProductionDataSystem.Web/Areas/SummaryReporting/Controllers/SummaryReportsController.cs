@@ -369,13 +369,13 @@
         }
 
         [HttpGet]
-        public ActionResult UnitsDailyByShiftsReportsData()
+        public ActionResult DailyInfoHydrocarbonsData()
         {
             return View();
         }
 
         [OutputCache(Duration = HalfAnHour, Location = OutputCacheLocation.ServerAndClient, VaryByParam = "*")]
-        public JsonResult ReadUnitsDailyByShiftsReportsData([DataSourceRequest]
+        public JsonResult ReadDailyInfoHydrocarbonsData([DataSourceRequest]
                                         DataSourceRequest request, DateTime? date, int? processUnitId, int? factoryId)
         {
             ValidateUnitsReportModelState(date);
@@ -383,7 +383,7 @@
             {
                 IEnumerable<UnitsData> dbResult = this.unitsData.GetUnitsDataForDateTime(date, processUnitId, null)
                     .Where(x =>
-                        x.UnitConfig.ShiftProductTypeId == 52
+                        x.UnitConfig.ShiftProductTypeId == CommonConstants.DailyInfoDailyInfoHydrocarbonsShiftTypeId
                         && (factoryId == null || x.UnitConfig.ProcessUnit.FactoryId == factoryId))
                     .ToList();
 

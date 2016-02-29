@@ -12,6 +12,7 @@
         public int MeasuringPointConfigId { get; set; }
         public decimal? Value { get; set; }
         public virtual MeasuringPointConfig MeasuringPointConfig { get; set; }
-        
+        public int ProductId { get; set; }
+        public int DirectionId { get; set; }
     }
 }

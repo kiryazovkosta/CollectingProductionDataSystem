@@ -669,7 +669,9 @@
                                         {
                                             MeasuringPointConfigId = scaleProduct.MeasuringPointConfigId,
                                             RecordTimestamp = today,
-                                            Value = entry.Value
+                                            Value = entry.Value,
+                                            ProductId = scaleProduct.ProductId,
+                                            DirectionId = scaleProduct.DirectionId
                                         };
 
                                         logger.InfoFormat("Processing virtual transaction for {0} {1} {2} {3}", entry.Key, scaleProduct.PhdProductTotalizerTag, entry.Value, scaleProduct.Direction.Name);
