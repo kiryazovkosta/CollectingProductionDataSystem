@@ -73,6 +73,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Transactions" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -80,6 +81,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IEfStatusExtentions.cs" />
     <Compile Include="NinjectConfig.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -108,6 +110,10 @@
     <ProjectReference Include="..\Domain\CollectingProductionDataSystem.Models\CollectingProductionDataSystem.Models.csproj">
       <Project>{63cc73a0-f2c2-453d-a915-1913095f22fd}</Project>
       <Name>CollectingProductionDataSystem.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Web\CollectingProductionDataSystem.Web\CollectingProductionDataSystem.Web.csproj">
+      <Project>{5B247F7F-E5B4-4D0D-8652-8132C4B83C1D}</Project>
+      <Name>CollectingProductionDataSystem.Web</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

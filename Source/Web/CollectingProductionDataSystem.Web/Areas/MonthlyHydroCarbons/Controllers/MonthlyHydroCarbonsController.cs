@@ -69,8 +69,9 @@ namespace CollectingProductionDataSystem.Web.Areas.MonthlyHydroCarbons.Controlle
                 var kendoResult = new DataSourceResult();
                 if (ModelState.IsValid)
                 {
-                    var dbResult = this.monthlyService.GetDataForMonth(date, this.reportType).OrderBy(x => x.UnitMonthlyConfig.Code);
-                    kendoResult = dbResult.ToDataSourceResult(request, ModelState, Mapper.Map<MonthlyHydroCarbonViewModel>);
+                    var dbResult = this.monthlyService.GetDataForMonth(date, this.reportType).OrderBy(x => x.UnitMonthlyConfig.Code).ToList();
+                    var vmResult = Mapper.Map<IEnumerable<MonthlyHydroCarbonViewModel>>(dbResult);
+                    kendoResult = vmResult.ToDataSourceResult(request, ModelState);
                 }
                 Session["reportParams"] = Convert.ToBase64String(Encoding.UTF8.GetBytes(
                                                                    JsonConvert.SerializeObject(
@@ -128,7 +129,8 @@ namespace CollectingProductionDataSystem.Web.Areas.MonthlyHydroCarbons.Controlle
                         var updatedRecords = this.monthlyService.CalculateMonthlyDataForReportType(
                             inTargetMonth: model.RecordTimestamp,
                             isRecalculate: true,
-                            reportTypeId: this.reportType
+                            reportTypeId: this.reportType,
+                            changedMonthlyConfigId: model.UnitMonthlyConfigId
                             );
                         var status = UpdateResultRecords(updatedRecords);
 
