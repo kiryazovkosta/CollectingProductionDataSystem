@@ -235,10 +235,13 @@ var unitGridsData = (function () {
         if (confirmButton) {
             confirmButton.hide();
         }
-        var unitsGrid = $(".k-widget.k-grid").data("kendoGrid");
-        if (unitsGrid) {
-            unitsGrid.hideColumn('commands');
-        }
+
+        //if (($("#tanks-statuses").val() === undefined) && ($("#inner-pipes").val() !== undefined)) {
+            var unitsGrid = $(".k-widget.k-grid").data("kendoGrid");
+            if (unitsGrid) {
+                unitsGrid.hideColumn('commands');
+            }
+        //}
     }
 
     function showCommandButtons() {
