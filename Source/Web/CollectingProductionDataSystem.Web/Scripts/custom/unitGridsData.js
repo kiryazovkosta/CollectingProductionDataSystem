@@ -3,8 +3,10 @@ var beginDate;
 var unitGridsData = (function () {
     //Exclusion list of grids without command button hiding
     var exclusionList = ["#measuringpoints",
+                         "#highwaypipelines",
                          "#inner-pipes",
-                         "#tanks-statuses"];
+                         "#tanks-statuses",
+                         "#messages-grid"];
 
     // ----------------- autorun function on document ready -------------------
     'use strict';

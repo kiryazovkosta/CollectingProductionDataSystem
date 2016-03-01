@@ -21,7 +21,6 @@ using CollectingProductionDataSystem.Application.UnitsDataServices;
 using CollectingProductionDataSystem.Data.Concrete;
 using CollectingProductionDataSystem.Data;
 using CollectingProductionDataSystem.Models.Productions.Mounthly;
-using CollectingProductionDataSystem.Web.Areas.MonthlyHydroCarbons.Models;
 using Ninject;
 
 namespace CollectingProductionDataSystem.ConsoleTester

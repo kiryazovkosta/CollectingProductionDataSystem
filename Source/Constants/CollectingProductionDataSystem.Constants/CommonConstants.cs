@@ -22,15 +22,22 @@ namespace CollectingProductionDataSystem.Constants
 
         private static readonly int hydroCarbons = 1;
 
+        private static readonly int freshWater = 2;
+
+        private static readonly int circulatingWater = 3;
+
+        private static readonly int potableWater = 4;
+
+        private static readonly int heatEnergy = 5;
+
+        private static readonly int electricalEnergy = 6;
+
+
         private static readonly int dailyInfoDailyInfoHydrocarbonsShiftTypeId = 52;
 
-        public static string StandartPassword
-        {
-            get
-            {
-                return standartPassword;
-            }
-        }
+
+
+        public static string StandartPassword { get { return standartPassword; } }
 
         public static string[] PowerUsers { get { return powerUsers; } }
 
@@ -43,6 +50,16 @@ namespace CollectingProductionDataSystem.Constants
         public static int FirstDayInMonth { get { return firstDayInMonth; } }
 
         public static int HydroCarbons { get { return hydroCarbons; } }
+
+        public static int FreshWate { get { return freshWater; } }
+
+        public static int CirculatingWater { get { return circulatingWater; } }
+
+        public static int PotableWater { get { return potableWater; } }
+
+        public static int HeatEnergy { get { return heatEnergy; } }
+
+        public static int ElectricalEnergy { get { return electricalEnergy; } }
 
         public static int DailyInfoDailyInfoHydrocarbonsShiftTypeId { get { return dailyInfoDailyInfoHydrocarbonsShiftTypeId; } }
     }

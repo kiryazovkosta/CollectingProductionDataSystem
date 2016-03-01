@@ -47,11 +47,13 @@
                             <li>@Html.AuthorizedActionLink(@Resources.Layout.InnerPipelinesData, "InnerPipelinesData", "InnerPipelines", new { area = "MonthlyReporting" }, null)</li>
                             <li>@Html.AuthorizedActionLink(@Resources.Layout.InProcessUnitsData, "InProcessUnitsData", "InProcessUnits", new { area = "MonthlyReporting" }, null)</li>
                             <li role="separator" class="divider divider-labeled"><span class="label label-default pull-right">Месечни данни</span></li>
-                            <li>@Html.AuthorizedActionLink(@Resources.Layout.UnitMonthlyHCData, "Report", "MonthlyHydroCarbons", new { area = "MonthlyHydroCarbons" }, null)</li>
-                            <li>@Html.AuthorizedActionLink(@Resources.Layout.UnitMonthlyFWData, "Report", "MonthlyHydroCarbons", new { area = "MonthlyHydroCarbons" }, null)</li>
-                            <li>@Html.AuthorizedActionLink(@Resources.Layout.UnitMonthlyCWData, "Report", "MonthlyHydroCarbons", new { area = "MonthlyHydroCarbons" }, null)</li>
-                            <li>@Html.AuthorizedActionLink(@Resources.Layout.UnitMonthlyPWData, "Report", "MonthlyHydroCarbons", new { area = "MonthlyHydroCarbons" }, null)</li>
-                            <li>@Html.AuthorizedActionLink(@Resources.Layout.UnitMonthlyHEData, "Report", "MonthlyHydroCarbons", new { area = "MonthlyHydroCarbons" }, null)</li>
+                            <li>@Html.AuthorizedActionLink(@Resources.Layout.UnitMonthlyHCData, "Report", "MonthlyHydroCarbons", new { area = "MonthlyDataReporting" }, null)</li>
+                            <li>@Html.AuthorizedActionLink(@Resources.Layout.UnitMonthlyFWData, "Report", "MonthlyFreshWater", new { area = "MonthlyDataReporting" }, null)</li>
+                            <li>@Html.AuthorizedActionLink(@Resources.Layout.UnitMonthlyCWData, "Report", "MonthlyCirculatingWater", new { area = "MonthlyDataReporting" }, null)</li>
+                            <li>@Html.AuthorizedActionLink(@Resources.Layout.UnitMonthlyPWData, "Report", "MonthlyPotableWater", new { area = "MonthlyDataReporting" }, null)</li>
+                            <li>@Html.AuthorizedActionLink(@Resources.Layout.UnitMonthlyHEData, "Report", "MonthlyHeatEnergy", new { area = "MonthlyDataReporting" }, null)</li>
+                            <li>@Html.AuthorizedActionLink(@Resources.Layout.UnitMonthlyEEData, "Report", "MonthlyElectricalEnergy", new { area = "MonthlyDataReporting" }, null)</li>
+
                         </ul>
                     </li>
                 }

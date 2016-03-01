@@ -33,6 +33,8 @@
 
         public bool IsExpired { get { return this.ValidUntill < DateTime.Now; } set { } }
 
+        public bool IsEditable { get { return true; } }
+
         
     }
 }

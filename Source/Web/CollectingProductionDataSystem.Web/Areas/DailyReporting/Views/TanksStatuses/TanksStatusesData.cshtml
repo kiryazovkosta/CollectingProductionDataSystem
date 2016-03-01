@@ -69,11 +69,12 @@
             .Events(events =>
             {
                 events.Error("kendoAdditional.ErrorHandler");
-                events.Change("kendoAdditional.OnPipeChange");
                 events.RequestEnd("kendoAdditional.OnRequestEnd");
             })
         )
-        .Events(ev=>ev.Save("Save"))
+        .Events(ev=>{
+            ev.Save("Save");
+        })
 )
 
 @* //Error window for kendo grid error event handler *@
@@ -81,24 +82,21 @@
 @* //Error window for kendo grid error event handler *@
 <div id="success-window" style="display:none">@Html.Partial("_SuccessWindow")</div>
 
-
-
 @section scripts{
     @Scripts.Render("~/bundles/custom/kendoadditional")
     @Scripts.Render("~/bundles/custom/unitGrids")
     @Scripts.Render("~/bundles/custom/renderMaterialGraphic")
     @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.min.js")
-<script>
-    function Save(ev) {
-        if (ev.model !== undefined) {
-            if (ev.model.RecordTimestamp !== undefined) {
-                var targetDate = $('input[name=date]').data('kendoDatePicker').value();
-                ev.model.RecordTimestamp = targetDate;
+    <script>
+        function Save(ev) {
+            if (ev.model !== undefined) {
+                if (ev.model.RecordTimestamp) {
+                    var targetDate = $('input[name=date]').data('kendoDatePicker').value();
+                    ev.model.RecordTimestamp = targetDate;
+                }
             }
         }
-    }
-</script>
-
+    </script>
 }
 @section sidebar{
     @Html.Partial("_TanksSideBarByDate")

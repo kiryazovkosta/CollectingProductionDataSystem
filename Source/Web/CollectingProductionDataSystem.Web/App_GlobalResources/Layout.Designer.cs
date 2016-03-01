@@ -1591,6 +1591,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to InventoryBased.
+        /// </summary>
+        public static string InventoryBased {
+            get {
+                return ResourceManager.GetString("InventoryBased", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to IsAvailableForInnerPipeLine.
         /// </summary>
         public static string IsAvailableForInnerPipeLine {
@@ -2302,6 +2311,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Operational Data.
+        /// </summary>
+        public static string OperatinalData {
+            get {
+                return ResourceManager.GetString("OperatinalData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Operation.
         /// </summary>
         public static string OperationType {
@@ -2950,6 +2968,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Relative Difference.
+        /// </summary>
+        public static string RelativeDiff {
+            get {
+                return ResourceManager.GetString("RelativeDiff", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Total Relative Difference.
         /// </summary>
         public static string RelativeDifference {
@@ -2964,6 +2991,15 @@ namespace App_GlobalResources.Resources {
         public static string RememberMe {
             get {
                 return ResourceManager.GetString("RememberMe", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reported Data.
+        /// </summary>
+        public static string ReportedData {
+            get {
+                return ResourceManager.GetString("ReportedData", resourceCulture);
             }
         }
         
@@ -3877,6 +3913,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Monthly Electrical Eenergy Data.
+        /// </summary>
+        public static string UnitMonthlyEEData {
+            get {
+                return ResourceManager.GetString("UnitMonthlyEEData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to UnitMonthlyFWData.
         /// </summary>
         public static string UnitMonthlyFWData {
@@ -3895,7 +3940,7 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Месечни данни за топлоенергия.
+        ///   Looks up a localized string similar to UnitMonthlyHEData.
         /// </summary>
         public static string UnitMonthlyHEData {
             get {
@@ -3904,7 +3949,7 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Месечни данни за питейна вода.
+        ///   Looks up a localized string similar to UnitMonthlyPWData.
         /// </summary>
         public static string UnitMonthlyPWData {
             get {

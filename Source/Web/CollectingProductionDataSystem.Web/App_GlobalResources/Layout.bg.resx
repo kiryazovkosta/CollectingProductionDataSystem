@@ -1528,4 +1528,20 @@
   <data name="Reports" xml:space="preserve">
     <value>Отчети</value>
   </data>
+  <data name="InventoryBased" xml:space="preserve">
+    <value>На база инвентаризация</value>
+  </data>
+  <data name="OperatinalData" xml:space="preserve">
+    <value>Оперативни данни</value>
+  </data>
+  <data name="RelativeDiff" xml:space="preserve">
+    <value>Относителна разлика</value>
+  </data>
+  <data name="ReportedData" xml:space="preserve">
+    <value>Отчетено</value>
+  </data>
+  <data name="UnitMonthlyEEData" xml:space="preserve">
+    <value>Месечни данни за електрическа енергия</value>
+    <comment>electrical energy</comment>
+  </data>
 </root>

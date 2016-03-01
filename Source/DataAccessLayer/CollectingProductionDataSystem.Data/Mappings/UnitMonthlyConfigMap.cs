@@ -14,7 +14,7 @@ namespace CollectingProductionDataSystem.Data.Mappings
         {
             // Primary Key
             this.HasKey(t => t.Id);
-            
+
             //Index
             this.Property(t => t.IsDeleted)
                 .HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("ix_units_monthly_config_data", 1)))
@@ -29,6 +29,7 @@ namespace CollectingProductionDataSystem.Data.Mappings
                 .HasMaxLength(100);
 
             this.Property(t => t.Code)
+                .HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("ix_units_monthly_code_data", 1) { IsUnique = true }))
                 .IsRequired()
                 .HasMaxLength(20);
 

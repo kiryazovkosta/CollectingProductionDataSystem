@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace CollectingProductionDataSystem.Web.Areas.MonthlyHydroCarbons.Models
+﻿namespace CollectingProductionDataSystem.Web.Areas.MonthlyDataReporting.Models
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+
     public class ConfirmMonthlyInputModel : IEquatable<ConfirmMonthlyInputModel>
     {
         public DateTime date { get; set; }

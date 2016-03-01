@@ -6,9 +6,8 @@ using System.Web.Mvc;
 using CollectingProductionDataSystem.Data.Contracts;
 using CollectingProductionDataSystem.Web.Controllers;
 
-namespace CollectingProductionDataSystem.Web.Areas.MonthlyHydroCarbons.Controllers
+namespace CollectingProductionDataSystem.Web.Areas.MonthlyDataReporting.Controllers
 {
-    [Authorize(Roles = "Administrator, MonthlyHydroCarbonsReporter")]
     public abstract class AreaBaseController : BaseController
     {
         public AreaBaseController(IProductionData dataParam)

@@ -1517,11 +1517,11 @@
     <value>UnitMonthlyFWData</value>
   </data>
   <data name="UnitMonthlyHEData" xml:space="preserve">
-    <value>Месечни данни за топлоенергия</value>
+    <value>UnitMonthlyHEData</value>
     <comment>heat energy</comment>
   </data>
   <data name="UnitMonthlyPWData" xml:space="preserve">
-    <value>Месечни данни за питейна вода</value>
+    <value>UnitMonthlyPWData</value>
     <comment>potable water</comment>
   </data>
   <data name="DailyInfoHydrocarbonsData" xml:space="preserve">
@@ -1529,5 +1529,21 @@
   </data>
   <data name="Reports" xml:space="preserve">
     <value>Reports</value>
+  </data>
+  <data name="InventoryBased" xml:space="preserve">
+    <value>InventoryBased</value>
+  </data>
+  <data name="OperatinalData" xml:space="preserve">
+    <value>Operational Data</value>
+  </data>
+  <data name="RelativeDiff" xml:space="preserve">
+    <value>Relative Difference</value>
+  </data>
+  <data name="ReportedData" xml:space="preserve">
+    <value>Reported Data</value>
+  </data>
+  <data name="UnitMonthlyEEData" xml:space="preserve">
+    <value>Monthly Electrical Eenergy Data</value>
+    <comment>electrical energy</comment>
   </data>
 </root>

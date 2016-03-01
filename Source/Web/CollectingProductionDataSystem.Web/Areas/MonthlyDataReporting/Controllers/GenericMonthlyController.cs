@@ -1,49 +1,56 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
 using System.Text;
-using System.Web;
+using System.Transactions;
 using System.Web.Mvc;
 using AutoMapper;
 using CollectingProductionDataSystem.Application.Contracts;
-using CollectingProductionDataSystem.Application.MonthlyServices;
-using CollectingProductionDataSystem.Constants;
 using CollectingProductionDataSystem.Data.Common;
 using CollectingProductionDataSystem.Data.Contracts;
 using CollectingProductionDataSystem.Models.Productions.Mounthly;
-using CollectingProductionDataSystem.Web.Areas.MonthlyHydroCarbons.Models;
+using CollectingProductionDataSystem.Web.Areas.MonthlyDataReporting.Models;
 using CollectingProductionDataSystem.Web.Infrastructure.Extentions;
 using Kendo.Mvc.Extensions;
 using Kendo.Mvc.UI;
 using Newtonsoft.Json;
 using Resources = App_GlobalResources.Resources;
-using System.Transactions;
 
-namespace CollectingProductionDataSystem.Web.Areas.MonthlyHydroCarbons.Controllers
+namespace CollectingProductionDataSystem.Web.Areas.MonthlyDataReporting.Controllers
 {
-    public class MonthlyHydroCarbonsController : AreaBaseController
+    public class GenericMonthlyController<TViewModel> : AreaBaseController
+        where TViewModel: IValuable
     {
         private readonly IUnitMothlyDataService monthlyService;
         private readonly TransactionOptions transantionOption;
-        private readonly int reportType = CommonConstants.HydroCarbons;
+        private readonly int reportType;
+        private readonly string defaultView;
+        private readonly MonthlyEnergyReportsViewModel modelParams;
 
-        public MonthlyHydroCarbonsController(IProductionData dataParam, IUnitMothlyDataService monthlyServiceParam)
+        public GenericMonthlyController(IProductionData dataParam, IUnitMothlyDataService monthlyServiceParam, int reportType, string defaultView, MonthlyEnergyReportsViewModel modelParams = null)
             : base(dataParam)
         {
             this.monthlyService = monthlyServiceParam;
             this.transantionOption = DefaultTransactionOptions.Instance.TransactionOptions;
+            this.reportType = reportType;
+            this.defaultView = defaultView;
+            this.modelParams = modelParams;
         }
 
-        // GET: MonthlyHydroCarbons/MonthlyHydroCarbons
         [HttpGet]
         public ActionResult Report()
         {
-            return View();
+            if (this.modelParams == null)
+            {
+                return View(defaultView);
+            }
+            else 
+            {
+                return View(defaultView, modelParams);
+            }
         }
 
         [HttpPost]
@@ -53,7 +60,7 @@ namespace CollectingProductionDataSystem.Web.Areas.MonthlyHydroCarbons.Controlle
 
             if (!this.ModelState.IsValid)
             {
-                var kendoResult = new List<MonthlyHydroCarbonViewModel>().ToDataSourceResult(request, ModelState);
+                var kendoResult = new List<TViewModel>().ToDataSourceResult(request, ModelState);
                 return Json(kendoResult);
             }
 
@@ -70,7 +77,7 @@ namespace CollectingProductionDataSystem.Web.Areas.MonthlyHydroCarbons.Controlle
                 if (ModelState.IsValid)
                 {
                     var dbResult = this.monthlyService.GetDataForMonth(date, this.reportType).OrderBy(x => x.UnitMonthlyConfig.Code).ToList();
-                    var vmResult = Mapper.Map<IEnumerable<MonthlyHydroCarbonViewModel>>(dbResult);
+                    var vmResult = Mapper.Map<IEnumerable<TViewModel>>(dbResult);
                     kendoResult = vmResult.ToDataSourceResult(request, ModelState);
                 }
                 Session["reportParams"] = Convert.ToBase64String(Encoding.UTF8.GetBytes(
@@ -87,14 +94,14 @@ namespace CollectingProductionDataSystem.Web.Areas.MonthlyHydroCarbons.Controlle
             }
             else
             {
-                var kendoResult = new List<MonthlyHydroCarbonViewModel>().ToDataSourceResult(request, ModelState);
+                var kendoResult = new List<TViewModel>().ToDataSourceResult(request, ModelState);
                 return Json(kendoResult);
             }
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([DataSourceRequest]DataSourceRequest request, MonthlyHydroCarbonViewModel model)
+        public ActionResult Edit([DataSourceRequest]DataSourceRequest request, TViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -176,7 +183,7 @@ namespace CollectingProductionDataSystem.Web.Areas.MonthlyHydroCarbons.Controlle
             return this.data.SaveChanges(this.UserProfile.UserName);
         }
 
-        private void UpdateRecord(UnitManualMonthlyData existManualRecord, MonthlyHydroCarbonViewModel model)
+        private void UpdateRecord(UnitManualMonthlyData existManualRecord, TViewModel model)
         {
             existManualRecord.Value = model.UnitManualMonthlyData.Value;
             this.data.UnitManualMonthlyDatas.Update(existManualRecord);

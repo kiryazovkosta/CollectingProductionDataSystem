@@ -193,7 +193,7 @@ namespace CollectingProductionDataSystem.Application.MonthlyServices
         /// </summary>
         /// <param name="targetMonth">The target month.</param>
         /// <returns></returns>
-        private Dictionary<string, UnitMonthlyData> GetMonthlyDataForMonth(DateTime targetMonth, int changedRecordId = 0)
+        private Dictionary<string, UnitMonthlyData> GetMonthlyDataForMonth(DateTime targetMonth)
         {
             return this.data.UnitMonthlyDatas.All()
                         .Include(x => x.UnitMonthlyConfig)

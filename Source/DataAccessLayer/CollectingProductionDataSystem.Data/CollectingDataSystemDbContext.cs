@@ -253,6 +253,20 @@
                 logger.Error(ex.Message, this, ex);
                 return result.SetErrors(ex.EntityValidationErrors);
             }
+            catch(DbUpdateException ex)
+            {
+                logger.Error(ex.Message, this, ex);
+                var sqlException = ex.InnerException.InnerException as System.Data.SqlClient.SqlException;
+                
+                if ( (sqlException != null) && (sqlException.Number == 2601 || sqlException.Number == 2627))
+                {
+                    return result.SetErrors(new List<ValidationResult>{new ValidationResult( Errors.UnikConstraintViolation)});
+                }
+                else
+                {
+                    return result.SetErrors(new List<ValidationResult> { new ValidationResult(Errors.SavingDataError) });
+                }
+            }
             //else it isn't an exception we understand so it throws in the normal way
 
             return result;
