@@ -47,18 +47,23 @@
                     var max = context.MaxAsoMeasuringPointDataSequenceNumberMap.All().FirstOrDefault();
                     if (max != null)
                     {
-                        var transactions = GetTransactionsFromAso(max, context);
+                        long maxSequenceNumber = -1;
+
+                        var transactions = GetTransactionsFromAso(max, context, ref maxSequenceNumber);
                         if (transactions.Count > 0)
                         {
                             context.MeasuringPointsConfigsDatas.BulkInsert(transactions, "Aso2Sql");
                             context.SaveChanges("Aso2Sql");
                             logger.InfoFormat("Successfully synchronization {0} records from Aso to Cpds", transactions.Count);
+
+                            if (maxSequenceNumber > 0)
+                            {
+                                max.MaxSequenceNumber = maxSequenceNumber;
+                                context.MaxAsoMeasuringPointDataSequenceNumberMap.Update(max);
+                                context.SaveChanges("Aso2Sql");
+                                logger.InfoFormat("Last SequenceNumber was updated to {0}.", maxSequenceNumber);    
+                            }
                         }
-                        
-                        max.LastTransactionsFetchingDateTime = DateTime.Now;
-                        context.MaxAsoMeasuringPointDataSequenceNumberMap.Update(max);
-                        context.SaveChanges("Aso2Sql");
-                        logger.InfoFormat("Last transactions fetching date-time was updated to {0}.", DateTime.Now);  
                     }
 
                     logger.Info("End aso2sapo data synchronization");
@@ -71,14 +76,15 @@
             }
         }
  
-        private static List<MeasuringPointsConfigsData> GetTransactionsFromAso(MaxAsoMeasuringPointDataSequenceNumber max, ProductionData context)
+        private static List<MeasuringPointsConfigsData> GetTransactionsFromAso(MaxAsoMeasuringPointDataSequenceNumber max, 
+            ProductionData context, ref long maxSequenceNumber)
         {
             var transactions = new List<MeasuringPointsConfigsData>();
-            logger.InfoFormat("Last transaction fetching date-time was {0}", max.LastTransactionsFetchingDateTime);
-            var maxLastTransactionsFetchingDateTime = max.LastTransactionsFetchingDateTime;
+            logger.InfoFormat("Last processing SequenceNumber was {0}", max.MaxSequenceNumber);
+            var maximumLastFetchSequenceNumber = max.MaxSequenceNumber;
             var adapter = new AsoDataSetTableAdapters.flow_MeasuringPointsDataTableAdapter();
             var table = new AsoDataSet.flow_MeasuringPointsDataDataTable();
-            adapter.Fill(table, maxLastTransactionsFetchingDateTime.Value);
+            adapter.Fill(table, maximumLastFetchSequenceNumber);
             if (table.Rows.Count > 0)
             {
                 var mesurinpPointsByTransactions = context.MeasuringPointConfigs.All().Where(x => x.IsUsedPhdTotalizers == true).Select(x => x.Id).ToList();
@@ -88,6 +94,11 @@
                     if (mesurinpPointsByTransactions.Contains(row.MeasuringPointId))
                     {
                         continue;
+                    }
+
+                    if (row.RowId != -1)
+                    {
+                        continue;   
                     }
 
                     var tr = new MeasuringPointsConfigsData();
@@ -301,6 +312,8 @@
                     logger.InfoFormat("Processing sequence number {0}", row.SequenceNumber);
                     transactions.Add(tr);
                 }
+
+                maxSequenceNumber = Convert.ToInt64(table.Compute("max(SequenceNumber)", string.Empty));
             }
 
             return transactions;

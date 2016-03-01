@@ -52,6 +52,20 @@
                 return result;
             }
 
+
+            var existingProductionPlanData = this.data.ProductionPlanDatas.All()
+                .Include(p => p.ProductionPlanConfig)
+                .Include(p => p.ProductionPlanConfig.MaterialType)
+                .Where(p => p.RecordTimestamp == date &&
+                        p.ProcessUnitId == processUnitId &&
+                        p.ProductionPlanConfig.MaterialTypeId == materialTypeId)
+                .ToList();
+            if (existingProductionPlanData.Count > 0)
+	        {
+                return existingProductionPlanData;
+	        }
+
+
             var dbResult = this.data.ProductionPlanConfigs.All();
             if (processUnitId != null)
             {

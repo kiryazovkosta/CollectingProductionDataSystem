@@ -1096,6 +1096,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to EozMeasuringPointsData.
+        /// </summary>
+        public static string EozMeasuringPointsData {
+            get {
+                return ResourceManager.GetString("EozMeasuringPointsData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to EstimatedCompressibilityFactor.
         /// </summary>
         public static string EstimatedCompressibilityFactor {

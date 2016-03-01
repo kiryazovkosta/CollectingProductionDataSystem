@@ -293,7 +293,7 @@
     <Compile Include="Areas\NomManagement\Models\ViewModels\UnitMonthlyConfigViewModel.cs" />
     <Compile Include="Areas\OverseersReporting\Controllers\AjaxController.cs" />
     <Compile Include="Areas\OverseersReporting\Controllers\AreaBaseController.cs" />
-    <Compile Include="Areas\OverseersReporting\Controllers\TransactionsDailyController.cs" />
+    <Compile Include="Areas\SummaryReporting\Controllers\OverseersTransactionsController.cs" />
     <Compile Include="Areas\OverseersReporting\OverseersReportingAreaRegistration.cs" />
     <Compile Include="Areas\ShiftReporting\Controllers\DailyInfoHydrocarbonsController.cs" />
     <Compile Include="Areas\ShiftReporting\Controllers\HighwayPipelinesController.cs" />
@@ -404,6 +404,9 @@
     <Compile Include="Areas\SummaryReporting\ViewModels\DataConfirmationViewModel.cs" />
     <Compile Include="Areas\SummaryReporting\ViewModels\EnergyProductionPlanDataViewModel.cs" />
     <Compile Include="Areas\SummaryReporting\ViewModels\SummaryProductionPlanViewModel.cs" />
+    <Compile Include="Areas\SummaryReporting\ViewModels\WeightInVacuumDto.cs" />
+    <Compile Include="Areas\SummaryReporting\ViewModels\TankWeighInVacuumViewModel.cs" />
+    <Compile Include="ViewModels\Transactions\TransactionDataModel.cs" />
     <Compile Include="Controllers\AccountController.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -1079,7 +1082,6 @@
     <Content Include="Areas\Administration\Views\Shared\_UserAdditionalData.cshtml" />
     <Content Include="Areas\Administration\Views\Shared\_KendoAdminLayout.cshtml" />
     <Content Include="Areas\DailyReporting\Views\UnitsDaily\UnitsDailyData.cshtml" />
-    <Content Include="Areas\ShiftReporting\Views\Tanks\TanksData.cshtml" />
     <Content Include="Areas\NomManagement\Views\web.config" />
     <Content Include="Areas\NomManagement\Views\UploadNom\Index.cshtml" />
     <Content Include="Areas\NomManagement\Views\UnitConfig\Index.cshtml" />
@@ -1202,11 +1204,12 @@
     <Content Include="Areas\Documentation\Views\Help\HelpNomenclature.cshtml" />
     <Content Include="Areas\ShiftReporting\Views\_ViewStart.cshtml" />
     <Content Include="Areas\ShiftReporting\Views\Shared\_Layout.cshtml" />
-    <Content Include="Areas\ShiftReporting\Views\Tanks\TanksDataNew.cshtml" />
+    <Content Include="Areas\ShiftReporting\Views\Tanks\TanksData.cshtml" />
     <Content Include="Areas\ShiftReporting\Views\DailyInfoHydrocarbons\DailyInfoHydrocarbonsData.cshtml" />
     <Content Include="Areas\OverseersReporting\Views\web.config" />
-    <Content Include="Areas\OverseersReporting\Views\TransactionsDaily\TransactionsDailyData.cshtml" />
     <Content Include="Areas\SummaryReporting\Views\SummaryReports\DailyInfoHydrocarbonsData.cshtml" />
+    <Content Include="Areas\SummaryReporting\Views\OverseersTransactions\OverseersTransactionsData.cshtml" />
+    <Content Include="Areas\SummaryReporting\Views\SummaryReports\TanksWeightInVacuumData.cshtml" />
     <Content Include="Areas\MonthlyDataReporting\Views\Shared\EnergyReport.cshtml" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <None Include="Properties\PublishProfiles\Home.pubxml" />
