@@ -437,9 +437,9 @@ namespace CollectingProductionDataSystem.Application.MonthlyServices
         {
             DateTime date = inTargetMonth.Date;
             DateTime targetMonth = new DateTime(date.Year, date.Month, DateTime.DaysInMonth(date.Year, date.Month));
-            //#if DEBUG
+#if DEBUG
             targetMonth = new DateTime(inTargetMonth.Year, 2, 2);
-            //#endif
+#endif
             return targetMonth;
         }
 
