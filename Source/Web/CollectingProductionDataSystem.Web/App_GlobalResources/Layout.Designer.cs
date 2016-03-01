@@ -1708,6 +1708,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Тотализираща позиция.
+        /// </summary>
+        public static string IsSummaryOfProcessing {
+            get {
+                return ResourceManager.GetString("IsSummaryOfProcessing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to IsTotal.
         /// </summary>
         public static string IsTotal {

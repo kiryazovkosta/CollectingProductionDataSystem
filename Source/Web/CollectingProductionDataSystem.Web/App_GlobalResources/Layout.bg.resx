@@ -1547,4 +1547,7 @@
   <data name="EozMeasuringPointsData" xml:space="preserve">
     <value>Данни за експедирани и доставени нефтопродукти - Диспечеризация и ЕОЗ</value>
   </data>
+  <data name="IsSummaryOfProcessing" xml:space="preserve">
+    <value>Тотализираща позиция</value>
+  </data>
 </root>

@@ -35,6 +35,8 @@ namespace CollectingProductionDataSystem.Web.ViewModels.Units
 
         [Display(Name = "TotalMonthPercentagesFact", ResourceType = typeof(App_GlobalResources.Resources.Layout))]
         public decimal TotalMonthPercentagesFact { get; set; }
+
+        public int Position { get; set; }
         public void CreateMappings(IConfiguration configuration)
         {
             configuration.CreateMap<ProductionPlanData, ProductionPlanViewModel>()
@@ -44,6 +46,7 @@ namespace CollectingProductionDataSystem.Web.ViewModels.Units
                 .ForMember(p => p.QuantityFact, opt => opt.MapFrom(p => p.QuantityFact))
                 .ForMember(p => p.PercentagesFact, opt => opt.MapFrom(p => p.PercentagesFact))
                 .ForMember(p => p.TotalMonthQuantityFact, opt => opt.MapFrom(p => p.QuanityFactCurrentMonth + p.QuantityFact))
+                .ForMember(p => p.Position, opt => opt.MapFrom(p => p.ProductionPlanConfig.Position))
                 .ForMember(p => p.TotalMonthPercentagesFact, opt => opt.MapFrom(p => p.PercentagesFactCurrentMonth));
 
         }

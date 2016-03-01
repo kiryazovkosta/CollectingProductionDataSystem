@@ -16,6 +16,9 @@
           toolbar.Create();
           toolbar.Excel();
       })
+        .Excel(excel => excel
+            .AllPages(true)
+        )
       .Editable(editable => editable.Mode(GridEditMode.InLine))
       .Pageable(pageable => pageable
           .Refresh(true)

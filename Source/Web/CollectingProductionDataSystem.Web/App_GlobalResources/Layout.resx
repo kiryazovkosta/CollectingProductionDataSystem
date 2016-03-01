@@ -1549,4 +1549,7 @@
     <value>Monthly Electrical Eenergy Data</value>
     <comment>electrical energy</comment>
   </data>
+  <data name="IsSummaryOfProcessing" xml:space="preserve">
+    <value>Тотализираща позиция</value>
+  </data>
 </root>

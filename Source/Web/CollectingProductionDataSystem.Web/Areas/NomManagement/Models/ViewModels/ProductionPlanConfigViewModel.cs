@@ -22,6 +22,13 @@ namespace CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewMode
         public string Name { get; set; }
 
         [Required]
+        [Display(Name = "Position", ResourceType = typeof(Resources.Layout))]
+        public int Position { get; set; }
+
+        [Display(Name = "IsSummaryOfProcessing", ResourceType = typeof(Resources.Layout))]
+        public bool IsSummaryOfProcessing { get; set; }
+
+        [Required]
         [Display(Name = "Percentages", ResourceType = typeof(Resources.Layout))]
         public decimal Percentages { get; set; }
 
