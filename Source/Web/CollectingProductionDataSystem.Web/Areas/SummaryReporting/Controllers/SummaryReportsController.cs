@@ -52,7 +52,7 @@
         [OutputCache(Duration = HalfAnHour, Location = OutputCacheLocation.Server, VaryByParam = "*")]
         public ActionResult ReadTanksData([DataSourceRequest]DataSourceRequest request, DateTime? date, int? parkId, int? areaId)
         {
-            ValidateTanksInputModel(date, parkId);
+            ValidateInputModel(date, parkId);
 
             if (this.ModelState.IsValid)
             {
@@ -62,22 +62,66 @@
                     .Include(t => t.TankConfig)
                     .Include(t => t.TankConfig.Park)
                     .Where(t => t.RecordTimestamp == date
-                        && t.TankConfig.Park.AreaId == (areaId ?? t.TankConfig.Park.AreaId)
-                        && t.ParkId == (parkId ?? t.ParkId));
+                        && (areaId == null || t.TankConfig.Park.AreaId == areaId)
+                        && (parkId == null || t.ParkId == parkId))
+                    .ToList();
 
-                var kendoResult = dbResult.ToDataSourceResult(request, ModelState);
-                kendoResult.Data = Mapper.Map<IEnumerable<TankData>, IEnumerable<TankDataViewModel>>((IEnumerable<TankData>)kendoResult.Data);
-                foreach (var item in kendoResult.Data)
+                //var kendoResult = dbResult.ToDataSourceResult(request, ModelState);
+                //kendoResult.Data = Mapper.Map<IEnumerable<TankData>, IEnumerable<TankDataViewModel>>((IEnumerable<TankData>)kendoResult.Data);
+                var vmResult = Mapper.Map<IEnumerable<TankDataViewModel>>(dbResult);
+
+
+                foreach (var tank in vmResult)
                 {
-                    var model = (TankDataViewModel)item;
-                    var status = statuses.Where(x => x.Tank.Id == model.TankId).FirstOrDefault();
+                    var status = statuses.Where(x => x.Tank.Id == tank.TankId).FirstOrDefault();
                     if (status != null && status.Quantity.TankStatus != null)
                     {
-                        model.StatusOfTank = status.Quantity.TankStatus.Id.ToString();   
+                        tank.StatusOfTank = status.Quantity.TankStatus.Id.ToString();
                     }
                 }
-                
+
+                return Json(vmResult.OrderByDescending(x=>x.TankName[0]).ThenBy(x=>x.TankNumber).ToDataSourceResult(request, this.ModelState));
+            }
+            else
+            {
+                var kendoResult = new List<TankDataViewModel>().ToDataSourceResult(request, ModelState);
                 return Json(kendoResult);
+            }
+        }
+
+        [HttpGet]
+        public ActionResult TanksWeightInVacuumData()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [OutputCache(Duration = HalfAnHour, Location = OutputCacheLocation.Server, VaryByParam = "*")]
+        public ActionResult ReadTanksWeightInVacuumData([DataSourceRequest]DataSourceRequest request, DateTime? date, int? parkId, int? areaId)
+        {
+            ValidateUnitsReportModelState(date);
+
+            if (this.ModelState.IsValid)
+            {
+                var dbResult = this.data.TanksData.All()
+                    .Include(t => t.TankConfig)
+                    .Include(t => t.TankConfig.Park)
+                    .Include(t => t.Product)
+                    .Where(t => t.RecordTimestamp == date
+                        && (areaId == null || t.TankConfig.Park.AreaId == areaId)
+                        && (parkId == null || t.ParkId == parkId))
+                    .Select(t => new WeightInVacuumDto
+                    {
+                        Id = t.Id,
+                        RecordTimestamp = t.RecordTimestamp,
+                        TankConfig = t.TankConfig,
+                        Product = t.Product,
+                        WeightInVaccum = t.WeightInVacuum??0.0m
+                    });
+
+                var vmResult = Mapper.Map<IEnumerable<TankDataViewModel>>(dbResult);
+                return Json(vmResult.OrderByDescending(x=>x.TankName[0]).ThenBy(x=>x.TankNumber).ToDataSourceResult(request, this.ModelState));
             }
             else
             {
@@ -428,6 +472,21 @@
             if (date == null)
             {
                 this.ModelState.AddModelError("date", string.Format(Resources.ErrorMessages.Required, Resources.Layout.UnitsDateSelector));
+            }
+        }
+
+        private void ValidateInputModel(DateTime? date, int? parkId)
+        {
+            if (date == null)
+            {
+                this.ModelState.AddModelError("date", string.Format(Resources.ErrorMessages.Required, Resources.Layout.TanksDateSelector));
+            }
+            if (!User.IsInRole("Administrator") && !User.IsInRole("AllParksReporter"))
+            {
+                if (parkId == null)
+                {
+                    this.ModelState.AddModelError("parks", string.Format(Resources.ErrorMessages.Required, Resources.Layout.TanksParkSelector));
+                }
             }
         }
 

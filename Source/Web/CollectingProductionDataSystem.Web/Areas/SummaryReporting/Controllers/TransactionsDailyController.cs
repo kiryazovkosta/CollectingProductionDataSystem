@@ -1,24 +1,25 @@
-﻿using System.Data.Entity;
-using System.Diagnostics;
-using CollectingProductionDataSystem.Data.Contracts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using CollectingProductionDataSystem.Web.Areas.DailyReporting.Controllers;
-using CollectingProductionDataSystem.Web.ViewModels.Transactions;
-using Kendo.Mvc.Extensions;
-using Kendo.Mvc.UI;
-using AutoMapper;
-using CollectingProductionDataSystem.Models.Transactions;
-using Resources = App_GlobalResources.Resources;
-
-namespace CollectingProductionDataSystem.Web.Areas.SummaryReporting.Controllers
+﻿namespace CollectingProductionDataSystem.Web.Areas.SummaryReporting.Controllers
 {
+    using System.Data.Entity;
+    using System.Diagnostics;
+    using CollectingProductionDataSystem.Data.Contracts;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Web;
+    using System.Web.Mvc;
+    using CollectingProductionDataSystem.Web.Areas.DailyReporting.Controllers;
+    using CollectingProductionDataSystem.Web.ViewModels.Transactions;
+    using Kendo.Mvc.Extensions;
+    using Kendo.Mvc.UI;
+    using AutoMapper;
+    using CollectingProductionDataSystem.Models.Transactions;
+    using Resources = App_GlobalResources.Resources;
+
     public class TransactionsDailyController : AreaBaseController
     {
-        public TransactionsDailyController(IProductionData dataParam) : base(dataParam)
+        public TransactionsDailyController(IProductionData dataParam)
+            : base(dataParam)
         {
         }
 
@@ -29,7 +30,7 @@ namespace CollectingProductionDataSystem.Web.Areas.SummaryReporting.Controllers
         }
 
         [HttpPost]
-                public JsonResult ReadTransactionsDailyData([DataSourceRequest]DataSourceRequest request, DateTime? date, int? flowDirection)
+        public JsonResult ReadTransactionsDailyData([DataSourceRequest]DataSourceRequest request, DateTime? date, int? flowDirection)
         {
             ValidateModelState(date, flowDirection);
             var kendoResult = new DataSourceResult();
@@ -48,13 +49,13 @@ namespace CollectingProductionDataSystem.Web.Areas.SummaryReporting.Controllers
                 });
 
                 var dict = new SortedDictionary<int, MeasuringPointsDataViewModel>();
-                
+
                 foreach (var transactionData in transactionsData)
                 {
                     var measuringPointData = FillModelObject(transactionData, dict, flowDirection);
                     if (measuringPointData != null)
                     {
-                        dict[transactionData.ProductId] = measuringPointData;   
+                        dict[transactionData.ProductId] = measuringPointData;
                     }
                 }
 
@@ -108,8 +109,8 @@ namespace CollectingProductionDataSystem.Web.Areas.SummaryReporting.Controllers
 
             return Json(kendoResult);
         }
- 
-        private HashSet<MeasuringPointsDataViewModel> PopulateAllMeaurementPointDatas(SortedDictionary<int, MeasuringPointsDataViewModel> dict, 
+
+        private HashSet<MeasuringPointsDataViewModel> PopulateAllMeaurementPointDatas(SortedDictionary<int, MeasuringPointsDataViewModel> dict,
             Dictionary<int, decimal> actDict, Dictionary<int, decimal> totallyQuantityByProducts)
         {
             var hs = new HashSet<MeasuringPointsDataViewModel>();
@@ -118,7 +119,7 @@ namespace CollectingProductionDataSystem.Web.Areas.SummaryReporting.Controllers
                 var p = SetMeasuringPointsDataViewModel(item, actDict, totallyQuantityByProducts);
                 if (p.TotalQuantity > 0)
                 {
-                    hs.Add(p);   
+                    hs.Add(p);
                 }
             }
 
@@ -153,7 +154,7 @@ namespace CollectingProductionDataSystem.Web.Areas.SummaryReporting.Controllers
 
             return hs;
         }
- 
+
         private IQueryable<MeasuringPointsConfigsData> GetMeasurementPointsDataByDateAndDirection(DateTime? date, int? flowDirection, bool checkMonthData = false)
         {
             var transactions = this.data.MeasuringPointsConfigsDatas
@@ -169,7 +170,7 @@ namespace CollectingProductionDataSystem.Web.Areas.SummaryReporting.Controllers
                 if (!checkMonthData)
                 {
                     beginTimestamp = date.Value.AddMinutes(300);
-                    endTimestamp = beginTimestamp.AddMinutes(1440);  
+                    endTimestamp = beginTimestamp.AddMinutes(1440);
                 }
                 else
                 {
@@ -177,7 +178,7 @@ namespace CollectingProductionDataSystem.Web.Areas.SummaryReporting.Controllers
                     endTimestamp = date.Value.AddMinutes(1740);
                 }
 
-                transactions = transactions.Where(x => x.TransactionEndTime >= beginTimestamp & x.TransactionEndTime < endTimestamp); 
+                transactions = transactions.Where(x => x.TransactionEndTime >= beginTimestamp & x.TransactionEndTime < endTimestamp);
             }
 
             if (flowDirection.HasValue)
@@ -186,7 +187,7 @@ namespace CollectingProductionDataSystem.Web.Areas.SummaryReporting.Controllers
             }
             return transactions;
         }
- 
+
         private Dictionary<int, decimal> GetActiveTransactionsData(DateTime? date, int? flowDirection)
         {
             var actDict = new Dictionary<int, decimal>();
@@ -222,21 +223,21 @@ namespace CollectingProductionDataSystem.Web.Areas.SummaryReporting.Controllers
                 {
                     if (direction == 1)
                     {
-                        actDict[prodId] = actDict[prodId] + activeTransaction.Mass; 
+                        actDict[prodId] = actDict[prodId] + activeTransaction.Mass;
                     }
                     else if (direction == 2)
                     {
-                        actDict[prodId] = actDict[prodId] + activeTransaction.MassReverse;  
+                        actDict[prodId] = actDict[prodId] + activeTransaction.MassReverse;
                     }
-                    else 
+                    else
                     {
                         if (flowDirection == 1)
                         {
-                            actDict[prodId] = actDict[prodId] + activeTransaction.Mass;    
+                            actDict[prodId] = actDict[prodId] + activeTransaction.Mass;
                         }
                         else
                         {
-                            actDict[prodId] = actDict[prodId] + activeTransaction.MassReverse;  
+                            actDict[prodId] = actDict[prodId] + activeTransaction.MassReverse;
                         }
                     }
                 }
@@ -244,21 +245,21 @@ namespace CollectingProductionDataSystem.Web.Areas.SummaryReporting.Controllers
                 {
                     if (direction == 1)
                     {
-                        actDict[prodId] = activeTransaction.Mass; 
+                        actDict[prodId] = activeTransaction.Mass;
                     }
                     else if (direction == 2)
                     {
-                        actDict[prodId] = activeTransaction.MassReverse;  
+                        actDict[prodId] = activeTransaction.MassReverse;
                     }
-                    else 
+                    else
                     {
                         if (flowDirection == 1)
                         {
-                            actDict[prodId] = activeTransaction.Mass;    
+                            actDict[prodId] = activeTransaction.Mass;
                         }
                         else
                         {
-                            actDict[prodId] = activeTransaction.MassReverse;  
+                            actDict[prodId] = activeTransaction.MassReverse;
                         }
                     }
                 }
@@ -266,8 +267,8 @@ namespace CollectingProductionDataSystem.Web.Areas.SummaryReporting.Controllers
 
             return actDict;
         }
- 
-        private MeasuringPointsDataViewModel SetMeasuringPointsDataViewModel(KeyValuePair<int, MeasuringPointsDataViewModel> item, 
+
+        private MeasuringPointsDataViewModel SetMeasuringPointsDataViewModel(KeyValuePair<int, MeasuringPointsDataViewModel> item,
             Dictionary<int, decimal> actDict, Dictionary<int, decimal> totallyQuantityByProducts)
         {
             var p = item.Value;
@@ -306,9 +307,9 @@ namespace CollectingProductionDataSystem.Web.Areas.SummaryReporting.Controllers
             }
             return p;
         }
- 
-        private MeasuringPointsDataViewModel FillModelObject(TransactionDataModel transactionData, 
-            SortedDictionary<int, MeasuringPointsDataViewModel> dict, 
+
+        private MeasuringPointsDataViewModel FillModelObject(TransactionDataModel transactionData,
+            SortedDictionary<int, MeasuringPointsDataViewModel> dict,
             int? flowDirection)
         {
             var measuringPointData = new MeasuringPointsDataViewModel();
@@ -329,7 +330,7 @@ namespace CollectingProductionDataSystem.Web.Areas.SummaryReporting.Controllers
             {
                 measuringPointData = dict[transactionData.ProductId];
             }
-                
+
             measuringPointData.ProductId = transactionData.ProductId;
 
             if (transactionData.TransportId == 1)
@@ -352,7 +353,7 @@ namespace CollectingProductionDataSystem.Web.Areas.SummaryReporting.Controllers
 
             return measuringPointData;
         }
- 
+
         private void ValidateModelState(DateTime? date, int? directionId)
         {
             if (date == null)
@@ -362,35 +363,6 @@ namespace CollectingProductionDataSystem.Web.Areas.SummaryReporting.Controllers
             if (directionId == null || directionId.Value == 3)
             {
                 this.ModelState.AddModelError("direction", string.Format(Resources.ErrorMessages.Required, Resources.Layout.Direction));
-            }
-        }
-    }
-
-    public class TransactionDataModel 
-    { 
-        public int MeasuringPointId { get; set; }
-        public int DirectionId { get; set; }
-        public int TransportId { get; set; }
-        public int ProductId { get; set; }
-        public int FlowDirection { get; set; }
-        public decimal? Mass { get; set; }
-        public decimal? MassReverse { get; set; }
-        public decimal RealMass
-        {
-            get 
-            {
-                if (this.Mass.HasValue && this.Mass.Value > 0)
-                {
-                    return this.Mass.Value;
-                }
-                else if (this.MassReverse.HasValue)
-                {
-                    return this.MassReverse.Value;   
-                }
-                else
-                {
-                    return 0.0m;
-                }
             }
         }
     }

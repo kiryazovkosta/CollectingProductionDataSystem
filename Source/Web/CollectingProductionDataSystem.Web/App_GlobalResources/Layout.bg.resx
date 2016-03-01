@@ -1528,4 +1528,7 @@
   <data name="Reports" xml:space="preserve">
     <value>Отчети</value>
   </data>
+  <data name="EozMeasuringPointsData" xml:space="preserve">
+    <value>Данни за експедирани и доставени нефтопродукти - Диспечеризация и ЕОЗ</value>
+  </data>
 </root>

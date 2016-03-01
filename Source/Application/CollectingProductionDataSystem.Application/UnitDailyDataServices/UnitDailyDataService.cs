@@ -433,6 +433,7 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
                 .Where(y => y.RecordTimestamp == targetDate
                     && y.UnitsDailyConfig.ProcessUnitId == processUnitId
                     && y.UnitsDailyConfig.MaterialTypeId == materialTypeId).Any();
+
             return unitDailyDatas;
         }
 

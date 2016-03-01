@@ -9,7 +9,7 @@
 }
 <div class="row">
     <div class="col-md-10">
-        <h2>@Resources.Layout.MeasuringPointsData</h2>
+        <h2>@Resources.Layout.EozMeasuringPointsData</h2>
     </div>
     <div class="col-md-2">
         <button id="excel-export" class="k-button k-button-icontext k-grid-excel pull-right head-button"><span class="k-icon k-i-excel"></span>Експорт в Excel</button>
@@ -32,14 +32,7 @@
                 columns.Bound(c => c.SeaQuantity).ClientTemplate("<div style='text-align:right;'>#=kendo.toString(data.SeaQuantity, 'n3') #</div>").Width(140);
                 columns.Bound(c => c.PipeQuantity).ClientTemplate("<div style='text-align:right;'>#=kendo.toString(data.PipeQuantity, 'n3') #</div>").Width(140);
                 columns.Bound(c => c.TotalQuantity).ClientTemplate("<div style='text-align:right;'>#=kendo.toString(data.TotalQuantity, 'n3') #</div>").Width(140);
-                //columns.Bound(c => c.TotalMonthQuantity).ClientTemplate("<div style='text-align:right;'>#=kendo.toString(data.TotalMonthQuantity, 'n3') #</div>").Width(140);
-                //columns.Bound(c => c.ActiveQuantity).ClientTemplate("<div style='text-align:right;'>#=kendo.toString(data.ActiveQuantity, 'n3') #</div>").Width(140);
             })
-                //.Pageable(pageable => pageable
-                //        //.Refresh(true)
-                //        .PageSizes(new[] { 50, 100 })
-                //        //.ButtonCount(5)
-                //)
         .Sortable()
         .Excel(excel => excel
                     .FileName(@Resources.Layout.MeasuringPointsData + "_" + DateTime.Now + ".xlsx")
@@ -53,7 +46,7 @@
             .Ajax()
             .PageSize(50)
             .ServerOperation(true)
-            .Read(read => read.Action("ReadTransactionsDailyData", "TransactionsDaily", new { area = "OverseersReporting" }).Data("sendDate"))
+            .Read(read => read.Action("ReadOverseersTransactionsData", "OverseersTransactions", new { area = "SummaryReporting" }).Data("sendDate"))
             .Sort(a => a.Add(c => c.ProductId).Ascending())
         .Events(events =>
         {

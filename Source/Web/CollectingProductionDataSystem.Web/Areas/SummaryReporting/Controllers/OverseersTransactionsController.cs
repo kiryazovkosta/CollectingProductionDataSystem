@@ -1,4 +1,4 @@
-﻿namespace CollectingProductionDataSystem.Web.Areas.OverseersReporting.Controllers
+﻿namespace CollectingProductionDataSystem.Web.Areas.SummaryReporting.Controllers
 {
     using System;
     using System.Collections.Generic;
@@ -6,6 +6,7 @@
     using System.Linq;
     using CollectingProductionDataSystem.Data.Contracts;
     using System.Web.Mvc;
+    using CollectingProductionDataSystem.Web.Areas.OverseersReporting.Controllers;
     using Kendo.Mvc.Extensions;
     using Kendo.Mvc.UI;
     using CollectingProductionDataSystem.Models.Transactions;
@@ -13,36 +14,38 @@
     using CollectingProductionDataSystem.Web.ViewModels.Transactions;
     using System.Diagnostics;
 
-    public class TransactionsDailyController : AreaBaseController
+    [Authorize(Roles = "Administrator, OverseerReporter")]
+    public class OverseersTransactionsController : AreaBaseController
     {
-        public TransactionsDailyController(IProductionData productionDataParam)
-            :base(productionDataParam)
-        { }
+        public OverseersTransactionsController(IProductionData productionDataParam) : base(productionDataParam)
+        {
+        }
 
         [HttpGet]
-        public ActionResult TransactionsDailyData()
+        public ActionResult OverseersTransactionsData()
         {
             return View();
         }
 
         [HttpPost]
-        public JsonResult ReadTransactionsDailyData([DataSourceRequest]DataSourceRequest request, DateTime? date, int? flowDirection)
+        public JsonResult ReadOverseersTransactionsData([DataSourceRequest]
+                                                        DataSourceRequest request, DateTime? date, int? flowDirection)
         {
             ValidateModelState(date, flowDirection);
             var kendoResult = new DataSourceResult();
             try
             {
                 var transactionsData = GetMeasurementPointsDataByDateAndDirection(date, flowDirection)
-                    .Select(t => new TransactionDataModel
-                {
-                    MeasuringPointId = t.MeasuringPointId,
-                    DirectionId = t.MeasuringPointConfig.FlowDirection.Value,
-                    TransportId = t.MeasuringPointConfig.TransportTypeId,
-                    ProductId = t.ProductNumber.Value,
-                    Mass = t.Mass,
-                    MassReverse = t.MassReverse,
-                    FlowDirection = t.MeasuringPointConfig.FlowDirection.Value,
-                });
+                                                    .Select(t => new TransactionDataModel
+                                                            {
+                                                                MeasuringPointId = t.MeasuringPointId,
+                                                                DirectionId = t.MeasuringPointConfig.FlowDirection.Value,
+                                                                TransportId = t.MeasuringPointConfig.TransportTypeId,
+                                                                ProductId = t.ProductNumber.Value,
+                                                                Mass = t.Mass,
+                                                                MassReverse = t.MassReverse,
+                                                                FlowDirection = t.MeasuringPointConfig.FlowDirection.Value,
+                                                            });
 
                 var dict = new SortedDictionary<int, MeasuringPointsDataViewModel>();
                 
@@ -59,10 +62,10 @@
                 var endTimestamp = beginTimestamp.AddMinutes(1440);
                 var totalizers = this.data.MeasuringPointProductsConfigs.All().Where(x => x.IsUsedInProductionReport == true).ToList();
                 var totalizersData = this.data.MeasurementPointsProductsDatas.All()
-                    .Where( x => x.RecordTimestamp > beginTimestamp && 
-                            x.RecordTimestamp < endTimestamp &&
-                            x.DirectionId == flowDirection.Value)
-                    .ToList();
+                                         .Where(x => x.RecordTimestamp > beginTimestamp &&
+                                                     x.RecordTimestamp < endTimestamp &&
+                                                     x.DirectionId == flowDirection.Value)
+                                         .ToList();
 
                 foreach (var item in totalizersData)
                 {
@@ -96,7 +99,7 @@
                             measuringPointData.PipeQuantity += item.Value.Value;
                         }
                         measuringPointData.TotalQuantity += item.Value.Value;
-                        dict[item.ProductId] = measuringPointData;
+                        dict[code] = measuringPointData;
                     }
                 }
 
@@ -192,8 +195,8 @@
             return p;
         }
  
-        private MeasuringPointsDataViewModel FillModelObject(TransactionDataModel transactionData, 
-            SortedDictionary<int, MeasuringPointsDataViewModel> dict, 
+        private MeasuringPointsDataViewModel FillModelObject(TransactionDataModel transactionData,
+            SortedDictionary<int, MeasuringPointsDataViewModel> dict,
             int? flowDirection)
         {
             var measuringPointData = new MeasuringPointsDataViewModel();
@@ -247,35 +250,6 @@
             if (directionId == null || directionId.Value == 3)
             {
                 this.ModelState.AddModelError("direction", string.Format(Resources.ErrorMessages.Required, Resources.Layout.Direction));
-            }
-        }
-    }
-
-    public class TransactionDataModel 
-    { 
-        public int MeasuringPointId { get; set; }
-        public int DirectionId { get; set; }
-        public int TransportId { get; set; }
-        public int ProductId { get; set; }
-        public int FlowDirection { get; set; }
-        public decimal? Mass { get; set; }
-        public decimal? MassReverse { get; set; }
-        public decimal RealMass
-        {
-            get 
-            {
-                if (this.Mass.HasValue && this.Mass.Value > 0)
-                {
-                    return this.Mass.Value;
-                }
-                else if (this.MassReverse.HasValue)
-                {
-                    return this.MassReverse.Value;   
-                }
-                else
-                {
-                    return 0.0m;
-                }
             }
         }
     }

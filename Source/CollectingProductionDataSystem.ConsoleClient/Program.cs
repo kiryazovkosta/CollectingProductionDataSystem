@@ -34,26 +34,26 @@ namespace CollectingProductionDataSystem.ConsoleClient
             //    && x.RecordTimestamp == new DateTime(2016, 2, 1, 0, 0, 0) 
             //    && x.UnitConfig.ProcessUnitId == 50).ToList();
 
-            //int monthIndex = DateTime.Now.Month;
-            //var lastDate = new DateTime(2016, 2, 16, 0, 0, 0);
+            int monthIndex = DateTime.Now.Month - 1;
+            var lastDate = new DateTime(2016, 2, 19, 0, 0, 0);
 
-            //var shiftData = data.UnitsData.All().Where(x => x.ShiftId == ShiftType.Second
-            //    && x.RecordTimestamp == lastDate
-            //    && x.UnitConfig.ProcessUnitId == 34).ToList();
+            var shiftData = data.UnitsData.All().Where(x => x.ShiftId == ShiftType.Second
+                && x.RecordTimestamp == lastDate
+                && x.UnitConfig.ProcessUnitId == 37).ToList();
 
-            //var prevDay = lastDate.AddDays(-1);
-            //while(prevDay.Month == monthIndex)
-            //{
-            //    foreach (var item in shiftData)
-            //    {
-            //        item.RecordTimestamp = prevDay;
-            //        item.ShiftId = ShiftType.First;
-            //        data.UnitsData.Add(item);
-            //    }
+            var prevDay = lastDate.AddDays(-1);
+            while (prevDay.Month == monthIndex)
+            {
+                foreach (var item in shiftData)
+                {
+                    item.RecordTimestamp = prevDay;
+                    item.ShiftId = ShiftType.First;
+                    data.UnitsData.Add(item);
+                }
 
-            //    data.SaveChanges("Loader");
-            //    prevDay = prevDay.AddDays(-1);
-            //}
+                data.SaveChanges("Loader");
+                prevDay = prevDay.AddDays(-1);
+            }
 
             //for (int i = 0; i < 19; i++)
             //{
@@ -69,7 +69,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
 
             //DoCalculation();
 
-            ProcessProductionReportTransactionsData();
+            //ProcessProductionReportTransactionsData();
 
             System.Console.WriteLine("finished");
             //ConvertProductsForInternalPipes(data);

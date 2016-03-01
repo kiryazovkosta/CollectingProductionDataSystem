@@ -1530,4 +1530,7 @@
   <data name="Reports" xml:space="preserve">
     <value>Reports</value>
   </data>
+  <data name="EozMeasuringPointsData" xml:space="preserve">
+    <value>EozMeasuringPointsData</value>
+  </data>
 </root>
