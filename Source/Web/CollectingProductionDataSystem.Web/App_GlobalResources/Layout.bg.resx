@@ -1545,7 +1545,7 @@
     <comment>electrical energy</comment>
   </data>
   <data name="EozMeasuringPointsData" xml:space="preserve">
-    <value>Данни за експедирани и доставени нефтопродукти - Диспечеризация и ЕОЗ</value>
+    <value>Експедиция и доставки - Диспечеризация и ЕОЗ</value>
   </data>
   <data name="IsSummaryOfProcessing" xml:space="preserve">
     <value>Тотализираща позиция</value>

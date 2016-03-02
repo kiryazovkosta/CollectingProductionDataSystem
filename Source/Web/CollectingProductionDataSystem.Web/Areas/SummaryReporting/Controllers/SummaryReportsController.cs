@@ -9,6 +9,8 @@
     using System.Web.UI;
     using CollectingProductionDataSystem.Constants;
     using CollectingProductionDataSystem.Data.Contracts;
+    using CollectingProductionDataSystem.Web.Areas.MonthlyReporting.ViewModels;
+    using CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewModels;
     using CollectingProductionDataSystem.Web.Areas.SummaryReporting.ViewModels;
     using CollectingProductionDataSystem.Web.Infrastructure.Extentions;
     using Kendo.Mvc.UI;
@@ -31,14 +33,16 @@
         private readonly IUnitsDataService unitsData;
         private readonly IUnitDailyDataService dailyService;
         private readonly IInventoryTanksService tanksService;
+        private readonly IPipelineServices pipes;
 
-        public SummaryReportsController(IProductionData dataParam, IUnitsDataService unitsDataParam, IUnitDailyDataService dailyServiceParam, 
-            IInventoryTanksService tanksParam)
+        public SummaryReportsController(IProductionData dataParam, IUnitsDataService unitsDataParam, IUnitDailyDataService dailyServiceParam,
+            IInventoryTanksService tanksParam, IPipelineServices pipesParam)
             : base(dataParam)
         {
             this.unitsData = unitsDataParam;
             this.dailyService = dailyServiceParam;
             this.tanksService = tanksParam;
+            this.pipes = pipesParam;
         }
 
         [HttpGet]
@@ -80,7 +84,7 @@
                     }
                 }
 
-                return Json(vmResult.OrderByDescending(x=>x.TankName[0]).ThenBy(x=>x.TankNumber).ToDataSourceResult(request, this.ModelState));
+                return Json(vmResult.OrderByDescending(x => x.TankName[0]).ThenBy(x => x.TankNumber).ToDataSourceResult(request, this.ModelState));
             }
             else
             {
@@ -117,11 +121,11 @@
                         RecordTimestamp = t.RecordTimestamp,
                         TankConfig = t.TankConfig,
                         Product = t.Product,
-                        WeightInVaccum = t.WeightInVacuum??0.0m
+                        WeightInVaccum = t.WeightInVacuum ?? 0.0m
                     });
 
                 var vmResult = Mapper.Map<IEnumerable<TankDataViewModel>>(dbResult);
-                return Json(vmResult.OrderByDescending(x=>x.TankName[0]).ThenBy(x=>x.TankNumber).ToDataSourceResult(request, this.ModelState));
+                return Json(vmResult.OrderByDescending(x => x.TankName[0]).ThenBy(x => x.TankNumber).ToDataSourceResult(request, this.ModelState));
             }
             else
             {
@@ -464,6 +468,33 @@
             else
             {
                 return Json(new[] { new object() }.ToDataSourceResult(request, ModelState), JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpGet]
+        public ActionResult InnerPipelinesData()
+        {
+            this.ViewData["products"] = Mapper.Map<IEnumerable<ProductViewModel>>(this.data.Products.All()).ToList();
+            return View();
+        }
+
+        [HttpGet]
+        [OutputCache(Duration = HalfAnHour, Location = OutputCacheLocation.ServerAndClient, VaryByParam = "*")]
+        public ActionResult ReadInnerPipelinesData([DataSourceRequest]DataSourceRequest request, DateTime? date)
+        {
+            ValidateDailyModelState(date);
+
+            if (this.ModelState.IsValid)
+            {
+                var dbResult = this.pipes.ReadDataForMonth(date.Value).ToList();
+                var vmResult = Mapper.Map<IEnumerable<InnerPipelinesDataViewModel>>(dbResult).Where(x => x.Volume != 0 || x.Mass != 0).OrderBy(x => x.Product.Code);
+                var kendoResult = vmResult.ToDataSourceResult(request, ModelState);
+                return Json(kendoResult, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                var kendoResult = new List<InnerPipelinesDataViewModel>().ToDataSourceResult(request, ModelState);
+                return Json(kendoResult, JsonRequestBehavior.AllowGet);
             }
         }
 

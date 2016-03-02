@@ -1212,6 +1212,7 @@
     <Content Include="Areas\SummaryReporting\Views\OverseersTransactions\OverseersTransactionsData.cshtml" />
     <Content Include="Areas\SummaryReporting\Views\SummaryReports\TanksWeightInVacuumData.cshtml" />
     <Content Include="Areas\MonthlyDataReporting\Views\Shared\EnergyReport.cshtml" />
+    <Content Include="Areas\SummaryReporting\Views\SummaryReports\InnerPipelinesData.cshtml" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <None Include="Properties\PublishProfiles\Home.pubxml" />
     <Content Include="Scripts\custom\sendArea.js" />

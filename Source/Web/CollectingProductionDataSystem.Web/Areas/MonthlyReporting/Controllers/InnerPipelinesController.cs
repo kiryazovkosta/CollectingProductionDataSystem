@@ -85,7 +85,7 @@
                     }
                     else 
                     {
-                        inputViewModel.Id = entity.Product.Code;
+                        inputViewModel.Id = inputViewModel.Product.Code;
                     }
                 }
             }
