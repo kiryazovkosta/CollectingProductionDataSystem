@@ -4,7 +4,7 @@
 @using CollectingProductionDataSystem.Web.Infrastructure.Helpers;
 @using Resources = App_GlobalResources.Resources;
 
-@model MonthlyEnergyReportsViewModel
+@model MonthlyReportParametersViewModel
     @{
         Layout = "~/Views/Shared/_KendoLayoutWithSideBar.cshtml";
     }
@@ -21,7 +21,7 @@
     @Html.ValidationSummary()
     @Html.AntiForgeryToken()
     @(Html.Kendo()
-    .Grid<MonthlyEnergyViewModel>()
+    .Grid<MonthlyReportTableViewModel>()
     .Name("monthly-hc-units")
     .AutoBind(false)
     .Columns(

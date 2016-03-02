@@ -11,12 +11,13 @@
 
         </div>
         <div class="navbar-collapse collapse">
-            <ul class="nav navbar-nav">
-                @if (Html.ActionIsAccessibleToUser("UnitsData", "Units", "ShiftReporting"))
+            <ul id="main-nav" class="nav navbar-nav">
+                @if (Html.ActionIsAccessibleToUser("AuthorizeShiftMenu", "Home", ""))
                 {
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">@Resources.Layout.ShiftsData<span class="caret"></span></a>
                         <ul class="dropdown-menu">
+                            @*<li role="separator" class="divider divider-labeled"><span class="label label-default pull-right">Сменни данни</span></li>*@
                             <li>@Html.AuthorizedActionLink(@Resources.Layout.UnitsData, "UnitsData", "Units", new { area = "ShiftReporting" }, null)</li>
                             <li>@Html.AuthorizedActionLink(@Resources.Layout.TanksData, "TanksData", "Tanks", new { area = "ShiftReporting" }, null)</li>
                             <li role="separator" class="divider divider-labeled"><span class="label label-default pull-right">Магистрални тръбопроводи</span></li>
@@ -24,7 +25,7 @@
                         </ul>
                     </li>
                 }
-                @if (Html.ActionIsAccessibleToUser("UnitsDailyData", "UnitsDaily", "DailyReporting"))
+                @if (Html.ActionIsAccessibleToUser("AuthorizeDailyMenu", "Home", ""))
                 {
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">@Resources.Layout.DailyData<span class="caret"></span></a>
@@ -38,12 +39,12 @@
                     </li>
                 }
 
-                @if (Html.ActionIsAccessibleToUser("InnerPipelinesData", "InnerPipelines", "MonthlyReporting"))
+                @if (Html.ActionIsAccessibleToUser("AuthorizeMonthlyMenu", "Home", ""))
                 {
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">@Resources.Layout.MonthData<span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li role="separator" class="divider divider-labeled divider-top"><span class="label label-default pull-right">Месечни количества</span></li>
+                            <li role="separator" class="divider divider-labeled"><span class="label label-default pull-right">Месечни количества</span></li>
                             <li>@Html.AuthorizedActionLink(@Resources.Layout.InnerPipelinesData, "InnerPipelinesData", "InnerPipelines", new { area = "MonthlyReporting" }, null)</li>
                             <li>@Html.AuthorizedActionLink(@Resources.Layout.InProcessUnitsData, "InProcessUnitsData", "InProcessUnits", new { area = "MonthlyReporting" }, null)</li>
                             <li role="separator" class="divider divider-labeled"><span class="label label-default pull-right">Месечни данни</span></li>
@@ -58,7 +59,7 @@
                     </li>
                 }
 
-                @if (Html.ActionIsAccessibleToUser("UnitsReportsData", "SummaryReports", "SummaryReporting"))
+                @if (Html.ActionIsAccessibleToUser("AuthorizeSummaryMenu", "Home", ""))
                 {
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">@Resources.Layout.SummaryReports<span class="caret"></span></a>
@@ -102,7 +103,8 @@
 {
     <div id="dev">
         <div class="alert alert-danger alert-dismissable text-center">
-            @if(User.IsInRole("Administrator")){<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>}
+            @if (User.IsInRole("Administrator"))
+            {<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>}
             <h2>Вие се намирате в системата за разработки!</h2> <br>За работа в продуктивната система моля използвайте линка: <a href="http:\\s-api-1.neftochim.bg" class="alert-link">"Продуктивна система"</a>.
         </div>
     </div>

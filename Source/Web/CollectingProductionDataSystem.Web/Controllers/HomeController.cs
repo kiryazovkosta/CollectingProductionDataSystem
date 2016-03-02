@@ -25,5 +25,24 @@
         {
             return View();
         }
+
+
+        //Define Authorization for Base Menus
+
+        [Authorize(Roles="Administrator, ShiftReporter, HighwayPipelinesDataReporter")]
+        public ActionResult AuthorizeShiftMenu(){return Content("");}
+
+        [Authorize(Roles="Administrator, DailyReporter, TanksStatusesReporter")]
+        public ActionResult AuthorizeDailyMenu(){return Content("");}
+
+        [Authorize(Roles= "Administrator, MonthlyReporter, MonthlyHydroCarbonsReporter, MonthlyFreshWaterReporter, MonthlyCirculatingWaterReporter, MonthlyPotableWaterReporter, MonthlyHeatEnetgyReporter, MonthlyElectricalEnergyReporter")]
+        public ActionResult AuthorizeMonthlyMenu(){return Content("");}
+
+        [Authorize(Roles="Administrator,SummaryReporter")]
+        public ActionResult AuthorizeSummaryMenu(){return Content("");}
+
+
+
+
     }
 }

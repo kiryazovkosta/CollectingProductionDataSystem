@@ -12,17 +12,25 @@
     using Resources = App_GlobalResources.Resources;
 
     [Authorize(Roles = "Administrator, MonthlyCirculatingWaterReporter")]
-    public class MonthlyCirculatingWaterController : GenericMonthlyController<MonthlyEnergyViewModel>
+    public class MonthlyCirculatingWaterController : BaseMonthlyController
     {
-        private const string defaultView = "EnergyReport";            
+         public MonthlyCirculatingWaterController(IProductionData dataParam, IUnitMothlyDataService monthlyServiceParam)
+            : base(dataParam, monthlyServiceParam)
+        {
+        }
 
-        public MonthlyCirculatingWaterController(IProductionData dataParam, IUnitMothlyDataService monthlyServiceParam)
-            : base(dataParam, monthlyServiceParam, CommonConstants.CirculatingWater, defaultView, 
-                new MonthlyEnergyReportsViewModel(
+        /// <summary>
+        /// Gets the report parameters.
+        /// </summary>
+        /// <returns></returns>
+        protected override MonthlyReportParametersViewModel GetReportParameters()
+        {
+            return new MonthlyReportParametersViewModel(
                     reportName: Resources.Layout.UnitMonthlyCWData,
                     controllerName: "MonthlyCirculatingWater",
-                    monthlyReportTypeId: CommonConstants.CirculatingWater ))
-        {
+                    monthlyReportTypeId: CommonConstants.CirculatingWater,
+                    defaultViewName: "EnergyReport"
+                    );
         }
     }
 }

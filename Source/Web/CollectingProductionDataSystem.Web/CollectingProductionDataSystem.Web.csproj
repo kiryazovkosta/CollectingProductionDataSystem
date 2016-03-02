@@ -267,7 +267,7 @@
     <Compile Include="Areas\DailyReporting\Controllers\TanksStatusesController.cs" />
     <Compile Include="Areas\DailyReporting\ViewModels\TanksStatusDataViewModel.cs" />
     <Compile Include="Areas\MonthlyDataReporting\Controllers\AreaBaseController.cs" />
-    <Compile Include="Areas\MonthlyDataReporting\Controllers\GenericMonthlyController.cs" />
+    <Compile Include="Areas\MonthlyDataReporting\Controllers\BaseMonthlyController.cs" />
     <Compile Include="Areas\MonthlyDataReporting\Controllers\MonthlyCirculatingWaterController.cs" />
     <Compile Include="Areas\MonthlyDataReporting\Controllers\MonthlyElectricalEnergyController.cs" />
     <Compile Include="Areas\MonthlyDataReporting\Controllers\MonthlyFreshWaterController.cs" />
@@ -277,8 +277,8 @@
     <Compile Include="Areas\MonthlyDataReporting\Controllers\MonthlyHydroCarbonsController.cs" />
     <Compile Include="Areas\MonthlyDataReporting\Models\IValuable.cs" />
     <Compile Include="Areas\MonthlyDataReporting\Models\MeasureUnitUnitMonthlyDataViewModel.cs" />
-    <Compile Include="Areas\MonthlyDataReporting\Models\MonthlyEnergyReportsViewModel.cs" />
-    <Compile Include="Areas\MonthlyDataReporting\Models\MonthlyEnergyViewModel.cs" />
+    <Compile Include="Areas\MonthlyDataReporting\Models\MonthlyReportParametersViewModel.cs" />
+    <Compile Include="Areas\MonthlyDataReporting\Models\MonthlyReportTableViewModel.cs" />
     <Compile Include="Areas\MonthlyDataReporting\Models\MonthlyHydroCarbonViewModel.cs" />
     <Compile Include="Areas\MonthlyDataReporting\Models\MonthlyProductTypeViewModel.cs" />
     <Compile Include="Areas\MonthlyDataReporting\Models\ProcessUnitUnitsMonthlyDataViewModel.cs" />
@@ -1045,6 +1045,7 @@
     <Content Include="Scripts\custom\backfix.min.js" />
     <Content Include="Scripts\custom\bootstrapAdditional.js" />
     <Content Include="Scripts\custom\browserclosurenotice.js" />
+    <Content Include="Scripts\custom\clearSeparators.js" />
     <Content Include="Scripts\custom\confirmationRefresh.js" />
     <Content Include="Scripts\custom\confirmationRefresh.min.js">
       <DependentUpon>confirmationRefresh.js</DependentUpon>
@@ -1211,6 +1212,7 @@
     <Content Include="Areas\SummaryReporting\Views\OverseersTransactions\OverseersTransactionsData.cshtml" />
     <Content Include="Areas\SummaryReporting\Views\SummaryReports\TanksWeightInVacuumData.cshtml" />
     <Content Include="Areas\MonthlyDataReporting\Views\Shared\EnergyReport.cshtml" />
+    <Content Include="Areas\SummaryReporting\Views\SummaryReports\InnerPipelinesData.cshtml" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <None Include="Properties\PublishProfiles\Home.pubxml" />
     <Content Include="Scripts\custom\sendArea.js" />

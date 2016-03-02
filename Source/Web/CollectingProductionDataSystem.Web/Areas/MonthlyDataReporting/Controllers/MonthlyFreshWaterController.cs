@@ -12,17 +12,29 @@
     using Resources = App_GlobalResources.Resources;
 
     [Authorize(Roles = "Administrator, MonthlyFreshWaterReporter")]
-    public class MonthlyFreshWaterController : GenericMonthlyController<MonthlyEnergyViewModel>
+    public class MonthlyFreshWaterController :BaseMonthlyController
     {
-        private const string defaultView = "EnergyReport";
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MonthlyFreshWaterController" /> class.
+        /// </summary>
+        /// <param name="dataParam">The data param.</param>
+        /// <param name="monthlyServiceParam">The monthly service param.</param>
+        public MonthlyFreshWaterController(IProductionData dataParam, IUnitMothlyDataService monthlyServiceParam) 
+            : base(dataParam, monthlyServiceParam)
+        {
+        }
 
-        public MonthlyFreshWaterController(IProductionData dataParam, IUnitMothlyDataService monthlyServiceParam)
-            : base(dataParam, monthlyServiceParam, CommonConstants.CirculatingWater, defaultView,
-                new MonthlyEnergyReportsViewModel(
+        /// <summary>
+        /// Gets the report parameters.
+        /// </summary>
+        /// <returns></returns>
+        protected override MonthlyReportParametersViewModel GetReportParameters()
+        {
+            return new MonthlyReportParametersViewModel(
                     reportName: Resources.Layout.UnitMonthlyFWData,
                     controllerName: "MonthlyFreshWater",
-                    monthlyReportTypeId: CommonConstants.FreshWate))
-        {
+                    monthlyReportTypeId: CommonConstants.FreshWater,
+                    defaultViewName: "EnergyReport");
         }
     }
 }

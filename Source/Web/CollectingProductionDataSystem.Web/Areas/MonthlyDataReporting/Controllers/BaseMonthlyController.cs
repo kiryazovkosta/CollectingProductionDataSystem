@@ -21,36 +21,26 @@ using Resources = App_GlobalResources.Resources;
 
 namespace CollectingProductionDataSystem.Web.Areas.MonthlyDataReporting.Controllers
 {
-    public class GenericMonthlyController<TViewModel> : AreaBaseController
-        where TViewModel: IValuable
+    public abstract class BaseMonthlyController : AreaBaseController
     {
         private readonly IUnitMothlyDataService monthlyService;
         private readonly TransactionOptions transantionOption;
-        private readonly int reportType;
-        private readonly string defaultView;
-        private readonly MonthlyEnergyReportsViewModel modelParams;
+        private readonly MonthlyReportParametersViewModel modelParams;
 
-        public GenericMonthlyController(IProductionData dataParam, IUnitMothlyDataService monthlyServiceParam, int reportType, string defaultView, MonthlyEnergyReportsViewModel modelParams = null)
+        protected abstract MonthlyReportParametersViewModel GetReportParameters();
+
+        public BaseMonthlyController(IProductionData dataParam, IUnitMothlyDataService monthlyServiceParam)
             : base(dataParam)
         {
             this.monthlyService = monthlyServiceParam;
             this.transantionOption = DefaultTransactionOptions.Instance.TransactionOptions;
-            this.reportType = reportType;
-            this.defaultView = defaultView;
-            this.modelParams = modelParams;
+            this.modelParams = this.GetReportParameters();
         }
 
         [HttpGet]
         public ActionResult Report()
         {
-            if (this.modelParams == null)
-            {
-                return View(defaultView);
-            }
-            else 
-            {
-                return View(defaultView, modelParams);
-            }
+                return View(modelParams.DefaultView, modelParams);
         }
 
         [HttpPost]
@@ -60,11 +50,11 @@ namespace CollectingProductionDataSystem.Web.Areas.MonthlyDataReporting.Controll
 
             if (!this.ModelState.IsValid)
             {
-                var kendoResult = new List<TViewModel>().ToDataSourceResult(request, ModelState);
+                var kendoResult = new List<MonthlyReportTableViewModel>().ToDataSourceResult(request, ModelState);
                 return Json(kendoResult);
             }
 
-            IEfStatus status = this.monthlyService.CalculateMonthlyDataIfNotAvailable(date, this.reportType, this.UserProfile.UserName);
+            IEfStatus status = this.monthlyService.CalculateMonthlyDataIfNotAvailable(date, this.modelParams.MonthlyReportTypeId, this.UserProfile.UserName);
 
             if (!status.IsValid)
             {
@@ -76,8 +66,8 @@ namespace CollectingProductionDataSystem.Web.Areas.MonthlyDataReporting.Controll
                 var kendoResult = new DataSourceResult();
                 if (ModelState.IsValid)
                 {
-                    var dbResult = this.monthlyService.GetDataForMonth(date, this.reportType).OrderBy(x => x.UnitMonthlyConfig.Code).ToList();
-                    var vmResult = Mapper.Map<IEnumerable<TViewModel>>(dbResult);
+                    var dbResult = this.monthlyService.GetDataForMonth(date, this.modelParams.MonthlyReportTypeId).OrderBy(x => x.UnitMonthlyConfig.Code).ToList();
+                    var vmResult = Mapper.Map<IEnumerable<MonthlyReportTableViewModel>>(dbResult);
                     kendoResult = vmResult.ToDataSourceResult(request, ModelState);
                 }
                 Session["reportParams"] = Convert.ToBase64String(Encoding.UTF8.GetBytes(
@@ -85,7 +75,7 @@ namespace CollectingProductionDataSystem.Web.Areas.MonthlyDataReporting.Controll
                                                                        new ConfirmMonthlyInputModel()
                                                                        {
                                                                            date = date,
-                                                                           monthlyReportTypeId = this.reportType,
+                                                                           monthlyReportTypeId = this.modelParams.MonthlyReportTypeId,
                                                                        }
                                                                    )
                                                                )
@@ -94,14 +84,14 @@ namespace CollectingProductionDataSystem.Web.Areas.MonthlyDataReporting.Controll
             }
             else
             {
-                var kendoResult = new List<TViewModel>().ToDataSourceResult(request, ModelState);
+                var kendoResult = new List<MonthlyReportTableViewModel>().ToDataSourceResult(request, ModelState);
                 return Json(kendoResult);
             }
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([DataSourceRequest]DataSourceRequest request, TViewModel model)
+        public ActionResult Edit([DataSourceRequest]DataSourceRequest request, MonthlyReportTableViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -136,7 +126,7 @@ namespace CollectingProductionDataSystem.Web.Areas.MonthlyDataReporting.Controll
                         var updatedRecords = this.monthlyService.CalculateMonthlyDataForReportType(
                             inTargetMonth: model.RecordTimestamp,
                             isRecalculate: true,
-                            reportTypeId: this.reportType,
+                            reportTypeId: this.modelParams.MonthlyReportTypeId,
                             changedMonthlyConfigId: model.UnitMonthlyConfigId
                             );
                         var status = UpdateResultRecords(updatedRecords);
@@ -183,7 +173,7 @@ namespace CollectingProductionDataSystem.Web.Areas.MonthlyDataReporting.Controll
             return this.data.SaveChanges(this.UserProfile.UserName);
         }
 
-        private void UpdateRecord(UnitManualMonthlyData existManualRecord, TViewModel model)
+        private void UpdateRecord(UnitManualMonthlyData existManualRecord, MonthlyReportTableViewModel model)
         {
             existManualRecord.Value = model.UnitManualMonthlyData.Value;
             this.data.UnitManualMonthlyDatas.Update(existManualRecord);
