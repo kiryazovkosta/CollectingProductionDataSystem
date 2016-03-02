@@ -85,6 +85,7 @@
             {
                 try
                 {
+                    var confidence = 0;
                     var inputParams = new Dictionary<string, double>();
                     var formula = unitConfig.CalculatedFormula;
                     var arguments = unitConfig.PreviousShiftTag.Split(new char[]{'@'});
@@ -93,6 +94,7 @@
                     {
                         var row = oPhd.FetchRowData(item).Tables[0].Rows[0];
                         var val = Convert.ToDouble(row["Value"]);
+                        confidence += Convert.ToInt32(row["Confidence"]);
                         inputParams.Add(string.Format("p{0}", argumentIndex), val);
                         argumentIndex++;
                     }
@@ -111,7 +113,8 @@
                                 UnitConfigId = unitConfig.Id,
                                 RecordTimestamp = recordDataTime,
                                 ShiftId = shift,
-                                Value = (double.IsNaN(result)||double.IsInfinity(result)) ? 0.0m : (decimal)result
+                                Value = (double.IsNaN(result)||double.IsInfinity(result)) ? 0.0m : (decimal)result,
+                                Confidence = confidence / arguments.Count()
                             });
                     }
                 }
@@ -147,6 +150,7 @@
                         arguments.CustomFormulaExpression = unitConfig.CustomFormulaExpression;
 
                         var ruc = unitConfig.RelatedUnitConfigs.ToList();
+                        var confidence = 100;
                         foreach (var ru in ruc)
                         {
                             var parameterType = ru.RelatedUnitConfig.AggregateGroup;
@@ -163,6 +167,19 @@
                                     inputValue = calculatedUnitsData[ru.RelatedUnitConfigId].RealValue;   
                                 }   
                             }
+
+                            try
+                            {
+                                if (element != null && element.Confidence != 100)
+                                {
+                                    confidence = element.Confidence;
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                throw new Exception("CONFIDENCE ERROR: " + ex.Message, ex);
+                            }
+
 
                             if (parameterType == "I+")
                             {
@@ -205,7 +222,8 @@
                                                         UnitConfigId = unitConfig.Id,
                                                         RecordTimestamp = recordDataTime,
                                                         ShiftId = shift,
-                                                        Value = (double.IsNaN(result) || double.IsInfinity(result)) ? 0.0m : (decimal)result
+                                                        Value = (double.IsNaN(result) || double.IsInfinity(result)) ? 0.0m : (decimal)result,
+                                                        Confidence = confidence
                                                     });
                         }
                     }
@@ -269,7 +287,7 @@
                 x.CollectingDataMechanism == "MD" || 
                 x.CollectingDataMechanism == "MS"  ))
             {
-                SetDefaultValue(recordDataTime, shift, unitsData, unitConfig);    
+                SetDefaultValue(recordDataTime, shift, unitsData, unitConfig, 100);    
             }
         }
  
@@ -279,7 +297,7 @@
             {
                 if (unitConfig.NeedToGetOnlyLastShiftValue == 1 && shift != ShiftType.Third)
                 {
-                    SetDefaultValue(recordDataTime, shift, unitsData, unitConfig);   
+                    SetDefaultValue(recordDataTime, shift, unitsData, unitConfig, 100);   
                 }
                 else
                 {
@@ -293,12 +311,13 @@
                             {
                                 unitData.ShiftId = shift;
                                 unitData.RecordTimestamp = unitData.RecordTimestamp.Date;
+                                unitData.Confidence = confidence;
                                 this.data.UnitsData.Add(unitData);
                             }
                         }
                         else
                         {
-                            SetDefaultValue(recordDataTime, shift, unitsData, unitConfig);
+                            SetDefaultValue(recordDataTime, shift, unitsData, unitConfig, confidence);
                         }
                     } 
                 }
@@ -318,6 +337,9 @@
                         var end = recordDataTime.AddTicks(shiftData.EndTicks);
                         var begin = end.AddHours(-8);
 
+                        var beginConfidence = 100;
+                        var endConfidence = 100;
+
                         var endTimestamp = DateTime.Now - end;
                         var beginTimestamp = DateTime.Now - begin;
 
@@ -329,12 +351,14 @@
                         var result = oPhd.FetchRowData(unitConfig.PreviousShiftTag);
                         var row = result.Tables[0].Rows[0];
                         var endValue = Convert.ToInt64(row["Value"]);
+                        endConfidence = Convert.ToInt32(row["Confidence"]);
 
                         oPhd.StartTime = beginPhdTimestamp;
                         oPhd.EndTime = beginPhdTimestamp;
                         result = oPhd.FetchRowData(unitConfig.PreviousShiftTag);
                         row = result.Tables[0].Rows[0];
                         var beginValue = Convert.ToInt64(row["Value"]);
+                        beginConfidence = Convert.ToInt32(row["Confidence"]);
 
                         this.data.UnitsData.Add(
                             new UnitsData
@@ -343,6 +367,7 @@
                                 Value = (endValue - beginValue)/1000m,
                                 ShiftId = shift,
                                 RecordTimestamp = recordDataTime,
+                                Confidence = (beginConfidence+endConfidence)/2
                             });
                     }
                 }
@@ -370,11 +395,15 @@
                         var endPhdTimestamp = string.Format("NOW-{0}H{1}M", Math.Truncate(endTimestamp.TotalHours), endTimestamp.Minutes);
                         var beginPhdTimestamp = string.Format("NOW-{0}H{1}M", Math.Truncate(beginTimestamp.TotalHours), beginTimestamp.Minutes);
 
+                        var beginConfidence = 100;
+                        var endConfidence = 100;
+
                         oPhd.StartTime = endPhdTimestamp;
                         oPhd.EndTime = endPhdTimestamp;
                         var result = oPhd.FetchRowData(tags[0]);
                         var row = result.Tables[0].Rows[0];
                         var endValue = Convert.ToInt64(row["Value"]);
+                        endConfidence = Convert.ToInt32(row["Confidence"]);
 
                         result = oPhd.FetchRowData(tags[1]);
                         row = result.Tables[0].Rows[0];
@@ -385,6 +414,7 @@
                         result = oPhd.FetchRowData(tags[0]);
                         row = result.Tables[0].Rows[0];
                         var beginValue = Convert.ToInt64(row["Value"]);
+                        beginConfidence = Convert.ToInt32(row["Confidence"]);
 
                         this.data.UnitsData.Add(
                             new UnitsData
@@ -393,6 +423,7 @@
                                 Value = ((endValue - beginValue)*pressure)/Convert.ToDecimal(tags[2]),
                                 ShiftId = shift,
                                 RecordTimestamp = recordDataTime,
+                                Confidence = (beginConfidence + endConfidence)/2
                             });
                     }
                 }
@@ -417,7 +448,7 @@
             oPhd.MaximumRows = Convert.ToUInt32(settings.Settings.Get("PHD_DATA_MAX_ROWS").Value.ValueXml.InnerText);
         }
 
-        private void SetDefaultValue(DateTime recordDataTime, ShiftType shift, List<UnitsData> unitsData, UnitConfig unitConfig)
+        private void SetDefaultValue(DateTime recordDataTime, ShiftType shift, List<UnitsData> unitsData, UnitConfig unitConfig, int confidence)
         {
             var u = unitsData.Where(x => x.UnitConfigId == unitConfig.Id).FirstOrDefault();
             if (u == null)
@@ -428,7 +459,8 @@
                         UnitConfigId = unitConfig.Id,
                         Value = null,
                         RecordTimestamp = recordDataTime,
-                        ShiftId = shift
+                        ShiftId = shift,
+                        Confidence = confidence
                     });
             }
         }
