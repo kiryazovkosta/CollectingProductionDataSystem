@@ -1045,6 +1045,7 @@
     <Content Include="Scripts\custom\backfix.min.js" />
     <Content Include="Scripts\custom\bootstrapAdditional.js" />
     <Content Include="Scripts\custom\browserclosurenotice.js" />
+    <Content Include="Scripts\custom\clearSeparators.js" />
     <Content Include="Scripts\custom\confirmationRefresh.js" />
     <Content Include="Scripts\custom\confirmationRefresh.min.js">
       <DependentUpon>confirmationRefresh.js</DependentUpon>
