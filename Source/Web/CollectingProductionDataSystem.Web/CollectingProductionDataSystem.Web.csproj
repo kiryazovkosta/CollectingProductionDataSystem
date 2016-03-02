@@ -267,7 +267,7 @@
     <Compile Include="Areas\DailyReporting\Controllers\TanksStatusesController.cs" />
     <Compile Include="Areas\DailyReporting\ViewModels\TanksStatusDataViewModel.cs" />
     <Compile Include="Areas\MonthlyDataReporting\Controllers\AreaBaseController.cs" />
-    <Compile Include="Areas\MonthlyDataReporting\Controllers\GenericMonthlyController.cs" />
+    <Compile Include="Areas\MonthlyDataReporting\Controllers\BaseMonthlyController.cs" />
     <Compile Include="Areas\MonthlyDataReporting\Controllers\MonthlyCirculatingWaterController.cs" />
     <Compile Include="Areas\MonthlyDataReporting\Controllers\MonthlyElectricalEnergyController.cs" />
     <Compile Include="Areas\MonthlyDataReporting\Controllers\MonthlyFreshWaterController.cs" />
@@ -277,8 +277,8 @@
     <Compile Include="Areas\MonthlyDataReporting\Controllers\MonthlyHydroCarbonsController.cs" />
     <Compile Include="Areas\MonthlyDataReporting\Models\IValuable.cs" />
     <Compile Include="Areas\MonthlyDataReporting\Models\MeasureUnitUnitMonthlyDataViewModel.cs" />
-    <Compile Include="Areas\MonthlyDataReporting\Models\MonthlyEnergyReportsViewModel.cs" />
-    <Compile Include="Areas\MonthlyDataReporting\Models\MonthlyEnergyViewModel.cs" />
+    <Compile Include="Areas\MonthlyDataReporting\Models\MonthlyReportParametersViewModel.cs" />
+    <Compile Include="Areas\MonthlyDataReporting\Models\MonthlyReportTableViewModel.cs" />
     <Compile Include="Areas\MonthlyDataReporting\Models\MonthlyHydroCarbonViewModel.cs" />
     <Compile Include="Areas\MonthlyDataReporting\Models\MonthlyProductTypeViewModel.cs" />
     <Compile Include="Areas\MonthlyDataReporting\Models\ProcessUnitUnitsMonthlyDataViewModel.cs" />

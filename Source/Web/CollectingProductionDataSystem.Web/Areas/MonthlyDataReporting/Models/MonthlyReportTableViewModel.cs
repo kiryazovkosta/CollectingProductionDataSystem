@@ -10,7 +10,7 @@
     using CollectingProductionDataSystem.Models.Productions.Mounthly;
     using Resources = App_GlobalResources.Resources;
 
-    public class MonthlyEnergyViewModel: IMapFrom<UnitMonthlyData>, IHaveCustomMappings, IValuable
+    public class MonthlyReportTableViewModel: IMapFrom<UnitMonthlyData>, IHaveCustomMappings, IValuable
     {
         [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
         [Display(Name = "№")]
@@ -56,7 +56,7 @@
 
         public void CreateMappings(IConfiguration configuration)
         {
-            configuration.CreateMap<UnitMonthlyData, MonthlyEnergyViewModel>()
+            configuration.CreateMap<UnitMonthlyData, MonthlyReportTableViewModel>()
                          .ForMember(p => p.UnitManualMonthlyData, opt => opt.MapFrom(p => p.UnitManualMonthlyData ?? new UnitManualMonthlyData() { Value = p.Value }))
                          .ForMember(p => p.IsEditable, opt => opt.MapFrom(p => p.UnitMonthlyConfig.IsEditable));
         }

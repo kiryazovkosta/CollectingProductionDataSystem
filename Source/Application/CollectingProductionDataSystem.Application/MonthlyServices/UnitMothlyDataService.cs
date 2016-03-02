@@ -124,6 +124,7 @@ namespace CollectingProductionDataSystem.Application.MonthlyServices
             if (!isRecalculate)
             {
                 resultMonthly = CalculateMonthlyDataFromDailyData(targetUnitMonthlyRecordConfigs, targetMonth);
+                changedRecords = null;
             }
             else
             {

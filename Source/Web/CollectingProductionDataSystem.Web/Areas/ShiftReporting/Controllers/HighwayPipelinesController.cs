@@ -13,13 +13,15 @@
     using CollectingProductionDataSystem.Data.Contracts;
     using CollectingProductionDataSystem.Models.Transactions.HighwayPipelines;
     using CollectingProductionDataSystem.Web.Areas.ShiftReporting.ViewModels;
+    using CollectingProductionDataSystem.Web.Controllers;
     using CollectingProductionDataSystem.Web.Infrastructure.Extentions;
     using Kendo.Mvc.Extensions;
     using Kendo.Mvc.UI;
     using Resources = App_GlobalResources.Resources;
 
-    [Authorize(Roles = "HighwayPipelinesDataReporter")]
-    public class HighwayPipelinesController : AreaBaseController
+    //[Authorize(Roles = "Administrator, ShiftReporter")]
+    [Authorize(Roles = "Administrator,HighwayPipelinesDataReporter")]
+    public class HighwayPipelinesController : BaseController
     {
         private readonly IHighwayPipelinesDataService highwayPipelinesService;
 

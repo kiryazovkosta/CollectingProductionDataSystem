@@ -12,17 +12,24 @@
     using Resources = App_GlobalResources.Resources;
 
     [Authorize(Roles = "Administrator, MonthlyPotableWaterReporter")]
-    public class MonthlyPotableWaterController : GenericMonthlyController<MonthlyEnergyViewModel>
+    public class MonthlyPotableWaterController : BaseMonthlyController
     {
-        private const string defaultView = "EnergyReport";
-
         public MonthlyPotableWaterController(IProductionData dataParam, IUnitMothlyDataService monthlyServiceParam)
-            : base(dataParam, monthlyServiceParam, CommonConstants.CirculatingWater, defaultView,
-                new MonthlyEnergyReportsViewModel(
+            : base(dataParam, monthlyServiceParam)
+        {
+        }
+        /// <summary>
+        /// Gets the report parameters.
+        /// </summary>
+        /// <returns></returns>
+        protected override MonthlyReportParametersViewModel GetReportParameters()
+        {
+            return
+                new MonthlyReportParametersViewModel(
                     reportName: Resources.Layout.UnitMonthlyPWData,
                     controllerName: "MonthlyPotableWater",
-                    monthlyReportTypeId: CommonConstants.PotableWater))
-        {
+                    monthlyReportTypeId: CommonConstants.PotableWater,
+                    defaultViewName: "EnergyReport");
         }
     }
 }

@@ -51,7 +51,7 @@ namespace CollectingProductionDataSystem.Constants
 
         public static int HydroCarbons { get { return hydroCarbons; } }
 
-        public static int FreshWate { get { return freshWater; } }
+        public static int FreshWater { get { return freshWater; } }
 
         public static int CirculatingWater { get { return circulatingWater; } }
 
