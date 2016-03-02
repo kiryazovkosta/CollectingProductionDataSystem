@@ -79,6 +79,7 @@
           })
           .Filterable()
           .Scrollable(scrol => scrol.Height(620))
+              .Excel(x => x.AllPages(true))
       .Scrollable()
       .DataSource(dataSource => dataSource
           .Ajax()

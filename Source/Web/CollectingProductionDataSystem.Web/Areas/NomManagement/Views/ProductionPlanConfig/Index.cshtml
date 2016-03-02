@@ -2,23 +2,26 @@
       .Name("grid")
       .Columns(columns =>
       {
-          columns.Bound(c => c.Name)
+          columns.Command(command => { command.Edit(); command.Destroy(); }).Width(230);
+          columns.Bound(c => c.Name).Width(300)
               .ClientTemplate(Ajax.AuthorizedAjaxActionLinkOrText("#=data.Name#", "Index", "History",
                                                 new AjaxOptions() { HttpMethod = "Get", OnSuccess = "showRecordHistoriModal" },
                                                 new { area = "RecordsHistory", id = "#=data.id#", entityName = "ProductionPlanConfig" },
                                                 new { data_ajax_mode = "replace", data_ajax_update = @"\#modal-dialog-body" })
                                                 .ToHtmlString());
-          columns.Bound(c => c.Percentages);
-          columns.Bound(c => c.QuantityPlanFormula);
-          columns.Bound(c => c.QuantityPlanMembers);
-          columns.Bound(c => c.QuantityFactFormula);
-          columns.Bound(c => c.QuantityFactMembers);
-          columns.Bound(c => c.UsageRateFormula);
-          columns.Bound(c => c.UsageRateMembers);
-          columns.ForeignKey(c => c.MaterialTypeId, (System.Collections.IEnumerable)ViewData["materialTypes"], "Id", "Name").EditorTemplateName("MaterialTypeViewModel");
-          columns.ForeignKey(c => c.MaterialDetailTypeId, (System.Collections.IEnumerable)ViewData["materialDetailTypes"], "Id", "Name").EditorTemplateName("MaterialDetailTypeViewModel");
-          columns.ForeignKey(c => c.ProcessUnitId,(System.Collections.IEnumerable)ViewData["processUnits"], "Id", "FullName").EditorTemplateName("ProcessUnitViewModel");
-          columns.ForeignKey(c=>c.MeasureUnitId, (System.Collections.IEnumerable)ViewData["measureUnits"], "Id", "Name").EditorTemplateName("MeasureUnitViewModel");
+          columns.Bound(c => c.Position).Width(80);
+          columns.Bound(c => c.IsSummaryOfProcessing).Width(80);
+          columns.Bound(c => c.Percentages).Width(80);
+          columns.Bound(c => c.QuantityPlanFormula).Width(400);
+          columns.Bound(c => c.QuantityPlanMembers).Width(300);
+          columns.Bound(c => c.QuantityFactFormula).Width(300);
+          columns.Bound(c => c.QuantityFactMembers).Width(300);
+          columns.Bound(c => c.UsageRateFormula).Width(300);
+          columns.Bound(c => c.UsageRateMembers).Width(300);
+          columns.ForeignKey(c => c.MaterialTypeId, (System.Collections.IEnumerable)ViewData["materialTypes"], "Id", "Name").EditorTemplateName("MaterialTypeViewModel").Width(200);
+          columns.ForeignKey(c => c.MaterialDetailTypeId, (System.Collections.IEnumerable)ViewData["materialDetailTypes"], "Id", "Name").EditorTemplateName("MaterialDetailTypeViewModel").Width(200);
+          columns.ForeignKey(c => c.ProcessUnitId, (System.Collections.IEnumerable)ViewData["processUnits"], "Id", "FullName").EditorTemplateName("ProcessUnitViewModel").Width(200);
+          columns.ForeignKey(c => c.MeasureUnitId, (System.Collections.IEnumerable)ViewData["measureUnits"], "Id", "Name").EditorTemplateName("MeasureUnitViewModel").Width(200);
           columns.Command(command => { command.Edit(); command.Destroy(); }).Width(230);
       })
       .ToolBar(toolbar =>
@@ -26,6 +29,9 @@
           toolbar.Create();
           toolbar.Excel();
       })
+          .Excel(excel => excel
+            .AllPages(true)
+        )
       .Editable(editable => editable.Mode(GridEditMode.InLine))
           .Pageable(pageable => pageable
               .Refresh(true)

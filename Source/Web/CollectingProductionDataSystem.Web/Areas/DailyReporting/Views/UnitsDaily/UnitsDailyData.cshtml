@@ -42,6 +42,7 @@
         .Ajax()
         .ServerOperation(true)
         //    .Group(group => group.Add(c => c.UnitsDailyConfig.ProductType.Sort))
+        .Sort(sort => sort.Add(c => c.Position).Ascending())
         .Read(read => read.Action("ReadProductionPlanData", "Ajax", new { area = "DailyReporting" }).Data("unitGridsData.SendDate"))
         .Model(model =>
         {
