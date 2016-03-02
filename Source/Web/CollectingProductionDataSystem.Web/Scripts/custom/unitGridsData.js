@@ -83,20 +83,7 @@ var unitGridsData = (function () {
         nameGridCommancolumn();
         hideCommandButtons();
         attachCallendatEvents();
-        var unitsGrid = $('#units').data('kendoGrid');
-        if (unitsGrid) {
-            attachEventToExportBtn("#excel-export", "#units");
-        }
-
-        var tanksGrid = $('#tanks').data('kendoGrid');
-        if (tanksGrid) {
-            attachEventToExportBtn("#excel-export", "#tanks");
-        }
-
-        var monthlyHCGrid = $('#monthly-hc-units').data('kendoGrid');
-        if (monthlyHCGrid) {
-            attachEventToExportBtn("#excel-export", "#monthly-hc-units");
-        }
+        attachExcellExportToGrid();
 
         var summaryGrid = $('#confirmation').data('kendoGrid');
         if (summaryGrid) {
@@ -183,6 +170,28 @@ var unitGridsData = (function () {
             return {};
         }
 
+    }
+
+    function attachExcellExportToGrid() {
+        var unitsGrid = $('#units').data('kendoGrid');
+        if (unitsGrid) {
+            attachEventToExportBtn("#excel-export", "#units");
+        }
+
+        var tanksGrid = $('#tanks').data('kendoGrid');
+        if (tanksGrid) {
+            attachEventToExportBtn("#excel-export", "#tanks");
+        }
+
+        var monthlyHCGrid = $('#monthly-hc-units').data('kendoGrid');
+        if (monthlyHCGrid) {
+            attachEventToExportBtn("#excel-export", "#monthly-hc-units");
+        }
+
+        var monthlyInnerPipelines = $('#inner-pipes').data('kendoGrid');
+        if (monthlyInnerPipelines) {
+            attachEventToExportBtn("#excel-export", "#inner-pipes");
+        }
     }
 
     function checkEquals(dataParam, controlData) {
