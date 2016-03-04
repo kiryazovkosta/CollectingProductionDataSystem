@@ -113,8 +113,7 @@
                     .Include(t => t.TankConfig.Park)
                     .Include(t => t.Product)
                     .Where(t => t.RecordTimestamp == date
-                        && (areaId == null || t.TankConfig.Park.AreaId == areaId)
-                        && (parkId == null || t.ParkId == parkId))
+                        && (areaId == null || t.TankConfig.Park.AreaId == areaId))
                     .Select(t => new WeightInVacuumDto
                     {
                         Id = t.Id,

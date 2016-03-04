@@ -244,6 +244,7 @@
 
             var mathExpression = unitConfig.CustomFormulaExpression;
             var relatedunitConfigs = unitConfig.RelatedUnitConfigs.ToList();
+            var confidence = 100;
             foreach (var relatedunitConfig in relatedunitConfigs)
             {
                 var element = data.UnitsData
@@ -257,8 +258,19 @@
                 {
                     if (calculatedUnitsData.ContainsKey(relatedunitConfig.RelatedUnitConfigId))
                     {
-                        inputValue = calculatedUnitsData[relatedunitConfig.RelatedUnitConfigId].RealValue;   
+                        inputValue = calculatedUnitsData[relatedunitConfig.RelatedUnitConfigId].RealValue;
+                        if (calculatedUnitsData[relatedunitConfig.RelatedUnitConfigId].Confidence != 100)
+                        {
+                            confidence = calculatedUnitsData[relatedunitConfig.RelatedUnitConfigId].Confidence;   
+                        }
                     }   
+                }
+                else
+                {
+                    if (element != null && element.Confidence != 100)
+                    {
+                        confidence = element.Confidence;
+                    }
                 }
 
                 inputParams.Add(string.Format("p{0}", indexCounter), inputValue);
@@ -275,7 +287,8 @@
                         UnitConfigId = unitConfig.Id,
                         RecordTimestamp = recordDataTime,
                         ShiftId = shift,
-                        Value = (double.IsNaN(result) || double.IsInfinity(result)) ? 0.0m : (decimal)result
+                        Value = (double.IsNaN(result) || double.IsInfinity(result)) ? 0.0m : (decimal)result,
+                        Confidence = confidence,
                     });
             }
         }

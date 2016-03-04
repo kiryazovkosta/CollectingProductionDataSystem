@@ -74,6 +74,8 @@
                             <li>@Html.AuthorizedActionLink(@Resources.Layout.DailyInfoHydrocarbonsData, "DailyInfoHydrocarbonsData", "SummaryReports", new { area = "SummaryReporting" }, null)</li>
                             <li>@Html.AuthorizedActionLink(@Resources.Layout.MeasuringPointsData, "TransactionsDailyData", "TransactionsDaily", new { area = "SummaryReporting" }, null)</li>
                             <li>@Html.AuthorizedActionLink(@Resources.Layout.HighwayPipelinesData, "HighwayPipelinesData", "HighwayPipelinesReport", new { area = "SummaryReporting" }, null)</li>
+                            <li role="separator" class="divider divider-labeled"><span class="label label-default pull-right">Месечни количества</span></li>
+                            <li>@Html.AuthorizedActionLink(@Resources.Layout.InnerPipelinesData, "InnerPipelinesData", "SummaryReports", new { area = "SummaryReporting" }, null)</li>
                             <li role="separator" class="divider divider-labeled"><span class="label label-default pull-right">Дневни данни - Диспечеризация и ЕОЗ</span></li>
                             <li>@Html.AuthorizedActionLink(@Resources.Layout.EozMeasuringPointsData, "OverseersTransactionsData", "OverseersTransactions", new { area = "SummaryReporting" }, null)</li>
                             <li role="separator" class="divider divider-labeled"><span class="label label-default pull-right">Контрол на изпълнителска дисциплина</span></li>
