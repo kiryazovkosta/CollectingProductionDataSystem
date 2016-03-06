@@ -264,7 +264,7 @@
                                         }
                                         catch (Exception ex)
                                         {
-                                            logger.ErrorFormat("Tank Id [{0}] Exception:\n\n\n", t.TankId, ex.ToString());
+                                            logger.ErrorFormat("Tank Id [{0}] Exception:\n\n\n{1}", t.TankId, ex.ToString());
                                         }
                                     }
 

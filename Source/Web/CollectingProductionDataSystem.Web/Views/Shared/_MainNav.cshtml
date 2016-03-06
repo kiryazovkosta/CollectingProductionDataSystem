@@ -66,6 +66,7 @@
                         <ul class="dropdown-menu">
                             <li role="separator" class="divider divider-labeled divider-top"><span class="label label-default pull-right">Сменни данни</span></li>
                             <li>@Html.AuthorizedActionLink(@Resources.Layout.TanksData, "TanksData", "SummaryReports", new { area = "SummaryReporting" }, null)</li>
+                            <li>@Html.AuthorizedActionLink(@Resources.Layout.TanksDataByProducts, "TanksWeightInVacuumData", "SummaryReports", new { area = "SummaryReporting" }, null)</li>
                             <li>@Html.AuthorizedActionLink(@Resources.Layout.UnitsReportData, "UnitsReportsData", "SummaryReports", new { area = "SummaryReporting" }, null)</li>
                             <li role="separator" class="divider divider-labeled"><span class="label label-default pull-right">Дневни данни</span></li>
                             <li>@Html.AuthorizedActionLink(@Resources.Layout.UnitsDailyReportData, "UnitsDailyReportsData", "SummaryReports", new { area = "SummaryReporting" }, null)</li>

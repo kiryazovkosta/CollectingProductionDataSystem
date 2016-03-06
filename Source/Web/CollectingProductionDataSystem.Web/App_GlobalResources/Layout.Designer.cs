@@ -3265,6 +3265,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to TanksDataByProducts.
+        /// </summary>
+        public static string TanksDataByProducts {
+            get {
+                return ResourceManager.GetString("TanksDataByProducts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Report Date.
         /// </summary>
         public static string TanksDateSelector {
