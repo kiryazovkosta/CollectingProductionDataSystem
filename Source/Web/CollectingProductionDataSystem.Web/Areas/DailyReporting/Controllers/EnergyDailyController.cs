@@ -293,23 +293,24 @@
 
             if (ModelState.IsValid)
             {
-                var approvedShift = this.data.UnitsApprovedDailyDatas
+                var approvedDay = this.data.UnitsApprovedDailyDatas
                    .All()
                    .Where(u => u.RecordDate == model.date && u.ProcessUnitId == model.processUnitId && u.EnergyApproved == false)
                    .FirstOrDefault();
-                if (approvedShift != null)
+                if (approvedDay != null)
                 {
-                    approvedShift.EnergyApproved = true;
-                    this.data.UnitsApprovedDailyDatas.Update(approvedShift);
+                    approvedDay.EnergyApproved = true;
+                    this.data.UnitsApprovedDailyDatas.Update(approvedDay);
 
                     // Get all process plan data and save it
                     IEnumerable<ProductionPlanData> dbResult = this.productionPlanData.ReadProductionPlanData(model.date, model.processUnitId, CommonConstants.EnergyType);
                     if (dbResult.Count() > 0)
                     {
-                        foreach (var item in dbResult)
-                        {
-                            this.data.ProductionPlanDatas.Add(item);
-                        }
+                        //foreach (var item in dbResult)
+                        //{
+                        //    this.data.ProductionPlanDatas.Add(item);
+                        //}
+                        this.data.ProductionPlanDatas.BulkInsert(dbResult, this.UserProfile.UserName);
                     }
 
                     var result = this.data.SaveChanges(this.UserProfile.UserName);

@@ -154,7 +154,7 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
         public void AppendTotalMonthQuantityToDailyRecords(Dictionary<string, UnitsDailyData> resultDaily, int processUnitId, DateTime targetDay)
         {
             var beginningOfMonth = new DateTime(targetDay.Year, targetDay.Month, 1);
-            var totalMonthQuantities = data.UnitsDailyDatas.All().Include(x => x.UnitsDailyConfig)
+            var totalMonthQuantities = data.UnitsDailyDatas.All().Include(x => x.UnitsDailyConfig).Include(x=>x.UnitsManualDailyData)
                 .Join(data.UnitsApprovedDailyDatas.All(),
                         units => new UnitDailyToApprove { ProcessUnitId = units.UnitsDailyConfig.ProcessUnitId, RecordDate = units.RecordTimestamp },
                         appd => new UnitDailyToApprove { ProcessUnitId = appd.ProcessUnitId, RecordDate = appd.RecordDate },
