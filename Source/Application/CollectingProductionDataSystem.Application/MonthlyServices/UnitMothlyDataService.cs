@@ -438,7 +438,7 @@ namespace CollectingProductionDataSystem.Application.MonthlyServices
                 inputDictionary.Add(string.Format("p{0}", currentIndex - 1), record.RealValueTillDay);
             }
 
-            if (unitMonthlyConfig.AggregationFormula =="p.p0" && unitMonthlyConfig.AggregationCurrentLevel==false && records.Count() == 0)
+            if (unitMonthlyConfig.AggregationFormula.Contains("p.p0") && !unitMonthlyConfig.AggregationFormula.Contains("p.p1") && unitMonthlyConfig.AggregationCurrentLevel == false && records.Count() == 0)
             {//new record was added after last day is approved
                 inputDictionary.Add(string.Format("p0"), 0);
             }
