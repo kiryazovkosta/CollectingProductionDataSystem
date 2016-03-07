@@ -169,6 +169,8 @@
                                             SetPhdTag(t.PhdTagWeightInVaccum, tags);
 
                                             DataSet dsGrid = oPhd.FetchRowData(tags);
+
+                                            var confedence = 100;
                                             foreach (DataRow row in dsGrid.Tables[0].Rows)
                                             {
                                                 var tagName = string.Empty;
@@ -182,7 +184,8 @@
                                                     }
                                                     else if (dc.ColumnName.Equals("Confidence") && !row[dc].ToString().Equals("100"))
                                                     {
-                                                        continue;
+                                                        confedence = Convert.ToInt32(row[dc]);
+                                                        break;
                                                     }
                                                     else if (dc.ColumnName.Equals("TagName"))
                                                     {
@@ -195,6 +198,11 @@
                                                             tagValue = Convert.ToDecimal(row[dc]);
                                                         }
                                                     }
+                                                }
+
+                                                if (confedence != 100)
+                                                {
+                                                    continue;    
                                                 }
 
                                                 if (tagName.Contains(".PROD_ID"))
@@ -251,12 +259,12 @@
                                                     tankData.WeightInVacuum = tagValue;
                                                 }
                                             }
-
+                                            tankData.Confidence = confedence;
                                             tanksDataList.Add(tankData);
                                         }
                                         catch (Exception ex)
                                         {
-                                            logger.ErrorFormat("Tank Id [{0}] Exception:\n\n\n", t.TankId, ex.ToString());
+                                            logger.ErrorFormat("Tank Id [{0}] Exception:\n\n\n{1}", t.TankId, ex.ToString());
                                         }
                                     }
 

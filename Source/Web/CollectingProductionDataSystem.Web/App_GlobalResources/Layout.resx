@@ -1552,4 +1552,7 @@
   <data name="IsSummaryOfProcessing" xml:space="preserve">
     <value>Тотализираща позиция</value>
   </data>
+  <data name="TanksDataByProducts" xml:space="preserve">
+    <value>TanksDataByProducts</value>
+  </data>
 </root>

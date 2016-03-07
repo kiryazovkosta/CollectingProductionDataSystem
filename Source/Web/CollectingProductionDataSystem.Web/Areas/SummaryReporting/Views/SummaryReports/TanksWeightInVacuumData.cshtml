@@ -7,7 +7,7 @@
 }
 <div class="row">
     <div class="col-md-10">
-        <h2>@Resources.Layout.TanksData</h2>
+        <h2>@Resources.Layout.TanksDataByProducts</h2>
     </div>
     <div class="col-md-2">
         <button id="excel-export" class="k-button k-button-icontext k-grid-excel pull-right head-button"><span class="k-icon k-i-excel"></span>Експорт в Excel</button>
@@ -22,7 +22,7 @@
             {
                 //columns.Bound(c => c.SortableName).Hidden(true).ClientGroupHeaderTemplate("Парк #=value.substr(3,value.length-3)#");
                 columns.Bound(c => c.RecordTimestamp).Format("{0:dd.MM.yyyy HH:mm}").Width(100);
-                columns.Bound(c => c.ProductId).Width(140);
+                //columns.Bound(c => c.ProductId).Width(140);
                 columns.Bound(c => c.ProductName).Width(250);
                 columns.Bound(c => c.WeightInVacuum).ClientTemplate("<div style='text-align:right;'>#=kendo.toString(data.WeightInVacuum, 'n3') #</div>").Width(140);
             })
@@ -35,7 +35,7 @@
         .Sortable(
             sortable => sortable
                 .AllowUnsort(true)
-                .SortMode(GridSortMode.MultipleColumn)
+                .SortMode(GridSortMode.SingleColumn)
         )
         .Excel(excel => excel
             .FileName(@Resources.Layout.TanksData + "_" + DateTime.Now + ".xlsx")
@@ -71,5 +71,5 @@
     @Scripts.Render("~/bundles/custom/unitGrids")
 }
 @section sidebar{
-    @Html.Partial("_TanksSideBarByDateTime")
+    @Html.Partial("_TanksSideBarByAreaAndDateTime")
 }

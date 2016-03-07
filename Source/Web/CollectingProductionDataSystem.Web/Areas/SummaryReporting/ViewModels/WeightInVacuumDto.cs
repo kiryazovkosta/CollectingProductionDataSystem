@@ -17,8 +17,6 @@ namespace CollectingProductionDataSystem.Web.Areas.SummaryReporting.ViewModels
 
         public Product Product { get; set; }
 
-        public TankConfig TankConfig { get; set; }
-
         public decimal WeightInVaccum { get; set; }
     }
 }

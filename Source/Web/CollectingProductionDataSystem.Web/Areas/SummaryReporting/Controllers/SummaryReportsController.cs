@@ -108,24 +108,62 @@
 
             if (this.ModelState.IsValid)
             {
+                //var dbResult = this.data.TanksData.All()
+                //    .Include(t => t.TankConfig)
+                //    .Include(t => t.TankConfig.Park)
+                //    .Include(t => t.Product)
+                //    .Where(t => t.RecordTimestamp == date
+                //        && (areaId == null || t.TankConfig.Park.AreaId == areaId) 
+                //        && t.ProductId > 0)
+                //    .Select(t => new WeightInVacuumDto
+                //    {
+                //        Id = t.Id,
+                //        RecordTimestamp = t.RecordTimestamp,
+                //        TankConfig = t.TankConfig,
+                //        Product = t.Product,
+                //        WeightInVaccum = t.WeightInVacuum ?? 0.0m
+                //    });
+
+                //var weightInVacuumList = new Dictionary<int, decimal>();
+                //foreach (var tankData in dbResult)
+                //{
+                //    int code = tankData.Product.Code;
+                //    if (weightInVacuumList.ContainsKey(code))
+                //    {
+                //        weightInVacuumList[code] += tankData.WeightInVaccum;      
+                //    }
+                //    else
+                //    {
+                //        weightInVacuumList[code] = tankData.WeightInVaccum;
+                //    }
+                //}
+
+                var products = this.data.Products.All().ToList();
+
                 var dbResult = this.data.TanksData.All()
                     .Include(t => t.TankConfig)
                     .Include(t => t.TankConfig.Park)
                     .Include(t => t.Product)
                     .Where(t => t.RecordTimestamp == date
-                        && (areaId == null || t.TankConfig.Park.AreaId == areaId)
-                        && (parkId == null || t.ParkId == parkId))
-                    .Select(t => new WeightInVacuumDto
-                    {
-                        Id = t.Id,
-                        RecordTimestamp = t.RecordTimestamp,
-                        TankConfig = t.TankConfig,
-                        Product = t.Product,
-                        WeightInVaccum = t.WeightInVacuum ?? 0.0m
-                    });
+                        && (areaId == null || t.TankConfig.Park.AreaId == areaId) 
+                        && t.Product.Code > 0)
+                    .GroupBy(x => x.Product.Code)
+                    .ToDictionary(g => g.Key, g => g.Sum(v => v.WeightInVacuum));
 
-                var vmResult = Mapper.Map<IEnumerable<TankDataViewModel>>(dbResult);
-                return Json(vmResult.OrderByDescending(x => x.TankName[0]).ThenBy(x => x.TankNumber).ToDataSourceResult(request, this.ModelState));
+                var weightInVacuumList = new List<WeightInVacuumDto>();
+                foreach (var weight in dbResult)
+                {
+                    weightInVacuumList.Add(new WeightInVacuumDto
+                    {
+                        Id = weight.Key,
+                        RecordTimestamp = date.Value,
+                        Product = products.Where(p => p.Code == weight.Key).FirstOrDefault(),
+                        WeightInVaccum = weight.Value.Value
+                    });       
+                }
+
+                var vmResult = Mapper.Map<IEnumerable<TankWeighInVacuumViewModel>>(weightInVacuumList);
+                return Json(vmResult.OrderBy(x => x.ProductId).ToDataSourceResult(request, this.ModelState));
             }
             else
             {

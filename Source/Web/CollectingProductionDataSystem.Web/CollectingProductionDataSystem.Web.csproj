@@ -1906,6 +1906,7 @@
     <Content Include="Views\Shared\_TanksSideBarByDate.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\TankStatusViewModel.cshtml" />
     <Content Include="Views\Shared\_MonthSelectorAproveableSideBar.cshtml" />
+    <Content Include="Views\Shared\_TanksSideBarByAreaAndDateTime.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

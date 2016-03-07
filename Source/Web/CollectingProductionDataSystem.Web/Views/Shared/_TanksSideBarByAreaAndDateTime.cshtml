@@ -1,0 +1,34 @@
+﻿@using Resources = App_GlobalResources.Resources;
+@using CollectingProductionDataSystem.Web.Infrastructure.Helpers;
+@Html.Hidden("user", User.Identity.Name)
+@Html.Partial("_ControlParams")
+<div class="form-group">
+    <label for="areas">@Resources.Layout.Area</label>
+    @(Html.Kendo().DropDownList()
+        .Name("areas")
+        .OptionLabel(Resources.Layout.ChooseArea)
+        .HtmlAttributes(new { style = "width:95%" })
+        .DataTextField("Name")
+        .DataValueField("Id")
+        .DataSource(source =>
+        {
+            source.Read(read =>
+            {
+                read.Action("GetAreas", "Ajax", new { area = "" });
+            });
+        })
+    )
+
+</div>
+<div class="form-group">
+    <label for="date">@Resources.Layout.Date</label>
+    @Html.Kendo().DateTimePicker().Name("date").Culture("bg-BG").Interval(60).HtmlAttributes(new { style = "width:95%" }).Value(DateTime.Today.AddHours(5))
+</div>
+<hr />
+<div class="form-group">
+    <button id="apply" type="button" class="btn btn-primary" style="width:95%">@Resources.Layout.Apply</button>
+</div>
+@using (Html.BeginScripts())
+{
+    <script src="~/Scripts/custom/sendArea.min.js"></script>
+}
