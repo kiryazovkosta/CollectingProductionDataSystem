@@ -151,7 +151,7 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
         /// <param name="resultDaily">The result daily.</param>
         /// <param name="processUnitId">The process unit id.</param>
         /// <param name="targetDay">The target day.</param>
-        private void AppendTotalMonthQuantityToDailyRecords(Dictionary<string, UnitsDailyData> resultDaily, int processUnitId, DateTime targetDay)
+        public void AppendTotalMonthQuantityToDailyRecords(Dictionary<string, UnitsDailyData> resultDaily, int processUnitId, DateTime targetDay)
         {
             var beginningOfMonth = new DateTime(targetDay.Year, targetDay.Month, 1);
             var totalMonthQuantities = data.UnitsDailyDatas.All().Include(x => x.UnitsDailyConfig)
@@ -163,7 +163,7 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
                         !x.Units.UnitsDailyConfig.NotATotalizedPosition &&
                         beginningOfMonth <= x.Units.RecordTimestamp &&
                         x.Units.RecordTimestamp < targetDay &&
-                        x.Appd.Approved == true).GroupBy(x => x.Units.UnitsDailyConfig.Code).ToList()
+                        x.Appd.Approved == true).ToList().GroupBy(x => x.Units.UnitsDailyConfig.Code)
                         .Select(group => new { Code = group.Key, Value = group.Sum(x => x.Units.RealValue) }).ToDictionary(x => x.Code, x => x.Value);
 
             foreach (var item in resultDaily)
@@ -177,7 +177,7 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
                     resultDaily[item.Key].TotalMonthQuantity = 0m;
                 }
             }
-            Debug.WriteLine("finish");
+            //Debug.WriteLine("finish");
         }
 
         /// <summary>

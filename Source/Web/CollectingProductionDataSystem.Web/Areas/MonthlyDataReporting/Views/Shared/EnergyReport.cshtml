@@ -37,7 +37,7 @@
                 .Width(75);
 
             columns.Bound(c => c.UnitMonthlyConfig.ProcessUnit.Factory.FactorySortableName).Hidden(true).ClientGroupHeaderTemplate("Производство #=value.substr(3,value.length-3)#").Width(10);
-            columns.Bound(c => c.UnitMonthlyConfig.ProductType.SortableName).Hidden(true).ClientGroupHeaderTemplate("#=value.substr(3,value.length-3)#").Width(10);
+            columns.Bound(c => c.UnitMonthlyConfig.ProductType.SortableName).Hidden(true).ClientGroupHeaderTemplate("#=value.substr(3,value.length-3)#");
             columns.Bound(c => c.UnitMonthlyConfig.ProcessUnit.SortableName).ClientTemplate("#=data.UnitMonthlyConfig.ProcessUnit.SortableName.substr(3,data.UnitMonthlyConfig.ProcessUnit.SortableName.length-3)#").Width(80).Title(@Resources.Layout.ProcessUnit);
             columns.Bound(c => c.UnitMonthlyConfig.Name).Width(250);
             columns.Bound(c => c.UnitMonthlyConfig.MeasureUnit.Code).Width(100);
@@ -77,8 +77,8 @@
                                                                  .ServerOperation(true)
                                                                     .Group(group =>
                                                                     {
-                                                                        group.Add(c => c.UnitMonthlyConfig.ProcessUnit.Factory.FactorySortableName);
                                                                         group.Add(c => c.UnitMonthlyConfig.ProductType.SortableName);
+                                                                        group.Add(c => c.UnitMonthlyConfig.ProcessUnit.Factory.FactorySortableName);
                                                                     })
 
                                                                     .Read(read => read.Action("ReadMonthlyUnitsData", Model.ControllerName, new { area = "MonthlyDataReporting" }).Data("unitGridsData.SendDate").Type(HttpVerbs.Post))
@@ -92,7 +92,7 @@
                                                                     model.Field(p => p.UnitMonthlyConfig.Name).Editable(false);
                                                                     model.Field(p => p.UnitMonthlyConfig.MeasureUnit.Code).Editable(false);
                                                                     model.Field(p => p.Value).Editable(false);
-                                                                    model.Field(p => p.UnitManualMonthlyData.Value).Editable(true);
+                                                                    model.Field(p => p.UnitManualMonthlyData.Value).Editable(true).DefaultValue(0);
                                                                 })
                                                                 .Events(events =>
                                                                 {

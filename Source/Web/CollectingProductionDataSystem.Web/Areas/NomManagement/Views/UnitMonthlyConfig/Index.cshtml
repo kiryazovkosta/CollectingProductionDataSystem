@@ -1,4 +1,5 @@
 ﻿@using CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewModels;
+@using Resources = App_GlobalResources.Resources;
 
 @(Html.Kendo()
       .Grid<CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewModels.UnitMonthlyConfigViewModel>()
@@ -30,45 +31,55 @@
       })
       .Resizable(res => res.Columns(true))
       .ToolBar(toolbar =>
-{
-    toolbar.Create();
-    toolbar.Excel();
-})
+            {
+                toolbar.Create();
+                toolbar.Excel();
+            })
+      .Excel(excel => excel
+            .FileName(@Resources.Layout.UnitsDailyConfig + "_" + DateTime.Now + ".xlsx")
+            .Filterable(true)
+            .ProxyURL(Url.Action("Excel_Export_Save", "Ajax", new { area = "" }))
+            .AllPages(true)
+        )
       .Editable(editable => editable.Mode(GridEditMode.InLine))
       .Pageable(pageable => pageable
-.Refresh(true)
-.PageSizes(new[] { 20, 50, 100 })
-.ButtonCount(5)
-)
+                .Refresh(true)
+                .PageSizes(new[] { 20, 50, 100 })
+                .ButtonCount(5)
+         )
       .Sortable(sortable =>
-{
-    sortable.SortMode(GridSortMode.SingleColumn);
-})
+                    {
+                        sortable.SortMode(GridSortMode.SingleColumn);
+                    })
       .Filterable()
       .Scrollable(scrol => scrol.Height(620))
       .Scrollable()
       .DataSource(dataSource => dataSource
-.Ajax()
-.PageSize(20)
-.Model(model =>
-{
-    model.Id(p => p.Id);
-    model.Field(p => p.UnitDailyConfigUnitMonthlyConfigs).DefaultValue(new HashSet<UnitDailyConfigUnitMonthlyConfigViewModel>() { new UnitDailyConfigUnitMonthlyConfigViewModel() }).Editable(true);
-    model.Field(p => p.RelatedUnitMonthlyConfigs).DefaultValue(new HashSet<RelatedUnitMonthlyConfigsViewModel>() { new RelatedUnitMonthlyConfigsViewModel() }).Editable(true);
-    model.Field(p => p.IsEditable).DefaultValue(true);
+                    .Ajax()
+                    .PageSize(20)
+                    .Model(model =>
+                    {
+                        model.Id(p => p.Id);
+                        model.Field(p => p.UnitDailyConfigUnitMonthlyConfigs).DefaultValue(new HashSet<UnitDailyConfigUnitMonthlyConfigViewModel>() { new UnitDailyConfigUnitMonthlyConfigViewModel() }).Editable(true);
+                        model.Field(p => p.RelatedUnitMonthlyConfigs).DefaultValue(new HashSet<RelatedUnitMonthlyConfigsViewModel>() { new RelatedUnitMonthlyConfigsViewModel() }).Editable(true);
+                        model.Field(p => p.IsEditable).DefaultValue(true);
 
-})
-.Read(read => read.Action("Read", "UnitMonthlyConfig", new { area = "NomManagement" }).Data("sendAntiForgery"))
-    .Create(create => create.Action("Create", "UnitMonthlyConfig", new { area = "NomManagement" }).Data("sendAntiForgery"))
-    .Update(update => update.Action("Update", "UnitMonthlyConfig", new { area = "NomManagement" }).Data("sendAntiForgery"))
-    .Destroy(destroy => destroy.Action("Destroy", "UnitMonthlyConfig", new { area = "NomManagement" }).Data("sendAntiForgery"))
-.Events(events =>
-{
-    events.Error("kendoAdditional.ErrorHandler");
-    events.RequestEnd("kendoAdditional.AfterterNomGridValidation");
-})
-)
-      .Events(ev => ev.DataBound("kendoAdditional.DeletableDataBound"))
+                    })
+                    .Read(read => read.Action("Read", "UnitMonthlyConfig", new { area = "NomManagement" }).Data("sendAntiForgery"))
+                    .Create(create => create.Action("Create", "UnitMonthlyConfig", new { area = "NomManagement" }).Data("sendAntiForgery"))
+                    .Update(update => update.Action("Update", "UnitMonthlyConfig", new { area = "NomManagement" }).Data("sendAntiForgery"))
+                    .Destroy(destroy => destroy.Action("Destroy", "UnitMonthlyConfig", new { area = "NomManagement" }).Data("sendAntiForgery"))
+                    .Events(events =>
+                    {
+                        events.Error("kendoAdditional.ErrorHandler");
+                        events.RequestEnd("kendoAdditional.AfterterNomGridValidation");
+                    })
+                )
+      .Events(ev =>
+      {
+          ev.DataBound("kendoAdditional.DeletableDataBound");
+          ev.ExcelExport("beforeExcelExport");
+      })
 )
 
 <script type="text/kendo" id="unitConfigTemplate">

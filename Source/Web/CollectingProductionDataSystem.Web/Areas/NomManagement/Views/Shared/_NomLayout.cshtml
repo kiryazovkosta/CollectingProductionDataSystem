@@ -256,5 +256,22 @@
 
             });
         })
+
+        function beforeExcelExport(e) {
+            var sheet = e.workbook.sheets[0];
+
+            var data = e.data;
+            data.forEach(function (item, index) {
+                sheet.rows[index + 1].cells[9].value="";
+                sheet.rows[index + 1].cells[10].value = "";
+                item.UnitDailyConfigUnitMonthlyConfigs.forEach(function(value,ix){
+                    sheet.rows[index + 1].cells[9].value += "p.p"+ ix +" -> "+value.Code +  ";\r\n";
+                });
+                item.RelatedUnitMonthlyConfigs.forEach(function (value,ix) {
+                    sheet.rows[index + 1].cells[10].value += "p.p" + ix + " -> " + value.Code + ";\r\n";
+                });
+            });
+           
+        }
     </script>
 }

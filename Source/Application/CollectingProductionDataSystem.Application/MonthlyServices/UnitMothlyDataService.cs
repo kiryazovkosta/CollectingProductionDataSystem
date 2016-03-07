@@ -220,24 +220,31 @@ namespace CollectingProductionDataSystem.Application.MonthlyServices
 
             foreach (var targetUnitMonthlyRecordConfig in targetUnitMonthlyRecordConfigs.Where(x => x.AggregationCurrentLevel == false && x.IsManualEntry == false))
             {
-                var monthlyRecord = new UnitMonthlyData()
+                try
                 {
-                    RecordTimestamp = targetMonth,
-                    UnitMonthlyConfigId = targetUnitMonthlyRecordConfig.Id
-                };
+                    var monthlyRecord = new UnitMonthlyData()
+                    {
+                        RecordTimestamp = targetMonth,
+                        UnitMonthlyConfigId = targetUnitMonthlyRecordConfig.Id
+                    };
 
-                var positionDictionary = targetUnitMonthlyRecordConfig.UnitDailyConfigUnitMonthlyConfigs
-                                        .Select(x => new { Id = x.UnitDailyConfigId, Position = x.Position }).Distinct()
-                                        .ToDictionary(x => x.Id, x => x.Position);
+                    var positionDictionary = targetUnitMonthlyRecordConfig.UnitDailyConfigUnitMonthlyConfigs
+                                            .Select(x => new { Id = x.UnitDailyConfigId, Position = x.Position }).Distinct()
+                                            .ToDictionary(x => x.Id, x => x.Position);
 
-                var unitDailyDatasByMontlyData = GetUnitDailyDatasForMonthlyData(targetUnitMonthlyRecordConfig, targetUnitDailyDatas);
+                    var unitDailyDatasByMontlyData = GetUnitDailyDatasForMonthlyData(targetUnitMonthlyRecordConfig, targetUnitDailyDatas);
 
-                var monthlyValue = GetMonthlyValueFromRelatedDailyRecords(unitDailyDatasByMontlyData, targetUnitMonthlyRecordConfig, positionDictionary);
+                    var monthlyValue = GetMonthlyValueFromRelatedDailyRecords(unitDailyDatasByMontlyData, targetUnitMonthlyRecordConfig, positionDictionary);
 
 
-                monthlyRecord.Value = (decimal)monthlyValue;
-                monthlyRecord.HasManualData = unitDailyDatasByMontlyData.Any(y => y.IsManual == true);
-                result.Add(targetUnitMonthlyRecordConfig.Code, monthlyRecord);
+                    monthlyRecord.Value = (decimal)monthlyValue;
+                    monthlyRecord.HasManualData = unitDailyDatasByMontlyData.Any(y => y.IsManual == true);
+                    result.Add(targetUnitMonthlyRecordConfig.Code, monthlyRecord);
+                }
+                catch (Exception ex) 
+                {
+                    Console.WriteLine();
+                }
             }
 
             // append manual records
@@ -429,6 +436,11 @@ namespace CollectingProductionDataSystem.Application.MonthlyServices
             {
                 int currentIndex = positionDictionary[record.UnitsDailyConfigId];
                 inputDictionary.Add(string.Format("p{0}", currentIndex - 1), record.RealValueTillDay);
+            }
+
+            if (unitMonthlyConfig.AggregationFormula =="p.p0" && unitMonthlyConfig.AggregationCurrentLevel==false && records.Count() == 0)
+            {//new record was added after last day is approved
+                inputDictionary.Add(string.Format("p0"), 0);
             }
 
             return calculator.Calculate(unitMonthlyConfig.AggregationFormula, "p", inputDictionary.Count, inputDictionary);
