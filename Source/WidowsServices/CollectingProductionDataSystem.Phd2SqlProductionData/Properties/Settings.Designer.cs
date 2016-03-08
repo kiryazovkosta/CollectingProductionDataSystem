@@ -247,5 +247,14 @@ namespace CollectingProductionDataSystem.Phd2SqlProductionData.Properties {
                 return ((int)(this["PHD_DATA_SOURCE_SECOND"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public int PHD_OFFSET {
+            get {
+                return ((int)(this["PHD_OFFSET"]));
+            }
+        }
     }
 }

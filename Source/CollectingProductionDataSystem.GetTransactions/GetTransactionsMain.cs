@@ -189,15 +189,36 @@
                     }
                     if (!row.IsAverageObservableDensityNull())
                     {
-                        tr.AverageObservableDensity = row.AverageObservableDensity;
+                        try
+                        {
+                            tr.AverageObservableDensity = row.AverageObservableDensity;
+                        }
+                        catch (Exception ex)
+                        {
+                            tr.AverageObservableDensity = 0;
+                        }
                     }
                     if (!row.IsAverageReferenceDensityNull())
                     {
-                        tr.AverageReferenceDensity = row.AverageReferenceDensity;
+                        try
+                        {
+                            tr.AverageReferenceDensity = row.AverageReferenceDensity;
+                        }
+                        catch (Exception ex)
+                        {
+                            tr.AverageReferenceDensity = 0;
+                        }
                     }
                     if (!row.IsAverageTemperatureNull())
                     {
-                        tr.AverageTemperature = row.AverageTemperature;
+                        try
+                        {
+                            tr.AverageTemperature = row.AverageTemperature;
+                        }
+                        catch (Exception ex)
+                        {
+                            tr.AverageTemperature = 0;
+                        }
                     }
                     if (!row.IsTotalizerBeginGrossObservableVolumeReverseNull())
                     {
