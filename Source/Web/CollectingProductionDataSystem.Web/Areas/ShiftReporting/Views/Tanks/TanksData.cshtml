@@ -34,6 +34,7 @@
                 columns.Bound(c => c.WeightInVacuum).ClientTemplate("<div style='text-align:right;'>#=kendo.toString(data.WeightInVacuum, 'n2') #</div>").Width(140);
                 //columns.Bound(c => c.FreeWaterLevel).Format("{0:n2}").Width(120);
                 columns.Bound(c => c.StatusOfTank).Format("{0:n2}").Width(80);
+                //columns.Bound(c => c.Confidence).Width(80);
             })
             .Pageable(pageable => pageable
                 .Refresh(true)
@@ -68,7 +69,7 @@
         {
             events.Error("kendoAdditional.ErrorHandler");
         }))
-        //.Events(ev => ev.DataBound("unitGridsData.BlinkDemo"))//"unitGridsData.DataBound")
+        .Events(ev => ev.DataBound("unitGridsData.DataBound"))
 
 )
 

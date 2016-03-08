@@ -5,22 +5,22 @@
 @using Resources = App_GlobalResources.Resources;
 
 @model MonthlyReportParametersViewModel
-    @{
-        Layout = "~/Views/Shared/_KendoLayoutWithSideBar.cshtml";
-    }
-    <div class="row">
-        <div class="col-md-10">
-            <h2>@Model.ReportName</h2>
-        </div>
-        <div class="col-md-2">
-            <button id="excel-export" class="k-button k-button-icontext k-grid-excel pull-right head-button"><span class="k-icon k-i-excel"></span>Експорт в Excel</button>
-        </div>
+@{
+    Layout = "~/Views/Shared/_KendoLayoutWithSideBar.cshtml";
+}
+<div class="row">
+    <div class="col-md-10">
+        <h2>@Model.ReportName</h2>
     </div>
-    @Html.Hidden("monthlyReportTypeId", Model.MonthlyReportTypeId)
+    <div class="col-md-2">
+        <button id="excel-export" class="k-button k-button-icontext k-grid-excel pull-right head-button"><span class="k-icon k-i-excel"></span>Експорт в Excel</button>
+    </div>
+</div>
+@Html.Hidden("monthlyReportTypeId", Model.MonthlyReportTypeId)
 
-    @Html.ValidationSummary()
-    @Html.AntiForgeryToken()
-    @(Html.Kendo()
+@Html.ValidationSummary()
+@Html.AntiForgeryToken()
+@(Html.Kendo()
     .Grid<MonthlyReportTableViewModel>()
     .Name("monthly-hc-units")
     .AutoBind(false)
@@ -38,7 +38,7 @@
 
             columns.Bound(c => c.UnitMonthlyConfig.ProcessUnit.Factory.FactorySortableName).Hidden(true).ClientGroupHeaderTemplate("Производство #=value.substr(3,value.length-3)#").Width(10);
             columns.Bound(c => c.UnitMonthlyConfig.ProductType.SortableName).Hidden(true).ClientGroupHeaderTemplate("#=value.substr(3,value.length-3)#");
-            columns.Bound(c => c.UnitMonthlyConfig.ProcessUnit.SortableName).ClientTemplate("#=data.UnitMonthlyConfig.ProcessUnit.SortableName.substr(3,data.UnitMonthlyConfig.ProcessUnit.SortableName.length-3)#").Width(80).Title(@Resources.Layout.ProcessUnit);
+            columns.Bound(c => c.UnitMonthlyConfig.ProcessUnit.ShortName).Width(80).Title(@Resources.Layout.ProcessUnit);
             columns.Bound(c => c.UnitMonthlyConfig.Name).Width(250);
             columns.Bound(c => c.UnitMonthlyConfig.MeasureUnit.Code).Width(100);
             columns.Bound(c => c.Value).ClientTemplate("<div style='text-align:right;'>#=data.Value==null?'':kendo.toString(data.Value, '\\#\\#.\\#\\#\\#\\#\\#')#</div>").Width(100).Title(Resources.Layout.OperatinalData);
@@ -70,16 +70,16 @@
                                                                 .Events(ev => ev.DataBound("unitGridsData.DataBound"))
                                                                 .Scrollable(scr => scr.Height(640))
                                                                 .Filterable()
-            //.ClientDetailTemplateId("template")
+        //.ClientDetailTemplateId("template")
                                                                 .DataSource(dataSource => dataSource
                                                                 .Ajax()
                                                                 .PageSize(int.MaxValue)
-                                                                 .ServerOperation(true)
-                                                                    .Group(group =>
-                                                                    {
-                                                                        group.Add(c => c.UnitMonthlyConfig.ProductType.SortableName);
-                                                                        group.Add(c => c.UnitMonthlyConfig.ProcessUnit.Factory.FactorySortableName);
-                                                                    })
+                                                                .ServerOperation(true)
+                                                                .Group(group =>
+                                                                {
+                                                                    group.Add(c =>c.UnitMonthlyConfig.ProductType.SortableName);
+                                                                    group.Add(c => c.UnitMonthlyConfig.ProcessUnit.Factory.FactorySortableName);
+                                                                })
 
                                                                     .Read(read => read.Action("ReadMonthlyUnitsData", Model.ControllerName, new { area = "MonthlyDataReporting" }).Data("unitGridsData.SendDate").Type(HttpVerbs.Post))
                                                                         .Update(update => update.Action("Edit", Model.ControllerName, new { area = "MonthlyDataReporting" }).Data("sendAntiForgery"))
@@ -100,21 +100,21 @@
                                                                     events.RequestEnd("unitGridsData.DataSave");
                                                                 })
                                                             )
-    )
+)
 
-    @* //Error window for kendo grid error event handler *@
-    <div id="err-window" style="display:none">@Html.Partial("_KendoGridErrorWindow")</div>
-    @* //Error window for kendo grid error event handler *@
-    <div id="success-window" style="display:none">@Html.Partial("_SuccessWindow")</div>
+@* //Error window for kendo grid error event handler *@
+<div id="err-window" style="display:none">@Html.Partial("_KendoGridErrorWindow")</div>
+@* //Error window for kendo grid error event handler *@
+<div id="success-window" style="display:none">@Html.Partial("_SuccessWindow")</div>
 
-    @section scripts{
-        @Scripts.Render("~/bundles/custom/kendoadditional")
-        @Scripts.Render("~/bundles/custom/unitGrids")
-        @Scripts.Render("~/Scripts/custom/renderDailyGraphic.min.js")
-        @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.min.js")
-    }
-    @section sidebar{
-        @Html.Partial("_MonthSelectorAproveableSideBar")
-    }
+@section scripts{
+    @Scripts.Render("~/bundles/custom/kendoadditional")
+    @Scripts.Render("~/bundles/custom/unitGrids")
+    @Scripts.Render("~/Scripts/custom/renderDailyGraphic.min.js")
+    @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.min.js")
+}
+@section sidebar{
+    @Html.Partial("_MonthSelectorAproveableSideBar")
+}
 
 

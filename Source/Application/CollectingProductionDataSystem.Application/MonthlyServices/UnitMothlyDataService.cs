@@ -51,7 +51,7 @@ namespace CollectingProductionDataSystem.Application.MonthlyServices
         public IEfStatus CalculateMonthlyDataIfNotAvailable(DateTime date, int reportTypeId, string userName)
         {
             var targetMonth = this.GetTargetMonth(date);
-            var status = this.CheckIfDailyAreReady(targetMonth, false);
+            var status = this.CheckIfDailyAreReady(targetMonth, reportTypeId > CommonConstants.HydroCarbons);
             if (!status.IsValid)
             {
                 return status;
@@ -217,8 +217,8 @@ namespace CollectingProductionDataSystem.Application.MonthlyServices
                   .Where(x => x.RecordTimestamp == targetMonth).ToList();
 
             Dictionary<string, UnitMonthlyData> result = new Dictionary<string, UnitMonthlyData>();
-
-            foreach (var targetUnitMonthlyRecordConfig in targetUnitMonthlyRecordConfigs.Where(x => x.AggregationCurrentLevel == false && x.IsManualEntry == false))
+            var targetRecordConfigs =targetUnitMonthlyRecordConfigs.Where(x => x.AggregationCurrentLevel == false && x.IsManualEntry == false).ToList();
+            foreach (var targetUnitMonthlyRecordConfig in targetRecordConfigs)
             {
                 try
                 {
@@ -438,7 +438,7 @@ namespace CollectingProductionDataSystem.Application.MonthlyServices
                 inputDictionary.Add(string.Format("p{0}", currentIndex - 1), record.RealValueTillDay);
             }
 
-            if (unitMonthlyConfig.AggregationFormula =="p.p0" && unitMonthlyConfig.AggregationCurrentLevel==false && records.Count() == 0)
+            if (unitMonthlyConfig.AggregationFormula.Contains("p.p0") && !unitMonthlyConfig.AggregationFormula.Contains("p.p1") && unitMonthlyConfig.AggregationCurrentLevel == false && records.Count() == 0)
             {//new record was added after last day is approved
                 inputDictionary.Add(string.Format("p0"), 0);
             }
@@ -450,9 +450,9 @@ namespace CollectingProductionDataSystem.Application.MonthlyServices
         {
             DateTime date = inTargetMonth.Date;
             DateTime targetMonth = new DateTime(date.Year, date.Month, DateTime.DaysInMonth(date.Year, date.Month));
-#if DEBUG
-            targetMonth = new DateTime(inTargetMonth.Year, 2, 2);
-#endif
+//#if DEBUG
+//            targetMonth = new DateTime(inTargetMonth.Year, 2, 2);
+//#endif
             return targetMonth;
         }
 
@@ -557,7 +557,18 @@ namespace CollectingProductionDataSystem.Application.MonthlyServices
         public IEfStatus CheckIfDailyAreReady(DateTime targetDate, bool IsEnergy)
         {
             var targetMonth = this.GetTargetMonth(targetDate);
-            var currentApprovedDailyDatas = this.data.UnitsApprovedDailyDatas.All().Where(x => x.RecordDate == targetMonth && (!IsEnergy || x.EnergyApproved)).ToDictionary(x => x.ProcessUnitId, x => x);
+            List<int> energyCompletionCheckExclusionList = new List<int>();
+            
+            if (IsEnergy)
+            {
+                energyCompletionCheckExclusionList = this.data.UnitsDailyConfigs.All().ToList()
+                .GroupBy(x => x.ProcessUnitId).Where(y => !y.Any(z => z.MaterialTypeId == CommonConstants.EnergyType))
+                .Select(w => w.Key).ToList();
+            }
+            
+
+            var currentApprovedDailyDatas = this.data.UnitsApprovedDailyDatas.All()
+                .Where(x => x.RecordDate == targetMonth && (!IsEnergy || x.EnergyApproved || energyCompletionCheckExclusionList.Contains(x.ProcessUnitId))).ToDictionary(x => x.ProcessUnitId, x => x);
             var processUnits = this.data.ProcessUnits.All();
 
             var validationResults = new List<ValidationResult>();
