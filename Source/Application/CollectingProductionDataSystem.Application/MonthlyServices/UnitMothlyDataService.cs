@@ -51,7 +51,7 @@ namespace CollectingProductionDataSystem.Application.MonthlyServices
         public IEfStatus CalculateMonthlyDataIfNotAvailable(DateTime date, int reportTypeId, string userName)
         {
             var targetMonth = this.GetTargetMonth(date);
-            var status = this.CheckIfDailyAreReady(targetMonth, false);
+            var status = this.CheckIfDailyAreReady(targetMonth, reportTypeId > CommonConstants.HydroCarbons);
             if (!status.IsValid)
             {
                 return status;
@@ -217,8 +217,8 @@ namespace CollectingProductionDataSystem.Application.MonthlyServices
                   .Where(x => x.RecordTimestamp == targetMonth).ToList();
 
             Dictionary<string, UnitMonthlyData> result = new Dictionary<string, UnitMonthlyData>();
-
-            foreach (var targetUnitMonthlyRecordConfig in targetUnitMonthlyRecordConfigs.Where(x => x.AggregationCurrentLevel == false && x.IsManualEntry == false))
+            var targetRecordConfigs =targetUnitMonthlyRecordConfigs.Where(x => x.AggregationCurrentLevel == false && x.IsManualEntry == false).ToList();
+            foreach (var targetUnitMonthlyRecordConfig in targetRecordConfigs)
             {
                 try
                 {
@@ -450,9 +450,9 @@ namespace CollectingProductionDataSystem.Application.MonthlyServices
         {
             DateTime date = inTargetMonth.Date;
             DateTime targetMonth = new DateTime(date.Year, date.Month, DateTime.DaysInMonth(date.Year, date.Month));
-#if DEBUG
-            targetMonth = new DateTime(inTargetMonth.Year, 2, 2);
-#endif
+//#if DEBUG
+//            targetMonth = new DateTime(inTargetMonth.Year, 2, 2);
+//#endif
             return targetMonth;
         }
 

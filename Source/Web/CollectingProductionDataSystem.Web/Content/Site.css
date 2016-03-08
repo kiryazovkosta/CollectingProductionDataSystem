@@ -865,45 +865,62 @@ td pre, #err-message {
 }
 
 li.divider-labeled {
-    overflow:initial !important;
+    overflow: initial !important;
 }
 
-li.divider-labeled.divider-top {
-    margin-top:-5px;
-}
-
-    li.divider-labeled span {
-        float:right !important;
-        font-weight:normal !important;
+    li.divider-labeled.divider-top {
+        margin-top: -5px;
     }
 
+    li.divider-labeled span {
+        float: right !important;
+        font-weight: normal !important;
+    }
+ 
+/*Error animation*/
 @-webkit-keyframes alarm {
-    0%   {background-color: lightyellow;}
-    25%  {background-color: pink;}
-    50%  {background-color: yellow;}
-    100% {background-color: red;}
+    0% { background-color: lightyellow;}
+    25% { background-color: pink;}
+    50% { background-color: yellow;}
+    100% { background-color: red;}
 }
 
-/* Standard syntax */
 @-moz-keyframes alarm {
-    0%   {background-color: lightyellow;}
-    25%  {background-color: pink;}
-    50%  {background-color: yellow;}
-    100% {background-color: red;}
+    0% { background-color: lightyellow;}
+    25% { background-color: pink;}
+    50% { background-color: yellow;}
+    100% { background-color: red;}
 }
 
 @keyframes alarm {
-    0%   {background-color: lightyellow;}
-    25%  {background-color: pink;}
-    50%  {background-color: yellow;}
-    100% {background-color: red;}
+       0% { background-color: lightyellow;}
+    25% { background-color: pink;}
+    50% { background-color: yellow;}
+    100% { background-color: red;}
 }
 
-.blink {
-    -moz-animation-name: alarm;
-    -o-animation-name: alarm;
-    -webkit-animation-name: alarm;
-    animation-name: alarm;
+/*warning animation*/
+@-webkit-keyframes warning {
+    0% { background-color: white;}
+    50% { background-color: lightyellow;}
+    100% { background-color:yellow;}
+}
+
+/* Standard syntax */
+@-moz-keyframes warning {
+    0% { background-color: white;}
+    50% { background-color: lightyellow;}
+    100% { background-color:yellow;}
+}
+
+@keyframes warning {
+    0% { background-color: white;}
+    50% { background-color: lightyellow;}
+    100% { background-color:yellow;}
+}
+
+
+.error-animation, .warning-animation {
     -moz-animation-duration: 0.8s;
     -o-animation-duration: 0.8s;
     -webkit-animation-duration: 0.8s;
@@ -913,5 +930,20 @@ li.divider-labeled.divider-top {
     -webkit-animation-iteration-count: infinite;
     animation-iteration-count: infinite;
     font-weight: bold;
-    color:white;
+}
+
+.error-animation {
+    -moz-animation-name: alarm;
+    -o-animation-name: alarm;
+    -webkit-animation-name: alarm;
+    animation-name: alarm;
+    color: white;
+}
+
+.warning-animation {
+    -moz-animation-name: warning;
+    -o-animation-name: warning;
+    -webkit-animation-name: warning;
+    animation-name: warning;
+    color: black;
 }
