@@ -557,7 +557,18 @@ namespace CollectingProductionDataSystem.Application.MonthlyServices
         public IEfStatus CheckIfDailyAreReady(DateTime targetDate, bool IsEnergy)
         {
             var targetMonth = this.GetTargetMonth(targetDate);
-            var currentApprovedDailyDatas = this.data.UnitsApprovedDailyDatas.All().Where(x => x.RecordDate == targetMonth && (!IsEnergy || x.EnergyApproved)).ToDictionary(x => x.ProcessUnitId, x => x);
+            List<int> energyCompletionCheckExclusionList = new List<int>();
+            
+            if (IsEnergy)
+            {
+                energyCompletionCheckExclusionList = this.data.UnitsDailyConfigs.All().ToList()
+                .GroupBy(x => x.ProcessUnitId).Where(y => !y.Any(z => z.MaterialTypeId == CommonConstants.EnergyType))
+                .Select(w => w.Key).ToList();
+            }
+            
+
+            var currentApprovedDailyDatas = this.data.UnitsApprovedDailyDatas.All()
+                .Where(x => x.RecordDate == targetMonth && (!IsEnergy || x.EnergyApproved || energyCompletionCheckExclusionList.Contains(x.ProcessUnitId))).ToDictionary(x => x.ProcessUnitId, x => x);
             var processUnits = this.data.ProcessUnits.All();
 
             var validationResults = new List<ValidationResult>();

@@ -7,6 +7,7 @@
     using System.Text;
     using System.Web;
     using AutoMapper;
+    using CollectingProductionDataSystem.Enumerations;
     using CollectingProductionDataSystem.Infrastructure.Mapping;
     using CollectingProductionDataSystem.Models.Inventories;
     using Resources = App_GlobalResources.Resources;
@@ -80,6 +81,10 @@
 
         public int TankId { get; set; }
 
+        public Status Status { get; set; }
+
+        public int Confidence { get; set; }
+
         public string SortableName
         {
             get
@@ -117,7 +122,9 @@
                 .ForMember(p => p.LiquidLevel, opt => opt.MapFrom(p => p.CorrectedLiquidLevel))
                 .ForMember(p => p.ProductLevel, opt => opt.MapFrom(p => p.CorrectedProductLevel))
                 .ForMember(p => p.FreeWaterLevel, opt => opt.MapFrom(p => p.CorrectedFreeWaterLevel))
-                .ForMember(p => p.ControlPoint, opt => opt.MapFrom(p => p.TankConfig.ControlPoint == "n/a" ? string.Format("{0}{1}", p.TankConfig.Park.Name, p.TankConfig.TankName) : p.TankConfig.ControlPoint));
+                .ForMember(p => p.ControlPoint, opt => opt.MapFrom(p => p.TankConfig.ControlPoint == "n/a" ? string.Format("{0}{1}", p.TankConfig.Park.Name, p.TankConfig.TankName) : p.TankConfig.ControlPoint))
+                .ForMember(p=>p.Status,opt=>opt.MapFrom(p=>p.Confidence==100 ? Status.Ok: Status.Error));
+
 
         }
     }

@@ -121,7 +121,7 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
                 {
                     if (!resultDaily.ContainsKey(item.Key))
                     {
-                        resultDaily.Add(item.Key, item.Value); 
+                        resultDaily.Add(item.Key, item.Value);
                     }
                 }
             }
@@ -154,42 +154,46 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
         public void AppendTotalMonthQuantityToDailyRecords(Dictionary<string, UnitsDailyData> resultDaily, int processUnitId, DateTime targetDay)
         {
             var beginningOfMonth = new DateTime(targetDay.Year, targetDay.Month, 1);
-            var totalMonthQuantities = data.UnitsDailyDatas.All().Include(x=>x.UnitsDailyConfig)
-                .Join(data.UnitsDailyConfigs.All(),
-                        unitDailyData => unitDailyData.UnitsDailyConfigId,
-                        config => config.Id,
-                        (unitDailyData, config) => new {Id=unitDailyData.Id, UnitDatas = unitDailyData, Config = config }
-                      )
-                .Join(data.UnitsManualDailyDatas.All(),
-                    unitDailyData=>unitDailyData.Id,
-                    manualData=>manualData.Id,
-                    (unitDailyData,manualData)=> new {Id = unitDailyData.Id, UnitDailyData = unitDailyData, RealValue = (manualData==null)? unitDailyData.UnitDatas.Value : manualData.Value }
-                )
-                .Join(data.UnitsApprovedDailyDatas.All(),
-                        units => new UnitDailyToApprove { ProcessUnitId = units.UnitDailyData.Config.ProcessUnitId, RecordDate = units.UnitDailyData.UnitDatas.RecordTimestamp },
-                        appd => new UnitDailyToApprove { ProcessUnitId = appd.ProcessUnitId, RecordDate = appd.RecordDate },
-                        (units, appd) => new { Units = units, Appd = appd })
-                .Where(x => x.Units.UnitDailyData.Config.ProcessUnitId == processUnitId 
-                          && !x.Units.UnitDailyData.Config.NotATotalizedPosition
-                          && beginningOfMonth <= x.Units.UnitDailyData.UnitDatas.RecordTimestamp
-                          && x.Units.UnitDailyData.UnitDatas.RecordTimestamp < targetDay 
-                          && x.Appd.Approved == true
-                        )
-                        .ToList().GroupBy(x => x.Units.UnitDailyData.Config.Code)
-                        .Select(group => new { Code = group.Key, Value = group.Sum(x => x.Units.RealValue) }).ToDictionary(x => x.Code, x => x.Value);
-
-            foreach (var item in resultDaily)
+            data.DbContext.DbContext.Configuration.LazyLoadingEnabled = false;
+            Exception exc = null;
+            try
             {
-                if (totalMonthQuantities.ContainsKey(item.Key))
+                var totalMonthQuantities = data.UnitsDailyDatas.All().Include(x => x.UnitsDailyConfig).Include(x => x.UnitsManualDailyData).Select(x => x)
+                    .Join(data.UnitsApprovedDailyDatas.All(),
+                            units => new UnitDailyToApprove { ProcessUnitId = units.UnitsDailyConfig.ProcessUnitId, RecordDate = units.RecordTimestamp },
+                            appd => new UnitDailyToApprove { ProcessUnitId = appd.ProcessUnitId, RecordDate = appd.RecordDate },
+                            (units, appd) => new { Units = units, Appd = appd })
+                    .Where(x => x.Units.UnitsDailyConfig.ProcessUnitId == processUnitId &&
+                            !x.Units.UnitsDailyConfig.NotATotalizedPosition &&
+                            beginningOfMonth <= x.Units.RecordTimestamp &&
+                            x.Units.RecordTimestamp < targetDay &&
+                            x.Appd.Approved == true).GroupBy(x => x.Units.UnitsDailyConfig.Code).ToList()
+                            .Select(group => new { Code = group.Key, Value = group.Sum(x => x.Units.RealValue) }).ToDictionary(x => x.Code, x => x.Value);
+
+                foreach (var item in resultDaily)
                 {
-                    resultDaily[item.Key].TotalMonthQuantity = (decimal)totalMonthQuantities[item.Key];
-                }
-                else
-                {
-                    resultDaily[item.Key].TotalMonthQuantity = 0m;
+                    if (totalMonthQuantities.ContainsKey(item.Key))
+                    {
+                        resultDaily[item.Key].TotalMonthQuantity = (decimal)totalMonthQuantities[item.Key];
+                    }
+                    else
+                    {
+                        resultDaily[item.Key].TotalMonthQuantity = 0m;
+                    }
                 }
             }
-            //Debug.WriteLine("finish");
+            catch (Exception ex) 
+            {
+                exc = ex;
+            }
+            finally
+            {
+                data.DbContext.DbContext.Configuration.LazyLoadingEnabled = true;
+                if (exc != null)
+                {
+                    throw exc;
+                }
+            }
         }
 
         /// <summary>
@@ -480,7 +484,7 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
                     {
                         validationMaterialResults.Add(new ValidationResult(string.Format("\t\t- {0:dd.MM.yyyy г.}", checkedDay)));
                     }
-                    else if ((!approvedDays[checkedDay].EnergyApproved) 
+                    else if ((!approvedDays[checkedDay].EnergyApproved)
                         && materialTypeId == CommonConstants.EnergyType
                         && (!Convert.ToBoolean(System.Configuration.ConfigurationManager.AppSettings["ComplitionEnergyCheckDeactivared"])))
                     {
@@ -554,11 +558,11 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
                 .Where(x => x.ProcessUnitId == processUnitId && x.AggregationCurrentLevel == true)
                 .SelectMany(y => y.RelatedUnitDailyConfigs);
             if (materialTypeId == CommonConstants.MaterialType)
-	        {
-		        relatedDailyDatasFromOtherProcessUnits = relatedDailyDatasFromOtherProcessUnits
+            {
+                relatedDailyDatasFromOtherProcessUnits = relatedDailyDatasFromOtherProcessUnits
                     .Where(z => z.RelatedUnitsDailyConfig.ProcessUnitId != processUnitId);
-	        }
-               
+            }
+
             var relatedDailyDatasFromOtherProcessUnitsList = relatedDailyDatasFromOtherProcessUnits.ToList();
 
             foreach (var item in relatedDailyDatasFromOtherProcessUnitsList)
