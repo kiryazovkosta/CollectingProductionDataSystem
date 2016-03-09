@@ -76,5 +76,14 @@ namespace CollectingProductionDataSystem.PhdApplication.Properties {
                 return ((uint)(this["PHD_DATA_MAX_ROWS"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public int PHD_OFFSET {
+            get {
+                return ((int)(this["PHD_OFFSET"]));
+            }
+        }
     }
 }
