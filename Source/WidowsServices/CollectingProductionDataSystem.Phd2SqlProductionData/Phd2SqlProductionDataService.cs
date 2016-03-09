@@ -45,10 +45,10 @@ namespace CollectingProductionDataSystem.Phd2SqlProductionData
                     this.inventoryDataTimer = new Timer(TimerHandlerInventory, null, 0, Timeout.Infinite);
                 }
 
-                if (Properties.Settings.Default.SYNC_PRIMARY_SECOND)
-                {
-                    this.measurementDataTimer = new Timer(TimerHandlerMeasurement, null, 0, Timeout.Infinite); 
-                }
+                //if (Properties.Settings.Default.SYNC_PRIMARY_SECOND)
+                //{
+                //    this.measurementDataTimer = new Timer(TimerHandlerMeasurement, null, 0, Timeout.Infinite); 
+                //}
             }
             catch (Exception ex)
             {

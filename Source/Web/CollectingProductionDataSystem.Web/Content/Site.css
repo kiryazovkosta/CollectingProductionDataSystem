@@ -947,3 +947,7 @@ li.divider-labeled {
     animation-name: warning;
     color: black;
 }
+
+input[type="text"] {
+    color: black;
+}
