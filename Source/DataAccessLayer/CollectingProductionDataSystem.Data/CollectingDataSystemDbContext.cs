@@ -59,6 +59,14 @@
             this.transantionOption = DefaultTransactionOptions.Instance.TransactionOptions;
         }
 
+        public CollectingDataSystemDbContext(IPersister param, ILogger loggerParam, string connectionString)
+            : base(connectionString)
+        {
+            this.persister = param;
+            this.logger = loggerParam;
+            this.transantionOption = DefaultTransactionOptions.Instance.TransactionOptions;
+        }
+
         public IDbSet<Product> Products { get; set; }
 
         public IDbSet<ProductType> ProductTypes { get; set; }

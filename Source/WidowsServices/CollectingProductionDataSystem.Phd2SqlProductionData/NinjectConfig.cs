@@ -21,7 +21,7 @@
             kernel.Bind<DbContext>().To<CollectingDataSystemDbContext>();
             kernel.Bind(typeof(IDeletableEntityRepository<>)).To(typeof(DeletableEntityRepository<>));
             kernel.Bind(typeof(IRepository<>)).To(typeof(GenericRepository<>));
-            kernel.Bind<IProductionData>().To<ProductionData>();
+            kernel.Bind<IProductionData>().To<ProductionData>().InSingletonScope();
             kernel.Bind<IPersister>().To<AuditablePersister>();
             kernel.Bind<IEfStatus>().To<EfStatus>();
             kernel.Bind<ILogger>().To<Logger>();

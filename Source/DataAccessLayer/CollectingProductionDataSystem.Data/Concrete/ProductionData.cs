@@ -30,6 +30,11 @@
         {
         }
 
+        public ProductionData(IPersister persisterParam, ILogger loggerParam, string connectionString)
+            : this(new CollectingDataSystemDbContext(persisterParam, loggerParam, connectionString))
+        {
+        }
+
         public ProductionData(IDbContext context)
         {
             this.context = context;

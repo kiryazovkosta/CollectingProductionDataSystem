@@ -67,11 +67,11 @@ namespace CollectingProductionDataSystem.ConsoleClient
 
             //ProcessTransactionsData();
 
-            //DoCalculation();
+            DoCalculation();
 
             //ProcessProductionReportTransactionsData();
 
-            System.Console.WriteLine("finished");
+            //System.Console.WriteLine("finished");
             //ConvertProductsForInternalPipes(data);
 
             //TransformUnitDailyConfigTable(data);

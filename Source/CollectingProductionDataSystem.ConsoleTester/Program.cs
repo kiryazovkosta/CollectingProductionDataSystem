@@ -68,14 +68,16 @@ namespace CollectingProductionDataSystem.ConsoleTester
             dailyService.CheckExistsUnitDailyDatas(new DateTime(2016, 3, 6), 35, 1);
 
             var timer = new Stopwatch();
+            var resultDaily = new Dictionary<string, UnitsDailyData>();
 
             //service.GetDataForMonth(DateTime.Now,1);
             timer.Start();
-            dailyService.AppendTotalMonthQuantityToDailyRecords(new Dictionary<string, UnitsDailyData>(), 2, new DateTime(2016, 3, 6));
+            dailyService.AppendTotalMonthQuantityToDailyRecords(resultDaily, 35, new DateTime(2016, 3, 2),2);
 
             //Update(service);
             timer.Stop();
             Console.WriteLine("Ready!\n Estimated time per operation {0}", timer.Elapsed);
+
         }
 
         private static void Update(UnitMothlyDataService monthlyService, string userName = "Test")

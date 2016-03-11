@@ -1,4 +1,4 @@
-﻿namespace CollectingProductionDataSystem.ConsoleTester
+﻿namespace CollectingProductionDataSystem.InterfaceDataChecker
 {
     using CollectingProductionDataSystem.Application.CalculatorService;
     using CollectingProductionDataSystem.Application.Contracts;

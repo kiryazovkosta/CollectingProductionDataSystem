@@ -24,12 +24,14 @@
         private static readonly ILog logger;
 
         private static readonly NinjectConfig ninject;
+        private static readonly PhdPrimaryDataService service;
 
         static Phd2SqlProductionDataMain()
         {
             logger = LogManager.GetLogger("CollectingProductionDataSystem.Phd2SqlProductionData");
             ninject = new NinjectConfig();
-
+            var kernel = ninject.Kernel;
+            service = kernel.GetService(typeof(PhdPrimaryDataService)) as PhdPrimaryDataService;
         }
 
         internal static void Main()
@@ -47,8 +49,7 @@
             try
             {
                 logger.Info("Sync primary data started!");
-                var kernel = ninject.Kernel;
-                var service = kernel.GetService(typeof(PhdPrimaryDataService)) as PhdPrimaryDataService;
+                
                 for (int offsetInHours = 0; offsetInHours < Properties.Settings.Default.SYNC_PRIMARY_HOURS_OFFSET; offsetInHours += 8)
                 {
                     var offset = offsetInHours == 0 ? offsetInHours : offsetInHours * -1;

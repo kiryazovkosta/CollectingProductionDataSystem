@@ -2,6 +2,7 @@ namespace CollectingProductionDataSystem.Models.Productions
 {
     using System;
     using System.Collections.Generic;
+    using System.Text;
     using CollectingProductionDataSystem.Models.Abstract;
     using CollectingProductionDataSystem.Models.Contracts;
     using CollectingProductionDataSystem.Models.Nomenclatures;
@@ -67,6 +68,21 @@ namespace CollectingProductionDataSystem.Models.Productions
             {
                 return string.Empty;
             }
+        }
+
+        public string Stringify()
+        {
+            var sb = new StringBuilder();
+            sb.AppendFormat("{0} | ", this.CreatedOn);            
+            sb.AppendFormat("{0} | ",this.Id.ToString().PadLeft(10,'0'));
+            sb.AppendFormat("{0:10} | ", this.UnitConfig.Code);
+            sb.AppendFormat("{0:50} | ", this.UnitConfig.Name);
+            sb.AppendFormat("{0:0.00000} | ", this.Value ?? 0);
+            sb.AppendFormat("{0} | ", ShiftId);
+            sb.AppendFormat("{0} | ", this.UnitConfig.CollectingDataMechanism);
+            sb.AppendFormat("{0} | ", this.UnitConfig.PreviousShiftTag);
+            sb.AppendFormat("{0} | ", this.Confidence);
+            return sb.ToString();
         }
     }
 }

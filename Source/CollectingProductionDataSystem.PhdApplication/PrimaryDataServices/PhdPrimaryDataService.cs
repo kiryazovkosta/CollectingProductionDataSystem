@@ -108,7 +108,7 @@
                     var calculatedUnitDatas = ProcessCalculatedUnits(unitsConfigsList, recordDataTime, shift, unitsData, ref expectedNumberOfRecords);
 
                     realNumberOfRecords = calculatedUnitDatas.Count();
-                    LogConsistencyMessage("Processing Calculated By Automatic Records", expectedNumberOfRecords, realNumberOfRecords);
+                    LogConsistencyMessage("Processing Calculated Records", expectedNumberOfRecords, realNumberOfRecords);
 
                     if (calculatedUnitDatas.Count() > 0)
                     {
