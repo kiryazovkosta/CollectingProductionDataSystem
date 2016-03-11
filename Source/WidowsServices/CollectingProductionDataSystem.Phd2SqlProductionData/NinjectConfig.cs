@@ -10,6 +10,7 @@
     using System;
     using System.Data.Entity;
     using System.Linq;
+    using log4net;
 
     public class NinjectConfig : IDisposable
     {
@@ -24,6 +25,7 @@
             kernel.Bind<IPersister>().To<AuditablePersister>();
             kernel.Bind<IEfStatus>().To<EfStatus>();
             kernel.Bind<ILogger>().To<Logger>();
+            kernel.Bind<ILog>().ToMethod(context => LogManager.GetLogger("CollectingProductionDataSystem.Phd2SqlProductionData")).InSingletonScope();
         }
 
         /// <summary>
@@ -41,8 +43,6 @@
             {
                 return this.kernel;
             }
-        }
-    
-        
+        } 
     }
 }

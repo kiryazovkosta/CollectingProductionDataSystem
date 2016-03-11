@@ -23,5 +23,8 @@
     <Setting Name="PHD_OFFSET" Type="System.Int32" Scope="Application">
       <Value Profile="(Default)">1</Value>
     </Setting>
+    <Setting Name="IsTwoPHDS" Type="System.Boolean" Scope="Application">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

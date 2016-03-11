@@ -85,5 +85,14 @@ namespace CollectingProductionDataSystem.PhdApplication.Properties {
                 return ((int)(this["PHD_OFFSET"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool IsTwoPHDS {
+            get {
+                return ((bool)(this["IsTwoPHDS"]));
+            }
+        }
     }
 }
