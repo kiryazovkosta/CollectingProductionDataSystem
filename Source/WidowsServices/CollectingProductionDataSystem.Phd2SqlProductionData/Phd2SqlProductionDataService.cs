@@ -98,16 +98,16 @@ namespace CollectingProductionDataSystem.Phd2SqlProductionData
                 }
                 catch (Exception ex)
                 {
-                    logger.Error(ex.Message, ex);
+                    logger.Error(ex.Message + ex.StackTrace, ex);
                 }
                 finally
                 {
                     DateTime endDateTime = DateTime.Now;
                     lastTimeDuration = endDateTime - beginDateTime;
-                    var operationTimeout = Convert.ToInt64((endDateTime - beginDateTime).TotalMilliseconds);
-                    var callbackTimeout = Convert.ToInt64(Properties.Settings.Default.IDLE_TIMER_PRIMARY.TotalMilliseconds);
+                    //var operationTimeout = Convert.ToInt64((endDateTime - beginDateTime).TotalMilliseconds);
+                    //var callbackTimeout = Convert.ToInt64(Properties.Settings.Default.IDLE_TIMER_PRIMARY.TotalMilliseconds);
                     TimeSpan duration = GetNextTimeDuration(lastOperationSucceeded);
-                    this.primaryDataTimer.Change(callbackTimeout - operationTimeout, Timeout.Infinite);
+                    this.primaryDataTimer.Change(duration.Ticks, Timeout.Infinite);
                 }
             }
         }

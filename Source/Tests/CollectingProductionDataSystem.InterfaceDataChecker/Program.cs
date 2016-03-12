@@ -39,7 +39,7 @@ namespace CollectingProductionDataSystem.InterfaceDataChecker
             int ix = 0;
             foreach (var item in testUnits)
             {
-                if ((item.Value.Value ?? 0M) != (productiveUnits[item.Key].Value ?? 0M))
+                if (((item.Value.Value ?? 0M) != (productiveUnits[item.Key].Value ?? 0M)) || (item.Value.Confidence != productiveUnits[item.Key].Confidence))
                 {
                     resultList.Add(string.Format("Test | {0}", item.Value.Stringify()));
                     resultList.Add(string.Format("Prod | {0}", productiveUnits[item.Key].Stringify()));
