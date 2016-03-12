@@ -17,7 +17,7 @@ namespace CollectingProductionDataSystem.InterfaceDataChecker
     {
         public static void Main()
         {
-            var targetDay = new DateTime(2016, 3, 10);
+            var targetDay = new DateTime(2016, 3, 12);
             var testContext = new CollectingDataSystemDbContext(new AuditablePersister(), new Logger(), "Dev");
             var productiveContext = new CollectingDataSystemDbContext(new AuditablePersister(), new Logger(), "Productive");
             var testData = new ProductionData(testContext);
@@ -29,8 +29,8 @@ namespace CollectingProductionDataSystem.InterfaceDataChecker
 
             for (int i = 1; i < 4; i++)
             {
-                var productiveUnitsCnt = productiveUnits.Where(x => x.Key.ShiftId == (ShiftType)i).Count();
-                var testUnitsCnt = testUnits.Where(x => x.Key.ShiftId == (ShiftType)i).Count();
+                var productiveUnitsCnt = productiveUnits.Where(x => x.Key.ShiftId == i).Count();
+                var testUnitsCnt = testUnits.Where(x => x.Key.ShiftId == i).Count();
                 Console.WriteLine("\n\nShift {0}", i);
                 Console.WriteLine("Productive data count: {0}", productiveUnitsCnt);
                 Console.WriteLine("Testing data count: {0}", testUnitsCnt);
@@ -39,7 +39,7 @@ namespace CollectingProductionDataSystem.InterfaceDataChecker
             int ix = 0;
             foreach (var item in testUnits)
             {
-                if (item.Value.Value != productiveUnits[item.Key].Value)
+                if ((item.Value.Value ?? 0M) != (productiveUnits[item.Key].Value ?? 0M))
                 {
                     resultList.Add(string.Format("Test | {0}", item.Value.Stringify()));
                     resultList.Add(string.Format("Prod | {0}", productiveUnits[item.Key].Stringify()));

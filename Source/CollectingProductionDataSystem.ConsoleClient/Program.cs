@@ -316,6 +316,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
                     .Where(x => x.UnitConfig.ProcessUnitId == processUnitIdParam && x.RecordTimestamp == dateParam)
                     .ToList();
 
+                //ToDo: On shifts changed to 2 must repair this code 
                 var result = data.Select(x => new MultiShift
                 {
                     TimeStamp = x.RecordTimestamp,
@@ -323,9 +324,9 @@ namespace CollectingProductionDataSystem.ConsoleClient
                     Position = x.UnitConfig.Position,
                     UnitConfigId = x.UnitConfigId,
                     UnitName = x.UnitConfig.Name,
-                    Shift1 = data.Where(y => y.RecordTimestamp == dateParam && y.ShiftId == ShiftType.First).Where(u => u.UnitConfigId == x.UnitConfigId).FirstOrDefault(),
-                    Shift2 = data.Where(y => y.RecordTimestamp == dateParam && y.ShiftId == ShiftType.Second).Where(u => u.UnitConfigId == x.UnitConfigId).FirstOrDefault(),
-                    Shift3 = data.Where(y => y.RecordTimestamp == dateParam && y.ShiftId == ShiftType.Third).Where(u => u.UnitConfigId == x.UnitConfigId).FirstOrDefault(),
+                    Shift1 = data.Where(y => y.RecordTimestamp == dateParam && y.ShiftId == (int)ShiftType.First).Where(u => u.UnitConfigId == x.UnitConfigId).FirstOrDefault(),
+                    Shift2 = data.Where(y => y.RecordTimestamp == dateParam && y.ShiftId == (int)ShiftType.Second).Where(u => u.UnitConfigId == x.UnitConfigId).FirstOrDefault(),
+                    Shift3 = data.Where(y => y.RecordTimestamp == dateParam && y.ShiftId == (int)ShiftType.Third).Where(u => u.UnitConfigId == x.UnitConfigId).FirstOrDefault(),
                 }).Distinct(new MultiShiftComparer()).ToList();
 
                 Console.WriteLine("Estimated Time For Action: {0}", timer.Elapsed);

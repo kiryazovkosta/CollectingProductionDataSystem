@@ -31,7 +31,7 @@
         public UnitsManualDataViewModel UnitsManualData { get; set; }
 
         [Display(Name = "Shift", ResourceType = typeof(Resources.Layout))]
-        public ShiftType Shift { get; set; }
+        public int Shift { get; set; }
 
         public bool IsEditable { get; set; }
 

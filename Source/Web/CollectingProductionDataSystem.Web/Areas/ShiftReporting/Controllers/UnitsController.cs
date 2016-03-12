@@ -49,7 +49,7 @@
         [HttpGet]
         public ActionResult UnitsData()
         {
-            // ToDo: It's very importaint to set manual data indicator which sets different process of entering data (water-meter, flow-meter, electro-meter, etc.)
+            // It's very importaint to set manual data indicator which sets different process of entering data (water-meter, flow-meter, electro-meter, etc.)
             ViewBag.ManualIndicator = "MD";
             ViewBag.ManualCalcumated = "MC";
             ViewBag.ManualSelfCalculated = "MS";

@@ -339,7 +339,7 @@
             return arguments;
         }
 
-        private void PopulateFormulaDataFromRelatedUnitConfigs(UnitConfig unitConfig, FormulaArguments arguments, DateTime recordDate, ShiftType shiftId)
+        private void PopulateFormulaDataFromRelatedUnitConfigs(UnitConfig unitConfig, FormulaArguments arguments, DateTime recordDate, int shiftId)
         {
             var ruc = unitConfig.RelatedUnitConfigs.ToList();
             foreach (var ru in ruc)
@@ -392,7 +392,7 @@
             }
         }
 
-        private IEfStatus UpdateCalculatedUnitConfig(int unitConfigId, double newValue, DateTime recordDate, ShiftType shiftId)
+        private IEfStatus UpdateCalculatedUnitConfig(int unitConfigId, double newValue, DateTime recordDate, int shiftId)
         {
             var record = data.UnitsData
                                .All().Include(x => x.UnitConfig)
