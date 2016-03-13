@@ -74,6 +74,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CollectingProductionDataSys
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CollectingProductionDataSystem.PrPlMeasureUnitMigration", "CollectingProductionDataSystem.PrPlMeasureUnitMigration\CollectingProductionDataSystem.PrPlMeasureUnitMigration.csproj", "{8E121769-B080-4F4D-836E-BA040C4E81E2}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{97E86ECF-14AF-49A9-A493-9D5C70C5FECA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CollectingProductionDataSystem.InterfaceDataChecker", "Tests\CollectingProductionDataSystem.InterfaceDataChecker\CollectingProductionDataSystem.InterfaceDataChecker.csproj", "{5AAC5E1A-0EF8-4AF2-901C-03B6B9E7E221}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CollectingProductionDataSystem.PhdApplication.Tests", "CollectingProductionDataSystem.PhdApplication.Tests\CollectingProductionDataSystem.PhdApplication.Tests.csproj", "{289749CD-DF47-40DB-BF28-9EDA8B2397BD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CollectingProductionDataSystem.Phd2SqlProductionData.Tests", "CollectingProductionDataSystem.Phd2SqlProductionData.Tests\CollectingProductionDataSystem.Phd2SqlProductionData.Tests.csproj", "{047D886B-273D-4675-8CE8-8DB90A2A53CC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -266,6 +274,30 @@ Global
 		{8E121769-B080-4F4D-836E-BA040C4E81E2}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8E121769-B080-4F4D-836E-BA040C4E81E2}.Release|x64.ActiveCfg = Release|Any CPU
 		{8E121769-B080-4F4D-836E-BA040C4E81E2}.Release|x86.ActiveCfg = Release|Any CPU
+		{5AAC5E1A-0EF8-4AF2-901C-03B6B9E7E221}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5AAC5E1A-0EF8-4AF2-901C-03B6B9E7E221}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5AAC5E1A-0EF8-4AF2-901C-03B6B9E7E221}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{5AAC5E1A-0EF8-4AF2-901C-03B6B9E7E221}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{5AAC5E1A-0EF8-4AF2-901C-03B6B9E7E221}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5AAC5E1A-0EF8-4AF2-901C-03B6B9E7E221}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5AAC5E1A-0EF8-4AF2-901C-03B6B9E7E221}.Release|x64.ActiveCfg = Release|Any CPU
+		{5AAC5E1A-0EF8-4AF2-901C-03B6B9E7E221}.Release|x86.ActiveCfg = Release|Any CPU
+		{289749CD-DF47-40DB-BF28-9EDA8B2397BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{289749CD-DF47-40DB-BF28-9EDA8B2397BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{289749CD-DF47-40DB-BF28-9EDA8B2397BD}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{289749CD-DF47-40DB-BF28-9EDA8B2397BD}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{289749CD-DF47-40DB-BF28-9EDA8B2397BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{289749CD-DF47-40DB-BF28-9EDA8B2397BD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{289749CD-DF47-40DB-BF28-9EDA8B2397BD}.Release|x64.ActiveCfg = Release|Any CPU
+		{289749CD-DF47-40DB-BF28-9EDA8B2397BD}.Release|x86.ActiveCfg = Release|Any CPU
+		{047D886B-273D-4675-8CE8-8DB90A2A53CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{047D886B-273D-4675-8CE8-8DB90A2A53CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{047D886B-273D-4675-8CE8-8DB90A2A53CC}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{047D886B-273D-4675-8CE8-8DB90A2A53CC}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{047D886B-273D-4675-8CE8-8DB90A2A53CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{047D886B-273D-4675-8CE8-8DB90A2A53CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{047D886B-273D-4675-8CE8-8DB90A2A53CC}.Release|x64.ActiveCfg = Release|Any CPU
+		{047D886B-273D-4675-8CE8-8DB90A2A53CC}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -295,5 +327,8 @@ Global
 		{4028E5FA-0601-4757-91CD-C6E045DC5A7F} = {1BA91924-D5E6-467D-8DB6-584D54F00F4F}
 		{BA08DAD7-81BE-4AEB-8EED-E835721574B5} = {1BA91924-D5E6-467D-8DB6-584D54F00F4F}
 		{8E121769-B080-4F4D-836E-BA040C4E81E2} = {1BA91924-D5E6-467D-8DB6-584D54F00F4F}
+		{5AAC5E1A-0EF8-4AF2-901C-03B6B9E7E221} = {97E86ECF-14AF-49A9-A493-9D5C70C5FECA}
+		{289749CD-DF47-40DB-BF28-9EDA8B2397BD} = {1BA91924-D5E6-467D-8DB6-584D54F00F4F}
+		{047D886B-273D-4675-8CE8-8DB90A2A53CC} = {43D6A01F-7526-42F9-A34E-D060EAB9CBDB}
 	EndGlobalSection
 EndGlobal

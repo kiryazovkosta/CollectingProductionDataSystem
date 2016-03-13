@@ -584,15 +584,15 @@ var unitGridsData = (function () {
             }
 
             if (row.Status !== undefined) {
-                if (row.Status === 1) {
-                    var uid = row.uid;
-                    $("#" + $(grid.element).attr('id') + " tbody").find("tr[data-uid=" + uid + "]").addClass("warning-animation");
-                }
+                //if (row.Status === 1) {
+                //    var uid = row.uid;
+                //    $("#" + $(grid.element).attr('id') + " tbody").find("tr[data-uid=" + uid + "]").addClass("warning-animation");
+                //}
 
-                if (row.Status === 2) {
-                    var uid = row.uid;
-                    $("#" + $(grid.element).attr('id') + " tbody").find("tr[data-uid=" + uid + "]").addClass("error-animation");
-                }
+                //if (row.Status === 2) {
+                //    var uid = row.uid;
+                //    $("#" + $(grid.element).attr('id') + " tbody").find("tr[data-uid=" + uid + "]").addClass("error-animation");
+                //}
             }
            
 

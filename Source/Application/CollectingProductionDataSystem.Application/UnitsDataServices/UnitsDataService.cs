@@ -56,7 +56,7 @@
                 .Where(x=>
                 (dateParam == null || x.RecordTimestamp == dateParam.Value)
                 &&(processUnitIdParam == null || x.UnitConfig.ProcessUnitId == processUnitIdParam.Value)
-                &&(shiftIdParam == null || x.ShiftId == (ShiftType)shiftIdParam.Value)
+                &&(shiftIdParam == null || x.ShiftId == shiftIdParam.Value)
                 ).OrderBy(x => x.UnitConfig.Code);
             return dbResult;
         }

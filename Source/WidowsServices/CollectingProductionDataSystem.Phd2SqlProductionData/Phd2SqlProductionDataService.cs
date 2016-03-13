@@ -2,6 +2,9 @@
 
 namespace CollectingProductionDataSystem.Phd2SqlProductionData
 {
+    using System.Linq;
+    using CollectingProductionDataSystem.Data.Contracts;
+    using CollectingProductionDataSystem.Models.Nomenclatures;
     using CollectingProductionDataSystem.Models.Productions;
     using log4net;
     using System;
@@ -16,11 +19,14 @@ namespace CollectingProductionDataSystem.Phd2SqlProductionData
 
         private Timer measurementDataTimer = null;
 
+        private static TimeSpan lastTimeDuration = TimeSpan.FromMinutes(0);
+
         private static readonly object lockObjectPrimaryData = new object();
 
         private static readonly object lockObjectInventoryData = new object();
 
         private static readonly object lockObjectMeasurementData = new object();
+
 
         private readonly ILog logger;
 
@@ -71,6 +77,9 @@ namespace CollectingProductionDataSystem.Phd2SqlProductionData
 
         private void TimerHandlerPrimary(object state)
         {
+            bool lastOperationSucceeded = false;
+            var targetTime = DateTime.Now;
+
             lock (lockObjectPrimaryData)
             {
                 DateTime beginDateTime = DateTime.Now;
@@ -79,21 +88,74 @@ namespace CollectingProductionDataSystem.Phd2SqlProductionData
                     Utility.SetRegionalSettings();
                     this.primaryDataTimer.Change(Timeout.Infinite, Timeout.Infinite);
                     var dataSourceId = Properties.Settings.Default.PHD_DATA_SOURCE;
-                    PrimaryDataSourceType dataSource = (PrimaryDataSourceType)Enum.ToObject(typeof(PrimaryDataSourceType) , dataSourceId);
-                    Phd2SqlProductionDataMain.ProcessPrimaryProductionData(dataSource);
+                    PrimaryDataSourceType dataSource = (PrimaryDataSourceType)Enum.ToObject(typeof(PrimaryDataSourceType), dataSourceId);
+                    Shift targetShift = Phd2SqlProductionDataMain.GetTargetShiftByDateTime(targetTime);
+                    if (targetShift != null)
+                    {
+                        bool isForcedResultCalculation = CheckIfForcedCalculationNeeded(targetTime + lastTimeDuration, targetShift);
+                        lastOperationSucceeded = Phd2SqlProductionDataMain.ProcessPrimaryProductionData(dataSource, targetTime, targetShift, isForcedResultCalculation);
+                    }
                 }
                 catch (Exception ex)
                 {
-                    logger.Error(ex.Message, ex);
+                    logger.Error(ex.Message + ex.StackTrace, ex);
                 }
                 finally
                 {
                     DateTime endDateTime = DateTime.Now;
-                    var operationTimeout = Convert.ToInt64((endDateTime - beginDateTime).TotalMilliseconds);
-                    var callbackTimeout = Convert.ToInt64(Properties.Settings.Default.IDLE_TIMER_PRIMARY.TotalMilliseconds);
-                    this.primaryDataTimer.Change(callbackTimeout - operationTimeout, Timeout.Infinite);
+                    lastTimeDuration = endDateTime - beginDateTime;
+                    //var operationTimeout = Convert.ToInt64((endDateTime - beginDateTime).TotalMilliseconds);
+                    //var callbackTimeout = Convert.ToInt64(Properties.Settings.Default.IDLE_TIMER_PRIMARY.TotalMilliseconds);
+                    TimeSpan duration = GetNextTimeDuration(lastOperationSucceeded);
+                    this.primaryDataTimer.Change(duration.Ticks, Timeout.Infinite);
                 }
             }
+        }
+
+        /// <summary>
+        /// Gets the duration of the next time.
+        /// </summary>
+        /// <param name="lastOperationSucceeded">The last operation succeeded.</param>
+        /// <returns></returns>
+        private TimeSpan GetNextTimeDuration(bool lastOperationSucceeded)
+        {
+            if (!lastOperationSucceeded)
+            {
+                return TimeSpan.FromMinutes(1);
+            }
+            else
+            {
+                var time = DateTime.Now + TimeSpan.FromMinutes(30);
+                if (time.Minute < 30)
+                {
+                    time = new DateTime(time.Year, time.Month, time.Day, time.Hour, 30, 0);
+                }
+                else
+                {
+                    time = new DateTime(time.Year, time.Month, time.Day, time.Hour + 1, 0, 0);
+                }
+
+                return time - DateTime.Now;
+            }
+        }
+
+        /// <summary>
+        /// Checks if forced calculation needed.
+        /// </summary>
+        /// <param name="targetTime">The target time.</param>
+        /// <param name="shift">The shift.</param>
+        /// <returns></returns>
+        public bool CheckIfForcedCalculationNeeded(DateTime targetDateTime, Shift shift)
+        {
+            var baseDate = targetDateTime.Date;
+            var lastPosibleTimeForOperation = baseDate + shift.ReadOffset + shift.ReadPollTimeSlot - TimeSpan.FromMinutes(1);
+
+            if (lastPosibleTimeForOperation >= targetDateTime)
+            {
+                return true;
+            }
+
+            return false;
         }
 
         private void TimerHandlerInventory(object state)
@@ -112,37 +174,39 @@ namespace CollectingProductionDataSystem.Phd2SqlProductionData
                 }
                 finally
                 {
-                    this.inventoryDataTimer.Change(Convert.ToInt64(Properties.Settings.Default.IDLE_TIMER_INVENTORY.TotalMilliseconds), 
+                    this.inventoryDataTimer.Change(Convert.ToInt64(Properties.Settings.Default.IDLE_TIMER_INVENTORY.TotalMilliseconds),
                         System.Threading.Timeout.Infinite);
                 }
             }
         }
 
-        private void TimerHandlerMeasurement(object state)
-        {
-            lock (lockObjectMeasurementData)
-            {
-                DateTime beginDateTime = DateTime.Now;
-                try
-                {
-                    Utility.SetRegionalSettings();
-                    this.measurementDataTimer.Change(Timeout.Infinite, Timeout.Infinite);
-                    var dataSourceId = Properties.Settings.Default.PHD_DATA_SOURCE_SECOND;
-                    PrimaryDataSourceType dataSource = (PrimaryDataSourceType)Enum.ToObject(typeof(PrimaryDataSourceType) , dataSourceId);
-                    Phd2SqlProductionDataMain.ProcessPrimaryProductionData(dataSource);
-                }
-                catch (Exception ex)
-                {
-                    logger.Error(ex.Message, ex);
-                }
-                finally
-                {
-                    DateTime endDateTime = DateTime.Now;
-                    var operationTimeout = Convert.ToInt64((endDateTime - beginDateTime).TotalMilliseconds);
-                    var callbackTimeout = Convert.ToInt64(Properties.Settings.Default.IDLE_TIMER_PRIMARY_SECOND.TotalMilliseconds);
-                    this.measurementDataTimer.Change(callbackTimeout - operationTimeout, Timeout.Infinite);
-                }
-            }
-        }
+        //private void TimerHandlerMeasurement(object state)
+        //{
+        //    lock (lockObjectMeasurementData)
+        //    {
+        //        DateTime targetDateTime = DateTime.Now;
+        //        try
+        //        {
+        //            Utility.SetRegionalSettings();
+        //            this.measurementDataTimer.Change(Timeout.Infinite, Timeout.Infinite);
+        //            var dataSourceId = Properties.Settings.Default.PHD_DATA_SOURCE_SECOND;
+        //            Shift targetShift = Phd2SqlProductionDataMain.GetTargetShiftByDateTime(targetDateTime);
+        //            PrimaryDataSourceType dataSource = (PrimaryDataSourceType)Enum.ToObject(typeof(PrimaryDataSourceType), dataSourceId);
+        //            bool isForcedResultCalculation = CheckIfForcedCalculationNeeded(targetDateTime, targetShift);
+        //            Phd2SqlProductionDataMain.ProcessPrimaryProductionData(dataSource,targetDateTime, targetShift,isForcedResultCalculation);
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            logger.Error(ex.Message, ex);
+        //        }
+        //        finally
+        //        {
+        //            DateTime endDateTime = DateTime.Now;
+        //            var operationTimeout = Convert.ToInt64((endDateTime - targetDateTime).TotalMilliseconds);
+        //            var callbackTimeout = Convert.ToInt64(Properties.Settings.Default.IDLE_TIMER_PRIMARY_SECOND.TotalMilliseconds);
+        //            this.measurementDataTimer.Change(callbackTimeout - operationTimeout, Timeout.Infinite);
+        //        }
+        //    }
+        //}
     }
 }

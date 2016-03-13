@@ -9,8 +9,10 @@
     using System.ServiceProcess;
     using CollectingProductionDataSystem.Data;
     using CollectingProductionDataSystem.Data.Concrete;
+    using CollectingProductionDataSystem.Data.Contracts;
     using CollectingProductionDataSystem.Infrastructure.Log;
     using CollectingProductionDataSystem.Models.Inventories;
+    using CollectingProductionDataSystem.Models.Nomenclatures;
     using CollectingProductionDataSystem.Models.Transactions;
     using CollectingProductionDataSystem.Phd2SqlProductionData.Models;
     using CollectingProductionDataSystem.PhdApplication.PrimaryDataServices;
@@ -24,12 +26,19 @@
         private static readonly ILog logger;
 
         private static readonly NinjectConfig ninject;
+        private static readonly PhdPrimaryDataService service;
 
         static Phd2SqlProductionDataMain()
         {
             logger = LogManager.GetLogger("CollectingProductionDataSystem.Phd2SqlProductionData");
             ninject = new NinjectConfig();
+            var kernel = ninject.Kernel;
+            service = kernel.GetService(typeof(PhdPrimaryDataService)) as PhdPrimaryDataService;
+        }
 
+        internal static Shift GetTargetShiftByDateTime(DateTime targetDateTime)
+        {
+            return service.GetObservedShiftByDateTime(targetDateTime);
         }
 
         internal static void Main()
@@ -42,22 +51,21 @@
             ServiceBase.Run(servicesToRun);
         }
 
-        internal static void ProcessPrimaryProductionData(PrimaryDataSourceType dataSource)
+        internal static bool ProcessPrimaryProductionData(PrimaryDataSourceType dataSource,
+                                                          DateTime targetDate,
+                                                          Shift shift,
+                                                          bool isForcedResultCalculation)
         {
+            bool lastOperationSucceeded = false;
             try
             {
                 logger.Info("Sync primary data started!");
-                var kernel = ninject.Kernel;
-                var service = kernel.GetService(typeof(PhdPrimaryDataService)) as PhdPrimaryDataService;
-                for (int offsetInHours = 0; offsetInHours < Properties.Settings.Default.SYNC_PRIMARY_HOURS_OFFSET; offsetInHours += 8)
+
+                var insertedRecords = service.ReadAndSaveUnitsDataForShift(targetDate, shift, dataSource, isForcedResultCalculation, ref lastOperationSucceeded);
+                logger.InfoFormat("Successfully added {0} UnitsData records to CollectingPrimaryDataSystem", insertedRecords);
+                if (insertedRecords > 0)
                 {
-                    var offset = offsetInHours == 0 ? offsetInHours : offsetInHours * -1;
-                    var insertedRecords = service.ReadAndSaveUnitsDataForShift(DateTime.Now, offset, dataSource);
-                    logger.InfoFormat("Successfully added {0} UnitsData records to CollectingPrimaryDataSystem", insertedRecords);
-                    if (insertedRecords > 0)
-                    {
-                        SendEmail("SAPO - Shift data", string.Format("Successfully added {0} recorts to database", insertedRecords));
-                    }
+                    SendEmail("SAPO - Shift data", string.Format("Successfully added {0} recorts to database", insertedRecords));
                 }
                 logger.Info("Sync primary data finished!");
             }
@@ -71,6 +79,8 @@
                 logger.Error(ex);
                 SendEmail("SAPO - ERROR", ex.Message);
             }
+
+            return lastOperationSucceeded;
         }
 
         private static void LogValidationDataException(DataException validationException)
@@ -202,7 +212,7 @@
 
                                                 if (confedence != 100)
                                                 {
-                                                    continue;    
+                                                    continue;
                                                 }
 
                                                 if (tagName.Contains(".PROD_ID"))
