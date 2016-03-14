@@ -16,6 +16,7 @@ using CollectingProductionDataSystem.Infrastructure.Extentions;
 using Uniformance.PHD;
 using CollectingProductionDataSystem.Models.Transactions;
 using System.Data;
+using System.Globalization;
 
 namespace CollectingProductionDataSystem.ConsoleClient
 {
@@ -65,7 +66,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
             //    ProcessScaleTransactionsData(i);   
             //}
 
-            ProcessTransactionsData();
+            //ProcessTransactionsData();
 
             DoCalculation();
 
@@ -942,6 +943,10 @@ namespace CollectingProductionDataSystem.ConsoleClient
                     oPhd.MinimumConfidence = 100;
                     oPhd.MaximumRows = 1;
 
+                    var fomatedDate = DateTime.Now.ToString("M/d/yyyy hh:mm:ss tt", CultureInfo.InvariantCulture);
+                    oPhd.StartTime = fomatedDate;
+                    oPhd.EndTime = fomatedDate;
+
                     var tags = "TSN_KT014009_QN_T.PV@TSN_KT014009_PD.PV@1000".Split('@');
 
                     var recordDataTime = new DateTime(2016, 2, 23, 0, 0, 0);
@@ -960,18 +965,19 @@ namespace CollectingProductionDataSystem.ConsoleClient
                     var endPhdTimestamp = string.Format("NOW-{0}H{1}M", Math.Truncate(endTimestamp.TotalHours), endTimestamp.Minutes);
                     var beginPhdTimestamp = string.Format("NOW-{0}H{1}M", Math.Truncate(beginTimestamp.TotalHours), beginTimestamp.Minutes);
 
-                    oPhd.StartTime = endPhdTimestamp;
-                    oPhd.EndTime = endPhdTimestamp;
+                    //oPhd.StartTime = endPhdTimestamp;
+                    //oPhd.EndTime = endPhdTimestamp;
                     var result = oPhd.FetchRowData(tags[0]);
                     var row = result.Tables[0].Rows[0];
                     var endValue = Convert.ToInt64(row["Value"]);
+                    Console.WriteLine(row["Timestamp"]);
 
                     result = oPhd.FetchRowData(tags[1]);
                     row = result.Tables[0].Rows[0];
                     var pressure = Convert.ToDecimal(row["Value"]);
 
-                    oPhd.StartTime = beginPhdTimestamp;
-                    oPhd.EndTime = beginPhdTimestamp;
+                    //oPhd.StartTime = beginPhdTimestamp;
+                    //oPhd.EndTime = beginPhdTimestamp;
                     result = oPhd.FetchRowData(tags[0]);
                     row = result.Tables[0].Rows[0];
                     var beginValue = Convert.ToInt64(row["Value"]);
