@@ -1,9 +1,8 @@
-﻿
-
-namespace CollectingProductionDataSystem.Phd2SqlProductionData
+﻿namespace CollectingProductionDataSystem.Phd2SqlProductionData
 {
     using System.Linq;
     using CollectingProductionDataSystem.Data.Contracts;
+    using CollectingProductionDataSystem.Enumerations;
     using CollectingProductionDataSystem.Models.Nomenclatures;
     using CollectingProductionDataSystem.Models.Productions;
     using log4net;
@@ -27,6 +26,7 @@ namespace CollectingProductionDataSystem.Phd2SqlProductionData
 
         private static readonly object lockObjectMeasurementData = new object();
 
+        private static volatile TreeState isFirstPhdInterfaceCompleted = TreeState.Null;
 
         private readonly ILog logger;
 
@@ -51,10 +51,10 @@ namespace CollectingProductionDataSystem.Phd2SqlProductionData
                     this.inventoryDataTimer = new Timer(TimerHandlerInventory, null, 0, Timeout.Infinite);
                 }
 
-                //if (Properties.Settings.Default.SYNC_PRIMARY_SECOND)
-                //{
-                //    this.measurementDataTimer = new Timer(TimerHandlerMeasurement, null, 0, Timeout.Infinite); 
-                //}
+                if (Properties.Settings.Default.SYNC_PRIMARY_SECOND)
+                {
+                    this.measurementDataTimer = new Timer(TimerHandlerMeasurement, null, 0, Timeout.Infinite);
+                }
             }
             catch (Exception ex)
             {
@@ -77,39 +77,77 @@ namespace CollectingProductionDataSystem.Phd2SqlProductionData
 
         private void TimerHandlerPrimary(object state)
         {
-            bool lastOperationSucceeded = false;
-            var targetTime = DateTime.Now;
-
             lock (lockObjectPrimaryData)
             {
-                DateTime beginDateTime = DateTime.Now;
+                isFirstPhdInterfaceCompleted = TreeState.Null;
+                PrimaryDataSourceType dataSource = (PrimaryDataSourceType)Enum.ToObject(typeof(PrimaryDataSourceType), Properties.Settings.Default.PHD_DATA_SOURCE);
+                isFirstPhdInterfaceCompleted = GetDataFromPhd(dataSource, isFirstPhdInterfaceCompleted, this.primaryDataTimer);
+            }
+        }
+
+        private void TimerHandlerMeasurement(object state)
+        {
+            lock (lockObjectMeasurementData)
+            {
+                PrimaryDataSourceType dataSource = (PrimaryDataSourceType)Enum.ToObject(typeof(PrimaryDataSourceType), Properties.Settings.Default.PHD_DATA_SOURCE_SECOND);
+                GetDataFromPhd(dataSource, isFirstPhdInterfaceCompleted, this.measurementDataTimer);
+            }
+        }
+
+        /// <summary>
+        /// Gets the data from PHD.
+        /// </summary>
+        /// <param name="srvVmMesPhdA">The SRV vm mes PHD A.</param>
+        private TreeState GetDataFromPhd(PrimaryDataSourceType dataSourceParam, TreeState isFirstPhdInteraceCompleted, Timer timer)
+        {
+            bool lastOperationSucceeded = false;
+            DateTime beginDateTime = DateTime.Now;
+            var targetTime = DateTime.Now;
+            try
+            {
+                Utility.SetRegionalSettings();
+                this.primaryDataTimer.Change(Timeout.Infinite, Timeout.Infinite);
+                Shift targetShift = Phd2SqlProductionDataMain.GetTargetShiftByDateTime(targetTime);
+                if (targetShift != null)
+                {
+                    bool isForcedResultCalculation = CheckIfForcedCalculationNeeded(targetTime + lastTimeDuration, targetShift);
+                    DateTime recordTimeStamp = GetTargetRecordTimestamp(targetTime, targetShift);
+                    lastOperationSucceeded = Phd2SqlProductionDataMain.ProcessPrimaryProductionData(dataSourceParam, recordTimeStamp, targetShift, isForcedResultCalculation, isFirstPhdInteraceCompleted);
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex.Message + ex.StackTrace, ex);
+            }
+            finally
+            {
+                DateTime endDateTime = DateTime.Now;
+                lastTimeDuration = endDateTime - beginDateTime;
                 try
                 {
-                    Utility.SetRegionalSettings();
-                    this.primaryDataTimer.Change(Timeout.Infinite, Timeout.Infinite);
-                    var dataSourceId = Properties.Settings.Default.PHD_DATA_SOURCE;
-                    PrimaryDataSourceType dataSource = (PrimaryDataSourceType)Enum.ToObject(typeof(PrimaryDataSourceType), dataSourceId);
-                    Shift targetShift = Phd2SqlProductionDataMain.GetTargetShiftByDateTime(targetTime);
-                    if (targetShift != null)
-                    {
-                        bool isForcedResultCalculation = CheckIfForcedCalculationNeeded(targetTime + lastTimeDuration, targetShift);
-                        lastOperationSucceeded = Phd2SqlProductionDataMain.ProcessPrimaryProductionData(dataSource, targetTime, targetShift, isForcedResultCalculation);
-                    }
+                    TimeSpan duration = GetNextTimeDuration(lastOperationSucceeded);
+                    logger.Info(duration);
                 }
                 catch (Exception ex)
                 {
                     logger.Error(ex.Message + ex.StackTrace, ex);
                 }
-                finally
-                {
-                    DateTime endDateTime = DateTime.Now;
-                    lastTimeDuration = endDateTime - beginDateTime;
-                    //var operationTimeout = Convert.ToInt64((endDateTime - beginDateTime).TotalMilliseconds);
-                    //var callbackTimeout = Convert.ToInt64(Properties.Settings.Default.IDLE_TIMER_PRIMARY.TotalMilliseconds);
-                    TimeSpan duration = GetNextTimeDuration(lastOperationSucceeded);
-                    this.primaryDataTimer.Change(duration.Ticks, Timeout.Infinite);
-                }
+
+                timer.Change(Convert.ToInt64(TimeSpan.FromMinutes(10).TotalMilliseconds), Timeout.Infinite);
             }
+
+            return lastOperationSucceeded ? TreeState.True : TreeState.False;
+        }
+
+        /// <summary>
+        /// Gets the target record timestamp.
+        /// </summary>
+        /// <param name="targetTime">The target time.</param>
+        /// <param name="targetShift">The target shift.</param>
+        /// <returns></returns>
+        private DateTime GetTargetRecordTimestamp(DateTime targetTime, Shift targetShift)
+        {
+            return (targetTime.Date + targetShift.BeginTime).Date;
         }
 
         /// <summary>
@@ -179,34 +217,5 @@ namespace CollectingProductionDataSystem.Phd2SqlProductionData
                 }
             }
         }
-
-        //private void TimerHandlerMeasurement(object state)
-        //{
-        //    lock (lockObjectMeasurementData)
-        //    {
-        //        DateTime targetDateTime = DateTime.Now;
-        //        try
-        //        {
-        //            Utility.SetRegionalSettings();
-        //            this.measurementDataTimer.Change(Timeout.Infinite, Timeout.Infinite);
-        //            var dataSourceId = Properties.Settings.Default.PHD_DATA_SOURCE_SECOND;
-        //            Shift targetShift = Phd2SqlProductionDataMain.GetTargetShiftByDateTime(targetDateTime);
-        //            PrimaryDataSourceType dataSource = (PrimaryDataSourceType)Enum.ToObject(typeof(PrimaryDataSourceType), dataSourceId);
-        //            bool isForcedResultCalculation = CheckIfForcedCalculationNeeded(targetDateTime, targetShift);
-        //            Phd2SqlProductionDataMain.ProcessPrimaryProductionData(dataSource,targetDateTime, targetShift,isForcedResultCalculation);
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            logger.Error(ex.Message, ex);
-        //        }
-        //        finally
-        //        {
-        //            DateTime endDateTime = DateTime.Now;
-        //            var operationTimeout = Convert.ToInt64((endDateTime - targetDateTime).TotalMilliseconds);
-        //            var callbackTimeout = Convert.ToInt64(Properties.Settings.Default.IDLE_TIMER_PRIMARY_SECOND.TotalMilliseconds);
-        //            this.measurementDataTimer.Change(callbackTimeout - operationTimeout, Timeout.Infinite);
-        //        }
-        //    }
-        //}
     }
 }

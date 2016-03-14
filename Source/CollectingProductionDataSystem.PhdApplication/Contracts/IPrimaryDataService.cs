@@ -2,6 +2,7 @@
 {
     using System;
     using System.Linq;
+    using CollectingProductionDataSystem.Enumerations;
     using CollectingProductionDataSystem.Models.Nomenclatures;
     using CollectingProductionDataSystem.Models.Productions;
 
@@ -11,7 +12,8 @@
                                          Shift Shift,
                                          PrimaryDataSourceType dataSource,
                                          bool isForcedResultCalculation,
-                                         ref bool lastOperationSucceeded);
+                                         ref bool lastOperationSucceeded,
+                                         TreeState IsFirstPhdInteraceCompleted);
         Shift GetObservedShiftByDateTime(DateTime targetDateTime);
     }
 }

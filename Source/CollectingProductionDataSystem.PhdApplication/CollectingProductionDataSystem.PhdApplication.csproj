@@ -78,6 +78,10 @@
       <Project>{3a125de9-28b9-4004-a1d9-bebde62ac786}</Project>
       <Name>CollectingProductionDataSystem.Application</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Common\CollectingProductionDataSystem.Enumerations\CollectingProductionDataSystem.Enumerations.csproj">
+      <Project>{D39275E1-1997-41C3-99CC-FF1B7502E93F}</Project>
+      <Name>CollectingProductionDataSystem.Enumerations</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Constants\CollectingProductionDataSystem.Constants\CollectingProductionDataSystem.Constants.csproj">
       <Project>{21b90cc4-73cc-4c1a-a2e3-fb6c7278beb9}</Project>
       <Name>CollectingProductionDataSystem.Constants</Name>

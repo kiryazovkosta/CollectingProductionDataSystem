@@ -10,6 +10,7 @@
     using CollectingProductionDataSystem.Data;
     using CollectingProductionDataSystem.Data.Concrete;
     using CollectingProductionDataSystem.Data.Contracts;
+    using CollectingProductionDataSystem.Enumerations;
     using CollectingProductionDataSystem.Infrastructure.Log;
     using CollectingProductionDataSystem.Models.Inventories;
     using CollectingProductionDataSystem.Models.Nomenclatures;
@@ -38,7 +39,8 @@
 
         internal static Shift GetTargetShiftByDateTime(DateTime targetDateTime)
         {
-            return service.GetObservedShiftByDateTime(targetDateTime);
+            var resultShift = service.GetObservedShiftByDateTime(targetDateTime);
+            return resultShift;
         }
 
         internal static void Main()
@@ -52,16 +54,17 @@
         }
 
         internal static bool ProcessPrimaryProductionData(PrimaryDataSourceType dataSource,
-                                                          DateTime targetDate,
+                                                          DateTime targetRecordTimestamp,
                                                           Shift shift,
-                                                          bool isForcedResultCalculation)
+                                                          bool isForcedResultCalculation,
+                                                          TreeState isFirstPhdInteraceCompleted)
         {
             bool lastOperationSucceeded = false;
             try
             {
                 logger.Info("Sync primary data started!");
 
-                var insertedRecords = service.ReadAndSaveUnitsDataForShift(targetDate, shift, dataSource, isForcedResultCalculation, ref lastOperationSucceeded);
+                var insertedRecords = service.ReadAndSaveUnitsDataForShift(targetRecordTimestamp, shift, dataSource, isForcedResultCalculation, ref lastOperationSucceeded, isFirstPhdInteraceCompleted);
                 logger.InfoFormat("Successfully added {0} UnitsData records to CollectingPrimaryDataSystem", insertedRecords);
                 if (insertedRecords > 0)
                 {
@@ -76,7 +79,7 @@
             }
             catch (Exception ex)
             {
-                logger.Error(ex);
+                logger.Error(ex.Message + ex.StackTrace);
                 SendEmail("SAPO - ERROR", ex.Message);
             }
 

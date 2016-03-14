@@ -120,6 +120,10 @@
       <Project>{ba08dad7-81be-4aeb-8eed-e835721574b5}</Project>
       <Name>CollectingProductionDataSystem.PhdApplication</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Common\CollectingProductionDataSystem.Enumerations\CollectingProductionDataSystem.Enumerations.csproj">
+      <Project>{D39275E1-1997-41C3-99CC-FF1B7502E93F}</Project>
+      <Name>CollectingProductionDataSystem.Enumerations</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Common\CollectingProductionDataSystem.Infrastructure\CollectingProductionDataSystem.Infrastructure.csproj">
       <Project>{69DEBDE6-B1BA-4A55-9570-AE7E6ABB5F98}</Project>
       <Name>CollectingProductionDataSystem.Infrastructure</Name>

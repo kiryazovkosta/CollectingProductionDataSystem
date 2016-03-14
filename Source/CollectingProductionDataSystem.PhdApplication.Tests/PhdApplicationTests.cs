@@ -31,10 +31,10 @@ namespace CollectingProductionDataSystem.PhdApplication.Tests
         }
 
         [TestMethod]
-        public void TestIfGetObservedShiftByDateTimeReturnsFirstShift2016_01_01_13_00_00()
+        public void TestIfGetObservedShiftByDateTimeReturnsFirstShift2016_01_01_13_10_00()
         {
             // Arrange
-            var targetDateTime = new DateTime(2016, 1, 1, 13, 0, 0);
+            var targetDateTime = new DateTime(2016, 1, 1, 13, 10, 0);
             var expectedShiftId = 1;
             // Act
             var actualShift = this.service.GetObservedShiftByDateTime(targetDateTime);
@@ -44,10 +44,10 @@ namespace CollectingProductionDataSystem.PhdApplication.Tests
         }
 
         [TestMethod]
-        public void TestIfGetObservedShiftByDateTimeReturnsFirstShift2016_01_01_13_01_00()
+        public void TestIfGetObservedShiftByDateTimeReturnsFirstShift2016_01_01_13_11_00()
         {
             // Arrange
-            var targetDateTime = new DateTime(2016, 1, 1, 13, 1, 0);
+            var targetDateTime = new DateTime(2016, 1, 1, 13, 11, 0);
             var expectedShiftId = 1;
             // Act
             var actualShift = this.service.GetObservedShiftByDateTime(targetDateTime);
@@ -96,10 +96,10 @@ namespace CollectingProductionDataSystem.PhdApplication.Tests
         }
 
         [TestMethod]
-        public void TestIfGetObservedShiftByDateTimeReturnsFirstShift2016_01_01_15_01_00MustReturnNull()
+        public void TestIfGetObservedShiftByDateTimeReturnsFirstShift2016_01_01_15_11_00MustReturnNull()
         {
             // Arrange
-            var targetDateTime = new DateTime(2016, 1, 1, 15, 0, 1);
+            var targetDateTime = new DateTime(2016, 1, 1, 15, 11, 0);
            
             // Act
             var actualShift = this.service.GetObservedShiftByDateTime(targetDateTime);
@@ -109,10 +109,10 @@ namespace CollectingProductionDataSystem.PhdApplication.Tests
         }
         //-------------------Second Shift
         [TestMethod]
-        public void TestIfGetObservedShiftByDateTimeReturnsSecondShift2016_01_01_20_59_59MustReturnNull()
+        public void TestIfGetObservedShiftByDateTimeReturnsSecondShift2016_01_01_21_09_59MustReturnNull()
         {
             // Arrange
-            var targetDateTime = new DateTime(2016, 1, 1, 20, 59, 59);
+            var targetDateTime = new DateTime(2016, 1, 1, 21, 9, 59);
             // Act
             var actualShift = this.service.GetObservedShiftByDateTime(targetDateTime);
 
@@ -121,10 +121,10 @@ namespace CollectingProductionDataSystem.PhdApplication.Tests
         }
 
         [TestMethod]
-        public void TestIfGetObservedShiftByDateTimeReturnsSecondShift2016_01_01_21_00_00()
+        public void TestIfGetObservedShiftByDateTimeReturnsSecondShift2016_01_01_21_10_00()
         {
             // Arrange
-            var targetDateTime = new DateTime(2016, 1, 1, 21, 0, 0);
+            var targetDateTime = new DateTime(2016, 1, 1, 21, 10, 0);
             var expectedShiftId = 2;
             // Act
             var actualShift = this.service.GetObservedShiftByDateTime(targetDateTime);
@@ -134,10 +134,10 @@ namespace CollectingProductionDataSystem.PhdApplication.Tests
         }
 
         [TestMethod]
-        public void TestIfGetObservedShiftByDateTimeReturnsSecondShift2016_01_01_21_01_00()
+        public void TestIfGetObservedShiftByDateTimeReturnsSecondShift2016_01_01_21_11_00()
         {
             // Arrange
-            var targetDateTime = new DateTime(2016, 1, 1, 21, 1, 0);
+            var targetDateTime = new DateTime(2016, 1, 1, 21, 11, 0);
             var expectedShiftId = 2;
             // Act
             var actualShift = this.service.GetObservedShiftByDateTime(targetDateTime);
@@ -186,10 +186,10 @@ namespace CollectingProductionDataSystem.PhdApplication.Tests
         }
 
         [TestMethod]
-        public void TestIfGetObservedShiftByDateTimeReturnsSecondShift2016_01_01_23_00_01MustReturnNull()
+        public void TestIfGetObservedShiftByDateTimeReturnsSecondShift2016_01_01_23_10_01MustReturnNull()
         {
             // Arrange
-            var targetDateTime = new DateTime(2016, 1, 1, 23, 0, 1);
+            var targetDateTime = new DateTime(2016, 1, 1, 23, 10, 1);
 
             // Act
             var actualShift = this.service.GetObservedShiftByDateTime(targetDateTime);
@@ -200,10 +200,10 @@ namespace CollectingProductionDataSystem.PhdApplication.Tests
 
         //-------------------Third Shift
         [TestMethod]
-        public void TestIfGetObservedShiftByDateTimeReturnsThirdShift2016_01_01_04_59_59МustReturnNull()
+        public void TestIfGetObservedShiftByDateTimeReturnsThirdShift2016_01_01_05_09_59МustReturnNull()
         {
             // Arrange
-            var targetDateTime = new DateTime(2016, 1, 1, 4, 59, 59);
+            var targetDateTime = new DateTime(2016, 1, 1, 5, 9, 59);
             
             // Act
             var actualShift = this.service.GetObservedShiftByDateTime(targetDateTime);
@@ -212,10 +212,10 @@ namespace CollectingProductionDataSystem.PhdApplication.Tests
             Assert.AreEqual(null, actualShift);
         }
         [TestMethod]
-        public void TestIfGetObservedShiftByDateTimeReturnsThirdShift2016_01_01_05_00_00()
+        public void TestIfGetObservedShiftByDateTimeReturnsThirdShift2016_01_01_05_10_00()
         {
             // Arrange
-            var targetDateTime = new DateTime(2016, 1, 1, 05, 0, 0);
+            var targetDateTime = new DateTime(2016, 1, 1, 05, 10, 0);
             var expectedShiftId = 3;
             // Act
             var actualShift = this.service.GetObservedShiftByDateTime(targetDateTime);
@@ -225,10 +225,10 @@ namespace CollectingProductionDataSystem.PhdApplication.Tests
         }
 
         [TestMethod]
-        public void TestIfGetObservedShiftByDateTimeReturnsThirdShift2016_01_01_05_01_00()
+        public void TestIfGetObservedShiftByDateTimeReturnsThirdShift2016_01_01_05_11_00()
         {
             // Arrange
-            var targetDateTime = new DateTime(2016, 1, 1, 5, 1, 0);
+            var targetDateTime = new DateTime(2016, 1, 1, 5, 11, 0);
             var expectedShiftId = 3;
             // Act
             var actualShift = this.service.GetObservedShiftByDateTime(targetDateTime);
@@ -251,10 +251,10 @@ namespace CollectingProductionDataSystem.PhdApplication.Tests
         }
 
         [TestMethod]
-        public void TestIfGetObservedShiftByDateTimeReturnsThirdShift2016_01_01_06_59_00()
+        public void TestIfGetObservedShiftByDateTimeReturnsThirdShift2016_01_01_07_9_00()
         {
             // Arrange
-            var targetDateTime = new DateTime(2016, 1, 1, 6, 59, 0);
+            var targetDateTime = new DateTime(2016, 1, 1, 7, 9, 0);
             var expectedShiftId = 3;
             // Act
             var actualShift = this.service.GetObservedShiftByDateTime(targetDateTime);
@@ -264,10 +264,10 @@ namespace CollectingProductionDataSystem.PhdApplication.Tests
         }
 
         [TestMethod]
-        public void TestIfGetObservedShiftByDateTimeReturnsThirdShift2016_01_01_07_00_00()
+        public void TestIfGetObservedShiftByDateTimeReturnsThirdShift2016_01_01_07_9_59()
         {
             // Arrange
-            var targetDateTime = new DateTime(2016, 1, 1, 7, 0, 0);
+            var targetDateTime = new DateTime(2016, 1, 1, 7, 9, 59);
             var expectedShiftId = 3;
             // Act
             var actualShift = this.service.GetObservedShiftByDateTime(targetDateTime);
@@ -277,10 +277,10 @@ namespace CollectingProductionDataSystem.PhdApplication.Tests
         }
 
         [TestMethod]
-        public void TestIfGetObservedShiftByDateTimeReturnsThirdShift2016_01_01_07_00_01MustReturnNull()
+        public void TestIfGetObservedShiftByDateTimeReturnsThirdShift2016_01_01_07_10_01MustReturnNull()
         {
             // Arrange
-            var targetDateTime = new DateTime(2016, 1, 1, 7, 0, 1);
+            var targetDateTime = new DateTime(2016, 1, 1, 7, 10, 1);
             
             // Act
             var actualShift = this.service.GetObservedShiftByDateTime(targetDateTime);

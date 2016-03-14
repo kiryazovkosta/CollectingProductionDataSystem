@@ -17,7 +17,7 @@ namespace CollectingProductionDataSystem.InterfaceDataChecker
     {
         public static void Main()
         {
-            var targetDay = new DateTime(2016, 3, 12);
+            var targetDay = new DateTime(2016, 3, 14);
             var testContext = new CollectingDataSystemDbContext(new AuditablePersister(), new Logger(), "Dev");
             var productiveContext = new CollectingDataSystemDbContext(new AuditablePersister(), new Logger(), "Productive");
             var testData = new ProductionData(testContext);
@@ -61,6 +61,8 @@ namespace CollectingProductionDataSystem.InterfaceDataChecker
                 tw.WriteLine(s);
 
             tw.Close();
+
+            //Console.WriteLine(new DateTime(2016,1,1,22,54,05) + new TimeSpan(0,35,54));
         }
     }
 }
