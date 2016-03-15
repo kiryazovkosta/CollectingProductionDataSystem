@@ -64,6 +64,9 @@
                 using (PHDServer defaultServer = new PHDServer(settings.Settings.Get("PHD_HOST"+(int)dataSource).Value.ValueXml.InnerText))
                 {
                     SetPhdConnectionSettings(oPhd, defaultServer, targetRecordTimestamp, targetShift);
+                    //ToDo: remove after tests
+                    logger.InfoFormat("Phd target shift time: {0}", oPhd.StartTime);
+                    //
                     var unitsData = this.data.UnitsData.All().Where(x => x.RecordTimestamp == targetRecordTimestampDate && x.ShiftId == targetShift.Id).ToList();
 
                     var newRecords = ProcessAutomaticUnits(unitsConfigsList, unitsData, oPhd, targetRecordTimestampDate, targetShift.Id, ref expectedNumberOfRecords);
@@ -532,13 +535,16 @@
                     {
                         var endShiftDateTime = baseDate + shiftData.EndTime;
                         var beginShiftDateTime = endShiftDateTime - shiftData.ShiftDuration;
-
+                        // Todo: remove after tests
+                        logger.InfoFormat("ProcessAutomaticDeltaUnits begin shift time: {0}", beginShiftDateTime.ToString(CommonConstants.PhdDateTimeFormat, CultureInfo.InvariantCulture));
+                        logger.InfoFormat("ProcessAutomaticDeltaUnits end shift time: {0}", endShiftDateTime.ToString(CommonConstants.PhdDateTimeFormat, CultureInfo.InvariantCulture));
+                        //
                         var beginConfidence = 100;
                         var endConfidence = 100;
 
                         oPhd.StartTime = string.Format("{0}", endShiftDateTime.ToString(CommonConstants.PhdDateTimeFormat, CultureInfo.InvariantCulture));
                         oPhd.EndTime = oPhd.StartTime;
-
+                        
                         var result = oPhd.FetchRowData(unitConfig.PreviousShiftTag);
                         var row = result.Tables[0].Rows[0];
                         var endValue = Convert.ToInt64(row["Value"]);
@@ -600,6 +606,11 @@
 
                         var endShiftDateTime = baseDate + shiftData.EndTime;
                         var beginShiftDateTime = endShiftDateTime - shiftData.ShiftDuration;
+
+                        // Todo: remove after tests
+                        logger.InfoFormat("ProcessAutomaticCalulatedUnits begin shift time: {0}", beginShiftDateTime.ToString(CommonConstants.PhdDateTimeFormat, CultureInfo.InvariantCulture));
+                        logger.InfoFormat("ProcessAutomaticCalulatedUnits end shift time: {0}", endShiftDateTime.ToString(CommonConstants.PhdDateTimeFormat, CultureInfo.InvariantCulture));
+                        //
 
                         var beginConfidence = 100;
                         var endConfidence = 100;

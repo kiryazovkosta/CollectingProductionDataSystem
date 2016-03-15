@@ -101,6 +101,7 @@
         private TreeState GetDataFromPhd(PrimaryDataSourceType dataSourceParam, TreeState isFirstPhdInteraceCompleted, Timer timer)
         {
             bool lastOperationSucceeded = false;
+            bool inTimeSlot = false;
             DateTime beginDateTime = DateTime.Now;
             var targetTime = DateTime.Now;
             try
@@ -110,6 +111,7 @@
                 Shift targetShift = Phd2SqlProductionDataMain.GetTargetShiftByDateTime(targetTime);
                 if (targetShift != null)
                 {
+                    inTimeSlot = true;
                     bool isForcedResultCalculation = CheckIfForcedCalculationNeeded(targetTime + lastTimeDuration, targetShift);
                     DateTime recordTimeStamp = GetTargetRecordTimestamp(targetTime, targetShift);
                     lastOperationSucceeded = Phd2SqlProductionDataMain.ProcessPrimaryProductionData(dataSourceParam, recordTimeStamp, targetShift, isForcedResultCalculation, isFirstPhdInteraceCompleted);
@@ -123,17 +125,8 @@
             {
                 DateTime endDateTime = DateTime.Now;
                 lastTimeDuration = endDateTime - beginDateTime;
-                try
-                {
-                    TimeSpan duration = GetNextTimeDuration(lastOperationSucceeded);
-                    logger.Info(duration);
-                }
-                catch (Exception ex)
-                {
-                    logger.Error(ex.Message + ex.StackTrace, ex);
-                }
-
-                timer.Change(Convert.ToInt64(TimeSpan.FromMinutes(10).TotalMilliseconds), Timeout.Infinite);
+                TimeSpan nextStartDuration = GetNextTimeDuration(lastOperationSucceeded, inTimeSlot);
+                timer.Change(Convert.ToInt64(nextStartDuration.TotalMilliseconds), Timeout.Infinite);
             }
 
             return lastOperationSucceeded ? TreeState.True : TreeState.False;
@@ -154,19 +147,22 @@
         /// Gets the duration of the next time.
         /// </summary>
         /// <param name="lastOperationSucceeded">The last operation succeeded.</param>
+        /// <param name="inTimeSlot">In time slot for shift reading.</param>
         /// <returns></returns>
-        private TimeSpan GetNextTimeDuration(bool lastOperationSucceeded)
+        public TimeSpan GetNextTimeDuration(bool lastOperationSucceeded, bool inTimeSlot)
         {
-            if (!lastOperationSucceeded)
+            if (!lastOperationSucceeded && inTimeSlot)
             {
                 return TimeSpan.FromMinutes(1);
             }
             else
             {
-                var time = DateTime.Now + TimeSpan.FromMinutes(30);
-                if (time.Minute < 30)
+                var time = DateTime.Now;
+                var tens = (time.Minute / 10) + 1;
+
+                if (tens < 6)
                 {
-                    time = new DateTime(time.Year, time.Month, time.Day, time.Hour, 30, 0);
+                    time = new DateTime(time.Year, time.Month, time.Day, time.Hour, 10 * tens, 0);
                 }
                 else
                 {
