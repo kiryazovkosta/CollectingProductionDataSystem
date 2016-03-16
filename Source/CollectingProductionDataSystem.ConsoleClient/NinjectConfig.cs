@@ -18,24 +18,56 @@
     using CollectingProductionDataSystem.Infrastructure.Contracts;
     using CollectingProductionDataSystem.Infrastructure.Log;
     using Ninject;
+    using log4net;
 
-    public class NinjectConfig: IDisposable
+    public class NinjectConfig : IDisposable
     {
-        private readonly IKernel kernel;
-        public NinjectConfig() 
+        private static readonly object lockObj = new object();
+        private static NinjectConfig injector;
+        private static IKernel kernel;
+
+        /// <summary>
+        /// Prevents a default instance of the <see cref="NinjectInjector" /> class from being created.
+        /// </summary>
+        private NinjectConfig()
         {
-            this.kernel = new Ninject.StandardKernel();
+            kernel = new StandardKernel();
+            InitializeKernel(kernel);
+        }
+
+        public static IKernel GetInjector
+        {
+            get
+            {
+                if (injector == null)
+                {
+                    lock (lockObj)
+                    {
+                        if (injector == null)
+                        {
+                            injector = new NinjectConfig();
+                        }
+                    }
+                }
+
+                return kernel;
+            }
+        }
+
+        /// <summary>
+        /// Initializes the kernel.
+        /// </summary>
+        public static void InitializeKernel(IKernel kernel)
+        {
+//            kernel = new Ninject.StandardKernel();
             kernel.Bind<DbContext>().To<CollectingDataSystemDbContext>();
             kernel.Bind(typeof(IDeletableEntityRepository<>)).To(typeof(DeletableEntityRepository<>));
             kernel.Bind(typeof(IRepository<>)).To(typeof(GenericRepository<>));
-            kernel.Bind<IProductionData>().To<ProductionData>();
+            kernel.Bind<IProductionData>().To<ProductionData>().InSingletonScope();
             kernel.Bind<IPersister>().To<AuditablePersister>();
-            kernel.Bind<ITankDataKendoService>().To<TankDataKendoService>();
-            kernel.Bind<IUnitsDataService>().To<UnitsDataService>();
-            kernel.Bind<IUserService>().To<UserService>();
             kernel.Bind<IEfStatus>().To<EfStatus>();
-            kernel.Bind<IFileUploadService>().To<FileUploadService>();
             kernel.Bind<ILogger>().To<Logger>();
+            kernel.Bind<ILog>().ToMethod(context => LogManager.GetLogger("CollectingProductionDataSystem.Phd2SqlProductionData")).InSingletonScope();
         }
 
         /// <summary>
@@ -44,17 +76,7 @@
         /// </summary>
         public void Dispose()
         {
-            this.kernel.Dispose();
+            kernel.Dispose();
         }
-
-        public IKernel Kernel
-        {
-            get
-            {
-                return this.kernel;
-            }
-        }
-    
-        
     }
 }

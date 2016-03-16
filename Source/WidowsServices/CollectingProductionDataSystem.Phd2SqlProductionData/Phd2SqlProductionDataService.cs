@@ -1,6 +1,8 @@
 ﻿namespace CollectingProductionDataSystem.Phd2SqlProductionData
 {
     using System.Linq;
+    using System.Transactions;
+    using CollectingProductionDataSystem.Data.Common;
     using CollectingProductionDataSystem.Data.Contracts;
     using CollectingProductionDataSystem.Enumerations;
     using CollectingProductionDataSystem.Models.Nomenclatures;
@@ -18,6 +20,8 @@
 
         private Timer measurementDataTimer = null;
 
+        private TransactionOptions transantionOption;
+
         private static TimeSpan lastTimeDuration = TimeSpan.FromMinutes(0);
 
         private static readonly object lockObjectPrimaryData = new object();
@@ -34,6 +38,7 @@
         {
             InitializeComponent();
             this.logger = loggerParam;
+            this.transantionOption = DefaultTransactionOptions.Instance.TransactionOptions;
         }
 
         protected override void OnStart(string[] args)
@@ -51,10 +56,10 @@
                     this.inventoryDataTimer = new Timer(TimerHandlerInventory, null, 0, Timeout.Infinite);
                 }
 
-                if (Properties.Settings.Default.SYNC_PRIMARY_SECOND)
-                {
-                    this.measurementDataTimer = new Timer(TimerHandlerMeasurement, null, 0, Timeout.Infinite);
-                }
+                //if (Properties.Settings.Default.SYNC_PRIMARY_SECOND)
+                //{
+                //    this.measurementDataTimer = new Timer(TimerHandlerMeasurement, null, 0, Timeout.Infinite);
+                //}
             }
             catch (Exception ex)
             {
@@ -81,24 +86,29 @@
             {
                 isFirstPhdInterfaceCompleted = TreeState.Null;
                 PrimaryDataSourceType dataSource = (PrimaryDataSourceType)Enum.ToObject(typeof(PrimaryDataSourceType), Properties.Settings.Default.PHD_DATA_SOURCE);
-                isFirstPhdInterfaceCompleted = GetDataFromPhd(dataSource, isFirstPhdInterfaceCompleted, this.primaryDataTimer);
+                using (var transaction = new TransactionScope(TransactionScopeOption.Required, this.transantionOption))
+                {
+                    isFirstPhdInterfaceCompleted = GetDataFromPhd(dataSource, isFirstPhdInterfaceCompleted, this.primaryDataTimer);
+                    dataSource = (PrimaryDataSourceType)Enum.ToObject(typeof(PrimaryDataSourceType), Properties.Settings.Default.PHD_DATA_SOURCE_SECOND);
+                    GetDataFromPhd(dataSource, isFirstPhdInterfaceCompleted, this.primaryDataTimer, true);
+                    transaction.Complete();
+                }
             }
         }
 
-        private void TimerHandlerMeasurement(object state)
-        {
-            lock (lockObjectMeasurementData)
-            {
-                PrimaryDataSourceType dataSource = (PrimaryDataSourceType)Enum.ToObject(typeof(PrimaryDataSourceType), Properties.Settings.Default.PHD_DATA_SOURCE_SECOND);
-                GetDataFromPhd(dataSource, isFirstPhdInterfaceCompleted, this.measurementDataTimer);
-            }
-        }
+        //private void TimerHandlerMeasurement(object state)
+        //{
+        //    lock (lockObjectMeasurementData)
+        //    {
+
+        //    }
+        //}
 
         /// <summary>
         /// Gets the data from PHD.
         /// </summary>
         /// <param name="srvVmMesPhdA">The SRV vm mes PHD A.</param>
-        private TreeState GetDataFromPhd(PrimaryDataSourceType dataSourceParam, TreeState isFirstPhdInteraceCompleted, Timer timer)
+        private TreeState GetDataFromPhd(PrimaryDataSourceType dataSourceParam, TreeState isFirstPhdInteraceCompleted, Timer timer, bool last = false)
         {
             bool lastOperationSucceeded = false;
             bool inTimeSlot = false;
@@ -112,7 +122,7 @@
                 if (targetShift != null)
                 {
                     inTimeSlot = true;
-                    bool isForcedResultCalculation = CheckIfForcedCalculationNeeded(targetTime + lastTimeDuration, targetShift);
+                    bool isForcedResultCalculation = CheckIfForcedCalculationNeeded(DateTime.Now + lastTimeDuration, targetShift);
                     DateTime recordTimeStamp = GetTargetRecordTimestamp(targetTime, targetShift);
                     lastOperationSucceeded = Phd2SqlProductionDataMain.ProcessPrimaryProductionData(dataSourceParam, recordTimeStamp, targetShift, isForcedResultCalculation, isFirstPhdInteraceCompleted);
                 }
@@ -123,10 +133,14 @@
             }
             finally
             {
-                DateTime endDateTime = DateTime.Now;
-                lastTimeDuration = endDateTime - beginDateTime;
-                TimeSpan nextStartDuration = GetNextTimeDuration(lastOperationSucceeded, inTimeSlot);
-                timer.Change(Convert.ToInt64(nextStartDuration.TotalMilliseconds), Timeout.Infinite);
+                if (last)
+                {
+                    DateTime endDateTime = DateTime.Now;
+                    lastTimeDuration = endDateTime - beginDateTime;
+                    TimeSpan nextStartDuration = GetNextTimeDuration(lastOperationSucceeded, inTimeSlot);
+                    logger.InfoFormat("Timer {0} for {1} is set to: {2}", timer.ToString(), dataSourceParam.ToString(), DateTime.Now + nextStartDuration);
+                    timer.Change(Convert.ToInt64(nextStartDuration.TotalMilliseconds), Timeout.Infinite);
+                }
             }
 
             return lastOperationSucceeded ? TreeState.True : TreeState.False;
@@ -158,7 +172,7 @@
             else
             {
                 var time = DateTime.Now;
-                var tens = (time.Minute / 10) + 1;
+                var tens = ((time.Minute + 1) / 10) + 1;
 
                 if (tens < 6)
                 {
@@ -166,10 +180,24 @@
                 }
                 else
                 {
-                    time = new DateTime(time.Year, time.Month, time.Day, time.Hour + 1, 0, 0);
+                    if (time.Hour + 1 > 23)
+                    {
+                        time = time.Date.AddDays(1);
+                    }
+                    else
+                    {
+                        time = new DateTime(time.Year, time.Month, time.Day, time.Hour + 1, 0, 0);
+                    }
                 }
 
-                return time - DateTime.Now;
+                var result = time - DateTime.Now;
+
+                if (result.TotalMinutes <= 0)
+                {
+                    result = TimeSpan.FromMinutes(10);
+                }
+
+                return result;
             }
         }
 
@@ -181,10 +209,10 @@
         /// <returns></returns>
         public bool CheckIfForcedCalculationNeeded(DateTime targetDateTime, Shift shift)
         {
-            var baseDate = targetDateTime.Date;
-            var lastPosibleTimeForOperation = baseDate + shift.ReadOffset + shift.ReadPollTimeSlot - TimeSpan.FromMinutes(1);
+            //var baseDate = (targetDateTime.Date + shift.BeginTime).Date;
+            var lastPosibleTimeForOperation = targetDateTime.Date + shift.ReadOffset + shift.ReadPollTimeSlot - TimeSpan.FromMinutes(1.5);//baseDate + shift.EndTime + shift.ReadPollTimeSlot - TimeSpan.FromMinutes(1);
 
-            if (lastPosibleTimeForOperation >= targetDateTime)
+            if (targetDateTime >= lastPosibleTimeForOperation)
             {
                 return true;
             }
@@ -208,7 +236,9 @@
                 }
                 finally
                 {
-                    this.inventoryDataTimer.Change(Convert.ToInt64(Properties.Settings.Default.IDLE_TIMER_INVENTORY.TotalMilliseconds),
+                    TimeSpan nextStartDuration = GetNextTimeDuration(true, false);
+                    logger.InfoFormat("Timer {0} for {1} is set to: {2}", "InventoryDataTimer", "Tanks", DateTime.Now + nextStartDuration);
+                    this.inventoryDataTimer.Change(Convert.ToInt64(nextStartDuration.TotalMilliseconds),//Properties.Settings.Default.IDLE_TIMER_INVENTORY.TotalMilliseconds),
                         System.Threading.Timeout.Infinite);
                 }
             }

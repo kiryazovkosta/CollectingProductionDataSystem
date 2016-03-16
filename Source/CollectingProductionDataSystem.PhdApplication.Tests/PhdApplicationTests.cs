@@ -57,10 +57,10 @@ namespace CollectingProductionDataSystem.PhdApplication.Tests
         }
 
         [TestMethod]
-        public void TestIfGetObservedShiftByDateTimeReturnsFirstShift2016_01_01_14_00_00()
+        public void TestIfGetObservedShiftByDateTimeReturnsFirstShift2016_01_01_13_15_00()
         {
             // Arrange
-            var targetDateTime = new DateTime(2016, 1, 1, 14, 0, 0);
+            var targetDateTime = new DateTime(2016, 1, 1, 13, 15 , 0);
             var expectedShiftId = 1;
             // Act
             var actualShift = this.service.GetObservedShiftByDateTime(targetDateTime);
@@ -70,10 +70,10 @@ namespace CollectingProductionDataSystem.PhdApplication.Tests
         }
 
         [TestMethod]
-        public void TestIfGetObservedShiftByDateTimeReturnsFirstShift2016_01_01_14_59_00()
+        public void TestIfGetObservedShiftByDateTimeReturnsFirstShift2016_01_01_13_20_00()
         {
             // Arrange
-            var targetDateTime = new DateTime(2016, 1, 1, 14, 59, 0);
+            var targetDateTime = new DateTime(2016, 1, 1, 13, 20, 0);
             var expectedShiftId = 1;
             // Act
             var actualShift = this.service.GetObservedShiftByDateTime(targetDateTime);
@@ -82,24 +82,24 @@ namespace CollectingProductionDataSystem.PhdApplication.Tests
             Assert.AreEqual(expectedShiftId, actualShift.Id);
         }
 
+        //[TestMethod]
+        //public void TestIfGetObservedShiftByDateTimeReturnsFirstShift2016_01_01_15_00_00()
+        //{
+        //    // Arrange
+        //    var targetDateTime = new DateTime(2016, 1, 1, 15, 0, 0);
+        //    var expectedShiftId = 1;
+        //    // Act
+        //    var actualShift = this.service.GetObservedShiftByDateTime(targetDateTime);
+
+        //    // Assert
+        //    Assert.AreEqual(expectedShiftId, actualShift.Id);
+        //}
+
         [TestMethod]
-        public void TestIfGetObservedShiftByDateTimeReturnsFirstShift2016_01_01_15_00_00()
+        public void TestIfGetObservedShiftByDateTimeReturnsFirstShift2016_01_01_13_21_00MustReturnNull()
         {
             // Arrange
-            var targetDateTime = new DateTime(2016, 1, 1, 15, 0, 0);
-            var expectedShiftId = 1;
-            // Act
-            var actualShift = this.service.GetObservedShiftByDateTime(targetDateTime);
-
-            // Assert
-            Assert.AreEqual(expectedShiftId, actualShift.Id);
-        }
-
-        [TestMethod]
-        public void TestIfGetObservedShiftByDateTimeReturnsFirstShift2016_01_01_15_11_00MustReturnNull()
-        {
-            // Arrange
-            var targetDateTime = new DateTime(2016, 1, 1, 15, 11, 0);
+            var targetDateTime = new DateTime(2016, 1, 1, 13, 21, 0);
            
             // Act
             var actualShift = this.service.GetObservedShiftByDateTime(targetDateTime);
@@ -147,10 +147,36 @@ namespace CollectingProductionDataSystem.PhdApplication.Tests
         }
 
         [TestMethod]
-        public void TestIfGetObservedShiftByDateTimeReturnsSecondShift2016_01_01_22_00_00()
+        public void TestIfGetObservedShiftByDateTimeReturnsSecondShift2016_01_01_21_15_00()
         {
             // Arrange
-            var targetDateTime = new DateTime(2016, 1, 1, 22, 0, 0);
+            var targetDateTime = new DateTime(2016, 1, 1, 21, 15, 0);
+            var expectedShiftId = 2;
+            // Act
+            var actualShift = this.service.GetObservedShiftByDateTime(targetDateTime);
+
+            // Assert
+            Assert.AreEqual(expectedShiftId, actualShift.Id);
+        }
+
+        //[TestMethod]
+        //public void TestIfGetObservedShiftByDateTimeReturnsSecondShift2016_01_01_22_59_00()
+        //{
+        //    // Arrange
+        //    var targetDateTime = new DateTime(2016, 1, 1, 22, 59, 0);
+        //    var expectedShiftId = 2;
+        //    // Act
+        //    var actualShift = this.service.GetObservedShiftByDateTime(targetDateTime);
+
+        //    // Assert
+        //    Assert.AreEqual(expectedShiftId, actualShift.Id);
+        //}
+
+        [TestMethod]
+        public void TestIfGetObservedShiftByDateTimeReturnsSecondShift2016_01_01_21_20_00()
+        {
+            // Arrange
+            var targetDateTime = new DateTime(2016, 1, 1, 21, 20, 0);
             var expectedShiftId = 2;
             // Act
             var actualShift = this.service.GetObservedShiftByDateTime(targetDateTime);
@@ -160,36 +186,10 @@ namespace CollectingProductionDataSystem.PhdApplication.Tests
         }
 
         [TestMethod]
-        public void TestIfGetObservedShiftByDateTimeReturnsSecondShift2016_01_01_22_59_00()
+        public void TestIfGetObservedShiftByDateTimeReturnsSecondShift2016_01_01_21_20_01MustReturnNull()
         {
             // Arrange
-            var targetDateTime = new DateTime(2016, 1, 1, 22, 59, 0);
-            var expectedShiftId = 2;
-            // Act
-            var actualShift = this.service.GetObservedShiftByDateTime(targetDateTime);
-
-            // Assert
-            Assert.AreEqual(expectedShiftId, actualShift.Id);
-        }
-
-        [TestMethod]
-        public void TestIfGetObservedShiftByDateTimeReturnsSecondShift2016_01_01_23_00_00()
-        {
-            // Arrange
-            var targetDateTime = new DateTime(2016, 1, 1, 23, 0, 0);
-            var expectedShiftId = 2;
-            // Act
-            var actualShift = this.service.GetObservedShiftByDateTime(targetDateTime);
-
-            // Assert
-            Assert.AreEqual(expectedShiftId, actualShift.Id);
-        }
-
-        [TestMethod]
-        public void TestIfGetObservedShiftByDateTimeReturnsSecondShift2016_01_01_23_10_01MustReturnNull()
-        {
-            // Arrange
-            var targetDateTime = new DateTime(2016, 1, 1, 23, 10, 1);
+            var targetDateTime = new DateTime(2016, 1, 1, 21, 20, 1);
 
             // Act
             var actualShift = this.service.GetObservedShiftByDateTime(targetDateTime);
@@ -238,10 +238,10 @@ namespace CollectingProductionDataSystem.PhdApplication.Tests
         }
 
         [TestMethod]
-        public void TestIfGetObservedShiftByDateTimeReturnsThirdShift2016_01_01_06_00_00()
+        public void TestIfGetObservedShiftByDateTimeReturnsThirdShift2016_01_01_05_15_00()
         {
             // Arrange
-            var targetDateTime = new DateTime(2016, 1, 1, 6, 0, 0);
+            var targetDateTime = new DateTime(2016, 1, 1, 5, 15, 0);
             var expectedShiftId = 3;
             // Act
             var actualShift = this.service.GetObservedShiftByDateTime(targetDateTime);
@@ -251,10 +251,10 @@ namespace CollectingProductionDataSystem.PhdApplication.Tests
         }
 
         [TestMethod]
-        public void TestIfGetObservedShiftByDateTimeReturnsThirdShift2016_01_01_07_9_00()
+        public void TestIfGetObservedShiftByDateTimeReturnsThirdShift2016_01_01_05_20_00()
         {
             // Arrange
-            var targetDateTime = new DateTime(2016, 1, 1, 7, 9, 0);
+            var targetDateTime = new DateTime(2016, 1, 1, 5, 20, 0);
             var expectedShiftId = 3;
             // Act
             var actualShift = this.service.GetObservedShiftByDateTime(targetDateTime);
@@ -263,24 +263,24 @@ namespace CollectingProductionDataSystem.PhdApplication.Tests
             Assert.AreEqual(expectedShiftId, actualShift.Id);
         }
 
+        //[TestMethod]
+        //public void TestIfGetObservedShiftByDateTimeReturnsThirdShift2016_01_01_07_9_59()
+        //{
+        //    // Arrange
+        //    var targetDateTime = new DateTime(2016, 1, 1, 7, 9, 59);
+        //    var expectedShiftId = 3;
+        //    // Act
+        //    var actualShift = this.service.GetObservedShiftByDateTime(targetDateTime);
+
+        //    // Assert
+        //    Assert.AreEqual(expectedShiftId, actualShift.Id);
+        //}
+
         [TestMethod]
-        public void TestIfGetObservedShiftByDateTimeReturnsThirdShift2016_01_01_07_9_59()
+        public void TestIfGetObservedShiftByDateTimeReturnsThirdShift2016_01_01_05_20_01MustReturnNull()
         {
             // Arrange
-            var targetDateTime = new DateTime(2016, 1, 1, 7, 9, 59);
-            var expectedShiftId = 3;
-            // Act
-            var actualShift = this.service.GetObservedShiftByDateTime(targetDateTime);
-
-            // Assert
-            Assert.AreEqual(expectedShiftId, actualShift.Id);
-        }
-
-        [TestMethod]
-        public void TestIfGetObservedShiftByDateTimeReturnsThirdShift2016_01_01_07_10_01MustReturnNull()
-        {
-            // Arrange
-            var targetDateTime = new DateTime(2016, 1, 1, 7, 10, 1);
+            var targetDateTime = new DateTime(2016, 1, 1, 5, 20, 1);
             
             // Act
             var actualShift = this.service.GetObservedShiftByDateTime(targetDateTime);

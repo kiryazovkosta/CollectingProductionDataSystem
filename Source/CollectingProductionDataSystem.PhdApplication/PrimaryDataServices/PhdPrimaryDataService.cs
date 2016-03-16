@@ -59,57 +59,72 @@
             var unitsConfigsList = this.data.UnitConfigs.All().Where(x => x.DataSource == dataSource).ToList();
             var targetRecordTimestampDate = targetRecordTimestamp.Date;
 
-            using (PHDHistorian oPhd = new PHDHistorian())
+            try
             {
-                using (PHDServer defaultServer = new PHDServer(settings.Settings.Get("PHD_HOST"+(int)dataSource).Value.ValueXml.InnerText))
+                using (PHDHistorian oPhd = new PHDHistorian())
                 {
-                    SetPhdConnectionSettings(oPhd, defaultServer, targetRecordTimestamp, targetShift);
-                    //ToDo: remove after tests
-                    logger.InfoFormat("Phd target shift time: {0}", oPhd.StartTime);
-                    //
-                    var unitsData = this.data.UnitsData.All().Where(x => x.RecordTimestamp == targetRecordTimestampDate && x.ShiftId == targetShift.Id).ToList();
+                    using (PHDServer defaultServer = new PHDServer(settings.Settings.Get("PHD_HOST" + (int)dataSource).Value.ValueXml.InnerText))
+                    {
+                        SetPhdConnectionSettings(oPhd, defaultServer, targetRecordTimestamp, targetShift);
+                        //ToDo: remove after tests
+                        logger.InfoFormat("Phd target shift time: {0}", oPhd.StartTime);
+                        //
+                        var unitsData = this.data.UnitsData.All().Where(x => x.RecordTimestamp == targetRecordTimestampDate && x.ShiftId == targetShift.Id).ToList();
 
-                    var newRecords = ProcessAutomaticUnits(unitsConfigsList, unitsData, oPhd, targetRecordTimestampDate, targetShift.Id, ref expectedNumberOfRecords);
-                    realNumberOfRecords = newRecords.Count();
-                    unitDatasToAdd.AddRange(newRecords);
-                    LogConsistencyMessage("Processing Automatic Units Records", expectedNumberOfRecords, realNumberOfRecords);
+                        var newRecords = ProcessAutomaticUnits(unitsConfigsList, unitsData, oPhd, targetRecordTimestampDate, targetShift.Id, ref expectedNumberOfRecords);
+                        realNumberOfRecords = newRecords.Count();
+                        unitDatasToAdd.AddRange(newRecords);
+                        LogConsistencyMessage("Processing Automatic Units Records", expectedNumberOfRecords, realNumberOfRecords);
 
-                    newRecords = ProcessAutomaticDeltaUnits(unitsConfigsList, unitsData, oPhd, targetRecordTimestampDate, targetShift, ref expectedNumberOfRecords);
-                    realNumberOfRecords = newRecords.Count();
-                    unitDatasToAdd.AddRange(newRecords);
-                    LogConsistencyMessage("Processing Automatic Delta Records", expectedNumberOfRecords, realNumberOfRecords);
+                        newRecords = ProcessAutomaticDeltaUnits(unitsConfigsList, unitsData, oPhd, targetRecordTimestampDate, targetShift, ref expectedNumberOfRecords);
+                        realNumberOfRecords = newRecords.Count();
+                        unitDatasToAdd.AddRange(newRecords);
+                        LogConsistencyMessage("Processing Automatic Delta Records", expectedNumberOfRecords, realNumberOfRecords);
 
-                    newRecords = ProcessAutomaticCalulatedUnits(unitsConfigsList, unitsData, oPhd, targetRecordTimestampDate, targetShift, ref expectedNumberOfRecords);
-                    realNumberOfRecords = newRecords.Count();
-                    unitDatasToAdd.AddRange(newRecords);
-                    LogConsistencyMessage("Processing Automatic Calculated Units Records", expectedNumberOfRecords, realNumberOfRecords);
+                        newRecords = ProcessAutomaticCalulatedUnits(unitsConfigsList, unitsData, oPhd, targetRecordTimestampDate, targetShift, ref expectedNumberOfRecords);
+                        realNumberOfRecords = newRecords.Count();
+                        unitDatasToAdd.AddRange(newRecords);
+                        LogConsistencyMessage("Processing Automatic Calculated Units Records", expectedNumberOfRecords, realNumberOfRecords);
 
-                    newRecords = ProcessManualUnits(unitsConfigsList, targetRecordTimestampDate, targetShift.Id, unitsData, ref expectedNumberOfRecords);
-                    realNumberOfRecords = newRecords.Count();
-                    unitDatasToAdd.AddRange(newRecords);
-                    LogConsistencyMessage("Processing Manual Units Records", expectedNumberOfRecords, realNumberOfRecords);
+                        newRecords = ProcessManualUnits(unitsConfigsList, targetRecordTimestampDate, targetShift.Id, unitsData, ref expectedNumberOfRecords);
+                        realNumberOfRecords = newRecords.Count();
+                        unitDatasToAdd.AddRange(newRecords);
+                        LogConsistencyMessage("Processing Manual Units Records", expectedNumberOfRecords, realNumberOfRecords);
 
-                    newRecords = ProcessCalculatedByAutomaticUnits(unitsConfigsList, oPhd, targetRecordTimestampDate, targetShift, unitsData, ref expectedNumberOfRecords);
-                    realNumberOfRecords = newRecords.Count();
-                    unitDatasToAdd.AddRange(newRecords);
-                    LogConsistencyMessage("Processing Calculated By Automatic Records", expectedNumberOfRecords, realNumberOfRecords);
+                        newRecords = ProcessCalculatedByAutomaticUnits(unitsConfigsList, oPhd, targetRecordTimestampDate, targetShift, unitsData, ref expectedNumberOfRecords);
+                        realNumberOfRecords = newRecords.Count();
+                        unitDatasToAdd.AddRange(newRecords);
+                        LogConsistencyMessage("Processing Calculated By Automatic Records", expectedNumberOfRecords, realNumberOfRecords);
+                    }
                 }
             }
+            catch(Exception ex)
+            {
+                logger.Error(ex.Message + ex.StackTrace, ex);
+            }
+
 
             var totalInsertedRecords = 0;
             saveChangesTimer.Start();
             // persisting received data and incorporate the data with records get from second PHD
             using (var transaction = new TransactionScope(TransactionScopeOption.Required, this.transantionOption))
             {
-                if (unitDatasToAdd.Count > 0)
+                try
                 {
-                    this.data.UnitsData.BulkInsert(unitDatasToAdd, "Phd2SqlLoader");
-                    totalInsertedRecords += unitDatasToAdd.Count;
-                }
+                    if (unitDatasToAdd.Count > 0)
+                    {
+                        this.data.UnitsData.BulkInsert(unitDatasToAdd, "Phd2SqlLoader");
+                        totalInsertedRecords += unitDatasToAdd.Count;
+                    }
 
-                if (IsFirstPhdInteraceCompleted == TreeState.Null || IsFirstPhdInteraceCompleted == TreeState.True)
+                    if (IsFirstPhdInteraceCompleted == TreeState.Null || IsFirstPhdInteraceCompleted == TreeState.True)
+                    {
+                        totalInsertedRecords += GetCalculatedUnits(targetShift, unitsConfigsList, targetRecordTimestampDate);
+                    }
+                }
+                catch (Exception ex) 
                 {
-                    totalInsertedRecords += GetCalculatedUnits(targetShift, unitsConfigsList, targetRecordTimestampDate);
+                    logger.Error(ex.Message + ex.StackTrace, ex);
                 }
 
                 List<UnitsData> resultUnitData;

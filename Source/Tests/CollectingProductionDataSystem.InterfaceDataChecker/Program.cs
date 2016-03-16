@@ -17,7 +17,7 @@ namespace CollectingProductionDataSystem.InterfaceDataChecker
     {
         public static void Main()
         {
-            var targetDay = new DateTime(2016, 3, 14);
+            var targetDay = new DateTime(2016, 3, 16);
             var testContext = new CollectingDataSystemDbContext(new AuditablePersister(), new Logger(), "Dev");
             var productiveContext = new CollectingDataSystemDbContext(new AuditablePersister(), new Logger(), "Productive");
             var testData = new ProductionData(testContext);
