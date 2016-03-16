@@ -25,15 +25,12 @@
     static class Phd2SqlProductionDataMain
     {
         private static readonly ILog logger;
-
-        private static readonly NinjectConfig ninject;
         private static readonly PhdPrimaryDataService service;
 
         static Phd2SqlProductionDataMain()
         {
             logger = LogManager.GetLogger("CollectingProductionDataSystem.Phd2SqlProductionData");
-            ninject = new NinjectConfig();
-            var kernel = ninject.Kernel;
+            var kernel = NinjectConfig.GetInjector;
             service = kernel.GetService(typeof(PhdPrimaryDataService)) as PhdPrimaryDataService;
         }
 

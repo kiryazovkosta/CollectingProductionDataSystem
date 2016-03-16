@@ -13,6 +13,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CollectingProductionDataSystem.Infrastructure.Extentions;
+using Ninject;
 using Uniformance.PHD;
 using CollectingProductionDataSystem.Models.Transactions;
 using System.Data;
@@ -24,13 +25,14 @@ namespace CollectingProductionDataSystem.ConsoleClient
     {
         static void Main(string[] args)
         {
-            var ninject = new NinjectConfig();
+            //var ninject = new NinjectConfig();
             //var timer = new Stopwatch();
             //timer.Start();
-            var kernel = ninject.Kernel;
+            var kernel = NinjectConfig.GetInjector;
 
-            var data = kernel.GetService(typeof(IProductionData)) as IProductionData;
+            var data = kernel.Get<ProductionData>();
 
+           
             //var shiftData = data.UnitsData.All().Where(x => x.ShiftId == ShiftType.Second 
             //    && x.RecordTimestamp == new DateTime(2016, 2, 1, 0, 0, 0) 
             //    && x.UnitConfig.ProcessUnitId == 50).ToList();
@@ -68,7 +70,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
 
             //ProcessTransactionsData();
 
-            DoCalculation();
+             DoCalculation();
 
             //ProcessProductionReportTransactionsData();
 

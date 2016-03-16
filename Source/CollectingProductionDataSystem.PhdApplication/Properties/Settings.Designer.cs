@@ -25,7 +25,7 @@ namespace CollectingProductionDataSystem.PhdApplication.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("srv-vm-mes-phd.neftochim.bg")]
+        [global::System.Configuration.DefaultSettingValueAttribute("srv-vm-mes-phd")]
         public string PHD_HOST1 {
             get {
                 return ((string)(this["PHD_HOST1"]));
@@ -97,7 +97,7 @@ namespace CollectingProductionDataSystem.PhdApplication.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("phd-l35-1.neftochim.bg")]
+        [global::System.Configuration.DefaultSettingValueAttribute("phd-l35-1")]
         public string PHD_HOST11 {
             get {
                 return ((string)(this["PHD_HOST11"]));
