@@ -27,6 +27,7 @@ namespace CollectingProductionDataSystem.Web.AppStart
     using CollectingProductionDataSystem.Data.Concrete;
     using CollectingProductionDataSystem.Application.UnitsDataServices;
     using CollectingProductionDataSystem.Application.ProductionPlanDataServices;
+    using CollectingProductionDataSystem.Application.ShiftServices;
 
 
     public static class NinjectWebCommon 
@@ -101,6 +102,7 @@ namespace CollectingProductionDataSystem.Web.AppStart
             kernel.Bind<IPipelineServices>().To<PipelineServices>();
             kernel.Bind<IInventoryTanksService>().To<InventoryTanksService>();
             kernel.Bind<IUnitMothlyDataService>().To<UnitMothlyDataService>();
+            kernel.Bind<IShiftService>().To<ShiftService>();
         }        
     }
 }

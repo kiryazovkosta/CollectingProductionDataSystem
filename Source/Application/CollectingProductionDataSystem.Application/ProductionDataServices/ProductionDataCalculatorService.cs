@@ -444,21 +444,21 @@
         {
             var newUnitEnteredForCalculationRecord = new UnitEnteredForCalculationData
             {
-                Id = unitDataId,
+                UnitDataId = unitDataId,
                 OldValue = oldValue,
                 NewValue = newValue
             };
-            var existsUnitEnteredForCalculationRecord = this.data.UnitEnteredForCalculationDatas.All().Where(x => x.Id == newUnitEnteredForCalculationRecord.Id).FirstOrDefault();
-            if (existsUnitEnteredForCalculationRecord == null)
+            //var existsUnitEnteredForCalculationRecord = this.data.UnitEnteredForCalculationDatas.All().Where(x => x.Id == newUnitEnteredForCalculationRecord.Id).FirstOrDefault();
+            //if (existsUnitEnteredForCalculationRecord == null)
             {
                 this.data.UnitEnteredForCalculationDatas.Add(newUnitEnteredForCalculationRecord);   
             }
-            else
-            {
-                existsUnitEnteredForCalculationRecord.OldValue = oldValue;
-                existsUnitEnteredForCalculationRecord.NewValue = newValue;
-                this.data.UnitEnteredForCalculationDatas.Update(existsUnitEnteredForCalculationRecord);
-            }
+            //else
+            //{
+            //    existsUnitEnteredForCalculationRecord.OldValue = oldValue;
+            //    existsUnitEnteredForCalculationRecord.NewValue = newValue;
+            //    this.data.UnitEnteredForCalculationDatas.Update(existsUnitEnteredForCalculationRecord);
+            //}
         }
 
         ///  <summary>
