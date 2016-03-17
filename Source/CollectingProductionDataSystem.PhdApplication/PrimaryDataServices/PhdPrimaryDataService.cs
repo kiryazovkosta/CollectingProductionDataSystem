@@ -186,7 +186,7 @@
         {
             var unitDatas = resultUnitData.ToDictionary(x => x.UnitConfig.Code);
             var targetDate = targetRecordTimestamp.Date;
-            var confidense = 100;
+            var confidense = 0;
             var result = new List<UnitsData>();
 
 
@@ -289,81 +289,99 @@
 
                         var ruc = unitConfig.RelatedUnitConfigs.ToList();
                         var confidence = 100;
+                        var allRelatedUnitDataExsists = true;
                         foreach (var ru in ruc)
                         {
-                            var parameterType = ru.RelatedUnitConfig.AggregateGroup;
-                            var element = data.UnitsData.All()
-                                .Where(x => x.RecordTimestamp == recordDataTime)
-                                .Where(x => x.ShiftId == shift)
-                                .Where(x => x.UnitConfigId == ru.RelatedUnitConfigId)
-                                .FirstOrDefault();
-                            var inputValue = (element != null) ? element.RealValue : 0.0;
-                            if (inputValue == 0.0)
+                            if (allRelatedUnitDataExsists == true)
                             {
-                                if (currentUnitDatas.ContainsKey(ru.RelatedUnitConfigId))
+                                var parameterType = ru.RelatedUnitConfig.AggregateGroup;
+                                var element = data.UnitsData.All()
+                                    .Where(x => x.RecordTimestamp == recordDataTime)
+                                    .Where(x => x.ShiftId == shift)
+                                    .Where(x => x.UnitConfigId == ru.RelatedUnitConfigId)
+                                    .FirstOrDefault();
+
+                                if (element != null)
                                 {
-                                    inputValue = currentUnitDatas[ru.RelatedUnitConfigId].RealValue;
-                                }
-                            }
+                                    var inputValue = element.RealValue;
+                                    if (inputValue == 0.0)
+                                    {
+                                        if (currentUnitDatas.ContainsKey(ru.RelatedUnitConfigId))
+                                        {
+                                            inputValue = currentUnitDatas[ru.RelatedUnitConfigId].RealValue;
+                                        }
+                                    }
 
-                            try
-                            {
-                                if (element != null && element.Confidence != 100)
+                                    try
+                                    {
+                                        if (element.Confidence != 100)
+                                        {
+                                            confidence = element.Confidence;
+                                        }
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        throw new Exception("CONFIDENCE ERROR: " + ex.Message, ex);
+                                    }
+
+
+                                    if (parameterType == "I+")
+                                    {
+                                        var exsistingValue = arguments.InputValue.HasValue ? arguments.InputValue.Value : 0.0;
+                                        arguments.InputValue = exsistingValue + inputValue;
+                                    }
+                                    if (parameterType == "I-")
+                                    {
+                                        var exsistingValue = arguments.InputValue.HasValue ? arguments.InputValue.Value : 0.0;
+                                        arguments.InputValue = exsistingValue - inputValue;
+                                    }
+                                    else if (parameterType == "T")
+                                    {
+                                        arguments.Temperature = inputValue;
+                                    }
+                                    else if (parameterType == "P")
+                                    {
+                                        arguments.Pressure = inputValue;
+                                    }
+                                    else if (parameterType == "D")
+                                    {
+                                        arguments.Density = inputValue;
+                                    }
+                                    else if (parameterType == "I/")
+                                    {
+                                        arguments.CalculationPercentage = inputValue;
+                                    }
+                                    else if (parameterType == "I*")
+                                    {
+                                        arguments.CalculationPercentage = inputValue;
+                                    }
+                                }
+                                else
                                 {
-                                    confidence = element.Confidence;
-                                }
+                                    allRelatedUnitDataExsists = false;
+                                } 
                             }
-                            catch (Exception ex)
-                            {
-                                throw new Exception("CONFIDENCE ERROR: " + ex.Message, ex);
-                            }
-
-
-                            if (parameterType == "I+")
-                            {
-                                var exsistingValue = arguments.InputValue.HasValue ? arguments.InputValue.Value : 0.0;
-                                arguments.InputValue = exsistingValue + inputValue;
-                            }
-                            if (parameterType == "I-")
-                            {
-                                var exsistingValue = arguments.InputValue.HasValue ? arguments.InputValue.Value : 0.0;
-                                arguments.InputValue = exsistingValue - inputValue;
-                            }
-                            else if (parameterType == "T")
-                            {
-                                arguments.Temperature = inputValue;
-                            }
-                            else if (parameterType == "P")
-                            {
-                                arguments.Pressure = inputValue;
-                            }
-                            else if (parameterType == "D")
-                            {
-                                arguments.Density = inputValue;
-                            }
-                            else if (parameterType == "I/")
-                            {
-                                arguments.CalculationPercentage = inputValue;
-                            }
-                            else if (parameterType == "I*")
-                            {
-                                arguments.CalculationPercentage = inputValue;
-                            }
+                            
                         }
 
-                        var result = new ProductionDataCalculatorService(this.data).Calculate(formulaCode, arguments);
-                        if (!unitsData.Where(x => x.RecordTimestamp == recordDataTime && x.ShiftId == shift && x.UnitConfigId == unitConfig.Id).Any())
+                        if (allRelatedUnitDataExsists == true)
                         {
-                            currentUnitDatas.Add(unitConfig.Id,
-                                                    new UnitsData
-                                                    {
-                                                        UnitConfigId = unitConfig.Id,
-                                                        RecordTimestamp = recordDataTime,
-                                                        ShiftId = shift,
-                                                        Value = (double.IsNaN(result) || double.IsInfinity(result)) ? 0.0m : (decimal)result,
-                                                        Confidence = confidence
-                                                    });
+                            var result = new ProductionDataCalculatorService(this.data).Calculate(formulaCode, arguments);
+                            if (!unitsData.Where(x => x.RecordTimestamp == recordDataTime && x.ShiftId == shift && x.UnitConfigId == unitConfig.Id).Any())
+                            {
+                                currentUnitDatas.Add(unitConfig.Id,
+                                                        new UnitsData
+                                                        {
+                                                            UnitConfigId = unitConfig.Id,
+                                                            RecordTimestamp = recordDataTime,
+                                                            ShiftId = shift,
+                                                            Value = (double.IsNaN(result) || double.IsInfinity(result)) ? 0.0m : (decimal)result,
+                                                            Confidence = confidence
+                                                        });
+                            }    
                         }
+
+
                     }
                 }
                 catch (Exception ex)
@@ -510,10 +528,10 @@
                             unitData.Confidence = confidence;
                             currentUnitDatas.Add(unitData);
                         }
-                        else
-                        {
-                            currentUnitDatas.Add(SetDefaultUnitsDataValue(recordTimestamp, shift, unitConfig, confidence));
-                        }
+                        //else
+                        //{
+                        //    currentUnitDatas.Add(SetDefaultUnitsDataValue(recordTimestamp, shift, unitConfig, confidence));
+                        //}
                     }
                 }
             }
