@@ -15,10 +15,15 @@
 
             // Properties
             this.Property(t => t.Id)
-                .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
+                .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 
             // Table & Column Mappings
             this.ToTable("UnitEnteredForCalculationDatas");
+
+            // Relationships
+            this.HasRequired(t => t.UnitsData)
+                .WithMany(t => t.UnitEnteredForCalculationData)
+                .HasForeignKey(d => d.UnitDataId);
         }
     }
 }

@@ -162,6 +162,10 @@
     <Compile Include="Mappings\UnitsManualDataMap.cs" />
     <Compile Include="Mappings\UnitMonthlyDataMap.cs" />
     <Compile Include="Mappings\ZoneMap.cs" />
+    <Compile Include="Migrations\201603141925266_EnteredByUserValues.cs" />
+    <Compile Include="Migrations\201603141925266_EnteredByUserValues.Designer.cs">
+      <DependentUpon>201603141925266_EnteredByUserValues.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Concrete\ProductionData.cs" />
     <Compile Include="Migrations\ProductionDataImporter.cs" />
@@ -199,6 +203,9 @@
     <EmbeddedResource Include="Errors.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Errors.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603141925266_EnteredByUserValues.resx">
+      <DependentUpon>201603141925266_EnteredByUserValues.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

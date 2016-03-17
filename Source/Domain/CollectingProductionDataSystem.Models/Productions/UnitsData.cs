@@ -10,6 +10,12 @@ namespace CollectingProductionDataSystem.Models.Productions
 
     public partial class UnitsData : AuditInfo, IApprovableEntity, IEntity
     {
+        private ICollection<UnitEnteredForCalculationData> unitEnteredForCalculationData;
+
+        public UnitsData()
+        {
+            this.unitEnteredForCalculationData = new HashSet<UnitEnteredForCalculationData>();
+        }
         public int Id { get; set; }
         public DateTime RecordTimestamp { get; set; }
         public int UnitConfigId { get; set; }
@@ -18,7 +24,11 @@ namespace CollectingProductionDataSystem.Models.Productions
         public bool IsApproved { get; set; }
         public virtual UnitConfig UnitConfig { get; set; }
         public virtual UnitsManualData UnitsManualData { get; set; }
-        public virtual UnitEnteredForCalculationData UnitEnteredForCalculationData { get; set; }
+        public virtual ICollection<UnitEnteredForCalculationData> UnitEnteredForCalculationData 
+        { 
+            get { return this.unitEnteredForCalculationData; }
+            set { this.unitEnteredForCalculationData = value; } 
+        }
         public int Confidence { get; set; }
 
         [NotMapped]

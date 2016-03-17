@@ -147,6 +147,8 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="Contracts\IInventoryTanksService.cs" />
+    <Compile Include="Contracts\IShiftService.cs" />
+    <Compile Include="ShiftServices\ShiftService.cs" />
     <Compile Include="TankDataServices\InventoryTanksService.cs" />
     <Compile Include="TankDataServices\ITankDataKendoService.cs" />
     <Compile Include="TankDataServices\StatusOfTankDto.cs" />
