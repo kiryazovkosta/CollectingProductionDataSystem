@@ -14,12 +14,14 @@ namespace CollectingProductionDataSystem.Models.Productions
         private ICollection<UnitsData> unitsDatas;
         private ICollection<RelatedUnitConfigs> relatedUnitConfigs;
         private ICollection<UnitConfigUnitDailyConfig> unitConfigUnitDailyConfigs;
+        private ICollection<UnitDatasTemp> unitDatasTemps;
 
         public UnitConfig()
         {
             this.unitsDatas = new HashSet<UnitsData>();
             this.relatedUnitConfigs = new HashSet<RelatedUnitConfigs>();
             this.unitConfigUnitDailyConfigs = new HashSet<UnitConfigUnitDailyConfig>();
+            this.unitDatasTemps = new HashSet<UnitDatasTemp>();
         }
 
         public int Id { get; set; }
@@ -79,6 +81,13 @@ namespace CollectingProductionDataSystem.Models.Productions
             get { return this.unitConfigUnitDailyConfigs; }
             set { this.unitConfigUnitDailyConfigs = value; }
         }
+
+        public virtual ICollection<UnitDatasTemp> UnitDatasTemps 
+        {
+            get { return this.unitDatasTemps; }
+            set { this.unitDatasTemps = value; }
+        }
+
         public decimal? StartupValue { get; set; }
 
         public bool IsMemberOfShiftsReport { get; set; }

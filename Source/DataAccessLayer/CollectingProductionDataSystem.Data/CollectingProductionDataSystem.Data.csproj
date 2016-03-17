@@ -94,6 +94,7 @@
     <Compile Include="Mappings\ApplicationUserProcessUnitMap.cs" />
     <Compile Include="Mappings\TankStatusDataMap.cs" />
     <Compile Include="Mappings\TankStatusMap.cs" />
+    <Compile Include="Mappings\UnitDatasTempMap.cs" />
     <Compile Include="Mappings\UnitMonthlyConfigMap.cs" />
     <Compile Include="Mappings\Configuration\GlobalTypeMappingConfig.cs" />
     <Compile Include="Mappings\DailyProductTypeMap.cs" />

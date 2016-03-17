@@ -20,6 +20,8 @@
 
         private Timer measurementDataTimer = null;
 
+        private static int lastTargetShiftId = 0;
+
         private TransactionOptions transantionOption;
 
         private static TimeSpan lastTimeDuration = TimeSpan.FromMinutes(0);
@@ -96,14 +98,6 @@
             }
         }
 
-        //private void TimerHandlerMeasurement(object state)
-        //{
-        //    lock (lockObjectMeasurementData)
-        //    {
-
-        //    }
-        //}
-
         /// <summary>
         /// Gets the data from PHD.
         /// </summary>
@@ -118,7 +112,17 @@
             {
                 Utility.SetRegionalSettings();
                 this.primaryDataTimer.Change(Timeout.Infinite, Timeout.Infinite);
+
                 Shift targetShift = Phd2SqlProductionDataMain.GetTargetShiftByDateTime(targetTime);
+
+                int targetShiftId = targetShift != null ? targetShift.Id : 0;
+                if (lastTargetShiftId != targetShiftId)
+                {
+                    Phd2SqlProductionDataMain.ClearTemporaryData();
+                }
+
+                lastTargetShiftId = targetShiftId;
+
                 if (targetShift != null)
                 {
                     inTimeSlot = true;

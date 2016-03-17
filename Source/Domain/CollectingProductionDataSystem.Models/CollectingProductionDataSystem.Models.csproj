@@ -106,6 +106,7 @@
     <Compile Include="Productions\Mounthly\UnitManualMonthlyData.cs" />
     <Compile Include="Productions\Mounthly\UnitMonthlyData.cs" />
     <Compile Include="Productions\Mounthly\RelatedUnitMonthlyConfigs.cs" />
+    <Compile Include="Productions\UnitDatasTemp.cs" />
     <Compile Include="Transactions\HighwayPipelines\HighwayPipelineApprovedData.cs" />
     <Compile Include="Transactions\HighwayPipelines\HighwayPipelineConfig.cs" />
     <Compile Include="Transactions\HighwayPipelines\HighwayPipelineData.cs" />

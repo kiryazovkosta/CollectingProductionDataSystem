@@ -1,5 +1,7 @@
 ﻿namespace CollectingProductionDataSystem.Phd2SqlProductionData
 {
+    using CollectingProductionDataSystem.Application.Contracts;
+    using CollectingProductionDataSystem.Application.MailerService;
     using CollectingProductionDataSystem.Data;
     using CollectingProductionDataSystem.Data.Common;
     using CollectingProductionDataSystem.Data.Concrete;
@@ -68,6 +70,7 @@
             kernel.Bind<IEfStatus>().To<EfStatus>();
             kernel.Bind<ILogger>().To<Logger>();
             kernel.Bind<ILog>().ToMethod(context => LogManager.GetLogger("CollectingProductionDataSystem.Phd2SqlProductionData")).InSingletonScope();
+            kernel.Bind<IMailerService>().To<MailerService>();
         }
     }
 

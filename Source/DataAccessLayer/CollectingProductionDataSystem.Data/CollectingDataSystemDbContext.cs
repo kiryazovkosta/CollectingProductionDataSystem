@@ -193,6 +193,8 @@
 
         public IDbSet<TankStatusData> TankStatusDatas { get; set; }
 
+        public IDbSet<UnitDatasTemp> UnitDatasTemps { get; set; }
+
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

@@ -7,14 +7,14 @@ namespace CollectingProductionDataSystem.Data.Migrations
     {
         public override void Up()
         {
-            //DropForeignKey("dbo.UnitEnteredForCalculationDatas", "Id", "dbo.UnitsDatas");
-            //DropColumn("dbo.UnitEnteredForCalculationDatas", "UnitDataId");
-            //RenameColumn(table: "dbo.UnitEnteredForCalculationDatas", name: "Id", newName: "UnitDataId");
-            //RenameIndex(table: "dbo.UnitEnteredForCalculationDatas", name: "IX_Id", newName: "IX_UnitDataId");
-            //DropPrimaryKey("dbo.UnitEnteredForCalculationDatas");
-            //AddColumn("dbo.UnitEnteredForCalculationDatas", "Id", c => c.Int(nullable: false, identity: true));
-            //AddPrimaryKey("dbo.UnitEnteredForCalculationDatas", "Id");
-            //AddForeignKey("dbo.UnitEnteredForCalculationDatas", "UnitDataId", "dbo.UnitsDatas", "Id", cascadeDelete: true);
+            DropForeignKey("dbo.UnitEnteredForCalculationDatas", "Id", "dbo.UnitsDatas");
+            DropColumn("dbo.UnitEnteredForCalculationDatas", "UnitDataId");
+            RenameColumn(table: "dbo.UnitEnteredForCalculationDatas", name: "Id", newName: "UnitDataId");
+            RenameIndex(table: "dbo.UnitEnteredForCalculationDatas", name: "IX_Id", newName: "IX_UnitDataId");
+            DropPrimaryKey("dbo.UnitEnteredForCalculationDatas");
+            AddColumn("dbo.UnitEnteredForCalculationDatas", "Id", c => c.Int(nullable: false, identity: true));
+            AddPrimaryKey("dbo.UnitEnteredForCalculationDatas", "Id");
+            AddForeignKey("dbo.UnitEnteredForCalculationDatas", "UnitDataId", "dbo.UnitsDatas", "Id", cascadeDelete: true);
         }
         
         public override void Down()

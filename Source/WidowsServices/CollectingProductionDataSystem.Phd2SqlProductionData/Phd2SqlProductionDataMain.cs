@@ -465,5 +465,10 @@
                 logger.Error(ex.Message, ex);
             }
         }
+
+        internal static void ClearTemporaryData()
+        {
+            service.ClearTemporaryData();
+        }
     }
 }

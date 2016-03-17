@@ -8,6 +8,8 @@
     using System.Globalization;
     using System.Linq;
     using System.Transactions;
+    using CollectingProductionDataSystem.Application.Contracts;
+    using CollectingProductionDataSystem.Application.ProductionDataServices;
     using CollectingProductionDataSystem.Constants;
     using CollectingProductionDataSystem.Data.Common;
     using CollectingProductionDataSystem.Data.Contracts;
@@ -16,7 +18,6 @@
     using CollectingProductionDataSystem.Models.Productions;
     using Uniformance.PHD;
     using CollectingProductionDataSystem.PhdApplication.Contracts;
-    using CollectingProductionDataSystem.Application.ProductionDataServices;
     using System.Reflection;
     using log4net;
     using System.Data.Entity;
@@ -26,22 +27,32 @@
     {
         private readonly IProductionData data;
         private readonly ILog logger;
+        private readonly IMailerService mailer;
         private TransactionOptions transantionOption;
 
 
-        public PhdPrimaryDataService(IProductionData dataParam, ILog loggerParam)
+        public PhdPrimaryDataService(IProductionData dataParam, ILog loggerParam, IMailerService mailerServiceParam)
         {
             this.data = dataParam;
             this.logger = loggerParam;
+            this.mailer = mailerServiceParam;
             this.transantionOption = DefaultTransactionOptions.Instance.TransactionOptions;
         }
 
+        /// <summary>
+        /// Clears the temporary data.
+        /// </summary>
+        public void ClearTemporaryData()
+        {
+            this.data.DbContext.DbContext.Database.ExecuteSqlCommand("TRUNCATE TABLE [UnitDataTemporaryRecords]");
+        }
+
         public int ReadAndSaveUnitsDataForShift(DateTime targetRecordTimestamp,
-                                                 Shift targetShift,
-                                                 PrimaryDataSourceType dataSource,
-                                                 bool isForcedResultCalculation,
-                                                 ref bool lastOperationSucceeded,
-                                                 TreeState IsFirstPhdInteraceCompleted)
+            Shift targetShift,
+            PrimaryDataSourceType dataSource,
+            bool isForcedResultCalculation,
+            ref bool lastOperationSucceeded,
+            TreeState isFirstPhdInteraceCompleted)
         {
             var timer = new Stopwatch();
             var saveChangesTimer = new Stopwatch();
@@ -55,7 +66,7 @@
             ClientSettingsSection settings = appSettingsSection as ClientSettingsSection;
             int expectedNumberOfRecords = 0;
             int realNumberOfRecords = 0;
-            var unitDatasToAdd = new List<UnitsData>();
+            var unitDatasToAdd = new List<UnitDatasTemp>();
             var unitsConfigsList = this.data.UnitConfigs.All().Where(x => x.DataSource == dataSource).ToList();
             var targetRecordTimestampDate = targetRecordTimestamp.Date;
 
@@ -66,10 +77,7 @@
                     using (PHDServer defaultServer = new PHDServer(settings.Settings.Get("PHD_HOST" + (int)dataSource).Value.ValueXml.InnerText))
                     {
                         SetPhdConnectionSettings(oPhd, defaultServer, targetRecordTimestamp, targetShift);
-                        //ToDo: remove after tests
-                        logger.InfoFormat("Phd target shift time: {0}", oPhd.StartTime);
-                        //
-                        var unitsData = this.data.UnitsData.All().Where(x => x.RecordTimestamp == targetRecordTimestampDate && x.ShiftId == targetShift.Id).ToList();
+                        var unitsData = this.data.UnitDatasTemps.All().Where(x => x.RecordTimestamp == targetRecordTimestampDate && x.ShiftId == targetShift.Id).ToList();
 
                         var newRecords = ProcessAutomaticUnits(unitsConfigsList, unitsData, oPhd, targetRecordTimestampDate, targetShift.Id, ref expectedNumberOfRecords);
                         realNumberOfRecords = newRecords.Count();
@@ -100,9 +108,9 @@
             }
             catch(Exception ex)
             {
-                logger.Error(ex.Message + ex.StackTrace, ex);
+                logger.Error(ex.Message + ex.StackTrace);
+                mailer.SendMail( ex.Message + ex.StackTrace, "Phd2Interface Error");
             }
-
 
             var totalInsertedRecords = 0;
             saveChangesTimer.Start();
@@ -113,11 +121,11 @@
                 {
                     if (unitDatasToAdd.Count > 0)
                     {
-                        this.data.UnitsData.BulkInsert(unitDatasToAdd, "Phd2SqlLoader");
+                        this.data.UnitDatasTemps.BulkInsert(unitDatasToAdd, "Phd2SqlLoader");
                         totalInsertedRecords += unitDatasToAdd.Count;
                     }
 
-                    if (IsFirstPhdInteraceCompleted == TreeState.Null || IsFirstPhdInteraceCompleted == TreeState.True)
+                    if (isFirstPhdInteraceCompleted == TreeState.Null || isFirstPhdInteraceCompleted == TreeState.True)
                     {
                         totalInsertedRecords += GetCalculatedUnits(targetShift, unitsConfigsList, targetRecordTimestampDate);
                     }
@@ -125,21 +133,28 @@
                 catch (Exception ex) 
                 {
                     logger.Error(ex.Message + ex.StackTrace, ex);
+
                 }
 
-                List<UnitsData> resultUnitData;
+                List<UnitDatasTemp> resultUnitData;
                 lastOperationSucceeded = CheckIfLastOperationSucceded(unitsConfigsList, targetRecordTimestampDate, targetShift.Id, out resultUnitData);
                 if (isForcedResultCalculation && !lastOperationSucceeded)
                 {
                     var additionalRecords = CreateMissingRecords(unitsConfigsList, resultUnitData, targetRecordTimestamp, targetShift);
                     if (additionalRecords.Count() > 0)
                     {
-                        this.data.UnitsData.BulkInsert(additionalRecords, "Phd2SqlLoader");
+                        this.data.UnitDatasTemps.BulkInsert(additionalRecords, "Phd2SqlLoader");
                         totalInsertedRecords += additionalRecords.Count();
                         LogConsistencyMessage("Added Missing Records", additionalRecords.Count(), additionalRecords.Count());
                     }
 
                     lastOperationSucceeded = true;
+                }
+
+                if (lastOperationSucceeded == true)
+                {
+                    totalInsertedRecords = FlashDataToOriginalUnitData(out expectedNumberOfRecords);
+                    LogConsistencyMessage("Records flashed to original UnitsData", expectedNumberOfRecords, totalInsertedRecords);
                 }
 
                 transaction.Complete();
@@ -153,8 +168,48 @@
             logger.InfoFormat("\tTotal number of persisted records: {0}", totalInsertedRecords);
             logger.Info("-------------------------------------------------------  End Interface Iteration -------------------------------------------------------- ");
 
-
             return totalInsertedRecords;
+        }
+ 
+        /// <summary>
+        /// Flashes the data to original unit data.
+        /// </summary>
+        /// <param name="expectedNumberOfRecords">The ecpected number of records.</param>
+        /// <returns></returns>
+        private int FlashDataToOriginalUnitData(out int expectedNumberOfRecords)
+        {
+            var timer = new Stopwatch();
+            expectedNumberOfRecords = 0;
+            using (var transaction = new TransactionScope(TransactionScopeOption.Required, this.transantionOption))
+            {
+                try
+                {
+                    var preparedUnitDatasTemps = this.data.UnitDatasTemps.All().ToList();
+                    var preparedUnitsData = new List<UnitsData>();
+                    foreach (var unitDataTemp in preparedUnitDatasTemps)
+                    {
+                        preparedUnitsData.Add(new UnitsData()
+                         {
+                             RecordTimestamp = unitDataTemp.RecordTimestamp,
+                             UnitConfigId = unitDataTemp.UnitConfigId,
+                             ShiftId = unitDataTemp.ShiftId,
+                             Value = unitDataTemp.Value,
+                             Confidence = unitDataTemp.Confidence
+                         });
+                    }
+
+                    expectedNumberOfRecords = preparedUnitsData.Count();
+                    this.data.UnitsData.BulkInsert(preparedUnitsData, "Phd2SqlLoader");
+                    this.data.DbContext.DbContext.Database.ExecuteSqlCommand("TRUNCATE TABLE [UnitDataTemporaryRecords]");
+                    transaction.Complete();
+                }
+                catch (Exception ex)
+                {
+                    logger.Error(ex + ex.StackTrace);
+                    throw ex;
+                }
+            }
+            return expectedNumberOfRecords;
         }
 
         private int GetCalculatedUnits(Shift targetShift, List<UnitConfig> unitsConfigsList, DateTime targetRecordTimestampDate)
@@ -162,7 +217,7 @@
             int totalInsertedRecords = 0;
             int expectedNumberOfRecords = 0;
             int realNumberOfRecords = 0;
-            var unitsData = this.data.UnitsData.All().Where(x => x.RecordTimestamp == targetRecordTimestampDate && x.ShiftId == targetShift.Id).ToList();
+            var unitsData = this.data.UnitDatasTemps.All().Where(x => x.RecordTimestamp == targetRecordTimestampDate && x.ShiftId == targetShift.Id).ToList();
 
             var calculatedUnitDatas = ProcessCalculatedUnits(unitsConfigsList, 
                                                              targetRecordTimestampDate, 
@@ -175,24 +230,29 @@
 
             if (calculatedUnitDatas.Count() > 0)
             {
-                this.data.UnitsData.BulkInsert(calculatedUnitDatas, "Phd2SqlLoader");
+                this.data.UnitDatasTemps.BulkInsert(calculatedUnitDatas, "Phd2SqlLoader");
                 totalInsertedRecords += calculatedUnitDatas.Count();
             }
 
             return totalInsertedRecords;
         }
 
-        private IEnumerable<UnitsData> CreateMissingRecords(List<UnitConfig> unitsConfigsList, IEnumerable<UnitsData> resultUnitData, DateTime targetRecordTimestamp, Shift shift)
+        private IEnumerable<UnitDatasTemp> CreateMissingRecords(
+            List<UnitConfig> unitsConfigsList,
+            IEnumerable<UnitDatasTemp> resultUnitData, 
+            DateTime targetRecordTimestamp, 
+            Shift shift)
         {
-            var unitDatas = resultUnitData.ToDictionary(x => x.UnitConfig.Code);
+            unitsConfigsList = this.data.UnitConfigs.All().ToList();
+            var unitDatas = resultUnitData.ToDictionary(x => x.UnitConfigId);
             var targetDate = targetRecordTimestamp.Date;
             var confidense = 0;
-            var result = new List<UnitsData>();
+            var result = new List<UnitDatasTemp>();
 
 
             foreach (var position in unitsConfigsList)
             {
-                if (!unitDatas.ContainsKey(position.Code))
+                if (!unitDatas.ContainsKey(position.Id))
                 {
                     result.Add(this.SetDefaultUnitsDataValue(targetDate, shift.Id, position, confidense));
                 }
@@ -208,9 +268,12 @@
         /// <param name="targetDate">The target date.</param>
         /// <param name="id">The id.</param>
         /// <returns></returns>
-        private bool CheckIfLastOperationSucceded(List<UnitConfig> unitsConfigsList, DateTime targetDate, int targetShiftId, out List<UnitsData> resultUnitData)
+        private bool CheckIfLastOperationSucceded(List<UnitConfig> unitsConfigsList, 
+                                                    DateTime targetDate, 
+                                                    int targetShiftId, 
+                                                    out List<UnitDatasTemp> resultUnitData)
         {
-            resultUnitData = this.data.UnitsData.All().Include(x => x.UnitConfig)
+            resultUnitData = this.data.UnitDatasTemps.All().Include(x => x.UnitConfig)
                                         .Where(x => x.RecordTimestamp == targetDate
                                         && x.ShiftId == targetShiftId).ToList();
             return unitsConfigsList.Count == resultUnitData.Count;
@@ -259,9 +322,12 @@
         }
 
 
-        private IEnumerable<UnitsData> ProcessCalculatedUnits(List<UnitConfig> unitsConfigsList, DateTime recordDataTime, int shift, List<UnitsData> unitsData, ref int expectedNumberOfRecords)
+        private IEnumerable<UnitDatasTemp> ProcessCalculatedUnits(List<UnitConfig> unitsConfigsList,
+                                                                    DateTime recordDataTime, 
+                                                                    int shift, List<UnitDatasTemp> unitsData, 
+                                                                    ref int expectedNumberOfRecords)
         {
-            var currentUnitDatas = new Dictionary<int, UnitsData>();
+            var currentUnitDatas = new Dictionary<int, UnitDatasTemp>();
 
             var observedUnitConfigs = unitsConfigsList.Where(x => x.CollectingDataMechanism == "C");
 
@@ -370,7 +436,7 @@
                             if (!unitsData.Where(x => x.RecordTimestamp == recordDataTime && x.ShiftId == shift && x.UnitConfigId == unitConfig.Id).Any())
                             {
                                 currentUnitDatas.Add(unitConfig.Id,
-                                                        new UnitsData
+                                                        new UnitDatasTemp
                                                         {
                                                             UnitConfigId = unitConfig.Id,
                                                             RecordTimestamp = recordDataTime,
@@ -393,7 +459,10 @@
             return currentUnitDatas.Values.ToList();
         }
 
-        private void CalculateByMathExpression(UnitConfig unitConfig, DateTime recordDataTime, int shift, List<UnitsData> unitsData, Dictionary<int, UnitsData> calculatedUnitsData)
+        private void CalculateByMathExpression(UnitConfig unitConfig, DateTime recordDataTime, 
+                                                int shift, 
+                                                List<UnitDatasTemp> unitsData, 
+                                                Dictionary<int, UnitDatasTemp> calculatedUnitsData)
         {
             var inputParams = new Dictionary<string, double>();
             int indexCounter = 0;
@@ -438,7 +507,7 @@
             {
                 calculatedUnitsData.Add(
                     unitConfig.Id,
-                    new UnitsData
+                    new UnitDatasTemp
                     {
                         UnitConfigId = unitConfig.Id,
                         RecordTimestamp = recordDataTime,
@@ -457,9 +526,13 @@
         /// <param name="shift">The shift.</param>
         /// <param name="unitsData">The units data.</param>
         /// <returns></returns>
-        private IEnumerable<UnitsData> ProcessManualUnits(List<UnitConfig> unitsConfigsList, DateTime targetRecordTimestamp, int shiftId, List<UnitsData> unitsData, ref int expectedNumberOfRecords)
+        private IEnumerable<UnitDatasTemp> ProcessManualUnits(List<UnitConfig> unitsConfigsList, 
+                                                                DateTime targetRecordTimestamp, 
+                                                                int shiftId, 
+                                                                List<UnitDatasTemp> unitsData,
+                                                                ref int expectedNumberOfRecords)
         {
-            var currentUnitDatas = new List<UnitsData>();
+            var currentUnitDatas = new List<UnitDatasTemp>();
 
             var observedUnitConfigs = unitsConfigsList.Where(x => x.CollectingDataMechanism == "M"
                                                                 || x.CollectingDataMechanism == "MC"
@@ -492,11 +565,11 @@
         /// <param name="shift">The shift.</param>
         /// <param name="expectedNumberOfRecords">The expected number of records.</param>
         /// <returns></returns>
-        private IEnumerable<UnitsData> ProcessAutomaticUnits(List<UnitConfig> unitsConfigsList, List<UnitsData> unitsData,
+        private IEnumerable<UnitDatasTemp> ProcessAutomaticUnits(List<UnitConfig> unitsConfigsList, List<UnitDatasTemp> unitsData,
                                                                 PHDHistorian oPhd, DateTime recordTimestamp,
                                                                 int shift, ref int expectedNumberOfRecords)
         {
-            var currentUnitDatas = new List<UnitsData>();
+            var currentUnitDatas = new List<UnitDatasTemp>();
 
             //ToDo: Find correct request
             var shifts = this.data.Shifts.All().ToList();
@@ -520,7 +593,7 @@
                     else
                     {
                         var confidence = 0;
-                        var unitData = GetUnitData(unitConfig, oPhd, recordTimestamp, out confidence);
+                        var unitData = GetUnitDataFromPhd(unitConfig, oPhd, recordTimestamp, out confidence);
                         if (confidence >= Properties.Settings.Default.PHD_DATA_MIN_CONFIDENCE && unitData.RecordTimestamp != null)
                         {
                             unitData.ShiftId = shift;
@@ -549,11 +622,11 @@
         /// <param name="shift">The shift.</param>
         /// <param name="expectedNumberOfRecords">The expected number of records.</param>
         /// <returns></returns>
-        private IEnumerable<UnitsData> ProcessAutomaticDeltaUnits(List<UnitConfig> unitsConfigsList, List<UnitsData> unitsData,
+        private IEnumerable<UnitDatasTemp> ProcessAutomaticDeltaUnits(List<UnitConfig> unitsConfigsList, List<UnitDatasTemp> unitsData,
                                                                     PHDHistorian oPhd, DateTime targetRecordTimestamp,
                                                                     Shift shiftData, ref int expectedNumberOfRecords)
         {
-            var currentUnitDatas = new List<UnitsData>();
+            var currentUnitDatas = new List<UnitDatasTemp>();
             var baseDate = targetRecordTimestamp.Date;
 
             var observedUnitConfigs = unitsConfigsList.Where(x => x.CollectingDataMechanism == "AA");
@@ -568,10 +641,10 @@
                     {
                         var endShiftDateTime = baseDate + shiftData.EndTime;
                         var beginShiftDateTime = endShiftDateTime - shiftData.ShiftDuration;
-                        // Todo: remove after tests
-                        logger.InfoFormat("ProcessAutomaticDeltaUnits begin shift time: {0}", beginShiftDateTime.ToString(CommonConstants.PhdDateTimeFormat, CultureInfo.InvariantCulture));
-                        logger.InfoFormat("ProcessAutomaticDeltaUnits end shift time: {0}", endShiftDateTime.ToString(CommonConstants.PhdDateTimeFormat, CultureInfo.InvariantCulture));
-                        //
+                        //// Todo: remove after tests
+                        //logger.InfoFormat("ProcessAutomaticDeltaUnits begin shift time: {0}", beginShiftDateTime.ToString(CommonConstants.PhdDateTimeFormat, CultureInfo.InvariantCulture));
+                        //logger.InfoFormat("ProcessAutomaticDeltaUnits end shift time: {0}", endShiftDateTime.ToString(CommonConstants.PhdDateTimeFormat, CultureInfo.InvariantCulture));
+                        ////
                         var beginConfidence = 100;
                         var endConfidence = 100;
 
@@ -591,7 +664,7 @@
                         beginConfidence = Convert.ToInt32(row["Confidence"]);
 
                         currentUnitDatas.Add(
-                            new UnitsData
+                            new UnitDatasTemp
                             {
                                 UnitConfigId = unitConfig.Id,
                                 Value = (endValue - beginValue) / (unitConfig.EstimatedCompressibilityFactor ?? 1000.00m),
@@ -616,14 +689,14 @@
         /// <param name="shift">The shift.</param>
         /// <param name="expectedNumberOfRecords">The expected number of records.</param>
         /// <returns></returns>
-        private IEnumerable<UnitsData> ProcessAutomaticCalulatedUnits(List<UnitConfig> unitsConfigsList,
-                                                                        List<UnitsData> unitsData,
+        private IEnumerable<UnitDatasTemp> ProcessAutomaticCalulatedUnits(List<UnitConfig> unitsConfigsList,
+                                                                        List<UnitDatasTemp> unitsData,
                                                                         PHDHistorian oPhd,
                                                                         DateTime targetRecordTimestamp,
                                                                         Shift shiftData,
                                                                         ref int expectedNumberOfRecords)
         {
-            var currentUnitDatas = new List<UnitsData>();
+            var currentUnitDatas = new List<UnitDatasTemp>();
             var baseDate = targetRecordTimestamp.Date;
 
             var observedUnitConfigs = unitsConfigsList.Where(x => x.CollectingDataMechanism == "AC");
@@ -640,10 +713,10 @@
                         var endShiftDateTime = baseDate + shiftData.EndTime;
                         var beginShiftDateTime = endShiftDateTime - shiftData.ShiftDuration;
 
-                        // Todo: remove after tests
-                        logger.InfoFormat("ProcessAutomaticCalulatedUnits begin shift time: {0}", beginShiftDateTime.ToString(CommonConstants.PhdDateTimeFormat, CultureInfo.InvariantCulture));
-                        logger.InfoFormat("ProcessAutomaticCalulatedUnits end shift time: {0}", endShiftDateTime.ToString(CommonConstants.PhdDateTimeFormat, CultureInfo.InvariantCulture));
-                        //
+                        //// Todo: remove after tests
+                        //logger.InfoFormat("ProcessAutomaticCalulatedUnits begin shift time: {0}", beginShiftDateTime.ToString(CommonConstants.PhdDateTimeFormat, CultureInfo.InvariantCulture));
+                        //logger.InfoFormat("ProcessAutomaticCalulatedUnits end shift time: {0}", endShiftDateTime.ToString(CommonConstants.PhdDateTimeFormat, CultureInfo.InvariantCulture));
+                        ////
 
                         var beginConfidence = 100;
                         var endConfidence = 100;
@@ -667,7 +740,7 @@
                         beginConfidence = Convert.ToInt32(row["Confidence"]);
 
                         currentUnitDatas.Add(
-                            new UnitsData
+                            new UnitDatasTemp
                             {
                                 UnitConfigId = unitConfig.Id,
                                 Value = ((endValue - beginValue) * pressure) / Convert.ToDecimal(tags[2]),
@@ -692,14 +765,14 @@
         /// <param name="unitsData">The units data.</param>
         /// <param name="expectedNumberOfRecords">The expected number of records.</param>
         /// <returns></returns>
-        private IEnumerable<UnitsData> ProcessCalculatedByAutomaticUnits(List<UnitConfig> unitsConfigsList,
+        private IEnumerable<UnitDatasTemp> ProcessCalculatedByAutomaticUnits(List<UnitConfig> unitsConfigsList,
                                                                          PHDHistorian oPhd,
                                                                          DateTime targetRecordTimestamp,
                                                                          Shift shift,
-                                                                         List<UnitsData> unitsData,
+                                                                         List<UnitDatasTemp> unitsData,
                                                                          ref int expectedNumberOfRecords)
         {
-            var currentUnitDatas = new List<UnitsData>();
+            var currentUnitDatas = new List<UnitDatasTemp>();
 
             var observedUnitConfigs = unitsConfigsList.Where(x => x.CollectingDataMechanism == "CC");
             expectedNumberOfRecords = observedUnitConfigs.Count();
@@ -733,7 +806,7 @@
                     if (!unitsData.Any(x => x.RecordTimestamp == targetRecordTimestamp && x.ShiftId == shift.Id && x.UnitConfigId == unitConfig.Id))
                     {
                         currentUnitDatas.Add(
-                            new UnitsData
+                            new UnitDatasTemp
                             {
                                 UnitConfigId = unitConfig.Id,
                                 RecordTimestamp = targetRecordTimestamp,
@@ -782,9 +855,9 @@
         /// <param name="unitConfig">The unit config.</param>
         /// <param name="confidence">The confidence.</param>
         /// <returns></returns>
-        private UnitsData SetDefaultUnitsDataValue(DateTime targetRecordTimestamp, int shiftId, UnitConfig unitConfig, int confidence)
+        private UnitDatasTemp SetDefaultUnitsDataValue(DateTime targetRecordTimestamp, int shiftId, UnitConfig unitConfig, int confidence)
         {
-            return new UnitsData
+            return new UnitDatasTemp
                     {
                         UnitConfigId = unitConfig.Id,
                         Value = null,
@@ -822,9 +895,9 @@
             }
         }
 
-        private static UnitsData GetUnitData(UnitConfig unitConfig, PHDHistorian oPhd, DateTime targetRecordTimestamp, out int confidence)
+        private static UnitDatasTemp GetUnitDataFromPhd(UnitConfig unitConfig, PHDHistorian oPhd, DateTime targetRecordTimestamp, out int confidence)
         {
-            var unitData = new UnitsData();
+            var unitData = new UnitDatasTemp();
             unitData.UnitConfigId = unitConfig.Id;
             DataSet dsGrid = oPhd.FetchRowData(unitConfig.PreviousShiftTag);
             confidence = 100;

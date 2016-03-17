@@ -75,6 +75,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Application\CollectingProductionDataSystem.Application\CollectingProductionDataSystem.Application.csproj">
+      <Project>{3A125DE9-28B9-4004-A1D9-BEBDE62AC786}</Project>
+      <Name>CollectingProductionDataSystem.Application</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CollectingProductionDataSystem.PhdApplication\CollectingProductionDataSystem.PhdApplication.csproj">
       <Project>{BA08DAD7-81BE-4AEB-8EED-E835721574B5}</Project>
       <Name>CollectingProductionDataSystem.PhdApplication</Name>

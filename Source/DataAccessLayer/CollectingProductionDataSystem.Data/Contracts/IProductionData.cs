@@ -151,7 +151,9 @@
 
         IDeletableEntityRepository<TankStatus> TankStatuses { get; }
 
-        IDeletableEntityRepository<TankStatusData> TankStatusDatas { get; } 
+        IDeletableEntityRepository<TankStatusData> TankStatusDatas { get; }
+
+        IRepository<UnitDatasTemp> UnitDatasTemps { get; }
 
         IDbContext DbContext { get; }
 

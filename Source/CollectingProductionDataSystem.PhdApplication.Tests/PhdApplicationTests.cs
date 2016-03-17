@@ -1,4 +1,5 @@
 ﻿using System;
+using CollectingProductionDataSystem.Application.MailerService;
 using CollectingProductionDataSystem.Data;
 using CollectingProductionDataSystem.Data.Concrete;
 using CollectingProductionDataSystem.PhdApplication.Contracts;
@@ -14,7 +15,9 @@ namespace CollectingProductionDataSystem.PhdApplication.Tests
         private readonly IPrimaryDataService service;
         public PhdApplicationTests()
         {
-            this.service = new PhdPrimaryDataService(new ProductionData(new CollectingDataSystemDbContext()), LogManager.GetLogger("CollectingProductionDataSystem.Phd2SqlProductionData"));
+            this.service = new PhdPrimaryDataService(new ProductionData(new CollectingDataSystemDbContext()),
+                LogManager.GetLogger("CollectingProductionDataSystem.Phd2SqlProductionData"), 
+            new MailerService(LogManager.GetLogger("CollectingProductionDataSystem.Phd2SqlProductionData")));
         }
 
         [TestMethod]
@@ -34,7 +37,7 @@ namespace CollectingProductionDataSystem.PhdApplication.Tests
         public void TestIfGetObservedShiftByDateTimeReturnsFirstShift2016_01_01_13_10_00()
         {
             // Arrange
-            var targetDateTime = new DateTime(2016, 1, 1, 13, 10, 0);
+            var targetDateTime = new DateTime(2016, 3, 17, 13, 10, 0);
             var expectedShiftId = 1;
             // Act
             var actualShift = this.service.GetObservedShiftByDateTime(targetDateTime);

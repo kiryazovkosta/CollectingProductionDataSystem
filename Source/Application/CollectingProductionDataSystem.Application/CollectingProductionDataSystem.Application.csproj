@@ -50,6 +50,9 @@
       <HintPath>..\..\packages\ExpressionEvaluator.2.0.3.0\lib\net40\ExpressionEvaluator.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
       <Private>True</Private>
@@ -127,6 +130,8 @@
     <Compile Include="IdentityInfrastructure\EmailService.cs" />
     <Compile Include="IdentityInfrastructure\SmsService.cs" />
     <Compile Include="Contracts\IPipelineServices.cs" />
+    <Compile Include="Contracts\IMailerService.cs" />
+    <Compile Include="MailerService\MailerService.cs" />
     <Compile Include="MonthlyServices\InnerPipelineDto.cs" />
     <Compile Include="Contracts\IUnitMothlyDataService.cs" />
     <Compile Include="Contracts\ITestUnitMonthlyCalculationService.cs" />

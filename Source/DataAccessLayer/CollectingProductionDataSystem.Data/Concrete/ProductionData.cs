@@ -309,7 +309,6 @@
             get
             {
                 return this.GetDeletableEntityRepository<UnitApprovedMonthlyData>();
-
             }
         }
 
@@ -522,6 +521,14 @@
             get
             {
                 return this.GetRepository<AuditLogRecord>();
+            }
+        }
+
+        public IRepository<UnitDatasTemp> UnitDatasTemps
+        {
+            get
+            {
+                return this.GetRepository<UnitDatasTemp>();
             }
         }
 
