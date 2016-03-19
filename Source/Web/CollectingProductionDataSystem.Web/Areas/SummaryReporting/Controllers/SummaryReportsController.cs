@@ -212,6 +212,7 @@
                     MeasureUnit = x.UnitConfig.MeasureUnit.Code,
                     UnitConfigId = x.UnitConfigId,
                     UnitName = x.UnitConfig.Name,
+                    NotATotalizedPosition = x.UnitConfig.NotATotalizedPosition,
                     Shift1 = dbResult.Where(y => y.RecordTimestamp == date && y.ShiftId == (int)ShiftType.First).Where(u => u.UnitConfigId == x.UnitConfigId).FirstOrDefault(),
                     Shift2 = dbResult.Where(y => y.RecordTimestamp == date && y.ShiftId == (int)ShiftType.Second).Where(u => u.UnitConfigId == x.UnitConfigId).FirstOrDefault(),
                     Shift3 = dbResult.Where(y => y.RecordTimestamp == date && y.ShiftId == (int)ShiftType.Third).Where(u => u.UnitConfigId == x.UnitConfigId).FirstOrDefault(),

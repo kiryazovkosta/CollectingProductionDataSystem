@@ -1555,4 +1555,7 @@
   <data name="TanksDataByProducts" xml:space="preserve">
     <value>TanksDataByProducts</value>
   </data>
+  <data name="NotATotalizedPosition" xml:space="preserve">
+    <value>NotATotalizedPosition</value>
+  </data>
 </root>

@@ -15,6 +15,7 @@
         public string Position { get; set; }
         public string MeasureUnit { get; set; }
         public int UnitConfigId { get; set; }
+        public bool NotATotalizedPosition { get; set; }
         public string UnitName { get; set; }
         public UnitsData Shift1 { get; set; }
         public UnitsData Shift2 { get; set; }
