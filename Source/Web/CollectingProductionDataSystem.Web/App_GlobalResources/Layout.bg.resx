@@ -1553,4 +1553,7 @@
   <data name="TanksDataByProducts" xml:space="preserve">
     <value>Наличности в резервоари по продукти</value>
   </data>
+  <data name="NotATotalizedPosition" xml:space="preserve">
+    <value>Позицията не се сумира</value>
+  </data>
 </root>

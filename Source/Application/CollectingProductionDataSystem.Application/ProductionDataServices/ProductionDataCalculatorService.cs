@@ -683,6 +683,10 @@
             double t = args.Temperature.Value > 0 ? args.Temperature.Value : args.EstimatedTemperature.Value;
 
             double ent = Functions.GetValueFormulaEN(t, p);
+            if (ent < 0)
+            {
+                ent = Functions.GetValueFormulaEN(1, 1);
+            }
 
             var inputParams = new Dictionary<string, double>();
             inputParams.Add("pl", pl);
@@ -722,7 +726,12 @@
             double pl = args.InputValue.Value;
             double p = args.Pressure.Value > 0 ? args.Pressure.Value : args.EstimatedPressure.Value;
             double t = args.Temperature.Value > 0 ? args.Temperature.Value : args.EstimatedTemperature.Value;
+
             double ent = Functions.GetValueFormulaEN(t, p);
+            if (ent < 0)
+            {
+                ent = Functions.GetValueFormulaEN(1, 1);
+            }
 
             var inputParams = new Dictionary<string, double>();
             inputParams.Add("pl", pl);

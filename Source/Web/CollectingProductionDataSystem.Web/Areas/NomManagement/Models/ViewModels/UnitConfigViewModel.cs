@@ -128,6 +128,9 @@
         [Display(Name = "ProcessUnitAlias", ResourceType = typeof(Resources.Layout))]
         public string ProcessUnitAlias { get; set; }
 
+         [Display(Name = "NotATotalizedPosition", ResourceType = typeof(Resources.Layout))]
+        public bool NotATotalizedPosition { get; set; }
+
         /// <summary>
         /// Creates the mappings.
         /// </summary>
@@ -167,7 +170,7 @@
                 .ForMember(p => p.UnitConfigUnitDailyConfigs, opt => opt.Ignore())
                 .ForMember(p => p.IsConverted, opt => opt.Ignore())
                 .ForMember(p => p.StartupValue, opt => opt.Ignore())
-                .ForMember(p => p.NotATotalizedPosition, opt => opt.Ignore())
+                //.ForMember(p => p.NotATotalizedPosition, opt => opt.Ignore())
                 .ForMember(p => p.NeedToGetOnlyLastShiftValue, opt => opt.Ignore())
                 .ForMember(p => p.EnteredMeasureUnit, opt => opt.Ignore())
                 .ForMember(p => p.UnitDatasTemps, opt => opt.Ignore());

@@ -2257,6 +2257,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to NotATotalizedPosition.
+        /// </summary>
+        public static string NotATotalizedPosition {
+            get {
+                return ResourceManager.GetString("NotATotalizedPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Notes.
         /// </summary>
         public static string Notes {
