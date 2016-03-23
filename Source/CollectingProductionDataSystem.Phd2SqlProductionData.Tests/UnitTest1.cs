@@ -1,20 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using CollectingProductionDataSystem.Application.Contracts;
+using CollectingProductionDataSystem.Data.Contracts;
 using CollectingProductionDataSystem.Models.Nomenclatures;
 using CollectingProductionDataSystem.Phd2SqlProductionData;
+using CollectingProductionDataSystem.PhdApplication.Contracts;
+using CollectingProductionDataSystem.PhdApplication.PrimaryDataServices;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using log4net;
+using Moq;
 
 namespace CollectingProductionDataSystem.Phd2SqlProductionData.Tests
 {
     [TestClass]
     public class UnitTest1
     {
-        private readonly Phd2SqlProductionDataService service;
+        private readonly  Phd2SqlProductionDataService service;
         private readonly List<Shift> shifts;
+        private static Mock<IProductionData> mockData = new Mock<IProductionData>();
+         
         public UnitTest1() 
         {
-            service = new Phd2SqlProductionDataService(LogManager.GetLogger("CollectingProductionDataSystem.Phd2SqlProductionData"));
+            mockData.Setup(m=>m.Shifts.All()).Returns(CreateShifts().AsQueryable);
+           // service = new PhdPrimaryDataService(mockData.Object, new Mock<ILog>().Object, new Mock<IMailerService>().Object );
+            service = new Phd2SqlProductionDataService();
             shifts = CreateShifts();
         }
  

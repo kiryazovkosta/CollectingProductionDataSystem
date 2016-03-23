@@ -1,4 +1,5 @@
-﻿namespace CollectingProductionDataSystem.Phd2SqlProductionData
+﻿using Ninject;
+namespace CollectingProductionDataSystem.Phd2SqlProductionData
 {
     partial class Phd2SqlProductionDataService
     {

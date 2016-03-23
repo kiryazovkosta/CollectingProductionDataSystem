@@ -26,17 +26,25 @@
         /// </summary>
         private void InitializeMailService()
         {
-            var exeFileName = Assembly.GetEntryAssembly().Location;
-            Configuration configuration = ConfigurationManager.OpenExeConfiguration(exeFileName);
-            ConfigurationSectionGroup appSettingsGroup = configuration.GetSectionGroup("applicationSettings");
-            ConfigurationSection appSettingsSection = appSettingsGroup.Sections[0];
-            ClientSettingsSection settings = appSettingsSection as ClientSettingsSection;
-            string toString = settings.Settings.Get("SMTP_TO").Value.ValueXml.InnerText;
-            this.To = string.IsNullOrEmpty(toString) ? "nikolay.kostadinov@bmsys.eu, kosta.kiryazov@bmsys.eu" : toString;
-            string fromString = settings.Settings.Get("SMTP_FROM").Value.ValueXml.InnerText;
-            this.From = string.IsNullOrEmpty(fromString) ? "SAPO@bmsys.eu" : fromString;
-            string smtpServerString = settings.Settings.Get("SMTP_SERVER").Value.ValueXml.InnerText;
-            this.smtpServer = string.IsNullOrEmpty(smtpServerString) ? "192.168.7.195" : smtpServerString;
+
+            // ToDo: refactore this
+            var assembly = Assembly.GetEntryAssembly();
+            Configuration configuration;
+            if (assembly != null)
+            {
+                var exeFileName = assembly.Location;
+                configuration = ConfigurationManager.OpenExeConfiguration(exeFileName);
+                ConfigurationSectionGroup appSettingsGroup = configuration.GetSectionGroup("applicationSettings");
+                ConfigurationSection appSettingsSection = appSettingsGroup.Sections[0];
+                ClientSettingsSection settings = appSettingsSection as ClientSettingsSection;
+                string toString = settings.Settings.Get("SMTP_TO").Value.ValueXml.InnerText;
+                this.To = string.IsNullOrEmpty(toString) ? "nikolay.kostadinov@bmsys.eu, kosta.kiryazov@bmsys.eu" : toString;
+                string fromString = settings.Settings.Get("SMTP_FROM").Value.ValueXml.InnerText;
+                this.From = string.IsNullOrEmpty(fromString) ? "SAPO@bmsys.eu" : fromString;
+                string smtpServerString = settings.Settings.Get("SMTP_SERVER").Value.ValueXml.InnerText;
+                this.smtpServer = string.IsNullOrEmpty(smtpServerString) ? "192.168.7.195" : smtpServerString;
+            }       
+           
         }
 
         public string From { get; set; }

@@ -98,5 +98,16 @@ namespace CollectingProductionDataSystem.Models.Nomenclatures
             }
         }
 
+        public override string ToString()
+        {
+            var sb = new StringBuilder();
+            sb.AppendFormat("{0}\t |", this.Id);
+            sb.AppendFormat("{0}\t |", this.BeginTime.ToString(@"dd\.hh\:mm\:ss"));
+            sb.AppendFormat("{0}\t |", this.EndTime.ToString(@"dd\.hh\:mm\:ss"));
+            sb.AppendFormat("{0}\t |", this.ReadOffset.ToString(@"dd\.hh\:mm\:ss"));
+            sb.AppendFormat("{0}\t |", this.ReadPollTimeSlot.ToString(@"dd\.hh\:mm\:ss"));
+            return sb.ToString();
+        }
+
     }
 }

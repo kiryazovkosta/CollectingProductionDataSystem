@@ -103,5 +103,32 @@ namespace CollectingProductionDataSystem.PhdApplication.Properties {
                 return ((string)(this["PHD_HOST11"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int MIN_GET_INVENTORY_HOURS_INTERVAL {
+            get {
+                return ((int)(this["MIN_GET_INVENTORY_HOURS_INTERVAL"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int MAX_GET_INVENTORY_HOURS_INTERVAL {
+            get {
+                return ((int)(this["MAX_GET_INVENTORY_HOURS_INTERVAL"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("srv-vm-mes-phd")]
+        public string PHD_HOST {
+            get {
+                return ((string)(this["PHD_HOST"]));
+            }
+        }
     }
 }

@@ -2,9 +2,12 @@
 using CollectingProductionDataSystem.Application.MailerService;
 using CollectingProductionDataSystem.Data;
 using CollectingProductionDataSystem.Data.Concrete;
+using CollectingProductionDataSystem.Data.Contracts;
 using CollectingProductionDataSystem.PhdApplication.Contracts;
 using CollectingProductionDataSystem.PhdApplication.PrimaryDataServices;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using Ninject;
 using log4net;
 
 namespace CollectingProductionDataSystem.PhdApplication.Tests
@@ -12,9 +15,10 @@ namespace CollectingProductionDataSystem.PhdApplication.Tests
     [TestClass]
     public class PhdApplicationTests
     {
-        private readonly IPrimaryDataService service;
+        private readonly IPhdPrimaryDataService service;
         public PhdApplicationTests()
         {
+            var moqObj = new Mock<IKernel>();
             this.service = new PhdPrimaryDataService(new ProductionData(new CollectingDataSystemDbContext()),
                 LogManager.GetLogger("CollectingProductionDataSystem.Phd2SqlProductionData"), 
             new MailerService(LogManager.GetLogger("CollectingProductionDataSystem.Phd2SqlProductionData")));
@@ -99,10 +103,10 @@ namespace CollectingProductionDataSystem.PhdApplication.Tests
         //}
 
         [TestMethod]
-        public void TestIfGetObservedShiftByDateTimeReturnsFirstShift2016_01_01_13_21_00MustReturnNull()
+        public void TestIfGetObservedShiftByDateTimeReturnsFirstShift2016_01_01_13_25_01MustReturnNull()
         {
             // Arrange
-            var targetDateTime = new DateTime(2016, 1, 1, 13, 21, 0);
+            var targetDateTime = new DateTime(2016, 1, 1, 13, 25, 1);
            
             // Act
             var actualShift = this.service.GetObservedShiftByDateTime(targetDateTime);
@@ -189,10 +193,10 @@ namespace CollectingProductionDataSystem.PhdApplication.Tests
         }
 
         [TestMethod]
-        public void TestIfGetObservedShiftByDateTimeReturnsSecondShift2016_01_01_21_20_01MustReturnNull()
+        public void TestIfGetObservedShiftByDateTimeReturnsSecondShift2016_01_01_21_25_01MustReturnNull()
         {
             // Arrange
-            var targetDateTime = new DateTime(2016, 1, 1, 21, 20, 1);
+            var targetDateTime = new DateTime(2016, 1, 1, 21, 25, 1);
 
             // Act
             var actualShift = this.service.GetObservedShiftByDateTime(targetDateTime);
@@ -280,10 +284,10 @@ namespace CollectingProductionDataSystem.PhdApplication.Tests
         //}
 
         [TestMethod]
-        public void TestIfGetObservedShiftByDateTimeReturnsThirdShift2016_01_01_05_20_01MustReturnNull()
+        public void TestIfGetObservedShiftByDateTimeReturnsThirdShift2016_01_01_05_25_01MustReturnNull()
         {
             // Arrange
-            var targetDateTime = new DateTime(2016, 1, 1, 5, 20, 1);
+            var targetDateTime = new DateTime(2016, 1, 1, 5, 25, 1);
             
             // Act
             var actualShift = this.service.GetObservedShiftByDateTime(targetDateTime);

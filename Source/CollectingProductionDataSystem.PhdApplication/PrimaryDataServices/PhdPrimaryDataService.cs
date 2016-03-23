@@ -2,8 +2,10 @@
 {
     using System.Configuration;
     using System.Data;
+    using System.Data.Entity;
     using System;
     using System.Collections.Generic;
+    using System.Data.Entity.Validation;
     using System.Diagnostics;
     using System.Globalization;
     using System.Linq;
@@ -11,11 +13,16 @@
     using CollectingProductionDataSystem.Application.Contracts;
     using CollectingProductionDataSystem.Application.ProductionDataServices;
     using CollectingProductionDataSystem.Constants;
+    using CollectingProductionDataSystem.Data;
     using CollectingProductionDataSystem.Data.Common;
+    using CollectingProductionDataSystem.Data.Concrete;
     using CollectingProductionDataSystem.Data.Contracts;
     using CollectingProductionDataSystem.Enumerations;
+    using CollectingProductionDataSystem.Models.Inventories;
     using CollectingProductionDataSystem.Models.Nomenclatures;
     using CollectingProductionDataSystem.Models.Productions;
+    using CollectingProductionDataSystem.PhdApplication.Models;
+    using Ninject;
     using Uniformance.PHD;
     using CollectingProductionDataSystem.PhdApplication.Contracts;
     using System.Reflection;
@@ -23,13 +30,12 @@
     using System.Data.Entity;
     using log4net.Core;
 
-    public class PhdPrimaryDataService : IPrimaryDataService
+    public class PhdPrimaryDataService : IPhdPrimaryDataService
     {
-        private readonly IProductionData data;
         private readonly ILog logger;
         private readonly IMailerService mailer;
         private TransactionOptions transantionOption;
-
+        private IProductionData data;
 
         public PhdPrimaryDataService(IProductionData dataParam, ILog loggerParam, IMailerService mailerServiceParam)
         {
@@ -40,6 +46,25 @@
         }
 
         /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing,
+        /// or resetting unmanaged resources.
+        /// </summary>
+        public void Dispose()
+        {
+            this.data.Dispose();
+        }
+
+        /// <summary>
+        /// Gets the shift by id.
+        /// </summary>
+        /// <param name="shiftId">The shift id.</param>
+        /// <returns></returns>
+        public Shift GetShiftById(int shiftId)
+        {
+            return this.data.Shifts.GetById(shiftId);
+        }
+
+        /// <summary>
         /// Clears the temporary data.
         /// </summary>
         public void ClearTemporaryData()
@@ -47,7 +72,7 @@
             this.data.DbContext.DbContext.Database.ExecuteSqlCommand("TRUNCATE TABLE [UnitDataTemporaryRecords]");
         }
 
-        public int ReadAndSaveUnitsDataForShift(DateTime targetRecordTimestamp,
+        private int ReadAndSaveUnitsDataForShift(DateTime targetRecordTimestamp,
             Shift targetShift,
             PrimaryDataSourceType dataSource,
             bool isForcedResultCalculation,
@@ -57,8 +82,8 @@
             var timer = new Stopwatch();
             var saveChangesTimer = new Stopwatch();
             timer.Start();
-            logger.Info("-------------------------------------------------------- Begin Interface Iteration -------------------------------------------------------- ");
- 
+            logger.InfoFormat("-------------------------------------------------------- Begin Interface Iteration For {0} Shift {1} -------------------------------------------------------- ", dataSource.ToString(), targetShift.Id);
+
             var exeFileName = Assembly.GetEntryAssembly().Location;
             Configuration configuration = ConfigurationManager.OpenExeConfiguration(exeFileName);
             ConfigurationSectionGroup appSettingsGroup = configuration.GetSectionGroup("applicationSettings");
@@ -67,7 +92,11 @@
             int expectedNumberOfRecords = 0;
             int realNumberOfRecords = 0;
             var unitDatasToAdd = new List<UnitDatasTemp>();
-            var unitsConfigsList = this.data.UnitConfigs.All().Where(x => x.DataSource == dataSource).ToList();
+            var unitsConfigsList = this.data.UnitConfigs.All()
+                .Include(x => x.RelatedUnitConfigs)
+                .Include(x => x.RelatedUnitConfigs.Select(y => y.UnitConfig))
+                .Include(x => x.RelatedUnitConfigs.Select(z => z.RelatedUnitConfig).Select(w => w.UnitDatasTemps))
+                .Where(x => x.DataSource == dataSource).ToList();
             var targetRecordTimestampDate = targetRecordTimestamp.Date;
 
             try
@@ -106,59 +135,56 @@
                     }
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 logger.Error(ex.Message + ex.StackTrace);
-                mailer.SendMail( ex.Message + ex.StackTrace, "Phd2Interface Error");
+                mailer.SendMail(ex.Message + ex.StackTrace, "Phd2Interface Error");
             }
 
             var totalInsertedRecords = 0;
             saveChangesTimer.Start();
             // persisting received data and incorporate the data with records get from second PHD
-            using (var transaction = new TransactionScope(TransactionScopeOption.Required, this.transantionOption))
+
+            try
             {
-                try
+                if (unitDatasToAdd.Count > 0)
                 {
-                    if (unitDatasToAdd.Count > 0)
-                    {
-                        this.data.UnitDatasTemps.BulkInsert(unitDatasToAdd, "Phd2SqlLoader");
-                        totalInsertedRecords += unitDatasToAdd.Count;
-                    }
+                    this.data.UnitDatasTemps.BulkInsert(unitDatasToAdd, "Phd2SqlLoader");
+                    this.data.SaveChanges("Phd2SqlLoader");
 
-                    if (isFirstPhdInteraceCompleted == TreeState.Null || isFirstPhdInteraceCompleted == TreeState.True)
-                    {
-                        totalInsertedRecords += GetCalculatedUnits(targetShift, unitsConfigsList, targetRecordTimestampDate);
-                    }
-                }
-                catch (Exception ex) 
-                {
-                    logger.Error(ex.Message + ex.StackTrace, ex);
-
+                    totalInsertedRecords += unitDatasToAdd.Count;
                 }
 
-                List<UnitDatasTemp> resultUnitData;
-                lastOperationSucceeded = CheckIfLastOperationSucceded(unitsConfigsList, targetRecordTimestampDate, targetShift.Id, out resultUnitData);
-                if (isForcedResultCalculation && !lastOperationSucceeded)
-                {
-                    var additionalRecords = CreateMissingRecords(unitsConfigsList, resultUnitData, targetRecordTimestamp, targetShift);
-                    if (additionalRecords.Count() > 0)
-                    {
-                        this.data.UnitDatasTemps.BulkInsert(additionalRecords, "Phd2SqlLoader");
-                        totalInsertedRecords += additionalRecords.Count();
-                        LogConsistencyMessage("Added Missing Records", additionalRecords.Count(), additionalRecords.Count());
-                    }
+                totalInsertedRecords += GetCalculatedUnits(targetShift, unitsConfigsList, targetRecordTimestampDate);
 
-                    lastOperationSucceeded = true;
-                }
-
-                if (lastOperationSucceeded == true)
-                {
-                    totalInsertedRecords = FlashDataToOriginalUnitData(out expectedNumberOfRecords);
-                    LogConsistencyMessage("Records flashed to original UnitsData", expectedNumberOfRecords, totalInsertedRecords);
-                }
-
-                transaction.Complete();
             }
+            catch (Exception ex)
+            {
+                logger.Error(ex.Message + ex.StackTrace, ex);
+
+            }
+
+            List<UnitDatasTemp> resultUnitData;
+            lastOperationSucceeded = CheckIfLastOperationSucceded(unitsConfigsList, targetRecordTimestampDate, targetShift.Id, out resultUnitData);
+            //if (isForcedResultCalculation && !lastOperationSucceeded)
+            //{
+            //    var additionalRecords = CreateMissingRecords(targetRecordTimestamp, targetShift);
+            //    if (additionalRecords.Count() > 0)
+            //    {
+            //        this.data.UnitDatasTemps.BulkInsert(additionalRecords, "Phd2SqlLoader");
+            //        totalInsertedRecords += additionalRecords.Count();
+            //        LogConsistencyMessage("Added Missing Records", additionalRecords.Count(), additionalRecords.Count());
+            //    }
+
+            //    lastOperationSucceeded = true;
+            //}
+
+            //if (lastOperationSucceeded == true)
+            //{
+            //    //ToDo: Commented for the test
+            //    //totalInsertedRecords = FlashDataToOriginalUnitData(out expectedNumberOfRecords);
+            //    //LogConsistencyMessage("Records flashed to original UnitsData", expectedNumberOfRecords, totalInsertedRecords);
+            //}
 
             saveChangesTimer.Stop();
             timer.Stop();
@@ -166,63 +192,30 @@
             logger.InfoFormat("\tEstimated time for Iteration result saving: {0} s", saveChangesTimer.Elapsed);
             logger.InfoFormat("\tTotal Estimated time for Iteration: {0} s", timer.Elapsed);
             logger.InfoFormat("\tTotal number of persisted records: {0}", totalInsertedRecords);
-            logger.Info("-------------------------------------------------------  End Interface Iteration -------------------------------------------------------- ");
+            logger.InfoFormat("-------------------------------------------------------  End Interface Iteration For {0} Shift {1} -------------------------------------------------------- ", dataSource.ToString(), targetShift.Id);
 
             return totalInsertedRecords;
         }
- 
+
+
         /// <summary>
-        /// Flashes the data to original unit data.
+        /// Gets the calculated units.
         /// </summary>
-        /// <param name="expectedNumberOfRecords">The ecpected number of records.</param>
+        /// <param name="targetShift">The target shift.</param>
+        /// <param name="unitsConfigsList">The units configs list.</param>
+        /// <param name="targetRecordTimestampDate">The target record timestamp date.</param>
         /// <returns></returns>
-        private int FlashDataToOriginalUnitData(out int expectedNumberOfRecords)
-        {
-            var timer = new Stopwatch();
-            expectedNumberOfRecords = 0;
-            using (var transaction = new TransactionScope(TransactionScopeOption.Required, this.transantionOption))
-            {
-                try
-                {
-                    var preparedUnitDatasTemps = this.data.UnitDatasTemps.All().ToList();
-                    var preparedUnitsData = new List<UnitsData>();
-                    foreach (var unitDataTemp in preparedUnitDatasTemps)
-                    {
-                        preparedUnitsData.Add(new UnitsData()
-                         {
-                             RecordTimestamp = unitDataTemp.RecordTimestamp,
-                             UnitConfigId = unitDataTemp.UnitConfigId,
-                             ShiftId = unitDataTemp.ShiftId,
-                             Value = unitDataTemp.Value,
-                             Confidence = unitDataTemp.Confidence
-                         });
-                    }
-
-                    expectedNumberOfRecords = preparedUnitsData.Count();
-                    this.data.UnitsData.BulkInsert(preparedUnitsData, "Phd2SqlLoader");
-                    this.data.DbContext.DbContext.Database.ExecuteSqlCommand("TRUNCATE TABLE [UnitDataTemporaryRecords]");
-                    transaction.Complete();
-                }
-                catch (Exception ex)
-                {
-                    logger.Error(ex + ex.StackTrace);
-                    throw ex;
-                }
-            }
-            return expectedNumberOfRecords;
-        }
-
         private int GetCalculatedUnits(Shift targetShift, List<UnitConfig> unitsConfigsList, DateTime targetRecordTimestampDate)
         {
             int totalInsertedRecords = 0;
             int expectedNumberOfRecords = 0;
             int realNumberOfRecords = 0;
-            var unitsData = this.data.UnitDatasTemps.All().Where(x => x.RecordTimestamp == targetRecordTimestampDate && x.ShiftId == targetShift.Id).ToList();
+            var unitsTempData = this.data.UnitDatasTemps.All().Where(x => x.RecordTimestamp == targetRecordTimestampDate && x.ShiftId == targetShift.Id).ToList();
 
-            var calculatedUnitDatas = ProcessCalculatedUnits(unitsConfigsList, 
-                                                             targetRecordTimestampDate, 
-                                                             targetShift.Id, 
-                                                             unitsData, 
+            var calculatedUnitDatas = ProcessCalculatedUnits(unitsConfigsList,
+                                                             targetRecordTimestampDate,
+                                                             targetShift.Id,
+                                                             unitsTempData,
                                                              ref expectedNumberOfRecords);
 
             realNumberOfRecords = calculatedUnitDatas.Count();
@@ -231,34 +224,12 @@
             if (calculatedUnitDatas.Count() > 0)
             {
                 this.data.UnitDatasTemps.BulkInsert(calculatedUnitDatas, "Phd2SqlLoader");
+                this.data.SaveChanges("Phd2SqlLoader");
+
                 totalInsertedRecords += calculatedUnitDatas.Count();
             }
 
             return totalInsertedRecords;
-        }
-
-        private IEnumerable<UnitDatasTemp> CreateMissingRecords(
-            List<UnitConfig> unitsConfigsList,
-            IEnumerable<UnitDatasTemp> resultUnitData, 
-            DateTime targetRecordTimestamp, 
-            Shift shift)
-        {
-            unitsConfigsList = this.data.UnitConfigs.All().ToList();
-            var unitDatas = resultUnitData.ToDictionary(x => x.UnitConfigId);
-            var targetDate = targetRecordTimestamp.Date;
-            var confidense = 0;
-            var result = new List<UnitDatasTemp>();
-
-
-            foreach (var position in unitsConfigsList)
-            {
-                if (!unitDatas.ContainsKey(position.Id))
-                {
-                    result.Add(this.SetDefaultUnitsDataValue(targetDate, shift.Id, position, confidense));
-                }
-            }
-
-            return result;
         }
 
         /// <summary>
@@ -268,9 +239,9 @@
         /// <param name="targetDate">The target date.</param>
         /// <param name="id">The id.</param>
         /// <returns></returns>
-        private bool CheckIfLastOperationSucceded(List<UnitConfig> unitsConfigsList, 
-                                                    DateTime targetDate, 
-                                                    int targetShiftId, 
+        private bool CheckIfLastOperationSucceded(List<UnitConfig> unitsConfigsList,
+                                                    DateTime targetDate,
+                                                    int targetShiftId,
                                                     out List<UnitDatasTemp> resultUnitData)
         {
             resultUnitData = this.data.UnitDatasTemps.All().Include(x => x.UnitConfig)
@@ -288,7 +259,7 @@
         public Shift GetObservedShiftByDateTime(DateTime targetDateTime)
         {
             var baseDate = targetDateTime.Date;
-            var resultShift = data.Shifts.All().ToList().FirstOrDefault(x =>
+            var resultShift = this.data.Shifts.All().ToList().FirstOrDefault(x =>
                                             (baseDate + x.ReadOffset) <= targetDateTime
                                             && targetDateTime <= (baseDate + x.ReadOffset + x.ReadPollTimeSlot));
 
@@ -311,6 +282,100 @@
         }
 
         /// <summary>
+        /// Finalizes the shift observation.
+        /// </summary>
+        /// <param name="targetRecordTimestamp">The target record timestamp.</param>
+        /// <param name="targetShift">The target shift.</param>
+        public void FinalizeShiftObservation(DateTime targetRecordTimestamp, Shift targetShift)
+        {
+            int expectedNumberOfRecords = 0;
+
+            var additionalRecords = CreateMissingRecords(targetRecordTimestamp, targetShift, ref expectedNumberOfRecords);
+            if (additionalRecords.Count() > 0)
+            {
+                this.data.UnitDatasTemps.BulkInsert(additionalRecords, "Phd2SqlLoader");
+                LogConsistencyMessage("Added Missing Records", additionalRecords.Count(), additionalRecords.Count());
+                this.mailer.SendMail(string.Format("Successfully Added Missing {0} records to database", additionalRecords.Count()), "SAPO - Shift data");
+            }
+
+            var addedRecords = this.FlashDataToOriginalUnitData();
+            LogConsistencyMessage("Finally Flashed Records To Units Data", expectedNumberOfRecords, addedRecords);
+            this.mailer.SendMail(string.Format("Successfully Finally Flashed {0} records to UnitsData", addedRecords), "SAPO - Shift data");
+
+        }
+      
+        /// <summary>
+        /// Creates the missing records.
+        /// </summary>
+        /// <param name="targetRecordTimestamp">The target record timestamp.</param>
+        /// <param name="shift">The shift.</param>
+        /// <param name="expectedNumberOfRecords">The expected number of records.</param>
+        /// <returns></returns>
+        private IEnumerable<UnitDatasTemp> CreateMissingRecords(
+            DateTime targetRecordTimestamp,
+            Shift shift,
+            ref int expectedNumberOfRecords)
+        {
+            var unitsConfigsList = this.data.UnitConfigs.All().ToList();
+            var unitDatas = this.data.UnitDatasTemps.All().ToDictionary(x => x.UnitConfigId);
+            var targetDate = targetRecordTimestamp.Date;
+            var confidense = 0;
+            var result = new List<UnitDatasTemp>();
+
+            foreach (var position in unitsConfigsList)
+            {
+                if (!unitDatas.ContainsKey(position.Id))
+                {
+                    result.Add(this.SetDefaultUnitsDataValue(targetDate, shift.Id, position, confidense));
+                }
+            }
+
+            expectedNumberOfRecords = unitsConfigsList.Count;
+            return result;
+        }
+
+        /// <summary>
+        /// Flashes the data to original unit data.
+        /// </summary>
+        /// <param name="expectedNumberOfRecords">The ecpected number of records.</param>
+        /// <returns></returns>
+        private int FlashDataToOriginalUnitData()
+        {
+            var timer = new Stopwatch();
+            int resultNumberOfRecords = 0;
+            using (var transaction = new TransactionScope(TransactionScopeOption.Required, this.transantionOption))
+            {
+                try
+                {
+                    var preparedUnitDatasTemps = this.data.UnitDatasTemps.All().ToList();
+                    var preparedUnitsData = new List<UnitsData>();
+                    foreach (var unitDataTemp in preparedUnitDatasTemps)
+                    {
+                        preparedUnitsData.Add(new UnitsData()
+                        {
+                            RecordTimestamp = unitDataTemp.RecordTimestamp,
+                            UnitConfigId = unitDataTemp.UnitConfigId,
+                            ShiftId = unitDataTemp.ShiftId,
+                            Value = unitDataTemp.Value,
+                            Confidence = unitDataTemp.Confidence
+                        });
+                    }
+
+                    resultNumberOfRecords = preparedUnitsData.Count();
+                    this.data.UnitsData.BulkInsert(preparedUnitsData, "Phd2SqlLoader");
+                    this.data.DbContext.DbContext.Database.ExecuteSqlCommand("TRUNCATE TABLE [UnitDataTemporaryRecords]");
+                    transaction.Complete();
+                }
+                catch (Exception ex)
+                {
+                    logger.Error(ex + ex.StackTrace);
+                    throw ex;
+                }
+            }
+            return resultNumberOfRecords;
+        }
+
+        /// <summary>
         /// Logs the consistency message.
         /// </summary>
         /// <param name="stepName">Name of the step.</param>
@@ -323,8 +388,8 @@
 
 
         private IEnumerable<UnitDatasTemp> ProcessCalculatedUnits(List<UnitConfig> unitsConfigsList,
-                                                                    DateTime recordDataTime, 
-                                                                    int shift, List<UnitDatasTemp> unitsData, 
+                                                                    DateTime recordDataTime,
+                                                                    int shift, List<UnitDatasTemp> unitsTempData,
                                                                     ref int expectedNumberOfRecords)
         {
             var currentUnitDatas = new Dictionary<int, UnitDatasTemp>();
@@ -339,7 +404,7 @@
                 {
                     if (unitConfig.CalculatedFormula.Equals("C9"))
                     {
-                        CalculateByMathExpression(unitConfig, recordDataTime, shift, unitsData, currentUnitDatas);
+                        CalculateByMathExpression(unitConfig, recordDataTime, shift, unitsTempData, currentUnitDatas);
                     }
                     else
                     {
@@ -353,43 +418,38 @@
                         arguments.CalculationPercentage = (double?)unitConfig.CalculationPercentage;
                         arguments.CustomFormulaExpression = unitConfig.CustomFormulaExpression;
 
-                        var ruc = unitConfig.RelatedUnitConfigs.ToList();
+                        var relatedUnitConfigs = unitConfig.RelatedUnitConfigs.ToList();
                         var confidence = 100;
                         var allRelatedUnitDataExsists = true;
-                        foreach (var ru in ruc)
+
+                        foreach (var relatedUnitConfig in relatedUnitConfigs)
                         {
                             if (allRelatedUnitDataExsists == true)
                             {
-                                var parameterType = ru.RelatedUnitConfig.AggregateGroup;
-                                var element = data.UnitsData.All()
+                                var parameterType = relatedUnitConfig.RelatedUnitConfig.AggregateGroup;
+                                var element = unitsTempData
                                     .Where(x => x.RecordTimestamp == recordDataTime)
                                     .Where(x => x.ShiftId == shift)
-                                    .Where(x => x.UnitConfigId == ru.RelatedUnitConfigId)
+                                    .Where(x => x.UnitConfigId == relatedUnitConfig.RelatedUnitConfigId)
                                     .FirstOrDefault();
+
+                                if (element == null)
+                                {
+                                    if (currentUnitDatas.ContainsKey(relatedUnitConfig.RelatedUnitConfigId))
+                                    {
+                                        element = currentUnitDatas[relatedUnitConfig.RelatedUnitConfigId];
+                                    }
+
+                                }
 
                                 if (element != null)
                                 {
                                     var inputValue = element.RealValue;
-                                    if (inputValue == 0.0)
-                                    {
-                                        if (currentUnitDatas.ContainsKey(ru.RelatedUnitConfigId))
-                                        {
-                                            inputValue = currentUnitDatas[ru.RelatedUnitConfigId].RealValue;
-                                        }
-                                    }
 
-                                    try
+                                    if (element.Confidence != 100)
                                     {
-                                        if (element.Confidence != 100)
-                                        {
-                                            confidence = element.Confidence;
-                                        }
+                                        confidence = element.Confidence;
                                     }
-                                    catch (Exception ex)
-                                    {
-                                        throw new Exception("CONFIDENCE ERROR: " + ex.Message, ex);
-                                    }
-
 
                                     if (parameterType == "I+")
                                     {
@@ -425,15 +485,17 @@
                                 else
                                 {
                                     allRelatedUnitDataExsists = false;
-                                } 
+                                }
                             }
-                            
+
                         }
 
                         if (allRelatedUnitDataExsists == true)
                         {
-                            var result = new ProductionDataCalculatorService(this.data).Calculate(formulaCode, arguments);
-                            if (!unitsData.Where(x => x.RecordTimestamp == recordDataTime && x.ShiftId == shift && x.UnitConfigId == unitConfig.Id).Any())
+                            var calculator = new ProductionDataCalculatorService(this.data);
+                            var result = calculator.Calculate(formulaCode, arguments);
+
+                            if (!unitsTempData.Where(x => x.RecordTimestamp == recordDataTime && x.ShiftId == shift && x.UnitConfigId == unitConfig.Id).Any())
                             {
                                 currentUnitDatas.Add(unitConfig.Id,
                                                         new UnitDatasTemp
@@ -444,7 +506,7 @@
                                                             Value = (double.IsNaN(result) || double.IsInfinity(result)) ? 0.0m : (decimal)result,
                                                             Confidence = confidence
                                                         });
-                            }    
+                            }
                         }
 
 
@@ -459,9 +521,9 @@
             return currentUnitDatas.Values.ToList();
         }
 
-        private void CalculateByMathExpression(UnitConfig unitConfig, DateTime recordDataTime, 
-                                                int shift, 
-                                                List<UnitDatasTemp> unitsData, 
+        private void CalculateByMathExpression(UnitConfig unitConfig, DateTime recordDataTime,
+                                                int shift,
+                                                List<UnitDatasTemp> unitsData,
                                                 Dictionary<int, UnitDatasTemp> calculatedUnitsData)
         {
             var inputParams = new Dictionary<string, double>();
@@ -526,9 +588,9 @@
         /// <param name="shift">The shift.</param>
         /// <param name="unitsData">The units data.</param>
         /// <returns></returns>
-        private IEnumerable<UnitDatasTemp> ProcessManualUnits(List<UnitConfig> unitsConfigsList, 
-                                                                DateTime targetRecordTimestamp, 
-                                                                int shiftId, 
+        private IEnumerable<UnitDatasTemp> ProcessManualUnits(List<UnitConfig> unitsConfigsList,
+                                                                DateTime targetRecordTimestamp,
+                                                                int shiftId,
                                                                 List<UnitDatasTemp> unitsData,
                                                                 ref int expectedNumberOfRecords)
         {
@@ -650,7 +712,7 @@
 
                         oPhd.StartTime = string.Format("{0}", endShiftDateTime.ToString(CommonConstants.PhdDateTimeFormat, CultureInfo.InvariantCulture));
                         oPhd.EndTime = oPhd.StartTime;
-                        
+
                         var result = oPhd.FetchRowData(unitConfig.PreviousShiftTag);
                         var row = result.Tables[0].Rows[0];
                         var endValue = Convert.ToInt64(row["Value"]);
@@ -867,34 +929,6 @@
                     };
         }
 
-        private DateTime GetRecordTimestamp(DateTime recordDateTime)
-        {
-            var result = new DateTime(recordDateTime.Year, recordDateTime.Month, recordDateTime.Day, 0, 0, 0);
-
-            if (recordDateTime.Hour < 13)
-            {
-                result = result.AddDays(-1);
-            }
-
-            return result;
-        }
-
-        private ShiftType GetShift(DateTime recordDateTime)
-        {
-            if (recordDateTime.Hour >= 5 && recordDateTime.Hour < 13)
-            {
-                return ShiftType.Third;
-            }
-            else if (recordDateTime.Hour >= 13 && recordDateTime.Hour < 21)
-            {
-                return ShiftType.First;
-            }
-            else
-            {
-                return ShiftType.Second;
-            }
-        }
-
         private static UnitDatasTemp GetUnitDataFromPhd(UnitConfig unitConfig, PHDHistorian oPhd, DateTime targetRecordTimestamp, out int confidence)
         {
             var unitData = new UnitDatasTemp();
@@ -936,6 +970,429 @@
             }
 
             return unitData;
+        }
+
+
+        public bool ProcessPrimaryProductionData(PrimaryDataSourceType dataSource,
+                                                  DateTime targetRecordTimestamp,
+                                                  Shift shift,
+                                                  bool isForcedResultCalculation,
+                                                  TreeState isFirstPhdInteraceCompleted)
+        {
+            bool lastOperationSucceeded = false;
+            try
+            {
+                logger.Info("Sync primary data started!");
+
+                var insertedRecords = ReadAndSaveUnitsDataForShift(targetRecordTimestamp, shift, dataSource, isForcedResultCalculation, ref lastOperationSucceeded, isFirstPhdInteraceCompleted);
+                logger.InfoFormat("Successfully added {0} UnitsData records to CollectingPrimaryDataSystem", insertedRecords);
+                if (insertedRecords > 0)
+                {
+                    this.mailer.SendMail(string.Format("Successfully added {0} records to database", insertedRecords), "SAPO - Shift data");
+                }
+                logger.Info("Sync primary data finished!");
+            }
+            catch (DataException validationException)
+            {
+                this.LogValidationDataException(validationException);
+                this.mailer.SendMail(validationException.Message, "SAPO - ERROR");
+            }
+            catch (Exception ex)
+            {
+                this.logger.Error(ex.Message + ex.StackTrace);
+                this.mailer.SendMail(ex.Message, "SAPO - ERROR");
+            }
+
+            return lastOperationSucceeded;
+        }
+
+        /// <summary>
+        /// Gets the shifts.
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<Shift> GetShifts()
+        {
+            return this.data.Shifts.All().ToList();
+        }
+
+        private void LogValidationDataException(DataException validationException)
+        {
+            var dbEntityException = validationException.InnerException as DbEntityValidationException;
+            if (dbEntityException != null)
+            {
+                foreach (var validationErrors in dbEntityException.EntityValidationErrors)
+                {
+                    foreach (var validationError in validationErrors.ValidationErrors)
+                    {
+                        this.logger.ErrorFormat("Property: {0} Error: {1}", validationError.PropertyName, validationError.ErrorMessage);
+                    }
+                }
+            }
+            else
+            {
+                logger.Error(validationException.ToString());
+            }
+        }
+
+        public void ProcessInventoryTanksData()
+        {
+            var now = DateTime.Now;
+            if (2 <= now.Minute && now.Minute <= 10)
+            {
+                var exeFileName = Assembly.GetEntryAssembly().Location;
+                Configuration configuration = ConfigurationManager.OpenExeConfiguration(exeFileName);
+                ConfigurationSectionGroup appSettingsGroup = configuration.GetSectionGroup("applicationSettings");
+                ConfigurationSection appSettingsSection = appSettingsGroup.Sections[0];
+                ClientSettingsSection settings = appSettingsSection as ClientSettingsSection;
+
+                var inventoryMinHoursInterval = Convert.ToInt32(settings.Settings.Get("MIN_GET_INVENTORY_HOURS_INTERVAL").Value.ValueXml.InnerText);
+                var inventoryHoursInterval = Convert.ToInt32(settings.Settings.Get("MAX_GET_INVENTORY_HOURS_INTERVAL").Value.ValueXml.InnerText);
+                for (int hours = inventoryMinHoursInterval; hours < inventoryHoursInterval; hours++)
+                {
+                    var recordTime = new DateTime(now.Year, now.Month, now.Day, now.Hour, 0, 0);
+                    var checkedDateTime = recordTime.AddHours(-hours);
+                    var targetRecordDateTime = new DateTime(checkedDateTime.Year,
+                                                            checkedDateTime.Month,
+                                                            checkedDateTime.Day,
+                                                            checkedDateTime.Hour,
+                                                            0, 
+                                                            0);
+                    if (this.data.TanksData.All().Where(t => t.RecordTimestamp == checkedDateTime).Any())
+                    {
+                        logger.InfoFormat("There are already a records for that time of the day: {0:yyyy-MM-dd HH:ss:mm}!", checkedDateTime);
+                        continue;
+                    }
+
+                    try
+                    {
+                        logger.InfoFormat("-------------------------------------------------------  Begin processing inventory tanks data for {0:yyyy-MM-dd HH:ss:mm}!", checkedDateTime);
+                        var tanks = this.data.Tanks.All().Select(t => new Tank()
+                        {
+                            TankId = t.Id,
+                            ParkId = t.ParkId,
+                            ControlPoint = t.ControlPoint,
+                            UnusableResidueLevel = 0.05m,
+                            PhdTagProductId = t.PhdTagProductId,
+                            PhdTagLiquidLevel = t.PhdTagLiquidLevel,
+                            PhdTagProductLevel = t.PhdTagProductLevel,
+                            PhdTagFreeWaterLevel = t.PhdTagFreeWaterLevel,
+                            PhdTagReferenceDensity = t.PhdTagReferenceDensity,
+                            PhdTagNetStandardVolume = t.PhdTagNetStandardVolume,
+                            PhdTagWeightInAir = t.PhdTagWeightInAir,
+                            PhdTagWeightInVaccum = t.PhdTagWeightInVacuum
+                        });
+
+                        if (tanks.Count() > 0)
+                        {
+                            using (PHDHistorian oPhd = new PHDHistorian())
+                            {
+                                var phdServer = settings.Settings.Get("PHD_HOST").Value.ValueXml.InnerText;
+                                using (PHDServer defaultServer = new PHDServer(phdServer))
+                                {
+                                    var getRecordTimestamp = string.Format("{0}", targetRecordDateTime.ToString(CommonConstants.PhdDateTimeFormat, CultureInfo.InvariantCulture));
+                                    defaultServer.Port = Properties.Settings.Default.PHD_PORT;
+                                    defaultServer.APIVersion = Uniformance.PHD.SERVERVERSION.RAPI200;
+                                    oPhd.DefaultServer = defaultServer;
+                                    oPhd.StartTime = getRecordTimestamp;
+                                    oPhd.EndTime = getRecordTimestamp;
+                                    oPhd.Sampletype = SAMPLETYPE.Raw;
+                                    oPhd.MinimumConfidence = 100;
+                                    oPhd.MaximumRows = 1;
+
+                                    var tanksDataList = new List<TankData>();
+
+                                    foreach (var t in tanks)
+                                    {
+                                        try
+                                        {
+                                            var tankData = new TankData();
+                                            tankData.RecordTimestamp = targetRecordDateTime;
+                                            tankData.TankConfigId = t.TankId;
+                                            tankData.ParkId = t.ParkId;
+                                            tankData.NetStandardVolume = t.UnusableResidueLevel;
+
+                                            Tags tags = new Tags();
+                                            SetPhdTag(t.PhdTagProductId, tags);
+                                            SetPhdTag(t.PhdTagLiquidLevel, tags);
+                                            SetPhdTag(t.PhdTagProductLevel, tags);
+                                            SetPhdTag(t.PhdTagFreeWaterLevel, tags);
+                                            SetPhdTag(t.PhdTagReferenceDensity, tags);
+                                            SetPhdTag(t.PhdTagNetStandardVolume, tags);
+                                            SetPhdTag(t.PhdTagWeightInAir, tags);
+                                            SetPhdTag(t.PhdTagWeightInVaccum, tags);
+
+                                            DataSet dsGrid = oPhd.FetchRowData(tags);
+
+                                            var confedence = 100;
+                                            foreach (DataRow row in dsGrid.Tables[0].Rows)
+                                            {
+                                                var tagName = string.Empty;
+                                                var tagValue = 0m;
+
+                                                foreach (DataColumn dc in dsGrid.Tables[0].Columns)
+                                                {
+                                                    if (dc.ColumnName.Equals("Tolerance") || dc.ColumnName.Equals("HostName") || dc.ColumnName.Equals("Units"))
+                                                    {
+                                                        continue;
+                                                    }
+                                                    else if (dc.ColumnName.Equals("Confidence") && !row[dc].ToString().Equals("100"))
+                                                    {
+                                                        confedence = Convert.ToInt32(row[dc]);
+                                                        break;
+                                                    }
+                                                    else if (dc.ColumnName.Equals("TagName"))
+                                                    {
+                                                        tagName = row[dc].ToString();
+                                                    }
+                                                    else if (dc.ColumnName.Equals("Value"))
+                                                    {
+                                                        if (!row.IsNull("Value"))
+                                                        {
+                                                            tagValue = Convert.ToDecimal(row[dc]);
+                                                        }
+                                                    }
+                                                }
+
+                                                if (confedence != 100)
+                                                {
+                                                    continue;
+                                                }
+
+                                                if (tagName.Contains(".PROD_ID"))
+                                                {
+                                                    var prId = Convert.ToInt32(tagValue);
+                                                    var product = this.data.TankMasterProducts.All().Where(x => x.TankMasterProductCode == prId).FirstOrDefault();
+                                                    if (product != null)
+                                                    {
+                                                        tankData.ProductId = product.Id;
+                                                        var pr = this.data.Products.All().Where(p => p.Id == product.Id).FirstOrDefault();
+                                                        if (pr != null)
+                                                        {
+                                                            tankData.ProductName = pr.Name;
+                                                        }
+                                                        else
+                                                        {
+                                                            tankData.ProductName = "N/A";
+                                                            this.mailer.SendMail("There is a product with unknown id in TankMaster configuration", "Phd2Sql Inventory");
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        tankData.ProductId = Convert.ToInt32(tagValue);
+                                                        tankData.ProductName = "N/A";
+                                                        this.mailer.SendMail("There is a product with unknown id in TankMaster configuration", "Phd2Sql Inventory");
+                                                    }
+                                                }
+                                                else if (tagName.EndsWith(".LL") || tagName.EndsWith(".LEVEL_MM"))
+                                                {
+                                                    tankData.LiquidLevel = tagValue;
+                                                }
+                                                else if (tagName.EndsWith(".LL_FWL") || tagName.EndsWith(".LEVEL_FWL"))
+                                                {
+                                                    tankData.ProductLevel = tagValue;
+                                                }
+                                                else if (tagName.EndsWith(".FWL"))
+                                                {
+                                                    tankData.FreeWaterLevel = tagValue;
+                                                }
+                                                else if (tagName.EndsWith(".DREF") || tagName.EndsWith(".REF_DENS"))
+                                                {
+                                                    tankData.ReferenceDensity = tagValue;
+                                                }
+                                                else if (tagName.EndsWith(".NSV"))
+                                                {
+                                                    tankData.NetStandardVolume = tagValue;
+                                                }
+                                                else if (tagName.EndsWith(".WIA"))
+                                                {
+                                                    tankData.WeightInAir = tagValue;
+                                                }
+                                                else if (tagName.EndsWith(".WIV"))
+                                                {
+                                                    tankData.WeightInVacuum = tagValue;
+                                                }
+                                            }
+                                            tankData.Confidence = confedence;
+                                            tanksDataList.Add(tankData);
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            logger.ErrorFormat("Tank Id [{0}] Exception:\n\n\n{1}", t.TankId, ex.ToString());
+                                        }
+                                    }
+
+                                    if (tanksDataList.Count > 0)
+                                    {
+                                        this.data.TanksData.BulkInsert(tanksDataList, "Phd2SqlLoading");
+                                        this.data.SaveChanges("Phd2SqlLoading");
+                                        logger.InfoFormat("Successfully added {0} TanksData records for: {1:yyyy-MM-dd HH:ss:mm}!", tanksDataList.Count, checkedDateTime);
+                                    }
+                                }
+                            }
+                        }
+
+                        logger.InfoFormat("Finish processing inventory tanks data for {0:yyyy-MM-dd HH:ss:mm}!", checkedDateTime);
+
+                    }
+                    catch (DataException validationException)
+                    {
+                        LogValidationDataException(validationException);
+                    }
+                    catch (Exception ex)
+                    {
+                        logger.Error(ex.ToString());
+                    }
+                }
+            }
+        }
+
+        internal static void ProcessMeasuringPointsData()
+        {
+            //try
+            //{
+            //    logger.Info("Sync measurements points data started!");
+            //    //var now = DateTime.Now;
+            //    //var today = DateTime.Today;
+            //    //var fiveOClock = today.AddHours(5);
+
+            //    //var ts = now - fiveOClock;
+            //    //if (ts.TotalMinutes > 2 && ts.Hours == 0)
+            //    {
+            //        using (var context = new ProductionData(new CollectingDataSystemDbContext(new AuditablePersister(),new Logger())))
+            //        {
+            //            var measuringPoints = context.MeasuringPointConfigs.All().Where(x => !string.IsNullOrEmpty(x.TotalizerCurrentValueTag));
+
+            //            if (measuringPoints.Count() > 0)
+            //            {
+            //                using(PHDHistorian oPhd = new PHDHistorian())
+            //                { 
+            //                    using(PHDServer defaultServer = new PHDServer("srv-vm-mes-phd"))
+            //                    {
+            //                        defaultServer.Port = 3150;
+            //                        defaultServer.APIVersion = Uniformance.PHD.SERVERVERSION.RAPI200;
+            //                        oPhd.DefaultServer = defaultServer;
+            //                        oPhd.StartTime = "NOW - 2M";
+            //                        oPhd.EndTime = "NOW - 2M";
+            //                        oPhd.Sampletype = SAMPLETYPE.Snapshot;
+            //                        oPhd.MinimumConfidence = 49;
+            //                        oPhd.ReductionType = REDUCTIONTYPE.Average;
+            //                        oPhd.MaximumRows = 1;
+
+            //                        foreach (var item in measuringPoints)
+            //                        {
+            //                            var measurementPointData = new MeasuringPointProductsData();
+            //                            measurementPointData.MeasuringPointConfigId = item.Id;
+            //                            DataSet dsGrid = oPhd.FetchRowData(item.TotalizerCurrentValueTag);
+            //                            foreach (DataRow row in dsGrid.Tables[0].Rows)
+            //                            {
+            //                                foreach (DataColumn dc in dsGrid.Tables[0].Columns)
+            //                                {
+            //                                    if (dc.ColumnName.Equals("Tolerance") || dc.ColumnName.Equals("HostName"))
+            //                                    {
+            //                                        continue;
+            //                                    }
+            //                                    else if (dc.ColumnName.Equals("Value"))
+            //                                    {
+            //                                        if (!string.IsNullOrWhiteSpace(row[dc].ToString()))
+            //                                        {
+            //                                            measurementPointData.Value = Convert.ToDecimal(row[dc]);
+            //                                            logger.InfoFormat("Value: {0}", measurementPointData.Value ?? 0);
+            //                                        }
+            //                                    }
+            //                                }
+            //                            }
+            //                        }
+            //                    }
+            //                }
+
+
+            //                //using (PHDHistorian oPhd = new PHDHistorian())
+            //                //{
+            //                //    using (PHDServer oPhd = new PHDServer("srv-vm-mes-phd""))
+            //                //    {
+            //                //        oPhd.Port = 3150;
+            //                //        defaultServer.APIVersion = Uniformance.PHD.SERVERVERSION.RAPI200;
+            //                //        oPhd.DefaultServer = defaultServer;
+            //                //        oPhd.StartTime = "NOW - 2M";
+            //                //        oPhd.EndTime = "NOW - 2M";
+            //                //        oPhd.Sampletype = SAMPLETYPE.Snapshot;
+            //                //        oPhd.MinimumConfidence = 49;
+            //                //        oPhd.ReductionType = REDUCTIONTYPE.Average;
+            //                //        oPhd.MaximumRows = 1;
+
+            //                //        foreach (var item in measuringPoints)
+            //                //        {
+            //                //            var measurementPointData = new MeasuringPointProductsData();
+            //                //            measurementPointData.MeasuringPointConfigId = item.Id;
+            //                //            DataSet dsGrid = oPhd.FetchRowData(item.TotalizerCurrentValueTag);
+            //                //            var confidence = 100;
+            //                //            foreach (DataRow row in dsGrid.Tables[0].Rows)
+            //                //            {
+            //                //                foreach (DataColumn dc in dsGrid.Tables[0].Columns)
+            //                //                {
+            //                //                    if (dc.ColumnName.Equals("Tolerance") || dc.ColumnName.Equals("HostName"))
+            //                //                    {
+            //                //                        continue;
+            //                //                    }
+            //                //                    else if (dc.ColumnName.Equals("Confidence"))
+            //                //                    {
+            //                //                        if (!string.IsNullOrWhiteSpace(row[dc].ToString()))
+            //                //                        {
+            //                //                            confidence = Convert.ToInt32(row[dc]);
+            //                //                        }
+            //                //                        else
+            //                //                        {
+            //                //                            confidence = 0;
+            //                //                            break;
+            //                //                        }
+            //                //                    }
+            //                //                    else if (dc.ColumnName.Equals("Value"))
+            //                //                    {
+            //                //                        if (!string.IsNullOrWhiteSpace(row[dc].ToString()))
+            //                //                        {
+            //                //                            measurementPointData.Value = Convert.ToDecimal(row[dc]);
+            //                //                        }
+            //                //                    }
+            //                //                }
+            //                //            }
+            //                //            if (confidence > Properties.Settings.Default.INSPECTION_DATA_MINIMUM_CONFIDENCE &&
+            //                //                measurementPointData.RecordTimestamp != null)
+            //                //            {
+            //                //                measurementPointData.RecordTimestamp = currentDate;
+            //                //                context.MeasurementPointsProductsDatas.Add(measurementPointData);
+            //                //            }
+            //                //        }
+
+            //                //        //context.SaveChanges("Phd2Sql");
+            //                //    }
+            //                //}
+            //            }
+            //        }
+            //    }
+
+            //    logger.Info("Sync measurements points data finished!");
+            //}
+            //catch (DataException validationException)
+            //{
+            //    LogValidationDataException(validationException);
+            //}
+            //catch (Exception ex)
+            //{
+            //    logger.Error(ex);
+            //}
+        }
+
+        private IProductionData CreateProductionData()
+        {
+            return new ProductionData(new CollectingDataSystemDbContext());
+        }
+
+        private static void SetPhdTag(string tagName, Tags tags)
+        {
+            if (!string.IsNullOrEmpty(tagName))
+            {
+                tags.Add(new Tag(tagName));
+            }
         }
     }
 }

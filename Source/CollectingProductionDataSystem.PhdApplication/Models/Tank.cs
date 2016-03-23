@@ -1,4 +1,4 @@
-﻿namespace CollectingProductionDataSystem.Phd2SqlProductionData.Models
+﻿namespace CollectingProductionDataSystem.PhdApplication.Models
 {
     public class Tank
     {

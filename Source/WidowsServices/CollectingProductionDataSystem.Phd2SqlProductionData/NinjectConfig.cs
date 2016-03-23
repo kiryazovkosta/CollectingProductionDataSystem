@@ -8,6 +8,8 @@
     using CollectingProductionDataSystem.Data.Contracts;
     using CollectingProductionDataSystem.Infrastructure.Contracts;
     using CollectingProductionDataSystem.Infrastructure.Log;
+    using CollectingProductionDataSystem.PhdApplication.Contracts;
+    using CollectingProductionDataSystem.PhdApplication.PrimaryDataServices;
     using Ninject;
     using System;
     using System.Data.Entity;
@@ -62,15 +64,16 @@
         /// </summary>
         public static void InitializeKernel(IKernel kernel)
         {
-            kernel.Bind<DbContext>().To<CollectingDataSystemDbContext>().InSingletonScope();
+            kernel.Bind<DbContext>().To<CollectingDataSystemDbContext>();
             kernel.Bind(typeof(IDeletableEntityRepository<>)).To(typeof(DeletableEntityRepository<>));
             kernel.Bind(typeof(IRepository<>)).To(typeof(GenericRepository<>));
-            kernel.Bind<IProductionData>().To<ProductionData>().InSingletonScope();
+            kernel.Bind<IProductionData>().To<ProductionData>();
             kernel.Bind<IPersister>().To<AuditablePersister>();
             kernel.Bind<IEfStatus>().To<EfStatus>();
             kernel.Bind<ILogger>().To<Logger>();
-            kernel.Bind<ILog>().ToMethod(context => LogManager.GetLogger("CollectingProductionDataSystem.Phd2SqlProductionData")).InSingletonScope();
+            kernel.Bind<ILog>().ToMethod(context => LogManager.GetLogger("CollectingProductionDataSystem.Phd2SqlProductionData"));
             kernel.Bind<IMailerService>().To<MailerService>();
+            kernel.Bind<IPhdPrimaryDataService>().To<PhdPrimaryDataService>();
         }
     }
 

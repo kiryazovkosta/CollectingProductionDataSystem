@@ -29,5 +29,14 @@
     <Setting Name="PHD_HOST11" Type="System.String" Scope="Application">
       <Value Profile="(Default)">phd-l35-1</Value>
     </Setting>
+    <Setting Name="MIN_GET_INVENTORY_HOURS_INTERVAL" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="MAX_GET_INVENTORY_HOURS_INTERVAL" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="PHD_HOST" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">srv-vm-mes-phd</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
