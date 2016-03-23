@@ -951,3 +951,9 @@ li.divider-labeled {
 input[type="text"] {
     color: black;
 }
+
+.total {
+    background-color:darkgrey;
+    font-weight:bold;
+    color:white;
+}

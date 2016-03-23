@@ -82,6 +82,11 @@
         [Editable(false)]
         public bool IsDeleted { get; set; }
 
+        [Required]
+        [Display(Name = "IsTotalPosition", ResourceType = typeof(Resources.Layout))]
+        public bool IsTotalPosition { get; set; }
+
+
         /// <summary>
         /// Creates the mappings.
         /// </summary>

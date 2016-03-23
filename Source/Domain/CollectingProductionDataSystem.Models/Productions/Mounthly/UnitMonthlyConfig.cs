@@ -109,6 +109,8 @@ namespace CollectingProductionDataSystem.Models.Productions.Mounthly
 
         public bool IsManualEntry { get; set; }
 
+        public bool IsTotalPosition { get; set; }
+
 
          /// <summary>
         /// Determines whether the specified object is valid.

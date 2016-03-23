@@ -1556,4 +1556,7 @@
   <data name="NotATotalizedPosition" xml:space="preserve">
     <value>Позицията не се сумира</value>
   </data>
+  <data name="IsTotalPosition" xml:space="preserve">
+    <value>Визуализация &lt;/br&gt;тотал</value>
+  </data>
 </root>
