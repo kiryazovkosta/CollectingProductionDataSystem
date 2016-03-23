@@ -594,7 +594,7 @@ var unitGridsData = (function () {
                     $("#" + $(grid.element).attr('id') + " tbody").find("tr[data-uid=" + uid + "]").addClass("error-animation");
                 }
             }
-           
+
 
             if (row.UnitConfig) {
                 if (row.UnitConfig.CollectingDataMechanism === manualIndicator) {
@@ -617,6 +617,23 @@ var unitGridsData = (function () {
                     editButton = $(currenRow).find(".k-grid-edit");
                     editButton.click({ data: row, url: "/ShiftReporting/Units/ShowManualSelfCalculatedDataModal" }, manualEntry);
                 }
+            }
+
+            if (row.IsTotalPosition) {
+                currentUid = row.uid;
+                currenRow = grid.table.find("tr[data-uid='" + currentUid + "']");
+                var prevRow = $(currenRow).prev('tr');
+                if (prevRow) {
+                    prevRow.attr("style","display:none");
+                }
+                $(currenRow).addClass("total");
+                var groupCells = $(currenRow).find("td");
+                $.each(groupCells, function (ix, cell) {
+                    $(cell).removeClass("k-group-cell");
+                    if (ix===4) {
+                        $(cell).html("");
+                    }
+                });
             }
         }
     }
