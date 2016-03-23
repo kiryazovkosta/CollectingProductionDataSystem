@@ -630,7 +630,8 @@ var unitGridsData = (function () {
                 var groupCells = $(currenRow).find("td");
                 $.each(groupCells, function (ix, cell) {
                     $(cell).removeClass("k-group-cell");
-                    if (ix===4) {
+                    $(cell).attr("display", "table-cell");
+                    if (ix===5) {
                         $(cell).html("");
                     }
                 });
