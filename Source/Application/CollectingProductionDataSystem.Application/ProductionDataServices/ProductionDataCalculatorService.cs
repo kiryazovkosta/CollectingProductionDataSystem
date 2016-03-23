@@ -442,6 +442,14 @@
  
         private void AddOrUpdateUnitEnteredForCalculationData(int unitDataId, decimal oldValue, decimal newValue)
         {
+            if (oldValue < 0)
+            {
+                var totalizerMaximumValue = this.data.UnitsData.All().Include(x => x.UnitConfig).Where(x => x.Id == unitDataId).Select(x => x.UnitConfig.EstimatedCompressibilityFactor).FirstOrDefault();
+                var diff = totalizerMaximumValue.Value + oldValue;
+                oldValue = diff;
+            }
+
+
             var newUnitEnteredForCalculationRecord = new UnitEnteredForCalculationData
             {
                 UnitDataId = unitDataId,
