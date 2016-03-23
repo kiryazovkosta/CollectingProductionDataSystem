@@ -1,4 +1,5 @@
 ﻿using System.Data.Entity;
+using System.IO;
 using CollectingProductionDataSystem.Application.FileServices;
 using CollectingProductionDataSystem.Data;
 using CollectingProductionDataSystem.Data.Concrete;
@@ -31,7 +32,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
             var kernel = NinjectConfig.GetInjector;
 
             var data = kernel.Get<ProductionData>();
-
+            WritePositionsConfidence(data);
            
             //var shiftData = data.UnitsData.All().Where(x => x.ShiftId == ShiftType.Second 
             //    && x.RecordTimestamp == new DateTime(2016, 2, 1, 0, 0, 0) 
@@ -70,7 +71,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
 
             //ProcessTransactionsData();
 
-             DoCalculation();
+             //DoCalculation();
 
             //ProcessProductionReportTransactionsData();
 
@@ -100,6 +101,61 @@ namespace CollectingProductionDataSystem.ConsoleClient
             //}
             //TreeShiftsReports(DateTime.Today.AddDays(-2), 1);
             //SeedShiftsToDatabase(uow);
+        }
+
+        private static void WritePositionsConfidence(IProductionData data)
+        {
+            PHDHistorian phd = new PHDHistorian();
+            try
+            {
+                PHDServer server = new PHDServer("phd-l35-1", SERVERVERSION.RAPI200);
+                phd.DefaultServer = server;
+                phd.DefaultServer.Port = 3150;
+                phd.Sampletype = SAMPLETYPE.Snapshot;
+                phd.ReductionType = REDUCTIONTYPE.None;
+                phd.StartTime = "NOW-5M";
+                phd.EndTime = "NOW-5M";
+                phd.MaximumRows = 1;
+
+                using (var writer = new StreamWriter(@"C:\Temp\phd.log"))
+                {
+                    var unitConfigs = data.UnitConfigs.All().Include(x=>x.ProcessUnit).Where(x => x.DataSource == PrimaryDataSourceType.PhdL311B).ToList();
+                    foreach (var unitConfig in unitConfigs)
+                    {
+                        if (unitConfig.CollectingDataMechanism == "A")
+                        {
+                            var tag = unitConfig.PreviousShiftTag;
+                            DataSet dsGrid = phd.FetchRowData(tag);
+                            foreach (DataRow row in dsGrid.Tables[0].Rows)
+                            {
+                                string tagHeaderLine = string.Format("-------------------- {0} : {1} : {2} : {3} --------------------",
+                                                                     unitConfig.ProcessUnit.FullName,
+                                                                     unitConfig.Code, 
+                                                                     unitConfig.Name, 
+                                                                     tag);
+                                writer.WriteLine(tagHeaderLine);
+                                foreach (DataColumn dc in dsGrid.Tables[0].Columns)
+                                {
+                                    writer.WriteLine(dc.ColumnName + " : " + row[dc]);
+                                }
+                            }   
+                        } 
+                    }   
+                }
+
+            }
+            catch(PHDErrorException phdException)
+            {
+                Console.WriteLine("PHD ERROR: " + phdException.ToString());
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine("EXCEPTION: " + exception.ToString());
+            }
+            finally
+            {
+                phd.Dispose();
+            }
         }
 
         private static void ConvertProductsForInternalPipes(IProductionData data)
