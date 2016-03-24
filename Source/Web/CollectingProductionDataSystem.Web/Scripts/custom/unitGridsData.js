@@ -555,7 +555,6 @@ var unitGridsData = (function () {
             $.each(dataCollection.items, function (key, value) {
                 if (ConvertGridRows(value, grid) === true) {
                     modifyGridRow(value, grid);
-
                 }
             })
 
@@ -625,15 +624,16 @@ var unitGridsData = (function () {
                 var prevRow = $(currenRow).prev('tr');
                 if (prevRow) {
                     if (prevRow.hasClass("k-grouping-row")) {
-                        prevRow.attr("style", "display:none");
+                        prevRow.remove();//attr("style", "display:none !important");
                     }
                 }
                 $(currenRow).addClass("total");
                 var groupCells = $(currenRow).find("td");
+                $(groupCells[6]).attr("colspan", 5);
                 $.each(groupCells, function (ix, cell) {
                     $(cell).removeClass("k-group-cell");
-                    if (ix === 5) {
-                        $(cell).html("");
+                    if (ix < 6) {
+                        $(cell).attr("style","display:none !important");
                     }
                 });
             }
