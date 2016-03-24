@@ -624,7 +624,7 @@ var unitGridsData = (function () {
                 var prevRow = $(currenRow).prev('tr');
                 if (prevRow) {
                     if (prevRow.hasClass("k-grouping-row")) {
-                        prevRow.remove();//attr("style", "display:none !important");
+                        prevRow.remove();
                     }
                 }
                 $(currenRow).addClass("total");
