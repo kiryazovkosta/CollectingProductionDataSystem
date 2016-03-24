@@ -624,14 +624,15 @@ var unitGridsData = (function () {
                 currenRow = grid.table.find("tr[data-uid='" + currentUid + "']");
                 var prevRow = $(currenRow).prev('tr');
                 if (prevRow) {
-                    prevRow.attr("style","display:none");
+                    if (prevRow.hasClass("k-grouping-row")) {
+                        prevRow.attr("style", "display:none");
+                    }
                 }
                 $(currenRow).addClass("total");
                 var groupCells = $(currenRow).find("td");
                 $.each(groupCells, function (ix, cell) {
                     $(cell).removeClass("k-group-cell");
-                    $(cell).attr("display", "table-cell");
-                    if (ix===5) {
+                    if (ix === 5) {
                         $(cell).html("");
                     }
                 });
@@ -762,6 +763,49 @@ var unitGridsData = (function () {
         return result;
     }
 
+    function OnMonthlyExcelExport(ev) {
+        var dataRows = ev.sender._data;
+        var totalRowCodes = [];
+        dataRows.forEach(function (value) {
+            if (value.IsTotalPosition === true) {
+                totalRowCodes.push(value.UnitMonthlyConfig.Code);
+            }
+        });
+        var excelRows = ev.workbook.sheets[0].rows;
+        excelRows.forEach(function (row, index, excelRows) {
+            if (row.cells[2]) {
+                if (isInArray(row.cells[2].value, totalRowCodes)) {
+                    row.cells[0].value = row.cells[4].value;
+                    row.cells[0].colSpan = 5;
+                    row.cells.splice(1,4);
+                    if (excelRows[index - 1]) {
+                        if (excelRows[index - 1].type === "group-header") {
+                            excelRows[index - 1].markForDelete = true;
+                        } 
+                    }
+                    row.cells.forEach(function (cell) {
+                        cell.background = "#7a7a7a";
+                        cell.color = "#fff";
+                    });
+                }
+            }
+        });
+
+        index = excelRows.length - 1;
+
+        while (index >= 0) {
+            if (excelRows[index].markForDelete) {
+                excelRows.splice(index, 1);
+            }
+
+            index -= 1;
+        }
+    }
+
+    function isInArray(value, array) {
+        return array.indexOf(value) > -1;
+    }
+
     return {
         SendDate: sendDate,
         SendTanksData: SendTanksData,
@@ -773,5 +817,6 @@ var unitGridsData = (function () {
         FormatGridToPdfExport: FormatGridToPdfExport,
         SendDateForSummaryReports: sendDateForSummaryReports,
         BlinkDemo: blinkDemo,
+        OnMonthlyExcelExport: OnMonthlyExcelExport
     };
 })();

@@ -67,7 +67,10 @@
                                                                 .Filterable(true)
                                                                 .ProxyURL(Url.Action("Excel_Export_Save", "Ajax", new { area = "" }))
                                                                 .AllPages(true))
-                                                                .Events(ev => ev.DataBound("unitGridsData.DataBound"))
+                                                                    .Events(ev => { 
+                                                                        ev.DataBound("unitGridsData.DataBound");
+                                                                        ev.ExcelExport("unitGridsData.OnMonthlyExcelExport");
+                                                                    })
                                                                 .Scrollable(scr => scr.Height(640))
                                                                 .Filterable()
         //.ClientDetailTemplateId("template")
