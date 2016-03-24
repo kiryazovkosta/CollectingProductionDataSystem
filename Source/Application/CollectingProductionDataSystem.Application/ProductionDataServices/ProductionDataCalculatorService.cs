@@ -339,7 +339,7 @@
             return arguments;
         }
 
-        private void PopulateFormulaDataFromRelatedUnitConfigs(UnitConfig unitConfig, FormulaArguments arguments, DateTime recordDate, ShiftType shiftId)
+        private void PopulateFormulaDataFromRelatedUnitConfigs(UnitConfig unitConfig, FormulaArguments arguments, DateTime recordDate, int shiftId)
         {
             var ruc = unitConfig.RelatedUnitConfigs.ToList();
             foreach (var ru in ruc)
@@ -392,7 +392,7 @@
             }
         }
 
-        private IEfStatus UpdateCalculatedUnitConfig(int unitConfigId, double newValue, DateTime recordDate, ShiftType shiftId)
+        private IEfStatus UpdateCalculatedUnitConfig(int unitConfigId, double newValue, DateTime recordDate, int shiftId)
         {
             var record = data.UnitsData
                                .All().Include(x => x.UnitConfig)
@@ -442,23 +442,31 @@
  
         private void AddOrUpdateUnitEnteredForCalculationData(int unitDataId, decimal oldValue, decimal newValue)
         {
+            if (oldValue < 0)
+            {
+                var totalizerMaximumValue = this.data.UnitsData.All().Include(x => x.UnitConfig).Where(x => x.Id == unitDataId).Select(x => x.UnitConfig.EstimatedCompressibilityFactor).FirstOrDefault();
+                var diff = totalizerMaximumValue.Value + oldValue;
+                oldValue = diff;
+            }
+
+
             var newUnitEnteredForCalculationRecord = new UnitEnteredForCalculationData
             {
-                Id = unitDataId,
+                UnitDataId = unitDataId,
                 OldValue = oldValue,
                 NewValue = newValue
             };
-            var existsUnitEnteredForCalculationRecord = this.data.UnitEnteredForCalculationDatas.All().Where(x => x.Id == newUnitEnteredForCalculationRecord.Id).FirstOrDefault();
-            if (existsUnitEnteredForCalculationRecord == null)
+            //var existsUnitEnteredForCalculationRecord = this.data.UnitEnteredForCalculationDatas.All().Where(x => x.Id == newUnitEnteredForCalculationRecord.Id).FirstOrDefault();
+            //if (existsUnitEnteredForCalculationRecord == null)
             {
                 this.data.UnitEnteredForCalculationDatas.Add(newUnitEnteredForCalculationRecord);   
             }
-            else
-            {
-                existsUnitEnteredForCalculationRecord.OldValue = oldValue;
-                existsUnitEnteredForCalculationRecord.NewValue = newValue;
-                this.data.UnitEnteredForCalculationDatas.Update(existsUnitEnteredForCalculationRecord);
-            }
+            //else
+            //{
+            //    existsUnitEnteredForCalculationRecord.OldValue = oldValue;
+            //    existsUnitEnteredForCalculationRecord.NewValue = newValue;
+            //    this.data.UnitEnteredForCalculationDatas.Update(existsUnitEnteredForCalculationRecord);
+            //}
         }
 
         ///  <summary>
@@ -683,6 +691,10 @@
             double t = args.Temperature.Value > 0 ? args.Temperature.Value : args.EstimatedTemperature.Value;
 
             double ent = Functions.GetValueFormulaEN(t, p);
+            if (ent < 0)
+            {
+                ent = Functions.GetValueFormulaEN(1, 1);
+            }
 
             var inputParams = new Dictionary<string, double>();
             inputParams.Add("pl", pl);
@@ -722,7 +734,12 @@
             double pl = args.InputValue.Value;
             double p = args.Pressure.Value > 0 ? args.Pressure.Value : args.EstimatedPressure.Value;
             double t = args.Temperature.Value > 0 ? args.Temperature.Value : args.EstimatedTemperature.Value;
+
             double ent = Functions.GetValueFormulaEN(t, p);
+            if (ent < 0)
+            {
+                ent = Functions.GetValueFormulaEN(1, 1);
+            }
 
             var inputParams = new Dictionary<string, double>();
             inputParams.Add("pl", pl);

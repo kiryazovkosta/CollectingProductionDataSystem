@@ -37,6 +37,8 @@
         [UIHint("Hidden")]
         public int UnitConfigId { get; set; }
 
+        public bool NotATotalizedPosition { get; set; }
+
         [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
         [Display(Name = "UnitName", ResourceType = typeof(Resources.Layout))]
         public string UnitName { get; set; }
@@ -63,9 +65,18 @@
         {
             get
             {
-                return this.Shift1QuantityValue
-                    + this.Shift2QuantityValue
-                    + this.Shift3QuantityValue;
+                var totalQuantity = 0m;
+
+                if (this.NotATotalizedPosition == true)
+                {
+                    totalQuantity = this.Shift3QuantityValue;
+                }
+                else
+                {
+                    totalQuantity = this.Shift1QuantityValue + this.Shift2QuantityValue + this.Shift3QuantityValue;
+                }
+
+                return totalQuantity;
             }
         }
 

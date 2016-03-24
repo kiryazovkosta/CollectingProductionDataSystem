@@ -41,8 +41,8 @@
             try
             {
                 logger.Info("Begin aso2sapo data synchronization!");
-                
-                using (var context = new ProductionData(new CollectingDataSystemDbContext(new AuditablePersister(),new Logger())))
+
+                using (var context = new ProductionData(new CollectingDataSystemDbContext(new AuditablePersister(), new Logger())))
                 {
                     var max = context.MaxAsoMeasuringPointDataSequenceNumberMap.All().FirstOrDefault();
                     if (max != null)
@@ -61,7 +61,7 @@
                                 max.MaxSequenceNumber = maxSequenceNumber;
                                 context.MaxAsoMeasuringPointDataSequenceNumberMap.Update(max);
                                 context.SaveChanges("Aso2Sql");
-                                logger.InfoFormat("Last SequenceNumber was updated to {0}.", maxSequenceNumber);    
+                                logger.InfoFormat("Last SequenceNumber was updated to {0}.", maxSequenceNumber);
                             }
                         }
                     }
@@ -75,8 +75,8 @@
                 SendEmail("ASO 2 SAPO Inerface", ex.ToString());
             }
         }
- 
-        private static List<MeasuringPointsConfigsData> GetTransactionsFromAso(MaxAsoMeasuringPointDataSequenceNumber max, 
+
+        private static List<MeasuringPointsConfigsData> GetTransactionsFromAso(MaxAsoMeasuringPointDataSequenceNumber max,
             ProductionData context, ref long maxSequenceNumber)
         {
             var transactions = new List<MeasuringPointsConfigsData>();
@@ -98,7 +98,7 @@
 
                     if (row.RowId != -1)
                     {
-                        continue;   
+                        continue;
                     }
 
                     var tr = new MeasuringPointsConfigsData();
@@ -115,7 +115,14 @@
                     tr.BaseProductName = row.BaseProductName;
                     tr.ProductNumber = row.ProductNumber;
                     var prod = context.Products.All().Where(p => p.Code == row.ProductNumber).FirstOrDefault();
-                    tr.ProductId = prod.Id;
+                    if (prod == null)
+                    {
+                        tr.ProductId = 1; 
+                    }
+                    else
+                    {
+                        tr.ProductId = prod.Id;
+                    }
                     tr.ProductType = row.ProductType;
                     tr.ProductName = row.ProductName;
                     tr.FlowDirection = row.FlowDirection;
@@ -189,15 +196,15 @@
                     }
                     if (!row.IsAverageObservableDensityNull())
                     {
-                        tr.AverageObservableDensity = row.AverageObservableDensity;
+                        tr.AverageObservableDensity = row.AverageObservableDensity > 999999 ? 0 : row.AverageObservableDensity;
                     }
                     if (!row.IsAverageReferenceDensityNull())
                     {
-                        tr.AverageReferenceDensity = row.AverageReferenceDensity;
+                        tr.AverageReferenceDensity = row.AverageReferenceDensity > 999999 ? 0 : row.AverageReferenceDensity;
                     }
                     if (!row.IsAverageTemperatureNull())
                     {
-                        tr.AverageTemperature = row.AverageTemperature;
+                        tr.AverageTemperature = row.AverageTemperature > 999999 ? 0 : row.AverageTemperature;
                     }
                     if (!row.IsTotalizerBeginGrossObservableVolumeReverseNull())
                     {
@@ -320,18 +327,18 @@
         }
 
         internal static void ProcessActiveTransactionsData(int offsetInDays)
-        { 
+        {
             try
             {
                 logger.Info("Begin active transactions data synchronization!");
                 var now = DateTime.Now.AddDays(offsetInDays);
                 var today = DateTime.Today.AddDays(offsetInDays * -1);
                 var fiveOClock = new DateTime(today.Year, today.Month, today.Day, 5, 0, 0);
-                
+
                 var ts = now - fiveOClock;
-                if(ts.TotalMinutes > 4 && ts.Hours == 0)
+                if (ts.TotalMinutes > 4 && ts.Hours == 0)
                 {
-                    using (var context = new ProductionData(new CollectingDataSystemDbContext(new AuditablePersister(),new Logger())))
+                    using (var context = new ProductionData(new CollectingDataSystemDbContext(new AuditablePersister(), new Logger())))
                     {
                         var currentDate = today.AddDays(-1);
                         var existsActiveTransactionData = context.ActiveTransactionsDatas.All().Where(x => x.RecordTimestamp == currentDate).Any();
@@ -355,7 +362,7 @@
                                                 context.ActiveTransactionsDatas.Add(activeTransactionData);
                                                 logger.InfoFormat("Active transaction processing TK [{0}] ProductId[{0}] Mass[{1}] MassReverse[{2}]",
                                                     activeTransactionData.ProductId,
-                                                    activeTransactionData.Mass, 
+                                                    activeTransactionData.Mass,
                                                     activeTransactionData.MassReverse,
                                                     item.MeasuringPointName);
                                             }
@@ -371,13 +378,13 @@
 
                 logger.Info("End active transactions data synchronization!");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 logger.Error(ex.Message, ex);
                 SendEmail("ASO 2 SAPO Inerface", ex.ToString());
             }
         }
- 
+
         private static ActiveTransactionsData ProcessMeasuringPoint(Tags tagsList, MeasuringPointConfig item, PHDHistorian oPhd, DateTime currentDate, ProductionData context)
         {
             tagsList.RemoveAll();
@@ -396,8 +403,8 @@
                 {
                     tagsList.Add(new Tag { TagName = item.ActiveTransactionMassReverseTag });
                 }
-                else 
-                { 
+                else
+                {
                     tagsList.Add(new Tag { TagName = item.ActiveTransactionMassTag });
                     tagsList.Add(new Tag { TagName = item.ActiveTransactionMassReverseTag });
                 }
@@ -417,18 +424,18 @@
                         var product = context.Products.All().Where(x => x.Code == code).FirstOrDefault();
                         activeTransactionData.ProductId = product != null ? product.Id : 1;
                     }
-                    else 
+                    else
                     {
                         var value = 0m;
                         if (valueRow[0].ToString().Equals(item.ActiveTransactionMassTag))
                         {
                             logger.Info(item.ActiveTransactionMassTag);
-                            if(decimal.TryParse(valueRow["Value"].ToString(), out value))
+                            if (decimal.TryParse(valueRow["Value"].ToString(), out value))
                             {
                                 if (!string.IsNullOrEmpty(item.MassCorrectionFactor))
                                 {
                                     logger.Info(item.MassCorrectionFactor);
-                                    value = value * Convert.ToDecimal(item.MassCorrectionFactor); 
+                                    value = value * Convert.ToDecimal(item.MassCorrectionFactor);
                                 }
                                 activeTransactionData.Mass = value;
                             }
@@ -436,12 +443,12 @@
                         else if (valueRow[0].ToString().Equals(item.ActiveTransactionMassReverseTag))
                         {
                             logger.Info(item.ActiveTransactionMassTag);
-                            if(decimal.TryParse(valueRow["Value"].ToString(), out value))
+                            if (decimal.TryParse(valueRow["Value"].ToString(), out value))
                             {
                                 if (!string.IsNullOrEmpty(item.MassCorrectionFactor))
                                 {
                                     logger.Info(item.MassCorrectionFactor);
-                                    value = value * Convert.ToDecimal(item.MassCorrectionFactor); 
+                                    value = value * Convert.ToDecimal(item.MassCorrectionFactor);
                                 }
                                 activeTransactionData.MassReverse = value;
                             }
@@ -454,7 +461,7 @@
 
             return null;
         }
- 
+
         private static void SetPhdConnectionSettings(PHDServer defaultServer, PHDHistorian oPhd, TimeSpan ts)
         {
             defaultServer.Port = Properties.Settings.Default.PHD_PORT;
@@ -488,13 +495,13 @@
                     var now = DateTime.Now;
                     var today = DateTime.Today;
                     var fiveOClock = new DateTime(today.Year, today.Month, today.Day, 5, 0, 0);
-                
+
                     var ts = now - fiveOClock;
-                    if(ts.TotalMinutes > 4 && ts.Hours == 0)
+                    if (ts.TotalMinutes > 4 && ts.Hours == 0)
                     {
                         var phdValues = new Dictionary<int, long>();
 
-                        using (var context = new ProductionData(new CollectingDataSystemDbContext(new AuditablePersister(),new Logger())))
+                        using (var context = new ProductionData(new CollectingDataSystemDbContext(new AuditablePersister(), new Logger())))
                         {
                             if (!context.MeasuringPointsConfigsDatas.All().Where(x => x.TransactionNumber >= today.Ticks).Any())
                             {
@@ -604,7 +611,7 @@
 
                 logger.Info("End trade report data synchronization!");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 logger.Error(ex.Message, ex);
                 SendEmail("ASO 2 SAPO Inerface", ex.ToString());
@@ -620,13 +627,13 @@
                     var now = DateTime.Now;
                     var today = DateTime.Today;
                     var fiveOClock = new DateTime(today.Year, today.Month, today.Day, 4, 30, 0);
-                
+
                     var ts = now - fiveOClock;
-                    if(ts.TotalMinutes > 4 && ts.Hours == 0)
+                    if (ts.TotalMinutes > 4 && ts.Hours == 0)
                     {
                         var phdValues = new Dictionary<int, long>();
 
-                        using (var context = new ProductionData(new CollectingDataSystemDbContext(new AuditablePersister(),new Logger())))
+                        using (var context = new ProductionData(new CollectingDataSystemDbContext(new AuditablePersister(), new Logger())))
                         {
                             if (!context.MeasurementPointsProductsDatas.All().Where(x => x.RecordTimestamp >= today).Any())
                             {
@@ -700,7 +707,7 @@
 
                 logger.Info("End roduction report data synchronization!");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 logger.Error(ex.Message, ex);
                 SendEmail("ASO 2 SAPO Inerface", ex.ToString());

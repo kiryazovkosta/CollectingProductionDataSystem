@@ -1,4 +1,5 @@
 ﻿using System.Data.Entity;
+using System.IO;
 using CollectingProductionDataSystem.Application.FileServices;
 using CollectingProductionDataSystem.Data;
 using CollectingProductionDataSystem.Data.Concrete;
@@ -13,9 +14,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CollectingProductionDataSystem.Infrastructure.Extentions;
+using Ninject;
 using Uniformance.PHD;
 using CollectingProductionDataSystem.Models.Transactions;
 using System.Data;
+using System.Globalization;
 
 namespace CollectingProductionDataSystem.ConsoleClient
 {
@@ -23,37 +26,38 @@ namespace CollectingProductionDataSystem.ConsoleClient
     {
         static void Main(string[] args)
         {
-            var ninject = new NinjectConfig();
+            //var ninject = new NinjectConfig();
             //var timer = new Stopwatch();
             //timer.Start();
-            var kernel = ninject.Kernel;
+            var kernel = NinjectConfig.GetInjector;
 
-            var data = kernel.GetService(typeof(IProductionData)) as IProductionData;
-
+            var data = kernel.Get<ProductionData>();
+            WritePositionsConfidence(data);
+           
             //var shiftData = data.UnitsData.All().Where(x => x.ShiftId == ShiftType.Second 
             //    && x.RecordTimestamp == new DateTime(2016, 2, 1, 0, 0, 0) 
             //    && x.UnitConfig.ProcessUnitId == 50).ToList();
 
-            int monthIndex = DateTime.Now.Month - 1;
-            var lastDate = new DateTime(2016, 2, 19, 0, 0, 0);
+            //int monthIndex = DateTime.Now.Month - 1;
+            //var lastDate = new DateTime(2016, 2, 19, 0, 0, 0);
 
-            var shiftData = data.UnitsData.All().Where(x => x.ShiftId == ShiftType.Second
-                && x.RecordTimestamp == lastDate
-                && x.UnitConfig.ProcessUnitId == 37).ToList();
+            //var shiftData = data.UnitsData.All().Where(x => x.ShiftId == ShiftType.Second
+            //    && x.RecordTimestamp == lastDate
+            //    && x.UnitConfig.ProcessUnitId == 37).ToList();
 
-            var prevDay = lastDate.AddDays(-1);
-            while (prevDay.Month == monthIndex)
-            {
-                foreach (var item in shiftData)
-                {
-                    item.RecordTimestamp = prevDay;
-                    item.ShiftId = ShiftType.First;
-                    data.UnitsData.Add(item);
-                }
+            //var prevDay = lastDate.AddDays(-1);
+            //while (prevDay.Month == monthIndex)
+            //{
+            //    foreach (var item in shiftData)
+            //    {
+            //        item.RecordTimestamp = prevDay;
+            //        item.ShiftId = ShiftType.First;
+            //        data.UnitsData.Add(item);
+            //    }
 
-                data.SaveChanges("Loader");
-                prevDay = prevDay.AddDays(-1);
-            }
+            //    data.SaveChanges("Loader");
+            //    prevDay = prevDay.AddDays(-1);
+            //}
 
             //for (int i = 0; i < 19; i++)
             //{
@@ -67,11 +71,11 @@ namespace CollectingProductionDataSystem.ConsoleClient
 
             //ProcessTransactionsData();
 
-            //DoCalculation();
+             //DoCalculation();
 
             //ProcessProductionReportTransactionsData();
 
-            System.Console.WriteLine("finished");
+            //System.Console.WriteLine("finished");
             //ConvertProductsForInternalPipes(data);
 
             //TransformUnitDailyConfigTable(data);
@@ -97,6 +101,61 @@ namespace CollectingProductionDataSystem.ConsoleClient
             //}
             //TreeShiftsReports(DateTime.Today.AddDays(-2), 1);
             //SeedShiftsToDatabase(uow);
+        }
+
+        private static void WritePositionsConfidence(IProductionData data)
+        {
+            PHDHistorian phd = new PHDHistorian();
+            try
+            {
+                PHDServer server = new PHDServer("phd-l35-1", SERVERVERSION.RAPI200);
+                phd.DefaultServer = server;
+                phd.DefaultServer.Port = 3150;
+                phd.Sampletype = SAMPLETYPE.Snapshot;
+                phd.ReductionType = REDUCTIONTYPE.None;
+                phd.StartTime = "NOW-5M";
+                phd.EndTime = "NOW-5M";
+                phd.MaximumRows = 1;
+
+                using (var writer = new StreamWriter(@"C:\Temp\phd.log"))
+                {
+                    var unitConfigs = data.UnitConfigs.All().Include(x=>x.ProcessUnit).Where(x => x.DataSource == PrimaryDataSourceType.PhdL311B).ToList();
+                    foreach (var unitConfig in unitConfigs)
+                    {
+                        if (unitConfig.CollectingDataMechanism == "A")
+                        {
+                            var tag = unitConfig.PreviousShiftTag;
+                            DataSet dsGrid = phd.FetchRowData(tag);
+                            foreach (DataRow row in dsGrid.Tables[0].Rows)
+                            {
+                                string tagHeaderLine = string.Format("-------------------- {0} : {1} : {2} : {3} --------------------",
+                                                                     unitConfig.ProcessUnit.FullName,
+                                                                     unitConfig.Code, 
+                                                                     unitConfig.Name, 
+                                                                     tag);
+                                writer.WriteLine(tagHeaderLine);
+                                foreach (DataColumn dc in dsGrid.Tables[0].Columns)
+                                {
+                                    writer.WriteLine(dc.ColumnName + " : " + row[dc]);
+                                }
+                            }   
+                        } 
+                    }   
+                }
+
+            }
+            catch(PHDErrorException phdException)
+            {
+                Console.WriteLine("PHD ERROR: " + phdException.ToString());
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine("EXCEPTION: " + exception.ToString());
+            }
+            finally
+            {
+                phd.Dispose();
+            }
         }
 
         private static void ConvertProductsForInternalPipes(IProductionData data)
@@ -316,6 +375,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
                     .Where(x => x.UnitConfig.ProcessUnitId == processUnitIdParam && x.RecordTimestamp == dateParam)
                     .ToList();
 
+                //ToDo: On shifts changed to 2 must repair this code 
                 var result = data.Select(x => new MultiShift
                 {
                     TimeStamp = x.RecordTimestamp,
@@ -323,9 +383,9 @@ namespace CollectingProductionDataSystem.ConsoleClient
                     Position = x.UnitConfig.Position,
                     UnitConfigId = x.UnitConfigId,
                     UnitName = x.UnitConfig.Name,
-                    Shift1 = data.Where(y => y.RecordTimestamp == dateParam && y.ShiftId == ShiftType.First).Where(u => u.UnitConfigId == x.UnitConfigId).FirstOrDefault(),
-                    Shift2 = data.Where(y => y.RecordTimestamp == dateParam && y.ShiftId == ShiftType.Second).Where(u => u.UnitConfigId == x.UnitConfigId).FirstOrDefault(),
-                    Shift3 = data.Where(y => y.RecordTimestamp == dateParam && y.ShiftId == ShiftType.Third).Where(u => u.UnitConfigId == x.UnitConfigId).FirstOrDefault(),
+                    Shift1 = data.Where(y => y.RecordTimestamp == dateParam && y.ShiftId == (int)ShiftType.First).Where(u => u.UnitConfigId == x.UnitConfigId).FirstOrDefault(),
+                    Shift2 = data.Where(y => y.RecordTimestamp == dateParam && y.ShiftId == (int)ShiftType.Second).Where(u => u.UnitConfigId == x.UnitConfigId).FirstOrDefault(),
+                    Shift3 = data.Where(y => y.RecordTimestamp == dateParam && y.ShiftId == (int)ShiftType.Third).Where(u => u.UnitConfigId == x.UnitConfigId).FirstOrDefault(),
                 }).Distinct(new MultiShiftComparer()).ToList();
 
                 Console.WriteLine("Estimated Time For Action: {0}", timer.Elapsed);
@@ -341,18 +401,18 @@ namespace CollectingProductionDataSystem.ConsoleClient
         }
 
         internal static void ProcessActiveTransactionsData(int offsetInDays)
-        { 
+        {
             try
             {
                 Console.WriteLine("Begin active transactions synchronization!");
                 var now = DateTime.Now;
                 var today = DateTime.Today.AddDays(offsetInDays * -1);
                 var fiveOClock = new DateTime(today.Year, today.Month, today.Day, 4, 30, 0);
-                
+
                 var ts = now - fiveOClock;
-                if(ts.TotalMinutes > 2 /*&& ts.Hours == 0*/)
+                if (ts.TotalMinutes > 2 /*&& ts.Hours == 0*/)
                 {
-                    using (var context = new ProductionData(new CollectingDataSystemDbContext(new AuditablePersister(),new Logger())))
+                    using (var context = new ProductionData(new CollectingDataSystemDbContext(new AuditablePersister(), new Logger())))
                     {
                         var currentDate = today.AddDays(-1);
                         var existsActiveTransactionData = context.ActiveTransactionsDatas.All().Where(x => x.RecordTimestamp == currentDate).Any();
@@ -385,7 +445,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
                                                 Console.WriteLine(
                                                     string.Format("Active transaction processing TK [{3}] ProductId[{0}] Mass[{1}] MassReverse[{2}]",
                                                         activeTransactionData.ProductId,
-                                                        activeTransactionData.Mass, 
+                                                        activeTransactionData.Mass,
                                                         activeTransactionData.MassReverse,
                                                         item.MeasuringPointName));
                                             }
@@ -401,7 +461,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
 
                 Console.WriteLine("End active transactions synchronization!");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message, ex);
             }
@@ -425,8 +485,8 @@ namespace CollectingProductionDataSystem.ConsoleClient
                 {
                     tagsList.Add(new Tag { TagName = item.ActiveTransactionMassReverseTag });
                 }
-                else 
-                { 
+                else
+                {
                     tagsList.Add(new Tag { TagName = item.ActiveTransactionMassTag });
                     tagsList.Add(new Tag { TagName = item.ActiveTransactionMassReverseTag });
                 }
@@ -446,18 +506,18 @@ namespace CollectingProductionDataSystem.ConsoleClient
                         var product = context.Products.All().Where(x => x.Code == code).FirstOrDefault();
                         activeTransactionData.ProductId = product != null ? product.Id : 1;
                     }
-                    else 
+                    else
                     {
                         var value = 0m;
                         if (valueRow[0].ToString().Equals(item.ActiveTransactionMassTag))
                         {
                             Console.WriteLine(item.ActiveTransactionMassTag);
-                            if(decimal.TryParse(valueRow["Value"].ToString(), out value))
+                            if (decimal.TryParse(valueRow["Value"].ToString(), out value))
                             {
                                 if (!string.IsNullOrEmpty(item.MassCorrectionFactor))
                                 {
                                     Console.WriteLine(item.MassCorrectionFactor);
-                                    value = value * Convert.ToDecimal(item.MassCorrectionFactor); 
+                                    value = value * Convert.ToDecimal(item.MassCorrectionFactor);
                                 }
                                 activeTransactionData.Mass = value;
                             }
@@ -465,12 +525,12 @@ namespace CollectingProductionDataSystem.ConsoleClient
                         else if (valueRow[0].ToString().Equals(item.ActiveTransactionMassReverseTag))
                         {
                             Console.WriteLine(item.ActiveTransactionMassTag);
-                            if(decimal.TryParse(valueRow["Value"].ToString(), out value))
+                            if (decimal.TryParse(valueRow["Value"].ToString(), out value))
                             {
                                 if (!string.IsNullOrEmpty(item.MassCorrectionFactor))
                                 {
                                     Console.WriteLine(item.MassCorrectionFactor);
-                                    value = value * Convert.ToDecimal(item.MassCorrectionFactor); 
+                                    value = value * Convert.ToDecimal(item.MassCorrectionFactor);
                                 }
                                 activeTransactionData.MassReverse = value;
                             }
@@ -495,13 +555,13 @@ namespace CollectingProductionDataSystem.ConsoleClient
                     var fiveOClock = new DateTime(today.Year, today.Month, today.Day, 4, 30, 0);
 
                     Console.WriteLine(string.Format("Today.Ticks: {0}", today.Ticks));
-                
+
                     var ts = now - fiveOClock;
-                    if(ts.TotalMinutes > 2 /*&& ts.Hours == 0*/)
+                    if (ts.TotalMinutes > 2 /*&& ts.Hours == 0*/)
                     {
                         var phdValues = new Dictionary<int, long>();
 
-                        using (var context = new ProductionData(new CollectingDataSystemDbContext(new AuditablePersister(),new Logger())))
+                        using (var context = new ProductionData(new CollectingDataSystemDbContext(new AuditablePersister(), new Logger())))
                         {
                             if (!context.MeasuringPointsConfigsDatas.All().Where(x => x.TransactionNumber >= today.Ticks).Any())
                             {
@@ -626,7 +686,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
 
                 Console.WriteLine("End scale transactions synchronization!");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message, ex);
             }
@@ -637,23 +697,12 @@ namespace CollectingProductionDataSystem.ConsoleClient
             try
             {
                 Console.WriteLine("Begin synchronization!");
-                
-                using (var context = new ProductionData(new CollectingDataSystemDbContext(new AuditablePersister(),new Logger())))
+
+                using (var context = new ProductionData(new CollectingDataSystemDbContext(new AuditablePersister(), new Logger())))
                 {
-                    var max = context.MaxAsoMeasuringPointDataSequenceNumberMap.All().FirstOrDefault();
-                    if (max != null)
+                    long max = 573846;
                     {
-                        var transactions = GetTransactionsFromAso(max, context);
-                        if (transactions.Count > 0)
-                        {
-                            context.MeasuringPointsConfigsDatas.BulkInsert(transactions, "Aso2SapoLoader");
-                            var status = context.SaveChanges("Aso2Sql");
-                            max.LastTransactionsFetchingDateTime = DateTime.Now;
-                            context.MaxAsoMeasuringPointDataSequenceNumberMap.Update(max);
-                            context.SaveChanges("Aso2Sql");
-                            Console.WriteLine("Successfully synchronization {0} records from Aso to Cpds", status.ResultRecordsCount);
-                            Console.WriteLine("Last transactions fetching date-time was updated to {0}.", DateTime.Now);   
-                        }
+                        GetTransactionsFromAso(max, context);
                     }
 
                     Console.WriteLine("End synchronization");
@@ -665,239 +714,278 @@ namespace CollectingProductionDataSystem.ConsoleClient
             }
         }
 
-        private static List<MeasuringPointsConfigsData> GetTransactionsFromAso(MaxAsoMeasuringPointDataSequenceNumber max, ProductionData context)
+        private static List<MeasuringPointsConfigsData> GetTransactionsFromAso(long minSequenceNumber, ProductionData context)
         {
-            var result = new List<MeasuringPointsConfigsData>();
-            Console.WriteLine(string.Format("Last transaction fetching date-time was {0}", max.LastTransactionsFetchingDateTime));
-            var maxLastTransactionsFetchingDateTime = max.LastTransactionsFetchingDateTime;
+            var transactions = new List<MeasuringPointsConfigsData>();
+            Console.WriteLine(string.Format("Last processing SequenceNumber was {0}", minSequenceNumber));
+            var maximumLastFetchSequenceNumber = minSequenceNumber;
             var adapter = new AsoDataSetTableAdapters.flow_MeasuringPointsDataTableAdapter();
             var table = new AsoDataSet.flow_MeasuringPointsDataDataTable();
-            adapter.Fill(table, maxLastTransactionsFetchingDateTime.Value);
+            adapter.Fill(table, maximumLastFetchSequenceNumber);
             if (table.Rows.Count > 0)
             {
                 var mesurinpPointsByTransactions = context.MeasuringPointConfigs.All().Where(x => x.IsUsedPhdTotalizers == true).Select(x => x.Id).ToList();
 
                 foreach (AsoDataSet.flow_MeasuringPointsDataRow row in table.Rows)
                 {
-                    if (mesurinpPointsByTransactions.Contains(row.MeasuringPointId))
+                    try
                     {
-                        continue;
+                        if (row.SequenceNumber == 576866)
+                        {
+                            var x = 0;
+                            x++;
+                        }
+
+
+                        if (mesurinpPointsByTransactions.Contains(row.MeasuringPointId))
+                        {
+                            continue;
+                        }
+
+                        if (row.RowId != -1)
+                        {
+                            continue;
+                        }
+
+                        var tr = new MeasuringPointsConfigsData();
+                        tr.MeasuringPointId = row.MeasuringPointId;
+                        tr.MeasuringPointConfigId = row.MeasuringPointId;
+                        tr.TransactionNumber = row.TransactionNumber;
+                        tr.RowId = row.RowId;
+                        tr.TransactionBeginTime = row.TransactionBeginTime;
+                        tr.TransactionEndTime = row.TransactionEndTime;
+                        tr.ExciseStoreId = row.ExciseStoreId;
+                        tr.ZoneId = row.ZoneId;
+                        tr.BaseProductNumber = row.BaseProductNumber;
+                        tr.BaseProductType = row.BaseProductType;
+                        tr.BaseProductName = row.BaseProductName;
+                        tr.ProductNumber = row.ProductNumber;
+                        var prod = context.Products.All().Where(p => p.Code == row.ProductNumber).FirstOrDefault();
+                        tr.ProductId = prod.Id;
+                        tr.ProductType = row.ProductType;
+                        tr.ProductName = row.ProductName;
+                        tr.FlowDirection = row.FlowDirection;
+                        tr.EngineeringUnitMass = row.EngineeringUnitMass;
+                        tr.EngineeringUnitVolume = row.EngineeringUnitVolume;
+                        tr.EngineeringUnitDensity = row.EngineeringUnitDensity;
+                        tr.EngineeringUnitTemperature = row.EngineeringUnitTemperature;
+                        tr.FactorMass = row.FactorMass;
+                        tr.FactorVolume = row.FactorVolume;
+                        tr.FactorDensity = row.FactorDensity;
+                        tr.FactorTemperature = row.FactorTemperature;
+                        if (!row.IsTotalizerBeginGrossObservableVolumeNull())
+                        {
+                            tr.TotalizerBeginGrossObservableVolume = row.TotalizerBeginGrossObservableVolume;
+                        }
+                        if (!row.IsTotalizerEndGrossObservableVolumeNull())
+                        {
+                            tr.TotalizerEndGrossObservableVolume = row.TotalizerEndGrossObservableVolume;
+                        }
+                        if (!row.IsTotalizerBeginGrossStandardVolumeNull())
+                        {
+                            tr.TotalizerBeginGrossStandardVolume = row.TotalizerBeginGrossStandardVolume;
+                        }
+                        if (!row.IsTotalizerEndGrossStandardVolumeNull())
+                        {
+                            tr.TotalizerEndGrossStandardVolume = row.TotalizerEndGrossStandardVolume;
+                        }
+                        if (!row.IsTotalizerBeginMassNull())
+                        {
+                            tr.TotalizerBeginMass = row.TotalizerBeginMass;
+                        }
+                        if (!row.IsTotalizerEndMassNull())
+                        {
+                            tr.TotalizerEndMass = row.TotalizerEndMass;
+                        }
+                        if (!row.IsTotalizerBeginGrossObservableCommonVolumeNull())
+                        {
+                            tr.TotalizerBeginGrossObservableCommonVolume = row.TotalizerBeginGrossObservableCommonVolume;
+                        }
+                        if (!row.IsTotalizerEndGrossObservableCommonVolumeNull())
+                        {
+                            tr.TotalizerEndGrossObservableCommonVolume = row.TotalizerEndGrossObservableCommonVolume;
+                        }
+                        if (!row.IsTotalizerBeginGrossStandardCommonVolumeNull())
+                        {
+                            tr.TotalizerBeginGrossStandardCommonVolume = row.TotalizerBeginGrossStandardCommonVolume;
+                        }
+                        if (!row.IsTotalizerEndGrossStandardCommonVolumeNull())
+                        {
+                            tr.TotalizerEndGrossStandardCommonVolume = row.TotalizerEndGrossStandardCommonVolume;
+                        }
+                        if (!row.IsTotalizerBeginCommonMassNull())
+                        {
+                            tr.TotalizerBeginCommonMass = row.TotalizerBeginCommonMass;
+                        }
+                        if (!row.IsTotalizerEndCommonMassNull())
+                        {
+                            tr.TotalizerEndCommonMass = row.TotalizerEndCommonMass;
+                        }
+                        if (!row.IsGrossObservableVolumeNull())
+                        {
+                            tr.GrossObservableVolume = row.GrossObservableVolume;
+                        }
+                        if (!row.IsGrossStandardVolumeNull())
+                        {
+                            tr.GrossStandardVolume = row.GrossStandardVolume;
+                        }
+                        if (!row.IsMassNull())
+                        {
+                            tr.Mass = row.Mass;
+                        }
+                        if (!row.IsAverageObservableDensityNull())
+                        {
+                            tr.AverageObservableDensity = row.AverageObservableDensity > 999999 ? 0 : row.AverageObservableDensity;
+                        }
+                        if (!row.IsAverageReferenceDensityNull())
+                        {
+                            tr.AverageReferenceDensity = row.AverageReferenceDensity > 999999 ? 0 : row.AverageReferenceDensity;
+                        }
+                        if (!row.IsAverageTemperatureNull())
+                        {
+                            tr.AverageTemperature = row.AverageTemperature > 999999 ? 0 : row.AverageTemperature;
+                        }
+                        if (!row.IsTotalizerBeginGrossObservableVolumeReverseNull())
+                        {
+                            tr.TotalizerBeginGrossObservableVolumeReverse = row.TotalizerBeginGrossObservableVolumeReverse;
+                        }
+                        if (!row.IsTotalizerEndGrossObservableVolumeReverseNull())
+                        {
+                            tr.TotalizerEndGrossObservableVolumeReverse = row.TotalizerEndGrossObservableVolumeReverse;
+                        }
+                        if (!row.IsTotalizerBeginGrossStandardVolumeReverseNull())
+                        {
+                            tr.TotalizerBeginGrossStandardVolumeReverse = row.TotalizerBeginGrossStandardVolumeReverse;
+                        }
+                        if (!row.IsTotalizerEndGrossStandardVolumeReverseNull())
+                        {
+                            tr.TotalizerEndGrossStandardVolumeReverse = row.TotalizerEndGrossStandardVolumeReverse;
+                        }
+                        if (!row.IsTotalizerBeginMassReverseNull())
+                        {
+                            tr.TotalizerBeginMassReverse = row.TotalizerBeginMassReverse;
+                        }
+                        if (!row.IsTotalizerEndMassReverseNull())
+                        {
+                            tr.TotalizerEndMassReverse = row.TotalizerEndMassReverse;
+                        }
+                        if (!row.IsTotalizerBeginGrossObservableCommonVolumeReverseNull())
+                        {
+                            tr.TotalizerBeginGrossObservableCommonVolumeReverse = row.TotalizerBeginGrossObservableCommonVolumeReverse;
+                        }
+                        if (!row.IsTotalizerEndGrossObservableCommonVolumeReverseNull())
+                        {
+                            tr.TotalizerEndGrossObservableCommonVolumeReverse = row.TotalizerEndGrossObservableCommonVolumeReverse;
+                        }
+                        if (!row.IsTotalizerBeginGrossStandardCommonVolumeReverseNull())
+                        {
+                            tr.TotalizerBeginGrossStandardCommonVolumeReverse = row.TotalizerBeginGrossStandardCommonVolumeReverse;
+                        }
+                        if (!row.IsTotalizerEndGrossStandardCommonVolumeReverseNull())
+                        {
+                            tr.TotalizerEndGrossStandardCommonVolumeReverse = row.TotalizerEndGrossStandardCommonVolumeReverse;
+                        }
+                        if (!row.IsTotalizerBeginCommonMassReverseNull())
+                        {
+                            tr.TotalizerBeginCommonMassReverse = row.TotalizerBeginCommonMassReverse;
+                        }
+                        if (!row.IsTotalizerEndCommonMassReverseNull())
+                        {
+                            tr.TotalizerEndCommonMassReverse = row.TotalizerEndCommonMassReverse;
+                        }
+                        if (!row.IsGrossObservableVolumeReverseNull())
+                        {
+                            tr.GrossObservableVolumeReverse = row.GrossObservableVolumeReverse;
+                        }
+                        if (!row.IsGrossStandardVolumeReverseNull())
+                        {
+                            tr.GrossStandardVolumeReverse = row.GrossStandardVolumeReverse;
+                        }
+                        if (!row.IsMassReverseNull())
+                        {
+                            tr.MassReverse = row.MassReverse;
+                        }
+                        if (!row.IsAverageObservableDensityReverseNull())
+                        {
+                            tr.AverageObservableDensityReverse = row.AverageObservableDensityReverse;
+                        }
+                        if (!row.IsAverageReferenceDensityReverseNull())
+                        {
+                            tr.AverageReferenceDensityReverse = row.AverageReferenceDensityReverse;
+                        }
+                        if (!row.IsAverageTemperatureReverseNull())
+                        {
+                            tr.AverageTemperatureReverse = row.AverageTemperatureReverse;
+                        }
+                        tr.InsertTimestamp = row.InsertTimestamp;
+                        if (!row.IsResultIdNull())
+                        {
+                            tr.ResultId = row.ResultId;
+                        }
+                        if (!row.IsAdditiveResultIdNull())
+                        {
+                            tr.AdditiveResultId = row.AdditiveResultId;
+                        }
+                        if (!row.IsTamasCreateTimestampNull())
+                        {
+                            tr.TamasCreateTimestamp = row.TamasCreateTimestamp;
+                        }
+                        if (!row.IsTamasRecipeTransIdNull())
+                        {
+                            tr.TamasRecipeTransId = row.TamasRecipeTransId;
+                        }
+                        if (!row.IsEpksSequenceNumberNull())
+                        {
+                            tr.EpksSequenceNumber = row.EpksSequenceNumber;
+                        }
+                        if (!row.IsMartaRowNumNull())
+                        {
+                            tr.MartaRowNum = row.MartaRowNum;
+                        }
+                        if (!row.IsAlcoholContentNull())
+                        {
+                            tr.AlcoholContent = row.AlcoholContent;
+                        }
+                        if (!row.IsAlcoholContentReverseNull())
+                        {
+                            tr.AlcoholContentReverse = row.AlcoholContentReverse;
+                        }
+                        if (!row.IsBatchIdNull())
+                        {
+                            tr.BatchId = row.BatchId;
+                        }
+
+                        var isExsistingTransaction = context.MeasuringPointsConfigsDatas.All()
+                            .Any(x => x.MeasuringPointConfigId == tr.MeasuringPointConfigId
+                            && x.TransactionBeginTime == tr.TransactionBeginTime
+                            && x.TransactionEndTime == tr.TransactionEndTime
+                            && x.TransactionNumber == tr.TransactionNumber
+                            && x.RowId == tr.RowId);
+                        if (!isExsistingTransaction)
+                        {
+                            context.MeasuringPointsConfigsDatas.Add(tr);
+                            var status = context.SaveChanges("Aso2SapoLoader");
+                            if (status.IsValid)
+                            {
+                                Console.WriteLine(string.Format("Processing sequence number {0}", row.SequenceNumber));     
+                            }
+                            else 
+                            { 
+                                Console.WriteLine(string.Format("Processing sequence number {0} failed {1}", 
+                                    row.SequenceNumber, status.EfErrors[0].ErrorMessage));
+                            }   
+                        }
+                        
+                    }
+                    catch (Exception dbException)
+                    {
+                        Console.WriteLine(dbException.Message);
                     }
 
-                    var tr = new MeasuringPointsConfigsData();
-                    tr.MeasuringPointId = row.MeasuringPointId;
-                    tr.MeasuringPointConfigId = row.MeasuringPointId;
-                    tr.TransactionNumber = row.TransactionNumber;
-                    tr.RowId = row.RowId;
-                    tr.TransactionBeginTime = row.TransactionBeginTime;
-                    tr.TransactionEndTime = row.TransactionEndTime;
-                    tr.ExciseStoreId = row.ExciseStoreId;
-                    tr.ZoneId = row.ZoneId;
-                    tr.BaseProductNumber = row.BaseProductNumber;
-                    tr.BaseProductType = row.BaseProductType;
-                    tr.BaseProductName = row.BaseProductName;
-                    tr.ProductNumber = row.ProductNumber;
-                    var prod = context.Products.All().Where(p => p.Code == row.ProductNumber).FirstOrDefault();
-                    tr.ProductId = prod.Id;
-                    tr.ProductType = row.ProductType;
-                    tr.ProductName = row.ProductName;
-                    tr.FlowDirection = row.FlowDirection;
-                    tr.EngineeringUnitMass = row.EngineeringUnitMass;
-                    tr.EngineeringUnitVolume = row.EngineeringUnitVolume;
-                    tr.EngineeringUnitDensity = row.EngineeringUnitDensity;
-                    tr.EngineeringUnitTemperature = row.EngineeringUnitTemperature;
-                    tr.FactorMass = row.FactorMass;
-                    tr.FactorVolume = row.FactorVolume;
-                    tr.FactorDensity = row.FactorDensity;
-                    tr.FactorTemperature = row.FactorTemperature;
-                    if (!row.IsTotalizerBeginGrossObservableVolumeNull())
-                    {
-                        tr.TotalizerBeginGrossObservableVolume = row.TotalizerBeginGrossObservableVolume;
-                    }
-                    if (!row.IsTotalizerEndGrossObservableVolumeNull())
-                    {
-                        tr.TotalizerEndGrossObservableVolume = row.TotalizerEndGrossObservableVolume;
-                    }
-                    if (!row.IsTotalizerBeginGrossStandardVolumeNull())
-                    {
-                        tr.TotalizerBeginGrossStandardVolume = row.TotalizerBeginGrossStandardVolume;
-                    }
-                    if (!row.IsTotalizerEndGrossStandardVolumeNull())
-                    {
-                        tr.TotalizerEndGrossStandardVolume = row.TotalizerEndGrossStandardVolume;
-                    }
-                    if (!row.IsTotalizerBeginMassNull())
-                    {
-                        tr.TotalizerBeginMass = row.TotalizerBeginMass;
-                    }
-                    if (!row.IsTotalizerEndMassNull())
-                    {
-                        tr.TotalizerEndMass = row.TotalizerEndMass;
-                    }
-                    if (!row.IsTotalizerBeginGrossObservableCommonVolumeNull())
-                    {
-                        tr.TotalizerBeginGrossObservableCommonVolume = row.TotalizerBeginGrossObservableCommonVolume;
-                    }
-                    if (!row.IsTotalizerEndGrossObservableCommonVolumeNull())
-                    {
-                        tr.TotalizerEndGrossObservableCommonVolume = row.TotalizerEndGrossObservableCommonVolume;
-                    }
-                    if (!row.IsTotalizerBeginGrossStandardCommonVolumeNull())
-                    {
-                        tr.TotalizerBeginGrossStandardCommonVolume = row.TotalizerBeginGrossStandardCommonVolume;
-                    }
-                    if (!row.IsTotalizerEndGrossStandardCommonVolumeNull())
-                    {
-                        tr.TotalizerEndGrossStandardCommonVolume = row.TotalizerEndGrossStandardCommonVolume;
-                    }
-                    if (!row.IsTotalizerBeginCommonMassNull())
-                    {
-                        tr.TotalizerBeginCommonMass = row.TotalizerBeginCommonMass;
-                    }
-                    if (!row.IsTotalizerEndCommonMassNull())
-                    {
-                        tr.TotalizerEndCommonMass = row.TotalizerEndCommonMass;
-                    }
-                    if (!row.IsGrossObservableVolumeNull())
-                    {
-                        tr.GrossObservableVolume = row.GrossObservableVolume;
-                    }
-                    if (!row.IsGrossStandardVolumeNull())
-                    {
-                        tr.GrossStandardVolume = row.GrossStandardVolume;
-                    }
-                    if (!row.IsMassNull())
-                    {
-                        tr.Mass = row.Mass;
-                    }
-                    if (!row.IsAverageObservableDensityNull())
-                    {
-                        tr.AverageObservableDensity = row.AverageObservableDensity;
-                    }
-                    if (!row.IsAverageReferenceDensityNull())
-                    {
-                        tr.AverageReferenceDensity = row.AverageReferenceDensity;
-                    }
-                    if (!row.IsAverageTemperatureNull())
-                    {
-                        tr.AverageTemperature = row.AverageTemperature;
-                    }
-                    if (!row.IsTotalizerBeginGrossObservableVolumeReverseNull())
-                    {
-                        tr.TotalizerBeginGrossObservableVolumeReverse = row.TotalizerBeginGrossObservableVolumeReverse;
-                    }
-                    if (!row.IsTotalizerEndGrossObservableVolumeReverseNull())
-                    {
-                        tr.TotalizerEndGrossObservableVolumeReverse = row.TotalizerEndGrossObservableVolumeReverse;
-                    }
-                    if (!row.IsTotalizerBeginGrossStandardVolumeReverseNull())
-                    {
-                        tr.TotalizerBeginGrossStandardVolumeReverse = row.TotalizerBeginGrossStandardVolumeReverse;
-                    }
-                    if (!row.IsTotalizerEndGrossStandardVolumeReverseNull())
-                    {
-                        tr.TotalizerEndGrossStandardVolumeReverse = row.TotalizerEndGrossStandardVolumeReverse;
-                    }
-                    if (!row.IsTotalizerBeginMassReverseNull())
-                    {
-                        tr.TotalizerBeginMassReverse = row.TotalizerBeginMassReverse;
-                    }
-                    if (!row.IsTotalizerEndMassReverseNull())
-                    {
-                        tr.TotalizerEndMassReverse = row.TotalizerEndMassReverse;
-                    }
-                    if (!row.IsTotalizerBeginGrossObservableCommonVolumeReverseNull())
-                    {
-                        tr.TotalizerBeginGrossObservableCommonVolumeReverse = row.TotalizerBeginGrossObservableCommonVolumeReverse;
-                    }
-                    if (!row.IsTotalizerEndGrossObservableCommonVolumeReverseNull())
-                    {
-                        tr.TotalizerEndGrossObservableCommonVolumeReverse = row.TotalizerEndGrossObservableCommonVolumeReverse;
-                    }
-                    if (!row.IsTotalizerBeginGrossStandardCommonVolumeReverseNull())
-                    {
-                        tr.TotalizerBeginGrossStandardCommonVolumeReverse = row.TotalizerBeginGrossStandardCommonVolumeReverse;
-                    }
-                    if (!row.IsTotalizerEndGrossStandardCommonVolumeReverseNull())
-                    {
-                        tr.TotalizerEndGrossStandardCommonVolumeReverse = row.TotalizerEndGrossStandardCommonVolumeReverse;
-                    }
-                    if (!row.IsTotalizerBeginCommonMassReverseNull())
-                    {
-                        tr.TotalizerBeginCommonMassReverse = row.TotalizerBeginCommonMassReverse;
-                    }
-                    if (!row.IsTotalizerEndCommonMassReverseNull())
-                    {
-                        tr.TotalizerEndCommonMassReverse = row.TotalizerEndCommonMassReverse;
-                    }
-                    if (!row.IsGrossObservableVolumeReverseNull())
-                    {
-                        tr.GrossObservableVolumeReverse = row.GrossObservableVolumeReverse;
-                    }
-                    if (!row.IsGrossStandardVolumeReverseNull())
-                    {
-                        tr.GrossStandardVolumeReverse = row.GrossStandardVolumeReverse;
-                    }
-                    if (!row.IsMassReverseNull())
-                    {
-                        tr.MassReverse = row.MassReverse;
-                    }
-                    if (!row.IsAverageObservableDensityReverseNull())
-                    {
-                        tr.AverageObservableDensityReverse = row.AverageObservableDensityReverse;
-                    }
-                    if (!row.IsAverageReferenceDensityReverseNull())
-                    {
-                        tr.AverageReferenceDensityReverse = row.AverageReferenceDensityReverse;
-                    }
-                    if (!row.IsAverageTemperatureReverseNull())
-                    {
-                        tr.AverageTemperatureReverse = row.AverageTemperatureReverse;
-                    }
-                    tr.InsertTimestamp = row.InsertTimestamp;
-                    if (!row.IsResultIdNull())
-                    {
-                        tr.ResultId = row.ResultId;
-                    }
-                    if (!row.IsAdditiveResultIdNull())
-                    {
-                        tr.AdditiveResultId = row.AdditiveResultId;
-                    }
-                    if (!row.IsTamasCreateTimestampNull())
-                    {
-                        tr.TamasCreateTimestamp = row.TamasCreateTimestamp;
-                    }
-                    if (!row.IsTamasRecipeTransIdNull())
-                    {
-                        tr.TamasRecipeTransId = row.TamasRecipeTransId;
-                    }
-                    if (!row.IsEpksSequenceNumberNull())
-                    {
-                        tr.EpksSequenceNumber = row.EpksSequenceNumber;
-                    }
-                    if (!row.IsMartaRowNumNull())
-                    {
-                        tr.MartaRowNum = row.MartaRowNum;
-                    }
-                    if (!row.IsAlcoholContentNull())
-                    {
-                        tr.AlcoholContent = row.AlcoholContent;
-                    }
-                    if (!row.IsAlcoholContentReverseNull())
-                    {
-                        tr.AlcoholContentReverse = row.AlcoholContentReverse;
-                    }
-                    if (!row.IsBatchIdNull())
-                    {
-                        tr.BatchId = row.BatchId;
-                    }
-
-                    Console.WriteLine(string.Format("Processing sequence number {0}", row.SequenceNumber));
-                    result.Add(tr);
                 }
             }
 
-            return result;
+            return transactions;
         }
 
         internal static void DoCalculation()
@@ -913,7 +1001,11 @@ namespace CollectingProductionDataSystem.ConsoleClient
                     oPhd.MinimumConfidence = 100;
                     oPhd.MaximumRows = 1;
 
-                     var tags = "TSN_KT014009_QN_T.PV@TSN_KT014009_PD.PV@1000".Split('@');
+                    var fomatedDate = DateTime.Now.ToString("M/d/yyyy hh:mm:ss tt", CultureInfo.InvariantCulture);
+                    oPhd.StartTime = fomatedDate;
+                    oPhd.EndTime = fomatedDate;
+
+                    var tags = "TSN_KT014009_QN_T.PV@TSN_KT014009_PD.PV@1000".Split('@');
 
                     var recordDataTime = new DateTime(2016, 2, 23, 0, 0, 0);
 
@@ -931,18 +1023,19 @@ namespace CollectingProductionDataSystem.ConsoleClient
                     var endPhdTimestamp = string.Format("NOW-{0}H{1}M", Math.Truncate(endTimestamp.TotalHours), endTimestamp.Minutes);
                     var beginPhdTimestamp = string.Format("NOW-{0}H{1}M", Math.Truncate(beginTimestamp.TotalHours), beginTimestamp.Minutes);
 
-                    oPhd.StartTime = endPhdTimestamp;
-                    oPhd.EndTime = endPhdTimestamp;
+                    //oPhd.StartTime = endPhdTimestamp;
+                    //oPhd.EndTime = endPhdTimestamp;
                     var result = oPhd.FetchRowData(tags[0]);
                     var row = result.Tables[0].Rows[0];
                     var endValue = Convert.ToInt64(row["Value"]);
+                    Console.WriteLine(row["Timestamp"]);
 
                     result = oPhd.FetchRowData(tags[1]);
                     row = result.Tables[0].Rows[0];
                     var pressure = Convert.ToDecimal(row["Value"]);
 
-                    oPhd.StartTime = beginPhdTimestamp;
-                    oPhd.EndTime = beginPhdTimestamp;
+                    //oPhd.StartTime = beginPhdTimestamp;
+                    //oPhd.EndTime = beginPhdTimestamp;
                     result = oPhd.FetchRowData(tags[0]);
                     row = result.Tables[0].Rows[0];
                     var beginValue = Convert.ToInt64(row["Value"]);
@@ -951,7 +1044,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
                     Console.WriteLine(value);
                 }
             }
-           
+
         }
 
         internal static void ProcessProductionReportTransactionsData()
@@ -963,13 +1056,13 @@ namespace CollectingProductionDataSystem.ConsoleClient
                     var now = DateTime.Now;
                     var today = DateTime.Today.AddDays(-3);
                     var fiveOClock = new DateTime(today.Year, today.Month, today.Day, 4, 30, 0);
-                
+
                     var ts = now - fiveOClock;
                     //if(ts.TotalMinutes > 4 && ts.Hours == 0)
                     {
                         var phdValues = new Dictionary<int, long>();
 
-                        using (var context = new ProductionData(new CollectingDataSystemDbContext(new AuditablePersister(),new Logger())))
+                        using (var context = new ProductionData(new CollectingDataSystemDbContext(new AuditablePersister(), new Logger())))
                         {
                             //if (!context.MeasurementPointsProductsDatas.All().Where(x => x.RecordTimestamp >= today).Any())
                             {
@@ -1057,7 +1150,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
 
                 Console.WriteLine("End roduction report data synchronization!");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }

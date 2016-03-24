@@ -59,6 +59,14 @@
             this.transantionOption = DefaultTransactionOptions.Instance.TransactionOptions;
         }
 
+        public CollectingDataSystemDbContext(IPersister param, ILogger loggerParam, string connectionString)
+            : base(connectionString)
+        {
+            this.persister = param;
+            this.logger = loggerParam;
+            this.transantionOption = DefaultTransactionOptions.Instance.TransactionOptions;
+        }
+
         public IDbSet<Product> Products { get; set; }
 
         public IDbSet<ProductType> ProductTypes { get; set; }
@@ -184,6 +192,8 @@
         public IDbSet<TankStatus> TankStatuses { get; set; }
 
         public IDbSet<TankStatusData> TankStatusDatas { get; set; }
+
+        public IDbSet<UnitDatasTemp> UnitDatasTemps { get; set; }
 
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

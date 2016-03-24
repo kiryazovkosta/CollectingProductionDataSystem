@@ -201,6 +201,7 @@
                         && (factoryId == null || x.UnitConfig.ProcessUnit.FactoryId == factoryId))
                     .ToList();
 
+                //ToDo: On shifts changed to 2 must repair this code 
                 var result = dbResult.Select(x => new MultiShift
                 {
                     TimeStamp = x.RecordTimestamp,
@@ -211,9 +212,10 @@
                     MeasureUnit = x.UnitConfig.MeasureUnit.Code,
                     UnitConfigId = x.UnitConfigId,
                     UnitName = x.UnitConfig.Name,
-                    Shift1 = dbResult.Where(y => y.RecordTimestamp == date && y.ShiftId == ShiftType.First).Where(u => u.UnitConfigId == x.UnitConfigId).FirstOrDefault(),
-                    Shift2 = dbResult.Where(y => y.RecordTimestamp == date && y.ShiftId == ShiftType.Second).Where(u => u.UnitConfigId == x.UnitConfigId).FirstOrDefault(),
-                    Shift3 = dbResult.Where(y => y.RecordTimestamp == date && y.ShiftId == ShiftType.Third).Where(u => u.UnitConfigId == x.UnitConfigId).FirstOrDefault(),
+                    NotATotalizedPosition = x.UnitConfig.NotATotalizedPosition,
+                    Shift1 = dbResult.Where(y => y.RecordTimestamp == date && y.ShiftId == (int)ShiftType.First).Where(u => u.UnitConfigId == x.UnitConfigId).FirstOrDefault(),
+                    Shift2 = dbResult.Where(y => y.RecordTimestamp == date && y.ShiftId == (int)ShiftType.Second).Where(u => u.UnitConfigId == x.UnitConfigId).FirstOrDefault(),
+                    Shift3 = dbResult.Where(y => y.RecordTimestamp == date && y.ShiftId == (int)ShiftType.Third).Where(u => u.UnitConfigId == x.UnitConfigId).FirstOrDefault(),
                 }).Distinct(new MultiShiftComparer()).ToList();
 
                 var kendoPreparedResult = Mapper.Map<IEnumerable<MultiShift>, IEnumerable<UnitsReportsDataViewModel>>(result);
@@ -472,7 +474,7 @@
                         x.UnitConfig.ShiftProductTypeId == CommonConstants.DailyInfoDailyInfoHydrocarbonsShiftTypeId
                         && (factoryId == null || x.UnitConfig.ProcessUnit.FactoryId == factoryId))
                     .ToList();
-
+                // ToDo: On shifts changed to 2 must repair this code 
                 var result = dbResult.Select(x => new MultiShift
                 {
                     TimeStamp = x.RecordTimestamp,
@@ -483,9 +485,9 @@
                     MeasureUnit = x.UnitConfig.MeasureUnit.Code,
                     UnitConfigId = x.UnitConfigId,
                     UnitName = x.UnitConfig.Name,
-                    Shift1 = dbResult.Where(y => y.RecordTimestamp == date && y.ShiftId == ShiftType.First).Where(u => u.UnitConfigId == x.UnitConfigId).FirstOrDefault(),
-                    Shift2 = dbResult.Where(y => y.RecordTimestamp == date && y.ShiftId == ShiftType.Second).Where(u => u.UnitConfigId == x.UnitConfigId).FirstOrDefault(),
-                    Shift3 = dbResult.Where(y => y.RecordTimestamp == date && y.ShiftId == ShiftType.Third).Where(u => u.UnitConfigId == x.UnitConfigId).FirstOrDefault(),
+                    Shift1 = dbResult.Where(y => y.RecordTimestamp == date && y.ShiftId == (int)ShiftType.First).Where(u => u.UnitConfigId == x.UnitConfigId).FirstOrDefault(),
+                    Shift2 = dbResult.Where(y => y.RecordTimestamp == date && y.ShiftId == (int)ShiftType.Second).Where(u => u.UnitConfigId == x.UnitConfigId).FirstOrDefault(),
+                    Shift3 = dbResult.Where(y => y.RecordTimestamp == date && y.ShiftId == (int)ShiftType.Third).Where(u => u.UnitConfigId == x.UnitConfigId).FirstOrDefault(),
                 }).Distinct(new MultiShiftComparer()).ToList();
 
                 var kendoPreparedResult = Mapper.Map<IEnumerable<MultiShift>, IEnumerable<UnitsReportsDataViewModel>>(result);

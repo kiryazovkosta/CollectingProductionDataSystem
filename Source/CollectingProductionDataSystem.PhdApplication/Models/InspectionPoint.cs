@@ -1,6 +1,5 @@
-﻿namespace CollectingProductionDataSystem.Phd2SqlProductionData.Models
+﻿namespace CollectingProductionDataSystem.PhdApplication.Models
 {
-
     public class InspectionPoint
     {
         public int UnitId { get; set; }

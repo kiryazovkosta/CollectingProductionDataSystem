@@ -555,7 +555,6 @@ var unitGridsData = (function () {
             $.each(dataCollection.items, function (key, value) {
                 if (ConvertGridRows(value, grid) === true) {
                     modifyGridRow(value, grid);
-
                 }
             })
 
@@ -583,6 +582,19 @@ var unitGridsData = (function () {
                 $("#" + $(grid.element).attr('id') + " tbody").find("tr[data-uid=" + uid + "]").addClass("bg-danger");
             }
 
+            if (row.Status !== undefined) {
+                if (row.Status === 1) {
+                    var uid = row.uid;
+                    $("#" + $(grid.element).attr('id') + " tbody").find("tr[data-uid=" + uid + "]").addClass("warning-animation");
+                }
+
+                if (row.Status === 2) {
+                    var uid = row.uid;
+                    $("#" + $(grid.element).attr('id') + " tbody").find("tr[data-uid=" + uid + "]").addClass("error-animation");
+                }
+            }
+
+
             if (row.UnitConfig) {
                 if (row.UnitConfig.CollectingDataMechanism === manualIndicator) {
                     currentUid = row.uid;
@@ -604,6 +616,26 @@ var unitGridsData = (function () {
                     editButton = $(currenRow).find(".k-grid-edit");
                     editButton.click({ data: row, url: "/ShiftReporting/Units/ShowManualSelfCalculatedDataModal" }, manualEntry);
                 }
+            }
+
+            if (row.IsTotalPosition) {
+                currentUid = row.uid;
+                currenRow = grid.table.find("tr[data-uid='" + currentUid + "']");
+                var prevRow = $(currenRow).prev('tr');
+                if (prevRow) {
+                    if (prevRow.hasClass("k-grouping-row")) {
+                        prevRow.remove();
+                    }
+                }
+                $(currenRow).addClass("total");
+                var groupCells = $(currenRow).find("td");
+                $(groupCells[6]).attr("colspan", 5);
+                $.each(groupCells, function (ix, cell) {
+                    $(cell).removeClass("k-group-cell");
+                    if (ix < 6) {
+                        $(cell).attr("style","display:none !important");
+                    }
+                });
             }
         }
     }
@@ -731,6 +763,49 @@ var unitGridsData = (function () {
         return result;
     }
 
+    function OnMonthlyExcelExport(ev) {
+        var dataRows = ev.sender._data;
+        var totalRowCodes = [];
+        dataRows.forEach(function (value) {
+            if (value.IsTotalPosition === true) {
+                totalRowCodes.push(value.UnitMonthlyConfig.Code);
+            }
+        });
+        var excelRows = ev.workbook.sheets[0].rows;
+        excelRows.forEach(function (row, index, excelRows) {
+            if (row.cells[2]) {
+                if (isInArray(row.cells[2].value, totalRowCodes)) {
+                    row.cells[0].value = row.cells[4].value;
+                    row.cells[0].colSpan = 5;
+                    row.cells.splice(1,4);
+                    if (excelRows[index - 1]) {
+                        if (excelRows[index - 1].type === "group-header") {
+                            excelRows[index - 1].markForDelete = true;
+                        } 
+                    }
+                    row.cells.forEach(function (cell) {
+                        cell.background = "#7a7a7a";
+                        cell.color = "#fff";
+                    });
+                }
+            }
+        });
+
+        index = excelRows.length - 1;
+
+        while (index >= 0) {
+            if (excelRows[index].markForDelete) {
+                excelRows.splice(index, 1);
+            }
+
+            index -= 1;
+        }
+    }
+
+    function isInArray(value, array) {
+        return array.indexOf(value) > -1;
+    }
+
     return {
         SendDate: sendDate,
         SendTanksData: SendTanksData,
@@ -742,5 +817,6 @@ var unitGridsData = (function () {
         FormatGridToPdfExport: FormatGridToPdfExport,
         SendDateForSummaryReports: sendDateForSummaryReports,
         BlinkDemo: blinkDemo,
+        OnMonthlyExcelExport: OnMonthlyExcelExport
     };
 })();

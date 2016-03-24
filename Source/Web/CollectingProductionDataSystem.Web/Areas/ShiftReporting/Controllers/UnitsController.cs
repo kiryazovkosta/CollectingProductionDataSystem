@@ -28,6 +28,7 @@
     using Newtonsoft.Json;
     using Resources = App_GlobalResources.Resources;
     using CollectingProductionDataSystem.Infrastructure.Contracts;
+    using CollectingProductionDataSystem.Models.Nomenclatures;
 
     [Authorize]
     public class UnitsController : AreaBaseController
@@ -36,20 +37,23 @@
         private readonly IUnitDailyDataService dailyServices;
         private readonly IProductionDataCalculatorService productionDataCalculator;
         private readonly ILogger logger;
+        private readonly IShiftService shiftService;
 
-        public UnitsController(IProductionData dataParam, IUnitsDataService shiftServicesParam, IUnitDailyDataService dailyServicesParam, IProductionDataCalculatorService productionDataCalcParam, ILogger loggerParam)
+        public UnitsController(IProductionData dataParam, IUnitsDataService shiftServicesParam, IUnitDailyDataService dailyServicesParam, 
+            IProductionDataCalculatorService productionDataCalcParam, ILogger loggerParam, IShiftService shiftServiceParam)
             : base(dataParam)
         {
             this.shiftServices = shiftServicesParam;
             this.dailyServices = dailyServicesParam;
             this.productionDataCalculator = productionDataCalcParam;
+            this.shiftService = shiftServiceParam;
             this.logger = loggerParam;
         }
 
         [HttpGet]
         public ActionResult UnitsData()
         {
-            // ToDo: It's very importaint to set manual data indicator which sets different process of entering data (water-meter, flow-meter, electro-meter, etc.)
+            // It's very importaint to set manual data indicator which sets different process of entering data (water-meter, flow-meter, electro-meter, etc.)
             ViewBag.ManualIndicator = "MD";
             ViewBag.ManualCalcumated = "MC";
             ViewBag.ManualSelfCalculated = "MS";
@@ -288,6 +292,17 @@
         [ValidateAntiForgeryToken]
         public ActionResult ShowManualDataModal(UnitDataViewModel model)
         {
+            var previousShiftDate = DateTime.MinValue;
+            var previousShiftId = this.shiftService.GetPreviousShiftAndDate(model.RecordTimestamp, model.Shift, out previousShiftDate);
+            var approvedPreviousShiftForProcessUnit = this.data.UnitsApprovedDatas.All()
+                .Any(x => x.RecordDate == previousShiftDate
+                    && x.ShiftId == previousShiftId
+                    && x.ProcessUnitId == model.UnitConfig.ProcessUnitId);
+            if (!approvedPreviousShiftForProcessUnit)
+            {
+                this.ModelState.AddModelError("", "Не е потвърдена предходната смяна!");  
+            }
+
             if (ModelState.IsValid)
             {
                 var startupValue = GetUnitConfigStartupValue(model);
@@ -454,7 +469,15 @@
                 var formulaCode = unitConfig.CalculatedFormula ?? string.Empty;
                 var arguments = PopulateFormulaTadaFromPassportData(unitConfig);
                 PopulateFormulaDataFromRelatedUnitConfigs(unitConfig, arguments, model);
-                var newValue = this.productionDataCalculator.Calculate(formulaCode, arguments);
+                double newValue = 0;
+                if (formulaCode.Equals("C9"))
+                { 
+                    newValue = this.CalculateByMathExpression(unitConfig, model.RecordTimestamp, model.Shift);
+                }   
+                else
+                {
+                    newValue = this.productionDataCalculator.Calculate(formulaCode, arguments);
+                }
                 IEfStatus result = UpdateCalculatedUnitConfig(unitConfigId, newValue, model);
                 return result;
             }
@@ -597,6 +620,38 @@
             }
         }
 
+        private double CalculateByMathExpression(UnitConfig unitConfig, DateTime targetDay, int shiftId)
+        {
+            var inputParams = new Dictionary<string, double>();
+            int indexCounter = 0;
+            var mathExpression = unitConfig.CustomFormulaExpression;
+            var relatedunitConfigs = unitConfig.RelatedUnitConfigs.ToList();
+            var confidence = 100;
+            foreach (var relatedunitConfig in relatedunitConfigs)
+            {
+                var element = data.UnitsData
+                                  .All()
+                                  .Where(x => x.RecordTimestamp == targetDay)
+                                  .Where(x => x.ShiftId == shiftId)
+                                  .Where(x => x.UnitConfigId == relatedunitConfig.RelatedUnitConfigId)
+                                  .FirstOrDefault();
+                var inputValue = (element != null) ? element.RealValue : 0.0;
+                if (inputValue == 0.0)
+                {
+                    if (element != null && element.Confidence != 100)
+                    {
+                        confidence = element.Confidence;
+                    }
+                }
+
+                inputParams.Add(string.Format("p{0}", indexCounter), inputValue);
+                indexCounter++;
+            }
+
+            double calculatedValue = new ProductionDataCalculatorService(this.data).Calculate(mathExpression, "p", inputParams);
+            return calculatedValue;
+        }
+
         private void UpdateRecord(UnitsManualData existManualRecord, UnitDataViewModel model)
         {
             existManualRecord.Value = model.UnitsManualData.Value;
@@ -634,29 +689,25 @@
         {
             var startupValue = decimal.MinValue;
 
-            var lastCreatedData = data.UnitEnteredForCalculationDatas.All().Where(x => x.UnitsData.UnitConfigId == model.UnitConfigId).OrderByDescending(x => x.CreatedOn).FirstOrDefault();
-            var lastModifiedData = data.UnitEnteredForCalculationDatas.All().Where(x => x.UnitsData.UnitConfigId == model.UnitConfigId).OrderByDescending(x => x.ModifiedOn).FirstOrDefault();
-
-            if (lastCreatedData != null && lastModifiedData != null)
+            var currentEnteredData = data.UnitEnteredForCalculationDatas.All().Where(x => x.UnitDataId == model.Id).FirstOrDefault();
+            if (currentEnteredData != null)
             {
-                if (lastModifiedData.ModifiedOn == null || (lastCreatedData.CreatedOn > lastModifiedData.ModifiedOn))
-                {
-                    startupValue = lastCreatedData.NewValue;
-                }
-                else
-                {
-                    startupValue = lastModifiedData.NewValue;
-                }
-            }
-            else if (lastCreatedData != null && lastModifiedData == null)
-            {
-                startupValue = lastCreatedData.NewValue;
-            }
-            else if (lastModifiedData != null && lastCreatedData == null)
-            {
-                startupValue = lastModifiedData.NewValue;
+                startupValue = currentEnteredData.OldValue;
             }
             else
+            {
+                var previousEnteredData = data.UnitEnteredForCalculationDatas.All()
+                    .Include(x=>x.UnitsData)
+                    .Where(x => x.UnitsData.UnitConfigId == model.UnitConfigId)
+                    .OrderByDescending(y => y.Id)
+                    .FirstOrDefault();
+                if (previousEnteredData != null)
+	            {
+		            startupValue = previousEnteredData.NewValue;
+	            }
+            }
+
+            if (startupValue == decimal.MinValue)
             {
                 var unitConfig = data.UnitConfigs.All().Where(x => x.Id == model.UnitConfigId).FirstOrDefault();
                 if (unitConfig.StartupValue.HasValue)

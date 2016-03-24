@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CollectingProductionDataSystem.Phd2SqlProductionData.Models
+namespace CollectingProductionDataSystem.PhdApplication.Models
 {
     public class PreviousShift
     {

@@ -95,7 +95,10 @@
                     }
                     else
                     {
-                        totallyQuantityByProducts[item.ProductId] = item.RealMass;
+                        if (item.RealMass > 0)
+                        {
+                            totallyQuantityByProducts[item.ProductId] = item.RealMass;   
+                        }
                     }
                 }
 

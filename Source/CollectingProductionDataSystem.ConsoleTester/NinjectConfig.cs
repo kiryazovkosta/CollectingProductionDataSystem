@@ -25,7 +25,7 @@
         public NinjectConfig() 
         {
             this.kernel = new Ninject.StandardKernel();
-            kernel.Bind<DbContext>().To<CollectingDataSystemDbContext>();
+            //kernel.Bind<DbContext>().To<CollectingDataSystemDbContext>();
             kernel.Bind(typeof(IDeletableEntityRepository<>)).To(typeof(DeletableEntityRepository<>));
             kernel.Bind(typeof(IRepository<>)).To(typeof(GenericRepository<>));
             kernel.Bind<IProductionData>().To<ProductionData>();

@@ -66,6 +66,8 @@
 
         public bool NotATotalizedPosition { get; set; }
 
+        public string  ProcessUnitAlias { get; set; }
+
         [UIHint("UnitConfigUnitDailyConfigEditor")]
         [Display(Name = "UnitConfigUnitDailyConfig", ResourceType = typeof(Resources.Layout))]
         public ICollection<UnitConfigUnitDailyConfigViewModel> UnitConfigUnitDailyConfigs { get; set; }

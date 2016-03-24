@@ -1726,6 +1726,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to IsTotalPosition.
+        /// </summary>
+        public static string IsTotalPosition {
+            get {
+                return ResourceManager.GetString("IsTotalPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to User LogIns Count .
         /// </summary>
         public static string IsUserLoggedIn {
@@ -2253,6 +2262,15 @@ namespace App_GlobalResources.Resources {
         public static string NomUploadTitle {
             get {
                 return ResourceManager.GetString("NomUploadTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to NotATotalizedPosition.
+        /// </summary>
+        public static string NotATotalizedPosition {
+            get {
+                return ResourceManager.GetString("NotATotalizedPosition", resourceCulture);
             }
         }
         

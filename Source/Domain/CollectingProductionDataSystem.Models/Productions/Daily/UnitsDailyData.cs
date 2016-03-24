@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations.Schema;
+    using System.Text;
     using CollectingProductionDataSystem.Models.Abstract;
     using CollectingProductionDataSystem.Models.Contracts;
     using System;
@@ -59,6 +60,21 @@
             {
                 return (double)this.TotalMonthQuantity + this.RealValue;
             }
+        }
+
+        public override string ToString()
+        {
+            var sb = new StringBuilder();
+            sb.AppendFormat("{0} | ", this.CreatedOn);
+            sb.AppendFormat("{0} | ", this.Id.ToString().PadLeft(10, '0'));
+            sb.AppendFormat("{0:10} | ", this.UnitsDailyConfig.Code);
+            sb.AppendFormat("{0:50} | ", this.UnitsDailyConfig.Name);
+            sb.AppendFormat("{0:0.00000} | ", this.Value);
+            sb.AppendFormat("{0:0.00000} | ", this.UnitsManualDailyData.Value);
+            sb.AppendFormat("{0:0.00000} | ", this.RealValue);
+            sb.AppendFormat("{0} | ", this.TotalMonthQuantity);
+
+            return sb.ToString();
         }
     }
 }

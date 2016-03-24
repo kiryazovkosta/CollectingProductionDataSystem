@@ -128,6 +128,9 @@
         [Display(Name = "ProcessUnitAlias", ResourceType = typeof(Resources.Layout))]
         public string ProcessUnitAlias { get; set; }
 
+         [Display(Name = "NotATotalizedPosition", ResourceType = typeof(Resources.Layout))]
+        public bool NotATotalizedPosition { get; set; }
+
         /// <summary>
         /// Creates the mappings.
         /// </summary>
@@ -143,7 +146,7 @@
                 //    p => (p.RelatedUnitConfigs != null) && (p.RelatedUnitConfigs.Count != 0) ?
                 //    p.RelatedUnitConfigs : new HashSet<RelatedUnitConfigs> { new RelatedUnitConfigs() }));
 
-            
+
             configuration.CreateMap<UnitConfigViewModel, UnitConfig>()
                 .ForMember(p => p.ShiftProductTypeId, opt => opt.MapFrom(p => p.ShiftProductTypeId == 0 ? null : (Nullable<int>)p.ShiftProductTypeId))
                 .ForMember(p => p.RelatedUnitConfigs, opt => opt.MapFrom(p => p.RelatedUnitConfigs != null ?
@@ -167,9 +170,10 @@
                 .ForMember(p => p.UnitConfigUnitDailyConfigs, opt => opt.Ignore())
                 .ForMember(p => p.IsConverted, opt => opt.Ignore())
                 .ForMember(p => p.StartupValue, opt => opt.Ignore())
-                .ForMember(p => p.NotATotalizedPosition, opt => opt.Ignore())
+                //.ForMember(p => p.NotATotalizedPosition, opt => opt.Ignore())
                 .ForMember(p => p.NeedToGetOnlyLastShiftValue, opt => opt.Ignore())
-                .ForMember(p => p.EnteredMeasureUnit, opt => opt.Ignore());
+                .ForMember(p => p.EnteredMeasureUnit, opt => opt.Ignore())
+                .ForMember(p => p.UnitDatasTemps, opt => opt.Ignore());
                 //.ForMember(p => p.CalculationPercentage, opt => opt.Ignore())
                 //.ForMember(p => p.IsMemberOfShiftsReport, opt=>opt.Ignore())
                 //.ForMember(p=>p.DataSource, opt=>opt.Ignore())

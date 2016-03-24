@@ -4,6 +4,7 @@
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
     using AutoMapper;
+    using CollectingProductionDataSystem.Enumerations;
     using CollectingProductionDataSystem.Infrastructure.Mapping;
     using CollectingProductionDataSystem.Models.Nomenclatures;
     using CollectingProductionDataSystem.Models.Productions;
@@ -30,17 +31,48 @@
         public UnitsManualDataViewModel UnitsManualData { get; set; }
 
         [Display(Name = "Shift", ResourceType = typeof(Resources.Layout))]
-        public ShiftType Shift { get; set; }
+        public int Shift { get; set; }
 
         public bool IsEditable { get; set; }
+
+        public bool HasManualData { get; set; }
+
+        public Status Status
+        {
+            get
+            {
+                if (this.HasManualData)
+                {
+                    return Status.Ok;
+                }
+                else
+                {
+                    if (Confidence == 100)
+                    {
+                        return Status.Ok;
+                    }
+                    if (Confidence >= 50)
+                    {
+                        return Status.Warning;
+                    }
+                    else 
+                    {
+                        return Status.Error;
+                    }
+                }
+            }
+        }
+
+        public int Confidence { get; set; }
 
         public void CreateMappings(IConfiguration configuration)
         {
             configuration.CreateMap<UnitsData, UnitDataViewModel>()
                 .ForMember(p => p.UnitsManualData, opt => opt.MapFrom(p => p.UnitsManualData ?? new UnitsManualData() { Value = p.Value ?? 0M }))
                 .ForMember(p => p.Shift, opt => opt.MapFrom(p => p.ShiftId))
-                .ForMember(p => p.IsEditable, opt => opt.MapFrom(p => p.UnitConfig.IsEditable));
-           
+                .ForMember(p => p.IsEditable, opt => opt.MapFrom(p => p.UnitConfig.IsEditable))
+                .ForMember(p => p.HasManualData, opt => opt.MapFrom(p => p.UnitsManualData!=null));
+
         }
     }
 
@@ -110,7 +142,7 @@
         {
             get
             {
-                return this.Id.ToString().PadLeft(2,'0')+ " " + this.Name;
+                return this.Id.ToString().PadLeft(2, '0') + " " + this.Name;
             }
         }
     }
@@ -129,7 +161,7 @@
 
         [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
         [Display(Name = "ProcessUnit", ResourceType = typeof(Resources.Layout))]
-        public string ShortName { get; set; } 
+        public string ShortName { get; set; }
 
     }
 

@@ -30,6 +30,11 @@
         {
         }
 
+        public ProductionData(IPersister persisterParam, ILogger loggerParam, string connectionString)
+            : this(new CollectingDataSystemDbContext(persisterParam, loggerParam, connectionString))
+        {
+        }
+
         public ProductionData(IDbContext context)
         {
             this.context = context;
@@ -304,7 +309,6 @@
             get
             {
                 return this.GetDeletableEntityRepository<UnitApprovedMonthlyData>();
-
             }
         }
 
@@ -517,6 +521,14 @@
             get
             {
                 return this.GetRepository<AuditLogRecord>();
+            }
+        }
+
+        public IRepository<UnitDatasTemp> UnitDatasTemps
+        {
+            get
+            {
+                return this.GetRepository<UnitDatasTemp>();
             }
         }
 

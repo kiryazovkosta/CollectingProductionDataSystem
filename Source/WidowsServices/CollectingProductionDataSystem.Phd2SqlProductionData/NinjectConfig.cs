@@ -1,29 +1,34 @@
 ﻿namespace CollectingProductionDataSystem.Phd2SqlProductionData
 {
+    using CollectingProductionDataSystem.Application.Contracts;
+    using CollectingProductionDataSystem.Application.MailerService;
     using CollectingProductionDataSystem.Data;
     using CollectingProductionDataSystem.Data.Common;
     using CollectingProductionDataSystem.Data.Concrete;
     using CollectingProductionDataSystem.Data.Contracts;
     using CollectingProductionDataSystem.Infrastructure.Contracts;
     using CollectingProductionDataSystem.Infrastructure.Log;
+    using CollectingProductionDataSystem.PhdApplication.Contracts;
+    using CollectingProductionDataSystem.PhdApplication.PrimaryDataServices;
     using Ninject;
     using System;
     using System.Data.Entity;
     using System.Linq;
+    using log4net;
 
     public class NinjectConfig : IDisposable
     {
-        private readonly IKernel kernel;
-        public NinjectConfig() 
+        private static readonly object lockObj = new object();
+        private static NinjectConfig injector;
+        private static IKernel kernel;
+
+        /// <summary>
+        /// Prevents a default instance of the <see cref="NinjectInjector" /> class from being created.
+        /// </summary>
+        private NinjectConfig()
         {
-            this.kernel = new Ninject.StandardKernel();
-            kernel.Bind<DbContext>().To<CollectingDataSystemDbContext>();
-            kernel.Bind(typeof(IDeletableEntityRepository<>)).To(typeof(DeletableEntityRepository<>));
-            kernel.Bind(typeof(IRepository<>)).To(typeof(GenericRepository<>));
-            kernel.Bind<IProductionData>().To<ProductionData>();
-            kernel.Bind<IPersister>().To<AuditablePersister>();
-            kernel.Bind<IEfStatus>().To<EfStatus>();
-            kernel.Bind<ILogger>().To<Logger>();
+            kernel = new StandardKernel();
+            InitializeKernel(kernel);
         }
 
         /// <summary>
@@ -32,17 +37,45 @@
         /// </summary>
         public void Dispose()
         {
-            this.kernel.Dispose();
+            kernel.Dispose();
         }
 
-        public IKernel Kernel
+        public static IKernel GetInjector
         {
             get
             {
-                return this.kernel;
+                if (injector == null)
+                {
+                    lock (lockObj)
+                    {
+                        if (injector == null)
+                        {
+                            injector = new NinjectConfig();
+                        }
+                    }
+                }
+
+                return kernel;
             }
         }
-    
-        
+
+        /// <summary>
+        /// Initializes the kernel.
+        /// </summary>
+        public static void InitializeKernel(IKernel kernel)
+        {
+            kernel.Bind<DbContext>().To<CollectingDataSystemDbContext>();
+            kernel.Bind(typeof(IDeletableEntityRepository<>)).To(typeof(DeletableEntityRepository<>));
+            kernel.Bind(typeof(IRepository<>)).To(typeof(GenericRepository<>));
+            kernel.Bind<IProductionData>().To<ProductionData>();
+            kernel.Bind<IPersister>().To<AuditablePersister>();
+            kernel.Bind<IEfStatus>().To<EfStatus>();
+            kernel.Bind<ILogger>().To<Logger>();
+            kernel.Bind<ILog>().ToMethod(context => LogManager.GetLogger("CollectingProductionDataSystem.Phd2SqlProductionData"));
+            kernel.Bind<IMailerService>().To<MailerService>();
+            kernel.Bind<IPhdPrimaryDataService>().To<PhdPrimaryDataService>();
+        }
     }
+
+
 }

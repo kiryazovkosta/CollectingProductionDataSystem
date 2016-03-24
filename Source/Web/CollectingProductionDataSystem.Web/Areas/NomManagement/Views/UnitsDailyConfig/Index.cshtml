@@ -1,7 +1,8 @@
 ﻿@using CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewModels;
+@using Resources = App_GlobalResources.Resources;
 
 @(Html.Kendo()
-      .Grid<CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewModels.UnitsDailyConfigViewModel>()
+      .Grid<UnitsDailyConfigViewModel>()
       .Name("grid")
       .Columns(columns =>
       {
@@ -15,6 +16,7 @@
           .Width(100);
           columns.Bound(c => c.Name).Width(200);
           columns.ForeignKey(c => c.ProcessUnitId, (System.Collections.IEnumerable)ViewData["processUnits"], "Id", "FullName").EditorTemplateName("ProcessUnitViewModel").Width(280);
+          columns.Bound(c => c.ProcessUnitAlias).Width(140);
           columns.ForeignKey(c => c.ProductId, (System.Collections.IEnumerable)ViewData["products"], "Id", "Name").EditorTemplateName("ProductViewModel").Width(280);
           columns.ForeignKey(c => c.MeasureUnitId, (System.Collections.IEnumerable)ViewData["measureUnits"], "Id", "Name").EditorTemplateName("MeasureUnitViewModel").Width(280);
           columns.ForeignKey(c => c.DailyProductTypeId, (System.Collections.IEnumerable)ViewData["dailyProductTypes"], "Id", "Name").EditorTemplateName("DailyProductTypeViewModel").Width(280);
@@ -30,24 +32,30 @@
           columns.Command(command => { command.Edit(); command.Destroy(); }).Width(230);
       })
       .Resizable(res => res.Columns(true))
-      .ToolBar(toolbar =>
-{
-    toolbar.Create();
-    toolbar.Excel();
-})
+      .ToolBar(toolbar =>        {
+            toolbar.Create();
+            toolbar.Excel();
+        })
+           .Excel(excel => excel
+                 .FileName(@Resources.Layout.UnitsDailyConfig + "_" + DateTime.Now + ".xlsx")
+                 .Filterable(true)
+                 .ProxyURL(Url.Action("Excel_Export_Save", "Ajax", new { area = "" }))
+                 .AllPages(true)
+                )
       .Editable(editable => editable.Mode(GridEditMode.InLine))
       .Pageable(pageable => pageable
-.Refresh(true)
-.PageSizes(new[] { 20, 50, 100 })
-.ButtonCount(5)
-)
+                    .Refresh(true)
+                    .PageSizes(new[] { 20, 50, 100 })
+                    .ButtonCount(5)
+                )
       .Sortable(sortable =>
-{
-    sortable.SortMode(GridSortMode.SingleColumn);
-})
+                {
+                    sortable.SortMode(GridSortMode.SingleColumn);
+                })
       .Filterable()
       .Scrollable(scrol => scrol.Height(620))
       .Scrollable()
+
       .DataSource(dataSource => dataSource
 .Ajax()
 .PageSize(20)

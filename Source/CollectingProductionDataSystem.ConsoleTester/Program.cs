@@ -27,7 +27,7 @@ namespace CollectingProductionDataSystem.ConsoleTester
 {
     class Program
     {
-        private static IUnitDailyDataService dailyService;
+        private static UnitDailyDataService dailyService;
         private static IProductionData data;
         private static TransactionOptions transantionOption = DefaultTransactionOptions.Instance.TransactionOptions;
         private static NinjectConfig ninject;
@@ -39,10 +39,14 @@ namespace CollectingProductionDataSystem.ConsoleTester
         {
             ninject = new NinjectConfig();
             kernel = ninject.Kernel;
-            dailyService = new UnitDailyDataService(data, kernel, new CalculatorService());
             data = new ProductionData(new CollectingDataSystemDbContext());
-            testUnitDailyCalculationService = kernel.Get<ITestUnitDailyCalculationService>();
-            service = kernel.Get<UnitMothlyDataService>();
+            dailyService = kernel.Get<UnitDailyDataService>();//new UnitDailyDataService(data, kernel, new CalculatorService());
+            
+
+            //dailyService = new UnitDailyDataService(data, kernel, new CalculatorService());
+            //data = new ProductionData(new CollectingDataSystemDbContext());
+            //testUnitDailyCalculationService = kernel.Get<ITestUnitDailyCalculationService>();
+            //service = kernel.Get<UnitMothlyDataService>();
         }
 
         static void Main(string[] args)
@@ -61,15 +65,19 @@ namespace CollectingProductionDataSystem.ConsoleTester
             //var str = string.Format("Some formula * {0}", (2.34).ToString(System.Globalization.CultureInfo.InvariantCulture));
             //Console.WriteLine(str);
 
+            dailyService.CheckExistsUnitDailyDatas(new DateTime(2016, 3, 6), 35, 1);
 
             var timer = new Stopwatch();
+            var resultDaily = new Dictionary<string, UnitsDailyData>();
 
             //service.GetDataForMonth(DateTime.Now,1);
-
             timer.Start();
-            Update(service);
+            dailyService.AppendTotalMonthQuantityToDailyRecords(resultDaily, 35, new DateTime(2016, 3, 2),2);
+
+            //Update(service);
             timer.Stop();
             Console.WriteLine("Ready!\n Estimated time per operation {0}", timer.Elapsed);
+
         }
 
         private static void Update(UnitMothlyDataService monthlyService, string userName = "Test")

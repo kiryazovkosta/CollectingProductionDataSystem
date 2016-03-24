@@ -26,7 +26,7 @@
         {
             return new MonthlyReportParametersViewModel(
                     reportName: Resources.Layout.UnitMonthlyHEData,
-                    controllerName: "MonthlyHeatEnetgy",
+                    controllerName: "MonthlyHeatEnergy",
                     monthlyReportTypeId: CommonConstants.HeatEnergy,
                     defaultViewName: "EnergyReport");
         }

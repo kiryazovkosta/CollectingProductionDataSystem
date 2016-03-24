@@ -25,10 +25,10 @@ namespace CollectingProductionDataSystem.PhdApplication.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("srv-vm-mes-phd.neftochim.bg")]
-        public string PHD_HOST {
+        [global::System.Configuration.DefaultSettingValueAttribute("srv-vm-mes-phd")]
+        public string PHD_HOST1 {
             get {
-                return ((string)(this["PHD_HOST"]));
+                return ((string)(this["PHD_HOST1"]));
             }
         }
         
@@ -74,6 +74,60 @@ namespace CollectingProductionDataSystem.PhdApplication.Properties {
         public uint PHD_DATA_MAX_ROWS {
             get {
                 return ((uint)(this["PHD_DATA_MAX_ROWS"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public int PHD_OFFSET {
+            get {
+                return ((int)(this["PHD_OFFSET"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool IsTwoPHDS {
+            get {
+                return ((bool)(this["IsTwoPHDS"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("phd-l35-1")]
+        public string PHD_HOST11 {
+            get {
+                return ((string)(this["PHD_HOST11"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int MIN_GET_INVENTORY_HOURS_INTERVAL {
+            get {
+                return ((int)(this["MIN_GET_INVENTORY_HOURS_INTERVAL"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int MAX_GET_INVENTORY_HOURS_INTERVAL {
+            get {
+                return ((int)(this["MAX_GET_INVENTORY_HOURS_INTERVAL"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("srv-vm-mes-phd")]
+        public string PHD_HOST {
+            get {
+                return ((string)(this["PHD_HOST"]));
             }
         }
     }
