@@ -129,6 +129,6 @@ li.list-group-item.mylist-group-item.activeLi{
 .panel.panel-primary.mypanel-primary{
     width:279px;
 }
-aside.col-sm-2.documentation{
-    overflow-x:hidden;
+aside.col-sm-2.documentation {
+   overflow-x:auto; 
 }

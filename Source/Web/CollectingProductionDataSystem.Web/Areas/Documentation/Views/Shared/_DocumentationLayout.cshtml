@@ -7,14 +7,12 @@
     @Styles.Render("~/Content/custom/documentation.css")
 }
 
-<aside class="col-sm-2 documentation">
-    <nav class="panel panel-primary mypanel-primary">
-        <div class="panel-heading mypanel-heading">
-            Съдържание
-        </div>
-        <div class="panel-body">
-            @if (Html.ActionIsAccessibleToUser("UnitsData", "Units", "ShiftReporting"))
-            {
+    <aside class="col-sm-2 documentation">
+        <nav class="panel panel-primary mypanel-primary">
+            <div class="panel-heading mypanel-heading">
+                Съдържание
+            </div>
+            <div class="panel-body">
                 <div class="panel-group" role="tablist">
                     <div class="panel mypanel">
                         <div class="panel-heading mypanel-heading" role="tab" id="collapseListGroupHeading11">
@@ -28,26 +26,26 @@
                             <ul class="list-group mylist-group">
                                 <li class="list-group-item mylist-group-item">
                                     @Ajax.ActionLink("Сменни данни за отчети", "ShiftData", "Help",
-                                             new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "mypage-content", LoadingElementId = "inprogress" })
+                                                 new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "mypage-content", LoadingElementId = "inprogress" })
                                 </li>
                                 <li class="list-group-item mylist-group-item">
                                     @Ajax.ActionLink("Сменни данни за измервателни позиции", "ShiftDataMeasuringPosition", "Help",
-                                             new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "mypage-content", LoadingElementId = "inprogress" })
+                                                 new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "mypage-content", LoadingElementId = "inprogress" })
 
                                 </li>
                                 <li class="list-group-item mylist-group-item">
                                     @Ajax.ActionLink("Сменни данни за наличности по резервоари", "ShiftDataTank", "Help",
-                                                     new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "mypage-content", LoadingElementId = "inprogress" })
+                                                            new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "mypage-content", LoadingElementId = "inprogress" })
+                                </li>
+                                <li class="list-group-item mylist-group-item">
+                                    @Ajax.ActionLink("Количества продукти в магистрални тръбопроводи", "ShiftDataHighwayPipelines", "Help",
+                                                             new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "mypage-content", LoadingElementId = "inprogress" })
                                 </li>
                             </ul>
-
                         </div>
                     </div>
                 </div>
-            }
 
-            @if (Html.ActionIsAccessibleToUser("UnitsDailyData", "UnitsDaily", "DailyReporting"))
-            {
                 <div class="panel-group" role="tablist">
                     <div class="panel mypanel">
                         <div class="panel-heading mypanel-heading" role="tab" id="collapseListGroupHeading12">
@@ -62,32 +60,33 @@
                             <ul class="list-group mylist-group">
                                 <li class="list-group-item mylist-group-item">
                                     @Ajax.ActionLink("Дневни данни за отчети", "DailyData", "Help",
-                                    new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "mypage-content", LoadingElementId = "inprogress" })
+                                        new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "mypage-content", LoadingElementId = "inprogress" })
                                 </li>
                                 <li class="list-group-item mylist-group-item">
                                     @Ajax.ActionLink("Дневни данни за измервателни позиции - Материални потоци", "DailyDataMeasuringPosition", "Help",
-                                             new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "mypage-content", LoadingElementId = "inprogress" })
+                                                 new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "mypage-content", LoadingElementId = "inprogress" })
                                 </li>
                                 <li class="list-group-item mylist-group-item">
                                     @Ajax.ActionLink("Дневни данни за измервателни позиции - Енергийни потоци", "DailyDataEnergyFlows", "Help",
-                                             new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "mypage-content", LoadingElementId = "inprogress" })
+                                                 new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "mypage-content", LoadingElementId = "inprogress" })
                                 </li>
                                 <li class="list-group-item mylist-group-item">
                                     @Ajax.ActionLink("Сменни данни за измервателни позиции - отчет", "ShiftDataMeasuringPositionReport", "Help",
-                                                 new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "mypage-content", LoadingElementId = "inprogress" })
+                                                     new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "mypage-content", LoadingElementId = "inprogress" })
                                 </li>
                                 <li class="list-group-item mylist-group-item">
                                     @Ajax.ActionLink("Данни за експедирани и доставени нефтопродукти", "DailyDataExpedition", "Help",
-                                                 new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "mypage-content", LoadingElementId = "inprogress" })
+                                                     new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "mypage-content", LoadingElementId = "inprogress" })
+                                </li>
+                                <li class="list-group-item mylist-group-item">
+                                    @Ajax.ActionLink("Статус на резервоарите", "DailyDataStatusTank", "Help",
+                                                             new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "mypage-content", LoadingElementId = "inprogress" })
                                 </li>
                             </ul>
                         </div>
                     </div>
                 </div>
-            }
 
-            @if (Html.ActionIsAccessibleToUser("InnerPipelinesData", "InnerPipelines", "MonthlyReporting"))
-            {
                 <div class="panel-group" role="tablist">
                     <div class="panel mypanel">
                         <div class="panel-heading mypanel-heading" role="tab" id="collapseListGroupHeading13">
@@ -102,24 +101,21 @@
                             <ul class="list-group mylist-group">
                                 <li class="list-group-item mylist-group-item">
                                     @Ajax.ActionLink("Месечни данни", "MonthlyData", "Help",
-                                    new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "mypage-content", LoadingElementId = "inprogress" })
+                                        new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "mypage-content", LoadingElementId = "inprogress" })
                                 </li>
                                 <li class="list-group-item mylist-group-item">
                                     @Ajax.ActionLink("Количества продукти във вътрешни тръбопроводи", "MonthlyDataIndoorPipeLines", "Help",
-                                    new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "mypage-content", LoadingElementId = "inprogress" })
+                                        new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "mypage-content", LoadingElementId = "inprogress" })
                                 </li>
                                 <li class="list-group-item mylist-group-item">
                                     @Ajax.ActionLink("Количества продукти в технологични инсталации", "MonthlyDataTechPlants", "Help",
-                                    new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "mypage-content", LoadingElementId = "inprogress" })
+                                        new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "mypage-content", LoadingElementId = "inprogress" })
                                 </li>
                             </ul>
                         </div>
                     </div>
                 </div>
-            }
 
-            @if (Html.ActionIsAccessibleToUser("UnitsReportsData", "SummaryReports", "SummaryReporting"))
-            {
                 <div class="panel-group" role="tablist">
                     <div class="panel mypanel">
                         <div class="panel-heading mypanel-heading" role="tab" id="collapseListGroupHeading14">
@@ -145,27 +141,22 @@
                         </div>
                     </div>
                 </div>
-            }
 
-
-
-         
-
-            @if (Html.ActionIsAccessibleToUser("Index", "Nomenclatures", "NomManagement"))
+                @if (Html.ActionIsAccessibleToUser("Index", "Nomenclatures", "NomManagement"))
             {
-                <div class="panel-group" role="tablist">
-                    <div class="panel mypanel">
-                        <div class="panel-heading mypanel-heading" role="tab" id="collapseListGroupHeading15">
-                            <h4 class="panel-title">
-                                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseListGroup15" aria-expanded="true" aria-controls="collapseListGroup15">
-                                    Номенклатури
-                                </a>
-                            </h4>
-                        </div>
-                        <div id="collapseListGroup15" class="panel-collapse collapse" role="tabpanel" aria-labelledby="collapseListGroupHeading15" aria-expanded="false">
-                            <ul class="list-group mylist-group">
-                                <li class="list-group-item mylist-group-item">
-                                    @Ajax.ActionLink("Номенклатури", "HelpNomenclature", "Help",
+                    <div class="panel-group" role="tablist">
+                        <div class="panel mypanel">
+                            <div class="panel-heading mypanel-heading" role="tab" id="collapseListGroupHeading15">
+                                <h4 class="panel-title">
+                                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseListGroup15" aria-expanded="true" aria-controls="collapseListGroup15">
+                                        Номенклатури
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapseListGroup15" class="panel-collapse collapse" role="tabpanel" aria-labelledby="collapseListGroupHeading15" aria-expanded="false">
+                                <ul class="list-group mylist-group">
+                                    <li class="list-group-item mylist-group-item">
+                                        @Ajax.ActionLink("Номенклатури", "HelpNomenclature", "Help",
                                                      new AjaxOptions()
                                                      {
                                                          HttpMethod = "Get",
@@ -173,55 +164,27 @@
                                                          UpdateTargetId = "mypage-content",
                                                          LoadingElementId = "inprogress"
                                                      })
-                                </li>
-                            </ul>
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
-                </div>
             }
-            @* <div class="panel-group" role="tablist">
-                    <div class="panel mypanel">
-                        <div class="panel-heading mypanel-heading" role="tab" id="collapseListGroupHeading15">
-                            <h4 class="panel-title">
-                                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseListGroup15" aria-expanded="true" aria-controls="collapseListGroup15">
-                                    Администрация
-                                </a>
-                            </h4>
-                        </div>
-                        <div id="collapseListGroup15" class="panel-collapse collapse" role="tabpanel" aria-labelledby="collapseListGroupHeading15" aria-expanded="false">
-                            <ul class="list-group mylist-group">
-                                <li class="list-group-item mylist-group-item">
-                                    @Ajax.ActionLink("Администрация", "HelpAdministration", "Help",
-                                                 new AjaxOptions()
-                                                 {
-                                                     HttpMethod = "Get",
-                                                     InsertionMode = InsertionMode.Replace,
-                                                     UpdateTargetId = "mypage-content",
-                                                     LoadingElementId = "inprogress"
-                                                 })
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>*@
+            </div>
+        </nav>
+    </aside>
 
-
+    <article class="col-sm-10 documentation">
+        <div id="inprogress" style="display:none;">
+            <img src="~/Content/Images/loading.gif" />
         </div>
-    </nav>
-</aside>
-
-<article class="col-sm-10 documentation">
-    <div id="inprogress" style="display:none;">
-        <img src="~/Content/Images/loading.gif" />
-    </div>
-    <div id="mypage-content" class="container-fluid">
-        @RenderBody()
-    </div>
-</article>
+        <div id="mypage-content" class="container-fluid">
+            @RenderBody()
+        </div>
+    </article>
 
 @section scripts{
     @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.min.js")
     <script src="~/Scripts/custom/documentation.js"></script>
     @RenderSection("scripts", false);
 }
-

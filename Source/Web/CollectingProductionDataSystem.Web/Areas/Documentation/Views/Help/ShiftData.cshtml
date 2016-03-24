@@ -1,28 +1,34 @@
-﻿@{
-    Layout = null;
-}
-<div class="mycontainer">
-    <h1>Сменни данни за отчети</h1>
-    <br />
-    <div class="row myrow">
-        <article>
-            <section>
-                <p>За генерирането на сменни данни за отчети се събират данни от три смени:</p>
-                <p><span class="glyphicon glyphicon-play" aria-hidden="true"></span>Първа смяна  - събират се данни от 05:00 часа до 13:00 часа;</p>
-                <p><span class="glyphicon glyphicon-play" aria-hidden="true"></span>Втора смянa - събират се данни от 13:00 часа до 21:00 часа;</p>
-                <p><span class="glyphicon glyphicon-play" aria-hidden="true"></span>Трета смяна - събират се данни от 21:00 часа до 05:00 часа.</p>
-                <p>Права за потвърждаване на сменни отчети има основно потребител с роля "ShiftReporter". Потребител с посочената роля има достъп до меню „Сменни данни“, показано на Фиг.1:</p>
-                <br />
-                <p><img class="img-rounded" src="~/Content/images/ShiftData/smenni_danni.png" /></p>
-                <p class="pCenterSmall">Фиг.1</p>
-            </section>
-            
-       
-            <section>
-                <p>Сменните данни за отчети се събират в две основни групи: </p>
-                <p>•  Сменни данни за измервателни позиции;</p>
-                <p>•  Сменни данни за наличности по резервоари.</p>
-            </section>
-        </article>
-    </div>
+﻿<h1>Сменни данни за отчети</h1>
+<br />
+<div class="row">
+    <article>
+        <section>
+
+            <p>
+                Права за потвърждаване на сменни отчети има основно потребител с роля <b>"ShiftReporter"</b>. 
+                <span><img src=" ~/Content/Images/ShiftData/images.jpg" width="24" height="45"/></span> <br /> Потребител с посочената
+                роля има достъп до меню „Сменни данни“, показано на Фиг.1:
+            </p>
+            <br />
+            <p><img class="img-rounded" src="~/Content/images/ShiftData/НоваСменни_данни.jpg" /></p>
+            <p class="pCenterSmall">Фиг.1</p>
+            <p>За генерирането на сменни данни за отчети се събират данни от три смени:</p>
+            <ul>
+                <li>Първа смяна  - събират се данни от 05:00 часа до 13:00 часа;</li>
+                <li> Втора смянa - събират се данни от 13:00 часа до 21:00 часа;</li>
+                <li> Трета смяна - събират се данни от 21:00 часа до 05:00 часа.</li>
+            </ul>
+        </section>
+        <section>
+            <p>Въвеждането на сменните данни се разделя в две основни групи: </p>
+            <ul>
+                <li> Сменни данни за измервателни позиции;</li>
+                <li> Сменни данни за наличности по резервоари.</li>
+            </ul>
+        </section>
+        <p>
+            Съществува и друга група за въвеждане на сменни данни, наречена „Количества продукти в магистрални тръбопроводи“, която се вижда
+            само от потребител с присъединена роля <b> „HighwayPipelinesDataReporter“ </b>. <span><img src=" ~/Content/Images/ShiftData/images.jpg" width="24" height="45" /></span> 
+        </p>
+    </article>
 </div>

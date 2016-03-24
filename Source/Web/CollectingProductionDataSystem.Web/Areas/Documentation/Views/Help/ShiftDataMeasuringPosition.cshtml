@@ -1,43 +1,48 @@
-﻿@{
-    Layout = null;
-}
-<div class="mycontainer">
-    <h1>Сменни данни за измервателни позиции</h1>
+﻿<h1>Сменни данни за измервателни позиции</h1>
     <br />
-    <div class="row myrow">
+    <div class="row">
         <article>
             <section>
                 <p>Сменните данни за измервателни позиции се избират от меню <b>Сменни данни -> Сменни данни за измервателни позиции,</b> показано на Фиг.1: </p>
                 <p><img class="img-rounded" src="~/Content/images/Shiftdata/Fig4A.png" /></p>
-                <p class="pCenterSmall">Фиг.1</p>
+                <p>Фиг.1</p>
                 <p> Отваря се екран, съдържащ в ляво таблица „Параметри на отчета“ и в дясно таблица „Сменни данни за измервателни позиции“. </p>
                 <p> Таблица „Параметри на отчета“ е показана на Фиг.2.</p>
                 <p><img class="img-rounded" src="~/Content/images/Shiftdata/figura5.png" /></p>
-                <p class="pCenterSmall">Фиг.2</p>
+                <p>Фиг.2</p>
                 <br />
             </section>
             <section>
                 <p>В таблицата се съдържат параметри на отчета, които задължително трябва да се попълнят, а именно:</p>
-                <p><span class="glyphicon glyphicon-play" aria-hidden="true"></span>Производство;</p>
-                <p><span class="glyphicon glyphicon-play" aria-hidden="true"></span>Инсталация;</p>
-                <p><span class="glyphicon glyphicon-play" aria-hidden="true"></span>Дата;</p>
-                <p><span class="glyphicon glyphicon-play" aria-hidden="true"></span>Вид смяна.</p>
-                <p> Ако се натисне бутона <span><img class="img-rounded btnApply" src="~/Content/images/Shiftdata/butonPrilogi.png" /></span> и горепосочените полета не са въведени се извежда следното съобщение за грешка:</p>
-                <p><img class="img-rounded" src="~/Content/images/Shiftdata/figura6.png" /></p>
+                <ul>
+                   <li>Производство;</li>
+                    <li>Инсталация;</li>
+                    <li>Дата;</li>
+                    <li>Смяна.</li>
+                </ul>
+                    <p> Ако се натисне бутона <span><img class="img-rounded btnApply" src="~/Content/images/Shiftdata/butonPrilogi.png" /></span> и горепосочените полета не са въведени се извежда следното съобщение за грешка:</p>
+                    <p><img class="img-rounded" src="~/Content/images/Shiftdata/figura6.png" /></p>
             </section>
             <section>
                 <p> Необходимо е да се въведат всички полета в таблица „Параметри на отчета“. Изборът в поле „Производство“ става от падащо меню, показан на Фиг.4: </p>
                 <p><img class="img-rounded" src="~/Content/images/Shiftdata/figura7.png" /></p>
-                <p class="pCenterSmall">Фиг.4</p>
+                <p>Фиг.4</p>
                 <p>Изборът в поле „Инсталация“ става от падащо  меню, показан на Фиг.5</p>
                 <img class="img-rounded" src="~/Content/images/Shiftdata/figura7A.png" />
-                <p class="pCenterSmall">Фиг.5</p>
+                <p>Фиг.5</p>
+                <p>
+                    <b>Всеки потребител вижда само имената на инсталациите, които са му присъединени към акаунта, с който влиза в системата.</b>
+                </p>
+                <p>
+                    Ако на даден потребител е присвоена и роля <b>"PowerUser"</b>, то този потребител вижда всички инсталации в падащото меню
+                    <span><img src=" ~/Content/Images/ShiftData/images.jpg" width="24" height="45" /> .</span>
+                </p>
                 <p>Изборът в поле „Дата“ става както е показано на Фиг.6:</p>
                 <img class="img-rounded" src="~/Content/images/Shiftdata/figura8.png" />
-                <p class="pCenterSmall">Фиг.6</p>
+                <p>Фиг.6</p>
                 <p>Изборът в поле „Смяна“ става както е показано на Фиг.7:</p>
                 <p><img class="img-rounded" src="~/Content/images/Shiftdata/figura9.png" /></p>
-                <p class="pCenterSmall"> Фиг.7</p>
+                <p> Фиг.7</p>
             </section>
             <section>
                 <p>
@@ -45,29 +50,26 @@
                     <span><img class="img-rounded btnApply" src="~/Content/images/Shiftdata/butonPrilogi.png" /></span>.Появява  се следният екран:
                 </p>
                 <p><img class="img-rounded myWidth102" src="~/Content/images/Shiftdata/figura11.png" /></p>
-                <p class="pCenterB"> Фиг.8</p>
-
-
+                <p> Фиг.8</p>
                 <p>
                     Таблицата съдържа информация, която е необходима за изготвянето на сменния отчет за измервателните позиции
                     в края на всяка смяна. Постъпването на данните е отразено в колона „Начин на постъпване на данни“, като
                     съществуват следните механизми:
                 </p>
-                <p><span class="glyphicon glyphicon-play" aria-hidden="true"></span>А – автоматично постъпване на данни от измервателно устройство;</p>
-                <p><span class="glyphicon glyphicon-play" aria-hidden="true"></span>М – ръчно въвеждане на данни;</p>
-                <p><span class="glyphicon glyphicon-play" aria-hidden="true"></span>MS – ръчно въвеждане на стойност, която се променя по определена формула</p>
-                <p><span class="glyphicon glyphicon-play" aria-hidden="true"></span>MD – ръчно въвеждане на данни от броячи;</p>
-                <p>
-                    <span class="glyphicon glyphicon-play" aria-hidden="true"></span>MC – ръчно въвеждане на стойност, която се променя по определена
-                    формула спрямо стойността й в други измервателни позиции;
-                </p>
-                <p>
-                    <span class="glyphicon glyphicon-play" aria-hidden="true"></span>C – изчислими данни от свързани измервателни позиции. За промяна на
-                    стойността на такъв вид поле е необходимо да се редактира една или повече от свързаните измервателни позиции.
-                </p>
+                <ul>
+                    <li> А – автоматично постъпване на данни от измервателно устройство;</li>
+                    <li>М – ръчно въвеждане на данни;</li>
+                    <li>MS – ръчно въвеждане на стойност, която се променя по определена формула</li>
+                    <li>MD – ръчно въвеждане на данни от броячи;</li>
+                    <li>MC – ръчно въвеждане на стойност, която се променя по определена формула спрямо стойността й в други измервателни позиции;</li>
+                    <li>
+                        C – изчислими данни от свързани измервателни позиции.
+                        За промяна на стойността на такъв вид поле е необходимо да се редактира една или повече от свързаните измервателни позиции.
+                    </li>
+                </ul>
                 <p>Всяка колона от таблицата може да бъде филтрирана по следния начин: </p>
-                <p><img class="img-rounded AllTable" src="~/Content/images/Shiftdata/figura12.png" /></p>
-                <p class="pCenterB"> Фиг.9</p>
+                <p><img class="img-rounded" src="~/Content/images/Shiftdata/figura12.png" /></p>
+                <p> Фиг.9</p>
                 <p>Всеки ред от таблицата може да се редактира като се натисне бутон <span><img class="img-rounded" src="~/Content/images/Shiftdata/edit.png" /></span>.</p>
 
                 <p>
@@ -77,67 +79,67 @@
                 </p>
                 <p>Въвеждат се коректни стойности в колоните за редакция и се натиска бутон <span><img class="img-rounded" src="~/Content/images/Shiftdata/save.png" /></span>.</p>
                 <p><img class="img-rounded myWidth102" src="~/Content/images/Shiftdata/figura14A.png" /></p>
-                <p class="pCenterB"> Фиг.10</p>
+                <p> Фиг.10</p>
                 <p>
                     При редактиране на измервателна позиция с „Начин на постъпване на данни“ „МD“ се отваря екран, показан на Фиг.11.
-                    Необходимо е да се въведе новото показание на брояч и да се избере бутон <span><img class="img-rounded" src="~/Content/images/Shiftdata/butonPrilogi.png" /></span>.
+                    Необходимо е да се въведе новото показание на брояч и да се избере бутон <span><img class="img-rounded btnApply" src="~/Content/images/Shiftdata/butonPrilogi.png" /></span>.
                     Ако не е било въведено старо показание е необходимо да се въведе и то.
                 </p>
-                <p><img class="img-rounded AllTable" src="~/Content/images/Shiftdata/figura15A.png" /></p>
-                <p class="pCenterB"> Фиг.11</p>
+                <p><img class="img-rounded" src="~/Content/images/Shiftdata/figura15A.png" /></p>
+                <p> Фиг.11</p>
                 <p>
                     При редактиране на измервателна позиция с „Начин на постъпване на данни“ „МC“ и „МS“ се отваря екран, показан на Фиг.12. Необходимо е
                     да се въведе стойност в поле „Нова стойност“ и да се избере бутон <span><img class="img-rounded btnApply" src="~/Content/images/Shiftdata/butonPrilogi.png" /></span>.
                 </p>
-                <p><img class="img-rounded AllTable" src="~/Content/images/Shiftdata/figura16A.png" /></p>
-                <p class="pCenterB"> Фиг.12</p>
+                <p><img class="img-rounded" src="~/Content/images/Shiftdata/figura16A.png" /></p>
+                <p> Фиг.12</p>
                 <p>При въвеждане на дробни числа в колоните за редактиране е необходимо да се съобрази със съответните регионални настройки на клиента, който използва компютъра.</p>
                 <p>
                     Въвеждат се коректни стойности в колоните за редакция и се натиска бутон <span><img class="img-rounded" src="~/Content/images/Shiftdata/save.png" /></span>.
                     Ако се въведе невалидна стойност в колоната се появява следното съобщение за грешка, показано на Фиг.13:
                 </p>
                 <p><img class="img-rounded" src="~/Content/images/Shiftdata/figura14.png" /></p>
-                <p class="pCenterB"> Фиг.13</p>
+                <p> Фиг.13</p>
                 <p>Въвеждат се коректни стойности в колоните за редакция и се натиска бутон <span><img class="img-rounded" src="~/Content/images/Shiftdata/save.png" /></span>.</p>
-
                 <p>
                     При избиране на колона „Код“ или на колона „Ръчна стойност“ от таблицата се отваря екран, съдържащ информация кой потребител,
                     кога и какви промени е направил за избраната измервателна позиция, както е показано на Фиг.14:
                 </p>
-                <p><img class="img-rounded AllTable" src="~/Content/images/Shiftdata/figura15.png" /></p>
-                <p class="pCenterB">Фиг.14</p>
+                <p><img class="img-rounded" src="~/Content/images/Shiftdata/figura15.png" /></p>
+                <p>Фиг.14</p>
             </section>
-
             <section>
                 <p>
                     Когато информацията в таблица “Сменни данни за измервателни позиции” е много голяма и не се събира на един екран, тя се прехвърля
                     на следващи екрани като преминаването между различните екрани става чрез бутоните, показани на Фиг.15.
                 </p>
                 <p><img class="img-rounded myPage" src="~/Content/images/Shiftdata/figura63.png" /></p>
-                <p class="pCenterB">Фиг.15</p>
+                <p>Фиг.15</p>
                 <p>
-                    Потребителят с роля „ShiftReporter“ внимателно преглежда всеки ред от таблицата. Когато е готов
-                    да запише отчета натиска бутон „Потвърждавам“ и запазва сменния отчет. Появява се екран за успешна  операция, показан на Фиг.16:
+                    Потребителят с роля <b>„ShiftReporter“</b> внимателно преглежда всеки ред от таблицата. Когато е готов
+                    да запише отчета натиска бутон <span><img class="img-rounded btnApply" src="~/Content/images/DailyData/Potvarjdavam_red.png" /></span> и
+                    запазва сменния отчет. Появява се екран за успешна  операция, показан на Фиг.16:
                 </p>
                 <p><img class="img-rounded" src="~/Content/images/Shiftdata/figura16.png" /></p>
-                <p class="pCenterB">Фиг.16</p>
-                <p>Веднъж потвърден сменен отчет няма възможност за редактиране и повторно потвърждаване.</p>
-
+                <p>Фиг.16</p>
                 <p>
                     <b>
                         Потребителят с роля „ShiftReporter“, след като е избрал конкретни производство, инсталация и дата, трябва
                         да потвърди сменни данни и за трите смени – първа, втора и трета. В противен случай ще се появи съобщение
-                        за грешка при извикването на дневни данни за измервателни позиции за същите избрани параметри производство,
-                        инсталация и дата, което се изпълнява основно от потребител с роля „DailyReporter“ от меню „Дневни данни“ -> “Дневни данни за измервателни позиции“.
+                        за грешка при извикването на дневни данни за измервателни позиции - Материални потоци за същите избрани параметри производство,
+                        инсталация и дата, което се изпълнява основно от потребител с роля „DailyReporter“ от меню „Дневни данни“ -> “Дневни данни за измервателни позиции- Материални потоци“.
                     </b>
                 </p>
                 <p>
-                    Отчетът може само повторно да бъде извикан и експортиран в Excel чрез бутон <span><img class="img-rounded" src="~/Content/images/Shiftdata/Export.png" /></span>.
+                    Веднъж потвърден сменен отчет няма възможност за повторно редактиране или потвърждаване“.
+                </p>
+                <p>
+                    Отчетът може само повторно да бъде извикан и експортиран в Excel чрез бутон <span><img class="img-rounded btnApply" src="~/Content/images/Shiftdata/Export.png" /></span>.
                     Отчетът се експортира и може да се извика по начин, както е показано на Фиг.18:
                 </p>
-                <p><img class="img-rounded myPage" src="~/Content/images/Shiftdata/Figura18.png" /></p>
-                <p class="pCenterB">Фиг.17</p>
+                <p><img class="img-rounded" src="~/Content/images/Shiftdata/Figura18.png" /></p>
+                <p>Фиг.17</p>
             </section>
         </article>
     </div>
-</div>
+

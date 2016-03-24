@@ -73,5 +73,37 @@ namespace CollectingProductionDataSystem.Web.Areas.Documentation.Controllers
         {
             return PartialView();
         }
+         public PartialViewResult ShiftDataHighwayPipelines()
+              {
+                    return PartialView();
+              }
+        public PartialViewResult DailyDataStatusTank()
+              {
+                    return PartialView();
+              }
+        public PartialViewResult MonthlyDataHydroCarbons()
+              {
+                    return PartialView();
+              }
+        public PartialViewResult MonthlyDataFreshWater()
+              {
+                    return PartialView();
+              }
+        public PartialViewResult MonthlyDataCircularWater()
+              {
+                    return PartialView();
+              }
+         public PartialViewResult MonthlyDataPotableWater()
+              {
+                    return PartialView();
+              }
+         public PartialViewResult MonthlyDataHeatEnergy()
+              {
+                    return PartialView();
+              }
+        public PartialViewResult MonthlyDataElectricalEnergy()
+              {
+                    return PartialView();
+              }
     }
 }
