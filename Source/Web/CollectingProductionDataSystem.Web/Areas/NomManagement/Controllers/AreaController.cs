@@ -6,7 +6,7 @@
     using CollectingProductionDataSystem.Models.Inventories;
     using CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewModels;
 
-    public class AreaController : GenericNomController<TankStatus, AreaViewModel>
+    public class AreaController : GenericNomController<Area, AreaViewModel>
     {
         public AreaController(IProductionData dataParam)
             : base(dataParam)
