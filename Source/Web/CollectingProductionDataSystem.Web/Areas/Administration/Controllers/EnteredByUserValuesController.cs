@@ -1,16 +1,15 @@
-﻿using AutoMapper;
-using CollectingProductionDataSystem.Data.Contracts;
-using CollectingProductionDataSystem.Web.Areas.Administration.ViewModels;
-using Kendo.Mvc.Extensions;
-using Kendo.Mvc.UI;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-
-namespace CollectingProductionDataSystem.Web.Areas.Administration.Controllers
+﻿namespace CollectingProductionDataSystem.Web.Areas.Administration.Controllers
 {
+    using System;
+    using System.Data.Entity;
+    using System.Linq;
+    using System.Web.Mvc;
+    using AutoMapper;
+    using CollectingProductionDataSystem.Data.Contracts;
+    using CollectingProductionDataSystem.Web.Areas.Administration.ViewModels;
+    using Kendo.Mvc.Extensions;
+    using Kendo.Mvc.UI;
+
     public class EnteredByUserValuesController : AreaBaseController
     {
         public EnteredByUserValuesController(IProductionData dataParam)
@@ -29,7 +28,20 @@ namespace CollectingProductionDataSystem.Web.Areas.Administration.Controllers
         [ValidateAntiForgeryToken]
         public JsonResult Read([DataSourceRequest]DataSourceRequest request)
         {
-            var result = data.UnitEnteredForCalculationDatas.All().OrderByDescending(x => x.CreatedOn).ToList();
+            var result = data.UnitEnteredForCalculationDatas.All()
+                .Include(x => x.UnitsData)
+                .Include(x => x.UnitsData.UnitConfig)
+                .Include(x => x.UnitsData.UnitConfig.ProcessUnit)
+                .OrderByDescending(x => x.Id).Select(y => new EnteredByUserValueViewModel
+                {
+                    Code = y.UnitsData.UnitConfig.Code, 
+                    CreatedFrom = y.CreatedFrom, 
+                    CreatedOn = y.CreatedOn, 
+                    Name = y.UnitsData.UnitConfig.Name, 
+                    ProcessUnitName = y.UnitsData.UnitConfig.ProcessUnit.FullName, 
+                    OldValue = y.OldValue, 
+                    NewValue = y.NewValue
+                });
             return Json(result.ToDataSourceResult(request, ModelState, Mapper.Map<EnteredByUserValueViewModel>));
         }
     }

@@ -21,14 +21,14 @@ namespace CollectingProductionDataSystem.Web.Areas.Administration.ViewModels
         //[Display(Name = "NewValue", ResourceType = typeof(Resources.Layout))]
         public decimal NewValue { get; set; }
 
-        //[Display(Name = "ProcessUnit", ResourceType = typeof(Resources.Layout))]
-        //public string ProcessUnitName { get; set; }
+        [Display(Name = "ProcessUnit", ResourceType = typeof(Resources.Layout))]
+        public string ProcessUnitName { get; set; }
 
-        //[Display(Name = "Code", ResourceType = typeof(Resources.Layout))]
-        //public string Code { get; set; }
+        [Display(Name = "Code", ResourceType = typeof(Resources.Layout))]
+        public string Code { get; set; }
 
-        //[Display(Name = "Name", ResourceType = typeof(Resources.Layout))]
-        //public string Name { get; set; }
+        [Display(Name = "Name", ResourceType = typeof(Resources.Layout))]
+        public string Name { get; set; }
 
         //[Display(Name = "CreatedOn", ResourceType = typeof(Resources.Layout))]
         public DateTime CreatedOn { get; set; }
@@ -40,8 +40,7 @@ namespace CollectingProductionDataSystem.Web.Areas.Administration.ViewModels
         //{
         //    configuration.CreateMap<EnteredByUserValueViewModel, UnitEnteredForCalculationData>()
         //        //.ForMember(p => p.UnitsData.UnitConfig.ProcessUnit.ShortName, opt => opt.MapFrom(p => p.ProcessUnitName))
-        //        .ForMember(p => p.UnitsData.UnitConfig.Code, opt => opt.MapFrom(p => p.Code))
-        //        .ForMember(p => p.UnitsData.UnitConfig.Name, opt => opt.MapFrom(p => p.Name));
+        //        .ForMember(p => p.UnitsData.UnitConfig.Code, opt => opt.MapFrom(p => p.Code));
         //}
     }
 }
