@@ -12,11 +12,14 @@
       .Name("entered-items")
       .Columns(columns =>
       {
+          columns.Bound(c => c.Id);
           columns.Bound(c => c.CreatedOn).Format("{0:dd.MM.yyyy HH:mm:ss:fff}");
           columns.Bound(c => c.CreatedFrom);
           columns.Bound(c => c.ProcessUnitName);
           columns.Bound(c => c.Code);
           columns.Bound(c => c.Name);
+          columns.Bound(c => c.RecordTimestamp).Format("{0:dd.MM.yyyy}");
+          columns.Bound(c => c.ShiftName);
           columns.Bound(c => c.OldValue);
           columns.Bound(c => c.NewValue);
       })

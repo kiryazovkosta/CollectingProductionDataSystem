@@ -1144,6 +1144,16 @@
                                                     {
                                                         tagName = row[dc].ToString();
                                                     }
+                                                    else if(dc.ColumnName.Equals("TimeStamp"))
+                                                    {
+                                                        var dt = Convert.ToDateTime(row[dc]);
+                                                        var difference = targetRecordDateTime - dt;
+                                                        logger.InfoFormat("Difference bettween {0} and {1} is {2}", targetRecordDateTime, dt, difference);
+                                                        if(difference.TotalMinutes > 15)
+                                                        {
+                                                            confedence = 0;     
+                                                        }
+                                                    }
                                                     else if (dc.ColumnName.Equals("Value"))
                                                     {
                                                         if (!row.IsNull("Value"))

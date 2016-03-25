@@ -754,6 +754,24 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to CreatedFrom.
+        /// </summary>
+        public static string CreatedFrom {
+            get {
+                return ResourceManager.GetString("CreatedFrom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CreatedOn.
+        /// </summary>
+        public static string CreatedOn {
+            get {
+                return ResourceManager.GetString("CreatedOn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Create User Account.
         /// </summary>
         public static string CreateUser {

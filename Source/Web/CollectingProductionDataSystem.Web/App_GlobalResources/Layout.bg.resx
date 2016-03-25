@@ -1559,4 +1559,10 @@
   <data name="IsTotalPosition" xml:space="preserve">
     <value>Визуализация &lt;/br&gt;тотал</value>
   </data>
+  <data name="CreatedFrom" xml:space="preserve">
+    <value>Създаден от</value>
+  </data>
+  <data name="CreatedOn" xml:space="preserve">
+    <value>Създаден на</value>
+  </data>
 </root>
