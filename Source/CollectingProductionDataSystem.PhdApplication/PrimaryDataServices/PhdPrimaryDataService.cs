@@ -141,6 +141,11 @@
                 mailer.SendMail(ex.Message + ex.StackTrace, "Phd2Interface Error");
             }
 
+            //var newRecords = ProcessManualUnits(unitsConfigsList, targetRecordTimestampDate, targetShift.Id, unitsData, ref expectedNumberOfRecords);
+            //realNumberOfRecords = newRecords.Count();
+            //unitDatasToAdd.AddRange(newRecords);
+            //LogConsistencyMessage("Processing Manual Units Records", expectedNumberOfRecords, realNumberOfRecords);
+
             var totalInsertedRecords = 0;
             saveChangesTimer.Start();
             // persisting received data and incorporate the data with records get from second PHD
