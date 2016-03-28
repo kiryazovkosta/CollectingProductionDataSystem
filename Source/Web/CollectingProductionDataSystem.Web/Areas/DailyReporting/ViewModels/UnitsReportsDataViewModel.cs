@@ -80,6 +80,9 @@
             }
         }
 
+        [Display(Name = "TotalMonthQuantity", ResourceType = typeof(Resources.Layout))]
+        public double TotalMonthQuantity { get; set; }
+
         public void CreateMappings(IConfiguration configuration)
         {
             configuration.CreateMap<MultiShift, UnitsReportsDataViewModel>()

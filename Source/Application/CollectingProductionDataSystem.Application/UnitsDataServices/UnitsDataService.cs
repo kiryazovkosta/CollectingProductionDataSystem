@@ -6,6 +6,7 @@
     using System.Linq;
     using System.Threading.Tasks;
     using CollectingProductionDataSystem.Application.Contracts;
+    using CollectingProductionDataSystem.Constants;
     using CollectingProductionDataSystem.Data.Contracts;
     using CollectingProductionDataSystem.Models.Productions;
     using CollectingProductionDataSystem.Data.Common;
@@ -53,10 +54,10 @@
         public IQueryable<UnitsData> GetUnitsDataForDateTime(DateTime? dateParam, int? processUnitIdParam, int? shiftIdParam)
         {
             var dbResult = GetAllUnitDataIncludeRelations()
-                .Where(x=>
+                .Where(x =>
                 (dateParam == null || x.RecordTimestamp == dateParam.Value)
-                &&(processUnitIdParam == null || x.UnitConfig.ProcessUnitId == processUnitIdParam.Value)
-                &&(shiftIdParam == null || x.ShiftId == shiftIdParam.Value)
+                && (processUnitIdParam == null || x.UnitConfig.ProcessUnitId == processUnitIdParam.Value)
+                && (shiftIdParam == null || x.ShiftId == shiftIdParam.Value)
                 ).OrderBy(x => x.UnitConfig.Code);
             return dbResult;
         }
@@ -72,7 +73,7 @@
                                .Include(x => x.UnitConfig.MeasureUnit)
                                .Include(x => x.UnitsManualData)
                                .Include(x => x.UnitsManualData.EditReason);
-                               //.Include(x => x.UnitConfig.UnitConfigUnitDailyConfigs.Select(y => y.UnitDailyConfig).Select(z => z.UnitsDailyDatas));
+            //.Include(x => x.UnitConfig.UnitConfigUnitDailyConfigs.Select(y => y.UnitDailyConfig).Select(z => z.UnitsDailyDatas));
             return dbResult;
         }
 
@@ -99,7 +100,7 @@
 
             if (materialType.HasValue)
             {
-                dbResult = dbResult.Where(u => u.UnitsDailyConfig.MaterialTypeId == materialType);    
+                dbResult = dbResult.Where(u => u.UnitsDailyConfig.MaterialTypeId == materialType);
             }
 
             dbResult = dbResult.OrderBy(x => x.UnitsDailyConfig.Code);
@@ -113,6 +114,28 @@
                      .Where(u => u.RecordDate == date &&
                          u.ProcessUnitId == processUnitId &&
                          u.ShiftId == shiftId).Any();
+        }
+
+        /// <summary>
+        /// Appends the total month quantity to daily records.
+        /// </summary>
+        /// <param name="resultDaily">The result daily.</param>
+        /// <param name="processUnitId">The process unit id.</param>
+        /// <param name="targetDay">The target day.</param>
+        public Dictionary<string, double> GetTotalMonthQuantityToDayFromShiftData(DateTime targetDay, int processUnitId = 0)
+        {
+            var beginningOfMonth = new DateTime(targetDay.Year, targetDay.Month, 1);
+            var endOfObservedPeriod = new DateTime(targetDay.Year, targetDay.Month, targetDay.Day);
+
+            var totalMonthQuantities = data.UnitsData.All().Include(x => x.UnitConfig).Include(x => x.UnitsManualData)
+               .Where(x => (processUnitId == 0 || x.UnitConfig.ProcessUnitId == processUnitId)
+                        && x.UnitConfig.ShiftProductTypeId == CommonConstants.DailyInfoDailyInfoHydrocarbonsShiftTypeId // Тип на позициите за ежедневно сведение
+                        && beginningOfMonth <= x.RecordTimestamp
+                        && x.RecordTimestamp <= endOfObservedPeriod).ToList()
+                       .GroupBy(x => x.UnitConfig.Code)
+                       .Select(group => new { Code = group.Key, Value = group.Sum(x => x.RealValue) }).ToDictionary(x => x.Code, x => x.Value);
+
+            return totalMonthQuantities;
         }
     }
 }

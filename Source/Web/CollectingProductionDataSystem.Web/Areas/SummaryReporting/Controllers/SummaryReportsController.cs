@@ -491,6 +491,17 @@
                 }).Distinct(new MultiShiftComparer()).ToList();
 
                 var kendoPreparedResult = Mapper.Map<IEnumerable<MultiShift>, IEnumerable<UnitsReportsDataViewModel>>(result);
+
+                var totalMonthQuantities = unitsData.GetTotalMonthQuantityToDayFromShiftData(date.Value, processUnitId ?? 0);
+
+                foreach (var position in kendoPreparedResult)
+                {
+                    if (totalMonthQuantities.ContainsKey(position.Code))
+                    {
+                        position.TotalMonthQuantity = totalMonthQuantities[position.Code];
+                    }
+                }
+
                 var kendoResult = new DataSourceResult();
                 try
                 {
