@@ -7,6 +7,7 @@
     using CollectingProductionDataSystem.Data.Contracts;
     using System.Web.Mvc;
     using CollectingProductionDataSystem.Web.Areas.OverseersReporting.Controllers;
+    using CollectingProductionDataSystem.Web.Controllers;
     using Kendo.Mvc.Extensions;
     using Kendo.Mvc.UI;
     using CollectingProductionDataSystem.Models.Transactions;
@@ -15,7 +16,7 @@
     using System.Diagnostics;
 
     [Authorize(Roles = "Administrator, OverseerReporter")]
-    public class OverseersTransactionsController : AreaBaseController
+    public class OverseersTransactionsController : BaseController
     {
         public OverseersTransactionsController(IProductionData productionDataParam) : base(productionDataParam)
         {
