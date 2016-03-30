@@ -33,6 +33,7 @@
             columns.Bound(c => c.Shift2QuantityValue).ClientTemplate("<div style='text-align:right;'>#=kendo.toString(data.Shift2QuantityValue, 'n3') #</div>").Width(140);
             columns.Bound(c => c.Shift3QuantityValue).ClientTemplate("<div style='text-align:right;'>#=kendo.toString(data.Shift3QuantityValue, 'n3') #</div>").Width(140);
             columns.Bound(c => c.TotalQuantityValue).ClientTemplate("<div style='text-align:right;'>#=kendo.toString(data.TotalQuantityValue, 'n3') #</div>").Width(140);
+            columns.Bound(c => c.TotalMonthQuantity).ClientTemplate("<div style='text-align:right;'>#=kendo.toString(data.TotalMonthQuantity, 'n3') #</div>").Width(140);
         })
 
     .Pageable(pageable => pageable

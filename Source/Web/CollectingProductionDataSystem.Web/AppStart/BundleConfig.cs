@@ -30,6 +30,9 @@ namespace CollectingProductionDataSystem.Web.AppStart
                     "~/Content/kendo/kendo.bootstrap.min.css"));
             bundles.Add(new StyleBundle("~/Content/custom/slidebar").Include(
                 "~/Content/custom/slidebar.css"));
+
+            bundles.Add(new StyleBundle("~/Content/custom/manager-dashboard").Include(
+                "~/Content/custom/manDashSideBar.css"));
         }
 
         private static void ConfigureScriptBundles(BundleCollection bundles)
