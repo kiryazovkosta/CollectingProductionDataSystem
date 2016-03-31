@@ -9,6 +9,7 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
     using System.Data.Entity;
     using System.Diagnostics;
     using System.Linq;
+    using System.Threading.Tasks;
     using CollectingProductionDataSystem.Application.Contracts;
     using CollectingProductionDataSystem.Constants;
     using CollectingProductionDataSystem.Data.Contracts;
@@ -576,6 +577,30 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
                 if (parameter.Count() > 0)
                 {
                     IEnumerable<DataSery<DateTime, decimal>> series = GetSeriesFromData(parameter, beginingOfTheMonth, targetDate);
+                    charts.AddRange(series);
+                }
+            }
+
+            return new ChartViewModel<DateTime, decimal>() { DataSeries = charts };
+        }
+
+        public async Task<ChartViewModel<DateTime, decimal>> GetStatisticForProcessUnitAsync(int processUnitId, DateTime targetDate, int? materialTypeId = null)
+        {
+            var beginingOfTheMonth = new DateTime(targetDate.Year, targetDate.Month, 1);
+
+            var statistic = await this.data.ProductionPlanDatas.All().Include(x => x.ProductionPlanConfig)
+                                .Where(x => beginingOfTheMonth <= x.RecordTimestamp
+                                        && x.RecordTimestamp < targetDate
+                                        && x.ProcessUnitId == processUnitId
+                                        && x.ProductionPlanConfig.MaterialTypeId == (materialTypeId ?? x.ProductionPlanConfig.MaterialTypeId))
+                                .GroupBy(x => x.ProductionPlanConfigId).ToListAsync();
+            var charts = new List<DataSery<DateTime, decimal>>();
+
+            foreach (var parameter in statistic)
+            {
+                if (parameter.Count() > 0)
+                {
+                    IEnumerable<DataSery<DateTime, decimal>> series = await Task.Factory.StartNew(()=>GetSeriesFromData(parameter, beginingOfTheMonth, targetDate));
                     charts.AddRange(series);
                 }
             }

@@ -1567,4 +1567,10 @@
   <data name="CreatedOn" xml:space="preserve">
     <value>CreatedOn</value>
   </data>
+  <data name="DailyGraphicShortTitle" xml:space="preserve">
+    <value>Statistics for {0}</value>
+  </data>
+  <data name="ProcessUnitLoading" xml:space="preserve">
+    <value>ProcessUnitLoading</value>
+  </data>
 </root>

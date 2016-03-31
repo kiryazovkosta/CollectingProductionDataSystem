@@ -756,6 +756,10 @@ div#modal-chart-plot-area {
     width: 95%;
 }
 
+div#chart-wrapper {
+    margin-top:2px;
+}
+
 div#chart-wrapper div.panel.panel-default div.panel-body,
 div#modal-chart-dialog-body div.modal-body {
     overflow: auto;
@@ -876,47 +880,104 @@ li.divider-labeled {
         float: right !important;
         font-weight: normal !important;
     }
- 
+
 /*Error animation*/
 @-webkit-keyframes alarm {
-    0% { background-color: lightyellow;}
-    25% { background-color: pink;}
-    50% { background-color: yellow;}
-    100% { background-color: red;}
+    0% {
+        background-color: lightyellow;
+    }
+
+    25% {
+        background-color: pink;
+    }
+
+    50% {
+        background-color: yellow;
+    }
+
+    100% {
+        background-color: red;
+    }
 }
 
 @-moz-keyframes alarm {
-    0% { background-color: lightyellow;}
-    25% { background-color: pink;}
-    50% { background-color: yellow;}
-    100% { background-color: red;}
+    0% {
+        background-color: lightyellow;
+    }
+
+    25% {
+        background-color: pink;
+    }
+
+    50% {
+        background-color: yellow;
+    }
+
+    100% {
+        background-color: red;
+    }
 }
 
 @keyframes alarm {
-       0% { background-color: lightyellow;}
-    25% { background-color: pink;}
-    50% { background-color: yellow;}
-    100% { background-color: red;}
+    0% {
+        background-color: lightyellow;
+    }
+
+    25% {
+        background-color: pink;
+    }
+
+    50% {
+        background-color: yellow;
+    }
+
+    100% {
+        background-color: red;
+    }
 }
 
 /*warning animation*/
 @-webkit-keyframes warning {
-    0% { background-color: white;}
-    50% { background-color: lightyellow;}
-    100% { background-color:yellow;}
+    0% {
+        background-color: white;
+    }
+
+    50% {
+        background-color: lightyellow;
+    }
+
+    100% {
+        background-color: yellow;
+    }
 }
 
 /* Standard syntax */
 @-moz-keyframes warning {
-    0% { background-color: white;}
-    50% { background-color: lightyellow;}
-    100% { background-color:yellow;}
+    0% {
+        background-color: white;
+    }
+
+    50% {
+        background-color: lightyellow;
+    }
+
+    100% {
+        background-color: yellow;
+    }
 }
 
 @keyframes warning {
-    0% { background-color: white;}
-    50% { background-color: lightyellow;}
-    100% { background-color:yellow;}
+    0% {
+        background-color: white;
+    }
+
+    50% {
+        background-color: lightyellow;
+    }
+
+    100% {
+        background-color: yellow;
+    }
 }
 
 
@@ -953,7 +1014,73 @@ input[type="text"] {
 }
 
 .total {
-    background-color:darkgrey;
-    font-weight:bold;
-    color:white;
+    background-color: darkgrey;
+    font-weight: bold;
+    color: white;
+}
+
+.wrapper {
+    height: 600px;
+    z-index: -1;
+}
+
+#charts-holder {
+    margin-left: 30px;
+    margin-right: 30px;
+    margin-bottom: 10px;
+    height: 100%;
+}
+
+    #charts-holder .k-content {
+        max-height: 580px;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+.panel {
+    margin-bottom: 10px;
+}
+
+.tab-content {
+    margin-top: 10px;
+}
+
+div#controlls {
+    background-color: #efefef;
+    border: solid 1px #ccc;
+    /*height:300px;*/
+    margin-left: 30px;
+    margin-right: 30px;
+    box-shadow: rgb(118,171,217) 0 0 7px 0;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 10px;
+}
+
+hr.control-delimiter {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-color: #e5e5e5;
+}
+
+.factory-tag {
+    background-color: ActiveCaption;
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.4em;
+    color: white;
+    border-radius: 2px;
+}
+
+.pu-chart-holder {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+    .pu-chart-holder .panel {
+        max-width: 98%;
+    }
+.chart-tumb-row {
+    margin-left:0;
+    margin-right:0;
 }

@@ -1256,6 +1256,8 @@
     <Content Include="Areas\ManagementDashBoard\Views\Shared\_DashBoardLayout.cshtml" />
     <Content Include="Areas\ManagementDashBoard\Views\Dashboard\Index.cshtml" />
     <Content Include="Areas\ManagementDashBoard\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\ManagementDashBoard\Views\Dashboard\AllProcessUnitsProductionPlan.cshtml" />
+    <Content Include="Areas\ManagementDashBoard\Views\Shared\ComplexDailyChart.cshtml" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <None Include="Properties\PublishProfiles\Home.pubxml" />
     <Content Include="Scripts\custom\sendArea.js" />

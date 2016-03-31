@@ -22,14 +22,15 @@
     border-width: 1px 1px 1px 0;
     height: 200px;
     background-color: #fff;
+    z-index: 1000;
 }
 
 #slide-in-handle {
     position: absolute;
-    left: 100px;
-    width: 31px;
-    height: 69px;
-    text-indent: -999em;
+    top: 15px;
+    left: 85px;
+    border-top-left-radius: 0 !important;
+    border-top-right-radius: 0 !important;
     -moz-transform: rotate(-90deg);
     -ms-transform: rotate(-90deg);
     -o-transform: rotate(-90deg);

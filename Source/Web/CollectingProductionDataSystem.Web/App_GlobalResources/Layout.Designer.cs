@@ -828,6 +828,15 @@ namespace App_GlobalResources.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Statistics for {0}.
         /// </summary>
+        public static string DailyGraphicShortTitle {
+            get {
+                return ResourceManager.GetString("DailyGraphicShortTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Statistics for {0}.
+        /// </summary>
         public static string DailyGraphicTitle {
             get {
                 return ResourceManager.GetString("DailyGraphicTitle", resourceCulture);
@@ -2676,6 +2685,15 @@ namespace App_GlobalResources.Resources {
         public static string ProcessUnitAlias {
             get {
                 return ResourceManager.GetString("ProcessUnitAlias", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ProcessUnitLoading.
+        /// </summary>
+        public static string ProcessUnitLoading {
+            get {
+                return ResourceManager.GetString("ProcessUnitLoading", resourceCulture);
             }
         }
         

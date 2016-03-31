@@ -1,1 +1,93 @@
-﻿I am the DashBoard View
+﻿@using Resources = App_GlobalResources.Resources
+@(Html.Kendo().TabStrip()
+    .Name("charts-holder")
+        //.HtmlAttributes(new {style="max-height:490px;" })
+    .Items(items =>
+    {
+        items.Add().Text(@Resources.Layout.ProcessUnitLoading).Selected(true).Content("<div id='value1' class = 'tab-content'></div>");
+        items.Add().Text("Нещо друго").Content("<div id='value2' class = 'tab-content'></div>");
+        items.Add().Text("Отборни данни за инсталаций").Content(Html.Action("AllProcessUnitsProductionPlan").ToHtmlString());
+        items.Add().Text("Други...").Content("<div id='value4' class = 'tab-content'></div>");
+
+    })
+    .Events(ev => ev.Activate("OnActivate"))
+)
+
+
+<div id="controlls">
+    <fieldset>
+        <legend>Параметри на графиката</legend>
+        <div class="row">
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="control-label" for="form-group-input1">Paramater1</label>
+                    <input type="text" class="form-control" id="form-group-input1" placeholder="Paramater1">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="control-label" for="form-group-input2">Paramater2</label>
+                    <input type="text" class="form-control" id="form-group-input2" placeholder="Paramater2">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="control-label" for="form-group-input3">Paramater3</label>
+                    <input type="text" class="form-control" id="form-group-input3" placeholder="Paramater3">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="control-label" for="form-group-input4">Paramater4</label>
+                    <input type="text" class="form-control" id="form-group-input4" placeholder="Paramater4">
+                </div>
+            </div>
+        </div>
+    </fieldset>
+    <hr class="control-delimiter" />
+    <input type="submit" class="btn btn-primary" value="Приложи" />
+    <a href="#" class="btn btn-danger">Отказ</a>
+</div>
+
+@section scripts
+{
+    <script>
+        var Charts = [];
+        $(function () {
+            GetTabValue(2);
+        });
+
+        function OnActivate(ev) {
+            var id = parseInt($(ev.item).attr("aria-controls").replace(/^\D+/g, ''));
+            if (id !== 3) {
+                GetTabValue(id);
+            } else {
+                var processUnits = $("[role=pu-chart-holder]");
+                processUnits.each(function (index, holder) {
+                    var id = $(holder).attr("id").replace("pu-", "");
+                    GetHolderValue(id, holder);
+                });
+            }
+
+        }
+
+        function GetHolderValue(id, holder) {
+            $.ajax({
+                url: "/ManagementDashBoard/Dashboard/DailyMaterialChart?processUnitId=" + id + "&date=2016-03-31+00%3A00%3A00Z" + "&height=200&shortTitle=true",
+                success: function (data) {
+                    $(holder).html(data);
+                }
+            });
+        }
+
+
+        function GetTabValue(id) {
+            $.ajax({
+                url: "/ManagementDashBoard/Dashboard/DailyMaterialChart?processUnitId=" + id + "&date=2016-03-31+00%3A00%3A00Z",
+                success: function (data) {
+                    $("#value" + (id)).html(data);
+                }
+            });
+        }
+    </script>
+}

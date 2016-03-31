@@ -17,6 +17,9 @@ namespace CollectingProductionDataSystem.Application.Contracts
         IEfStatus CheckIfShiftsAreReady(DateTime targetDate, int processUnitId);
         IEfStatus CheckIfPreviousDaysAreReady(int processUnitId, DateTime targetDate, int materialTypeId);
         ChartViewModel<DateTime, decimal> GetStatisticForProcessUnit(int processUnitId, DateTime targetDate, int? materialTypeId = null);
+
+        Task<ChartViewModel<DateTime, decimal>> GetStatisticForProcessUnitAsync(int processUnitId, DateTime targetDate, int? materialTypeId = null);
+
         IEfStatus CheckIfDayIsApprovedButEnergyNot(DateTime date, int processUnitId, out bool readyForCalculation);
 
     }

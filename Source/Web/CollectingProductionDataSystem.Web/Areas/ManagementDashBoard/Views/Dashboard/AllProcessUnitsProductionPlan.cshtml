@@ -1,0 +1,22 @@
+﻿@using CollectingProductionDataSystem.Models.Productions;
+
+@model IEnumerable<Factory>
+
+<div class="container-fluid">
+
+
+    @foreach (var factory in Model)
+    {
+        <div class="panel panel-default">
+            <div class="panel-heading">@factory.FullName</div>
+            <div class="panel-body">
+                <div class="row chart-tumb-row" style="width:100%; margin-top:5px;">
+                    @foreach (var processUnit in factory.ProcessUnits)
+                    {
+                        <div id="pu-@processUnit.Id" class="col-sm-3 pu-chart-holder" role="pu-chart-holder"></div>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>
