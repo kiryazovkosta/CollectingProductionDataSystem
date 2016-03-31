@@ -141,11 +141,6 @@
                 mailer.SendMail(ex.Message + ex.StackTrace, "Phd2Interface Error");
             }
 
-            //var newRecords = ProcessManualUnits(unitsConfigsList, targetRecordTimestampDate, targetShift.Id, unitsData, ref expectedNumberOfRecords);
-            //realNumberOfRecords = newRecords.Count();
-            //unitDatasToAdd.AddRange(newRecords);
-            //LogConsistencyMessage("Processing Manual Units Records", expectedNumberOfRecords, realNumberOfRecords);
-
             var totalInsertedRecords = 0;
             saveChangesTimer.Start();
             // persisting received data and incorporate the data with records get from second PHD
@@ -724,7 +719,7 @@
                         var endValue = row.IsNull("Value") ? 0 : Convert.ToInt64(row["Value"]);
                         endConfidence = row.IsNull("Confidence") ? 0 : Convert.ToInt32(row["Confidence"]);
                         if (!row.IsNull("Timestamp")) { recordTimestamp = Convert.ToDateTime(row["Timestamp"]); }
-                        logger.InfoFormat("{0} {1} : Tag:{2} Value:{3} Confidence:{4} Timestamp {5}", unitConfig.Code, unitConfig.Name, unitConfig.PreviousShiftTag, endValue, endConfidence, recordTimestamp);
+                        logger.DebugFormat("{0} {1} : Tag:{2} Value:{3} Confidence:{4} Timestamp {5}", unitConfig.Code, unitConfig.Name, unitConfig.PreviousShiftTag, endValue, endConfidence, recordTimestamp);
 
                         oPhd.StartTime = string.Format("{0}", beginShiftDateTime.ToString(CommonConstants.PhdDateTimeFormat, CultureInfo.InvariantCulture));
                         oPhd.EndTime = oPhd.StartTime;
@@ -733,7 +728,7 @@
                         var beginValue = row.IsNull("Value") ? 0 : Convert.ToInt64(row["Value"]);
                         beginConfidence = row.IsNull("Confidence") ? 0 : Convert.ToInt32(row["Confidence"]);
                         if (!row.IsNull("Timestamp")) { recordTimestamp = Convert.ToDateTime(row["Timestamp"]); }
-                        logger.InfoFormat("{0} {1} : Tag:{2} Value:{3} Confidence:{4} Timestamp {5}", unitConfig.Code, unitConfig.Name, unitConfig.PreviousShiftTag, endValue, endConfidence, recordTimestamp);
+                        logger.DebugFormat("{0} {1} : Tag:{2} Value:{3} Confidence:{4} Timestamp {5}", unitConfig.Code, unitConfig.Name, unitConfig.PreviousShiftTag, endValue, endConfidence, recordTimestamp);
 
                         currentUnitDatas.Add(
                             new UnitDatasTemp
@@ -801,7 +796,7 @@
                         var endValue = row.IsNull("Value") ? 0 : Convert.ToInt64(row["Value"]);
                         endConfidence = row.IsNull("Confidence") ? 0 :Convert.ToInt32(row["Confidence"]);
                         if (!row.IsNull("Timestamp")) { recordTimestamp = Convert.ToDateTime(row["Timestamp"]); }
-                        logger.InfoFormat("{0} {1} : Tag:{2} Value:{3} Confidence:{4} Timestamp:{5}", unitConfig.Code, unitConfig.Name, tags[0], endValue, endConfidence, recordTimestamp);
+                        logger.DebugFormat("{0} {1} : Tag:{2} Value:{3} Confidence:{4} Timestamp:{5}", unitConfig.Code, unitConfig.Name, tags[0], endValue, endConfidence, recordTimestamp);
 
                         result = oPhd.FetchRowData(tags[1]);
                         row = result.Tables[0].Rows[0];
@@ -814,7 +809,7 @@
                         var beginValue = row.IsNull("Value") ? 0 : Convert.ToInt64(row["Value"]);
                         beginConfidence = row.IsNull("Confidence") ? 0 : Convert.ToInt32(row["Confidence"]);
                         if (!row.IsNull("Timestamp")) { recordTimestamp = Convert.ToDateTime(row["Timestamp"]); }
-                        logger.InfoFormat("{0} {1} : Tag:{2} Value:{3} Confidence:{4} Timestamp:{5}", unitConfig.Code, unitConfig.Name, tags[0], beginValue, beginConfidence, recordTimestamp);
+                        logger.DebugFormat("{0} {1} : Tag:{2} Value:{3} Confidence:{4} Timestamp:{5}", unitConfig.Code, unitConfig.Name, tags[0], beginValue, beginConfidence, recordTimestamp);
 
                         currentUnitDatas.Add(
                             new UnitDatasTemp
@@ -875,7 +870,7 @@
                         confidence += currentConf;
                         inputParams.Add(string.Format("p{0}", argumentIndex), val);
                         argumentIndex++;
-                        logger.InfoFormat("{0} {1} : Tag:{2} Value:{3} Confidence:{4} Timestamp:{5}", unitConfig.Code, unitConfig.Name, item, val, currentConf, recordTimestamp);
+                        logger.DebugFormat("{0} {1} : Tag:{2} Value:{3} Confidence:{4} Timestamp:{5}", unitConfig.Code, unitConfig.Name, item, val, currentConf, recordTimestamp);
                     }
 
                     if (unitConfig.CalculationPercentage.HasValue)
@@ -948,7 +943,7 @@
                     };
         }
 
-        private static UnitDatasTemp GetUnitDataFromPhd(UnitConfig unitConfig, PHDHistorian oPhd, DateTime targetRecordTimestamp, out int confidence)
+        private UnitDatasTemp GetUnitDataFromPhd(UnitConfig unitConfig, PHDHistorian oPhd, DateTime targetRecordTimestamp, out int confidence)
         {
             var unitData = new UnitDatasTemp();
             unitData.UnitConfigId = unitConfig.Id;
@@ -986,6 +981,18 @@
                         unitData.RecordTimestamp = targetRecordTimestamp;
                     }
                 }
+
+                var currentTimestamp = new DateTime(2016, 1, 1, 1, 0, 0);
+                var currentValue = row.IsNull("Value") ? 0 : Convert.ToInt64(row["Value"]);
+                var currentConfidence = row.IsNull("Confidence") ? 0 :Convert.ToInt32(row["Confidence"]);
+                if (!row.IsNull("Timestamp")) { currentTimestamp = Convert.ToDateTime(row["Timestamp"]); }
+                logger.DebugFormat("Automatic {0} {1} : Tag:{2} Value:{3} Confidence:{4} Timestamp:{5}", 
+                                    unitConfig.Code, 
+                                    unitConfig.Name, 
+                                    unitConfig.PreviousShiftTag, 
+                                    currentValue, 
+                                    currentConfidence, 
+                                    currentTimestamp);
             }
 
             return unitData;
@@ -1078,7 +1085,7 @@
                                                             0);
                     if (this.data.TanksData.All().Where(t => t.RecordTimestamp == checkedDateTime).Any())
                     {
-                        logger.InfoFormat("There are already a records for that time of the day: {0:yyyy-MM-dd HH:ss:mm}!", checkedDateTime);
+                        logger.DebugFormat("There are already a records for that time of the day: {0:yyyy-MM-dd HH:ss:mm}!", checkedDateTime);
                         continue;
                     }
 
@@ -1167,8 +1174,16 @@
                                                     {
                                                         var dt = Convert.ToDateTime(row[dc]);
                                                         var difference = targetRecordDateTime - dt;
-                                                        logger.InfoFormat("{3} {4} Difference bettween {0} and {1} is {2}", targetRecordDateTime, dt, difference, t.TankId, row["TagName"].ToString());
-                                                        if(difference.TotalMinutes > 15)
+                                                        var currentTagName = !row.IsNull("TagName") ? row["TagName"].ToString() : string.Empty;
+                                                        var currentTagValue = !row.IsNull("Value") ? row["Value"].ToString() : string.Empty;
+                                                        logger.DebugFormat("[TankId: {0}] [TagName: {1}] [TargetRecordDateTime: {2}] [RecordPhdDateTime: {3}] [Difference: {4}] [Value: {5}]", 
+                                                                           t.TankId, 
+                                                                           currentTagName, 
+                                                                           targetRecordDateTime, 
+                                                                           dt, 
+                                                                           difference, 
+                                                                           currentTagValue);
+                                                        if(difference.TotalMinutes > 120)
                                                         {
                                                             confedence = 0;     
                                                         }

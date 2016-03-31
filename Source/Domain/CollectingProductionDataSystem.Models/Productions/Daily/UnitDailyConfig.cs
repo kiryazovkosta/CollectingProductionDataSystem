@@ -75,6 +75,8 @@
 
         public bool IsMemberOfDilyReport { get; set; }
 
+        public bool RemoveAndAddInsteadUpdate { get; set; }
+
         /// <summary>
         /// Determines whether the specified object is valid.
         /// </summary>

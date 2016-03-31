@@ -108,18 +108,18 @@ namespace CollectingProductionDataSystem.ConsoleClient
             PHDHistorian phd = new PHDHistorian();
             try
             {
-                PHDServer server = new PHDServer("phd-l35-1", SERVERVERSION.RAPI200);
+                PHDServer server = new PHDServer("srv-vm-mes-phd", SERVERVERSION.RAPI200);
                 phd.DefaultServer = server;
                 phd.DefaultServer.Port = 3150;
-                phd.Sampletype = SAMPLETYPE.Snapshot;
+                phd.Sampletype = SAMPLETYPE.Raw;
                 phd.ReductionType = REDUCTIONTYPE.None;
-                phd.StartTime = "NOW-5M";
-                phd.EndTime = "NOW-5M";
+                phd.StartTime = "3/28/2016 1:05:05 PM";
+                phd.EndTime = "3/28/2016 1:05:05 PM";
                 phd.MaximumRows = 1;
 
-                using (var writer = new StreamWriter(@"C:\Temp\phd.log"))
+                using (var writer = new StreamWriter(@"C:\Temp\phd-3.log"))
                 {
-                    var unitConfigs = data.UnitConfigs.All().Include(x=>x.ProcessUnit).Where(x => x.DataSource == PrimaryDataSourceType.PhdL311B).ToList();
+                    var unitConfigs = data.UnitConfigs.All().Include(x=>x.ProcessUnit).Where(x => x.DataSource == PrimaryDataSourceType.SrvVmMesPhdA).ToList();
                     foreach (var unitConfig in unitConfigs)
                     {
                         if (unitConfig.CollectingDataMechanism == "A")
@@ -128,16 +128,19 @@ namespace CollectingProductionDataSystem.ConsoleClient
                             DataSet dsGrid = phd.FetchRowData(tag);
                             foreach (DataRow row in dsGrid.Tables[0].Rows)
                             {
-                                string tagHeaderLine = string.Format("-------------------- {0} : {1} : {2} : {3} --------------------",
+                                string tagHeaderLine = string.Format("{0};{1};{2};{3};{4};",
                                                                      unitConfig.ProcessUnit.FullName,
                                                                      unitConfig.Code, 
-                                                                     unitConfig.Name, 
+                                                                     unitConfig.Name,
+                                                                     unitConfig.Position,
                                                                      tag);
-                                writer.WriteLine(tagHeaderLine);
+                                writer.Write(tagHeaderLine);
                                 foreach (DataColumn dc in dsGrid.Tables[0].Columns)
                                 {
-                                    writer.WriteLine(dc.ColumnName + " : " + row[dc]);
+                                    writer.Write(row[dc] + ";");
                                 }
+
+                                writer.WriteLine();
                             }   
                         } 
                     }   

@@ -47,7 +47,7 @@
                                                                 MassReverse = t.MassReverse,
                                                                 FlowDirection = t.MeasuringPointConfig.FlowDirection.Value,
                                                             });
-
+    
                 var dict = new SortedDictionary<int, MeasuringPointsDataViewModel>();
                 
                 foreach (var transactionData in transactionsData)

@@ -37,6 +37,16 @@ namespace CollectingProductionDataSystem.Web.Areas.MonthlyDataReporting.Controll
             this.modelParams = this.GetReportParameters();
         }
 
+        public IUnitMothlyDataService MonthlyService
+        {
+            get { return this.monthlyService; }
+        }
+
+        public MonthlyReportParametersViewModel ModelParams
+        {
+            get { return this.modelParams; }
+        }
+
         [HttpGet]
         public ActionResult Report()
         {
