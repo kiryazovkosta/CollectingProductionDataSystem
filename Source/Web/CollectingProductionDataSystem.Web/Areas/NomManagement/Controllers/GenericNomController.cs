@@ -12,6 +12,7 @@ using CollectingProductionDataSystem.Web.Infrastructure.Extentions;
 using Kendo.Mvc.Extensions;
 using Kendo.Mvc.UI;
 using Resources = App_GlobalResources.Resources;
+using CollectingProductionDataSystem.Models.Productions;
 
 namespace CollectingProductionDataSystem.Web.Areas.NomManagement.Controllers
 {
@@ -109,15 +110,42 @@ namespace CollectingProductionDataSystem.Web.Areas.NomManagement.Controllers
                 }
                 else
                 {
-                    Mapper.Map(inputViewModel, dbEntity);
+                    var removeAndAddInsteadUpdate = false;
 
-                    this.repository.Update(dbEntity);
-
-                    var result = data.SaveChanges(this.UserProfile.UserName);
-
-                    if (!result.IsValid)
+                    if(dbEntity is UnitConfig)
                     {
-                        result.ToModelStateErrors(ModelState);
+                        var unitConfig = dbEntity as UnitConfig;
+                        if (unitConfig.RemoveAndAddInsteadUpdate == true)
+                        {
+                            removeAndAddInsteadUpdate = true;   
+                        }
+                    }
+
+                    if (removeAndAddInsteadUpdate == false)
+                    {
+                        var unitDailyConfig = dbEntity as UnitDailyConfig;
+                        if (unitDailyConfig.RemoveAndAddInsteadUpdate == true)
+                        {
+                            removeAndAddInsteadUpdate = true;   
+                        }   
+                    }
+
+                    if (removeAndAddInsteadUpdate == true)
+                    {
+                            
+                    }
+                    else
+                    {
+                        Mapper.Map(inputViewModel, dbEntity);
+
+                        this.repository.Update(dbEntity);
+
+                        var result = data.SaveChanges(this.UserProfile.UserName);
+
+                        if (!result.IsValid)
+                        {
+                            result.ToModelStateErrors(ModelState);
+                        }
                     }
                 }
             }

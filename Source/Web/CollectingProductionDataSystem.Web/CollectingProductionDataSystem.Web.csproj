@@ -1256,6 +1256,7 @@
     <Content Include="Areas\ManagementDashBoard\Views\Shared\_DashBoardLayout.cshtml" />
     <Content Include="Areas\ManagementDashBoard\Views\Dashboard\Index.cshtml" />
     <Content Include="Areas\ManagementDashBoard\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\MonthlyDataReporting\Views\MonthlyPotableWater\MonthlyPotableWaterData.cshtml" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <None Include="Properties\PublishProfiles\Home.pubxml" />
     <Content Include="Scripts\custom\sendArea.js" />
@@ -1950,6 +1951,7 @@
     <Content Include="Views\Shared\EditorTemplates\TankStatusViewModel.cshtml" />
     <Content Include="Views\Shared\_MonthSelectorAproveableSideBar.cshtml" />
     <Content Include="Views\Shared\_TanksSideBarByAreaAndDateTime.cshtml" />
+    <Content Include="Views\Shared\_MonthSelectorEditAndReportSideBar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1966,7 +1968,6 @@
     <Folder Include="Areas\MonthlyDataReporting\Views\MonthlyElectricalEnergy\" />
     <Folder Include="Areas\MonthlyDataReporting\Views\MonthlyFreshWater\" />
     <Folder Include="Areas\MonthlyDataReporting\Views\MonthlyHeatEnergy\" />
-    <Folder Include="Areas\MonthlyDataReporting\Views\MonthlyPotableWater\" />
     <Folder Include="Areas\MonthlyReporting\Models\" />
     <Folder Include="Areas\MonthlyReporting\Views\AreaBase\" />
     <Folder Include="Areas\MonthlyReporting\Views\Shared\" />
