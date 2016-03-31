@@ -121,7 +121,7 @@ namespace CollectingProductionDataSystem.Web.Areas.NomManagement.Controllers
                         }
                     }
 
-                    if (removeAndAddInsteadUpdate == false)
+                    if (removeAndAddInsteadUpdate == false && dbEntity is UnitDailyConfig)
                     {
                         var unitDailyConfig = dbEntity as UnitDailyConfig;
                         if (unitDailyConfig.RemoveAndAddInsteadUpdate == true)
