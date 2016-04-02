@@ -122,6 +122,9 @@
         [Display(Name = "CalculationPercentage", ResourceType = typeof(Resources.Layout))]
         public decimal? CalculationPercentage { get; set; }
 
+        //[Display(Name = "CalculationPercentage", ResourceType = typeof(Resources.Layout))]
+        public decimal? StartupValue { get; set; }
+
         [Display(Name = "DataSource", ResourceType = typeof(Resources.Layout))]
         public PrimaryDataSourceType? DataSource { get; set; }
 
@@ -169,7 +172,7 @@
                 .ForMember(p => p.ModifiedFrom, opt => opt.Ignore())
                 .ForMember(p => p.UnitConfigUnitDailyConfigs, opt => opt.Ignore())
                 .ForMember(p => p.IsConverted, opt => opt.Ignore())
-                .ForMember(p => p.StartupValue, opt => opt.Ignore())
+                //.ForMember(p => p.StartupValue, opt => opt.Ignore())
                 //.ForMember(p => p.NotATotalizedPosition, opt => opt.Ignore())
                 .ForMember(p => p.NeedToGetOnlyLastShiftValue, opt => opt.Ignore())
                 .ForMember(p => p.EnteredMeasureUnit, opt => opt.Ignore())
