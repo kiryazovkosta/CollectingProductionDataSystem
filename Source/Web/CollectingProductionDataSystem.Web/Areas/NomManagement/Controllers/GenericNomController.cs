@@ -132,7 +132,26 @@ namespace CollectingProductionDataSystem.Web.Areas.NomManagement.Controllers
 
                     if (removeAndAddInsteadUpdate == true)
                     {
-                            
+                        // delete
+                        this.repository.Delete(inputViewModel.Id);
+                        var result = data.SaveChanges(this.UserProfile.UserName);
+
+                        if (!result.IsValid)
+                        {
+                            result.ToModelStateErrors(ModelState);
+                        }
+
+                        // add
+                        var entity = this.data.DbContext.DbContext.Set<TModel>().Create();
+                        Mapper.Map(inputViewModel, entity);
+
+                        this.repository.Add(entity);
+                        result = data.SaveChanges(this.UserProfile.UserName);
+
+                        if (!result.IsValid)
+                        {
+                            result.ToModelStateErrors(ModelState);
+                        }
                     }
                     else
                     {
