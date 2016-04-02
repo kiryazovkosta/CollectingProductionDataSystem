@@ -1573,4 +1573,10 @@
   <data name="ProcessUnitLoading" xml:space="preserve">
     <value>ProcessUnitLoading</value>
   </data>
+  <data name="ChemicalClearedWater" xml:space="preserve">
+    <value>ChemicalClearedWater</value>
+  </data>
+  <data name="UnitMonthlyCCWData" xml:space="preserve">
+    <value>UnitMonthlyCCWData</value>
+  </data>
 </root>

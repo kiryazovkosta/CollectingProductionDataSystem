@@ -14,131 +14,146 @@
 @if (Model.DataSeries.Count() > 0)
 {
     <script>
-        var clickedMaxButton = 0;
-        var maxButtonId=0;
-        function createChart(selector, width, height) {
-            var legendVisible = (width !== undefined);
-            $(selector).kendoChart({
-                theme: "bootstrap",
-                chartArea:{
-                    width: width || $(selector).width(),
-                    height:height||@(Model.Height ?? 400),
-                },
-                legend: {
-                    position: "bottom",
-                    visible: legendVisible
-                },
-                seriesDefaults: {
-                    type: "line"
-                },
-                series: [
-                @foreach (var serie in Model.DataSeries)
+    var clickedMaxButton = 0;
+    var maxButtonId=0;
+    function createChart(selector, width, height) {
+        var legendVisible = (width !== undefined);
+        $(selector).kendoChart({
+            theme: "bootstrap",
+            chartArea:{
+                width: width || $(selector).width(),
+                height:height||@(Model.Height ?? 400),
+            },
+            legend: {
+                position: "bottom",
+                visible: legendVisible
+            },
+            seriesDefaults: {
+                type: "line"
+            },
+            series: [
+            @foreach (var serie in Model.DataSeries)
                 {
-                    @:{
+                    @:{ @*stack: { group: '@serie.Axis'},*@
                                         @: name: '@serie.Label',
                                         @: type: '@serie.Type',
+                                        //@: axis: '@serie.Axis',
                                         @: data: [
                                         foreach (var item in serie.Values)
                     {
                         @item.Y.ToString(CultureInfo.InvariantCulture)@:,
-                                        }
+                                                        }
                     @:]},
                     }
-                ],
-                valueAxis: {
-                    line: {
-                        visible: false
-                    }
-                },
-                categoryAxis: {
-                    categories: [
-                    @foreach (var item in Model.DataSeries.FirstOrDefault().Values)
+            ],
+            valueAxes: [{
+                visible:true
+                //name: "percent",
+                //title: { text: "проценти" }
+                ////majorUnit: 10
+                ////min: 0,
+
+                ////max: 120
+                //}, {
+                //    name: "thone",
+                //    title: { text: "Т" },
+                ////    //min: 0,
+
+                ////    //max: 50000
+                ////    //majorUnit: 10000
+                ////}
+            }],
+            categoryAxis: {
+                axisCrossingValues: [ 0],
+                categories: [
+                @foreach (var item in Model.DataSeries.FirstOrDefault().Values)
                 {
                           @Html.Raw("'" + item.X.Day + "',")
                 }],
-                    majorGridLines: {
-                        visible: true
-                    }
-                },
-                tooltip: {
-                    visible: true,
-                    format: "days",
-                    template: "#= series.name #: #= value #"
-                },
-                pannable: {
+                majorGridLines: {
+                    visible: true
+                }
+            },
+
+            tooltip: {
+                visible: true,
+                format: "days",
+                template: "#= series.name #: #= value #"
+            },
+            pannable: {
+                lock: "y"
+            },
+            zoomable: {
+                mousewheel: {
                     lock: "y"
                 },
-                zoomable: {
-                    mousewheel: {
-                        lock: "y"
-                    },
-                    selection: {
-                        lock: "y"
+                selection: {
+                    lock: "y"
+                }
+            }
+        });
+    }
+
+    $(document).ready(function () {
+        var idNum = Math.floor((Math.random() * 10000) + 1);
+        var chartId = "chart" + idNum;
+        var chartHolder = $("#chart");
+        chartHolder.attr("id", chartId);
+        var fsButton = $('#chart-fullscreen');
+        fsButton.attr('id', 'chart-fullscreen'+idNum);
+
+        if (Charts) {
+            Charts[idNum] = createChart.bind(this);
+            Charts[idNum]("#" + chartId);
+        }else{
+            createChart("#" + chartId);
+        }
+
+        createModalChart();
+
+        //fsButtons.each(function (index, button) {
+        //$('#chart-fullscreen').click(function () {
+        $('#chart-fullscreen'+idNum).click(function (ev) {
+            var element = $(ev.currentTarget)
+            var btnId = parseInt(element.attr('id').replace('chart-fullscreen',''));
+            var data = '<div class="modal-header">' +
+                               '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>' +
+                               '<h4 class="modal-title" id="record-history-label"' + btnId + '>' +
+                                   element.parent().text() +
+                               '</h4>' +
+                           '</div>' +
+                           '<div class="modal-body"' + btnId + '>' +
+                           '<div id="chart-fs" >'
+            '</div>' +
+            '</div>';
+            $("#modal-chart-dialog-body").html(data);
+            $('#modal-chart-dialog').modal('show');
+            maxButtonId = parseInt(element.attr('id').replace('chart-fullscreen',''));
+            return false;
+
+        });
+        //});
+
+
+    });
+
+    function createModalChart() {
+        if ($("#modal-chart-dialog").val()===undefined) {
+            var modalChartHolderHtml = '<div class="modal fade" id="modal-chart-dialog" tabindex="-1" role="dialog" aria-labelledby="record-history-label" aria-hidden="true"><div id="modal-chart-plot-area" class="modal-dialog modal-lg"><div id="modal-chart-dialog-body" class="modal-content"></div></div></div>';
+            $('body').append(modalChartHolderHtml);
+            $("#modal-chart-dialog").on('shown.bs.modal', function (ev) {
+
+                var modalWidth = $('#modal-chart-plot-area').width() * 0.98;
+
+                if (Charts) {
+                    if (maxButtonId !== 0) {
+                        Charts[maxButtonId]("#chart-fs", modalWidth, 650);//select right function for maximized chart
                     }
+                } else {
+                    createChart("#chart-fs", modalWidth, 650);
                 }
             });
         }
-
-        $(document).ready(function () {
-            var idNum = Math.floor((Math.random() * 10000) + 1);
-            var chartId = "chart" + idNum;
-            var chartHolder = $("#chart");
-            chartHolder.attr("id", chartId);
-            var fsButton = $('#chart-fullscreen');
-            fsButton.attr('id', 'chart-fullscreen'+idNum);
-
-            if (Charts) {
-                Charts[idNum] = createChart.bind(this);
-                Charts[idNum]("#" + chartId);
-            }else{
-                createChart("#" + chartId);
-            }
-
-            createModalChart();
-
-            //fsButtons.each(function (index, button) {
-                //$('#chart-fullscreen').click(function () {           
-            $('#chart-fullscreen'+idNum).click(function (ev) {
-                    var element = $(ev.currentTarget)
-                    var btnId = parseInt(element.attr('id').replace('chart-fullscreen',''));
-                    var data = '<div class="modal-header">' +
-                                       '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>' +
-                                       '<h4 class="modal-title" id="record-history-label"' + btnId + '>' +
-                                           element.parent().text() +
-                                       '</h4>' +
-                                   '</div>' +
-                                   '<div class="modal-body"' + btnId + '>' +
-                                   '<div id="chart-fs" >'
-                    '</div>' +
-                    '</div>';
-                    $("#modal-chart-dialog-body").html(data);
-                    $('#modal-chart-dialog').modal('show');
-                    maxButtonId = parseInt(element.attr('id').replace('chart-fullscreen',''));
-                    return false;
-
-                });
-            //});
-
-           
-        });
-
-        function createModalChart() {
-            if ($("#modal-chart-dialog").val()===undefined) {
-                var modalChartHolderHtml = '<div class="modal fade" id="modal-chart-dialog" tabindex="-1" role="dialog" aria-labelledby="record-history-label" aria-hidden="true"><div id="modal-chart-plot-area" class="modal-dialog modal-lg"><div id="modal-chart-dialog-body" class="modal-content"></div></div></div>';
-                $('body').append(modalChartHolderHtml);
-                $("#modal-chart-dialog").on('shown.bs.modal', function (ev) {
-                    
-                    var modalWidth = $('#modal-chart-plot-area').width() * 0.98;
-                    
-                    if (Charts) {
-                        if (maxButtonId !== 0) {
-                            Charts[maxButtonId]("#chart-fs", modalWidth, 650);//select right function for maximized chart
-                        }
-                    } else {
-                        createChart("#chart-fs", modalWidth, 650);
-                    }
-                });
-            }
-        }
+    }
     </script>
 }

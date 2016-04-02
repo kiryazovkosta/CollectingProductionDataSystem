@@ -387,7 +387,7 @@
         }
 
 
-        private IEnumerable<UnitDatasTemp> ProcessCalculatedUnits(List<UnitConfig> unitsConfigsList,
+        public IEnumerable<UnitDatasTemp> ProcessCalculatedUnits(List<UnitConfig> unitsConfigsList,
                                                                     DateTime recordDataTime,
                                                                     int shift, List<UnitDatasTemp> unitsTempData,
                                                                     ref int expectedNumberOfRecords)

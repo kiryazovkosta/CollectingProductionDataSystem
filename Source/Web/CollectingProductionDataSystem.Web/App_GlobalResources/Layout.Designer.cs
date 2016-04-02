@@ -502,6 +502,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ChemicalClearedWater.
+        /// </summary>
+        public static string ChemicalClearedWater {
+            get {
+                return ResourceManager.GetString("ChemicalClearedWater", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Choose Area....
         /// </summary>
         public static string ChooseArea {
@@ -3981,6 +3990,15 @@ namespace App_GlobalResources.Resources {
         public static string UnitDailyConfigUnitMonthlyConfig {
             get {
                 return ResourceManager.GetString("UnitDailyConfigUnitMonthlyConfig", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to UnitMonthlyCCWData.
+        /// </summary>
+        public static string UnitMonthlyCCWData {
+            get {
+                return ResourceManager.GetString("UnitMonthlyCCWData", resourceCulture);
             }
         }
         

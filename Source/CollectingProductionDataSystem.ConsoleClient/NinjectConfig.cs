@@ -8,6 +8,7 @@
     using System.Threading.Tasks;
     using CollectingProductionDataSystem.Application.Contracts;
     using CollectingProductionDataSystem.Application.FileServices;
+    using CollectingProductionDataSystem.Application.MailerService;
     using CollectingProductionDataSystem.Application.TankDataServices;
     using CollectingProductionDataSystem.Application.UnitsDataServices;
     using CollectingProductionDataSystem.Application.UserServices;
@@ -17,8 +18,11 @@
     using CollectingProductionDataSystem.Data.Contracts;
     using CollectingProductionDataSystem.Infrastructure.Contracts;
     using CollectingProductionDataSystem.Infrastructure.Log;
+    using CollectingProductionDataSystem.PhdApplication.Contracts;
+    using Moq;
     using Ninject;
     using log4net;
+    using CollectingProductionDataSystem.PhdApplication.PrimaryDataServices;
 
     public class NinjectConfig : IDisposable
     {
@@ -59,7 +63,8 @@
         /// </summary>
         public static void InitializeKernel(IKernel kernel)
         {
-//            kernel = new Ninject.StandardKernel();
+            var MailerMoq = new Mock<IMailerService>();
+//          kernel = new Ninject.StandardKernel();
             kernel.Bind<DbContext>().To<CollectingDataSystemDbContext>();
             kernel.Bind(typeof(IDeletableEntityRepository<>)).To(typeof(DeletableEntityRepository<>));
             kernel.Bind(typeof(IRepository<>)).To(typeof(GenericRepository<>));
@@ -68,6 +73,8 @@
             kernel.Bind<IEfStatus>().To<EfStatus>();
             kernel.Bind<ILogger>().To<Logger>();
             kernel.Bind<ILog>().ToMethod(context => LogManager.GetLogger("CollectingProductionDataSystem.Phd2SqlProductionData")).InSingletonScope();
+            kernel.Bind<IMailerService>().ToMethod(context =>MailerMoq.Object);
+            kernel.Bind<IPhdPrimaryDataService>().To<PhdPrimaryDataService>();
         }
 
         /// <summary>

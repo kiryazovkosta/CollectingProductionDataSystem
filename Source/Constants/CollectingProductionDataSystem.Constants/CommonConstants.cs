@@ -32,6 +32,8 @@ namespace CollectingProductionDataSystem.Constants
 
         private static readonly int electricalEnergy = 6;
 
+        private static readonly int chemicalClearedWater = 7;
+
         private static readonly int dailyInfoDailyInfoHydrocarbonsShiftTypeId = 52;
 
         private static string phdDateTimeFormat = @"M/d/yyyy hh:mm:ss tt";
@@ -65,6 +67,8 @@ namespace CollectingProductionDataSystem.Constants
         public static int HeatEnergy { get { return heatEnergy; } }
 
         public static int ElectricalEnergy { get { return electricalEnergy; } }
+
+        public static int ChemicalClearedWater { get { return chemicalClearedWater; } }
 
         public static int DailyInfoDailyInfoHydrocarbonsShiftTypeId { get { return dailyInfoDailyInfoHydrocarbonsShiftTypeId; } }
 
