@@ -549,6 +549,33 @@
             }
         }
 
+        [HttpGet]
+        public ActionResult InProcessUnitsData()
+        {
+            this.ViewData["products"] = Mapper.Map<IEnumerable<ProductViewModel>>(this.data.Products.All().ToList());
+            this.ViewData["processunits"] = Mapper.Map<IEnumerable<CollectingProductionDataSystem.Web.ViewModels.Units.ProcessUnitViewModel>>(this.data.ProcessUnits.All().ToList());
+            return View();
+        }
+
+        [HttpGet]
+        [OutputCache(Duration = HalfAnHour, Location = OutputCacheLocation.ServerAndClient, VaryByParam = "*")]
+        public ActionResult ReadInProcessUnitsData([DataSourceRequest]DataSourceRequest request, DateTime? date)
+        {
+            ValidateDailyModelState(date);
+
+            if (this.ModelState.IsValid)
+            {
+                var dbResult = this.data.InProcessUnitDatas.All().Where(x => x.RecordTimestamp == date);
+                var kendoResult = dbResult.ToDataSourceResult(request, this.ModelState, Mapper.Map<InProcessUnitsViewModel>);
+                return Json(kendoResult, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                var kendoResult = new List<InProcessUnitsViewModel>().ToDataSourceResult(request, ModelState);
+                return Json(kendoResult, JsonRequestBehavior.AllowGet);
+            }
+        }
+
         private void ValidateDailyModelState(DateTime? date)
         {
             if (date == null)

@@ -1260,6 +1260,9 @@
     <Content Include="Areas\ManagementDashBoard\Views\Dashboard\AllProcessUnitsProductionPlan.cshtml" />
     <Content Include="Areas\ManagementDashBoard\Views\Shared\ComplexDailyChart.cshtml" />
     <Content Include="Areas\MonthlyDataReporting\Views\MonthlyPotableWater\MonthlyPotableWaterData.cshtml" />
+    <Content Include="Areas\SummaryReporting\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\SummaryReporting\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\SummaryReporting\Views\SummaryReports\InProcessUnitsData.cshtml" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <None Include="Properties\PublishProfiles\Home.pubxml" />
     <Content Include="Scripts\custom\sendArea.js" />
