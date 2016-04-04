@@ -1561,4 +1561,34 @@
   <data name="IsTotalPosition" xml:space="preserve">
     <value>IsTotalPosition</value>
   </data>
+  <data name="CreatedFrom" xml:space="preserve">
+    <value>CreatedFrom</value>
+  </data>
+  <data name="CreatedOn" xml:space="preserve">
+    <value>CreatedOn</value>
+  </data>
+  <data name="DailyGraphicShortTitle" xml:space="preserve">
+    <value>Statistics for {0}</value>
+  </data>
+  <data name="ProcessUnitLoading" xml:space="preserve">
+    <value>ProcessUnitLoading</value>
+  </data>
+  <data name="ChemicalClearedWater" xml:space="preserve">
+    <value>ChemicalClearedWater</value>
+  </data>
+  <data name="UnitMonthlyCCWData" xml:space="preserve">
+    <value>UnitMonthlyCCWData</value>
+  </data>
+  <data name="HasDailyStatistics" xml:space="preserve">
+    <value>HasDailyStatistics</value>
+  </data>
+  <data name="HasLoadStatistics" xml:space="preserve">
+    <value>HasLoadStatistics</value>
+  </data>
+  <data name="IsTotalWorkTime" xml:space="preserve">
+    <value>IsTotalWorkTime</value>
+  </data>
+  <data name="VisibleInChart" xml:space="preserve">
+    <value>VisibleInChart</value>
+  </data>
 </root>

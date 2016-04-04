@@ -491,6 +491,17 @@
                 }).Distinct(new MultiShiftComparer()).ToList();
 
                 var kendoPreparedResult = Mapper.Map<IEnumerable<MultiShift>, IEnumerable<UnitsReportsDataViewModel>>(result);
+
+                var totalMonthQuantities = unitsData.GetTotalMonthQuantityToDayFromShiftData(date.Value, processUnitId ?? 0);
+
+                foreach (var position in kendoPreparedResult)
+                {
+                    if (totalMonthQuantities.ContainsKey(position.Code))
+                    {
+                        position.TotalMonthQuantity = totalMonthQuantities[position.Code];
+                    }
+                }
+
                 var kendoResult = new DataSourceResult();
                 try
                 {
@@ -534,6 +545,33 @@
             else
             {
                 var kendoResult = new List<InnerPipelinesDataViewModel>().ToDataSourceResult(request, ModelState);
+                return Json(kendoResult, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpGet]
+        public ActionResult InProcessUnitsData()
+        {
+            this.ViewData["products"] = Mapper.Map<IEnumerable<ProductViewModel>>(this.data.Products.All().ToList());
+            this.ViewData["processunits"] = Mapper.Map<IEnumerable<CollectingProductionDataSystem.Web.ViewModels.Units.ProcessUnitViewModel>>(this.data.ProcessUnits.All().ToList());
+            return View();
+        }
+
+        [HttpGet]
+        [OutputCache(Duration = HalfAnHour, Location = OutputCacheLocation.ServerAndClient, VaryByParam = "*")]
+        public ActionResult ReadInProcessUnitsData([DataSourceRequest]DataSourceRequest request, DateTime? date)
+        {
+            ValidateDailyModelState(date);
+
+            if (this.ModelState.IsValid)
+            {
+                var dbResult = this.data.InProcessUnitDatas.All().Where(x => x.RecordTimestamp == date);
+                var kendoResult = dbResult.ToDataSourceResult(request, this.ModelState, Mapper.Map<InProcessUnitsViewModel>);
+                return Json(kendoResult, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                var kendoResult = new List<InProcessUnitsViewModel>().ToDataSourceResult(request, ModelState);
                 return Json(kendoResult, JsonRequestBehavior.AllowGet);
             }
         }

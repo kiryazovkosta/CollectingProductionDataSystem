@@ -1,0 +1,50 @@
+﻿@{
+    Layout = "~/Views/Shared/_KendoLayout.cshtml";
+}
+
+@section styles{
+    @Styles.Render("~/Content/custom/manager-dashboard")
+    @RenderSection("styles", required: false)
+}
+
+    <div id="slide-in-share">
+        <a id="slide-in-handle" class="btn btn-primary" href="#">Share</a>
+        <ul>
+            <li><a class="share-button share-facebook" href="#">Share in Facebook</a></li>
+            <li><a class="share-button share-twitter" href="#">Post in Twitter</a></li>
+            <li><a class="share-button share-tumblr" href="#">Reblog in Tumblr</a></li>
+        </ul>
+    </div>
+
+
+
+@RenderBody()
+
+@section scripts{
+    @Scripts.Render("~/bundles/kendo")
+    @RenderSection("scripts", required: false)
+
+    <script>
+        var slide = kendo.fx($("#slide-in-share")).slideIn("left"),
+            visible = true;
+
+        $("#slide-in-handle").click(function (e) {
+            if (visible) {
+                slide.reverse();
+            } else {
+                slide.play();
+            }
+            visible = !visible;
+            e.preventDefault();
+        });
+
+    </script>
+}
+
+
+
+
+
+
+
+

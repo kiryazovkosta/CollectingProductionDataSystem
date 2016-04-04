@@ -502,6 +502,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ChemicalClearedWater.
+        /// </summary>
+        public static string ChemicalClearedWater {
+            get {
+                return ResourceManager.GetString("ChemicalClearedWater", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Choose Area....
         /// </summary>
         public static string ChooseArea {
@@ -754,6 +763,24 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to CreatedFrom.
+        /// </summary>
+        public static string CreatedFrom {
+            get {
+                return ResourceManager.GetString("CreatedFrom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CreatedOn.
+        /// </summary>
+        public static string CreatedOn {
+            get {
+                return ResourceManager.GetString("CreatedOn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Create User Account.
         /// </summary>
         public static string CreateUser {
@@ -804,6 +831,15 @@ namespace App_GlobalResources.Resources {
         public static string DailyData {
             get {
                 return ResourceManager.GetString("DailyData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Statistics for {0}.
+        /// </summary>
+        public static string DailyGraphicShortTitle {
+            get {
+                return ResourceManager.GetString("DailyGraphicShortTitle", resourceCulture);
             }
         }
         
@@ -1528,6 +1564,24 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to HasDailyStatistics.
+        /// </summary>
+        public static string HasDailyStatistics {
+            get {
+                return ResourceManager.GetString("HasDailyStatistics", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to HasLoadStatistics.
+        /// </summary>
+        public static string HasLoadStatistics {
+            get {
+                return ResourceManager.GetString("HasLoadStatistics", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to HighwayPipelinesData.
         /// </summary>
         public static string HighwayPipelinesData {
@@ -1731,6 +1785,15 @@ namespace App_GlobalResources.Resources {
         public static string IsTotalPosition {
             get {
                 return ResourceManager.GetString("IsTotalPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to IsTotalWorkTime.
+        /// </summary>
+        public static string IsTotalWorkTime {
+            get {
+                return ResourceManager.GetString("IsTotalWorkTime", resourceCulture);
             }
         }
         
@@ -2658,6 +2721,15 @@ namespace App_GlobalResources.Resources {
         public static string ProcessUnitAlias {
             get {
                 return ResourceManager.GetString("ProcessUnitAlias", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ProcessUnitLoading.
+        /// </summary>
+        public static string ProcessUnitLoading {
+            get {
+                return ResourceManager.GetString("ProcessUnitLoading", resourceCulture);
             }
         }
         
@@ -3949,6 +4021,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to UnitMonthlyCCWData.
+        /// </summary>
+        public static string UnitMonthlyCCWData {
+            get {
+                return ResourceManager.GetString("UnitMonthlyCCWData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Месечни данни за оборотна вода.
         /// </summary>
         public static string UnitMonthlyCWData {
@@ -4287,6 +4368,15 @@ namespace App_GlobalResources.Resources {
         public static string ValidUntill {
             get {
                 return ResourceManager.GetString("ValidUntill", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to VisibleInChart.
+        /// </summary>
+        public static string VisibleInChart {
+            get {
+                return ResourceManager.GetString("VisibleInChart", resourceCulture);
             }
         }
         

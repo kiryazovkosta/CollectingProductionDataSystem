@@ -266,8 +266,12 @@
     <Compile Include="Areas\Administration\ViewModels\UserPieViewModel.cs" />
     <Compile Include="Areas\DailyReporting\Controllers\TanksStatusesController.cs" />
     <Compile Include="Areas\DailyReporting\ViewModels\TanksStatusDataViewModel.cs" />
+    <Compile Include="Areas\ManagementDashBoard\Controllers\AreaBaseController.cs" />
+    <Compile Include="Areas\ManagementDashBoard\Controllers\DashboardController.cs" />
+    <Compile Include="Areas\ManagementDashBoard\ManagementDashBoardAreaRegistration.cs" />
     <Compile Include="Areas\MonthlyDataReporting\Controllers\AreaBaseController.cs" />
     <Compile Include="Areas\MonthlyDataReporting\Controllers\BaseMonthlyController.cs" />
+    <Compile Include="Areas\MonthlyDataReporting\Controllers\MonthlyChemicalClearedWaterController.cs" />
     <Compile Include="Areas\MonthlyDataReporting\Controllers\MonthlyCirculatingWaterController.cs" />
     <Compile Include="Areas\MonthlyDataReporting\Controllers\MonthlyElectricalEnergyController.cs" />
     <Compile Include="Areas\MonthlyDataReporting\Controllers\MonthlyFreshWaterController.cs" />
@@ -475,6 +479,7 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\custom\manDashSideBar.css" />
     <Content Include="Content\custom\slidebar.css" />
     <Content Include="Content\custom\documentation.css" />
     <Content Include="Content\ErrorPage\error.css" />
@@ -1264,6 +1269,16 @@
     <Content Include="Areas\Documentation\Views\Help\MonthlyDataPotableWater.cshtml" />
     <Content Include="Areas\Documentation\Views\Help\MonthlyDataHeatEnergy.cshtml" />
     <Content Include="Areas\Documentation\Views\Help\MonthlyDataElectricalEnergy.cshtml" />
+    <Content Include="Areas\ManagementDashBoard\Views\web.config" />
+    <Content Include="Areas\ManagementDashBoard\Views\Shared\_DashBoardLayout.cshtml" />
+    <Content Include="Areas\ManagementDashBoard\Views\Dashboard\Index.cshtml" />
+    <Content Include="Areas\ManagementDashBoard\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\ManagementDashBoard\Views\Dashboard\AllProcessUnitsProductionPlan.cshtml" />
+    <Content Include="Areas\ManagementDashBoard\Views\Shared\ComplexDailyChart.cshtml" />
+    <Content Include="Areas\MonthlyDataReporting\Views\MonthlyPotableWater\MonthlyPotableWaterData.cshtml" />
+    <Content Include="Areas\SummaryReporting\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\SummaryReporting\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\SummaryReporting\Views\SummaryReports\InProcessUnitsData.cshtml" />
     <Content Include="Areas\Documentation\Views\Help\SummaryReportDescription.cshtml" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <None Include="Properties\PublishProfiles\Home.pubxml" />
@@ -1959,6 +1974,7 @@
     <Content Include="Views\Shared\EditorTemplates\TankStatusViewModel.cshtml" />
     <Content Include="Views\Shared\_MonthSelectorAproveableSideBar.cshtml" />
     <Content Include="Views\Shared\_TanksSideBarByAreaAndDateTime.cshtml" />
+    <Content Include="Views\Shared\_MonthSelectorEditAndReportSideBar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1968,12 +1984,14 @@
     <Folder Include="Areas\DailyReporting\Views\Ajax\" />
     <Folder Include="Areas\DailyReporting\Views\AreaBase\" />
     <Folder Include="Areas\Documentation\Models\" />
+    <Folder Include="Areas\ManagementDashBoard\Models\" />
+    <Folder Include="Areas\ManagementDashBoard\Views\AreaBase\" />
     <Folder Include="Areas\MonthlyDataReporting\Views\GenericMonthly\" />
+    <Folder Include="Areas\MonthlyDataReporting\Views\MonthlyChemicalClearedWater\" />
     <Folder Include="Areas\MonthlyDataReporting\Views\MonthlyCirculatingWater\" />
     <Folder Include="Areas\MonthlyDataReporting\Views\MonthlyElectricalEnergy\" />
     <Folder Include="Areas\MonthlyDataReporting\Views\MonthlyFreshWater\" />
     <Folder Include="Areas\MonthlyDataReporting\Views\MonthlyHeatEnergy\" />
-    <Folder Include="Areas\MonthlyDataReporting\Views\MonthlyPotableWater\" />
     <Folder Include="Areas\MonthlyReporting\Models\" />
     <Folder Include="Areas\MonthlyReporting\Views\AreaBase\" />
     <Folder Include="Areas\MonthlyReporting\Views\Shared\" />

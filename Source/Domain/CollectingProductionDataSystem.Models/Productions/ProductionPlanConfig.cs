@@ -65,6 +65,8 @@
 
         public int? MeasureUnitId { get; set; }
 
+        public bool VisibleInChart { get; set; }
+
         public virtual MeasureUnit MeasureUnit { get; set; }
 
         /// <summary>

@@ -103,5 +103,8 @@ namespace CollectingProductionDataSystem.Models.Productions
         public bool NotATotalizedPosition { get; set; }
 
         public int NeedToGetOnlyLastShiftValue { get; set; }
+
+        public bool RemoveAndAddInsteadUpdate { get; set; }
+
     }
 }

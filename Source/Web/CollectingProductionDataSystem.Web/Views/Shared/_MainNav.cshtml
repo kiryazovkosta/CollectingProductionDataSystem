@@ -51,6 +51,7 @@
                             <li>@Html.AuthorizedActionLink(@Resources.Layout.UnitMonthlyHCData, "Report", "MonthlyHydroCarbons", new { area = "MonthlyDataReporting" }, null)</li>
                             <li>@Html.AuthorizedActionLink(@Resources.Layout.UnitMonthlyFWData, "Report", "MonthlyFreshWater", new { area = "MonthlyDataReporting" }, null)</li>
                             <li>@Html.AuthorizedActionLink(@Resources.Layout.UnitMonthlyCWData, "Report", "MonthlyCirculatingWater", new { area = "MonthlyDataReporting" }, null)</li>
+                            <li>@Html.AuthorizedActionLink(@Resources.Layout.UnitMonthlyCCWData, "Report", "MonthlyChemicalClearedWater", new { area = "MonthlyDataReporting" }, null)</li>
                             <li>@Html.AuthorizedActionLink(@Resources.Layout.UnitMonthlyPWData, "Report", "MonthlyPotableWater", new { area = "MonthlyDataReporting" }, null)</li>
                             <li>@Html.AuthorizedActionLink(@Resources.Layout.UnitMonthlyHEData, "Report", "MonthlyHeatEnergy", new { area = "MonthlyDataReporting" }, null)</li>
                             <li>@Html.AuthorizedActionLink(@Resources.Layout.UnitMonthlyEEData, "Report", "MonthlyElectricalEnergy", new { area = "MonthlyDataReporting" }, null)</li>
@@ -77,6 +78,7 @@
                             <li>@Html.AuthorizedActionLink(@Resources.Layout.HighwayPipelinesData, "HighwayPipelinesData", "HighwayPipelinesReport", new { area = "SummaryReporting" }, null)</li>
                             <li role="separator" class="divider divider-labeled"><span class="label label-default pull-right">Месечни количества</span></li>
                             <li>@Html.AuthorizedActionLink(@Resources.Layout.InnerPipelinesData, "InnerPipelinesData", "SummaryReports", new { area = "SummaryReporting" }, null)</li>
+                            <li>@Html.AuthorizedActionLink(@Resources.Layout.InProcessUnitsData, "InProcessUnitsData", "SummaryReports", new { area = "SummaryReporting" }, null)</li>
                             <li role="separator" class="divider divider-labeled"><span class="label label-default pull-right">Дневни данни - Диспечеризация и ЕОЗ</span></li>
                             <li>@Html.AuthorizedActionLink(@Resources.Layout.EozMeasuringPointsData, "OverseersTransactionsData", "OverseersTransactions", new { area = "SummaryReporting" }, null)</li>
                             <li role="separator" class="divider divider-labeled"><span class="label label-default pull-right">Контрол на изпълнителска дисциплина</span></li>
@@ -102,7 +104,7 @@
         </div>
     </div>
 </div>
-@if (!this.Server.MachineName.ToLower().Contains("s-api-1"))
+@*@if (!this.Server.MachineName.ToLower().Contains("s-api-1"))
 {
     <div id="dev">
         <div class="alert alert-danger alert-dismissable text-center">
@@ -111,4 +113,4 @@
             <h2>Вие се намирате в системата за разработки!</h2> <br>За работа в продуктивната система моля използвайте линка: <a href="http:\\s-api-1.neftochim.bg" class="alert-link">"Продуктивна система"</a>.
         </div>
     </div>
-}
+}*@

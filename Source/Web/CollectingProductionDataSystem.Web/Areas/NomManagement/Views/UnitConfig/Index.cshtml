@@ -21,7 +21,7 @@
           columns.Bound(c => c.CollectingDataMechanism).Width(100);
           columns.Bound(c => c.CalculatedFormula).Width(100);
           columns.Bound(c => c.AggregateGroup).Width(100);
-          columns.Bound(c => c.CustomFormulaExpression).Width(100);
+          columns.Bound(c => c.CustomFormulaExpression).Width(200);
           columns.Bound(c => c.RelatedUnitConfigs).Width(300).ClientTemplate("#=territoriesTemplate(RelatedUnitConfigs)#");
           columns.Bound(c => c.IsCalculated).Width(100);
           columns.Bound(c => c.PreviousShiftTag).Width(300);
@@ -35,6 +35,7 @@
           columns.Bound(c => c.IsMemberOfShiftsReport).Width(100);
           columns.Bound(c => c.NotATotalizedPosition).Width(100);
           columns.Bound(c => c.CalculationPercentage).Width(100);
+          columns.Bound(c => c.StartupValue).Width(100);
           //columns.ForeignKey(c => c.EnteredMeasureUnitId, (System.Collections.IEnumerable)ViewData["measureUnits"], "Id", "Name").EditorTemplateName("MeasureUnitViewModel").Width(280);
           columns.Bound(c => c.DataSource).Width(80);
           columns.Bound(c => c.ProcessUnitAlias).Width(140);

@@ -76,6 +76,8 @@
         [Display(Name = "RelatedUnitDailyConfigs", ResourceType = typeof(Resources.Layout))]
         public ICollection<RelatedUnitDailyConfigsViewModel> RelatedUnitDailyConfigs { get; set; }
 
+        [Display(Name = "IsTotalWorkTime", ResourceType = typeof(Resources.Layout))]
+        public bool IsTotalWorkTime { get; set; }
 
 
         [UIHint("Hidden")]

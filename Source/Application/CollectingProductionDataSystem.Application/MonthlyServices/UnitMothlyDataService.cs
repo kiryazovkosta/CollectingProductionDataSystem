@@ -289,8 +289,7 @@ namespace CollectingProductionDataSystem.Application.MonthlyServices
                 .Where(x => x.AggregationCurrentLevel == true
                         && x.IsManualEntry == false
                         && x.MonthlyReportTypeId == reportTypeId
-
-                       ).ToList().Where(x => changedRecords == null || changedRecords.Any(y => y == x.Code));
+                       ).ToList().Where(x => changedRecords == null || changedRecords.Any(y => y == x.Code)).OrderBy(x=>x.Code);
 
             Dictionary<string, UnitMonthlyData> targetUnitMonthlyRecords = new Dictionary<string, UnitMonthlyData>();
 

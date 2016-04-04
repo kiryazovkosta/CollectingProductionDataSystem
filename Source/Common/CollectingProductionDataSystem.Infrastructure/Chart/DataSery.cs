@@ -12,6 +12,11 @@ namespace CollectingProductionDataSystem.Infrastructure.Chart
 
     public class DataSery<TypeX, TypeY>
     {
+        public DataSery(string typeParam, string labelParam, string axisParam, string colorParam = null)
+            :this(typeParam,labelParam,colorParam)
+        {
+            this.Axis = axisParam;
+        }
         public DataSery(string typeParam, string labelParam, string colorParam = null)
             :this()
         {
@@ -24,9 +29,11 @@ namespace CollectingProductionDataSystem.Infrastructure.Chart
         {
             Values = new List<Pair<TypeX, TypeY>>();
         }
+
         public string Type { get; set; }
         public string Label { get; set; }
         public string Color { get; set; }
+        public string Axis { get; set; }
         public List<Pair<TypeX,TypeY>> Values { get; set; }
     }
 }

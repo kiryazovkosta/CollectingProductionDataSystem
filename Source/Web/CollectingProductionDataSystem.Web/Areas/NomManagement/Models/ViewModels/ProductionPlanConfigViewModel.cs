@@ -69,6 +69,10 @@ namespace CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewMode
         [Display(Name = "MeasureUnit", ResourceType = typeof(Resources.Layout))]
         public int MeasureUnitId { get; set; }
 
+        [Required]
+        [Display(Name = "VisibleInChart", ResourceType = typeof(Resources.Layout))]
+        public bool VisibleInChart { get; set; }
+
         [UIHint("Hidden")]
         [Editable(false)]
         public bool IsDeleted { get; set; }

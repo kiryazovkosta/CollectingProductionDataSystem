@@ -1,4 +1,5 @@
 ﻿@using CollectingProductionDataSystem.Web.Infrastructure.Helpers;
+@using CollectingProductionDataSystem.Web.Areas.Administration.ViewModels;
 @using Resources = App_GlobalResources.Resources
 @{
     Layout = "~/Areas/Administration/Views/Shared/_KendoAdminLayout.cshtml";
@@ -7,35 +8,42 @@
     @Resources.Layout.ApplicationLog
 </h2>
 @Html.Hidden("user", this.User.Identity.Name)
-@(Html.Kendo().Grid<CollectingProductionDataSystem.Web.Areas.Administration.ViewModels.EnteredByUserValueViewModel>()
-      .Name("events")
+@(Html.Kendo().Grid<EnteredByUserValueViewModel>()
+      .Name("entered-items")
       .Columns(columns =>
       {
-          columns.Bound(c => c.CreatedOn).Format("{0:dd.MM.yyyy HH:mm:ss}").Width(120);
+          columns.Bound(c => c.Id);
+          columns.Bound(c => c.CreatedOn).Format("{0:dd.MM.yyyy HH:mm:ss:fff}");
           columns.Bound(c => c.CreatedFrom);
-          //columns.Bound(c => c.ProcessUnitName);
-          //columns.Bound(c => c.Code);
-          //columns.Bound(c => c.Name);
+          columns.Bound(c => c.ProcessUnitName);
+          columns.Bound(c => c.Code);
+          columns.Bound(c => c.Name);
+          columns.Bound(c => c.RecordTimestamp).Format("{0:dd.MM.yyyy}");
+          columns.Bound(c => c.ShiftName);
           columns.Bound(c => c.OldValue);
           columns.Bound(c => c.NewValue);
       })
-          .Pageable(pageable => pageable
-                    .Refresh(true)
-                    .PageSizes(new[] { 10, 20, 50, 100 })
-                    .ButtonCount(5))
-              .Sortable()
-              .Scrollable(scr => scr.Height(600))
-              .Filterable()
-              .Resizable(c => c.Columns(true))
-              .ColumnMenu()
+    .ToolBar(toolbar =>
+    {
+        toolbar.Excel();
+    })
+    .Pageable(pageable => pageable
+            .Refresh(true)
+            .PageSizes(new[] { 10, 20, 50, 100 })
+            .ButtonCount(5))
+        .Sortable()
+        .Scrollable(scr => scr.Height(600))
+        .Filterable()
+        .Resizable(c => c.Columns(true))
+        .ColumnMenu()
       .DataSource(dataSource => dataSource
           .Ajax()
-              .PageSize(20)
+              .PageSize(100)
                   .Read(read => read.Action("Read", "EnteredByUserValues", new { area = "Administration" }).Data("sendAntiForgery"))
               )
 )
 @section scripts{
     @Scripts.Render("~/bundles/custom/kendoadditional")
     @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.min.js")
-    @Scripts.Render("~/Scripts/custom/kendoGridState.js")
+    @*@Scripts.Render("~/Scripts/custom/kendoGridState.js")*@
 }

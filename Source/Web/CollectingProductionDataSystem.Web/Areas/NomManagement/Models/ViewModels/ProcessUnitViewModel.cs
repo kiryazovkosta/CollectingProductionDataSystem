@@ -29,6 +29,14 @@ namespace CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewMode
         [Display(Name = "Factory", ResourceType = typeof(Resources.Layout))]
         public int FactoryId { get; set; }
 
+        [Required]
+        [Display(Name = "HasDailyStatistics", ResourceType = typeof(Resources.Layout))]
+        public bool HasDailyStatistics { get; set; }
+
+        [Required]
+        [Display(Name = "HasLoadStatistics", ResourceType = typeof(Resources.Layout))]
+        public bool HasLoadStatistics { get; set; }
+
         [UIHint("Hidden")]
         [Editable(false)]
         public bool IsDeleted { get; set; }

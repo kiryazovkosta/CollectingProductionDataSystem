@@ -53,6 +53,10 @@
       <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.1\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Moq, Version=4.2.1510.2205, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
+      <HintPath>..\packages\Moq.4.2.1510.2205\lib\net40\Moq.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Ninject, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
       <HintPath>..\packages\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>
       <Private>True</Private>
@@ -114,6 +118,10 @@
     <ProjectReference Include="..\Application\CollectingProductionDataSystem.Application\CollectingProductionDataSystem.Application.csproj">
       <Project>{3A125DE9-28B9-4004-A1D9-BEBDE62AC786}</Project>
       <Name>CollectingProductionDataSystem.Application</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CollectingProductionDataSystem.PhdApplication\CollectingProductionDataSystem.PhdApplication.csproj">
+      <Project>{BA08DAD7-81BE-4AEB-8EED-E835721574B5}</Project>
+      <Name>CollectingProductionDataSystem.PhdApplication</Name>
     </ProjectReference>
     <ProjectReference Include="..\Common\CollectingProductionDataSystem.Infrastructure\CollectingProductionDataSystem.Infrastructure.csproj">
       <Project>{69debde6-b1ba-4a55-9570-ae7e6abb5f98}</Project>

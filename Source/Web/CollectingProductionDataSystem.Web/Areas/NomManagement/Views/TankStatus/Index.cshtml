@@ -16,7 +16,7 @@
             .ClientTemplate(
                 Ajax.AuthorizedAjaxActionLinkOrText("#=data.Name#", "Index", "History",
                                                 new AjaxOptions() { HttpMethod = "Get", OnSuccess = "showRecordHistoriModal" },
-                                                new { area = "RecordsHistory", id = "#=data.id#", entityName = "Area" },
+                                                new { area = "RecordsHistory", id = "#=data.id#", entityName = "TankStatus" },
                                                 new { data_ajax_mode = "replace", data_ajax_update = @"\#modal-dialog-body" })
                                                 .ToHtmlString());
             columns.Command(command => { command.Edit(); command.Destroy(); }).Width(230);
@@ -42,10 +42,10 @@
         .Ajax()
         .PageSize(20)
         .Model(model => model.Id(p => p.Id))
-        .Read(read => read.Action("Read", "Area", new { area = "NomManagement" }).Data("sendAntiForgery"))
-        .Create(create => create.Action("Create", "Area", new { area = "NomManagement" }).Data("sendAntiForgery"))
-        .Update(update => update.Action("Update", "Area", new { area = "NomManagement" }).Data("sendAntiForgery"))
-        .Destroy(destroy => destroy.Action("Destroy", "Area", new { area = "NomManagement" }).Data("sendAntiForgery"))
+            .Read(read => read.Action("Read", "TankStatus", new { area = "NomManagement" }).Data("sendAntiForgery"))
+            .Create(create => create.Action("Create", "TankStatus", new { area = "NomManagement" }).Data("sendAntiForgery"))
+            .Update(update => update.Action("Update", "TankStatus", new { area = "NomManagement" }).Data("sendAntiForgery"))
+            .Destroy(destroy => destroy.Action("Destroy", "TankStatus", new { area = "NomManagement" }).Data("sendAntiForgery"))
         .Events(events =>
         {
             events.Error("kendoAdditional.ErrorHandler");

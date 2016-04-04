@@ -12,6 +12,7 @@ using CollectingProductionDataSystem.Web.Infrastructure.Extentions;
 using Kendo.Mvc.Extensions;
 using Kendo.Mvc.UI;
 using Resources = App_GlobalResources.Resources;
+using CollectingProductionDataSystem.Models.Productions;
 
 namespace CollectingProductionDataSystem.Web.Areas.NomManagement.Controllers
 {
@@ -109,15 +110,61 @@ namespace CollectingProductionDataSystem.Web.Areas.NomManagement.Controllers
                 }
                 else
                 {
-                    Mapper.Map(inputViewModel, dbEntity);
+                    var removeAndAddInsteadUpdate = false;
 
-                    this.repository.Update(dbEntity);
-
-                    var result = data.SaveChanges(this.UserProfile.UserName);
-
-                    if (!result.IsValid)
+                    if(dbEntity is UnitConfig)
                     {
-                        result.ToModelStateErrors(ModelState);
+                        var unitConfig = dbEntity as UnitConfig;
+                        if (unitConfig.RemoveAndAddInsteadUpdate == true)
+                        {
+                            removeAndAddInsteadUpdate = true;   
+                        }
+                    }
+
+                    if (removeAndAddInsteadUpdate == false && dbEntity is UnitDailyConfig)
+                    {
+                        var unitDailyConfig = dbEntity as UnitDailyConfig;
+                        if (unitDailyConfig.RemoveAndAddInsteadUpdate == true)
+                        {
+                            removeAndAddInsteadUpdate = true;   
+                        }   
+                    }
+
+                    if (removeAndAddInsteadUpdate == true)
+                    {
+                        // delete
+                        this.repository.Delete(inputViewModel.Id);
+                        var result = data.SaveChanges(this.UserProfile.UserName);
+
+                        if (!result.IsValid)
+                        {
+                            result.ToModelStateErrors(ModelState);
+                        }
+
+                        // add
+                        var entity = this.data.DbContext.DbContext.Set<TModel>().Create();
+                        Mapper.Map(inputViewModel, entity);
+
+                        this.repository.Add(entity);
+                        result = data.SaveChanges(this.UserProfile.UserName);
+
+                        if (!result.IsValid)
+                        {
+                            result.ToModelStateErrors(ModelState);
+                        }
+                    }
+                    else
+                    {
+                        Mapper.Map(inputViewModel, dbEntity);
+
+                        this.repository.Update(dbEntity);
+
+                        var result = data.SaveChanges(this.UserProfile.UserName);
+
+                        if (!result.IsValid)
+                        {
+                            result.ToModelStateErrors(ModelState);
+                        }
                     }
                 }
             }

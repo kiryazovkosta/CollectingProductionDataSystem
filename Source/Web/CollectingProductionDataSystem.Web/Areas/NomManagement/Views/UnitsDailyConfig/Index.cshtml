@@ -29,6 +29,7 @@
           columns.Bound(c => c.RelatedUnitDailyConfigs).Width(300).ClientTemplate("#=unitConfigTemplate(RelatedUnitDailyConfigs)#");
           columns.Bound(c => c.IsEditable).Width(100);
           columns.Bound(c => c.NotATotalizedPosition).Width(100);
+          columns.Bound(c => c.IsTotalWorkTime).Width(100);          
           columns.Command(command => { command.Edit(); command.Destroy(); }).Width(230);
       })
       .Resizable(res => res.Columns(true))

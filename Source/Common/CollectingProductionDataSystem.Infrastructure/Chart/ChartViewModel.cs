@@ -10,5 +10,7 @@ namespace CollectingProductionDataSystem.Infrastructure.Chart
     {
         public string Title { get; set; }
         public IEnumerable<DataSery<XType, YType>> DataSeries { get; set; }
+
+        public int? Height { get; set; }
     }
 }

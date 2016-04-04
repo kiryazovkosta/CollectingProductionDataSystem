@@ -1559,4 +1559,34 @@
   <data name="IsTotalPosition" xml:space="preserve">
     <value>Визуализация &lt;/br&gt;тотал</value>
   </data>
+  <data name="CreatedFrom" xml:space="preserve">
+    <value>Създаден от</value>
+  </data>
+  <data name="CreatedOn" xml:space="preserve">
+    <value>Създаден на</value>
+  </data>
+  <data name="DailyGraphicShortTitle" xml:space="preserve">
+    <value>Oтбори за инсталация {0}</value>
+  </data>
+  <data name="ProcessUnitLoading" xml:space="preserve">
+    <value>Натоварване на инсталациите</value>
+  </data>
+  <data name="ChemicalClearedWater" xml:space="preserve">
+    <value>Химически очистена вода</value>
+  </data>
+  <data name="UnitMonthlyCCWData" xml:space="preserve">
+    <value>Месечни данни за химически очистена вода</value>
+  </data>
+  <data name="HasDailyStatistics" xml:space="preserve">
+    <value>Учартва в статистика за отбори</value>
+  </data>
+  <data name="HasLoadStatistics" xml:space="preserve">
+    <value>Участва в статистика за натоварване</value>
+  </data>
+  <data name="IsTotalWorkTime" xml:space="preserve">
+    <value>Отработено време на инсталацията</value>
+  </data>
+  <data name="VisibleInChart" xml:space="preserve">
+    <value>Визуализация в графика</value>
+  </data>
 </root>

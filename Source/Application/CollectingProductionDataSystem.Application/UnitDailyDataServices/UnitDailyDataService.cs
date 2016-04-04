@@ -9,6 +9,7 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
     using System.Data.Entity;
     using System.Diagnostics;
     using System.Linq;
+    using System.Threading.Tasks;
     using CollectingProductionDataSystem.Application.Contracts;
     using CollectingProductionDataSystem.Constants;
     using CollectingProductionDataSystem.Data.Contracts;
@@ -580,7 +581,33 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
                 }
             }
 
-            return new ChartViewModel<DateTime, decimal>() { DataSeries = charts };
+            var orderedCharts = charts.OrderByDescending(x => x.Values.FirstOrDefault().Y).ThenBy(x => x.Label.Replace("план", "").Replace("факт", "")).ToList();
+            return new ChartViewModel<DateTime, decimal>() { DataSeries = orderedCharts };
+        }
+
+        public async Task<ChartViewModel<DateTime, decimal>> GetStatisticForProcessUnitAsync(int processUnitId, DateTime targetDate, int? materialTypeId = null)
+        {
+            var beginingOfTheMonth = new DateTime(targetDate.Year, targetDate.Month, 1);
+
+            var statistic = await this.data.ProductionPlanDatas.All().Include(x => x.ProductionPlanConfig)
+                                .Where(x => beginingOfTheMonth <= x.RecordTimestamp
+                                        && x.RecordTimestamp < targetDate
+                                        && x.ProcessUnitId == processUnitId
+                                        && x.ProductionPlanConfig.MaterialTypeId == (materialTypeId ?? x.ProductionPlanConfig.MaterialTypeId))
+                                .GroupBy(x => x.ProductionPlanConfigId).ToListAsync();
+            var charts = new List<DataSery<DateTime, decimal>>();
+
+            foreach (var parameter in statistic.OrderByDescending(x=>x.Key))
+            {
+                if (parameter.Count() > 0)
+                {
+                    IEnumerable<DataSery<DateTime, decimal>> series = await Task.Factory.StartNew(()=>GetSeriesFromData(parameter, beginingOfTheMonth, targetDate));
+                    charts.AddRange(series);
+                }
+            }
+
+            var orderedCharts = charts.OrderByDescending(x => x.Values.FirstOrDefault().Y).ThenBy(x => x.Label.Replace("план", "").Replace("факт", "")).ToList();
+            return new ChartViewModel<DateTime, decimal>() { DataSeries = orderedCharts };
         }
 
         /// <summary>
@@ -596,10 +623,10 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
 
             var paramTransformed = parameter.ToDictionary(x => x.RecordTimestamp);
 
-            DataSery<DateTime, decimal> planPercent = new DataSery<DateTime, decimal>("area", string.Format("{0} план(%)", model.Name));
-            DataSery<DateTime, decimal> factPercent = new DataSery<DateTime, decimal>("line", string.Format("{0} факт(%)", model.Name));
-            DataSery<DateTime, decimal> plan = new DataSery<DateTime, decimal>("area", string.Format("{0} план(T)", model.Name));
-            DataSery<DateTime, decimal> fact = new DataSery<DateTime, decimal>("line", string.Format("{0} факт(T)", model.Name));
+            DataSery<DateTime, decimal> planPercent = new DataSery<DateTime, decimal>("area", string.Format("{0} план(%)", model.Name),"percent",null);
+            DataSery<DateTime, decimal> factPercent = new DataSery<DateTime, decimal>("line", string.Format("{0} факт(%)", model.Name), "percent", null);
+            DataSery<DateTime, decimal> plan = new DataSery<DateTime, decimal>("area", string.Format("{0} план(T)", model.Name), "thone", null);
+            DataSery<DateTime, decimal> fact = new DataSery<DateTime, decimal>("line", string.Format("{0} факт(T)", model.Name), "thone", null);
 
             for (DateTime target = beginDate; target <= endDate; target = target.AddDays(1))
             {

@@ -1,0 +1,81 @@
+﻿@using System.Web.Optimization;
+@using CollectingProductionDataSystem.Web.Areas.MonthlyReporting.ViewModels;
+@using Resources = App_GlobalResources.Resources;
+@model InProcessUnitsViewModel
+@{
+    Layout = "~/Views/Shared/_KendoLayoutWithSideBar.cshtml";
+    var now = DateTime.Now;
+}
+<div class="row">
+    <div class="col-md-10">
+        <h2>@Resources.Layout.InProcessUnitsData</h2>
+    </div>
+    <div class="col-md-2">
+        <button id="excel-export" class="k-button k-button-icontext k-grid-excel pull-right head-button"><span class="k-icon k-i-excel"></span>Експорт в Excel</button>
+    </div>
+</div>
+@Html.ValidationSummary()
+@Html.AntiForgeryToken()
+<div class="row">
+    <div class="col-lg-12 col">
+        @(Html.Kendo().Grid<InProcessUnitsViewModel>()
+                .Name("inner-pipes")
+        .AutoBind(false)
+        .Columns(columns =>
+            {
+                //columns.Bound(c => c.Id);
+                columns.Bound(c => c.RecordTimestamp).Width(200).Format("{0:MMMM yyyy}");
+                columns.ForeignKey(c => c.ProcessUnitId, (System.Collections.IEnumerable)ViewData["processunits"], "Id", "FullName").EditorTemplateName("ProcessUnitViewModel").Width(300);
+                columns.ForeignKey(c => c.ProductId, (System.Collections.IEnumerable)ViewData["products"], "Id", "Name").EditorTemplateName("ProductViewModel").Width(400);
+                columns.Bound(c => c.Mass).ClientTemplate("<div style='text-align:right;'>#=kendo.toString(data.Mass, 'n3') #</div>");
+            })
+        .Pageable(pageable => pageable
+            .Refresh(true)
+            .PageSizes(new[] { 10, 20, 50, 100 })
+            .ButtonCount(5))
+        .Sortable()
+        .Editable(editable => editable.Mode(GridEditMode.InLine))
+        .Excel(excel => excel
+            .FileName(@Resources.Layout.InProcessUnitsData + "_" + DateTime.Now + ".xlsx")
+            .Filterable(true)
+            .ProxyURL(Url.Action("Excel_Export_Save", "Ajax", new { area = "" }))
+            .AllPages(true)
+        )
+        .Scrollable(scr => scr.Height(660))
+        .Filterable()
+        .DataSource(dataSource => dataSource
+            .Ajax()
+            .PageSize(50)
+            .ServerOperation(true)
+                            .Read(read => read.Action("ReadInProcessUnitsData", "SummaryReports", new { area = "SummaryReporting" }).Type(HttpVerbs.Get).Data("unitGridsData.SendDate"))
+            .Model(model =>
+            {
+                model.Id(p => p.Id);
+                model.Field(p => p.RecordTimestamp).Editable(false).DefaultValue(new DateTime(now.Year, now.Month, 1));
+                model.Field(p => p.ProcessUnitId).Editable(true);
+                model.Field(p => p.ProductId).Editable(true);
+                model.Field(p => p.Mass).Editable(true);
+            })
+        .Events(events =>
+        {
+            events.Error("kendoAdditional.ErrorHandler");
+            events.Change("kendoAdditional.OnPipeChange");
+            events.RequestEnd("kendoAdditional.OnRequestEnd");
+        }))
+
+        )
+    </div>
+</div>
+@* //Error window for kendo grid error event handler *@
+<div id="err-window" style="display:none">@Html.Partial("_KendoGridErrorWindow")</div>
+@* //Error window for kendo grid error event handler *@
+<div id="success-window" style="display:none">@Html.Partial("_SuccessWindow")</div>
+@section scripts{
+    @Scripts.Render("~/bundles/custom/kendoadditional")
+    @Scripts.Render("~/bundles/custom/unitGrids")
+    @Scripts.Render("~/Scripts/custom/renderDailyGraphic.min.js")
+    @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.min.js")
+}
+@section sidebar{
+    @Html.Partial("_MonthSelectorSideBar")
+}

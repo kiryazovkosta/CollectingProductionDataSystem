@@ -14,6 +14,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CollectingProductionDataSystem.Infrastructure.Extentions;
+using CollectingProductionDataSystem.PhdApplication.Contracts;
 using Ninject;
 using Uniformance.PHD;
 using CollectingProductionDataSystem.Models.Transactions;
@@ -32,8 +33,52 @@ namespace CollectingProductionDataSystem.ConsoleClient
             var kernel = NinjectConfig.GetInjector;
 
             var data = kernel.Get<ProductionData>();
-            WritePositionsConfidence(data);
-           
+            //WritePositionsConfidence(data);
+
+            var service = kernel.Get<IPhdPrimaryDataService>();
+
+            var unitConfigs = data.UnitConfigs.All().Include(x => x.RelatedUnitConfigs)
+                .Include(x => x.RelatedUnitConfigs.Select(y => y.UnitConfig))
+                .Include(x => x.RelatedUnitConfigs.Select(z => z.RelatedUnitConfig).Select(w => w.UnitDatasTemps)).Where(x => x.CollectingDataMechanism == "C").ToList();
+
+            var unitsTemp = data.UnitsData.All().Include(x => x.UnitConfig).Where(x => x.RecordTimestamp == new DateTime(2016, 4, 1)
+                && x.ShiftId == 1
+                && x.UnitConfig.CollectingDataMechanism != "C"
+                ).ToList().Select(x => new UnitDatasTemp
+                {
+                    RecordTimestamp = x.RecordTimestamp,
+                    UnitConfigId = x.UnitConfigId,
+                    ShiftId = x.ShiftId,
+                    Value = x.Value,
+                    UnitConfig = x.UnitConfig,
+                    Confidence = x.Confidence
+                }).ToList();
+
+            int test = 0;
+
+            var result = service.ProcessCalculatedUnits(unitConfigs, new DateTime(2016, 4, 1), 1, unitsTemp, ref test)
+                        .Select(unitDataTemp => new UnitsData()
+                                {
+                                    RecordTimestamp = unitDataTemp.RecordTimestamp,
+                                    UnitConfigId = unitDataTemp.UnitConfigId,
+                                    ShiftId = unitDataTemp.ShiftId,
+                                    Value = unitDataTemp.Value,
+                                    Confidence = unitDataTemp.Confidence
+                                }).ToDictionary(x => new { RecordTimestamp = x.RecordTimestamp, UnitConfigId = x.UnitConfigId, ShiftId = x.ShiftId });
+
+            var neededUnitData = data.UnitsData.All().Include(x => x.UnitConfig)
+                                                    .Where(x => x.RecordTimestamp == new DateTime(2016, 4, 1)
+                                                    && x.ShiftId == 1
+                                                    && x.UnitConfig.CollectingDataMechanism == "C"
+                                                    && x.UnitConfig.IsDeleted == false);
+
+            foreach (var unitData in neededUnitData)
+            {
+                unitData.Value = result[new { RecordTimestamp = unitData.RecordTimestamp, UnitConfigId = unitData.UnitConfigId, ShiftId = unitData.ShiftId }].Value;
+                unitData.Confidence = result[new { RecordTimestamp = unitData.RecordTimestamp, UnitConfigId = unitData.UnitConfigId, ShiftId = unitData.ShiftId }].Confidence;
+            }
+
+            data.SaveChanges("Initial Loading");
             //var shiftData = data.UnitsData.All().Where(x => x.ShiftId == ShiftType.Second 
             //    && x.RecordTimestamp == new DateTime(2016, 2, 1, 0, 0, 0) 
             //    && x.UnitConfig.ProcessUnitId == 50).ToList();
@@ -71,7 +116,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
 
             //ProcessTransactionsData();
 
-             //DoCalculation();
+            //DoCalculation();
 
             //ProcessProductionReportTransactionsData();
 
@@ -108,18 +153,18 @@ namespace CollectingProductionDataSystem.ConsoleClient
             PHDHistorian phd = new PHDHistorian();
             try
             {
-                PHDServer server = new PHDServer("phd-l35-1", SERVERVERSION.RAPI200);
+                PHDServer server = new PHDServer("srv-vm-mes-phd", SERVERVERSION.RAPI200);
                 phd.DefaultServer = server;
                 phd.DefaultServer.Port = 3150;
-                phd.Sampletype = SAMPLETYPE.Snapshot;
+                phd.Sampletype = SAMPLETYPE.Raw;
                 phd.ReductionType = REDUCTIONTYPE.None;
-                phd.StartTime = "NOW-5M";
-                phd.EndTime = "NOW-5M";
+                phd.StartTime = "3/28/2016 1:05:05 PM";
+                phd.EndTime = "3/28/2016 1:05:05 PM";
                 phd.MaximumRows = 1;
 
-                using (var writer = new StreamWriter(@"C:\Temp\phd.log"))
+                using (var writer = new StreamWriter(@"C:\Temp\phd-3.log"))
                 {
-                    var unitConfigs = data.UnitConfigs.All().Include(x=>x.ProcessUnit).Where(x => x.DataSource == PrimaryDataSourceType.PhdL311B).ToList();
+                    var unitConfigs = data.UnitConfigs.All().Include(x => x.ProcessUnit).Where(x => x.DataSource == PrimaryDataSourceType.SrvVmMesPhdA).ToList();
                     foreach (var unitConfig in unitConfigs)
                     {
                         if (unitConfig.CollectingDataMechanism == "A")
@@ -128,23 +173,26 @@ namespace CollectingProductionDataSystem.ConsoleClient
                             DataSet dsGrid = phd.FetchRowData(tag);
                             foreach (DataRow row in dsGrid.Tables[0].Rows)
                             {
-                                string tagHeaderLine = string.Format("-------------------- {0} : {1} : {2} : {3} --------------------",
+                                string tagHeaderLine = string.Format("{0};{1};{2};{3};{4};",
                                                                      unitConfig.ProcessUnit.FullName,
-                                                                     unitConfig.Code, 
-                                                                     unitConfig.Name, 
+                                                                     unitConfig.Code,
+                                                                     unitConfig.Name,
+                                                                     unitConfig.Position,
                                                                      tag);
-                                writer.WriteLine(tagHeaderLine);
+                                writer.Write(tagHeaderLine);
                                 foreach (DataColumn dc in dsGrid.Tables[0].Columns)
                                 {
-                                    writer.WriteLine(dc.ColumnName + " : " + row[dc]);
+                                    writer.Write(row[dc] + ";");
                                 }
-                            }   
-                        } 
-                    }   
+
+                                writer.WriteLine();
+                            }
+                        }
+                    }
                 }
 
             }
-            catch(PHDErrorException phdException)
+            catch (PHDErrorException phdException)
             {
                 Console.WriteLine("PHD ERROR: " + phdException.ToString());
             }
@@ -967,15 +1015,15 @@ namespace CollectingProductionDataSystem.ConsoleClient
                             var status = context.SaveChanges("Aso2SapoLoader");
                             if (status.IsValid)
                             {
-                                Console.WriteLine(string.Format("Processing sequence number {0}", row.SequenceNumber));     
+                                Console.WriteLine(string.Format("Processing sequence number {0}", row.SequenceNumber));
                             }
-                            else 
-                            { 
-                                Console.WriteLine(string.Format("Processing sequence number {0} failed {1}", 
+                            else
+                            {
+                                Console.WriteLine(string.Format("Processing sequence number {0} failed {1}",
                                     row.SequenceNumber, status.EfErrors[0].ErrorMessage));
-                            }   
+                            }
                         }
-                        
+
                     }
                     catch (Exception dbException)
                     {

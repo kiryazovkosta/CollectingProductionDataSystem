@@ -30,6 +30,8 @@ namespace CollectingProductionDataSystem.Models.Productions
         public int Id { get; set; }
         public string ShortName { get; set; }
         public string FullName { get; set; }
+        public bool HasDailyStatistics { get; set; }
+        public bool HasLoadStatistics { get; set; }
         public int FactoryId { get; set; }
         public virtual Factory Factory { get; set; }
         public virtual ICollection<UnitConfig> UnitsConfigs { get; set; }

@@ -5,7 +5,7 @@
 @model ChartViewModel<DateTime, decimal>
 
 <div class="panel panel-default">
-    <div class="panel-heading">@Model.Title<a href="#" id = "chart-fullscreen" role="button" class="pull-right"><span class="glyphicon glyphicon-fullscreen"></span></a></div>
+    <div class="panel-heading">@Model.Title<a href="#" id = "chart-fullscreen" role="button" class="pull-right" funk="chart-fullscreen"><span class="glyphicon glyphicon-fullscreen"></span></a></div>
     <div class="panel-body">
         <div id="chart"></div>
     </div>
@@ -14,15 +14,18 @@
 @if (Model.DataSeries.Count() > 0)
 {
     <script>
+        var clickedMaxButton = 0;
         function createChart(selector, width, height) {
+            var legendVisible = (width !== undefined);
         $(selector).kendoChart({
             theme: "bootstrap",
             chartArea:{
                 width: width || $(selector).width(),
-                height:height||400,
+                height:height||290,
             },
             legend: {
-                position: "bottom"
+                position: "bottom",
+                visible: legendVisible
             },
             seriesDefaults: {
                 type: "line"
@@ -76,22 +79,38 @@
         }
 
         $(document).ready(function () {
-            createChart("#chart");
+            var idNum = Math.floor((Math.random() * 10000) + 1);
+            var chartId = "chart" + idNum;
+            var chartHolder = $("#chart");
+            chartHolder.attr("id", chartId);
+            var fsButton = $('#chart-fullscreen');
+            fsButton.attr('id', 'chart-fullscreen'+idNum);
+            var fsButtons = $('[funk=chart-fullscreen]');
+
+
+            createChart("#" + chartId);
             createModalChart();
-            $('#chart-fullscreen').click(function () {
-                var data = '<div class="modal-header">' +
-                                   '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>' +
-                                   '<h4 class="modal-title" id="record-history-label">' +
-                                       '@(Model.Title??"")' +
-                                   '</h4>' +
-                               '</div>' +
-                               '<div class="modal-body">' +
-                               '<div id="chart-fs" >'
-                '</div>' +
-                '</div>';
-                $("#modal-chart-dialog-body").html(data);
-                $('#modal-chart-dialog').modal('show');
+            
+
+            fsButtons.each(function (index, button) {
+                //$('#chart-fullscreen').click(function () {           
+                $(button).click(function (ev) {
+                    var data = '<div class="modal-header">' +
+                                       '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>' +
+                                       '<h4 class="modal-title" id="record-history-label"' + $(button).attr('id') + '>' +
+                                           '@(Model.Title??"")' +
+                                       '</h4>' +
+                                   '</div>' +
+                                   '<div class="modal-body"' + $(button).attr('id') + '>' +
+                                   '<div id="chart-fs" >'
+                    '</div>' +
+                    '</div>';
+                    $("#modal-chart-dialog-body").html(data);
+                    $('#modal-chart-dialog').modal('show');
+
+                });
             });
+
             $('#modal-chart-dialog').on('shown.bs.modal', function () {
                 var modalWidth = $('#modal-chart-plot-area').width() * 0.98;
                 createChart("#chart-fs", modalWidth, 650);
@@ -99,7 +118,7 @@
         });
 
         function createModalChart() {
-            if ($("modal-chart-dialog").val()===undefined) {
+            if ($("#modal-chart-dialog").val()===undefined) {
                 var modalChartHolderHtml = '<div class="modal fade" id="modal-chart-dialog" tabindex="-1" role="dialog" aria-labelledby="record-history-label" aria-hidden="true"><div id="modal-chart-plot-area" class="modal-dialog modal-lg"><div id="modal-chart-dialog-body" class="modal-content"></div></div></div>';
                 $('body').append(modalChartHolderHtml);
             }
