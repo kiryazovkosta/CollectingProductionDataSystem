@@ -33,63 +33,62 @@ namespace CollectingProductionDataSystem.ConsoleClient
             var kernel = NinjectConfig.GetInjector;
 
             var data = kernel.Get<ProductionData>();
-            //WritePositionsConfidence(data);
 
-            var service = kernel.Get<IPhdPrimaryDataService>();
-
-            var unitConfigs = data.UnitConfigs.All().Include(x => x.RelatedUnitConfigs)
-                .Include(x => x.RelatedUnitConfigs.Select(y => y.UnitConfig))
-                .Include(x => x.RelatedUnitConfigs.Select(z => z.RelatedUnitConfig).Select(w => w.UnitDatasTemps)).Where(x => x.CollectingDataMechanism == "C").ToList();
-
-            var unitsTemp = data.UnitsData.All().Include(x => x.UnitConfig).Where(x => x.RecordTimestamp == new DateTime(2016, 4, 1)
-                && x.ShiftId == 1
-                && x.UnitConfig.CollectingDataMechanism != "C"
-                ).ToList().Select(x => new UnitDatasTemp
-                {
-                    RecordTimestamp = x.RecordTimestamp,
-                    UnitConfigId = x.UnitConfigId,
-                    ShiftId = x.ShiftId,
-                    Value = x.Value,
-                    UnitConfig = x.UnitConfig,
-                    Confidence = x.Confidence
-                }).ToList();
-
-            int test = 0;
-
-            var result = service.ProcessCalculatedUnits(unitConfigs, new DateTime(2016, 4, 1), 1, unitsTemp, ref test)
-                        .Select(unitDataTemp => new UnitsData()
-                                {
-                                    RecordTimestamp = unitDataTemp.RecordTimestamp,
-                                    UnitConfigId = unitDataTemp.UnitConfigId,
-                                    ShiftId = unitDataTemp.ShiftId,
-                                    Value = unitDataTemp.Value,
-                                    Confidence = unitDataTemp.Confidence
-                                }).ToDictionary(x => new { RecordTimestamp = x.RecordTimestamp, UnitConfigId = x.UnitConfigId, ShiftId = x.ShiftId });
-
-            var neededUnitData = data.UnitsData.All().Include(x => x.UnitConfig)
-                                                    .Where(x => x.RecordTimestamp == new DateTime(2016, 4, 1)
-                                                    && x.ShiftId == 1
-                                                    && x.UnitConfig.CollectingDataMechanism == "C"
-                                                    && x.UnitConfig.IsDeleted == false);
-
-            foreach (var unitData in neededUnitData)
+            using (var writer = new StreamWriter(@"c:\Temp\users.txt"))
             {
-                unitData.Value = result[new { RecordTimestamp = unitData.RecordTimestamp, UnitConfigId = unitData.UnitConfigId, ShiftId = unitData.ShiftId }].Value;
-                unitData.Confidence = result[new { RecordTimestamp = unitData.RecordTimestamp, UnitConfigId = unitData.UnitConfigId, ShiftId = unitData.ShiftId }].Confidence;
+                var sb = new StringBuilder();
+                var roles = data.Roles.All().ToArray();
+                for (int i = -1; i < roles.Length; i++)
+                {
+                    if (i == -1)
+                    {
+                        sb.Append("Име Презиме Фамилия;");
+                    }
+                    else
+                    {
+                        sb.Append(roles[i].Description + ";");
+                    }
+                }
+
+                writer.WriteLine(sb.ToString());
+
+
+                var users = data.Users.All().ToList();
+                foreach (var user in users)
+                {
+                    sb.Clear();
+                    sb.Append(user.FirstName + " " + user.MiddleName + " " + user.LastName + ";");
+                    var userRoles = user.Roles.ToDictionary(x => x.RoleId, x => x);
+                    for (int i = 2; i <= 22; i++)
+                    {
+                        if (userRoles.ContainsKey(i))
+                        {
+                            sb.Append("x;");
+                        }
+                        else
+                        {
+                            sb.Append(";");
+                        }
+                    }
+                     
+                    writer.WriteLine(sb.ToString());
+                }
             }
 
-            data.SaveChanges("Initial Loading");
+
+
+
+            //WritePositionsConfidence(data);
+
+            //UpdateShiftUnitData(kernel, data);
             //var shiftData = data.UnitsData.All().Where(x => x.ShiftId == ShiftType.Second 
             //    && x.RecordTimestamp == new DateTime(2016, 2, 1, 0, 0, 0) 
             //    && x.UnitConfig.ProcessUnitId == 50).ToList();
-
             //int monthIndex = DateTime.Now.Month - 1;
             //var lastDate = new DateTime(2016, 2, 19, 0, 0, 0);
-
             //var shiftData = data.UnitsData.All().Where(x => x.ShiftId == ShiftType.Second
             //    && x.RecordTimestamp == lastDate
             //    && x.UnitConfig.ProcessUnitId == 37).ToList();
-
             //var prevDay = lastDate.AddDays(-1);
             //while (prevDay.Month == monthIndex)
             //{
@@ -99,30 +98,22 @@ namespace CollectingProductionDataSystem.ConsoleClient
             //        item.ShiftId = ShiftType.First;
             //        data.UnitsData.Add(item);
             //    }
-
             //    data.SaveChanges("Loader");
             //    prevDay = prevDay.AddDays(-1);
             //}
-
             //for (int i = 0; i < 19; i++)
             //{
             //    ProcessActiveTransactionsData(i);   
             //}
-
             //for (int i = 18; i >= 0; i--)
             //{
             //    ProcessScaleTransactionsData(i);   
             //}
-
             //ProcessTransactionsData();
-
             //DoCalculation();
-
             //ProcessProductionReportTransactionsData();
-
             //System.Console.WriteLine("finished");
             //ConvertProductsForInternalPipes(data);
-
             //TransformUnitDailyConfigTable(data);
             //TransformUnitConfigTable(data);
             //var fileName = @"d:\Proba\ХО-2-Конфигурация инсталации.csv";
@@ -146,6 +137,60 @@ namespace CollectingProductionDataSystem.ConsoleClient
             //}
             //TreeShiftsReports(DateTime.Today.AddDays(-2), 1);
             //SeedShiftsToDatabase(uow);
+        }
+
+        private static void UpdateShiftUnitData(IKernel kernel, ProductionData data)
+        {
+            var service = kernel.Get<IPhdPrimaryDataService>();
+
+            var unitConfigs = data.UnitConfigs
+                                  .All()
+                                  .Include(x => x.RelatedUnitConfigs)
+                                  .Include(x => x.RelatedUnitConfigs.Select(y => y.UnitConfig))
+                                  .Include(x => x.RelatedUnitConfigs.Select(z => z.RelatedUnitConfig).Select(w => w.UnitDatasTemps))
+                                  .Where(x => x.CollectingDataMechanism == "C")
+                                  .ToList();
+
+            var unitsTemp = data.UnitsData.All().Include(x => x.UnitConfig).Where(x => x.RecordTimestamp == new DateTime(2016, 4, 1) &&
+                                                                                       x.ShiftId == 1 &&
+                                                                                       x.UnitConfig.CollectingDataMechanism != "C").ToList().Select(x => new UnitDatasTemp
+                                                                                                                                                   {
+                                                                                                                                                       RecordTimestamp = x.RecordTimestamp,
+                                                                                                                                                       UnitConfigId = x.UnitConfigId,
+                                                                                                                                                       ShiftId = x.ShiftId,
+                                                                                                                                                       Value = x.Value,
+                                                                                                                                                       UnitConfig = x.UnitConfig,
+                                                                                                                                                       Confidence = x.Confidence
+                                                                                                                                                   }).ToList();
+
+            int test = 0;
+
+            var result = service.ProcessCalculatedUnits(unitConfigs, new DateTime(2016, 4, 1), 1, unitsTemp, ref test)
+                                .Select(unitDataTemp => new UnitsData()
+                                       {
+                                           RecordTimestamp = unitDataTemp.RecordTimestamp,
+                                           UnitConfigId = unitDataTemp.UnitConfigId,
+                                           ShiftId = unitDataTemp.ShiftId,
+                                           Value = unitDataTemp.Value,
+                                           Confidence = unitDataTemp.Confidence
+                                       })
+                                .ToDictionary(x => new { RecordTimestamp = x.RecordTimestamp, UnitConfigId = x.UnitConfigId, ShiftId = x.ShiftId });
+
+            var neededUnitData = data.UnitsData
+                                     .All()
+                                     .Include(x => x.UnitConfig)
+                                     .Where(x => x.RecordTimestamp == new DateTime(2016, 4, 1) &&
+                                                 x.ShiftId == 1 &&
+                                                 x.UnitConfig.CollectingDataMechanism == "C" &&
+                                                 x.UnitConfig.IsDeleted == false);
+
+            foreach (var unitData in neededUnitData)
+            {
+                unitData.Value = result[new { RecordTimestamp = unitData.RecordTimestamp, UnitConfigId = unitData.UnitConfigId, ShiftId = unitData.ShiftId }].Value;
+                unitData.Confidence = result[new { RecordTimestamp = unitData.RecordTimestamp, UnitConfigId = unitData.UnitConfigId, ShiftId = unitData.ShiftId }].Confidence;
+            }
+
+            data.SaveChanges("Initial Loading");
         }
 
         private static void WritePositionsConfidence(IProductionData data)
