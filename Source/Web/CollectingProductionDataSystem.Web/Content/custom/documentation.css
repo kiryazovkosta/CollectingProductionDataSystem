@@ -132,3 +132,47 @@ li.list-group-item.mylist-group-item.activeLi{
 aside.col-sm-2.documentation {
    overflow-x:auto; 
 }
+.container.mycontainer{
+   padding:0;
+   margin:0;
+}
+.col-md-1.divimage{
+    width:6em;
+    height: 5.6em;
+}
+.myimg{
+    width: 4.5em;
+    margin-top: 0.5em;
+}
+.myhr2{
+    border:1px solid black;
+    margin-right:18.3em;
+}
+.myh1{
+    margin-top:0;
+    margin-bottom:0;
+}
+.myhr1{
+    border:1px solid black;
+    margin-right:0;
+    margin-top:0;
+}
+.row.myrow{
+    width:67.9em;
+    margin-right:0;
+    padding-left:1em;
+}
+.col-md-11.mycol11{
+    border:1px solid black !important;
+    width:61.5em;
+    background-color:#f2eeee;
+}
+.stronged{
+    font-weight:bold;
+}
+.tablebordered{
+    border:1px solid grey;
+}
+.imgboxshadow{
+    box-shadow: 5px 5px 5px #888888;
+}

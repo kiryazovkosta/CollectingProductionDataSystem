@@ -3,14 +3,18 @@
     <div class="row">
         <article>
             <section>
-                <p>Сменните данни за наличности по резервоари се избират от меню <b>Сменни данни -> Сменни данни за наличности по резервоари,</b> показано на Фиг.1:</p>
+                <hr class="myhr1" />
+                <p>
+                    Сменните данни за наличности по резервоари се избират от меню <span class="stronged">Сменни данни -> Сменни данни за наличности по резервоари,</span>
+                    показано на Фиг.1:
+                </p>
                 <p><img class="img-rounded" src="~/Content/images/Shiftdata/smenni2.png" /></p>
                 <p>Фиг.1</p>
                 <p>
                     Отваря се екран, съдържащ  в ляво таблица „Параметри на отчета“ и в дясно таблица „Сменни данни за наличности по резервоари“.
                     Таблица „Параметри на отчета“ е показана на Фиг.2.
                 </p>
-                <p><img class="img-rounded" src="~/Content/images/Shiftdata/figura23A.png" /></p>
+                <p><img class="img-rounded imgboxshadow tablebordered" src="~/Content/images/Shiftdata/figura23A.png" /></p>
                 <p>Фиг.2</p>
                 <p>В таблицата се съдържат параметри на отчета, които задължително трябва да се попълнят, а именно:</p>
                 <ul>
@@ -33,11 +37,10 @@
                 <p><img class="img-rounded" src="~/Content/images/Shiftdata/figura22A.png" /></p>
                 <p>Фиг.5</p>
                 <p>
-                    <b>Всеки потребител вижда само имената на парковете, които са му присъединени към акаунта, с който влиза в системата.</b>
+                    <span class="stronged">Всеки потребител вижда само имената на парковете, които са му присъединени към акаунта, с който влиза в системата.</span>
                 </p>
                 <p>
-                    Ако на даден потребител е присвоена и роля <b>"PowerUser"</b>, то този потребител вижда всички паркове в падащото меню "Паркове"
-                    <span><img src=" ~/Content/Images/ShiftData/images.jpg" width="24" height="45" /> .</span>
+                    Ако на даден потребител е присвоена и роля <span class="stronged">"AllParksReporter"</span>, то този потребител вижда всички паркове в падащото меню "Паркове".
                 </p>
                 <p>Изборът в поле „Дата“ става по начин, показан на Фиг.6:</p>
                 <p><img class="img-rounded" src="~/Content/images/Shiftdata/figura23.png" /></p>
@@ -53,10 +56,57 @@
                 </p>
                 <p><img class="img-rounded" src="~/Content/images/Shiftdata/figura25.png" /></p>
                 <p>Фиг.8</p>
+                <p> Таблицата съдържа информация, която е необходима за изготвянето на сменния отчет за наличности по резервоари в края на всяка смяна.</p>
                 <p>
-                    Таблицата съдържа информация, която е необходима за изготвянето на сменния отчет за наличности по резервоари в края на всяка смяна.
-                    Всяка колона от таблицата може да бъде филтрирана по следния начин:
+                    Редовете на таблицата мигат в цвят <span class="stronged">жълто</span>, когато достоверността на извлечените данни от дадената контролна точка в реда е
+                    в диапазон от <span class="stronged"> 100% до 50% от доверителния диапазон.</span>
                 </p>
+                <p>
+                    Редовете на таблицата мигат в цвят <span class="stronged">червено</span>, когато достоверността на извлечените данни от дадената контролна точка в реда
+                    е по-малка от  <span class="stronged">50 % от доверителния диапазон.</span>
+                </p>
+                <br />
+                <table role="grid" class="tablebordered">
+                    <colgroup >
+                        <col class="k-group-col tablebordered" style="width:160px">
+                        <col style="width:140px" class="tablebordered">
+                        <col style="width:100px" class="tablebordered">
+                        <col style="width:80px" class="tablebordered">
+                        <col style="width:150px" class="tablebordered">
+                        <col style="width:120px" class="tablebordered">
+                        <col style="width:120px" class="tablebordered">
+                    </colgroup>
+                    <thead role="rowgroup" class="tablebordered">
+                        <tr role="row" class="tablebordered" style="background-color:#f4f4f4">
+                            <th class="k-header k-filterable k-with-icon"> Време на запис</th>
+                            <th class="k-header k-filterable k-with-icon">Контролна точка </th>
+                            <th class="k-header k-filterable k-with-icon"> Парк </th>
+                            <th class="k-header k-filterable k-with-icon"> Резервоар </th>
+                            <th class="k-header k-filterable k-with-icon">Продукт</th>
+                            <th class="k-header k-filterable k-with-icon">Ниво на течност <br />[см] </th>
+                            <th class="k-header k-filterable k-with-icon">Ниво на продукт <br>[см] </th>
+                        </tr>
+                    </thead>
+                    <tbody role="rowgroup" class="tablebordered">
+                        <tr role="row" class="k-grouping-row tablebordered">
+                            <td colspan="12" class="tablebordered" style="background-color:#f4f4f4">Парк ОЗС</td>
+                        </tr>
+                        <tr class="warning-animation">
+                            <td role="gridcell">03.03.2016 05:00</td>
+                            <td role="gridcell">KT1028</td>
+                            <td role="gridcell">ОЗС</td>
+                            <td role="gridcell">P-1</td>
+                            <td role="gridcell">Нефт</td>
+                            <td role="gridcell"><div style="text-align:left;">268,30</div></td>
+                            <td role="gridcell"><div style="text-align:left;">219,10</div></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <br />
+                <p> Фиг.8A</p>
+                <br />
+                <p> Всяка колона от таблицата може да бъде филтрирана по следния начин:</p>
                 <p><img class="img-rounded" src="~/Content/images/Shiftdata/Figura27.png" /></p>
                 <p>Фиг.9</p>
                 <p>
@@ -66,9 +116,9 @@
                 <p><img class="img-rounded" src="~/Content/images/Shiftdata/figura63.png" /></p>
                 <p>Фиг.10</p>
                 <p>
-                    Потребителят с роля <b>„ShiftReporter“</b> няма право да редактира или променя таблицата „Сменни данни за наличности по резервоари“.
-                    Корекции по данните за резервоари се прави само от потребител с роля <b>„TankStatussesReporter“</b> от меню <b>„Дневни данни“ -> “Статус на резервоарите”</b>
-                    ,където може да се променя само статуса на резервоарите.
+                    Потребителят с роля <span class="stronged">„ShiftReporter“</span> няма право да редактира или променя таблицата „Сменни данни за наличности по резервоари“.
+                    Корекции по данните за резервоари се прави само от потребител с роля <span class="stronged">„TankStatussesReporter“</span> от меню
+                    <span class="stronged"> „Дневни данни“ -> “Статус на резервоарите”</span>,където може да се променя само статуса на резервоарите.
                 </p>
                 <p>
                     Отчетът може само повторно да бъде извикан и експортиран в Excel чрез
@@ -80,3 +130,10 @@
             </section>
         </article>
     </div>
+@section scripts{
+    @Scripts.Render("~/bundles/custom/kendoadditional")
+    @Scripts.Render("~/bundles/custom/unitGrids")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Scripts/custom/jquery-kendo-globalize.js")
+    @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.min.js")
+}

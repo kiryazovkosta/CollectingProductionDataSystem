@@ -105,5 +105,9 @@ namespace CollectingProductionDataSystem.Web.Areas.Documentation.Controllers
               {
                     return PartialView();
               }
+           public PartialViewResult SummaryReportDescription()
+        {
+            return PartialView();
+        }
     }
 }

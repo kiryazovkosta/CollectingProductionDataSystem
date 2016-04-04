@@ -53,7 +53,7 @@
     .DataSource(dataSource => dataSource
         .Ajax()
         .PageSize(100)
-        .ServerOperation(false)
+        .ServerOperation(true)
             .Read(read => read.Action("ReadUnitsReportsData", "SummaryReports", new { area = "SummaryReporting" }).Type(HttpVerbs.Get).Data("unitGridsData.SendDateForSummaryReports"))
         .Events(events =>
         {

@@ -505,6 +505,10 @@
     <Content Include="Content\Images\DailyData\Figura133.jpg" />
     <Content Include="Content\Images\DailyData\Figura134.jpg" />
     <Content Include="Content\Images\DailyData\Figura135.jpg" />
+    <Content Include="Content\Images\DailyData\Figura136.png" />
+    <Content Include="Content\Images\DailyData\Figura137.png" />
+    <Content Include="Content\Images\DailyData\Figura138.png" />
+    <Content Include="Content\Images\DailyData\Figura139.png" />
     <Content Include="Content\Images\DailyData\Figura31.png" />
     <Content Include="Content\Images\DailyData\Figura31A.png" />
     <Content Include="Content\Images\DailyData\figura32.png" />
@@ -520,12 +524,15 @@
     <Content Include="Content\Images\DailyData\figura43.png" />
     <Content Include="Content\Images\DailyData\Figura43A.png" />
     <Content Include="Content\Images\DailyData\figura44.png" />
+    <Content Include="Content\Images\DailyData\Figura44A - Copy.png" />
     <Content Include="Content\Images\DailyData\Figura44A.png" />
+    <Content Include="Content\Images\DailyData\Figura44AB.png" />
     <Content Include="Content\Images\DailyData\Figura44B.png" />
     <Content Include="Content\Images\DailyData\Figura44Б.png" />
     <Content Include="Content\Images\DailyData\figura46.png" />
     <Content Include="Content\Images\DailyData\figura47.png" />
     <Content Include="Content\Images\DailyData\Figura47A.png" />
+    <Content Include="Content\Images\DailyData\Figura47AAA.png" />
     <Content Include="Content\Images\DailyData\Figura48.png" />
     <Content Include="Content\Images\DailyData\Figura49.png" />
     <Content Include="Content\Images\DailyData\Figura50.png" />
@@ -582,6 +589,13 @@
     <Content Include="Content\Images\MonthlyData\Figura103.jpg" />
     <Content Include="Content\Images\MonthlyData\Figura103_Количества-продук.jpg" />
     <Content Include="Content\Images\MonthlyData\Figura104.jpg" />
+    <Content Include="Content\Images\MonthlyData\Figura112.png" />
+    <Content Include="Content\Images\MonthlyData\Figura113.png" />
+    <Content Include="Content\Images\MonthlyData\Figura114.png" />
+    <Content Include="Content\Images\MonthlyData\Figura115.png" />
+    <Content Include="Content\Images\MonthlyData\Figura116.png" />
+    <Content Include="Content\Images\MonthlyData\Figura117.png" />
+    <Content Include="Content\Images\MonthlyData\Figura118.png" />
     <Content Include="Content\Images\MonthlyData\НоваМесечни_данни.jpg" />
     <Content Include="Content\Images\MonthlyData\Фигура105.jpg" />
     <Content Include="Content\Images\MonthlyData\Фигура105A.jpg" />
@@ -654,6 +668,7 @@
     <Content Include="Content\Images\PNG\64x64\Wait.png" />
     <Content Include="Content\Images\PNG\64x64\Warning.png" />
     <Content Include="Content\Images\PNG\Help.png" />
+    <Content Include="Content\Images\ShiftData\3027633.jpg" />
     <Content Include="Content\Images\ShiftData\butonPrilogi.png" />
     <Content Include="Content\Images\ShiftData\edit.png" />
     <Content Include="Content\Images\ShiftData\erase.png" />
@@ -696,6 +711,7 @@
     <Content Include="Content\Images\ShiftData\smenni1.png" />
     <Content Include="Content\Images\ShiftData\smenni2.png" />
     <Content Include="Content\Images\ShiftData\smenni_danni.png" />
+    <Content Include="Content\Images\ShiftData\technical_stuff.gif" />
     <Content Include="Content\Images\ShiftData\НоваСменни_данни.jpg" />
     <Content Include="Content\Images\SummaryReport\dnevni2.jpg" />
     <Content Include="Content\Images\SummaryReport\ExportPDF_button.png" />
@@ -1264,6 +1280,7 @@
     <Content Include="Areas\SummaryReporting\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\SummaryReporting\Views\SummaryReports\InProcessUnitsData.cshtml" />
     <Content Include="Areas\NomManagement\Views\Shared\DisplayTemplates\Bool.cshtml" />
+    <Content Include="Areas\Documentation\Views\Help\SummaryReportDescription.cshtml" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <None Include="Properties\PublishProfiles\Home.pubxml" />
     <Content Include="Scripts\custom\sendArea.js" />
