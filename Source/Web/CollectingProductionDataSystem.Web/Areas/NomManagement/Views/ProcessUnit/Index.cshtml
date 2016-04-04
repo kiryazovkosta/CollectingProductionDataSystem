@@ -10,8 +10,8 @@
                                                 .ToHtmlString());
           columns.Bound(c => c.FullName);
           columns.ForeignKey(c => c.FactoryId, (System.Collections.IEnumerable)ViewData["factories"], "Id", "FullName").EditorTemplateName("FactoryViewModel");
-          columns.Bound(c => c.HasDailyStatistics);
-          columns.Bound(c => c.HasLoadStatistics);          
+          columns.Bound(c => c.HasDailyStatistics).ClientTemplate("<img src='../Content/Images/#=data.HasDailyStatistics ? 'ok.png': 'error.png'#' alt='#=data.HasDailyStatistics#' height='20px' width='20px'/>");
+          columns.Bound(c => c.HasLoadStatistics).ClientTemplate("<img src='../Content/Images/#=data.HasLoadStatistics ? 'ok.png': 'error.png'#' alt='#=data.HasLoadStatistics#' height='20px' width='20px'/>");           
           columns.Command(command => { command.Edit(); command.Destroy(); }).Width(230);
       })
       .ToolBar(toolbar =>

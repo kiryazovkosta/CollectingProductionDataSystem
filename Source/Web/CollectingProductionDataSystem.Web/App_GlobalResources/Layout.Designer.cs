@@ -2500,6 +2500,24 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to PeriodBegining.
+        /// </summary>
+        public static string PeriodBegining {
+            get {
+                return ResourceManager.GetString("PeriodBegining", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PeriodEnd.
+        /// </summary>
+        public static string PeriodEnd {
+            get {
+                return ResourceManager.GetString("PeriodEnd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to PhdTagAvailableRoom.
         /// </summary>
         public static string PhdTagAvailableRoom {

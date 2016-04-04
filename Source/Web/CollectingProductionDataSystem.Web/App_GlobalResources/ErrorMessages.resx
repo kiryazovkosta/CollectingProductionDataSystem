@@ -183,4 +183,7 @@
   <data name="Volume" xml:space="preserve">
     <value>Invalid volume</value>
   </data>
+  <data name="DateDifference" xml:space="preserve">
+    <value>The differene between {0} and {1} cannot be greater than {3}</value>
+  </data>
 </root>

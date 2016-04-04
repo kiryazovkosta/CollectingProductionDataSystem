@@ -70,6 +70,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The differene between {0} and {1} cannot be greater than {3}.
+        /// </summary>
+        public static string DateDifference {
+            get {
+                return ResourceManager.GetString("DateDifference", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid e-mail.
         /// </summary>
         public static string Email {

@@ -1588,6 +1588,12 @@
   <data name="IsTotalWorkTime" xml:space="preserve">
     <value>IsTotalWorkTime</value>
   </data>
+  <data name="PeriodBegining" xml:space="preserve">
+    <value>PeriodBegining</value>
+  </data>
+  <data name="PeriodEnd" xml:space="preserve">
+    <value>PeriodEnd</value>
+  </data>
   <data name="VisibleInChart" xml:space="preserve">
     <value>VisibleInChart</value>
   </data>

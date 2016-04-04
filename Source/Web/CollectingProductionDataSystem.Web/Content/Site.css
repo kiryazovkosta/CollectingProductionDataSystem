@@ -1032,7 +1032,7 @@ input[type="text"] {
 }
 
     #charts-holder .k-content {
-        max-height: 580px;
+        /*max-height: 580px;*/
         overflow-y: auto;
         overflow-x: hidden;
     }
@@ -1083,4 +1083,9 @@ hr.control-delimiter {
 .chart-tumb-row {
     margin-left:0;
     margin-right:0;
+}
+
+.controlls-wraper {
+    padding-left:30px;
+    padding-right:30px;
 }

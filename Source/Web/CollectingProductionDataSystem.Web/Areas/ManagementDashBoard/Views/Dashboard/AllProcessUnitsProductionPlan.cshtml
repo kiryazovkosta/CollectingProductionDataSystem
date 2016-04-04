@@ -13,7 +13,10 @@
                 <div class="row chart-tumb-row" style="width:100%; margin-top:5px;">
                     @foreach (var processUnit in factory.ProcessUnits)
                     {
-                        <div id="pu-@processUnit.Id" class="col-sm-3 pu-chart-holder" role="pu-chart-holder"></div>
+                        if (processUnit.HasDailyStatistics && !processUnit.IsDeleted)
+                        {
+                            <div id="pu-@processUnit.Id" class="col-sm-3 pu-chart-holder" role="pu-chart-holder"></div>
+                        }
                     }
                 </div>
             </div>
