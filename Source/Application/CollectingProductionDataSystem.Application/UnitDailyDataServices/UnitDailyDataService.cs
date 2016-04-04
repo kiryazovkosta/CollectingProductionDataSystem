@@ -585,13 +585,17 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
             return new ChartViewModel<DateTime, decimal>() { DataSeries = orderedCharts };
         }
 
-        public async Task<ChartViewModel<DateTime, decimal>> GetStatisticForProcessUnitAsync(int processUnitId, DateTime targetDate, int? materialTypeId = null)
+        public async Task<ChartViewModel<DateTime, decimal>> GetStatisticForProcessUnitAsync(int processUnitId, DateTime beginDate, DateTime endDate, int? materialTypeId = null)
         {
-            var beginingOfTheMonth = new DateTime(targetDate.Year, targetDate.Month, 1);
+            if ((endDate-beginDate)>TimeSpan.FromDays(CommonConstants.MaxDateDifference))
+            {
+                throw new ArgumentOutOfRangeException();
+            }
+            var beginingOfTheMonth = beginDate;
 
             var statistic = await this.data.ProductionPlanDatas.All().Include(x => x.ProductionPlanConfig)
                                 .Where(x => beginingOfTheMonth <= x.RecordTimestamp
-                                        && x.RecordTimestamp < targetDate
+                                        && x.RecordTimestamp <= endDate
                                         && x.ProcessUnitId == processUnitId
                                         && x.ProductionPlanConfig.MaterialTypeId == (materialTypeId ?? x.ProductionPlanConfig.MaterialTypeId))
                                 .GroupBy(x => x.ProductionPlanConfigId).ToListAsync();
@@ -601,7 +605,7 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
             {
                 if (parameter.Count() > 0)
                 {
-                    IEnumerable<DataSery<DateTime, decimal>> series = await Task.Factory.StartNew(()=>GetSeriesFromData(parameter, beginingOfTheMonth, targetDate));
+                    IEnumerable<DataSery<DateTime, decimal>> series = await Task.Factory.StartNew(()=>GetSeriesFromData(parameter, beginingOfTheMonth, endDate));
                     charts.AddRange(series);
                 }
             }

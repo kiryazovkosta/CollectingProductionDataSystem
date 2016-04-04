@@ -1,7 +1,42 @@
 ﻿@using Resources = App_GlobalResources.Resources
+@Html.AntiForgeryToken()
+<div class="container-fluid controlls-wraper">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Параметри на графиките
+            <a role="button" id="collapse" data-toggle="collapse" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne" class="pull-right"><span class="glyphicon glyphicon-chevron-up"></span></a>
+        </div>
+        <div class="panel-body collapse in" id="collapseOne">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="control-label" for="form-group-input1">@Resources.Layout.PeriodBegining</label>
+                        @(Html.Kendo().DatePicker()
+                        .Name("begin-date")
+                        .Value(DateTime.Now.AddDays(-32)).Max(DateTime.Now.AddDays(-1))
+                        )
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="control-label" for="form-group-input2">@Resources.Layout.PeriodEnd</label>
+                        @(Html.Kendo().DatePicker()
+                        .Name("end-date")
+                        .Value(DateTime.Now.AddDays(-1)).Max(DateTime.Now.AddDays(-1))
+                        )
+                    </div>
+                </div>
+            </div>
+            <div class="row chart-tumb-row">
+                <hr class="control-delimiter" />
+                <a href="#" id="convert" class="btn btn-primary">Приложи</a>
+            </div>
+        </div>
+    </div>
+</div>
+
 @(Html.Kendo().TabStrip()
     .Name("charts-holder")
-        //.HtmlAttributes(new {style="max-height:490px;" })
     .Items(items =>
     {
         items.Add().Text(@Resources.Layout.ProcessUnitLoading).Selected(true).Content("<div id='value1' class = 'tab-content'></div>");
@@ -10,55 +45,62 @@
         items.Add().Text("Други...").Content("<div id='value4' class = 'tab-content'></div>");
 
     })
-    .Events(ev => ev.Activate("OnActivate"))
+    //.Events(ev => ev.Activate("OnActivate"))
 )
 
 
-<div id="controlls">
-    <fieldset>
-        <legend>Параметри на графиката</legend>
-        <div class="row">
-            <div class="col-md-3">
-                <div class="form-group">
-                    <label class="control-label" for="form-group-input1">Paramater1</label>
-                    <input type="text" class="form-control" id="form-group-input1" placeholder="Paramater1">
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="form-group">
-                    <label class="control-label" for="form-group-input2">Paramater2</label>
-                    <input type="text" class="form-control" id="form-group-input2" placeholder="Paramater2">
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="form-group">
-                    <label class="control-label" for="form-group-input3">Paramater3</label>
-                    <input type="text" class="form-control" id="form-group-input3" placeholder="Paramater3">
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="form-group">
-                    <label class="control-label" for="form-group-input4">Paramater4</label>
-                    <input type="text" class="form-control" id="form-group-input4" placeholder="Paramater4">
-                </div>
-            </div>
-        </div>
-    </fieldset>
-    <hr class="control-delimiter" />
-    <input type="submit" class="btn btn-primary" value="Приложи" />
-    <a href="#" class="btn btn-danger">Отказ</a>
-</div>
+@* //Error window for kendo grid error event handler *@
+<div id="err-window" style="display:none">@Html.Partial("_KendoGridErrorWindow")</div>
+@* //Error window for kendo grid error event handler *@
+<div id="success-window" style="display:none">@Html.Partial("_SuccessWindow")</div>
 
 @section scripts
 {
+    @Scripts.Render("~/bundles/custom/kendoadditional")
     <script>
+
         var Charts = [];
         $(function () {
-            GetTabValue(2);
+            $('#collapseOne').on('hidden.bs.collapse', function () {
+                var span = $('#collapse span');
+                span.removeClass();
+                span.addClass("glyphicon glyphicon-chevron-down")
+            });
+
+            $('#collapseOne').on('shown.bs.collapse', function () {
+                var span = $('#collapse span');
+                span.removeClass();
+                span.addClass("glyphicon glyphicon-chevron-up");
+            })
+
+            $("#convert").click(
+                function () {
+                    $.ajax({
+                        url: "/ManagementDashBoard/Dashboard/CheckDates",
+                        type: 'POST',
+                        data: {
+                            beginDate: GetDate("#begin-date"),
+                            endDate: GetDate("#end-date"),
+                            "__RequestVerificationToken": $('input[name=__RequestVerificationToken]').val()
+                        }
+                    }).done(function () {
+                        var tab = $("#charts-holder").data("kendoTabStrip").select();
+                        var id = parseInt(tab.attr("aria-controls").replace(/^\D+/g, ''));
+                        populateTab(id);
+                    })
+                        .fail(function (data) {
+                            errHandler(data);
+                        });
+                });
         });
 
         function OnActivate(ev) {
             var id = parseInt($(ev.item).attr("aria-controls").replace(/^\D+/g, ''));
+            populateTab(id);
+        }
+
+        function populateTab(id)
+        {
             if (id !== 3) {
                 GetTabValue(id);
             } else {
@@ -68,12 +110,18 @@
                     GetHolderValue(id, holder);
                 });
             }
-
         }
 
         function GetHolderValue(id, holder) {
             $.ajax({
-                url: "/ManagementDashBoard/Dashboard/DailyMaterialChart?processUnitId=" + id + "&date=2016-03-31+00%3A00%3A00Z" + "&height=200&shortTitle=true",
+                url: "/ManagementDashBoard/Dashboard/DailyMaterialChart",
+                data: {
+                    processUnitId: id,
+                    beginDate: GetDate("#begin-date"),
+                    endDate: GetDate("#end-date"),
+                    height: 200,
+                    shortTitle: true
+                },
                 success: function (data) {
                     $(holder).html(data);
                 }
@@ -88,6 +136,28 @@
                     $("#value" + (id)).html(data);
                 }
             });
+        }
+
+        function GetDate(selector) {
+            var datePicker = $(selector).data('kendoDatePicker');
+            if (datePicker !== undefined) {
+                var date = datePicker.value();
+            } else {
+                return;
+            }
+
+            return date.toISOString(kendo.culture().name);
+        }
+
+
+        function errHandler (data) {
+            var errorMessage = "";
+            var response = JSON.parse(data.responseText).data;
+            $.each(response.errors, function (key, value) {
+                errorMessage += this + "\n";
+            });
+            $('pre#err-message').text(errorMessage);
+            $('div#err-window').data("kendoWindow").open();
         }
     </script>
 }

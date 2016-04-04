@@ -38,6 +38,8 @@ namespace CollectingProductionDataSystem.Constants
 
         private static string phdDateTimeFormat = @"M/d/yyyy hh:mm:ss tt";
 
+        private static int maxDateDifference = 31;
+
         public static string StandartPassword
         {
             get
@@ -71,7 +73,7 @@ namespace CollectingProductionDataSystem.Constants
         public static int ChemicalClearedWater { get { return chemicalClearedWater; } }
 
         public static int DailyInfoDailyInfoHydrocarbonsShiftTypeId { get { return dailyInfoDailyInfoHydrocarbonsShiftTypeId; } }
-
+        public static int MaxDateDifference { get { return maxDateDifference; } }
         public static string PhdDateTimeFormat { get { return phdDateTimeFormat; } }
     }
 }

@@ -137,6 +137,16 @@
                                                  LoadingElementId = "inprogress"
                                              })
                                 </li>
+                                <li class="list-group-item mylist-group-item">
+                                    @Ajax.ActionLink("Сводни отчети описание", "SummaryReportDescription", "Help",
+                                             new AjaxOptions()
+                                             {
+                                                 HttpMethod = "Get",
+                                                 InsertionMode = InsertionMode.Replace,
+                                                 UpdateTargetId = "mypage-content",
+                                                 LoadingElementId = "inprogress"
+                                             })
+                                </li>
                             </ul>
                         </div>
                     </div>

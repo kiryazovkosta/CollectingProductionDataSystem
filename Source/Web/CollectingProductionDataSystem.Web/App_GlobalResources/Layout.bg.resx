@@ -1578,13 +1578,19 @@
     <value>Месечни данни за химически очистена вода</value>
   </data>
   <data name="HasDailyStatistics" xml:space="preserve">
-    <value>Учартва в статистика за отбори</value>
+    <value>Участва в статистика за отбори</value>
   </data>
   <data name="HasLoadStatistics" xml:space="preserve">
     <value>Участва в статистика за натоварване</value>
   </data>
   <data name="IsTotalWorkTime" xml:space="preserve">
     <value>Отработено време на инсталацията</value>
+  </data>
+  <data name="PeriodBegining" xml:space="preserve">
+    <value>Начало на периода</value>
+  </data>
+  <data name="PeriodEnd" xml:space="preserve">
+    <value>Край на периода</value>
   </data>
   <data name="VisibleInChart" xml:space="preserve">
     <value>Визуализация в графика</value>
