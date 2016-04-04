@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -34,6 +35,24 @@ namespace CollectingProductionDataSystem.Web.Areas.ManagementDashBoard.Controlle
             return PartialView(factories);
         }
 
+        [AllowAnonymous]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CheckDates(DateTime beginDate, DateTime endDate)
+        {
+            var difference = Math.Abs((beginDate-endDate).TotalDays);
+            if ( difference > CommonConstants.MaxDateDifference)
+            {
+                var message = string.Format(Resources.ErrorMessages.DateDifference, Resources.Layout.PeriodBegining, Resources.Layout.PeriodEnd, CommonConstants.MaxDateDifference);
+                this.ModelState.AddModelError(string.Empty, message);
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                var errors = GetErrorListFromModelState(ModelState);
+                return Json(new { data = new { errors = errors } });
+            }
+
+            return Json(string.Empty, JsonRequestBehavior.AllowGet);
+        }
+
         [HttpGet]
         public async Task<ActionResult> DailyMaterialChart(int processUnitId, DateTime beginDate, DateTime endDate, int? height = null, bool shortTitle = false)
         {
@@ -55,5 +74,16 @@ namespace CollectingProductionDataSystem.Web.Areas.ManagementDashBoard.Controlle
 
             return PartialView("ComplexDailyChart", null);
         }
+
+        private List<string> GetErrorListFromModelState(ModelStateDictionary modelState)
+        {
+            var query = from state in modelState.Values
+                        from error in state.Errors
+                        select error.ErrorMessage;
+
+            var errorList = query.ToList();
+            return errorList;
+        }
     }
+
 }

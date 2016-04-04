@@ -1,5 +1,5 @@
 ﻿@using Resources = App_GlobalResources.Resources
-
+@Html.AntiForgeryToken()
 <div class="container-fluid controlls-wraper">
     <div class="panel panel-default">
         <div class="panel-heading">
@@ -29,7 +29,7 @@
             </div>
             <div class="row chart-tumb-row">
                 <hr class="control-delimiter" />
-                <input type="submit" class="btn btn-primary" value="Приложи" />
+                <a href="#" id="convert" class="btn btn-primary">Приложи</a>
             </div>
         </div>
     </div>
@@ -45,14 +45,18 @@
         items.Add().Text("Други...").Content("<div id='value4' class = 'tab-content'></div>");
 
     })
-    .Events(ev => ev.Activate("OnActivate"))
+    //.Events(ev => ev.Activate("OnActivate"))
 )
 
 
-
+@* //Error window for kendo grid error event handler *@
+<div id="err-window" style="display:none">@Html.Partial("_KendoGridErrorWindow")</div>
+@* //Error window for kendo grid error event handler *@
+<div id="success-window" style="display:none">@Html.Partial("_SuccessWindow")</div>
 
 @section scripts
 {
+    @Scripts.Render("~/bundles/custom/kendoadditional")
     <script>
 
         var Charts = [];
@@ -68,10 +72,35 @@
                 span.removeClass();
                 span.addClass("glyphicon glyphicon-chevron-up");
             })
+
+            $("#convert").click(
+                function () {
+                    $.ajax({
+                        url: "/ManagementDashBoard/Dashboard/CheckDates",
+                        type: 'POST',
+                        data: {
+                            beginDate: GetDate("#begin-date"),
+                            endDate: GetDate("#end-date"),
+                            "__RequestVerificationToken": $('input[name=__RequestVerificationToken]').val()
+                        }
+                    }).done(function () {
+                        var tab = $("#charts-holder").data("kendoTabStrip").select();
+                        var id = parseInt(tab.attr("aria-controls").replace(/^\D+/g, ''));
+                        populateTab(id);
+                    })
+                        .fail(function (data) {
+                            errHandler(data);
+                        });
+                });
         });
 
         function OnActivate(ev) {
             var id = parseInt($(ev.item).attr("aria-controls").replace(/^\D+/g, ''));
+            populateTab(id);
+        }
+
+        function populateTab(id)
+        {
             if (id !== 3) {
                 GetTabValue(id);
             } else {
@@ -81,7 +110,6 @@
                     GetHolderValue(id, holder);
                 });
             }
-
         }
 
         function GetHolderValue(id, holder) {
@@ -92,7 +120,7 @@
                     beginDate: GetDate("#begin-date"),
                     endDate: GetDate("#end-date"),
                     height: 200,
-                    shortTitle:true
+                    shortTitle: true
                 },
                 success: function (data) {
                     $(holder).html(data);
@@ -119,6 +147,17 @@
             }
 
             return date.toISOString(kendo.culture().name);
+        }
+
+
+        function errHandler (data) {
+            var errorMessage = "";
+            var response = JSON.parse(data.responseText).data;
+            $.each(response.errors, function (key, value) {
+                errorMessage += this + "\n";
+            });
+            $('pre#err-message').text(errorMessage);
+            $('div#err-window').data("kendoWindow").open();
         }
     </script>
 }
