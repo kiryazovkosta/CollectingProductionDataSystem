@@ -10,6 +10,8 @@
                                                 .ToHtmlString());
           columns.Bound(c => c.FullName);
           columns.ForeignKey(c => c.FactoryId, (System.Collections.IEnumerable)ViewData["factories"], "Id", "FullName").EditorTemplateName("FactoryViewModel");
+          columns.Bound(c => c.HasDailyStatistics);
+          columns.Bound(c => c.HasLoadStatistics);          
           columns.Command(command => { command.Edit(); command.Destroy(); }).Width(230);
       })
       .ToolBar(toolbar =>

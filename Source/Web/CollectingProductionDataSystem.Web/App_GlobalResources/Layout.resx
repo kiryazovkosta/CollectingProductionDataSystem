@@ -1579,4 +1579,16 @@
   <data name="UnitMonthlyCCWData" xml:space="preserve">
     <value>UnitMonthlyCCWData</value>
   </data>
+  <data name="HasDailyStatistics" xml:space="preserve">
+    <value>HasDailyStatistics</value>
+  </data>
+  <data name="HasLoadStatistics" xml:space="preserve">
+    <value>HasLoadStatistics</value>
+  </data>
+  <data name="IsTotalWorkTime" xml:space="preserve">
+    <value>IsTotalWorkTime</value>
+  </data>
+  <data name="VisibleInChart" xml:space="preserve">
+    <value>VisibleInChart</value>
+  </data>
 </root>

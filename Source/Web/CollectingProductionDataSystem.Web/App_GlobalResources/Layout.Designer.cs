@@ -1564,6 +1564,24 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to HasDailyStatistics.
+        /// </summary>
+        public static string HasDailyStatistics {
+            get {
+                return ResourceManager.GetString("HasDailyStatistics", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to HasLoadStatistics.
+        /// </summary>
+        public static string HasLoadStatistics {
+            get {
+                return ResourceManager.GetString("HasLoadStatistics", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to HighwayPipelinesData.
         /// </summary>
         public static string HighwayPipelinesData {
@@ -1767,6 +1785,15 @@ namespace App_GlobalResources.Resources {
         public static string IsTotalPosition {
             get {
                 return ResourceManager.GetString("IsTotalPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to IsTotalWorkTime.
+        /// </summary>
+        public static string IsTotalWorkTime {
+            get {
+                return ResourceManager.GetString("IsTotalWorkTime", resourceCulture);
             }
         }
         
@@ -4341,6 +4368,15 @@ namespace App_GlobalResources.Resources {
         public static string ValidUntill {
             get {
                 return ResourceManager.GetString("ValidUntill", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to VisibleInChart.
+        /// </summary>
+        public static string VisibleInChart {
+            get {
+                return ResourceManager.GetString("VisibleInChart", resourceCulture);
             }
         }
         

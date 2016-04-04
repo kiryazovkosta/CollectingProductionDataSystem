@@ -134,6 +134,7 @@
          [Display(Name = "NotATotalizedPosition", ResourceType = typeof(Resources.Layout))]
         public bool NotATotalizedPosition { get; set; }
 
+
         /// <summary>
         /// Creates the mappings.
         /// </summary>

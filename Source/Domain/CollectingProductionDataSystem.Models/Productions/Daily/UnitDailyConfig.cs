@@ -77,6 +77,8 @@
 
         public bool RemoveAndAddInsteadUpdate { get; set; }
 
+        public bool IsTotalWorkTime { get; set; }
+
         /// <summary>
         /// Determines whether the specified object is valid.
         /// </summary>
