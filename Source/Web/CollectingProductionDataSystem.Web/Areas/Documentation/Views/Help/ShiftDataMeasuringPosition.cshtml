@@ -3,12 +3,13 @@
     <div class="row">
         <article>
             <section>
-                <p>Сменните данни за измервателни позиции се избират от меню <b>Сменни данни -> Сменни данни за измервателни позиции,</b> показано на Фиг.1: </p>
+                <hr class="myhr1" />
+                <p>Сменните данни за измервателни позиции се избират от меню <span class="stronged">Сменни данни -> Сменни данни за измервателни позиции,</span> показано на Фиг.1: </p>
                 <p><img class="img-rounded" src="~/Content/images/Shiftdata/Fig4A.png" /></p>
                 <p>Фиг.1</p>
                 <p> Отваря се екран, съдържащ в ляво таблица „Параметри на отчета“ и в дясно таблица „Сменни данни за измервателни позиции“. </p>
                 <p> Таблица „Параметри на отчета“ е показана на Фиг.2.</p>
-                <p><img class="img-rounded" src="~/Content/images/Shiftdata/figura5.png" /></p>
+                <p><img class="img-rounded" src="~/Content/images/Shiftdata/figura5.png" style="width:20%;" /></p>
                 <p>Фиг.2</p>
                 <br />
             </section>
@@ -20,8 +21,8 @@
                     <li>Дата;</li>
                     <li>Смяна.</li>
                 </ul>
-                    <p> Ако се натисне бутона <span><img class="img-rounded btnApply" src="~/Content/images/Shiftdata/butonPrilogi.png" /></span> и горепосочените полета не са въведени се извежда следното съобщение за грешка:</p>
-                    <p><img class="img-rounded" src="~/Content/images/Shiftdata/figura6.png" /></p>
+                <p> Ако се натисне бутона <span><img class="img-rounded btnApply" src="~/Content/images/Shiftdata/butonPrilogi.png" /></span> и горепосочените полета не са въведени се извежда следното съобщение за грешка:</p>
+                <p><img class="img-rounded" src="~/Content/images/Shiftdata/figura6.png" /></p>
             </section>
             <section>
                 <p> Необходимо е да се въведат всички полета в таблица „Параметри на отчета“. Изборът в поле „Производство“ става от падащо меню, показан на Фиг.4: </p>
@@ -30,14 +31,8 @@
                 <p>Изборът в поле „Инсталация“ става от падащо  меню, показан на Фиг.5</p>
                 <img class="img-rounded" src="~/Content/images/Shiftdata/figura7A.png" />
                 <p>Фиг.5</p>
-                <p>
-                    <b>Всеки потребител вижда само имената на инсталациите, които са му присъединени към акаунта, с който влиза в системата.</b>
-                </p>
-                <p>
-                    Ако на даден потребител е присвоена и роля <b>"PowerUser"</b>, то този потребител вижда всички инсталации в падащото меню
-                    <span><img src=" ~/Content/Images/ShiftData/images.jpg" width="24" height="45" /> .</span>
-                </p>
-                <p>Изборът в поле „Дата“ става както е показано на Фиг.6:</p>
+               <span class="stronged">Всеки потребител вижда само имената на инсталациите, които са му присъединени към акаунта, с който влиза в системата.</span>
+               <p>Изборът в поле „Дата“ става както е показано на Фиг.6:</p>
                 <img class="img-rounded" src="~/Content/images/Shiftdata/figura8.png" />
                 <p>Фиг.6</p>
                 <p>Изборът в поле „Смяна“ става както е показано на Фиг.7:</p>
@@ -51,11 +46,72 @@
                 </p>
                 <p><img class="img-rounded myWidth102" src="~/Content/images/Shiftdata/figura11.png" /></p>
                 <p> Фиг.8</p>
+                <p>Таблицата съдържа информация, която е необходима за изготвянето на сменния отчет за измервателните позиции в края на всяка смяна.</p>
                 <p>
-                    Таблицата съдържа информация, която е необходима за изготвянето на сменния отчет за измервателните позиции
-                    в края на всяка смяна. Постъпването на данните е отразено в колона „Начин на постъпване на данни“, като
-                    съществуват следните механизми:
+                    Редовете на таблицата мигат в цвят <span class="stronged">жълто</span>, когато достоверността на извлечените данни от дадената измервателна позиция в реда е
+                    в диапазон от <span class="stronged"> 100% до 50% от доверителния диапазон.</span>
                 </p>
+                <p>
+                    Редовете на таблицата мигат в цвят <span class="stronged">червено</span>, когато достоверността на извлечените данни от дадената измервателна позиция в реда
+                    е по-малка от  <span class="stronged">50 % от доверителния диапазон.</span>
+                </p>
+                <br />
+                <table role="grid" class="tablebordered">
+                    <colgroup>
+                        <col class="k-group-col tablebordered" style="width:30px">
+                        <col style="width:80px" class="tablebordered">
+                        <col style="width:110px" class="tablebordered">
+                        <col style="width:320px" class="tablebordered">
+                        <col style="width:170px" class="tablebordered">
+                        <col style="width:100px" class="tablebordered">
+                        <col style="width:20px" class="tablebordered">
+                        <col style="width:110px" class="tablebordered">
+                        <col style="width:90px" class="tablebordered">
+                        <col style="width:180px" class="tablebordered">
+
+                    </colgroup>
+                    <thead role="rowgroup" class="tablebordered">
+                        <tr role="row" class="tablebordered" style="background-color:#f4f4f4">
+                            <th class="k-header k-filterable k-with-icon"> </th>
+                            <th class="k-header k-filterable k-with-icon"> Код</th>
+                            <th class="k-header k-filterable k-with-icon">Инсталация </th>
+                            <th class="k-header k-filterable k-with-icon"> Наим-е поток  </th>
+                            <th class="k-header k-filterable k-with-icon"> Позиция  </th>
+                            <th class="k-header k-filterable k-with-icon">Мерна единица</th>
+                            <th class="k-header k-filterable k-with-icon">Начин на постъпване </th>
+                            <th class="k-header k-filterable k-with-icon">Автоматична стойност </th>
+                            <th class="k-header k-filterable k-with-icon">Ръчна стойност </th>
+                            <th class="k-header k-filterable k-with-icon">Причина за постъпване </th>
+                        </tr>
+                    </thead>
+                    <tbody role="rowgroup" class="tablebordered">
+                        <tr role="row" class="k-grouping-row tablebordered">
+                            <td colspan="10" aria-expanded="true" class="tablebordered" style="background-color:#f4f4f4"><p class="k-reset"><a class="k-icon k-i-collapse" href="#" tabindex="-1"></a>01 Входни потоци</p></td>
+                        </tr>
+                        <tr data-uid="ddcccb46-7ed9-4701-b934-6853904d7497" role="row" class="error-animation">
+                            <td class="k-group-cell tablebordered">&nbsp;</td>
+                            <td role="gridcell" class="tablebordered">1P0100</td>
+                            <td style="display:none;" role="gridcell"><span class="stronged">01 Входни потоци</span></td>
+                            <td role="gridcell" class="tablebordered">КР-1</td>
+                            <td role="gridcell" class="tablebordered">СУРОВ Б-Н ВХ</td>
+                            <td role="gridcell" class="tablebordered">200FQR003A</td>
+                            <td role="gridcell" class="tablebordered">Тон</td>
+                            <td role="gridcell" class="tablebordered">A</td>
+                            <td role="gridcell" class="tablebordered"><div style="text-align:left;">588,734</div></td>
+                            <td role="gridcell" class="tablebordered"><div style="text-align:left;">588,734</div></td>
+                            <td role="gridcell" class="tablebordered">
+                                <div class="col-xs-2 no-horisontal-padding">
+                                    <div class="bg-ok"></div>
+                                </div><div class="col-xs-9 no-horisontal-padding reason">Автоматично зареждане</div>
+                            </td>
+                            <td role="gridcell" class="tablebordered"></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br />
+                <p> Фиг.8A</p>
+                <br />
+                <p>Постъпването на данните е отразено в колона „Начин на постъпване на данни“, като съществуват следните механизми: </p>
                 <ul>
                     <li> А – автоматично постъпване на данни от измервателно устройство;</li>
                     <li>М – ръчно въвеждане на данни;</li>
@@ -102,7 +158,7 @@
                 <p> Фиг.13</p>
                 <p>Въвеждат се коректни стойности в колоните за редакция и се натиска бутон <span><img class="img-rounded" src="~/Content/images/Shiftdata/save.png" /></span>.</p>
                 <p>
-                    При избиране на колона „Код“ или на колона „Ръчна стойност“ от таблицата се отваря екран, съдържащ информация кой потребител,
+                    Ако потребителят е с присъединена роля <span class="stronged">"Administrator"</span> при избиране на колона „Код“ или на колона „Ръчна стойност“ от таблицата се отваря екран, съдържащ информация кой потребител,
                     кога и какви промени е направил за избраната измервателна позиция, както е показано на Фиг.14:
                 </p>
                 <p><img class="img-rounded" src="~/Content/images/Shiftdata/figura15.png" /></p>
@@ -113,22 +169,22 @@
                     Когато информацията в таблица “Сменни данни за измервателни позиции” е много голяма и не се събира на един екран, тя се прехвърля
                     на следващи екрани като преминаването между различните екрани става чрез бутоните, показани на Фиг.15.
                 </p>
-                <p><img class="img-rounded myPage" src="~/Content/images/Shiftdata/figura63.png" /></p>
+                <p><img class="img-rounded" src="~/Content/images/Shiftdata/figura63.png" /></p>
                 <p>Фиг.15</p>
                 <p>
-                    Потребителят с роля <b>„ShiftReporter“</b> внимателно преглежда всеки ред от таблицата. Когато е готов
+                    Потребителят с роля <span class="stronged">„ShiftReporter“</span> внимателно преглежда всеки ред от таблицата. Когато е готов
                     да запише отчета натиска бутон <span><img class="img-rounded btnApply" src="~/Content/images/DailyData/Potvarjdavam_red.png" /></span> и
                     запазва сменния отчет. Появява се екран за успешна  операция, показан на Фиг.16:
                 </p>
                 <p><img class="img-rounded" src="~/Content/images/Shiftdata/figura16.png" /></p>
                 <p>Фиг.16</p>
                 <p>
-                    <b>
+                    <span class="stronged">
                         Потребителят с роля „ShiftReporter“, след като е избрал конкретни производство, инсталация и дата, трябва
                         да потвърди сменни данни и за трите смени – първа, втора и трета. В противен случай ще се появи съобщение
                         за грешка при извикването на дневни данни за измервателни позиции - Материални потоци за същите избрани параметри производство,
                         инсталация и дата, което се изпълнява основно от потребител с роля „DailyReporter“ от меню „Дневни данни“ -> “Дневни данни за измервателни позиции- Материални потоци“.
-                    </b>
+                    </span>
                 </p>
                 <p>
                     Веднъж потвърден сменен отчет няма възможност за повторно редактиране или потвърждаване“.
@@ -142,4 +198,10 @@
             </section>
         </article>
     </div>
-
+@section scripts{
+    @Scripts.Render("~/bundles/custom/kendoadditional")
+    @Scripts.Render("~/bundles/custom/unitGrids")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Scripts/custom/jquery-kendo-globalize.js")
+    @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.min.js")
+}
