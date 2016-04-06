@@ -4,6 +4,7 @@ using CollectingProductionDataSystem.Application.FileServices;
 using CollectingProductionDataSystem.Data;
 using CollectingProductionDataSystem.Data.Concrete;
 using CollectingProductionDataSystem.Data.Contracts;
+using CollectingProductionDataSystem.Enumerations;
 using CollectingProductionDataSystem.Infrastructure.Log;
 using CollectingProductionDataSystem.Models.Contracts;
 using CollectingProductionDataSystem.Models.Productions;
@@ -33,52 +34,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
             var kernel = NinjectConfig.GetInjector;
 
             var data = kernel.Get<ProductionData>();
-
-            using (var writer = new StreamWriter(@"c:\Temp\users.txt"))
-            {
-                var sb = new StringBuilder();
-                var roles = data.Roles.All().ToArray();
-                for (int i = -1; i < roles.Length; i++)
-                {
-                    if (i == -1)
-                    {
-                        sb.Append("Име Презиме Фамилия;");
-                    }
-                    else
-                    {
-                        sb.Append(roles[i].Description + ";");
-                    }
-                }
-
-                writer.WriteLine(sb.ToString());
-
-
-                var users = data.Users.All().ToList();
-                foreach (var user in users)
-                {
-                    sb.Clear();
-                    sb.Append(user.FirstName + " " + user.MiddleName + " " + user.LastName + ";");
-                    var userRoles = user.Roles.ToDictionary(x => x.RoleId, x => x);
-                    for (int i = 2; i <= 22; i++)
-                    {
-                        if (userRoles.ContainsKey(i))
-                        {
-                            sb.Append("x;");
-                        }
-                        else
-                        {
-                            sb.Append(";");
-                        }
-                    }
-                     
-                    writer.WriteLine(sb.ToString());
-                }
-            }
-
-
-
-
-            //WritePositionsConfidence(data);
+            WritePositionsConfidence(data);
 
             //UpdateShiftUnitData(kernel, data);
             //var shiftData = data.UnitsData.All().Where(x => x.ShiftId == ShiftType.Second 
@@ -198,18 +154,18 @@ namespace CollectingProductionDataSystem.ConsoleClient
             PHDHistorian phd = new PHDHistorian();
             try
             {
-                PHDServer server = new PHDServer("srv-vm-mes-phd", SERVERVERSION.RAPI200);
+                PHDServer server = new PHDServer("172.30.1.40", SERVERVERSION.RAPI200);
                 phd.DefaultServer = server;
                 phd.DefaultServer.Port = 3150;
                 phd.Sampletype = SAMPLETYPE.Raw;
                 phd.ReductionType = REDUCTIONTYPE.None;
-                phd.StartTime = "3/28/2016 1:05:05 PM";
-                phd.EndTime = "3/28/2016 1:05:05 PM";
+                phd.StartTime = "4/5/2016 9:05:00 PM";
+                phd.EndTime = "4/5/2016 9:05:00 PM";
                 phd.MaximumRows = 1;
 
-                using (var writer = new StreamWriter(@"C:\Temp\phd-3.log"))
+                using (var writer = new StreamWriter(@"C:\Temp\phd-l35-1.log"))
                 {
-                    var unitConfigs = data.UnitConfigs.All().Include(x => x.ProcessUnit).Where(x => x.DataSource == PrimaryDataSourceType.SrvVmMesPhdA).ToList();
+                    var unitConfigs = data.UnitConfigs.All().Include(x => x.ProcessUnit).Where(x => x.DataSource == PrimaryDataSourceType.PhdL311B).ToList();
                     foreach (var unitConfig in unitConfigs)
                     {
                         if (unitConfig.CollectingDataMechanism == "A")
@@ -233,6 +189,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
                                 writer.WriteLine();
                             }
                         }
+                        Console.WriteLine(unitConfig.PreviousShiftTag);
                     }
                 }
 

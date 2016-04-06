@@ -32,5 +32,14 @@ namespace CollectingProductionDataSystem.ConsoleClient.Properties {
                 return ((string)(this["AutomatedReportingSystemConnectionString"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("test")]
+        public string TestValue {
+            get {
+                return ((string)(this["TestValue"]));
+            }
+        }
     }
 }

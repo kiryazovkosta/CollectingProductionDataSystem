@@ -10,5 +10,8 @@
 &lt;/SerializableConnectionString&gt;</DesignTimeValue>
       <Value Profile="(Default)">Data Source=.;Initial Catalog=AutomatedReportingSystem;Integrated Security=True</Value>
     </Setting>
+    <Setting Name="TestValue" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">test</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
