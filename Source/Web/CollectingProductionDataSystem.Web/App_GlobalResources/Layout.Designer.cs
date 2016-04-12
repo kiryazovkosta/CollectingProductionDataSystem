@@ -196,6 +196,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to All Shifts.
+        /// </summary>
+        public static string AllShifts {
+            get {
+                return ResourceManager.GetString("AllShifts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to All Users Coint.
         /// </summary>
         public static string AllUsersCount {
@@ -426,6 +435,15 @@ namespace App_GlobalResources.Resources {
         public static string AvtoQuantity {
             get {
                 return ResourceManager.GetString("AvtoQuantity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to BeginDate.
+        /// </summary>
+        public static string BeginDate {
+            get {
+                return ResourceManager.GetString("BeginDate", resourceCulture);
             }
         }
         
@@ -862,6 +880,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Loading of instalation.
+        /// </summary>
+        public static string DailyLoadGraphicShortTitle {
+            get {
+                return ResourceManager.GetString("DailyLoadGraphicShortTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Daily Product Type.
         /// </summary>
         public static string DailyProductType {
@@ -1056,6 +1083,15 @@ namespace App_GlobalResources.Resources {
         public static string Email {
             get {
                 return ResourceManager.GetString("Email", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to EndDate.
+        /// </summary>
+        public static string EndDate {
+            get {
+                return ResourceManager.GetString("EndDate", resourceCulture);
             }
         }
         
@@ -1600,6 +1636,24 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to HostIpAddress.
+        /// </summary>
+        public static string HostIpAddress {
+            get {
+                return ResourceManager.GetString("HostIpAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to HostName.
+        /// </summary>
+        public static string HostName {
+            get {
+                return ResourceManager.GetString("HostName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Hours.
         /// </summary>
         public static string Hours {
@@ -1659,6 +1713,15 @@ namespace App_GlobalResources.Resources {
         public static string InventoryBased {
             get {
                 return ResourceManager.GetString("InventoryBased", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to IsActive.
+        /// </summary>
+        public static string IsActive {
+            get {
+                return ResourceManager.GetString("IsActive", resourceCulture);
             }
         }
         
@@ -1758,6 +1821,42 @@ namespace App_GlobalResources.Resources {
         public static string IsMemberOfShiftReport {
             get {
                 return ResourceManager.GetString("IsMemberOfShiftReport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Visible % fact.
+        /// </summary>
+        public static string IsPercentagesFactVisibleInChast {
+            get {
+                return ResourceManager.GetString("IsPercentagesFactVisibleInChast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Visible % plan.
+        /// </summary>
+        public static string IsPercentagesPlanVisibleInChast {
+            get {
+                return ResourceManager.GetString("IsPercentagesPlanVisibleInChast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Visible T paln.
+        /// </summary>
+        public static string IsQuanityPlanVisibleInChast {
+            get {
+                return ResourceManager.GetString("IsQuanityPlanVisibleInChast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Visible T fact.
+        /// </summary>
+        public static string IsQuantityFactVisibleInChast {
+            get {
+                return ResourceManager.GetString("IsQuantityFactVisibleInChast", resourceCulture);
             }
         }
         
@@ -1875,6 +1974,33 @@ namespace App_GlobalResources.Resources {
         public static string LiquidLevelLowExtreme {
             get {
                 return ResourceManager.GetString("LiquidLevelLowExtreme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Load.
+        /// </summary>
+        public static string Load {
+            get {
+                return ResourceManager.GetString("Load", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loaded....
+        /// </summary>
+        public static string Loaded {
+            get {
+                return ResourceManager.GetString("Loaded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loading Data For:.
+        /// </summary>
+        public static string LoadingDataFor {
+            get {
+                return ResourceManager.GetString("LoadingDataFor", resourceCulture);
             }
         }
         
@@ -2514,6 +2640,15 @@ namespace App_GlobalResources.Resources {
         public static string PeriodEnd {
             get {
                 return ResourceManager.GetString("PeriodEnd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PhdConfig.
+        /// </summary>
+        public static string PhdConfig {
+            get {
+                return ResourceManager.GetString("PhdConfig", resourceCulture);
             }
         }
         
@@ -3315,6 +3450,15 @@ namespace App_GlobalResources.Resources {
         public static string SlectRoles {
             get {
                 return ResourceManager.GetString("SlectRoles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string String1 {
+            get {
+                return ResourceManager.GetString("String1", resourceCulture);
             }
         }
         

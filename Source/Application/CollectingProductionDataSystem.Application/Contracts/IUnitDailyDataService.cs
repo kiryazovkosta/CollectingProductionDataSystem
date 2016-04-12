@@ -20,6 +20,8 @@ namespace CollectingProductionDataSystem.Application.Contracts
 
         Task<ChartViewModel<DateTime, decimal>> GetStatisticForProcessUnitAsync(int processUnitId, DateTime beginDate, DateTime endDate, int? materialTypeId = null);
 
+        Task<ChartViewModel<DateTime, decimal>> GetStatisticForProcessUnitLoadAsync(int processUnitId, DateTime beginDate, DateTime endDate, int? materialTypeId = null);
+
         IEfStatus CheckIfDayIsApprovedButEnergyNot(DateTime date, int processUnitId, out bool readyForCalculation);
 
     }

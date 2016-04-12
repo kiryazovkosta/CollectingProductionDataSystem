@@ -101,6 +101,8 @@
 
         IDeletableEntityRepository<ActiveTransactionsData> ActiveTransactionsDatas { get; }
 
+        IDeletableEntityRepository<PhdConfig> PhdConfigs { get; }
+
         IRepository<UnitConfigUnitDailyConfig> UnitConfigUnitDailyConfigs { get; }
 
         IRepository<UnitDailyConfigUnitMonthlyConfig> UnitDailyConfigUnitMonthlyConfigs { get; }

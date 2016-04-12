@@ -195,6 +195,8 @@
 
         public IDbSet<UnitDatasTemp> UnitDatasTemps { get; set; }
 
+        public IDbSet<PhdConfig> PhdConfigs { get; set; }
+
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

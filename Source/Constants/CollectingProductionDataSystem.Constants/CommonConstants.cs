@@ -36,6 +36,8 @@ namespace CollectingProductionDataSystem.Constants
 
         private static readonly int dailyInfoDailyInfoHydrocarbonsShiftTypeId = 52;
 
+        private static readonly int halfAnHour = 60 * 30;
+
         private static string phdDateTimeFormat = @"M/d/yyyy hh:mm:ss tt";
 
         private static int maxDateDifference = 31;
@@ -75,5 +77,7 @@ namespace CollectingProductionDataSystem.Constants
         public static int DailyInfoDailyInfoHydrocarbonsShiftTypeId { get { return dailyInfoDailyInfoHydrocarbonsShiftTypeId; } }
         public static int MaxDateDifference { get { return maxDateDifference; } }
         public static string PhdDateTimeFormat { get { return phdDateTimeFormat; } }
+
+        public static int HalfAnHour { get { return halfAnHour; } }
     }
 }

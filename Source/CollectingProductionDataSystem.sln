@@ -82,6 +82,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CollectingProductionDataSys
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CollectingProductionDataSystem.Phd2SqlProductionData.Tests", "CollectingProductionDataSystem.Phd2SqlProductionData.Tests\CollectingProductionDataSystem.Phd2SqlProductionData.Tests.csproj", "{047D886B-273D-4675-8CE8-8DB90A2A53CC}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PhdWrapper", "PhdWrapper", "{0319135C-8482-4ACB-970E-D93F1A5F337A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

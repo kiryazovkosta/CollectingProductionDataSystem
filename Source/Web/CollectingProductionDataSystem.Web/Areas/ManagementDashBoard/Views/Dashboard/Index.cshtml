@@ -1,4 +1,6 @@
-﻿@using Resources = App_GlobalResources.Resources
+﻿@using CollectingProductionDataSystem.Web.Areas.ManagementDashBoard.Models;
+@using Resources = App_GlobalResources.Resources
+@model DashBoardViewModel
 @Html.AntiForgeryToken()
 <div class="container-fluid controlls-wraper">
     <div class="panel panel-default">
@@ -39,11 +41,8 @@
     .Name("charts-holder")
     .Items(items =>
     {
-        items.Add().Text(@Resources.Layout.ProcessUnitLoading).Selected(true).Content("<div id='value1' class = 'tab-content'></div>");
-        items.Add().Text("Нещо друго").Content("<div id='value2' class = 'tab-content'></div>");
-        items.Add().Text("Отборни данни за инсталаций").Content(Html.Action("AllProcessUnitsProductionPlan").ToHtmlString());
-        items.Add().Text("Други...").Content("<div id='value4' class = 'tab-content'></div>");
-
+        items.Add().Text(@Resources.Layout.ProcessUnitLoading).Selected(true).Content(Html.AllProcessUnints(Model.ProcessUnitLoadStatistics).ToHtmlString());
+        items.Add().Text("Отборни данни за инсталации").Content(Html.AllProcessUnints(Model.ProcessUnitStatistics).ToHtmlString());
     })
     //.Events(ev => ev.Activate("OnActivate"))
 )
@@ -101,20 +100,28 @@
 
         function populateTab(id)
         {
-            if (id !== 3) {
-                GetTabValue(id);
-            } else {
+            if (id == 1) {
+ 
+                    var processUnits = $("[role=pu-load-chart-holder]");
+                    processUnits.each(function (index, holder) {
+                        var id = $(holder).attr("id").replace("pul-", "");
+                        GetHolderValue(id, holder, "/ManagementDashBoard/Dashboard/DailyLoadChart");
+                    });
+                
+            }
+
+            if (id == 2) {
                 var processUnits = $("[role=pu-chart-holder]");
                 processUnits.each(function (index, holder) {
                     var id = $(holder).attr("id").replace("pu-", "");
-                    GetHolderValue(id, holder);
+                    GetHolderValue(id, holder, "/ManagementDashBoard/Dashboard/DailyMaterialChart");
                 });
             }
         }
 
-        function GetHolderValue(id, holder) {
+        function GetHolderValue(id, holder, url) {
             $.ajax({
-                url: "/ManagementDashBoard/Dashboard/DailyMaterialChart",
+                url: url,
                 data: {
                     processUnitId: id,
                     beginDate: GetDate("#begin-date"),

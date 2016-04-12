@@ -1,0 +1,20 @@
+﻿@using CollectingProductionDataSystem.Web.Areas.Administration.ViewModels;
+@using Resources = App_GlobalResources.Resources
+
+@model ProgressBarViewModel
+<div class="col-lg-10">
+    <div class="panel panel-primary">
+        <div class="panel-heading">@Resources.Layout.Loaded</div>
+        <div class="panel-body">
+            @(Html.Kendo()
+                .ProgressBar()
+                .Name("current-proccess-progress")
+                .Min(Model.MinValue)
+                .Max(Model.MaxValue)
+                .HtmlAttributes(new { style = "width:100%" })
+                .Type(ProgressBarType.Value)
+            )
+        </div>
+    </div>
+</div>
+

@@ -186,4 +186,10 @@
   <data name="DateDifference" xml:space="preserve">
     <value>The differene between {0} and {1} cannot be greater than {3}</value>
   </data>
+  <data name="MustBeGreaterThan" xml:space="preserve">
+    <value>The {0} must be greater than {1}</value>
+  </data>
+  <data name="ShiftCannotBeSet" xml:space="preserve">
+    <value>There cannot be selected value in Shift field when begin date is diferend than end date</value>
+  </data>
 </root>

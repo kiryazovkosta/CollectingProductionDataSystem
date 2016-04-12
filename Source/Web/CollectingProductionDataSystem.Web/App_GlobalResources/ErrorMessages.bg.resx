@@ -186,4 +186,10 @@
   <data name="DateDifference" xml:space="preserve">
     <value>Разликата между "{0}" и "{1}" не може да надвишава {2} дена.</value>
   </data>
+  <data name="MustBeGreaterThan" xml:space="preserve">
+    <value>Стойността на {0} трябва да бъде по - голяма от {1}</value>
+  </data>
+  <data name="ShiftCannotBeSet" xml:space="preserve">
+    <value>Не може да бъде избрана смяна ако началната и крайната дата са различни</value>
+  </data>
 </root>

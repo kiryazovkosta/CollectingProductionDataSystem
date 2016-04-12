@@ -50,8 +50,9 @@
       <HintPath>..\..\packages\ExpressionEvaluator.2.0.3.0\lib\net40\ExpressionEvaluator.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="log4net">
-      <HintPath>..\..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
+    <Reference Include="log4net, Version=1.2.15.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\log4net.2.0.5\lib\net45-full\log4net.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
@@ -139,6 +140,7 @@
     <Compile Include="MonthlyServices\TestUnitMonthlyCalculationService.cs" />
     <Compile Include="MonthlyServices\UnitMonthlyCalculationIndicator.cs" />
     <Compile Include="MonthlyServices\UnitMothlyDataService.cs" />
+    <Compile Include="PhdLogProxy\LoggerToLogAdapter.cs" />
     <Compile Include="ProductionDataServices\FormulaArguments.cs" />
     <Compile Include="ProductionDataServices\Functions.cs" />
     <Compile Include="Contracts\IProductionDataCalculatorService.cs" />

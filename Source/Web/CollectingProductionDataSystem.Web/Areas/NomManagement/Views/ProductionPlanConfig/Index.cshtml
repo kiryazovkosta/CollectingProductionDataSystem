@@ -22,7 +22,10 @@
           columns.ForeignKey(c => c.MaterialDetailTypeId, (System.Collections.IEnumerable)ViewData["materialDetailTypes"], "Id", "Name").EditorTemplateName("MaterialDetailTypeViewModel").Width(200);
           columns.ForeignKey(c => c.ProcessUnitId, (System.Collections.IEnumerable)ViewData["processUnits"], "Id", "FullName").EditorTemplateName("ProcessUnitViewModel").Width(200);
           columns.ForeignKey(c => c.MeasureUnitId, (System.Collections.IEnumerable)ViewData["measureUnits"], "Id", "Name").EditorTemplateName("MeasureUnitViewModel").Width(200);
-          columns.Bound(c => c.VisibleInChart).Width(100);
+          columns.Bound(c => c.IsPercentagesPlanVisibleInChast).Width(100);
+          columns.Bound(c => c.IsPercentagesFactVisibleInChast).Width(100);
+          columns.Bound(c => c.IsQuanityPlanVisibleInChast).Width(100);
+          columns.Bound(c => c.IsQuantityFactVisibleInChast).Width(100);                    
           columns.Command(command => { command.Edit(); command.Destroy(); }).Width(230);
       })
       .ToolBar(toolbar =>
