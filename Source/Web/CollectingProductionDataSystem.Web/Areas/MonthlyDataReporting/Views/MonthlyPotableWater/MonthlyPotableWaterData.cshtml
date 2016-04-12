@@ -20,7 +20,7 @@
 @Html.AntiForgeryToken()
 @(Html.Kendo()
     .Grid<MonthlyReportTableViewModel>()
-    .Name("monthly-hc-units")
+    .Name("monthly-pw-units")
     .AutoBind(false)
     .Columns(
         columns =>
@@ -107,7 +107,6 @@
 @section scripts{
     @Scripts.Render("~/bundles/custom/kendoadditional")
     @Scripts.Render("~/bundles/custom/unitGrids")
-    @Scripts.Render("~/Scripts/custom/renderDailyGraphic.min.js")
     @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.min.js")
 }
 @section sidebar{
