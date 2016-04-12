@@ -21,6 +21,11 @@
             getLastMessage();
             sessionStorage.setItem('firstTime', 'false');
         }
+
+        job.client.jobStatus = function (selector, value) {
+            var progressBar = $(selector).data("kendoProgressBar");
+            progressBar.value(value);
+        }
         
     });
 

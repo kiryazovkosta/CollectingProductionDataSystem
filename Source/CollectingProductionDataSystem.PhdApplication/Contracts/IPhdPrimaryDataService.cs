@@ -20,5 +20,11 @@
                                                                     DateTime recordDataTime,
                                                                     int shift, List<UnitDatasTemp> unitsTempData,
                                                                     ref int expectedNumberOfRecords);
+
+        IEnumerable<UnitDatasTemp> GetPrimaryProductionData(PrimaryDataSourceType dataSource,
+                                                 string hostName,
+                                                 DateTime targetRecordTimestamp,
+                                                 Shift shift,
+                                                 IEnumerable<UnitDatasTemp> lastIterationData = null);
     }
 }

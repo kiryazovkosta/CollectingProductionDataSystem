@@ -38,10 +38,10 @@
 
         public virtual ProcessUnit ProcessUnit { get; set; }
 
-        public virtual ICollection<UnitDailyConfig> UnitsDailyConfigsFact 
+        public virtual ICollection<UnitDailyConfig> UnitsDailyConfigsFact
         {
             get { return this.unitsDailyConfigs; }
-            set { this.unitsDailyConfigs = value; } 
+            set { this.unitsDailyConfigs = value; }
         }
 
         public virtual ICollection<ProductionPlanData> ProductionPlanDatas
@@ -64,8 +64,11 @@
         public virtual MaterialDetailType MaterialDetailType { get; set; }
 
         public int? MeasureUnitId { get; set; }
-
-        public bool VisibleInChart { get; set; }
+        
+        public bool IsPercentagesPlanVisibleInChast { get; set; }
+        public bool IsPercentagesFactVisibleInChast { get; set; }
+        public bool IsQuanityPlanVisibleInChast { get; set; }
+        public bool IsQuantityFactVisibleInChast { get; set; }
 
         public virtual MeasureUnit MeasureUnit { get; set; }
 
@@ -81,12 +84,12 @@
             {
                 if (validationObject.MaterialType.IsDetailRequired && (validationObject.MaterialDetailTypeId == null || validationObject.MaterialDetailTypeId == 0))
                 {
-                    yield return new ValidationResult(string.Format(Resources.ModelErrors.Required, Resources.ModelErrors.MaterialDetailType), new string[]{ "MaterialDetailTypeId" });
+                    yield return new ValidationResult(string.Format(Resources.ModelErrors.Required, Resources.ModelErrors.MaterialDetailType), new string[] { "MaterialDetailTypeId" });
                 }
             }
-            else 
+            else
             {
-                yield return new ValidationResult(string.Format(Resources.ModelErrors.Required, Resources.ModelErrors.MaterialType), new string[]{ "MaterialTypeId" });
+                yield return new ValidationResult(string.Format(Resources.ModelErrors.Required, Resources.ModelErrors.MaterialType), new string[] { "MaterialTypeId" });
             }
         }
     }

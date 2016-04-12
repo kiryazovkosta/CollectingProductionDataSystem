@@ -40,7 +40,8 @@ namespace CollectingProductionDataSystem.ConsoleTester
             ninject = new NinjectConfig();
             kernel = ninject.Kernel;
             data = new ProductionData(new CollectingDataSystemDbContext());
-            dailyService = kernel.Get<UnitDailyDataService>();//new UnitDailyDataService(data, kernel, new CalculatorService());
+            dailyService = kernel.Get<UnitDailyDataService>();
+            //new UnitDailyDataService(data, kernel, new CalculatorService());
             
 
             //dailyService = new UnitDailyDataService(data, kernel, new CalculatorService());
@@ -65,18 +66,20 @@ namespace CollectingProductionDataSystem.ConsoleTester
             //var str = string.Format("Some formula * {0}", (2.34).ToString(System.Globalization.CultureInfo.InvariantCulture));
             //Console.WriteLine(str);
 
-            dailyService.CheckExistsUnitDailyDatas(new DateTime(2016, 3, 6), 35, 1);
+            //dailyService.CheckExistsUnitDailyDatas(new DateTime(2016, 3, 6), 35, 1);
 
-            var timer = new Stopwatch();
-            var resultDaily = new Dictionary<string, UnitsDailyData>();
+            //var timer = new Stopwatch();
+            //var resultDaily = new Dictionary<string, UnitsDailyData>();
 
-            //service.GetDataForMonth(DateTime.Now,1);
-            timer.Start();
-            dailyService.AppendTotalMonthQuantityToDailyRecords(resultDaily, 35, new DateTime(2016, 3, 2),2);
+            ////service.GetDataForMonth(DateTime.Now,1);
+            //timer.Start();
+            //dailyService.AppendTotalMonthQuantityToDailyRecords(resultDaily, 35, new DateTime(2016, 3, 2),2);
 
-            //Update(service);
-            timer.Stop();
-            Console.WriteLine("Ready!\n Estimated time per operation {0}", timer.Elapsed);
+            ////Update(service);
+            //timer.Stop();
+            //Console.WriteLine("Ready!\n Estimated time per operation {0}", timer.Elapsed);
+
+            var result = dailyService.GetStatisticForProcessUnitLoadAsync(1, new DateTime(2016, 4, 1), new DateTime(2016, 4, 3), 1).Result;
 
         }
 

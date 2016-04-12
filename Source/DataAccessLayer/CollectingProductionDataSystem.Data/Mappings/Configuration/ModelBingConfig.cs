@@ -79,6 +79,7 @@
             modelBuilder.Configurations.Add(new TankStatusDataMap());
             modelBuilder.Configurations.Add(new UnitDatasTempMap());
             modelBuilder.Configurations.Add(new UnitRecalculatedMonthlyDataMap());
+            modelBuilder.Configurations.Add(new PhdConfgMap());
         }
     }
 }

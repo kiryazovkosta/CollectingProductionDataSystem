@@ -180,6 +180,14 @@
             }
         }
 
+        public IDeletableEntityRepository<PhdConfig> PhdConfigs
+        {
+            get
+            {
+                return this.GetDeletableEntityRepository<PhdConfig>();
+            }
+        }
+
         public IApprovableEntityRepository<TankData> TanksData
         {
             get

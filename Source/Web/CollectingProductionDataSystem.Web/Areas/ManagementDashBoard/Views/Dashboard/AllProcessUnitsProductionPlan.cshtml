@@ -1,13 +1,12 @@
 ﻿@using CollectingProductionDataSystem.Models.Productions;
+@using CollectingProductionDataSystem.Web.Areas.ManagementDashBoard.Models;
 
-@model IEnumerable<Factory>
+@model AllProcessUnitProductionPlanViewModel
 
 <div class="container-fluid">
-
-
-    @foreach (var factory in Model)
+    @foreach (var factory in Model.Factories)
     {
-        <div class="panel panel-default">
+        <div class="panel panel-danger">
             <div class="panel-heading">@factory.FullName</div>
             <div class="panel-body">
                 <div class="row chart-tumb-row" style="width:100%; margin-top:5px;">
@@ -15,7 +14,7 @@
                     {
                         if (processUnit.HasDailyStatistics && !processUnit.IsDeleted)
                         {
-                            <div id="pu-@processUnit.Id" class="col-sm-3 pu-chart-holder" role="pu-chart-holder"></div>
+                            <div id="@Model.ElementPrefix-@processUnit.Id" class="col-sm-3 pu-chart-holder" role="@Model.ElementRole"></div>
                         }
                     }
                 </div>
