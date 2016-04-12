@@ -27,7 +27,10 @@
           columns.Bound(c => c.RelatedUnitMonthlyConfigs).Width(300).ClientTemplate("#=unitConfigTemplate(RelatedUnitMonthlyConfigs)#");
           columns.Bound(c => c.IsEditable).Width(100);
           columns.Bound(c => c.IsManualEntry).Width(100);
-          columns.Bound(c => c.IsTotalPosition).Width(100);          
+          columns.Bound(c => c.IsTotalPosition).Width(100);
+          columns.Bound(c => c.IsTotalInputPosition).Width(100);
+          columns.Bound(c => c.IsExternalOutputPosition).Width(100);
+          columns.Bound(c => c.IsTotalExternalOutputPosition).Width(100);          
           columns.Command(command => { command.Edit(); command.Destroy(); }).Width(230);
       })
       .Resizable(res => res.Columns(true))

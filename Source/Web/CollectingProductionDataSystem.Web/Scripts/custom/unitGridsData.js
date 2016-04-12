@@ -60,6 +60,16 @@ var unitGridsData = (function () {
                 kendoAdditional.RefreshGrid("#monthly-hc-units");
             }
 
+            if ($("#monthly-pw-units").val() !== undefined) {
+
+                if (ctrlParamsElement.val() !== undefined) {
+                    ctrlParamsElement.attr('data-params', JSON.stringify(sendDate()));
+                }
+
+                kendoAdditional.RefreshGrid("#monthly-pw-units");
+            }
+
+
             if ($("#tanks-statuses").val() !== undefined) {
 
                 if (ctrlParamsElement.val() !== undefined) {
@@ -120,6 +130,11 @@ var unitGridsData = (function () {
                                 var message = "Вие потвърдихте отчета успешно."
                                 $('pre#succ-message').text(message);
                                 $('div#success-window').data("kendoWindow").open();
+
+                                var reportButton = $("#report");
+                                if (reportButton) {
+                                    reportButton.show();
+                                }
 
                             } else {
                                 if (data.errors) {
@@ -259,6 +274,11 @@ var unitGridsData = (function () {
             var confirmButton = $("#confirm");
             if (confirmButton) {
                 confirmButton.hide();
+            }
+
+            var reportButton = $("#report");
+            if (reportButton) {
+                reportButton.hide();
             }
 
             var unitsGrids = $(".k-widget.k-grid");
@@ -636,6 +656,17 @@ var unitGridsData = (function () {
                         $(cell).attr("style","display:none !important");
                     }
                 });
+            }
+
+            // monthly data total input and external rows
+            if (row.IsTotalInputPosition) {
+                var uid = row.uid;
+                $("#" + $(grid.element).attr('id') + " tbody").find("tr[data-uid=" + uid + "]").addClass("total-input-position");
+            }
+
+            if (row.IsExternalOutputPosition) {
+                var uid = row.uid;
+                $("#" + $(grid.element).attr('id') + " tbody").find("tr[data-uid=" + uid + "]").addClass("external-output-position");
             }
         }
     }

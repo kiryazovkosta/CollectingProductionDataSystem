@@ -153,6 +153,7 @@
     <Compile Include="Mappings\UnitDailyConfigUnitMonthlyConfigMap.cs" />
     <Compile Include="Mappings\UnitEnteredForCalculationDataMap.cs" />
     <Compile Include="Mappings\UnitManualMonthlyDataMap.cs" />
+    <Compile Include="Mappings\UnitRecalculatedMonthlyDataMap.cs" />
     <Compile Include="Mappings\UnitsApprovedDailyDataMap.cs" />
     <Compile Include="Mappings\UnitApprovedMonthlyDataMap.cs" />
     <Compile Include="Mappings\UnitDailyConfigMap.cs" />

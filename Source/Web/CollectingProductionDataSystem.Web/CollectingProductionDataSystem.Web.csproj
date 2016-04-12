@@ -1275,12 +1275,12 @@
     <Content Include="Areas\ManagementDashBoard\Views\_ViewStart.cshtml" />
     <Content Include="Areas\ManagementDashBoard\Views\Dashboard\AllProcessUnitsProductionPlan.cshtml" />
     <Content Include="Areas\ManagementDashBoard\Views\Shared\ComplexDailyChart.cshtml" />
-    <Content Include="Areas\MonthlyDataReporting\Views\MonthlyPotableWater\MonthlyPotableWaterData.cshtml" />
     <Content Include="Areas\SummaryReporting\Views\_ViewStart.cshtml" />
     <Content Include="Areas\SummaryReporting\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\SummaryReporting\Views\SummaryReports\InProcessUnitsData.cshtml" />
     <Content Include="Areas\NomManagement\Views\Shared\DisplayTemplates\Bool.cshtml" />
     <Content Include="Areas\Documentation\Views\Help\SummaryReportDescription.cshtml" />
+    <Content Include="Areas\MonthlyDataReporting\Views\MonthlyPotableWater\MonthlyPotableWaterData.cshtml" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <None Include="Properties\PublishProfiles\Home.pubxml" />
     <Content Include="Scripts\custom\sendArea.js" />

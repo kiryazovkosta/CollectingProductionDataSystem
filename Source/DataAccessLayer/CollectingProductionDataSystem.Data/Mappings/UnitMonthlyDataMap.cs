@@ -30,10 +30,16 @@ namespace CollectingProductionDataSystem.Data.Mappings
            // Relationships
             this.HasRequired(u => u.UnitMonthlyConfig)
                 .WithMany(u => u.UnitMonthlyDatas)
-                .HasForeignKey(d => d.UnitMonthlyConfigId).WillCascadeOnDelete(false);
+                .HasForeignKey(d => d.UnitMonthlyConfigId)
+                .WillCascadeOnDelete(false);
 
             this.HasOptional(t => t.UnitManualMonthlyData)
-                .WithRequired(t => t.UnitMonthlyData).WillCascadeOnDelete(false);
+                .WithRequired(t => t.UnitMonthlyData)
+                .WillCascadeOnDelete(false);
+
+            this.HasOptional(t => t.UnitRecalculatedMonthlyData)
+                .WithRequired(t => t.UnitMonthlyData)
+                .WillCascadeOnDelete(false);
         }
     }
 }

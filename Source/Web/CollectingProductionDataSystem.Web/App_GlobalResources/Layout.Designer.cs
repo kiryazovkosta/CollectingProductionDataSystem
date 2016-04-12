@@ -1717,6 +1717,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to IsExternalOutputPosition.
+        /// </summary>
+        public static string IsExternalOutputPosition {
+            get {
+                return ResourceManager.GetString("IsExternalOutputPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to IsInspectionPoint.
         /// </summary>
         public static string IsInspectionPoint {
@@ -1776,6 +1785,24 @@ namespace App_GlobalResources.Resources {
         public static string IsTotal {
             get {
                 return ResourceManager.GetString("IsTotal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to IsTotalExternalOutputPosition.
+        /// </summary>
+        public static string IsTotalExternalOutputPosition {
+            get {
+                return ResourceManager.GetString("IsTotalExternalOutputPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to IsTotalInputPosition.
+        /// </summary>
+        public static string IsTotalInputPosition {
+            get {
+                return ResourceManager.GetString("IsTotalInputPosition", resourceCulture);
             }
         }
         

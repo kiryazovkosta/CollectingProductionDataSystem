@@ -532,6 +532,14 @@
             }
         }
 
+        public IDeletableEntityRepository<UnitRecalculatedMonthlyData> UnitRecalculatedMonthlyDatas
+        {
+            get
+            {
+                return this.GetDeletableEntityRepository<UnitRecalculatedMonthlyData>();
+            }
+        }
+
         public IEfStatus SaveChanges(string userName)
         {
             return this.context.SaveChangesWithValidation(userName);

@@ -77,7 +77,6 @@
         [Display(Name = "IsManualEntry", ResourceType = typeof(Resources.Layout))]
         public bool IsManualEntry { get; set; }
 
-
         [UIHint("Hidden")]
         [Editable(false)]
         public bool IsDeleted { get; set; }
@@ -85,6 +84,18 @@
         [Required]
         [Display(Name = "IsTotalPosition", ResourceType = typeof(Resources.Layout))]
         public bool IsTotalPosition { get; set; }
+
+        [Required]
+        [Display(Name = "IsTotalInputPosition", ResourceType = typeof(Resources.Layout))]
+        public bool IsTotalInputPosition { get; set; }
+
+        [Required]
+        [Display(Name = "IsExternalOutputPosition", ResourceType = typeof(Resources.Layout))]
+        public bool IsExternalOutputPosition { get; set; }
+
+        [Required]
+        [Display(Name = "IsTotalExternalOutputPosition", ResourceType = typeof(Resources.Layout))]
+        public bool IsTotalExternalOutputPosition { get; set; }
 
 
         /// <summary>

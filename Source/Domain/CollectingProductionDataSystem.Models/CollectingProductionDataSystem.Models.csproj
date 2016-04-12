@@ -104,6 +104,7 @@
     <Compile Include="Productions\Mounthly\UnitDailyConfigUnitMonthlyConfig.cs" />
     <Compile Include="Productions\Mounthly\UnitMonthlyConfig.cs" />
     <Compile Include="Productions\Mounthly\UnitManualMonthlyData.cs" />
+    <Compile Include="Productions\Mounthly\UnitRecalculatedMonthlyData.cs" />
     <Compile Include="Productions\Mounthly\UnitMonthlyData.cs" />
     <Compile Include="Productions\Mounthly\RelatedUnitMonthlyConfigs.cs" />
     <Compile Include="Productions\UnitDatasTemp.cs" />
