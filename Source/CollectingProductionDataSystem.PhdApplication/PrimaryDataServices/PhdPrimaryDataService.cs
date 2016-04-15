@@ -10,6 +10,7 @@
     using System.Globalization;
     using System.Linq;
     using System.Transactions;
+    using System.Web.Configuration;
     using CollectingProductionDataSystem.Application.Contracts;
     using CollectingProductionDataSystem.Application.ProductionDataServices;
     using CollectingProductionDataSystem.Constants;
@@ -287,7 +288,6 @@
             return unitDatasToAddList;
         }
 
-
         /// <summary>
         /// Checks if last operation succeded.
         /// </summary>
@@ -441,12 +441,12 @@
         {
             if (stepName is IProgressMessage)
             {
-                logger.InfoFormat("\tOn step {0}: \n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tExpected number of records: {1} \n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tThe number of the generated records:{2}", stepName.ToString(), expectedRecordsCount, generatedRecordsCount, stepName);                
+                logger.InfoFormat("\tOn step {0}: \n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tExpected number of records: {1} \n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tThe number of the generated records:{2}", stepName.ToString(), expectedRecordsCount, generatedRecordsCount, stepName);
             }
             else
             {
-                logger.InfoFormat("\tOn step {0}: \n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tExpected number of records: {1} \n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tThe number of the generated records:{2}", stepName, expectedRecordsCount, generatedRecordsCount);                
-                
+                logger.InfoFormat("\tOn step {0}: \n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tExpected number of records: {1} \n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tThe number of the generated records:{2}", stepName, expectedRecordsCount, generatedRecordsCount);
+
             }
         }
 
@@ -630,14 +630,14 @@
                         }
 
                         inputParams.Add(string.Format("p{0}", indexCounter), inputValue);
-                        indexCounter++;     
+                        indexCounter++;
                     }
                     else
                     {
                         allRelatedRecordsExists = false;
                     }
                 }
-                
+
             }
 
             if (allRelatedRecordsExists == true)
@@ -655,7 +655,7 @@
                             Value = (double.IsNaN(result) || double.IsInfinity(result)) ? 0.0m : (decimal)result,
                             Confidence = confidence,
                         });
-                }    
+                }
             }
 
         }
@@ -985,21 +985,39 @@
 
         private static void SetPhdConnectionSettings(PHDHistorian oPhd, PHDServer defaultServer, DateTime targetRecordTimestamp, Shift targetShift)
         {
-            var exeFileName = Assembly.GetEntryAssembly().Location;
-            Configuration configuration = ConfigurationManager.OpenExeConfiguration(exeFileName);
-            ConfigurationSectionGroup appSettingsGroup = configuration.GetSectionGroup("applicationSettings");
-            ConfigurationSection appSettingsSection = appSettingsGroup.Sections[0];
-            ClientSettingsSection settings = appSettingsSection as ClientSettingsSection;
-            defaultServer.Port = Convert.ToInt32(settings.Settings.Get("PHD_PORT").Value.ValueXml.InnerText);
-            defaultServer.APIVersion = SERVERVERSION.RAPI200;
-            oPhd.DefaultServer = defaultServer;
-            var beginShiftDateTime = targetRecordTimestamp.Date + targetShift.EndTime;
-            oPhd.StartTime = string.Format("{0}", beginShiftDateTime.ToString(CommonConstants.PhdDateTimeFormat, CultureInfo.InvariantCulture));
-            oPhd.EndTime = oPhd.StartTime;
-            oPhd.Sampletype = SAMPLETYPE.Snapshot;
-            oPhd.MinimumConfidence = Convert.ToInt32(settings.Settings.Get("PHD_DATA_MIN_CONFIDENCE").Value.ValueXml.InnerText);
-            oPhd.MaximumRows = Convert.ToUInt32(settings.Settings.Get("PHD_DATA_MAX_ROWS").Value.ValueXml.InnerText);
-            //oPhd.Offset = Convert.ToInt32(settings.Settings.Get("PHD_OFFSET").Value.ValueXml.InnerText);
+            if (Assembly.GetEntryAssembly() != null)
+            {
+                var exeFileName = Assembly.GetEntryAssembly().Location;
+                Configuration configuration = ConfigurationManager.OpenExeConfiguration(exeFileName);
+                ConfigurationSectionGroup appSettingsGroup = configuration.GetSectionGroup("applicationSettings");
+                ConfigurationSection appSettingsSection = appSettingsGroup.Sections[0];
+                ClientSettingsSection settings = appSettingsSection as ClientSettingsSection;
+                defaultServer.Port = Convert.ToInt32(settings.Settings.Get("PHD_PORT").Value.ValueXml.InnerText);
+                defaultServer.APIVersion = SERVERVERSION.RAPI200;
+                oPhd.DefaultServer = defaultServer;
+                var beginShiftDateTime = targetRecordTimestamp.Date + targetShift.EndTime;
+                oPhd.StartTime = string.Format("{0}", beginShiftDateTime.ToString(CommonConstants.PhdDateTimeFormat, CultureInfo.InvariantCulture));
+                oPhd.EndTime = oPhd.StartTime;
+                oPhd.Sampletype = SAMPLETYPE.Snapshot;
+                oPhd.MinimumConfidence = Convert.ToInt32(settings.Settings.Get("PHD_DATA_MIN_CONFIDENCE").Value.ValueXml.InnerText);
+                oPhd.MaximumRows = Convert.ToUInt32(settings.Settings.Get("PHD_DATA_MAX_ROWS").Value.ValueXml.InnerText);
+                //oPhd.Offset = Convert.ToInt32(settings.Settings.Get("PHD_OFFSET").Value.ValueXml.InnerText);
+            }
+            else
+            {
+                var settings = WebConfigurationManager.AppSettings;
+                defaultServer.Port = Convert.ToInt32(settings["PHD_PORT"]);
+                defaultServer.APIVersion = SERVERVERSION.RAPI200;
+                oPhd.DefaultServer = defaultServer;
+                var beginShiftDateTime = targetRecordTimestamp.Date + targetShift.EndTime;
+                oPhd.StartTime = string.Format("{0}", beginShiftDateTime.ToString(CommonConstants.PhdDateTimeFormat, CultureInfo.InvariantCulture));
+                oPhd.EndTime = oPhd.StartTime;
+                oPhd.Sampletype = SAMPLETYPE.Snapshot;
+                oPhd.MinimumConfidence = Convert.ToInt32(settings["PHD_DATA_MIN_CONFIDENCE"]);
+                oPhd.MaximumRows = Convert.ToUInt32(settings["PHD_DATA_MAX_ROWS"]);
+                //oPhd.Offset = Convert.ToInt32(settings.Settings.Get("PHD_OFFSET").Value.ValueXml.InnerText);
+            }
+
         }
 
         /// <summary>
@@ -1137,6 +1155,33 @@
             }
 
             return preparedRecords;
+        }
+
+        /// <summary>
+        /// Creates the missing records.
+        /// </summary>
+        /// <param name="targetRecordTimestamp">The target record timestamp.</param>
+        /// <param name="shift">The shift.</param>
+        /// <param name="existTempUnitData">The exist temp unit data.</param>
+        /// <param name="expectedNumberOfRecords">The expected number of records.</param>
+        /// <returns></returns>
+        public IEnumerable<UnitDatasTemp> CreateMissingRecords(DateTime targetRecordTimestamp, Shift shift, IEnumerable<UnitDatasTemp> existTempUnitData)
+        {
+            var unitsConfigsList = this.data.UnitConfigs.All().ToList();
+            var unitDatas = existTempUnitData.ToDictionary(x => x.UnitConfigId);
+            var targetDate = targetRecordTimestamp.Date;
+            var confidense = 0;
+            var result = new List<UnitDatasTemp>();
+
+            foreach (var position in unitsConfigsList)
+            {
+                if (!unitDatas.ContainsKey(position.Id))
+                {
+                    result.Add(this.SetDefaultUnitsDataValue(targetDate, shift.Id, position, confidense));
+                }
+            }
+
+            return result;
         }
 
         /// <summary>
