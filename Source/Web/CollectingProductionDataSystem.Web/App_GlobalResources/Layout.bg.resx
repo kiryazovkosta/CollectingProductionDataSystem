@@ -1595,6 +1595,15 @@
   <data name="VisibleInChart" xml:space="preserve">
     <value>Визуализация в графика</value>
   </data>
+  <data name="IsExternalOutputPosition" xml:space="preserve">
+    <value>Външен консулатор</value>
+  </data>
+  <data name="IsTotalExternalOutputPosition" xml:space="preserve">
+    <value>Общо външни консуматори</value>
+  </data>
+  <data name="IsTotalInputPosition" xml:space="preserve">
+    <value>Общо вход</value>
+  </data>
   <data name="DailyLoadGraphicShortTitle" xml:space="preserve">
     <value>Натоварване на инсталация {0}</value>
   </data>

@@ -157,6 +157,8 @@
 
         IRepository<UnitDatasTemp> UnitDatasTemps { get; }
 
+        IDeletableEntityRepository<UnitRecalculatedMonthlyData> UnitRecalculatedMonthlyDatas { get; }
+
         IDbContext DbContext { get; }
 
         IEfStatus SaveChanges(string userName);

@@ -1089,3 +1089,11 @@ hr.control-delimiter {
     padding-left:30px;
     padding-right:30px;
 }
+
+.total-input-position {
+    background-color: lightgreen;
+}
+
+.external-output-position {
+    background-color: lightblue;
+}

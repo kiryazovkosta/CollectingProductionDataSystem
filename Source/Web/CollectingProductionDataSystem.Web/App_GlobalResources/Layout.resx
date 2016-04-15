@@ -1597,6 +1597,15 @@
   <data name="VisibleInChart" xml:space="preserve">
     <value>VisibleInChart</value>
   </data>
+  <data name="IsExternalOutputPosition" xml:space="preserve">
+    <value>IsExternalOutputPosition</value>
+  </data>
+  <data name="IsTotalExternalOutputPosition" xml:space="preserve">
+    <value>IsTotalExternalOutputPosition</value>
+  </data>
+  <data name="IsTotalInputPosition" xml:space="preserve">
+    <value>IsTotalInputPosition</value>
+  </data>
   <data name="DailyLoadGraphicShortTitle" xml:space="preserve">
     <value>Loading of instalation</value>
   </data>

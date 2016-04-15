@@ -18,6 +18,10 @@
             : base(dataParam, monthlyServiceParam)
         {
         }
+
+
+
+
         /// <summary>
         /// Gets the report parameters.
         /// </summary>

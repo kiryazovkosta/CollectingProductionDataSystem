@@ -20,8 +20,8 @@ namespace CollectingProductionDataSystem.Web.AppStart
     using CollectingProductionDataSystem.Data.Contracts;
     using CollectingProductionDataSystem.Infrastructure.Contracts;
     using CollectingProductionDataSystem.Infrastructure.Log;
-    using CollectingProductionDataSystem.PhdApplication.Contracts;
-    using CollectingProductionDataSystem.PhdApplication.PrimaryDataServices;
+    //using CollectingProductionDataSystem.PhdApplication.Contracts;
+    //using CollectingProductionDataSystem.PhdApplication.PrimaryDataServices;
     using CollectingProductionDataSystem.Web.Infrastructure.Helpers;
     using CollectingProductionDataSystem.Web.Infrastructure.ModelBinders;
     using Microsoft.Web.Infrastructure.DynamicModuleHelper;
@@ -34,6 +34,8 @@ namespace CollectingProductionDataSystem.Web.AppStart
     using CollectingProductionDataSystem.Application.ProductionPlanDataServices;
     using CollectingProductionDataSystem.Application.ShiftServices;
     using log4net;
+    using CollectingProductionDataSystem.PhdApplication.Contracts;
+    using CollectingProductionDataSystem.PhdApplication.PrimaryDataServices;
 
     public static class NinjectWebCommon 
     {

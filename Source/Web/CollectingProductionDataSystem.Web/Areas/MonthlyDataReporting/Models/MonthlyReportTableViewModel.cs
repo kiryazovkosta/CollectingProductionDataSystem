@@ -57,12 +57,20 @@
         [UIHint("Hidden")]
         public bool IsTotalPosition { get; set; }
 
+        [UIHint("Hidden")]
+        public bool IsTotalInputPosition { get; set; }
+
+        [UIHint("Hidden")]
+        public bool IsExternalOutputPosition { get; set; }
+
         public void CreateMappings(IConfiguration configuration)
         {
             configuration.CreateMap<UnitMonthlyData, MonthlyReportTableViewModel>()
                          .ForMember(p => p.UnitManualMonthlyData, opt => opt.MapFrom(p => p.UnitManualMonthlyData ?? new UnitManualMonthlyData() { Value = p.Value }))
                          .ForMember(p => p.IsEditable, opt => opt.MapFrom(p => p.UnitMonthlyConfig.IsEditable))
-                         .ForMember(p=>p.IsTotalPosition, opt=> opt.MapFrom(p=>p.UnitMonthlyConfig.IsTotalPosition));
+                         .ForMember(p => p.IsTotalPosition, opt => opt.MapFrom(p => p.UnitMonthlyConfig.IsTotalPosition))
+                         .ForMember(p => p.IsTotalInputPosition, opt => opt.MapFrom(p => p.UnitMonthlyConfig.IsTotalInputPosition))
+                         .ForMember(p => p.IsExternalOutputPosition, opt => opt.MapFrom(p => p.UnitMonthlyConfig.IsExternalOutputPosition));
         }
 
         public bool HasManualData { get; set; }

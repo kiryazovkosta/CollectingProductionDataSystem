@@ -195,6 +195,7 @@
 
         public IDbSet<UnitDatasTemp> UnitDatasTemps { get; set; }
 
+        public IDbSet<UnitRecalculatedMonthlyData> UnitRecalculatedMonthlyDatas { get; set; }
         public IDbSet<PhdConfig> PhdConfigs { get; set; }
 
 

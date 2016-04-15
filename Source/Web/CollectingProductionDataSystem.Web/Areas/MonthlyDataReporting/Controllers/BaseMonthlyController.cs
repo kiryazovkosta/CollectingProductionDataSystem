@@ -206,7 +206,7 @@ namespace CollectingProductionDataSystem.Web.Areas.MonthlyDataReporting.Controll
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Confirm(ConfirmMonthlyInputModel model)
+        public virtual ActionResult Confirm(ConfirmMonthlyInputModel model)
         {
             ValidateModelAgainstReportPatameters(this.ModelState, model, Session["reportParams"]);
 

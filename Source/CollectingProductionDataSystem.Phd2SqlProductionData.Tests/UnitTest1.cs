@@ -19,12 +19,13 @@ namespace CollectingProductionDataSystem.Phd2SqlProductionData.Tests
         private readonly  Phd2SqlProductionDataService service;
         private readonly List<Shift> shifts;
         private static Mock<IProductionData> mockData = new Mock<IProductionData>();
+        private static Mock<ILog> mockLogger = new Mock<ILog>();
          
         public UnitTest1() 
         {
             mockData.Setup(m=>m.Shifts.All()).Returns(CreateShifts().AsQueryable);
            // service = new PhdPrimaryDataService(mockData.Object, new Mock<ILog>().Object, new Mock<IMailerService>().Object );
-            service = new Phd2SqlProductionDataService();
+            service = new Phd2SqlProductionDataService(mockLogger.Object);
             shifts = CreateShifts();
         }
  

@@ -30,6 +30,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -1295,12 +1296,12 @@
     <Content Include="Areas\ManagementDashBoard\Views\_ViewStart.cshtml" />
     <Content Include="Areas\ManagementDashBoard\Views\Dashboard\AllProcessUnitsProductionPlan.cshtml" />
     <Content Include="Areas\ManagementDashBoard\Views\Shared\ComplexDailyChart.cshtml" />
-    <Content Include="Areas\MonthlyDataReporting\Views\MonthlyPotableWater\MonthlyPotableWaterData.cshtml" />
     <Content Include="Areas\SummaryReporting\Views\_ViewStart.cshtml" />
     <Content Include="Areas\SummaryReporting\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\SummaryReporting\Views\SummaryReports\InProcessUnitsData.cshtml" />
     <Content Include="Areas\NomManagement\Views\Shared\DisplayTemplates\Bool.cshtml" />
     <Content Include="Areas\Documentation\Views\Help\SummaryReportDescription.cshtml" />
+    <Content Include="Areas\MonthlyDataReporting\Views\MonthlyPotableWater\MonthlyPotableWaterData.cshtml" />
     <Content Include="Areas\Administration\Views\ForceLoading\Index.cshtml" />
     <Content Include="Areas\Administration\Views\Shared\FactoryViewModel.cshtml" />
     <Content Include="Areas\Administration\Views\Shared\ProcessUnitViewModel.cshtml" />
@@ -2231,11 +2232,11 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>False</UseIIS>
+          <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>2555</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:3215/</IISUrl>
+          <IISUrl>http://localhost:2555/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

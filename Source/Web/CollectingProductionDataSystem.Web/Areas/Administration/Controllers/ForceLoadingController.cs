@@ -34,7 +34,7 @@ namespace CollectingProductionDataSystem.Web.Areas.Administration.Controllers
         {
             return View();
         }
-
+    
         [HttpPost]
         [ValidateAntiForgeryToken]
         public JsonResult Index(ForceLoadingViewModel model)

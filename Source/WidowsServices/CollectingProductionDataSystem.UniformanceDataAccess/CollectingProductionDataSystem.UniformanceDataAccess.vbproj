@@ -100,7 +100,8 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="phdapinet">
+    <Reference Include="phdapinet, Version=300.1.0.1, Culture=neutral, PublicKeyToken=5c915cbb2b8fbc32, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\ExternalLibraries\Uniformance\phdapinet.dll</HintPath>
     </Reference>
     <Reference Include="System" />

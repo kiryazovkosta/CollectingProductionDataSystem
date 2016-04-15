@@ -23,6 +23,8 @@ namespace CollectingProductionDataSystem.Models.Productions.Mounthly
 
         public virtual UnitManualMonthlyData UnitManualMonthlyData { get; set; }
 
+        public virtual UnitRecalculatedMonthlyData UnitRecalculatedMonthlyData { get; set; }
+
         //public decimal TotalMonthQuantity { get; set; }
 
         [NotMapped]
