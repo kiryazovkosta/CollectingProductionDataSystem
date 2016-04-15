@@ -34,7 +34,8 @@ namespace CollectingProductionDataSystem.ConsoleClient
             var kernel = NinjectConfig.GetInjector;
 
             var data = kernel.Get<ProductionData>();
-            WritePositionsConfidence(data);
+            //WritePositionsConfidence(data);
+            //UpdateShiftUnitData(kernel, data);
 
             //UpdateShiftUnitData(kernel, data);
             //var shiftData = data.UnitsData.All().Where(x => x.ShiftId == ShiftType.Second 
@@ -106,8 +107,8 @@ namespace CollectingProductionDataSystem.ConsoleClient
                                   .Include(x => x.RelatedUnitConfigs.Select(z => z.RelatedUnitConfig).Select(w => w.UnitDatasTemps))
                                   .Where(x => x.CollectingDataMechanism == "C")
                                   .ToList();
-
-            var unitsTemp = data.UnitsData.All().Include(x => x.UnitConfig).Where(x => x.RecordTimestamp == new DateTime(2016, 4, 1) &&
+            var targerDay = new DateTime(2016, 4, 15);
+            var unitsTemp = data.UnitsData.All().Include(x => x.UnitConfig).Where(x => x.RecordTimestamp == targerDay &&
                                                                                        x.ShiftId == 1 &&
                                                                                        x.UnitConfig.CollectingDataMechanism != "C").ToList().Select(x => new UnitDatasTemp
                                                                                                                                                    {
@@ -121,7 +122,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
 
             int test = 0;
 
-            var result = service.ProcessCalculatedUnits(unitConfigs, new DateTime(2016, 4, 1), 1, unitsTemp, ref test)
+            var result = service.ProcessCalculatedUnits(unitConfigs, targerDay, 1, unitsTemp, ref test)
                                 .Select(unitDataTemp => new UnitsData()
                                        {
                                            RecordTimestamp = unitDataTemp.RecordTimestamp,
@@ -135,7 +136,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
             var neededUnitData = data.UnitsData
                                      .All()
                                      .Include(x => x.UnitConfig)
-                                     .Where(x => x.RecordTimestamp == new DateTime(2016, 4, 1) &&
+                                     .Where(x => x.RecordTimestamp == targerDay &&
                                                  x.ShiftId == 1 &&
                                                  x.UnitConfig.CollectingDataMechanism == "C" &&
                                                  x.UnitConfig.IsDeleted == false);

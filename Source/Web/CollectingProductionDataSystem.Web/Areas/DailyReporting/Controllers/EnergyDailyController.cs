@@ -78,10 +78,10 @@
                 status.ToModelStateErrors(this.ModelState);
             }
 
-            //if (ModelState.IsValid)
-            //{
-            //    ValidateProductionPlanRelatedData(processUnitId, materialTypeId, date);
-            //}
+            if (ModelState.IsValid)
+            {
+                ValidateProductionPlanRelatedData(processUnitId, materialTypeId, date);
+            }
 
             if (ModelState.IsValid)
             {

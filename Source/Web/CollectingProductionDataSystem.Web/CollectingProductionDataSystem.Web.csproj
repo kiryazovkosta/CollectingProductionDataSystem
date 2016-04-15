@@ -1303,6 +1303,7 @@
     <Content Include="Areas\Administration\Views\Shared\ProcessUnitViewModel.cshtml" />
     <Content Include="Areas\Administration\Views\ForceLoading\GetProgressBar.cshtml" />
     <Content Include="Areas\NomManagement\Views\PhdConfig\Index.cshtml" />
+    <Content Include="Areas\MonthlyDataReporting\Views\MonthlyPotableWater\MonthlyPotableWaterReport.cshtml" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <None Include="Properties\PublishProfiles\Home.pubxml" />
     <Content Include="Scripts\custom\sendArea.js" />
