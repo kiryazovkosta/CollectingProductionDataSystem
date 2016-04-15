@@ -177,7 +177,8 @@
                 //.ForMember(p => p.NotATotalizedPosition, opt => opt.Ignore())
                 .ForMember(p => p.NeedToGetOnlyLastShiftValue, opt => opt.Ignore())
                 .ForMember(p => p.EnteredMeasureUnit, opt => opt.Ignore())
-                .ForMember(p => p.UnitDatasTemps, opt => opt.Ignore());
+                .ForMember(p => p.UnitDatasTemps, opt => opt.Ignore())
+                .ForMember(p=>p.RemoveAndAddInsteadUpdate,opt=>opt.Ignore());
                 //.ForMember(p => p.CalculationPercentage, opt => opt.Ignore())
                 //.ForMember(p => p.IsMemberOfShiftsReport, opt=>opt.Ignore())
                 //.ForMember(p=>p.DataSource, opt=>opt.Ignore())
