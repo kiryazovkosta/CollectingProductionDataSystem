@@ -596,52 +596,68 @@
             var mathExpression = unitConfig.CustomFormulaExpression;
             var relatedunitConfigs = unitConfig.RelatedUnitConfigs.ToList();
             var confidence = 100;
+            bool allRelatedRecordsExists = true;
             foreach (var relatedunitConfig in relatedunitConfigs)
             {
-                var element = data.UnitsData
+                if (allRelatedRecordsExists == true)
+                {
+                    var element = data.UnitsData
                                   .All()
                                   .Where(x => x.RecordTimestamp == recordDataTime)
                                   .Where(x => x.ShiftId == shift)
                                   .Where(x => x.UnitConfigId == relatedunitConfig.RelatedUnitConfigId)
                                   .FirstOrDefault();
-                var inputValue = (element != null) ? element.RealValue : 0.0;
-                if (inputValue == 0.0)
-                {
-                    if (calculatedUnitsData.ContainsKey(relatedunitConfig.RelatedUnitConfigId))
+                    if (element != null)
                     {
-                        inputValue = calculatedUnitsData[relatedunitConfig.RelatedUnitConfigId].RealValue;
-                        if (calculatedUnitsData[relatedunitConfig.RelatedUnitConfigId].Confidence != 100)
+                        var inputValue = element.RealValue;
+                        if (inputValue == 0.0)
                         {
-                            confidence = calculatedUnitsData[relatedunitConfig.RelatedUnitConfigId].Confidence;
+                            if (calculatedUnitsData.ContainsKey(relatedunitConfig.RelatedUnitConfigId))
+                            {
+                                inputValue = calculatedUnitsData[relatedunitConfig.RelatedUnitConfigId].RealValue;
+                                if (calculatedUnitsData[relatedunitConfig.RelatedUnitConfigId].Confidence != 100)
+                                {
+                                    confidence = calculatedUnitsData[relatedunitConfig.RelatedUnitConfigId].Confidence;
+                                }
+                            }
                         }
-                    }
-                }
-                else
-                {
-                    if (element != null && element.Confidence != 100)
-                    {
-                        confidence = element.Confidence;
-                    }
-                }
+                        else
+                        {
+                            if (element.Confidence != 100)
+                            {
+                                confidence = element.Confidence;
+                            }
+                        }
 
-                inputParams.Add(string.Format("p{0}", indexCounter), inputValue);
-                indexCounter++;
+                        inputParams.Add(string.Format("p{0}", indexCounter), inputValue);
+                        indexCounter++;     
+                    }
+                    else
+                    {
+                        allRelatedRecordsExists = false;
+                    }
+                }
+                
             }
 
-            double result = new ProductionDataCalculatorService(this.data).Calculate(mathExpression, "p", inputParams);
-            if (!unitsData.Where(x => x.RecordTimestamp == recordDataTime && x.ShiftId == shift && x.UnitConfigId == unitConfig.Id).Any())
+            if (allRelatedRecordsExists == true)
             {
-                calculatedUnitsData.Add(
-                    unitConfig.Id,
-                    new UnitDatasTemp
-                    {
-                        UnitConfigId = unitConfig.Id,
-                        RecordTimestamp = recordDataTime,
-                        ShiftId = shift,
-                        Value = (double.IsNaN(result) || double.IsInfinity(result)) ? 0.0m : (decimal)result,
-                        Confidence = confidence,
-                    });
+                double result = new ProductionDataCalculatorService(this.data).Calculate(mathExpression, "p", inputParams);
+                if (!unitsData.Where(x => x.RecordTimestamp == recordDataTime && x.ShiftId == shift && x.UnitConfigId == unitConfig.Id).Any())
+                {
+                    calculatedUnitsData.Add(
+                        unitConfig.Id,
+                        new UnitDatasTemp
+                        {
+                            UnitConfigId = unitConfig.Id,
+                            RecordTimestamp = recordDataTime,
+                            ShiftId = shift,
+                            Value = (double.IsNaN(result) || double.IsInfinity(result)) ? 0.0m : (decimal)result,
+                            Confidence = confidence,
+                        });
+                }    
             }
+
         }
 
         /// <summary>

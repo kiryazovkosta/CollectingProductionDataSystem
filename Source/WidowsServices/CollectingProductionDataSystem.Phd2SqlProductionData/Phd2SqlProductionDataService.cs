@@ -14,6 +14,7 @@
     using System;
     using System.ServiceProcess;
     using System.Threading;
+    using CollectingProductionDataSystem.Application.Contracts;
 
     public partial class Phd2SqlProductionDataService : ServiceBase
     {
@@ -37,11 +38,11 @@
 
         private readonly IKernel kernel;
 
-        public Phd2SqlProductionDataService()
+        public Phd2SqlProductionDataService(ILog loggerParam)
         {
             InitializeComponent();
             this.kernel = NinjectConfig.GetInjector;
-            this.logger = kernel.Get<ILog>();
+            this.logger = loggerParam;
             this.transantionOption = DefaultTransactionOptions.Instance.TransactionOptions;
         }
 
@@ -64,6 +65,8 @@
             catch (Exception ex)
             {
                 logger.Info(ex);
+                var mailer = kernel.Get<IMailerService>();
+                mailer.SendMail(ex.Message + ex.StackTrace, "OnStart");
             }
         }
 

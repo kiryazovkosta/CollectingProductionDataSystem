@@ -9,7 +9,7 @@ using log4net.Core;
 
 namespace CollectingProductionDataSystem.Application.PhdLogProxy
 {
-    public class LoggerToLogAdapter:ILog
+    public class LoggerToLogAdapter : ILog
     {
 
         private readonly CollectingProductionDataSystem.Infrastructure.Contracts.ILogger logger;
@@ -21,7 +21,7 @@ namespace CollectingProductionDataSystem.Application.PhdLogProxy
             this.progressRegistrator = progressRegistratorParam;
         }
 
-#region Debug
+        #region Debug
         /// <summary>
         /// Log a message object with the <see cref="F:log4net.Core.Level.Debug" /> level.
         /// </summary>
@@ -50,7 +50,7 @@ namespace CollectingProductionDataSystem.Application.PhdLogProxy
         /// <seealso cref="P:log4net.ILog.IsDebugEnabled" />
         public void Debug(object message)
         {
-           
+
         }
 
         /// <summary>
@@ -68,7 +68,7 @@ namespace CollectingProductionDataSystem.Application.PhdLogProxy
         /// <seealso cref="P:log4net.ILog.IsDebugEnabled" />
         public void Debug(object message, Exception exception)
         {
-            
+
         }
 
         /// <summary>
@@ -124,7 +124,7 @@ namespace CollectingProductionDataSystem.Application.PhdLogProxy
         /// <seealso cref="P:log4net.ILog.IsDebugEnabled" />
         public void DebugFormat(string format, object arg0)
         {
-          
+
         }
 
         /// <summary>
@@ -209,9 +209,9 @@ namespace CollectingProductionDataSystem.Application.PhdLogProxy
         public void DebugFormat(IFormatProvider provider, string format, params object[] args)
         {
         }
-#endregion
+        #endregion
 
-#region Info
+        #region Info
         /// <summary>
         /// Logs a message object with the <see cref="F:log4net.Core.Level.Info" /> level.
         /// </summary>
@@ -302,10 +302,10 @@ namespace CollectingProductionDataSystem.Application.PhdLogProxy
                 {
                     arguments.Add(param);
                 }
-                
+
             }
 
-            this.Info(string.Format(format, arguments));
+            this.Info(string.Format(format,arguments.ToArray()));
         }
 
         /// <summary>
@@ -361,8 +361,9 @@ namespace CollectingProductionDataSystem.Application.PhdLogProxy
         /// <seealso cref="P:log4net.ILog.IsInfoEnabled" />
         public void InfoFormat(string format, object arg0, object arg1)
         {
-            // TODO: Implement this method
-            throw new NotImplementedException();
+            var args = new object[] { arg0, arg1 };
+            InfoFormat(format, args);
+
         }
 
         /// <summary>
@@ -424,9 +425,9 @@ namespace CollectingProductionDataSystem.Application.PhdLogProxy
             // TODO: Implement this method
             throw new NotImplementedException();
         }
-#endregion
+        #endregion
 
-#region Warning
+        #region Warning
 
         /// <summary>
         /// Log a message object with the <see cref="F:log4net.Core.Level.Warn" /> level.
@@ -624,9 +625,9 @@ namespace CollectingProductionDataSystem.Application.PhdLogProxy
             // TODO: Implement this method
             throw new NotImplementedException();
         }
-#endregion
+        #endregion
 
-#region Error
+        #region Error
 
         /// <summary>
         /// Logs a message object with the <see cref="F:log4net.Core.Level.Error" /> level.
@@ -703,7 +704,7 @@ namespace CollectingProductionDataSystem.Application.PhdLogProxy
         /// <seealso cref="P:log4net.ILog.IsErrorEnabled" />
         public void ErrorFormat(string format, params object[] args)
         {
-            
+
         }
 
         /// <summary>
@@ -730,7 +731,7 @@ namespace CollectingProductionDataSystem.Application.PhdLogProxy
         /// <seealso cref="P:log4net.ILog.IsErrorEnabled" />
         public void ErrorFormat(string format, object arg0)
         {
-            
+
         }
 
         /// <summary>
@@ -816,12 +817,12 @@ namespace CollectingProductionDataSystem.Application.PhdLogProxy
         /// <seealso cref="P:log4net.ILog.IsErrorEnabled" />
         public void ErrorFormat(IFormatProvider provider, string format, params object[] args)
         {
-            
+
         }
 
-#endregion
+        #endregion
 
-#region FatalError
+        #region FatalError
 
         /// <summary>
         /// Log a message object with the <see cref="F:log4net.Core.Level.Fatal" /> level.
@@ -1021,7 +1022,7 @@ namespace CollectingProductionDataSystem.Application.PhdLogProxy
             throw new NotImplementedException();
         }
 
-#endregion
+        #endregion
 
 
         /// <summary>

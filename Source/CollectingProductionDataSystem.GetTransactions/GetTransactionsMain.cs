@@ -14,7 +14,7 @@
     using System.Data.Entity;
     using System.Net.Mail;
 
-    static class GetTransactionsMain
+    class GetTransactionsMain
     {
         private static readonly ILog logger;
 

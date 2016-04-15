@@ -214,7 +214,7 @@ namespace CollectingProductionDataSystem.Phd2SqlProductionData.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("101.101.101.101")]
+        [global::System.Configuration.DefaultSettingValueAttribute("192.168.7.195")]
         public string SMTP_SERVER {
             get {
                 return ((string)(this["SMTP_SERVER"]));
@@ -223,7 +223,7 @@ namespace CollectingProductionDataSystem.Phd2SqlProductionData.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("from@example.com")]
+        [global::System.Configuration.DefaultSettingValueAttribute("SAPO_TEST@bmsys.eu")]
         public string SMTP_FROM {
             get {
                 return ((string)(this["SMTP_FROM"]));
@@ -232,7 +232,7 @@ namespace CollectingProductionDataSystem.Phd2SqlProductionData.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("to@example.com")]
+        [global::System.Configuration.DefaultSettingValueAttribute("mes@bmsys.eu")]
         public string SMTP_TO {
             get {
                 return ((string)(this["SMTP_TO"]));
@@ -263,6 +263,24 @@ namespace CollectingProductionDataSystem.Phd2SqlProductionData.Properties {
         public string IsTwoPHDS {
             get {
                 return ((string)(this["IsTwoPHDS"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("srv-vm-mes-phd")]
+        public string PHD_HOST1 {
+            get {
+                return ((string)(this["PHD_HOST1"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("phd-l35-1")]
+        public string PHD_HOST11 {
+            get {
+                return ((string)(this["PHD_HOST11"]));
             }
         }
     }
