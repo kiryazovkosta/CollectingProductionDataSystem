@@ -10,13 +10,23 @@
 
     public class ProgressRegistrator : IProgressRegistrator
     {
+        private int progressCounter;
+        /// <summary>
+        /// Resets the progress.
+        /// </summary>
+        public void ResetProgress()
+        {
+            progressCounter = 0;
+        }
+
         /// <summary>
         /// Registers the progress.
         /// </summary>
         /// <param name="value">The value.</param>
         public void RegisterProgress(int value)
         {
-            MessagesHub.JobStatus("#current-proccess-progress", value);
+            progressCounter += value;
+            MessagesHub.JobStatus("#current-proccess-progress", progressCounter);
         }
     }
 }

@@ -9,6 +9,7 @@ using System.Web;
 using System.Web.Mvc;
 using CollectingProductionDataSystem.Data.Contracts;
 using CollectingProductionDataSystem.Infrastructure.Extentions;
+using CollectingProductionDataSystem.Models.Nomenclatures;
 using CollectingProductionDataSystem.Models.Productions;
 using CollectingProductionDataSystem.PhdApplication.Contracts;
 using CollectingProductionDataSystem.Web.Areas.Administration.ViewModels;
@@ -33,24 +34,31 @@ namespace CollectingProductionDataSystem.Web.Areas.Administration.Controllers
         {
             return View();
         }
-    
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public JsonResult Index(ForceLoadingViewModel model)
         {
-            var phdServers = this.data.PhdConfigs.All().OrderBy(x => x.Position);
             var shift = this.data.Shifts.GetById(model.ShiftId);
-
-            IEnumerable<UnitDatasTemp> result = new List<UnitDatasTemp>();
-
-            foreach (var server in phdServers)
-            {
-                result = this.phdService.GetPrimaryProductionData((PrimaryDataSourceType)server.Position, server.HostIpAddress, model.BeginDate, shift, result);
-            }
+            IEnumerable<UnitDatasTemp> result = CalculateShiftData(model.BeginDate, shift);
 
             this.data.UnitDatasTemps.BulkInsert(result, this.UserProfile.UserName);
 
             return Json(model);
+        }
+ 
+        private IEnumerable<UnitDatasTemp> CalculateShiftData(DateTime targetDate, Shift shift)
+        {
+            var phdServers = this.data.PhdConfigs.All().OrderBy(x => x.Position);
+            IEnumerable<UnitDatasTemp> result = new List<UnitDatasTemp>();
+
+            foreach (var server in phdServers)
+            {
+                result = this.phdService.GetPrimaryProductionData((PrimaryDataSourceType)server.Position, server.HostIpAddress, targetDate, shift, result);
+            }
+
+            (result as List<UnitDatasTemp>).AddRange(this.phdService.CreateMissingRecords(targetDate, shift, result));
+            return result;
         }
 
         public async Task<ActionResult> GetProgressBar(ForceLoadingViewModel model)
@@ -94,7 +102,7 @@ namespace CollectingProductionDataSystem.Web.Areas.Administration.Controllers
                 yield return new KeyValuePair<string, string>(string.Empty, string.Format(Resources.ErrorMessages.MustBeGreaterThan, Resources.Layout.EndDate, Resources.Layout.BeginDate));
             }
 
-            var includedProcessUnitIds = this.data.Factories.All().Include(x=>x.ProcessUnits)
+            var includedProcessUnitIds = this.data.Factories.All().Include(x => x.ProcessUnits)
                 .Where(x => (model.FactoryId == 0 || x.Id == model.FactoryId))
                 .SelectMany(x => x.ProcessUnits.Where(y => y.IsDeleted == false).Select(y => y.Id))
                     .ToList();
@@ -103,8 +111,7 @@ namespace CollectingProductionDataSystem.Web.Areas.Administration.Controllers
                 .Where(x => x.RecordDate >= model.BeginDate
                          && x.RecordDate <= model.EndDate
                          && (model.ProcessUnitId == 0 || x.ProcessUnitId == model.ProcessUnitId)).ToList();
-              approvedRecords = approvedRecords.Where(x=>(model.FactoryId == 0) || includedProcessUnitIds.Any(pu => pu == x.ProcessUnitId)).Distinct(new ApprovedDailyDataComparer());
-                
+            approvedRecords = approvedRecords.Where(x => (model.FactoryId == 0) || includedProcessUnitIds.Any(pu => pu == x.ProcessUnitId)).Distinct(new ApprovedDailyDataComparer());
 
             if (approvedRecords.Count() > 0)
             {
@@ -119,6 +126,17 @@ namespace CollectingProductionDataSystem.Web.Areas.Administration.Controllers
             }
 
             // Todo: check if end date is not after last available shift 
+            var lastAvailableShiftTime = GetLastAvailableTime();
+        }
+
+        /// <summary>
+        /// Gets the last available time.
+        /// </summary>
+        /// <returns></returns>
+        private Shift GetLastAvailableTime()
+        {
+            var result = this.data.Shifts.All().ToList().LastOrDefault(x => x.ReadPollTimeSlot <= DateTime.Now.TimeOfDay);
+            return result;
         }
 
         /// <summary>
@@ -161,11 +179,11 @@ namespace CollectingProductionDataSystem.Web.Areas.Administration.Controllers
             return errorList;
         }
     }
- 
+
     /// <summary>
     /// 
     /// </summary>
-    public class ApprovedDailyDataComparer:IEqualityComparer<UnitsApprovedDailyData>
+    public class ApprovedDailyDataComparer : IEqualityComparer<UnitsApprovedDailyData>
     {
         /// <summary>
         /// Equalses the specified x.

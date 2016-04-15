@@ -8,12 +8,14 @@
     using System.Reflection;
     using System.Text;
     using System.Threading.Tasks;
+    using System.Web.Configuration;
     using log4net;
 
     public class MailerService : CollectingProductionDataSystem.Application.Contracts.IMailerService
     {
         private readonly ILog logger;
         private string smtpServer;
+
 
         public MailerService(ILog loggerParam)
         {
@@ -38,18 +40,30 @@
                 ConfigurationSection appSettingsSection = appSettingsGroup.Sections[0];
                 ClientSettingsSection settings = appSettingsSection as ClientSettingsSection;
                 string toString = settings.Settings.Get("SMTP_TO").Value.ValueXml.InnerText;
-                this.To = string.IsNullOrEmpty(toString) ? "nikolay.kostadinov@bmsys.eu, kosta.kiryazov@bmsys.eu" : toString;
+                this.To = string.IsNullOrEmpty(toString) ? "kosta.kiryazov@bmsys.eu , nikolay.kostadinov@bmsys.eu" : toString;
                 string fromString = settings.Settings.Get("SMTP_FROM").Value.ValueXml.InnerText;
                 this.From = string.IsNullOrEmpty(fromString) ? "SAPO@bmsys.eu" : fromString;
                 string smtpServerString = settings.Settings.Get("SMTP_SERVER").Value.ValueXml.InnerText;
                 this.smtpServer = string.IsNullOrEmpty(smtpServerString) ? "192.168.7.195" : smtpServerString;
-            }       
+            }
+            else
+            {
+                var settings = WebConfigurationManager.AppSettings;
+                string toString = settings["SMTP_TO"];
+                this.To = string.IsNullOrEmpty(toString) ? "kosta.kiryazov@bmsys.eu , nikolay.kostadinov@bmsys.eu" : toString;
+                string fromString = settings["SMTP_FROM"];
+                this.From = string.IsNullOrEmpty(fromString) ? "SAPO@bmsys.eu" : fromString;
+                string smtpServerString = settings["SMTP_SERVER"];
+                this.smtpServer = string.IsNullOrEmpty(smtpServerString) ? "192.168.7.195" : smtpServerString;
+            }
            
         }
 
         public string From { get; set; }
 
         public string To { get; set; }
+
+        public string Cc { get; set; }
 
         public string SmtpServer
         {

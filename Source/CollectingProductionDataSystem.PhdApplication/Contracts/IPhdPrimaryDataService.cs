@@ -26,5 +26,10 @@
                                                  DateTime targetRecordTimestamp,
                                                  Shift shift,
                                                  IEnumerable<UnitDatasTemp> lastIterationData = null);
+        IEnumerable<UnitDatasTemp> CreateMissingRecords(
+                                                DateTime targetRecordTimestamp,
+                                                Shift shift,
+                                                IEnumerable<UnitDatasTemp> existTempUnitData
+                                                );
     }
 }
