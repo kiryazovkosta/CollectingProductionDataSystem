@@ -1377,7 +1377,9 @@
     <Content Include="Scripts\custom\sendArea.min.js.map">
       <DependentUpon>sendArea.min.js</DependentUpon>
     </Content>
-    <None Include="Properties\PublishProfiles\Productive.pubxml" />
+    <None Include="Properties\PublishProfiles\Productive.pubxml">
+      <SubType>Designer</SubType>
+    </None>
     <Content Include="Scripts\custom\signalR.js" />
     <Content Include="Scripts\custom\signalR.min.js">
       <DependentUpon>signalR.js</DependentUpon>
