@@ -254,6 +254,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Layout.bg.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\Layout.bg4.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Layout.bg.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\Layout.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -285,11 +290,13 @@
     <Compile Include="Areas\ManagementDashBoard\Models\DashBoardViewModel.cs" />
     <Compile Include="Areas\MonthlyDataReporting\Controllers\AreaBaseController.cs" />
     <Compile Include="Areas\MonthlyDataReporting\Controllers\BaseMonthlyController.cs" />
+    <Compile Include="Areas\MonthlyDataReporting\Controllers\MonthlyAirController.cs" />
     <Compile Include="Areas\MonthlyDataReporting\Controllers\MonthlyChemicalClearedWaterController.cs" />
     <Compile Include="Areas\MonthlyDataReporting\Controllers\MonthlyCirculatingWaterController.cs" />
     <Compile Include="Areas\MonthlyDataReporting\Controllers\MonthlyElectricalEnergyController.cs" />
     <Compile Include="Areas\MonthlyDataReporting\Controllers\MonthlyFreshWaterController.cs" />
     <Compile Include="Areas\MonthlyDataReporting\Controllers\MonthlyHeatEnergyController.cs" />
+    <Compile Include="Areas\MonthlyDataReporting\Controllers\MonthlyNitrogenController.cs" />
     <Compile Include="Areas\MonthlyDataReporting\Controllers\MonthlyPotableWaterController.cs" />
     <Compile Include="Areas\MonthlyDataReporting\Models\ConfirmMonthlyInputModel.cs" />
     <Compile Include="Areas\MonthlyDataReporting\Controllers\MonthlyHydroCarbonsController.cs" />
@@ -2010,11 +2017,13 @@
     <Folder Include="Areas\Documentation\Models\" />
     <Folder Include="Areas\ManagementDashBoard\Views\AreaBase\" />
     <Folder Include="Areas\MonthlyDataReporting\Views\GenericMonthly\" />
+    <Folder Include="Areas\MonthlyDataReporting\Views\MonthlyAir\" />
     <Folder Include="Areas\MonthlyDataReporting\Views\MonthlyChemicalClearedWater\" />
     <Folder Include="Areas\MonthlyDataReporting\Views\MonthlyCirculatingWater\" />
     <Folder Include="Areas\MonthlyDataReporting\Views\MonthlyElectricalEnergy\" />
     <Folder Include="Areas\MonthlyDataReporting\Views\MonthlyFreshWater\" />
     <Folder Include="Areas\MonthlyDataReporting\Views\MonthlyHeatEnergy\" />
+    <Folder Include="Areas\MonthlyDataReporting\Views\MonthlyNitrogen\" />
     <Folder Include="Areas\MonthlyReporting\Models\" />
     <Folder Include="Areas\MonthlyReporting\Views\AreaBase\" />
     <Folder Include="Areas\MonthlyReporting\Views\Shared\" />
@@ -2199,8 +2208,8 @@
     <EmbeddedResource Include="App_GlobalResources\Layout.bg.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <CustomToolNamespace>App_GlobalResources.Resources</CustomToolNamespace>
-      <LastGenOutput>Layout.bg2.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Layout.bg4.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Layout.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

@@ -4210,6 +4210,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to UnitMonthlyAirData.
+        /// </summary>
+        public static string UnitMonthlyAirData {
+            get {
+                return ResourceManager.GetString("UnitMonthlyAirData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to UnitMonthlyCCWData.
         /// </summary>
         public static string UnitMonthlyCCWData {
@@ -4260,6 +4269,15 @@ namespace App_GlobalResources.Resources {
         public static string UnitMonthlyHEData {
             get {
                 return ResourceManager.GetString("UnitMonthlyHEData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to UnitMonthlyNitrogenData.
+        /// </summary>
+        public static string UnitMonthlyNitrogenData {
+            get {
+                return ResourceManager.GetString("UnitMonthlyNitrogenData", resourceCulture);
             }
         }
         
