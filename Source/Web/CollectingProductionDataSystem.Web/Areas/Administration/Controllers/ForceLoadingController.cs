@@ -39,7 +39,7 @@ namespace CollectingProductionDataSystem.Web.Areas.Administration.Controllers
         [ValidateAntiForgeryToken]
         public JsonResult Index(ForceLoadingViewModel model)
         {
-            var shift = this.data.Shifts.GetById(model.ShiftId);
+            var shift = this.data.Shifts.GetById(model.ShiftId);    
             IEnumerable<UnitDatasTemp> result = CalculateShiftData(model.BeginDate, shift);
 
             this.data.UnitDatasTemps.BulkInsert(result, this.UserProfile.UserName);
