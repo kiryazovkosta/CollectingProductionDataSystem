@@ -82,6 +82,9 @@ namespace CollectingProductionDataSystem.Web.AppStart
 
             bundles.Add(new ScriptBundle("~/bundles/custom/renderEnergyGraphic")
                 .Include("~/Scripts/custom/renderDailyEnergyGraphic.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/custom/dashboard")
+                .Include("~/Scripts/custom/dashboard.js"));
         }
 
         public static void AddDefaultIgnorePatterns(IgnoreList ignoreList)
