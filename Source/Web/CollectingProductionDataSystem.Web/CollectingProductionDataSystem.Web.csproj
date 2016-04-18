@@ -103,10 +103,6 @@
     <Reference Include="Ninject.Web.Mvc">
       <HintPath>..\..\packages\Ninject.MVC5.3.2.1.0\lib\net45-full\Ninject.Web.Mvc.dll</HintPath>
     </Reference>
-    <Reference Include="phdapinet, Version=300.1.0.1, Culture=neutral, PublicKeyToken=5c915cbb2b8fbc32, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\ExternalLibraries\Uniformance\phdapinet.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -1321,7 +1317,9 @@
     <Content Include="Scripts\custom\sendArea.min.js.map">
       <DependentUpon>sendArea.min.js</DependentUpon>
     </Content>
-    <None Include="Properties\PublishProfiles\Productive.pubxml" />
+    <None Include="Properties\PublishProfiles\Productive.pubxml">
+      <SubType>Designer</SubType>
+    </None>
     <Content Include="Scripts\custom\signalR.js" />
     <Content Include="Scripts\custom\signalR.min.js">
       <DependentUpon>signalR.js</DependentUpon>
@@ -2167,10 +2165,6 @@
     <ProjectReference Include="..\..\Application\CollectingProductionDataSystem.Application\CollectingProductionDataSystem.Application.csproj">
       <Project>{3a125de9-28b9-4004-a1d9-bebde62ac786}</Project>
       <Name>CollectingProductionDataSystem.Application</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\CollectingProductionDataSystem.PhdApplication\CollectingProductionDataSystem.PhdApplication.csproj">
-      <Project>{BA08DAD7-81BE-4AEB-8EED-E835721574B5}</Project>
-      <Name>CollectingProductionDataSystem.PhdApplication</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Common\CollectingProductionDataSystem.Enumerations\CollectingProductionDataSystem.Enumerations.csproj">
       <Project>{d39275e1-1997-41c3-99cc-ff1b7502e93f}</Project>
