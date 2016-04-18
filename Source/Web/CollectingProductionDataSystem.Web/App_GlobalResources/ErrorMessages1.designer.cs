@@ -196,6 +196,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The {0} must be greater than {1}.
+        /// </summary>
+        public static string MustBeGreaterThan {
+            get {
+                return ResourceManager.GetString("MustBeGreaterThan", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No data was found for the specified criterias.
         /// </summary>
         public static string NoDataWasFound {
@@ -237,6 +246,15 @@ namespace App_GlobalResources.Resources {
         public static string Required {
             get {
                 return ResourceManager.GetString("Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There cannot be selected value in Shift field when begin date is diferend than end date.
+        /// </summary>
+        public static string ShiftCannotBeSet {
+            get {
+                return ResourceManager.GetString("ShiftCannotBeSet", resourceCulture);
             }
         }
         

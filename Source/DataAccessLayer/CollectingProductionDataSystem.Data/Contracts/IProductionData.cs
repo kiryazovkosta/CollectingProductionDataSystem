@@ -101,6 +101,8 @@
 
         IDeletableEntityRepository<ActiveTransactionsData> ActiveTransactionsDatas { get; }
 
+        IDeletableEntityRepository<PhdConfig> PhdConfigs { get; }
+
         IRepository<UnitConfigUnitDailyConfig> UnitConfigUnitDailyConfigs { get; }
 
         IRepository<UnitDailyConfigUnitMonthlyConfig> UnitDailyConfigUnitMonthlyConfigs { get; }
@@ -154,6 +156,8 @@
         IDeletableEntityRepository<TankStatusData> TankStatusDatas { get; }
 
         IRepository<UnitDatasTemp> UnitDatasTemps { get; }
+
+        IDeletableEntityRepository<UnitRecalculatedMonthlyData> UnitRecalculatedMonthlyDatas { get; }
 
         IDbContext DbContext { get; }
 

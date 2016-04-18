@@ -19,6 +19,13 @@ namespace CollectingProductionDataSystem.Infrastructure.Log
             var errEvent = new CustomWebErrorEvent(message, eventSource, exception, customDetails);
             errEvent.Raise();
         }
+
+        public void Info(string message, object eventSource, int eventCode = 100001)
+        {
+            var infoEvent =
+               new CustomWebInfoEvent(message, eventSource, eventCode);
+            infoEvent.Raise();
+        }
     }
 
 

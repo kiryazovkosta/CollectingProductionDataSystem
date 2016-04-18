@@ -70,8 +70,20 @@ namespace CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewMode
         public int MeasureUnitId { get; set; }
 
         [Required]
-        [Display(Name = "VisibleInChart", ResourceType = typeof(Resources.Layout))]
-        public bool VisibleInChart { get; set; }
+        [Display(Name = "IsPercentagesPlanVisibleInChast", ResourceType = typeof(Resources.Layout))]
+        public bool IsPercentagesPlanVisibleInChast { get; set; }
+
+        [Required]
+        [Display(Name = "IsPercentagesFactVisibleInChast", ResourceType = typeof(Resources.Layout))]
+        public bool IsPercentagesFactVisibleInChast { get; set; }
+
+        [Required]
+        [Display(Name = "IsQuanityPlanVisibleInChast", ResourceType = typeof(Resources.Layout))]
+        public bool IsQuanityPlanVisibleInChast { get; set; }
+
+        [Required]
+        [Display(Name = "IsQuantityFactVisibleInChast", ResourceType = typeof(Resources.Layout))]
+        public bool IsQuantityFactVisibleInChast { get; set; }
 
         [UIHint("Hidden")]
         [Editable(false)]

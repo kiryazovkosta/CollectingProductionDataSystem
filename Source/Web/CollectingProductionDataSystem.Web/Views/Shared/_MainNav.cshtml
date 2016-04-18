@@ -52,9 +52,11 @@
                             <li>@Html.AuthorizedActionLink(@Resources.Layout.UnitMonthlyFWData, "Report", "MonthlyFreshWater", new { area = "MonthlyDataReporting" }, null)</li>
                             <li>@Html.AuthorizedActionLink(@Resources.Layout.UnitMonthlyCWData, "Report", "MonthlyCirculatingWater", new { area = "MonthlyDataReporting" }, null)</li>
                             <li>@Html.AuthorizedActionLink(@Resources.Layout.UnitMonthlyCCWData, "Report", "MonthlyChemicalClearedWater", new { area = "MonthlyDataReporting" }, null)</li>
-                            <li>@Html.AuthorizedActionLink(@Resources.Layout.UnitMonthlyPWData, "Report", "MonthlyPotableWater", new { area = "MonthlyDataReporting" }, null)</li>
+                            <li>@Html.AuthorizedActionLink(@Resources.Layout.UnitMonthlyPWData, "MonthlyPotableWaterData", "MonthlyPotableWater", new { area = "MonthlyDataReporting" }, null)</li>
                             <li>@Html.AuthorizedActionLink(@Resources.Layout.UnitMonthlyHEData, "Report", "MonthlyHeatEnergy", new { area = "MonthlyDataReporting" }, null)</li>
                             <li>@Html.AuthorizedActionLink(@Resources.Layout.UnitMonthlyEEData, "Report", "MonthlyElectricalEnergy", new { area = "MonthlyDataReporting" }, null)</li>
+                            <li>@Html.AuthorizedActionLink(@Resources.Layout.UnitMonthlyAirData, "Report", "MonthlyAir", new { area = "MonthlyDataReporting" }, null)</li>
+                            <li>@Html.AuthorizedActionLink(@Resources.Layout.UnitMonthlyNitrogenData, "Report", "MonthlyNitrogen", new { area = "MonthlyDataReporting" }, null)</li>
 
                         </ul>
                     </li>
@@ -86,7 +88,7 @@
                         </ul>
                     </li>
                 }
-
+                <li>@Html.AuthorizedActionLink("Dashboard", "Index", "Dashboard", new { area = "ManagementDashBoard" }, null)</li>
                 <li>@Html.AuthorizedActionLink(@Resources.Layout.Administration, "Index", "User", new { area = "Administration" }, null)</li>
 
                 @if (Html.ActionIsAccessibleToUser("Index", "Nomenclatures", "NomManagement"))

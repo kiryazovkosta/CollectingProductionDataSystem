@@ -6,9 +6,8 @@
     {
         @Html.AntiForgeryToken()
         <ul class="nav navbar-nav navbar-right">
-            <li class="hidden-sm">
+            <li class="hidden-md">
                 @Html.Action("GetGreetingMessage", "Account", new { area = string.Empty})
-
             </li>
             <li><a href="#" id="logoff">@Resources.Layout.Logoff</a></li>
             <li><a href='@Url.Action("ShowMessagesGrid", "Home", new { area = "" })' id="messages"><span class="glyphicon glyphicon-envelope"><span class="label label-danger label-as-badge" id="message-counter"></span></span></a></li>

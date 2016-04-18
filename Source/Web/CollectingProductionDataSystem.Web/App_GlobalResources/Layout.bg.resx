@@ -1595,4 +1595,64 @@
   <data name="VisibleInChart" xml:space="preserve">
     <value>Визуализация в графика</value>
   </data>
+  <data name="IsExternalOutputPosition" xml:space="preserve">
+    <value>Външен консулатор</value>
+  </data>
+  <data name="IsTotalExternalOutputPosition" xml:space="preserve">
+    <value>Общо външни консуматори</value>
+  </data>
+  <data name="IsTotalInputPosition" xml:space="preserve">
+    <value>Общо вход</value>
+  </data>
+  <data name="DailyLoadGraphicShortTitle" xml:space="preserve">
+    <value>Натоварване на инсталация {0}</value>
+  </data>
+  <data name="BeginDate" xml:space="preserve">
+    <value>Начална дата</value>
+  </data>
+  <data name="EndDate" xml:space="preserve">
+    <value>Крайна дата</value>
+  </data>
+  <data name="Load" xml:space="preserve">
+    <value>Зареди</value>
+  </data>
+  <data name="Loaded" xml:space="preserve">
+    <value>Заредени...</value>
+  </data>
+  <data name="LoadingDataFor" xml:space="preserve">
+    <value>Зареждане на данни за:</value>
+  </data>
+  <data name="AllShifts" xml:space="preserve">
+    <value>Всички смени</value>
+  </data>
+  <data name="HostIpAddress" xml:space="preserve">
+    <value>IP адрес</value>
+  </data>
+  <data name="HostName" xml:space="preserve">
+    <value>Име на хоста</value>
+  </data>
+  <data name="PhdConfig" xml:space="preserve">
+    <value>Phd Сървъри</value>
+  </data>
+  <data name="IsActive" xml:space="preserve">
+    <value>Активен</value>
+  </data>
+  <data name="IsPercentagesFactVisibleInChast" xml:space="preserve">
+    <value>Визуализация&lt;/br&gt; % факт</value>
+  </data>
+  <data name="IsPercentagesPlanVisibleInChast" xml:space="preserve">
+    <value>Визуализация&lt;/br&gt; % план</value>
+  </data>
+  <data name="IsQuanityPlanVisibleInChast" xml:space="preserve">
+    <value>Визуализация&lt;/br&gt; Q план</value>
+  </data>
+  <data name="IsQuantityFactVisibleInChast" xml:space="preserve">
+    <value>Визуализация&lt;/br&gt; Q факт</value>
+  </data>
+  <data name="UnitMonthlyAirData" xml:space="preserve">
+    <value>Технически газове – Въздух</value>
+  </data>
+  <data name="UnitMonthlyNitrogenData" xml:space="preserve">
+    <value>Технически газове – Азот</value>
+  </data>
 </root>

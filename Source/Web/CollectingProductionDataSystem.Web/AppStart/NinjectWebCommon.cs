@@ -9,7 +9,9 @@ namespace CollectingProductionDataSystem.Web.AppStart
     using CollectingProductionDataSystem.Application.Contracts;
     using CollectingProductionDataSystem.Application.FileServices;
     using CollectingProductionDataSystem.Application.HighwayPipelinesDataServices;
+    using CollectingProductionDataSystem.Application.MailerService;
     using CollectingProductionDataSystem.Application.MonthlyServices;
+    using CollectingProductionDataSystem.Application.PhdLogProxy;
     using CollectingProductionDataSystem.Application.ProductionDataServices;
     using CollectingProductionDataSystem.Application.TankDataServices;
     using CollectingProductionDataSystem.Application.UnitDailyDataServices;
@@ -18,6 +20,9 @@ namespace CollectingProductionDataSystem.Web.AppStart
     using CollectingProductionDataSystem.Data.Contracts;
     using CollectingProductionDataSystem.Infrastructure.Contracts;
     using CollectingProductionDataSystem.Infrastructure.Log;
+    //using CollectingProductionDataSystem.PhdApplication.Contracts;
+    //using CollectingProductionDataSystem.PhdApplication.PrimaryDataServices;
+    using CollectingProductionDataSystem.Web.Infrastructure.Helpers;
     using CollectingProductionDataSystem.Web.Infrastructure.ModelBinders;
     using Microsoft.Web.Infrastructure.DynamicModuleHelper;
     using Ninject;
@@ -28,7 +33,7 @@ namespace CollectingProductionDataSystem.Web.AppStart
     using CollectingProductionDataSystem.Application.UnitsDataServices;
     using CollectingProductionDataSystem.Application.ProductionPlanDataServices;
     using CollectingProductionDataSystem.Application.ShiftServices;
-
+    using log4net;
 
     public static class NinjectWebCommon 
     {
@@ -94,7 +99,7 @@ namespace CollectingProductionDataSystem.Web.AppStart
             kernel.Bind<ICalculatorService>().To<CalculatorService>();
             kernel.Bind<IUnitDailyDataService>().To<UnitDailyDataService>();
             kernel.Bind<IProductionDataCalculatorService>().To<ProductionDataCalculatorService>();
-            kernel.Bind<ILogger>().To<Logger>();
+            kernel.Bind<CollectingProductionDataSystem.Infrastructure.Contracts.ILogger>().To<Logger>();
             kernel.Bind<IProductionPlanDataService>().To<ProductionPlanDataService>();
             kernel.Bind<IHighwayPipelinesDataService>().To<HighwayPipelinesDataService>();
             kernel.Bind<ITestUnitDailyCalculationService>().ToMethod(context => TestUnitDailyCalculationService.GetInstance()).InSingletonScope();
@@ -103,6 +108,11 @@ namespace CollectingProductionDataSystem.Web.AppStart
             kernel.Bind<IInventoryTanksService>().To<InventoryTanksService>();
             kernel.Bind<IUnitMothlyDataService>().To<UnitMothlyDataService>();
             kernel.Bind<IShiftService>().To<ShiftService>();
+            //kernel.Bind<ILog>().ToMethod(context => LogManager.GetLogger("CollectingProductionDataSystem.Phd2SqlProductionData")).InSingletonScope();
+            kernel.Bind<IMailerService>().To<MailerService>();
+            //kernel.Bind<IPhdPrimaryDataService>().To<PhdPrimaryDataService>();
+            kernel.Bind<log4net.ILog>().To<LoggerToLogAdapter>();
+            kernel.Bind<IProgressRegistrator>().To<ProgressRegistrator>();
         }        
     }
 }

@@ -111,6 +111,21 @@ namespace CollectingProductionDataSystem.Models.Productions.Mounthly
 
         public bool IsTotalPosition { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool IsTotalInputPosition { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool IsExternalOutputPosition { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool IsTotalExternalOutputPosition { get; set; }
+
 
          /// <summary>
         /// Determines whether the specified object is valid.

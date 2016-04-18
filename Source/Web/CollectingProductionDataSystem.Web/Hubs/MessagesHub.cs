@@ -20,5 +20,11 @@
             IHubContext context = GlobalHost.ConnectionManager.GetHubContext<MessagesHub>();
             context.Clients.All.getMessagesCount();
         }
+
+        public static void JobStatus(string selector, int value)
+        {
+            IHubContext context = GlobalHost.ConnectionManager.GetHubContext<MessagesHub>();
+            context.Clients.All.jobStatus(selector, value);
+        }
     }
 }

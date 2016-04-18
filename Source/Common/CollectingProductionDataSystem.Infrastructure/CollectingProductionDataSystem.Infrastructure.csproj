@@ -11,6 +11,7 @@
     <AssemblyName>CollectingProductionDataSystem.Infrastructure</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -64,12 +65,15 @@
     <Compile Include="Chart\DataSery.cs" />
     <Compile Include="Chart\Pair.cs" />
     <Compile Include="Contracts\ILogger.cs" />
+    <Compile Include="Contracts\IProgressMessage.cs" />
+    <Compile Include="Contracts\IProgressRegistrator.cs" />
     <Compile Include="Extentions\DateTimeExtentions.cs" />
     <Compile Include="Extentions\ICollectionExtensions.cs" />
     <Compile Include="Extentions\IEnumerableExtensions.cs" />
     <Compile Include="Extentions\ObjectExtensions.cs" />
     <Compile Include="Log\CustomWebAuthenticationFailureAuditEvent.cs" />
     <Compile Include="Log\CustomWebErrorEvent.cs" />
+    <Compile Include="Log\CustomWebInfoEvent.cs" />
     <Compile Include="Log\Logger.cs" />
     <Compile Include="Mapping\AutoMapperConfig.cs" />
     <Compile Include="Mapping\IHaveCustomMappings.cs" />

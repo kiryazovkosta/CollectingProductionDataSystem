@@ -180,6 +180,14 @@
             }
         }
 
+        public IDeletableEntityRepository<PhdConfig> PhdConfigs
+        {
+            get
+            {
+                return this.GetDeletableEntityRepository<PhdConfig>();
+            }
+        }
+
         public IApprovableEntityRepository<TankData> TanksData
         {
             get
@@ -529,6 +537,14 @@
             get
             {
                 return this.GetRepository<UnitDatasTemp>();
+            }
+        }
+
+        public IDeletableEntityRepository<UnitRecalculatedMonthlyData> UnitRecalculatedMonthlyDatas
+        {
+            get
+            {
+                return this.GetDeletableEntityRepository<UnitRecalculatedMonthlyData>();
             }
         }
 

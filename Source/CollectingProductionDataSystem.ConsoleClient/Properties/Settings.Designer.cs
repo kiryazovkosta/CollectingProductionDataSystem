@@ -41,5 +41,59 @@ namespace CollectingProductionDataSystem.ConsoleClient.Properties {
                 return ((string)(this["TestValue"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("PHD-L35-1")]
+        public string PHD_HOST11 {
+            get {
+                return ((string)(this["PHD_HOST11"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("3150")]
+        public string PHD_PORT {
+            get {
+                return ((string)(this["PHD_PORT"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Snapshot")]
+        public string PHD_SAMPLETYPE {
+            get {
+                return ((string)(this["PHD_SAMPLETYPE"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("RAPI200")]
+        public string PHD_API_VERSION {
+            get {
+                return ((string)(this["PHD_API_VERSION"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("49")]
+        public string PHD_DATA_MIN_CONFIDENCE {
+            get {
+                return ((string)(this["PHD_DATA_MIN_CONFIDENCE"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public string PHD_DATA_MAX_ROWS {
+            get {
+                return ((string)(this["PHD_DATA_MAX_ROWS"]));
+            }
+        }
     }
 }

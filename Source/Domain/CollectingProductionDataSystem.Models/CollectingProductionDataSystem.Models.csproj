@@ -11,6 +11,7 @@
     <AssemblyName>CollectingProductionDataSystem.Models</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -90,6 +91,7 @@
     <Compile Include="Nomenclatures\MaterialDetailType.cs" />
     <Compile Include="Nomenclatures\MathExpression.cs" />
     <Compile Include="Nomenclatures\MeasureUnit.cs" />
+    <Compile Include="Nomenclatures\PhdConfig.cs" />
     <Compile Include="Productions\Mounthly\MonthlyReportType.cs" />
     <Compile Include="Nomenclatures\Shift.cs" />
     <Compile Include="Nomenclatures\ShiftProductType.cs" />
@@ -104,6 +106,7 @@
     <Compile Include="Productions\Mounthly\UnitDailyConfigUnitMonthlyConfig.cs" />
     <Compile Include="Productions\Mounthly\UnitMonthlyConfig.cs" />
     <Compile Include="Productions\Mounthly\UnitManualMonthlyData.cs" />
+    <Compile Include="Productions\Mounthly\UnitRecalculatedMonthlyData.cs" />
     <Compile Include="Productions\Mounthly\UnitMonthlyData.cs" />
     <Compile Include="Productions\Mounthly\RelatedUnitMonthlyConfigs.cs" />
     <Compile Include="Productions\UnitDatasTemp.cs" />

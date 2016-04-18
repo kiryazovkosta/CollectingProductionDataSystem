@@ -11,6 +11,7 @@
     <AssemblyName>CollectingProductionDataSystem.Data</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -92,6 +93,7 @@
     <Compile Include="Mappings\ActiveTransactionsDataMap.cs" />
     <Compile Include="Mappings\ApplicationUserParkMap.cs" />
     <Compile Include="Mappings\ApplicationUserProcessUnitMap.cs" />
+    <Compile Include="Mappings\PhdConfgMap.cs" />
     <Compile Include="Mappings\TankStatusDataMap.cs" />
     <Compile Include="Mappings\TankStatusMap.cs" />
     <Compile Include="Mappings\UnitDatasTempMap.cs" />
@@ -153,6 +155,7 @@
     <Compile Include="Mappings\UnitDailyConfigUnitMonthlyConfigMap.cs" />
     <Compile Include="Mappings\UnitEnteredForCalculationDataMap.cs" />
     <Compile Include="Mappings\UnitManualMonthlyDataMap.cs" />
+    <Compile Include="Mappings\UnitRecalculatedMonthlyDataMap.cs" />
     <Compile Include="Mappings\UnitsApprovedDailyDataMap.cs" />
     <Compile Include="Mappings\UnitApprovedMonthlyDataMap.cs" />
     <Compile Include="Mappings\UnitDailyConfigMap.cs" />

@@ -156,27 +156,27 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
         {
             var beginningOfMonth = new DateTime(targetDay.Year, targetDay.Month, 1);
             var endOfObservedPeriod = new DateTime(targetDay.Year, targetDay.Month, targetDay.Day);
-            
-                var totalMonthQuantities = data.UnitsDailyDatas.All().Include(x => x.UnitsDailyConfig).Include(x => x.UnitsManualDailyData)
-                   .Where(x => x.UnitsDailyConfig.ProcessUnitId == processUnitId &&
-                           !x.UnitsDailyConfig.NotATotalizedPosition &&
-                           beginningOfMonth <= x.RecordTimestamp &&
-                           x.RecordTimestamp < endOfObservedPeriod &&
-                           x.UnitsDailyConfig.MaterialTypeId == materialTypeId).ToList()
-                           .GroupBy(x => x.UnitsDailyConfig.Code)
-                           .Select(group => new { Code = group.Key, Value = group.Sum(x => x.RealValue) }).ToDictionary(x => x.Code, x => x.Value);
 
-                foreach (var item in resultDaily)
+            var totalMonthQuantities = data.UnitsDailyDatas.All().Include(x => x.UnitsDailyConfig).Include(x => x.UnitsManualDailyData)
+               .Where(x => x.UnitsDailyConfig.ProcessUnitId == processUnitId &&
+                       !x.UnitsDailyConfig.NotATotalizedPosition &&
+                       beginningOfMonth <= x.RecordTimestamp &&
+                       x.RecordTimestamp < endOfObservedPeriod &&
+                       x.UnitsDailyConfig.MaterialTypeId == materialTypeId).ToList()
+                       .GroupBy(x => x.UnitsDailyConfig.Code)
+                       .Select(group => new { Code = group.Key, Value = group.Sum(x => x.RealValue) }).ToDictionary(x => x.Code, x => x.Value);
+
+            foreach (var item in resultDaily)
+            {
+                if (totalMonthQuantities.ContainsKey(item.Key))
                 {
-                    if (totalMonthQuantities.ContainsKey(item.Key))
-                    {
-                        resultDaily[item.Key].TotalMonthQuantity = (decimal)totalMonthQuantities[item.Key];
-                    }
-                    else
-                    {
-                        resultDaily[item.Key].TotalMonthQuantity = 0m;
-                    }
-                }            
+                    resultDaily[item.Key].TotalMonthQuantity = (decimal)totalMonthQuantities[item.Key];
+                }
+                else
+                {
+                    resultDaily[item.Key].TotalMonthQuantity = 0m;
+                }
+            }
         }
 
         /// <summary>
@@ -587,31 +587,103 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
 
         public async Task<ChartViewModel<DateTime, decimal>> GetStatisticForProcessUnitAsync(int processUnitId, DateTime beginDate, DateTime endDate, int? materialTypeId = null)
         {
-            if ((endDate-beginDate)>TimeSpan.FromDays(CommonConstants.MaxDateDifference))
+            if ((endDate - beginDate) > TimeSpan.FromDays(CommonConstants.MaxDateDifference))
             {
                 throw new ArgumentOutOfRangeException();
             }
-            var beginingOfTheMonth = beginDate;
 
             var statistic = await this.data.ProductionPlanDatas.All().Include(x => x.ProductionPlanConfig)
-                                .Where(x => beginingOfTheMonth <= x.RecordTimestamp
+                                .Where(x => beginDate <= x.RecordTimestamp
                                         && x.RecordTimestamp <= endDate
                                         && x.ProcessUnitId == processUnitId
                                         && x.ProductionPlanConfig.MaterialTypeId == (materialTypeId ?? x.ProductionPlanConfig.MaterialTypeId))
                                 .GroupBy(x => x.ProductionPlanConfigId).ToListAsync();
             var charts = new List<DataSery<DateTime, decimal>>();
 
-            foreach (var parameter in statistic.OrderByDescending(x=>x.Key))
+            foreach (var parameter in statistic.OrderByDescending(x => x.Key))
             {
                 if (parameter.Count() > 0)
                 {
-                    IEnumerable<DataSery<DateTime, decimal>> series = await Task.Factory.StartNew(()=>GetSeriesFromData(parameter, beginingOfTheMonth, endDate));
+                    IEnumerable<DataSery<DateTime, decimal>> series = await Task.Factory.StartNew(() => GetSeriesFromData(parameter, beginDate, endDate));
                     charts.AddRange(series);
                 }
             }
 
             var orderedCharts = charts.OrderByDescending(x => x.Values.FirstOrDefault().Y).ThenBy(x => x.Label.Replace("план", "").Replace("факт", "")).ToList();
             return new ChartViewModel<DateTime, decimal>() { DataSeries = orderedCharts };
+        }
+
+
+        public async Task<ChartViewModel<DateTime, decimal>> GetStatisticForProcessUnitLoadAsync(int processUnitId, DateTime beginDate, DateTime endDate, int? materialTypeId = null)
+        {
+            if ((endDate - beginDate) > TimeSpan.FromDays(CommonConstants.MaxDateDifference))
+            {
+                throw new ArgumentOutOfRangeException();
+            }
+            var beginingOfTheMonth = beginDate;
+
+            var processingDailyRecords = await this.data.ProductionPlanDatas.All().Include(x => x.ProductionPlanConfig)
+                                .Where(x => beginingOfTheMonth <= x.RecordTimestamp
+                                        && x.RecordTimestamp <= endDate
+                                        && x.ProcessUnitId == processUnitId
+                                        && x.ProductionPlanConfig.IsSummaryOfProcessing).ToDictionaryAsync(x => x.RecordTimestamp);
+            var workHoursDalyRecords = await this.data.UnitsDailyDatas.All().Include(x => x.UnitsDailyConfig)
+                                .Where(x => beginingOfTheMonth <= x.RecordTimestamp
+                                        && x.RecordTimestamp <= endDate
+                                        && x.UnitsDailyConfig.ProcessUnitId == processUnitId
+                                        && x.UnitsDailyConfig.IsTotalWorkTime).ToDictionaryAsync(x => x.RecordTimestamp);
+            var data = new Dictionary<DateTime, ProcessUnitLoadRecord>();
+            foreach (var record in processingDailyRecords)
+            {
+                decimal workTime = 0m;
+
+                if (workHoursDalyRecords.ContainsKey(record.Key))
+                {
+                    workTime = Convert.ToDecimal(workHoursDalyRecords[record.Key].RealValue);
+                }
+
+                if (workTime == 0m)
+                {
+                    workTime = 24m;
+                }
+
+                var loadPerHourFact = record.Value.QuantityFact / workTime;
+                var loadPerHourPlan = record.Value.QuanityPlan / 24m;
+                data.Add(record.Value.RecordTimestamp, new ProcessUnitLoadRecord(record.Value.RecordTimestamp, loadPerHourPlan, loadPerHourFact));
+            }
+            var chart = new List<DataSery<DateTime, decimal>>();
+
+            if (data.Count > 0)
+            {
+                IEnumerable<DataSery<DateTime, decimal>> series = await Task.Factory.StartNew(() => this.GetSeriesFromLoadData(data, beginDate, endDate));
+                chart.AddRange(series);
+            }
+
+
+            return new ChartViewModel<DateTime, decimal>() { DataSeries = chart };
+        }
+
+        private IEnumerable<DataSery<DateTime, decimal>> GetSeriesFromLoadData(Dictionary<DateTime, ProcessUnitLoadRecord> data, DateTime beginDate, DateTime endDate)
+        {
+            var model = data.First();
+            DataSery<DateTime, decimal> plan = new DataSery<DateTime, decimal>("area", string.Format("{0} план(T/h)", "Натоварване"), "thone", null);
+            DataSery<DateTime, decimal> fact = new DataSery<DateTime, decimal>("line", string.Format("{0} факт(T/h)", "Натоварване"), "thone", null);
+
+            for (DateTime target = beginDate; target <= endDate; target = target.AddDays(1))
+            {
+                if (data.ContainsKey(target.Date))
+                {
+                    plan.Values.Add(new Pair<DateTime, decimal>(target.Date, data[target.Date].LoadPlan));
+                    fact.Values.Add(new Pair<DateTime, decimal>(target.Date, data[target.Date].LoadFact));
+                }
+                else
+                {
+                    plan.Values.Add(new Pair<DateTime, decimal>(target.Date, 0m));
+                    fact.Values.Add(new Pair<DateTime, decimal>(target.Date, 0m));
+                }
+            }
+
+            return new List<DataSery<DateTime, decimal>>() { plan, fact };
         }
 
         /// <summary>
@@ -627,10 +699,10 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
 
             var paramTransformed = parameter.ToDictionary(x => x.RecordTimestamp);
 
-            DataSery<DateTime, decimal> planPercent = new DataSery<DateTime, decimal>("area", string.Format("{0} план(%)", model.Name),"percent",null);
-            DataSery<DateTime, decimal> factPercent = new DataSery<DateTime, decimal>("line", string.Format("{0} факт(%)", model.Name), "percent", null);
-            DataSery<DateTime, decimal> plan = new DataSery<DateTime, decimal>("area", string.Format("{0} план(T)", model.Name), "thone", null);
-            DataSery<DateTime, decimal> fact = new DataSery<DateTime, decimal>("line", string.Format("{0} факт(T)", model.Name), "thone", null);
+            DataSery<DateTime, decimal> planPercent = new DataSery<DateTime, decimal>("area", string.Format("{0} план(%)", model.Name), "percent", null, model.ProductionPlanConfig.IsPercentagesPlanVisibleInChast);
+            DataSery<DateTime, decimal> factPercent = new DataSery<DateTime, decimal>("line", string.Format("{0} факт(%)", model.Name), "percent", null, model.ProductionPlanConfig.IsPercentagesFactVisibleInChast);
+            DataSery<DateTime, decimal> plan = new DataSery<DateTime, decimal>("area", string.Format("{0} план(T)", model.Name), "thone", null, model.ProductionPlanConfig.IsQuanityPlanVisibleInChast);
+            DataSery<DateTime, decimal> fact = new DataSery<DateTime, decimal>("line", string.Format("{0} факт(T)", model.Name), "thone", null, model.ProductionPlanConfig.IsQuantityFactVisibleInChast);
 
             for (DateTime target = beginDate; target <= endDate; target = target.AddDays(1))
             {
@@ -678,5 +750,20 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
             public DateTime RecordTimestamp { get; set; }
             public int Id { get; set; }
         }
+    }
+
+    class ProcessUnitLoadRecord
+    {
+        public ProcessUnitLoadRecord(DateTime timestamp, decimal loadPlan, decimal loadFact)
+        {
+            this.RecordTimeStamp = timestamp;
+            this.LoadPlan = loadPlan;
+            this.LoadFact = loadFact;
+        }
+        public DateTime RecordTimeStamp { get; set; }
+
+        public decimal LoadPlan { get; set; }
+
+        public decimal LoadFact { get; set; }
     }
 }

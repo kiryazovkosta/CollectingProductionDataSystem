@@ -24,74 +24,75 @@
                 width: width || $(selector).width(),
                 height:height||@(Model.Height ?? 400),
             },
-            legend: {
+        legend: {
                 position: "bottom",
                 visible: legendVisible
-            },
-            seriesDefaults: {
+        },
+        seriesDefaults: {
                 type: "line"
-            },
-            series: [
-            @foreach (var serie in Model.DataSeries)
+        },
+        series: [
+        @foreach (var serie in Model.DataSeries)
                 {
                     @:{ @*stack: { group: '@serie.Axis'},*@
-                                        @: name: '@serie.Label',
-                                        @: type: '@serie.Type',
-                                        //@: axis: '@serie.Axis',
+                                                    @: name: '@serie.Label',
+                                                    @: type: '@serie.Type',
+                                                    @: visible: @serie.Visible.ToString().ToLower(),
+                                                    //@: axis: '@serie.Axis',
                                         @: data: [
-                                        foreach (var item in serie.Values)
+                                                    foreach (var item in serie.Values)
                     {
                         @item.Y.ToString(CultureInfo.InvariantCulture)@:,
-                                                        }
+                                                                    }
                     @:]},
                     }
-            ],
-            valueAxes: [{
-                visible:true
-                //name: "percent",
-                //title: { text: "проценти" }
-                ////majorUnit: 10
-                ////min: 0,
+        ],
+        valueAxes: [{
+            visible:true
+            //name: "percent",
+            //title: { text: "проценти" }
+            ////majorUnit: 10
+            ////min: 0,
 
-                ////max: 120
-                //}, {
-                //    name: "thone",
-                //    title: { text: "Т" },
-                ////    //min: 0,
+            ////max: 120
+            //}, {
+            //    name: "thone",
+            //    title: { text: "Т" },
+            ////    //min: 0,
 
-                ////    //max: 50000
-                ////    //majorUnit: 10000
-                ////}
-            }],
-            categoryAxis: {
-                axisCrossingValues: [ 0],
-                categories: [
-                @foreach (var item in Model.DataSeries.FirstOrDefault().Values)
+            ////    //max: 50000
+            ////    //majorUnit: 10000
+            ////}
+        }],
+        categoryAxis: {
+            axisCrossingValues: [ 0],
+            categories: [
+            @foreach (var item in Model.DataSeries.FirstOrDefault().Values)
                 {
                           @Html.Raw("'" + item.X.Day + "',")
                 }],
-                majorGridLines: {
-                    visible: true
-                }
-            },
+            majorGridLines: {
+                visible: true
+            }
+        },
 
-            tooltip: {
+        tooltip: {
                 visible: true,
                 format: "days",
                 template: "#= series.name #: #= value #"
-            },
-            pannable: {
+        },
+        pannable: {
                 lock: "y"
-            },
-            zoomable: {
+        },
+        zoomable: {
                 mousewheel: {
                     lock: "y"
                 },
-                selection: {
+            selection: {
                     lock: "y"
-                }
             }
-        });
+        }
+    });
     }
 
     $(document).ready(function () {
