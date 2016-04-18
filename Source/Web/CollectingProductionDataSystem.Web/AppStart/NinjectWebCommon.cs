@@ -34,8 +34,6 @@ namespace CollectingProductionDataSystem.Web.AppStart
     using CollectingProductionDataSystem.Application.ProductionPlanDataServices;
     using CollectingProductionDataSystem.Application.ShiftServices;
     using log4net;
-    using CollectingProductionDataSystem.PhdApplication.Contracts;
-    using CollectingProductionDataSystem.PhdApplication.PrimaryDataServices;
 
     public static class NinjectWebCommon 
     {
@@ -112,7 +110,7 @@ namespace CollectingProductionDataSystem.Web.AppStart
             kernel.Bind<IShiftService>().To<ShiftService>();
             //kernel.Bind<ILog>().ToMethod(context => LogManager.GetLogger("CollectingProductionDataSystem.Phd2SqlProductionData")).InSingletonScope();
             kernel.Bind<IMailerService>().To<MailerService>();
-            kernel.Bind<IPhdPrimaryDataService>().To<PhdPrimaryDataService>();
+            //kernel.Bind<IPhdPrimaryDataService>().To<PhdPrimaryDataService>();
             kernel.Bind<log4net.ILog>().To<LoggerToLogAdapter>();
             kernel.Bind<IProgressRegistrator>().To<ProgressRegistrator>();
         }        

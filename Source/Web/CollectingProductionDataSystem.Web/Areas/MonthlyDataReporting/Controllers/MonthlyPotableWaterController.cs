@@ -87,6 +87,58 @@
             }
         }
 
+        [HttpGet]
+        public ActionResult MonthlyPotableWaterReport()
+        {
+                return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public JsonResult ReadMonthlyPotableWaterReport([DataSourceRequest]DataSourceRequest request, DateTime date)
+        {
+
+            if (!this.ModelState.IsValid)
+            {
+                var kendoResult = new List<MonthlyReportTableViewModel>().ToDataSourceResult(request, ModelState);
+                return Json(kendoResult);
+            }
+
+            IEfStatus status = this.monthlyService.CalculateMonthlyDataIfNotAvailable(date, CommonConstants.PotableWater, this.UserProfile.UserName);
+
+            if (!status.IsValid)
+            {
+                status.ToModelStateErrors(this.ModelState);
+            }
+
+            if (ModelState.IsValid)
+            {
+                var kendoResult = new DataSourceResult();
+                if (ModelState.IsValid)
+                {
+                    var dbResult = this.monthlyService.GetDataForMonth(date, CommonConstants.PotableWater).OrderBy(x => x.UnitMonthlyConfig.Code).ToList();
+                    var vmResult = Mapper.Map<IEnumerable<MonthlyReportTableViewModel>>(dbResult);
+                    kendoResult = vmResult.ToDataSourceResult(request, ModelState);
+                }
+                Session["reportParams"] = Convert.ToBase64String(Encoding.UTF8.GetBytes(
+                                                                   JsonConvert.SerializeObject(
+                                                                       new ConfirmMonthlyInputModel()
+                                                                       {
+                                                                           date = date,
+                                                                           monthlyReportTypeId = CommonConstants.PotableWater,
+                                                                       }
+                                                                   )
+                                                               )
+                                                           );
+                return Json(kendoResult);
+            }
+            else
+            {
+                var kendoResult = new List<MonthlyReportTableViewModel>().ToDataSourceResult(request, ModelState);
+                return Json(kendoResult);
+            }
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([DataSourceRequest]DataSourceRequest request, MonthlyReportTableViewModel model)
@@ -226,6 +278,50 @@
                     var errors = GetErrorListFromModelState(ModelState);
                     return Json(new { data = new { errors = errors } });
                 }
+            }
+            else
+            {
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                var errors = GetErrorListFromModelState(ModelState);
+                return Json(new { data = new { errors = errors } });
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public virtual ActionResult Report(ConfirmMonthlyInputModel model)
+        {
+            //ValidateModelAgainstReportPatameters(this.ModelState, model, Session["reportParams"]);
+
+            if (ModelState.IsValid)
+            {
+                //var targetMonth = this.monthlyService.GetTargetMonth(model.date);
+                //var approvedMonth = this.data.UnitApprovedMonthlyDatas
+                //   .All()
+                //   .Where(u => u.RecordDate == targetMonth && u.MonthlyReportTypeId == model.monthlyReportTypeId)
+                //   .FirstOrDefault();
+                //if (approvedMonth == null)
+                //{
+                //    this.data.UnitApprovedMonthlyDatas.Add(
+                //        new UnitApprovedMonthlyData
+                //        {
+                //            RecordDate = targetMonth,
+                //            MonthlyReportTypeId = model.monthlyReportTypeId,
+                //            Approved = true
+                //        });
+
+                //    var result = this.data.SaveChanges(this.UserProfile.UserName);
+
+                //    return Json(new { IsReported = result.IsValid }, JsonRequestBehavior.AllowGet);
+                //}
+                //else
+                //{
+                //    ModelState.AddModelError("unitsapproveddata", "Месечните данни вече са потвърдени");
+                //    Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                //    var errors = GetErrorListFromModelState(ModelState);
+                //    return Json(new { data = new { errors = errors } });
+                //}
+                return RedirectToAction("MonthlyPotableWaterReport");
             }
             else
             {

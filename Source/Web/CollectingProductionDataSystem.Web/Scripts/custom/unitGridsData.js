@@ -131,10 +131,10 @@ var unitGridsData = (function () {
                                 $('pre#succ-message').text(message);
                                 $('div#success-window').data("kendoWindow").open();
 
-                                var reportButton = $("#report");
-                                if (reportButton) {
-                                    reportButton.show();
-                                }
+                                //var reportButton = $("#report");
+                                //if (reportButton) {
+                                //    reportButton.show();
+                                //}
 
                             } else {
                                 if (data.errors) {
@@ -173,6 +173,22 @@ var unitGridsData = (function () {
                 }
             });
         }
+
+        if ($("#report")) {
+            $("#report").click(function () {
+                $.ajax({
+                    url: 'Report',
+                    type: 'POST',
+                    data: dataParam,
+                    success: function (data) {
+                    },
+                    error: function (data) {
+                    }
+                });
+            });
+        }
+
+
     });
 
     //------------------ private functions ------------------------------------
