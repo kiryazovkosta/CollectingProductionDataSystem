@@ -226,6 +226,16 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ErrorMessages.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\HelpResource.bg.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>HelpResource.bg.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\HelpResource.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>HelpResource.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\Layout.bg.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -484,6 +494,8 @@
     <Content Include="Content\custom\documentation.css" />
     <Content Include="Content\ErrorPage\error.css" />
     <Content Include="Content\ErrorPage\Error.html" />
+    <Content Include="Content\Images\btn-bg-normal.png" />
+    <Content Include="Content\Images\btn-bg-pressed.png" />
     <Content Include="Content\Images\center.png" />
     <Content Include="Content\Images\DailyData\44Б.png" />
     <Content Include="Content\Images\DailyData\44В.png" />
@@ -576,6 +588,7 @@
     <Content Include="Content\Images\DailyData\Фигура98.jpg" />
     <Content Include="Content\Images\DailyData\Фигура99.jpg" />
     <Content Include="Content\Images\danger.png" />
+    <Content Include="Content\Images\eangle_green.png" />
     <Content Include="Content\Images\error.png" />
     <Content Include="Content\Images\Excel-icon.png" />
     <Content Include="Content\Images\factory.png" />
@@ -596,6 +609,39 @@
     <Content Include="Content\Images\MonthlyData\Figura116.png" />
     <Content Include="Content\Images\MonthlyData\Figura117.png" />
     <Content Include="Content\Images\MonthlyData\Figura118.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataChemical\Figura167.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataChemical\Figura168.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataChemical\Figura169.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataChemical\Figura170.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataChemical\Figura171.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataCirculating\Figura155.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataCirculating\Figura156.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataCirculating\Figura158.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataCirculating\Figura159.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataCirculating\Figura160.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataCirculating\Figura161.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataElectricalEnergy\Figura177.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataElectricalEnergy\Figura178.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataElectricalEnergy\Figura179.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataElectricalEnergy\Figura180.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataElectricalEnergy\Figura181.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataFresh\Figura149.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataFresh\Figura150.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataFresh\Figura151.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataFresh\Figura152.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataFresh\Figura153.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataFresh\Figura154.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataFresh\Figura157.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataHeatEnergy\Figura172.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataHeatEnergy\Figura173.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataHeatEnergy\Figura174.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataHeatEnergy\Figura175.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataHeatEnergy\Figura176.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataPotable\Figura162.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataPotable\Figura163.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataPotable\Figura164.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataPotable\Figura165.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataPotable\Figura166.png" />
     <Content Include="Content\Images\MonthlyData\НоваМесечни_данни.jpg" />
     <Content Include="Content\Images\MonthlyData\Фигура105.jpg" />
     <Content Include="Content\Images\MonthlyData\Фигура105A.jpg" />
@@ -706,13 +752,17 @@
     <Content Include="Content\Images\ShiftData\figura8.png" />
     <Content Include="Content\Images\ShiftData\figura9.png" />
     <Content Include="Content\Images\ShiftData\Figura_20.png" />
+    <Content Include="Content\Images\ShiftData\green-texture-pressed.png" />
+    <Content Include="Content\Images\ShiftData\green-texture.png" />
     <Content Include="Content\Images\ShiftData\images.jpg" />
     <Content Include="Content\Images\ShiftData\save.png" />
     <Content Include="Content\Images\ShiftData\smenni1.png" />
     <Content Include="Content\Images\ShiftData\smenni2.png" />
     <Content Include="Content\Images\ShiftData\smenni_danni.png" />
     <Content Include="Content\Images\ShiftData\technical_stuff.gif" />
+    <Content Include="Content\Images\ShiftData\Дневниданни.png" />
     <Content Include="Content\Images\ShiftData\НоваСменни_данни.jpg" />
+    <Content Include="Content\Images\ShiftData\СменниДанни.png" />
     <Content Include="Content\Images\SummaryReport\dnevni2.jpg" />
     <Content Include="Content\Images\SummaryReport\ExportPDF_button.png" />
     <Content Include="Content\Images\SummaryReport\Fig75.png" />
@@ -1281,6 +1331,7 @@
     <Content Include="Areas\SummaryReporting\Views\SummaryReports\InProcessUnitsData.cshtml" />
     <Content Include="Areas\NomManagement\Views\Shared\DisplayTemplates\Bool.cshtml" />
     <Content Include="Areas\Documentation\Views\Help\SummaryReportDescription.cshtml" />
+    <Content Include="Areas\Documentation\Views\Help\MonthlyDataChemicalClearingWater.cshtml" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <None Include="Properties\PublishProfiles\Home.pubxml" />
     <Content Include="Scripts\custom\sendArea.js" />
@@ -2172,6 +2223,16 @@
     <EmbeddedResource Include="App_GlobalResources\ErrorMessages.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ErrorMessages1.designer.cs</LastGenOutput>
+      <CustomToolNamespace>App_GlobalResources.Resources</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\HelpResource.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>HelpResource.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>App_GlobalResources.Resources</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\HelpResource.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>HelpResource.bg.designer.cs</LastGenOutput>
       <CustomToolNamespace>App_GlobalResources.Resources</CustomToolNamespace>
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Layout.bg.resx">

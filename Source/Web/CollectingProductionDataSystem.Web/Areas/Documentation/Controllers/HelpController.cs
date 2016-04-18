@@ -101,6 +101,10 @@ namespace CollectingProductionDataSystem.Web.Areas.Documentation.Controllers
               {
                     return PartialView();
               }
+             public PartialViewResult MonthlyDataChemicalClearingWater()
+              {
+                    return PartialView();
+              }
         public PartialViewResult MonthlyDataElectricalEnergy()
               {
                     return PartialView();
@@ -109,5 +113,6 @@ namespace CollectingProductionDataSystem.Web.Areas.Documentation.Controllers
         {
             return PartialView();
         }
+            
     }
 }
