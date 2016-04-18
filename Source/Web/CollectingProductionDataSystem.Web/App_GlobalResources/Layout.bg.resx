@@ -1649,4 +1649,10 @@
   <data name="IsQuantityFactVisibleInChast" xml:space="preserve">
     <value>Визуализация&lt;/br&gt; Q факт</value>
   </data>
+  <data name="UnitMonthlyAirData" xml:space="preserve">
+    <value>Технически газове – Въздух</value>
+  </data>
+  <data name="UnitMonthlyNitrogenData" xml:space="preserve">
+    <value>Технически газове – Азот</value>
+  </data>
 </root>

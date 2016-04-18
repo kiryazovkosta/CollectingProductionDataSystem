@@ -11,7 +11,6 @@ using CollectingProductionDataSystem.Data.Contracts;
 using CollectingProductionDataSystem.Infrastructure.Extentions;
 using CollectingProductionDataSystem.Models.Nomenclatures;
 using CollectingProductionDataSystem.Models.Productions;
-//using CollectingProductionDataSystem.PhdApplication.Contracts;
 using CollectingProductionDataSystem.Web.Areas.Administration.ViewModels;
 using CollectingProductionDataSystem.Web.Hubs;
 using Resources = App_GlobalResources.Resources;
@@ -20,26 +19,26 @@ namespace CollectingProductionDataSystem.Web.Areas.Administration.Controllers
 {
     public class ForceLoadingController : AreaBaseController
     {
-    //    private readonly IPhdPrimaryDataService phdService;
-    //    private static int max;
-        public ForceLoadingController(IProductionData dataParam/*, IPhdPrimaryDataService phdServiceParam*/)
+        //private readonly IPhdPrimaryDataService phdService;
+        //private static int max;
+        public ForceLoadingController(IProductionData dataParam)//, IPhdPrimaryDataService phdServiceParam)
             : base(dataParam)
         {
             //this.phdService = phdServiceParam;
         }
 
-    //    // GET: Administration/ForceLoading
-    //    [HttpGet]
-    //    public ActionResult Index()
-    //    {
-    //        return View();
-    //    }
+        // GET: Administration/ForceLoading
+        [HttpGet]
+        public ActionResult Index()
+        {
+            return View();
+        }
 
     //    [HttpPost]
     //    [ValidateAntiForgeryToken]
     //    public JsonResult Index(ForceLoadingViewModel model)
     //    {
-    //        var shift = this.data.Shifts.GetById(model.ShiftId);
+    //        var shift = this.data.Shifts.GetById(model.ShiftId);    
     //        IEnumerable<UnitDatasTemp> result = CalculateShiftData(model.BeginDate, shift);
 
     //        this.data.UnitDatasTemps.BulkInsert(result, this.UserProfile.UserName);

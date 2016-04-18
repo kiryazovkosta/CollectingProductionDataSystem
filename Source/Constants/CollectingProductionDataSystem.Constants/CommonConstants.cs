@@ -33,6 +33,10 @@ namespace CollectingProductionDataSystem.Constants
         private static readonly int electricalEnergy = 6;
 
         private static readonly int chemicalClearedWater = 7;
+        
+        private static int air = 8;
+
+        private static int nitrogen = 9;
 
         private static readonly int dailyInfoDailyInfoHydrocarbonsShiftTypeId = 52;
 
@@ -41,6 +45,8 @@ namespace CollectingProductionDataSystem.Constants
         private static string phdDateTimeFormat = @"M/d/yyyy hh:mm:ss tt";
 
         private static int maxDateDifference = 31;
+
+        
 
         public static string StandartPassword
         {
@@ -73,6 +79,10 @@ namespace CollectingProductionDataSystem.Constants
         public static int ElectricalEnergy { get { return electricalEnergy; } }
 
         public static int ChemicalClearedWater { get { return chemicalClearedWater; } }
+        public static int Air { get { return air; } }
+        public static int Nitrogen { get { return nitrogen; } }
+
+
 
         public static int DailyInfoDailyInfoHydrocarbonsShiftTypeId { get { return dailyInfoDailyInfoHydrocarbonsShiftTypeId; } }
         public static int MaxDateDifference { get { return maxDateDifference; } }

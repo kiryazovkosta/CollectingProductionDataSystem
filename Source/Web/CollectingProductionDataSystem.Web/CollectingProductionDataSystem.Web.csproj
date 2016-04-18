@@ -112,9 +112,9 @@
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Routing" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Configuration" />
@@ -234,6 +234,16 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ErrorMessages.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\HelpResource.bg.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>HelpResource.bg.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\HelpResource.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>HelpResource.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\Layout.bg.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -250,6 +260,11 @@
       <DependentUpon>Layout.bg.resx</DependentUpon>
     </Compile>
     <Compile Include="App_GlobalResources\Layout.bg3.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Layout.bg.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Layout.bg4.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Layout.bg.resx</DependentUpon>
@@ -285,11 +300,13 @@
     <Compile Include="Areas\ManagementDashBoard\Models\DashBoardViewModel.cs" />
     <Compile Include="Areas\MonthlyDataReporting\Controllers\AreaBaseController.cs" />
     <Compile Include="Areas\MonthlyDataReporting\Controllers\BaseMonthlyController.cs" />
+    <Compile Include="Areas\MonthlyDataReporting\Controllers\MonthlyAirController.cs" />
     <Compile Include="Areas\MonthlyDataReporting\Controllers\MonthlyChemicalClearedWaterController.cs" />
     <Compile Include="Areas\MonthlyDataReporting\Controllers\MonthlyCirculatingWaterController.cs" />
     <Compile Include="Areas\MonthlyDataReporting\Controllers\MonthlyElectricalEnergyController.cs" />
     <Compile Include="Areas\MonthlyDataReporting\Controllers\MonthlyFreshWaterController.cs" />
     <Compile Include="Areas\MonthlyDataReporting\Controllers\MonthlyHeatEnergyController.cs" />
+    <Compile Include="Areas\MonthlyDataReporting\Controllers\MonthlyNitrogenController.cs" />
     <Compile Include="Areas\MonthlyDataReporting\Controllers\MonthlyPotableWaterController.cs" />
     <Compile Include="Areas\MonthlyDataReporting\Models\ConfirmMonthlyInputModel.cs" />
     <Compile Include="Areas\MonthlyDataReporting\Controllers\MonthlyHydroCarbonsController.cs" />
@@ -501,6 +518,8 @@
     <Content Include="Content\custom\documentation.css" />
     <Content Include="Content\ErrorPage\error.css" />
     <Content Include="Content\ErrorPage\Error.html" />
+    <Content Include="Content\Images\btn-bg-normal.png" />
+    <Content Include="Content\Images\btn-bg-pressed.png" />
     <Content Include="Content\Images\center.png" />
     <Content Include="Content\Images\DailyData\44Б.png" />
     <Content Include="Content\Images\DailyData\44В.png" />
@@ -593,6 +612,7 @@
     <Content Include="Content\Images\DailyData\Фигура98.jpg" />
     <Content Include="Content\Images\DailyData\Фигура99.jpg" />
     <Content Include="Content\Images\danger.png" />
+    <Content Include="Content\Images\eangle_green.png" />
     <Content Include="Content\Images\error.png" />
     <Content Include="Content\Images\Excel-icon.png" />
     <Content Include="Content\Images\factory.png" />
@@ -613,6 +633,39 @@
     <Content Include="Content\Images\MonthlyData\Figura116.png" />
     <Content Include="Content\Images\MonthlyData\Figura117.png" />
     <Content Include="Content\Images\MonthlyData\Figura118.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataChemical\Figura167.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataChemical\Figura168.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataChemical\Figura169.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataChemical\Figura170.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataChemical\Figura171.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataCirculating\Figura155.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataCirculating\Figura156.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataCirculating\Figura158.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataCirculating\Figura159.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataCirculating\Figura160.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataCirculating\Figura161.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataElectricalEnergy\Figura177.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataElectricalEnergy\Figura178.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataElectricalEnergy\Figura179.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataElectricalEnergy\Figura180.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataElectricalEnergy\Figura181.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataFresh\Figura149.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataFresh\Figura150.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataFresh\Figura151.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataFresh\Figura152.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataFresh\Figura153.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataFresh\Figura154.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataFresh\Figura157.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataHeatEnergy\Figura172.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataHeatEnergy\Figura173.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataHeatEnergy\Figura174.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataHeatEnergy\Figura175.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataHeatEnergy\Figura176.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataPotable\Figura162.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataPotable\Figura163.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataPotable\Figura164.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataPotable\Figura165.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataPotable\Figura166.png" />
     <Content Include="Content\Images\MonthlyData\НоваМесечни_данни.jpg" />
     <Content Include="Content\Images\MonthlyData\Фигура105.jpg" />
     <Content Include="Content\Images\MonthlyData\Фигура105A.jpg" />
@@ -723,13 +776,17 @@
     <Content Include="Content\Images\ShiftData\figura8.png" />
     <Content Include="Content\Images\ShiftData\figura9.png" />
     <Content Include="Content\Images\ShiftData\Figura_20.png" />
+    <Content Include="Content\Images\ShiftData\green-texture-pressed.png" />
+    <Content Include="Content\Images\ShiftData\green-texture.png" />
     <Content Include="Content\Images\ShiftData\images.jpg" />
     <Content Include="Content\Images\ShiftData\save.png" />
     <Content Include="Content\Images\ShiftData\smenni1.png" />
     <Content Include="Content\Images\ShiftData\smenni2.png" />
     <Content Include="Content\Images\ShiftData\smenni_danni.png" />
     <Content Include="Content\Images\ShiftData\technical_stuff.gif" />
+    <Content Include="Content\Images\ShiftData\Дневниданни.png" />
     <Content Include="Content\Images\ShiftData\НоваСменни_данни.jpg" />
+    <Content Include="Content\Images\ShiftData\СменниДанни.png" />
     <Content Include="Content\Images\SummaryReport\dnevni2.jpg" />
     <Content Include="Content\Images\SummaryReport\ExportPDF_button.png" />
     <Content Include="Content\Images\SummaryReport\Fig75.png" />
@@ -1304,6 +1361,7 @@
     <Content Include="Areas\Administration\Views\ForceLoading\GetProgressBar.cshtml" />
     <Content Include="Areas\NomManagement\Views\PhdConfig\Index.cshtml" />
     <Content Include="Areas\MonthlyDataReporting\Views\MonthlyPotableWater\MonthlyPotableWaterReport.cshtml" />
+    <Content Include="Areas\Documentation\Views\Help\MonthlyDataChemicalClearingWater.cshtml" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <None Include="Properties\PublishProfiles\Home.pubxml" />
     <Content Include="Scripts\custom\sendArea.js" />
@@ -2012,11 +2070,13 @@
     <Folder Include="Areas\Documentation\Models\" />
     <Folder Include="Areas\ManagementDashBoard\Views\AreaBase\" />
     <Folder Include="Areas\MonthlyDataReporting\Views\GenericMonthly\" />
+    <Folder Include="Areas\MonthlyDataReporting\Views\MonthlyAir\" />
     <Folder Include="Areas\MonthlyDataReporting\Views\MonthlyChemicalClearedWater\" />
     <Folder Include="Areas\MonthlyDataReporting\Views\MonthlyCirculatingWater\" />
     <Folder Include="Areas\MonthlyDataReporting\Views\MonthlyElectricalEnergy\" />
     <Folder Include="Areas\MonthlyDataReporting\Views\MonthlyFreshWater\" />
     <Folder Include="Areas\MonthlyDataReporting\Views\MonthlyHeatEnergy\" />
+    <Folder Include="Areas\MonthlyDataReporting\Views\MonthlyNitrogen\" />
     <Folder Include="Areas\MonthlyReporting\Models\" />
     <Folder Include="Areas\MonthlyReporting\Views\AreaBase\" />
     <Folder Include="Areas\MonthlyReporting\Views\Shared\" />
@@ -2198,11 +2258,21 @@
       <LastGenOutput>ErrorMessages1.designer.cs</LastGenOutput>
       <CustomToolNamespace>App_GlobalResources.Resources</CustomToolNamespace>
     </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\HelpResource.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>HelpResource.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>App_GlobalResources.Resources</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\HelpResource.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>HelpResource.bg.designer.cs</LastGenOutput>
+      <CustomToolNamespace>App_GlobalResources.Resources</CustomToolNamespace>
+    </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Layout.bg.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <CustomToolNamespace>App_GlobalResources.Resources</CustomToolNamespace>
-      <LastGenOutput>Layout.bg2.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Layout.bg4.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Layout.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -2216,6 +2286,24 @@
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>favicon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />

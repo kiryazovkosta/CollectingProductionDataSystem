@@ -1,17 +1,17 @@
-﻿<h1 class="myh1">Месечни данни за отчети</h1>
+﻿<h1 class="h1ForTitle">Месечни данни </h1>
 <br />
 <div class="row">
     <article>
         <section>
-            <div class="row myrow">
-                <hr class="myhr1" />
-                <p>Системата предоставя възможност за генериране на месечни данни за отчети, съответно след потвърждаването на сменните и дневните данни за желан месец.
-                    Потребителят е необходимо да потвърждава месечните данни веднъж месечно.
-                <p />
-                <p>Потребителят избира меню „Месечни данни“, показано на Фиг.1:</p>
+            <hr class="hrUnderText" />
+            <p>
+                Генерират се месечни данни съответно след потвърждаването на сменните и дневните данни за желан месец.
+                Потребителят е необходимо да потвърждава месечните данни веднъж месечно. Меню „Месечни данни“ е показано на Фиг.1.
+            <p />
+            <div class="centeredDivForImages">
+                <p><img class="img-rounded" src="~/Content/images/MonthlyData/НоваМесечни_данни.jpg" /></p>
+                <p>Фиг.1</p>
             </div>
-            <p><img class="img-rounded" src="~/Content/images/MonthlyData/НоваМесечни_данни.jpg" /></p>
-            <p>Фиг.1</p>
             <p>Въвеждането на месечни количества за нуждите на месечната отчетност е обособено в две групи: </p>
             <ul>
                 <li>Количества продукти във вътрешни тръбопроводи;</li>
@@ -22,25 +22,46 @@
                 <li>Месечни данни за въглеводороди;</li>
                 <li>Месечни данни за свежа вода;</li>
                 <li>Месечни данни за оборотна вода;</li>
+                <li>Месечни данни за химически очистена вода;</li>
                 <li>Месечни данни за питейна вода;</li>
                 <li>Месечни данни за топлоенергия;</li>
                 <li>Месечни данни за електроенергия.</li>
             </ul>
         </section>
+        <br />
+        <hr class="hrUnderText" />
+        <div class="container" style="margin-left:13em;">
+            <div class="col-md-1 divimage">
+                <img src="~/Content/Images/ShiftData/technical_stuff.gif" class="imgForStuff" />
+            </div>
+            <div class="col-md-11 ForStuff" style="width:995px;">
+                <h4 style="text-align:center">Кой има право да обработва Месечни данни ?</h4>
+                <p>
+                    Право за потвърждаване на Месечни количества има потребител с присъединена роля <span class="stronged">"MonthlyReporter"</span>.<br />
+                    Право за потвърждаване на Месечни данни за въглеводороди има само потребител с присъединена роля <span class="stronged">"MonthlyHydroCarbonsReporter"</span>.<br />
+                    Право за потвърждаване на Месечни данни за свежа вода има само потребител с присъединена роля <span class="stronged">"MonthlyFreshWaterReporter"</span>.<br />
+                    Право за потвърждаване на Месечни данни за оборотна вода има само потребител с присъединена роля <span class="stronged">"MonthlyCirculatingWaterReporter"</span>.<br />
+                    Право за потвърждаване на Месечни данни за химически очистена вода има само потребител с присъединена роля
+                    <span class="stronged">
+                        "MonthlyChemicalClearedWaterReporter"
+                    </span>.<br />
+                    Право за потвърждаване на Месечни данни за питейна вода има само потребител с присъединена роля
+                    <span class="stronged">
+                        "MonthlyPotableWaterReporter"
+                    </span>.<br />
+                    Право за потвърждаване на Месечни данни за топлоенергия има само потребител с присъединена роля
+                    <span class="stronged">
+                        "MonthlyHeatEnergyReporter"
+                    </span>.<br />
+                    Право за потвърждаване на Месечни данни за електроенергия има само потребител с присъединена роля
+                    <span class="stronged">
+                        "MonthlyElectricalEnergyReporter"
+                    </span>.<br />
+                </p>
+            </div>
+        </div>
+        <br />
+        <hr class="hrUnderText" />
     </article>
 </div>
-<div class="container mycontainer">
-    <div class="row">
-        <hr class="myhr2" />
-        <div class="col-md-1 divimage">
-            <img src="~/Content/Images/ShiftData/technical_stuff.gif" class="myimg" />
-        </div>
-        <div class="col-md-11 mycol11">
-            <h4 style="text-align:center">Кой има право да обработва Месечни данни за отчети ?</h4>
-            <p>
-                Право за потвърждаване на месечните количества има основно потребител с присъединена роля <span class="stronged">"MonthlyReporter"</span>.<br />
-                <span class="stronged"> Всеки тип месечен отчет може да се генерира само от потребител с присъединена му за съответния отчет роля.</span>
-            </p>
-        </div>
-    </div>
-</div>
+

@@ -1654,4 +1654,10 @@
   <data name="IsQuantityFactVisibleInChast" xml:space="preserve">
     <value>Visible T fact</value>
   </data>
+  <data name="UnitMonthlyAirData" xml:space="preserve">
+    <value>UnitMonthlyAirData</value>
+  </data>
+  <data name="UnitMonthlyNitrogenData" xml:space="preserve">
+    <value>UnitMonthlyNitrogenData</value>
+  </data>
 </root>

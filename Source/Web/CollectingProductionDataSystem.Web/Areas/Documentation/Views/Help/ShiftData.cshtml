@@ -1,10 +1,9 @@
-﻿<h1 class="myh1" >Сменни данни за отчети</h1>
+﻿<h1 class="h1ForTitle">Сменни данни</h1>
 <br />
 <div class="row">
     <article>
         <section>
-            <div class="row myrow" >
-                <hr class="myhr1"/>
+            <hr class="hrUnderText" />
                 <p>Основна функционалност на системата е извличането на данни, необходими за изготвяне на сменни отчети.<p />
                 <p> Потребителят е необходимо да потвърждава сменните данни след приключването на всяка смяна през деня.</p>
                 <p>
@@ -13,11 +12,11 @@
                 </p>
                <p> Потребителят избира меню „Сменни данни“, показано на Фиг.1:
                 </p>
+            <div class="centeredDivForImages">
+                <p><img class="img-rounded" src="~/Content/images/ShiftData/НоваСменни_данни.jpg" /></p>
+                <p> Фиг.1</p>
             </div>
-            <br />
-            <p><img class="img-rounded" src="~/Content/images/ShiftData/НоваСменни_данни.jpg" /></p>
-            <p> Фиг.1</p>
-            <p>За генерирането на сменни данни за отчети се събират данни от три смени:</p>
+            <p>За генерирането на сменни данни се събират данни от три смени:</p>
             <ul>
                 <li>Първа смяна  - събират се данни от 05:00 часа до 13:00 часа;</li>
                 <li> Втора смянa - събират се данни от 13:00 часа до 21:00 часа;</li>
@@ -32,23 +31,24 @@
                 <li> Количества продукти в магистрални тръбопроводи.</li>
             </ul>
         </section>
+        <hr class="hrUnderText" />
+        <div class="container" style="margin-left:18em;">
+            <div class="col-md-1 divimage">
+                <img src="~/Content/Images/ShiftData/technical_stuff.gif" class="imgForStuff" />
+            </div>
+            <div class="col-md-11 ForStuff">
+                <h4 style="text-align:center">Кой има право да обработва Сменни данни ?</h4>
+                <p>
+                    Право за потвърждаване на сменни данни за измервателни позиции и наличности по резервоари
+                    има основно потребител с присъединена роля <span class="stronged">"ShiftReporter"</span>.<br />
+                    Право за потвърждаване на сменни данни за количества продукти в магистрални тръбопроводи
+                    има само потребител с присъединена роля <span class="stronged">"HighwayPipelinesDatаReporter"</span>.
+                </p>
+            </div>
+        </div>
+        <br />
+        <hr class="hrUnderText" />
     </article>
 </div>
-<div class="container mycontainer">
-    <div class="row">
-        <hr class="myhr2" />
-        <div class="col-md-1 divimage">
-            <img src="~/Content/Images/ShiftData/technical_stuff.gif" class="myimg" />
-        </div>
-        <div class="col-md-11 mycol11">
-            <h4 style="text-align:center">Кой има право да обработва Сменни данни за отчети ?</h4>
-            <p>
-                Право за потвърждаване на сменни данни за измервателни позиции и наличности по резервоари
-                има основно потребител с присъединена роля <span class="stronged">"ShiftReporter"</span>.<br />
-                Право за потвърждаване на сменни данни за количества продукти в магистрални тръбопроводи
-                има само потребител с присъединена роля <span class="stronged">"HighwayPipelinesDatаReporter"</span>.
-            </p>
-        </div>
-    </div>
-</div>
+
 

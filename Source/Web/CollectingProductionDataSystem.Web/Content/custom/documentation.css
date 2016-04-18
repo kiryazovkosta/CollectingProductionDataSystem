@@ -14,7 +14,7 @@
 
 /*Desktop*/
 @media only screen and (min-device-width: 1300px) and (max-width: 1899px) {
-    aside.documentation, article.documentation {
+   div.nav-site-bar, article.documentation {
         height: 575px;
         margin-bottom: -20px;
         overflow-y: auto;
@@ -28,7 +28,7 @@
 
 /*Small*/
 @media only screen and (min-device-width: 800px) and (max-width: 1299px) {
-    aside.documentation, article.documentation {
+    div.nav-site-bar, article.documentation {
         height: 450px;
         margin-bottom: -20px;
         overflow-y: auto;
@@ -42,7 +42,7 @@
 
 /*Extra Small*/
 @media only screen and (min-device-width: 400px) and (max-width: 799px) {
-    aside.documentation, article.documentation {
+    div.nav-site-bar, article.documentation {
         height: 100%;
         margin-bottom: -20px;
         overflow-y: auto;
@@ -53,119 +53,24 @@
         top: 150px;
     }
 }
-
 #inprogress {
     width: 95%;
 }
-
-    #inprogress > img {
+ #inprogress > img {
         width: 50px;
         margin-left: auto;
         margin-right: auto;
         display: block;
-    }
-
-aside.documentation {
-    background-color: #f8f8f8;
-    margin-top:-10px;
-    margin-left:-15px;
-}
-
-img.myWidth102 {
+  }
+img.MaxWidthForTable{
     max-width: 98%;
-}
-
-nav {
-    margin-top:15px;
-}
-
-li.mylist-group-item > a,div.mypanel-heading>h4 >a{
-  display:block; 
-   width:230px ;
-   line-height:25px;
-   height:45px !important;
-   text-decoration:none;
-    color:black;
-}
- div.mypanel-heading {
-       display:block; 
-   width:100%;
-   line-height:25px;
-   /*height:45px !important;*/
-   text-decoration:none;
-    color:black;
-    height:55px;
-    margin-bottom:-8px;
-    margin-top:-6px;
-}
- div.mypanel-heading>h4 >a{
-     font-weight:bold;
- }
-li.mylist-group-item:hover,div.mypanel-heading:hover,li.mylist-group-item > a:hover,div.mypanel-heading > h4>a:hover{
-    background-color:#b6acac;
-    color:white ;
- }
-li.mylist-group-item,div.mypanel-heading > h4{
-    padding-right:0;
-    margin-right:0;
-    padding-bottom:0;
-    margin-bottom:0;
-    padding-top:0;
-    margin-top:0;
 }
 img.btnApply{
     width:8%;
     box-shadow: 5px 5px 5px #888888;
 }
-p.summaryReport{
-    list-style-type:decimal;
-    font-size:20px;
-    font-weight:bold;
-}
-li.list-group-item.mylist-group-item.activeLi{
-    color:white;
-    background-color:#b6acac;
-}
-.panel.panel-primary.mypanel-primary{
-    width:279px;
-}
-aside.col-sm-2.documentation {
-   overflow-x:auto; 
-}
-.container.mycontainer{
-   padding:0;
-   margin:0;
-}
-.col-md-1.divimage{
-    width:6em;
-    height: 5.6em;
-}
-.myimg{
-    width: 4.5em;
-    margin-top: 0.5em;
-}
-.myhr2{
-    border:1px solid black;
-    margin-right:18.3em;
-}
-.myh1{
-    margin-top:0;
-    margin-bottom:0;
-}
-.myhr1{
-    border:1px solid black;
-    margin-right:0;
-    margin-top:0;
-}
-.row.myrow{
-    width:67.9em;
-    margin-right:0;
-    padding-left:1em;
-}
-.col-md-11.mycol11{
-    border:1px solid black !important;
-    width:61.5em;
-    background-color:#f2eeee;
+aside.col-sm-2.documentation{
+    overflow-x:auto;
 }
 .stronged{
     font-weight:bold;
@@ -176,3 +81,139 @@ aside.col-sm-2.documentation {
 .imgboxshadow{
     box-shadow: 5px 5px 5px #888888;
 }
+p.summaryReport{
+    list-style-type:decimal;
+    font-size:20px;
+    font-weight:bold;
+}
+.col-md-1.divimage{
+    width:6em;
+    height: 5.6em;
+}
+.imgForStuff{
+    width: 4.5em;
+    margin-top: 0.5em;
+}
+.hrUnderText{
+    border:1px solid black !important;
+    margin-right:0;
+    margin-top:0;
+}
+.col-md-11.ForStuff{
+    border:1px solid black !important;
+    width:61.5em;
+    background-color:#f2eeee;
+}
+article.col-sm-10.documentation{
+    left:250px;
+}
+
+.nav-site-bar {
+    width: 240px;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-bottom: -10px;
+    margin-top: -20px;
+    position: absolute;
+    top: 70px;
+    bottom: 70px;
+    overflow-y:auto;
+}
+    .nav-site-bar ul {
+        margin-left: 0;
+        padding-left: 0;
+        list-style-type: none;
+        /*height:650px;*/
+        background-color: #e9e9e9;
+ }
+ .nav-site-bar>ul>li {
+       margin-bottom:10px;
+    }
+ .nav-site-bar ul li a {
+            display: inline-block;
+            line-height: 15px;
+            border-bottom: 1px solid green;
+            width: 100%;
+            margin-right: -10px;
+            background: #fbfaf9;
+           padding-bottom:5px;
+           padding-left:5px;
+           padding-right:5px;
+           padding-top:10px;  
+}
+.nav-site-bar ul li a span {
+            -moz-transform: scale(1,1.4);
+            -ms-transform: scale(1,1.4);
+            -o-transform: scale(1,1.4);
+            -webkit-transform: scale(1,1.4);
+            transform: scale(1,1.4);
+            display: inline-block;
+            vertical-align: middle;
+           padding-top:0; 
+           color:white !important;
+}
+a.help-side-nav-main
+{
+    text-decoration: none;
+    font-family: Verdana;
+    font-weight: bold;
+    color: white;
+    text-transform: uppercase;
+    font-stretch: condensed;
+    font: bold 20px Verdana;
+      padding-top:-2px;
+       border: 2px solid #6e9c89 !important;
+    height: 45px;
+    width: 105% !important;
+    padding-left: 10px;
+    margin-left: -10px;
+    margin-right: -10px;
+    background-image: url('../../Content/Images/btn-bg-normal.png') !important;
+    text-shadow: 2px 2px #6e9c89;
+}
+a.help-side-nav-main:hover,a.help-side-nav-main :active {
+        background-image: url('../../Content/Images/btn-bg-pressed.png') !important;
+        color: white !important;
+}
+#collapseListGroup11>ul>li>a,#collapseListGroup12 >ul>li>a,#collapseListGroup13 >ul>li>a,#collapseListGroup14 >ul>li>a{
+    text-decoration:none;
+    color:black ;
+     font-family: Verdana;
+     font-size:13px;
+}
+#collapseListGroup11  >ul>li>a:hover,#collapseListGroup12 >ul>li>a:hover,#collapseListGroup13 >ul>li>a:hover,#collapseListGroup14 >ul>li>a:hover{
+     background:#6ead9f;
+    color:white !important;
+     text-decoration:none;
+}
+#collapseListGroup11  >ul>li>a.activeLi,#collapseListGroup12 >ul>li>a.activeLi,#collapseListGroup13 >ul>li>a.activeLi,#collapseListGroup14 >ul>li>a.activeLi{
+     background:#6ead9f;
+    color:white !important;
+}
+
+.nav-site-bar>ul>li>ul{
+    border-right:3px solid #e9e8e7;
+    border-left:3px solid #e9e8e7;
+}
+.green-edge-image{
+    width:10px;
+    height:10px;
+    background-image:url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYxIDY0LjE0MDk0OSwgMjAxMC8xMi8wNy0xMDo1NzowMSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1Nzc2MURBMDhCRkRFNTExQjVBRjk2REIzNEE0OEQ3RiIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDpBODg3NUQxM0ZEOEIxMUU1OUJGMEVDMTc4N0I4OTg2NiIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDpBODg3NUQxMkZEOEIxMUU1OUJGMEVDMTc4N0I4OTg2NiIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1LjEgV2luZG93cyI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOjU3NzYxREEwOEJGREU1MTFCNUFGOTZEQjM0QTQ4RDdGIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3NzYxREEwOEJGREU1MTFCNUFGOTZEQjM0QTQ4RDdGIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+DHchagAAARhJREFUeNp0j0FOwzAQRf/MOE56EQ7AIUqTtKSEVmrFySpBu4MNSCyolNMgIbpih5AqYsc2033xxpbmzfvfdP/y9Pa67+q+d8hJEGNEEMAlD0sWX4dPAPwtj9vdc4zh8v3wcRGYgNyAjWCUjyCJ0B9/IMw9F8JuNWvaZTXdixCMgobVrEtSWAzMSMLgmAlsbtyyrNt1M99bn2ANg0hBziDEsKIp7Ack7zUmuuvJpF1UdZcUKrQZhUHtQBgGsCh9Gug69OWW47KZj686J/opA3gKoEyj1acx2iMlSEiIktxqUjbrcdWxj2BkiCC9zx+tUTXtbNqd4lkF/4GwIbobNd/dLjqT1Ond8SxotPdvTMgyGW0etrs/AQYAg/tzBMXDBxsAAAAASUVORK5CYII=') /*../Images/eangle_green.png*/ ;
+   left:1px;
+   position:absolute;
+}
+.nav-site-bar > ul{
+    border:1px solid #e9e8e7;
+    height:805px;
+    padding-top:30px;
+}
+.centeredDivForImages{
+    text-align:center;
+    position:relative;
+}
+.h1ForTitle{
+    text-align:center;
+}
+
+
+
