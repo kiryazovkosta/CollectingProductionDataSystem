@@ -1,7 +1,8 @@
 ﻿var Charts = [];
 (function () {
     $(function () {
-        regreshTab(1, true);
+        //regreshTab(1, true);
+        populateTab(1);
 
         $('#collapseOne').on('hidden.bs.collapse', function () {
             var span = $('#collapse span');
@@ -28,7 +29,8 @@
                 }).done(function () {
                     var tab = $("#charts-holder").data("kendoTabStrip").select();
                     var id = parseInt(tab.attr("aria-controls").replace(/^\D+/g, ''));
-                    regreshTab(id, true);
+                    populateTab(id);
+                    //regreshTab(id, true);
                 })
                     .fail(function (data) {
                         errHandler(data);
@@ -42,7 +44,8 @@
 
     function onActivate(ev, populate) {
         var id = parseInt($(ev.item).attr("aria-controls").replace(/^\D+/g, ''));
-        regreshTab(id, true);
+        populateTab(id)
+        //regreshTab(id, true);
     }
 
     function regreshTab(id, populate) {
