@@ -302,6 +302,7 @@
     <Compile Include="Areas\MonthlyDataReporting\Controllers\BaseMonthlyController.cs" />
     <Compile Include="Areas\MonthlyDataReporting\Controllers\MonthlyAirController.cs" />
     <Compile Include="Areas\MonthlyDataReporting\Controllers\MonthlyChemicalClearedWaterController.cs" />
+    <Compile Include="Areas\MonthlyDataReporting\Controllers\MonthlyChemicalController.cs" />
     <Compile Include="Areas\MonthlyDataReporting\Controllers\MonthlyCirculatingWaterController.cs" />
     <Compile Include="Areas\MonthlyDataReporting\Controllers\MonthlyElectricalEnergyController.cs" />
     <Compile Include="Areas\MonthlyDataReporting\Controllers\MonthlyFreshWaterController.cs" />
@@ -1346,7 +1347,7 @@
     <Content Include="Areas\MonthlyDataReporting\Views\web.config" />
     <Content Include="Areas\MonthlyDataReporting\Views\_ViewStart.cshtml" />
     <Content Include="Areas\MonthlyDataReporting\Views\Shared\_Layout.cshtml" />
-    <Content Include="Areas\MonthlyDataReporting\Views\MonthlyHydroCarbons\HydroCorbonsReport.cshtml" />
+    <Content Include="Areas\MonthlyDataReporting\Views\Shared\HydroCorbonsReport.cshtml" />
     <Content Include="Areas\Documentation\Views\Help\MonthlyData.cshtml" />
     <Content Include="Areas\Documentation\Views\Help\DailyDataEnergyFlows.cshtml" />
     <Content Include="Areas\Documentation\Views\Help\MonthlyDataIndoorPipeLines.cshtml" />
@@ -2103,10 +2104,12 @@
     <Folder Include="Areas\MonthlyDataReporting\Views\GenericMonthly\" />
     <Folder Include="Areas\MonthlyDataReporting\Views\MonthlyAir\" />
     <Folder Include="Areas\MonthlyDataReporting\Views\MonthlyChemicalClearedWater\" />
+    <Folder Include="Areas\MonthlyDataReporting\Views\MonthlyChemical\" />
     <Folder Include="Areas\MonthlyDataReporting\Views\MonthlyCirculatingWater\" />
     <Folder Include="Areas\MonthlyDataReporting\Views\MonthlyElectricalEnergy\" />
     <Folder Include="Areas\MonthlyDataReporting\Views\MonthlyFreshWater\" />
     <Folder Include="Areas\MonthlyDataReporting\Views\MonthlyHeatEnergy\" />
+    <Folder Include="Areas\MonthlyDataReporting\Views\MonthlyHydroCarbons\" />
     <Folder Include="Areas\MonthlyDataReporting\Views\MonthlyNitrogen\" />
     <Folder Include="Areas\MonthlyReporting\Models\" />
     <Folder Include="Areas\MonthlyReporting\Views\AreaBase\" />

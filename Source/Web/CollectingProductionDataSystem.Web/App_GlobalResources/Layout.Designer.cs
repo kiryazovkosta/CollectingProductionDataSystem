@@ -4228,6 +4228,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to UnitMonthlyCHData.
+        /// </summary>
+        public static string UnitMonthlyCHData {
+            get {
+                return ResourceManager.GetString("UnitMonthlyCHData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Месечни данни за оборотна вода.
         /// </summary>
         public static string UnitMonthlyCWData {
