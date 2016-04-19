@@ -41,8 +41,8 @@
     .Name("charts-holder")
     .Items(items =>
     {
-        items.Add().Text(@Resources.Layout.ProcessUnitLoading).Selected(true);//.Content(Html.AllProcessUnints(Model.ProcessUnitLoadStatistics).ToHtmlString());
-        items.Add().Text("Отборни данни за инсталации");//.Content(Html.AllProcessUnints(Model.ProcessUnitStatistics).ToHtmlString());
+        items.Add().Text(@Resources.Layout.ProcessUnitLoading).Selected(true).Content(Html.AllProcessUnints(Model.ProcessUnitLoadStatistics).ToHtmlString());
+        items.Add().Text("Отборни данни за инсталации").Content(Html.AllProcessUnints(Model.ProcessUnitStatistics).ToHtmlString());
     })
     
 )
