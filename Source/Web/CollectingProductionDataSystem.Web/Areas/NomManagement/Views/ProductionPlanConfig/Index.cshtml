@@ -22,10 +22,10 @@
           columns.ForeignKey(c => c.MaterialDetailTypeId, (System.Collections.IEnumerable)ViewData["materialDetailTypes"], "Id", "Name").EditorTemplateName("MaterialDetailTypeViewModel").Width(200);
           columns.ForeignKey(c => c.ProcessUnitId, (System.Collections.IEnumerable)ViewData["processUnits"], "Id", "FullName").EditorTemplateName("ProcessUnitViewModel").Width(200);
           columns.ForeignKey(c => c.MeasureUnitId, (System.Collections.IEnumerable)ViewData["measureUnits"], "Id", "Name").EditorTemplateName("MeasureUnitViewModel").Width(200);
-          columns.Bound(c => c.IsPercentagesPlanVisibleInChast).Width(100);
-          columns.Bound(c => c.IsPercentagesFactVisibleInChast).Width(100);
-          columns.Bound(c => c.IsQuanityPlanVisibleInChast).Width(100);
-          columns.Bound(c => c.IsQuantityFactVisibleInChast).Width(100);                    
+          columns.Bound(c => c.IsPercentagesPlanVisibleInChast).Width(100).ClientTemplate("<img src='../Content/Images/#=data.IsPercentagesPlanVisibleInChast ? 'ok.png': 'error.png'#' alt='#=data.IsPercentagesPlanVisibleInChast#' height='20px' width='20px'/>");
+          columns.Bound(c => c.IsPercentagesFactVisibleInChast).Width(100).ClientTemplate("<img src='../Content/Images/#=data.IsPercentagesFactVisibleInChast ? 'ok.png': 'error.png'#' alt='#=data.IsPercentagesFactVisibleInChast#' height='20px' width='20px'/>");
+          columns.Bound(c => c.IsQuanityPlanVisibleInChast).Width(100).ClientTemplate("<img src='../Content/Images/#=data.IsQuanityPlanVisibleInChast ? 'ok.png': 'error.png'#' alt='#=data.IsQuanityPlanVisibleInChast#' height='20px' width='20px'/>");
+          columns.Bound(c => c.IsQuantityFactVisibleInChast).Width(100).ClientTemplate("<img src='../Content/Images/#=data.IsQuantityFactVisibleInChast ? 'ok.png': 'error.png'#' alt='#=data.IsQuantityFactVisibleInChast#' height='20px' width='20px'/>");                     
           columns.Command(command => { command.Edit(); command.Destroy(); }).Width(230);
       })
       .ToolBar(toolbar =>

@@ -1191,6 +1191,7 @@
     <Content Include="Scripts\custom\confirmationRefresh.min.js">
       <DependentUpon>confirmationRefresh.js</DependentUpon>
     </Content>
+    <Content Include="Scripts\custom\dashboard.js" />
     <Content Include="Scripts\custom\documentation.js" />
     <Content Include="Scripts\custom\jquery-kendo-globalize.js" />
     <Content Include="Scripts\custom\json2.js" />
@@ -1383,6 +1384,7 @@
     <Content Include="Areas\Documentation\Views\Help\MonthlyDataChemicalClearingWater.cshtml" />
     <Content Include="Areas\Documentation\Views\Help\MonthlyAir.cshtml" />
     <Content Include="Areas\Documentation\Views\Help\MonthlyNitrogen.cshtml" />
+    <Content Include="Areas\ManagementDashBoard\Views\Dashboard\ReloadTabContent.cshtml" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <None Include="Properties\PublishProfiles\Home.pubxml" />
     <Content Include="Scripts\custom\sendArea.js" />
@@ -1396,7 +1398,9 @@
     <Content Include="Scripts\custom\sendArea.min.js.map">
       <DependentUpon>sendArea.min.js</DependentUpon>
     </Content>
-    <None Include="Properties\PublishProfiles\Productive.pubxml" />
+    <None Include="Properties\PublishProfiles\Productive.pubxml">
+      <SubType>Designer</SubType>
+    </None>
     <Content Include="Scripts\custom\signalR.js" />
     <Content Include="Scripts\custom\signalR.min.js">
       <DependentUpon>signalR.js</DependentUpon>

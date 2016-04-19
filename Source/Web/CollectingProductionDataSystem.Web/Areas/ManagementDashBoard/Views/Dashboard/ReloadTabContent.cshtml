@@ -1,0 +1,13 @@
+﻿@using CollectingProductionDataSystem.Web.Areas.ManagementDashBoard.Models
+@using Resources = App_GlobalResources.Resources
+@model DashBoardViewModel
+
+@if (Model.TabId == 1)
+{
+    @Html.AllProcessUnints(Model.ProcessUnitLoadStatistics)
+}
+else 
+{
+    
+    @Html.AllProcessUnints(Model.ProcessUnitStatistics)
+}
