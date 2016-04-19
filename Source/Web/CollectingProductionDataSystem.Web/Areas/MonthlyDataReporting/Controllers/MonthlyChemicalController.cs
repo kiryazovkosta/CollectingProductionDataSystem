@@ -1,6 +1,6 @@
 ﻿namespace CollectingProductionDataSystem.Web.Areas.MonthlyDataReporting.Controllers
 {
- using System;
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Web;
@@ -11,13 +11,14 @@
     using CollectingProductionDataSystem.Web.Areas.MonthlyDataReporting.Models;
     using Resources = App_GlobalResources.Resources;
 
-    [Authorize(Roles = "Administrator, MonthlyChemicalClearedWaterReporter")]
-    public class MonthlyChemicalClearedWaterController : BaseMonthlyController
+    [Authorize(Roles = "Administrator, MonthlyChemicalReporter")]
+    public class MonthlyChemicalController : BaseMonthlyController
     {
-        public MonthlyChemicalClearedWaterController(IProductionData dataParam, IUnitMothlyDataService monthlyServiceParam)
+        public MonthlyChemicalController(IProductionData dataParam, IUnitMothlyDataService monthlyServiceParam)
             : base(dataParam, monthlyServiceParam)
         {
         }
+
 
         /// <summary>
         /// Gets the report parameters.
@@ -26,11 +27,10 @@
         protected override MonthlyReportParametersViewModel GetReportParameters()
         {
             return new MonthlyReportParametersViewModel(
-                    reportName: Resources.Layout.UnitMonthlyCCWData,
-                    controllerName: "MonthlyChemicalClearedWater",
-                    monthlyReportTypeId: CommonConstants.ChemicalClearedWater,
-                    defaultViewName: "EnergyReport"
-                    );
+                    reportName: Resources.Layout.UnitMonthlyCHData,
+                    controllerName: "MonthlyChemical",
+                    monthlyReportTypeId: CommonConstants.Chemicals,
+                    defaultViewName: "HydroCorbonsReport");
         }
     }
 }

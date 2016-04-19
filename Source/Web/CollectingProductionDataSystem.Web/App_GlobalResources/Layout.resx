@@ -1660,4 +1660,7 @@
   <data name="UnitMonthlyNitrogenData" xml:space="preserve">
     <value>UnitMonthlyNitrogenData</value>
   </data>
+  <data name="UnitMonthlyCHData" xml:space="preserve">
+    <value>UnitMonthlyCHData</value>
+  </data>
 </root>
