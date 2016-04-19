@@ -20,8 +20,6 @@
         }
 
 
-
-
         /// <summary>
         /// Gets the report parameters.
         /// </summary>

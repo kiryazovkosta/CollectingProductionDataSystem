@@ -26,7 +26,7 @@
         protected override MonthlyReportParametersViewModel GetReportParameters()
         {
             return new MonthlyReportParametersViewModel(
-                    reportName: Resources.Layout.UnitMonthlyCWData,
+                    reportName: Resources.Layout.UnitMonthlyCCWData,
                     controllerName: "MonthlyChemicalClearedWater",
                     monthlyReportTypeId: CommonConstants.ChemicalClearedWater,
                     defaultViewName: "EnergyReport"

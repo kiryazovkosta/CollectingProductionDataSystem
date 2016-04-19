@@ -302,6 +302,7 @@
     <Compile Include="Areas\MonthlyDataReporting\Controllers\BaseMonthlyController.cs" />
     <Compile Include="Areas\MonthlyDataReporting\Controllers\MonthlyAirController.cs" />
     <Compile Include="Areas\MonthlyDataReporting\Controllers\MonthlyChemicalClearedWaterController.cs" />
+    <Compile Include="Areas\MonthlyDataReporting\Controllers\MonthlyChemicalController.cs" />
     <Compile Include="Areas\MonthlyDataReporting\Controllers\MonthlyCirculatingWaterController.cs" />
     <Compile Include="Areas\MonthlyDataReporting\Controllers\MonthlyElectricalEnergyController.cs" />
     <Compile Include="Areas\MonthlyDataReporting\Controllers\MonthlyFreshWaterController.cs" />
@@ -634,6 +635,12 @@
     <Content Include="Content\Images\MonthlyData\Figura116.png" />
     <Content Include="Content\Images\MonthlyData\Figura117.png" />
     <Content Include="Content\Images\MonthlyData\Figura118.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataAir\Figura194.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataAir\Figura195.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataAir\Figura196.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataAir\Figura197.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataAir\Figura198.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataAir\Redakt.png" />
     <Content Include="Content\Images\MonthlyData\MonthlyDataChemical\Figura167.png" />
     <Content Include="Content\Images\MonthlyData\MonthlyDataChemical\Figura168.png" />
     <Content Include="Content\Images\MonthlyData\MonthlyDataChemical\Figura169.png" />
@@ -662,6 +669,19 @@
     <Content Include="Content\Images\MonthlyData\MonthlyDataHeatEnergy\Figura174.png" />
     <Content Include="Content\Images\MonthlyData\MonthlyDataHeatEnergy\Figura175.png" />
     <Content Include="Content\Images\MonthlyData\MonthlyDataHeatEnergy\Figura176.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataHidrogen\Figura199.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataHidrogen\Figura200.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataHidrogen\Figura201.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataHidrogen\Figura202.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataHidrogen\Figura203.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataHidrogen\филтриране.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataHydroCarbons\Figura188.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataHydroCarbons\Figura189.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataHydroCarbons\Figura190.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataHydroCarbons\Figura191.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataHydroCarbons\Figura192.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataHydroCarbons\Figura193.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataHydroCarbons\Gre6ka.png" />
     <Content Include="Content\Images\MonthlyData\MonthlyDataPotable\Figura162.png" />
     <Content Include="Content\Images\MonthlyData\MonthlyDataPotable\Figura163.png" />
     <Content Include="Content\Images\MonthlyData\MonthlyDataPotable\Figura164.png" />
@@ -674,6 +694,14 @@
     <Content Include="Content\Images\MonthlyData\Фигура107.jpg" />
     <Content Include="Content\Images\MonthlyData\Фигура108.jpg" />
     <Content Include="Content\Images\MonthlyData\Фигура109.jpg" />
+    <Content Include="Content\Images\Nomenclature\Figua183.png" />
+    <Content Include="Content\Images\Nomenclature\Figua184.png" />
+    <Content Include="Content\Images\Nomenclature\Figura185.png" />
+    <Content Include="Content\Images\Nomenclature\Figura186.png" />
+    <Content Include="Content\Images\Nomenclature\Figura187.png" />
+    <Content Include="Content\Images\Nomenclature\Figura189.png" />
+    <Content Include="Content\Images\Nomenclature\Iztriv.png" />
+    <Content Include="Content\Images\Nomenclature\Redakt.png" />
     <Content Include="Content\Images\ok.png" />
     <Content Include="Content\Images\pdf-download.png" />
     <Content Include="Content\Images\PNG\128x128\Cancel2.png" />
@@ -1173,6 +1201,7 @@
     <Content Include="Scripts\custom\confirmationRefresh.min.js">
       <DependentUpon>confirmationRefresh.js</DependentUpon>
     </Content>
+    <Content Include="Scripts\custom\dashboard.js" />
     <Content Include="Scripts\custom\documentation.js" />
     <Content Include="Scripts\custom\jquery-kendo-globalize.js" />
     <Content Include="Scripts\custom\json2.js" />
@@ -1319,7 +1348,7 @@
     <Content Include="Areas\MonthlyDataReporting\Views\web.config" />
     <Content Include="Areas\MonthlyDataReporting\Views\_ViewStart.cshtml" />
     <Content Include="Areas\MonthlyDataReporting\Views\Shared\_Layout.cshtml" />
-    <Content Include="Areas\MonthlyDataReporting\Views\MonthlyHydroCarbons\HydroCorbonsReport.cshtml" />
+    <Content Include="Areas\MonthlyDataReporting\Views\Shared\HydroCorbonsReport.cshtml" />
     <Content Include="Areas\Documentation\Views\Help\MonthlyData.cshtml" />
     <Content Include="Areas\Documentation\Views\Help\DailyDataEnergyFlows.cshtml" />
     <Content Include="Areas\Documentation\Views\Help\MonthlyDataIndoorPipeLines.cshtml" />
@@ -1363,6 +1392,9 @@
     <Content Include="Areas\NomManagement\Views\PhdConfig\Index.cshtml" />
     <Content Include="Areas\MonthlyDataReporting\Views\MonthlyPotableWater\MonthlyPotableWaterReport.cshtml" />
     <Content Include="Areas\Documentation\Views\Help\MonthlyDataChemicalClearingWater.cshtml" />
+    <Content Include="Areas\Documentation\Views\Help\MonthlyAir.cshtml" />
+    <Content Include="Areas\Documentation\Views\Help\MonthlyNitrogen.cshtml" />
+    <Content Include="Areas\ManagementDashBoard\Views\Dashboard\ReloadTabContent.cshtml" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <None Include="Properties\PublishProfiles\Home.pubxml" />
     <Content Include="Scripts\custom\sendArea.js" />
@@ -2073,10 +2105,12 @@
     <Folder Include="Areas\MonthlyDataReporting\Views\GenericMonthly\" />
     <Folder Include="Areas\MonthlyDataReporting\Views\MonthlyAir\" />
     <Folder Include="Areas\MonthlyDataReporting\Views\MonthlyChemicalClearedWater\" />
+    <Folder Include="Areas\MonthlyDataReporting\Views\MonthlyChemical\" />
     <Folder Include="Areas\MonthlyDataReporting\Views\MonthlyCirculatingWater\" />
     <Folder Include="Areas\MonthlyDataReporting\Views\MonthlyElectricalEnergy\" />
     <Folder Include="Areas\MonthlyDataReporting\Views\MonthlyFreshWater\" />
     <Folder Include="Areas\MonthlyDataReporting\Views\MonthlyHeatEnergy\" />
+    <Folder Include="Areas\MonthlyDataReporting\Views\MonthlyHydroCarbons\" />
     <Folder Include="Areas\MonthlyDataReporting\Views\MonthlyNitrogen\" />
     <Folder Include="Areas\MonthlyReporting\Models\" />
     <Folder Include="Areas\MonthlyReporting\Views\AreaBase\" />

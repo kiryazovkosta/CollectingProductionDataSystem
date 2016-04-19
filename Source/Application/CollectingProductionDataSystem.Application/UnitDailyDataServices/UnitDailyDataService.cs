@@ -633,13 +633,13 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
                                         && x.UnitsDailyConfig.ProcessUnitId == processUnitId
                                         && x.UnitsDailyConfig.IsTotalWorkTime).ToDictionaryAsync(x => x.RecordTimestamp);
             var data = new Dictionary<DateTime, ProcessUnitLoadRecord>();
-            foreach (var record in processingDailyRecords)
+            for (DateTime date = beginDate; date <= endDate; date = date.AddDays(1))
             {
                 decimal workTime = 0m;
 
-                if (workHoursDalyRecords.ContainsKey(record.Key))
+                if (workHoursDalyRecords.ContainsKey(date))
                 {
-                    workTime = Convert.ToDecimal(workHoursDalyRecords[record.Key].RealValue);
+                    workTime = Convert.ToDecimal(workHoursDalyRecords[date].RealValue);
                 }
 
                 if (workTime == 0m)
@@ -647,9 +647,15 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
                     workTime = 24m;
                 }
 
-                var loadPerHourFact = record.Value.QuantityFact / workTime;
-                var loadPerHourPlan = record.Value.QuanityPlan / 24m;
-                data.Add(record.Value.RecordTimestamp, new ProcessUnitLoadRecord(record.Value.RecordTimestamp, loadPerHourPlan, loadPerHourFact));
+                ProductionPlanData record = new ProductionPlanData();
+                if (processingDailyRecords.ContainsKey(date))
+                {
+                    record = processingDailyRecords[date];
+                }
+
+                var loadPerHourFact = record.QuantityFact / workTime;
+                var loadPerHourPlan = record.QuanityPlan / 24m;
+                data.Add(date, new ProcessUnitLoadRecord(date, loadPerHourPlan, loadPerHourFact));
             }
             var chart = new List<DataSery<DateTime, decimal>>();
 
@@ -659,7 +665,10 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
                 chart.AddRange(series);
             }
 
-
+            if (chart.Count < 1)
+            {
+                chart.Add(new DataSery<DateTime, decimal>());
+            }
             return new ChartViewModel<DateTime, decimal>() { DataSeries = chart };
         }
 

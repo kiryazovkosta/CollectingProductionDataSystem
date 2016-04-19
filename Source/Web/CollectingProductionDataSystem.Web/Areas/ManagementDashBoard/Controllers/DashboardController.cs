@@ -51,6 +51,44 @@ namespace CollectingProductionDataSystem.Web.Areas.ManagementDashBoard.Controlle
             return View(viewModel);
         }
 
+        [HttpGet]
+        [OutputCache(Duration = HalfAnHour, Location = OutputCacheLocation.Server, VaryByParam = "*")]
+        public ActionResult ReloadTabContent(int tabId)
+        {
+            var viewModel = new DashBoardViewModel();
+            if (this.ModelState.IsValid && tabId > 0)
+            {
+                viewModel.TabId = tabId;
+                switch (tabId)
+                {
+                    case 1:
+                            var factoriesForLoad = this.data.Factories.All().Include(x => x.ProcessUnits).Where(x => x.ProcessUnits.Any(y => y.HasLoadStatistics && y.IsDeleted == false)).ToList();
+
+                            viewModel.ProcessUnitLoadStatistics = new AllProcessUnitProductionPlanViewModel()
+                                {
+                                    Factories = factoriesForLoad,
+                                    ElementPrefix = "pul",
+                                    ElementRole = "pu-load-chart-holder"
+                                };
+                            break;
+                    case 2:
+                            var factoriesForStatistics = this.data.Factories.All().Include(x => x.ProcessUnits).Where(x => x.ProcessUnits.Any(y => y.HasDailyStatistics && y.IsDeleted == false)).ToList();
+                            viewModel.ProcessUnitStatistics = new AllProcessUnitProductionPlanViewModel()
+                            {
+                                Factories = factoriesForStatistics,
+                                ElementPrefix = "pu",
+                                ElementRole = "pu-chart-holder"
+                            };
+                            break;
+                    default:
+                            break;
+                }
+            }
+
+            return PartialView(viewModel);
+        }
+
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult CheckDates(DateTime beginDate, DateTime endDate)

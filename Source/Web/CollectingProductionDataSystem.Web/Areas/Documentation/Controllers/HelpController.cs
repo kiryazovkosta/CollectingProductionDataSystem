@@ -113,6 +113,13 @@ namespace CollectingProductionDataSystem.Web.Areas.Documentation.Controllers
         {
             return PartialView();
         }
-            
+            public PartialViewResult MonthlyAir()
+        {
+            return PartialView();
+        }
+             public PartialViewResult MonthlyNitrogen()
+        {
+            return PartialView();
+        }  
     }
 }

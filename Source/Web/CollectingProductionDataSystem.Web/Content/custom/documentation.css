@@ -175,18 +175,18 @@ a.help-side-nav-main:hover,a.help-side-nav-main :active {
         background-image: url('../../Content/Images/btn-bg-pressed.png') !important;
         color: white !important;
 }
-#collapseListGroup11>ul>li>a,#collapseListGroup12 >ul>li>a,#collapseListGroup13 >ul>li>a,#collapseListGroup14 >ul>li>a{
+#collapseListGroup11>ul>li>a,#collapseListGroup12 >ul>li>a,#collapseListGroup13 >ul>li>a,#collapseListGroup14 >ul>li>a,#collapseListGroup15 >ul>li>a{
     text-decoration:none;
     color:black ;
      font-family: Verdana;
      font-size:13px;
 }
-#collapseListGroup11  >ul>li>a:hover,#collapseListGroup12 >ul>li>a:hover,#collapseListGroup13 >ul>li>a:hover,#collapseListGroup14 >ul>li>a:hover{
+#collapseListGroup11 >ul>li>a:hover,#collapseListGroup12 >ul>li>a:hover,#collapseListGroup13 >ul>li>a:hover,#collapseListGroup14 >ul>li>a:hover,#collapseListGroup15 >ul>li>a:hover{
      background:#6ead9f;
     color:white !important;
      text-decoration:none;
 }
-#collapseListGroup11  >ul>li>a.activeLi,#collapseListGroup12 >ul>li>a.activeLi,#collapseListGroup13 >ul>li>a.activeLi,#collapseListGroup14 >ul>li>a.activeLi{
+#collapseListGroup11>ul>li>a.activeLi,#collapseListGroup12 >ul>li>a.activeLi,#collapseListGroup13 >ul>li>a.activeLi,#collapseListGroup14 >ul>li>a.activeLi,#collapseListGroup15 >ul>li>a.activeLi{
      background:#6ead9f;
     color:white !important;
 }

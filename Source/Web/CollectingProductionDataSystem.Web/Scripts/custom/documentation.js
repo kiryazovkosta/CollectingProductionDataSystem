@@ -7,7 +7,7 @@
         ChangeWidthNav();
     });
     //-----------------------------------------------------------------------
-    var array = ['collapseListGroup11', 'collapseListGroup12', 'collapseListGroup13', 'collapseListGroup14'];
+    var array = ['collapseListGroup11', 'collapseListGroup12', 'collapseListGroup13', 'collapseListGroup14','collapseListGroup15'];
     for (var k = 0; k < array.length; k++) {
         var newstr = "#".concat(array[k]).concat('>ul>li>a');
         $(newstr).click(function () {
@@ -18,7 +18,7 @@
 })
 
 function AddOrRemoveActiveLi() {
-    var array = [ 'collapseListGroup11','collapseListGroup12','collapseListGroup13','collapseListGroup14'];
+    var array = ['collapseListGroup11', 'collapseListGroup12', 'collapseListGroup13', 'collapseListGroup14', , 'collapseListGroup15'];
     for (var j = 0; j < array.length; j++) {
         var newstring = "#".concat(array[j]).concat('>ul>li>a');
         var collection = $(newstring);

@@ -78,9 +78,15 @@ namespace CollectingProductionDataSystem.ConsoleTester
             ////Update(service);
             //timer.Stop();
             //Console.WriteLine("Ready!\n Estimated time per operation {0}", timer.Elapsed);
-
-            var result = dailyService.GetStatisticForProcessUnitLoadAsync(1, new DateTime(2016, 4, 1), new DateTime(2016, 4, 3), 1).Result;
-
+            try
+            {
+                var result = dailyService.GetStatisticForProcessUnitLoadAsync(29, new DateTime(2016, 4, 1), new DateTime(2016, 4, 3), 2).Result;
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);    
+            }
+            Console.WriteLine();
         }
 
         private static void Update(UnitMothlyDataService monthlyService, string userName = "Test")

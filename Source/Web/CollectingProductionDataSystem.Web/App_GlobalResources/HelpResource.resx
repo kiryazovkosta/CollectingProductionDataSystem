@@ -135,6 +135,9 @@
   <data name="HelpNomenclature" xml:space="preserve">
     <value>HelpNomenclature</value>
   </data>
+  <data name="MonthlyAir" xml:space="preserve">
+    <value>MonthlyAir</value>
+  </data>
   <data name="MonthlyData" xml:space="preserve">
     <value>MonthlyData</value>
   </data>
@@ -164,6 +167,9 @@
   </data>
   <data name="MonthlyDataTechPlants" xml:space="preserve">
     <value>MonthlyDataTechPlants</value>
+  </data>
+  <data name="MonthlyNitrogen" xml:space="preserve">
+    <value>MonthlyNitrogen</value>
   </data>
   <data name="ShiftData" xml:space="preserve">
     <value>ShiftData</value>
