@@ -115,6 +115,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to MonthlyAir.
+        /// </summary>
+        public static string MonthlyAir {
+            get {
+                return ResourceManager.GetString("MonthlyAir", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to MonthlyData.
         /// </summary>
         public static string MonthlyData {
@@ -201,6 +210,15 @@ namespace App_GlobalResources.Resources {
         public static string MonthlyDataTechPlants {
             get {
                 return ResourceManager.GetString("MonthlyDataTechPlants", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MonthlyNitrogen.
+        /// </summary>
+        public static string MonthlyNitrogen {
+            get {
+                return ResourceManager.GetString("MonthlyNitrogen", resourceCulture);
             }
         }
         

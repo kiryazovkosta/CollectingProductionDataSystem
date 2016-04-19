@@ -104,6 +104,10 @@
                         <span class="label label-default pull-right" style="color:black;background-color:lightgray">Месечни данни</span>
                     </li>
                     <li style="background-color:#fbfaf9;">
+                        @Ajax.ActionLink(@Resources.HelpResource.MonthlyDataHydroCarbons, "MonthlyDataHydroCarbons", "Help", new { @class = "help-side-nav-main-items" },
+                                                          new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "pageHelp-content", LoadingElementId = "inprogress" })
+                    </li>
+                    <li style="background-color:#fbfaf9;">
                         @Ajax.ActionLink(@Resources.HelpResource.MonthlyDataFreshWater, "MonthlyDataFreshWater", "Help", new { @class = "help-side-nav-main-items" },
                                                           new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "pageHelp-content", LoadingElementId = "inprogress" })
                     </li>
@@ -125,6 +129,14 @@
                     </li>
                     <li>
                         @Ajax.ActionLink(@Resources.HelpResource.MonthlyDataElectricalEnergy, "MonthlyDataElectricalEnergy", "Help", new { @class = "help-side-nav-main-items" },
+                                                          new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "pageHelp-content", LoadingElementId = "inprogress" })
+                    </li>
+                    <li>
+                        @Ajax.ActionLink(@Resources.HelpResource.MonthlyAir, "MonthlyAir", "Help", new { @class = "help-side-nav-main-items" },
+                                                          new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "pageHelp-content", LoadingElementId = "inprogress" })
+                    </li>
+                    <li>
+                        @Ajax.ActionLink(@Resources.HelpResource.MonthlyNitrogen, "MonthlyNitrogen", "Help", new { @class = "help-side-nav-main-items" },
                                                           new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "pageHelp-content", LoadingElementId = "inprogress" })
                     </li>
                 </ul>
