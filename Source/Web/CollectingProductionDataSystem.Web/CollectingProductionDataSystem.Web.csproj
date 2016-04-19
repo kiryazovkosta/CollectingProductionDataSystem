@@ -313,6 +313,7 @@
     <Compile Include="Areas\MonthlyDataReporting\Models\IValuable.cs" />
     <Compile Include="Areas\MonthlyDataReporting\Models\MeasureUnitUnitMonthlyDataViewModel.cs" />
     <Compile Include="Areas\MonthlyDataReporting\Models\MonthlyReportParametersViewModel.cs" />
+    <Compile Include="Areas\MonthlyDataReporting\Models\MonthlyReportTableReportViewModel.cs" />
     <Compile Include="Areas\MonthlyDataReporting\Models\MonthlyReportTableViewModel.cs" />
     <Compile Include="Areas\MonthlyDataReporting\Models\MonthlyHydroCarbonViewModel.cs" />
     <Compile Include="Areas\MonthlyDataReporting\Models\MonthlyProductTypeViewModel.cs" />

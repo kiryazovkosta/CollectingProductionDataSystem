@@ -69,6 +69,10 @@ var unitGridsData = (function () {
                 kendoAdditional.RefreshGrid("#monthly-pw-units");
             }
 
+            if ($("#monthly-recalc-data-report").val() !== undefined) {
+                kendoAdditional.RefreshGrid("#monthly-recalc-data-report");
+            }
+
 
             if ($("#tanks-statuses").val() !== undefined) {
 
@@ -131,10 +135,10 @@ var unitGridsData = (function () {
                                 $('pre#succ-message').text(message);
                                 $('div#success-window').data("kendoWindow").open();
 
-                                //var reportButton = $("#report");
-                                //if (reportButton) {
-                                //    reportButton.show();
-                                //}
+                                var reportButton = $("#report");
+                                if (reportButton) {
+                                    reportButton.show();
+                                }
 
                             } else {
                                 if (data.errors) {
@@ -176,11 +180,13 @@ var unitGridsData = (function () {
 
         if ($("#report")) {
             $("#report").click(function () {
+                var dataParam = sendDate();
                 $.ajax({
                     url: 'Report',
                     type: 'POST',
                     data: dataParam,
-                    success: function (data) {
+                    success: function (response) {
+                        window.location.href = response.Url;
                     },
                     error: function (data) {
                     }
@@ -223,6 +229,18 @@ var unitGridsData = (function () {
         if (monthlyInnerPipelines) {
             attachEventToExportBtn("#excel-export", "#inner-pipes");
         }
+
+        var monthlyPWGrid = $('#monthly-pw-units').data('kendoGrid');
+        if (monthlyPWGrid) {
+            attachEventToExportBtn("#excel-export", "#monthly-pw-units");
+        }
+
+        var monthlyPWReportGrid = $('#monthly-recalc-data-report').data('kendoGrid');
+        if (monthlyPWReportGrid) {
+            attachEventToExportBtn("#excel-export", "#monthly-recalc-data-report");
+        }
+
+        
     }
 
     function checkEquals(dataParam, controlData) {
@@ -292,11 +310,6 @@ var unitGridsData = (function () {
                 confirmButton.hide();
             }
 
-            var reportButton = $("#report");
-            if (reportButton) {
-                reportButton.hide();
-            }
-
             var unitsGrids = $(".k-widget.k-grid");
             Array.prototype.forEach.call(unitsGrids, function (unitsGrid) {
                 unitsGrid = $(unitsGrid).data("kendoGrid");
@@ -304,6 +317,22 @@ var unitGridsData = (function () {
                     unitsGrid.hideColumn('commands');
                 }
             });
+
+            var grid = $("#monthly-pw-units").data('kendoGrid');
+            if (grid !== null) {
+                var count = grid.dataSource.total();
+                var reportButton = $("#report");
+                if (count === 0) {
+                    if (reportButton) {
+                        reportButton.hide();
+                    }
+                }
+                else {
+                    if (reportButton) {
+                        reportButton.show();
+                    }
+                }
+            }
         }
     }
 
@@ -311,6 +340,11 @@ var unitGridsData = (function () {
         var confirmButton = $("#confirm");
         if (confirmButton) {
             confirmButton.show();
+        }
+
+        var reportButton = $("#report");
+        if (reportButton) {
+            reportButton.show();
         }
 
         var unitsGrids = $(".k-widget.k-grid");

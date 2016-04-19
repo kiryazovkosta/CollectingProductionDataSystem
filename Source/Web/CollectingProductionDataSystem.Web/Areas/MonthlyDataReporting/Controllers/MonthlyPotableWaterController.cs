@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Data.Entity;
     using System.Linq;
     using System.Net;
     using System.Text;
@@ -45,6 +46,7 @@
         [ValidateAntiForgeryToken]
         public JsonResult ReadMonthlyPotableWaterData([DataSourceRequest]DataSourceRequest request, DateTime date)
         {
+
 
             if (!this.ModelState.IsValid)
             {
@@ -97,44 +99,45 @@
         [ValidateAntiForgeryToken]
         public JsonResult ReadMonthlyPotableWaterReport([DataSourceRequest]DataSourceRequest request, DateTime date)
         {
-
-            if (!this.ModelState.IsValid)
-            {
-                var kendoResult = new List<MonthlyReportTableViewModel>().ToDataSourceResult(request, ModelState);
-                return Json(kendoResult);
-            }
-
-            IEfStatus status = this.monthlyService.CalculateMonthlyDataIfNotAvailable(date, CommonConstants.PotableWater, this.UserProfile.UserName);
-
-            if (!status.IsValid)
-            {
-                status.ToModelStateErrors(this.ModelState);
-            }
-
             if (ModelState.IsValid)
             {
                 var kendoResult = new DataSourceResult();
-                if (ModelState.IsValid)
+                var potableWaterData = this.monthlyService.GetDataForMonth(date, CommonConstants.PotableWater).ToList();
+                var recalculatedPotableWater = potableWaterData.Where(x => x.UnitMonthlyConfig.IsTotalExternalOutputPosition == true).Sum(x => x.RealValue);
+                var innerPotableWater = potableWaterData.Where(x => x.UnitMonthlyConfig.IsTotalInputPosition == true && x.UnitMonthlyConfig.IsTotalPosition == true).Sum(x => x.RealValue);
+
+                var dbResult = potableWaterData.OrderBy(x => x.UnitMonthlyConfig.Code).ToList();
+                var vmResult = Mapper.Map<IEnumerable<MonthlyReportTableReportViewModel>>(dbResult);
+                foreach (var item in vmResult)
                 {
-                    var dbResult = this.monthlyService.GetDataForMonth(date, CommonConstants.PotableWater).OrderBy(x => x.UnitMonthlyConfig.Code).ToList();
-                    var vmResult = Mapper.Map<IEnumerable<MonthlyReportTableViewModel>>(dbResult);
-                    kendoResult = vmResult.ToDataSourceResult(request, ModelState);
+                    if (item.IsExternalOutputPosition == true)
+                    {
+                        item.RecalculationPercentage = 0;
+                        item.TotalValue = item.RealValue + item.RecalculationPercentage;
+                    }
+                    else
+                    {
+                        if (item.RealValue == 0)
+                        {
+                            item.RecalculationPercentage = 0;
+                            item.TotalValue = item.RealValue + item.RecalculationPercentage;
+                        }
+                        else
+                        {
+                            double percentages = item.RealValue / innerPotableWater;
+                            double recalulated = (recalculatedPotableWater * percentages) / 100.0;
+                            item.RecalculationPercentage = percentages;
+                            item.TotalValue = recalulated + item.RealValue;
+                        }
+                    }
                 }
-                Session["reportParams"] = Convert.ToBase64String(Encoding.UTF8.GetBytes(
-                                                                   JsonConvert.SerializeObject(
-                                                                       new ConfirmMonthlyInputModel()
-                                                                       {
-                                                                           date = date,
-                                                                           monthlyReportTypeId = CommonConstants.PotableWater,
-                                                                       }
-                                                                   )
-                                                               )
-                                                           );
+
+                kendoResult = vmResult.ToDataSourceResult(request, ModelState);
                 return Json(kendoResult);
             }
             else
             {
-                var kendoResult = new List<MonthlyReportTableViewModel>().ToDataSourceResult(request, ModelState);
+                var kendoResult = new List<MonthlyReportTableReportViewModel>().ToDataSourceResult(request, ModelState);
                 return Json(kendoResult);
             }
         }
@@ -235,18 +238,26 @@
         {
             if (this.ModelState.IsValid)
             {
-                return Json(new { IsConfirmed = this.monthlyService.IsMonthlyReportConfirmed(date, monthlyReportTypeId) });
+                if (this.monthlyService.IsMonthlyReportConfirmed(date, CommonConstants.PotableWater) == false)
+                {
+                    if (this.monthlyService.GetDataForMonth(date, CommonConstants.PotableWater).Any())
+                    {
+                        return Json(new { IsConfirmed = false });
+                    }
+                }
+
+                return Json(new { IsConfirmed = true });
             }
             else
             {
-                return Json(new { IsConfirmed = false });
+                return Json(new { IsConfirmed = true });
             }
         }
 
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public virtual ActionResult Confirm(ConfirmMonthlyInputModel model)
+        public ActionResult Confirm(ConfirmMonthlyInputModel model)
         {
             ValidateModelAgainstReportPatameters(this.ModelState, model, Session["reportParams"]);
 
@@ -289,39 +300,15 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public virtual ActionResult Report(ConfirmMonthlyInputModel model)
+        public ActionResult Report(ConfirmMonthlyInputModel model)
         {
-            //ValidateModelAgainstReportPatameters(this.ModelState, model, Session["reportParams"]);
-
             if (ModelState.IsValid)
             {
-                //var targetMonth = this.monthlyService.GetTargetMonth(model.date);
-                //var approvedMonth = this.data.UnitApprovedMonthlyDatas
-                //   .All()
-                //   .Where(u => u.RecordDate == targetMonth && u.MonthlyReportTypeId == model.monthlyReportTypeId)
-                //   .FirstOrDefault();
-                //if (approvedMonth == null)
-                //{
-                //    this.data.UnitApprovedMonthlyDatas.Add(
-                //        new UnitApprovedMonthlyData
-                //        {
-                //            RecordDate = targetMonth,
-                //            MonthlyReportTypeId = model.monthlyReportTypeId,
-                //            Approved = true
-                //        });
+                var redirectUrl = new UrlHelper(Request.RequestContext).Action("MonthlyPotableWaterReport", "MonthlyPotableWater", new { reportId = CommonConstants.PotableWater });
+                return Json(new { Url = redirectUrl });
 
-                //    var result = this.data.SaveChanges(this.UserProfile.UserName);
 
-                //    return Json(new { IsReported = result.IsValid }, JsonRequestBehavior.AllowGet);
-                //}
-                //else
-                //{
-                //    ModelState.AddModelError("unitsapproveddata", "Месечните данни вече са потвърдени");
-                //    Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                //    var errors = GetErrorListFromModelState(ModelState);
-                //    return Json(new { data = new { errors = errors } });
-                //}
-                return RedirectToAction("MonthlyPotableWaterReport");
+                //return RedirectToAction("MonthlyPotableWaterReport", "MonthlyPotableWater", new { area = "MonthlyDataReporting", ReportId = CommonConstants.PotableWater });
             }
             else
             {
