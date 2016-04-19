@@ -163,6 +163,22 @@
                 </ul>
             </div>
         </li>
+        <li>
+            <div role="tab" id="collapseListGroupHeading15">
+                <a class="help-side-nav-main" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseListGroup15" aria-expanded="true" aria-controls="collapseListGroup15">
+                    <span>@Resources.HelpResource.HelpNomenclature</span>
+                </a>
+                <div class="green-edge-image"></div>
+            </div>
+            <div id="collapseListGroup15" class="panel-collapse collapse" role="tabpanel" aria-labelledby="collapseListGroupHeading15" aria-expanded="false">
+                <ul>
+                    <li>
+                        @Ajax.ActionLink(@Resources.HelpResource.HelpNomenclature, "HelpNomenclature", "Help", new { @class = "help-side-nav-main-items" },
+                                                          new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "pageHelp-content", LoadingElementId = "inprogress" })
+                    </li>
+                </ul>
+            </div>
+        </li>
     </ul>
 </div>
 

@@ -692,6 +692,14 @@
     <Content Include="Content\Images\MonthlyData\Фигура107.jpg" />
     <Content Include="Content\Images\MonthlyData\Фигура108.jpg" />
     <Content Include="Content\Images\MonthlyData\Фигура109.jpg" />
+    <Content Include="Content\Images\Nomenclature\Figua183.png" />
+    <Content Include="Content\Images\Nomenclature\Figua184.png" />
+    <Content Include="Content\Images\Nomenclature\Figura185.png" />
+    <Content Include="Content\Images\Nomenclature\Figura186.png" />
+    <Content Include="Content\Images\Nomenclature\Figura187.png" />
+    <Content Include="Content\Images\Nomenclature\Figura189.png" />
+    <Content Include="Content\Images\Nomenclature\Iztriv.png" />
+    <Content Include="Content\Images\Nomenclature\Redakt.png" />
     <Content Include="Content\Images\ok.png" />
     <Content Include="Content\Images\pdf-download.png" />
     <Content Include="Content\Images\PNG\128x128\Cancel2.png" />
