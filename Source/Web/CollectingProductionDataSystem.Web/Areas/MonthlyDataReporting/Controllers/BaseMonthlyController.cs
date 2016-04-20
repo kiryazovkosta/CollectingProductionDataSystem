@@ -14,6 +14,7 @@ using CollectingProductionDataSystem.Data.Contracts;
 using CollectingProductionDataSystem.Models.Productions.Mounthly;
 using CollectingProductionDataSystem.Web.Areas.MonthlyDataReporting.Models;
 using CollectingProductionDataSystem.Web.Infrastructure.Extentions;
+using CollectingProductionDataSystem.Web.Infrastructure.Filters;
 using Kendo.Mvc.Extensions;
 using Kendo.Mvc.UI;
 using Newtonsoft.Json;
@@ -48,14 +49,24 @@ namespace CollectingProductionDataSystem.Web.Areas.MonthlyDataReporting.Controll
         }
 
         [HttpGet]
-        public ActionResult Report()
+        [SummaryReportAuthorize]
+        public virtual ActionResult Report(bool? isReport)
         {
-                return View(modelParams.DefaultView, modelParams);
+            if (isReport != null)
+            {
+                this.TempData["isReport"] = isReport;
+            }
+            else
+            {
+                this.TempData["isReport"] = false;
+            }
+            return View(modelParams.DefaultView, modelParams);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public JsonResult ReadMonthlyUnitsData([DataSourceRequest]DataSourceRequest request, DateTime date)
+        [SummaryReportFilter]
+        public JsonResult ReadMonthlyUnitsData([DataSourceRequest]DataSourceRequest request, DateTime date, bool? isReport)
         {
 
             if (!this.ModelState.IsValid)
@@ -191,11 +202,19 @@ namespace CollectingProductionDataSystem.Web.Areas.MonthlyDataReporting.Controll
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult IsConfirmed(DateTime date, int monthlyReportTypeId)
+        [SummaryReportFilter]
+        public ActionResult IsConfirmed(DateTime date, int monthlyReportTypeId, bool? isReport)
         {
             if (this.ModelState.IsValid)
             {
-                return Json(new { IsConfirmed = this.monthlyService.IsMonthlyReportConfirmed(date, monthlyReportTypeId) });
+                if (isReport == null || isReport.Value == false)
+                {
+                    return Json(new { IsConfirmed = this.monthlyService.IsMonthlyReportConfirmed(date, monthlyReportTypeId) });
+                }
+                else
+                {
+                    return Json(new { IsConfirmed = true });
+                }
             }
             else
             {

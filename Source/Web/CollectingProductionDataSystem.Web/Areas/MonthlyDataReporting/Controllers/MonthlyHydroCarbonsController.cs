@@ -6,6 +6,7 @@
     using CollectingProductionDataSystem.Data.Contracts;
     using CollectingProductionDataSystem.Web.Areas.MonthlyDataReporting.Models;
     using System.Web.Mvc;
+    using CollectingProductionDataSystem.Web.Infrastructure.Filters;
     using Resources = App_GlobalResources.Resources;
 
     [Authorize(Roles = "Administrator, MonthlyHydroCarbonsReporter")]

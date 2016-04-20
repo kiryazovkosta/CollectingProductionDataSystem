@@ -444,6 +444,8 @@
     <Compile Include="Areas\SummaryReporting\ViewModels\SummaryProductionPlanViewModel.cs" />
     <Compile Include="Areas\SummaryReporting\ViewModels\WeightInVacuumDto.cs" />
     <Compile Include="Areas\SummaryReporting\ViewModels\TankWeighInVacuumViewModel.cs" />
+    <Compile Include="Infrastructure\Filters\SummaryReportAuthorizeAttribute.cs" />
+    <Compile Include="Infrastructure\Filters\SummaryReportFilterAttribute.cs" />
     <Compile Include="Infrastructure\Helpers\ProgressRegistrator.cs" />
     <Compile Include="ViewModels\Transactions\TransactionDataModel.cs" />
     <Compile Include="Controllers\AccountController.cs">
