@@ -314,6 +314,7 @@
     <Compile Include="Areas\MonthlyDataReporting\Models\IValuable.cs" />
     <Compile Include="Areas\MonthlyDataReporting\Models\MeasureUnitUnitMonthlyDataViewModel.cs" />
     <Compile Include="Areas\MonthlyDataReporting\Models\MonthlyReportParametersViewModel.cs" />
+    <Compile Include="Areas\MonthlyDataReporting\Models\MonthlyReportTableReportViewModel.cs" />
     <Compile Include="Areas\MonthlyDataReporting\Models\MonthlyReportTableViewModel.cs" />
     <Compile Include="Areas\MonthlyDataReporting\Models\MonthlyHydroCarbonViewModel.cs" />
     <Compile Include="Areas\MonthlyDataReporting\Models\MonthlyProductTypeViewModel.cs" />
@@ -1396,6 +1397,8 @@
     <Content Include="Areas\Documentation\Views\Help\MonthlyAir.cshtml" />
     <Content Include="Areas\Documentation\Views\Help\MonthlyNitrogen.cshtml" />
     <Content Include="Areas\ManagementDashBoard\Views\Dashboard\ReloadTabContent.cshtml" />
+    <Content Include="Areas\MonthlyDataReporting\Views\MonthlyChemicalClearedWater\MonthlyChemicalClearedWaterData.cshtml" />
+    <Content Include="Areas\MonthlyDataReporting\Views\MonthlyChemicalClearedWater\MonthlyChemicalClearedWaterReport.cshtml" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <None Include="Properties\PublishProfiles\Home.pubxml" />
     <Content Include="Scripts\custom\sendArea.js" />
@@ -2105,7 +2108,6 @@
     <Folder Include="Areas\ManagementDashBoard\Views\AreaBase\" />
     <Folder Include="Areas\MonthlyDataReporting\Views\GenericMonthly\" />
     <Folder Include="Areas\MonthlyDataReporting\Views\MonthlyAir\" />
-    <Folder Include="Areas\MonthlyDataReporting\Views\MonthlyChemicalClearedWater\" />
     <Folder Include="Areas\MonthlyDataReporting\Views\MonthlyChemical\" />
     <Folder Include="Areas\MonthlyDataReporting\Views\MonthlyCirculatingWater\" />
     <Folder Include="Areas\MonthlyDataReporting\Views\MonthlyElectricalEnergy\" />

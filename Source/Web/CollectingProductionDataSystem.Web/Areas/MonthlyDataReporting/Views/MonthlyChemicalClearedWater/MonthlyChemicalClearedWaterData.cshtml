@@ -9,13 +9,13 @@
 }
 <div class="row">
     <div class="col-md-10">
-        <h2>@Resources.Layout.UnitMonthlyPWData</h2>
+        <h2>@Resources.Layout.UnitMonthlyCCWData</h2>
     </div>
     <div class="col-md-2">
         <button id="excel-export" class="k-button k-button-icontext k-grid-excel pull-right head-button"><span class="k-icon k-i-excel"></span>Експорт в Excel</button>
     </div>
 </div>
-@Html.Hidden("monthlyReportTypeId", CommonConstants.PotableWater)
+@Html.Hidden("monthlyReportTypeId", CommonConstants.ChemicalClearedWater)
 @Html.ValidationSummary()
 @Html.AntiForgeryToken()
 @(Html.Kendo()
@@ -81,8 +81,8 @@
                 group.Add(c => c.UnitMonthlyConfig.ProcessUnit.Factory.FactorySortableName);
             })
 
-            .Read(read => read.Action("ReadMonthlyPotableWaterData", "MonthlyPotableWater", new { area = "MonthlyDataReporting" }).Data("unitGridsData.SendDate").Type(HttpVerbs.Post))
-            .Update(update => update.Action("Edit", "MonthlyPotableWater", new { area = "MonthlyDataReporting" }).Data("sendAntiForgery"))
+                    .Read(read => read.Action("ReadMonthlyChemicalClearedWaterData", "MonthlyChemicalClearedWater", new { area = "MonthlyDataReporting" }).Data("unitGridsData.SendDate").Type(HttpVerbs.Post))
+                .Update(update => update.Action("Edit", "MonthlyChemicalClearedWater", new { area = "MonthlyDataReporting" }).Data("sendAntiForgery"))
             .Model(model =>
             {
                 model.Id(p => p.Id);

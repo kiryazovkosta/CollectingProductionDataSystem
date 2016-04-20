@@ -15,7 +15,7 @@
         <button id="excel-export" class="k-button k-button-icontext k-grid-excel pull-right head-button"><span class="k-icon k-i-excel"></span>Експорт в Excel</button>
     </div>
 </div>
-@Html.Hidden("monthlyReportTypeId", CommonConstants.PotableWater)
+@Html.Hidden("monthlyReportTypeId", CommonConstants.ChemicalClearedWater)
 @Html.ValidationSummary()
 @Html.AntiForgeryToken()
 @(Html.Kendo()
@@ -70,7 +70,7 @@
                 group.Add(c => c.UnitMonthlyConfig.ProductType.SortableName);
                 group.Add(c => c.UnitMonthlyConfig.ProcessUnit.Factory.FactorySortableName);
             })
-            .Read(read => read.Action("ReadMonthlyPotableWaterReport", "MonthlyPotableWater", new { area = "MonthlyDataReporting" }).Data("unitGridsData.SendDate").Type(HttpVerbs.Post))
+                    .Read(read => read.Action("ReadMonthlyChemicalClearedWaterReport", "MonthlyChemicalClearedWater", new { area = "MonthlyDataReporting" }).Data("unitGridsData.SendDate").Type(HttpVerbs.Post))
             .Events(events =>
             {
                 events.Error("kendoAdditional.ErrorHandler");
