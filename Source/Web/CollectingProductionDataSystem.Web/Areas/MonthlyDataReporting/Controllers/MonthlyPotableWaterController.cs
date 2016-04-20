@@ -39,7 +39,7 @@
         [HttpGet]
         public ActionResult MonthlyPotableWaterData()
         {
-                return View();
+            return View();
         }
 
         [HttpPost]
@@ -90,9 +90,9 @@
         }
 
         [HttpGet]
-        public ActionResult MonthlyPotableWaterReport()
+        public ActionResult MonthlyPotableWaterReport(DateTime? reportDate)
         {
-                return View();
+            return View(reportDate);
         }
 
         [HttpPost]
@@ -300,19 +300,9 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Report(ConfirmMonthlyInputModel model)
+        public ActionResult Report(DateTime? date)
         {
-            if (ModelState.IsValid)
-            {
-                var redirectUrl = new UrlHelper(Request.RequestContext).Action("MonthlyPotableWaterReport", "MonthlyPotableWater", new { area = "MonthlyDataReporting" });
-                return Json(new { Url = redirectUrl });
-            }
-            else
-            {
-                Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                var errors = GetErrorListFromModelState(ModelState);
-                return Json(new { data = new { errors = errors } });
-            }
+            return RedirectToAction("MonthlyPotableWaterReport", new { reportDate = date });
         }
 
         /// <summary>

@@ -14,7 +14,7 @@ namespace CollectingProductionDataSystem.Web.Infrastructure.Filters
             AuthorizeAttribute filter = new AuthorizeAttribute();
             foreach (var attribute in attributes)
             {
-                if (attribute.GetType() is AuthorizeAttribute)
+                if (attribute is AuthorizeAttribute)
                 {
                     filter = attribute as AuthorizeAttribute;
                     break;
