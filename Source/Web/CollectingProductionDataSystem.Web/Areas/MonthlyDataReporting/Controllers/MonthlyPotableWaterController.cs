@@ -304,11 +304,8 @@
         {
             if (ModelState.IsValid)
             {
-                var redirectUrl = new UrlHelper(Request.RequestContext).Action("MonthlyPotableWaterReport", "MonthlyPotableWater", new { reportId = CommonConstants.PotableWater });
+                var redirectUrl = new UrlHelper(Request.RequestContext).Action("MonthlyPotableWaterReport", "MonthlyPotableWater", new { area = "MonthlyDataReporting" });
                 return Json(new { Url = redirectUrl });
-
-
-                //return RedirectToAction("MonthlyPotableWaterReport", "MonthlyPotableWater", new { area = "MonthlyDataReporting", ReportId = CommonConstants.PotableWater });
             }
             else
             {

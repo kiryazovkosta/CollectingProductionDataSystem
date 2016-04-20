@@ -110,7 +110,9 @@
                 var vmResult = Mapper.Map<IEnumerable<MonthlyReportTableReportViewModel>>(dbResult);
                 foreach (var item in vmResult)
                 {
-                    if (item.IsExternalOutputPosition == true)
+                    if (item.IsExternalOutputPosition == true 
+                        || item.IsTotalInputPosition == true 
+                        || item.IsTotalExternalOutputPosition == true)
                     {
                         item.RecalculationPercentage = 0;
                         item.TotalValue = item.RealValue + item.RecalculationPercentage;
@@ -304,7 +306,7 @@
         {
             if (ModelState.IsValid)
             {
-                var redirectUrl = new UrlHelper(Request.RequestContext).Action("ReadMonthlyChemicalClearedWaterReport", "MonthlyChemicalClearedWater", new { reportId = CommonConstants.ChemicalClearedWater });
+                var redirectUrl = new UrlHelper(Request.RequestContext).Action("MonthlyChemicalClearedWaterReport", "MonthlyChemicalClearedWater", new { area = "MonthlyDataReporting" });
                 return Json(new { Url = redirectUrl });
             }
             else
