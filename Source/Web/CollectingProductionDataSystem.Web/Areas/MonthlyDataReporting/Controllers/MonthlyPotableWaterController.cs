@@ -91,8 +91,17 @@
         }
 
         [HttpGet]
-        public ActionResult MonthlyPotableWaterReport(DateTime? reportDate)
+        [SummaryReportFilter]
+        public ActionResult MonthlyPotableWaterReport(DateTime? reportDate,  bool? isReport)
         {
+            if (isReport != null)
+            {
+                this.TempData["isReport"] = isReport;
+            }
+            else
+            {
+                this.TempData["isReport"] = false;
+            }
             return View(reportDate);
         }
 
