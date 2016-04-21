@@ -178,23 +178,6 @@ var unitGridsData = (function () {
             });
         }
 
-        //if ($("#report")) {
-        //    $("#report").click(function () {
-        //        var dataParam = sendDate();
-        //        $.ajax({
-        //            url: 'Report',
-        //            type: 'POST',
-        //            data: dataParam,
-        //            success: function (response) {
-        //                window.location.href = response.Url;
-        //            },
-        //            error: function (data) {
-        //            }
-        //        });
-        //    });
-        //}
-
-
     });
 
     //------------------ private functions ------------------------------------

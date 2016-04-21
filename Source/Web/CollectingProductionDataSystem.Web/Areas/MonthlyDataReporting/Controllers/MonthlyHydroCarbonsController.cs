@@ -9,7 +9,7 @@
     using CollectingProductionDataSystem.Web.Infrastructure.Filters;
     using Resources = App_GlobalResources.Resources;
 
-    [Authorize(Roles = "Administrator, MonthlyHydroCarbonsReporter")]
+    [Authorize(Roles = "Administrator, MonthlyHydroCarbonsReporter,SummaryReporter")]
     public class MonthlyHydroCarbonsController : BaseMonthlyController
     {
         public MonthlyHydroCarbonsController(IProductionData dataParam, IUnitMothlyDataService monthlyServiceParam) 
