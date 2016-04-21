@@ -22,12 +22,13 @@
     using CollectingProductionDataSystem.Models.Productions.Mounthly;
     using System.ComponentModel.DataAnnotations;
     using System.Data.Entity.Infrastructure;
+    using CollectingProductionDataSystem.Web.Infrastructure.Filters;
 
     [Authorize(Roles = "Administrator, MonthlyPotableWaterReporter, SummaryReporter")]
     public class MonthlyPotableWaterController : AreaBaseController
     {
         private readonly IUnitMothlyDataService monthlyService;
-        private readonly TransactionOptions transantionOption;
+        private readonly TransactionOptions transantionOption;  
 
         public MonthlyPotableWaterController(IProductionData dataParam, IUnitMothlyDataService monthlyServiceParam)
             : base(dataParam)
@@ -97,8 +98,25 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public JsonResult ReadMonthlyPotableWaterReport([DataSourceRequest]DataSourceRequest request, DateTime date)
+        [SummaryReportFilter]
+        public JsonResult ReadMonthlyPotableWaterReport([DataSourceRequest]DataSourceRequest request, DateTime date, bool? isReport)
         {
+            if (!this.ModelState.IsValid)
+            {
+                var kendoResult = new List<MonthlyReportTableViewModel>().ToDataSourceResult(request, ModelState);
+                return Json(kendoResult);
+            }
+
+            if (isReport ?? false)
+            {
+                if (!this.monthlyService.IsMonthlyReportConfirmed(date, CommonConstants.PotableWater))
+                {
+                    this.ModelState.AddModelError(string.Empty, string.Format(@Resources.ErrorMessages.MonthIsNotConfirmed, date.ToString("MMMM yyyy")));
+                    var kendoResult = new List<MonthlyReportTableReportViewModel>().ToDataSourceResult(request, ModelState);
+                    return Json(kendoResult);
+                }
+            }
+
             if (ModelState.IsValid)
             {
                 var kendoResult = new DataSourceResult();

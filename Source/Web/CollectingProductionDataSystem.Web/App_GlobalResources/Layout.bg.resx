@@ -1664,4 +1664,7 @@
   <data name="RecalculationPercentage" xml:space="preserve">
     <value>Процент на преизчисление</value>
   </data>
+  <data name="TotalValue" xml:space="preserve">
+    <value>Общо</value>
+  </data>
 </root>
