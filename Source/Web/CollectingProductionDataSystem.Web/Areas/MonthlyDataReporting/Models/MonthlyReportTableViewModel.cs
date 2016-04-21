@@ -50,6 +50,10 @@
                 {
                     result = ((measured - inventory) / measured) * 100;
                 }
+                else
+                {
+                    result = ((measured - inventory) / 1) * 100;
+                }
                 return result;
             }
         }
