@@ -3193,6 +3193,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to RecalculationPercentage.
+        /// </summary>
+        public static string RecalculationPercentage {
+            get {
+                return ResourceManager.GetString("RecalculationPercentage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Record Timestamp.
         /// </summary>
         public static string RecordTimestamp {

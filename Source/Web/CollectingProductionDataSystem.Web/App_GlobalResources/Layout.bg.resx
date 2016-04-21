@@ -1661,4 +1661,7 @@
   <data name="IsTotalInternalPosition" xml:space="preserve">
     <value>Общо вътрешни консуматори</value>
   </data>
+  <data name="RecalculationPercentage" xml:space="preserve">
+    <value>Процент на преизчисление</value>
+  </data>
 </root>

@@ -302,19 +302,9 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Report(ConfirmMonthlyInputModel model)
+        public ActionResult Report(DateTime? date)
         {
-            if (ModelState.IsValid)
-            {
-                var redirectUrl = new UrlHelper(Request.RequestContext).Action("MonthlyChemicalClearedWaterReport", "MonthlyChemicalClearedWater", new { area = "MonthlyDataReporting" });
-                return Json(new { Url = redirectUrl });
-            }
-            else
-            {
-                Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                var errors = GetErrorListFromModelState(ModelState);
-                return Json(new { data = new { errors = errors } });
-            }
+            return RedirectToAction("MonthlyChemicalClearedWaterReport", new { reportDate = date });
         }
 
         /// <summary>
