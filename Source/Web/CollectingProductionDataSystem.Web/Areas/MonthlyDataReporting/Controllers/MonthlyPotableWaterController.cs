@@ -104,13 +104,13 @@
                 var kendoResult = new DataSourceResult();
                 var potableWaterData = this.monthlyService.GetDataForMonth(date, CommonConstants.PotableWater).ToList();
                 var recalculatedPotableWater = potableWaterData.Where(x => x.UnitMonthlyConfig.IsTotalExternalOutputPosition == true).Sum(x => x.RealValue);
-                var innerPotableWater = potableWaterData.Where(x => x.UnitMonthlyConfig.IsTotalInputPosition == true && x.UnitMonthlyConfig.IsTotalPosition == true).Sum(x => x.RealValue);
+                var innerPotableWater = potableWaterData.Where(x => x.UnitMonthlyConfig.IsTotalInternalPosition == true && x.UnitMonthlyConfig.IsTotalPosition == true).Sum(x => x.RealValue);
 
                 var dbResult = potableWaterData.OrderBy(x => x.UnitMonthlyConfig.Code).ToList();
                 var vmResult = Mapper.Map<IEnumerable<MonthlyReportTableReportViewModel>>(dbResult);
                 foreach (var item in vmResult)
                 {
-                    if (item.IsExternalOutputPosition == true)
+                    if (item.IsExternalOutputPosition == true || item.IsTotalInputPosition || item.IsTotalInternalPosition || item.IsTotalExternalOutputPosition)
                     {
                         item.RecalculationPercentage = 0;
                         item.TotalValue = item.RealValue + item.RecalculationPercentage;

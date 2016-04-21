@@ -1663,4 +1663,7 @@
   <data name="UnitMonthlyCHData" xml:space="preserve">
     <value>UnitMonthlyCHData</value>
   </data>
+  <data name="IsTotalInternalPosition" xml:space="preserve">
+    <value>IsTotalInternalPosition</value>
+  </data>
 </root>
