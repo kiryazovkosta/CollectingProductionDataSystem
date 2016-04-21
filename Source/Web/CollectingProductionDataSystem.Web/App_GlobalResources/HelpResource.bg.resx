@@ -144,6 +144,9 @@
   <data name="MonthlyDataChemicalClearWater" xml:space="preserve">
     <value>Месечни данни за химически очистена вода</value>
   </data>
+  <data name="MonthlyDataChemicals" xml:space="preserve">
+    <value>Месечни данни за химикали</value>
+  </data>
   <data name="MonthlyDataCircularWater" xml:space="preserve">
     <value>Месечни данни за оборотна вода</value>
   </data>

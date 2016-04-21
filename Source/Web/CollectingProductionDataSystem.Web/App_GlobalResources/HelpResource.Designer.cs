@@ -142,6 +142,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to MonthlyDataChemicals.
+        /// </summary>
+        public static string MonthlyDataChemicals {
+            get {
+                return ResourceManager.GetString("MonthlyDataChemicals", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to MonthlyDataCircularWater.
         /// </summary>
         public static string MonthlyDataCircularWater {

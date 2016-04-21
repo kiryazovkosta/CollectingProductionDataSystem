@@ -144,6 +144,9 @@
   <data name="MonthlyDataChemicalClearWater" xml:space="preserve">
     <value>MonthlyDataChemicalClearWater</value>
   </data>
+  <data name="MonthlyDataChemicals" xml:space="preserve">
+    <value>MonthlyDataChemicals</value>
+  </data>
   <data name="MonthlyDataCircularWater" xml:space="preserve">
     <value>MonthlyDataCircularWater</value>
   </data>

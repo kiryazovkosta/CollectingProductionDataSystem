@@ -121,5 +121,9 @@ namespace CollectingProductionDataSystem.Web.Areas.Documentation.Controllers
         {
             return PartialView();
         }  
+         public PartialViewResult MonthlyDataChemicals()
+              {
+                    return PartialView();
+              }
     }
 }

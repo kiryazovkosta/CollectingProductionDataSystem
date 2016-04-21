@@ -107,7 +107,11 @@
                         @Ajax.ActionLink(@Resources.HelpResource.MonthlyDataHydroCarbons, "MonthlyDataHydroCarbons", "Help", new { @class = "help-side-nav-main-items" },
                                                           new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "pageHelp-content", LoadingElementId = "inprogress" })
                     </li>
-                    <li style="background-color:#fbfaf9;">
+                    <li>
+                        @Ajax.ActionLink(@Resources.HelpResource.MonthlyDataChemicals, "MonthlyDataChemicals", "Help", new { @class = "help-side-nav-main-items" },
+                                                          new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "pageHelp-content", LoadingElementId = "inprogress" })
+                    </li>
+                    <li>
                         @Ajax.ActionLink(@Resources.HelpResource.MonthlyDataFreshWater, "MonthlyDataFreshWater", "Help", new { @class = "help-side-nav-main-items" },
                                                           new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "pageHelp-content", LoadingElementId = "inprogress" })
                     </li>

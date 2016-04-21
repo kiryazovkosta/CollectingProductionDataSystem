@@ -643,6 +643,11 @@
     <Content Include="Content\Images\MonthlyData\MonthlyDataAir\Figura197.png" />
     <Content Include="Content\Images\MonthlyData\MonthlyDataAir\Figura198.png" />
     <Content Include="Content\Images\MonthlyData\MonthlyDataAir\Redakt.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataChemicals\Figura200.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataChemicals\Figura201.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataChemicals\Figura202.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataChemicals\Figura203.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataChemicals\Figura204.png" />
     <Content Include="Content\Images\MonthlyData\MonthlyDataChemical\Figura167.png" />
     <Content Include="Content\Images\MonthlyData\MonthlyDataChemical\Figura168.png" />
     <Content Include="Content\Images\MonthlyData\MonthlyDataChemical\Figura169.png" />
@@ -698,10 +703,17 @@
     <Content Include="Content\Images\MonthlyData\Фигура109.jpg" />
     <Content Include="Content\Images\Nomenclature\Figua183.png" />
     <Content Include="Content\Images\Nomenclature\Figua184.png" />
+    <Content Include="Content\Images\Nomenclature\Figua206.png" />
+    <Content Include="Content\Images\Nomenclature\Figua207.png" />
+    <Content Include="Content\Images\Nomenclature\Figua209.png" />
+    <Content Include="Content\Images\Nomenclature\Figua210.png" />
     <Content Include="Content\Images\Nomenclature\Figura185.png" />
     <Content Include="Content\Images\Nomenclature\Figura186.png" />
     <Content Include="Content\Images\Nomenclature\Figura187.png" />
+    <Content Include="Content\Images\Nomenclature\Figura188.png" />
     <Content Include="Content\Images\Nomenclature\Figura189.png" />
+    <Content Include="Content\Images\Nomenclature\Figura190.png" />
+    <Content Include="Content\Images\Nomenclature\Figura205.png" />
     <Content Include="Content\Images\Nomenclature\Iztriv.png" />
     <Content Include="Content\Images\Nomenclature\Redakt.png" />
     <Content Include="Content\Images\ok.png" />
@@ -1399,6 +1411,7 @@
     <Content Include="Areas\ManagementDashBoard\Views\Dashboard\ReloadTabContent.cshtml" />
     <Content Include="Areas\MonthlyDataReporting\Views\MonthlyChemicalClearedWater\MonthlyChemicalClearedWaterData.cshtml" />
     <Content Include="Areas\MonthlyDataReporting\Views\MonthlyChemicalClearedWater\MonthlyChemicalClearedWaterReport.cshtml" />
+    <Content Include="Areas\Documentation\Views\Help\MonthlyDataChemicals.cshtml" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <None Include="Properties\PublishProfiles\Home.pubxml" />
     <Content Include="Scripts\custom\sendArea.js" />
