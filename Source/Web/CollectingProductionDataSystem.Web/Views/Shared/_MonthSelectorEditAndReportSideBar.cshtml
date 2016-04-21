@@ -1,8 +1,8 @@
 ﻿@using Resources = App_GlobalResources.Resources;
 @Html.Hidden("user", User.Identity.Name)
 @Html.Partial("_ControlParams")
-
-@using (Html.BeginForm("Report", "MonthlyPotableWater", new { area = "MonthlyDataReporting" }, FormMethod.Post, null))
+@model string
+@using (Html.BeginForm("Report", Model, new { area = "MonthlyDataReporting" }, FormMethod.Post, null))
 {
     @Html.AntiForgeryToken()
     
