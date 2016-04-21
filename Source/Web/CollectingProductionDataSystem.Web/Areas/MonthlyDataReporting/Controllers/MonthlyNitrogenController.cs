@@ -11,7 +11,7 @@
     using CollectingProductionDataSystem.Web.Areas.MonthlyDataReporting.Models;
     using Resources = App_GlobalResources.Resources;
 
-    [Authorize(Roles = "Administrator, MonthlyNitrogenReporter")]
+    [Authorize(Roles = "Administrator, MonthlyNitrogenReporter, SummaryReporter")]
     public class MonthlyNitrogenController : BaseMonthlyController
     {
         public MonthlyNitrogenController(IProductionData dataParam, IUnitMothlyDataService monthlyServiceParam)

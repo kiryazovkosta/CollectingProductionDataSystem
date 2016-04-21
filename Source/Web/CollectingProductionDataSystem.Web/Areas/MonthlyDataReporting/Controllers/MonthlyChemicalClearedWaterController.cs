@@ -23,7 +23,7 @@
     using System.Data.Entity.Infrastructure;
     using System.Net;
 
-    [Authorize(Roles = "Administrator, MonthlyChemicalClearedWaterReporter")]
+    [Authorize(Roles = "Administrator, MonthlyChemicalClearedWaterReporter, SummaryReporter")]
     public class MonthlyChemicalClearedWaterController : AreaBaseController
     {
         private readonly IUnitMothlyDataService monthlyService;

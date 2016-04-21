@@ -75,6 +75,16 @@ namespace CollectingProductionDataSystem.Web.Areas.MonthlyDataReporting.Controll
                 return Json(kendoResult);
             }
 
+            if (isReport ?? false)
+            {
+                if (!this.monthlyService.IsMonthlyReportConfirmed(date, this.modelParams.MonthlyReportTypeId))
+                {
+                    this.ModelState.AddModelError(string.Empty, string.Format(@Resources.ErrorMessages.MonthIsNotConfirmed, date.ToString("MMMM yyyy")));
+                    var kendoResult = new List<MonthlyReportTableViewModel>().ToDataSourceResult(request, ModelState);
+                    return Json(kendoResult);
+                }
+            }
+
             IEfStatus status = this.monthlyService.CalculateMonthlyDataIfNotAvailable(date, this.modelParams.MonthlyReportTypeId, this.UserProfile.UserName);
 
             if (!status.IsValid)

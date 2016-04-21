@@ -13,37 +13,37 @@ namespace CollectingProductionDataSystem.Web.Infrastructure.Filters
         public override void OnAuthorization(AuthorizationContext filterContext)
         {
             base.OnAuthorization(filterContext);
-            var attributes = filterContext.ActionDescriptor.ControllerDescriptor.GetCustomAttributes(true);
-            AuthorizeAttribute filter = new AuthorizeAttribute();
-            foreach (var attribute in attributes)
-            {
-                if (attribute is AuthorizeAttribute)
-                {
-                    filter = attribute as AuthorizeAttribute;
-                    break;
-                }
-            }
+            //var attributes = filterContext.ActionDescriptor.ControllerDescriptor.GetCustomAttributes(true);
+            //AuthorizeAttribute filter = new AuthorizeAttribute();
+            //foreach (var attribute in attributes)
+            //{
+            //    if (attribute is AuthorizeAttribute)
+            //    {
+            //        filter = attribute as AuthorizeAttribute;
+            //        break;
+            //    }
+            //}
 
-            var rolesAllowed = filter.Roles.Split(",".ToArray<char>(), StringSplitOptions.RemoveEmptyEntries);
+            //var rolesAllowed = filter.Roles.Split(",".ToArray<char>(), StringSplitOptions.RemoveEmptyEntries);
 
-            foreach (var roleName in rolesAllowed)
-            {
-                roleName = roleName.Trim();
-            }
+            //for (int i = 0; i < rolesAllowed.Count(); i++)
+            //{
+            //    rolesAllowed[i] = rolesAllowed[i].Trim();
+            //}
 
-            var user = filterContext.HttpContext.User;
+            //var user = filterContext.HttpContext.User;
 
-            if (IsUserOnlySummaryReporter(rolesAllowed, user))
-            {
-                var actionAttribute = filterContext.ActionDescriptor.GetCustomAttributes(true).FirstOrDefault(x => x is SummaryReportFilterAttribute) as SummaryReportFilterAttribute;
-                var strValue = (filterContext.HttpContext.Request.Params.Get("isReport") ?? string.Empty).Split(',')[0].Trim();
-                bool valueOfIsReportParam = string.IsNullOrEmpty(strValue) ? false : Convert.ToBoolean(strValue);
+            //if (IsUserOnlySummaryReporter(rolesAllowed, user))
+            //{
+            //    var actionAttribute = filterContext.ActionDescriptor.GetCustomAttributes(true).FirstOrDefault(x => x is SummaryReportFilterAttribute) as SummaryReportFilterAttribute;
+            //    var strValue = (filterContext.HttpContext.Request.QueryString.Get("isReport") ?? string.Empty).Split(',')[0].Trim();
+            //    bool valueOfIsReportParam = string.IsNullOrEmpty(strValue) ? false : Convert.ToBoolean(strValue);
 
-                if ((actionAttribute == null) || valueOfIsReportParam)
-                {
-                    filterContext.Result = new HttpUnauthorizedResult();
-                }
-            }
+            //    if ((actionAttribute == null) || valueOfIsReportParam == false)
+            //    {
+            //        filterContext.Result = new HttpUnauthorizedResult();
+            //    }
+            //}
         }
 
         /// <summary>

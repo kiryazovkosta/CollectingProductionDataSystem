@@ -11,7 +11,7 @@
     using CollectingProductionDataSystem.Web.Areas.MonthlyDataReporting.Models;
     using Resources = App_GlobalResources.Resources;
 
-    [Authorize(Roles = "Administrator, MonthlyFreshWaterReporter")]
+    [Authorize(Roles = "Administrator, MonthlyFreshWaterReporter, SummaryReporter")]
     public class MonthlyFreshWaterController :BaseMonthlyController
     {
         /// <summary>
