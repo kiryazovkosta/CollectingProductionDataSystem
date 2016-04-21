@@ -49,7 +49,7 @@ namespace CollectingProductionDataSystem.Web.Areas.MonthlyDataReporting.Controll
         }
 
         [HttpGet]
-        [SummaryReportAuthorize]
+        //[SummaryReportAuthorize]
         public virtual ActionResult Report(bool? isReport)
         {
             if (isReport != null)

@@ -91,7 +91,6 @@
         }
 
         [HttpGet]
-        [SummaryReportFilter]
         public ActionResult MonthlyPotableWaterReport(DateTime? reportDate,  bool? isReport)
         {
             return View(reportDate);
@@ -321,7 +320,7 @@
         [ValidateAntiForgeryToken]
         public ActionResult Report(DateTime? date)
         {
-            return RedirectToAction("MonthlyPotableWaterReport", new { reportDate = date });
+            return RedirectToAction("MonthlyPotableWaterReport", new { reportDate = date, isReport = false });
         }
 
         /// <summary>
