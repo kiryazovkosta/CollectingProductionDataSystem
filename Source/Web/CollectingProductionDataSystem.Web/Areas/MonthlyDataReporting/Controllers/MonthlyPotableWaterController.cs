@@ -131,10 +131,20 @@
                 var vmResult = Mapper.Map<IEnumerable<MonthlyReportTableReportViewModel>>(dbResult);
                 foreach (var item in vmResult)
                 {
-                    if (item.IsExternalOutputPosition == true || item.IsTotalInputPosition || item.IsTotalInternalPosition || item.IsTotalExternalOutputPosition)
+                    if (item.IsExternalOutputPosition == true || item.IsTotalInputPosition == true)
                     {
                         item.RecalculationPercentage = 0;
                         item.TotalValue = item.RealValue + item.RecalculationPercentage;
+                    }
+                    else if (item.IsTotalExternalOutputPosition == true)
+                    {
+                        item.RecalculationPercentage = 0;
+                        item.TotalValue = 0;   
+                    }
+                    else if (item.IsTotalInternalPosition)
+                    {
+                        item.RecalculationPercentage = 0;
+                        item.TotalValue = innerPotableWater + recalculatedPotableWater;    
                     }
                     else
                     {
@@ -145,8 +155,8 @@
                         }
                         else
                         {
-                            double percentages = item.RealValue / innerPotableWater;
-                            double recalulated = (recalculatedPotableWater * percentages) / 100.0;
+                            double percentages = (item.RealValue / innerPotableWater) * 100;
+                            double recalulated = (recalculatedPotableWater / 100.00) * percentages;
                             item.RecalculationPercentage = percentages;
                             item.TotalValue = recalulated + item.RealValue;
                         }
@@ -154,6 +164,16 @@
                 }
 
                 kendoResult = vmResult.ToDataSourceResult(request, ModelState);
+                Session["reportParams"] = Convert.ToBase64String(Encoding.UTF8.GetBytes(
+                                                    JsonConvert.SerializeObject(
+                                                        new ConfirmMonthlyInputModel()
+                                                        {
+                                                            date = date,
+                                                            monthlyReportTypeId = CommonConstants.PotableWater,
+                                                        }
+                                                    )
+                                                )
+                                            );
                 return Json(kendoResult);
             }
             else

@@ -133,18 +133,26 @@
                 var kendoResult = new DataSourceResult();
                 var chemicalClearedWaterData = this.monthlyService.GetDataForMonth(date, CommonConstants.ChemicalClearedWater).ToList();
                 var recalculatedChemicalClearedWater = chemicalClearedWaterData.Where(x => x.UnitMonthlyConfig.IsTotalExternalOutputPosition == true).Sum(x => x.RealValue);
-                var innerChemicalClearedWater = chemicalClearedWaterData.Where(x => x.UnitMonthlyConfig.IsTotalInputPosition == true && x.UnitMonthlyConfig.IsTotalPosition == true).Sum(x => x.RealValue);
+                var innerChemicalClearedWater = chemicalClearedWaterData.Where(x => x.UnitMonthlyConfig.IsTotalInternalPosition == true && x.UnitMonthlyConfig.IsTotalPosition == true).Sum(x => x.RealValue);
 
                 var dbResult = chemicalClearedWaterData.OrderBy(x => x.UnitMonthlyConfig.Code).ToList();
                 var vmResult = Mapper.Map<IEnumerable<MonthlyReportTableReportViewModel>>(dbResult);
                 foreach (var item in vmResult)
                 {
-                    if (item.IsExternalOutputPosition == true
-                        || item.IsTotalInputPosition == true
-                        || item.IsTotalExternalOutputPosition == true)
+                    if (item.IsExternalOutputPosition == true || item.IsTotalInputPosition == true)
                     {
                         item.RecalculationPercentage = 0;
                         item.TotalValue = item.RealValue + item.RecalculationPercentage;
+                    }
+                    else if (item.IsTotalExternalOutputPosition == true)
+                    {
+                        item.RecalculationPercentage = 0;
+                        item.TotalValue = 0;   
+                    }
+                    else if (item.IsTotalInternalPosition)
+                    {
+                        item.RecalculationPercentage = 0;
+                        item.TotalValue = innerChemicalClearedWater + recalculatedChemicalClearedWater;    
                     }
                     else
                     {
@@ -155,8 +163,8 @@
                         }
                         else
                         {
-                            double percentages = item.RealValue / innerChemicalClearedWater;
-                            double recalulated = (recalculatedChemicalClearedWater * percentages) / 100.0;
+                            double percentages = (item.RealValue / innerChemicalClearedWater) * 100;
+                            double recalulated = (recalculatedChemicalClearedWater / 100.00) * percentages;
                             item.RecalculationPercentage = percentages;
                             item.TotalValue = recalulated + item.RealValue;
                         }
@@ -164,6 +172,16 @@
                 }
 
                 kendoResult = vmResult.ToDataSourceResult(request, ModelState);
+                Session["reportParams"] = Convert.ToBase64String(Encoding.UTF8.GetBytes(
+                                                    JsonConvert.SerializeObject(
+                                                        new ConfirmMonthlyInputModel()
+                                                        {
+                                                            date = date,
+                                                            monthlyReportTypeId = CommonConstants.ChemicalClearedWater,
+                                                        }
+                                                    )
+                                                )
+                                            );
                 return Json(kendoResult);
             }
             else

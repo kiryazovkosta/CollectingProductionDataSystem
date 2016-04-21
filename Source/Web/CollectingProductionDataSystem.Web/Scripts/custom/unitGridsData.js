@@ -70,6 +70,10 @@ var unitGridsData = (function () {
             }
 
             if ($("#monthly-recalc-data-report").val() !== undefined) {
+                if (ctrlParamsElement.val() !== undefined) {
+                    ctrlParamsElement.attr('data-params', JSON.stringify(sendDate()));
+                }
+
                 kendoAdditional.RefreshGrid("#monthly-recalc-data-report");
             }
 
@@ -287,7 +291,6 @@ var unitGridsData = (function () {
         });
 
         if (!IsExcluded) {
-
             var confirmButton = $("#confirm");
             if (confirmButton) {
                 confirmButton.hide();

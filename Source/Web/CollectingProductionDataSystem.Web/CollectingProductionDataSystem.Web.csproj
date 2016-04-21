@@ -2098,7 +2098,6 @@
     <Content Include="Views\Shared\_MonthSelectorAproveableSideBar.cshtml" />
     <Content Include="Views\Shared\_TanksSideBarByAreaAndDateTime.cshtml" />
     <Content Include="Views\Shared\_MonthSelectorEditAndReportSideBar.cshtml" />
-    <Content Include="Views\Shared\_MonthSelectorEditAndReportSideBar2.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
