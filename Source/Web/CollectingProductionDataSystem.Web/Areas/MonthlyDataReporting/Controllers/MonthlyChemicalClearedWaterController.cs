@@ -1,8 +1,9 @@
 ﻿namespace CollectingProductionDataSystem.Web.Areas.MonthlyDataReporting.Controllers
 {
- using System;
+    using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Security.Principal;
     using System.Text;
     using System.Web;
     using System.Web.Mvc;
@@ -91,14 +92,23 @@
         }
 
         [HttpGet]
-        [SummaryReportFilter]
-        public ActionResult MonthlyChemicalClearedWaterReport(DateTime? reportDate,  bool? isReport)
+        [SummaryReportAllowedFilter]
+        public ActionResult MonthlyChemicalClearedWaterReport(DateTime? reportDate, bool? isReport)
         {
+            if (isReport != null)
+            {
+                this.TempData["isReport"] = isReport;
+            }
+            else
+            {
+                this.TempData["isReport"] = false;
+            }
             return View(reportDate);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [SummaryReportAllowedFilter]
         [SummaryReportFilter]
         public JsonResult ReadMonthlyChemicalClearedWaterReport([DataSourceRequest]DataSourceRequest request, DateTime date, bool? isReport)
         {
@@ -129,8 +139,8 @@
                 var vmResult = Mapper.Map<IEnumerable<MonthlyReportTableReportViewModel>>(dbResult);
                 foreach (var item in vmResult)
                 {
-                    if (item.IsExternalOutputPosition == true 
-                        || item.IsTotalInputPosition == true 
+                    if (item.IsExternalOutputPosition == true
+                        || item.IsTotalInputPosition == true
                         || item.IsTotalExternalOutputPosition == true)
                     {
                         item.RecalculationPercentage = 0;
@@ -255,6 +265,7 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [SummaryReportAllowedFilter]
         public ActionResult IsConfirmed(DateTime date, int monthlyReportTypeId)
         {
             if (this.ModelState.IsValid)
@@ -323,7 +334,7 @@
         [ValidateAntiForgeryToken]
         public ActionResult Report(DateTime? date)
         {
-            return RedirectToAction("MonthlyChemicalClearedWaterReport", new { reportDate = date });
+            return RedirectToAction("MonthlyChemicalClearedWaterReport", new { reportDate = date , isReport = false});
         }
 
         /// <summary>
@@ -369,6 +380,56 @@
 
             var errorList = query.ToList();
             return errorList;
+        }
+
+        protected override void OnActionExecuting(ActionExecutingContext filterContext)
+        {
+            var attributes = filterContext.ActionDescriptor.ControllerDescriptor.GetCustomAttributes(true);
+            AuthorizeAttribute filter = new AuthorizeAttribute();
+            foreach (var attribute in attributes)
+            {
+                if (attribute is AuthorizeAttribute)
+                {
+                    filter = attribute as AuthorizeAttribute;
+                    break;
+                }
+            }
+            var rolesAllowed = filter.Roles.Split(",".ToArray<char>(), StringSplitOptions.RemoveEmptyEntries);
+
+            for (int i = 0; i < rolesAllowed.Count(); i++)
+            {
+                rolesAllowed[i] = rolesAllowed[i].Trim();
+            }
+
+            var user = filterContext.HttpContext.User;
+            if (IsUserOnlySummaryReporter(rolesAllowed, user))
+            {
+                var actionAttribute = filterContext.ActionDescriptor.GetCustomAttributes(true).FirstOrDefault(x => x is SummaryReportAllowedFilterAttribute) as SummaryReportAllowedFilterAttribute;
+                var strValue = (filterContext.HttpContext.Request.QueryString.Get("isReport") ?? string.Empty).Split(',')[0].Trim();
+                var fromTempData = filterContext.Controller.TempData["isReport"] as bool? ?? false;
+                bool valueOfIsReportParam = string.IsNullOrEmpty(strValue) ? false : Convert.ToBoolean(strValue);
+
+                if ((actionAttribute == null) || ((valueOfIsReportParam || fromTempData) == false))
+                {
+                    filterContext.Result = new HttpUnauthorizedResult();
+                }
+            }
+            base.OnActionExecuting(filterContext);
+        }
+
+        protected bool IsUserOnlySummaryReporter(string[] rolesAllowed, IPrincipal user)
+        {
+            var result = user.IsInRole("SummaryReporter");
+
+            foreach (var roleName in rolesAllowed)
+            {
+                if (user.IsInRole(roleName) && roleName != "SummaryReporter")
+                {
+                    result = false;
+                }
+            }
+
+            return result;
         }
     }
 }

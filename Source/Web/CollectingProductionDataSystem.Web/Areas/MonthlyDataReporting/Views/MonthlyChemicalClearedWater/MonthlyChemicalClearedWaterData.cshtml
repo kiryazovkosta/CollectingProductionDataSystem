@@ -48,7 +48,7 @@
                         new { data_ajax_mode = "replace", data_ajax_update = @"\#modal-dialog-body" })
                     .ToHtmlString()))
                 .Width(100).Title(Resources.Layout.ReportedData);
-            columns.Bound(c => c.RelativeDifference).Width(100).ClientTemplate("<div style='text-align:right;'>#=data.RelativeDifference==null?'':kendo.toString(data.RelativeDifference, '\\#\\#.\\#\\#\\#\\#\\#')#%</div>").Visible(false);
+            columns.Bound(c => c.RelativeDifference).Width(100).ClientTemplate("<div style='text-align:right;'>#=data.RelativeDifference==null?'':kendo.toString(data.RelativeDifference, '\\#\\#.\\#\\#\\#\\#\\#')#%</div>");
             columns.Bound(c => c.IsEditable).Visible(false);
             columns.Command(c => c.Edit()).Width(170);
         })
@@ -87,6 +87,7 @@
             {
                 model.Id(p => p.Id);
                 model.Field(p => p.UnitMonthlyConfig.Code).Editable(false);
+                model.Field(p => p.UnitMonthlyConfig.ProcessUnit.ShortName).Editable(false);                
                 model.Field(p => p.UnitMonthlyConfig.ProductType.Name).Editable(false);
                 model.Field(p => p.UnitMonthlyConfig.ProcessUnit.SortableName).Editable(false);
                 model.Field(p => p.UnitMonthlyConfig.Name).Editable(false);
@@ -108,9 +109,8 @@
 @section scripts{
     @Scripts.Render("~/bundles/custom/kendoadditional")
     @Scripts.Render("~/bundles/custom/unitGrids")
-    @Scripts.Render("~/Scripts/custom/renderDailyGraphic.min.js")
     @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.min.js")
 }
 @section sidebar{
-    @Html.Partial("_MonthSelectorEditAndReportSideBar2")
+    @Html.Partial("_MonthSelectorEditAndReportSideBar", "MonthlyChemicalClearedWater")
 }
