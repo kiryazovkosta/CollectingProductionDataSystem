@@ -1,0 +1,26 @@
+﻿@using Resources = App_GlobalResources.Resources;
+@Html.Hidden("user", User.Identity.Name)
+@Html.Partial("_ControlParams")
+
+@using (Html.BeginForm("Report", "MonthlyChemicalClearedWater", new { area = "MonthlyDataReporting" }, FormMethod.Post, null))
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-group">
+        <label for="date">@Resources.Layout.Month</label>
+        @Html.Kendo().DatePicker().Name("date").Culture("bg-BG").Start(CalendarView.Year).Depth(CalendarView.Year).Format("MMMM yyyy").HtmlAttributes(new { style = "width:95%" }).Value(DateTime.Today.AddDays(-1))
+    </div>
+    <hr />
+    <div class="form-group">
+        <button id="apply" type="button" class="btn btn-primary" style="width:95%">@Resources.Layout.Apply</button>
+    </div>
+    <hr />
+    <div class="form-group">
+        <button id="confirm" type="button" class="btn btn-danger" style="width:95%">@Resources.Layout.Confirm</button>
+    </div>
+    <hr />
+    <div class="form-group">
+        <button id="report" type="submit" class="btn btn-info" style="width:95%">@Resources.Layout.Reports</button>
+    </div>
+
+}

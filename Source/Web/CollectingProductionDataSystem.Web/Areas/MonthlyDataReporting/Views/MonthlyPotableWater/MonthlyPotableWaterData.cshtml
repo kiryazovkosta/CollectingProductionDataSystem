@@ -48,7 +48,7 @@
                         new { data_ajax_mode = "replace", data_ajax_update = @"\#modal-dialog-body" })
                     .ToHtmlString()))
                 .Width(100).Title(Resources.Layout.ReportedData);
-            columns.Bound(c => c.RelativeDifference).Width(100).ClientTemplate("<div style='text-align:right;'>#=data.RelativeDifference==null?'':kendo.toString(data.RelativeDifference, '\\#\\#.\\#\\#\\#\\#\\#')#%</div>");
+            columns.Bound(c => c.RelativeDifference).Width(100).ClientTemplate("<div style='text-align:right;'>#=data.RelativeDifference==null?'':kendo.toString(data.RelativeDifference, '\\#\\#.\\#\\#\\#\\#\\#')#%</div>").Visible(false);
             columns.Bound(c => c.IsEditable).Visible(false);
             columns.Command(c => c.Edit()).Width(170);
         })

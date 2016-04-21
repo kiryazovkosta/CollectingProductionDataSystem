@@ -3,7 +3,7 @@
 @using CollectingProductionDataSystem.Web.Areas.MonthlyDataReporting.Models;
 @using CollectingProductionDataSystem.Web.Infrastructure.Helpers;
 @using Resources = App_GlobalResources.Resources;
-@model MonthlyReportTableReportViewModel
+@model DateTime?
 @{
     Layout = "~/Views/Shared/_KendoLayoutWithSideBar.cshtml";
 }
@@ -84,8 +84,16 @@
 @section scripts{
     @Scripts.Render("~/bundles/custom/kendoadditional")
     @Scripts.Render("~/bundles/custom/unitGrids")
-    @Scripts.Render("~/Scripts/custom/renderDailyGraphic.min.js")
-    @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.min.js")
+
+
+    @if (Model != null)
+    {
+        <script>
+                $(function () {
+                    kendoAdditional.RefreshGrid('#monthly-recalc-data-report');
+                });
+        </script>
+    }
 }
 @section sidebar{
     @Html.Partial("_MonthSelectorSideBar")
