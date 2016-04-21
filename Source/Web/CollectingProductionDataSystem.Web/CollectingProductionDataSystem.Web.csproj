@@ -319,6 +319,7 @@
     <Compile Include="Areas\MonthlyDataReporting\Models\MonthlyHydroCarbonViewModel.cs" />
     <Compile Include="Areas\MonthlyDataReporting\Models\MonthlyProductTypeViewModel.cs" />
     <Compile Include="Areas\MonthlyDataReporting\Models\ProcessUnitUnitsMonthlyDataViewModel.cs" />
+    <Compile Include="Areas\MonthlyDataReporting\Models\RecalculatedMonthlyDataViewModel.cs" />
     <Compile Include="Areas\MonthlyDataReporting\Models\UnitManualMonthlyDataViewModel.cs" />
     <Compile Include="Areas\MonthlyDataReporting\Models\UnitsMonthlyConfigDataViewModel.cs" />
     <Compile Include="Areas\MonthlyDataReporting\MonthlyDataReportingAreaRegistration.cs" />
@@ -2097,6 +2098,7 @@
     <Content Include="Views\Shared\_MonthSelectorAproveableSideBar.cshtml" />
     <Content Include="Views\Shared\_TanksSideBarByAreaAndDateTime.cshtml" />
     <Content Include="Views\Shared\_MonthSelectorEditAndReportSideBar.cshtml" />
+    <Content Include="Views\Shared\_MonthSelectorEditAndReportSideBar2.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
