@@ -97,6 +97,10 @@
         [Display(Name = "IsTotalExternalOutputPosition", ResourceType = typeof(Resources.Layout))]
         public bool IsTotalExternalOutputPosition { get; set; }
 
+        [Required]
+        [Display(Name = "IsTotalInternalPosition", ResourceType = typeof(Resources.Layout))]
+        public bool IsTotalInternalPosition { get; set; }
+
 
         /// <summary>
         /// Creates the mappings.

@@ -708,16 +708,16 @@ var unitGridsData = (function () {
                 });
             }
 
-            // monthly data total input and external rows
-            if (row.IsTotalInputPosition) {
-                var uid = row.uid;
-                $("#" + $(grid.element).attr('id') + " tbody").find("tr[data-uid=" + uid + "]").addClass("total-input-position");
-            }
+            //// monthly data total input and external rows
+            //if (row.IsTotalInputPosition) {
+            //    var uid = row.uid;
+            //    $("#" + $(grid.element).attr('id') + " tbody").find("tr[data-uid=" + uid + "]").addClass("total-input-position");
+            //}
 
-            if (row.IsExternalOutputPosition) {
-                var uid = row.uid;
-                $("#" + $(grid.element).attr('id') + " tbody").find("tr[data-uid=" + uid + "]").addClass("external-output-position");
-            }
+            //if (row.IsExternalOutputPosition) {
+            //    var uid = row.uid;
+            //    $("#" + $(grid.element).attr('id') + " tbody").find("tr[data-uid=" + uid + "]").addClass("external-output-position");
+            //}
         }
     }
 

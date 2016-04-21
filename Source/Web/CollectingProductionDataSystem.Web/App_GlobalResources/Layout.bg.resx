@@ -1658,4 +1658,7 @@
   <data name="UnitMonthlyCHData" xml:space="preserve">
     <value>Месечни данни за химикали</value>
   </data>
+  <data name="IsTotalInternalPosition" xml:space="preserve">
+    <value>Общо вътрешни консуматори</value>
+  </data>
 </root>

@@ -1906,6 +1906,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to IsTotalInternalPosition.
+        /// </summary>
+        public static string IsTotalInternalPosition {
+            get {
+                return ResourceManager.GetString("IsTotalInternalPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to IsTotalPosition.
         /// </summary>
         public static string IsTotalPosition {
