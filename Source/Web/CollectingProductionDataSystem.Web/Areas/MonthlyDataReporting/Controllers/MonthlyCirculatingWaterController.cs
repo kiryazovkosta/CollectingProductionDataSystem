@@ -11,7 +11,7 @@
     using CollectingProductionDataSystem.Web.Areas.MonthlyDataReporting.Models;
     using Resources = App_GlobalResources.Resources;
 
-    [Authorize(Roles = "Administrator, MonthlyCirculatingWaterReporter")]
+    [Authorize(Roles = "Administrator, MonthlyCirculatingWaterReporter, SummaryReporter")]
     public class MonthlyCirculatingWaterController : BaseMonthlyController
     {
          public MonthlyCirculatingWaterController(IProductionData dataParam, IUnitMothlyDataService monthlyServiceParam)

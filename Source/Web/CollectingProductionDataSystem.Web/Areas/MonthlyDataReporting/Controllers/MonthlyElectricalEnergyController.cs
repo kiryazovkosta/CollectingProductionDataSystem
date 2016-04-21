@@ -11,7 +11,7 @@
     using CollectingProductionDataSystem.Web.Areas.MonthlyDataReporting.Models;
     using Resources = App_GlobalResources.Resources;
 
-    [Authorize(Roles = "Administrator, MonthlyElectricalEnergyReporter")]
+    [Authorize(Roles = "Administrator, MonthlyElectricalEnergyReporter, SummaryReporter")]
     public class MonthlyElectricalEnergyController : BaseMonthlyController
     {
         public MonthlyElectricalEnergyController(IProductionData dataParam, IUnitMothlyDataService monthlyServiceParam)
