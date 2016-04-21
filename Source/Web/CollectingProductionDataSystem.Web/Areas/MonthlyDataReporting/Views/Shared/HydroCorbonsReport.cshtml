@@ -19,6 +19,8 @@
 @Html.Hidden("monthlyReportTypeId", CommonConstants.HydroCarbons)
 @Html.ValidationSummary()
 @Html.AntiForgeryToken()
+
+@Html.Hidden("monthlyReportTypeId", Model.MonthlyReportTypeId)
 @(Html.Kendo()
     .Grid<MonthlyReportTableViewModel>()
     .Name("monthly-hc-units")
@@ -81,8 +83,8 @@
                                                                         group.Add(c => c.UnitMonthlyConfig.ProductType.SortableName);
                                                                     })
 
-                                                                    .Read(read => read.Action("ReadMonthlyUnitsData", "MonthlyHydroCarbons", new { area = "MonthlyDataReporting" }).Data("unitGridsData.SendDate").Type(HttpVerbs.Post))
-                                                                    .Update(update => update.Action("Edit", "MonthlyHydroCarbons", new { area = "MonthlyDataReporting" }).Data("sendAntiForgery"))
+                                                                        .Read(read => read.Action("ReadMonthlyUnitsData", Model.ControllerName, new { area = "MonthlyDataReporting" }).Data("unitGridsData.SendDate").Type(HttpVerbs.Post))
+                                                                        .Update(update => update.Action("Edit", Model.ControllerName, new { area = "MonthlyDataReporting" }).Data("sendAntiForgery"))
                                                                 .Model(model =>
                                                                 {
                                                                     model.Id(p => p.Id);
