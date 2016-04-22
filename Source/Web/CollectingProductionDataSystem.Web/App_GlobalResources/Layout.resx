@@ -1666,4 +1666,10 @@
   <data name="IsTotalInternalPosition" xml:space="preserve">
     <value>IsTotalInternalPosition</value>
   </data>
+  <data name="RecalculationPercentage" xml:space="preserve">
+    <value>RecalculationPercentage</value>
+  </data>
+  <data name="TotalValue" xml:space="preserve">
+    <value>TotalValue</value>
+  </data>
 </root>

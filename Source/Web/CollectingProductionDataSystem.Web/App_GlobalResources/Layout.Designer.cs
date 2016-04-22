@@ -3193,6 +3193,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to RecalculationPercentage.
+        /// </summary>
+        public static string RecalculationPercentage {
+            get {
+                return ResourceManager.GetString("RecalculationPercentage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Record Timestamp.
         /// </summary>
         public static string RecordTimestamp {
@@ -4161,6 +4170,15 @@ namespace App_GlobalResources.Resources {
         public static string TotalQuantityValue {
             get {
                 return ResourceManager.GetString("TotalQuantityValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TotalValue.
+        /// </summary>
+        public static string TotalValue {
+            get {
+                return ResourceManager.GetString("TotalValue", resourceCulture);
             }
         }
         

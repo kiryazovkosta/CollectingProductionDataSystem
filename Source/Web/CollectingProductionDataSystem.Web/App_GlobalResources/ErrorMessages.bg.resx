@@ -192,4 +192,7 @@
   <data name="ShiftCannotBeSet" xml:space="preserve">
     <value>Не може да бъде избрана смяна ако началната и крайната дата са различни</value>
   </data>
+  <data name="MonthIsNotConfirmed" xml:space="preserve">
+    <value>Данните за месец {0} не са потвърдени</value>
+  </data>
 </root>

@@ -192,4 +192,7 @@
   <data name="ShiftCannotBeSet" xml:space="preserve">
     <value>There cannot be selected value in Shift field when begin date is diferend than end date</value>
   </data>
+  <data name="MonthIsNotConfirmed" xml:space="preserve">
+    <value>MonthIsNotConfirmed {0}</value>
+  </data>
 </root>

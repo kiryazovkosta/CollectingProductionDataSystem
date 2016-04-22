@@ -1,8 +1,9 @@
 ﻿namespace CollectingProductionDataSystem.Web.Areas.MonthlyDataReporting.Controllers
 {
- using System;
+    using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Security.Principal;
     using System.Text;
     using System.Web;
     using System.Web.Mvc;
@@ -10,6 +11,7 @@
     using CollectingProductionDataSystem.Constants;
     using CollectingProductionDataSystem.Data.Contracts;
     using CollectingProductionDataSystem.Web.Areas.MonthlyDataReporting.Models;
+    using CollectingProductionDataSystem.Web.Infrastructure.Filters;
     using Kendo.Mvc.Extensions;
     using Newtonsoft.Json;
     using Resources = App_GlobalResources.Resources;
@@ -23,7 +25,7 @@
     using System.Data.Entity.Infrastructure;
     using System.Net;
 
-    [Authorize(Roles = "Administrator, MonthlyChemicalClearedWaterReporter")]
+    [Authorize(Roles = "Administrator, MonthlyChemicalClearedWaterReporter, SummaryReporter")]
     public class MonthlyChemicalClearedWaterController : AreaBaseController
     {
         private readonly IUnitMothlyDataService monthlyService;
@@ -90,32 +92,67 @@
         }
 
         [HttpGet]
-        public ActionResult MonthlyChemicalClearedWaterReport()
+        [SummaryReportAllowedFilter]
+        public ActionResult MonthlyChemicalClearedWaterReport(DateTime? reportDate, bool? isReport)
         {
-                return View();
+            if (isReport != null)
+            {
+                this.TempData["isReport"] = isReport;
+            }
+            else
+            {
+                this.TempData["isReport"] = false;
+            }
+            return View(reportDate);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public JsonResult ReadMonthlyChemicalClearedWaterReport([DataSourceRequest]DataSourceRequest request, DateTime date)
+        [SummaryReportAllowedFilter]
+        [SummaryReportFilter]
+        public JsonResult ReadMonthlyChemicalClearedWaterReport([DataSourceRequest]DataSourceRequest request, DateTime date, bool? isReport)
         {
+            if (!this.ModelState.IsValid)
+            {
+                var kendoResult = new List<MonthlyReportTableViewModel>().ToDataSourceResult(request, ModelState);
+                return Json(kendoResult);
+            }
+
+            if (isReport ?? false)
+            {
+                if (!this.monthlyService.IsMonthlyReportConfirmed(date, CommonConstants.PotableWater))
+                {
+                    this.ModelState.AddModelError(string.Empty, string.Format(@Resources.ErrorMessages.MonthIsNotConfirmed, date.ToString("MMMM yyyy")));
+                    var kendoResult = new List<MonthlyReportTableReportViewModel>().ToDataSourceResult(request, ModelState);
+                    return Json(kendoResult);
+                }
+            }
+
             if (ModelState.IsValid)
             {
                 var kendoResult = new DataSourceResult();
                 var chemicalClearedWaterData = this.monthlyService.GetDataForMonth(date, CommonConstants.ChemicalClearedWater).ToList();
                 var recalculatedChemicalClearedWater = chemicalClearedWaterData.Where(x => x.UnitMonthlyConfig.IsTotalExternalOutputPosition == true).Sum(x => x.RealValue);
-                var innerChemicalClearedWater = chemicalClearedWaterData.Where(x => x.UnitMonthlyConfig.IsTotalInputPosition == true && x.UnitMonthlyConfig.IsTotalPosition == true).Sum(x => x.RealValue);
+                var innerChemicalClearedWater = chemicalClearedWaterData.Where(x => x.UnitMonthlyConfig.IsTotalInternalPosition == true && x.UnitMonthlyConfig.IsTotalPosition == true).Sum(x => x.RealValue);
 
                 var dbResult = chemicalClearedWaterData.OrderBy(x => x.UnitMonthlyConfig.Code).ToList();
                 var vmResult = Mapper.Map<IEnumerable<MonthlyReportTableReportViewModel>>(dbResult);
                 foreach (var item in vmResult)
                 {
-                    if (item.IsExternalOutputPosition == true 
-                        || item.IsTotalInputPosition == true 
-                        || item.IsTotalExternalOutputPosition == true)
+                    if (item.IsExternalOutputPosition == true || item.IsTotalInputPosition == true)
                     {
                         item.RecalculationPercentage = 0;
                         item.TotalValue = item.RealValue + item.RecalculationPercentage;
+                    }
+                    else if (item.IsTotalExternalOutputPosition == true)
+                    {
+                        item.RecalculationPercentage = 0;
+                        item.TotalValue = 0;   
+                    }
+                    else if (item.IsTotalInternalPosition)
+                    {
+                        item.RecalculationPercentage = 0;
+                        item.TotalValue = innerChemicalClearedWater + recalculatedChemicalClearedWater;    
                     }
                     else
                     {
@@ -126,8 +163,8 @@
                         }
                         else
                         {
-                            double percentages = item.RealValue / innerChemicalClearedWater;
-                            double recalulated = (recalculatedChemicalClearedWater * percentages) / 100.0;
+                            double percentages = (item.RealValue / innerChemicalClearedWater) * 100;
+                            double recalulated = (recalculatedChemicalClearedWater / 100.00) * percentages;
                             item.RecalculationPercentage = percentages;
                             item.TotalValue = recalulated + item.RealValue;
                         }
@@ -135,6 +172,16 @@
                 }
 
                 kendoResult = vmResult.ToDataSourceResult(request, ModelState);
+                Session["reportParams"] = Convert.ToBase64String(Encoding.UTF8.GetBytes(
+                                                    JsonConvert.SerializeObject(
+                                                        new ConfirmMonthlyInputModel()
+                                                        {
+                                                            date = date,
+                                                            monthlyReportTypeId = CommonConstants.ChemicalClearedWater,
+                                                        }
+                                                    )
+                                                )
+                                            );
                 return Json(kendoResult);
             }
             else
@@ -236,6 +283,7 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [SummaryReportAllowedFilter]
         public ActionResult IsConfirmed(DateTime date, int monthlyReportTypeId)
         {
             if (this.ModelState.IsValid)
@@ -302,19 +350,9 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Report(ConfirmMonthlyInputModel model)
+        public ActionResult Report(DateTime? date)
         {
-            if (ModelState.IsValid)
-            {
-                var redirectUrl = new UrlHelper(Request.RequestContext).Action("MonthlyChemicalClearedWaterReport", "MonthlyChemicalClearedWater", new { area = "MonthlyDataReporting" });
-                return Json(new { Url = redirectUrl });
-            }
-            else
-            {
-                Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                var errors = GetErrorListFromModelState(ModelState);
-                return Json(new { data = new { errors = errors } });
-            }
+            return RedirectToAction("MonthlyChemicalClearedWaterReport", new { reportDate = date , isReport = false});
         }
 
         /// <summary>
@@ -360,6 +398,56 @@
 
             var errorList = query.ToList();
             return errorList;
+        }
+
+        protected override void OnActionExecuting(ActionExecutingContext filterContext)
+        {
+            var attributes = filterContext.ActionDescriptor.ControllerDescriptor.GetCustomAttributes(true);
+            AuthorizeAttribute filter = new AuthorizeAttribute();
+            foreach (var attribute in attributes)
+            {
+                if (attribute is AuthorizeAttribute)
+                {
+                    filter = attribute as AuthorizeAttribute;
+                    break;
+                }
+            }
+            var rolesAllowed = filter.Roles.Split(",".ToArray<char>(), StringSplitOptions.RemoveEmptyEntries);
+
+            for (int i = 0; i < rolesAllowed.Count(); i++)
+            {
+                rolesAllowed[i] = rolesAllowed[i].Trim();
+            }
+
+            var user = filterContext.HttpContext.User;
+            if (IsUserOnlySummaryReporter(rolesAllowed, user))
+            {
+                var actionAttribute = filterContext.ActionDescriptor.GetCustomAttributes(true).FirstOrDefault(x => x is SummaryReportAllowedFilterAttribute) as SummaryReportAllowedFilterAttribute;
+                var strValue = (filterContext.HttpContext.Request.QueryString.Get("isReport") ?? string.Empty).Split(',')[0].Trim();
+                var fromTempData = filterContext.Controller.TempData["isReport"] as bool? ?? false;
+                bool valueOfIsReportParam = string.IsNullOrEmpty(strValue) ? false : Convert.ToBoolean(strValue);
+
+                if ((actionAttribute == null) || ((valueOfIsReportParam || fromTempData) == false))
+                {
+                    filterContext.Result = new HttpUnauthorizedResult();
+                }
+            }
+            base.OnActionExecuting(filterContext);
+        }
+
+        protected bool IsUserOnlySummaryReporter(string[] rolesAllowed, IPrincipal user)
+        {
+            var result = user.IsInRole("SummaryReporter");
+
+            foreach (var roleName in rolesAllowed)
+            {
+                if (user.IsInRole(roleName) && roleName != "SummaryReporter")
+                {
+                    result = false;
+                }
+            }
+
+            return result;
         }
     }
 }

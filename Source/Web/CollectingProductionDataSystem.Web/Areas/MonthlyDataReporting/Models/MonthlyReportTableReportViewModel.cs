@@ -19,11 +19,13 @@
         //[Display(Name = "MeasuredValue", ResourceType = typeof(Resources.Layout))]
         public decimal? Value { get; set; }
 
-        //[Display(Name = "MeasuredValue", ResourceType = typeof(Resources.Layout))]
+        [Display(Name = "OperatinalData", ResourceType = typeof(Resources.Layout))]
         public double RealValue { get; set; }
 
+         [Display(Name = "RecalculationPercentage", ResourceType = typeof(Resources.Layout))]
         public double? RecalculationPercentage { get; set; }
 
+         [Display(Name = "TotalValue", ResourceType = typeof(Resources.Layout))]
         public double? TotalValue { get; set; }
 
         [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]

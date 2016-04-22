@@ -196,6 +196,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to MonthIsNotConfirmed {0}.
+        /// </summary>
+        public static string MonthIsNotConfirmed {
+            get {
+                return ResourceManager.GetString("MonthIsNotConfirmed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The {0} must be greater than {1}.
         /// </summary>
         public static string MustBeGreaterThan {

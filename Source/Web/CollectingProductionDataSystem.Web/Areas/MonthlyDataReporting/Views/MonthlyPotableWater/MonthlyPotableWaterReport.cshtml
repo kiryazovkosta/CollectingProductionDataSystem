@@ -9,7 +9,7 @@
 }
 <div class="row">
     <div class="col-md-10">
-        <h2>Kosta</h2>
+        <h2>@Resources.Layout.UnitMonthlyPWData</h2>
     </div>
     <div class="col-md-2">
         <button id="excel-export" class="k-button k-button-icontext k-grid-excel pull-right head-button"><span class="k-icon k-i-excel"></span>Експорт в Excel</button>
@@ -74,6 +74,7 @@
             .Events(events =>
             {
                 events.Error("kendoAdditional.ErrorHandler");
+                events.RequestEnd("unitGridsData.DataSave");
             })
         )
 )
@@ -99,5 +100,5 @@
 
 }
 @section sidebar{
-    @Html.Partial("_MonthSelectorSideBar", Model)
+    @Html.Partial("_MonthSelectorAproveableRecalcSideBar", Model)
 }

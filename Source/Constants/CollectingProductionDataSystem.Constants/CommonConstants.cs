@@ -86,7 +86,7 @@ namespace CollectingProductionDataSystem.Constants
 
         public static int Nitrogen { get { return nitrogen; } }
 
-        public static int Chemicals { get; set; }
+        public static int Chemicals { get { return chemicals; } }
 
         public static int DailyInfoDailyInfoHydrocarbonsShiftTypeId { get { return dailyInfoDailyInfoHydrocarbonsShiftTypeId; } }
 

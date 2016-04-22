@@ -5,6 +5,7 @@
     using System.Data.Entity;
     using System.Linq;
     using System.Net;
+    using System.Security.Principal;
     using System.Text;
     using System.Transactions;
     using System.Web.Mvc;
@@ -22,12 +23,13 @@
     using CollectingProductionDataSystem.Models.Productions.Mounthly;
     using System.ComponentModel.DataAnnotations;
     using System.Data.Entity.Infrastructure;
+    using CollectingProductionDataSystem.Web.Infrastructure.Filters;
 
-    [Authorize(Roles = "Administrator, MonthlyPotableWaterReporter")]
+    [Authorize(Roles = "Administrator, MonthlyPotableWaterReporter, SummaryReporter")]
     public class MonthlyPotableWaterController : AreaBaseController
     {
         private readonly IUnitMothlyDataService monthlyService;
-        private readonly TransactionOptions transantionOption;
+        private readonly TransactionOptions transantionOption;  
 
         public MonthlyPotableWaterController(IProductionData dataParam, IUnitMothlyDataService monthlyServiceParam)
             : base(dataParam)
@@ -90,15 +92,34 @@
         }
 
         [HttpGet]
-        public ActionResult MonthlyPotableWaterReport(DateTime? reportDate)
+        [SummaryReportAllowedFilter]
+        public ActionResult MonthlyPotableWaterReport(DateTime? reportDate,  bool? isReport)
         {
             return View(reportDate);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public JsonResult ReadMonthlyPotableWaterReport([DataSourceRequest]DataSourceRequest request, DateTime date)
+        [SummaryReportAllowedFilter]
+        [SummaryReportFilter]
+        public JsonResult ReadMonthlyPotableWaterReport([DataSourceRequest]DataSourceRequest request, DateTime date, bool? isReport)
         {
+            if (!this.ModelState.IsValid)
+            {
+                var kendoResult = new List<MonthlyReportTableViewModel>().ToDataSourceResult(request, ModelState);
+                return Json(kendoResult);
+            }
+
+            if (isReport ?? false)
+            {
+                if (!this.monthlyService.IsMonthlyReportConfirmed(date, CommonConstants.PotableWater))
+                {
+                    this.ModelState.AddModelError(string.Empty, string.Format(@Resources.ErrorMessages.MonthIsNotConfirmed, date.ToString("MMMM yyyy")));
+                    var kendoResult = new List<MonthlyReportTableReportViewModel>().ToDataSourceResult(request, ModelState);
+                    return Json(kendoResult);
+                }
+            }
+
             if (ModelState.IsValid)
             {
                 var kendoResult = new DataSourceResult();
@@ -110,10 +131,20 @@
                 var vmResult = Mapper.Map<IEnumerable<MonthlyReportTableReportViewModel>>(dbResult);
                 foreach (var item in vmResult)
                 {
-                    if (item.IsExternalOutputPosition == true || item.IsTotalInputPosition || item.IsTotalInternalPosition || item.IsTotalExternalOutputPosition)
+                    if (item.IsExternalOutputPosition == true || item.IsTotalInputPosition == true)
                     {
                         item.RecalculationPercentage = 0;
                         item.TotalValue = item.RealValue + item.RecalculationPercentage;
+                    }
+                    else if (item.IsTotalExternalOutputPosition == true)
+                    {
+                        item.RecalculationPercentage = 0;
+                        item.TotalValue = 0;   
+                    }
+                    else if (item.IsTotalInternalPosition)
+                    {
+                        item.RecalculationPercentage = 0;
+                        item.TotalValue = innerPotableWater + recalculatedPotableWater;    
                     }
                     else
                     {
@@ -124,8 +155,8 @@
                         }
                         else
                         {
-                            double percentages = item.RealValue / innerPotableWater;
-                            double recalulated = (recalculatedPotableWater * percentages) / 100.0;
+                            double percentages = (item.RealValue / innerPotableWater) * 100;
+                            double recalulated = (recalculatedPotableWater / 100.00) * percentages;
                             item.RecalculationPercentage = percentages;
                             item.TotalValue = recalulated + item.RealValue;
                         }
@@ -133,6 +164,16 @@
                 }
 
                 kendoResult = vmResult.ToDataSourceResult(request, ModelState);
+                Session["reportParams"] = Convert.ToBase64String(Encoding.UTF8.GetBytes(
+                                                    JsonConvert.SerializeObject(
+                                                        new ConfirmMonthlyInputModel()
+                                                        {
+                                                            date = date,
+                                                            monthlyReportTypeId = CommonConstants.PotableWater,
+                                                        }
+                                                    )
+                                                )
+                                            );
                 return Json(kendoResult);
             }
             else
@@ -234,6 +275,7 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [SummaryReportAllowedFilter]
         public ActionResult IsConfirmed(DateTime date, int monthlyReportTypeId)
         {
             if (this.ModelState.IsValid)
@@ -302,7 +344,7 @@
         [ValidateAntiForgeryToken]
         public ActionResult Report(DateTime? date)
         {
-            return RedirectToAction("MonthlyPotableWaterReport", new { reportDate = date });
+            return RedirectToAction("MonthlyPotableWaterReport", new { reportDate = date, isReport = false });
         }
 
         /// <summary>
@@ -349,6 +391,56 @@
 
             var errorList = query.ToList();
             return errorList;
+        }
+
+        protected override void OnActionExecuting(ActionExecutingContext filterContext)
+        {
+            var attributes = filterContext.ActionDescriptor.ControllerDescriptor.GetCustomAttributes(true);
+            AuthorizeAttribute filter = new AuthorizeAttribute();
+            foreach (var attribute in attributes)
+            {
+                if (attribute is AuthorizeAttribute)
+                {
+                    filter = attribute as AuthorizeAttribute;
+                    break;
+                }
+            }
+            var rolesAllowed = filter.Roles.Split(",".ToArray<char>(), StringSplitOptions.RemoveEmptyEntries);
+
+            for (int i = 0; i < rolesAllowed.Count(); i++)
+            {
+                rolesAllowed[i] = rolesAllowed[i].Trim();
+            }
+
+            var user = filterContext.HttpContext.User;
+            if (IsUserOnlySummaryReporter(rolesAllowed, user))
+            {
+                var actionAttribute = filterContext.ActionDescriptor.GetCustomAttributes(true).FirstOrDefault(x => x is SummaryReportAllowedFilterAttribute) as SummaryReportAllowedFilterAttribute;
+                var strValue = (filterContext.HttpContext.Request.QueryString.Get("isReport") ?? string.Empty).Split(',')[0].Trim();
+                var fromTempData = filterContext.Controller.TempData["isReport"] as bool? ?? false;
+                bool valueOfIsReportParam = string.IsNullOrEmpty(strValue) ? false : Convert.ToBoolean(strValue);
+
+                if ((actionAttribute == null) || ((valueOfIsReportParam || fromTempData) == false))
+                {
+                    filterContext.Result = new HttpUnauthorizedResult();
+                }
+            }
+            base.OnActionExecuting(filterContext);
+        }
+
+        protected bool IsUserOnlySummaryReporter(string[] rolesAllowed, IPrincipal user)
+        {
+            var result = user.IsInRole("SummaryReporter");
+
+            foreach (var roleName in rolesAllowed)
+            {
+                if (user.IsInRole(roleName) && roleName != "SummaryReporter")
+                {
+                    result = false;
+                }
+            }
+
+            return result;
         }
     }
 }
