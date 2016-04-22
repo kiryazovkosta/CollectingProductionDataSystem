@@ -188,64 +188,36 @@
                                                           new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "pageHelp-content", LoadingElementId = "inprogress" })
                     </li>
                     <li>
-                        @Ajax.ActionLink(@Resources.HelpResource.NomDirection, "NomTypeProductDaily", "Help", new { @class = "help-side-nav-main-items" },
+                        @Ajax.ActionLink(@Resources.HelpResource.NomDirection, "NomDirection", "Help", new { @class = "help-side-nav-main-items" },
                                                           new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "pageHelp-content", LoadingElementId = "inprogress" })
                     </li>
                     <li>
-                        @Ajax.ActionLink(@Resources.HelpResource.NomCauseForEdit, "NomTypeProductDaily", "Help", new { @class = "help-side-nav-main-items" },
+                        @Ajax.ActionLink(@Resources.HelpResource.NomCauseForEdit, "NomCauseForEdit", "Help", new { @class = "help-side-nav-main-items" },
                                                           new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "pageHelp-content", LoadingElementId = "inprogress" })
                     </li>
+                    <li>
+                        @Ajax.ActionLink(@Resources.HelpResource.NomTypeMaterial, "NomTypeMaterial", "Help", new { @class = "help-side-nav-main-items" },
+                                                          new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "pageHelp-content", LoadingElementId = "inprogress" })
+                    </li>
+                    <li>
+                        @Ajax.ActionLink(@Resources.HelpResource.NomSortMaterial, "NomSortMaterial", "Help", new { @class = "help-side-nav-main-items" },
+                                                          new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "pageHelp-content", LoadingElementId = "inprogress" })
+                    </li>
+                    
                 </ul>
             </div>
         </li>
     </ul>
 </div>
 
-@*<aside class="col-sm-2 documentation">
-        <nav class="panel panel-primary mypanel-primary">
-            <div class="panel-body mypanel-body">
-                <div class="panel-group mypanel-group" role="tablist">
-                    <div class="panel mypanel">
-                        <div class="panel-heading mypanel-heading" role="tab" id="collapseListGroupHeading11">
-                             <a class="myA" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseListGroup11" aria-expanded="true" aria-controls="collapseListGroup11">
-                                 <img class="eachimg" src="~/Content/images/ShiftData/green-texture.png" /><span class="spanForImage">СМЕННИ ДАННИ</span>
-                             </a>
-                        </div>
-                        <div id="collapseListGroup11" class="panel-collapse collapse" role="tabpanel" aria-labelledby="collapseListGroupHeading11" aria-expanded="false">
-                            <ul class="list-group mylist-group">
-                                <li class="list-group-item mylist-group-item">
-                                    @Ajax.ActionLink("Сменни данни за отчети", "ShiftData", "Help",
-                                                 new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "pageHelp-content", LoadingElementId = "inprogress" })
-                                </li>
-                                <li class="list-group-item mylist-group-item">
-                                    @Ajax.ActionLink("Сменни данни за измервателни позиции", "ShiftDataMeasuringPosition", "Help",
-                                                 new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "pageHelp-content", LoadingElementId = "inprogress" })
-
-                                </li>
-                                <li class="list-group-item mylist-group-item">
-                                    @Ajax.ActionLink("Сменни данни за наличности по резервоари", "ShiftDataTank", "Help",
-                                                            new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "pageHelp-content", LoadingElementId = "inprogress" })
-                                </li>
-                                <li class="list-group-item mylist-group-item">
-                                    @Ajax.ActionLink("Количества продукти в магистрални тръбопроводи", "ShiftDataHighwayPipelines", "Help",
-                                                             new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "pageHelp-content", LoadingElementId = "inprogress" })
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-              </div>
-        </nav>
-    </aside>
-*@
-    <article class="col-sm-10 documentation">
+<article class="col-sm-10 documentation">
         <div id="inprogress" style="display:none;">
             <img src="~/Content/Images/loading.gif" />
         </div>
         <div id="pageHelp-content" class="container-fluid">
             @RenderBody()
         </div>
-    </article>
+</article>
 
 @section scripts{
     @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.min.js")

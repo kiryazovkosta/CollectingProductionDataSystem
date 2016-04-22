@@ -717,6 +717,26 @@
     <Content Include="Content\Images\Nomenclature\Figura190.png" />
     <Content Include="Content\Images\Nomenclature\Figura205.png" />
     <Content Include="Content\Images\Nomenclature\Iztriv.png" />
+    <Content Include="Content\Images\Nomenclature\NomCauseForEdit\Add.png" />
+    <Content Include="Content\Images\Nomenclature\NomCauseForEdit\Edit.png" />
+    <Content Include="Content\Images\Nomenclature\NomCauseForEdit\History.png" />
+    <Content Include="Content\Images\Nomenclature\NomCauseForEdit\Menu1.png" />
+    <Content Include="Content\Images\Nomenclature\NomCauseForEdit\Pylna.png" />
+    <Content Include="Content\Images\Nomenclature\NomDirection\Figura1.png" />
+    <Content Include="Content\Images\Nomenclature\NomDirection\Figura2.png" />
+    <Content Include="Content\Images\Nomenclature\NomDirection\Figura3.png" />
+    <Content Include="Content\Images\Nomenclature\NomDirection\Figura4.png" />
+    <Content Include="Content\Images\Nomenclature\NomDirection\Figura5.png" />
+    <Content Include="Content\Images\Nomenclature\NomTypeMaterial\Figura1.png" />
+    <Content Include="Content\Images\Nomenclature\NomTypeMaterial\Figura2.png" />
+    <Content Include="Content\Images\Nomenclature\NomTypeMaterial\Figura3.png" />
+    <Content Include="Content\Images\Nomenclature\NomTypeMaterial\Figura4.png" />
+    <Content Include="Content\Images\Nomenclature\NomTypeMaterial\Figura5.png" />
+    <Content Include="Content\Images\Nomenclature\NomTypeProductDaily\Figura1.png" />
+    <Content Include="Content\Images\Nomenclature\NomTypeProductDaily\Figura2.png" />
+    <Content Include="Content\Images\Nomenclature\NomTypeProductDaily\Figura3.png" />
+    <Content Include="Content\Images\Nomenclature\NomTypeProductDaily\FiguraAdd.png" />
+    <Content Include="Content\Images\Nomenclature\NomTypeProductDaily\FiguraEdit.png" />
     <Content Include="Content\Images\Nomenclature\Redakt.png" />
     <Content Include="Content\Images\ok.png" />
     <Content Include="Content\Images\pdf-download.png" />
@@ -1425,6 +1445,7 @@
     <Content Include="Areas\Documentation\Views\Help\NomTypeProductShift.cshtml" />
     <Content Include="Areas\Documentation\Views\Help\NomTypeTransport.cshtml" />
     <Content Include="Areas\Documentation\Views\Help\NomPhdServers.cshtml" />
+    <Content Include="Areas\Documentation\Views\Help\NomSortMaterial.cshtml" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <None Include="Properties\PublishProfiles\Home.pubxml" />
     <Content Include="Scripts\custom\sendArea.js" />
@@ -2327,11 +2348,13 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>HelpResource.Designer.cs</LastGenOutput>
       <CustomToolNamespace>App_GlobalResources.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\HelpResource.bg.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>HelpResource.bg.designer.cs</LastGenOutput>
       <CustomToolNamespace>App_GlobalResources.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Layout.bg.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

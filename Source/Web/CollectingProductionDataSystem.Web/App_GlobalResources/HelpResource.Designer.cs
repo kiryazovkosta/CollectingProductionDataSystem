@@ -286,6 +286,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to NomSortMaterial.
+        /// </summary>
+        public static string NomSortMaterial {
+            get {
+                return ResourceManager.GetString("NomSortMaterial", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to NomTypeMaterial.
         /// </summary>
         public static string NomTypeMaterial {

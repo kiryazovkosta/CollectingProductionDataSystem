@@ -192,6 +192,9 @@
   <data name="NomShift" xml:space="preserve">
     <value>NomShift</value>
   </data>
+  <data name="NomSortMaterial" xml:space="preserve">
+    <value>NomSortMaterial</value>
+  </data>
   <data name="NomTypeMaterial" xml:space="preserve">
     <value>NomTypeMaterial</value>
   </data>

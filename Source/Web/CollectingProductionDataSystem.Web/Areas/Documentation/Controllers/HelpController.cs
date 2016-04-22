@@ -169,5 +169,9 @@ namespace CollectingProductionDataSystem.Web.Areas.Documentation.Controllers
               {
                     return PartialView();
               }
+         public PartialViewResult NomSortMaterial()
+              {
+                    return PartialView();
+              }
     }
 }
