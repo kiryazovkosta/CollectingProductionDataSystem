@@ -103,6 +103,7 @@
             {
                 this.TempData["isReport"] = false;
             }
+
             return View(reportDate);
         }
 
