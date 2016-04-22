@@ -174,6 +174,39 @@
   <data name="MonthlyNitrogen" xml:space="preserve">
     <value>MonthlyNitrogen</value>
   </data>
+  <data name="NomCauseForEdit" xml:space="preserve">
+    <value>NomCauseForEdit</value>
+  </data>
+  <data name="NomDirection" xml:space="preserve">
+    <value>NomDirection</value>
+  </data>
+  <data name="NomMeasuringUnit" xml:space="preserve">
+    <value>NomMeasuringUnit</value>
+  </data>
+  <data name="NomPhdServers" xml:space="preserve">
+    <value>NomPhdServers</value>
+  </data>
+  <data name="NomProduct" xml:space="preserve">
+    <value>NomProduct</value>
+  </data>
+  <data name="NomShift" xml:space="preserve">
+    <value>NomShift</value>
+  </data>
+  <data name="NomTypeMaterial" xml:space="preserve">
+    <value>NomTypeMaterial</value>
+  </data>
+  <data name="NomTypeProduct" xml:space="preserve">
+    <value>NomTypeProduct</value>
+  </data>
+  <data name="NomTypeProductDaily" xml:space="preserve">
+    <value>NomTypeProductDaily</value>
+  </data>
+  <data name="NomTypeProductShift" xml:space="preserve">
+    <value>NomTypeProductShift</value>
+  </data>
+  <data name="NomTypeTransport" xml:space="preserve">
+    <value>NomTypeTransport</value>
+  </data>
   <data name="ShiftData" xml:space="preserve">
     <value>ShiftData</value>
   </data>

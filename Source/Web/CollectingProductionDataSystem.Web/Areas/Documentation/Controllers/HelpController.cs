@@ -125,5 +125,49 @@ namespace CollectingProductionDataSystem.Web.Areas.Documentation.Controllers
               {
                     return PartialView();
               }
+        public PartialViewResult NomTypeProductDaily()
+              {
+                    return PartialView();
+              }
+         public PartialViewResult NomDirection()
+              {
+                    return PartialView();
+              }
+         public PartialViewResult NomCauseForEdit()
+              {
+                    return PartialView();
+              }
+         public PartialViewResult NomTypeMaterial()
+              {
+                    return PartialView();
+              }
+         public PartialViewResult NomMeasuringUnit()
+              {
+                    return PartialView();
+              }
+         public PartialViewResult NomProduct()
+              {
+                    return PartialView();
+              }
+         public PartialViewResult NomShift()
+              {
+                    return PartialView();
+              }
+         public PartialViewResult NomTypeProduct()
+              {
+                    return PartialView();
+              }
+         public PartialViewResult NomTypeProductShift()
+              {
+                    return PartialView();
+              }
+         public PartialViewResult NomTypeTransport()
+              {
+                    return PartialView();
+              }
+         public PartialViewResult NomPhdServers()
+              {
+                    return PartialView();
+              }
     }
 }

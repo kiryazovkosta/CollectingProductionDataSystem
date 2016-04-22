@@ -232,6 +232,105 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to NomCauseForEdit.
+        /// </summary>
+        public static string NomCauseForEdit {
+            get {
+                return ResourceManager.GetString("NomCauseForEdit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to NomDirection.
+        /// </summary>
+        public static string NomDirection {
+            get {
+                return ResourceManager.GetString("NomDirection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to NomMeasuringUnit.
+        /// </summary>
+        public static string NomMeasuringUnit {
+            get {
+                return ResourceManager.GetString("NomMeasuringUnit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to NomPhdServers.
+        /// </summary>
+        public static string NomPhdServers {
+            get {
+                return ResourceManager.GetString("NomPhdServers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to NomProduct.
+        /// </summary>
+        public static string NomProduct {
+            get {
+                return ResourceManager.GetString("NomProduct", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to NomShift.
+        /// </summary>
+        public static string NomShift {
+            get {
+                return ResourceManager.GetString("NomShift", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to NomTypeMaterial.
+        /// </summary>
+        public static string NomTypeMaterial {
+            get {
+                return ResourceManager.GetString("NomTypeMaterial", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to NomTypeProduct.
+        /// </summary>
+        public static string NomTypeProduct {
+            get {
+                return ResourceManager.GetString("NomTypeProduct", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to NomTypeProductDaily.
+        /// </summary>
+        public static string NomTypeProductDaily {
+            get {
+                return ResourceManager.GetString("NomTypeProductDaily", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to NomTypeProductShift.
+        /// </summary>
+        public static string NomTypeProductShift {
+            get {
+                return ResourceManager.GetString("NomTypeProductShift", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to NomTypeTransport.
+        /// </summary>
+        public static string NomTypeTransport {
+            get {
+                return ResourceManager.GetString("NomTypeTransport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ShiftData.
         /// </summary>
         public static string ShiftData {

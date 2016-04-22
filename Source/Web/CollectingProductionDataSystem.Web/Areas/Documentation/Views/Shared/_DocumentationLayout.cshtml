@@ -180,6 +180,21 @@
                         @Ajax.ActionLink(@Resources.HelpResource.HelpNomenclature, "HelpNomenclature", "Help", new { @class = "help-side-nav-main-items" },
                                                           new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "pageHelp-content", LoadingElementId = "inprogress" })
                     </li>
+                    <li role="separator" class="divider divider-labeled" style="background-color:#fbfaf9">
+                        <span class="label label-default pull-right" style="color:black;background-color:lightgray">@Resources.HelpResource.HelpNomenclature</span>
+                    </li>
+                    <li style="background-color:#fbfaf9;">
+                        @Ajax.ActionLink(@Resources.HelpResource.NomTypeProductDaily, "NomTypeProductDaily", "Help", new { @class = "help-side-nav-main-items" },
+                                                          new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "pageHelp-content", LoadingElementId = "inprogress" })
+                    </li>
+                    <li>
+                        @Ajax.ActionLink(@Resources.HelpResource.NomDirection, "NomTypeProductDaily", "Help", new { @class = "help-side-nav-main-items" },
+                                                          new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "pageHelp-content", LoadingElementId = "inprogress" })
+                    </li>
+                    <li>
+                        @Ajax.ActionLink(@Resources.HelpResource.NomCauseForEdit, "NomTypeProductDaily", "Help", new { @class = "help-side-nav-main-items" },
+                                                          new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "pageHelp-content", LoadingElementId = "inprogress" })
+                    </li>
                 </ul>
             </div>
         </li>

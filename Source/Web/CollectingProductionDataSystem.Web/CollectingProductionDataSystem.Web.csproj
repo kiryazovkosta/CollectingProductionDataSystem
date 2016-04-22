@@ -1412,6 +1412,17 @@
     <Content Include="Areas\MonthlyDataReporting\Views\MonthlyChemicalClearedWater\MonthlyChemicalClearedWaterData.cshtml" />
     <Content Include="Areas\MonthlyDataReporting\Views\MonthlyChemicalClearedWater\MonthlyChemicalClearedWaterReport.cshtml" />
     <Content Include="Areas\Documentation\Views\Help\MonthlyDataChemicals.cshtml" />
+    <Content Include="Areas\Documentation\Views\Help\NomTypeProductDaily.cshtml" />
+    <Content Include="Areas\Documentation\Views\Help\NomDirection.cshtml" />
+    <Content Include="Areas\Documentation\Views\Help\NomCauseForEdit.cshtml" />
+    <Content Include="Areas\Documentation\Views\Help\NomTypeMaterial.cshtml" />
+    <Content Include="Areas\Documentation\Views\Help\NomMeasuringUnit.cshtml" />
+    <Content Include="Areas\Documentation\Views\Help\NomProduct.cshtml" />
+    <Content Include="Areas\Documentation\Views\Help\NomShift.cshtml" />
+    <Content Include="Areas\Documentation\Views\Help\NomTypeProduct.cshtml" />
+    <Content Include="Areas\Documentation\Views\Help\NomTypeProductShift.cshtml" />
+    <Content Include="Areas\Documentation\Views\Help\NomTypeTransport.cshtml" />
+    <Content Include="Areas\Documentation\Views\Help\NomPhdServers.cshtml" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <None Include="Properties\PublishProfiles\Home.pubxml" />
     <Content Include="Scripts\custom\sendArea.js" />
