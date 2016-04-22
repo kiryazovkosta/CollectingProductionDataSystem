@@ -95,6 +95,15 @@
         [SummaryReportAllowedFilter]
         public ActionResult MonthlyPotableWaterReport(DateTime? reportDate,  bool? isReport)
         {
+            if (isReport != null)
+            {
+                this.TempData["isReport"] = isReport;
+            }
+            else
+            {
+                this.TempData["isReport"] = false;
+            }
+
             return View(reportDate);
         }
 
@@ -276,7 +285,7 @@
         [HttpPost]
         [ValidateAntiForgeryToken]
         [SummaryReportAllowedFilter]
-        public ActionResult IsConfirmed(DateTime date, int monthlyReportTypeId)
+        public ActionResult IsConfirmed(DateTime date, int monthlyReportTypeId, bool? isReport)
         {
             if (this.ModelState.IsValid)
             {
