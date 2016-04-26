@@ -132,8 +132,20 @@
   <data name="DailyDataStatusTank" xml:space="preserve">
     <value>DailyDataStatusTank</value>
   </data>
+  <data name="DailyMeasuringPositions" xml:space="preserve">
+    <value>DailyMeasuringPositions</value>
+  </data>
   <data name="HelpNomenclature" xml:space="preserve">
     <value>HelpNomenclature</value>
+  </data>
+  <data name="HelpProductionData" xml:space="preserve">
+    <value>HelpProductionData</value>
+  </data>
+  <data name="Installation" xml:space="preserve">
+    <value>Installation</value>
+  </data>
+  <data name="MeasuringPositions" xml:space="preserve">
+    <value>MeasuringPositions</value>
   </data>
   <data name="MonthlyAir" xml:space="preserve">
     <value>MonthlyAir</value>
@@ -210,6 +222,15 @@
   <data name="NomTypeTransport" xml:space="preserve">
     <value>NomTypeTransport</value>
   </data>
+  <data name="Plant" xml:space="preserve">
+    <value>Plant</value>
+  </data>
+  <data name="Production" xml:space="preserve">
+    <value>Production</value>
+  </data>
+  <data name="ProductionData" xml:space="preserve">
+    <value>ProductionData</value>
+  </data>
   <data name="ShiftData" xml:space="preserve">
     <value>ShiftData</value>
   </data>
@@ -230,5 +251,8 @@
   </data>
   <data name="SummaryReportDescription" xml:space="preserve">
     <value>SummaryReportDescription</value>
+  </data>
+  <data name="TeamDataFlows" xml:space="preserve">
+    <value>TeamDataFlows</value>
   </data>
 </root>

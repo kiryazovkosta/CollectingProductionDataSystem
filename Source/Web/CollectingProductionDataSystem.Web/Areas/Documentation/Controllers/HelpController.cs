@@ -173,5 +173,33 @@ namespace CollectingProductionDataSystem.Web.Areas.Documentation.Controllers
               {
                     return PartialView();
               }
+        public PartialViewResult HelpProductionData()
+              {
+                    return PartialView();
+              }
+        public PartialViewResult Plant()
+              {
+                    return PartialView();
+              }
+        public PartialViewResult Production()
+              {
+                    return PartialView();
+              }
+        public PartialViewResult Installation()
+              {
+                    return PartialView();
+              }
+        public PartialViewResult MeasuringPositions()
+              {
+                    return PartialView();
+              }
+        public PartialViewResult DailyMeasuringPositions()
+              {
+                    return PartialView();
+              }
+         public PartialViewResult TeamDataFlows()
+              {
+                    return PartialView();
+              }
     }
 }
