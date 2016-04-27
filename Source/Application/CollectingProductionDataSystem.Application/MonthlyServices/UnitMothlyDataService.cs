@@ -243,7 +243,7 @@ namespace CollectingProductionDataSystem.Application.MonthlyServices
                 }
                 catch (Exception ex) 
                 {
-                    Console.WriteLine();
+                    Console.WriteLine(ex.Message);
                 }
             }
 

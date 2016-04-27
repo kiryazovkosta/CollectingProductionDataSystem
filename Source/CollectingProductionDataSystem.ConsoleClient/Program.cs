@@ -34,7 +34,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
             var kernel = NinjectConfig.GetInjector;
 
             var data = kernel.Get<ProductionData>();
-            //WritePositionsConfidence(data);
+            WritePositionsConfidence(data);
             //UpdateShiftUnitData(kernel, data);
 
             //UpdateShiftUnitData(kernel, data);
@@ -155,18 +155,18 @@ namespace CollectingProductionDataSystem.ConsoleClient
             PHDHistorian phd = new PHDHistorian();
             try
             {
-                PHDServer server = new PHDServer("172.30.1.40", SERVERVERSION.RAPI200);
+                PHDServer server = new PHDServer("srv-vm-mes-phd", SERVERVERSION.RAPI200);
                 phd.DefaultServer = server;
                 phd.DefaultServer.Port = 3150;
                 phd.Sampletype = SAMPLETYPE.Raw;
                 phd.ReductionType = REDUCTIONTYPE.None;
-                phd.StartTime = "4/5/2016 9:05:00 PM";
-                phd.EndTime = "4/5/2016 9:05:00 PM";
+                phd.StartTime = "4/25/2016 5:15:00 AM";
+                phd.EndTime = "4/25/2016 5:15:00 AM";
                 phd.MaximumRows = 1;
 
-                using (var writer = new StreamWriter(@"C:\Temp\phd-l35-1.log"))
+                using (var writer = new StreamWriter(@"C:\Temp\srv-vm-mes-phd-25042016-0515.log"))
                 {
-                    var unitConfigs = data.UnitConfigs.All().Include(x => x.ProcessUnit).Where(x => x.DataSource == PrimaryDataSourceType.PhdL311B).ToList();
+                    var unitConfigs = data.UnitConfigs.All().Include(x => x.ProcessUnit).Where(x => x.DataSource == PrimaryDataSourceType.SrvVmMesPhdA).ToList();
                     foreach (var unitConfig in unitConfigs)
                     {
                         if (unitConfig.CollectingDataMechanism == "A")
