@@ -41,33 +41,79 @@
             </div>
             <p>Tаблицата "Месечни данни за химическа очистена вода" съдържа данни за месечния отчет за химическа очистена вода по направления за месеца, посочен в таблица "Параметри на отчета".</p>
             <br />
+            <p>
+                Ако таблицата съдържа светло червен ред, както е показано на Фиг.6, то това означава че има ръчна корекция на по-долни нива в стойността
+                в колона "Отчетено".
+            </p>
+            <div class="centeredDivForImages">
+                <p><img class="img-rounded imgboxshadow" src="~/Content/images/MonthlyData/MonthlyDataChemical/RedRow.png" /></p>
+                <p>Фиг.6</p>
+            </div>
             <p>Всяка колона от таблицата може да бъде филтрирана по следния начин:</p>
             <div class="centeredDivForImages">
                 <p><img class="img-rounded imgboxshadow" src="~/Content/images/MonthlyData/MonthlyDataChemical/Figura169.png" /></p>
-                <p>Фиг.6</p>
+                <p>Фиг.7</p>
             </div>
             <p>
                 Всеки ред от таблицата може да се редактира като се натисне бутон  <span><img class="img-rounded" src="~/Content/images/Shiftdata/edit.png" /></span>.
-                Колоните, които могат да бъдат редактирани са "Инсталация" и „Отчетено“. Те се ограждат в сив правоъгълник, както е показано на фиг.7.
+                Колоните, които могат да бъдат редактирани са "Инсталация" и „Отчетено“. Те се ограждат в сив правоъгълник, както е показано на фиг.8.
                 Данните в останалите колони в таблицата не подлежат на промяна.
             </p>
             <div class="centeredDivForImages">
                 <p><img class="img-rounded imgboxshadow" src="~/Content/images/MonthlyData/MonthlyDataChemical/Figura170.png" /></p>
-                <p>Фиг.7</p>
+                <p>Фиг.8</p>
             </div>
             <p>Въвеждат се коректни стойности в колоните за редакция и се натиска бутон  <span><img class="img-rounded" src="~/Content/images/Shiftdata/save.png" /></span>. </p>
+
+            <p>
+                Месечният отчет съдържа най-долу <span class="stronged">ред "Загуби"</span>, който ред съдържа в колона "Отчетено" (предпоследната колона в долната таблица)
+                стойност, различна от нула, както е показано на Фиг.9.
+            </p>
+            <div class="centeredDivForImages">
+                <p><img class="img-rounded imgboxshadow" src="~/Content/images/MonthlyData/MonthlyDataChemical/rowZagubi1.png" /></p>
+                <p>Фиг.9</p>
+            </div>
+            <p>
+                При избор на бутон <span><img class="img-rounded btnApply" src="~/Content/images/MonthlyData/MonthlyDataChemical/ButtonReports.png" /></span> в таблицата
+                "Параметри на отчета", стойността в колона "Отчетено" се преразпределя по всички направления в група "Консумирана ХОВ от технологични инсталации" в отчета.
+                Отваря се отваря таблицата "Месечни данни за химически очистена вода", където може да се види промяната в колона "Процент на преизчисление". Таблицата е
+                показана на Фиг.10. Натискането на бутона може да се повтаря многократно или след всяка ръчна промяна в колона "Отчетено".
+            </p>
+            <div class="centeredDivForImages">
+                <p><img class="img-rounded imgboxshadow " src="~/Content/images/MonthlyData/MonthlyDataChemical/Report.png" /></p>
+                <p>Фиг.10</p>
+            </div>
+            <p>
+                Преразпределнието в <span class="stronged">ред "Загуби"</span> може да се види и при извикване на сводния отчет от меню "Сводни отчети" -> секция месечни данни -> "Месечни данни за
+                химически очистена вода", показан на Фиг.11, където ясно се вижда, че стойността в колона "Процент на преизчисление" (предпоследната колона в долната таблица)
+                в ред "Загуби" е вече нула процента.
+            </p>
+            <div class="centeredDivForImages">
+                <p><img class="img-rounded imgboxshadow " src="~/Content/images/MonthlyData/MonthlyDataChemical/RowZagubiZero.png" /></p>
+                <p>Фиг.11</p>
+            </div>
             <p>
                 Потребителят внимателно преглежда всеки ред от таблицата и тогава избира бутон <span><img class="img-rounded" src="~/Content/images/DailyData/Potvarjdavam_red.png" style="width:140px;" /></span>
                 и запазва месечния отчет.
             </p>
             <p>
-                Появява се екран за успешна операция, показан на Фиг.8.
+                Появява се екран за успешна операция, показан на Фиг.12.
             </p>
             <div class="centeredDivForImages">
                 <p><img class="img-rounded" src="~/Content/images/dailyData/figura51.png" /></p>
-                <p>Фиг.8</p>
+                <p>Фиг.12</p>
             </div>
             <p>Веднъж потвърден месечен отчет няма възможност за повторно редактиране или потвърждаване.</p>
+
+            <p>
+                Потребител с присъединена роля <span class="stronged">"Administrator"</span> може да види всяка направена промяна в колона „Код“ и в колона "Отчетено".
+                Тя се вижда след избиране на съдържанието на посочените колони, както e показано на Фиг.13. Отваря се екран, съдържащ информация кой, кога и какви промени е правил
+                върху колона “Код“ или колона "Отчетено".
+            </p>
+            <div class="centeredDivForImages">
+                <p><img class="img-rounded imgboxshadow" src="~/Content/images/MonthlyData/MonthlyDataHydroCarbons/History.png" /></p>
+                <p>Фиг.13</p>
+            </div>
             <p>
                 Данните за месечния отчет могат да бъдат само експортирани в Excel чрез бутон
                 <span><img class="img-rounded btnApply" src="~/Content/images/Shiftdata/Export.png" /></span> .

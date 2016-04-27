@@ -132,8 +132,20 @@
   <data name="DailyDataStatusTank" xml:space="preserve">
     <value>Статус на резервоарите</value>
   </data>
+  <data name="DailyMeasuringPositions" xml:space="preserve">
+    <value>Дневни измервателни позиции</value>
+  </data>
   <data name="HelpNomenclature" xml:space="preserve">
     <value>Номенклатури</value>
+  </data>
+  <data name="HelpProductionData" xml:space="preserve">
+    <value>Производствени данни</value>
+  </data>
+  <data name="Installation" xml:space="preserve">
+    <value>Инсталация</value>
+  </data>
+  <data name="MeasuringPositions" xml:space="preserve">
+    <value>Измервателни позиции</value>
   </data>
   <data name="MonthlyAir" xml:space="preserve">
     <value>Технически газове - въздух</value>
@@ -143,6 +155,9 @@
   </data>
   <data name="MonthlyDataChemicalClearWater" xml:space="preserve">
     <value>Месечни данни за химически очистена вода</value>
+  </data>
+  <data name="MonthlyDataChemicals" xml:space="preserve">
+    <value>Месечни данни за химикали</value>
   </data>
   <data name="MonthlyDataCircularWater" xml:space="preserve">
     <value>Месечни данни за оборотна вода</value>
@@ -171,6 +186,51 @@
   <data name="MonthlyNitrogen" xml:space="preserve">
     <value>Технически газове - азот</value>
   </data>
+  <data name="NomCauseForEdit" xml:space="preserve">
+    <value>Причина за корекция</value>
+  </data>
+  <data name="NomDirection" xml:space="preserve">
+    <value>Посока</value>
+  </data>
+  <data name="NomMeasuringUnit" xml:space="preserve">
+    <value>Мерна единица</value>
+  </data>
+  <data name="NomPhdServers" xml:space="preserve">
+    <value>Phd сървъри</value>
+  </data>
+  <data name="NomProduct" xml:space="preserve">
+    <value>Продукт</value>
+  </data>
+  <data name="NomShift" xml:space="preserve">
+    <value>Смяна</value>
+  </data>
+  <data name="NomSortMaterial" xml:space="preserve">
+    <value>Вид материал</value>
+  </data>
+  <data name="NomTypeMaterial" xml:space="preserve">
+    <value>Тип на материала</value>
+  </data>
+  <data name="NomTypeProduct" xml:space="preserve">
+    <value>Тип продукт</value>
+  </data>
+  <data name="NomTypeProductDaily" xml:space="preserve">
+    <value>Тип на продукта при дневни справки</value>
+  </data>
+  <data name="NomTypeProductShift" xml:space="preserve">
+    <value>Тип на продукта при сменни справки</value>
+  </data>
+  <data name="NomTypeTransport" xml:space="preserve">
+    <value>Вид транспорт</value>
+  </data>
+  <data name="Plant" xml:space="preserve">
+    <value>Завод</value>
+  </data>
+  <data name="Production" xml:space="preserve">
+    <value>Производство</value>
+  </data>
+  <data name="ProductionData" xml:space="preserve">
+    <value>Производствени данни</value>
+  </data>
   <data name="ShiftData" xml:space="preserve">
     <value>Сменни данни</value>
   </data>
@@ -191,5 +251,8 @@
   </data>
   <data name="SummaryReportDescription" xml:space="preserve">
     <value>Сводни отчети описание</value>
+  </data>
+  <data name="TeamDataFlows" xml:space="preserve">
+    <value>Отборни данни за потоци</value>
   </data>
 </root>
