@@ -41,6 +41,9 @@
             </div>
             <p>Tаблицата "Месечни данни за питейна вода" съдържа данни за месечния отчет за питейна вода по направления за месеца, посочен в таблица "Параметри на отчета".</p>
             <br />
+            <p>
+                Ако таблицата съдържа светло червен ред, то това означава че има ръчна корекция на по-долни нива в стойността в колона "Отчетено".
+            </p>
             <p>Всяка колона от таблицата може да бъде филтрирана по следния начин:</p>
             <div class="centeredDivForImages">
                 <p><img class="img-rounded imgboxshadow" src="~/Content/images/MonthlyData/MonthlyDataPotable/Figura166.png" /></p>
@@ -56,16 +59,44 @@
                 <p>Фиг.7</p>
             </div>
             <p>Въвеждат се коректни стойности в колоните за редакция и се натиска бутон  <span><img class="img-rounded" src="~/Content/images/Shiftdata/save.png" /></span>. </p>
+            
+            <p>
+                Месечният отчет съдържа най-долу <span class="stronged">ред "Питейна вода за разпределение"</span>, който ред съдържа в колона "Отчетено" (последната колона в долната таблица)
+                стойност, различна от нула, както е показано на Фиг.8.
+            </p>
+            <div class="centeredDivForImages">
+                <p><img class="img-rounded imgboxshadow" src="~/Content/images/MonthlyData/MonthlyDataPotable/RowPrerazp.png" /></p>
+                <p>Фиг.8</p>
+            </div>
+            <p>
+                При избор на бутон <span><img class="img-rounded btnApply" src="~/Content/images/MonthlyData/MonthlyDataChemical/ButtonReports.png" /></span> в таблицата
+                "Параметри на отчета", стойността в колона "Отчетено" се преразпределя по всички направления в отчета, с изключение на направление "Питейна вода - Външни консуматори".
+                Отваря се отваря таблицата "Месечни данни за питейна вода", където може да се види промяната в колона "Процент на преизчисление". Таблицата е показана на Фиг.9.
+                Натискането на бутона може да се повтаря многократно или след всяка ръчна промяна в колона "Отчетено".
+            </p>
+            <div class="centeredDivForImages">
+                <p><img class="img-rounded imgboxshadow " src="~/Content/images/MonthlyData/MonthlyDataPotable/Report.png" /></p>
+                <p>Фиг.9</p>
+            </div>
+            <p>
+                Преразпределнието в <span class="stronged">ред "Питейна вода за разпределение"</span> може да се види и при извикване на сводния отчет от меню "Сводни отчети" -> секция месечни данни -> "Месечни данни за
+                питейна вода", показан на Фиг.10, където ясно се вижда, че стойността в колона "Процент на преизчисление" (предпоследната колона в долната таблица)
+                в ред "Питейна вода за разпределение" е вече нула процента.
+            </p>
+            <div class="centeredDivForImages">
+                <p><img class="img-rounded imgboxshadow " src="~/Content/images/MonthlyData/MonthlyDataPotable/RowZero.png" /></p>
+                <p>Фиг.10</p>
+            </div>
             <p>
                 Потребителят внимателно преглежда всеки ред от таблицата и тогава избира бутон <span><img class="img-rounded" src="~/Content/images/DailyData/Potvarjdavam_red.png" style="width:140px;" /></span>
                 и запазва месечния отчет.
             </p>
             <p>
-                Появява се екран за успешна операция, показан на Фиг.8.
+                Появява се екран за успешна операция, показан на Фиг.11.
             </p>
             <div class="centeredDivForImages">
                 <p><img class="img-rounded" src="~/Content/images/dailyData/figura51.png" /></p>
-                <p>Фиг.8</p>
+                <p>Фиг.11</p>
             </div>
             <p>Веднъж потвърден месечен отчет няма възможност за повторно редактиране или потвърждаване.</p>
             <p>
@@ -75,11 +106,8 @@
             </p>
             <div class="centeredDivForImages">
                 <p><img class="img-rounded imgboxshadow" src="~/Content/images/MonthlyData/MonthlyDataHydroCarbons/History.png" /></p>
-                <p>Фиг.9</p>
+                <p>Фиг.12</p>
             </div>
-            <p>
-                Ако таблицата съдържа светло червен ред, то това означава че има ръчна корекция на по-долни нива в стойността в колона "Отчетено".
-            </p>
             <p>
                 Данните за месечния отчет могат да бъдат само експортирани в Excel чрез бутон
                 <span><img class="img-rounded btnApply" src="~/Content/images/Shiftdata/Export.png" /></span> .
