@@ -285,19 +285,32 @@
         [HttpPost]
         [ValidateAntiForgeryToken]
         [SummaryReportAllowedFilter]
-        public ActionResult IsConfirmed(DateTime date, int monthlyReportTypeId)
+        [SummaryReportFilter]
+        public ActionResult IsConfirmed(DateTime date, int monthlyReportTypeId, bool? isReport)
         {
+            if (isReport.HasValue && isReport.Value == true)
+            {
+                return Json(new { IsConfirmed = true });
+            }
+
             if (this.ModelState.IsValid)
             {
-                if (this.monthlyService.IsMonthlyReportConfirmed(date, CommonConstants.ChemicalClearedWater) == false)
+                if (isReport == null || isReport.Value == false)
                 {
-                    if (this.monthlyService.GetDataForMonth(date, CommonConstants.ChemicalClearedWater).Any())
-                    {
-                        return Json(new { IsConfirmed = false });
-                    }
+                    return Json(new { IsConfirmed = this.monthlyService.IsMonthlyReportConfirmed(date, CommonConstants.ChemicalClearedWater) });
                 }
+                else
+                {
+                    if (this.monthlyService.IsMonthlyReportConfirmed(date, CommonConstants.ChemicalClearedWater) == false)
+                    {
+                        if (this.monthlyService.GetDataForMonth(date, CommonConstants.ChemicalClearedWater).Any())
+                        {
+                            return Json(new { IsConfirmed = false });
+                        }
+                    }
 
-                return Json(new { IsConfirmed = true });
+                    return Json(new { IsConfirmed = true });
+                }
             }
             else
             {

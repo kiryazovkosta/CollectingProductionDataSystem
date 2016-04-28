@@ -29,7 +29,7 @@
     public class MonthlyPotableWaterController : AreaBaseController
     {
         private readonly IUnitMothlyDataService monthlyService;
-        private readonly TransactionOptions transantionOption;  
+        private readonly TransactionOptions transantionOption;
 
         public MonthlyPotableWaterController(IProductionData dataParam, IUnitMothlyDataService monthlyServiceParam)
             : base(dataParam)
@@ -93,7 +93,7 @@
 
         [HttpGet]
         [SummaryReportAllowedFilter]
-        public ActionResult MonthlyPotableWaterReport(DateTime? reportDate,  bool? isReport)
+        public ActionResult MonthlyPotableWaterReport(DateTime? reportDate, bool? isReport)
         {
             if (isReport != null)
             {
@@ -148,12 +148,12 @@
                     else if (item.IsTotalExternalOutputPosition == true)
                     {
                         item.RecalculationPercentage = 0;
-                        item.TotalValue = 0;   
+                        item.TotalValue = 0;
                     }
                     else if (item.IsTotalInternalPosition)
                     {
                         item.RecalculationPercentage = 0;
-                        item.TotalValue = innerPotableWater + recalculatedPotableWater;    
+                        item.TotalValue = innerPotableWater + recalculatedPotableWater;
                     }
                     else
                     {
@@ -285,19 +285,27 @@
         [HttpPost]
         [ValidateAntiForgeryToken]
         [SummaryReportAllowedFilter]
+        [SummaryReportFilter]
         public ActionResult IsConfirmed(DateTime date, int monthlyReportTypeId, bool? isReport)
         {
             if (this.ModelState.IsValid)
             {
-                if (this.monthlyService.IsMonthlyReportConfirmed(date, CommonConstants.PotableWater) == false)
+                if (isReport == null || isReport.Value == false)
                 {
-                    if (this.monthlyService.GetDataForMonth(date, CommonConstants.PotableWater).Any())
-                    {
-                        return Json(new { IsConfirmed = false });
-                    }
+                    return Json(new { IsConfirmed = this.monthlyService.IsMonthlyReportConfirmed(date, CommonConstants.PotableWater) });
                 }
+                else
+                {
+                    if (this.monthlyService.IsMonthlyReportConfirmed(date, CommonConstants.PotableWater) == false)
+                    {
+                        if (this.monthlyService.GetDataForMonth(date, CommonConstants.PotableWater).Any())
+                        {
+                            return Json(new { IsConfirmed = false });
+                        }
+                    }
 
-                return Json(new { IsConfirmed = true });
+                    return Json(new { IsConfirmed = true });
+                }
             }
             else
             {
