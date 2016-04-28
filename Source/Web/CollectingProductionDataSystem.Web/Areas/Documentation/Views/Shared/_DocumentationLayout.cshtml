@@ -120,11 +120,11 @@
                                                           new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "pageHelp-content", LoadingElementId = "inprogress" })
                     </li>
                     <li>
-                        @Ajax.ActionLink(@Resources.HelpResource.MonthlyDataPotableWater, "MonthlyDataPotableWater", "Help", new { @class = "help-side-nav-main-items" },
+                        @Ajax.ActionLink(@Resources.HelpResource.MonthlyDataChemicalClearWater, "MonthlyDataChemicalClearingWater", "Help", new { @class = "help-side-nav-main-items" },
                                                           new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "pageHelp-content", LoadingElementId = "inprogress" })
                     </li>
                     <li>
-                        @Ajax.ActionLink(@Resources.HelpResource.MonthlyDataChemicalClearWater, "MonthlyDataChemicalClearingWater", "Help", new { @class = "help-side-nav-main-items" },
+                        @Ajax.ActionLink(@Resources.HelpResource.MonthlyDataPotableWater, "MonthlyDataPotableWater", "Help", new { @class = "help-side-nav-main-items" },
                                                           new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "pageHelp-content", LoadingElementId = "inprogress" })
                     </li>
                     <li>
@@ -240,7 +240,7 @@
                         @Ajax.ActionLink(@Resources.HelpResource.Plant, "Plant", "Help", new { @class = "help-side-nav-main-items" },
                                                           new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "pageHelp-content", LoadingElementId = "inprogress" })
                     </li>
-                    <li style="background-color:#fbfaf9;">
+                    <li>
                         @Ajax.ActionLink(@Resources.HelpResource.Production, "Production", "Help", new { @class = "help-side-nav-main-items" },
                                                           new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "pageHelp-content", LoadingElementId = "inprogress" })
                     </li>
@@ -258,6 +258,30 @@
                     </li>
                     <li>
                         @Ajax.ActionLink(@Resources.HelpResource.TeamDataFlows, "TeamDataFlows", "Help", new { @class = "help-side-nav-main-items" },
+                                                          new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "pageHelp-content", LoadingElementId = "inprogress" })
+                    </li>
+
+                    <li role="separator" class="divider divider-labeled" style="background-color:#fbfaf9">
+                        <span class="label label-default pull-right" style="color:black;background-color:lightgray">@Resources.Layout.Inventories</span>
+                    </li>
+                    <li style="background-color:#fbfaf9;">
+                        @Ajax.ActionLink(Resources.Layout.Areas, "Area", "Help", new { @class = "help-side-nav-main-items" },
+                                                          new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "pageHelp-content", LoadingElementId = "inprogress" })
+                    </li>
+                    <li >
+                        @Ajax.ActionLink(Resources.Layout.Parks, "Park", "Help", new { @class = "help-side-nav-main-items" },
+                                                          new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "pageHelp-content", LoadingElementId = "inprogress" })
+                    </li>
+                    <li >
+                        @Ajax.ActionLink(Resources.Layout.TankConfig, "TankConfig", "Help", new { @class = "help-side-nav-main-items" },
+                                                          new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "pageHelp-content", LoadingElementId = "inprogress" })
+                    </li>
+                    <li>
+                        @Ajax.ActionLink(Resources.Layout.TankMasterProduct, "TankMasterProduct", "Help", new { @class = "help-side-nav-main-items" },
+                                                          new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "pageHelp-content", LoadingElementId = "inprogress" })
+                    </li>
+                    <li>
+                        @Ajax.ActionLink(Resources.Layout.TankStatus, "TankStatus", "Help", new { @class = "help-side-nav-main-items" },
                                                           new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "pageHelp-content", LoadingElementId = "inprogress" })
                     </li>
                 </ul>

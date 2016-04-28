@@ -148,7 +148,7 @@
     <value>Измервателни позиции</value>
   </data>
   <data name="MonthlyAir" xml:space="preserve">
-    <value>Технически газове - въздух</value>
+    <value>Месечни данни за въздух</value>
   </data>
   <data name="MonthlyData" xml:space="preserve">
     <value>Месечни данни</value>
@@ -184,7 +184,7 @@
     <value>Количества продукти в  технологични инсталации</value>
   </data>
   <data name="MonthlyNitrogen" xml:space="preserve">
-    <value>Технически газове - азот</value>
+    <value>Месечни данни за азот</value>
   </data>
   <data name="NomCauseForEdit" xml:space="preserve">
     <value>Причина за корекция</value>

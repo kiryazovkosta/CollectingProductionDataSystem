@@ -201,5 +201,25 @@ namespace CollectingProductionDataSystem.Web.Areas.Documentation.Controllers
               {
                     return PartialView();
               }
+          public PartialViewResult Area()
+              {
+                    return PartialView();
+              }
+         public PartialViewResult Park()
+              {
+                    return PartialView();
+              }
+         public PartialViewResult TankConfig()
+              {
+                    return PartialView();
+              }
+         public PartialViewResult TankMasterProduct()
+              {
+                    return PartialView();
+              }
+        public PartialViewResult TankStatus()
+              {
+                    return PartialView();
+              }
     }
 }
