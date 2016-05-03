@@ -217,6 +217,18 @@ namespace CollectingProductionDataSystem.Web.Areas.Documentation.Controllers
               {
                     return PartialView();
               }
+        public PartialViewResult Ikunk()
+              {
+                    return PartialView();
+              }
+        public PartialViewResult Zone()
+              {
+                    return PartialView();
+              }
+        public PartialViewResult MeasuringPointConfig()
+              {
+                    return PartialView();
+              }
         public PartialViewResult TankStatus()
               {
                     return PartialView();

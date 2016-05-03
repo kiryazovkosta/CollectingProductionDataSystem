@@ -284,6 +284,22 @@
                         @Ajax.ActionLink(Resources.Layout.TankStatus, "TankStatus", "Help", new { @class = "help-side-nav-main-items" },
                                                           new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "pageHelp-content", LoadingElementId = "inprogress" })
                     </li>
+
+                    <li role="separator" class="divider divider-labeled" style="background-color:#fbfaf9">
+                        <span class="label label-default pull-right" style="color:black;background-color:lightgray">@Resources.Layout.Transactions</span>
+                    </li>
+                    <li>
+                        @Ajax.ActionLink(Resources.Layout.Ikunk, "Ikunk", "Help", new { @class = "help-side-nav-main-items" },
+                                                          new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "pageHelp-content", LoadingElementId = "inprogress" })
+                    </li>
+                    <li>
+                        @Ajax.ActionLink(Resources.Layout.Zone, "Zone", "Help", new { @class = "help-side-nav-main-items" },
+                                                          new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "pageHelp-content", LoadingElementId = "inprogress" })
+                    </li>
+                    <li>
+                        @Ajax.ActionLink(Resources.Layout.MeasuringPointConfig, "MeasuringPointConfig", "Help", new { @class = "help-side-nav-main-items" },
+                                                          new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "pageHelp-content", LoadingElementId = "inprogress" })
+                    </li>
                 </ul>
             </div>
         </li>
