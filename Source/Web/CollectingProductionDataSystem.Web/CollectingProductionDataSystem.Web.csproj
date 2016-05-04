@@ -1607,6 +1607,8 @@
     <Content Include="Areas\Documentation\Views\Help\Ikunk.cshtml" />
     <Content Include="Areas\Documentation\Views\Help\Zone.cshtml" />
     <Content Include="Areas\Documentation\Views\Help\MeasuringPointConfig.cshtml" />
+    <Content Include="Areas\Documentation\Views\Help\MonthlyReportType.cshtml" />
+    <Content Include="Areas\Documentation\Views\Help\UnitsMonthlyConfig.cshtml" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <None Include="Properties\PublishProfiles\Home.pubxml" />
     <Content Include="Scripts\custom\sendArea.js" />
@@ -2340,6 +2342,7 @@
     <Folder Include="Areas\ShiftReporting\Views\AreaBase\" />
     <Folder Include="Areas\SummaryReporting\Views\Ajax\" />
     <Folder Include="Areas\SummaryReporting\Views\Shared\DisplayTemplates\" />
+    <Folder Include="Content\Images\Nomenclature\MothlyFormsReports\" />
     <Folder Include="Content\Images\Nomenclature\ProductionData\TeamDataFlows\" />
     <Folder Include="Content\Images\Nomenclature\Transactions\Ikunk\" />
     <Folder Include="Content\Images\Nomenclature\Transactions\Zone\" />

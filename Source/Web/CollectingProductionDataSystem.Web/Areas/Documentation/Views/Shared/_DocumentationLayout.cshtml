@@ -300,10 +300,22 @@
                         @Ajax.ActionLink(Resources.Layout.MeasuringPointConfig, "MeasuringPointConfig", "Help", new { @class = "help-side-nav-main-items" },
                                                           new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "pageHelp-content", LoadingElementId = "inprogress" })
                     </li>
+
+                    <li role="separator" class="divider divider-labeled" style="background-color:#fbfaf9">
+                        <span class="label label-default pull-right" style="color:black;background-color:lightgray">@Resources.Layout.MothlyFormsReports</span>
+                    </li>
+                    <li>
+                        @Ajax.ActionLink(Resources.Layout.MonthlyReportType, "MonthlyReportType", "Help", new { @class = "help-side-nav-main-items" },
+                                                          new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "pageHelp-content", LoadingElementId = "inprogress" })
+                    </li>
+                    <li>
+                        @Ajax.ActionLink(Resources.Layout.UnitsMonthlyConfig, "UnitsMonthlyConfig", "Help", new { @class = "help-side-nav-main-items" },
+                                                          new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "pageHelp-content", LoadingElementId = "inprogress" })
+                    </li>
                 </ul>
             </div>
         </li>
-        
+      
     </ul>
 </div>
 

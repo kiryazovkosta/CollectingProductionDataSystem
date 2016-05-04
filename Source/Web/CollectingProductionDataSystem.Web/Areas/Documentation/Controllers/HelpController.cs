@@ -233,5 +233,13 @@ namespace CollectingProductionDataSystem.Web.Areas.Documentation.Controllers
               {
                     return PartialView();
               }
+        public PartialViewResult MonthlyReportType()
+              {
+                    return PartialView();
+              }
+        public PartialViewResult UnitsMonthlyConfig()
+              {
+                    return PartialView();
+              }
     }
 }
