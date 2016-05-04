@@ -72,6 +72,8 @@
 
         public virtual MeasureUnit MeasureUnit { get; set; }
 
+        public string Code { get; set; }
+
         /// <summary>
         /// Determines whether the specified object is valid.
         /// </summary>

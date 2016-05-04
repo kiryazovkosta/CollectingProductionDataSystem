@@ -104,6 +104,11 @@
                 this.TempData["isReport"] = false;
             }
 
+            if (isReport.HasValue && isReport.Value == true)
+            {
+                return View("MonthlyChemicalClearedWaterSummaryReport"); 
+            }
+
             return View(reportDate);
         }
 
@@ -121,7 +126,7 @@
 
             if (isReport ?? false)
             {
-                if (!this.monthlyService.IsMonthlyReportConfirmed(date, CommonConstants.PotableWater))
+                if (!this.monthlyService.IsMonthlyReportConfirmed(date, CommonConstants.ChemicalClearedWater))
                 {
                     this.ModelState.AddModelError(string.Empty, string.Format(@Resources.ErrorMessages.MonthIsNotConfirmed, date.ToString("MMMM yyyy")));
                     var kendoResult = new List<MonthlyReportTableReportViewModel>().ToDataSourceResult(request, ModelState);

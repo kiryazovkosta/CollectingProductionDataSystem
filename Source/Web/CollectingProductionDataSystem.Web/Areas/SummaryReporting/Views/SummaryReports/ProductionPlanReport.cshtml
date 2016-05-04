@@ -23,6 +23,7 @@
         .Columns(
             columns =>
             {
+                //columns.Bound(c => c.Code).ClientTemplate("<div style='text-align:center;'>#=kendo.toString(data.Code) #</div>");
                 columns.Bound(c => c.Name).Width(230);
                 columns.Bound(c => c.FactoryName).Hidden(true).ClientGroupHeaderTemplate("Производство #=value.substr(3,value.length-3)#");
                 columns.Bound(c => c.ProcessUnitName).Hidden(true).ClientGroupHeaderTemplate("Инсталация #=value.substr(3,value.length-3)#");

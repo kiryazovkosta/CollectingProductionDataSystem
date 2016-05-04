@@ -4282,6 +4282,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to UnitMonthlyFuelsData.
+        /// </summary>
+        public static string UnitMonthlyFuelsData {
+            get {
+                return ResourceManager.GetString("UnitMonthlyFuelsData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to UnitMonthlyFWData.
         /// </summary>
         public static string UnitMonthlyFWData {

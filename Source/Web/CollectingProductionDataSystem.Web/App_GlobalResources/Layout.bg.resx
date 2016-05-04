@@ -1667,4 +1667,7 @@
   <data name="TotalValue" xml:space="preserve">
     <value>Общо</value>
   </data>
+  <data name="UnitMonthlyFuelsData" xml:space="preserve">
+    <value>Месечни данни за горива</value>
+  </data>
 </root>

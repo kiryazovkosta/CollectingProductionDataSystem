@@ -1,0 +1,117 @@
+﻿@using System.Web.Optimization;
+@using CollectingProductionDataSystem.Constants;
+@using CollectingProductionDataSystem.Web.Areas.MonthlyDataReporting.Models;
+@using CollectingProductionDataSystem.Web.Infrastructure.Helpers;
+@using Resources = App_GlobalResources.Resources;
+
+@model MonthlyReportParametersViewModel
+@{
+    Layout = "~/Views/Shared/_KendoLayoutWithSideBar.cshtml";
+}
+<div class="row">
+    <div class="col-md-10">
+        <h2>@Model.ReportName</h2>
+    </div>
+    <div class="col-md-2">
+        <button id="excel-export" class="k-button k-button-icontext k-grid-excel pull-right head-button"><span class="k-icon k-i-excel"></span>Експорт в Excel</button>
+    </div>
+</div>
+@Html.Hidden("monthlyReportTypeId", CommonConstants.HydroCarbons)
+@Html.ValidationSummary()
+@Html.AntiForgeryToken()
+
+@Html.Hidden("monthlyReportTypeId", Model.MonthlyReportTypeId)
+@(Html.Kendo()
+    .Grid<MonthlyReportTableViewModel>()
+    .Name("monthly-hc-units")
+    .AutoBind(false)
+    .Columns(
+        columns =>
+        {
+            columns.Bound(c => c.UnitMonthlyConfig.Code)
+                .ClientTemplate(
+                    Ajax.AuthorizedAjaxActionLinkOrText("#=data.UnitMonthlyConfig.Code#", "Index", "History",
+                                                new AjaxOptions() { HttpMethod = "Get", OnSuccess = "showRecordHistoriModal" },
+                                                new { area = "RecordsHistory", id = "#=data.id#", entityName = "UnitMonthlyData" },
+                                                new { data_ajax_mode = "replace", data_ajax_update = @"\#modal-dialog-body" })
+                                                .ToHtmlString())
+                .Width(200);
+
+            columns.Bound(c => c.UnitMonthlyConfig.ProcessUnit.Factory.FactorySortableName).Hidden(true).ClientGroupHeaderTemplate("Производство #=value.substr(3,value.length-3)#").Width(10);
+            columns.Bound(c => c.UnitMonthlyConfig.ProcessUnit.SortableName).Hidden(true).ClientGroupHeaderTemplate("Инсталация #=value.substr(3,value.length-3)#").Width(10);
+            columns.Bound(c => c.UnitMonthlyConfig.ProductType.SortableName).Hidden(true).ClientGroupHeaderTemplate("#=value.substr(3,value.length-3)#").Width(10);
+            columns.Bound(c => c.UnitMonthlyConfig.Name);
+            columns.Bound(c => c.UnitMonthlyConfig.MeasureUnit.Code).Width(100);
+            columns.Bound(c => c.UnitManualMonthlyData.Value)
+                .ClientTemplate(string.Format("{0}{2}{1}", "<div style='text-align:right;'>", "</div>",
+                    Ajax.AuthorizedAjaxActionLinkOrText("#=kendo.toString(data.UnitManualMonthlyData.Value,'\\#\\#.\\#\\#\\#')#", "Index", "History",
+                                                new AjaxOptions() { HttpMethod = "Get", OnSuccess = "showRecordHistoriModal" },
+                                                new { area = "RecordsHistory", id = "#=data.id#", entityName = "UnitManualMonthlyData" },
+                                                new { data_ajax_mode = "replace", data_ajax_update = @"\#modal-dialog-body" })
+                                                .ToHtmlString()))
+                .Width(220).Title(@Resources.Layout.InventoryBased);
+            columns.Bound(c => c.IsEditable).Visible(false);
+        })
+                                                            .Pageable(pageable => pageable
+                                                                .Refresh(true)
+                                                                .PageSizes(false)
+                                                                .Numeric(false)
+                                                                .PreviousNext(false)
+                                                            )
+                                                            .Sortable()
+                                                             .Excel(excel => excel
+                                                                .FileName(@Resources.Layout.UnitMonthlyHCData + "_" + DateTime.Now + ".xlsx")
+                                                                .Filterable(true)
+                                                                .ProxyURL(Url.Action("Excel_Export_Save", "Ajax", new { area = "" }))
+                                                                .AllPages(true))
+                                                                .Events(ev => ev.DataBound("unitGridsData.DataBound"))
+                                                                .Scrollable(scr => scr.Height(640))
+                                                                .Filterable()
+                                                                //.ClientDetailTemplateId("template")
+                                                                .DataSource(dataSource => dataSource
+                                                                .Ajax()
+                                                                .PageSize(int.MaxValue)
+                                                                 .ServerOperation(true)
+                                                                    .Group(group =>
+                                                                    {
+                                                                        group.Add(c => c.UnitMonthlyConfig.ProcessUnit.Factory.FactorySortableName);
+                                                                        group.Add(c => c.UnitMonthlyConfig.ProcessUnit.SortableName);
+                                                                        group.Add(c => c.UnitMonthlyConfig.ProductType.SortableName);
+                                                                    })
+
+                                                                        .Read(read => read.Action("ReadMonthlyUnitsData", Model.ControllerName, new { area = "MonthlyDataReporting" }).Data("unitGridsData.SendDate").Type(HttpVerbs.Post))
+                                                                .Model(model =>
+                                                                {
+                                                                    model.Id(p => p.Id);
+                                                                    model.Field(p => p.UnitMonthlyConfig.Code).Editable(false);
+                                                                    model.Field(p => p.UnitMonthlyConfig.ProductType.Name).Editable(false);
+                                                                    model.Field(p => p.UnitMonthlyConfig.ProcessUnit.ShortName).Editable(false);
+                                                                    model.Field(p => p.UnitMonthlyConfig.Name).Editable(false);
+                                                                    model.Field(p => p.UnitMonthlyConfig.MeasureUnit.Code).Editable(false);
+                                                                    model.Field(p => p.Value).Editable(false);
+                                                                    model.Field(p => p.UnitManualMonthlyData.Value).Editable(true);
+                                                                })
+                                                                .Events(events =>
+                                                                {
+                                                                    events.Error("kendoAdditional.ErrorHandler");
+                                                                    events.RequestEnd("unitGridsData.DataSave");
+                                                                })
+                                                            )
+)
+
+@* //Error window for kendo grid error event handler *@
+<div id="err-window" style="display:none">@Html.Partial("_KendoGridErrorWindow")</div>
+@* //Error window for kendo grid error event handler *@
+<div id="success-window" style="display:none">@Html.Partial("_SuccessWindow")</div>
+
+@section scripts{
+    @Scripts.Render("~/bundles/custom/kendoadditional")
+    @Scripts.Render("~/bundles/custom/unitGrids")
+    @Scripts.Render("~/Scripts/custom/renderDailyGraphic.min.js")
+    @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.min.js")
+}
+@section sidebar{
+    @Html.Partial("_MonthSelectorAproveableSideBar")
+}
+
+

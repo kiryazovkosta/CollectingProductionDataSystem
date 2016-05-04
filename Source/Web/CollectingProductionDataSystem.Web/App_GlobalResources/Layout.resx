@@ -1672,4 +1672,7 @@
   <data name="TotalValue" xml:space="preserve">
     <value>TotalValue</value>
   </data>
+  <data name="UnitMonthlyFuelsData" xml:space="preserve">
+    <value>UnitMonthlyFuelsData</value>
+  </data>
 </root>

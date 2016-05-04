@@ -3,6 +3,7 @@
       .Columns(columns =>
       {
           columns.Command(command => { command.Edit(); command.Destroy(); }).Width(230);
+          columns.Bound(c => c.Code).Width(160);
           columns.Bound(c => c.Name).Width(300)
               .ClientTemplate(Ajax.AuthorizedAjaxActionLinkOrText("#=data.Name#", "Index", "History",
                                                 new AjaxOptions() { HttpMethod = "Get", OnSuccess = "showRecordHistoriModal" },

@@ -104,6 +104,11 @@
                 this.TempData["isReport"] = false;
             }
 
+            if (isReport.HasValue && isReport.Value == true)
+            {
+                return View("MonthlyPotableWaterSummaryReport");
+            }
+
             return View(reportDate);
         }
 

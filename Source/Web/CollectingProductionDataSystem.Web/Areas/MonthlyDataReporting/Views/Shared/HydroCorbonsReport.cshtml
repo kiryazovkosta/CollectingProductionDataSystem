@@ -16,11 +16,10 @@
         <button id="excel-export" class="k-button k-button-icontext k-grid-excel pull-right head-button"><span class="k-icon k-i-excel"></span>Експорт в Excel</button>
     </div>
 </div>
-@Html.Hidden("monthlyReportTypeId", CommonConstants.HydroCarbons)
+@Html.Hidden("monthlyReportTypeId", Model.MonthlyReportTypeId)
 @Html.ValidationSummary()
 @Html.AntiForgeryToken()
 
-@Html.Hidden("monthlyReportTypeId", Model.MonthlyReportTypeId)
 @(Html.Kendo()
     .Grid<MonthlyReportTableViewModel>()
     .Name("monthly-hc-units")

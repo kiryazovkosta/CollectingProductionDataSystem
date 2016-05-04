@@ -105,6 +105,7 @@ namespace CollectingProductionDataSystem.Models.Productions
         public int NeedToGetOnlyLastShiftValue { get; set; }
 
         public bool RemoveAndAddInsteadUpdate { get; set; }
+        public bool HasRawDataReading { get; set; }
 
     }
 }

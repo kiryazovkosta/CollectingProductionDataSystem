@@ -14,6 +14,9 @@ namespace CollectingProductionDataSystem.Web.Areas.SummaryReporting.ViewModels
         [UIHint("Hidden")]
         public int Id { get; set; }
 
+        [Display(Name = "Code", ResourceType = typeof(App_GlobalResources.Resources.Layout))]
+        public string Code { get; set; }
+
         [Display(Name = "Name1", ResourceType = typeof(App_GlobalResources.Resources.Layout))]
         public string Name { get; set; }
 
@@ -59,6 +62,7 @@ namespace CollectingProductionDataSystem.Web.Areas.SummaryReporting.ViewModels
         public void CreateMappings(IConfiguration configuration)
         {
             configuration.CreateMap<ProductionPlanData, EnergyProductionPlanDataViewModel>()
+                .ForMember(p => p.Code, opt => opt.MapFrom(p => p.ProductionPlanConfig.Code))
                 .ForMember(p => p.Name, opt => opt.MapFrom(p => p.Name))
                 .ForMember(p => p.PercentagesPlan, opt => opt.MapFrom(p => p.PercentagesPlan))
                 .ForMember(p => p.QuantityPlan, opt => opt.MapFrom(p => p.QuanityPlan))

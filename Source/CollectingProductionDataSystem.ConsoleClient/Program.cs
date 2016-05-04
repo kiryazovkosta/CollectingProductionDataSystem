@@ -34,8 +34,8 @@ namespace CollectingProductionDataSystem.ConsoleClient
             var kernel = NinjectConfig.GetInjector;
 
             var data = kernel.Get<ProductionData>();
-            WritePositionsConfidence(data);
-            //UpdateShiftUnitData(kernel, data);
+            //WritePositionsConfidence(data);
+            UpdateShiftUnitData(kernel, data);
 
             //UpdateShiftUnitData(kernel, data);
             //var shiftData = data.UnitsData.All().Where(x => x.ShiftId == ShiftType.Second 
@@ -107,7 +107,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
                                   .Include(x => x.RelatedUnitConfigs.Select(z => z.RelatedUnitConfig).Select(w => w.UnitDatasTemps))
                                   .Where(x => x.CollectingDataMechanism == "C")
                                   .ToList();
-            var targerDay = new DateTime(2016, 4, 15);
+            var targerDay = new DateTime(2016, 4, 27);
             var unitsTemp = data.UnitsData.All().Include(x => x.UnitConfig).Where(x => x.RecordTimestamp == targerDay &&
                                                                                        x.ShiftId == 1 &&
                                                                                        x.UnitConfig.CollectingDataMechanism != "C").ToList().Select(x => new UnitDatasTemp
@@ -148,6 +148,10 @@ namespace CollectingProductionDataSystem.ConsoleClient
             }
 
             data.SaveChanges("Initial Loading");
+            //foreach (var item in neededUnitData)
+            //{
+            //    Console.WriteLine(item.Value + " " + item.Confidence);    
+            //}
         }
 
         private static void WritePositionsConfidence(IProductionData data)
