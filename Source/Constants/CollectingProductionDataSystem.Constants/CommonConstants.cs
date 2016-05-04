@@ -34,11 +34,13 @@ namespace CollectingProductionDataSystem.Constants
 
         private static readonly int chemicalClearedWater = 7;
         
-        private static int air = 8;
+        private static readonly int air = 8;
 
-        private static int nitrogen = 9;
+        private static readonly int nitrogen = 9;
 
-        private static int chemicals = 10;
+        private static readonly int chemicals = 10;
+
+        private static readonly int fuels = 11;
 
         private static readonly int dailyInfoDailyInfoHydrocarbonsShiftTypeId = 52;
 
@@ -87,6 +89,8 @@ namespace CollectingProductionDataSystem.Constants
         public static int Nitrogen { get { return nitrogen; } }
 
         public static int Chemicals { get { return chemicals; } }
+
+        public static int Fuels { get { return fuels; } }
 
         public static int DailyInfoDailyInfoHydrocarbonsShiftTypeId { get { return dailyInfoDailyInfoHydrocarbonsShiftTypeId; } }
 

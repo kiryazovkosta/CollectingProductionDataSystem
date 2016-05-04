@@ -306,6 +306,7 @@
     <Compile Include="Areas\MonthlyDataReporting\Controllers\MonthlyCirculatingWaterController.cs" />
     <Compile Include="Areas\MonthlyDataReporting\Controllers\MonthlyElectricalEnergyController.cs" />
     <Compile Include="Areas\MonthlyDataReporting\Controllers\MonthlyFreshWaterController.cs" />
+    <Compile Include="Areas\MonthlyDataReporting\Controllers\MonthlyFuelsController.cs" />
     <Compile Include="Areas\MonthlyDataReporting\Controllers\MonthlyHeatEnergyController.cs" />
     <Compile Include="Areas\MonthlyDataReporting\Controllers\MonthlyNitrogenController.cs" />
     <Compile Include="Areas\MonthlyDataReporting\Controllers\MonthlyPotableWaterController.cs" />
@@ -1569,6 +1570,10 @@
     <Content Include="Areas\Documentation\Views\Help\MeasuringPositions.cshtml" />
     <Content Include="Areas\Documentation\Views\Help\DailyMeasuringPositions.cshtml" />
     <Content Include="Areas\Documentation\Views\Help\TeamDataFlows.cshtml" />
+    <Content Include="Areas\MonthlyDataReporting\Views\MonthlyChemicalClearedWater\MonthlyChemicalClearedWaterSummaryReport.cshtml" />
+    <Content Include="Areas\MonthlyDataReporting\Views\Shared\EnergyReportSummaryReport.cshtml" />
+    <Content Include="Areas\MonthlyDataReporting\Views\Shared\HydroCorbonsReportSummaryReport.cshtml" />
+    <Content Include="Areas\MonthlyDataReporting\Views\MonthlyPotableWater\MonthlyPotableWaterSummaryReport.cshtml" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <None Include="Properties\PublishProfiles\Home.pubxml" />
     <Content Include="Scripts\custom\sendArea.js" />
@@ -2283,6 +2288,7 @@
     <Folder Include="Areas\MonthlyDataReporting\Views\MonthlyCirculatingWater\" />
     <Folder Include="Areas\MonthlyDataReporting\Views\MonthlyElectricalEnergy\" />
     <Folder Include="Areas\MonthlyDataReporting\Views\MonthlyFreshWater\" />
+    <Folder Include="Areas\MonthlyDataReporting\Views\MonthlyFuels\" />
     <Folder Include="Areas\MonthlyDataReporting\Views\MonthlyHeatEnergy\" />
     <Folder Include="Areas\MonthlyDataReporting\Views\MonthlyHydroCarbons\" />
     <Folder Include="Areas\MonthlyDataReporting\Views\MonthlyNitrogen\" />

@@ -58,7 +58,7 @@
                             <li>@Html.AuthorizedActionLink(@Resources.Layout.UnitMonthlyEEData, "Report", "MonthlyElectricalEnergy", new { area = "MonthlyDataReporting" }, null)</li>
                             <li>@Html.AuthorizedActionLink(@Resources.Layout.UnitMonthlyAirData, "Report", "MonthlyAir", new { area = "MonthlyDataReporting" }, null)</li>
                             <li>@Html.AuthorizedActionLink(@Resources.Layout.UnitMonthlyNitrogenData, "Report", "MonthlyNitrogen", new { area = "MonthlyDataReporting" }, null)</li>
-
+                            <li>@Html.AuthorizedActionLink(@Resources.Layout.UnitMonthlyFuelsData, "Report", "MonthlyFuels", new { area = "MonthlyDataReporting" }, null)</li>
                         </ul>
                     </li>
                 }
@@ -93,6 +93,7 @@
                             <li>@Html.AuthorizedActionLink(@Resources.Layout.UnitMonthlyEEData, "Report", "MonthlyElectricalEnergy", new { area = "MonthlyDataReporting", isReport = true }, null)</li>
                             <li>@Html.AuthorizedActionLink(@Resources.Layout.UnitMonthlyAirData, "Report", "MonthlyAir", new { area = "MonthlyDataReporting", isReport = true }, null)</li>
                             <li>@Html.AuthorizedActionLink(@Resources.Layout.UnitMonthlyNitrogenData, "Report", "MonthlyNitrogen", new { area = "MonthlyDataReporting", isReport = true }, null)</li>
+                            <li>@Html.AuthorizedActionLink(@Resources.Layout.UnitMonthlyFuelsData, "Report", "MonthlyFuels", new { area = "MonthlyDataReporting", isReport = true }, null)</li>
                             <li role="separator" class="divider divider-labeled"><span class="label label-default pull-right">Дневни данни - Диспечеризация и ЕОЗ</span></li>
                             <li>@Html.AuthorizedActionLink(@Resources.Layout.EozMeasuringPointsData, "OverseersTransactionsData", "OverseersTransactions", new { area = "SummaryReporting" }, null)</li>
                             <li role="separator" class="divider divider-labeled"><span class="label label-default pull-right">Контрол на изпълнителска дисциплина</span></li>

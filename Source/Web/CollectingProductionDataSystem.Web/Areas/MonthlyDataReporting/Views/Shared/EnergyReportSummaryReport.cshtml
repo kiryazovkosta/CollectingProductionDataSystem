@@ -17,9 +17,9 @@
     </div>
 </div>
 @Html.Hidden("monthlyReportTypeId", Model.MonthlyReportTypeId)
+
 @Html.ValidationSummary()
 @Html.AntiForgeryToken()
-
 @(Html.Kendo()
     .Grid<MonthlyReportTableViewModel>()
     .Name("monthly-hc-units")
@@ -34,25 +34,22 @@
                                                 new { area = "RecordsHistory", id = "#=data.id#", entityName = "UnitMonthlyData" },
                                                 new { data_ajax_mode = "replace", data_ajax_update = @"\#modal-dialog-body" })
                                                 .ToHtmlString())
-                .Width(75);
+                .Width(200);
 
             columns.Bound(c => c.UnitMonthlyConfig.ProcessUnit.Factory.FactorySortableName).Hidden(true).ClientGroupHeaderTemplate("Производство #=value.substr(3,value.length-3)#").Width(10);
-            columns.Bound(c => c.UnitMonthlyConfig.ProcessUnit.SortableName).Hidden(true).ClientGroupHeaderTemplate("Инсталация #=value.substr(3,value.length-3)#").Width(10);
-            columns.Bound(c => c.UnitMonthlyConfig.ProductType.SortableName).Hidden(true).ClientGroupHeaderTemplate("#=value.substr(3,value.length-3)#").Width(10);
-            columns.Bound(c => c.UnitMonthlyConfig.Name).Width(250);
+            columns.Bound(c => c.UnitMonthlyConfig.ProductType.SortableName).Hidden(true).ClientGroupHeaderTemplate("#=value.substr(3,value.length-3)#");
+            columns.Bound(c => c.UnitMonthlyConfig.ProcessUnit.ShortName).Width(120).Title(@Resources.Layout.ProcessUnit);
+            columns.Bound(c => c.UnitMonthlyConfig.Name);
             columns.Bound(c => c.UnitMonthlyConfig.MeasureUnit.Code).Width(100);
-            columns.Bound(c => c.Value).ClientTemplate("<div style='text-align:right;'>#=data.Value==null?'':kendo.toString(data.Value, '\\#\\#.\\#\\#\\#\\#\\#')#</div>").Width(100).Title(@Resources.Layout.ReportedData);
             columns.Bound(c => c.UnitManualMonthlyData.Value)
                 .ClientTemplate(string.Format("{0}{2}{1}", "<div style='text-align:right;'>", "</div>",
-                    Ajax.AuthorizedAjaxActionLinkOrText("#=kendo.toString(data.UnitManualMonthlyData.Value,'\\#\\#.\\#\\#\\#\\#\\#')#", "Index", "History",
+                    Ajax.AuthorizedAjaxActionLinkOrText("#=kendo.toString(data.UnitManualMonthlyData.Value,'\\#\\#.\\#\\#\\#')#", "Index", "History",
                                                 new AjaxOptions() { HttpMethod = "Get", OnSuccess = "showRecordHistoriModal" },
                                                 new { area = "RecordsHistory", id = "#=data.id#", entityName = "UnitManualMonthlyData" },
                                                 new { data_ajax_mode = "replace", data_ajax_update = @"\#modal-dialog-body" })
                                                 .ToHtmlString()))
-                .Width(100).Title(@Resources.Layout.InventoryBased);
-            columns.Bound(c => c.RelativeDifference).Width(100).ClientTemplate("<div style='text-align:right;'>#=data.RelativeDifference==null?'':kendo.toString(data.RelativeDifference, '\\#\\#.\\#\\#\\#\\#\\#')#%</div>");
+                .Width(180).Title(Resources.Layout.ReportedData);
             columns.Bound(c => c.IsEditable).Visible(false);
-            columns.Command(c => c.Edit()).Width(170);
         })
                                                             .Pageable(pageable => pageable
                                                                 .Refresh(true)
@@ -60,40 +57,39 @@
                                                                 .Numeric(false)
                                                                 .PreviousNext(false)
                                                             )
-                                                                   .Editable(editable => editable.Mode(GridEditMode.InLine))
                                                             .Sortable()
                                                              .Excel(excel => excel
-                                                                .FileName(@Resources.Layout.UnitMonthlyHCData + "_" + DateTime.Now + ".xlsx")
+                                                                .FileName(Model.ReportName + "_" + DateTime.Now + ".xlsx")
                                                                 .Filterable(true)
                                                                 .ProxyURL(Url.Action("Excel_Export_Save", "Ajax", new { area = "" }))
                                                                 .AllPages(true))
-                                                                .Events(ev => ev.DataBound("unitGridsData.DataBound"))
+                                                                    .Events(ev => { 
+                                                                        ev.DataBound("unitGridsData.DataBound");
+                                                                        ev.ExcelExport("unitGridsData.OnMonthlyExcelExport");
+                                                                    })
                                                                 .Scrollable(scr => scr.Height(640))
                                                                 .Filterable()
-                                                                //.ClientDetailTemplateId("template")
                                                                 .DataSource(dataSource => dataSource
                                                                 .Ajax()
                                                                 .PageSize(int.MaxValue)
-                                                                 .ServerOperation(true)
-                                                                    .Group(group =>
-                                                                    {
-                                                                        group.Add(c => c.UnitMonthlyConfig.ProcessUnit.Factory.FactorySortableName);
-                                                                        group.Add(c => c.UnitMonthlyConfig.ProcessUnit.SortableName);
-                                                                        group.Add(c => c.UnitMonthlyConfig.ProductType.SortableName);
-                                                                    })
+                                                                .ServerOperation(true)
+                                                                .Group(group =>
+                                                                {
+                                                                    group.Add(c =>c.UnitMonthlyConfig.ProductType.SortableName);
+                                                                    group.Add(c => c.UnitMonthlyConfig.ProcessUnit.Factory.FactorySortableName);
+                                                                })
 
-                                                                        .Read(read => read.Action("ReadMonthlyUnitsData", Model.ControllerName, new { area = "MonthlyDataReporting" }).Data("unitGridsData.SendDate").Type(HttpVerbs.Post))
-                                                                        .Update(update => update.Action("Edit", Model.ControllerName, new { area = "MonthlyDataReporting" }).Data("sendAntiForgery"))
+                                                                    .Read(read => read.Action("ReadMonthlyUnitsData", Model.ControllerName, new { area = "MonthlyDataReporting" }).Data("unitGridsData.SendDate").Type(HttpVerbs.Post))
                                                                 .Model(model =>
                                                                 {
                                                                     model.Id(p => p.Id);
                                                                     model.Field(p => p.UnitMonthlyConfig.Code).Editable(false);
                                                                     model.Field(p => p.UnitMonthlyConfig.ProductType.Name).Editable(false);
-                                                                    model.Field(p => p.UnitMonthlyConfig.ProcessUnit.ShortName).Editable(false);
+                                                                    model.Field(p => p.UnitMonthlyConfig.ProcessUnit.SortableName).Editable(false);
                                                                     model.Field(p => p.UnitMonthlyConfig.Name).Editable(false);
                                                                     model.Field(p => p.UnitMonthlyConfig.MeasureUnit.Code).Editable(false);
                                                                     model.Field(p => p.Value).Editable(false);
-                                                                    model.Field(p => p.UnitManualMonthlyData.Value).Editable(true);
+                                                                    model.Field(p => p.UnitManualMonthlyData.Value).Editable(true).DefaultValue(0);
                                                                 })
                                                                 .Events(events =>
                                                                 {

@@ -61,7 +61,16 @@ namespace CollectingProductionDataSystem.Web.Areas.MonthlyDataReporting.Controll
             {
                 this.TempData["isReport"] = false;
             }
-            return View(modelParams.DefaultView, modelParams);
+
+
+            if(isReport.HasValue && isReport.Value == true)
+            {
+                return View(modelParams.DefaultView + "SummaryReport", modelParams);
+            }
+            else
+            {
+                return View(modelParams.DefaultView, modelParams);
+            }
         }
 
         [HttpPost]
