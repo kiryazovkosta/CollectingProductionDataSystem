@@ -16,6 +16,7 @@ namespace CollectingProductionDataSystem.Models.Productions
         private ICollection<ProductionPlanConfig> productionPlanConfigs;
         private ICollection<InProcessUnitData> inProcessUnitDatas;
         private ICollection<UnitMonthlyConfig> unitMonthlyConfigs;
+        private ICollection<PlanValue> planValues;
 
         public ProcessUnit()
         {
@@ -25,6 +26,7 @@ namespace CollectingProductionDataSystem.Models.Productions
             this.productionPlanConfigs = new HashSet<ProductionPlanConfig>();
             this.inProcessUnitDatas = new HashSet<InProcessUnitData>();
             this.unitMonthlyConfigs = new HashSet<UnitMonthlyConfig>();
+            this.planValues = new HashSet<PlanValue>();
         }
 
         public int Id { get; set; }
@@ -69,6 +71,12 @@ namespace CollectingProductionDataSystem.Models.Productions
         {
             get { return this.unitMonthlyConfigs; }
             set { this.unitMonthlyConfigs = value; }
+        }
+
+        public virtual ICollection<PlanValue> PlanValues
+        {
+            get { return this.planValues; }
+            set { this.planValues = value; }
         }
     }
 }

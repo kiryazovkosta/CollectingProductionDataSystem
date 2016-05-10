@@ -20,5 +20,7 @@ namespace CollectingProductionDataSystem.Models.Productions.Mounthly
         public virtual ICollection<UnitMonthlyConfig> UnitMonthlyConfigs { get; set; }
 
         public virtual ICollection<UnitApprovedMonthlyData> UnitApprovedMonthlyDatas { get; set; }
+
+        public int Position { get; set; }
     }
 }

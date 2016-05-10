@@ -1624,7 +1624,6 @@
     <Content Include="Areas\MonthlyDataReporting\Views\MonthlyPotableWater\MonthlyPotableWaterSummaryReport.cshtml" />
     <Content Include="Areas\Documentation\Views\Help\MonthlyFuel.cshtml" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
-    <None Include="Properties\PublishProfiles\Home.pubxml" />
     <Content Include="Scripts\custom\sendArea.js" />
     <Content Include="Scripts\custom\sendArea.min.js">
       <DependentUpon>sendArea.js</DependentUpon>

@@ -61,49 +61,27 @@ namespace CollectingProductionDataSystem.Models.Productions.Mounthly
 
         public virtual ICollection<UnitMonthlyData> UnitMonthlyDatas
         {
-            get
-            {
-                return this.unitMonthlyDatas;
-            }
-            set
-            {
-                this.unitMonthlyDatas = value;
-            }
+            get { return this.unitMonthlyDatas; }
+            set { this.unitMonthlyDatas = value; }
         }
 
         public virtual ICollection<RelatedUnitMonthlyConfigs> RelatedUnitMonthlyConfigs
         {
-            get
-            {
-                return this.relatedUnitMonthlyConfigs;
-            }
-            set
-            {
-                this.relatedUnitMonthlyConfigs = value;
-            }
+            get { return this.relatedUnitMonthlyConfigs; }
+            set { this.relatedUnitMonthlyConfigs = value; }
         }
 
         public virtual ICollection<UnitDailyConfigUnitMonthlyConfig> UnitDailyConfigUnitMonthlyConfigs
         {
-            get
-            {
-                return this.unitDailyConfigUnitMonthlyConfig;
-            }
-            set
-            {
-                this.unitDailyConfigUnitMonthlyConfig = value;
-            }
+            get { return this.unitDailyConfigUnitMonthlyConfig; }
+            set { this.unitDailyConfigUnitMonthlyConfig = value; }
         }
 
         public string ProcessUnitAlias { get; set; }
 
-        //public int? MaterialTypeId { get; set; }
+        public int? ProductionPlanConfigId { get; set; }
 
-        //public virtual MaterialType MaterialType { get; set; }
-
-        //public int? MaterialDetailTypeId { get; set; }
-
-        //public virtual MaterialDetailType MaterialDetailType { get; set; }
+        public virtual ProductionPlanConfig ProductionPlanConfig { get; set; }
 
         public bool NotATotalizedPosition { get; set; }
 
@@ -121,7 +99,7 @@ namespace CollectingProductionDataSystem.Models.Productions.Mounthly
         public bool IsTotalInternalPosition { get; set; }
 
 
-         /// <summary>
+        /// <summary>
         /// Determines whether the specified object is valid.
         /// </summary>
         /// <param name="validationContext">The validation context.</param>

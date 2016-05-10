@@ -6,16 +6,26 @@
     using CollectingProductionDataSystem.Models.Contracts;
     using System.Collections.Generic;
     using CollectingProductionDataSystem.Models.Nomenclatures;
+    using CollectingProductionDataSystem.Models.Productions.Mounthly;
 
     public class ProductionPlanConfig : DeletableEntity, IEntity, IValidatableObject
     {
         private ICollection<UnitDailyConfig> unitsDailyConfigs;
         private ICollection<ProductionPlanData> productionPlanDatas;
+        private ICollection<PlanNorm> planNorms; //Monthly data for production plan from RPMS system
+        private ICollection<UnitMonthlyConfig> unitMonthlyConfigs;
+        private ICollection<ProductionPlanConfigUnitMonthlyConfigPlanMembers> productionPlanConfigUnitMonthlyConfigPlanMembers;
+        private ICollection<ProductionPlanConfigUnitMonthlyConfigFactFractionMembers> productionPlanConfigUnitMonthlyConfigFactFractionMembers;
 
         public ProductionPlanConfig()
         {
             this.unitsDailyConfigs = new HashSet<UnitDailyConfig>();
             this.productionPlanDatas = new HashSet<ProductionPlanData>();
+            this.planNorms = new HashSet<PlanNorm>();
+            this.unitMonthlyConfigs = new HashSet<UnitMonthlyConfig>();
+            this.productionPlanConfigUnitMonthlyConfigPlanMembers = new HashSet<ProductionPlanConfigUnitMonthlyConfigPlanMembers>();
+            this.productionPlanConfigUnitMonthlyConfigFactFractionMembers = new HashSet<ProductionPlanConfigUnitMonthlyConfigFactFractionMembers>();
+
         }
 
         public int Id { get; set; }
@@ -31,6 +41,23 @@
         public string QuantityFactFormula { get; set; }
 
         public string QuantityFactMembers { get; set; }
+
+        public string MonthlyValuePlanFormula { get; set; }
+
+        public virtual ICollection<ProductionPlanConfigUnitMonthlyConfigPlanMembers> ProductionPlanConfigUnitMonthlyConfigPlanMembers
+        {
+            get { return this.productionPlanConfigUnitMonthlyConfigPlanMembers; }
+            set { this.productionPlanConfigUnitMonthlyConfigPlanMembers = value; }
+        }
+
+        public string MonthlyFactFractionFormula { get; set; }
+
+        public virtual ICollection<ProductionPlanConfigUnitMonthlyConfigFactFractionMembers> ProductionPlanConfigUnitMonthlyConfigFactFractionMembers
+        {
+            get { return this.productionPlanConfigUnitMonthlyConfigFactFractionMembers; }
+            set { this.productionPlanConfigUnitMonthlyConfigFactFractionMembers = value; }
+        }
+
 
         public int ProcessUnitId { get; set; }
 
@@ -50,6 +77,18 @@
             set { this.productionPlanDatas = value; }
         }
 
+        public virtual ICollection<PlanNorm> PlanNorms
+        {
+            get { return this.planNorms; }
+            set { this.planNorms = value; }
+        }
+
+        public virtual ICollection<UnitMonthlyConfig> UnitMonthlyConfigs
+        {
+            get { return this.unitMonthlyConfigs; }
+            set { this.unitMonthlyConfigs = value; }
+        }
+
         public bool IsSummaryOfProcessing { get; set; }
 
         public string UsageRateFormula { get; set; }
@@ -64,7 +103,10 @@
         public virtual MaterialDetailType MaterialDetailType { get; set; }
 
         public int? MeasureUnitId { get; set; }
-        
+
+        public bool IsPropductionPlan { get; set; }
+        public bool IsMonthlyPlan { get; set; }
+
         public bool IsPercentagesPlanVisibleInChast { get; set; }
         public bool IsPercentagesFactVisibleInChast { get; set; }
         public bool IsQuanityPlanVisibleInChast { get; set; }

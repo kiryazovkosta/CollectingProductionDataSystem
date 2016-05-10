@@ -198,6 +198,11 @@
         public IDbSet<UnitRecalculatedMonthlyData> UnitRecalculatedMonthlyDatas { get; set; }
         public IDbSet<PhdConfig> PhdConfigs { get; set; }
 
+        public IDbSet<PlanNorm> PlanNorms { get; set; }
+
+        public IDbSet<PlanValue> PlanValues { get; set; }
+
+
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

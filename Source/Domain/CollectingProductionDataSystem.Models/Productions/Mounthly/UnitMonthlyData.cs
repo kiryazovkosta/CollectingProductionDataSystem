@@ -15,6 +15,8 @@ namespace CollectingProductionDataSystem.Models.Productions.Mounthly
 
         public decimal Value { get; set; }
 
+        public decimal YearTotalValue { get; set; }
+
         public bool IsApproved { get; set; }
 
         public bool HasManualData { get; set; }
