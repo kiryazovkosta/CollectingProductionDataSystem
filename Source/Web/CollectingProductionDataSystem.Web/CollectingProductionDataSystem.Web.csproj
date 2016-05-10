@@ -597,6 +597,8 @@
     <Content Include="Content\Images\DailyData\lenta.png" />
     <Content Include="Content\Images\DailyData\nFigura53.png" />
     <Content Include="Content\Images\DailyData\Potvarjdavam_red.png" />
+    <Content Include="Content\Images\DailyData\Save_1.png" />
+    <Content Include="Content\Images\DailyData\Status.png" />
     <Content Include="Content\Images\DailyData\Дневни_данни_чисто.png" />
     <Content Include="Content\Images\DailyData\Фигура119.jpg" />
     <Content Include="Content\Images\DailyData\Фигура120.jpg" />
@@ -774,6 +776,18 @@
     <Content Include="Content\Images\Nomenclature\Inventories\TankStatus\Figura4.png" />
     <Content Include="Content\Images\Nomenclature\Inventories\TankStatus\Figura5.png" />
     <Content Include="Content\Images\Nomenclature\Iztriv.png" />
+    <Content Include="Content\Images\Nomenclature\MothlyFormsReports\MonthlyReportType\Figura1.png" />
+    <Content Include="Content\Images\Nomenclature\MothlyFormsReports\MonthlyReportType\Figura2.png" />
+    <Content Include="Content\Images\Nomenclature\MothlyFormsReports\MonthlyReportType\Figura3.png" />
+    <Content Include="Content\Images\Nomenclature\MothlyFormsReports\MonthlyReportType\Figura4.png" />
+    <Content Include="Content\Images\Nomenclature\MothlyFormsReports\MonthlyReportType\Figura5.png" />
+    <Content Include="Content\Images\Nomenclature\MothlyFormsReports\UnitsMonthlyConfig\Error.png" />
+    <Content Include="Content\Images\Nomenclature\MothlyFormsReports\UnitsMonthlyConfig\Figura1.png" />
+    <Content Include="Content\Images\Nomenclature\MothlyFormsReports\UnitsMonthlyConfig\Figura2.png" />
+    <Content Include="Content\Images\Nomenclature\MothlyFormsReports\UnitsMonthlyConfig\Figura3.png" />
+    <Content Include="Content\Images\Nomenclature\MothlyFormsReports\UnitsMonthlyConfig\Figura4.png" />
+    <Content Include="Content\Images\Nomenclature\MothlyFormsReports\UnitsMonthlyConfig\Filter.png" />
+    <Content Include="Content\Images\Nomenclature\MothlyFormsReports\UnitsMonthlyConfig\History.png" />
     <Content Include="Content\Images\Nomenclature\NomCauseForEdit\Add.png" />
     <Content Include="Content\Images\Nomenclature\NomCauseForEdit\Edit.png" />
     <Content Include="Content\Images\Nomenclature\NomCauseForEdit\History.png" />
@@ -862,7 +876,32 @@
     <Content Include="Content\Images\Nomenclature\ProductionData\Plant\Figura3.png" />
     <Content Include="Content\Images\Nomenclature\ProductionData\Plant\Figura4.png" />
     <Content Include="Content\Images\Nomenclature\ProductionData\Plant\Figura5.png" />
+    <Content Include="Content\Images\Nomenclature\ProductionData\TeamDataFlows\Figura1.png" />
+    <Content Include="Content\Images\Nomenclature\ProductionData\TeamDataFlows\Figura2.png" />
+    <Content Include="Content\Images\Nomenclature\ProductionData\TeamDataFlows\Figura3.png" />
+    <Content Include="Content\Images\Nomenclature\ProductionData\TeamDataFlows\Figura4.png" />
+    <Content Include="Content\Images\Nomenclature\ProductionData\TeamDataFlows\Figura5.png" />
+    <Content Include="Content\Images\Nomenclature\ProductionData\TeamDataFlows\Figura6.png" />
+    <Content Include="Content\Images\Nomenclature\ProductionData\TeamDataFlows\Figura7.png" />
     <Content Include="Content\Images\Nomenclature\Redakt.png" />
+    <Content Include="Content\Images\Nomenclature\Transactions\Ikunk\Figura1.png" />
+    <Content Include="Content\Images\Nomenclature\Transactions\Ikunk\Figura2.png" />
+    <Content Include="Content\Images\Nomenclature\Transactions\Ikunk\Figura3.png" />
+    <Content Include="Content\Images\Nomenclature\Transactions\Ikunk\Figura4.png" />
+    <Content Include="Content\Images\Nomenclature\Transactions\Ikunk\Figura5.png" />
+    <Content Include="Content\Images\Nomenclature\Transactions\MeasuringPointConfig\Error.png" />
+    <Content Include="Content\Images\Nomenclature\Transactions\MeasuringPointConfig\Figura1.png" />
+    <Content Include="Content\Images\Nomenclature\Transactions\MeasuringPointConfig\Figura2.png" />
+    <Content Include="Content\Images\Nomenclature\Transactions\MeasuringPointConfig\Figura3.png" />
+    <Content Include="Content\Images\Nomenclature\Transactions\MeasuringPointConfig\Filter.png" />
+    <Content Include="Content\Images\Nomenclature\Transactions\MeasuringPointConfig\History.png" />
+    <Content Include="Content\Images\Nomenclature\Transactions\Zone\Error.png" />
+    <Content Include="Content\Images\Nomenclature\Transactions\Zone\Figura1.png" />
+    <Content Include="Content\Images\Nomenclature\Transactions\Zone\Figura2.png" />
+    <Content Include="Content\Images\Nomenclature\Transactions\Zone\Figura3.png" />
+    <Content Include="Content\Images\Nomenclature\Transactions\Zone\Figura4.png" />
+    <Content Include="Content\Images\Nomenclature\Transactions\Zone\Filter.png" />
+    <Content Include="Content\Images\Nomenclature\Transactions\Zone\History.png" />
     <Content Include="Content\Images\ok.png" />
     <Content Include="Content\Images\pdf-download.png" />
     <Content Include="Content\Images\PNG\128x128\Cancel2.png" />
@@ -969,6 +1008,7 @@
     <Content Include="Content\Images\ShiftData\green-texture-pressed.png" />
     <Content Include="Content\Images\ShiftData\green-texture.png" />
     <Content Include="Content\Images\ShiftData\images.jpg" />
+    <Content Include="Content\Images\ShiftData\MainMenu.png" />
     <Content Include="Content\Images\ShiftData\save.png" />
     <Content Include="Content\Images\ShiftData\smenni1.png" />
     <Content Include="Content\Images\ShiftData\smenni2.png" />
@@ -1021,6 +1061,7 @@
     <Content Include="Content\Images\SummaryReport\Figura43.png" />
     <Content Include="Content\Images\SummaryReport\Figura44.png" />
     <Content Include="Content\Images\SummaryReport\Figura45.png" />
+    <Content Include="Content\Images\SummaryReport\Figura46.png" />
     <Content Include="Content\Images\SummaryReport\Figura91.jpg" />
     <Content Include="Content\Images\SummaryReport\Figura911.jpg" />
     <Content Include="Content\Images\SummaryReport\Menu_1.png" />
@@ -2356,10 +2397,6 @@
     <Folder Include="Areas\ShiftReporting\Views\AreaBase\" />
     <Folder Include="Areas\SummaryReporting\Views\Ajax\" />
     <Folder Include="Areas\SummaryReporting\Views\Shared\DisplayTemplates\" />
-    <Folder Include="Content\Images\Nomenclature\MothlyFormsReports\" />
-    <Folder Include="Content\Images\Nomenclature\ProductionData\TeamDataFlows\" />
-    <Folder Include="Content\Images\Nomenclature\Transactions\Ikunk\" />
-    <Folder Include="Content\Images\Nomenclature\Transactions\Zone\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
