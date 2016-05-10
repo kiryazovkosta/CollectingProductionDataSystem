@@ -241,5 +241,9 @@ namespace CollectingProductionDataSystem.Web.Areas.Documentation.Controllers
               {
                     return PartialView();
               }
+        public PartialViewResult MonthlyFuel()
+              {
+                    return PartialView();
+              }
     }
 }

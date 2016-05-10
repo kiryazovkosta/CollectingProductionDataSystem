@@ -143,6 +143,10 @@
                         @Ajax.ActionLink(@Resources.HelpResource.MonthlyNitrogen, "MonthlyNitrogen", "Help", new { @class = "help-side-nav-main-items" },
                                                           new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "pageHelp-content", LoadingElementId = "inprogress" })
                     </li>
+                    <li>
+                        @Ajax.ActionLink(@Resources.HelpResource.MonthlyFuel, "MonthlyFuel", "Help", new { @class = "help-side-nav-main-items" },
+                                                          new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "pageHelp-content", LoadingElementId = "inprogress" })
+                    </li>
                 </ul>
             </div>
         </li>

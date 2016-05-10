@@ -259,6 +259,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to MonthlyFuel.
+        /// </summary>
+        public static string MonthlyFuel {
+            get {
+                return ResourceManager.GetString("MonthlyFuel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to MonthlyNitrogen.
         /// </summary>
         public static string MonthlyNitrogen {

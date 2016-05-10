@@ -183,6 +183,9 @@
   <data name="MonthlyDataTechPlants" xml:space="preserve">
     <value>MonthlyDataTechPlants</value>
   </data>
+  <data name="MonthlyFuel" xml:space="preserve">
+    <value>MonthlyFuel</value>
+  </data>
   <data name="MonthlyNitrogen" xml:space="preserve">
     <value>MonthlyNitrogen</value>
   </data>

@@ -183,6 +183,9 @@
   <data name="MonthlyDataTechPlants" xml:space="preserve">
     <value>Количества продукти в  технологични инсталации</value>
   </data>
+  <data name="MonthlyFuel" xml:space="preserve">
+    <value>Месечни данни за горива</value>
+  </data>
   <data name="MonthlyNitrogen" xml:space="preserve">
     <value>Месечни данни за азот</value>
   </data>

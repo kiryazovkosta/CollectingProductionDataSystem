@@ -685,6 +685,14 @@
     <Content Include="Content\Images\MonthlyData\MonthlyDataFresh\Figura154.png" />
     <Content Include="Content\Images\MonthlyData\MonthlyDataFresh\Figura157.png" />
     <Content Include="Content\Images\MonthlyData\MonthlyDataFresh\RedRow.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataFuel\Error.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataFuel\Figura02.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataFuel\Figura1.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataFuel\Figura2.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataFuel\Figura3.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataFuel\Filter.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataFuel\History.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataFuel\RedRow.png" />
     <Content Include="Content\Images\MonthlyData\MonthlyDataHeatEnergy\Figura172.png" />
     <Content Include="Content\Images\MonthlyData\MonthlyDataHeatEnergy\Figura173.png" />
     <Content Include="Content\Images\MonthlyData\MonthlyDataHeatEnergy\Figura174.png" />
@@ -1614,6 +1622,7 @@
     <Content Include="Areas\MonthlyDataReporting\Views\Shared\EnergyReportSummaryReport.cshtml" />
     <Content Include="Areas\MonthlyDataReporting\Views\Shared\HydroCorbonsReportSummaryReport.cshtml" />
     <Content Include="Areas\MonthlyDataReporting\Views\MonthlyPotableWater\MonthlyPotableWaterSummaryReport.cshtml" />
+    <Content Include="Areas\Documentation\Views\Help\MonthlyFuel.cshtml" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <None Include="Properties\PublishProfiles\Home.pubxml" />
     <Content Include="Scripts\custom\sendArea.js" />
