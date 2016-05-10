@@ -80,6 +80,10 @@
             modelBuilder.Configurations.Add(new UnitDatasTempMap());
             modelBuilder.Configurations.Add(new UnitRecalculatedMonthlyDataMap());
             modelBuilder.Configurations.Add(new PhdConfgMap());
+            modelBuilder.Configurations.Add(new PlanNormMap());
+            modelBuilder.Configurations.Add(new PlanValueMap());
+            modelBuilder.Configurations.Add(new ProductionPlanConfigUnitMonthlyConfigPlanMembersMap());
+            modelBuilder.Configurations.Add(new ProductionPlanConfigUnitMonthlyConfigFactFractionMembersMap());
         }
     }
 }

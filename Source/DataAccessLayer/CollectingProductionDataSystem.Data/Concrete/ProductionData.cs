@@ -400,6 +400,22 @@
             }
         }
 
+        public IDeletableEntityRepository<PlanNorm> PlanNorms
+        {
+            get
+            {
+                return this.GetDeletableEntityRepository<PlanNorm>();
+            }
+        }
+
+        public IDeletableEntityRepository<PlanValue> PlanValues
+        {
+            get
+            {
+                return this.GetDeletableEntityRepository<PlanValue>();
+            }
+        }
+
         public IRepository<UnitConfigUnitDailyConfig> UnitConfigUnitDailyConfigs
         {
             get
@@ -425,6 +441,22 @@
             get
             {
                 return this.GetRepository<LogedInUser>();
+            }
+        }
+
+        public IRepository<ProductionPlanConfigUnitMonthlyConfigPlanMembers> ProductionPlanConfigUnitMonthlyConfigPlanMembers
+        {
+            get
+            {
+                return this.GetRepository<ProductionPlanConfigUnitMonthlyConfigPlanMembers>();
+            }
+        }
+
+        public IRepository<ProductionPlanConfigUnitMonthlyConfigFactFractionMembers> ProductionPlanConfigUnitMonthlyConfigFactFractionMembers
+        {
+            get
+            {
+                return this.GetRepository<ProductionPlanConfigUnitMonthlyConfigFactFractionMembers>();
             }
         }
 

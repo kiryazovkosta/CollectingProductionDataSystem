@@ -39,6 +39,14 @@
             this.HasOptional(t => t.MeasureUnit)
                 .WithMany(t => t.ProductionPlanConfigs)
                 .HasForeignKey(x => x.MeasureUnitId);
+
+            this.HasMany(t => t.ProductionPlanConfigUnitMonthlyConfigPlanMembers)
+                .WithRequired()
+                .HasForeignKey(x => x.ProductionPlanConfigId);
+
+            this.HasMany(t => t.ProductionPlanConfigUnitMonthlyConfigFactFractionMembers)
+                .WithRequired()
+                .HasForeignKey(x => x.ProductionPlanConfigId);
         }
     }
 }

@@ -103,6 +103,10 @@
 
         IDeletableEntityRepository<PhdConfig> PhdConfigs { get; }
 
+        IDeletableEntityRepository<PlanNorm> PlanNorms { get; }
+
+        IDeletableEntityRepository<PlanValue> PlanValues { get; }
+
         IRepository<UnitConfigUnitDailyConfig> UnitConfigUnitDailyConfigs { get; }
 
         IRepository<UnitDailyConfigUnitMonthlyConfig> UnitDailyConfigUnitMonthlyConfigs { get; }
@@ -118,6 +122,9 @@
 
         IRepository<RelatedUnitMonthlyConfigs> RelatedUnitMonthlyConfigs { get; }
 
+        IRepository<ProductionPlanConfigUnitMonthlyConfigPlanMembers> ProductionPlanConfigUnitMonthlyConfigPlanMembers { get; }
+
+        IRepository<ProductionPlanConfigUnitMonthlyConfigFactFractionMembers> ProductionPlanConfigUnitMonthlyConfigFactFractionMembers { get; }
 
         IDeletableEntityRepository<UnitEnteredForCalculationData> UnitEnteredForCalculationDatas { get; }
 

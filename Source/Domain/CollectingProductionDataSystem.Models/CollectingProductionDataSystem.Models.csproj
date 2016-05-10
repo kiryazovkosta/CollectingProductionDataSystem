@@ -96,6 +96,9 @@
     <Compile Include="Nomenclatures\Shift.cs" />
     <Compile Include="Nomenclatures\ShiftProductType.cs" />
     <Compile Include="Nomenclatures\TransportType.cs" />
+    <Compile Include="Productions\Mounthly\ProductionPlanConfigUnitMonthlyConfigAbstract.cs" />
+    <Compile Include="Productions\Mounthly\ProductionPlanConfigUnitMonthlyConfigFactFractionMembers.cs" />
+    <Compile Include="Productions\Mounthly\ProductionPlanConfigUnitMonthlyConfigPlanMembers.cs" />
     <Compile Include="Productions\Mounthly\UnitApprovedMonthlyData.cs" />
     <Compile Include="Productions\Factory.cs" />
     <Compile Include="Inventories\Park.cs" />
@@ -109,6 +112,8 @@
     <Compile Include="Productions\Mounthly\UnitRecalculatedMonthlyData.cs" />
     <Compile Include="Productions\Mounthly\UnitMonthlyData.cs" />
     <Compile Include="Productions\Mounthly\RelatedUnitMonthlyConfigs.cs" />
+    <Compile Include="Productions\PlanNorm.cs" />
+    <Compile Include="Productions\PlanValue.cs" />
     <Compile Include="Productions\UnitDatasTemp.cs" />
     <Compile Include="Transactions\HighwayPipelines\HighwayPipelineApprovedData.cs" />
     <Compile Include="Transactions\HighwayPipelines\HighwayPipelineConfig.cs" />
