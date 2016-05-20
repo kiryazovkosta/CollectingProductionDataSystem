@@ -61,6 +61,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ApplicationLog.
+        /// </summary>
+        public static string ApplicationLog {
+            get {
+                return ResourceManager.GetString("ApplicationLog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to DailyData.
         /// </summary>
         public static string DailyData {
@@ -111,6 +120,24 @@ namespace App_GlobalResources.Resources {
         public static string DailyMeasuringPositions {
             get {
                 return ResourceManager.GetString("DailyMeasuringPositions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to EnteredByUserValues.
+        /// </summary>
+        public static string EnteredByUserValues {
+            get {
+                return ResourceManager.GetString("EnteredByUserValues", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to GlobalMessages.
+        /// </summary>
+        public static string GlobalMessages {
+            get {
+                return ResourceManager.GetString("GlobalMessages", resourceCulture);
             }
         }
         
@@ -412,6 +439,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Roles.
+        /// </summary>
+        public static string Roles {
+            get {
+                return ResourceManager.GetString("Roles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ShiftData.
         /// </summary>
         public static string ShiftData {
@@ -457,6 +493,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Statatistics.
+        /// </summary>
+        public static string Statatistics {
+            get {
+                return ResourceManager.GetString("Statatistics", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to SummaryReportData.
         /// </summary>
         public static string SummaryReportData {
@@ -480,6 +525,15 @@ namespace App_GlobalResources.Resources {
         public static string TeamDataFlows {
             get {
                 return ResourceManager.GetString("TeamDataFlows", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Users.
+        /// </summary>
+        public static string Users {
+            get {
+                return ResourceManager.GetString("Users", resourceCulture);
             }
         }
     }

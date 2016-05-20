@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ApplicationLog" xml:space="preserve">
+    <value>ApplicationLog</value>
+  </data>
   <data name="DailyData" xml:space="preserve">
     <value>DailyData</value>
   </data>
@@ -134,6 +137,12 @@
   </data>
   <data name="DailyMeasuringPositions" xml:space="preserve">
     <value>DailyMeasuringPositions</value>
+  </data>
+  <data name="EnteredByUserValues" xml:space="preserve">
+    <value>EnteredByUserValues</value>
+  </data>
+  <data name="GlobalMessages" xml:space="preserve">
+    <value>GlobalMessages</value>
   </data>
   <data name="HelpNomenclature" xml:space="preserve">
     <value>HelpNomenclature</value>
@@ -234,6 +243,9 @@
   <data name="ProductionData" xml:space="preserve">
     <value>ProductionData</value>
   </data>
+  <data name="Roles" xml:space="preserve">
+    <value>Roles</value>
+  </data>
   <data name="ShiftData" xml:space="preserve">
     <value>ShiftData</value>
   </data>
@@ -249,6 +261,9 @@
   <data name="ShiftDataTank" xml:space="preserve">
     <value>ShiftDataTank</value>
   </data>
+  <data name="Statatistics" xml:space="preserve">
+    <value>Statatistics</value>
+  </data>
   <data name="SummaryReportData" xml:space="preserve">
     <value>SummaryReportData</value>
   </data>
@@ -257,5 +272,8 @@
   </data>
   <data name="TeamDataFlows" xml:space="preserve">
     <value>TeamDataFlows</value>
+  </data>
+  <data name="Users" xml:space="preserve">
+    <value>Users</value>
   </data>
 </root>

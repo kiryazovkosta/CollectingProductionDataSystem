@@ -360,6 +360,70 @@
                 </ul>
             </div>
         </li>
+
+        <li>
+            <div role="tab" id="collapseListGroupHeading21">
+                <a class="help-side-nav-main" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseListGroup21" aria-expanded="true" aria-controls="collapseListGroup21">
+                    <span>@Resources.Layout.Administration</span>
+                </a>
+                <div class="green-edge-image"></div>
+            </div>
+            <div id="collapseListGroup21" class="panel-collapse collapse" role="tabpanel" aria-labelledby="collapseListGroupHeading21" aria-expanded="false">
+                <ul>
+                    <li>
+                        <div role="tab" id="collapseListGroupHeading22">
+                            <a class="inner-help-side-nav-main" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseListGroup22" aria-expanded="true" aria-controls="collapseListGroup22">
+                                <span>@Resources.Layout.Administration</span>
+                            </a>
+                        </div>
+                        <div id="collapseListGroup22" class="panel-collapse collapse" role="tabpanel" aria-labelledby="collapseListGroupHeading22" aria-expanded="false">
+                            <ul>
+                                <li>
+                                    @Ajax.ActionLink(@Resources.HelpResource.Users, "UsersAdministration", "Help", new { @class = "help-side-nav-main-items" },
+                                          new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "pageHelp-content", LoadingElementId = "inprogress" })
+                                </li>
+                                <li>
+                                    @Ajax.ActionLink(@Resources.HelpResource.Roles, "RolesAdministration", "Help", new { @class = "help-side-nav-main-items" },
+                                                                      new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "pageHelp-content", LoadingElementId = "inprogress" })
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    @*Administration*@
+
+                    <li>
+                        <div role="tab" id="collapseListGroupHeading23">
+                            <a class="inner-help-side-nav-main" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseListGroup23" aria-expanded="true" aria-controls="collapseListGroup23">
+                                <span>@Resources.HelpResource.Statatistics</span>
+                            </a>
+                        </div>
+                        <div id="collapseListGroup23" class="panel-collapse collapse" role="tabpanel" aria-labelledby="collapseListGroupHeading23" aria-expanded="false">
+                            <ul>
+                                <li>
+                                    @Ajax.ActionLink(@Resources.HelpResource.ApplicationLog, "ApplicationLogStatistics", "Help", new { @class = "help-side-nav-main-items" },
+                                          new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "pageHelp-content", LoadingElementId = "inprogress" })
+                                </li>
+                                <li>
+                                    @Ajax.ActionLink(@Resources.HelpResource.Users, "UsersStatistics", "Help", new { @class = "help-side-nav-main-items" },
+                                                                      new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "pageHelp-content", LoadingElementId = "inprogress" })
+                                </li>
+                                <li>
+                                    @Ajax.ActionLink(@Resources.HelpResource.GlobalMessages, "GlobalMessagesStatistics", "Help", new { @class = "help-side-nav-main-items" },
+                                                                      new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "pageHelp-content", LoadingElementId = "inprogress" })
+                                </li>
+                                <li>
+                                    @Ajax.ActionLink(@Resources.HelpResource.EnteredByUserValues, "EnteredByUserValuesMessagesStatistics", "Help", new { @class = "help-side-nav-main-items" },
+                                                                      new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "pageHelp-content", LoadingElementId = "inprogress" })
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    @*Statistics*@
+                </ul>
+            </div>
+
+        </li>
+
     </ul>
 </div>
 
