@@ -107,9 +107,9 @@ namespace CollectingProductionDataSystem.ConsoleClient
                                   .Include(x => x.RelatedUnitConfigs.Select(z => z.RelatedUnitConfig).Select(w => w.UnitDatasTemps))
                                   .Where(x => x.CollectingDataMechanism == "C")
                                   .ToList();
-            var targerDay = new DateTime(2016, 4, 27);
+            var targerDay = new DateTime(2016, 5, 17);
             var unitsTemp = data.UnitsData.All().Include(x => x.UnitConfig).Where(x => x.RecordTimestamp == targerDay &&
-                                                                                       x.ShiftId == 1 &&
+                                                                                       x.ShiftId == 2 &&
                                                                                        x.UnitConfig.CollectingDataMechanism != "C").ToList().Select(x => new UnitDatasTemp
                                                                                                                                                    {
                                                                                                                                                        RecordTimestamp = x.RecordTimestamp,
@@ -122,7 +122,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
 
             int test = 0;
 
-            var result = service.ProcessCalculatedUnits(unitConfigs, targerDay, 1, unitsTemp, ref test)
+            var result = service.ProcessCalculatedUnits(unitConfigs, targerDay, 2, unitsTemp, ref test)
                                 .Select(unitDataTemp => new UnitsData()
                                        {
                                            RecordTimestamp = unitDataTemp.RecordTimestamp,
@@ -137,7 +137,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
                                      .All()
                                      .Include(x => x.UnitConfig)
                                      .Where(x => x.RecordTimestamp == targerDay &&
-                                                 x.ShiftId == 1 &&
+                                                 x.ShiftId == 2 &&
                                                  x.UnitConfig.CollectingDataMechanism == "C" &&
                                                  x.UnitConfig.IsDeleted == false);
 
@@ -146,8 +146,15 @@ namespace CollectingProductionDataSystem.ConsoleClient
                 unitData.Value = result[new { RecordTimestamp = unitData.RecordTimestamp, UnitConfigId = unitData.UnitConfigId, ShiftId = unitData.ShiftId }].Value;
                 unitData.Confidence = result[new { RecordTimestamp = unitData.RecordTimestamp, UnitConfigId = unitData.UnitConfigId, ShiftId = unitData.ShiftId }].Confidence;
             }
+            try
+            {
+                data.SaveChanges("Initial Loading");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
 
-            data.SaveChanges("Initial Loading");
             //foreach (var item in neededUnitData)
             //{
             //    Console.WriteLine(item.Value + " " + item.Confidence);    
