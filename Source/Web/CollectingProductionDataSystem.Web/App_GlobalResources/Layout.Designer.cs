@@ -1834,6 +1834,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to IsMonthlyPlan.
+        /// </summary>
+        public static string IsMonthlyPlan {
+            get {
+                return ResourceManager.GetString("IsMonthlyPlan", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Visible % fact.
         /// </summary>
         public static string IsPercentagesFactVisibleInChast {
@@ -1848,6 +1857,15 @@ namespace App_GlobalResources.Resources {
         public static string IsPercentagesPlanVisibleInChast {
             get {
                 return ResourceManager.GetString("IsPercentagesPlanVisibleInChast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to IsPropductionPlan.
+        /// </summary>
+        public static string IsPropductionPlan {
+            get {
+                return ResourceManager.GetString("IsPropductionPlan", resourceCulture);
             }
         }
         

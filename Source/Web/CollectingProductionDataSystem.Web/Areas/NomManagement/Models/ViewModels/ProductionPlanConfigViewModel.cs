@@ -93,6 +93,17 @@ namespace CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewMode
         [Editable(false)]
         public bool IsDeleted { get; set; }
 
+        [Required]
+        [Display(Name = "IsPropductionPlan", ResourceType = typeof(Resources.Layout))]
+        public bool IsPropductionPlan { get; set; }
+        [Required]
+        [Display(Name = "IsMonthlyPlan", ResourceType = typeof(Resources.Layout))]
+        public bool IsMonthlyPlan { get; set; }
+
+        //Todo: delete after translation in productive
+        [Display(Name = "Количество план")]
+        public decimal? QuantityPlan { get; set; }
+
         /// <summary>
         /// Creates the mappings.
         /// </summary>
