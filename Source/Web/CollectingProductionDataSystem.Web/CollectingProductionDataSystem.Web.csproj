@@ -334,6 +334,7 @@
     <Compile Include="Areas\NomManagement\Models\ViewModels\UnitMonthlyConfigViewModel.cs" />
     <Compile Include="Areas\OverseersReporting\Controllers\AjaxController.cs" />
     <Compile Include="Areas\OverseersReporting\Controllers\AreaBaseController.cs" />
+    <Compile Include="Areas\PlanConfiguration\PlanConfigurationAreaRegistration.cs" />
     <Compile Include="Areas\SummaryReporting\Controllers\OverseersTransactionsController.cs" />
     <Compile Include="Areas\OverseersReporting\OverseersReportingAreaRegistration.cs" />
     <Compile Include="Areas\ShiftReporting\Controllers\DailyInfoHydrocarbonsController.cs" />
@@ -1710,6 +1711,7 @@
     <Content Include="Areas\MonthlyDataReporting\Views\Shared\EnergyReportSummaryReport.cshtml" />
     <Content Include="Areas\MonthlyDataReporting\Views\Shared\HydroCorbonsReportSummaryReport.cshtml" />
     <Content Include="Areas\MonthlyDataReporting\Views\MonthlyPotableWater\MonthlyPotableWaterSummaryReport.cshtml" />
+    <Content Include="Areas\PlanConfiguration\Views\web.config" />
     <Content Include="Areas\Documentation\Views\Help\MonthlyFuel.cshtml" />
     <Content Include="Areas\Documentation\Views\Help\UsersAdministration.cshtml" />
     <Content Include="Areas\Documentation\Views\Help\RolesAdministration.cshtml" />
@@ -2444,6 +2446,9 @@
     <Folder Include="Areas\OverseersReporting\Views\Ajax\" />
     <Folder Include="Areas\OverseersReporting\Views\AreaBase\" />
     <Folder Include="Areas\OverseersReporting\Views\Shared\" />
+    <Folder Include="Areas\PlanConfiguration\Controllers\" />
+    <Folder Include="Areas\PlanConfiguration\Models\" />
+    <Folder Include="Areas\PlanConfiguration\Views\Shared\" />
     <Folder Include="Areas\RecordsHistory\Views\Shared\" />
     <Folder Include="Areas\ShiftReporting\Models\" />
     <Folder Include="Areas\ShiftReporting\Views\Ajax\" />

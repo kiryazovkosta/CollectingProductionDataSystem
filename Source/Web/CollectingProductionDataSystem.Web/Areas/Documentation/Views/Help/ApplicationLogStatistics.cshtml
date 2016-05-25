@@ -1,0 +1,66 @@
+﻿@using Resources = App_GlobalResources.Resources;
+<h1>Администриране на @Resources.HelpResource.ApplicationLog</h1>
+<br />
+<div class="row">
+    <article>
+        <section>
+            <hr class="myhr1" />
+            <p>
+                Системата създава журнал на приложението, който е видим от меню Администриране. То което се намира в заглавната лента на основния екран на системата,
+                както е показано на Фиг.1.
+            </p>
+            <div class="centeredDivForImages">
+                <p><img class="img-rounded imgboxshadow" src="~/Content/images/Administration/Administration/Users/Figura1.png" /></p>
+                <p>Фиг.1</p>
+            </div>
+            <p>Журналът на приложението се избира от секция "Statistics", както е показано на Фиг.2:</p>
+            <div class="centeredDivForImages">
+                <p><img class="img-rounded imgboxshadow" src="~/Content/images/Administration/Statistics/ApplicationLog/Figura1.png" /></p>
+                <p>Фиг.2</p>
+            </div>
+            <p>Отваря се таблица "Журнал на приложението", която е показана на Фиг.3</p>
+            <div class="centeredDivForImages">
+                <p><img class="img-rounded imgboxshadow imgBordered" src="~/Content/images/Administration/Statistics/ApplicationLog/Figura2.png" /></p>
+                <p>Фиг.3</p>
+            </div>
+            <br />
+            <p>Tаблицата съдържа всички генерирали се грешки в системата. Те се записват в системата във всеки един момент, когато се генерират от нея. Следват някои техни характеристики:</p>
+            <ul>
+                <li>Време на възникване на грешката;</li>
+                <li>Тип на събитието, предизвикало грешката;</li>
+                <li>Текста на грешката;</li>
+                <li>Пътя до приложението, генерирало грешката;</li>
+                <li>Име на компютъра, от който се е създала грешката;</li>
+                <li>Типа на грешката.</li>
+            </ul>
+            <p>Редовете в таблицата "Журнал на приложението" не могат да се редактират или изтриват. Те могат само да се филтрират по начин, указан на Фиг.4.</p>
+            <div class="centeredDivForImages">
+                <p><img class="img-rounded imgboxshadow" src="~/Content/images/Administration/Statistics/ApplicationLog/Figura3.png" /></p>
+                <p>Фиг.4</p>
+            </div>
+            <p>
+                Когато информацията в таблица “Журнал на приложението” е много голяма и не се събира на един екран, тя се прехвърля на следващи екрани като
+                преминаването между различните екрани става чрез бутоните, показани на Фиг.5.
+            </p>
+            <div class="centeredDivForImages">
+                <p><img class="img-rounded" src="~/Content/images/Shiftdata/figura63.png" /></p>
+                <p>Фиг.5</p>
+            </div>
+        </section>
+        <hr class="hrUnderText" />
+        <div class="container" style="margin-left:18em;">
+            <div class="col-md-1 divimage">
+                <img src="~/Content/Images/ShiftData/technical_stuff.gif" class="imgForStuff" />
+            </div>
+            <div class="col-md-11 ForStuff">
+                <h4 style="text-align:center">Кой има право да разглежда "@Resources.HelpResource.ApplicationLog" ?</h4>
+                <p>
+                    Право да разглежда "@Resources.HelpResource.ApplicationLog" има само потребител с присъединена роля <span class="stronged">"Administrator"</span>.
+                </p>
+            </div>
+        </div>
+        <br />
+        <hr class="hrUnderText" />
+    </article>
+</div>
+

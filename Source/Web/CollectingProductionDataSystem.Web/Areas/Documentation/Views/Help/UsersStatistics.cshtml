@@ -1,0 +1,83 @@
+﻿@using Resources = App_GlobalResources.Resources;
+<h1>Статистика на @Resources.HelpResource.Users</h1>
+<br />
+<div class="row">
+    <article>
+        <section>
+            <hr class="myhr1" />
+            <p>
+                Системата предоставя информацията за влезлите потребители в системата във всеки един момент.
+                Тази възможност се избира от меню Администриране, което се намира в заглавната лента на основния екран на системата, както е показано на Фиг.1.
+            </p>
+            <div class="centeredDivForImages">
+                <p><img class="img-rounded imgboxshadow" src="~/Content/images/Administration/Administration/Users/Figura1.png" /></p>
+                <p>Фиг.1</p>
+            </div>
+            <p>Статистика на @Resources.HelpResource.Users се избира от секция "Statistics", както е показано на Фиг.2:</p>
+            <div class="centeredDivForImages">
+                <p><img class="img-rounded imgboxshadow" src="~/Content/images/Administration/Statistics/Users/Figura1.png" /></p>
+                <p>Фиг.2</p>
+            </div>
+            <p>Отваря се следният екран:</p>
+            <div class="centeredDivForImages">
+                <p><img class="img-rounded imgboxshadow imgBordered" src="~/Content/images/Administration/Statistics/Users/Figura5.png" /></p>
+                <p>Фиг.3</p>
+            </div>
+            <br />
+            <p>Статистика на потребителите съдържа две графики и една таблица.</p>
+            <br />
+            <p>
+                Кръговата графика, показана на Фиг.4 съдържа информация за брой потребители, влезли в системата в момента (на графиката е означен с цвят зелен) и
+                брой потребители извън системата за момента (на графиката е означен с цвят червен). Графиката се опреснява на всеки 10 секунди.
+            </p>
+            <div class="centeredDivForImages">
+                <p><img class="img-rounded imgboxshadow imgBordered" src="~/Content/images/Administration/Statistics/Users/Figura2.png" /></p>
+                <p>Фиг.4</p>
+            </div>
+            <p>
+                Правоъгълната графика, показана на Фиг.5 съдържа информация за почасовото влизане на потребителите в системата. По оста х на графиката са разположени
+                часовете на денонощието, в които потребителите са влизали в системата, по оста у са разположени броя потребители.
+                При позициониране върху часовите стълбове (сините стълбове) на графиката също се изписва броя потребители, влезли в системата за конкретния час.
+            </p>
+            <div class="centeredDivForImages">
+                <p><img class="img-rounded imgboxshadow imgBordered" src="~/Content/images/Administration/Statistics/Users/Figura3.png" /></p>
+                <p>Фиг.5</p>
+            </div>
+            <p>
+                Таблицата, намираща се под кръговата и правоъгълната графика,показана на Фиг.6, съдържа в табличен вид описание за всички потребители, влезли в системата.
+                В нея се показва информация за имената на потребителя, електронна поща, месторабота, последно влизане и брой сесии в системата.
+            </p>
+            <div class="centeredDivForImages">
+                <p><img class="img-rounded imgboxshadow imgBordered" src="~/Content/images/Administration/Statistics/Users/Figura4.png" style="width:95%;"/></p>
+                <p>Фиг.6</p>
+            </div>
+            <p>Редовете в таблицата "Статистика на потребителите" не могат да се редактират или изтриват. Те могат само да се филтрират по начин, указан на Фиг.7.</p>
+            <div class="centeredDivForImages">
+                <p><img class="img-rounded imgboxshadow" src="~/Content/images/Administration/Statistics/Users/Figura6.png" /></p>
+                <p>Фиг.7</p>
+            </div>
+            <p>
+                Когато информацията в таблица “Статистика на потребителите” е много голяма и не се събира на един екран, тя се прехвърля на следващи екрани като
+                преминаването между различните екрани става чрез бутоните, показани на Фиг.8.
+            </p>
+            <div class="centeredDivForImages">
+                <p><img class="img-rounded" src="~/Content/images/Shiftdata/figura63.png" /></p>
+                <p>Фиг.8</p>
+            </div>
+        </section>
+        <hr class="hrUnderText" />
+        <div class="container" style="margin-left:18em;">
+            <div class="col-md-1 divimage">
+                <img src="~/Content/Images/ShiftData/technical_stuff.gif" class="imgForStuff" />
+            </div>
+            <div class="col-md-11 ForStuff">
+                <h4 style="text-align:center">Кой има право да разглежда "Статистика на @Resources.HelpResource.Users" ?</h4>
+                <p>
+                    Право да разглежда "Статистика на @Resources.HelpResource.Users" има само потребител с присъединена роля <span class="stronged">"Administrator"</span>.
+                </p>
+            </div>
+        </div>
+        <br />
+        <hr class="hrUnderText" />
+    </article>
+</div>

@@ -1,0 +1,65 @@
+﻿@using Resources = App_GlobalResources.Resources;
+<h1> @Resources.HelpResource.EnteredByUserValues</h1>
+<br />
+<div class="row">
+    <article>
+        <section>
+            <hr class="myhr1" />
+            <p>
+                Системата предоставя възможност за създаване на история за направени корекции от всички потребители в системата във всеки един момент.
+                Тази възможност се избира от меню Администриране, което се намира в заглавната лента на основния екран на системата, както е показано на Фиг.1.
+            </p>
+            <div class="centeredDivForImages">
+                <p><img class="img-rounded imgboxshadow" src="~/Content/images/Administration/Administration/Users/Figura1.png" /></p>
+                <p>Фиг.1</p>
+            </div>
+            <p>@Resources.HelpResource.EnteredByUserValues се избира от секция "Statistics", както е показано на Фиг.2:</p>
+            <div class="centeredDivForImages">
+                <p><img class="img-rounded imgboxshadow" src="~/Content/images/Administration/Statistics/EnteredByUsersValues/Фигура1.png" /></p>
+                <p>Фиг.2</p>
+            </div>
+            <p>Отваря се следният екран:</p>
+            <div class="centeredDivForImages">
+                <p><img class="img-rounded imgboxshadow imgBordered" src="~/Content/images/Administration/Statistics/EnteredByUsersValues/Figura2.png" style="width:98%"/></p>
+                <p>Фиг.3</p>
+            </div>
+            <p>
+                Таблицата съдържа подробна информация за историята на направените корекции в системата. В нея се записва на коя дата е направена корекцията,
+                кой е потребителят, извършил корекцията, коя е инсталацията, в кой номер смяна, коя измервателна позиция е корегирана, наименованието й, каква е
+                била стойността преди корекцията на измервателната позиция и каква е нейната нова зададена стойност.
+            </p>
+            <br />
+            <p>Записите в таблицата не могат да се променят или изтриват.</p>
+            <br />
+            <p>
+                Когато информацията в таблица “Журнал на приложението” е много голяма и не се събира на един екран, тя се прехвърля на следващи екрани като
+                преминаването между различните екрани става чрез бутоните, показани на Фиг.4.
+            </p>
+            <div class="centeredDivForImages">
+                <p><img class="img-rounded" src="~/Content/images/Shiftdata/figura63.png" /></p>
+                <p>Фиг.4</p>
+            </div>
+            <p>
+                Таблицата “Журнал на приложението” може да се експортва в Excel чрез бутон <span><img class="img-rounded btnApply" src="~/Content/images/Shiftdata/Export.png" /></span> ,
+                намиращ се в горния ляв ъгъл на формата.
+            </p>
+
+            <hr class="hrUnderText" />
+            <div class="container" style="margin-left:18em;">
+                <div class="col-md-1 divimage">
+                    <img src="~/Content/Images/ShiftData/technical_stuff.gif" class="imgForStuff" />
+                </div>
+                <div class="col-md-11 ForStuff">
+                    <h4 style="text-align:center">Кой има право да разглежда "@Resources.HelpResource.EnteredByUserValues" ?</h4>
+                    <p>
+                        Право да разглежда "@Resources.HelpResource.EnteredByUserValues" в системата има само потребител с присъединена роля <span class="stronged">"Administrator"</span>.
+                    </p>
+                </div>
+            </div>
+            <br />
+            <hr class="hrUnderText" />
+        </section>
+    </article>
+</div>
+
+

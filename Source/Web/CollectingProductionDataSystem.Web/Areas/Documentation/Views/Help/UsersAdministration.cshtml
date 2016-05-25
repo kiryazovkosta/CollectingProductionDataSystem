@@ -1,0 +1,142 @@
+﻿@using Resources = App_GlobalResources.Resources;
+<h1>Администриране на @Resources.HelpResource.Users</h1>
+<br />
+<div class="row">
+    <article>
+        <section>
+            <hr class="myhr1" />
+            <p>
+                Системата предоставя възможност за администриране на потребители в меню Администриране, което се намира в заглавната лента на основния екран на системата,
+                както е показано на Фиг.1.
+            </p>
+            <div class="centeredDivForImages">
+                <p><img class="img-rounded imgboxshadow" src="~/Content/images/Administration/Administration/Users/Figura1.png" /></p>
+                <p>Фиг.1</p>
+            </div>
+            <p>
+                Отваря се екран, който в ляво съдържа таблица с възможностите за работа, които предлага меню Администриране, показана на Фиг.2
+                и в дясно таблица „Потребителски профили“, показана Фиг.3.
+            </p>
+            <div class="centeredDivForImages">
+                <p><img class="img-rounded imgboxshadow" src="~/Content/images/Administration/Administration/Users/Figura2.png" /></p>
+                <p>Фиг.2</p>
+            </div>
+            <div class="centeredDivForImages">
+                <p><img class="img-rounded imgboxshadow" src="~/Content/images/Administration/Administration/Users/Figura3.png" /></p>
+                <p>Фиг.3</p>
+            </div>
+            <br />
+            <p>Таблицата „Потребителски профили“ съдържа всички въведени до сега потребители.</p>
+
+            <p>Администрирането на потребители включва създаване на нов потребител, редактиране на съществуващ потребител и изтриване на съществуващ потребител.</p>
+            <p>
+                <span class="stronged">Нов потребител</span> се създава чрез бутон  <span><img class="img-rounded " src="~/Content/images/Dailydata/Create.png" /></span>,
+                намиращ се под таблица „Потребителски профили“. Отваря се екран, показан на Фиг.4:
+            </p>
+            <div class="centeredDivForImages">
+                <p><img class="img-rounded imgboxshadow imgBordered" src="~/Content/images/Administration/Administration/Users/Add.png" style="width:60%;height:60%;" /></p>
+                <p>Фиг.4</p>
+            </div>
+            <p>
+                Лявата страна на екрана съдържа полета, които трябва да се попълнят задължително.
+                Дясната страна на екрана съдържа полетата "Роли", "Инсталации"  и "Паркове", които не са задължителни и могат в последствие да се присвоят на потребителя, което се прави
+                чрез избиране на бутон <span><img class="img-rounded " src="~/Content/images/Shiftdata/edit.png" /></span> в таблица „Потребителски профили“.
+            </p>
+            <p>
+                Ако някои от задължителните полета не бъдат попълнени, то при избиране на бутон <span><img class="img-rounded" src="~/Content/images/Dailydata/Create.png" /></span>
+                автоматично се извежда съобщение под всяко непопълнено поле,че полето е задължително, както е показано на Фиг.5:
+            </p>
+            <div class="centeredDivForImages">
+                <p><img class="img-rounded imgboxshadow imgBordered" src="~/Content/images/Administration/Administration/Users/Error.png" /></p>
+                <p>Фиг.5</p>
+            </div>
+            <p>
+                След като всички задължителни полета бъдат попълнени, се избира бутон <span><img class="img-rounded" src="~/Content/images/Dailydata/Create.png" /></span>
+                и ако такъв потребител с въведеното име вече съществува в системата, се извежда съобщение, показано на Фиг.6:
+            </p>
+            <div class="centeredDivForImages">
+                <p><img class="img-rounded imgboxshadow imgBordered" src="~/Content/images/Administration/Administration/Users/Error1.png" /></p>
+                <p>Фиг.6</p>
+            </div>
+            <p>
+                Въвежда се ново име на потребител и отново се избира бутон <span><img class="img-rounded" src="~/Content/images/Dailydata/Create.png" /></span>.
+                Отваря се таблица „Потребителски профили“, която на последният си ред съдържа нововъведения потребител, както е показано на Фиг.7:
+            </p>
+            <div class="centeredDivForImages">
+                <p><img class="img-rounded imgboxshadow" src="~/Content/images/Administration/Administration/Users/Figura4.png" /></p>
+                <p>Фиг.7</p>
+            </div>
+            <p>
+                Съдържанието на първата колона със знак <span><img class="img-rounded " src="~/Content/images/Administration/Administration/Users/button_Err.png" /></span> показва,
+                че нововъведеният потребител не е влизал никога в системата. Когато този потребител влезе поне един път в системата, съдържанието на първата колона се променя със знак
+                <span><img class="img-rounded " src="~/Content/images/Administration/Administration/Users/button_Yes.png" /></span>.
+                Промяната в първата колона може да се види във всеки един момент в таблица „Потребителски профили“.
+            </p>
+            <p>
+                <span class="stronged"> Редактиране на всеки потребител </span> става чрез избор на бутон <span><img class="img-rounded" src="~/Content/images/ShiftData/edit.png" /></span> .
+                Отваря се следният екран:
+            </p>
+            <div class="centeredDivForImages">
+                <p><img class="img-rounded imgboxshadow imgBordered" src="~/Content/images/Administration/Administration/Users/Edit.png" style="width:40%;height:40%" /></p>
+                <p>Фиг.8</p>
+            </div>
+            <p>
+                В този екран има възможност за коригиране на всички полета.
+            </p>
+            <p>
+                В поле <span class="stronged">"Роли"</span>, избор на определена роля става чрез позициониране в полето, при което се отваря падащо меню, показано на Фиг.9:
+            </p>
+            <div class="centeredDivForImages">
+                <p><img class="img-rounded imgboxshadow imgBordered" src="~/Content/images/Administration/Administration/Users/Roles.png" /></p>
+                <p>Фиг.9</p>
+            </div>
+            <p>
+            <p>По аналогичен начин се избират стойности и в полета <span class="stronged">"Инсталации"</span> и <span class="stronged">"Паркове"</span>.</p>
+            <p>
+                След промяна в необходимите полета се натиска бутона <span><img class="img-rounded" src="~/Content/images/ShiftData/save.png" /></span>
+                и въведените корекции вече са записани в системата.
+            </p>
+            <p>
+                <span class="stronged">Изтриване на съществуващ потребител </span> става чрез избор на бутон
+                <span><img class="img-rounded" src="~/Content/images/ShiftData/erase.png" /></span> . След избирането му се появява екран, показан на Фиг.10:
+            </p>
+            <div class="centeredDivForImages">
+                <p><img class="img-rounded imgboxshadow imgBordered" src="~/Content/images/Nomenclature/Iztriv.png" /></p>
+                <p>Фиг.10</p>
+            </div>
+            <p>Ако се натисне бутон „ОК“ потребителят се изтрива от системата. Отваря се екран, съдържащ всички потребители като изтритият потребител вече не съществува.</p>
+            <p>
+                Таблицата “Потребителски профили” съдържа информация за всички въведени в системата потребители. Всяка колона в таблицата може да се филтрира по определени критерии,
+                както е показано на Фиг.11.
+            </p>
+            <div class="centeredDivForImages">
+                <p><img class="img-rounded imgboxshadow" src="~/Content/images/Administration/Administration/Users/Filter.png" style="border-left:1px solid lightgrey" /></p>
+                <p>Фиг.11</p>
+            </div>
+            <p>
+                Когато таблица „Потребителски профили“ е много голяма и не се събира на един екран, тя се прехвърля на следващи екрани
+                като преминаването между различните екрани става чрез бутоните, показани на Фиг.12.
+            </p>
+            <div class="centeredDivForImages">
+                <p><img class="img-rounded" src="~/Content/images/ShiftData/Figura63.png" /></p>
+                <p>Фиг.12</p>
+            </div>
+        </section>
+
+        <hr class="hrUnderText" />
+        <div class="container" style="margin-left:18em;">
+            <div class="col-md-1 divimage">
+                <img src="~/Content/Images/ShiftData/technical_stuff.gif" class="imgForStuff" />
+            </div>
+            <div class="col-md-11 ForStuff">
+                <h4 style="text-align:center">Кой има право да обработва "Администриране на @Resources.HelpResource.Users" ?</h4>
+                <p>
+                    Право за работа с "Администриране на @Resources.HelpResource.Users" има само потребител с присъединена роля <span class="stronged">"Administrator"</span>.
+                </p>
+            </div>
+        </div>
+        <br />
+        <hr class="hrUnderText" />
+    </article>
+</div>
+

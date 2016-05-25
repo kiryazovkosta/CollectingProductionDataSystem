@@ -54,6 +54,11 @@ using CollectingProductionDataSystem.Application.ProductionPlanDataServices;
         [AuthorizeFactory]
         public JsonResult ReadProductionPlanData([DataSourceRequest]DataSourceRequest request, DateTime? date, int? processUnitId, int? materialTypeId)
         {
+            if (date.HasValue == false || processUnitId.HasValue == false || materialTypeId.HasValue == false)
+            {
+                return Json(string.Empty);    
+            }
+
             IEnumerable<ProductionPlanData> dbResult = this.productionPlanData.ReadProductionPlanData(date, processUnitId, materialTypeId);
             if (dbResult.Count() == 0)
 	        {
