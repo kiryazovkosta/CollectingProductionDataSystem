@@ -334,6 +334,11 @@
     <Compile Include="Areas\NomManagement\Models\ViewModels\UnitMonthlyConfigViewModel.cs" />
     <Compile Include="Areas\OverseersReporting\Controllers\AjaxController.cs" />
     <Compile Include="Areas\OverseersReporting\Controllers\AreaBaseController.cs" />
+    <Compile Include="Areas\PlanConfiguration\Controllers\AreaBaseController.cs" />
+    <Compile Include="Areas\PlanConfiguration\Controllers\PlanNormController.cs" />
+    <Compile Include="Areas\PlanConfiguration\Controllers\PlanValuesController.cs" />
+    <Compile Include="Areas\PlanConfiguration\Models\PlanNormViewModel.cs" />
+    <Compile Include="Areas\PlanConfiguration\Models\ProductionPlanConfigViewModel.cs" />
     <Compile Include="Areas\PlanConfiguration\PlanConfigurationAreaRegistration.cs" />
     <Compile Include="Areas\SummaryReporting\Controllers\OverseersTransactionsController.cs" />
     <Compile Include="Areas\OverseersReporting\OverseersReportingAreaRegistration.cs" />
@@ -1712,6 +1717,9 @@
     <Content Include="Areas\MonthlyDataReporting\Views\Shared\HydroCorbonsReportSummaryReport.cshtml" />
     <Content Include="Areas\MonthlyDataReporting\Views\MonthlyPotableWater\MonthlyPotableWaterSummaryReport.cshtml" />
     <Content Include="Areas\PlanConfiguration\Views\web.config" />
+    <Content Include="Areas\PlanConfiguration\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\PlanConfiguration\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\PlanConfiguration\Views\PlanValues\Index.cshtml" />
     <Content Include="Areas\Documentation\Views\Help\MonthlyFuel.cshtml" />
     <Content Include="Areas\Documentation\Views\Help\UsersAdministration.cshtml" />
     <Content Include="Areas\Documentation\Views\Help\RolesAdministration.cshtml" />
@@ -2446,9 +2454,8 @@
     <Folder Include="Areas\OverseersReporting\Views\Ajax\" />
     <Folder Include="Areas\OverseersReporting\Views\AreaBase\" />
     <Folder Include="Areas\OverseersReporting\Views\Shared\" />
-    <Folder Include="Areas\PlanConfiguration\Controllers\" />
-    <Folder Include="Areas\PlanConfiguration\Models\" />
-    <Folder Include="Areas\PlanConfiguration\Views\Shared\" />
+    <Folder Include="Areas\PlanConfiguration\Views\AreaBase\" />
+    <Folder Include="Areas\PlanConfiguration\Views\PlanNorm\" />
     <Folder Include="Areas\RecordsHistory\Views\Shared\" />
     <Folder Include="Areas\ShiftReporting\Models\" />
     <Folder Include="Areas\ShiftReporting\Views\Ajax\" />

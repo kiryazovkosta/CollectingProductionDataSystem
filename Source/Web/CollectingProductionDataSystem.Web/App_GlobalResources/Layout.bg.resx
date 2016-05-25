@@ -1670,4 +1670,10 @@
   <data name="UnitMonthlyFuelsData" xml:space="preserve">
     <value>Месечни данни за горива</value>
   </data>
+  <data name="IsMonthlyPlan" xml:space="preserve">
+    <value>Месечен план</value>
+  </data>
+  <data name="IsPropductionPlan" xml:space="preserve">
+    <value>Дневен план</value>
+  </data>
 </root>

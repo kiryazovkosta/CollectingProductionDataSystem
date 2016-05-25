@@ -107,6 +107,10 @@
         public bool IsPropductionPlan { get; set; }
         public bool IsMonthlyPlan { get; set; }
 
+        //Todo: delete after translation in productive
+        public decimal? QuantityPlan { get; set; }
+
+
         public bool IsPercentagesPlanVisibleInChast { get; set; }
         public bool IsPercentagesFactVisibleInChast { get; set; }
         public bool IsQuanityPlanVisibleInChast { get; set; }
@@ -115,6 +119,7 @@
         public virtual MeasureUnit MeasureUnit { get; set; }
 
         public string Code { get; set; }
+
 
         /// <summary>
         /// Determines whether the specified object is valid.

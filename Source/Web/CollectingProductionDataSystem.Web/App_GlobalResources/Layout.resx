@@ -1675,4 +1675,10 @@
   <data name="UnitMonthlyFuelsData" xml:space="preserve">
     <value>UnitMonthlyFuelsData</value>
   </data>
+  <data name="IsMonthlyPlan" xml:space="preserve">
+    <value>IsMonthlyPlan</value>
+  </data>
+  <data name="IsPropductionPlan" xml:space="preserve">
+    <value>IsPropductionPlan</value>
+  </data>
 </root>
