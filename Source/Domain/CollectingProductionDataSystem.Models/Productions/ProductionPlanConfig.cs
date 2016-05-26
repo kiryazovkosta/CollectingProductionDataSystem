@@ -16,6 +16,7 @@
         private ICollection<UnitMonthlyConfig> unitMonthlyConfigs;
         private ICollection<ProductionPlanConfigUnitMonthlyConfigPlanMembers> productionPlanConfigUnitMonthlyConfigPlanMembers;
         private ICollection<ProductionPlanConfigUnitMonthlyConfigFactFractionMembers> productionPlanConfigUnitMonthlyConfigFactFractionMembers;
+        private ICollection<RelatedProductionPlanConfigs> relatedProductionPlanConfigs;
 
         public ProductionPlanConfig()
         {
@@ -25,7 +26,7 @@
             this.unitMonthlyConfigs = new HashSet<UnitMonthlyConfig>();
             this.productionPlanConfigUnitMonthlyConfigPlanMembers = new HashSet<ProductionPlanConfigUnitMonthlyConfigPlanMembers>();
             this.productionPlanConfigUnitMonthlyConfigFactFractionMembers = new HashSet<ProductionPlanConfigUnitMonthlyConfigFactFractionMembers>();
-
+            this.relatedProductionPlanConfigs = new HashSet<RelatedProductionPlanConfigs>();
         }
 
         public int Id { get; set; }
@@ -57,7 +58,6 @@
             get { return this.productionPlanConfigUnitMonthlyConfigFactFractionMembers; }
             set { this.productionPlanConfigUnitMonthlyConfigFactFractionMembers = value; }
         }
-
 
         public int ProcessUnitId { get; set; }
 
@@ -110,7 +110,6 @@
         //Todo: delete after translation in productive
         public decimal? QuantityPlan { get; set; }
 
-
         public bool IsPercentagesPlanVisibleInChast { get; set; }
         public bool IsPercentagesFactVisibleInChast { get; set; }
         public bool IsQuanityPlanVisibleInChast { get; set; }
@@ -120,6 +119,13 @@
 
         public string Code { get; set; }
 
+        public bool AggregationCurrentLevel { get; set; }
+
+        public virtual ICollection<RelatedProductionPlanConfigs> RelatedProductionPlanConfigs
+        {
+            get { return this.relatedProductionPlanConfigs; }
+            set { this.relatedProductionPlanConfigs = value; }
+        }
 
         /// <summary>
         /// Determines whether the specified object is valid.

@@ -166,6 +166,8 @@
 
         IDeletableEntityRepository<UnitRecalculatedMonthlyData> UnitRecalculatedMonthlyDatas { get; }
 
+        IRepository<RelatedProductionPlanConfigs> RelatedProductionPlanConfigs { get; }
+
         IDbContext DbContext { get; }
 
         IEfStatus SaveChanges(string userName);

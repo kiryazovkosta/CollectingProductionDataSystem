@@ -21,6 +21,7 @@ using Uniformance.PHD;
 using CollectingProductionDataSystem.Models.Transactions;
 using System.Data;
 using System.Globalization;
+using CollectingProductionDataSystem.Data.Common;
 
 namespace CollectingProductionDataSystem.ConsoleClient
 {
@@ -36,6 +37,8 @@ namespace CollectingProductionDataSystem.ConsoleClient
             var data = kernel.Get<ProductionData>();
             //WritePositionsConfidence(data);
             UpdateShiftUnitData(kernel, data);
+
+            //AddOrUpdateProductionPlanConfigs(data);
 
             //UpdateShiftUnitData(kernel, data);
             //var shiftData = data.UnitsData.All().Where(x => x.ShiftId == ShiftType.Second 
@@ -96,6 +99,56 @@ namespace CollectingProductionDataSystem.ConsoleClient
             //SeedShiftsToDatabase(uow);
         }
 
+        private static void AddOrUpdateProductionPlanConfigs(ProductionData data)
+        {
+            //// update all exsisting ProductionPlanData to become daily data
+            // UpdateInProductionPlanForExsisting(data);
+
+            // Insert quantity plan value and update QuantityPlanFormula
+            InsertPlanValueAndUpdateQuantityPlanFormula(data);
+        }
+ 
+        private static void InsertPlanValueAndUpdateQuantityPlanFormula(ProductionData data)
+        {
+            // UpdateInProductionPlanForExsisting(data);
+            // Insert
+            var productionPlanConfigs = data.ProductionPlanConfigs.AllWithDeleted().Where(x => x.MaterialTypeId == 1).ToList();
+            foreach (var productionPlanConfig in productionPlanConfigs)
+            {
+                var beginIndex = productionPlanConfig.QuantityPlanFormula.IndexOf("*");
+                if (beginIndex == -1)
+                {
+                    continue;
+                }
+
+                var endIndex = productionPlanConfig.QuantityPlanFormula.IndexOf(")", beginIndex);
+                if (endIndex == -1)
+                {
+                    continue;   
+                }
+
+                var value = productionPlanConfig.QuantityPlanFormula.Substring(beginIndex + 1, endIndex - beginIndex - 1);
+                Console.WriteLine("{0} -> {1}", productionPlanConfig.QuantityPlanFormula, value);
+                productionPlanConfig.QuantityPlan = decimal.Parse(value);
+                productionPlanConfig.QuantityPlanFormula = productionPlanConfig.QuantityPlanFormula.Replace(value, "p.pn");
+            }
+
+            data.SaveChanges("Initial Loading");
+        }
+ 
+        private static void UpdateInProductionPlanForExsisting(ProductionData data)
+        {
+            // update all exsisting ProductionPlanData to become daily data
+            var productionPlanConfigs = data.ProductionPlanConfigs.AllWithDeleted().ToList();
+            foreach (var productionPlanConfig in productionPlanConfigs)
+            {
+                productionPlanConfig.IsPropductionPlan = true;    
+            }
+
+            var status = data.SaveChanges("Initial Loading");
+            Console.WriteLine("Successfully updated {0} record", status.ResultRecordsCount);
+        }
+
         private static void UpdateShiftUnitData(IKernel kernel, ProductionData data)
         {
             var service = kernel.Get<IPhdPrimaryDataService>();
@@ -107,9 +160,9 @@ namespace CollectingProductionDataSystem.ConsoleClient
                                   .Include(x => x.RelatedUnitConfigs.Select(z => z.RelatedUnitConfig).Select(w => w.UnitDatasTemps))
                                   .Where(x => x.CollectingDataMechanism == "C")
                                   .ToList();
-            var targerDay = new DateTime(2016, 5, 17);
+            var targerDay = new DateTime(2016, 5, 25);
             var unitsTemp = data.UnitsData.All().Include(x => x.UnitConfig).Where(x => x.RecordTimestamp == targerDay &&
-                                                                                       x.ShiftId == 2 &&
+                                                                                       x.ShiftId == 1 &&
                                                                                        x.UnitConfig.CollectingDataMechanism != "C").ToList().Select(x => new UnitDatasTemp
                                                                                                                                                    {
                                                                                                                                                        RecordTimestamp = x.RecordTimestamp,
@@ -122,7 +175,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
 
             int test = 0;
 
-            var result = service.ProcessCalculatedUnits(unitConfigs, targerDay, 2, unitsTemp, ref test)
+            var result = service.ProcessCalculatedUnits(unitConfigs, targerDay, 1, unitsTemp, ref test)
                                 .Select(unitDataTemp => new UnitsData()
                                        {
                                            RecordTimestamp = unitDataTemp.RecordTimestamp,
@@ -137,7 +190,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
                                      .All()
                                      .Include(x => x.UnitConfig)
                                      .Where(x => x.RecordTimestamp == targerDay &&
-                                                 x.ShiftId == 2 &&
+                                                 x.ShiftId == 1 &&
                                                  x.UnitConfig.CollectingDataMechanism == "C" &&
                                                  x.UnitConfig.IsDeleted == false);
 

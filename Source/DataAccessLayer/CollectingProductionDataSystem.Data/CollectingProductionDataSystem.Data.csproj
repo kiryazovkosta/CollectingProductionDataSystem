@@ -98,6 +98,7 @@
     <Compile Include="Mappings\PlanNormMap.cs" />
     <Compile Include="Mappings\ProductionPlanConfigUnitMonthlyConfigFactFractionMembersMap.cs" />
     <Compile Include="Mappings\ProductionPlanConfigUnitMonthlyConfigPlanMembersMap.cs" />
+    <Compile Include="Mappings\RelatedProductionPlanConfigsMap.cs" />
     <Compile Include="Mappings\TankStatusDataMap.cs" />
     <Compile Include="Mappings\TankStatusMap.cs" />
     <Compile Include="Mappings\UnitDatasTempMap.cs" />
