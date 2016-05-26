@@ -2,23 +2,23 @@
 @using Resources = App_GlobalResources.Resources;
 <div class="row">
     <div class="col-md-12">
-        <h2>@Resources.Layout.PlanValues</h2>
+        <h2>@Resources.Layout.PlanNorm</h2>
     </div>
 </div>
 @Html.AntiForgeryToken()
 @(Html.Kendo()
-      .Grid<PlanValueViewModel>()
+      .Grid<PlanNormViewModel>()
       .Name("plan-grid")
       .AutoBind(false)
       .Columns(columns =>
       {
-          columns.Bound(c => c.ProcessUnit.Factory.FactorySortableName).Hidden(true).ClientGroupHeaderTemplate("Производство #=value.substr(3,value.length-3)#").Width(10);
-          columns.Bound(c => c.Month).Format("{0:MMMM yyyy}");          
-          columns.Bound(c => c.ProcessUnit.ShortName).Title(Resources.Layout.ProcessUnit);
+          columns.Bound(c => c.Month).Format("{0:MMMM yyyy}");
+          columns.ForeignKey(c => c.ProductionPlanConfigId, (System.Collections.IEnumerable)ViewData["planConfigs"], "Id", "DisplayName");
+
           columns.Bound(c => c.Value)
           .ClientTemplate(Ajax.AuthorizedAjaxActionLinkOrText("#=data.Value#", "Index", "History",
           new AjaxOptions() { HttpMethod = "Get", OnSuccess = "showRecordHistoriModal" },
-          new { area = "RecordsHistory", id = "#=data.id#", entityName = "PlanValue" },
+          new { area = "RecordsHistory", id = "#=data.id#", entityName = "PlanNorm" },
           new { data_ajax_mode = "replace", data_ajax_update = @"\#modal-dialog-body" })
           .ToHtmlString());
           columns.Command(command => { command.Edit(); });
@@ -31,36 +31,30 @@
                 .AllPages(true)
             )
       .Editable(editable => editable.Mode(GridEditMode.InLine))
-          .Pageable(pageable => pageable
-                        .Refresh(true)
-                        .PageSizes(false)
-                        .Numeric(false)
-                        .PreviousNext(false)
-                    )
-              .Sortable(sortable =>
-        {
-            sortable.SortMode(GridSortMode.SingleColumn);
-        })
+      .Pageable(pageable => pageable
+                    .Refresh(true)
+                    .PageSizes(false)
+                    .Numeric(false)
+                    .PreviousNext(false)
+                )
+      .Sortable(sortable =>
+      {
+          sortable.SortMode(GridSortMode.SingleColumn);
+      })
       .Filterable()
       .Scrollable(scrol => scrol.Height(620))
       .Scrollable()
       .DataSource(dataSource => dataSource
             .Ajax()
             .PageSize(int.MaxValue)
-            .ServerOperation(true)
-            .Group(group =>
-                    {                                               
-                        group.Add(c => c.ProcessUnit.Factory.FactorySortableName);
-                    })
             .Model(model =>
             {
                 model.Id(p => p.Id);
                 model.Field(p => p.Month).Editable(false);
-                model.Field(p => p.ProcessUnit.ShortName).Editable(false);                
-                model.Field(p => p.ProcessUnit.Factory.FactorySortableName).Editable(false);
+                model.Field(p => p.ProductionPlanConfigId).Editable(false);
             })
-            .Read(read => read.Action("Read", "PlanValues", new { area = "PlanConfiguration" }).Data("unitGridsData.SendDate"))
-            .Update(update => update.Action("Update", "PlanValues", new { area = "PlanConfiguration" }).Data("sendAntiForgery"))
+            .Read(read => read.Action("Read", "PlanNorm", new { area = "PlanConfiguration" }).Data("unitGridsData.SendDate"))
+                .Update(update => update.Action("Update", "PlanNorm", new { area = "PlanConfiguration" }).Data("sendAntiForgery"))
             .Events(events =>
             {
                 events.Error("kendoAdditional.ErrorHandler");
@@ -80,11 +74,12 @@
     @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.min.js")
 }
 
+
+
+
 @section sidebar{
     @Html.Partial("_MonthSelectorAproveableSideBar")
 }
-
-
 
 
 

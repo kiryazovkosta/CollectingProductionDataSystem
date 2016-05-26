@@ -1676,4 +1676,16 @@
   <data name="IsPropductionPlan" xml:space="preserve">
     <value>Дневен план</value>
   </data>
+  <data name="NormValue" xml:space="preserve">
+    <value>Разходна норма</value>
+  </data>
+  <data name="PlanNorm" xml:space="preserve">
+    <value>План по отбори</value>
+  </data>
+  <data name="PlanValues" xml:space="preserve">
+    <value>План преработка по инсталации</value>
+  </data>
+  <data name="ProcessingPlan" xml:space="preserve">
+    <value>Месечен план преработка</value>
+  </data>
 </root>

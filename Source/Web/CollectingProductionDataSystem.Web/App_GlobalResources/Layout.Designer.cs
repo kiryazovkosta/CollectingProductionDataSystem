@@ -2509,6 +2509,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to NormValue.
+        /// </summary>
+        public static string NormValue {
+            get {
+                return ResourceManager.GetString("NormValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to NotATotalizedPosition.
         /// </summary>
         public static string NotATotalizedPosition {
@@ -2869,6 +2878,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to PlanNorm.
+        /// </summary>
+        public static string PlanNorm {
+            get {
+                return ResourceManager.GetString("PlanNorm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Plant.
         /// </summary>
         public static string Plant {
@@ -2887,6 +2905,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to PlanValues.
+        /// </summary>
+        public static string PlanValues {
+            get {
+                return ResourceManager.GetString("PlanValues", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Position.
         /// </summary>
         public static string Position {
@@ -2901,6 +2928,15 @@ namespace App_GlobalResources.Resources {
         public static string PreviousShiftTag {
             get {
                 return ResourceManager.GetString("PreviousShiftTag", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ProcessingPlan.
+        /// </summary>
+        public static string ProcessingPlan {
+            get {
+                return ResourceManager.GetString("ProcessingPlan", resourceCulture);
             }
         }
         

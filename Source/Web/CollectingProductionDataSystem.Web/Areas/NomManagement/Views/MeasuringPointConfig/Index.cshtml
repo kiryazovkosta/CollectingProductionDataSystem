@@ -1,16 +1,19 @@
-﻿@(Html.Kendo()
+﻿@using CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewModels;
+
+@(Html.Kendo()
       .Grid<CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewModels.MeasuringPointConfigViewModel>()
       .Name("grid")
       .Columns(columns =>
       {
+          columns.Bound(p => p.Id).Width(80);          
           columns.Bound(p => p.ControlPoint)
-              .ClientTemplate(
-                                Ajax.AuthorizedAjaxActionLinkOrText("#=data.ControlPoint#", "Index", "History",
-                                      new AjaxOptions() { HttpMethod = "Get", OnSuccess = "showRecordHistoriModal" },
-                                      new { area = "RecordsHistory", id = "#=data.id#", entityName = "MeasuringPointConfig" },
-                                      new { data_ajax_mode = "replace", data_ajax_update = @"\#modal-dialog-body" })
-                                      .ToHtmlString())
-                                      .Width(200);
+          .ClientTemplate(
+          Ajax.AuthorizedAjaxActionLinkOrText("#=data.ControlPoint#", "Index", "History",
+          new AjaxOptions() { HttpMethod = "Get", OnSuccess = "showRecordHistoriModal" },
+          new { area = "RecordsHistory", id = "#=data.id#", entityName = "MeasuringPointConfig" },
+          new { data_ajax_mode = "replace", data_ajax_update = @"\#modal-dialog-body" })
+          .ToHtmlString())
+          .Width(200);
           columns.Bound(p => p.MeasuringPointName).Width(200);
           columns.ForeignKey(p => p.ZoneId, (System.Collections.IEnumerable)ViewData["zones"], "Id", "Name").EditorTemplateName("ZoneViewModel").Width(280);
           columns.Bound(p => p.EngineeringUnitMass).Width(100);
@@ -108,37 +111,42 @@
       })
       .Resizable(res => res.Columns(true))
       .ToolBar(toolbar =>
-      {
-          toolbar.Create();
-          toolbar.Excel();
-      })
-      .Editable(editable => editable.Mode(GridEditMode.InLine))
-          .Pageable(pageable => pageable
-              .Refresh(true)
-              .PageSizes(new[] { 20, 50, 100 })
-              .ButtonCount(5)
-          )
-          .Sortable(sortable =>
-          {
-              sortable.SortMode(GridSortMode.SingleColumn);
-          })
-          .Filterable()
-          .Scrollable(scrol => scrol.Height(620))
+                {
+                    toolbar.Create();
+                    toolbar.Excel();
+                })
+                      .Editable(editable => editable.Mode(GridEditMode.InLine))
+      .Pageable(pageable => pageable
+                .Refresh(true)
+                .PageSizes(new[] { 20, 50, 100 })
+                .ButtonCount(5)
+                )
+      .Sortable(sortable =>
+                {
+                    sortable.SortMode(GridSortMode.SingleColumn);
+                })
+      .Filterable()
+      .Scrollable(scrol => scrol.Height(500))
       .Scrollable()
       .DataSource(dataSource => dataSource
-          .Ajax()
-          .PageSize(20)
-          .Model(model => model.Id(p => p.Id))
-                  .Read(read => read.Action("Read", "MeasuringPointConfig", new { area = "NomManagement" }).Data("sendAntiForgery"))
-                  .Create(create => create.Action("Create", "MeasuringPointConfig", new { area = "NomManagement" }).Data("sendAntiForgery"))
-                  .Update(update => update.Action("Update", "MeasuringPointConfig", new { area = "NomManagement" }).Data("sendAntiForgery"))
-                  .Destroy(destroy => destroy.Action("Destroy", "MeasuringPointConfig", new { area = "NomManagement" }).Data("sendAntiForgery"))
-          .Events(events =>
-                {
-                    events.Error("kendoAdditional.ErrorHandler");
-                })
-          )
-              .Events(ev => ev.DataBound("kendoAdditional.DeletableDataBound"))
+                    .Ajax()
+                    .PageSize(20)
+                    .Model(model =>
+                    {
+                        model.Id(p => p.Id);
+                        model.Field(p => p.RelatedMeasuringPointConfigs).DefaultValue(new HashSet<RelatedMeasuringPointConfigsViewModel>() { new RelatedMeasuringPointConfigsViewModel() }).Editable(true);
+                    })
+                    .Read(read => read.Action("Read", "MeasuringPointConfig", new { area = "NomManagement" }).Data("sendAntiForgery"))
+                    .Create(create => create.Action("Create", "MeasuringPointConfig", new { area = "NomManagement" }).Data("sendAntiForgery"))
+                    .Update(update => update.Action("Update", "MeasuringPointConfig", new { area = "NomManagement" }).Data("sendAntiForgery"))
+                    .Destroy(destroy => destroy.Action("Destroy", "MeasuringPointConfig", new { area = "NomManagement" }).Data("sendAntiForgery"))
+                    .Events(events =>
+                                        {
+                                            events.Error("kendoAdditional.ErrorHandler");
+                                            events.RequestEnd("kendoAdditional.AfterterNomGridValidation");
+                                        })
+                )
+      .Events(ev => ev.DataBound("kendoAdditional.DeletableDataBound"))
 )
 
 <script type="text/kendo" id="relatedMeasuringPointConfigsTemplate">
