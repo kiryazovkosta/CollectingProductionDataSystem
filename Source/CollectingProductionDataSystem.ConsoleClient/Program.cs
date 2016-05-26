@@ -36,9 +36,9 @@ namespace CollectingProductionDataSystem.ConsoleClient
 
             var data = kernel.Get<ProductionData>();
             //WritePositionsConfidence(data);
-            UpdateShiftUnitData(kernel, data);
+            //UpdateShiftUnitData(kernel, data);
 
-            //AddOrUpdateProductionPlanConfigs(data);
+            AddOrUpdateProductionPlanConfigs(data);
 
             //UpdateShiftUnitData(kernel, data);
             //var shiftData = data.UnitsData.All().Where(x => x.ShiftId == ShiftType.Second 
@@ -97,22 +97,113 @@ namespace CollectingProductionDataSystem.ConsoleClient
             //}
             //TreeShiftsReports(DateTime.Today.AddDays(-2), 1);
             //SeedShiftsToDatabase(uow);
+            Console.WriteLine("finished");
         }
 
         private static void AddOrUpdateProductionPlanConfigs(ProductionData data)
         {
             //// update all exsisting ProductionPlanData to become daily data
-            // UpdateInProductionPlanForExsisting(data);
+            //UpdateInProductionPlanForExsisting(data);
+            //// Insert quantity plan value and update QuantityPlanFormula
+            //InsertPlanValueAndUpdateQuantityPlanFormula(data);
+            // Update PlanValues
+            //UpdatePlanValues(data);
+            // Update PlanValues
+            //UpdatePlanNorms(data);
+            // Second updating of the QuantityPlanFormula
+            UpdatingQuantityPlanFormula(data);
+        }
+ 
+        private static void UpdatingQuantityPlanFormula(ProductionData data)
+        {
+            //UpdateInProductionPlanForExsisting(data);
+            //// Insert quantity plan value and update QuantityPlanFormula
+            //InsertPlanValueAndUpdateQuantityPlanFormula(data);
+            // Update PlanValues
+            //UpdatePlanValues(data);
+            // Update PlanValues
+            //UpdatePlanNorms(data);
+            // Second updating of the QuantityPlanFormula
+            var p = data.ProductionPlanConfigs.All().Where(x => x.MaterialTypeId == 1).ToList();
+            foreach (var productionPlanConfig in p)
+            {
+                var beginIndex = productionPlanConfig.QuantityPlanFormula.IndexOf("((");
+                if (beginIndex == -1)
+                {
+                    continue;
+                }
 
-            // Insert quantity plan value and update QuantityPlanFormula
-            InsertPlanValueAndUpdateQuantityPlanFormula(data);
+                var endIndex = productionPlanConfig.QuantityPlanFormula.IndexOf("/", beginIndex);
+                if (endIndex == -1)
+                {
+                    continue;   
+                }
+
+                var value = productionPlanConfig.QuantityPlanFormula.Substring(beginIndex + 2, endIndex - beginIndex - 2);
+                Console.WriteLine("{0} -> {1}", productionPlanConfig.QuantityPlanFormula, value);
+                productionPlanConfig.QuantityPlanFormula = productionPlanConfig.QuantityPlanFormula.Replace(value, "p.pv");
+                productionPlanConfig.QuantityPlanFormula = productionPlanConfig.QuantityPlanFormula.Replace("100", "100.00");
+            }
+
+            data.SaveChanges("Initial Loading");
+        }
+
+        private static void UpdatePlanNorms(ProductionData data)
+        {
+            var date = new DateTime(2016, 5, 1, 0, 0, 0);
+            var productionPlanConfigs = data.ProductionPlanConfigs.All().Where(x => x.MaterialTypeId == 1).ToList();
+            foreach (var productionPlanConfig in productionPlanConfigs)
+            {
+                var productionPlanConfigId = productionPlanConfig.Id;
+                var planNorm = data.PlanNorms.All()
+                    .Where(x => x.ProductionPlanConfigId == productionPlanConfigId 
+                        && x.Month == date)
+                    .FirstOrDefault();
+
+                if (planNorm != null)
+                {
+                    planNorm.Value = productionPlanConfig.Percentages;
+                    data.PlanNorms.Update(planNorm);
+                    data.SaveChanges("Initial Loading");
+                }
+            }
+
+            //data.SaveChanges("Initial Loading");
+        }
+
+        private static void UpdatePlanValues(ProductionData data)
+        {
+            var planValues = new SortedDictionary<int, decimal>();
+            var productionPlanConfigs = data.ProductionPlanConfigs.All().Where(x => x.MaterialTypeId == 1).ToList();
+            foreach (var productionPlanConfig in productionPlanConfigs)
+            {
+                var processUnitId = productionPlanConfig.ProcessUnitId;
+                if (!planValues.ContainsKey(processUnitId) && productionPlanConfig.QuantityPlan.HasValue)
+                {
+                    planValues.Add(processUnitId, productionPlanConfig.QuantityPlan.Value);  
+                }
+            }
+
+            var date = new DateTime(2016, 5, 1, 0, 0, 0);
+            foreach (var planValue in planValues)
+            {
+                Console.WriteLine("{0} -> {1}", planValue.Key, planValue.Value);
+                var planValueV = data.PlanValues.All().Where(x => x.ProcessUnitId == planValue.Key && x.Month == date).FirstOrDefault();
+                if (planValueV != null)
+                {
+                    planValueV.Value = planValue.Value;
+                    data.PlanValues.Update(planValueV);
+                }
+            }
+
+            data.SaveChanges("Initial Loading");
         }
  
         private static void InsertPlanValueAndUpdateQuantityPlanFormula(ProductionData data)
         {
             // UpdateInProductionPlanForExsisting(data);
             // Insert
-            var productionPlanConfigs = data.ProductionPlanConfigs.AllWithDeleted().Where(x => x.MaterialTypeId == 1).ToList();
+            var productionPlanConfigs = data.ProductionPlanConfigs.All().Where(x => x.MaterialTypeId == 1).ToList();
             foreach (var productionPlanConfig in productionPlanConfigs)
             {
                 var beginIndex = productionPlanConfig.QuantityPlanFormula.IndexOf("*");
@@ -142,11 +233,11 @@ namespace CollectingProductionDataSystem.ConsoleClient
             var productionPlanConfigs = data.ProductionPlanConfigs.AllWithDeleted().ToList();
             foreach (var productionPlanConfig in productionPlanConfigs)
             {
-                productionPlanConfig.IsPropductionPlan = true;    
+                productionPlanConfig.IsPropductionPlan = true;
+                data.SaveChanges("Initial Loading");
             }
 
-            var status = data.SaveChanges("Initial Loading");
-            Console.WriteLine("Successfully updated {0} record", status.ResultRecordsCount);
+            Console.WriteLine("Successfully UpdateInProductionPlanForExsisting");
         }
 
         private static void UpdateShiftUnitData(IKernel kernel, ProductionData data)
