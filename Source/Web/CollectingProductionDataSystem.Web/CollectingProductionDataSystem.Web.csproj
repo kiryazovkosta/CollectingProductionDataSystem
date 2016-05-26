@@ -338,6 +338,7 @@
     <Compile Include="Areas\PlanConfiguration\Controllers\PlanNormController.cs" />
     <Compile Include="Areas\PlanConfiguration\Controllers\PlanValuesController.cs" />
     <Compile Include="Areas\PlanConfiguration\Models\PlanNormViewModel.cs" />
+    <Compile Include="Areas\PlanConfiguration\Models\PlanValueViewModel.cs" />
     <Compile Include="Areas\PlanConfiguration\Models\ProductionPlanConfigViewModel.cs" />
     <Compile Include="Areas\PlanConfiguration\PlanConfigurationAreaRegistration.cs" />
     <Compile Include="Areas\SummaryReporting\Controllers\OverseersTransactionsController.cs" />
@@ -1622,7 +1623,7 @@
     <Content Include="Areas\MonthlyDataReporting\Views\MonthlyPotableWater\MonthlyPotableWaterSummaryReport.cshtml" />
     <Content Include="Areas\PlanConfiguration\Views\web.config" />
     <Content Include="Areas\PlanConfiguration\Views\_ViewStart.cshtml" />
-    <Content Include="Areas\PlanConfiguration\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\PlanConfiguration\Views\PlanNorm\Index.cshtml" />
     <Content Include="Areas\PlanConfiguration\Views\PlanValues\Index.cshtml" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <Content Include="Scripts\custom\sendArea.js" />
@@ -2352,7 +2353,7 @@
     <Folder Include="Areas\OverseersReporting\Views\AreaBase\" />
     <Folder Include="Areas\OverseersReporting\Views\Shared\" />
     <Folder Include="Areas\PlanConfiguration\Views\AreaBase\" />
-    <Folder Include="Areas\PlanConfiguration\Views\PlanNorm\" />
+    <Folder Include="Areas\PlanConfiguration\Views\Shared\" />
     <Folder Include="Areas\RecordsHistory\Views\Shared\" />
     <Folder Include="Areas\ShiftReporting\Models\" />
     <Folder Include="Areas\ShiftReporting\Views\Ajax\" />

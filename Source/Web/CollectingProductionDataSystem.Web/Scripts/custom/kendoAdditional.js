@@ -90,7 +90,8 @@
             $.each(e.errors, function (key, value) {
                 if ('errors' in value) {
                     $.each(value.errors, function () {
-                        message += this + "\n";
+                        var that = this.replace('\\r\\n', '\r\n')
+                        message += that + "\n";
                     });
                 }
             });

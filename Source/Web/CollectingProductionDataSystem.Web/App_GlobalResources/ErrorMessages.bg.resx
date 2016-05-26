@@ -195,4 +195,7 @@
   <data name="MonthIsNotConfirmed" xml:space="preserve">
     <value>Данните за месец {0} не са потвърдени</value>
   </data>
+  <data name="MonthIsConfirmed" xml:space="preserve">
+    <value>Не можете да променяте плановите записи.\r\nМесецът е потвърден.</value>
+  </data>
 </root>
