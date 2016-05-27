@@ -63,7 +63,11 @@
                 return existingProductionPlanData;
 	        }
 
-            var dbResult = this.data.ProductionPlanConfigs.All().Where(x => x.IsPropductionPlan == true);
+            var dbResult = this.data.ProductionPlanConfigs.All()
+                .Include(x => x.PlanNorms)
+                .Include(x => x.ProcessUnit)
+                .Include(x => x.ProcessUnit.PlanValues)
+                .Where(x => x.IsPropductionPlan == true);
             if (processUnitId != null)
             {
                 dbResult = dbResult.Where(x => x.ProcessUnitId == processUnitId);
@@ -82,17 +86,21 @@
             var totallyQuantity = GetSumOfTottallyProcessing(processUnitId.Value, date.Value);
             var totallyQuantityAs = 0m;
 
+            var month = new DateTime(date.Value.Year, date.Value.Month, 1, 0, 0, 0);
+
             foreach (ProductionPlanConfig productionPlan in productionPlans)
             {
-                var planValue = CalculatePlanValue(productionPlan, dailyData, this.calculator);
+                var planValue = CalculatePlanValue(productionPlan, dailyData, this.calculator, month);
                 var factValue = CalculateFactValue(productionPlan, dailyData, this.calculator);
-                var factPercents = CalculateUsageRateValue(productionPlan, dailyData, this.calculator); 
+                var factPercents = CalculateUsageRateValue(productionPlan, dailyData, this.calculator);
+
+                var percentagesPlan = productionPlan.PlanNorms.Where(x => x.Month == month).First().Value;
 
                 var productionPlanData = new ProductionPlanData
                 {
                     ProductionPlanConfigId = productionPlan.Id,
                     RecordTimestamp = date.Value,
-                    PercentagesPlan = productionPlan.Percentages,
+                    PercentagesPlan = percentagesPlan,
                     QuanityPlan = (decimal)planValue,
                     PercentagesFact = GetValidValueOrZero(factPercents),
                     QuantityFact = GetValidValueOrZero(factValue),
@@ -239,7 +247,7 @@
             return factValue;
         }
  
-        private double CalculatePlanValue(ProductionPlanConfig productionPlan, List<UnitsDailyData> dailyData, ICalculatorService calculator)
+        private double CalculatePlanValue(ProductionPlanConfig productionPlan, List<UnitsDailyData> dailyData, ICalculatorService calculator, DateTime month)
         {
             var splitter = new char[] { '@' };
 
@@ -263,7 +271,17 @@
                 planInputParams.Add(string.Format("p{0}", i), planInputParamsValues[i]);  
             }
 
+            if (productionPlan.QuantityPlanFormula.IndexOf("p.pn") != -1)
+            {
+                var value = (double)productionPlan.PlanNorms.Where(x => x.Month == month).First().Value;
+                planInputParams.Add("pn", value);    
+            }
 
+            if (productionPlan.QuantityPlanFormula.IndexOf("p.pv") != -1)
+            {
+                var value = (double)productionPlan.ProcessUnit.PlanValues.Where(x => x.Month == month).First().Value;
+                planInputParams.Add("pv", value);    
+            }
 
             var planValue = calculator.Calculate(productionPlan.QuantityPlanFormula, "p", planInputParams.Count, planInputParams);
             return planValue;
