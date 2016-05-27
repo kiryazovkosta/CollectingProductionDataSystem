@@ -14,6 +14,7 @@
       {
           columns.Bound(c => c.ProductionPlanConfig.ProcessUnit.Factory.FactorySortableName).Hidden(true).ClientGroupHeaderTemplate("Производство #=value.substr(3,value.length-3)#").Width(10);
           columns.Bound(c => c.ProductionPlanConfig.ProcessUnit.SortableName).Hidden(true).ClientGroupHeaderTemplate("Инсталация #=value.substr(3,value.length-3)#").Width(10);
+          columns.Bound(c => c.ProductionPlanConfig.MaterialType.SortableName).Hidden(true).ClientGroupHeaderTemplate("#=value.substr(3,value.length-3)#").Width(10);          
           columns.Bound(c => c.Month).Format("{0:MMMM yyyy}").Width(100);
           columns.Bound(c => c.ProductionPlanConfig.Code).Width(100);
           columns.Bound(c => c.ProductionPlanConfig.Name);
@@ -54,6 +55,7 @@
                 {
                     group.Add(c => c.ProductionPlanConfig.ProcessUnit.Factory.FactorySortableName);
                     group.Add(c => c.ProductionPlanConfig.ProcessUnit.SortableName);
+                    group.Add(c => c.ProductionPlanConfig.MaterialType.SortableName);
                 })
                 .Sort(sort=>sort.Add(c=>c.ProductionPlanConfig.Position))
             .Model(model =>
