@@ -415,7 +415,7 @@ namespace CollectingProductionDataSystem.Application.MonthlyServices
         /// <returns></returns>
         private double GetMonthlyValueFromRelatedDailyRecords(IEnumerable<UnitsDailyData> records, UnitMonthlyConfig unitMonthlyConfig, Dictionary<int, int> positionDictionary)
         {
-            // single record reference to single DailyRecord
+            // single record reference to single DailyRecord    
             if (records.Count() == 1 && string.IsNullOrEmpty(unitMonthlyConfig.AggregationFormula))
             {
                 var record = records.FirstOrDefault();
@@ -425,7 +425,7 @@ namespace CollectingProductionDataSystem.Application.MonthlyServices
                 }
                 else
                 {
-                    return 0; // TODO See this may cause error
+                    return 0; 
                 }
 
             }

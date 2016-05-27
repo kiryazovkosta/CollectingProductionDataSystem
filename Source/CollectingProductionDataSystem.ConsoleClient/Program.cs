@@ -517,7 +517,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
         //    timer.Start();
 
         //    // need to use some kind of structure to store shifts begin and end timestamps
-        //    // TODO: Remove AddDays(-1)
+        //    
         //    //var shift1BeginTimestamp = DateTime.Today.AddMinutes(shifts[0].BeginMinutes);
         //    //var shift1EndTimestamp = DateTime.Today.AddMinutes(shifts[0].BeginMinutes + shifts[0].OffsetMinutes);
 

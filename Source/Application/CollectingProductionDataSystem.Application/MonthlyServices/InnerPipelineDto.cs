@@ -27,7 +27,6 @@ namespace CollectingProductionDataSystem.Application.MonthlyServices
 
         public Product Product { get; set; }
 
-        //TODO: fix this!!!
         public InnerPipelineData Quantity
         {
             get

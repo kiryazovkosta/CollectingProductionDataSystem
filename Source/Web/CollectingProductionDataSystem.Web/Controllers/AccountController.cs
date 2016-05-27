@@ -143,7 +143,6 @@
         }
 
         // POST: /Account/ChangePassword
-        // TODO: See what's wrong with the password change
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ChangePassword(ChangePasswordViewModel model)
