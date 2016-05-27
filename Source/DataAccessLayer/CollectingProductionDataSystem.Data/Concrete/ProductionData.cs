@@ -580,6 +580,14 @@
             }
         }
 
+        public IRepository<RelatedProductionPlanConfigs> RelatedProductionPlanConfigs
+        {
+            get
+            {
+                return this.GetRepository<RelatedProductionPlanConfigs>();
+            }
+        }
+
         public IEfStatus SaveChanges(string userName)
         {
             return this.context.SaveChangesWithValidation(userName);

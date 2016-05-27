@@ -16,15 +16,14 @@
         public int Id { get; set; }
 
         [Required]
-        [Display(Name = "Code", ResourceType = typeof(Resources.Layout))]
-        public int ProductionPlanConfigId { get; set; }
+        public ProductionPlanConfigViewModel ProductionPlanConfig { get; set; }
 
         [Required]
-        [Display(Name = "Code", ResourceType = typeof(Resources.Layout))]
+        [Display(Name = "Month", ResourceType = typeof(Resources.Layout))]
         public DateTime Month { get; set; }
 
         [Required]
-        [Display(Name = "Code", ResourceType = typeof(Resources.Layout))]
+        [Display(Name = "NormValue", ResourceType = typeof(Resources.Layout))]
         public decimal Value { get; set; }
     }
 }

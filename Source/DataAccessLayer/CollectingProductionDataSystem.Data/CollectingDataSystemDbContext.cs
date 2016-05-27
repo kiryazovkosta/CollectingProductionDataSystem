@@ -202,7 +202,7 @@
 
         public IDbSet<PlanValue> PlanValues { get; set; }
 
-
+        public IDbSet<RelatedProductionPlanConfigs> RelatedProductionPlanConfigs { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

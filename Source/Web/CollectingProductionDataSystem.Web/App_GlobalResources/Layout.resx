@@ -1681,4 +1681,16 @@
   <data name="IsPropductionPlan" xml:space="preserve">
     <value>IsPropductionPlan</value>
   </data>
+  <data name="NormValue" xml:space="preserve">
+    <value>NormValue</value>
+  </data>
+  <data name="PlanNorm" xml:space="preserve">
+    <value>PlanNorm</value>
+  </data>
+  <data name="PlanValues" xml:space="preserve">
+    <value>PlanValues</value>
+  </data>
+  <data name="ProcessingPlan" xml:space="preserve">
+    <value>ProcessingPlan</value>
+  </data>
 </root>

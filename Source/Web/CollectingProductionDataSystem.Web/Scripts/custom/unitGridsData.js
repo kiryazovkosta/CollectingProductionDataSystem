@@ -6,12 +6,17 @@ var unitGridsData = (function () {
                          "#highwaypipelines",
                          "#inner-pipes",
                          "#tanks-statuses",
-                         "#messages-grid"];
+                         "#messages-grid",
+                         "#plan-grid"
+                         ];
 
     // ----------------- autorun function on document ready -------------------
     'use strict';
     $(document).ready(function () {
         var ctrlParamsElement = $('#control-params');
+        if ($("#plan-grid").val() !== undefined) {
+            $('#confirm').remove();
+        }
         $("#apply").click(function () {
             if ($("#units").val() !== undefined) {
 
@@ -21,8 +26,6 @@ var unitGridsData = (function () {
 
                 kendoAdditional.RefreshGrid("#units");
             }
-
-
 
             if ($("#tanks").val() !== undefined) {
 
@@ -94,6 +97,10 @@ var unitGridsData = (function () {
             if ($("#highwaypipelines").val() !== undefined) {
 
                 kendoAdditional.RefreshGrid("#highwaypipelines");
+            }
+
+            if ($("#plan-grid").val() !== undefined) {
+                kendoAdditional.RefreshGrid("#plan-grid");
             }
 
         });
@@ -531,6 +538,12 @@ var unitGridsData = (function () {
 
     function sendOnlyDate() {
         var result = { "date": $('input[name=date]').val() };
+        $.extend(result, sendAntiForgery());
+        return result;
+    }
+
+    function sendMonth() {
+        var result = $('input[name=date]').data('kendoDatePicker').value();
         $.extend(result, sendAntiForgery());
         return result;
     }

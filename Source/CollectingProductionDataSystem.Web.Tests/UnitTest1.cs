@@ -10,6 +10,7 @@ using CollectingProductionDataSystem.Models.SystemLog;
 using CollectingProductionDataSystem.Web.AppStart;
 using CollectingProductionDataSystem.Web.Areas.Administration.ViewModels;
 using CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewModels;
+using CollectingProductionDataSystem.Web.Areas.PlanConfiguration.Models;
 using CollectingProductionDataSystem.Web.Areas.ShiftReporting.ViewModels;
 using CollectingProductionDataSystem.Web.ViewModels.Identity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -52,6 +53,7 @@ namespace CollectingProductionDataSystem.Web.Tests
 
             Mapper.AssertConfigurationIsValid();
         }
+        
         [TestMethod]
         public void CheckMappinIEnumerable_UnitDailyConfig_To_IEnumerable_UnitConfigUnitDailyConfigViewModel()
         {
@@ -59,6 +61,14 @@ namespace CollectingProductionDataSystem.Web.Tests
 
             var mapper = new UnitConfigUnitDailyConfigViewModel();
             mapper.CreateMappings(Mapper.Configuration);
+
+            Mapper.AssertConfigurationIsValid();
+        }
+
+        [TestMethod]
+        public void CheckMappinIEnumerable_PlanNorm_To_IEnumerable_PlanNormViewModel()
+        {
+            Mapper.CreateMap<IEnumerable<PlanNorm>, IEnumerable<PlanNormViewModel>>();
 
             Mapper.AssertConfigurationIsValid();
         }

@@ -578,7 +578,9 @@
                 }
                 catch (Exception ex)
                 {
-                    throw new Exception(string.Format("UnitConfigId: {0} \n [{1} \n {2}]", unitConfig.Id, ex.Message, ex.ToString()), ex);
+                    var errorMessage = string.Format("UnitConfigId: {0} \n [{1} \n {2}]", unitConfig.Id, ex.Message, ex.ToString());
+                    this.logger.ErrorFormat(errorMessage);
+                    this.mailer.SendMail(errorMessage, "Phd2Interface Error");
                 }
             }
 

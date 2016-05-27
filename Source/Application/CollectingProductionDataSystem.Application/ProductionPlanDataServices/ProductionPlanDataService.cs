@@ -37,8 +37,7 @@
                 return result;
             }
 
-            if (materialTypeId.HasValue && 
-                materialTypeId.Value == energyId)
+            if (materialTypeId.HasValue && materialTypeId.Value == energyId)
             {
                 dailyData = unitData.GetUnitsDailyDataForDateTime(date, null, null).ToList();    
             }
@@ -52,7 +51,6 @@
                 return result;
             }
 
-
             var existingProductionPlanData = this.data.ProductionPlanDatas.All()
                 .Include(p => p.ProductionPlanConfig)
                 .Include(p => p.ProductionPlanConfig.MaterialType)
@@ -65,8 +63,7 @@
                 return existingProductionPlanData;
 	        }
 
-
-            var dbResult = this.data.ProductionPlanConfigs.All();
+            var dbResult = this.data.ProductionPlanConfigs.All().Where(x => x.IsPropductionPlan == true);
             if (processUnitId != null)
             {
                 dbResult = dbResult.Where(x => x.ProcessUnitId == processUnitId);
@@ -265,6 +262,8 @@
             {
                 planInputParams.Add(string.Format("p{0}", i), planInputParamsValues[i]);  
             }
+
+
 
             var planValue = calculator.Calculate(productionPlan.QuantityPlanFormula, "p", planInputParams.Count, planInputParams);
             return planValue;

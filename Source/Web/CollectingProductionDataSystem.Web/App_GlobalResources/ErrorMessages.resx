@@ -195,4 +195,7 @@
   <data name="MonthIsNotConfirmed" xml:space="preserve">
     <value>MonthIsNotConfirmed {0}</value>
   </data>
+  <data name="MonthIsConfirmed" xml:space="preserve">
+    <value>You cannot modify plan records after confirmation of the month</value>
+  </data>
 </root>

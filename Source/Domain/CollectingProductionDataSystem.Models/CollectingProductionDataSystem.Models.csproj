@@ -114,6 +114,7 @@
     <Compile Include="Productions\Mounthly\RelatedUnitMonthlyConfigs.cs" />
     <Compile Include="Productions\PlanNorm.cs" />
     <Compile Include="Productions\PlanValue.cs" />
+    <Compile Include="Productions\RelatedProductionPlanConfig.cs" />
     <Compile Include="Productions\UnitDatasTemp.cs" />
     <Compile Include="Transactions\HighwayPipelines\HighwayPipelineApprovedData.cs" />
     <Compile Include="Transactions\HighwayPipelines\HighwayPipelineConfig.cs" />

@@ -122,7 +122,8 @@
                     p.UnitDailyConfigUnitMonthlyConfigs.Select((x, ixc) => new UnitDailyConfigUnitMonthlyConfig() { UnitDailyConfigId = x.UnitDailyConfigId, UnitMonthlyConfigId = p.Id, Position = ixc + 1, }) :
                     new List<UnitDailyConfigUnitMonthlyConfig>()))
                  .ForMember(p => p.RelatedUnitMonthlyConfigs, opt => opt.MapFrom(p => p.RelatedUnitMonthlyConfigs != null ?
-                    p.RelatedUnitMonthlyConfigs.Select((x, ixc) => new RelatedUnitMonthlyConfigs() { UnitMonthlyConfigId = p.Id, RelatedUnitMonthlyConfigId = x.Id, Position = ixc + 1 }) :
+                    p.RelatedUnitMonthlyConfigs.Select((x, ixc) => new RelatedUnitMonthlyConfigs() 
+                    { UnitMonthlyConfigId = p.Id, RelatedUnitMonthlyConfigId = x.Id, Position = ixc + 1 }) :
                     new List<RelatedUnitMonthlyConfigs>()))
                     //.ForMember(p => p.MaterialDetailTypeId, opt => opt.MapFrom(p => p.MaterialDetailTypeId == 0 ? null : (int?)p.MaterialDetailTypeId))
                   .ForMember(p => p.IsConverted, opt => opt.Ignore());

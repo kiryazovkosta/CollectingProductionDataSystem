@@ -196,6 +196,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You cannot modify plan records after confirmation of the month.
+        /// </summary>
+        public static string MonthIsConfirmed {
+            get {
+                return ResourceManager.GetString("MonthIsConfirmed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to MonthIsNotConfirmed {0}.
         /// </summary>
         public static string MonthIsNotConfirmed {

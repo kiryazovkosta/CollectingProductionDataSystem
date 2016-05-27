@@ -1,74 +1,88 @@
-﻿﻿﻿@(Html.Kendo().Grid<CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewModels.ProductionPlanConfigViewModel>()
-      .Name("grid")
+﻿@using CollectingProductionDataSystem.Web.Areas.PlanConfiguration.Models;
+@using Resources = App_GlobalResources.Resources;
+<div class="row">
+    <div class="col-md-12">
+        <h2>@Resources.Layout.PlanValues</h2>
+    </div>
+</div>
+@Html.AntiForgeryToken()
+@(Html.Kendo()
+      .Grid<PlanValueViewModel>()
+      .Name("plan-grid")
+      .AutoBind(false)
       .Columns(columns =>
       {
-          columns.Command(command => { command.Edit(); command.Destroy(); }).Width(230);
-          columns.Bound(c => c.Code).Width(160);
-          columns.Bound(c => c.Name).Width(300)
-              .ClientTemplate(Ajax.AuthorizedAjaxActionLinkOrText("#=data.Name#", "Index", "History",
-                                                new AjaxOptions() { HttpMethod = "Get", OnSuccess = "showRecordHistoriModal" },
-                                                new { area = "RecordsHistory", id = "#=data.id#", entityName = "ProductionPlanConfig" },
-                                                new { data_ajax_mode = "replace", data_ajax_update = @"\#modal-dialog-body" })
-                                                .ToHtmlString());
-          columns.Bound(c => c.Position).Width(80);
-          columns.Bound(c => c.IsSummaryOfProcessing).Width(80);
-          columns.Bound(c => c.Percentages).Width(80);
-          columns.Bound(c => c.QuantityPlanFormula).Width(400);
-          columns.Bound(c => c.QuantityPlanMembers).Width(300);
-          columns.Bound(c => c.QuantityFactFormula).Width(300);
-          columns.Bound(c => c.QuantityFactMembers).Width(300);
-          columns.Bound(c => c.UsageRateFormula).Width(300);
-          columns.Bound(c => c.UsageRateMembers).Width(300);
-          columns.ForeignKey(c => c.MaterialTypeId, (System.Collections.IEnumerable)ViewData["materialTypes"], "Id", "Name").EditorTemplateName("MaterialTypeViewModel").Width(200);
-          columns.ForeignKey(c => c.MaterialDetailTypeId, (System.Collections.IEnumerable)ViewData["materialDetailTypes"], "Id", "Name").EditorTemplateName("MaterialDetailTypeViewModel").Width(200);
-          columns.ForeignKey(c => c.ProcessUnitId, (System.Collections.IEnumerable)ViewData["processUnits"], "Id", "FullName").EditorTemplateName("ProcessUnitViewModel").Width(200);
-          columns.ForeignKey(c => c.MeasureUnitId, (System.Collections.IEnumerable)ViewData["measureUnits"], "Id", "Name").EditorTemplateName("MeasureUnitViewModel").Width(200);
-          columns.Bound(c => c.IsPercentagesPlanVisibleInChast).Width(100).ClientTemplate("<img src='../Content/Images/#=data.IsPercentagesPlanVisibleInChast ? 'ok.png': 'error.png'#' alt='#=data.IsPercentagesPlanVisibleInChast#' height='20px' width='20px'/>");
-          columns.Bound(c => c.IsPercentagesFactVisibleInChast).Width(100).ClientTemplate("<img src='../Content/Images/#=data.IsPercentagesFactVisibleInChast ? 'ok.png': 'error.png'#' alt='#=data.IsPercentagesFactVisibleInChast#' height='20px' width='20px'/>");
-          columns.Bound(c => c.IsQuanityPlanVisibleInChast).Width(100).ClientTemplate("<img src='../Content/Images/#=data.IsQuanityPlanVisibleInChast ? 'ok.png': 'error.png'#' alt='#=data.IsQuanityPlanVisibleInChast#' height='20px' width='20px'/>");
-          columns.Bound(c => c.IsQuantityFactVisibleInChast).Width(100).ClientTemplate("<img src='../Content/Images/#=data.IsQuantityFactVisibleInChast ? 'ok.png': 'error.png'#' alt='#=data.IsQuantityFactVisibleInChast#' height='20px' width='20px'/>");
-          columns.Command(command => { command.Edit(); command.Destroy(); }).Width(230);
+          columns.Bound(c => c.ProcessUnit.Factory.FactorySortableName).Hidden(true).ClientGroupHeaderTemplate("Производство #=value.substr(3,value.length-3)#").Width(10);
+          columns.Bound(c => c.Month).Format("{0:MMMM yyyy}");          
+          columns.Bound(c => c.ProcessUnit.ShortName).Title(Resources.Layout.ProcessUnit);
+          columns.Bound(c => c.Value)
+          .ClientTemplate(Ajax.AuthorizedAjaxActionLinkOrText("#=data.Value#", "Index", "History",
+          new AjaxOptions() { HttpMethod = "Get", OnSuccess = "showRecordHistoriModal" },
+          new { area = "RecordsHistory", id = "#=data.id#", entityName = "PlanValue" },
+          new { data_ajax_mode = "replace", data_ajax_update = @"\#modal-dialog-body" })
+          .ToHtmlString());
+          columns.Command(command => { command.Edit(); });
       })
       .ToolBar(toolbar =>
-      {
-          toolbar.Create();
-          toolbar.Excel();
-      })
-          .Excel(excel => excel
-            .AllPages(true)
-        )
+                {
+                    toolbar.Excel();
+                })
+      .Excel(excel => excel
+                .AllPages(true)
+            )
       .Editable(editable => editable.Mode(GridEditMode.InLine))
           .Pageable(pageable => pageable
-              .Refresh(true)
-              .PageSizes(new[] { 20, 50, 100 })
-              .ButtonCount(5)
-          )
-          .Sortable(sortable =>
-          {
-              sortable.SortMode(GridSortMode.SingleColumn);
-          })
-          .Filterable()
-          .Scrollable(scrol => scrol.Height(620))
+                        .Refresh(true)
+                        .PageSizes(false)
+                        .Numeric(false)
+                        .PreviousNext(false)
+                    )
+              .Sortable(sortable =>
+        {
+            sortable.SortMode(GridSortMode.SingleColumn);
+        })
+      .Filterable()
+      .Scrollable(scrol => scrol.Height(620))
       .Scrollable()
       .DataSource(dataSource => dataSource
-          .Ajax()
-          .PageSize(20)
-              .Model(model =>
-              {
-                  model.Id(p => p.Id);
-              })
-          .Read(read => read.Action("Read", "ProductionPlanConfig", new { area = "NomManagement" }).Data("sendAntiForgery"))
-          .Create(create => create.Action("Create", "ProductionPlanConfig", new { area = "NomManagement" }).Data("sendAntiForgery"))
-          .Update(update => update.Action("Update", "ProductionPlanConfig", new { area = "NomManagement" }).Data("sendAntiForgery"))
-          .Destroy(destroy => destroy.Action("Destroy", "ProductionPlanConfig", new { area = "NomManagement" }).Data("sendAntiForgery"))
-          .Events(events =>
-                {
-                    events.Error("kendoAdditional.ErrorHandler");
-                    events.RequestEnd("kendoAdditional.AfterterNomGridValidation");
-                })
-          )
-              .Events(ev => ev.DataBound("kendoAdditional.DeletableDataBound"))
+            .Ajax()
+            .PageSize(int.MaxValue)
+            .ServerOperation(true)
+            .Group(group =>
+                    {                                               
+                        group.Add(c => c.ProcessUnit.Factory.FactorySortableName);
+                    })
+            .Model(model =>
+            {
+                model.Id(p => p.Id);
+                model.Field(p => p.Month).Editable(false);
+                model.Field(p => p.ProcessUnit.ShortName).Editable(false);                
+                model.Field(p => p.ProcessUnit.Factory.FactorySortableName).Editable(false);
+            })
+            .Read(read => read.Action("Read", "PlanValues", new { area = "PlanConfiguration" }).Data("unitGridsData.SendDate"))
+            .Update(update => update.Action("Update", "PlanValues", new { area = "PlanConfiguration" }).Data("sendAntiForgery"))
+            .Events(events =>
+            {
+                events.Error("kendoAdditional.ErrorHandler");
+                events.RequestEnd("kendoAdditional.AfterterNomGridValidation");
+            })
+            )
+        .Events(ev => ev.DataBound("kendoAdditional.DeletableDataBound"))
 )
+@* //Error window for kendo grid error event handler *@
+<div id="err-window" style="display:none">@Html.Partial("_KendoGridErrorWindow")</div>
+@* //Error window for kendo grid error event handler *@
+<div id="success-window" style="display:none">@Html.Partial("_SuccessWindow")</div>
+
+@section scripts{
+    @Scripts.Render("~/bundles/custom/kendoadditional")
+    @Scripts.Render("~/bundles/custom/unitGrids")
+    @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.min.js")
+}
+
+@section sidebar{
+    @Html.Partial("_MonthSelectorAproveableSideBar")
+}
 
 
 
