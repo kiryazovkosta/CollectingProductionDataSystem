@@ -38,7 +38,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
             //WritePositionsConfidence(data);
             //UpdateShiftUnitData(kernel, data);
 
-            AddOrUpdateProductionPlanConfigs(data);
+            //AddOrUpdateProductionPlanConfigs(data);
 
             //UpdateShiftUnitData(kernel, data);
             //var shiftData = data.UnitsData.All().Where(x => x.ShiftId == ShiftType.Second 
