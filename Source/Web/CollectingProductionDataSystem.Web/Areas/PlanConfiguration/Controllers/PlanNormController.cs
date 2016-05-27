@@ -151,7 +151,11 @@
                 this.data.SaveChanges(this.UserProfile.UserName);
             }
 
-            return this.data.PlanNorms.All().Where(x => x.Month == date).ToList();
+            return this.data.PlanNorms.All()
+                .Include(x=>x.ProductionPlanConfig)
+                .Include(x => x.ProductionPlanConfig.ProcessUnit)
+                .Include(x => x.ProductionPlanConfig.ProcessUnit.Factory)
+                .Where(x => x.Month == date).ToList();
         }
 
 

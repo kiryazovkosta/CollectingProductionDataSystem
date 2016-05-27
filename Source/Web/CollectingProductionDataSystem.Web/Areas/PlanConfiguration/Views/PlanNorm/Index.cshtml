@@ -12,9 +12,11 @@
       .AutoBind(false)
       .Columns(columns =>
       {
+          columns.Bound(c => c.ProductionPlanConfig.ProcessUnit.Factory.FactorySortableName).Hidden(true).ClientGroupHeaderTemplate("Производство #=value.substr(3,value.length-3)#").Width(10);
+          columns.Bound(c => c.ProductionPlanConfig.ProcessUnit.SortableName).Hidden(true).ClientGroupHeaderTemplate("Инсталация #=value.substr(3,value.length-3)#").Width(10);
           columns.Bound(c => c.Month).Format("{0:MMMM yyyy}");
-          columns.ForeignKey(c => c.ProductionPlanConfigId, (System.Collections.IEnumerable)ViewData["planConfigs"], "Id", "DisplayName");
-
+          columns.Bound(c => c.ProductionPlanConfig.DisplayName).Title(@Resources.Layout.Code);
+          //columns.ForeignKey(c => c.ProductionPlanConfigId, (System.Collections.IEnumerable)ViewData["planConfigs"], "Id", "DisplayName");
           columns.Bound(c => c.Value)
           .ClientTemplate(Ajax.AuthorizedAjaxActionLinkOrText("#=data.Value#", "Index", "History",
           new AjaxOptions() { HttpMethod = "Get", OnSuccess = "showRecordHistoriModal" },
@@ -47,11 +49,18 @@
       .DataSource(dataSource => dataSource
             .Ajax()
             .PageSize(int.MaxValue)
+            .Group(group =>
+                {
+                    group.Add(c => c.ProductionPlanConfig.ProcessUnit.Factory.FactorySortableName);
+                    group.Add(c => c.ProductionPlanConfig.ProcessUnit.SortableName);
+                })
             .Model(model =>
             {
                 model.Id(p => p.Id);
                 model.Field(p => p.Month).Editable(false);
-                model.Field(p => p.ProductionPlanConfigId).Editable(false);
+                model.Field(p => p.ProductionPlanConfig.ProcessUnit.Factory.FactorySortableName).Editable(false);
+                model.Field(p => p.ProductionPlanConfig.ProcessUnit.SortableName).Editable(false);
+                
             })
             .Read(read => read.Action("Read", "PlanNorm", new { area = "PlanConfiguration" }).Data("unitGridsData.SendDate"))
                 .Update(update => update.Action("Update", "PlanNorm", new { area = "PlanConfiguration" }).Data("sendAntiForgery"))

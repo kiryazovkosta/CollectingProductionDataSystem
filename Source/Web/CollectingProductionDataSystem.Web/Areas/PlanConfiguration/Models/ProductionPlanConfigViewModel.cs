@@ -5,6 +5,7 @@ using System.Web;
 using AutoMapper;
 using CollectingProductionDataSystem.Infrastructure.Mapping;
 using CollectingProductionDataSystem.Models.Productions;
+using CollectingProductionDataSystem.Web.Areas.MonthlyDataReporting.Models;
 
 namespace CollectingProductionDataSystem.Web.Areas.PlanConfiguration.Models
 {
@@ -13,6 +14,7 @@ namespace CollectingProductionDataSystem.Web.Areas.PlanConfiguration.Models
         public int Id { get; set; }
         public string DisplayName { get; set; }
 
+        public ProcessUnitUnitsMonthlyDataViewModel ProcessUnit { get; set; }
         /// <summary>
         /// Creates the mappings.
         /// </summary>

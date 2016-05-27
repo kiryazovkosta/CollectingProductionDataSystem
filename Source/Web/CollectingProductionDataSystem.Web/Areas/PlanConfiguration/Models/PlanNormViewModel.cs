@@ -16,8 +16,7 @@
         public int Id { get; set; }
 
         [Required]
-        [Display(Name = "Code", ResourceType = typeof(Resources.Layout))]
-        public int ProductionPlanConfigId { get; set; }
+        public ProductionPlanConfigViewModel ProductionPlanConfig { get; set; }
 
         [Required]
         [Display(Name = "Month", ResourceType = typeof(Resources.Layout))]
