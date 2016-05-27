@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Text;
 using CollectingProductionDataSystem.Models.Abstract;
 using CollectingProductionDataSystem.Models.Contracts;
 using CollectingProductionDataSystem.Models.Productions;
@@ -27,6 +28,19 @@ namespace CollectingProductionDataSystem.Models.Nomenclatures
         public virtual ICollection<UnitConfig> Units { get; set; }
 
         public bool IsDetailRequired { get; set; }
+
+        // TODO: Remove this when Production Plan rewriting is finished
+        public string SortableName
+        {
+            get
+            {
+                var sb = new StringBuilder();
+                sb.Append(this.Id.ToString("d2"));
+                sb.Append(" ");
+                sb.Append(this.Name);
+                return sb.ToString();
+            }
+        }
 
         public virtual ICollection<UnitDailyConfig> UnitDailyConfigs
         {

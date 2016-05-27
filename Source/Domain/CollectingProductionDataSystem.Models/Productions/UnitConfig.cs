@@ -106,6 +106,10 @@ namespace CollectingProductionDataSystem.Models.Productions
 
         public bool RemoveAndAddInsteadUpdate { get; set; }
         public bool HasRawDataReading { get; set; }
-
+        
+         //<summary>
+         //If this property is set to true and value is negative number need to set value to zero. :)
+         //</summary>
+        public bool NeedToSetValueToZero { get; set; }
     }
 }

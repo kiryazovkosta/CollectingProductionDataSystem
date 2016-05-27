@@ -715,7 +715,6 @@
         {
             var currentUnitDatas = new List<UnitDatasTemp>();
 
-            //ToDo: Find correct request
             var shifts = this.data.Shifts.All().ToList();
             var lastShift = shifts.FirstOrDefault(x => x.EndTime == shifts.Max(y => y.EndTime));
 

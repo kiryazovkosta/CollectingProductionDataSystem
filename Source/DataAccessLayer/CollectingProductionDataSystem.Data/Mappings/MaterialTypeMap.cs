@@ -24,7 +24,10 @@ namespace CollectingProductionDataSystem.Data.Mappings
                 .WithOptional(x => x.MaterialType)
                 .HasForeignKey(y => y.MaterialTypeId);
 
-            // Properties
+            // Not Mapped Properties
+            // TODO: Remove this when Production Plan rewriting is finished
+            this.Ignore(t => t.SortableName);
+
             // Table & Column Mappings
             this.ToTable("MaterialTypes");
             this.Property(t => t.Id).HasColumnName("Id");

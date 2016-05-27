@@ -152,7 +152,8 @@
             }
 
             return this.data.PlanNorms.All()
-                .Include(x=>x.ProductionPlanConfig)
+                .Include(x => x.ProductionPlanConfig)
+                .Include(x => x.ProductionPlanConfig.MaterialType)
                 .Include(x => x.ProductionPlanConfig.ProcessUnit)
                 .Include(x => x.ProductionPlanConfig.ProcessUnit.Factory)
                 .Where(x => x.Month == date).ToList();

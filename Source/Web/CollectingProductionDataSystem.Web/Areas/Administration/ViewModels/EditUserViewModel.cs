@@ -112,7 +112,6 @@
             configuration.CreateMap<EditUserViewModel, ApplicationUser>()
                 .ForMember(p => p.Roles, opt => opt.MapFrom(x => x.UserRoles.AsQueryable().Select(y => new UserRoleIntPk() { UserId = x.Id, RoleId = y.Id }).ToList()))
                 .ForMember(p => p.UserRoles, opt => opt.Ignore())
-                // Todo: rewrite this mapping
                 .ForMember(p => p.ApplicationUserParks, opt => opt.MapFrom(x => x.Parks.AsQueryable().Select(y => new ApplicationUserPark() { ApplicationUserId = x.Id, ParkId = y.Id }).ToList()))
                 .ForMember(p => p.ApplicationUserProcessUnits, opt => opt.MapFrom(x => x.ProcessUnits.AsQueryable().Select(y => new ApplicationUserProcessUnit() { ApplicationUserId = x.Id, ProcessUnitId = y.Id }).ToList()))
                 .ForMember(p => p.PasswordHash, opt => opt.MapFrom(x => x.NewPassword != null ? new PasswordHasher().HashPassword(x.NewPassword) : string.Empty));
