@@ -234,8 +234,14 @@
   <data name="NomTypeTransport" xml:space="preserve">
     <value>Вид транспорт</value>
   </data>
+  <data name="PlanNorm" xml:space="preserve">
+    <value>План по отбори</value>
+  </data>
   <data name="Plant" xml:space="preserve">
     <value>Завод</value>
+  </data>
+  <data name="PlanValuesInstallations" xml:space="preserve">
+    <value>План преработка по инсталации</value>
   </data>
   <data name="Production" xml:space="preserve">
     <value>Производство</value>

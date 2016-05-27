@@ -274,5 +274,13 @@ namespace CollectingProductionDataSystem.Web.Areas.Documentation.Controllers
         {
             return PartialView();
         }
+        public PartialViewResult PlanNorm()
+        {
+            return PartialView();
+        }
+         public PartialViewResult PlanValuesInstallations()
+        {
+            return PartialView();
+        }
     }
 }

@@ -412,11 +412,29 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to PlanNorm.
+        /// </summary>
+        public static string PlanNorm {
+            get {
+                return ResourceManager.GetString("PlanNorm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Plant.
         /// </summary>
         public static string Plant {
             get {
                 return ResourceManager.GetString("Plant", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PlanValuesInstallations.
+        /// </summary>
+        public static string PlanValuesInstallations {
+            get {
+                return ResourceManager.GetString("PlanValuesInstallations", resourceCulture);
             }
         }
         

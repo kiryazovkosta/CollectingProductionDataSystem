@@ -9,13 +9,18 @@
                 Потребителят е необходимо да потвърждава месечните данни веднъж месечно. Меню „Месечни данни“ е показано на Фиг.1.
             <p />
             <div class="centeredDivForImages">
-                <p><img class="img-rounded" src="~/Content/images/MonthlyData/НоваМесечни_данни.jpg" /></p>
+                <p><img class="img-rounded imgboxshadow" src="~/Content/images/MonthlyData/MainFigure.png" /></p>
                 <p>Фиг.1</p>
             </div>
             <p>Въвеждането на месечни количества за нуждите на месечната отчетност е обособено в две групи: </p>
             <ul>
                 <li>Количества продукти във вътрешни тръбопроводи;</li>
                 <li>Количества продукти в технологични инсталации.</li>
+            </ul>
+            <p>В секция "Разходни норми" се създават следните планове:</p>
+            <ul>
+                <li>План по отбори;</li>
+                <li>План преработка по инсталации.</li>
             </ul>
             <p>Системата генерира месечни данни в следните типове отчети:</p>
             <ul style="margin-bottom:0;">
@@ -42,6 +47,8 @@
                 <h4 style="text-align:center">Кой има право да обработва Месечни данни ?</h4>
                 <p>
                     Право за потвърждаване на Месечни количества има потребител с присъединена роля <span class="stronged">"MonthlyReporter"</span>.<br />
+                    Право за въвеждане на разходни норми има потребител с присъединени роли <span class="stronged">"MonthlyReporter"</span> и
+                    <span class="stronged">"ProductuionPlanReporter"</span>.<br />
                     Право за потвърждаване на Месечни данни за въглеводороди има само потребител с присъединена роля <span class="stronged">"MonthlyHydroCarbonsReporter"</span>.<br />
                     Право за потвърждаване на Месечни данни за химикали има само потребител с присъединена роля <span class="stronged">"MonthlyChemicalsReporter"</span>.<br />
                     Право за потвърждаване на Месечни данни за свежа вода има само потребител с присъединена роля <span class="stronged">"MonthlyFreshWaterReporter"</span>.<br />

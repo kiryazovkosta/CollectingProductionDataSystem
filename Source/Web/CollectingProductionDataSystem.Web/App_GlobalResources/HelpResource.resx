@@ -234,8 +234,14 @@
   <data name="NomTypeTransport" xml:space="preserve">
     <value>NomTypeTransport</value>
   </data>
+  <data name="PlanNorm" xml:space="preserve">
+    <value>PlanNorm</value>
+  </data>
   <data name="Plant" xml:space="preserve">
     <value>Plant</value>
+  </data>
+  <data name="PlanValuesInstallations" xml:space="preserve">
+    <value>PlanValuesInstallations</value>
   </data>
   <data name="Production" xml:space="preserve">
     <value>Production</value>
