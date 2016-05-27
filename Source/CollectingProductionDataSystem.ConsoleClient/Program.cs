@@ -104,26 +104,84 @@ namespace CollectingProductionDataSystem.ConsoleClient
         {
             //// update all exsisting ProductionPlanData to become daily data
             //UpdateInProductionPlanForExsisting(data);
+
             //// Insert quantity plan value and update QuantityPlanFormula
             //InsertPlanValueAndUpdateQuantityPlanFormula(data);
-            // Update PlanValues
+
+            //// Update PlanValues
             //UpdatePlanValues(data);
-            // Update PlanValues
+
+            //// Update PlanValues
             //UpdatePlanNorms(data);
-            // Second updating of the QuantityPlanFormula
-            UpdatingQuantityPlanFormula(data);
+
+            //// Second updating of the QuantityPlanFormula
+            //UpdatingQuantityPlanFormula(data);
+
+            //// Loading usage rate value for the energy products
+            //LoadingUsageRateForEnergyProducts(data);
+
+            //// Thirth updating of the QuantityPlanFormula for the energy products
+            //UpdateQuantityPlanFormulaForTheEnergy(data);
+
+            //var p = data.ProductionPlanConfigs.All().ToList();
+            //foreach (var productionPlanConfig in p)
+            //{
+            //    Console.WriteLine("{0}:{1} - > {2}",
+            //         productionPlanConfig.Code,
+            //         productionPlanConfig.Name,
+            //         productionPlanConfig.QuantityPlanFormula);
+            //    productionPlanConfig.QuantityPlanFormula = productionPlanConfig.QuantityPlanFormula.Replace("p.PNPNPN", "p.pn");
+            //    productionPlanConfig.QuantityPlanFormula = productionPlanConfig.QuantityPlanFormula.Replace("p.PVPVPV", "p.pv");
+            //}
+
+            //var status = data.SaveChanges("Initial Loading");
+            //Console.WriteLine(status.ResultRecordsCount);
+        }
+ 
+        private static void UpdateQuantityPlanFormulaForTheEnergy(ProductionData data)
+        {
+            var p = data.ProductionPlanConfigs.All().Where(x => x.MaterialTypeId != 1).ToList();
+            foreach (var productionPlanConfig in p)
+            {
+                var endIndex = productionPlanConfig.QuantityPlanFormula.IndexOf("*");
+                if (endIndex == -1)
+                {
+                    continue;   
+                }
+                var beginIndex = productionPlanConfig.QuantityPlanFormula.StartsWith("(") == false ? 0 : 1; 
+                var value = productionPlanConfig.QuantityPlanFormula.Substring(beginIndex, endIndex - beginIndex);
+                Console.WriteLine("{0}:{1} - > {2} -> {3}",
+                    productionPlanConfig.Code,
+                    productionPlanConfig.Name,
+                    productionPlanConfig.QuantityPlanFormula,
+                    value);
+                productionPlanConfig.QuantityPlanFormula = productionPlanConfig.QuantityPlanFormula.Replace(value, "p.pn");
+            }
+
+            var status = data.SaveChanges("Initial Loading");
+            Console.WriteLine(status.ResultRecordsCount);
+        }
+ 
+        private static void LoadingUsageRateForEnergyProducts(ProductionData data)
+        {
+            var p = data.ProductionPlanConfigs.All().Where(x => x.MaterialTypeId != 1).ToList();
+            foreach (var productionPlanConfig in p)
+            {
+                Console.WriteLine("{0}:{1} - > {2}", productionPlanConfig.Code, productionPlanConfig.Name, productionPlanConfig.Percentages);
+                data.PlanNorms.Add(new PlanNorm
+                {
+                    ProductionPlanConfigId = productionPlanConfig.Id,
+                    Month = new DateTime(2016, 5, 1, 0, 0, 0),
+                    Value = productionPlanConfig.Percentages
+                });
+            }
+
+            var status = data.SaveChanges("Initial Loading");
+            Console.WriteLine(status.ResultRecordsCount);
         }
  
         private static void UpdatingQuantityPlanFormula(ProductionData data)
         {
-            //UpdateInProductionPlanForExsisting(data);
-            //// Insert quantity plan value and update QuantityPlanFormula
-            //InsertPlanValueAndUpdateQuantityPlanFormula(data);
-            // Update PlanValues
-            //UpdatePlanValues(data);
-            // Update PlanValues
-            //UpdatePlanNorms(data);
-            // Second updating of the QuantityPlanFormula
             var p = data.ProductionPlanConfigs.All().Where(x => x.MaterialTypeId == 1).ToList();
             foreach (var productionPlanConfig in p)
             {
@@ -141,7 +199,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
 
                 var value = productionPlanConfig.QuantityPlanFormula.Substring(beginIndex + 2, endIndex - beginIndex - 2);
                 Console.WriteLine("{0} -> {1}", productionPlanConfig.QuantityPlanFormula, value);
-                productionPlanConfig.QuantityPlanFormula = productionPlanConfig.QuantityPlanFormula.Replace(value, "p.pv");
+                productionPlanConfig.QuantityPlanFormula = productionPlanConfig.QuantityPlanFormula.Replace(value, "p.pn");
                 productionPlanConfig.QuantityPlanFormula = productionPlanConfig.QuantityPlanFormula.Replace("100", "100.00");
             }
 
@@ -168,7 +226,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
                 }
             }
 
-            //data.SaveChanges("Initial Loading");
+            data.SaveChanges("Initial Loading");
         }
 
         private static void UpdatePlanValues(ProductionData data)
@@ -201,8 +259,6 @@ namespace CollectingProductionDataSystem.ConsoleClient
  
         private static void InsertPlanValueAndUpdateQuantityPlanFormula(ProductionData data)
         {
-            // UpdateInProductionPlanForExsisting(data);
-            // Insert
             var productionPlanConfigs = data.ProductionPlanConfigs.All().Where(x => x.MaterialTypeId == 1).ToList();
             foreach (var productionPlanConfig in productionPlanConfigs)
             {
@@ -221,7 +277,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
                 var value = productionPlanConfig.QuantityPlanFormula.Substring(beginIndex + 1, endIndex - beginIndex - 1);
                 Console.WriteLine("{0} -> {1}", productionPlanConfig.QuantityPlanFormula, value);
                 productionPlanConfig.QuantityPlan = decimal.Parse(value);
-                productionPlanConfig.QuantityPlanFormula = productionPlanConfig.QuantityPlanFormula.Replace(value, "p.pn");
+                productionPlanConfig.QuantityPlanFormula = productionPlanConfig.QuantityPlanFormula.Replace(value, "p.pv");
             }
 
             data.SaveChanges("Initial Loading");
