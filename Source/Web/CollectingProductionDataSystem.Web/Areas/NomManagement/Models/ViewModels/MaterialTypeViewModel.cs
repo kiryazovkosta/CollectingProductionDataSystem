@@ -27,5 +27,8 @@ namespace CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewMode
         [UIHint("Hidden")]
         [Editable(false)]
         public bool IsDeleted { get; set; }
+
+        [Display(Name = "Name", ResourceType = typeof(Resources.Layout))]
+        public string SortableName { get; set; }
     }
 }

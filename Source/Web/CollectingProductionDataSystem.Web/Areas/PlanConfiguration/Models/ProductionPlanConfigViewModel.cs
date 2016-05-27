@@ -7,6 +7,7 @@ using AutoMapper;
 using CollectingProductionDataSystem.Infrastructure.Mapping;
 using CollectingProductionDataSystem.Models.Productions;
 using CollectingProductionDataSystem.Web.Areas.MonthlyDataReporting.Models;
+using CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewModels;
 using Resources = App_GlobalResources.Resources;
 
 namespace CollectingProductionDataSystem.Web.Areas.PlanConfiguration.Models
@@ -28,6 +29,8 @@ namespace CollectingProductionDataSystem.Web.Areas.PlanConfiguration.Models
         public int Position { get; set; }
 
         public ProcessUnitUnitsMonthlyDataViewModel ProcessUnit { get; set; }
+
+        public MaterialTypeViewModel MaterialType { get; set; }
         
     }
 }
