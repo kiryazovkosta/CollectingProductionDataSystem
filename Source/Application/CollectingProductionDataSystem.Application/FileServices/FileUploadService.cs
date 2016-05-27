@@ -106,7 +106,6 @@
                 }
                 catch (OutOfMemoryException oomException)
                 {
-                    // TODO:Add error logging after implementation of ILogger
                     status.SetErrors(
                         this.GetValidationResult(string.Format(Resources.FileProcessError, fileName))
                         );
@@ -114,7 +113,6 @@
                 }
                 catch (IOException ioException)
                 {
-                    // TODO:Add error logging after implementation of ILogger
                     status.SetErrors(
                         this.GetValidationResult(string.Format(Resources.FileProcessError, fileName))
                         );

@@ -40,7 +40,6 @@
 
         [Required]
         [Display(Name = "ProcessUnit", ResourceType = typeof(Resources.Layout))]
-        // TODO: Check this out
         public int ProcessUnitId { get; set; }
 
         [Display(Name = "EnteredMeasureUnit", ResourceType = typeof(Resources.Layout))]

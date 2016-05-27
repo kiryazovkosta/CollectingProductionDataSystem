@@ -55,6 +55,7 @@
                 {
                     group.Add(c => c.ProductionPlanConfig.ProcessUnit.Factory.FactorySortableName);
                     group.Add(c => c.ProductionPlanConfig.ProcessUnit.SortableName);
+                    // TODO: Remove this when Production Plan rewriting is finished
                     group.Add(c => c.ProductionPlanConfig.MaterialType.SortableName);
                 })
                 .Sort(sort=>sort.Add(c=>c.ProductionPlanConfig.Position))

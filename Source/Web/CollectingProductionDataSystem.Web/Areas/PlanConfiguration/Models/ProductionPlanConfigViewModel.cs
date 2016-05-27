@@ -30,6 +30,7 @@ namespace CollectingProductionDataSystem.Web.Areas.PlanConfiguration.Models
 
         public ProcessUnitUnitsMonthlyDataViewModel ProcessUnit { get; set; }
 
+        // TODO: Remove this when Production Plan rewriting is finished
         public MaterialTypeViewModel MaterialType { get; set; }
         
     }
