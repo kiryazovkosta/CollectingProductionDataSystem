@@ -1,28 +1,33 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using AutoMapper;
 using CollectingProductionDataSystem.Infrastructure.Mapping;
 using CollectingProductionDataSystem.Models.Productions;
 using CollectingProductionDataSystem.Web.Areas.MonthlyDataReporting.Models;
+using Resources = App_GlobalResources.Resources;
 
 namespace CollectingProductionDataSystem.Web.Areas.PlanConfiguration.Models
 {
-    public class ProductionPlanConfigViewModel : IMapFrom<ProductionPlanConfig>, IHaveCustomMappings
+    public class ProductionPlanConfigViewModel : IMapFrom<ProductionPlanConfig>
     {
+        [Required]
+        [UIHint("Hidden")]
         public int Id { get; set; }
-        public string DisplayName { get; set; }
+
+        [Required]
+        [Display(Name = "Code", ResourceType = typeof(Resources.Layout))]
+        public string Code { get; set; }
+
+        [Required]
+        [Display(Name = "Name", ResourceType = typeof(Resources.Layout))]
+        public string Name { get; set; }
+
+        public int Position { get; set; }
 
         public ProcessUnitUnitsMonthlyDataViewModel ProcessUnit { get; set; }
-        /// <summary>
-        /// Creates the mappings.
-        /// </summary>
-        /// <param name="configuration">The configuration.</param>
-        public void CreateMappings(IConfiguration configuration)
-        {
-            configuration.CreateMap<ProductionPlanConfig, ProductionPlanConfigViewModel>()
-                .ForMember(p => p.DisplayName, opt => opt.MapFrom(p => string.Format("{0} - {1}", p.Code, p.Name)));
-        }
+        
     }
 }

@@ -14,16 +14,17 @@
       {
           columns.Bound(c => c.ProductionPlanConfig.ProcessUnit.Factory.FactorySortableName).Hidden(true).ClientGroupHeaderTemplate("Производство #=value.substr(3,value.length-3)#").Width(10);
           columns.Bound(c => c.ProductionPlanConfig.ProcessUnit.SortableName).Hidden(true).ClientGroupHeaderTemplate("Инсталация #=value.substr(3,value.length-3)#").Width(10);
-          columns.Bound(c => c.Month).Format("{0:MMMM yyyy}");
-          columns.Bound(c => c.ProductionPlanConfig.DisplayName).Title(@Resources.Layout.Code);
+          columns.Bound(c => c.Month).Format("{0:MMMM yyyy}").Width(100);
+          columns.Bound(c => c.ProductionPlanConfig.Code).Width(100);
+          columns.Bound(c => c.ProductionPlanConfig.Name);
           //columns.ForeignKey(c => c.ProductionPlanConfigId, (System.Collections.IEnumerable)ViewData["planConfigs"], "Id", "DisplayName");
           columns.Bound(c => c.Value)
           .ClientTemplate(Ajax.AuthorizedAjaxActionLinkOrText("#=data.Value#", "Index", "History",
           new AjaxOptions() { HttpMethod = "Get", OnSuccess = "showRecordHistoriModal" },
           new { area = "RecordsHistory", id = "#=data.id#", entityName = "PlanNorm" },
           new { data_ajax_mode = "replace", data_ajax_update = @"\#modal-dialog-body" })
-          .ToHtmlString());
-          columns.Command(command => { command.Edit(); });
+          .ToHtmlString()).Width(160);
+          columns.Command(command => { command.Edit(); }).Width(180);
       })
       .ToolBar(toolbar =>
                 {
@@ -54,6 +55,7 @@
                     group.Add(c => c.ProductionPlanConfig.ProcessUnit.Factory.FactorySortableName);
                     group.Add(c => c.ProductionPlanConfig.ProcessUnit.SortableName);
                 })
+                .Sort(sort=>sort.Add(c=>c.ProductionPlanConfig.Position))
             .Model(model =>
             {
                 model.Id(p => p.Id);
