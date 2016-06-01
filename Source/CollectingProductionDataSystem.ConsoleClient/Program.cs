@@ -38,7 +38,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
             //WritePositionsConfidence(data);
             //UpdateShiftUnitData(kernel, data);
 
-            //AddOrUpdateProductionPlanConfigs(data);
+            AddOrUpdateProductionPlanConfigs(data);
 
             //UpdateShiftUnitData(kernel, data);
             //var shiftData = data.UnitsData.All().Where(x => x.ShiftId == ShiftType.Second 
@@ -171,8 +171,8 @@ namespace CollectingProductionDataSystem.ConsoleClient
                 data.PlanNorms.Add(new PlanNorm
                 {
                     ProductionPlanConfigId = productionPlanConfig.Id,
-                    Month = new DateTime(2016, 5, 1, 0, 0, 0),
-                    Value = productionPlanConfig.Percentages
+                    Month = new DateTime(2016, 6, 1, 0, 0, 0),
+                    Value = 0
                 });
             }
 
