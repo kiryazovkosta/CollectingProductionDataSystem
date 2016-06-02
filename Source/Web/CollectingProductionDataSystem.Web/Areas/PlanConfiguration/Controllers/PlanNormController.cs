@@ -125,7 +125,9 @@
             {
 
                 var resultFromPlan = this.data.ProductionPlanConfigs.All()
-                                .Include(x => x.PlanNorms).Where(x => x.MaterialTypeId == CommonConstants.MaterialType).ToList()
+                                .Include(x => x.PlanNorms)
+                                //.Where(x => x.MaterialTypeId == CommonConstants.MaterialType)
+                                .ToList()
                                 .Select(x => new
                                     {
                                         PlanConfig = x,
