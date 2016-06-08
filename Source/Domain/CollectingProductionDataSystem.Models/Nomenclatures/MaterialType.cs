@@ -29,7 +29,6 @@ namespace CollectingProductionDataSystem.Models.Nomenclatures
 
         public bool IsDetailRequired { get; set; }
 
-        // TODO: Remove this when Production Plan rewriting is finished
         public string SortableName
         {
             get

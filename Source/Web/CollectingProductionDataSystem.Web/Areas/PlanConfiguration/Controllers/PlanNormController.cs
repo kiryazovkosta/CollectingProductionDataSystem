@@ -121,15 +121,18 @@
         /// <returns></returns>
         private IEnumerable<PlanNorm> GetPlanNorm(DateTime date)
         {
-            if (date.Month >= DateTime.Now.Month)
+            var targetDateTime = DateTime.Now;
+            DateTime targetDate = new DateTime(targetDateTime.Year, targetDateTime.Month, 1);
+            if (date.Date >= targetDate)
             {
-
+                var searchedDate = new DateTime (date.Year, date.Month, 1);
                 var resultFromPlan = this.data.ProductionPlanConfigs.All()
-                                .Include(x => x.PlanNorms).Where(x => x.MaterialTypeId == CommonConstants.MaterialType).ToList()
+                                .Include(x => x.PlanNorms).ToList()
                                 .Select(x => new
                                     {
                                         PlanConfig = x,
-                                        PlanNorm = x.PlanNorms.FirstOrDefault(y => y.Month == date && y.IsDeleted == false)
+                                        PlanNorm = x.PlanNorms.FirstOrDefault(y => y.Month == searchedDate && y.IsDeleted == false),
+                                        PlanNormPreviouse = x.PlanNorms.FirstOrDefault(y => y.Month == searchedDate.AddMonths(-1))
                                     }).ToList();
 
                 List<PlanNorm> planNorms = new List<PlanNorm>();
@@ -142,7 +145,7 @@
                         {
                             Month = date,
                             ProductionPlanConfigId = planConfig.PlanConfig.Id,
-                            Value = planConfig.PlanConfig.IsSummaryOfProcessing ? 100M : 0M
+                            Value = planConfig.PlanConfig.IsSummaryOfProcessing ? 100M : planConfig.PlanNormPreviouse == null ? 0M : planConfig.PlanNormPreviouse.Value
                         });
                     }
                 }
@@ -158,7 +161,5 @@
                 .Include(x => x.ProductionPlanConfig.ProcessUnit.Factory)
                 .Where(x => x.Month == date).ToList();
         }
-
-
     }
 }
