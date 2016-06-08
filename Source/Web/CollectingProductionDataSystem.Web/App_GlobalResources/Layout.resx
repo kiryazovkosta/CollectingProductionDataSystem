@@ -1693,4 +1693,10 @@
   <data name="ProcessingPlan" xml:space="preserve">
     <value>ProcessingPlan</value>
   </data>
+  <data name="MonthlyFactFractionFormula" xml:space="preserve">
+    <value>MonthlyFactFractionFormula</value>
+  </data>
+  <data name="MonthlyValuePlanFormula" xml:space="preserve">
+    <value>MonthlyValuePlanFormula</value>
+  </data>
 </root>

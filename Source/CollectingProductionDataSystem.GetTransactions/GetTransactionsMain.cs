@@ -336,7 +336,7 @@
                 var fiveOClock = new DateTime(today.Year, today.Month, today.Day, 5, 0, 0);
 
                 var ts = now - fiveOClock;
-                if (ts.TotalMinutes > 4 && ts.Hours == 0)
+                if (ts.TotalMinutes > 4 && ts.Hours <= Properties.Settings.Default.SYNC_ACTIVE_TRANSACTIONS_OFFSET_IN_HOURS)
                 {
                     using (var context = new ProductionData(new CollectingDataSystemDbContext(new AuditablePersister(), new Logger())))
                     {
