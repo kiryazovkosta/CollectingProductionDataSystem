@@ -119,14 +119,17 @@ namespace CollectingProductionDataSystem.Web.Areas.PlanConfiguration.Controllers
         /// <returns></returns>
         private IEnumerable<PlanValue> GetPlanValue(DateTime date)
         {
-            if (date.Month >= DateTime.Now.Month)
+            var targetDateTime = DateTime.Now;
+            DateTime targetDate = new DateTime(targetDateTime.Year, targetDateTime.Month, 1);
+            if (date.Date >= targetDate)
             {
+                var searchedDate = new DateTime(date.Year, date.Month, 1);
                 var resultFromProcessUnits = this.data.ProcessUnits.All()
                                 .Include(x => x.PlanValues).ToList()
                                 .Select(x => new
                                 {
                                     ProcessUnit = x,
-                                    PlanValue = x.PlanValues.FirstOrDefault(y => y.Month == date && y.IsDeleted == false)
+                                    PlanValue = x.PlanValues.FirstOrDefault(y => y.Month == searchedDate && y.IsDeleted == false)
                                 }).ToList();
 
                 List<PlanValue> planValues = new List<PlanValue>();

@@ -120,5 +120,34 @@ namespace CollectingProductionDataSystem.Web.Tests
             // Assert
             Assert.AreSame(test1,test2);
         }
+
+
+        [TestMethod]
+        public void Check_Dates_Comparison_Must_Be_TRUE()
+        {
+            // Arrange 
+            var targetDateTime = DateTime.Now;
+            DateTime targetDate = new DateTime(targetDateTime.Year, targetDateTime.Month, 1);
+
+            // Act
+            var actualDateTime = DateTime.Now;
+            var result = actualDateTime.Date >= targetDate;
+            // Assert
+            Assert.AreEqual(true, result);
+        }    
+        
+        [TestMethod]
+        public void Check_Dates_Comparison_Must_Be_False()
+        {
+            // Arrange 
+            var targetDateTime = DateTime.Now;
+            DateTime targetDate = new DateTime(targetDateTime.Year, targetDateTime.Month, 1);
+
+            // Act
+            var actualDateTime = new DateTime(2016, 06, 01).AddMilliseconds(-1);
+            var result = actualDateTime.Date >= targetDate;
+            // Assert
+            Assert.AreEqual(false, result);
+        }
     }
 }
