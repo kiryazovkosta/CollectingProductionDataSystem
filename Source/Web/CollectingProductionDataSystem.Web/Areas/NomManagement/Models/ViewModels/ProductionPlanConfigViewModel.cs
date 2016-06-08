@@ -100,9 +100,16 @@ namespace CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewMode
         [Display(Name = "IsMonthlyPlan", ResourceType = typeof(Resources.Layout))]
         public bool IsMonthlyPlan { get; set; }
 
-        //Todo: delete after translation in productive
-        [Display(Name = "Количество план")]
-        public decimal? QuantityPlan { get; set; }
+        [Display(Name = "MonthlyValuePlanFormula", ResourceType = typeof(Resources.Layout))]
+        public string MonthlyValuePlanFormula { get; set; }
+
+        //public string ProductionPlanConfigUnitMonthlyConfigPlanMembers { get; set; }
+
+        [Display(Name = "MonthlyFactFractionFormula", ResourceType = typeof(Resources.Layout))]
+        public string MonthlyFactFractionFormula { get; set; }
+
+        //public string ProductionPlanConfigUnitMonthlyConfigFactFractionMembers { get; set; }
+
 
         /// <summary>
         /// Creates the mappings.

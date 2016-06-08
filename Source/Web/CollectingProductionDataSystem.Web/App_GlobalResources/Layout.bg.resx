@@ -1688,4 +1688,10 @@
   <data name="ProcessingPlan" xml:space="preserve">
     <value>Месечен план преработка</value>
   </data>
+  <data name="MonthlyFactFractionFormula" xml:space="preserve">
+    <value>Формула за фактическа месечна стойност</value>
+  </data>
+  <data name="MonthlyValuePlanFormula" xml:space="preserve">
+    <value>Формула за планова месечна стойност</value>
+  </data>
 </root>
