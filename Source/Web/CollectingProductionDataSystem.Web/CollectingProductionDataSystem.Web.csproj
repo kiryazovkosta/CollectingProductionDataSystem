@@ -683,6 +683,7 @@
     <Content Include="Content\Images\LukBlack.png" />
     <Content Include="Content\Images\LukTransparent.png" />
     <Content Include="Content\Images\MonthlyData\ConsumptionRates\Edit.png" />
+    <Content Include="Content\Images\MonthlyData\ConsumptionRates\EmptyTable_PlanInstallation.png" />
     <Content Include="Content\Images\MonthlyData\ConsumptionRates\EmptyTable_PlanNorm.png" />
     <Content Include="Content\Images\MonthlyData\ConsumptionRates\Figure1.png" />
     <Content Include="Content\Images\MonthlyData\ConsumptionRates\Figure2.png" />
@@ -690,9 +691,8 @@
     <Content Include="Content\Images\MonthlyData\ConsumptionRates\Figure2_2.png" />
     <Content Include="Content\Images\MonthlyData\ConsumptionRates\Figure2_Edit.png" />
     <Content Include="Content\Images\MonthlyData\ConsumptionRates\Filter.png" />
-    <Content Include="Content\Images\MonthlyData\ConsumptionRates\History.png" />
+    <Content Include="Content\Images\MonthlyData\ConsumptionRates\History_Installation.png" />
     <Content Include="Content\Images\MonthlyData\ConsumptionRates\Hystory_PlanNorm.png" />
-    <Content Include="Content\Images\MonthlyData\ConsumptionRates\Main.png" />
     <Content Include="Content\Images\MonthlyData\erase.png" />
     <Content Include="Content\Images\MonthlyData\Figura100.jpg" />
     <Content Include="Content\Images\MonthlyData\Figura101.jpg" />
