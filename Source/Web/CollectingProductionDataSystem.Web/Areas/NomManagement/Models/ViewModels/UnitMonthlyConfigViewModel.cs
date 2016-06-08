@@ -101,6 +101,11 @@
         [Display(Name = "IsTotalInternalPosition", ResourceType = typeof(Resources.Layout))]
         public bool IsTotalInternalPosition { get; set; }
 
+        [Required]
+        [Display(Name = "ProductionPlanConfig", ResourceType = typeof(Resources.Layout))]
+        public int? ProductionPlanConfigId { get; set; }
+
+
 
         /// <summary>
         /// Creates the mappings.
