@@ -85,6 +85,7 @@
             modelBuilder.Configurations.Add(new ProductionPlanConfigUnitMonthlyConfigPlanMembersMap());
             modelBuilder.Configurations.Add(new ProductionPlanConfigUnitMonthlyConfigFactFractionMembersMap());
             modelBuilder.Configurations.Add(new RelatedProductionPlanConfigsMap());
+            modelBuilder.Configurations.Add(new RelatedUnitDailyConfigAspenCodeMap());
         }
     }
 }
