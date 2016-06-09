@@ -30,6 +30,12 @@
             var result = new HashSet<ProductionPlanData>();
             var dailyData = new List<UnitsDailyData>();
 
+            var status = this.dailyData.CheckIfPreviousDaysAreReady(processUnitId.Value, date.Value, materialTypeId.Value);
+            if (!status.IsValid)
+            {
+                return result;    
+            }
+
             if (materialTypeId.HasValue && 
                 materialTypeId.Value == energyId &&
                 !this.dailyData.CheckIfDayIsApproved(date.Value, processUnitId.Value))

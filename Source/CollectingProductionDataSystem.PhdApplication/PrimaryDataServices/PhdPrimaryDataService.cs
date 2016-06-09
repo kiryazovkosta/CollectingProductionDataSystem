@@ -551,7 +551,6 @@
                                     allRelatedUnitDataExsists = false;
                                 }
                             }
-
                         }
 
                         if (allRelatedUnitDataExsists == true)
@@ -561,6 +560,11 @@
 
                             if (!unitsTempData.Where(x => x.RecordTimestamp == recordDataTime && x.ShiftId == shift && x.UnitConfigId == unitConfig.Id).Any())
                             {
+                                if (result < 0 && unitConfig.NeedToSetValueToZero == true)
+                                {
+                                    result = 0;
+                                }
+
                                 currentUnitDatas.Add(unitConfig.Id,
                                                         new UnitDatasTemp
                                                         {

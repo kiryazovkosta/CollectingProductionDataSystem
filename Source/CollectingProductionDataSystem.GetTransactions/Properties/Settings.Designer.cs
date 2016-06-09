@@ -196,5 +196,14 @@ namespace CollectingProductionDataSystem.GetTransactions.Properties {
                 return ((global::System.TimeSpan)(this["IDLE_TIMER_PRODUCTION_REPORT_DATA"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("2")]
+        public int SYNC_ACTIVE_TRANSACTIONS_OFFSET_IN_HOURS {
+            get {
+                return ((int)(this["SYNC_ACTIVE_TRANSACTIONS_OFFSET_IN_HOURS"]));
+            }
+        }
     }
 }

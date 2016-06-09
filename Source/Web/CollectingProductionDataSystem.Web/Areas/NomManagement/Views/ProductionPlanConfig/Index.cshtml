@@ -12,8 +12,8 @@
                                                 .ToHtmlString());
           columns.Bound(c => c.Position).Width(80);
           columns.Bound(c => c.IsSummaryOfProcessing).Width(80);
-          columns.Bound(c => c.Percentages).Width(80);
-          columns.Bound(c => c.QuantityPlan).Width(80);          
+          //columns.Bound(c => c.Percentages).Width(80);
+          //columns.Bound(c => c.QuantityPlan).Width(80);          
           columns.Bound(c => c.QuantityPlanFormula).Width(400);
           columns.Bound(c => c.QuantityPlanMembers).Width(300);
           columns.Bound(c => c.QuantityFactFormula).Width(300);
@@ -28,6 +28,8 @@
           columns.Bound(c => c.IsPercentagesFactVisibleInChast).Width(100).ClientTemplate("<img src='../Content/Images/#=data.IsPercentagesFactVisibleInChast ? 'ok.png': 'error.png'#' alt='#=data.IsPercentagesFactVisibleInChast#' height='20px' width='20px'/>");
           columns.Bound(c => c.IsQuanityPlanVisibleInChast).Width(100).ClientTemplate("<img src='../Content/Images/#=data.IsQuanityPlanVisibleInChast ? 'ok.png': 'error.png'#' alt='#=data.IsQuanityPlanVisibleInChast#' height='20px' width='20px'/>");
           columns.Bound(c => c.IsQuantityFactVisibleInChast).Width(100).ClientTemplate("<img src='../Content/Images/#=data.IsQuantityFactVisibleInChast ? 'ok.png': 'error.png'#' alt='#=data.IsQuantityFactVisibleInChast#' height='20px' width='20px'/>");
+          columns.Bound(c => c.MonthlyValuePlanFormula).Width(300);
+          columns.Bound(c => c.MonthlyFactFractionFormula).Width(300);
           columns.Bound(c => c.IsPropductionPlan).Width(100).ClientTemplate("<img src='../Content/Images/#=data.IsPropductionPlan ? 'ok.png': 'error.png'#' alt='#=data.IsPropductionPlan#' height='20px' width='20px'/>");
           columns.Bound(c => c.IsMonthlyPlan).Width(100).ClientTemplate("<img src='../Content/Images/#=data.IsMonthlyPlan ? 'ok.png': 'error.png'#' alt='#=data.IsMonthlyPlan#' height='20px' width='20px'/>");                     
           columns.Command(command => { command.Edit(); command.Destroy(); }).Width(230);

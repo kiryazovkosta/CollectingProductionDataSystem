@@ -10,7 +10,7 @@
           .ClientTemplate(
           Ajax.AuthorizedAjaxActionLinkOrText("#=data.Code#", "Index", "History",
           new AjaxOptions() { HttpMethod = "Get", OnSuccess = "showRecordHistoriModal" },
-          new { area = "RecordsHistory", id = "#=data.id#", entityName = "UnitConfig" },
+          new { area = "RecordsHistory", id = "#=data.id#", entityName = "UnitDailyConfig" },
           new { data_ajax_mode = "replace", data_ajax_update = @"\#modal-dialog-body" })
           .ToHtmlString())
           .Width(100);

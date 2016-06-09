@@ -2401,6 +2401,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to MonthlyFactFractionFormula.
+        /// </summary>
+        public static string MonthlyFactFractionFormula {
+            get {
+                return ResourceManager.GetString("MonthlyFactFractionFormula", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Monthly Product Type.
         /// </summary>
         public static string MonthlyProductType {
@@ -2415,6 +2424,15 @@ namespace App_GlobalResources.Resources {
         public static string MonthlyReportType {
             get {
                 return ResourceManager.GetString("MonthlyReportType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MonthlyValuePlanFormula.
+        /// </summary>
+        public static string MonthlyValuePlanFormula {
+            get {
+                return ResourceManager.GetString("MonthlyValuePlanFormula", resourceCulture);
             }
         }
         
