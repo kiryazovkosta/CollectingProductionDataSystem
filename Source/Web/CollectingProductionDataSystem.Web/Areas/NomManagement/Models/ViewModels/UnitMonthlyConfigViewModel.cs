@@ -110,7 +110,7 @@
         public bool IsAvailableInTechnologicalReport { get; set; }
 
         [Display(Name = "ProductionPlanConfig", ResourceType = typeof(Resources.Layout))]
-        public int? ProductionPlanConfigId { get; set; }
+        public int ProductionPlanConfigId { get; set; }
         
 
         /// <summary>
@@ -121,7 +121,7 @@
         {
             configuration.CreateMap<UnitMonthlyConfig, UnitMonthlyConfigViewModel>()
                     //.ForMember(p => p.MonthlyProductTypeId, opt => opt.MapFrom(p => p.MonthlyProductTypeId == null ? 0 : (int)p.MonthlyProductTypeId))
-                //.ForMember(p => p.MaterialTypeId, opt => opt.MapFrom(p => p.MaterialTypeId == null ? 0 : p.MaterialTypeId))
+                    //.ForMember(p => p.MaterialTypeId, opt => opt.MapFrom(p => p.MaterialTypeId == null ? 0 : p.MaterialTypeId))
                     //.ForMember(p => p.MaterialDetailTypeId, opt => opt.MapFrom(p => p.MaterialDetailTypeId == null ? 0 : p.MaterialDetailTypeId))
                     .ForMember(p => p.UnitDailyConfigUnitMonthlyConfigs, opt => opt.MapFrom(p => p.UnitDailyConfigUnitMonthlyConfigs.OrderBy(x => x.Position)))
                     .ForMember(p => p.RelatedUnitMonthlyConfigs, opt => opt.MapFrom(p => p.RelatedUnitMonthlyConfigs.OrderBy(x => x.Position)));
@@ -136,7 +136,7 @@
                     p.RelatedUnitMonthlyConfigs.Select((x, ixc) => new RelatedUnitMonthlyConfigs() 
                     { UnitMonthlyConfigId = p.Id, RelatedUnitMonthlyConfigId = x.Id, Position = ixc + 1 }) :
                     new List<RelatedUnitMonthlyConfigs>()))
-                    //.ForMember(p => p.MaterialDetailTypeId, opt => opt.MapFrom(p => p.MaterialDetailTypeId == 0 ? null : (int?)p.MaterialDetailTypeId))
+                  .ForMember(p => p.ProductionPlanConfigId, opt => opt.MapFrom(p => p.ProductionPlanConfigId == 0 ? null : (int?)p.ProductionPlanConfigId))
                   .ForMember(p => p.IsConverted, opt => opt.Ignore());
 
         }

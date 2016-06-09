@@ -29,7 +29,9 @@ namespace CollectingProductionDataSystem.Web.Areas.NomManagement.Controllers
             this.ViewData["dailyProductTypes"] = Mapper.Map<IEnumerable<DailyProductTypeViewModel>>(this.data.DailyProductTypes.All().ToList());
             this.ViewData["relatedDailyUnits"] = Mapper.Map<IEnumerable<UnitDailyConfig>, IEnumerable<UnitDailyConfigUnitMonthlyConfigViewModel>>(this.data.UnitsDailyConfigs.All()).ToList();
             this.ViewData["relatedMonthlyConfigs"] = Mapper.Map<IEnumerable<UnitMonthlyConfig>, IEnumerable<RelatedUnitMonthlyConfigsViewModel>>(this.data.UnitMonthlyConfigs.All()).ToList();
-            this.ViewData["productionPlanConfigs"] = Mapper.Map<IEnumerable<ProductionPlanConfig>, IEnumerable<ProductionPlanConfigDropDownViewModel>>(this.data.ProductionPlanConfigs.All().ToList());
+            List<ProductionPlanConfigDropDownViewModel> productionPlanData = Mapper.Map<List<ProductionPlanConfig>, List<ProductionPlanConfigDropDownViewModel>>(this.data.ProductionPlanConfigs.All().ToList());
+            productionPlanData.Add(new ProductionPlanConfigDropDownViewModel() { Id = 0, DisplayText = string.Empty });
+            this.ViewData["productionPlanConfigs"] = productionPlanData.OrderBy(x=>x.Id);//Mapper.Map<IEnumerable<ProductionPlanConfig>, IEnumerable<ProductionPlanConfigDropDownViewModel>>(this.data.ProductionPlanConfigs.All().ToList());
 
             return base.Index();
         }
@@ -60,10 +62,10 @@ namespace CollectingProductionDataSystem.Web.Areas.NomManagement.Controllers
 
         public JsonResult ReadProductionPlans()//[DataSourceRequest]DataSourceRequest request)
         {
-
-            var result = Mapper.Map<IEnumerable<ProductionPlanConfig>, IEnumerable<ProductionPlanConfigDropDownViewModel>>(data.ProductionPlanConfigs.All().ToList());
-            //DataSourceResult result = records.ToDataSourceResult(request, ModelState, Mapper.Map<ProductionPlanConfigDropDownViewModel>);
-            return Json(result);
+            List<ProductionPlanConfigDropDownViewModel> productionPlanData = Mapper.Map<List<ProductionPlanConfig>, List<ProductionPlanConfigDropDownViewModel>>(this.data.ProductionPlanConfigs.All().ToList());
+            productionPlanData.Add(new ProductionPlanConfigDropDownViewModel() { Id = 0, DisplayText = string.Empty });
+            this.ViewData["productionPlanConfigs"] = productionPlanData;
+            return Json(productionPlanData.OrderBy(x=>x.Id));
         }
 
         public JsonResult GetRelatedMonthly()
