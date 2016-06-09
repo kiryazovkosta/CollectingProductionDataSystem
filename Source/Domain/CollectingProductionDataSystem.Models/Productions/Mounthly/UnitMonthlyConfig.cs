@@ -98,6 +98,10 @@ namespace CollectingProductionDataSystem.Models.Productions.Mounthly
 
         public bool IsTotalInternalPosition { get; set; }
 
+        public bool IsAvailableInMothyReport { get; set; }
+
+        public bool IsAvailableInTechnologicalReport { get; set; }
+
 
         /// <summary>
         /// Determines whether the specified object is valid.

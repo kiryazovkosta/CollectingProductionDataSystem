@@ -17,7 +17,7 @@
                   {
                       transport.Read(read =>
                         {
-                            read.Action("Read", "DailyProductType", new { area = "NomManagement" }).Data("sendAntiForgery");
+                            read.Action("ReadDropdown", "DailyProductType", new { area = "NomManagement" }).Data("sendAntiForgery");
                         });
                   })
                   .Schema(schema =>

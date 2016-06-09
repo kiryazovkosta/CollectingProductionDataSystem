@@ -1744,6 +1744,24 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to IsAvailableInMothyReport.
+        /// </summary>
+        public static string IsAvailableInMothyReport {
+            get {
+                return ResourceManager.GetString("IsAvailableInMothyReport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to IsAvailableInTechnologicalReport.
+        /// </summary>
+        public static string IsAvailableInTechnologicalReport {
+            get {
+                return ResourceManager.GetString("IsAvailableInTechnologicalReport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to IsCalculated.
         /// </summary>
         public static string IsCalculated {

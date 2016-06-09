@@ -1,0 +1,134 @@
+﻿@using Resources = App_GlobalResources.Resources;
+<h1>Модул за публикуване на @Resources.HelpResource.GlobalMessages</h1>
+<br />
+<div class="row">
+    <article>
+        <section>
+            <hr class="myhr1" />
+            <p>
+                Системата предоставя възможност за публикуване на съобщения до всички потребители в системата във всеки един момент.
+                Тази възможност се избира от меню Администриране, което се намира в заглавната лента на основния екран на системата, както е показано на Фиг.1.
+            </p>
+            <div class="centeredDivForImages">
+                <p><img class="img-rounded imgboxshadow" src="~/Content/images/Administration/Administration/Users/Figura1.png" /></p>
+                <p>Фиг.1</p>
+            </div>
+            <p>Модулът за публикуване на @Resources.HelpResource.GlobalMessages се избира от секция "Statistics", както е показано на Фиг.2:</p>
+            <div class="centeredDivForImages">
+                <p><img class="img-rounded imgboxshadow" src="~/Content/images/Administration/Statistics/GlobalMessages/Figura1.png" /></p>
+                <p>Фиг.2</p>
+            </div>
+            <p>Отваря се следният екран:</p>
+            <div class="centeredDivForImages">
+                <p><img class="img-rounded imgboxshadow imgBordered" src="~/Content/images/Administration/Statistics/GlobalMessages/Figura2.png" /></p>
+                <p>Фиг.3</p>
+            </div>
+            <p>Във формата се визуализират всички до сега въведени съобщения в системата. </p>
+            <p>
+                Модулът за публикуване на @Resources.HelpResource.GlobalMessages включва създаване на ново глобално съобщение, редактиране на глобално съобщение и
+                изтриване на глобално съобщение.
+            </p>
+            <p>
+                <span class="stronged">Ново глобално съобщение </span> се създава чрез бутон <span><img class="img-rounded " src="~/Content/images/Dailydata/Add.png" /></span>,
+                намиращ се в горния ляв ъгъл над таблицата със генериралите се до сега съобщения. Отваря се нов ред над всички останали, в който трябва да се въведе новото глобално
+                съобщение, както е показано на Фиг.4:
+            </p>
+            <div class="centeredDivForImages">
+                <p><img class="img-rounded imgboxshadow imgBordered" src="~/Content/images/Administration/Statistics/GlobalMessages/Add.png" /></p>
+                <p>Фиг.4</p>
+            </div>
+            <p>В колона „Тип“ в новия ред, от падащо меню се избира какъв ще е типът на съобщението. Падащото меню е показано на Фиг.5:</p>
+            <div class="centeredDivForImages">
+                <p><img class="img-rounded imgboxshadow" src="~/Content/images/Administration/Statistics/GlobalMessages/DropDown.png" /></p>
+                <p>Фиг.5</p>
+            </div>
+            <p>
+                Ако не бъде избран тип на съобщението или не е попълнена колона "Съобщение", при избор на бутон <span><img class="img-rounded" src="~/Content/images/ShiftData/save.png" /></span>
+                се извежда предупредително съобщение, че полето е задължително. Съобщението е показано на Фиг.6:
+            </p>
+            <div class="centeredDivForImages">
+                <p><img class="img-rounded imgboxshadow imgBordered" src="~/Content/images/Administration/Statistics/GlobalMessages/Error.png" /></p>
+                <p>Фиг.6</p>
+            </div>
+            <p>Типовете съобщения, които могат да се подадат, са три вида, а именно:</p>
+            <ul>
+                <li><span class="stronged">„Info“ – тип „За информация“;</span></li>
+                <li><span class="stronged">„Warning“ – тип  „Внимание“;</span></li>
+                <li><span class="stronged">„Critical“ – тип „Опасност“.</span></li>
+            </ul>
+            <p>В колона „Съобщение“ се изписва текста на самото съобщение, което ще се визуализира на всички потребители, след като бъде създадено.</p>
+            <p>В колона „Валидно до“ от падащо меню се избира датата и часа, до когато ще е валидно даденото съобщение в системата.</p>
+            <p>Датата от падащото меню се избира по начин, показан на Фиг.7, след щракане върху иконката за календар:</p>
+            <div class="centeredDivForImages">
+                <p><img class="img-rounded imgboxshadow imgBordered" src="~/Content/images/Administration/Statistics/GlobalMessages/calendar.png" /></p>
+                <p>Фиг.7</p>
+            </div>
+            <p>Часът от падащото меню се избира по начин, показан на Фиг.8, след щракане върху иконката за часовник:</p>
+            <div class="centeredDivForImages">
+                <p><img class="img-rounded imgboxshadow imgBordered" src="~/Content/images/Administration/Statistics/GlobalMessages/clock.png" /></p>
+                <p>Фиг.8</p>
+            </div>
+            <p>
+                След избор на бутон <span><img class="img-rounded" src="~/Content/images/ShiftData/save.png" /></span>,
+                съобщението се записва и се появява червен индикатор над иконката "писмо" в заглавната лента на системата на всички потребители, по начин, показан на Фиг.9.
+            </p>
+            <div class="centeredDivForImages">
+                <p><img class="img-rounded imgboxshadow" src="~/Content/images/Administration/Statistics/GlobalMessages/AfterCreate.png" /></p>
+                <p>Фиг.9</p>
+            </div>
+            <p>
+                Всеки потребител, влязъл в системата ще вижда на заглавната лента на системата брой активни съобщения в момента. След щракане върху червения индикатор, съдържащ брой активни
+                съобщения в момента, се отваря екран със съдържанието на активните съобщения, както е показано на Фиг.10:
+            </p>
+            <div class="centeredDivForImages">
+                <p><img class="img-rounded imgboxshadow imgBordered" src="~/Content/images/Administration/Statistics/GlobalMessages/ViewMessage.png" /></p>
+                <p>Фиг.10</p>
+            </div>
+            <p>
+                Съобщенията ще са валидни до датата и часа, подадени в колона "Валидно до" в таблицата за съобщенията, показана на Фиг.3. Редът на валидните съобщения в таблицата
+                е оцветен в бял цвят, а редът с изтеклите съобщения - в червен или сив цвят. В периода, в който изтича валидно съобщение, червеният индикатор над иконката "писмо" в
+                заглавната лента на системата изчезва.
+            </p>
+            <p>Валидно съобщение е визуализирано на Фиг.11:</p>
+            <div class="centeredDivForImages">
+                <p><img class="img-rounded imgboxshadow imgBordered" src="~/Content/images/Administration/Statistics/GlobalMessages/NonExpiredMessage.png" /></p>
+                <p>Фиг.11</p>
+            </div>
+            <p>Съобщение с изтекъл срок е визуализирано на Фиг.12:</p>
+            <div class="centeredDivForImages">
+                <p><img class="img-rounded imgboxshadow" src="~/Content/images/Administration/Statistics/GlobalMessages/ExpiredMes.png" /></p>
+                <p>Фиг.12</p>
+            </div>
+            <p>
+                <span class="stronged"> Редактиране на валидно глобално съобщение</span> е възможнo след избор на бутон
+                <span><img class="img-rounded" src="~/Content/images/ShiftData/edit.png" />. Отваря се следният екран:</span>
+            </p>
+            <div class="centeredDivForImages">
+                <p><img class="img-rounded imgboxshadow imgBordered" src="~/Content/images/Administration/Statistics/GlobalMessages/Edit.png" /></p>
+                <p>Фиг.13</p>
+            </div>
+            <p>Редактиране може да се прави и в трите колони, след което се натиска бутон <span><img class="img-rounded" src="~/Content/images/ShiftData/save.png" /></span>.</p>
+            <p><span class="stronged">Изтриването на глобално съобщение </span> се прави чрез избор на бутон <span><img class="img-rounded" src="~/Content/images/ShiftData/erase.png" /></span>.</p>
+            <p>
+                Таблицата със съобщенията може да се експортва в Excel чрез бутон <span><img class="img-rounded btnApply" src="~/Content/images/Shiftdata/Export.png" /></span> ,
+                намиращ се в горния ляв ъгъл на формата.
+            </p>
+
+            <hr class="hrUnderText" />
+            <div class="container" style="margin-left:18em;">
+                <div class="col-md-1 divimage">
+                    <img src="~/Content/Images/ShiftData/technical_stuff.gif" class="imgForStuff" />
+                </div>
+                <div class="col-md-11 ForStuff">
+                    <h4 style="text-align:center">Кой има право да публикува "@Resources.HelpResource.GlobalMessages" ?</h4>
+                    <p>
+                        Право да публикува "@Resources.HelpResource.GlobalMessages" в системата има само потребител с присъединена роля <span class="stronged">"Administrator"</span>.
+                    </p>
+                </div>
+            </div>
+            <br />
+            <hr class="hrUnderText" />
+        </section>
+    </article>
+</div>
+

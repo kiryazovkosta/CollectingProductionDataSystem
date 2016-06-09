@@ -102,10 +102,16 @@
         public bool IsTotalInternalPosition { get; set; }
 
         [Required]
+        [Display(Name = "IsAvailableInMothyReport", ResourceType = typeof(Resources.Layout))]
+        public bool IsAvailableInMothyReport { get; set; }
+
+        [Required]
+        [Display(Name = "IsAvailableInTechnologicalReport", ResourceType = typeof(Resources.Layout))]
+        public bool IsAvailableInTechnologicalReport { get; set; }
+
         [Display(Name = "ProductionPlanConfig", ResourceType = typeof(Resources.Layout))]
-        public int ProductionPlanConfigId { get; set; }
-
-
+        public int? ProductionPlanConfigId { get; set; }
+        
 
         /// <summary>
         /// Creates the mappings.

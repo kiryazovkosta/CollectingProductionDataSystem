@@ -17,7 +17,7 @@
                   {
                       transport.Read(read =>
                         {
-                            read.Action("Read", "ShiftProductType", new { area = "NomManagement" }).Data("sendAntiForgery");
+                            read.Action("ReadDropdown", "ShiftProductType", new { area = "NomManagement" }).Data("sendAntiForgery");
                         });
                   })
                   .Schema(schema =>

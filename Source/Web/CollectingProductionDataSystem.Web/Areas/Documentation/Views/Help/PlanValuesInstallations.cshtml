@@ -1,0 +1,77 @@
+﻿@using Resources = App_GlobalResources.Resources;
+<h1 class="h1ForTitle">@Resources.HelpResource.PlanValuesInstallations</h1>
+<br />
+<div class="row">
+    <article>
+        <section>
+            <hr class="hrUnderText" />
+            <p>@Resources.HelpResource.PlanValuesInstallations се избира от меню, показано на Фиг.1. </p>
+            <div class="centeredDivForImages">
+                <p><img class="img-rounded imgboxshadow" src="~/Content/images/MonthlyData/ConsumptionRates/Figure2_1.png" /></p>
+                <p>Фиг.1</p>
+            </div>
+            <p>Отваря се екран, съдържащ две таблици. В ляво на екрана се намира таблица „Параметри на отчета“, показана на Фиг.2. </p>
+            <div class="centeredDivForImages">
+                <p><img class="img-rounded imgboxshadow" src="~/Content/images/MonthlyData/MonthlyDataFresh/Figura151.png" /></p>
+                <p>Фиг.2</p>
+            </div>
+            <p>В дясно на екрана се намира таблица @Resources.HelpResource.PlanValuesInstallations, показана на Фиг.3.</p>
+            <div class="centeredDivForImages">
+                <p><img class="img-rounded imgboxshadow imgBordered" src="~/Content/images/MonthlyData/ConsumptionRates/EmptyTable_PlanInstallation.png" /></p>
+                <p>Фиг.3</p>
+            </div>
+            <p>
+                В таблица „Параметри на отчета“ се задава месец, за който ще се редактира плана преработка по инсталации.
+            </p>
+            <p>
+                При избиране на бутон <span><img class="img-rounded btnApply" src="~/Content/images/Shiftdata/butonPrilogi.png" /></span>
+                се отваря таблицата с плана преработка по инсталации, както е показано на Фиг.4.
+            </p>
+            <div class="centeredDivForImages">
+                <p><img class="img-rounded imgboxshadow MaxWidthForTable" src="~/Content/images/MonthlyData/ConsumptionRates/Figure2_2.png" /></p>
+                <p>Фиг.4</p>
+            </div>
+            <p>Tаблицата "План преработка по инсталации" съдържа данни по инсталации и съответните им месечни планове преработка в тонове за конкретния месец.</p>
+            <br />
+            <p>
+                Всеки ред от таблицата може да се редактира като се натисне бутон <span><img class="img-rounded" src="~/Content/images/Shiftdata/edit.png" /></span>.
+                Колоната, която може да бъде редактирана е "Месечен план преработка". Тя се огражда в син правоъгълник, както е показано на Фиг.5. Останалите
+                колони не подлежат на редактиране.
+            </p>
+            <div class="centeredDivForImages">
+                <p><img class="img-rounded imgboxshadow" src="~/Content/images/MonthlyData/ConsumptionRates/Figure2_Edit.png" /></p>
+                <p>Фиг.5</p>
+            </div>
+            <p>Въвеждат се коректна стойност в колоната за редакция и се натиска бутон  <span><img class="img-rounded" src="~/Content/images/Shiftdata/save.png" /></span>. </p>
+            <p>
+                Потребител с присъединена роля <span class="stronged">"Administrator"</span> или <span class="stronged">"HistoryManager"</span> може да види всяка направена промяна
+                в таблицата. Тя се вижда след избиране на съдържанието на определена колона. Отваря се екран, съдържащ информация кой, кога и какви промени
+                е правил в таблицата, както e показано на Фиг.6.
+            </p>
+            <div class="centeredDivForImages">
+                <p><img class="img-rounded imgboxshadow imgBordered" src="~/Content/images/MonthlyData/ConsumptionRates/History_Installation.png" /></p>
+                <p>Фиг.6</p>
+            </div>
+            <p>В таблица "План преработка по инсталации" не може да се добавят нови редове или да се изтриват съществуващи редове.</p>
+            <p>
+                Данните за месечния план преработка по инсталации могат да бъдат само експортирани в Excel чрез бутон
+                <span><img class="img-rounded btnApply" src="~/Content/images/Shiftdata/Export.png" /></span> .
+            </p>
+        </section>
+        <hr class="hrUnderText" />
+        <div class="container" style="margin-left:18em;">
+            <div class="col-md-1 divimage">
+                <img src="~/Content/Images/ShiftData/technical_stuff.gif" class="imgForStuff" />
+            </div>
+            <div class="col-md-11 ForStuff">
+                <h4 style="text-align:center">Кой има право да обработва @Resources.HelpResource.PlanValuesInstallations ?</h4>
+                <p>
+                    Право за работа с @Resources.HelpResource.PlanValuesInstallations има потребител с присъединена роля <span class="stronged">"ProductionPlanManager"</span>.
+                </p>
+            </div>
+        </div>
+        <br />
+        <hr class="hrUnderText" />
+    </article>
+</div>
+

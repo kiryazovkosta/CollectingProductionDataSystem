@@ -62,6 +62,24 @@ namespace CollectingProductionDataSystem.Web.Areas.NomManagement.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        public virtual ActionResult ReadDropdown([DataSourceRequest]DataSourceRequest request)
+        {
+            IEnumerable<TModel> records = this.repository.All().ToList();
+            try
+            {
+                DataSourceResult result = records.ToDataSourceResult(request, ModelState, Mapper.Map<TView>);
+                return Json(result);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", ex.Message);
+                DataSourceResult result = new object[] { null }.ToDataSourceResult(request, ModelState);
+                return Json(result);
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public virtual ActionResult Create([DataSourceRequest]DataSourceRequest request, TView inputViewModel)
         {
             if (ModelState.IsValid)

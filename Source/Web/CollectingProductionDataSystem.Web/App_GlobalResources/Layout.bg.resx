@@ -1697,4 +1697,10 @@
   <data name="ChooseProductionPlan" xml:space="preserve">
     <value>Изберете отбор</value>
   </data>
+  <data name="IsAvailableInMothyReport" xml:space="preserve">
+    <value>Визуализация&lt;br/&gt;Месечен отчет</value>
+  </data>
+  <data name="IsAvailableInTechnologicalReport" xml:space="preserve">
+    <value>Визуализация&lt;br/&gt;Технологичен отчет</value>
+  </data>
 </root>

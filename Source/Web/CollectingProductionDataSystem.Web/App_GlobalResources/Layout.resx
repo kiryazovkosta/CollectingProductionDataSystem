@@ -1702,4 +1702,10 @@
   <data name="ChooseProductionPlan" xml:space="preserve">
     <value>ChooseProductionPlan</value>
   </data>
+  <data name="IsAvailableInMothyReport" xml:space="preserve">
+    <value>IsAvailableInMothyReport</value>
+  </data>
+  <data name="IsAvailableInTechnologicalReport" xml:space="preserve">
+    <value>IsAvailableInTechnologicalReport</value>
+  </data>
 </root>

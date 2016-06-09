@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ApplicationLog" xml:space="preserve">
+    <value>Журнал на приложението</value>
+  </data>
   <data name="DailyData" xml:space="preserve">
     <value>Дневни данни </value>
   </data>
@@ -134,6 +137,12 @@
   </data>
   <data name="DailyMeasuringPositions" xml:space="preserve">
     <value>Дневни измервателни позиции</value>
+  </data>
+  <data name="EnteredByUserValues" xml:space="preserve">
+    <value>История на извършени корекции от потребителите</value>
+  </data>
+  <data name="GlobalMessages" xml:space="preserve">
+    <value>Глобални съобщения</value>
   </data>
   <data name="HelpNomenclature" xml:space="preserve">
     <value>Номенклатури</value>
@@ -183,6 +192,9 @@
   <data name="MonthlyDataTechPlants" xml:space="preserve">
     <value>Количества продукти в  технологични инсталации</value>
   </data>
+  <data name="MonthlyFuel" xml:space="preserve">
+    <value>Месечни данни за горива</value>
+  </data>
   <data name="MonthlyNitrogen" xml:space="preserve">
     <value>Месечни данни за азот</value>
   </data>
@@ -222,14 +234,23 @@
   <data name="NomTypeTransport" xml:space="preserve">
     <value>Вид транспорт</value>
   </data>
+  <data name="PlanNorm" xml:space="preserve">
+    <value>План по отбори</value>
+  </data>
   <data name="Plant" xml:space="preserve">
     <value>Завод</value>
+  </data>
+  <data name="PlanValuesInstallations" xml:space="preserve">
+    <value>План преработка по инсталации</value>
   </data>
   <data name="Production" xml:space="preserve">
     <value>Производство</value>
   </data>
   <data name="ProductionData" xml:space="preserve">
     <value>Производствени данни</value>
+  </data>
+  <data name="Roles" xml:space="preserve">
+    <value>Роли</value>
   </data>
   <data name="ShiftData" xml:space="preserve">
     <value>Сменни данни</value>
@@ -246,6 +267,9 @@
   <data name="ShiftDataTank" xml:space="preserve">
     <value>Сменни данни за наличности по резервоари</value>
   </data>
+  <data name="Statatistics" xml:space="preserve">
+    <value>Статистика</value>
+  </data>
   <data name="SummaryReportData" xml:space="preserve">
     <value>Сводни отчети</value>
   </data>
@@ -254,5 +278,8 @@
   </data>
   <data name="TeamDataFlows" xml:space="preserve">
     <value>Отборни данни за потоци</value>
+  </data>
+  <data name="Users" xml:space="preserve">
+    <value>Потребители</value>
   </data>
 </root>
