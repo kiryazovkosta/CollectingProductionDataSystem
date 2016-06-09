@@ -80,6 +80,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CollectingProductionDataSys
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CollectingProductionDataSystem.Phd2SqlProductionData.Tests", "CollectingProductionDataSystem.Phd2SqlProductionData.Tests\CollectingProductionDataSystem.Phd2SqlProductionData.Tests.csproj", "{047D886B-273D-4675-8CE8-8DB90A2A53CC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CollectingProductionDataSystem.Extentions", "CollectingProductionDataSystem.Extentions\CollectingProductionDataSystem.Extentions.csproj", "{FEF2234F-7CCA-496A-910B-191506B0AF65}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -310,6 +312,14 @@ Global
 		{047D886B-273D-4675-8CE8-8DB90A2A53CC}.Release|x64.ActiveCfg = Release|Any CPU
 		{047D886B-273D-4675-8CE8-8DB90A2A53CC}.Release|x64.Build.0 = Release|Any CPU
 		{047D886B-273D-4675-8CE8-8DB90A2A53CC}.Release|x86.ActiveCfg = Release|Any CPU
+		{FEF2234F-7CCA-496A-910B-191506B0AF65}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FEF2234F-7CCA-496A-910B-191506B0AF65}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FEF2234F-7CCA-496A-910B-191506B0AF65}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{FEF2234F-7CCA-496A-910B-191506B0AF65}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{FEF2234F-7CCA-496A-910B-191506B0AF65}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FEF2234F-7CCA-496A-910B-191506B0AF65}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FEF2234F-7CCA-496A-910B-191506B0AF65}.Release|x64.ActiveCfg = Release|Any CPU
+		{FEF2234F-7CCA-496A-910B-191506B0AF65}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -341,5 +351,6 @@ Global
 		{5AAC5E1A-0EF8-4AF2-901C-03B6B9E7E221} = {97E86ECF-14AF-49A9-A493-9D5C70C5FECA}
 		{289749CD-DF47-40DB-BF28-9EDA8B2397BD} = {1BA91924-D5E6-467D-8DB6-584D54F00F4F}
 		{047D886B-273D-4675-8CE8-8DB90A2A53CC} = {43D6A01F-7526-42F9-A34E-D060EAB9CBDB}
+		{FEF2234F-7CCA-496A-910B-191506B0AF65} = {1BA91924-D5E6-467D-8DB6-584D54F00F4F}
 	EndGlobalSection
 EndGlobal

@@ -1,0 +1,13 @@
+﻿@using CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewModels;
+@using Resources = App_GlobalResources.Resources
+
+@model System.Int32
+@(Html.Kendo()
+      .DropDownListFor(m => m)
+      .OptionLabel(Resources.Layout.ChooseProductionPlan)
+      .DataTextField("DisplayText")
+      .DataValueField("Id")
+      .BindTo((IEnumerable<ProductionPlanConfigDropDownViewModel>)ViewData["productionPlanConfigs"])
+      .Height(520)
+      .Filter(FilterType.Contains)
+)

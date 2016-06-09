@@ -324,13 +324,11 @@
     <Compile Include="Areas\MonthlyDataReporting\Models\UnitManualMonthlyDataViewModel.cs" />
     <Compile Include="Areas\MonthlyDataReporting\Models\UnitsMonthlyConfigDataViewModel.cs" />
     <Compile Include="Areas\MonthlyDataReporting\MonthlyDataReportingAreaRegistration.cs" />
-    <Compile Include="Areas\MonthlyTechReporting\Controllers\AjaxController.cs" />
-    <Compile Include="Areas\MonthlyTechReporting\Controllers\AreaBaseController.cs" />
-    <Compile Include="Areas\MonthlyTechReporting\MonthlyTechReportingAreaRegistration.cs" />
     <Compile Include="Areas\NomManagement\Controllers\PhdConfigController.cs" />
     <Compile Include="Areas\NomManagement\Controllers\TankStatusController.cs" />
     <Compile Include="Areas\NomManagement\Controllers\UnitMonthlyConfigController.cs" />
     <Compile Include="Areas\NomManagement\Models\ViewModels\PhdConfigViewModel.cs" />
+    <Compile Include="Areas\NomManagement\Models\ViewModels\ProductionPlanConfigDropDownViewModel.cs" />
     <Compile Include="Areas\NomManagement\Models\ViewModels\RelatedUnitMonthlyConfigsViewModel.cs" />
     <Compile Include="Areas\NomManagement\Models\ViewModels\TankStatusViewModel.cs" />
     <Compile Include="Areas\NomManagement\Models\ViewModels\UnitDailyConfigUnitMonthlyConfigViewModel.cs" />
@@ -1628,7 +1626,7 @@
     <Content Include="Areas\PlanConfiguration\Views\_ViewStart.cshtml" />
     <Content Include="Areas\PlanConfiguration\Views\PlanNorm\Index.cshtml" />
     <Content Include="Areas\PlanConfiguration\Views\PlanValues\Index.cshtml" />
-    <Content Include="Areas\MonthlyTechReporting\Views\web.config" />
+    <Content Include="Areas\NomManagement\Views\UnitMonthlyConfig\EditorTemplates\ProductionPlanConfigDropDownViewModel.cshtml" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <Content Include="Scripts\custom\sendArea.js" />
     <Content Include="Scripts\custom\sendArea.min.js">
@@ -2349,13 +2347,8 @@
     <Folder Include="Areas\MonthlyReporting\Models\" />
     <Folder Include="Areas\MonthlyReporting\Views\AreaBase\" />
     <Folder Include="Areas\MonthlyReporting\Views\Shared\" />
-    <Folder Include="Areas\MonthlyTechReporting\Models\" />
-    <Folder Include="Areas\MonthlyTechReporting\Views\Ajax\" />
-    <Folder Include="Areas\MonthlyTechReporting\Views\AreaBase\" />
-    <Folder Include="Areas\MonthlyTechReporting\Views\Shared\" />
     <Folder Include="Areas\NomManagement\Models\InputModels\" />
     <Folder Include="Areas\NomManagement\Views\Ajax\" />
-    <Folder Include="Areas\NomManagement\Views\ProductionPlanConfig\EditorTemplates\" />
     <Folder Include="Areas\NomManagement\Views\RelatedUnitConfigs\" />
     <Folder Include="Areas\OverseersReporting\Models\" />
     <Folder Include="Areas\OverseersReporting\Views\Ajax\" />

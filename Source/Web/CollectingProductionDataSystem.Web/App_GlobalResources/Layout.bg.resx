@@ -1694,4 +1694,7 @@
   <data name="MonthlyValuePlanFormula" xml:space="preserve">
     <value>Формула за планова месечна стойност</value>
   </data>
+  <data name="ChooseProductionPlan" xml:space="preserve">
+    <value>Изберете отбор</value>
+  </data>
 </root>

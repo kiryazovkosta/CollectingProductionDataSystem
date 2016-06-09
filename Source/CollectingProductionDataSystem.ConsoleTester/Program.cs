@@ -5,7 +5,9 @@ using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Transactions;
 using System.Web.ModelBinding;
@@ -40,9 +42,11 @@ namespace CollectingProductionDataSystem.ConsoleTester
             ninject = new NinjectConfig();
             kernel = ninject.Kernel;
             data = new ProductionData(new CollectingDataSystemDbContext());
-            dailyService = kernel.Get<UnitDailyDataService>();
+
+
+
             //new UnitDailyDataService(data, kernel, new CalculatorService());
-            
+
 
             //dailyService = new UnitDailyDataService(data, kernel, new CalculatorService());
             //data = new ProductionData(new CollectingDataSystemDbContext());
@@ -80,13 +84,73 @@ namespace CollectingProductionDataSystem.ConsoleTester
             //Console.WriteLine("Ready!\n Estimated time per operation {0}", timer.Elapsed);
             try
             {
-                var result = dailyService.GetStatisticForProcessUnitLoadAsync(29, new DateTime(2016, 4, 1), new DateTime(2016, 4, 3), 2).Result;
+                var unitMothlyConfigs = data.UnitMonthlyConfigs.All()
+                                               .Include(x => x.UnitDailyConfigUnitMonthlyConfigs)
+                                               .Where(x => x.UnitDailyConfigUnitMonthlyConfigs.Count != 0)
+                                               .ToDictionary(x => string.Join("@", x.UnitDailyConfigUnitMonthlyConfigs.Select(y => y.UnitDailyConfig.Code).ToArray()));
+                var productionPlanConfigs = data.ProductionPlanConfigs.All().Where(x => x.Code != "4RMD0040" && x.Code != "4RMD0050" && !string.IsNullOrEmpty(x.QuantityFactMembers))
+                                                .ToDictionary(x => x.QuantityFactMembers, x => x.Id);
+                //IEnumerable<Data> productionPlanConfigs, unitMothlyConfigs;
+                using (var tran = new TransactionScope(TransactionScopeOption.Required, transantionOption))
+                {
+
+                    foreach (var key in unitMothlyConfigs.Keys)
+                    {
+                        if (productionPlanConfigs.ContainsKey(key))
+                        {
+                            Console.WriteLine(key);
+                            unitMothlyConfigs[key].ProductionPlanConfigId = productionPlanConfigs[key];
+                        }
+                    }
+
+                    data.SaveChanges("Georgiev.Georgi.V");
+
+                    tran.Complete();
+                }
+
+                //WriteResultResultToFile(@"d:\result\unitMonthly.txt", unitMothlyConfigs);
+
+                //WriteResultResultToFile(@"d:\result\productionPlan.txt", productionPlanConfigs);
+
+                //var result = dailyService.GetStatisticForProcessUnitLoadAsync(29, new DateTime(2016, 4, 1), new DateTime(2016, 4, 3), 2).Result;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);    
+                Console.WriteLine(ex.Message);
             }
             Console.WriteLine();
+        }
+
+        private class Data
+        {
+            public string Code { get; set; }
+            public string Members { get; set; }
+
+            public override string ToString()
+            {
+                return string.Format("{0}|{1}", this.Code, this.Members);
+            }
+        }
+
+        private static void WriteResultResultToFile(string fileName, IEnumerable<Data> collection)
+        {
+            //String fileName = "d:\\result.txt";
+
+            try
+            {
+
+                using (StreamWriter file = new System.IO.StreamWriter(fileName, false, Encoding.GetEncoding("windows-1251")))
+                {
+                    foreach (var record in collection)
+                    {
+                        file.WriteLine(record.ToString());
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Error");
+            }
         }
 
         private static void Update(UnitMothlyDataService monthlyService, string userName = "Test")

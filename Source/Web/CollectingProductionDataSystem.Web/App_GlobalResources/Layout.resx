@@ -1699,4 +1699,7 @@
   <data name="MonthlyValuePlanFormula" xml:space="preserve">
     <value>MonthlyValuePlanFormula</value>
   </data>
+  <data name="ChooseProductionPlan" xml:space="preserve">
+    <value>ChooseProductionPlan</value>
+  </data>
 </root>

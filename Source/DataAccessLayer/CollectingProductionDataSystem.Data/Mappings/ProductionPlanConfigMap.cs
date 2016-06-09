@@ -28,6 +28,9 @@
                 .IsRequired()
                 .HasMaxLength(80);
 
+            // Not Mapped Properties
+            this.Ignore(t => t.DisplayText);
+
             // Table & Column Mappings
             this.ToTable("ProductionPlanConfigs");     
 

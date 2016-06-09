@@ -646,6 +646,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ChooseProductionPlan.
+        /// </summary>
+        public static string ChooseProductionPlan {
+            get {
+                return ResourceManager.GetString("ChooseProductionPlan", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Choose production shift....
         /// </summary>
         public static string ChooseProductionShift {

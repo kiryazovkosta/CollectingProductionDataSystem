@@ -121,6 +121,8 @@
 
         public bool AggregationCurrentLevel { get; set; }
 
+        public string DisplayText { get { return string.Format("{0} - {1}", this.Code, this.Name); } }
+
         public virtual ICollection<RelatedProductionPlanConfigs> RelatedProductionPlanConfigs
         {
             get { return this.relatedProductionPlanConfigs; }

@@ -103,7 +103,7 @@
 
         [Required]
         [Display(Name = "ProductionPlanConfig", ResourceType = typeof(Resources.Layout))]
-        public int? ProductionPlanConfigId { get; set; }
+        public int ProductionPlanConfigId { get; set; }
 
 
 
@@ -132,6 +132,7 @@
                     new List<RelatedUnitMonthlyConfigs>()))
                     //.ForMember(p => p.MaterialDetailTypeId, opt => opt.MapFrom(p => p.MaterialDetailTypeId == 0 ? null : (int?)p.MaterialDetailTypeId))
                   .ForMember(p => p.IsConverted, opt => opt.Ignore());
+
         }
     }
 }

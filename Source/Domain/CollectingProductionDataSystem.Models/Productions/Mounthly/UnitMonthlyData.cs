@@ -5,7 +5,7 @@ namespace CollectingProductionDataSystem.Models.Productions.Mounthly
     using CollectingProductionDataSystem.Models.Abstract;
     using CollectingProductionDataSystem.Models.Contracts;
 
-    public class UnitMonthlyData : AuditInfo, IApprovableEntity, IEntity
+    public class UnitMonthlyData : AuditInfo, IApprovableEntity, IEntity, IDateable
     {
         public int Id { get; set; }
 

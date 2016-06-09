@@ -20,42 +20,51 @@ namespace CollectingProductionDataSystem.Web.Areas.NomManagement.Controllers
         {
         }
 
-         public override ActionResult Index()
+        public override ActionResult Index()
         {
             this.ViewData["processUnits"] = Mapper.Map<IEnumerable<ProcessUnitViewModel>>(this.data.ProcessUnits.All().ToList());
             this.ViewData["products"] = Mapper.Map<IEnumerable<ProductViewModel>>(this.data.Products.All().ToList());
             this.ViewData["measureUnits"] = Mapper.Map<IEnumerable<MeasureUnitViewModel>>(this.data.MeasureUnits.All().ToList());
             this.ViewData["monthlyReportTypes"] = Mapper.Map<IEnumerable<MonthlyReportTypeViewModel>>(this.data.MonthlyReportTypes.All().ToList());
             this.ViewData["dailyProductTypes"] = Mapper.Map<IEnumerable<DailyProductTypeViewModel>>(this.data.DailyProductTypes.All().ToList());
-            this.ViewData["relatedDailyUnits"]  = Mapper.Map<IEnumerable<UnitDailyConfig>, IEnumerable<UnitDailyConfigUnitMonthlyConfigViewModel>>(this.data.UnitsDailyConfigs.All()).ToList();
+            this.ViewData["relatedDailyUnits"] = Mapper.Map<IEnumerable<UnitDailyConfig>, IEnumerable<UnitDailyConfigUnitMonthlyConfigViewModel>>(this.data.UnitsDailyConfigs.All()).ToList();
             this.ViewData["relatedMonthlyConfigs"] = Mapper.Map<IEnumerable<UnitMonthlyConfig>, IEnumerable<RelatedUnitMonthlyConfigsViewModel>>(this.data.UnitMonthlyConfigs.All()).ToList();
+            this.ViewData["productionPlanConfigs"] = Mapper.Map<IEnumerable<ProductionPlanConfig>, IEnumerable<ProductionPlanConfigDropDownViewModel>>(this.data.ProductionPlanConfigs.All().ToList());
 
             return base.Index();
         }
 
-         [HttpPost]
-         [ValidateAntiForgeryToken]
-         public override ActionResult Create([DataSourceRequest]DataSourceRequest request, UnitMonthlyConfigViewModel inputViewModel) 
-         {
-             if (!ModelState.IsValid)
-             {
-                  return Json(new[] { inputViewModel }.ToDataSourceResult(request, ModelState));
-             }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public override ActionResult Create([DataSourceRequest]DataSourceRequest request, UnitMonthlyConfigViewModel inputViewModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return Json(new[] { inputViewModel }.ToDataSourceResult(request, ModelState));
+            }
 
-              if (inputViewModel.UnitDailyConfigUnitMonthlyConfigs.Count == 1
-                 && inputViewModel.UnitDailyConfigUnitMonthlyConfigs.FirstOrDefault().UnitDailyConfigId==0)
-             {
-                 inputViewModel.UnitDailyConfigUnitMonthlyConfigs.Clear();
-             }
+            if (inputViewModel.UnitDailyConfigUnitMonthlyConfigs.Count == 1
+               && inputViewModel.UnitDailyConfigUnitMonthlyConfigs.FirstOrDefault().UnitDailyConfigId == 0)
+            {
+                inputViewModel.UnitDailyConfigUnitMonthlyConfigs.Clear();
+            }
 
-             if (inputViewModel.RelatedUnitMonthlyConfigs.Count == 1
-                 && inputViewModel.RelatedUnitMonthlyConfigs.FirstOrDefault().Id==0)
-             {
-                 inputViewModel.RelatedUnitMonthlyConfigs.Clear();
-             }
+            if (inputViewModel.RelatedUnitMonthlyConfigs.Count == 1
+                && inputViewModel.RelatedUnitMonthlyConfigs.FirstOrDefault().Id == 0)
+            {
+                inputViewModel.RelatedUnitMonthlyConfigs.Clear();
+            }
 
-             return base.Create(request, inputViewModel);
-         }
+            return base.Create(request, inputViewModel);
+        }
+
+        public JsonResult ReadProductionPlans()//[DataSourceRequest]DataSourceRequest request)
+        {
+
+            var result = Mapper.Map<IEnumerable<ProductionPlanConfig>, IEnumerable<ProductionPlanConfigDropDownViewModel>>(data.ProductionPlanConfigs.All().ToList());
+            //DataSourceResult result = records.ToDataSourceResult(request, ModelState, Mapper.Map<ProductionPlanConfigDropDownViewModel>);
+            return Json(result);
+        }
 
         public JsonResult GetRelatedMonthly()
         {

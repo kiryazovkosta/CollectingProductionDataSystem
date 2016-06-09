@@ -64,6 +64,7 @@
     <Compile Include="Abstract\AuditInfo.cs" />
     <Compile Include="Abstract\DeletableEntity.cs" />
     <Compile Include="Contracts\IApprovableEntity.cs" />
+    <Compile Include="Contracts\IDateable.cs" />
     <Compile Include="Identity\ApplicationRole.cs" />
     <Compile Include="Identity\ApplicationUser.cs" />
     <Compile Include="Contracts\IAuditInfo.cs" />
