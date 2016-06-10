@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Data.Entity;
     using System.Linq;
+    using System.Text;
     using CollectingProductionDataSystem.Application.Contracts;
     using CollectingProductionDataSystem.Models.Productions;
     using CollectingProductionDataSystem.Data.Contracts;
@@ -98,7 +99,15 @@
             {
                 var planValue = CalculatePlanValue(productionPlan, dailyData, this.calculator, month);
                 var factValue = CalculateFactValue(productionPlan, dailyData, this.calculator);
+                if (factValue < 0 && materialTypeId == CommonConstants.EnergyType)
+                {
+                    factValue = 0;
+                }
                 var factPercents = CalculateUsageRateValue(productionPlan, dailyData, this.calculator);
+                if (factPercents < 0 && materialTypeId == CommonConstants.EnergyType)
+                {
+                    factPercents = 0;
+                }
 
                 var percentagesPlan = productionPlan.PlanNorms.Where(x => x.Month == month).First().Value;
 
@@ -118,7 +127,7 @@
 
                 if (materialTypeId == CommonConstants.EnergyType)
                 {
-                    var percs = CalculateUsageRateToTheDayValue(productionPlan, dailyData, this.calculator);
+                    var percs = CalculateUsageRateToTheDayValue(productionPlan, dailyData, this.calculator, productionPlanData);
                     productionPlanData.PercentagesFactCurrentMonth = GetValidValueOrZero(percs); 
                 }
 
@@ -154,6 +163,10 @@
                 if (materialTypeId == CommonConstants.MaterialType)
                 {
                     var percs = (((double)item.QuanityFactCurrentMonth + (double)item.QuantityFact) * 100.00) / (double)totallyQuantityAs;
+                    if (percs < 0 && materialTypeId == CommonConstants.EnergyType)
+                    {
+                        Console.WriteLine(percs);
+                    }
                     item.PercentagesFactCurrentMonth = GetValidValueOrZero(percs);  
                 }
             }
@@ -193,31 +206,44 @@
             return planValue;
         }
 
-        private double CalculateUsageRateToTheDayValue(ProductionPlanConfig productionPlan, List<UnitsDailyData> dailyData, ICalculatorService calculatorService)
+        private double CalculateUsageRateToTheDayValue(ProductionPlanConfig productionPlan, List<UnitsDailyData> dailyData, ICalculatorService calculatorService, 
+            ProductionPlanData productionPlanData)
         {
             var splitter = new char[] { '@' };
-
-            var planTokens = productionPlan.UsageRateMembers.Split(splitter, StringSplitOptions.RemoveEmptyEntries);
+            var planTokens = productionPlan.QuantityPlanMembers.Split(splitter, StringSplitOptions.RemoveEmptyEntries);
             var planInputParamsValues = new List<double>();
+
             foreach (var token in planTokens)
             {
                 foreach (var item in dailyData)
                 {
                     if (item.UnitsDailyConfig.Code == token)
                     {
-                        planInputParamsValues.Add((double)item.RealValueTillDay + (double)item.RealValue);
+                        planInputParamsValues.Add((double)item.RealValueTillDay);
                         break;
                     }
                 }
             }
 
+            var formula = new StringBuilder("p.pt/(");
+
             var planInputParams = new Dictionary<string, double>();
+            planInputParams.Add("pt", (double)(productionPlanData.QuanityFactCurrentMonth + productionPlanData.QuantityFact));
             for (int i = 0; i < planInputParamsValues.Count(); i++)
             {
-                planInputParams.Add(string.Format("p{0}", i), planInputParamsValues[i]);  
+                planInputParams.Add(string.Format("p{0}", i), planInputParamsValues[i]);
+                formula.Append(string.Format("p.p{0}", i));
+                if (i + 1 == planInputParamsValues.Count())
+	            {
+		            formula.Append(")");
+	            }
+                else
+                {
+                    formula.Append("+");
+                }
             }
 
-            var planValue = calculator.Calculate(productionPlan.UsageRateFormula, "p", planInputParams.Count, planInputParams);
+            var planValue = calculator.Calculate(formula.ToString(), "p", planInputParams.Count, planInputParams);
             if (double.IsNaN(planValue) || double.IsInfinity(planValue))
             {
                 planValue = 0.0;
