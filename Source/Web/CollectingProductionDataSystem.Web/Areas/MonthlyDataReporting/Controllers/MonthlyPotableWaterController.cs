@@ -49,7 +49,6 @@
         public JsonResult ReadMonthlyPotableWaterData([DataSourceRequest]DataSourceRequest request, DateTime date)
         {
 
-
             if (!this.ModelState.IsValid)
             {
                 var kendoResult = new List<MonthlyReportTableViewModel>().ToDataSourceResult(request, ModelState);
@@ -140,8 +139,10 @@
                 var potableWaterData = this.monthlyService.GetDataForMonth(date, CommonConstants.PotableWater).ToList();
                 var recalculatedPotableWater = potableWaterData.Where(x => x.UnitMonthlyConfig.IsTotalExternalOutputPosition == true).Sum(x => x.RealValue);
                 var innerPotableWater = potableWaterData.Where(x => x.UnitMonthlyConfig.IsTotalInternalPosition == true && x.UnitMonthlyConfig.IsTotalPosition == true).Sum(x => x.RealValue);
-
-                var dbResult = potableWaterData.OrderBy(x => x.UnitMonthlyConfig.Code).ToList();
+                var dbResult =  potableWaterData
+                                    .Where(x => x.UnitMonthlyConfig.IsAvailableInMothyReport)
+                                    .OrderBy(x => x.UnitMonthlyConfig.Code)
+                                    .ToList(); 
                 var vmResult = Mapper.Map<IEnumerable<MonthlyReportTableReportViewModel>>(dbResult);
                 foreach (var item in vmResult)
                 {

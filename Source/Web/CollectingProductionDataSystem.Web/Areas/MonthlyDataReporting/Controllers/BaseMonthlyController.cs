@@ -108,7 +108,18 @@ namespace CollectingProductionDataSystem.Web.Areas.MonthlyDataReporting.Controll
                 var kendoResult = new DataSourceResult();
                 if (ModelState.IsValid)
                 {
-                    var dbResult = this.monthlyService.GetDataForMonth(date, this.modelParams.MonthlyReportTypeId).OrderBy(x => x.UnitMonthlyConfig.Code).ToList();
+                    var dbResult = new List<UnitMonthlyData>();
+                    if (isReport ?? false)
+                    {
+                        dbResult = this.monthlyService.GetDataForMonth(date, this.modelParams.MonthlyReportTypeId)
+                            .Where(x => x.UnitMonthlyConfig.IsAvailableInMothyReport)
+                            .OrderBy(x => x.UnitMonthlyConfig.Code).ToList();                        
+                    }
+                    else 
+                    {
+                        dbResult = this.monthlyService.GetDataForMonth(date, this.modelParams.MonthlyReportTypeId)
+                            .OrderBy(x => x.UnitMonthlyConfig.Code).ToList();
+                    }
                     var vmResult = Mapper.Map<IEnumerable<MonthlyReportTableViewModel>>(dbResult);
                     kendoResult = vmResult.ToDataSourceResult(request, ModelState);
                 }
