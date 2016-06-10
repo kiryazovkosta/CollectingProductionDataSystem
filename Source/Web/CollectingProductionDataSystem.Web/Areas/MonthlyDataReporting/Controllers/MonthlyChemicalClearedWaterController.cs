@@ -141,7 +141,10 @@
                 var recalculatedChemicalClearedWater = chemicalClearedWaterData.Where(x => x.UnitMonthlyConfig.IsTotalExternalOutputPosition == true).Sum(x => x.RealValue);
                 var innerChemicalClearedWater = chemicalClearedWaterData.Where(x => x.UnitMonthlyConfig.IsTotalInternalPosition == true && x.UnitMonthlyConfig.IsTotalPosition == true).Sum(x => x.RealValue);
 
-                var dbResult = chemicalClearedWaterData.OrderBy(x => x.UnitMonthlyConfig.Code).ToList();
+                var dbResult = chemicalClearedWaterData
+                                    .Where(x => x.UnitMonthlyConfig.IsAvailableInMothyReport)
+                                    .OrderBy(x => x.UnitMonthlyConfig.Code)
+                                    .ToList();
                 var vmResult = Mapper.Map<IEnumerable<MonthlyReportTableReportViewModel>>(dbResult);
                 foreach (var item in vmResult)
                 {
