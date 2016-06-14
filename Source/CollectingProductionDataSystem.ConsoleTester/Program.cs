@@ -23,6 +23,7 @@ using CollectingProductionDataSystem.Application.UnitsDataServices;
 using CollectingProductionDataSystem.Data.Concrete;
 using CollectingProductionDataSystem.Data;
 using CollectingProductionDataSystem.Models.Productions.Mounthly;
+using CollectingProductionDataSystem.Extentions;
 using Ninject;
 
 namespace CollectingProductionDataSystem.ConsoleTester
@@ -42,20 +43,36 @@ namespace CollectingProductionDataSystem.ConsoleTester
             ninject = new NinjectConfig();
             kernel = ninject.Kernel;
             data = new ProductionData(new CollectingDataSystemDbContext());
-
-
-
             //new UnitDailyDataService(data, kernel, new CalculatorService());
-
-
             //dailyService = new UnitDailyDataService(data, kernel, new CalculatorService());
             //data = new ProductionData(new CollectingDataSystemDbContext());
             //testUnitDailyCalculationService = kernel.Get<ITestUnitDailyCalculationService>();
             //service = kernel.Get<UnitMothlyDataService>();
         }
+ 
+        /// <summary>
+        /// Gets the anual monthly positons.
+        /// </summary>
+        /// <param name="p">The p.</param>
+        /// <returns></returns>
+        private static IQueryable<UnitMonthlyConfig> GetAnualMonthlyPositons(int year)
+        {
+            var x = new List<string>();
+            x.AsEnumerable();
+            IQueryable<UnitMonthlyConfig> result = data.UnitMonthlyConfigs.AllAnual(year);
+            return result;
+        }
 
         static void Main(string[] args)
         {
+
+            var result = GetAnualMonthlyPositons(2016);
+            var result1 = GetAnualMonthlyPositons(2017);
+
+            Console.WriteLine("The Result Count for {0} Is {1}",2016, result.ToList().Count());
+            Console.WriteLine("The Result Count for {0} Is {1}", 2017, result1.ToList().Count());
+
+
             ////using (var transaction = new TransactionScope(TransactionScopeOption.Required, transantionOption))
             ////{
             ////    CalculateDailyDataIfNotAvailable(new DateTime(2015, 12, 4), 7);
@@ -84,29 +101,29 @@ namespace CollectingProductionDataSystem.ConsoleTester
             //Console.WriteLine("Ready!\n Estimated time per operation {0}", timer.Elapsed);
             try
             {
-                var unitMothlyConfigs = data.UnitMonthlyConfigs.All()
-                                               .Include(x => x.UnitDailyConfigUnitMonthlyConfigs)
-                                               .Where(x => x.UnitDailyConfigUnitMonthlyConfigs.Count != 0)
-                                               .ToDictionary(x => string.Join("@", x.UnitDailyConfigUnitMonthlyConfigs.Select(y => y.UnitDailyConfig.Code).ToArray()));
-                var productionPlanConfigs = data.ProductionPlanConfigs.All().Where(x => x.Code != "4RMD0040" && x.Code != "4RMD0050" && !string.IsNullOrEmpty(x.QuantityFactMembers))
-                                                .ToDictionary(x => x.QuantityFactMembers, x => x.Id);
-                //IEnumerable<Data> productionPlanConfigs, unitMothlyConfigs;
-                using (var tran = new TransactionScope(TransactionScopeOption.Required, transantionOption))
-                {
+                //var unitMothlyConfigs = data.UnitMonthlyConfigs.All()
+                //                               .Include(x => x.UnitDailyConfigUnitMonthlyConfigs)
+                //                               .Where(x => x.UnitDailyConfigUnitMonthlyConfigs.Count != 0)
+                //                               .ToDictionary(x => string.Join("@", x.UnitDailyConfigUnitMonthlyConfigs.Select(y => y.UnitDailyConfig.Code).ToArray()));
+                //var productionPlanConfigs = data.ProductionPlanConfigs.All().Where(x => x.Code != "4RMD0040" && x.Code != "4RMD0050" && !string.IsNullOrEmpty(x.QuantityFactMembers))
+                //                                .ToDictionary(x => x.QuantityFactMembers, x => x.Id);
+                ////IEnumerable<Data> productionPlanConfigs, unitMothlyConfigs;
+                //using (var tran = new TransactionScope(TransactionScopeOption.Required, transantionOption))
+                //{
 
-                    foreach (var key in unitMothlyConfigs.Keys)
-                    {
-                        if (productionPlanConfigs.ContainsKey(key))
-                        {
-                            Console.WriteLine(key);
-                            unitMothlyConfigs[key].ProductionPlanConfigId = productionPlanConfigs[key];
-                        }
-                    }
+                //    foreach (var key in unitMothlyConfigs.Keys)
+                //    {
+                //        if (productionPlanConfigs.ContainsKey(key))
+                //        {
+                //            Console.WriteLine(key);
+                //            unitMothlyConfigs[key].ProductionPlanConfigId = productionPlanConfigs[key];
+                //        }
+                //    }
 
-                    data.SaveChanges("Georgiev.Georgi.V");
+                //    data.SaveChanges("Georgiev.Georgi.V");
 
-                    tran.Complete();
-                }
+                //    tran.Complete();
+                //}
 
                 //WriteResultResultToFile(@"d:\result\unitMonthly.txt", unitMothlyConfigs);
 

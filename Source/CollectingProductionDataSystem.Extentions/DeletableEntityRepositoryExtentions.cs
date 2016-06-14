@@ -1,19 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CollectingProductionDataSystem.Data.Concrete;
-using CollectingProductionDataSystem.Models.Contracts;
-
-namespace CollectingProductionDataSystem.Extentions
+﻿namespace CollectingProductionDataSystem.Extentions
 {
+    using System;
+    using System.Linq;
+    using CollectingProductionDataSystem.Data.Contracts;
+    using CollectingProductionDataSystem.Models.Contracts;
+
     public static class DeletableEntityRepositoryExtentions
     {
-        public static IQueryable<T> AllAnual<T>(this DeletableEntityRepository<T> repository, int year) 
-            where T: class, IDeletableEntity, IEntity, IDateable
+        //[System.Runtime.CompilerServices.ExtensionAttribute()]
+        public static IQueryable<T> AllAnual<T>(this IDeletableEntityRepository<T> repository, int year) 
+            where T: class, IDeletableEntity, IEntity
         {
-            return repository.AllWithDeleted().Where(x => x.DeletedOn >= new DateTime(year, 1, 1));
+            var targetDate = new DateTime(year, 1, 1);
+            return repository.AllWithDeleted()
+                             .Where(x => (!x.IsDeleted) 
+                                 || (x.DeletedOn >= targetDate));
         }
     }
 }

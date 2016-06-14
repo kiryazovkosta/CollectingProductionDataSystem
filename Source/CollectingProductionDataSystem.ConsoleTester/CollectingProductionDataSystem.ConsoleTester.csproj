@@ -117,6 +117,10 @@
       <Project>{3a125de9-28b9-4004-a1d9-bebde62ac786}</Project>
       <Name>CollectingProductionDataSystem.Application</Name>
     </ProjectReference>
+    <ProjectReference Include="..\CollectingProductionDataSystem.Extentions\CollectingProductionDataSystem.Extentions.csproj">
+      <Project>{fef2234f-7cca-496a-910b-191506b0af65}</Project>
+      <Name>CollectingProductionDataSystem.Extentions</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Common\CollectingProductionDataSystem.Infrastructure\CollectingProductionDataSystem.Infrastructure.csproj">
       <Project>{69DEBDE6-B1BA-4A55-9570-AE7E6ABB5F98}</Project>
       <Name>CollectingProductionDataSystem.Infrastructure</Name>
