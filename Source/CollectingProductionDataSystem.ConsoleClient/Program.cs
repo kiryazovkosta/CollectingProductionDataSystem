@@ -22,6 +22,7 @@ using CollectingProductionDataSystem.Models.Transactions;
 using System.Data;
 using System.Globalization;
 using CollectingProductionDataSystem.Data.Common;
+using CollectingProductionDataSystem.Extentions;
 
 namespace CollectingProductionDataSystem.ConsoleClient
 {
@@ -38,7 +39,37 @@ namespace CollectingProductionDataSystem.ConsoleClient
             //WritePositionsConfidence(data);
             //UpdateShiftUnitData(kernel, data);
 
-            AddOrUpdateProductionPlanConfigs(data);
+            //AddOrUpdateProductionPlanConfigs(data);
+
+            var month = new DateTime(2016,5, 12, 0, 0, 0);
+
+            var monthDate = new DateTime(month.Year, month.Month, DateTime.DaysInMonth(month.Year, month.Month), 0, 0, 0);
+            var planValueMonthDate = new DateTime(month.Year, month.Month, 1, 0, 0, 0);
+
+            var monthlyProductionData =  data.UnitMonthlyConfigs.All()
+                .Include(x => x.UnitMonthlyDatas)
+                .Include(x => x.ProcessUnit)
+                .Include(x => x.ProcessUnit.Factory)
+                .Include(x => x.MeasureUnit)
+                .Include(x => x.ProductionPlanConfig)
+                .Where(x => x.IsAvailableInTechnologicalReport).ToList()
+                .SelectMany(y => y.UnitMonthlyDatas.Where(z => z.RecordTimestamp == monthDate))
+                .Select(x => new MonthlyTechnicalReportData
+                {
+                    Id = x.UnitMonthlyConfig.Id,
+                    Code = x.UnitMonthlyConfig.Code,
+                    Name = x.UnitMonthlyConfig.Name,
+                    Factory = x.UnitMonthlyConfig.ProcessUnit.Factory.FactorySortableName,
+                    ProcessUnit = x.UnitMonthlyConfig.ProcessUnit.SortableName,
+                    MeasurementUnit = x.UnitMonthlyConfig.MeasureUnit.Code,
+                    PlanPercentages = x.UnitMonthlyConfig.ProductionPlanConfig == null ? 0.0M : x.UnitMonthlyConfig.ProductionPlanConfig.PlanNorms.Where(b => b.Month == planValueMonthDate).FirstOrDefault().Value,
+                });
+            foreach (var item in monthlyProductionData)
+            {
+                Console.WriteLine(item.ToString());
+            }
+
+            Console.WriteLine(monthlyProductionData.Count());
 
             //UpdateShiftUnitData(kernel, data);
             //var shiftData = data.UnitsData.All().Where(x => x.ShiftId == ShiftType.Second 
@@ -1416,6 +1447,31 @@ namespace CollectingProductionDataSystem.ConsoleClient
             {
                 Console.WriteLine(ex.Message);
             }
+        }
+    }
+
+    class MonthlyTechnicalReportData 
+    {
+        public int Id { get; set; }
+        public string Code { get; set; }
+        public string Name { get; set; }
+        public string Factory { get; set; }
+        public string ProcessUnit { get; set; }
+        public string MeasurementUnit { get; set; }
+        public decimal PlanPercentages { get; set; }
+        public decimal PalnMonthlyRealValue { get; set; }
+
+        public override string ToString()
+        {
+            //return string.Format("Id {0} Code {1} Name {2} Factory {3} ProcessUnit {4} MeasurementUnit {5}",
+            return string.Format("{0};{1};{2};{3};{4};{5};{6}",
+                this.Id,
+                this.Code,
+                this.Name,
+                this.Factory,
+                this.ProcessUnit,
+                this.MeasurementUnit,
+                this.PlanPercentages);
         }
     }
 
