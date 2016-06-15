@@ -175,6 +175,10 @@
     <Compile Include="UserServices\UserService.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\CollectingProductionDataSystem.Extentions\CollectingProductionDataSystem.Extentions.csproj">
+      <Project>{fef2234f-7cca-496a-910b-191506b0af65}</Project>
+      <Name>CollectingProductionDataSystem.Extentions</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Common\CollectingProductionDataSystem.Infrastructure\CollectingProductionDataSystem.Infrastructure.csproj">
       <Project>{69debde6-b1ba-4a55-9570-ae7e6abb5f98}</Project>
       <Name>CollectingProductionDataSystem.Infrastructure</Name>

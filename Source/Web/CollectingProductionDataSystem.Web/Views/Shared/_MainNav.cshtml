@@ -104,7 +104,7 @@
                         </ul>
                     </li>
                 }
-                <li>@Html.AuthorizedActionLink("Dashboard", "Index", "Dashboard", new { area = "ManagementDashBoard" }, null)</li>
+                <li>@Html.AuthorizedActionLink(@Resources.Layout.Dashboard, "Index", "Dashboard", new { area = "ManagementDashBoard" }, null)</li>
                 <li>@Html.AuthorizedActionLink(@Resources.Layout.Administration, "Index", "User", new { area = "Administration" }, null)</li>
 
                 @if (Html.ActionIsAccessibleToUser("Index", "Nomenclatures", "NomManagement"))

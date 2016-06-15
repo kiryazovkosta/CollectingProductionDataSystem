@@ -6,11 +6,16 @@ namespace CollectingProductionDataSystem.Application.MonthlyServices
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using System.Data;
+    using System.Data.Common;
     using System.Data.Entity;
+    using System.Data.SqlClient;
+    using System.Diagnostics;
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
     using CollectingProductionDataSystem.Application.Contracts;
+    using CollectingProductionDataSystem.Extentions;
     using CollectingProductionDataSystem.Constants;
     using CollectingProductionDataSystem.Data.Contracts;
     using CollectingProductionDataSystem.Models.Productions;
@@ -138,9 +143,101 @@ namespace CollectingProductionDataSystem.Application.MonthlyServices
             }
 
             CalculateMonthlyDataFromRelatedMonthlyData(ref resultMonthly, targetMonth, isRecalculate, reportTypeId, changedRecords, wholeMonthResult);
+
+            //Add anual data of first calculation
+            if (!isRecalculate)
+            {
+                CalculateAnualAccumulation(ref resultMonthly, targetMonth);
+            }
             var result = resultMonthly.Select(x => x.Value);
             return result;
         }
+
+        private class Transport
+        {
+            public int UnitMonthlyConfigId { get; set; }
+            public string Code { get; set; }
+            public decimal RealValue { get; set; }
+            public decimal YearTotalValue { get; set; }
+
+        }
+
+        /// <summary>
+        /// Calculates the anual accumulation.
+        /// </summary>
+        /// <param name="resultMonthly">The result monthly.</param>
+        /// <param name="targetMonth">The target month.</param>
+        public void CalculateAnualAccumulation(ref Dictionary<string, UnitMonthlyData> resultMonthly, DateTime targetMonth)
+        {
+            var timer = new Stopwatch();
+            timer.Start();
+            var monthBeforeTargetMonth = targetMonth.AddMonths(-1);
+            if (targetMonth.Year == monthBeforeTargetMonth.Year)
+            {
+                //                var records = (data.DbContext.DbContext.Database
+                //                    .SqlQuery<Transport>(
+                //                    @"SELECT a.Id as UnitMonthlyConfigId, a.Code as Code, ISNULL(ISNULL( c.Value, b.Value),0) as RealValue
+                //                                FROM UnitMonthlyConfigs as a
+                //	                                LEFT JOIN UnitMonthlyDatas as b
+                //		                                on a.Id = b.UnitMonthlyConfigId AND b.RecordTimestamp = @p0
+                //	                                LEFT OUTER JOIN UnitManualMonthlyDatas as c
+                //	                                on b.Id = c.Id
+                //	                                ORDER BY a.Id", monthBeforeTargetMonth)).ToListAsync().Result
+                //                    .ToDictionary(row => row.Code);
+
+                var records = (from p in data.UnitMonthlyConfigs.AllAnual(targetMonth.Year)
+                               join q in data.UnitMonthlyDatas.All().Where(x => x.RecordTimestamp == monthBeforeTargetMonth) on p.Id equals q.UnitMonthlyConfigId into Result
+                               select new
+                               {
+                                   MonthConfig = p,
+                                   MonthlyData = Result.FirstOrDefault()
+                               }).ToList()
+                              .Select(x => new Transport
+                              {
+                                  UnitMonthlyConfigId = x.MonthConfig.Id,
+                                  Code = x.MonthConfig.Code,
+                                  RealValue = x.MonthlyData == null ? 0M : (decimal)x.MonthlyData.RealValue,
+                                  YearTotalValue = x.MonthlyData == null ? 0M : x.MonthlyData.YearTotalValue,
+                              }).ToDictionary(x=>x.Code);
+
+                //.SelectMany(q => q.UnitMonthlyDatas.DefaultIfEmpty())
+                //.Include(x=>x.UnitManualMonthlyData)
+                //where p.RecordTimestamp == monthBeforeTargetMonth
+                //select p).ToList();
+                //new Transport
+                //{
+                //    UnitMonthlyConfigId = p.Id,
+                //    Code = p..Code,
+                //    RealValue = l.Value,
+                //    YearTotalValue = q.YearTotalValue,
+                //};
+
+                foreach (var key in records.Keys)
+                {
+                    var currentRecord = records[key];
+                    if (resultMonthly.ContainsKey(key))
+                    {
+                        resultMonthly[key].YearTotalValue = (currentRecord == null) ? 0M
+                                        : currentRecord.RealValue + currentRecord.YearTotalValue;
+                    }
+                    else
+                    {
+
+                        resultMonthly.Add(key, new UnitMonthlyData()
+                        {
+                            RecordTimestamp = targetMonth,
+                            UnitMonthlyConfigId = records[key].UnitMonthlyConfigId,
+                            YearTotalValue = (currentRecord == null) ? 0M
+                                        : currentRecord.RealValue + currentRecord.YearTotalValue
+                        });
+                    }
+                }
+
+                timer.Stop();
+                Console.WriteLine(timer.Elapsed);
+            }
+        }
+
 
         /// <summary>
         /// Gets the depending records.
@@ -217,7 +314,7 @@ namespace CollectingProductionDataSystem.Application.MonthlyServices
                   .Where(x => x.RecordTimestamp == targetMonth).ToList();
 
             Dictionary<string, UnitMonthlyData> result = new Dictionary<string, UnitMonthlyData>();
-            var targetRecordConfigs =targetUnitMonthlyRecordConfigs.Where(x => x.AggregationCurrentLevel == false && x.IsManualEntry == false).ToList();
+            var targetRecordConfigs = targetUnitMonthlyRecordConfigs.Where(x => x.AggregationCurrentLevel == false && x.IsManualEntry == false).ToList();
             foreach (var targetUnitMonthlyRecordConfig in targetRecordConfigs)
             {
                 try
@@ -241,7 +338,7 @@ namespace CollectingProductionDataSystem.Application.MonthlyServices
                     monthlyRecord.HasManualData = unitDailyDatasByMontlyData.Any(y => y.IsManual == true);
                     result.Add(targetUnitMonthlyRecordConfig.Code, monthlyRecord);
                 }
-                catch (Exception ex) 
+                catch (Exception ex)
                 {
                     Console.WriteLine(ex.Message);
                 }
@@ -289,7 +386,7 @@ namespace CollectingProductionDataSystem.Application.MonthlyServices
                 .Where(x => x.AggregationCurrentLevel == true
                         && x.IsManualEntry == false
                         && x.MonthlyReportTypeId == reportTypeId
-                       ).ToList().Where(x => changedRecords == null || changedRecords.Any(y => y == x.Code)).OrderBy(x=>x.Code);
+                       ).ToList().Where(x => changedRecords == null || changedRecords.Any(y => y == x.Code)).OrderBy(x => x.Code);
 
             Dictionary<string, UnitMonthlyData> targetUnitMonthlyRecords = new Dictionary<string, UnitMonthlyData>();
 
@@ -425,7 +522,7 @@ namespace CollectingProductionDataSystem.Application.MonthlyServices
                 }
                 else
                 {
-                    return 0; 
+                    return 0;
                 }
 
             }
@@ -449,9 +546,9 @@ namespace CollectingProductionDataSystem.Application.MonthlyServices
         {
             DateTime date = inTargetMonth.Date;
             DateTime targetMonth = new DateTime(date.Year, date.Month, DateTime.DaysInMonth(date.Year, date.Month));
-//#if DEBUG
-//            targetMonth = new DateTime(inTargetMonth.Year, 2, 2);
-//#endif
+            //#if DEBUG
+            //            targetMonth = new DateTime(inTargetMonth.Year, 2, 2);
+            //#endif
             return targetMonth;
         }
 
@@ -557,14 +654,14 @@ namespace CollectingProductionDataSystem.Application.MonthlyServices
         {
             var targetMonth = this.GetTargetMonth(targetDate);
             List<int> energyCompletionCheckExclusionList = new List<int>();
-            
+
             if (IsEnergy)
             {
                 energyCompletionCheckExclusionList = this.data.UnitsDailyConfigs.All().ToList()
                 .GroupBy(x => x.ProcessUnitId).Where(y => !y.Any(z => z.MaterialTypeId == CommonConstants.EnergyType))
                 .Select(w => w.Key).ToList();
             }
-            
+
 
             var currentApprovedDailyDatas = this.data.UnitsApprovedDailyDatas.All()
                 .Where(x => x.RecordDate == targetMonth && (!IsEnergy || x.EnergyApproved || energyCompletionCheckExclusionList.Contains(x.ProcessUnitId))).ToDictionary(x => x.ProcessUnitId, x => x);

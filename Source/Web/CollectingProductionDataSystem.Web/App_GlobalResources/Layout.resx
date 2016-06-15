@@ -1708,4 +1708,13 @@
   <data name="IsAvailableInTechnologicalReport" xml:space="preserve">
     <value>IsAvailableInTechnologicalReport</value>
   </data>
+  <data name="ProductionPlanConfigUnitMonthlyConfigFactFractionMembers" xml:space="preserve">
+    <value>Членове за формула за фактическа месечна стойност</value>
+  </data>
+  <data name="ProductionPlanConfigUnitMonthlyConfigPlanMembers" xml:space="preserve">
+    <value>ProductionPlanConfigUnitMonthlyConfigPlanMembers</value>
+  </data>
+  <data name="Dashboard" xml:space="preserve">
+    <value>Dashboard</value>
+  </data>
 </root>

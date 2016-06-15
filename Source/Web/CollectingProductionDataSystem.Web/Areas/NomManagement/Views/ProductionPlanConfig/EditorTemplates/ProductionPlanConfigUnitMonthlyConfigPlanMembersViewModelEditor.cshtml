@@ -1,0 +1,13 @@
+﻿@using CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewModels;
+@using Resources = App_GlobalResources.Resources;
+
+@model IEnumerable<ProductionPlanConfigUnitMonthlyConfigPlanMembersViewModel>
+@(Html.Kendo()
+    .MultiSelectFor(m => m)
+    .AutoClose(false)
+        .BindTo((IEnumerable<ProductionPlanConfigUnitMonthlyConfigPlanMembersViewModel>)ViewData["relatedMonthlyUnits"])
+    .DataTextField("Code")
+    .DataValueField("UnitMonthlyConfigId")
+    .ItemTemplate("<span class=\"order-id\">#= Code #</span> #= Name #")
+)
+

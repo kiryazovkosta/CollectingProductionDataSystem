@@ -329,6 +329,8 @@
     <Compile Include="Areas\NomManagement\Controllers\UnitMonthlyConfigController.cs" />
     <Compile Include="Areas\NomManagement\Models\ViewModels\PhdConfigViewModel.cs" />
     <Compile Include="Areas\NomManagement\Models\ViewModels\ProductionPlanConfigDropDownViewModel.cs" />
+    <Compile Include="Areas\NomManagement\Models\ViewModels\ProductionPlanConfigUnitMonthlyConfigFactFractionMembersViewModel.cs" />
+    <Compile Include="Areas\NomManagement\Models\ViewModels\ProductionPlanConfigUnitMonthlyConfigPlanMembersViewModel.cs" />
     <Compile Include="Areas\NomManagement\Models\ViewModels\RelatedUnitMonthlyConfigsViewModel.cs" />
     <Compile Include="Areas\NomManagement\Models\ViewModels\TankStatusViewModel.cs" />
     <Compile Include="Areas\NomManagement\Models\ViewModels\UnitDailyConfigUnitMonthlyConfigViewModel.cs" />
@@ -1744,6 +1746,8 @@
     <Content Include="Areas\Documentation\Views\Help\EnteredByUserValuesMessagesStatistics.cshtml" />
     <Content Include="Areas\Documentation\Views\Help\PlanNorm.cshtml" />
     <Content Include="Areas\Documentation\Views\Help\PlanValuesInstallations.cshtml" />
+    <Content Include="Areas\NomManagement\Views\ProductionPlanConfig\EditorTemplates\ProductionPlanConfigUnitMonthlyConfigPlanMembersViewModelEditor.cshtml" />
+    <Content Include="Areas\NomManagement\Views\ProductionPlanConfig\EditorTemplates\ProductionPlanConfigUnitMonthlyConfigFactFractionMembersViewModelEditor.cshtml" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <Content Include="Scripts\custom\sendArea.js" />
     <Content Include="Scripts\custom\sendArea.min.js">

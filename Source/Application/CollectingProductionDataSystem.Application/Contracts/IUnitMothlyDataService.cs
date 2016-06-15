@@ -87,5 +87,8 @@ namespace CollectingProductionDataSystem.Application.Contracts
         /// <param name="monthlyReportTypeId">The monthly report type id.</param>
         /// <returns></returns>
         bool IsMonthlyReportConfirmed(DateTime inTargetDate, int monthlyReportTypeId);
+
+
+        void CalculateAnualAccumulation(ref Dictionary<string, UnitMonthlyData> resultMonthly, DateTime targetMonth);
     }
 }

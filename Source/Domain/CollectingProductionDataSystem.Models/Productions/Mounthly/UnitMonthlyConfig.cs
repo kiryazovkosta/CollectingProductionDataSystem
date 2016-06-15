@@ -89,7 +89,6 @@ namespace CollectingProductionDataSystem.Models.Productions.Mounthly
 
         public bool IsTotalPosition { get; set; }
 
-
         public bool IsTotalInputPosition { get; set; }
 
         public bool IsExternalOutputPosition { get; set; }

@@ -7,6 +7,7 @@ using AutoMapper;
 using CollectingProductionDataSystem.Infrastructure.Mapping;
 using CollectingProductionDataSystem.Models.Contracts;
 using CollectingProductionDataSystem.Models.Productions;
+using CollectingProductionDataSystem.Models.Productions.Mounthly;
 using Resources = App_GlobalResources.Resources;
 
 namespace CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewModels
@@ -103,12 +104,17 @@ namespace CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewMode
         [Display(Name = "MonthlyValuePlanFormula", ResourceType = typeof(Resources.Layout))]
         public string MonthlyValuePlanFormula { get; set; }
 
-        //public string ProductionPlanConfigUnitMonthlyConfigPlanMembers { get; set; }
+        [UIHint("ProductionPlanConfigUnitMonthlyConfigPlanMembersViewModelEditor")]
+        [Display(Name = "ProductionPlanConfigUnitMonthlyConfigPlanMembers", ResourceType = typeof(Resources.Layout))]
+        public ICollection<ProductionPlanConfigUnitMonthlyConfigPlanMembersViewModel> ProductionPlanConfigUnitMonthlyConfigPlanMembers { get; set; }
 
         [Display(Name = "MonthlyFactFractionFormula", ResourceType = typeof(Resources.Layout))]
         public string MonthlyFactFractionFormula { get; set; }
 
-        //public string ProductionPlanConfigUnitMonthlyConfigFactFractionMembers { get; set; }
+        [UIHint("ProductionPlanConfigUnitMonthlyConfigFactFractionMembersViewModelEditor")]
+        [Display(Name = "ProductionPlanConfigUnitMonthlyConfigFactFractionMembers", ResourceType = typeof(Resources.Layout))]
+        public ICollection<ProductionPlanConfigUnitMonthlyConfigFactFractionMembersViewModel> ProductionPlanConfigUnitMonthlyConfigFactFractionMembers { get; set; }
+        
 
 
         /// <summary>
@@ -118,10 +124,18 @@ namespace CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewMode
         public void CreateMappings(IConfiguration configuration)
         {
             configuration.CreateMap<ProductionPlanConfig, ProductionPlanConfigViewModel>()
-                    .ForMember(p => p.MaterialDetailTypeId, opt => opt.MapFrom(p => p.MaterialDetailTypeId == null ? 0 : p.MaterialDetailTypeId));
+                    .ForMember(p => p.MaterialDetailTypeId, opt => opt.MapFrom(p => p.MaterialDetailTypeId == null ? 0 : p.MaterialDetailTypeId))
+                    .ForMember(p => p.ProductionPlanConfigUnitMonthlyConfigPlanMembers, opt => opt.MapFrom(p => p.ProductionPlanConfigUnitMonthlyConfigPlanMembers.OrderBy(x => x.Position)))
+                    .ForMember(p => p.ProductionPlanConfigUnitMonthlyConfigFactFractionMembers, opt => opt.MapFrom(p => p.ProductionPlanConfigUnitMonthlyConfigFactFractionMembers.OrderBy(x => x.Position))); 
 
             configuration.CreateMap<ProductionPlanConfigViewModel, ProductionPlanConfig>()
-                    .ForMember(p => p.MaterialDetailTypeId, opt => opt.MapFrom(p => p.MaterialDetailTypeId == 0 ? null : (int?)p.MaterialDetailTypeId));
+                    .ForMember(p => p.MaterialDetailTypeId, opt => opt.MapFrom(p => p.MaterialDetailTypeId == 0 ? null : (int?)p.MaterialDetailTypeId))
+                    .ForMember(p => p.ProductionPlanConfigUnitMonthlyConfigPlanMembers, opt => opt.MapFrom(p => p.ProductionPlanConfigUnitMonthlyConfigPlanMembers != null ?
+                    p.ProductionPlanConfigUnitMonthlyConfigPlanMembers.Select((x, ixc) => new ProductionPlanConfigUnitMonthlyConfigPlanMembers() { UnitMonthlyConfigId = x.UnitMonthlyConfigId, ProductionPlanConfigId = p.Id, Position = ixc + 1, }) :
+                    new List<ProductionPlanConfigUnitMonthlyConfigPlanMembers>()))
+                    .ForMember(p => p.ProductionPlanConfigUnitMonthlyConfigFactFractionMembers, opt => opt.MapFrom(p => p.ProductionPlanConfigUnitMonthlyConfigFactFractionMembers != null ?
+                    p.ProductionPlanConfigUnitMonthlyConfigFactFractionMembers.Select((x, ixc) => new ProductionPlanConfigUnitMonthlyConfigFactFractionMembers() { UnitMonthlyConfigId = x.UnitMonthlyConfigId, ProductionPlanConfigId = p.Id, Position = ixc + 1, }) :
+                    new List<ProductionPlanConfigUnitMonthlyConfigFactFractionMembers>()));
         }
     }
 }

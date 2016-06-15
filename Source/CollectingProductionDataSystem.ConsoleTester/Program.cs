@@ -37,6 +37,7 @@ namespace CollectingProductionDataSystem.ConsoleTester
         private static IKernel kernel;
         private static UnitMothlyDataService service;
         private static ITestUnitDailyCalculationService testUnitDailyCalculationService;
+        private static IUnitMothlyDataService monthlyService;
 
         static Program()
         {
@@ -48,29 +49,21 @@ namespace CollectingProductionDataSystem.ConsoleTester
             //data = new ProductionData(new CollectingDataSystemDbContext());
             //testUnitDailyCalculationService = kernel.Get<ITestUnitDailyCalculationService>();
             //service = kernel.Get<UnitMothlyDataService>();
+            monthlyService = new UnitMothlyDataService(data, kernel, new CalculatorService(),TestUnitMonthlyCalculationService.GetInstance());
         }
  
-        /// <summary>
-        /// Gets the anual monthly positons.
-        /// </summary>
-        /// <param name="p">The p.</param>
-        /// <returns></returns>
-        private static IQueryable<UnitMonthlyConfig> GetAnualMonthlyPositons(int year)
-        {
-            var x = new List<string>();
-            x.AsEnumerable();
-            IQueryable<UnitMonthlyConfig> result = data.UnitMonthlyConfigs.AllAnual(year);
-            return result;
-        }
 
         static void Main(string[] args)
         {
 
-            var result = GetAnualMonthlyPositons(2016);
-            var result1 = GetAnualMonthlyPositons(2017);
+            var records = data.UnitMonthlyDatas.All().Include(x => x.UnitMonthlyConfig)
+                .Where(x => x.RecordTimestamp == new DateTime(2016, 5, 31))
+                .ToDictionary(x => x.UnitMonthlyConfig.Code);
 
-            Console.WriteLine("The Result Count for {0} Is {1}",2016, result.ToList().Count());
-            Console.WriteLine("The Result Count for {0} Is {1}", 2017, result1.ToList().Count());
+            monthlyService.CalculateAnualAccumulation(ref records, new DateTime(2016, 5, 31));
+            
+
+ 
 
 
             ////using (var transaction = new TransactionScope(TransactionScopeOption.Required, transantionOption))

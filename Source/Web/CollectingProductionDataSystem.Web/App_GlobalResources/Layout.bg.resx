@@ -1689,7 +1689,7 @@
     <value>Месечен план преработка</value>
   </data>
   <data name="MonthlyFactFractionFormula" xml:space="preserve">
-    <value>Формула за фактическа месечна стойност</value>
+    <value>Формула за фактическа месечна &lt;br/&gt;разходна норма / отбор</value>
   </data>
   <data name="MonthlyValuePlanFormula" xml:space="preserve">
     <value>Формула за планова месечна стойност</value>
@@ -1702,5 +1702,14 @@
   </data>
   <data name="IsAvailableInTechnologicalReport" xml:space="preserve">
     <value>Визуализация&lt;br/&gt;Технологичен отчет</value>
+  </data>
+  <data name="ProductionPlanConfigUnitMonthlyConfigFactFractionMembers" xml:space="preserve">
+    <value>Членове за формула за фактическа месечна &lt;br/&gt;разходна норма / отбор</value>
+  </data>
+  <data name="ProductionPlanConfigUnitMonthlyConfigPlanMembers" xml:space="preserve">
+    <value>Членове на формула за планова месечна стойност</value>
+  </data>
+  <data name="Dashboard" xml:space="preserve">
+    <value>Графики</value>
   </data>
 </root>

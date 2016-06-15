@@ -925,6 +925,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Dashboard.
+        /// </summary>
+        public static string Dashboard {
+            get {
+                return ResourceManager.GetString("Dashboard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to DataSource.
         /// </summary>
         public static string DataSource {
@@ -3081,6 +3090,24 @@ namespace App_GlobalResources.Resources {
         public static string ProductionPlanConfig {
             get {
                 return ResourceManager.GetString("ProductionPlanConfig", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Членове за формула за фактическа месечна стойност.
+        /// </summary>
+        public static string ProductionPlanConfigUnitMonthlyConfigFactFractionMembers {
+            get {
+                return ResourceManager.GetString("ProductionPlanConfigUnitMonthlyConfigFactFractionMembers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ProductionPlanConfigUnitMonthlyConfigPlanMembers.
+        /// </summary>
+        public static string ProductionPlanConfigUnitMonthlyConfigPlanMembers {
+            get {
+                return ResourceManager.GetString("ProductionPlanConfigUnitMonthlyConfigPlanMembers", resourceCulture);
             }
         }
         
