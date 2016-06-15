@@ -398,6 +398,7 @@
                             && x.FactoryId == (factoryId ?? x.FactoryId)
                             && x.ProcessUnitId == (processUnitId ?? x.ProcessUnitId)
                             && x.ProductionPlanConfig.MaterialTypeId == CommonConstants.MaterialType
+                            && x.ProductionPlanConfig.IsPropductionPlan == true
                         );
 
                     kendoResult = dbResult.ToDataSourceResult(request, ModelState, Mapper.Map<SummaryProductionPlanViewModel>);
@@ -440,7 +441,9 @@
                             && x.FactoryId == (factoryId ?? x.FactoryId)
                             && x.ProcessUnitId == (processUnitId ?? x.ProcessUnitId)
                             && x.ProductionPlanConfig.MaterialTypeId == CommonConstants.EnergyType
-                        ).ToList();
+                            && x.ProductionPlanConfig.IsPropductionPlan == true
+                        )
+                        .ToList();
 
                     kendoResult = dbResult.ToDataSourceResult(request, ModelState, Mapper.Map<EnergyProductionPlanDataViewModel>);
                 }

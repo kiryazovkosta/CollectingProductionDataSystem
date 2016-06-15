@@ -63,7 +63,8 @@
                 .Include(p => p.ProductionPlanConfig.MaterialType)
                 .Where(p => p.RecordTimestamp == date &&
                         p.ProcessUnitId == processUnitId &&
-                        p.ProductionPlanConfig.MaterialTypeId == materialTypeId)
+                        p.ProductionPlanConfig.MaterialTypeId == materialTypeId &&
+                        p.ProductionPlanConfig.IsPropductionPlan == true)
                 .ToList();
             if (existingProductionPlanData.Count > 0)
 	        {
@@ -73,15 +74,23 @@
             var dbResult = this.data.ProductionPlanConfigs.All()
                 .Include(x => x.PlanNorms)
                 .Include(x => x.ProcessUnit)
-                .Include(x => x.ProcessUnit.PlanValues)
-                .Where(x => x.IsPropductionPlan == true);
+                .Include(x => x.ProcessUnit.PlanValues);
+                //.Where(x => x.IsPropductionPlan == true);
             if (processUnitId != null)
             {
                 dbResult = dbResult.Where(x => x.ProcessUnitId == processUnitId);
             }
             if (materialTypeId != null)
             {
-                dbResult = dbResult.Where(x => x.MaterialTypeId == materialTypeId);
+                if (materialTypeId.Value == CommonConstants.MaterialType)
+                {
+                    dbResult = dbResult.Where(x => x.MaterialTypeId == materialTypeId);    
+                }
+                else
+                {
+                    dbResult = dbResult.Where(x => x.MaterialTypeId >= materialTypeId);
+                }
+                
             }
 
             var productionPlans = dbResult
@@ -99,12 +108,12 @@
             {
                 var planValue = CalculatePlanValue(productionPlan, dailyData, this.calculator, month);
                 var factValue = CalculateFactValue(productionPlan, dailyData, this.calculator);
-                if (factValue < 0 && materialTypeId == CommonConstants.EnergyType)
+                if (factValue < 0 && materialTypeId >= CommonConstants.EnergyType)
                 {
                     factValue = 0;
                 }
                 var factPercents = CalculateUsageRateValue(productionPlan, dailyData, this.calculator);
-                if (factPercents < 0 && materialTypeId == CommonConstants.EnergyType)
+                if (factPercents < 0 && materialTypeId >= CommonConstants.EnergyType)
                 {
                     factPercents = 0;
                 }
@@ -114,6 +123,7 @@
                 var productionPlanData = new ProductionPlanData
                 {
                     ProductionPlanConfigId = productionPlan.Id,
+                    ProductionPlanConfig = productionPlan,
                     RecordTimestamp = date.Value,
                     PercentagesPlan = percentagesPlan,
                     QuanityPlan = (decimal)planValue,
@@ -125,7 +135,7 @@
                     QuanityFactCurrentMonth = currentMonthQuantity.ContainsKey(productionPlan.Name) == true ?  currentMonthQuantity[productionPlan.Name] : 0.00m,
                 };
 
-                if (materialTypeId == CommonConstants.EnergyType)
+                if (materialTypeId >= CommonConstants.EnergyType)
                 {
                     var percs = CalculateUsageRateToTheDayValue(productionPlan, dailyData, this.calculator, productionPlanData);
                     productionPlanData.PercentagesFactCurrentMonth = GetValidValueOrZero(percs); 
@@ -153,7 +163,7 @@
                 result.Add(productionPlanData);
             }
 
-            if (materialTypeId == CommonConstants.EnergyType && totallyQuantity.Count == 1)
+            if (materialTypeId >= CommonConstants.EnergyType && totallyQuantity.Count == 1)
             {
                 totallyQuantityAs = totallyQuantity.First().Value;  
             }
@@ -163,10 +173,6 @@
                 if (materialTypeId == CommonConstants.MaterialType)
                 {
                     var percs = (((double)item.QuanityFactCurrentMonth + (double)item.QuantityFact) * 100.00) / (double)totallyQuantityAs;
-                    if (percs < 0 && materialTypeId == CommonConstants.EnergyType)
-                    {
-                        Console.WriteLine(percs);
-                    }
                     item.PercentagesFactCurrentMonth = GetValidValueOrZero(percs);  
                 }
             }

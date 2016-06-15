@@ -15,6 +15,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CollectingProductionDataSystem.Infrastructure.Extentions;
+using CollectingProductionDataSystem.Models.Productions.Mounthly;
 using CollectingProductionDataSystem.PhdApplication.Contracts;
 using Ninject;
 using Uniformance.PHD;
@@ -42,32 +43,61 @@ namespace CollectingProductionDataSystem.ConsoleClient
             //AddOrUpdateProductionPlanConfigs(data);
 
             var month = new DateTime(2016,5, 12, 0, 0, 0);
-
             var monthDate = new DateTime(month.Year, month.Month, DateTime.DaysInMonth(month.Year, month.Month), 0, 0, 0);
-            var planValueMonthDate = new DateTime(month.Year, month.Month, 1, 0, 0, 0);
+            var firstDayInMonth = new DateTime(month.Year, month.Month, 1, 0, 0, 0);
 
-            var monthlyProductionData =  data.UnitMonthlyConfigs.All()
+            var productionPlanData = data.ProductionPlanDatas.All().Include(x => x.ProductionPlanConfig).Include(x => x.ProductionPlanConfig.PlanNorms).Where(x => x.RecordTimestamp == monthDate).ToList();
+
+            var monthlyProductionDataList = data.UnitMonthlyConfigs.AllAnual(monthDate.Year)
                 .Include(x => x.UnitMonthlyDatas)
                 .Include(x => x.ProcessUnit)
                 .Include(x => x.ProcessUnit.Factory)
                 .Include(x => x.MeasureUnit)
                 .Include(x => x.ProductionPlanConfig)
-                .Where(x => x.IsAvailableInTechnologicalReport).ToList()
+                .Where(x => x.IsAvailableInTechnologicalReport)
+                .OrderBy(x => x.ProcessUnitId)
+                .ThenBy(x => x.MonthlyReportTypeId)
+                .ToList()
                 .SelectMany(y => y.UnitMonthlyDatas.Where(z => z.RecordTimestamp == monthDate))
-                .Select(x => new MonthlyTechnicalReportData
-                {
-                    Id = x.UnitMonthlyConfig.Id,
-                    Code = x.UnitMonthlyConfig.Code,
-                    Name = x.UnitMonthlyConfig.Name,
-                    Factory = x.UnitMonthlyConfig.ProcessUnit.Factory.FactorySortableName,
-                    ProcessUnit = x.UnitMonthlyConfig.ProcessUnit.SortableName,
-                    MeasurementUnit = x.UnitMonthlyConfig.MeasureUnit.Code,
-                    PlanPercentages = x.UnitMonthlyConfig.ProductionPlanConfig == null ? 0.0M : x.UnitMonthlyConfig.ProductionPlanConfig.PlanNorms.Where(b => b.Month == planValueMonthDate).FirstOrDefault().Value,
-                });
-            foreach (var item in monthlyProductionData)
+                .ToList();
+
+            var monthlyProductionData = new List<MonthlyTechnicalReportData>();
+
+            foreach (var item in monthlyProductionDataList)
             {
-                Console.WriteLine(item.ToString());
+                var m = new MonthlyTechnicalReportData()
+                {
+                    Id = item.UnitMonthlyConfig.Id,
+                    Code = item.UnitMonthlyConfig.Code,
+                    Name = item.UnitMonthlyConfig.Name,
+                    Factory = item.UnitMonthlyConfig.ProcessUnit.Factory.FactorySortableName,
+                    ProcessUnit = item.UnitMonthlyConfig.ProcessUnit.SortableName,
+                    MaterialType = item.UnitMonthlyConfig.MonthlyReportType.Name,
+                    MeasurementUnit = item.UnitMonthlyConfig.MeasureUnit.Code,
+                    PlanValue = GetPlanValue(item, productionPlanData, firstDayInMonth),
+                    PlanPercentage = GetPlanPercentage(item, productionPlanData, firstDayInMonth),
+                    FactValue = (decimal)item.RealValue,
+                    FactPercentage = CalculateFactPercentage(),
+                    FactValueDifference = 0,
+                    FactPercentageDifference = 0,
+                    YearValue = 0,
+                    YearPercentage = 0,
+                    YearValueDifference = 0,
+                    YearPercentageDifference = 0
+                };
+                monthlyProductionData.Add(m);
             }
+
+            using (var sw = new StreamWriter(@"c:\temp\MonthlyTechReport.txt", false))
+            {
+                //sw.WriteLine("Id;Code;Name;Factory;ProcessUnit;MaterialType;MeasurementUnit;PlanValue;PlanPercentage;FactValue;FactPercentage FactValueDifference;FactPercentageDifference;YearValue;YearPercentage;YearValueDifference;YearPercentageDifference");
+                
+                foreach (var item in monthlyProductionData)
+                {
+                    sw.WriteLine(item.ToString());
+                }
+            }
+
 
             Console.WriteLine(monthlyProductionData.Count());
 
@@ -129,6 +159,51 @@ namespace CollectingProductionDataSystem.ConsoleClient
             //TreeShiftsReports(DateTime.Today.AddDays(-2), 1);
             //SeedShiftsToDatabase(uow);
             Console.WriteLine("finished");
+        }
+
+        private static decimal CalculateFactPercentage()
+        {
+            return 0;
+        }
+
+        private static decimal GetPlanPercentage(UnitMonthlyData monthlyData, IList<ProductionPlanData> productionPlanDatas, DateTime firstDayInMonth)
+        {
+            if (monthlyData.UnitMonthlyConfig.ProductionPlanConfig == null)
+            {
+                return 0.0m;
+            }
+
+            var productionPlanData = productionPlanDatas.Where(x => x.ProductionPlanConfigId == monthlyData.UnitMonthlyConfigId).FirstOrDefault();
+
+            if (productionPlanData == null)
+            {
+                return 0.0m;    
+            }
+
+            var planNorm = productionPlanData.ProductionPlanConfig.PlanNorms.Where(x => x.Month == firstDayInMonth).FirstOrDefault();
+            if (planNorm == null)
+            {
+                return 0.0m;
+            }
+
+            return planNorm.Value;
+        }
+
+        private static decimal GetPlanValue(UnitMonthlyData monthlyData, IList<ProductionPlanData> productionPlanDatas, DateTime firstDayInMonth)
+        {
+            if (monthlyData.UnitMonthlyConfig.ProductionPlanConfig == null)
+            {
+                return 0.0m;
+            }
+
+            var productionPlanData = productionPlanDatas.Where(x => x.ProductionPlanConfigId == monthlyData.UnitMonthlyConfigId).FirstOrDefault();
+
+            if (productionPlanData == null)
+            {
+                return 0.0m;    
+            }
+
+            return productionPlanData.QuanityPlan;
         }
 
         private static void AddOrUpdateProductionPlanConfigs(ProductionData data)
@@ -1452,26 +1527,63 @@ namespace CollectingProductionDataSystem.ConsoleClient
 
     class MonthlyTechnicalReportData 
     {
+        /// <summary>
+        /// HEADER
+        /// </summary>
         public int Id { get; set; }
         public string Code { get; set; }
         public string Name { get; set; }
         public string Factory { get; set; }
         public string ProcessUnit { get; set; }
+        public string MaterialType { get; set; }
         public string MeasurementUnit { get; set; }
-        public decimal PlanPercentages { get; set; }
-        public decimal PalnMonthlyRealValue { get; set; }
+
+        /// <summary>
+        /// PLAN MONTH
+        /// </summary>
+        public decimal PlanValue { get; set; }
+        public decimal PlanPercentage { get; set; }
+
+        /// <summary>
+        /// FACT MONTH
+        /// </summary>
+        public decimal FactValue { get; set; }
+        public decimal FactPercentage { get; set; }
+        public decimal FactValueDifference { get; set; }
+        public decimal FactPercentageDifference { get; set; }
+
+        /// <summary>
+        /// FACT YEAR
+        /// </summary>
+        public decimal YearValue { get; set; }
+        public decimal YearPercentage { get; set; }
+        public decimal YearValueDifference { get; set; }
+        public decimal YearPercentageDifference { get; set; }
 
         public override string ToString()
         {
-            //return string.Format("Id {0} Code {1} Name {2} Factory {3} ProcessUnit {4} MeasurementUnit {5}",
-            return string.Format("{0};{1};{2};{3};{4};{5};{6}",
-                this.Id,
-                this.Code,
-                this.Name,
-                this.Factory,
-                this.ProcessUnit,
-                this.MeasurementUnit,
-                this.PlanPercentages);
+            return string.Format("{0};{1};{2};{3};{4};{5};{6};;{7};{8};;{9};{10};{11};{12};;{13};{14};{15};{16}",
+                    Id,
+                    Code,
+                    Name,
+                    Factory,
+                    ProcessUnit,
+                    MaterialType,
+                    MeasurementUnit,
+
+                    PlanValue,
+                    PlanPercentage,
+
+                    FactValue,
+                    FactPercentage,
+                    FactValueDifference,
+                    FactPercentageDifference,
+
+                    YearValue,
+                    YearPercentage,
+                    YearValueDifference,
+                    YearPercentageDifference
+                );
         }
     }
 
