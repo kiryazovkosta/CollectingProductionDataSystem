@@ -18,6 +18,8 @@ namespace CollectingProductionDataSystem.Constants
 
         private static readonly int energyType = 2;
 
+        private static readonly int chemicalType = 5;
+
         private static readonly int firstDayInMonth = 1;
 
         private static readonly int hydroCarbons = 1;
@@ -67,6 +69,8 @@ namespace CollectingProductionDataSystem.Constants
         public static int MaterialType { get { return materialType; } }
 
         public static int EnergyType { get { return energyType; } }
+
+        public static int ChemicalType { get { return chemicalType; } }
 
         public static int FirstDayInMonth { get { return firstDayInMonth; } }
 

@@ -65,8 +65,11 @@ using CollectingProductionDataSystem.Application.ProductionPlanDataServices;
 		         return Json(string.Empty);
 	        }
 
+            var visibleData = dbResult.Where(x => x.ProductionPlanConfig.IsPropductionPlan == true && x.ProductionPlanConfig.MaterialTypeId == materialTypeId.Value).ToList();
+
             var kendoResult = new DataSourceResult();
-            var kendoPreparedResult = Mapper.Map<IEnumerable<ProductionPlanData>, IEnumerable<ProductionPlanViewModel>>(dbResult);
+            //var kendoPreparedResult = Mapper.Map<IEnumerable<ProductionPlanData>, IEnumerable<ProductionPlanViewModel>>(dbResult);
+            var kendoPreparedResult = Mapper.Map<IEnumerable<ProductionPlanData>, IEnumerable<ProductionPlanViewModel>>(visibleData);
             try
             {
                 kendoResult = kendoPreparedResult.ToDataSourceResult(request, ModelState);
