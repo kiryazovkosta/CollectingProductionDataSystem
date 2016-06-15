@@ -104,14 +104,14 @@ namespace CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewMode
         [Display(Name = "MonthlyValuePlanFormula", ResourceType = typeof(Resources.Layout))]
         public string MonthlyValuePlanFormula { get; set; }
 
-        [UIHint("ProductionPlanConfigUnitMonthlyConfigPlanMembersViewModelEditor")]
+        [UIHint("PPCUMCPlanMembersViewModelEditor")]
         [Display(Name = "ProductionPlanConfigUnitMonthlyConfigPlanMembers", ResourceType = typeof(Resources.Layout))]
         public ICollection<ProductionPlanConfigUnitMonthlyConfigPlanMembersViewModel> ProductionPlanConfigUnitMonthlyConfigPlanMembers { get; set; }
 
         [Display(Name = "MonthlyFactFractionFormula", ResourceType = typeof(Resources.Layout))]
         public string MonthlyFactFractionFormula { get; set; }
 
-        [UIHint("ProductionPlanConfigUnitMonthlyConfigFactFractionMembersViewModelEditor")]
+        [UIHint("PPCUMCFactFractionMembersViewModelEditor")]
         [Display(Name = "ProductionPlanConfigUnitMonthlyConfigFactFractionMembers", ResourceType = typeof(Resources.Layout))]
         public ICollection<ProductionPlanConfigUnitMonthlyConfigFactFractionMembersViewModel> ProductionPlanConfigUnitMonthlyConfigFactFractionMembers { get; set; }
         

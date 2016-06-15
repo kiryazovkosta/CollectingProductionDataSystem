@@ -1746,8 +1746,8 @@
     <Content Include="Areas\Documentation\Views\Help\EnteredByUserValuesMessagesStatistics.cshtml" />
     <Content Include="Areas\Documentation\Views\Help\PlanNorm.cshtml" />
     <Content Include="Areas\Documentation\Views\Help\PlanValuesInstallations.cshtml" />
-    <Content Include="Areas\NomManagement\Views\ProductionPlanConfig\EditorTemplates\ProductionPlanConfigUnitMonthlyConfigPlanMembersViewModelEditor.cshtml" />
-    <Content Include="Areas\NomManagement\Views\ProductionPlanConfig\EditorTemplates\ProductionPlanConfigUnitMonthlyConfigFactFractionMembersViewModelEditor.cshtml" />
+    <Content Include="Areas\NomManagement\Views\ProductionPlanConfig\EditorTemplates\PPCUMCPlanMembersViewModelEditor.cshtml" />
+    <Content Include="Areas\NomManagement\Views\ProductionPlanConfig\EditorTemplates\PPCUMCFactFractionMembersViewModelEditor.cshtml" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <Content Include="Scripts\custom\sendArea.js" />
     <Content Include="Scripts\custom\sendArea.min.js">
