@@ -15,6 +15,7 @@ namespace CollectingProductionDataSystem.Application.MonthlyServices
     using System.Text;
     using System.Threading.Tasks;
     using CollectingProductionDataSystem.Application.Contracts;
+    using CollectingProductionDataSystem.Data.Common;
     using CollectingProductionDataSystem.Extentions;
     using CollectingProductionDataSystem.Constants;
     using CollectingProductionDataSystem.Data.Contracts;
@@ -153,14 +154,7 @@ namespace CollectingProductionDataSystem.Application.MonthlyServices
             return result;
         }
 
-        private class Transport
-        {
-            public int UnitMonthlyConfigId { get; set; }
-            public string Code { get; set; }
-            public decimal RealValue { get; set; }
-            public decimal YearTotalValue { get; set; }
 
-        }
 
         /// <summary>
         /// Calculates the anual accumulation.
@@ -174,61 +168,34 @@ namespace CollectingProductionDataSystem.Application.MonthlyServices
             var monthBeforeTargetMonth = targetMonth.AddMonths(-1);
             if (targetMonth.Year == monthBeforeTargetMonth.Year)
             {
-                //                var records = (data.DbContext.DbContext.Database
-                //                    .SqlQuery<Transport>(
-                //                    @"SELECT a.Id as UnitMonthlyConfigId, a.Code as Code, ISNULL(ISNULL( c.Value, b.Value),0) as RealValue
-                //                                FROM UnitMonthlyConfigs as a
-                //	                                LEFT JOIN UnitMonthlyDatas as b
-                //		                                on a.Id = b.UnitMonthlyConfigId AND b.RecordTimestamp = @p0
-                //	                                LEFT OUTER JOIN UnitManualMonthlyDatas as c
-                //	                                on b.Id = c.Id
-                //	                                ORDER BY a.Id", monthBeforeTargetMonth)).ToListAsync().Result
-                //                    .ToDictionary(row => row.Code);
-
-                var records = (from p in data.UnitMonthlyConfigs.AllAnual(targetMonth.Year)
-                               join q in data.UnitMonthlyDatas.All().Where(x => x.RecordTimestamp == monthBeforeTargetMonth) on p.Id equals q.UnitMonthlyConfigId into Result
-                               select new
-                               {
-                                   MonthConfig = p,
-                                   MonthlyData = Result.FirstOrDefault()
-                               }).ToList()
-                              .Select(x => new Transport
+                var records = from p in data.UnitMonthlyConfigs.AllAnual(targetMonth.Year)
+                              join m in data.UnitMonthlyDatas.All().Where(x => x.RecordTimestamp == monthBeforeTargetMonth) on p.Id equals m.UnitMonthlyConfigId into Result
+                              from q in Result.DefaultIfEmpty()
+                              join o in data.UnitManualMonthlyDatas.All() on q.Id equals o.Id into ManualResult
+                              from l in ManualResult.DefaultIfEmpty()
+                              select new AnnualAccumulation
                               {
-                                  UnitMonthlyConfigId = x.MonthConfig.Id,
-                                  Code = x.MonthConfig.Code,
-                                  RealValue = x.MonthlyData == null ? 0M : (decimal)x.MonthlyData.RealValue,
-                                  YearTotalValue = x.MonthlyData == null ? 0M : x.MonthlyData.YearTotalValue,
-                              }).ToDictionary(x=>x.Code);
+                                  UnitMonthlyConfigId = p.Id,
+                                  Code = p.Code,
+                                  MonthlyValue = (q == null) ? 0M : q.Value,
+                                  MonthlyManualValue = (l == null) ? null : (decimal?)l.Value,
+                                  YearTotalValue = (q == null) ? 0M : q.YearTotalValue,
+                              };
 
-                //.SelectMany(q => q.UnitMonthlyDatas.DefaultIfEmpty())
-                //.Include(x=>x.UnitManualMonthlyData)
-                //where p.RecordTimestamp == monthBeforeTargetMonth
-                //select p).ToList();
-                //new Transport
-                //{
-                //    UnitMonthlyConfigId = p.Id,
-                //    Code = p..Code,
-                //    RealValue = l.Value,
-                //    YearTotalValue = q.YearTotalValue,
-                //};
-
-                foreach (var key in records.Keys)
+                foreach (var record in records)
                 {
-                    var currentRecord = records[key];
-                    if (resultMonthly.ContainsKey(key))
+                    if (resultMonthly.ContainsKey(record.Code))
                     {
-                        resultMonthly[key].YearTotalValue = (currentRecord == null) ? 0M
-                                        : currentRecord.RealValue + currentRecord.YearTotalValue;
+                        resultMonthly[record.Code].YearTotalValue = record.RealValue + record.YearTotalValue;
                     }
                     else
                     {
 
-                        resultMonthly.Add(key, new UnitMonthlyData()
+                        resultMonthly.Add(record.Code, new UnitMonthlyData()
                         {
                             RecordTimestamp = targetMonth,
-                            UnitMonthlyConfigId = records[key].UnitMonthlyConfigId,
-                            YearTotalValue = (currentRecord == null) ? 0M
-                                        : currentRecord.RealValue + currentRecord.YearTotalValue
+                            UnitMonthlyConfigId = record.UnitMonthlyConfigId,
+                            YearTotalValue = record.RealValue + record.YearTotalValue
                         });
                     }
                 }
@@ -237,7 +204,6 @@ namespace CollectingProductionDataSystem.Application.MonthlyServices
                 Console.WriteLine(timer.Elapsed);
             }
         }
-
 
         /// <summary>
         /// Gets the depending records.
@@ -749,7 +715,8 @@ namespace CollectingProductionDataSystem.Application.MonthlyServices
                                 .Include(x => x.UnitMonthlyConfig.MeasureUnit)
                                 .Include(x => x.UnitManualMonthlyData)
                                 .Where(x => x.RecordTimestamp == targetMonth
-                                        && x.UnitMonthlyConfig.MonthlyReportTypeId == monthlyReportTypeId)
+                                        && x.UnitMonthlyConfig.MonthlyReportTypeId == monthlyReportTypeId
+                                        && (x.UnitMonthlyConfig.IsDeleted != true || x.UnitMonthlyConfig.DeletedOn > targetMonth))
                                         .ToList();
         }
 
@@ -757,6 +724,29 @@ namespace CollectingProductionDataSystem.Application.MonthlyServices
         {
             var targetMonth = this.GetTargetMonth(inTargetDate);
             return this.data.UnitApprovedMonthlyDatas.All().Where(u => u.RecordDate == targetMonth && u.MonthlyReportTypeId == monthlyReportTypeId).Any();
+        }
+    }
+
+    internal class AnnualAccumulation
+    {
+        public int UnitMonthlyConfigId { get; set; }
+        public string Code { get; set; }
+        public decimal MonthlyValue { get; set; }
+        public decimal? MonthlyManualValue { get; set; }
+
+        public decimal YearTotalValue { get; set; }
+
+        public decimal RealValue
+        {
+            get
+            {
+                decimal result = this.MonthlyValue;
+                if (this.MonthlyManualValue != null)
+                {
+                    result = this.MonthlyManualValue.Value;
+                }
+                return result;
+            }
         }
     }
 }

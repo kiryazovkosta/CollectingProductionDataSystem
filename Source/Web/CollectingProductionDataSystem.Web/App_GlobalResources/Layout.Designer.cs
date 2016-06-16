@@ -4462,6 +4462,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to UnitMonthlyWorkingHours.
+        /// </summary>
+        public static string UnitMonthlyWorkingHours {
+            get {
+                return ResourceManager.GetString("UnitMonthlyWorkingHours", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Name.
         /// </summary>
         public static string UnitName {

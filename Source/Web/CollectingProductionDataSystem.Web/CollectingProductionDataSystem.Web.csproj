@@ -310,6 +310,7 @@
     <Compile Include="Areas\MonthlyDataReporting\Controllers\MonthlyHeatEnergyController.cs" />
     <Compile Include="Areas\MonthlyDataReporting\Controllers\MonthlyNitrogenController.cs" />
     <Compile Include="Areas\MonthlyDataReporting\Controllers\MonthlyPotableWaterController.cs" />
+    <Compile Include="Areas\MonthlyDataReporting\Controllers\MonthlyWorkingHoursController.cs" />
     <Compile Include="Areas\MonthlyDataReporting\Models\ConfirmMonthlyInputModel.cs" />
     <Compile Include="Areas\MonthlyDataReporting\Controllers\MonthlyHydroCarbonsController.cs" />
     <Compile Include="Areas\MonthlyDataReporting\Models\IValuable.cs" />
@@ -2465,6 +2466,7 @@
     <Folder Include="Areas\MonthlyDataReporting\Views\MonthlyHeatEnergy\" />
     <Folder Include="Areas\MonthlyDataReporting\Views\MonthlyHydroCarbons\" />
     <Folder Include="Areas\MonthlyDataReporting\Views\MonthlyNitrogen\" />
+    <Folder Include="Areas\MonthlyDataReporting\Views\MonthlyWorkingHours\" />
     <Folder Include="Areas\MonthlyReporting\Models\" />
     <Folder Include="Areas\MonthlyReporting\Views\AreaBase\" />
     <Folder Include="Areas\MonthlyReporting\Views\Shared\" />

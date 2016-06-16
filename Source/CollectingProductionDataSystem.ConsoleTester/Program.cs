@@ -61,7 +61,13 @@ namespace CollectingProductionDataSystem.ConsoleTester
                 .ToDictionary(x => x.UnitMonthlyConfig.Code);
 
             monthlyService.CalculateAnualAccumulation(ref records, new DateTime(2016, 5, 31));
-            
+            List<UnitMonthlyData> newRecords = new List<UnitMonthlyData>();
+            foreach (var item in records.Values.Where(x=>x.Id == 0))
+            {
+                newRecords.Add(item);
+            }
+            data.UnitMonthlyDatas.BulkInsert(newRecords, "Test");
+            data.SaveChanges("Test");
 
  
 
