@@ -148,7 +148,7 @@ namespace CollectingProductionDataSystem.Application.MonthlyServices
             //Add anual data of first calculation
             if (!isRecalculate)
             {
-                CalculateAnualAccumulation(ref resultMonthly, targetMonth);
+                CalculateAnualAccumulation(ref resultMonthly, targetMonth, reportTypeId);
             }
             var result = resultMonthly.Select(x => x.Value);
             return result;
@@ -161,14 +161,14 @@ namespace CollectingProductionDataSystem.Application.MonthlyServices
         /// </summary>
         /// <param name="resultMonthly">The result monthly.</param>
         /// <param name="targetMonth">The target month.</param>
-        public void CalculateAnualAccumulation(ref Dictionary<string, UnitMonthlyData> resultMonthly, DateTime targetMonth)
+        public void CalculateAnualAccumulation(ref Dictionary<string, UnitMonthlyData> resultMonthly, DateTime targetMonth, int reportTypeId = 0)
         {
             var timer = new Stopwatch();
             timer.Start();
             var monthBeforeTargetMonth = targetMonth.AddMonths(-1);
             if (targetMonth.Year == monthBeforeTargetMonth.Year)
             {
-                var records = from p in data.UnitMonthlyConfigs.AllAnual(targetMonth.Year)
+                var records = from p in data.UnitMonthlyConfigs.AllAnual(targetMonth.Year).Where(x => reportTypeId == 0 || x.MonthlyReportTypeId == reportTypeId)
                               join m in data.UnitMonthlyDatas.All().Where(x => x.RecordTimestamp == monthBeforeTargetMonth) on p.Id equals m.UnitMonthlyConfigId into Result
                               from q in Result.DefaultIfEmpty()
                               join o in data.UnitManualMonthlyDatas.All() on q.Id equals o.Id into ManualResult
