@@ -440,6 +440,26 @@
         }
 
         [TestMethod]
+        public void TestIfRepeatOfFormulaMemberIsPossible()
+        {
+            //Arrange
+            double p0 = 455;
+
+
+            var inputParams = new Dictionary<string, double>();
+            inputParams.Add("p0", p0);
+            
+            double expected = 100;
+
+            string expr = @"((p.p0*100.00)/p.p0)";
+            //Act
+            double actual = calculator.Calculate(expr, "p", 1, inputParams);
+            //Assert
+            //100
+            Assert.AreEqual(Convert.ToDecimal(expected), Convert.ToDecimal(actual));            
+        }
+
+        [TestMethod]
         public void PartMyFormulaTest()
         {
             //Arrange
@@ -456,7 +476,7 @@
             double actual = calculator.Calculate(expr, "par", 2, inputParams);
             //Assert
             //.8044167846552613
-            Assert.AreEqual(Convert.ToDecimal(expected), Convert.ToDecimal(actual));            
+            Assert.AreEqual(Convert.ToDecimal(expected), Convert.ToDecimal(actual));
         }
 
         /**********************************************************/

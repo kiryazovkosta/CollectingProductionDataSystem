@@ -49,9 +49,9 @@ namespace CollectingProductionDataSystem.ConsoleTester
             //data = new ProductionData(new CollectingDataSystemDbContext());
             //testUnitDailyCalculationService = kernel.Get<ITestUnitDailyCalculationService>();
             //service = kernel.Get<UnitMothlyDataService>();
-            monthlyService = new UnitMothlyDataService(data, kernel, new CalculatorService(),TestUnitMonthlyCalculationService.GetInstance());
+            monthlyService = new UnitMothlyDataService(data, kernel, new CalculatorService(), TestUnitMonthlyCalculationService.GetInstance());
         }
- 
+
 
         static void Main(string[] args)
         {
@@ -61,9 +61,15 @@ namespace CollectingProductionDataSystem.ConsoleTester
                 .ToDictionary(x => x.UnitMonthlyConfig.Code);
 
             monthlyService.CalculateAnualAccumulation(ref records, new DateTime(2016, 5, 31));
-            
+            List<UnitMonthlyData> newRecords = new List<UnitMonthlyData>();
+            foreach (var item in records.Values.Where(x => x.Id == 0))
+            {
+                newRecords.Add(item);
+            }
+            data.UnitMonthlyDatas.BulkInsert(newRecords, "Test");
+            data.SaveChanges("Test");
 
- 
+
 
 
             ////using (var transaction = new TransactionScope(TransactionScopeOption.Required, transantionOption))

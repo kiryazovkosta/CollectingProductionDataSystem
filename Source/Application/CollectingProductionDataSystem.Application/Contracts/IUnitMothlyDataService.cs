@@ -89,6 +89,6 @@ namespace CollectingProductionDataSystem.Application.Contracts
         bool IsMonthlyReportConfirmed(DateTime inTargetDate, int monthlyReportTypeId);
 
 
-        void CalculateAnualAccumulation(ref Dictionary<string, UnitMonthlyData> resultMonthly, DateTime targetMonth);
+        void CalculateAnualAccumulation(ref Dictionary<string, UnitMonthlyData> resultMonthly, DateTime targetMonth, int reportTypeId = 0);
     }
 }

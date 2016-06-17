@@ -1717,4 +1717,7 @@
   <data name="Dashboard" xml:space="preserve">
     <value>Dashboard</value>
   </data>
+  <data name="UnitMonthlyWorkingHours" xml:space="preserve">
+    <value>UnitMonthlyWorkingHours</value>
+  </data>
 </root>

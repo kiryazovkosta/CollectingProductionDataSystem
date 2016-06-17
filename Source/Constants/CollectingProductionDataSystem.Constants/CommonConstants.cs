@@ -44,6 +44,8 @@ namespace CollectingProductionDataSystem.Constants
 
         private static readonly int fuels = 11;
 
+        private static readonly int workingHours = 12;
+
         private static readonly int dailyInfoDailyInfoHydrocarbonsShiftTypeId = 52;
 
         private static readonly int halfAnHour = 60 * 30;
@@ -93,6 +95,8 @@ namespace CollectingProductionDataSystem.Constants
         public static int Nitrogen { get { return nitrogen; } }
 
         public static int Chemicals { get { return chemicals; } }
+
+        public static int WorkingHours { get { return workingHours; } }
 
         public static int Fuels { get { return fuels; } }
 
