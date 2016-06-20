@@ -1,4 +1,5 @@
 ﻿@using CollectingProductionDataSystem.Web.ViewModels.Transactions;
+@using System.Web.Optimization;
 @using Resources = App_GlobalResources.Resources;
 @model MeasuringPointsDataViewModel
 @{
@@ -21,7 +22,8 @@
         .AutoBind(false)
         .Columns(columns =>
             {
-                columns.Bound(c => c.ProductId).Width(100);
+                columns.Bound(c => c.Id).Hidden();
+                columns.Bound(c => c.ProductId).Width(100).Format("{0:000}");
                 columns.Bound(c => c.ProductName);
                 columns.Bound(c => c.AvtoQuantity).ClientTemplate("<div style='text-align:right;'>#=kendo.toString(data.AvtoQuantity, 'n3') #</div>").Width(140);
                 columns.Bound(c => c.JpQuantity).ClientTemplate("<div style='text-align:right;'>#=kendo.toString(data.JpQuantity, 'n3') #</div>").Width(140);
@@ -31,11 +33,11 @@
                 columns.Bound(c => c.TotalMonthQuantity).ClientTemplate("<div style='text-align:right;'>#=kendo.toString(data.TotalMonthQuantity, 'n3') #</div>").Width(140);
                 columns.Bound(c => c.ActiveQuantity).ClientTemplate("<div style='text-align:right;'>#=kendo.toString(data.ActiveQuantity, 'n3') #</div>").Width(140);
             })
-        .Pageable(pageable => pageable
-            .Refresh(true)
-            .PageSizes(new[] { 100 })
-            .ButtonCount(5)
-        )
+        //.Pageable(pageable => pageable
+        //    .Refresh(true)
+        //    .PageSizes(new[] { 100 })
+        //    .ButtonCount(5)
+        //)
         .Sortable()
         .Excel(excel => excel
             .FileName(@Resources.Layout.MeasuringPointsData + "_" + DateTime.Now + ".xlsx")
@@ -49,7 +51,8 @@
             .Ajax()
             .PageSize(50)
             .ServerOperation(true)
-                    .Read(read => read.Action("ReadTransactionsDailyData", "TransactionsDaily", new { area = "DailyReporting" }).Data("sendDate"))
+            .Read(read => read.Action("ReadTransactionsDailyData", "TransactionsDaily", new { area = "DailyReporting" }).Data("sendDate"))
+            .Sort(a => a.Add(c => c.ProductId).Ascending())
         .Events(events =>
         {
             events.Error("kendoAdditional.ErrorHandler");

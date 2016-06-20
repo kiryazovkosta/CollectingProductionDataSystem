@@ -166,6 +166,9 @@
     <Compile Include="TankDataServices\TankDataKendoService.cs" />
     <Compile Include="Contracts\IUnitDailyDataService.cs" />
     <Compile Include="Contracts\ITestUnitDailyCalculationService.cs" />
+    <Compile Include="TransactionsDailyDataServices\ITransactionsDailyDataService.cs" />
+    <Compile Include="TransactionsDailyDataServices\TransactionDataDto.cs" />
+    <Compile Include="TransactionsDailyDataServices\TransactionsDailyDataService.cs" />
     <Compile Include="UnitDailyDataServices\TestUnitDailyCalculationService.cs" />
     <Compile Include="UnitDailyDataServices\UnitDailyCalculationIndicator.cs" />
     <Compile Include="UnitDailyDataServices\UnitDailyDataService.cs" />

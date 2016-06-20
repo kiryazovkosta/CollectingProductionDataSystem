@@ -588,6 +588,14 @@
             }
         }
 
+        public IRepository<MeasuringPointsConfigsReportData> MeasuringPointsConfigsReportDatas
+        {
+            get
+            {
+                return this.GetRepository<MeasuringPointsConfigsReportData>();
+            }
+        }
+
         public IEfStatus SaveChanges(string userName)
         {
             return this.context.SaveChangesWithValidation(userName);

@@ -15,12 +15,17 @@
     using AutoMapper;
     using CollectingProductionDataSystem.Models.Transactions;
     using Resources = App_GlobalResources.Resources;
+    using CollectingProductionDataSystem.Constants;
+    using CollectingProductionDataSystem.Application.TransactionsDailyDataServices;
 
     public class TransactionsDailyController : AreaBaseController
     {
-        public TransactionsDailyController(IProductionData dataParam)
+        private readonly ITransactionsDailyDataService transactionsDailyData;
+
+        public TransactionsDailyController(IProductionData dataParam, ITransactionsDailyDataService transactionDailyDataParam)
             : base(dataParam)
         {
+            this.transactionsDailyData = transactionDailyDataParam;
         }
 
         [HttpGet]
@@ -36,74 +41,76 @@
             var kendoResult = new DataSourceResult();
             try
             {
-                var transactionsData = GetMeasurementPointsDataByDateAndDirection(date, flowDirection)
-                    .Select(t => new TransactionDataModel
-                {
-                    MeasuringPointId = t.MeasuringPointId,
-                    DirectionId = t.MeasuringPointConfig.FlowDirection.Value,
-                    TransportId = t.MeasuringPointConfig.TransportTypeId,
-                    ProductId = t.ProductNumber.Value,
-                    Mass = t.Mass,
-                    MassReverse = t.MassReverse,
-                    FlowDirection = t.MeasuringPointConfig.FlowDirection.Value,
-                });
+                //var transactionsData = GetMeasurementPointsDataByDateAndDirection(date, flowDirection)
+                //    .Select(t => new TransactionDataModel
+                //{
+                //    MeasuringPointId = t.MeasuringPointId,
+                //    DirectionId = t.MeasuringPointConfig.FlowDirection.Value,
+                //    TransportId = t.MeasuringPointConfig.TransportTypeId,
+                //    ProductId = t.ProductNumber.Value,
+                //    Mass = t.Mass,
+                //    MassReverse = t.MassReverse,
+                //    FlowDirection = t.MeasuringPointConfig.FlowDirection.Value,
+                //});
 
-                var dict = new SortedDictionary<int, MeasuringPointsDataViewModel>();
+                //var dict = new SortedDictionary<int, MeasuringPointsDataViewModel>();
 
-                foreach (var transactionData in transactionsData)
-                {
-                    var measuringPointData = FillModelObject(transactionData, dict, flowDirection);
-                    if (measuringPointData != null)
-                    {
-                        dict[transactionData.ProductId] = measuringPointData;
-                    }
-                }
+                //foreach (var transactionData in transactionsData)
+                //{
+                //    var measuringPointData = FillModelObject(transactionData, dict, flowDirection);
+                //    if (measuringPointData != null)
+                //    {
+                //        dict[transactionData.ProductId] = measuringPointData;
+                //    }
+                //}
 
-                var actDict = GetActiveTransactionsData(date, flowDirection);
+                //var actDict = GetActiveTransactionsData(date, flowDirection);
 
-                var monthTransactions = GetMeasurementPointsDataByDateAndDirection(date, flowDirection, true)
-                    .Select(t => new TransactionDataModel
-                {
-                    MeasuringPointId = t.MeasuringPointId,
-                    DirectionId = t.MeasuringPointConfig.FlowDirection.Value,
-                    TransportId = t.MeasuringPointConfig.TransportTypeId,
-                    ProductId = t.ProductNumber.Value,
-                    Mass = t.Mass,
-                    MassReverse = t.MassReverse,
-                    FlowDirection = t.MeasuringPointConfig.FlowDirection.Value,
-                });
+                //var monthTransactions = GetMeasurementPointsDataByDateAndDirection(date, flowDirection, true)
+                //    .Select(t => new TransactionDataModel
+                //{
+                //    MeasuringPointId = t.MeasuringPointId,
+                //    DirectionId = t.MeasuringPointConfig.FlowDirection.Value,
+                //    TransportId = t.MeasuringPointConfig.TransportTypeId,
+                //    ProductId = t.ProductNumber.Value,
+                //    Mass = t.Mass,
+                //    MassReverse = t.MassReverse,
+                //    FlowDirection = t.MeasuringPointConfig.FlowDirection.Value,
+                //});
 
-                var totallyQuantityByProducts = new Dictionary<int, decimal>();
-                foreach (var item in monthTransactions)
-                {
-                    if (item.DirectionId == 3)
-                    {
-                        // data from Pt Rosenec
-                        if (flowDirection == 2 && (item.MassReverse.HasValue == false || item.MassReverse.Value == 0))
-                        {
-                            continue;
-                        }
-                        if (flowDirection == 1 && (item.Mass.HasValue == false || item.Mass.Value == 0))
-                        {
-                            continue;
-                        }
-                    }
+                //var totallyQuantityByProducts = new Dictionary<int, decimal>();
+                //foreach (var item in monthTransactions)
+                //{
+                //    if (item.DirectionId == 3)
+                //    {
+                //        // data from Pt Rosenec
+                //        if (flowDirection == 2 && (item.MassReverse.HasValue == false || item.MassReverse.Value == 0))
+                //        {
+                //            continue;
+                //        }
+                //        if (flowDirection == 1 && (item.Mass.HasValue == false || item.Mass.Value == 0))
+                //        {
+                //            continue;
+                //        }
+                //    }
 
-                    if (totallyQuantityByProducts.ContainsKey(item.ProductId))
-                    {
-                        totallyQuantityByProducts[item.ProductId] = totallyQuantityByProducts[item.ProductId] + item.RealMass;
-                    }
-                    else
-                    {
-                        if (item.RealMass > 0)
-                        {
-                            totallyQuantityByProducts[item.ProductId] = item.RealMass;   
-                        }
-                    }
-                }
+                //    if (totallyQuantityByProducts.ContainsKey(item.ProductId))
+                //    {
+                //        totallyQuantityByProducts[item.ProductId] = totallyQuantityByProducts[item.ProductId] + item.RealMass;
+                //    }
+                //    else
+                //    {
+                //        if (item.RealMass > 0)
+                //        {
+                //            totallyQuantityByProducts[item.ProductId] = item.RealMass;   
+                //        }
+                //    }
+                //}
 
-                var hs = PopulateAllMeaurementPointDatas(dict, actDict, totallyQuantityByProducts);
-                kendoResult = hs.ToDataSourceResult(request, ModelState);
+                //var hs = PopulateAllMeaurementPointDatas(dict, actDict, totallyQuantityByProducts);
+                //kendoResult = hs.ToDataSourceResult(request, ModelState);
+                var dbResult = this.transactionsDailyData.ReadTransactionsDailyData(date.Value, flowDirection.Value);
+                kendoResult = dbResult.ToDataSourceResult(request, ModelState);
             }
             catch (Exception ex1)
             {
@@ -363,7 +370,7 @@
             {
                 this.ModelState.AddModelError("date", string.Format(Resources.ErrorMessages.Required, Resources.Layout.UnitsDateSelector));
             }
-            if (directionId == null || directionId.Value == 3)
+            if (directionId == null || directionId.Value == CommonConstants.InputOutputDirection)
             {
                 this.ModelState.AddModelError("direction", string.Format(Resources.ErrorMessages.Required, Resources.Layout.Direction));
             }

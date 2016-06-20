@@ -166,6 +166,7 @@
     <Compile Include="Transactions\MeasuringPointProductsData.cs" />
     <Compile Include="Transactions\MeasuringPointConfig.cs" />
     <Compile Include="Transactions\MeasuringPointsConfigsData.cs" />
+    <Compile Include="Transactions\MeasuringPointsConfigsReportData.cs" />
     <Compile Include="Transactions\RelatedMeasuringPointConfigs.cs" />
     <Compile Include="Transactions\Zone.cs" />
     <Compile Include="UtilityEntities\Message.cs" />

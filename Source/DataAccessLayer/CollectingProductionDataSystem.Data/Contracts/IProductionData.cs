@@ -111,7 +111,6 @@
 
         IRepository<UnitDailyConfigUnitMonthlyConfig> UnitDailyConfigUnitMonthlyConfigs { get; }
 
-
         IRepository<AuditLogRecord> AuditLogRecords { get; }
 
         IDeletableEntityRepository<Shift> Shifts { get; }
@@ -167,6 +166,8 @@
         IDeletableEntityRepository<UnitRecalculatedMonthlyData> UnitRecalculatedMonthlyDatas { get; }
 
         IRepository<RelatedProductionPlanConfigs> RelatedProductionPlanConfigs { get; }
+
+        IRepository<MeasuringPointsConfigsReportData> MeasuringPointsConfigsReportDatas { get; }
 
         IDbContext DbContext { get; }
 

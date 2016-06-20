@@ -54,7 +54,11 @@ namespace CollectingProductionDataSystem.Constants
 
         private static int maxDateDifference = 31;
 
-        
+        private static int inputDirection = 2;
+
+        private static int outputDirection = 1;
+
+        private static int inputOutputDirection = 3;
 
         public static string StandartPassword
         {
@@ -107,5 +111,12 @@ namespace CollectingProductionDataSystem.Constants
         public static string PhdDateTimeFormat { get { return phdDateTimeFormat; } }
 
         public static int HalfAnHour { get { return halfAnHour; } }
+
+        public static int InputDirection { get { return inputDirection; } }
+
+        public static int OutputDirection { get { return outputDirection; } }
+
+        public static int InputOutputDirection { get { return inputOutputDirection; } }
+
     }
 }
