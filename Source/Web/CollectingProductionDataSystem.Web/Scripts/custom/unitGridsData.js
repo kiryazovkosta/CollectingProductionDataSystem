@@ -8,7 +8,7 @@ var unitGridsData = (function () {
                          "#tanks-statuses",
                          "#messages-grid",
                          "#plan-grid"
-                         ];
+    ];
 
     // ----------------- autorun function on document ready -------------------
     'use strict';
@@ -234,7 +234,7 @@ var unitGridsData = (function () {
             attachEventToExportBtn("#excel-export", "#monthly-recalc-data-report");
         }
 
-        
+
     }
 
     function checkEquals(dataParam, controlData) {
@@ -687,7 +687,7 @@ var unitGridsData = (function () {
                 }
             }
 
-            if (row.IsTotalPosition) {
+            if (row.IsTotalPosition && !row.IsTotalInputPosition) {
                 currentUid = row.uid;
                 currenRow = grid.table.find("tr[data-uid='" + currentUid + "']");
                 var prevRow = $(currenRow).prev('tr');
@@ -702,7 +702,7 @@ var unitGridsData = (function () {
                 $.each(groupCells, function (ix, cell) {
                     $(cell).removeClass("k-group-cell");
                     if (ix < 6) {
-                        $(cell).attr("style","display:none !important");
+                        $(cell).attr("style", "display:none !important");
                     }
                 });
             }
@@ -857,11 +857,11 @@ var unitGridsData = (function () {
                 if (isInArray(row.cells[2].value, totalRowCodes)) {
                     row.cells[0].value = row.cells[4].value;
                     row.cells[0].colSpan = 5;
-                    row.cells.splice(1,4);
+                    row.cells.splice(1, 4);
                     if (excelRows[index - 1]) {
                         if (excelRows[index - 1].type === "group-header") {
                             excelRows[index - 1].markForDelete = true;
-                        } 
+                        }
                     }
                     row.cells.forEach(function (cell) {
                         cell.background = "#7a7a7a";

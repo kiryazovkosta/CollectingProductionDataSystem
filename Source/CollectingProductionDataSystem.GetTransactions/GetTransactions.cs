@@ -13,11 +13,13 @@
         private Timer tradeReportDateTimer = null;
         private Timer productionReportDateTimer = null;
         private Timer activeTransactionsTimer = null;
+        private Timer reportTransactionsTimer = null;
 
         private static readonly object lockObjectTransactionsData = new object();
         private static readonly object lockObjectTradeReportData = new object();
         private static readonly object lockObjectProductionReportData = new object();
         private static readonly object lockObjectActiveTransactionsData = new object();
+        private static readonly object lockObjectReportTransactionsData = new object();
 
         private readonly ILog logger;
 
@@ -50,6 +52,11 @@
                 if (Properties.Settings.Default.SYNC_ACTIVE_TRANSACTIONS)
                 {
                     this.activeTransactionsTimer = new Timer(TimerHandlerActiveTransactionsData, null, 0, Timeout.Infinite);
+                }
+
+                if (Properties.Settings.Default.SYNC_TRANSACTIONS_BY_PRODUCTS)
+                {
+                    this.reportTransactionsTimer = new Timer(TimerHandlerReportTransactionsData, null, 0, Timeout.Infinite);  
                 }
 
             }
@@ -158,6 +165,29 @@
                 {
                     this.activeTransactionsTimer.Change(
                         Convert.ToInt64(Properties.Settings.Default.IDLE_TIMER_ACTIVE_TRANSACTIONS_DATA.TotalMilliseconds), 
+                        System.Threading.Timeout.Infinite);
+                }
+            }
+        }
+
+        private void TimerHandlerReportTransactionsData(object state)
+        {
+            lock (lockObjectReportTransactionsData)
+            {
+                try
+                {
+                    SetRegionalSettings();
+                    this.reportTransactionsTimer.Change(Timeout.Infinite, Timeout.Infinite);
+                    GetTransactionsMain.ProcesReportTransactionsData(DateTime.Today.AddDays(Properties.Settings.Default.TRANSACTIONS_BY_PRODUCTS_OFFSET_IN_DAYS));
+                }
+                catch (Exception ex)
+                {
+                    logger.Error(ex.Message, ex);
+                }
+                finally
+                {
+                    this.reportTransactionsTimer.Change(
+                        Convert.ToInt64(Properties.Settings.Default.IDLE_TIMER_REPORT_TRANSACTIONS_DATA.TotalMilliseconds), 
                         System.Threading.Timeout.Infinite);
                 }
             }

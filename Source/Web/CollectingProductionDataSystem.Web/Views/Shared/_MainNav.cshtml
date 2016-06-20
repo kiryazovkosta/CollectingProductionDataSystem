@@ -1,4 +1,6 @@
-﻿@using Resources = App_GlobalResources.Resources;
+﻿@using Microsoft.AspNet.Identity;
+@using Resources = App_GlobalResources.Resources;
+
 <div class="navbar navbar-default navbar-inverse navbar-fixed-top">
     <div class="container-fluid">
         <div class="navbar-header">
@@ -50,19 +52,20 @@
                             <li role="separator" class="divider divider-labeled"><span class="label label-default pull-right">Разходни норми</span></li>
                             <li>@Html.AuthorizedActionLink(@Resources.Layout.PlanNorm, "Index", "PlanNorm", new { area = "PlanConfiguration" }, null)</li>
                             <li>@Html.AuthorizedActionLink(@Resources.Layout.PlanValues, "Index", "PlanValues", new { area = "PlanConfiguration" }, null)</li>
+
                             <li role="separator" class="divider divider-labeled"><span class="label label-default pull-right">Месечни данни</span></li>
-                            <li>@Html.AuthorizedActionLink(@Resources.Layout.UnitMonthlyHCData, "Report", "MonthlyHydroCarbons", new { area = "MonthlyDataReporting" }, null)</li>
-                            <li>@Html.AuthorizedActionLink(@Resources.Layout.UnitMonthlyCHData, "Report", "MonthlyChemical", new { area = "MonthlyDataReporting" }, null)</li>
-                            <li>@Html.AuthorizedActionLink(@Resources.Layout.UnitMonthlyFWData, "Report", "MonthlyFreshWater", new { area = "MonthlyDataReporting" }, null)</li>
-                            <li>@Html.AuthorizedActionLink(@Resources.Layout.UnitMonthlyCWData, "Report", "MonthlyCirculatingWater", new { area = "MonthlyDataReporting" }, null)</li>
-                            <li>@Html.AuthorizedActionLink(@Resources.Layout.UnitMonthlyCCWData, "MonthlyChemicalClearedWaterData", "MonthlyChemicalClearedWater", new { area = "MonthlyDataReporting" }, null)</li>
-                            <li>@Html.AuthorizedActionLink(@Resources.Layout.UnitMonthlyPWData, "MonthlyPotableWaterData", "MonthlyPotableWater", new { area = "MonthlyDataReporting" }, null)</li>
-                            <li>@Html.AuthorizedActionLink(@Resources.Layout.UnitMonthlyHEData, "Report", "MonthlyHeatEnergy", new { area = "MonthlyDataReporting" }, null)</li>
-                            <li>@Html.AuthorizedActionLink(@Resources.Layout.UnitMonthlyEEData, "Report", "MonthlyElectricalEnergy", new { area = "MonthlyDataReporting" }, null)</li>
-                            <li>@Html.AuthorizedActionLink(@Resources.Layout.UnitMonthlyAirData, "Report", "MonthlyAir", new { area = "MonthlyDataReporting" }, null)</li>
-                            <li>@Html.AuthorizedActionLink(@Resources.Layout.UnitMonthlyNitrogenData, "Report", "MonthlyNitrogen", new { area = "MonthlyDataReporting" }, null)</li>
-                            <li>@Html.AuthorizedActionLink(@Resources.Layout.UnitMonthlyFuelsData, "Report", "MonthlyFuels", new { area = "MonthlyDataReporting" }, null)</li>
-                            <li>@Html.AuthorizedActionLink(@Resources.Layout.UnitMonthlyWorkingHours, "Report", "MonthlyWorkingHours", new { area = "MonthlyDataReporting" }, null)</li>
+                            <li>@Html.ActionIsAccessibleToCurrentRolls(@Resources.Layout.UnitMonthlyHCData, "Report", "MonthlyHydroCarbons", new { area = "MonthlyDataReporting", isReport = false })</li>
+                            <li>@Html.ActionIsAccessibleToCurrentRolls(@Resources.Layout.UnitMonthlyCHData, "Report", "MonthlyChemical", new { area = "MonthlyDataReporting" })</li>
+                            <li>@Html.ActionIsAccessibleToCurrentRolls(@Resources.Layout.UnitMonthlyFWData, "Report", "MonthlyFreshWater", new { area = "MonthlyDataReporting" })</li>
+                            <li>@Html.ActionIsAccessibleToCurrentRolls(@Resources.Layout.UnitMonthlyCWData, "Report", "MonthlyCirculatingWater", new { area = "MonthlyDataReporting" })</li>
+                            <li>@Html.ActionIsAccessibleToCurrentRolls(@Resources.Layout.UnitMonthlyCCWData, "MonthlyChemicalClearedWaterData", "MonthlyChemicalClearedWater", new { area = "MonthlyDataReporting" })</li>
+                            <li>@Html.ActionIsAccessibleToCurrentRolls(@Resources.Layout.UnitMonthlyPWData, "MonthlyPotableWaterData", "MonthlyPotableWater", new { area = "MonthlyDataReporting" })</li>
+                            <li>@Html.ActionIsAccessibleToCurrentRolls(@Resources.Layout.UnitMonthlyHEData, "Report", "MonthlyHeatEnergy", new { area = "MonthlyDataReporting" })</li>
+                            <li>@Html.ActionIsAccessibleToCurrentRolls(@Resources.Layout.UnitMonthlyEEData, "Report", "MonthlyElectricalEnergy", new { area = "MonthlyDataReporting" })</li>
+                            <li>@Html.ActionIsAccessibleToCurrentRolls(@Resources.Layout.UnitMonthlyAirData, "Report", "MonthlyAir", new { area = "MonthlyDataReporting" })</li>
+                            <li>@Html.ActionIsAccessibleToCurrentRolls(@Resources.Layout.UnitMonthlyNitrogenData, "Report", "MonthlyNitrogen", new { area = "MonthlyDataReporting" })</li>
+                            <li>@Html.ActionIsAccessibleToCurrentRolls(@Resources.Layout.UnitMonthlyFuelsData, "Report", "MonthlyFuels", new { area = "MonthlyDataReporting" })</li>
+                            <li>@Html.ActionIsAccessibleToCurrentRolls(@Resources.Layout.UnitMonthlyWorkingHours, "Report", "MonthlyWorkingHours", new { area = "MonthlyDataReporting" })</li>
                         </ul>
                     </li>
                 }
@@ -87,17 +90,17 @@
                             <li>@Html.AuthorizedActionLink(@Resources.Layout.InnerPipelinesData, "InnerPipelinesData", "SummaryReports", new { area = "SummaryReporting" }, null)</li>
                             <li>@Html.AuthorizedActionLink(@Resources.Layout.InProcessUnitsData, "InProcessUnitsData", "SummaryReports", new { area = "SummaryReporting" }, null)</li>
                             <li role="separator" class="divider divider-labeled"><span class="label label-default pull-right">Месечни данни</span></li>
-                            <li>@Html.AuthorizedActionLink(@Resources.Layout.UnitMonthlyHCData, "Report", "MonthlyHydroCarbons", new { area = "MonthlyDataReporting", isReport = true }, null)</li>
-                            <li>@Html.AuthorizedActionLink(@Resources.Layout.UnitMonthlyCHData, "Report", "MonthlyChemical", new { area = "MonthlyDataReporting", isReport = true }, null)</li>
-                            <li>@Html.AuthorizedActionLink(@Resources.Layout.UnitMonthlyFWData, "Report", "MonthlyFreshWater", new { area = "MonthlyDataReporting", isReport = true }, null)</li>
-                            <li>@Html.AuthorizedActionLink(@Resources.Layout.UnitMonthlyCWData, "Report", "MonthlyCirculatingWater", new { area = "MonthlyDataReporting", isReport = true }, null)</li>
-                            <li>@Html.AuthorizedActionLink(@Resources.Layout.UnitMonthlyCCWData, "MonthlyChemicalClearedWaterReport", "MonthlyChemicalClearedWater", new { area = "MonthlyDataReporting", isReport = true }, null)</li>
-                            <li>@Html.AuthorizedActionLink(@Resources.Layout.UnitMonthlyPWData, "MonthlyPotableWaterReport", "MonthlyPotableWater", new { area = "MonthlyDataReporting", isReport = true }, null)</li>
-                            <li>@Html.AuthorizedActionLink(@Resources.Layout.UnitMonthlyHEData, "Report", "MonthlyHeatEnergy", new { area = "MonthlyDataReporting", isReport = true }, null)</li>
-                            <li>@Html.AuthorizedActionLink(@Resources.Layout.UnitMonthlyEEData, "Report", "MonthlyElectricalEnergy", new { area = "MonthlyDataReporting", isReport = true }, null)</li>
-                            <li>@Html.AuthorizedActionLink(@Resources.Layout.UnitMonthlyAirData, "Report", "MonthlyAir", new { area = "MonthlyDataReporting", isReport = true }, null)</li>
-                            <li>@Html.AuthorizedActionLink(@Resources.Layout.UnitMonthlyNitrogenData, "Report", "MonthlyNitrogen", new { area = "MonthlyDataReporting", isReport = true }, null)</li>
-                            <li>@Html.AuthorizedActionLink(@Resources.Layout.UnitMonthlyFuelsData, "Report", "MonthlyFuels", new { area = "MonthlyDataReporting", isReport = true }, null)</li>
+                            <li>@Html.ActionIsAccessibleToCurrentRolls(@Resources.Layout.UnitMonthlyHCData, "Report", "MonthlyHydroCarbons", new { area = "MonthlyDataReporting", isReport = true })</li>
+                            <li>@Html.ActionIsAccessibleToCurrentRolls(@Resources.Layout.UnitMonthlyCHData, "Report", "MonthlyChemical", new { area = "MonthlyDataReporting", isReport = true })</li>
+                            <li>@Html.ActionIsAccessibleToCurrentRolls(@Resources.Layout.UnitMonthlyFWData, "Report", "MonthlyFreshWater", new { area = "MonthlyDataReporting", isReport = true })</li>
+                            <li>@Html.ActionIsAccessibleToCurrentRolls(@Resources.Layout.UnitMonthlyCWData, "Report", "MonthlyCirculatingWater", new { area = "MonthlyDataReporting", isReport = true })</li>
+                            <li>@Html.ActionIsAccessibleToCurrentRolls(@Resources.Layout.UnitMonthlyCCWData, "MonthlyChemicalClearedWaterReport", "MonthlyChemicalClearedWater", new { area = "MonthlyDataReporting", isReport = true })</li>
+                            <li>@Html.ActionIsAccessibleToCurrentRolls(@Resources.Layout.UnitMonthlyPWData, "MonthlyPotableWaterReport", "MonthlyPotableWater", new { area = "MonthlyDataReporting", isReport = true })</li>
+                            <li>@Html.ActionIsAccessibleToCurrentRolls(@Resources.Layout.UnitMonthlyHEData, "Report", "MonthlyHeatEnergy", new { area = "MonthlyDataReporting", isReport = true })</li>
+                            <li>@Html.ActionIsAccessibleToCurrentRolls(@Resources.Layout.UnitMonthlyEEData, "Report", "MonthlyElectricalEnergy", new { area = "MonthlyDataReporting", isReport = true })</li>
+                            <li>@Html.ActionIsAccessibleToCurrentRolls(@Resources.Layout.UnitMonthlyAirData, "Report", "MonthlyAir", new { area = "MonthlyDataReporting", isReport = true })</li>
+                            <li>@Html.ActionIsAccessibleToCurrentRolls(@Resources.Layout.UnitMonthlyNitrogenData, "Report", "MonthlyNitrogen", new { area = "MonthlyDataReporting", isReport = true })</li>
+                            <li>@Html.ActionIsAccessibleToCurrentRolls(@Resources.Layout.UnitMonthlyFuelsData, "Report", "MonthlyFuels", new { area = "MonthlyDataReporting", isReport = true })</li>
                             <li role="separator" class="divider divider-labeled"><span class="label label-default pull-right">Дневни данни - Диспечеризация и ЕОЗ</span></li>
                             <li>@Html.AuthorizedActionLink(@Resources.Layout.EozMeasuringPointsData, "OverseersTransactionsData", "OverseersTransactions", new { area = "SummaryReporting" }, null)</li>
                             <li role="separator" class="divider divider-labeled"><span class="label label-default pull-right">Контрол на изпълнителска дисциплина</span></li>

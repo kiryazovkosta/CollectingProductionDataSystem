@@ -23,6 +23,7 @@ using Resources = App_GlobalResources.Resources;
 
 namespace CollectingProductionDataSystem.Web.Areas.MonthlyDataReporting.Controllers
 {
+    
     public abstract class BaseMonthlyController : AreaBaseController
     {
         private readonly IUnitMothlyDataService monthlyService;
@@ -72,6 +73,7 @@ namespace CollectingProductionDataSystem.Web.Areas.MonthlyDataReporting.Controll
                 return View(modelParams.DefaultView, modelParams);
             }
         }
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]
