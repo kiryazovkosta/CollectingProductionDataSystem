@@ -51,9 +51,7 @@ namespace CollectingProductionDataSystem.Web.Areas.MonthlyDataReporting.Controll
         }
 
         [HttpGet]
-        [SummaryReportFilter]
         [SummaryReportAllowedFilter]
-        [SummaryReportAuthorize]
         public virtual ActionResult Report(bool? isReport)
         {
             if (isReport != null)
@@ -77,8 +75,10 @@ namespace CollectingProductionDataSystem.Web.Areas.MonthlyDataReporting.Controll
         }
 
 
-        [HttpGet]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         [SummaryReportAllowedFilter]
+        [SummaryReportFilter]
         public JsonResult ReadMonthlyUnitsData([DataSourceRequest]DataSourceRequest request, DateTime date, bool? isReport)
         {
 
