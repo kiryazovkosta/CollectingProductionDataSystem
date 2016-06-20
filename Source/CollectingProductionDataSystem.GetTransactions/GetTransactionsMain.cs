@@ -4,6 +4,8 @@
     using System.Data;
     using System.Linq;
     using System.ServiceProcess;
+    using CollectingProductionDataSystem.Application.TransactionsDailyDataServices;
+    using CollectingProductionDataSystem.Constants;
     using CollectingProductionDataSystem.Data;
     using CollectingProductionDataSystem.Data.Concrete;
     using CollectingProductionDataSystem.Infrastructure.Log;
@@ -731,6 +733,59 @@
             catch (Exception ex)
             {
                 logger.Error(ex.Message, ex);
+            }
+        }
+
+        internal static void ProcesReportTransactionsData(DateTime dateTime)
+        {
+            try
+            {
+                if (DateTime.Now.Hour >= 7 && DateTime.Now.Hour <= 10)
+                {
+                    using (var context = new ProductionData(new CollectingDataSystemDbContext(new AuditablePersister(), new Logger())))
+                    {
+                        var existingReport = context.MeasuringPointsConfigsReportDatas.All().Where(x => x.RecordTimestamp == dateTime).Any();
+                        if (!existingReport)
+                        {
+                            logger.Info(string.Format("Begin generation of transaction data by products report for {0:yyyy-MM-dd}!", dateTime));
+                            var transactionsDailyDataService = new TransactionsDailyDataService(context);
+                            var input = transactionsDailyDataService.ReadTransactionsDailyData(dateTime, CommonConstants.InputDirection);
+                            var output = transactionsDailyDataService.ReadTransactionsDailyData(dateTime, CommonConstants.OutputDirection);
+                            var result = new List<MeasuringPointsConfigsReportData>();
+                            foreach (var item in input)
+                            {
+                                var record = item;
+                                record.RecordTimestamp = dateTime;
+                                record.Direction = CommonConstants.InputDirection;
+                                result.Add(record);
+                            }
+
+                            foreach (var item in output)
+                            {
+                                var record = item;
+                                record.RecordTimestamp = dateTime;
+                                record.Direction = CommonConstants.OutputDirection;
+                                result.Add(record);
+                            }
+
+                            logger.Debug(string.Format("Processing {0} input records", input.Count()));
+                            logger.Debug(string.Format("Processing {0} output records", output.Count()));
+                            context.MeasuringPointsConfigsReportDatas.BulkInsert(result, "Initial Loading");
+                            context.SaveChanges("Initial Loading");
+
+                            input = null;
+                            output = null;
+                            logger.Info("End generation of transaction data by products report!");
+                        }
+                    }
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex.Message, ex);
+                SendEmail("ASO 2 SAPO Inerface", ex.ToString());
             }
         }
     }

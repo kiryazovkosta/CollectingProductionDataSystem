@@ -205,5 +205,32 @@ namespace CollectingProductionDataSystem.GetTransactions.Properties {
                 return ((int)(this["SYNC_ACTIVE_TRANSACTIONS_OFFSET_IN_HOURS"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool SYNC_TRANSACTIONS_BY_PRODUCTS {
+            get {
+                return ((bool)(this["SYNC_TRANSACTIONS_BY_PRODUCTS"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("-1")]
+        public int TRANSACTIONS_BY_PRODUCTS_OFFSET_IN_DAYS {
+            get {
+                return ((int)(this["TRANSACTIONS_BY_PRODUCTS_OFFSET_IN_DAYS"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("00:10:00")]
+        public global::System.TimeSpan IDLE_TIMER_REPORT_TRANSACTIONS_DATA {
+            get {
+                return ((global::System.TimeSpan)(this["IDLE_TIMER_REPORT_TRANSACTIONS_DATA"]));
+            }
+        }
     }
 }

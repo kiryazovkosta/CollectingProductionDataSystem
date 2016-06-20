@@ -72,5 +72,14 @@
     <Setting Name="SYNC_ACTIVE_TRANSACTIONS_OFFSET_IN_HOURS" Type="System.Int32" Scope="Application">
       <Value Profile="(Default)">2</Value>
     </Setting>
+    <Setting Name="SYNC_TRANSACTIONS_BY_PRODUCTS" Type="System.Boolean" Scope="Application">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="TRANSACTIONS_BY_PRODUCTS_OFFSET_IN_DAYS" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">-1</Value>
+    </Setting>
+    <Setting Name="IDLE_TIMER_REPORT_TRANSACTIONS_DATA" Type="System.TimeSpan" Scope="Application">
+      <Value Profile="(Default)">00:10:00</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
