@@ -1,4 +1,6 @@
-﻿@using Resources = App_GlobalResources.Resources;
+﻿@using Microsoft.AspNet.Identity;
+@using Resources = App_GlobalResources.Resources;
+
 <div class="navbar navbar-default navbar-inverse navbar-fixed-top">
     <div class="container-fluid">
         <div class="navbar-header">
@@ -50,8 +52,12 @@
                             <li role="separator" class="divider divider-labeled"><span class="label label-default pull-right">Разходни норми</span></li>
                             <li>@Html.AuthorizedActionLink(@Resources.Layout.PlanNorm, "Index", "PlanNorm", new { area = "PlanConfiguration" }, null)</li>
                             <li>@Html.AuthorizedActionLink(@Resources.Layout.PlanValues, "Index", "PlanValues", new { area = "PlanConfiguration" }, null)</li>
+
                             <li role="separator" class="divider divider-labeled"><span class="label label-default pull-right">Месечни данни</span></li>
-                            <li>@Html.AuthorizedActionLink(@Resources.Layout.UnitMonthlyHCData, "Report", "MonthlyHydroCarbons", new { area = "MonthlyDataReporting" }, null)</li>
+                            @if (Html.ActionIsAccessibleToUser("Report", "MonthlyHydroCarbons", "MonthlyDataReporting"))
+                            {
+                                <li>@Html.AuthorizedActionLink(@Resources.Layout.UnitMonthlyHCData, "Report", "MonthlyHydroCarbons", new { area = "MonthlyDataReporting" }, null)</li>
+                            }
                             <li>@Html.AuthorizedActionLink(@Resources.Layout.UnitMonthlyCHData, "Report", "MonthlyChemical", new { area = "MonthlyDataReporting" }, null)</li>
                             <li>@Html.AuthorizedActionLink(@Resources.Layout.UnitMonthlyFWData, "Report", "MonthlyFreshWater", new { area = "MonthlyDataReporting" }, null)</li>
                             <li>@Html.AuthorizedActionLink(@Resources.Layout.UnitMonthlyCWData, "Report", "MonthlyCirculatingWater", new { area = "MonthlyDataReporting" }, null)</li>

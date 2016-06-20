@@ -23,6 +23,7 @@ using Resources = App_GlobalResources.Resources;
 
 namespace CollectingProductionDataSystem.Web.Areas.MonthlyDataReporting.Controllers
 {
+    
     public abstract class BaseMonthlyController : AreaBaseController
     {
         private readonly IUnitMothlyDataService monthlyService;
@@ -50,7 +51,9 @@ namespace CollectingProductionDataSystem.Web.Areas.MonthlyDataReporting.Controll
         }
 
         [HttpGet]
+        [SummaryReportFilter]
         [SummaryReportAllowedFilter]
+        [SummaryReportAuthorize]
         public virtual ActionResult Report(bool? isReport)
         {
             if (isReport != null)
@@ -73,10 +76,9 @@ namespace CollectingProductionDataSystem.Web.Areas.MonthlyDataReporting.Controll
             }
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+
+        [HttpGet]
         [SummaryReportAllowedFilter]
-        [SummaryReportFilter]
         public JsonResult ReadMonthlyUnitsData([DataSourceRequest]DataSourceRequest request, DateTime date, bool? isReport)
         {
 
