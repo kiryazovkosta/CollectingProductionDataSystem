@@ -286,6 +286,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to MonthlyDataWorkingHours.
+        /// </summary>
+        public static string MonthlyDataWorkingHours {
+            get {
+                return ResourceManager.GetString("MonthlyDataWorkingHours", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to MonthlyFuel.
         /// </summary>
         public static string MonthlyFuel {

@@ -282,4 +282,7 @@
   <data name="Users" xml:space="preserve">
     <value>Users</value>
   </data>
+  <data name="MonthlyDataWorkingHours" xml:space="preserve">
+    <value>MonthlyDataWorkingHours</value>
+  </data>
 </root>

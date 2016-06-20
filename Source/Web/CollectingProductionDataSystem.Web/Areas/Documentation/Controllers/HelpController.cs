@@ -282,5 +282,9 @@ namespace CollectingProductionDataSystem.Web.Areas.Documentation.Controllers
         {
             return PartialView();
         }
+       public PartialViewResult MonthlyWorkingHours()
+        {
+            return PartialView();
+        }
     }
 }

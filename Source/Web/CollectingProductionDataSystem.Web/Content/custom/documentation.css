@@ -114,9 +114,9 @@ article.col-sm-10.documentation{
     padding-right: 10px;
     margin-bottom: -10px;
     margin-top: -20px;
-    position: absolute;
+    position: fixed;/*!!!!!!!!!!!!!!!*/
     top: 70px;
-    bottom: 70px;
+    bottom: 65px;/*!!!!!!!! dolnata 4erti4ka na skrola!!!*/
     overflow-y:auto;
 }
     .nav-site-bar ul {
@@ -137,7 +137,7 @@ article.col-sm-10.documentation{
             margin-right: -10px;
             background: #fbfaf9;
            padding-bottom:5px;
-           padding-left:5px;
+           padding-left:5px; 
            padding-right:5px;
            padding-top:10px;  
 }
@@ -218,7 +218,7 @@ a.help-side-nav-main:hover,a.inner-help-side-nav-main:hover,  a.help-side-nav-ma
 }
 .nav-site-bar > ul{
     border:1px solid #e9e8e7;
-    height:805px;
+    height:810px;/*!!!!!!!!!!!!!!!*/
     padding-top:30px;
 }
 .centeredDivForImages{

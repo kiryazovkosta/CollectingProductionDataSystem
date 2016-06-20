@@ -282,4 +282,7 @@
   <data name="Users" xml:space="preserve">
     <value>Потребители</value>
   </data>
+  <data name="MonthlyDataWorkingHours" xml:space="preserve">
+    <value>Месечни данни за работни часове</value>
+  </data>
 </root>

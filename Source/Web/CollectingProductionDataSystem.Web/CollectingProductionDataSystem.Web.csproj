@@ -712,6 +712,7 @@
     <Content Include="Content\Images\MonthlyData\Figura117.png" />
     <Content Include="Content\Images\MonthlyData\Figura118.png" />
     <Content Include="Content\Images\MonthlyData\MainFigure.png" />
+    <Content Include="Content\Images\MonthlyData\MainFigure1.png" />
     <Content Include="Content\Images\MonthlyData\MonthlyDataAir\Figura194.png" />
     <Content Include="Content\Images\MonthlyData\MonthlyDataAir\Figura195.png" />
     <Content Include="Content\Images\MonthlyData\MonthlyDataAir\Figura196.png" />
@@ -795,6 +796,13 @@
     <Content Include="Content\Images\MonthlyData\MonthlyDataPotable\Report.png" />
     <Content Include="Content\Images\MonthlyData\MonthlyDataPotable\RowPrerazp.png" />
     <Content Include="Content\Images\MonthlyData\MonthlyDataPotable\RowZero.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataWorkingHours\Edit.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataWorkingHours\Error.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataWorkingHours\Figura1.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataWorkingHours\Figura2.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataWorkingHours\Figura3.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataWorkingHours\Filter.png" />
+    <Content Include="Content\Images\MonthlyData\MonthlyDataWorkingHours\Histoty.png" />
     <Content Include="Content\Images\MonthlyData\НоваМесечни_данни.jpg" />
     <Content Include="Content\Images\MonthlyData\Фигура105.jpg" />
     <Content Include="Content\Images\MonthlyData\Фигура105A.jpg" />
@@ -1749,6 +1757,7 @@
     <Content Include="Areas\Documentation\Views\Help\PlanValuesInstallations.cshtml" />
     <Content Include="Areas\NomManagement\Views\ProductionPlanConfig\EditorTemplates\PPCUMCPlanMembersViewModelEditor.cshtml" />
     <Content Include="Areas\NomManagement\Views\ProductionPlanConfig\EditorTemplates\PPCUMCFactFractionMembersViewModelEditor.cshtml" />
+    <Content Include="Areas\Documentation\Views\Help\MonthlyWorkingHours.cshtml" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <Content Include="Scripts\custom\sendArea.js" />
     <Content Include="Scripts\custom\sendArea.min.js">
