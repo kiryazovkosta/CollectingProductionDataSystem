@@ -34,6 +34,7 @@ namespace CollectingProductionDataSystem.Web.AppStart
     using CollectingProductionDataSystem.Application.ProductionPlanDataServices;
     using CollectingProductionDataSystem.Application.ShiftServices;
     using log4net;
+    using CollectingProductionDataSystem.Application.TransactionsDailyDataServices;
 
     public static class NinjectWebCommon 
     {
@@ -113,6 +114,7 @@ namespace CollectingProductionDataSystem.Web.AppStart
             //kernel.Bind<IPhdPrimaryDataService>().To<PhdPrimaryDataService>();
             kernel.Bind<log4net.ILog>().To<LoggerToLogAdapter>();
             kernel.Bind<IProgressRegistrator>().To<ProgressRegistrator>();
+            kernel.Bind<ITransactionsDailyDataService>().To<TransactionsDailyDataService>();
         }        
     }
 }

@@ -32,8 +32,8 @@ namespace CollectingProductionDataSystem.ConsoleClient
         static void Main(string[] args)
         {
             //var ninject = new NinjectConfig();
-            //var timer = new Stopwatch();
-            //timer.Start();
+            var timer = new Stopwatch();
+            timer.Start();
             var kernel = NinjectConfig.GetInjector;
 
             var data = kernel.Get<ProductionData>();
@@ -42,64 +42,108 @@ namespace CollectingProductionDataSystem.ConsoleClient
 
             //AddOrUpdateProductionPlanConfigs(data);
 
-            var month = new DateTime(2016,5, 12, 0, 0, 0);
-            var monthDate = new DateTime(month.Year, month.Month, DateTime.DaysInMonth(month.Year, month.Month), 0, 0, 0);
-            var firstDayInMonth = new DateTime(month.Year, month.Month, 1, 0, 0, 0);
+            CalculateMonthlyTechnologicalData(data, timer);
 
-            var productionPlanData = data.ProductionPlanDatas.All().Include(x => x.ProductionPlanConfig).Include(x => x.ProductionPlanConfig.PlanNorms).Where(x => x.RecordTimestamp == monthDate).ToList();
+            //var lastRealDate = new DateTime(2016, 6, 15, 0, 0, 0);
+            //var dailyData = data.UnitsDailyDatas.All().Where(x => x.RecordTimestamp == lastRealDate).ToList();
+            //var approvedDaysData = data.UnitsApprovedDailyDatas.All().Where(x => x.RecordDate == lastRealDate).ToList();
+            //var nextDate = lastRealDate.AddDays(1);
+            //var daysInMonth = DateTime.DaysInMonth(lastRealDate.Year, lastRealDate.Month);
+            //while (nextDate.Day < daysInMonth)
+            //{
+            //    foreach (var item in dailyData)
+            //    {
+            //        var record = item;
+            //        record.RecordTimestamp = nextDate;
+            //        data.UnitsDailyDatas.Add(record);
+            //    }
 
-            var monthlyProductionDataList = data.UnitMonthlyConfigs.AllAnual(monthDate.Year)
-                .Include(x => x.UnitMonthlyDatas)
-                .Include(x => x.ProcessUnit)
-                .Include(x => x.ProcessUnit.Factory)
-                .Include(x => x.MeasureUnit)
-                .Include(x => x.ProductionPlanConfig)
-                .Where(x => x.IsAvailableInTechnologicalReport)
-                .OrderBy(x => x.ProcessUnitId)
-                .ThenBy(x => x.MonthlyReportTypeId)
-                .ToList()
-                .SelectMany(y => y.UnitMonthlyDatas.Where(z => z.RecordTimestamp == monthDate))
-                .ToList();
+            //    foreach (var item in approvedDaysData)
+            //    {
+            //        var record = item;
+            //        item.RecordDate = nextDate;
+            //        data.UnitsApprovedDailyDatas.Add(record);
+            //    }
 
-            var monthlyProductionData = new List<MonthlyTechnicalReportData>();
+            //    var result = data.SaveChanges("InitialLoading");
+            //    if (result.IsValid)
+            //    {
+            //        Console.WriteLine("Successfully added {0} records for {1}", result.ResultRecordsCount, nextDate); 
+            //    }
 
-            foreach (var item in monthlyProductionDataList)
-            {
-                var m = new MonthlyTechnicalReportData()
-                {
-                    Id = item.UnitMonthlyConfig.Id,
-                    Code = item.UnitMonthlyConfig.Code,
-                    Name = item.UnitMonthlyConfig.Name,
-                    Factory = item.UnitMonthlyConfig.ProcessUnit.Factory.FactorySortableName,
-                    ProcessUnit = item.UnitMonthlyConfig.ProcessUnit.SortableName,
-                    MaterialType = item.UnitMonthlyConfig.MonthlyReportType.Name,
-                    MeasurementUnit = item.UnitMonthlyConfig.MeasureUnit.Code,
-                    PlanValue = GetPlanValue(item, productionPlanData, firstDayInMonth),
-                    PlanPercentage = GetPlanPercentage(item, productionPlanData, firstDayInMonth),
-                    FactValue = (decimal)item.RealValue,
-                    FactPercentage = CalculateFactPercentage(),
-                    FactValueDifference = 0,
-                    FactPercentageDifference = 0,
-                    YearValue = 0,
-                    YearPercentage = 0,
-                    YearValueDifference = 0,
-                    YearPercentageDifference = 0
-                };
-                monthlyProductionData.Add(m);
-            }
+            //    nextDate = nextDate.AddDays(1);
+            //}
 
-            using (var sw = new StreamWriter(@"c:\temp\MonthlyTechReport.txt", false))
-            {
-                //sw.WriteLine("Id;Code;Name;Factory;ProcessUnit;MaterialType;MeasurementUnit;PlanValue;PlanPercentage;FactValue;FactPercentage FactValueDifference;FactPercentageDifference;YearValue;YearPercentage;YearValueDifference;YearPercentageDifference");
-                
-                foreach (var item in monthlyProductionData)
-                {
-                    sw.WriteLine(item.ToString());
-                }
-            }
+            //var lastRealDate = new DateTime(2016, 6, 15, 0, 0, 0);
+            //var shiftsData = data.UnitsData.All().Where(x => x.RecordTimestamp == lastRealDate).ToList();
+            //var approvedShiftsData = data.UnitsApprovedDatas.All().Where(x => x.RecordDate == lastRealDate).ToList();
+            //var nextDate = lastRealDate.AddDays(1);
+            //var daysInMonth = DateTime.DaysInMonth(lastRealDate.Year, lastRealDate.Month);
+            //while (nextDate.Day <= daysInMonth)
+            //{
+            //    var unitsDataList = new List<UnitsData>();
+            //    var unitsApprovedDataList = new List<UnitsApprovedData>();
 
+            //    foreach (var item in shiftsData)
+            //    {
+            //        var record = new UnitsData
+            //        {
+            //            RecordTimestamp = nextDate,
+            //            ShiftId = item.ShiftId,
+            //            UnitConfigId = item.UnitConfigId,
+            //            Value = (decimal)item.RealValue,
+            //            UnitsManualData = null,
+            //            UnitConfig = item.UnitConfig,
+            //            UnitEnteredForCalculationData = null
+            //        };
+            //        unitsDataList.Add(record);
+            //    }
 
-            Console.WriteLine(monthlyProductionData.Count());
+            //    foreach (var item in approvedShiftsData)
+            //    {
+            //        var record = new UnitsApprovedData
+            //        {
+            //            ShiftId = item.ShiftId, 
+            //            RecordDate = nextDate, 
+            //            ProcessUnitId = item.ProcessUnitId, 
+            //            Approved = true
+            //        };
+            //        unitsApprovedDataList.Add(record);
+            //    }
+
+            //    data.UnitsData.BulkInsert(unitsDataList, "InitialLoading");
+            //    data.UnitsApprovedDatas.BulkInsert(unitsApprovedDataList, "InitialLoading");
+
+            //    var result = data.SaveChanges("InitialLoading");
+            //    if (result.IsValid)
+            //    {
+            //        Console.WriteLine("Successfully added records for {0}", nextDate); 
+            //    }
+
+            //    nextDate = nextDate.AddDays(1);
+            //}
+
+            //var lastRealDate = new DateTime(2016, 6, 15, 0, 0, 0);
+            //var dailyData = data.ProductionPlanDatas.All().Where(x => x.RecordTimestamp == lastRealDate).ToList();
+            //var nextDate = lastRealDate.AddDays(1);
+            //var daysInMonth = DateTime.DaysInMonth(lastRealDate.Year, lastRealDate.Month);
+            //while (nextDate.Day < daysInMonth)
+            //{
+            //    foreach (var item in dailyData)
+            //    {
+            //        var record = item;
+            //        record.RecordTimestamp = nextDate;
+            //        data.ProductionPlanDatas.Add(record);
+            //    }
+
+            //    var result = data.SaveChanges("InitialLoading");
+            //    if (result.IsValid)
+            //    {
+            //        Console.WriteLine("Successfully added {0} records for {1}", result.ResultRecordsCount, nextDate); 
+            //    }
+
+            //    nextDate = nextDate.AddDays(1);
+            //}
 
             //UpdateShiftUnitData(kernel, data);
             //var shiftData = data.UnitsData.All().Where(x => x.ShiftId == ShiftType.Second 
@@ -160,10 +204,101 @@ namespace CollectingProductionDataSystem.ConsoleClient
             //SeedShiftsToDatabase(uow);
             Console.WriteLine("finished");
         }
-
-        private static decimal CalculateFactPercentage()
+ 
+        private static void CalculateMonthlyTechnologicalData(ProductionData data, Stopwatch timer)
         {
-            return 0;
+            //WritePositionsConfidence(data);
+            //UpdateShiftUnitData(kernel, data);
+            //AddOrUpdateProductionPlanConfigs(data);
+            var month = new DateTime(2016,6, 12, 0, 0, 0);
+            var monthDate = new DateTime(month.Year, month.Month, DateTime.DaysInMonth(month.Year, month.Month), 0, 0, 0);
+            var firstDayInMonth = new DateTime(month.Year, month.Month, 1, 0, 0, 0);
+
+            var productionPlanData = data.ProductionPlanDatas.All().Include(x => x.ProductionPlanConfig).Include(x => x.ProductionPlanConfig.PlanNorms).Where(x => x.RecordTimestamp == monthDate).ToList();
+
+            var monthlyProductionDataList = data.UnitMonthlyConfigs
+                                                .AllAnual(monthDate.Year)
+                                                .Include(x => x.UnitMonthlyDatas)
+                                                .Include(x => x.ProcessUnit)
+                                                .Include(x => x.ProcessUnit.Factory)
+                                                .Include(x => x.MeasureUnit)
+                                                .Include(x => x.ProductionPlanConfig)
+                                                .Where(x => x.IsAvailableInTechnologicalReport)
+                                                .OrderBy(x => x.ProcessUnitId)
+                                                .ThenBy(x => x.MonthlyReportTypeId)
+                                                .ToList()
+                                                .SelectMany(y => y.UnitMonthlyDatas.Where(z => z.RecordTimestamp == monthDate))
+                                                .ToList();
+
+            var monthlyProductionData = new List<MonthlyTechnicalReportData>();
+
+            foreach (var item in monthlyProductionDataList)
+            {
+                var planValue = GetPlanValue(item, productionPlanData, firstDayInMonth);
+                var planPercentage = GetPlanPercentage(item, productionPlanData, firstDayInMonth);
+                var factPercentage = CalculateFactPercentage(item, productionPlanData);
+                var yearPercentage = CalculateYearPercentage(item, productionPlanData);
+
+                var m = new MonthlyTechnicalReportData()
+                {
+                    Id = item.UnitMonthlyConfig.Id,
+                    Code = item.UnitMonthlyConfig.Code,
+                    Name = item.UnitMonthlyConfig.Name,
+                    Factory = item.UnitMonthlyConfig.ProcessUnit.Factory.FactorySortableName,
+                    ProcessUnit = item.UnitMonthlyConfig.ProcessUnit.SortableName,
+                    MaterialType = item.UnitMonthlyConfig.MonthlyReportType.Name,
+                    MeasurementUnit = item.UnitMonthlyConfig.MeasureUnit.Code,
+                    PlanValue = planValue,
+                    PlanPercentage = planPercentage,
+                    FactValue = (decimal)item.RealValue,
+                    FactPercentage = factPercentage,
+                    FactValueDifference = 0,
+                    FactPercentageDifference = 0,
+                    YearValue = item.YearTotalValue,
+                    YearPercentage = yearPercentage,
+                    YearValueDifference = 0,
+                    YearPercentageDifference = 0
+                };
+                monthlyProductionData.Add(m);
+            }
+
+            timer.Stop();
+            Console.WriteLine("Estimated time for action {0}", timer.Elapsed);
+
+            using (var sw = new StreamWriter(@"c:\temp\MonthlyTechReport.txt", false))
+            {
+                //sw.WriteLine("Id;Code;Name;Factory;ProcessUnit;MaterialType;MeasurementUnit;PlanValue;PlanPercentage;FactValue;FactPercentage FactValueDifference;FactPercentageDifference;YearValue;YearPercentage;YearValueDifference;YearPercentageDifference");
+                foreach (var item in monthlyProductionData)
+                {
+                    sw.WriteLine(item.ToString());
+                }
+            }
+
+            Console.WriteLine(monthlyProductionData.Count());
+        }
+
+        private static decimal CalculateYearPercentage(UnitMonthlyData monthlyData, List<ProductionPlanData> productionPlanDatas)
+        {
+            var productionPlanData = productionPlanDatas.Where(x => x.ProductionPlanConfigId == monthlyData.UnitMonthlyConfigId).FirstOrDefault();
+
+            if (productionPlanData == null)
+            {
+                return 0.0m;    
+            }
+
+            return productionPlanData.ProductionPlanConfig.ProductionPlanConfigUnitMonthlyConfigFactFractionMembers.Count();
+        }
+
+        private static decimal CalculateFactPercentage(UnitMonthlyData monthlyData, List<ProductionPlanData> productionPlanDatas)
+        {
+            var productionPlanData = productionPlanDatas.Where(x => x.ProductionPlanConfigId == monthlyData.UnitMonthlyConfigId).FirstOrDefault();
+
+            if (productionPlanData == null)
+            {
+                return 0.0m;    
+            }
+
+            return productionPlanData.ProductionPlanConfig.ProductionPlanConfigUnitMonthlyConfigFactFractionMembers.Count();
         }
 
         private static decimal GetPlanPercentage(UnitMonthlyData monthlyData, IList<ProductionPlanData> productionPlanDatas, DateTime firstDayInMonth)
