@@ -6,6 +6,7 @@
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
+    using CollectingProductionDataSystem.Application.CalculatorService;
     using CollectingProductionDataSystem.Application.Contracts;
     using CollectingProductionDataSystem.Application.FileServices;
     using CollectingProductionDataSystem.Application.MailerService;
@@ -75,6 +76,7 @@
             kernel.Bind<ILog>().ToMethod(context => LogManager.GetLogger("CollectingProductionDataSystem.Phd2SqlProductionData")).InSingletonScope();
             kernel.Bind<IMailerService>().ToMethod(context =>MailerMoq.Object);
             kernel.Bind<IPhdPrimaryDataService>().To<PhdPrimaryDataService>();
+            kernel.Bind<ICalculatorService>().To<CalculatorService>();
         }
 
         /// <summary>
