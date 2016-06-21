@@ -163,6 +163,10 @@ namespace CollectingProductionDataSystem.Application.MonthlyServices
         /// <param name="targetMonth">The target month.</param>
         public void CalculateAnualAccumulation(ref Dictionary<string, UnitMonthlyData> resultMonthly, DateTime targetMonth, int reportTypeId = 0)
         {
+            if (targetMonth.Month == 1)
+            {
+                return;
+            }
             var timer = new Stopwatch();
             timer.Start();
             var monthBeforeTargetMonth = targetMonth.AddMonths(-1);
