@@ -42,9 +42,9 @@ namespace CollectingProductionDataSystem.ConsoleClient
 
             //AddOrUpdateProductionPlanConfigs(data);
 
-            CalculateMonthlyTechnologicalData(data, timer);
+            //CalculateMonthlyTechnologicalData(data, timer);
 
-            //var lastRealDate = new DateTime(2016, 6, 15, 0, 0, 0);
+            //var lastRealDate = new DateTime(2016, 6, 16, 0, 0, 0);
             //var dailyData = data.UnitsDailyDatas.All().Where(x => x.RecordTimestamp == lastRealDate).ToList();
             //var approvedDaysData = data.UnitsApprovedDailyDatas.All().Where(x => x.RecordDate == lastRealDate).ToList();
             //var nextDate = lastRealDate.AddDays(1);
@@ -74,7 +74,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
             //    nextDate = nextDate.AddDays(1);
             //}
 
-            //var lastRealDate = new DateTime(2016, 6, 15, 0, 0, 0);
+            //var lastRealDate = new DateTime(2016, 6, 16, 0, 0, 0);
             //var shiftsData = data.UnitsData.All().Where(x => x.RecordTimestamp == lastRealDate).ToList();
             //var approvedShiftsData = data.UnitsApprovedDatas.All().Where(x => x.RecordDate == lastRealDate).ToList();
             //var nextDate = lastRealDate.AddDays(1);
@@ -123,7 +123,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
             //    nextDate = nextDate.AddDays(1);
             //}
 
-            //var lastRealDate = new DateTime(2016, 6, 15, 0, 0, 0);
+            //var lastRealDate = new DateTime(2016, 6, 16, 0, 0, 0);
             //var dailyData = data.ProductionPlanDatas.All().Where(x => x.RecordTimestamp == lastRealDate).ToList();
             //var nextDate = lastRealDate.AddDays(1);
             //var daysInMonth = DateTime.DaysInMonth(lastRealDate.Year, lastRealDate.Month);
