@@ -24,6 +24,8 @@ using System.Data;
 using System.Globalization;
 using CollectingProductionDataSystem.Data.Common;
 using CollectingProductionDataSystem.Extentions;
+using CollectingProductionDataSystem.Application.MonthlyTechnologicalDataServices;
+using CollectingProductionDataSystem.Application.CalculatorService;
 
 namespace CollectingProductionDataSystem.ConsoleClient
 {
@@ -37,12 +39,25 @@ namespace CollectingProductionDataSystem.ConsoleClient
             var kernel = NinjectConfig.GetInjector;
 
             var data = kernel.Get<ProductionData>();
+            var calculator = kernel.Get<CalculatorService>();
             //WritePositionsConfidence(data);
             //UpdateShiftUnitData(kernel, data);
 
             //AddOrUpdateProductionPlanConfigs(data);
 
-            //CalculateMonthlyTechnologicalData(data, timer);
+            var targetMonth = DateTime.Today;
+            var service = new MonthlyTechnicalDataService(data, calculator);
+            var monthlyProductionData = service.CalculateMonthlyTechnologicalData(targetMonth);
+            using (var sw = new StreamWriter(@"c:\temp\MonthlyTechReport.txt", false))
+            {
+                sw.WriteLine("Id;Code;Name;Factory;ProcessUnit;MaterialType;MeasurementUnit;;PlanValue;PlanPercentage;;FactValue;FactPercentage;FactValueDifference;FactPercentageDifference;;YearValue;YearPercentage;YearValueDifference;YearPercentageDifference");
+                foreach (var item in monthlyProductionData)
+                {
+                    sw.WriteLine(item.ToString());
+                }
+            }
+
+            Console.WriteLine(monthlyProductionData.Count());
 
             //var lastRealDate = new DateTime(2016, 6, 16, 0, 0, 0);
             //var dailyData = data.UnitsDailyDatas.All().Where(x => x.RecordTimestamp == lastRealDate).ToList();
@@ -203,142 +218,6 @@ namespace CollectingProductionDataSystem.ConsoleClient
             //TreeShiftsReports(DateTime.Today.AddDays(-2), 1);
             //SeedShiftsToDatabase(uow);
             Console.WriteLine("finished");
-        }
- 
-        private static void CalculateMonthlyTechnologicalData(ProductionData data, Stopwatch timer)
-        {
-            //WritePositionsConfidence(data);
-            //UpdateShiftUnitData(kernel, data);
-            //AddOrUpdateProductionPlanConfigs(data);
-            var month = new DateTime(2016,6, 12, 0, 0, 0);
-            var monthDate = new DateTime(month.Year, month.Month, DateTime.DaysInMonth(month.Year, month.Month), 0, 0, 0);
-            var firstDayInMonth = new DateTime(month.Year, month.Month, 1, 0, 0, 0);
-
-            var productionPlanData = data.ProductionPlanDatas.All().Include(x => x.ProductionPlanConfig).Include(x => x.ProductionPlanConfig.PlanNorms).Where(x => x.RecordTimestamp == monthDate).ToList();
-
-            var monthlyProductionDataList = data.UnitMonthlyConfigs
-                                                .AllAnual(monthDate.Year)
-                                                .Include(x => x.UnitMonthlyDatas)
-                                                .Include(x => x.ProcessUnit)
-                                                .Include(x => x.ProcessUnit.Factory)
-                                                .Include(x => x.MeasureUnit)
-                                                .Include(x => x.ProductionPlanConfig)
-                                                .Where(x => x.IsAvailableInTechnologicalReport)
-                                                .OrderBy(x => x.ProcessUnitId)
-                                                .ThenBy(x => x.MonthlyReportTypeId)
-                                                .ToList()
-                                                .SelectMany(y => y.UnitMonthlyDatas.Where(z => z.RecordTimestamp == monthDate))
-                                                .ToList();
-
-            var monthlyProductionData = new List<MonthlyTechnicalReportData>();
-
-            foreach (var item in monthlyProductionDataList)
-            {
-                var planValue = GetPlanValue(item, productionPlanData, firstDayInMonth);
-                var planPercentage = GetPlanPercentage(item, productionPlanData, firstDayInMonth);
-                var factPercentage = CalculateFactPercentage(item, productionPlanData);
-                var yearPercentage = CalculateYearPercentage(item, productionPlanData);
-
-                var m = new MonthlyTechnicalReportData()
-                {
-                    Id = item.UnitMonthlyConfig.Id,
-                    Code = item.UnitMonthlyConfig.Code,
-                    Name = item.UnitMonthlyConfig.Name,
-                    Factory = item.UnitMonthlyConfig.ProcessUnit.Factory.FactorySortableName,
-                    ProcessUnit = item.UnitMonthlyConfig.ProcessUnit.SortableName,
-                    MaterialType = item.UnitMonthlyConfig.MonthlyReportType.Name,
-                    MeasurementUnit = item.UnitMonthlyConfig.MeasureUnit.Code,
-                    PlanValue = planValue,
-                    PlanPercentage = planPercentage,
-                    FactValue = (decimal)item.RealValue,
-                    FactPercentage = factPercentage,
-                    FactValueDifference = 0,
-                    FactPercentageDifference = 0,
-                    YearValue = item.YearTotalValue,
-                    YearPercentage = yearPercentage,
-                    YearValueDifference = 0,
-                    YearPercentageDifference = 0
-                };
-                monthlyProductionData.Add(m);
-            }
-
-            timer.Stop();
-            Console.WriteLine("Estimated time for action {0}", timer.Elapsed);
-
-            using (var sw = new StreamWriter(@"c:\temp\MonthlyTechReport.txt", false))
-            {
-                //sw.WriteLine("Id;Code;Name;Factory;ProcessUnit;MaterialType;MeasurementUnit;PlanValue;PlanPercentage;FactValue;FactPercentage FactValueDifference;FactPercentageDifference;YearValue;YearPercentage;YearValueDifference;YearPercentageDifference");
-                foreach (var item in monthlyProductionData)
-                {
-                    sw.WriteLine(item.ToString());
-                }
-            }
-
-            Console.WriteLine(monthlyProductionData.Count());
-        }
-
-        private static decimal CalculateYearPercentage(UnitMonthlyData monthlyData, List<ProductionPlanData> productionPlanDatas)
-        {
-            var productionPlanData = productionPlanDatas.Where(x => x.ProductionPlanConfigId == monthlyData.UnitMonthlyConfigId).FirstOrDefault();
-
-            if (productionPlanData == null)
-            {
-                return 0.0m;    
-            }
-
-            return productionPlanData.ProductionPlanConfig.ProductionPlanConfigUnitMonthlyConfigFactFractionMembers.Count();
-        }
-
-        private static decimal CalculateFactPercentage(UnitMonthlyData monthlyData, List<ProductionPlanData> productionPlanDatas)
-        {
-            var productionPlanData = productionPlanDatas.Where(x => x.ProductionPlanConfigId == monthlyData.UnitMonthlyConfigId).FirstOrDefault();
-
-            if (productionPlanData == null)
-            {
-                return 0.0m;    
-            }
-
-            return productionPlanData.ProductionPlanConfig.ProductionPlanConfigUnitMonthlyConfigFactFractionMembers.Count();
-        }
-
-        private static decimal GetPlanPercentage(UnitMonthlyData monthlyData, IList<ProductionPlanData> productionPlanDatas, DateTime firstDayInMonth)
-        {
-            if (monthlyData.UnitMonthlyConfig.ProductionPlanConfig == null)
-            {
-                return 0.0m;
-            }
-
-            var productionPlanData = productionPlanDatas.Where(x => x.ProductionPlanConfigId == monthlyData.UnitMonthlyConfigId).FirstOrDefault();
-
-            if (productionPlanData == null)
-            {
-                return 0.0m;    
-            }
-
-            var planNorm = productionPlanData.ProductionPlanConfig.PlanNorms.Where(x => x.Month == firstDayInMonth).FirstOrDefault();
-            if (planNorm == null)
-            {
-                return 0.0m;
-            }
-
-            return planNorm.Value;
-        }
-
-        private static decimal GetPlanValue(UnitMonthlyData monthlyData, IList<ProductionPlanData> productionPlanDatas, DateTime firstDayInMonth)
-        {
-            if (monthlyData.UnitMonthlyConfig.ProductionPlanConfig == null)
-            {
-                return 0.0m;
-            }
-
-            var productionPlanData = productionPlanDatas.Where(x => x.ProductionPlanConfigId == monthlyData.UnitMonthlyConfigId).FirstOrDefault();
-
-            if (productionPlanData == null)
-            {
-                return 0.0m;    
-            }
-
-            return productionPlanData.QuanityPlan;
         }
 
         private static void AddOrUpdateProductionPlanConfigs(ProductionData data)

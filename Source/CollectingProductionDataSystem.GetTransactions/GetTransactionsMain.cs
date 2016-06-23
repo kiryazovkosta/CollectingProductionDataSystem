@@ -740,7 +740,7 @@
         {
             try
             {
-                if (DateTime.Now.Hour >= 7 && DateTime.Now.Hour <= 10)
+                if (DateTime.Now.Hour >= 7 /*&& DateTime.Now.Hour <= 10*/)
                 {
                     using (var context = new ProductionData(new CollectingDataSystemDbContext(new AuditablePersister(), new Logger())))
                     {
