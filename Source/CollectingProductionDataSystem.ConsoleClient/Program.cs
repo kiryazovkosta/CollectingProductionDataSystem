@@ -44,22 +44,21 @@ namespace CollectingProductionDataSystem.ConsoleClient
             //UpdateShiftUnitData(kernel, data);
 
             //AddOrUpdateProductionPlanConfigs(data);
+            //var targetMonth = DateTime.Today;
+            //var service = new MonthlyTechnicalDataService(data, kernel, calculator);
+            //var monthlyProductionData = service.ReadMonthlyTechnologicalData(targetMonth);
+            //using (var sw = new StreamWriter(@"c:\temp\MonthlyTechReport.txt", false))
+            //{
+            //    sw.WriteLine("Id;Code;Name;Factory;ProcessUnit;MaterialType;MeasurementUnit;;PlanValue;PlanPercentage;;FactValue;FactPercentage;FactValueDifference;FactPercentageDifference;;YearValue;YearPercentage;YearValueDifference;YearPercentageDifference");
+            //    foreach (var item in monthlyProductionData)
+            //    {
+            //        sw.WriteLine(item.ToString());
+            //    }
+            //}
 
-            var targetMonth = DateTime.Today;
-            var service = new MonthlyTechnicalDataService(data, calculator);
-            var monthlyProductionData = service.CalculateMonthlyTechnologicalData(targetMonth);
-            using (var sw = new StreamWriter(@"c:\temp\MonthlyTechReport.txt", false))
-            {
-                sw.WriteLine("Id;Code;Name;Factory;ProcessUnit;MaterialType;MeasurementUnit;;PlanValue;PlanPercentage;;FactValue;FactPercentage;FactValueDifference;FactPercentageDifference;;YearValue;YearPercentage;YearValueDifference;YearPercentageDifference");
-                foreach (var item in monthlyProductionData)
-                {
-                    sw.WriteLine(item.ToString());
-                }
-            }
+            //Console.WriteLine(monthlyProductionData.Count());
 
-            Console.WriteLine(monthlyProductionData.Count());
-
-            //var lastRealDate = new DateTime(2016, 6, 16, 0, 0, 0);
+            //var lastRealDate = new DateTime(2016, 6, 26, 0, 0, 0);
             //var dailyData = data.UnitsDailyDatas.All().Where(x => x.RecordTimestamp == lastRealDate).ToList();
             //var approvedDaysData = data.UnitsApprovedDailyDatas.All().Where(x => x.RecordDate == lastRealDate).ToList();
             //var nextDate = lastRealDate.AddDays(1);
@@ -89,7 +88,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
             //    nextDate = nextDate.AddDays(1);
             //}
 
-            //var lastRealDate = new DateTime(2016, 6, 16, 0, 0, 0);
+            //var lastRealDate = new DateTime(2016, 6, 26, 0, 0, 0);
             //var shiftsData = data.UnitsData.All().Where(x => x.RecordTimestamp == lastRealDate).ToList();
             //var approvedShiftsData = data.UnitsApprovedDatas.All().Where(x => x.RecordDate == lastRealDate).ToList();
             //var nextDate = lastRealDate.AddDays(1);
@@ -138,7 +137,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
             //    nextDate = nextDate.AddDays(1);
             //}
 
-            //var lastRealDate = new DateTime(2016, 6, 16, 0, 0, 0);
+            //var lastRealDate = new DateTime(2016, 6, 26, 0, 0, 0);
             //var dailyData = data.ProductionPlanDatas.All().Where(x => x.RecordTimestamp == lastRealDate).ToList();
             //var nextDate = lastRealDate.AddDays(1);
             //var daysInMonth = DateTime.DaysInMonth(lastRealDate.Year, lastRealDate.Month);

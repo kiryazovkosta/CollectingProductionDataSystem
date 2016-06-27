@@ -15,9 +15,12 @@
         public string Code { get; set; }
         public string Name { get; set; }
         public string Factory { get; set; }
+        public int FactoryId { get; set; }
         public string ProcessUnit { get; set; }
+        public int ProcessUnitId { get; set; }
         public string MaterialType { get; set; }
         public string MeasurementUnit { get; set; }
+        public string DetailedMaterialType { get; set; }
 
         /// <summary>
         /// PLAN MONTH

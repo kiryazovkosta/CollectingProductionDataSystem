@@ -2437,6 +2437,42 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to MonthFactPercentage.
+        /// </summary>
+        public static string MonthFactPercentage {
+            get {
+                return ResourceManager.GetString("MonthFactPercentage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MonthFactPercentageDifference.
+        /// </summary>
+        public static string MonthFactPercentageDifference {
+            get {
+                return ResourceManager.GetString("MonthFactPercentageDifference", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MonthFactValue.
+        /// </summary>
+        public static string MonthFactValue {
+            get {
+                return ResourceManager.GetString("MonthFactValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MonthFactValueDifference.
+        /// </summary>
+        public static string MonthFactValueDifference {
+            get {
+                return ResourceManager.GetString("MonthFactValueDifference", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to MonthlyFactFractionFormula.
         /// </summary>
         public static string MonthlyFactFractionFormula {
@@ -2464,11 +2500,38 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to MonthlyTechnologicalReport.
+        /// </summary>
+        public static string MonthlyTechnologicalReport {
+            get {
+                return ResourceManager.GetString("MonthlyTechnologicalReport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to MonthlyValuePlanFormula.
         /// </summary>
         public static string MonthlyValuePlanFormula {
             get {
                 return ResourceManager.GetString("MonthlyValuePlanFormula", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MonthPlanPercentage.
+        /// </summary>
+        public static string MonthPlanPercentage {
+            get {
+                return ResourceManager.GetString("MonthPlanPercentage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MonthPlanValue.
+        /// </summary>
+        public static string MonthPlanValue {
+            get {
+                return ResourceManager.GetString("MonthPlanValue", resourceCulture);
             }
         }
         
@@ -4836,6 +4899,42 @@ namespace App_GlobalResources.Resources {
         public static string WeightScaleNumber {
             get {
                 return ResourceManager.GetString("WeightScaleNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to YearFactPercentage.
+        /// </summary>
+        public static string YearFactPercentage {
+            get {
+                return ResourceManager.GetString("YearFactPercentage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to YearFactPercentageDifference.
+        /// </summary>
+        public static string YearFactPercentageDifference {
+            get {
+                return ResourceManager.GetString("YearFactPercentageDifference", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to YearFactValue.
+        /// </summary>
+        public static string YearFactValue {
+            get {
+                return ResourceManager.GetString("YearFactValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to YearFactValueDifference.
+        /// </summary>
+        public static string YearFactValueDifference {
+            get {
+                return ResourceManager.GetString("YearFactValueDifference", resourceCulture);
             }
         }
         

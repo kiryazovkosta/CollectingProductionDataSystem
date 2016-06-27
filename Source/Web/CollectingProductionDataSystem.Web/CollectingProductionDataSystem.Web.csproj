@@ -325,6 +325,10 @@
     <Compile Include="Areas\MonthlyDataReporting\Models\UnitManualMonthlyDataViewModel.cs" />
     <Compile Include="Areas\MonthlyDataReporting\Models\UnitsMonthlyConfigDataViewModel.cs" />
     <Compile Include="Areas\MonthlyDataReporting\MonthlyDataReportingAreaRegistration.cs" />
+    <Compile Include="Areas\MonthlyTechnicalReporting\Controllers\AreaBaseController.cs" />
+    <Compile Include="Areas\MonthlyTechnicalReporting\Controllers\MonthlyTechnicalController.cs" />
+    <Compile Include="Areas\MonthlyTechnicalReporting\ViewModels\MonthlyTechnicalViewModel.cs" />
+    <Compile Include="Areas\MonthlyTechnicalReporting\MonthlyTechnicalReportingAreaRegistration.cs" />
     <Compile Include="Areas\NomManagement\Controllers\PhdConfigController.cs" />
     <Compile Include="Areas\NomManagement\Controllers\TankStatusController.cs" />
     <Compile Include="Areas\NomManagement\Controllers\UnitMonthlyConfigController.cs" />
@@ -1749,6 +1753,8 @@
     <Content Include="Areas\Documentation\Views\Help\PlanValuesInstallations.cshtml" />
     <Content Include="Areas\NomManagement\Views\ProductionPlanConfig\EditorTemplates\PPCUMCPlanMembersViewModelEditor.cshtml" />
     <Content Include="Areas\NomManagement\Views\ProductionPlanConfig\EditorTemplates\PPCUMCFactFractionMembersViewModelEditor.cshtml" />
+    <Content Include="Areas\MonthlyTechnicalReporting\Views\web.config" />
+    <Content Include="Areas\MonthlyTechnicalReporting\Views\MonthlyTechnical\MonthlyTechnicalData.cshtml" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <Content Include="Scripts\custom\sendArea.js" />
     <Content Include="Scripts\custom\sendArea.min.js">
@@ -2470,6 +2476,9 @@
     <Folder Include="Areas\MonthlyReporting\Models\" />
     <Folder Include="Areas\MonthlyReporting\Views\AreaBase\" />
     <Folder Include="Areas\MonthlyReporting\Views\Shared\" />
+    <Folder Include="Areas\MonthlyTechnicalReporting\Models\" />
+    <Folder Include="Areas\MonthlyTechnicalReporting\Views\AreaBase\" />
+    <Folder Include="Areas\MonthlyTechnicalReporting\Views\Shared\" />
     <Folder Include="Areas\NomManagement\Models\InputModels\" />
     <Folder Include="Areas\NomManagement\Views\Ajax\" />
     <Folder Include="Areas\NomManagement\Views\RelatedUnitConfigs\" />

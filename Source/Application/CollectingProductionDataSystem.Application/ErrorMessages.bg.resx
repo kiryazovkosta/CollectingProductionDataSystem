@@ -150,6 +150,9 @@
   <data name="InvaludUser" xml:space="preserve">
     <value>Потребителя който коригирате не съществува.</value>
   </data>
+  <data name="MonthReportTypesConfirmationError" xml:space="preserve">
+    <value>Операцията по генерирането на технологичен отчет не може да се изпълни докато не бъдат потвърдени месечните данни за следните типове:</value>
+  </data>
   <data name="PreviousDaysEnergyConfirmationError" xml:space="preserve">
     <value>Операцията по потвърждаване не може да бъде изпълнена докато не бъдат потвърдени данните за енергийните потоци на следните дни:</value>
   </data>

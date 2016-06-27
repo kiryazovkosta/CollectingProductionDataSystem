@@ -154,8 +154,6 @@ namespace CollectingProductionDataSystem.Application.MonthlyServices
             return result;
         }
 
-
-
         /// <summary>
         /// Calculates the anual accumulation.
         /// </summary>
@@ -163,15 +161,13 @@ namespace CollectingProductionDataSystem.Application.MonthlyServices
         /// <param name="targetMonth">The target month.</param>
         public void CalculateAnualAccumulation(ref Dictionary<string, UnitMonthlyData> resultMonthly, DateTime targetMonth, int reportTypeId = 0)
         {
-            if (targetMonth.Month == 1)
+            if (targetMonth.Month != 1)
             {
-                return;
-            }
-            var timer = new Stopwatch();
-            timer.Start();
-            var monthBeforeTargetMonth = targetMonth.AddMonths(-1);
-            if (targetMonth.Year == monthBeforeTargetMonth.Year)
-            {
+                var referentMonth = targetMonth.AddMonths(-1);
+                var monthBeforeTargetMonth = new DateTime(referentMonth.Year,
+                                                          referentMonth.Month,
+                                                          DateTime.DaysInMonth(referentMonth.Year, referentMonth.Month));
+
                 var records = from p in data.UnitMonthlyConfigs.AllAnual(targetMonth.Year).Where(x => reportTypeId == 0 || x.MonthlyReportTypeId == reportTypeId)
                               join m in data.UnitMonthlyDatas.All().Where(x => x.RecordTimestamp == monthBeforeTargetMonth) on p.Id equals m.UnitMonthlyConfigId into Result
                               from q in Result.DefaultIfEmpty()
@@ -203,9 +199,6 @@ namespace CollectingProductionDataSystem.Application.MonthlyServices
                         });
                     }
                 }
-
-                timer.Stop();
-                Console.WriteLine(timer.Elapsed);
             }
         }
 

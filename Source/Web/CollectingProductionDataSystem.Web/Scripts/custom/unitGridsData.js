@@ -80,6 +80,10 @@ var unitGridsData = (function () {
                 kendoAdditional.RefreshGrid("#monthly-recalc-data-report");
             }
 
+            if ($("#technological-data").val() !== undefined) {
+                kendoAdditional.RefreshGrid("#technological-data");
+            }
+
 
             if ($("#tanks-statuses").val() !== undefined) {
 
@@ -189,6 +193,26 @@ var unitGridsData = (function () {
             });
         }
 
+        if ($("#report")) {
+            $("#report").click(function () {
+                if ($("#monthly-pw-units").val() !== undefined) {
+                    if (ctrlParamsElement.val() !== undefined) {
+                        ctrlParamsElement.attr('data-params', JSON.stringify(sendDate()));
+                    }
+
+                    kendoAdditional.RefreshGrid("#monthly-pw-units");
+                }
+
+                if ($("#monthly-recalc-data-report").val() !== undefined) {
+                    if (ctrlParamsElement.val() !== undefined) {
+                        ctrlParamsElement.attr('data-params', JSON.stringify(sendDate()));
+                    }
+
+                    kendoAdditional.RefreshGrid("#monthly-recalc-data-report");
+                }
+            });
+        }
+
     });
 
     //------------------ private functions ------------------------------------
@@ -196,11 +220,16 @@ var unitGridsData = (function () {
     function getControlData() {
         var controlParams = $('#control-params');
         if (controlParams.val() !== undefined) {
-            return JSON.parse(controlParams.attr('data-params'));
+            if (controlParams.attr('data-params') !== '') {
+                return JSON.parse(controlParams.attr('data-params'));
+            }
+            else {
+                return {};
+            }
+            
         } else {
             return {};
         }
-
     }
 
     function attachExcellExportToGrid() {
