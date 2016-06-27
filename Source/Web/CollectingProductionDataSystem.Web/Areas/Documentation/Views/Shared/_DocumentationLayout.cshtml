@@ -186,6 +186,24 @@
                 </ul>
             </div>
         </li>
+
+        <li>
+            <div role="tab" id="collapseListGroupHeading24">
+                <a class="help-side-nav-main" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseListGroup24" aria-expanded="true" aria-controls="collapseListGroup24">
+                    <span>@Resources.HelpResource.TechnologicalReport</span>
+                </a>
+                <div class="green-edge-image"></div>
+            </div>
+            <div id="collapseListGroup24" class="panel-collapse collapse" role="tabpanel" aria-labelledby="collapseListGroupHeading24" aria-expanded="false">
+                <ul>
+                    <li>
+                        @Ajax.ActionLink(@Resources.HelpResource.TechnologicalReportDescription, "TechnologicalReport", "Help", new { @class = "help-side-nav-main-items" },
+                                                          new AjaxOptions() { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "pageHelp-content", LoadingElementId = "inprogress" })
+                    </li>
+                </ul>
+            </div>
+        </li>
+
         <li>
             <div role="tab" id="collapseListGroupHeading15">
                 <a class="help-side-nav-main" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseListGroup15" aria-expanded="true" aria-controls="collapseListGroup15">

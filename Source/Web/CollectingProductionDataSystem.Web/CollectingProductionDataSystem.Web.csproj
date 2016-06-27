@@ -1156,6 +1156,11 @@
     <Content Include="Content\Images\SummaryReport\Фигура82.png" />
     <Content Include="Content\Images\SummaryReport\Фигура91.jpg" />
     <Content Include="Content\Images\tanks.png" />
+    <Content Include="Content\Images\TechnologicalReport\error.png" />
+    <Content Include="Content\Images\TechnologicalReport\Figura1.png" />
+    <Content Include="Content\Images\TechnologicalReport\Figura2.png" />
+    <Content Include="Content\Images\TechnologicalReport\figura3.png" />
+    <Content Include="Content\Images\TechnologicalReport\Filter.png" />
     <Content Include="Content\Images\TrafficLights\green_light.png" />
     <Content Include="Content\Images\TrafficLights\green_light_big.png" />
     <Content Include="Content\Images\TrafficLights\red_light.png" />
@@ -1758,6 +1763,7 @@
     <Content Include="Areas\NomManagement\Views\ProductionPlanConfig\EditorTemplates\PPCUMCPlanMembersViewModelEditor.cshtml" />
     <Content Include="Areas\NomManagement\Views\ProductionPlanConfig\EditorTemplates\PPCUMCFactFractionMembersViewModelEditor.cshtml" />
     <Content Include="Areas\Documentation\Views\Help\MonthlyWorkingHours.cshtml" />
+    <Content Include="Areas\Documentation\Views\Help\TechnologicalReport.cshtml" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <Content Include="Scripts\custom\sendArea.js" />
     <Content Include="Scripts\custom\sendArea.min.js">
@@ -2681,6 +2687,7 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <CustomToolNamespace>App_GlobalResources.Resources</CustomToolNamespace>
       <LastGenOutput>Layout.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

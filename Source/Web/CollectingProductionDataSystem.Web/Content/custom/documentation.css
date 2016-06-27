@@ -160,7 +160,7 @@ a.help-side-nav-main
     color: white;
     text-transform: uppercase;
     font-stretch: condensed;
-    font: bold 19px Verdana;
+    font: bold 15.4px Verdana;/*letter*/
     padding-top:-2px;
     border: 2px solid #6e9c89 !important;
     height: 45px;
@@ -182,7 +182,7 @@ a.help-side-nav-main:hover,a.inner-help-side-nav-main:hover,  a.help-side-nav-ma
 }
 #collapseListGroup11>ul>li>a,#collapseListGroup12 >ul>li>a,#collapseListGroup13 >ul>li>a,#collapseListGroup14 >ul>li>a,#collapseListGroup15 >ul>li>a,#collapseListGroup16 >ul>li>a,
 #collapseListGroup17 >ul>li>a,#collapseListGroup18 >ul>li>a,#collapseListGroup19 >ul>li>a,#collapseListGroup20 >ul>li>a,#collapseListGroup21 >ul>li>a,#collapseListGroup22 >ul>li>a,
-#collapseListGroup23 >ul>li>a
+#collapseListGroup23 >ul>li>a,#collapseListGroup24 >ul>li>a
 {
     text-decoration:none;
     color:black !important;
@@ -191,7 +191,7 @@ a.help-side-nav-main:hover,a.inner-help-side-nav-main:hover,  a.help-side-nav-ma
 }
 #collapseListGroup11 >ul>li>a:hover,#collapseListGroup12 >ul>li>a:hover,#collapseListGroup13 >ul>li>a:hover,#collapseListGroup14 >ul>li>a:hover,#collapseListGroup15 >ul>li>a:hover,
 #collapseListGroup16 >ul>li>a:hover,#collapseListGroup17 >ul>li>a:hover,#collapseListGroup18 >ul>li>a:hover,#collapseListGroup19 >ul>li>a:hover, #collapseListGroup20 >ul>li>a:hover,
-#collapseListGroup21 >ul>li>a:hover,#collapseListGroup22 >ul>li>a:hover,#collapseListGroup23 >ul>li>a:hover
+#collapseListGroup21 >ul>li>a:hover,#collapseListGroup22 >ul>li>a:hover,#collapseListGroup23 >ul>li>a:hover,#collapseListGroup24 >ul>li>a:hover
 {
      background:#6ead9f;
     color:white !important;
@@ -199,7 +199,7 @@ a.help-side-nav-main:hover,a.inner-help-side-nav-main:hover,  a.help-side-nav-ma
 }
 #collapseListGroup11>ul>li>a.activeLi,#collapseListGroup12 >ul>li>a.activeLi,#collapseListGroup13 >ul>li>a.activeLi,#collapseListGroup14 >ul>li>a.activeLi,#collapseListGroup15 >ul>li>a.activeLi,
 #collapseListGroup16 >ul>li>a.activeLi,#collapseListGroup17 >ul>li>a.activeLi, #collapseListGroup18 >ul>li>a.activeLi, #collapseListGroup19 >ul>li>a.activeLi,#collapseListGroup20 >ul>li>a.activeLi,
-#collapseListGroup21 >ul>li>a.activeLi, #collapseListGroup22 >ul>li>a.activeLi, #collapseListGroup23 >ul>li>a.activeLi
+#collapseListGroup21 >ul>li>a.activeLi, #collapseListGroup22 >ul>li>a.activeLi, #collapseListGroup23 >ul>li>a.activeLi,#collapseListGroup24 >ul>li>a.activeLi
 {
      background:#6ead9f;
     color:white !important;

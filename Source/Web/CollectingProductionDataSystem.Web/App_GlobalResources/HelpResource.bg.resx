@@ -285,4 +285,10 @@
   <data name="MonthlyDataWorkingHours" xml:space="preserve">
     <value>Месечни данни за работни часове</value>
   </data>
+  <data name="TechnologicalReport" xml:space="preserve">
+    <value>Технологичен отчет</value>
+  </data>
+  <data name="TechnologicalReportDescription" xml:space="preserve">
+    <value>Технологичен отчет описание</value>
+  </data>
 </root>

@@ -15,7 +15,7 @@
 
     //--Define array only here---------------------------------------------------------------------
     array = ['collapseListGroup11', 'collapseListGroup12', 'collapseListGroup13', 'collapseListGroup14', 'collapseListGroup15', 'collapseListGroup16', 'collapseListGroup17',
-    'collapseListGroup18', 'collapseListGroup19', 'collapseListGroup20', 'collapseListGroup21', 'collapseListGroup22', 'collapseListGroup23'];
+    'collapseListGroup18', 'collapseListGroup19', 'collapseListGroup20', 'collapseListGroup21', 'collapseListGroup22', 'collapseListGroup23','collapseListGroup24'];
     for (var k = 0; k < array.length; k++) {
         var newstr = "#".concat(array[k]).concat('>ul>li>a');
         $(newstr).click(function () {
