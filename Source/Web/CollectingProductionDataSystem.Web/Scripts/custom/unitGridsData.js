@@ -14,6 +14,14 @@ var unitGridsData = (function () {
     'use strict';
     $(document).ready(function () {
         var ctrlParamsElement = $('#control-params');
+        if ($("#monthly-recalc-data-report").val() !== undefined) {
+            if (ctrlParamsElement.val() !== undefined) {
+                ctrlParamsElement.attr('data-params', JSON.stringify(sendDate()));
+            }
+
+            kendoAdditional.RefreshGrid("#monthly-recalc-data-report");
+        }
+
         if ($("#plan-grid").val() !== undefined) {
             $('#confirm').remove();
         }
@@ -199,16 +207,12 @@ var unitGridsData = (function () {
                     if (ctrlParamsElement.val() !== undefined) {
                         ctrlParamsElement.attr('data-params', JSON.stringify(sendDate()));
                     }
-
-                    kendoAdditional.RefreshGrid("#monthly-pw-units");
                 }
 
                 if ($("#monthly-recalc-data-report").val() !== undefined) {
                     if (ctrlParamsElement.val() !== undefined) {
                         ctrlParamsElement.attr('data-params', JSON.stringify(sendDate()));
                     }
-
-                    kendoAdditional.RefreshGrid("#monthly-recalc-data-report");
                 }
             });
         }

@@ -367,6 +367,16 @@
         [ValidateAntiForgeryToken]
         public ActionResult Report(DateTime? date)
         {
+            Session["reportParams"] = Convert.ToBase64String(Encoding.UTF8.GetBytes(
+                                                                   JsonConvert.SerializeObject(
+                                                                       new ConfirmMonthlyInputModel()
+                                                                       {
+                                                                           date = date.Value,
+                                                                           monthlyReportTypeId = CommonConstants.PotableWater,
+                                                                       }
+                                                                   )
+                                                               )
+                                                           );
             return RedirectToAction("MonthlyPotableWaterReport", new { reportDate = date, isReport = false });
         }
 

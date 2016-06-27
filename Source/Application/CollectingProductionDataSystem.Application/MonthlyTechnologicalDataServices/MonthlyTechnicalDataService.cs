@@ -53,8 +53,7 @@ namespace CollectingProductionDataSystem.Application.MonthlyTechnologicalDataSer
                 .Include(x => x.MonthlyReportType)
                 .Include(x => x.ProductType)
                 .Where(x => x.IsAvailableInTechnologicalReport)
-                //.Where(x => processUnits.Contains(x.ProcessUnitId))
-                .Where(x => x.ProcessUnitId == 3)
+                .Where(x => processUnits.Contains(x.ProcessUnitId))
                 .ToList()
                 .SelectMany(y => y.UnitMonthlyDatas.Where(z => z.RecordTimestamp == monthDate))
                 .ToList();
