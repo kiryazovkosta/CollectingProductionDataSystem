@@ -35,7 +35,7 @@
         [Authorize(Roles="Administrator, DailyReporter, TanksStatusesReporter")]
         public ActionResult AuthorizeDailyMenu(){return Content("");}
 
-        [Authorize(Roles = "Administrator, MonthlyReporter, MonthlyHydroCarbonsReporter,MonthlyChemicalReporter,MonthlyFreshWaterReporter, MonthlyCirculatingWaterReporter,MonthlyChemicalClearedWaterReporter, MonthlyPotableWaterReporter, MonthlyHeatEnergyReporter, MonthlyElectricalEnergyReporter, MonthlyAirReporter, MonthlyNitrogenReporter, ProductionPlanManager")]
+        [Authorize(Roles = "Administrator, MonthlyReporter, MonthlyHydroCarbonsReporter,MonthlyChemicalReporter,MonthlyFreshWaterReporter, MonthlyCirculatingWaterReporter,MonthlyChemicalClearedWaterReporter, MonthlyPotableWaterReporter, MonthlyHeatEnergyReporter, MonthlyElectricalEnergyReporter, MonthlyAirReporter, MonthlyNitrogenReporter,MonthlyWorkingHoursReporter, ProductionPlanManager")]
         public ActionResult AuthorizeMonthlyMenu(){return Content("");}
 
         [Authorize(Roles="Administrator,SummaryReporter")]
