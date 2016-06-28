@@ -16,7 +16,11 @@
                 async.Save("Upload", "UploadNom")
                 )
             .Multiple(false)
-                            .Events(ev => ev.Success("uploadNom.onSuccess").Error("uploadNom.onError"))
+                            .Events(ev =>
+                            {
+                                ev.Success("uploadNom.onSuccess");
+                                ev.Error("uploadNom.onError");
+                            })
         )
     </form>
     <div class="separator"></div>

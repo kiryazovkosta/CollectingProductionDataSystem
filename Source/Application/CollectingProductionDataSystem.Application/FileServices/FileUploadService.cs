@@ -53,11 +53,10 @@
         /// <returns></returns>
         private FileDescriptor GetRecordsFromFileAsStream(Stream fileStream, string delimiter, string fileName)
         {
-            IEfStatus status = this.kernel.Get<IEfStatus>();
-
-            using (StreamReader file = new StreamReader(fileStream, Encoding.GetEncoding("windows-1251")))
+             using (StreamReader file = new StreamReader(fileStream, Encoding.GetEncoding("windows-1251")))
             {
-                FileDescriptor fileDescriptor = new FileDescriptor();
+                FileDescriptor fileDescriptor = new FileDescriptor() { Status = this.kernel.Get<IEfStatus>() };
+
                 char[] charSeparator = { Convert.ToChar(delimiter) };
                 try
                 {
@@ -71,26 +70,26 @@
                 }
                 catch (FileLoadException)
                 {
-                    status.SetErrors(
+                   fileDescriptor.Status.SetErrors(
                         this.GetValidationResult(Format(Resources.FileProcessError, fileName))
                         );
                 }
                 catch (OutOfMemoryException)
                 {
-                    status.SetErrors(
+                    fileDescriptor.Status.SetErrors(
                         this.GetValidationResult(Format(Resources.FileProcessError, fileName))
                         );
 
                 }
                 catch (IOException)
                 {
-                    status.SetErrors(
+                    fileDescriptor.Status.SetErrors(
                         this.GetValidationResult(Format(Resources.FileProcessError, fileName))
                         );
                 }
                 catch (ArgumentNullException anEx)
                 {
-                    status.SetErrors(
+                    fileDescriptor.Status.SetErrors(
                         this.GetValidationResult(Format(Resources.InvalidRecordType, anEx.Message))
                         );
                 }
@@ -129,13 +128,20 @@
             string line = fileReader.ReadLine();
             if (!IsNullOrEmpty(line))
             {
-                string[] result = line.Split(charSeparator, StringSplitOptions.RemoveEmptyEntries);
+                try
+                {
+                    string[] result = line.Split(charSeparator, StringSplitOptions.RemoveEmptyEntries);
 
-                string assemblyName = result[ASSEMBLY_NAME_POSITION];
-                string entityName = result[ENTITY_NAME_POSITION];
+                    string assemblyName = result[ASSEMBLY_NAME_POSITION];
+                    string entityName = result[ENTITY_NAME_POSITION];
 
-                fileDescriptor.RecordOriginalType = ExtractType(assemblyName, entityName);
-                fileDescriptor.DateTimeFormat = result[DATETIME_FORMAT_POSITION];
+                    fileDescriptor.RecordOriginalType = ExtractType(assemblyName, entityName);
+                    fileDescriptor.DateTimeFormat = result[DATETIME_FORMAT_POSITION];
+                }
+                catch (IndexOutOfRangeException ex)
+                {
+                    throw new FileLoadException("Cannot read the header information!",ex);
+                }
             }
             else
             {
