@@ -1,24 +1,18 @@
 ﻿namespace CollectingProductionDataSystem.Application.FileServices
 {
-    using System.Collections;
-    using System.ComponentModel.DataAnnotations;
-    using System.Diagnostics;
-    using System.Globalization;
-    using System.IO;
-    using System.Reflection;
-    using System.Runtime.InteropServices.ComTypes;
     using CollectingProductionDataSystem.Application.Contracts;
     using CollectingProductionDataSystem.Constants;
     using CollectingProductionDataSystem.Data.Contracts;
-    using CollectingProductionDataSystem.Infrastructure.Extentions;
-    using CollectingProductionDataSystem.Models.Contracts;
-    using CollectingProductionDataSystem.Models.Productions;
     using Ninject;
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+    using System.Globalization;
+    using System.IO;
     using System.Linq;
+    using System.Reflection;
     using System.Text;
-    using System.Threading.Tasks;
+    using static System.String;
     using Resources = App_Resources.ErrorMessages;
 
     public class FileUploadService : IFileUploadService
@@ -31,20 +25,22 @@
         const int FILE_CONTENT_STARTING_LINE = 2;
         private readonly IProductionData data;
         private readonly IKernel kernel;
+
         public FileUploadService(IProductionData dataParam, IKernel kernelParam)
         {
             this.kernel = kernelParam;
             this.data = dataParam;
         }
+
         public IEfStatus UploadFileToDatabase(string fileName, string delimiter)
         {
-            FileResult fileResult = GetRecordsFromFile(fileName, delimiter);
+            FileDescriptor fileResult = GetRecordsFromFile(fileName, delimiter);
             return ParseRecordsAndPersistToDatabase(fileResult, delimiter);
         }
 
         public IEfStatus UploadFileToDatabase(Stream fileStream, string delimiter, string fileName)
         {
-            FileResult fileResult = GetRecordsFromFileAsStream(fileStream, delimiter, fileName);
+            FileDescriptor fileResult = GetRecordsFromFileAsStream(fileStream, delimiter, fileName);
             return ParseRecordsAndPersistToDatabase(fileResult, delimiter);
         }
 
@@ -53,89 +49,107 @@
         /// </summary>
         /// <param name="fileStream">The file stream.</param>
         /// <param name="delimiter">The delimiter.</param>
+        /// <param name="fileName">Name of the file.</param>
         /// <returns></returns>
-        private FileResult GetRecordsFromFileAsStream(Stream fileStream, string delimiter, string fileName)
+        private FileDescriptor GetRecordsFromFileAsStream(Stream fileStream, string delimiter, string fileName)
         {
-            IEfStatus status = this.kernel.Get<IEfStatus>();
-
-            using (System.IO.StreamReader file = new System.IO.StreamReader(fileStream, Encoding.GetEncoding("windows-1251")))
+             using (StreamReader file = new StreamReader(fileStream, Encoding.GetEncoding("windows-1251")))
             {
-                string line;
-                int count = 0;
+                FileDescriptor fileDescriptor = new FileDescriptor() { Status = this.kernel.Get<IEfStatus>() };
 
-                string[] result;
-                string assemblyName = string.Empty;
-                string entityName = string.Empty;
-                string dateTimeFormat = string.Empty;
                 char[] charSeparator = { Convert.ToChar(delimiter) };
-                Type originalType = null;
-                List<PropertyDescription> properties = new List<PropertyDescription>();
-                List<string> records = new List<string>();
                 try
                 {
+                    GetRecordsDescription(file, fileDescriptor, charSeparator);
+                    GetPropertiesDescription(file, fileDescriptor, charSeparator);
+                    string line = string.Empty;
                     while ((line = file.ReadLine()) != null)
                     {
-                        if (count == ENTITY_NAME_FILE_LINE)
-                        {
-                            result = line.Split(charSeparator, StringSplitOptions.RemoveEmptyEntries);
-                            assemblyName = result[ASSEMBLY_NAME_POSITION];
-                            entityName = result[ENTITY_NAME_POSITION];
-                            dateTimeFormat = result[DATETIME_FORMAT_POSITION];
-                            originalType = ExtractType(assemblyName, entityName);
-                            if (originalType == null)
-                            {
-                                throw new ArgumentNullException("originalType");
-                            }
-                        }
-                        if (count == PROPERTIES_DESCRIPTION_FILE_LINE)
-                        {
-                            result = line.Split(charSeparator, StringSplitOptions.RemoveEmptyEntries);
-                            for (int i = 0; i < result.Length; i++)
-                            {
-                                properties.Add(new PropertyDescription { Position = i, Name = result[i] });
-                            }
-                        }
-                        // content of records in the file
-                        if (count >= FILE_CONTENT_STARTING_LINE)
-                        {
-                            records.Add(line);
-                        }
-
-                        count++;
+                        fileDescriptor.Records.Add(line);
                     }
                 }
-                catch (OutOfMemoryException oomException)
+                catch (FileLoadException)
                 {
-                    status.SetErrors(
-                        this.GetValidationResult(string.Format(Resources.FileProcessError, fileName))
+                   fileDescriptor.Status.SetErrors(
+                        this.GetValidationResult(Format(Resources.FileProcessError, fileName))
+                        );
+                }
+                catch (OutOfMemoryException)
+                {
+                    fileDescriptor.Status.SetErrors(
+                        this.GetValidationResult(Format(Resources.FileProcessError, fileName))
                         );
 
                 }
-                catch (IOException ioException)
+                catch (IOException)
                 {
-                    status.SetErrors(
-                        this.GetValidationResult(string.Format(Resources.FileProcessError, fileName))
+                    fileDescriptor.Status.SetErrors(
+                        this.GetValidationResult(Format(Resources.FileProcessError, fileName))
                         );
                 }
-                catch (ArgumentNullException)
+                catch (ArgumentNullException anEx)
                 {
-                    status.SetErrors(
-                        this.GetValidationResult(string.Format(Resources.InvalidRecordType, entityName))
+                    fileDescriptor.Status.SetErrors(
+                        this.GetValidationResult(Format(Resources.InvalidRecordType, anEx.Message))
                         );
                 }
 
-                return new FileResult()
-                {
-                    RecordOriginalType = originalType,
-                    DateTimeFormat = dateTimeFormat,
-                    Properties = properties,
-                    Records = records,
-                    Status = status
-                };
+                return fileDescriptor;
             }
         }
 
-        private IEfStatus ParseRecordsAndPersistToDatabase(FileResult fileResult, string delimiter)
+        private static void GetPropertiesDescription(StreamReader fileReader, FileDescriptor fileDescriptor, char[] charSeparator)
+        {
+            string line = fileReader.ReadLine();
+            if (!IsNullOrEmpty(line))
+            {
+
+                string[] result = line.Split(charSeparator, StringSplitOptions.RemoveEmptyEntries);
+                for (int i = 0; i < result.Length; i++)
+                {
+                    fileDescriptor.Properties.Add(new PropertyDescription { Position = i, Name = result[i] });
+                }
+            }
+            else
+            {
+                throw new FileLoadException("Cannot read the header information!");
+            }
+
+        }
+
+        /// <summary>
+        /// Gets the records description.
+        /// </summary>
+        /// <param name="fileReader">The file reader.</param>
+        /// <param name="fileDescriptor">The file descriptor.</param>
+        /// <param name="charSeparator">The char separator.</param>
+        private void GetRecordsDescription(StreamReader fileReader, FileDescriptor fileDescriptor, char[] charSeparator)
+        {
+            string line = fileReader.ReadLine();
+            if (!IsNullOrEmpty(line))
+            {
+                try
+                {
+                    string[] result = line.Split(charSeparator, StringSplitOptions.RemoveEmptyEntries);
+
+                    string assemblyName = result[ASSEMBLY_NAME_POSITION];
+                    string entityName = result[ENTITY_NAME_POSITION];
+
+                    fileDescriptor.RecordOriginalType = ExtractType(assemblyName, entityName);
+                    fileDescriptor.DateTimeFormat = result[DATETIME_FORMAT_POSITION];
+                }
+                catch (IndexOutOfRangeException ex)
+                {
+                    throw new FileLoadException("Cannot read the header information!",ex);
+                }
+            }
+            else
+            {
+                throw new FileLoadException("Cannot read the header information!");
+            }
+        }
+
+        private IEfStatus ParseRecordsAndPersistToDatabase(FileDescriptor fileResult, string delimiter)
         {
             if (!fileResult.Status.IsValid)
             {
@@ -160,7 +174,7 @@
         /// <param name="fileResult">The file result.</param>
         /// <param name="objResultl">The obj resultl.</param>
         /// <returns></returns>
-        private IEfStatus Parse(FileResult fileResult, string delimiter, out IEnumerable<object> objResult)
+        private IEfStatus Parse(FileDescriptor fileResult, string delimiter, out IEnumerable<object> objResult)
         {
             IEfStatus status = this.kernel.Get<IEfStatus>();
             List<ValidationResult> errors = new List<ValidationResult>();
@@ -202,7 +216,7 @@
         /// <param name="propertiesValues">The properties values.</param>
         /// <param name="properties">The properties.</param>
         /// <returns></returns>
-        private Dictionary<string, object> ConvertStringCollectionToPropDictionary(IEnumerable<string> propertiesValues, FileResult fileResult)
+        private Dictionary<string, object> ConvertStringCollectionToPropDictionary(IEnumerable<string> propertiesValues, FileDescriptor fileResult)
         {
             System.Threading.Thread.CurrentThread.CurrentCulture =
                 System.Globalization.CultureInfo.InvariantCulture;
@@ -311,14 +325,14 @@
         /// <param name="fileName">Name of the file.</param>
         /// <param name="delimiter">The delimiter.</param>
         /// <returns></returns>
-        private FileResult GetRecordsFromFile(string fileName, string delimiter)
+        private FileDescriptor GetRecordsFromFile(string fileName, string delimiter)
         {
             IEfStatus status = FileExist(fileName);
-            var result = new FileResult();
+            var result = new FileDescriptor();
 
             if (!status.IsValid)
             {
-                return new FileResult { Status = status };
+                return new FileDescriptor { Status = status };
             }
 
             using (FileStream file = new FileStream(fileName, FileMode.Open, FileAccess.Read))//, Encoding.GetEncoding("windows-1251")))
@@ -362,8 +376,8 @@
 
         private List<ValidationResult> GetValidationResult(string message)
         {
-            return new List<ValidationResult> { 
-                        new ValidationResult(string.Format(message)) 
+            return new List<ValidationResult> {
+                        new ValidationResult(string.Format(message))
                     };
         }
 
@@ -420,15 +434,54 @@
         public string Name { get; set; }
     }
 
-    internal class FileResult
+    internal class FileDescriptor
     {
-        public Type RecordOriginalType { get; set; }
+        private string dateTimeFormat;
+        private Type recordOriginalType;
 
-        public string DateTimeFormat { get; set; }
+        public FileDescriptor()
+        {
+            this.dateTimeFormat = string.Empty;
+            this.Properties = new List<PropertyDescription>();
+            this.Records = new List<string>();
+            this.recordOriginalType = null;
+        }
 
-        public IEnumerable<PropertyDescription> Properties { get; set; }
+        public Type RecordOriginalType
+        {
+            get { return this.recordOriginalType; }
+            set
+            {
+                if (value != null)
+                {
+                    this.recordOriginalType = value;
+                }
+                else
+                {
+                    throw new ArgumentNullException(nameof(RecordOriginalType));
+                }
+            }
+        }
 
-        public IEnumerable<string> Records { get; set; }
+        public string DateTimeFormat
+        {
+            get { return this.dateTimeFormat; }
+            set
+            {
+                if (value != null)
+                {
+                    this.dateTimeFormat = value;
+                }
+                else
+                {
+                    throw new ArgumentNullException(nameof(DateTimeFormat));
+                }
+            }
+        }
+
+        public ICollection<PropertyDescription> Properties { get; set; }
+
+        public ICollection<string> Records { get; set; }
 
         public IEfStatus Status { get; set; }
     }
