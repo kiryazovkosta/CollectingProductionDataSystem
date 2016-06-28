@@ -101,6 +101,7 @@ namespace CollectingProductionDataSystem.Models.Productions.Mounthly
 
         public bool IsAvailableInTechnologicalReport { get; set; }
 
+        public bool IsOnlyMonthFactValuePosition { get; set; }
 
         /// <summary>
         /// Determines whether the specified object is valid.
