@@ -13,7 +13,7 @@ namespace CollectingProductionDataSystem.Models.Nomenclatures
         private ICollection<UnitDailyConfig> unitDailyConfigs;
         private ICollection<MaterialDetailType> materialDetailTypes;
         private ICollection<ProductionPlanConfig> productionPlanConfigs;
-        private ICollection<UnitMonthlyConfig> unitMonthlyConfigs = new HashSet<UnitMonthlyConfig>();
+        private ICollection<UnitMonthlyConfig> unitMonthlyConfigs;
 
         public MaterialType()
         {
@@ -21,6 +21,7 @@ namespace CollectingProductionDataSystem.Models.Nomenclatures
             this.unitDailyConfigs = new HashSet<UnitDailyConfig>();
             this.materialDetailTypes = new HashSet<MaterialDetailType>();
             this.productionPlanConfigs = new HashSet<ProductionPlanConfig>();
+            this.unitMonthlyConfigs = new HashSet<UnitMonthlyConfig>();
         }
 
         public int Id { get; set; }

@@ -98,12 +98,12 @@
                     }
                     else 
                     {
-                        throw (ex);
+                        throw ex;
                     }
                 }
                 catch (Exception ex)
                 {
-                    ModelState.AddModelError("", ex.Message + ex.StackTrace);
+                    ModelState.AddModelError(string.Empty, ex.Message + ex.StackTrace);
                 }
             }
 

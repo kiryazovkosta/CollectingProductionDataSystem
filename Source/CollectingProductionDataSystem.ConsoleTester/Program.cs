@@ -32,10 +32,10 @@ namespace CollectingProductionDataSystem.ConsoleTester
     {
         private static UnitDailyDataService dailyService;
         private static IProductionData data;
-        private static TransactionOptions transantionOption = DefaultTransactionOptions.Instance.TransactionOptions;
+        private static readonly TransactionOptions transantionOption = DefaultTransactionOptions.Instance.TransactionOptions;
         private static NinjectConfig ninject;
         private static IKernel kernel;
-        private static UnitMothlyDataService service;
+        //private static UnitMothlyDataService service;
         private static ITestUnitDailyCalculationService testUnitDailyCalculationService;
         private static IUnitMothlyDataService monthlyService;
 

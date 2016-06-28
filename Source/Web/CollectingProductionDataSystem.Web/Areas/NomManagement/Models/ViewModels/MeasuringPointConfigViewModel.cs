@@ -13,10 +13,6 @@ namespace CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewMode
 {
     public class MeasuringPointConfigViewModel : IMapFrom<MeasuringPointConfig>, IHaveCustomMappings, IEntity
     {
-        public MeasuringPointConfigViewModel()
-        {
-            this.RelatedMeasuringPointConfigs = new HashSet<RelatedMeasuringPointConfigsViewModel>();
-        }
 
         [Required]
         [Display(Name = "Id", ResourceType = typeof(Resources.Layout))]
@@ -398,14 +394,14 @@ namespace CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewMode
 
         [UIHint("RelatedMeasuringPointConfigEditor")]
         [Display(Name = "RelatedMeasuringPointConfigs", ResourceType = typeof(Resources.Layout))]
-        public virtual ICollection<RelatedMeasuringPointConfigsViewModel> RelatedMeasuringPointConfigs { get; set; }
+        public virtual ICollection<RelatedMeasuringPointConfigsViewModel> RelatedMeasuringPointConfigs { get; set; } = new HashSet<RelatedMeasuringPointConfigsViewModel>();
 
-            /// <summary>
-            /// Creates the mappings.
-            /// </summary>
-            /// <param name="configuration">The configuration.</param>
-            ///<param name="configuration">The configuration.</param>
-            public void CreateMappings(IConfiguration configuration)
+        /// <summary>
+        /// Creates the mappings.
+        /// </summary>
+        /// <param name="configuration">The configuration.</param>
+        ///<param name="configuration">The configuration.</param>
+        public void CreateMappings(IConfiguration configuration)
             {
                 //configuration.CreateMap<MeasuringPointConfig, MeasuringPointConfigViewModel>()
                         //.ForMember(p => p.DailyProductTypeId, opt => opt.MapFrom(p => p.DailyProductTypeId == null ? 0 : (int)p.DailyProductTypeId))

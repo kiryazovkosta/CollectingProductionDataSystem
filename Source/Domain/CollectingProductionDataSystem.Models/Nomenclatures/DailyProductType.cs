@@ -27,7 +27,7 @@
         {
             get
             {
-                var sb = new StringBuilder();
+                StringBuilder sb = new StringBuilder();
                 sb.Append(this.Id.ToString("d2"));
                 sb.Append(" ");
                 sb.Append(this.Name);
