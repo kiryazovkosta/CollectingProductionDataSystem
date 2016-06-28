@@ -54,6 +54,7 @@ namespace CollectingProductionDataSystem.Application.MonthlyTechnologicalDataSer
                 .Include(x => x.ProductType)
                 .Where(x => x.IsAvailableInTechnologicalReport)
                 .Where(x => processUnits.Contains(x.ProcessUnitId))
+                //.Where(x => x.ProcessUnitId == 4)
                 .ToList()
                 .SelectMany(y => y.UnitMonthlyDatas.Where(z => z.RecordTimestamp == monthDate))
                 .ToList();
@@ -112,9 +113,11 @@ namespace CollectingProductionDataSystem.Application.MonthlyTechnologicalDataSer
         {
             var monthlyTechnicalReportDataDto = new MonthlyTechnicalReportDataDto();
 
-            var planValue = GetPlanValue(item, productionPlanData, firstDayInMonth);
+            bool isOnlyMonthFactValuePosition = item.UnitMonthlyConfig.IsOnlyMonthFactValuePosition;
+
+            var planValue = isOnlyMonthFactValuePosition ? 0 : GetPlanValue(item, productionPlanData, firstDayInMonth);
             var planPercentage = GetPlanPercentage(item, productionPlanData, firstDayInMonth);
-            var factPercentage = CalculateFactPercentage(item, productionPlanData, monthlyData);
+            var factPercentage = isOnlyMonthFactValuePosition ? 0 : CalculateFactPercentage(item, productionPlanData, monthlyData);
             if (factPercentage == double.MinValue)
             {
                 monthlyTechnicalReportDataDto = null;
@@ -122,7 +125,7 @@ namespace CollectingProductionDataSystem.Application.MonthlyTechnologicalDataSer
 
             if (monthlyTechnicalReportDataDto != null)
             {
-                var yearPercentage = CalculateYearPercentage(item, productionPlanData, monthlyData);
+                var yearPercentage = isOnlyMonthFactValuePosition ? 0 : CalculateYearPercentage(item, productionPlanData, monthlyData);
                 if (yearPercentage == double.MinValue)
                 {
                     monthlyTechnicalReportDataDto = null;
@@ -298,7 +301,13 @@ namespace CollectingProductionDataSystem.Application.MonthlyTechnologicalDataSer
                     var value = (double)monthlyApprovedDatas[relatedMonthlyData.UnitMonthlyConfig.Code].MonthValue;
                     inputDictionary.Add(string.Format("p{0}", relatedMonthlyData.Position - 1), value);
                 }
-                return calculator.Calculate(productionPlanData.ProductionPlanConfig.MonthlyFactFractionFormula, "p", inputDictionary.Count, inputDictionary);
+                double result = calculator.Calculate(productionPlanData.ProductionPlanConfig.MonthlyFactFractionFormula, "p", inputDictionary.Count, inputDictionary);
+                if (double.IsNaN(result) || double.IsInfinity(result))
+                {
+                    result = 0.0;
+                }
+
+                return result;
             }
             else
             {
@@ -325,7 +334,11 @@ namespace CollectingProductionDataSystem.Application.MonthlyTechnologicalDataSer
                     inputDictionary.Add(string.Format("p{0}", relatedMonthlyData.Position - 1), value);
                 }
 
-                var result = calculator.Calculate(productionPlanData.ProductionPlanConfig.MonthlyFactFractionFormula, "p", inputDictionary.Count, inputDictionary);
+                double result = calculator.Calculate(productionPlanData.ProductionPlanConfig.MonthlyFactFractionFormula, "p", inputDictionary.Count, inputDictionary);
+                if (double.IsNaN(result) || double.IsInfinity(result))
+                {
+                    result = 0.0;
+                }
                 return result;
             }
             else
