@@ -40,6 +40,8 @@ namespace CollectingProductionDataSystem.Application.MonthlyTechnologicalDataSer
                 .Include(x => x.ProductionPlanConfig.ProductionPlanConfigUnitMonthlyConfigFactFractionMembers)
                 .Include(x => x.ProductionPlanConfig.ProductionPlanConfigUnitMonthlyConfigPlanMembers)
                 .Include(x => x.ProductionPlanConfig.PlanNorms)
+                //.Include(x => x.ProductionPlanConfig.ProcessUnit)
+                //.Include(x => x.ProductionPlanConfig.ProcessUnit.PlanValues)
                 .Where(x => x.RecordTimestamp == monthDate)
                 .ToList();
 
@@ -54,7 +56,6 @@ namespace CollectingProductionDataSystem.Application.MonthlyTechnologicalDataSer
                 .Include(x => x.ProductType)
                 .Where(x => x.IsAvailableInTechnologicalReport)
                 .Where(x => processUnits.Contains(x.ProcessUnitId))
-                //.Where(x => x.ProcessUnitId == 4)
                 .ToList()
                 .SelectMany(y => y.UnitMonthlyDatas.Where(z => z.RecordTimestamp == monthDate))
                 .ToList();
@@ -63,7 +64,7 @@ namespace CollectingProductionDataSystem.Application.MonthlyTechnologicalDataSer
                 .Include(x => x.UnitMonthlyConfig)
                 .Include(x => x.UnitManualMonthlyData)
                 .Where(x => x.RecordTimestamp == monthDate)
-                .ToList()
+                //.ToList()
                 .ToDictionary(x => x.UnitMonthlyConfig.Code, y => new MonthlyData { MonthValue = (decimal)y.RealValue, YearValue = y.YearTotalValue });
 
             var result = CalculateMonthlyTechnologicalData(monthlyProductionDataList, productionPlanData, firstDayInMonth, monthlyData);
