@@ -14,6 +14,14 @@ var unitGridsData = (function () {
     'use strict';
     $(document).ready(function () {
         var ctrlParamsElement = $('#control-params');
+        if ($("#monthly-recalc-data-report").val() !== undefined) {
+            if (ctrlParamsElement.val() !== undefined) {
+                ctrlParamsElement.attr('data-params', JSON.stringify(sendDate()));
+            }
+
+            kendoAdditional.RefreshGrid("#monthly-recalc-data-report");
+        }
+
         if ($("#plan-grid").val() !== undefined) {
             $('#confirm').remove();
         }
@@ -78,6 +86,10 @@ var unitGridsData = (function () {
                 }
 
                 kendoAdditional.RefreshGrid("#monthly-recalc-data-report");
+            }
+
+            if ($("#technological-data").val() !== undefined) {
+                kendoAdditional.RefreshGrid("#technological-data");
             }
 
 
@@ -189,6 +201,22 @@ var unitGridsData = (function () {
             });
         }
 
+        if ($("#report")) {
+            $("#report").click(function () {
+                if ($("#monthly-pw-units").val() !== undefined) {
+                    if (ctrlParamsElement.val() !== undefined) {
+                        ctrlParamsElement.attr('data-params', JSON.stringify(sendDate()));
+                    }
+                }
+
+                if ($("#monthly-recalc-data-report").val() !== undefined) {
+                    if (ctrlParamsElement.val() !== undefined) {
+                        ctrlParamsElement.attr('data-params', JSON.stringify(sendDate()));
+                    }
+                }
+            });
+        }
+
     });
 
     //------------------ private functions ------------------------------------
@@ -196,11 +224,16 @@ var unitGridsData = (function () {
     function getControlData() {
         var controlParams = $('#control-params');
         if (controlParams.val() !== undefined) {
-            return JSON.parse(controlParams.attr('data-params'));
+            if (controlParams.attr('data-params') !== '') {
+                return JSON.parse(controlParams.attr('data-params'));
+            }
+            else {
+                return {};
+            }
+            
         } else {
             return {};
         }
-
     }
 
     function attachExcellExportToGrid() {

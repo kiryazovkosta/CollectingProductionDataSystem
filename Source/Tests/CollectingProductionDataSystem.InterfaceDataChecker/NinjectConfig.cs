@@ -22,7 +22,7 @@
     public class NinjectConfig : IDisposable
     {
         private readonly IKernel kernel;
-        public NinjectConfig() 
+        public NinjectConfig()
         {
             this.kernel = new Ninject.StandardKernel();
             //kernel.Bind<DbContext>().To<CollectingDataSystemDbContext>();
@@ -57,7 +57,7 @@
                 return this.kernel;
             }
         }
-    
-        
+
+
     }
 }

@@ -1720,4 +1720,37 @@
   <data name="UnitMonthlyWorkingHours" xml:space="preserve">
     <value>UnitMonthlyWorkingHours</value>
   </data>
+  <data name="MonthFactPercentage" xml:space="preserve">
+    <value>MonthFactPercentage</value>
+  </data>
+  <data name="MonthFactPercentageDifference" xml:space="preserve">
+    <value>MonthFactPercentageDifference</value>
+  </data>
+  <data name="MonthFactValue" xml:space="preserve">
+    <value>MonthFactValue</value>
+  </data>
+  <data name="MonthFactValueDifference" xml:space="preserve">
+    <value>MonthFactValueDifference</value>
+  </data>
+  <data name="MonthPlanPercentage" xml:space="preserve">
+    <value>MonthPlanPercentage</value>
+  </data>
+  <data name="MonthPlanValue" xml:space="preserve">
+    <value>MonthPlanValue</value>
+  </data>
+  <data name="YearFactPercentage" xml:space="preserve">
+    <value>YearFactPercentage</value>
+  </data>
+  <data name="YearFactPercentageDifference" xml:space="preserve">
+    <value>YearFactPercentageDifference</value>
+  </data>
+  <data name="YearFactValue" xml:space="preserve">
+    <value>YearFactValue</value>
+  </data>
+  <data name="YearFactValueDifference" xml:space="preserve">
+    <value>YearFactValueDifference</value>
+  </data>
+  <data name="MonthlyTechnologicalReport" xml:space="preserve">
+    <value>MonthlyTechnologicalReport</value>
+  </data>
 </root>

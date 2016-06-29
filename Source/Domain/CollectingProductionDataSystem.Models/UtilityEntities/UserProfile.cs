@@ -1,16 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using AutoMapper;
-using AutoMapper;
-using CollectingProductionDataSystem.Infrastructure.Mapping;
-using CollectingProductionDataSystem.Models.Identity;
-using CollectingProductionDataSystem.Models.Inventories;
-using CollectingProductionDataSystem.Models.Productions;
-
-namespace CollectingProductionDataSystem.Models.UtilityEntities
+﻿namespace CollectingProductionDataSystem.Models.UtilityEntities
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using AutoMapper;
+    using CollectingProductionDataSystem.Infrastructure.Mapping;
+    using CollectingProductionDataSystem.Models.Identity;
+    using CollectingProductionDataSystem.Models.Inventories;
+    using CollectingProductionDataSystem.Models.Productions;
+
     [Serializable]
     public class UserProfile : IMapFrom<ApplicationUser>, IHaveCustomMappings
     {
@@ -38,39 +36,8 @@ namespace CollectingProductionDataSystem.Models.UtilityEntities
 
         }
 
-        public string FullName
-        {
-            get
-            {
-                StringBuilder userName = new StringBuilder(150);
-                if (!string.IsNullOrEmpty((this.FirstName ?? string.Empty).Trim()))
-                {
-                    userName.Append(this.FirstName);
-                    userName.Append(" ");
-                }
-                if (!string.IsNullOrEmpty((this.MiddleName ?? string.Empty).Trim()))
-                {
-                    userName.Append(this.MiddleName);
-                    userName.Append(" ");
-                }
-                if (!string.IsNullOrEmpty((this.LastName ?? string.Empty).Trim()))
-                {
-                    userName.Append(this.LastName);
-                }
-                var resultName = userName.ToString().TrimEnd();
-
-                if (string.IsNullOrEmpty(resultName))
-                {
-                    return this.UserName;
-                }
-
-                return resultName;
-            }
-            private set
-            {
-            }
-        }
-
+        public string FullName => $"{$"{this?.FirstName} {this?.MiddleName}".Trim()} {this?.LastName}".Trim();
+        
         public string Occupation { get; set; }
 
         public IEnumerable<RoleModel> UserRoles { get; set; }
@@ -81,7 +48,7 @@ namespace CollectingProductionDataSystem.Models.UtilityEntities
     }
 
     /// <summary>
-    /// 
+    ///
     /// </summary>
     [Serializable]
     public class ParkModel : IMapFrom<Park>
@@ -92,7 +59,7 @@ namespace CollectingProductionDataSystem.Models.UtilityEntities
     }
 
     /// <summary>
-    /// 
+    ///
     /// </summary>
     [Serializable]
     public class AreaModel : IMapFrom<Area>
@@ -102,7 +69,7 @@ namespace CollectingProductionDataSystem.Models.UtilityEntities
     }
 
     /// <summary>
-    /// 
+    ///
     /// </summary>
     [Serializable]
     public class ProcessUnitModel : IMapFrom<ProcessUnit>
@@ -116,7 +83,7 @@ namespace CollectingProductionDataSystem.Models.UtilityEntities
     }
 
     /// <summary>
-    /// 
+    ///
     /// </summary>
     [Serializable]
     public class FactoryModel : IMapFrom<Factory>

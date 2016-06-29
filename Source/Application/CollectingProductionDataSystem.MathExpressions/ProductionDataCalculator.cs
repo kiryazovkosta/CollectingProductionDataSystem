@@ -17,7 +17,7 @@
 
             if (arguments == null)
             {
-                throw new ArgumentNullException("The value of formula arguments can not be null!"); 
+                throw new ArgumentNullException("The value of formula arguments can not be null!");
             }
 
             double result = double.MinValue;
@@ -117,8 +117,7 @@
                     result = FormulaC1(arguments);
                     break;
                 default:
-                    throw new ArgumentException("The entered value of the formula code is invalid!");
-                    break;
+                    throw new ArgumentException(message: "The entered value of the formula code is invalid!");
             }
 
             return result;
@@ -126,8 +125,8 @@
 
         ///  <summary>
         /// 1) P1 ;ПАРА-КОНСУМИРАНА [ТОНОВЕ] :: X A1,F Q
-        ///  </summary>            
-        public static double FormulaP1(FormulaArguments args) 
+        ///  </summary>
+        public static double FormulaP1(FormulaArguments args)
         {
             if (!args.InputValue.HasValue)
             {
@@ -170,7 +169,7 @@
             double result = calculator.Calculate("par.f", "par", 1, inputParams);
             return result;
         }
-        
+
         /// <summary>
         /// 2) PP1 ;ПАРА-ПРОИЗВЕДЕНА [ТОНОВЕ] :: X A1,F Q
         /// </summary>
@@ -230,7 +229,7 @@
 
             double a1 = Functions.GetValueFormulaA1(p, t, d5, d6);
             double f = Functions.GetValueFormulaF(d2, pl, a1);
-            double ent = Functions.GetValueFormulaEN(t, p);            
+            double ent = Functions.GetValueFormulaEN(t, p);
 
             var inputParams = new Dictionary<string, double>();
             inputParams.Add("f", f);
@@ -269,7 +268,7 @@
             {
                 throw new ArgumentNullException("The value of EstimatedTemperature(D6) is not allowed to be null");
             }
-            
+
             double pl = args.InputValue.Value;
             double p = args.Pressure.Value;
             double t = args.Temperature.Value;
@@ -292,7 +291,7 @@
         /// <summary>
         /// 5) Z2 ;ПАРА-КОНСУМИРАНА, АСУТП, [MWH] :: X K15,K2,K3,EN S Q=PL*ENT/0.860 Q
         /// </summary>
-        public static double FormulaZ2(FormulaArguments args) 
+        public static double FormulaZ2(FormulaArguments args)
         {
             if (!args.InputValue.HasValue)
             {
@@ -355,7 +354,7 @@
         }
 
         /// <summary>
-        /// 7) N2 ;ТЕЧНИ НЕФТОПРОДУКТИ И ВТЕЧНЕНИ ГАЗОВЕ ;ИЗЧИСЛЯВАНЕ НА ПЛЪТНОСТ :: S:D<0.5 D=0.5 X C,A2,F Q 
+        /// 7) N2 ;ТЕЧНИ НЕФТОПРОДУКТИ И ВТЕЧНЕНИ ГАЗОВЕ ;ИЗЧИСЛЯВАНЕ НА ПЛЪТНОСТ :: S:D<0.5 D=0.5 X C,A2,F Q
         /// </summary>
         public static double FormulaN2(FormulaArguments args)
         {
@@ -483,7 +482,7 @@
             double d6 = 50;
             double d = 50;
             double df = d;
-            
+
             double a7 = Functions.GetValueFormulaA7(p, t, d, d4, d5, d6);
             double f = Functions.GetValueFormulaF(d2, pl, a7);
             f = f * df;
@@ -511,7 +510,7 @@
             double d = 50;
             double qpt3 = 0.9929;
             double df = qpt3;
-            
+
             //double c1 = Functions.GetValueFormulaC1(p, t, qpt3);
             double a7 = Functions.GetValueFormulaA7(p, t, d, d4, d5, d6);
             double f = Functions.GetValueFormulaF(d2, pl, a7);
@@ -565,7 +564,7 @@
             double d4 = 5;
             double d6 = 50;
             double d = 50;
-            double al = 0.001163;            
+            double al = 0.001163;
             if (d < 0.5)
             {
                 d = 0.5;
@@ -574,7 +573,7 @@
             double c = Functions.GetValueFormulaC(t, d, al);
             double a3 = Functions.GetValueFormulaA3(t, c, d4, d6);
             double f = Functions.GetValueFormulaF(d2, pl, a3);
-            
+
             var inputParams = new Dictionary<string, double>();
             inputParams.Add("f", f);
 
@@ -675,7 +674,7 @@
             double d5 = 10;
             double d6 = 50;
             double d = 50;
-            
+
             double a7 = Functions.GetValueFormulaA7(p, t, d, d4, d5, d6);
             double f = Functions.GetValueFormulaF(d2, pl, a7);
             f = f / 1000;
@@ -695,9 +694,9 @@
         {
             double pl = 20;
             double d2 = 15;
-            
+
             double q = Functions.GetValueFormulaA10(pl, d2);
-            
+
             var inputParams = new Dictionary<string, double>();
             inputParams.Add("q", q);
 
@@ -759,7 +758,7 @@
 
             double a4 = Functions.GetValueFormulaA4(p, d5);
             double f = Functions.GetValueFormulaF(d2, pl, a4);
-            
+
             var inputParams = new Dictionary<string, double>();
             inputParams.Add("f", f);
 
@@ -778,7 +777,7 @@
             double d2 = 15;
 
             double q = Functions.GetValueFormulaA11(pl, pl1, d2);
-            
+
             var inputParams = new Dictionary<string, double>();
             inputParams.Add("q", q);
 
@@ -835,7 +834,7 @@
         {
             double pl = 20;
             double pl1 = 10;
-            double t = 40;            
+            double t = 40;
             double d = 50;
             double d2 = 15;
             double al = 0.001163;
@@ -892,7 +891,7 @@
             }
 
             double pl = args.InputValue.Value;
-            double d = args.EstimatedDensity.Value;           
+            double d = args.EstimatedDensity.Value;
             double q = pl * d;
 
             var inputParams = new Dictionary<string, double>();
@@ -947,7 +946,7 @@
         /// <summary>
         /// UCF1 - зчисляване на колко е стойността на % от число
         /// </summary>
-        public static double FormulaC1(FormulaArguments args)            
+        public static double FormulaC1(FormulaArguments args)
         {
             if (!args.InputValue.HasValue)
             {

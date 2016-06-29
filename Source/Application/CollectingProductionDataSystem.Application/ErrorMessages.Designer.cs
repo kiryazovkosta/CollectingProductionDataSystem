@@ -160,6 +160,15 @@ namespace App_Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You cannot continue generation of monthly technological reports until completes confitmation of all monthly data for:\n.
+        /// </summary>
+        public static string MonthReportTypesConfirmationError {
+            get {
+                return ResourceManager.GetString("MonthReportTypesConfirmationError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You cannot continue confirmation until completes confitmation of energy data for the days:\n.
         /// </summary>
         public static string PreviousDaysEnergyConfirmationError {

@@ -1,0 +1,102 @@
+﻿@using System.Web.Optimization;
+@using CollectingProductionDataSystem.Constants;
+@using CollectingProductionDataSystem.Web.Areas.MonthlyDataReporting.Models;
+@using CollectingProductionDataSystem.Web.Areas.MonthlyTechnicalReporting.ViewModels;
+@using CollectingProductionDataSystem.Web.Infrastructure.Helpers;
+@using Resources = App_GlobalResources.Resources;
+
+@model MonthlyTechnicalViewModel
+@{
+    Layout = "~/Views/Shared/_KendoLayoutWithSideBar.cshtml";
+}
+<div class="row">
+    <div class="col-md-10">
+        <h2>@Resources.Layout.MonthlyTechnologicalReport</h2>
+    </div>
+    <div class="col-md-2">
+        <button id="excel-export" class="k-button k-button-icontext k-grid-excel pull-right head-button"><span class="k-icon k-i-excel"></span>Експорт в Excel</button>
+    </div>
+</div>
+
+@Html.ValidationSummary()
+@Html.AntiForgeryToken()
+@(Html.Kendo()
+    .Grid<MonthlyTechnicalViewModel>()
+    .Name("units")
+    .AutoBind(false)
+    .Columns(
+        columns =>
+        {
+            columns.Bound(c => c.Id).Hidden(true).Width(75);
+            columns.Bound(c => c.Factory).Hidden(true).ClientGroupHeaderTemplate("Производство #=value.substr(3,value.length-3)#").Width(8);
+            columns.Bound(c => c.ProcessUnit).Hidden(true).ClientGroupHeaderTemplate("Инсталация #=value.substr(3,value.length-3)#").Width(8);
+            columns.Bound(c => c.MaterialType).Hidden(true).ClientGroupHeaderTemplate("#=value.substr(3,value.length-3)#").Width(8);
+            columns.Bound(c => c.DetailedMaterialType).Hidden(true).ClientGroupHeaderTemplate("#=value.substr(3,value.length-3)#").Width(8);
+            columns.Bound(c => c.Code).Width(80);
+            columns.Bound(c => c.Name).Width(260);
+            columns.Bound(c => c.MeasurementUnit).Width(60);
+            columns.Bound(c => c.MonthPlanValue).ClientTemplate("<div style='text-align:right;'>#=data.MonthPlanValue#</div>");
+            columns.Bound(c => c.MonthPlanPercentage).ClientTemplate("<div style='text-align:right;'>#=data.MonthPlanPercentage#</div>");
+            columns.Bound(c => c.MonthFactValue).ClientTemplate("<div style='text-align:right;'>#=data.MonthFactValue#</div>");
+            columns.Bound(c => c.MonthFactPercentage).ClientTemplate("<div style='text-align:right;'>#=data.MonthFactPercentage#</div>");
+            columns.Bound(c => c.MonthFactValueDifference).ClientTemplate("<div style='text-align:right;'>#=data.MonthFactValueDifference#</div>");
+            columns.Bound(c => c.MonthFactPercentageDifference).ClientTemplate("<div style='text-align:right;'>#=data.MonthFactPercentageDifference#</div>");
+            columns.Bound(c => c.YearFactValue).ClientTemplate("<div style='text-align:right;'>#=data.YearFactValue#</div>");
+            columns.Bound(c => c.YearFactPercentage).ClientTemplate("<div style='text-align:right;'>#=data.YearFactPercentage#</div>");
+            //columns.Bound(c => c.YearFactValueDifference).ClientTemplate("<div style='text-align:right;'>#=data.YearFactValueDifference#</div>");
+            //columns.Bound(c => c.YearFactPercentageDifference).ClientTemplate("<div style='text-align:right;'>#=data.YearFactPercentageDifference#</div>");
+        })
+        .Pageable(pageable => pageable
+            .Refresh(true)
+            .PageSizes(false)
+            .Numeric(false)
+            .PreviousNext(false)
+        )
+        .Sortable()
+            .Excel(excel => excel
+            .FileName(@Resources.Layout.MonthlyTechnologicalReport + "_" + DateTime.Now + ".xlsx")
+            .Filterable(true)
+            .ProxyURL(Url.Action("Excel_Export_Save", "Ajax", new { area = "" }))
+            .AllPages(true))
+            .Events(ev => ev.DataBound("unitGridsData.DataBound"))
+            .Scrollable(scr => scr.Height(640))
+            .Filterable()
+            .DataSource(dataSource => dataSource
+            .Ajax()
+            .PageSize(int.MaxValue)
+            .ServerOperation(true)
+            .Group(group =>
+            {
+                group.Add(c => c.Factory);
+                group.Add(c => c.ProcessUnit);
+                group.Add(c => c.MaterialType);
+                group.Add(c => c.DetailedMaterialType);
+            })
+            .Sort(sort => sort.Add(x => x.Code).Ascending())
+            .Read(read => read.Action("ReadMonthlyTechnicalData", "MonthlyTechnical", new { area = "MonthlyTechnicalReporting" }).Data("unitGridsData.SendDate"))
+            .Model(model =>
+            {
+                model.Id(p => p.Id);
+                model.Field(p => p.Code).Editable(false);
+                model.Field(p => p.Name).Editable(false);
+            })
+            .Events(events =>
+            {
+                events.Error("kendoAdditional.ErrorHandler");
+            })
+        )
+)
+@* //Error window for kendo grid error event handler *@
+<div id="err-window" style="display:none">@Html.Partial("_KendoGridErrorWindow")</div>
+@* //Error window for kendo grid error event handler *@
+<div id="success-window" style="display:none">@Html.Partial("_SuccessWindow")</div>
+@section scripts{
+    @Scripts.Render("~/bundles/custom/kendoadditional")
+    @Scripts.Render("~/bundles/custom/unitGrids")
+    @Scripts.Render("~/Scripts/custom/renderDailyGraphic.min.js")
+    @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.min.js")
+}
+@section sidebar{
+    @Html.Partial("_MonthSelectorSideBar")
+}
+

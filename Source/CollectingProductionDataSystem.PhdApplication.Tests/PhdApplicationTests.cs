@@ -13,7 +13,7 @@ using log4net;
 namespace CollectingProductionDataSystem.PhdApplication.Tests
 {
     [TestClass]
-    public class PhdApplicationTests
+    public class PhdApplicationTests:IDisposable
     {
         private readonly IPhdPrimaryDataService service;
         public PhdApplicationTests()
@@ -257,6 +257,11 @@ namespace CollectingProductionDataSystem.PhdApplication.Tests
 
             // Assert
             Assert.AreEqual(null, actualShift);
+        }
+
+        public void Dispose()
+        {
+            this.service.Dispose();
         }
     }
 }

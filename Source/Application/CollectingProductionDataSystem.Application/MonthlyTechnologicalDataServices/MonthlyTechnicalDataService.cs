@@ -2,6 +2,7 @@
 
 namespace CollectingProductionDataSystem.Application.MonthlyTechnologicalDataServices
 {
+    using System.ComponentModel.DataAnnotations;
     using CollectingProductionDataSystem.Application.Contracts;
     using CollectingProductionDataSystem.Constants;
     using CollectingProductionDataSystem.Data.Contracts;
@@ -12,19 +13,24 @@ namespace CollectingProductionDataSystem.Application.MonthlyTechnologicalDataSer
     using System.Collections.Generic;
     using System.Data.Entity;
     using System.Linq;
+    using Ninject;
+    using Resources = App_Resources;
+    using CollectingProductionDataSystem.Data.Common;
 
     public class MonthlyTechnicalDataService : IMonthlyTechnicalDataService
     {
         private readonly IProductionData data;
+        private readonly IKernel kernel;
         private readonly ICalculatorService calculator;
 
-        public MonthlyTechnicalDataService(IProductionData dataParam, ICalculatorService calculatorParam)
+        public MonthlyTechnicalDataService(IProductionData dataParam, IKernel kernelParam, ICalculatorService calculatorParam)
         {
             this.data = dataParam;
+            this.kernel = kernelParam;
             this.calculator = calculatorParam;
         }
 
-        public  IEnumerable<MonthlyTechnicalReportDataDto> CalculateMonthlyTechnologicalData(DateTime month)
+        public IEnumerable<MonthlyTechnicalReportDataDto> ReadMonthlyTechnologicalData(DateTime month, int[] processUnits)
         {
             var monthDate = new DateTime(month.Year, month.Month, DateTime.DaysInMonth(month.Year, month.Month), 0, 0, 0);
             var firstDayInMonth = new DateTime(month.Year, month.Month, 1, 0, 0, 0);
@@ -44,52 +50,177 @@ namespace CollectingProductionDataSystem.Application.MonthlyTechnologicalDataSer
                 .Include(x => x.ProcessUnit.Factory)
                 .Include(x => x.MeasureUnit)
                 .Include(x => x.ProductionPlanConfig)
+                .Include(x => x.MonthlyReportType)
+                .Include(x => x.ProductType)
                 .Where(x => x.IsAvailableInTechnologicalReport)
-                .Where(x => x.ProcessUnitId == 1)
-                .OrderBy(x => x.ProcessUnitId)
-                .ThenBy(x => x.MonthlyReportTypeId)
+                .Where(x => processUnits.Contains(x.ProcessUnitId))
                 .ToList()
                 .SelectMany(y => y.UnitMonthlyDatas.Where(z => z.RecordTimestamp == monthDate))
                 .ToList();
 
-            Dictionary<string, MonthlyData> monthlyData = data.UnitMonthlyDatas.All().Where(x => x.RecordTimestamp == monthDate).ToDictionary(x => x.UnitMonthlyConfig.Code, y => new MonthlyData { MonthValue = (decimal)y.RealValue, YearValue = y.YearTotalValue });
+            Dictionary<string, MonthlyData> monthlyData = data.UnitMonthlyDatas.All()
+                .Include(x => x.UnitMonthlyConfig)
+                .Include(x => x.UnitManualMonthlyData)
+                .Where(x => x.RecordTimestamp == monthDate)
+                .ToList()
+                .ToDictionary(x => x.UnitMonthlyConfig.Code, y => new MonthlyData { MonthValue = (decimal)y.RealValue, YearValue = y.YearTotalValue });
 
+            var result = CalculateMonthlyTechnologicalData(monthlyProductionDataList, productionPlanData, firstDayInMonth, monthlyData);
+            return result;
+        }
+
+        private IEnumerable<MonthlyTechnicalReportDataDto> CalculateMonthlyTechnologicalData(List<UnitMonthlyData> monthlyProductionDataList, List<ProductionPlanData> productionPlanData, DateTime firstDayInMonth, Dictionary<string, MonthlyData> monthlyData)
+        {
+            var processUnitsWithErrorInCalculation = new List<int>();
             var monthlyProductionData = new List<MonthlyTechnicalReportDataDto>();
-
             foreach (var item in monthlyProductionDataList)
             {
-                var planValue = GetPlanValue(item, productionPlanData, firstDayInMonth);
-                var planPercentage = GetPlanPercentage(item, productionPlanData, firstDayInMonth);
-                var factPercentage = CalculateFactPercentage(item, productionPlanData, monthlyData);
-                var yearPercentage = CalculateYearPercentage(item, productionPlanData);
-
-                var m = new MonthlyTechnicalReportDataDto()
+                if (processUnitsWithErrorInCalculation.Contains(item.UnitMonthlyConfig.ProcessUnitId))
                 {
-                    Id = item.UnitMonthlyConfig.Id,
-                    Code = item.UnitMonthlyConfig.Code,
-                    Name = item.UnitMonthlyConfig.Name,
-                    Factory = item.UnitMonthlyConfig.ProcessUnit.Factory.FactorySortableName,
-                    ProcessUnit = item.UnitMonthlyConfig.ProcessUnit.SortableName,
-                    MaterialType = item.UnitMonthlyConfig.MonthlyReportType.Name,
-                    MeasurementUnit = item.UnitMonthlyConfig.MeasureUnit.Code,
+                    continue;
+                }
 
-                    PlanValue = (decimal)planValue,
-                    PlanPercentage = (decimal)planPercentage,
-
-                    FactValue = (decimal)item.RealValue,
-                    FactPercentage = (decimal)factPercentage,
-                    FactValueDifference = (decimal)(item.RealValue - planValue),
-                    FactPercentageDifference = (decimal)(factPercentage - planPercentage),
-
-                    YearValue = item.YearTotalValue,
-                    YearPercentage = 0,
-                    YearValueDifference = 0,
-                    YearPercentageDifference = 0
-                };
-                monthlyProductionData.Add(m);
+                try
+                {
+                    var monthlyProductionDataRecord = CreateMonthlyTechnicalReportRecord(item, productionPlanData, firstDayInMonth, monthlyData);
+                    if (monthlyProductionDataRecord != null)
+                    {
+                        monthlyProductionData.Add(monthlyProductionDataRecord);
+                    }
+                    else
+                    {
+                        if (!processUnitsWithErrorInCalculation.Contains(item.UnitMonthlyConfig.ProcessUnitId))
+                        {
+                            processUnitsWithErrorInCalculation.Add(item.UnitMonthlyConfig.ProcessUnitId);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    if (!processUnitsWithErrorInCalculation.Contains(item.UnitMonthlyConfig.ProcessUnitId))
+                    {
+                        processUnitsWithErrorInCalculation.Add(item.UnitMonthlyConfig.ProcessUnitId);
+                    }
+                }
             }
 
-            return monthlyProductionData;
+            var monthlyProductionDataResult = monthlyProductionData.Where(m => !processUnitsWithErrorInCalculation.Contains(m.ProcessUnitId));//.ToList();
+            return monthlyProductionDataResult;
+        }
+
+        private MonthlyTechnicalReportDataDto CreateMonthlyTechnicalReportRecord(UnitMonthlyData item, List<ProductionPlanData> productionPlanData, DateTime firstDayInMonth, Dictionary<string, MonthlyData> monthlyData)
+        {
+            var monthlyTechnicalReportDataDto = new MonthlyTechnicalReportDataDto();
+
+            var planValue = GetPlanValue(item, productionPlanData, firstDayInMonth);
+            var planPercentage = GetPlanPercentage(item, productionPlanData, firstDayInMonth);
+            var factPercentage = CalculateFactPercentage(item, productionPlanData, monthlyData);
+            if (factPercentage == double.MinValue)
+            {
+                monthlyTechnicalReportDataDto = null;
+            }
+
+            if (monthlyTechnicalReportDataDto != null)
+            {
+                var yearPercentage = CalculateYearPercentage(item, productionPlanData, monthlyData);
+                if (yearPercentage == double.MinValue)
+                {
+                    monthlyTechnicalReportDataDto = null;
+                }
+
+                if (monthlyTechnicalReportDataDto != null)
+                {
+                    if (item.UnitMonthlyConfig.MonthlyReportTypeId == CommonConstants.HydroCarbons)
+                    {
+                        factPercentage = Math.Round(factPercentage, 2);
+                        yearPercentage = Math.Round(yearPercentage, 2);
+                    }
+                    else
+                    {
+                        factPercentage = Math.Round(factPercentage, 5);
+                        yearPercentage = Math.Round(yearPercentage, 5);
+                    }
+
+                    monthlyTechnicalReportDataDto = new MonthlyTechnicalReportDataDto()
+                    {
+                        Id = item.UnitMonthlyConfig.Id,
+                        Code = item.UnitMonthlyConfig.Code,
+                        Name = item.UnitMonthlyConfig.Name,
+                        FactoryId = item.UnitMonthlyConfig.ProcessUnit.FactoryId,
+                        Factory = item.UnitMonthlyConfig.ProcessUnit.Factory.FactorySortableName,
+                        ProcessUnitId = item.UnitMonthlyConfig.ProcessUnitId,
+                        ProcessUnit = item.UnitMonthlyConfig.ProcessUnit.SortableName,
+                        MaterialType = GetMaterialType(item.UnitMonthlyConfig.MonthlyReportTypeId),
+                        DetailedMaterialType = GetDetailedMaterialType(item),
+                        MeasurementUnit = item.UnitMonthlyConfig.MeasureUnit.Code,
+                        PlanValue = (decimal)planValue,
+                        PlanPercentage = (decimal)planPercentage,
+                        FactValue = (decimal)item.RealValue,
+                        FactPercentage = (decimal)factPercentage,
+                        FactValueDifference = Math.Round((decimal)(item.RealValue - planValue), 5),
+                        FactPercentageDifference = Math.Round((decimal)(factPercentage - planPercentage), 5),
+                        YearValue = item.YearTotalValue + (decimal)item.RealValue,
+                        YearPercentage = (decimal)yearPercentage,
+                        YearValueDifference = 0,
+                        YearPercentageDifference = 0
+                    };
+                }
+            }
+
+            return monthlyTechnicalReportDataDto;
+        }
+
+        private string GetDetailedMaterialType(UnitMonthlyData item)
+        {
+            if (item.UnitMonthlyConfig.MonthlyReportTypeId == CommonConstants.HydroCarbons)
+            {
+                return string.Format("{0:00}.{1}", item.UnitMonthlyConfig.ProductTypeId, item.UnitMonthlyConfig.ProductType.Name);
+            }
+            else
+            {
+                return string.Format("{0:00}.{1}", item.UnitMonthlyConfig.MonthlyReportTypeId, item.UnitMonthlyConfig.MonthlyReportType.Name);
+            }
+        }
+
+        private string GetMaterialType(int materialTypeId)
+        {
+            if (materialTypeId == CommonConstants.HydroCarbons)
+            {
+                return "01.Въглеводороди";
+            }
+            else if (materialTypeId == CommonConstants.Chemicals)
+            {
+                return "03.Химикали";
+            }
+            else
+            {
+                return "02.Енергоресурси";
+            }
+        }
+
+        public IEfStatus CheckIfAllMonthReportAreApproved(DateTime month)
+        {
+            var status = kernel.Get<IEfStatus>();
+            var validationResults = new List<ValidationResult>() { new ValidationResult(@Resources.ErrorMessages.MonthReportTypesConfirmationError) };
+
+            var targetMonth = new DateTime(month.Year, month.Month, DateTime.DaysInMonth(month.Year, month.Month), 0, 0, 0);
+            var approvedMonthReports = this.data.UnitApprovedMonthlyDatas.All().Where(x => x.RecordDate == targetMonth).ToDictionary(x => x.MonthlyReportTypeId, y => y.RecordDate);
+            var reportTypes = this.data.MonthlyReportTypes.All().ToList();
+
+            foreach (var reportType in reportTypes)
+            {
+                if (!approvedMonthReports.ContainsKey(reportType.Id))
+                {
+                    validationResults.Add(new ValidationResult(string.Format("\t\t- {0}", reportType.Name)));
+                }
+            }
+
+            if (validationResults.Count() > 1)
+            {
+                status.SetErrors(validationResults);
+            }
+
+            return status;
         }
 
         private double GetPlanValue(UnitMonthlyData monthlyData, IList<ProductionPlanData> productionPlanDatas, DateTime targetMonth)
@@ -103,7 +234,7 @@ namespace CollectingProductionDataSystem.Application.MonthlyTechnologicalDataSer
 
             if (productionPlanData == null)
             {
-                return 0.0;    
+                return 0.0;
             }
 
             int daysInMonth = DateTime.DaysInMonth(targetMonth.Year, targetMonth.Month);
@@ -113,14 +244,18 @@ namespace CollectingProductionDataSystem.Application.MonthlyTechnologicalDataSer
                 var inputDictionary = new Dictionary<string, double>();
                 inputDictionary.Add("pn", (double)productionPlanData.PercentagesPlan);
                 inputDictionary.Add("pv", (double)productionPlanData.ProductionPlanConfig.ProcessUnit.PlanValues.Where(x => x.Month == targetMonth).FirstOrDefault().Value);
-                return calculator.Calculate(productionPlanData.ProductionPlanConfig.MonthlyValuePlanFormula, "p", inputDictionary.Count, inputDictionary);
+                var formula = "(p.pn/100.00)*p.pv";
+                if (productionPlanData.ProductionPlanConfig.MonthlyValuePlanFormula != null)
+                {
+                    formula = productionPlanData.ProductionPlanConfig.MonthlyValuePlanFormula;
+                }
+                return calculator.Calculate(formula, "p", inputDictionary.Count, inputDictionary);
             }
             else
             {
                 return (double)productionPlanData.QuanityPlan * daysInMonth;
             }
         }
-
 
         private double GetPlanPercentage(UnitMonthlyData monthlyData, IList<ProductionPlanData> productionPlanDatas, DateTime firstDayInMonth)
         {
@@ -133,7 +268,7 @@ namespace CollectingProductionDataSystem.Application.MonthlyTechnologicalDataSer
 
             if (productionPlanData == null)
             {
-                return 0.0;    
+                return 0.0;
             }
 
             var planNorm = productionPlanData.ProductionPlanConfig.PlanNorms.Where(x => x.Month == firstDayInMonth).FirstOrDefault();
@@ -151,31 +286,52 @@ namespace CollectingProductionDataSystem.Application.MonthlyTechnologicalDataSer
 
             if (productionPlanData == null)
             {
-                return 0.0;    
+                return 0.0;
             }
 
-            var inputDictionary = new Dictionary<string, double>();
-            var relatedMonthlyDatas = productionPlanData.ProductionPlanConfig.ProductionPlanConfigUnitMonthlyConfigFactFractionMembers;
-            foreach (var relatedMonthlyData in relatedMonthlyDatas)
+            if (!string.IsNullOrEmpty(productionPlanData.ProductionPlanConfig.MonthlyFactFractionFormula))
             {
-                var value = (double)monthlyApprovedDatas[relatedMonthlyData.UnitMonthlyConfig.Code].MonthValue;
-                inputDictionary.Add(string.Format("p{0}", relatedMonthlyData.Position - 1), value);  
+                var inputDictionary = new Dictionary<string, double>();
+                var relatedMonthlyDatas = productionPlanData.ProductionPlanConfig.ProductionPlanConfigUnitMonthlyConfigFactFractionMembers;
+                foreach (var relatedMonthlyData in relatedMonthlyDatas)
+                {
+                    var value = (double)monthlyApprovedDatas[relatedMonthlyData.UnitMonthlyConfig.Code].MonthValue;
+                    inputDictionary.Add(string.Format("p{0}", relatedMonthlyData.Position - 1), value);
+                }
+                return calculator.Calculate(productionPlanData.ProductionPlanConfig.MonthlyFactFractionFormula, "p", inputDictionary.Count, inputDictionary);
             }
-            return calculator.Calculate(productionPlanData.ProductionPlanConfig.MonthlyFactFractionFormula, "p", inputDictionary.Count, inputDictionary);
+            else
+            {
+                return double.MinValue;
+            }
         }
 
-
-
-        private decimal CalculateYearPercentage(UnitMonthlyData monthlyData, List<ProductionPlanData> productionPlanDatas)
+        private double CalculateYearPercentage(UnitMonthlyData monthlyData, List<ProductionPlanData> productionPlanDatas, Dictionary<string, MonthlyData> monthlyApprovedDatas)
         {
             var productionPlanData = productionPlanDatas.Where(x => x.ProductionPlanConfig.Id == monthlyData.UnitMonthlyConfig.ProductionPlanConfigId).FirstOrDefault();
 
             if (productionPlanData == null)
             {
-                return 0.0m;    
+                return 0.0;
             }
 
-            return productionPlanData.ProductionPlanConfig.ProductionPlanConfigUnitMonthlyConfigFactFractionMembers.Count();
+            if (!string.IsNullOrEmpty(productionPlanData.ProductionPlanConfig.MonthlyFactFractionFormula))
+            {
+                var inputDictionary = new Dictionary<string, double>();
+                var relatedMonthlyDatas = productionPlanData.ProductionPlanConfig.ProductionPlanConfigUnitMonthlyConfigFactFractionMembers;
+                foreach (var relatedMonthlyData in relatedMonthlyDatas)
+                {
+                    var value = (double)monthlyApprovedDatas[relatedMonthlyData.UnitMonthlyConfig.Code].MonthValue + (double)monthlyApprovedDatas[relatedMonthlyData.UnitMonthlyConfig.Code].YearValue;
+                    inputDictionary.Add(string.Format("p{0}", relatedMonthlyData.Position - 1), value);
+                }
+
+                var result = calculator.Calculate(productionPlanData.ProductionPlanConfig.MonthlyFactFractionFormula, "p", inputDictionary.Count, inputDictionary);
+                return result;
+            }
+            else
+            {
+                return double.MinValue;
+            }
         }
 
 
@@ -185,7 +341,7 @@ namespace CollectingProductionDataSystem.Application.MonthlyTechnologicalDataSer
 
     }
 
-    class MonthlyData 
+    class MonthlyData
     {
         public decimal MonthValue { get; set; }
 

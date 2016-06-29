@@ -44,22 +44,21 @@ namespace CollectingProductionDataSystem.ConsoleClient
             //UpdateShiftUnitData(kernel, data);
 
             //AddOrUpdateProductionPlanConfigs(data);
+            //var targetMonth = DateTime.Today;
+            //var service = new MonthlyTechnicalDataService(data, kernel, calculator);
+            //var monthlyProductionData = service.ReadMonthlyTechnologicalData(targetMonth);
+            //using (var sw = new StreamWriter(@"c:\temp\MonthlyTechReport.txt", false))
+            //{
+            //    sw.WriteLine("Id;Code;Name;Factory;ProcessUnit;MaterialType;MeasurementUnit;;PlanValue;PlanPercentage;;FactValue;FactPercentage;FactValueDifference;FactPercentageDifference;;YearValue;YearPercentage;YearValueDifference;YearPercentageDifference");
+            //    foreach (var item in monthlyProductionData)
+            //    {
+            //        sw.WriteLine(item.ToString());
+            //    }
+            //}
 
-            var targetMonth = DateTime.Today;
-            var service = new MonthlyTechnicalDataService(data, calculator);
-            var monthlyProductionData = service.CalculateMonthlyTechnologicalData(targetMonth);
-            using (var sw = new StreamWriter(@"c:\temp\MonthlyTechReport.txt", false))
-            {
-                sw.WriteLine("Id;Code;Name;Factory;ProcessUnit;MaterialType;MeasurementUnit;;PlanValue;PlanPercentage;;FactValue;FactPercentage;FactValueDifference;FactPercentageDifference;;YearValue;YearPercentage;YearValueDifference;YearPercentageDifference");
-                foreach (var item in monthlyProductionData)
-                {
-                    sw.WriteLine(item.ToString());
-                }
-            }
+            //Console.WriteLine(monthlyProductionData.Count());
 
-            Console.WriteLine(monthlyProductionData.Count());
-
-            //var lastRealDate = new DateTime(2016, 6, 16, 0, 0, 0);
+            //var lastRealDate = new DateTime(2016, 6, 26, 0, 0, 0);
             //var dailyData = data.UnitsDailyDatas.All().Where(x => x.RecordTimestamp == lastRealDate).ToList();
             //var approvedDaysData = data.UnitsApprovedDailyDatas.All().Where(x => x.RecordDate == lastRealDate).ToList();
             //var nextDate = lastRealDate.AddDays(1);
@@ -89,7 +88,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
             //    nextDate = nextDate.AddDays(1);
             //}
 
-            //var lastRealDate = new DateTime(2016, 6, 16, 0, 0, 0);
+            //var lastRealDate = new DateTime(2016, 6, 26, 0, 0, 0);
             //var shiftsData = data.UnitsData.All().Where(x => x.RecordTimestamp == lastRealDate).ToList();
             //var approvedShiftsData = data.UnitsApprovedDatas.All().Where(x => x.RecordDate == lastRealDate).ToList();
             //var nextDate = lastRealDate.AddDays(1);
@@ -138,7 +137,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
             //    nextDate = nextDate.AddDays(1);
             //}
 
-            //var lastRealDate = new DateTime(2016, 6, 16, 0, 0, 0);
+            //var lastRealDate = new DateTime(2016, 6, 26, 0, 0, 0);
             //var dailyData = data.ProductionPlanDatas.All().Where(x => x.RecordTimestamp == lastRealDate).ToList();
             //var nextDate = lastRealDate.AddDays(1);
             //var daysInMonth = DateTime.DaysInMonth(lastRealDate.Year, lastRealDate.Month);
@@ -257,7 +256,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
             //var status = data.SaveChanges("Initial Loading");
             //Console.WriteLine(status.ResultRecordsCount);
         }
- 
+
         private static void UpdateQuantityPlanFormulaForTheEnergy(ProductionData data)
         {
             var p = data.ProductionPlanConfigs.All().Where(x => x.MaterialTypeId != 1).ToList();
@@ -266,9 +265,9 @@ namespace CollectingProductionDataSystem.ConsoleClient
                 var endIndex = productionPlanConfig.QuantityPlanFormula.IndexOf("*");
                 if (endIndex == -1)
                 {
-                    continue;   
+                    continue;
                 }
-                var beginIndex = productionPlanConfig.QuantityPlanFormula.StartsWith("(") == false ? 0 : 1; 
+                var beginIndex = productionPlanConfig.QuantityPlanFormula.StartsWith("(") == false ? 0 : 1;
                 var value = productionPlanConfig.QuantityPlanFormula.Substring(beginIndex, endIndex - beginIndex);
                 Console.WriteLine("{0}:{1} - > {2} -> {3}",
                     productionPlanConfig.Code,
@@ -281,7 +280,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
             var status = data.SaveChanges("Initial Loading");
             Console.WriteLine(status.ResultRecordsCount);
         }
- 
+
         private static void LoadingUsageRateForEnergyProducts(ProductionData data)
         {
             var p = data.ProductionPlanConfigs.All().Where(x => x.MaterialTypeId != 1).ToList();
@@ -299,7 +298,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
             var status = data.SaveChanges("Initial Loading");
             Console.WriteLine(status.ResultRecordsCount);
         }
- 
+
         private static void UpdatingQuantityPlanFormula(ProductionData data)
         {
             var p = data.ProductionPlanConfigs.All().Where(x => x.MaterialTypeId == 1).ToList();
@@ -314,7 +313,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
                 var endIndex = productionPlanConfig.QuantityPlanFormula.IndexOf("/", beginIndex);
                 if (endIndex == -1)
                 {
-                    continue;   
+                    continue;
                 }
 
                 var value = productionPlanConfig.QuantityPlanFormula.Substring(beginIndex + 2, endIndex - beginIndex - 2);
@@ -334,7 +333,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
             {
                 var productionPlanConfigId = productionPlanConfig.Id;
                 var planNorm = data.PlanNorms.All()
-                    .Where(x => x.ProductionPlanConfigId == productionPlanConfigId 
+                    .Where(x => x.ProductionPlanConfigId == productionPlanConfigId
                         && x.Month == date)
                     .FirstOrDefault();
 
@@ -358,7 +357,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
                 var processUnitId = productionPlanConfig.ProcessUnitId;
                 if (!planValues.ContainsKey(processUnitId) && productionPlanConfig.QuantityPlan.HasValue)
                 {
-                    planValues.Add(processUnitId, productionPlanConfig.QuantityPlan.Value);  
+                    planValues.Add(processUnitId, productionPlanConfig.QuantityPlan.Value);
                 }
             }
 
@@ -376,7 +375,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
 
             data.SaveChanges("Initial Loading");
         }
- 
+
         private static void InsertPlanValueAndUpdateQuantityPlanFormula(ProductionData data)
         {
             var productionPlanConfigs = data.ProductionPlanConfigs.All().Where(x => x.MaterialTypeId == 1).ToList();
@@ -391,7 +390,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
                 var endIndex = productionPlanConfig.QuantityPlanFormula.IndexOf(")", beginIndex);
                 if (endIndex == -1)
                 {
-                    continue;   
+                    continue;
                 }
 
                 var value = productionPlanConfig.QuantityPlanFormula.Substring(beginIndex + 1, endIndex - beginIndex - 1);
@@ -402,7 +401,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
 
             data.SaveChanges("Initial Loading");
         }
- 
+
         private static void UpdateInProductionPlanForExsisting(ProductionData data)
         {
             // update all exsisting ProductionPlanData to become daily data
@@ -431,26 +430,26 @@ namespace CollectingProductionDataSystem.ConsoleClient
             var unitsTemp = data.UnitsData.All().Include(x => x.UnitConfig).Where(x => x.RecordTimestamp == targerDay &&
                                                                                        x.ShiftId == 1 &&
                                                                                        x.UnitConfig.CollectingDataMechanism != "C").ToList().Select(x => new UnitDatasTemp
-                                                                                                                                                   {
-                                                                                                                                                       RecordTimestamp = x.RecordTimestamp,
-                                                                                                                                                       UnitConfigId = x.UnitConfigId,
-                                                                                                                                                       ShiftId = x.ShiftId,
-                                                                                                                                                       Value = x.Value,
-                                                                                                                                                       UnitConfig = x.UnitConfig,
-                                                                                                                                                       Confidence = x.Confidence
-                                                                                                                                                   }).ToList();
+                                                                                       {
+                                                                                           RecordTimestamp = x.RecordTimestamp,
+                                                                                           UnitConfigId = x.UnitConfigId,
+                                                                                           ShiftId = x.ShiftId,
+                                                                                           Value = x.Value,
+                                                                                           UnitConfig = x.UnitConfig,
+                                                                                           Confidence = x.Confidence
+                                                                                       }).ToList();
 
             int test = 0;
 
             var result = service.ProcessCalculatedUnits(unitConfigs, targerDay, 1, unitsTemp, ref test)
                                 .Select(unitDataTemp => new UnitsData()
-                                       {
-                                           RecordTimestamp = unitDataTemp.RecordTimestamp,
-                                           UnitConfigId = unitDataTemp.UnitConfigId,
-                                           ShiftId = unitDataTemp.ShiftId,
-                                           Value = unitDataTemp.Value,
-                                           Confidence = unitDataTemp.Confidence
-                                       })
+                                {
+                                    RecordTimestamp = unitDataTemp.RecordTimestamp,
+                                    UnitConfigId = unitDataTemp.UnitConfigId,
+                                    ShiftId = unitDataTemp.ShiftId,
+                                    Value = unitDataTemp.Value,
+                                    Confidence = unitDataTemp.Confidence
+                                })
                                 .ToDictionary(x => new { RecordTimestamp = x.RecordTimestamp, UnitConfigId = x.UnitConfigId, ShiftId = x.ShiftId });
 
             var neededUnitData = data.UnitsData
@@ -770,14 +769,14 @@ namespace CollectingProductionDataSystem.ConsoleClient
                     Shift3 = data.Where(y => y.RecordTimestamp == dateParam && y.ShiftId == (int)ShiftType.Third).Where(u => u.UnitConfigId == x.UnitConfigId).FirstOrDefault(),
                 }).Distinct(new MultiShiftComparer()).ToList();
 
-                Console.WriteLine("Estimated Time For Action: {0}", timer.Elapsed);
+                Console.WriteLine($"Estimated Time For Action: {timer.Elapsed}");
 
                 foreach (var item in result)
                 {
-                    Console.WriteLine("{0} {1} {2} {3} {4} {5}", item.TimeStamp, item.UnitName, item.Shift1, item.Shift2, item.Shift3.RealValue/*,item.TotalQuantityValue*/);
+                    Console.WriteLine($"{item.TimeStamp} {item.UnitName} {item.Shift1.RealValue} {item.Shift2.RealValue} {item.Shift3.RealValue} {item.Shift1.RealValue + item.Shift2.RealValue + item.Shift3.RealValue}");
                 }
 
-                Console.WriteLine("Estimated Time For Action: {0}", timer.Elapsed);
+                Console.WriteLine($"Estimated Time For Action: {timer.Elapsed}");
                 timer.Stop();
             }
         }
@@ -1539,7 +1538,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
         }
     }
 
-    class MonthlyTechnicalReportData 
+    class MonthlyTechnicalReportData
     {
         /// <summary>
         /// HEADER

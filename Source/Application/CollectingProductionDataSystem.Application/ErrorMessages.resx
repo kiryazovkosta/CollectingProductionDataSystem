@@ -150,6 +150,9 @@
   <data name="InvalidUserNameModification" xml:space="preserve">
     <value>Modification of UserName is not permitted</value>
   </data>
+  <data name="MonthReportTypesConfirmationError" xml:space="preserve">
+    <value>You cannot continue generation of monthly technological reports until completes confitmation of all monthly data for:\n</value>
+  </data>
   <data name="PreviousDaysEnergyConfirmationError" xml:space="preserve">
     <value>You cannot continue confirmation until completes confitmation of energy data for the days:\n</value>
   </data>

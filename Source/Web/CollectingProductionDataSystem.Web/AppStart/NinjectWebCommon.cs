@@ -11,6 +11,7 @@ namespace CollectingProductionDataSystem.Web.AppStart
     using CollectingProductionDataSystem.Application.HighwayPipelinesDataServices;
     using CollectingProductionDataSystem.Application.MailerService;
     using CollectingProductionDataSystem.Application.MonthlyServices;
+    using CollectingProductionDataSystem.Application.MonthlyTechnologicalDataServices;
     using CollectingProductionDataSystem.Application.PhdLogProxy;
     using CollectingProductionDataSystem.Application.ProductionDataServices;
     using CollectingProductionDataSystem.Application.TankDataServices;
@@ -115,6 +116,7 @@ namespace CollectingProductionDataSystem.Web.AppStart
             kernel.Bind<log4net.ILog>().To<LoggerToLogAdapter>();
             kernel.Bind<IProgressRegistrator>().To<ProgressRegistrator>();
             kernel.Bind<ITransactionsDailyDataService>().To<TransactionsDailyDataService>();
+            kernel.Bind<IMonthlyTechnicalDataService>().To<MonthlyTechnicalDataService>();
         }        
     }
 }
