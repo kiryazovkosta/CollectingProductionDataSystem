@@ -70,5 +70,10 @@
         /// </summary>
         public string CustomFormulaExpression { get; set; }
 
+        /// <summary>
+        /// Gets or sets the code.
+        /// </summary>
+        /// <value>The code.</value>
+        public string Code { get; set; }
     }
 }

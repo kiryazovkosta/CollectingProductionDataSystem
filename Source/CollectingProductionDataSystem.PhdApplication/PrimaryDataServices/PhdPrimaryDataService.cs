@@ -363,7 +363,7 @@
         /// <summary>
         /// Creates the missing records.
         /// </summary>
-        /// <param name="targetRecordTimestamp">The target record timestamp.</param>
+        /// <param name="targetRecordTimestamp">The target record time stamp.</param>
         /// <param name="shift">The shift.</param>
         /// <param name="expectedNumberOfRecords">The expected number of records.</param>
         /// <returns></returns>
@@ -393,7 +393,7 @@
         /// <summary>
         /// Flashes the data to original unit data.
         /// </summary>
-        /// <param name="expectedNumberOfRecords">The ecpected number of records.</param>
+        /// <param name="expectedNumberOfRecords">The expected number of records.</param>
         /// <returns></returns>
         private int FlashDataToOriginalUnitData()
         {
@@ -648,7 +648,7 @@
 
             if (allRelatedRecordsExists == true)
             {
-                double result = new ProductionDataCalculatorService(this.data).Calculate(mathExpression, "p", inputParams);
+                double result = new ProductionDataCalculatorService(this.data).Calculate(mathExpression, "p", inputParams, unitConfig.Code);
                 if (!unitsData.Where(x => x.RecordTimestamp == recordDataTime && x.ShiftId == shift && x.UnitConfigId == unitConfig.Id).Any())
                 {
                     calculatedUnitsData.Add(
@@ -963,7 +963,7 @@
                         inputParams.Add(string.Format("p{0}", argumentIndex), (double)unitConfig.CalculationPercentage.Value);
                     }
 
-                    var result = new ProductionDataCalculatorService(this.data).Calculate(formula, "p", inputParams);
+                    var result = new ProductionDataCalculatorService(this.data).Calculate(formula, "p", inputParams,unitConfig.Code);
                     if (!unitsData.Any(x => x.RecordTimestamp == targetRecordTimestamp && x.ShiftId == shift.Id && x.UnitConfigId == unitConfig.Id))
                     {
                         currentUnitDatas.Add(
@@ -1467,7 +1467,7 @@
             //            if (measuringPoints.Count() > 0)
             //            {
             //                using(PHDHistorian oPhd = new PHDHistorian())
-            //                { 
+            //                {
             //                    using(PHDServer defaultServer = new PHDServer("srv-vm-mes-phd"))
             //                    {
             //                        defaultServer.Port = 3150;

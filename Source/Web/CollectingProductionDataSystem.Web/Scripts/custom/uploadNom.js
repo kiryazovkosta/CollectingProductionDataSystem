@@ -1,23 +1,21 @@
 ﻿var uploadNom = (function () {
-    $(function () { $('#close').click(function () { $('#alert').hide(); }) });
+    $(function () {
+        $('#close').click(function () {
+            $('#alert').hide();
+        })
+    });
     function OnSuccess(ev) {
         var result = ev.response;
         if (result.IsValid == true) {
             var message = "Успешно създадохте " + result.ResultRecordsCount + " записа.";
-            showAlert('#alert', 'alert-success', message);
+            $('pre#succ-message').text(message);
+            $('div#success-window').data("kendoWindow").open();
         }
     }
     function OnError(ev) {
-        alert("error");
-    }
-
-    function showAlert(id, type, message) {
-        var alert = $(id);
-        var classes = ['alert-success', 'alert-warning', 'alert-danger'];
-        alert.find('p').text(message);
-        $.each(classes, function (index, value) { alert.removeClass(value); });
-        alert.addClass(type);
-        alert.show();
+        var message = ev.XMLHttpRequest.responseText;
+        $('pre#err-message').text(message);
+        $('div#err-window').data("kendoWindow").open();
     }
 
     return {

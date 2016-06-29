@@ -39,7 +39,7 @@
         private readonly ILogger logger;
         private readonly IShiftService shiftService;
 
-        public UnitsController(IProductionData dataParam, IUnitsDataService shiftServicesParam, IUnitDailyDataService dailyServicesParam, 
+        public UnitsController(IProductionData dataParam, IUnitsDataService shiftServicesParam, IUnitDailyDataService dailyServicesParam,
             IProductionDataCalculatorService productionDataCalcParam, ILogger loggerParam, IShiftService shiftServiceParam)
             : base(dataParam)
         {
@@ -138,7 +138,7 @@
                     {
                         this.ModelState.AddModelError("ManualValue", "Записът не можа да бъде осъществен. Моля опитайте на ново!");
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
                         this.ModelState.AddModelError("ManualValue", ex.ToString());
                     }
@@ -167,8 +167,8 @@
                     {
                         foreach (var subRelatedUnitConfig in subRelatedUnitConfigs)
                         {
-                            result = UpdateRelatedUnitConfig(subRelatedUnitConfig.UnitConfigId, model);    
-                        }   
+                            result = UpdateRelatedUnitConfig(subRelatedUnitConfig.UnitConfigId, model);
+                        }
                     }
 
                     if (!result.IsValid)
@@ -186,7 +186,7 @@
         public ActionResult Confirm(ProcessUnitConfirmShiftInputModel model)
         {
             ValidateModelAgainstReportPatameters(this.ModelState, model, Session["reportParams"]);
-            
+
             if (this.ModelState.IsValid)
             {
                 if (!this.shiftServices.IsShitApproved(model.date, model.processUnitId, model.shiftId))
@@ -204,10 +204,10 @@
                     {
                         status.ToModelStateErrors(this.ModelState);
                     }
-                    
+
                     if (!this.ModelState.IsValid)
                     {
-                        Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                        Response.StatusCode = (int) HttpStatusCode.BadRequest;
                         var errors = GetErrorListFromModelState(ModelState);
                         return Json(new { data = new { errors = errors } });
                     }
@@ -216,7 +216,7 @@
                 }
                 else
                 {
-                    Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                    Response.StatusCode = (int) HttpStatusCode.BadRequest;
                     ModelState.AddModelError("shiftdata", "Данните за смяната вече са потвърдени!!!");
                     var errors = GetErrorListFromModelState(ModelState);
                     return Json(new { data = new { errors = errors } });
@@ -224,7 +224,7 @@
             }
             else
             {
-                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                Response.StatusCode = (int) HttpStatusCode.BadRequest;
                 var errors = GetErrorListFromModelState(ModelState);
                 return Json(new { data = new { errors = errors } });
             }
@@ -242,7 +242,7 @@
 
             if (string.IsNullOrEmpty(inParamsString))
             {
-                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                Response.StatusCode = (int) HttpStatusCode.BadRequest;
                 var errors = GetErrorListFromModelState(ModelState);
                 modelState.AddModelError("", @Resources.ErrorMessages.InvalidReportParams);
                 return;
@@ -261,7 +261,7 @@
                 if (model.IsConfirmed != reportParams.IsConfirmed) { resultMessage.AppendLine(string.Format("\t\t -{0}", @Resources.Layout.IsConfirmed)); }
                 resultMessage.AppendLine(@Resources.ErrorMessages.ParametersDifferencesTrail);
 
-                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                Response.StatusCode = (int) HttpStatusCode.BadRequest;
                 var errors = GetErrorListFromModelState(ModelState);
                 modelState.AddModelError("", resultMessage.ToString());
                 return;
@@ -280,7 +280,7 @@
                 var isConfirmed = shiftServices.IsShitApproved(date.Value, processUnitId.Value, shiftId.Value);
                 if (!isConfirmed)
                 {
-                    isConfirmed = !this.data.UnitsData.All().Where(x => x.RecordTimestamp == date && x.UnitConfig.ProcessUnitId == processUnitId && (int)x.ShiftId == shiftId).Any();
+                    isConfirmed = !this.data.UnitsData.All().Where(x => x.RecordTimestamp == date && x.UnitConfig.ProcessUnitId == processUnitId && (int) x.ShiftId == shiftId).Any();
                 }
                 return Json(new { IsConfirmed = isConfirmed });
             }
@@ -300,7 +300,7 @@
                     && x.ProcessUnitId == model.UnitConfig.ProcessUnitId);
             if (!approvedPreviousShiftForProcessUnit)
             {
-                this.ModelState.AddModelError("", "Не е потвърдена предходната смяна!");  
+                this.ModelState.AddModelError("", "Не е потвърдена предходната смяна!");
             }
 
             if (ModelState.IsValid)
@@ -471,9 +471,9 @@
                 PopulateFormulaDataFromRelatedUnitConfigs(unitConfig, arguments, model);
                 double newValue = 0;
                 if (formulaCode.Equals("C9"))
-                { 
+                {
                     newValue = this.CalculateByMathExpression(unitConfig, model.RecordTimestamp, model.Shift);
-                }   
+                }
                 else
                 {
                     newValue = this.productionDataCalculator.Calculate(formulaCode, arguments);
@@ -492,11 +492,11 @@
                                .FirstOrDefault();
 
             IEfStatus result = ValidateObject(new UnitsManualData
-                                {
-                                    Id = record.Id,
-                                    Value = (decimal)newValue,
-                                    EditReasonId = model.UnitsManualData.EditReason.Id
-                                }, record.UnitConfig);
+            {
+                Id = record.Id,
+                Value = (decimal) newValue,
+                EditReasonId = model.UnitsManualData.EditReason.Id
+            }, record.UnitConfig);
             if (result.IsValid)
             {
 
@@ -506,13 +506,13 @@
                     this.data.UnitsManualData.Add(new UnitsManualData
                     {
                         Id = record.Id,
-                        Value = (decimal)newValue,
+                        Value = (decimal) newValue,
                         EditReasonId = model.UnitsManualData.EditReason.Id
                     });
                 }
                 else
                 {
-                    existManualRecord.Value = (decimal)newValue;
+                    existManualRecord.Value = (decimal) newValue;
                     existManualRecord.EditReasonId = model.UnitsManualData.EditReason.Id;
                     this.data.UnitsManualData.Update(existManualRecord);
                 }
@@ -551,12 +551,12 @@
         private FormulaArguments PopulateFormulaTadaFromPassportData(UnitConfig unitConfig)
         {
             var arguments = new FormulaArguments();
-            arguments.MaximumFlow = (double?)unitConfig.MaximumFlow;
-            arguments.EstimatedDensity = (double?)unitConfig.EstimatedDensity;
-            arguments.EstimatedPressure = (double?)unitConfig.EstimatedPressure;
-            arguments.EstimatedTemperature = (double?)unitConfig.EstimatedTemperature;
-            arguments.EstimatedCompressibilityFactor = (double?)unitConfig.EstimatedCompressibilityFactor;
-            arguments.CalculationPercentage = (double?)unitConfig.CalculationPercentage;
+            arguments.MaximumFlow = (double?) unitConfig.MaximumFlow;
+            arguments.EstimatedDensity = (double?) unitConfig.EstimatedDensity;
+            arguments.EstimatedPressure = (double?) unitConfig.EstimatedPressure;
+            arguments.EstimatedTemperature = (double?) unitConfig.EstimatedTemperature;
+            arguments.EstimatedCompressibilityFactor = (double?) unitConfig.EstimatedCompressibilityFactor;
+            arguments.CalculationPercentage = (double?) unitConfig.CalculationPercentage;
             arguments.CustomFormulaExpression = unitConfig.CustomFormulaExpression;
             return arguments;
         }
@@ -570,7 +570,7 @@
                 var inputValue = 0.0;
                 if (ru.RelatedUnitConfigId == model.UnitConfigId)
                 {
-                    inputValue = (double)model.UnitsManualData.Value;
+                    inputValue = (double) model.UnitsManualData.Value;
                 }
                 else
                 {
@@ -578,9 +578,9 @@
                         .Where(x => x.RecordTimestamp == model.RecordTimestamp && x.ShiftId == model.Shift && x.UnitConfigId == ru.RelatedUnitConfigId)
                         .FirstOrDefault();
                     if (dtExsists != null)
-	                {
-		                inputValue = dtExsists.RealValue;
-	                }
+                    {
+                        inputValue = dtExsists.RealValue;
+                    }
                 }
 
                 if (parameterType == "I+")
@@ -648,7 +648,7 @@
                 indexCounter++;
             }
 
-            double calculatedValue = new ProductionDataCalculatorService(this.data).Calculate(mathExpression, "p", inputParams);
+            double calculatedValue = new ProductionDataCalculatorService(this.data).Calculate(mathExpression, "p", inputParams, unitConfig.Code);
             return calculatedValue;
         }
 
@@ -697,14 +697,14 @@
             else
             {
                 var previousEnteredData = data.UnitEnteredForCalculationDatas.All()
-                    .Include(x=>x.UnitsData)
+                    .Include(x => x.UnitsData)
                     .Where(x => x.UnitsData.UnitConfigId == model.UnitConfigId)
                     .OrderByDescending(y => y.Id)
                     .FirstOrDefault();
                 if (previousEnteredData != null)
-	            {
-		            startupValue = previousEnteredData.NewValue;
-	            }
+                {
+                    startupValue = previousEnteredData.NewValue;
+                }
             }
 
             if (startupValue == decimal.MinValue)

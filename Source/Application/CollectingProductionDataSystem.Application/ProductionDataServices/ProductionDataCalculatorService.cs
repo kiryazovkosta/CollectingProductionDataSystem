@@ -10,7 +10,7 @@
     using CollectingProductionDataSystem.Data.Common;
     using CollectingProductionDataSystem.Data.Contracts;
     using CollectingProductionDataSystem.Models.Productions;
-
+    using Infrastructure.Contracts;
     public class ProductionDataCalculatorService : IProductionDataCalculatorService
     {
         private readonly ICalculatorService calculator;
@@ -31,7 +31,7 @@
 
             if (arguments == null)
             {
-                throw new ArgumentNullException("The value of formula arguments can not be null!"); 
+                throw new ArgumentNullException("The value of formula arguments can not be null!");
             }
 
             double result = double.MinValue;
@@ -192,9 +192,9 @@
             return result;
         }
 
-        public double Calculate(string expression, string param, Dictionary<string, double> inputParams)
+        public double Calculate(string expression, string param, Dictionary<string, double> inputParams, string formulaCode)
         {
-            var result = calculator.Calculate(expression, param, inputParams.Count, inputParams);
+            var result = calculator.Calculate(expression, param, inputParams.Count, inputParams, formulaCode);
             return result;
         }
 
@@ -237,9 +237,9 @@
                                         var subRArguments = PopulateFormulaTadaFromPassportData(subRUnitConfig);
                                         PopulateFormulaDataFromRelatedUnitConfigs(subRUnitConfig, subRArguments, unitData.RecordTimestamp, unitData.ShiftId);
                                         var subRNewValue = this.Calculate(subRFormulaCode, subRArguments);
-                                        status = UpdateCalculatedUnitConfig(subRelatdUnitConfig.UnitConfigId, subRNewValue, unitData.RecordTimestamp, unitData.ShiftId);   
+                                        status = UpdateCalculatedUnitConfig(subRelatdUnitConfig.UnitConfigId, subRNewValue, unitData.RecordTimestamp, unitData.ShiftId);
                                     }
-                                }    
+                                }
                             }
                         }
                     }
@@ -296,11 +296,11 @@
                         .RealValue;
                 if (parameterType == "I+")
                 {
-                    arguments.InputValue += inputValue;    
+                    arguments.InputValue += inputValue;
                 }
                 else if (parameterType == "I-")
                 {
-                    arguments.InputValue -= inputValue;    
+                    arguments.InputValue -= inputValue;
                 }
                 else if (parameterType == "T")
                 {
@@ -439,7 +439,7 @@
                 this.data.UnitsManualData.Update(existManualRecord);
             }
         }
- 
+
         private void AddOrUpdateUnitEnteredForCalculationData(int unitDataId, decimal oldValue, decimal newValue)
         {
             if (oldValue < 0)
@@ -459,7 +459,7 @@
             //var existsUnitEnteredForCalculationRecord = this.data.UnitEnteredForCalculationDatas.All().Where(x => x.Id == newUnitEnteredForCalculationRecord.Id).FirstOrDefault();
             //if (existsUnitEnteredForCalculationRecord == null)
             {
-                this.data.UnitEnteredForCalculationDatas.Add(newUnitEnteredForCalculationRecord);   
+                this.data.UnitEnteredForCalculationDatas.Add(newUnitEnteredForCalculationRecord);
             }
             //else
             //{
@@ -471,8 +471,8 @@
 
         ///  <summary>
         /// 1) P1 ;ПАРА-КОНСУМИРАНА [ТОНОВЕ] :: X A1,F Q
-        ///  </summary>            
-        private double FormulaP1(FormulaArguments args) 
+        ///  </summary>
+        private double FormulaP1(FormulaArguments args)
         {
             if (!args.InputValue.HasValue)
             {
@@ -512,10 +512,10 @@
             var inputParams = new Dictionary<string, double>();
             inputParams.Add("f", f);
 
-            double result = calculator.Calculate("par.f", "par", 1, inputParams);
+            double result = calculator.Calculate("par.f", "par", 1, inputParams, args.Code);
             return result;
         }
-        
+
         /// <summary>
         /// 2) PP1 ;ПАРА-ПРОИЗВЕДЕНА [ТОНОВЕ] :: X A1,F Q
         /// </summary>
@@ -558,7 +558,7 @@
 
             var inputParams = new Dictionary<string, double>();
             inputParams.Add("f", f);
-            double result = calculator.Calculate("par.f", "par", 1, inputParams);
+            double result = calculator.Calculate("par.f", "par", 1, inputParams, args.Code);
             return result;
         }
 
@@ -601,13 +601,13 @@
 
             double a1 = Functions.GetValueFormulaA1(p, t, d5, d6);
             double f = Functions.GetValueFormulaF(d2, pl, a1);
-            double ent = Functions.GetValueFormulaEN(t, p);            
+            double ent = Functions.GetValueFormulaEN(t, p);
 
             var inputParams = new Dictionary<string, double>();
             inputParams.Add("f", f);
             inputParams.Add("ent", ent);
             string expr = @"(par.f*par.ent)/0.860";
-            double result = calculator.Calculate(expr, "par", 2, inputParams);
+            double result = calculator.Calculate(expr, "par", 2, inputParams, args.Code);
             return result;
         }
 
@@ -640,7 +640,7 @@
             {
                 args.Temperature = args.EstimatedTemperature;
             }
-            
+
             double pl = args.InputValue.Value;
             double p = args.Pressure.Value;
             double t = args.Temperature.Value;
@@ -656,14 +656,14 @@
             inputParams.Add("f", f);
             inputParams.Add("ent", ent);
             string expr = @"(par.f*par.ent)/0.860";
-            var result = calculator.Calculate(expr, "par", 2, inputParams);
+            var result = calculator.Calculate(expr, "par", 2, inputParams, args.Code);
             return result;
         }
 
         /// <summary>
         /// 5) Z2 ;ПАРА-КОНСУМИРАНА, АСУТП, [MWH] :: X K15,K2,K3,EN S Q=PL*ENT/0.860 Q
         /// </summary>
-        private double FormulaZ2(FormulaArguments args) 
+        private double FormulaZ2(FormulaArguments args)
         {
             if (!args.InputValue.HasValue)
             {
@@ -751,7 +751,7 @@
         }
 
         /// <summary>
-        /// 7) N2 ;ТЕЧНИ НЕФТОПРОДУКТИ И ВТЕЧНЕНИ ГАЗОВЕ ;ИЗЧИСЛЯВАНЕ НА ПЛЪТНОСТ :: S:D<0.5 D=0.5 X C,A2,F Q 
+        /// 7) N2 ;ТЕЧНИ НЕФТОПРОДУКТИ И ВТЕЧНЕНИ ГАЗОВЕ ;ИЗЧИСЛЯВАНЕ НА ПЛЪТНОСТ :: S:D<0.5 D=0.5 X C,A2,F Q
         /// </summary>
         private double FormulaN2(FormulaArguments args)
         {
@@ -947,7 +947,7 @@
             double d6 = 50;
             double d = 50;
             double df = d;
-            
+
             double a7 = Functions.GetValueFormulaA7(p, t, d, d4, d5, d6);
             double f = Functions.GetValueFormulaF(d2, pl, a7);
             f = f * df;
@@ -975,7 +975,7 @@
             double d = 50;
             double qpt3 = 0.9929;
             double df = qpt3;
-            
+
             //double c1 = Functions.GetValueFormulaC1(p, t, qpt3);
             double a7 = Functions.GetValueFormulaA7(p, t, d, d4, d5, d6);
             double f = Functions.GetValueFormulaF(d2, pl, a7);
@@ -1058,7 +1058,7 @@
             double d6 = args.EstimatedTemperature.Value;
             double d = args.Density.Value;
             double t = args.Temperature.Value;
-            double al = args.FactorAlpha.Value;            
+            double al = args.FactorAlpha.Value;
             if (d < 0.5)
             {
                 d = 0.5;
@@ -1067,7 +1067,7 @@
             double c = Functions.GetValueFormulaC(t, d, al);
             double a3 = Functions.GetValueFormulaA3(t, c, d4, d6);
             double f = Functions.GetValueFormulaF(d2, pl, a3);
-            
+
             var inputParams = new Dictionary<string, double>();
             inputParams.Add("f", f);
 
@@ -1243,7 +1243,7 @@
             double d5 = 10;
             double d6 = 50;
             double d = 50;
-            
+
             double a7 = Functions.GetValueFormulaA7(p, t, d, d4, d5, d6);
             double f = Functions.GetValueFormulaF(d2, pl, a7);
             f = f / 1000;
@@ -1273,9 +1273,9 @@
 
             double pl = args.InputValue.Value;
             double d2 = args.MaximumFlow.Value;
-            
+
             double q = Functions.GetValueFormulaA10(pl, d2);
-            
+
             var inputParams = new Dictionary<string, double>();
             inputParams.Add("q", q);
 
@@ -1287,7 +1287,7 @@
         /// <summary>
         /// 36) O18 ;;БРОЯЧИ ЗА ВОДИ :: X A11 Q
         /// </summary>
-        private double FormulaO18(FormulaArguments args)              
+        private double FormulaO18(FormulaArguments args)
         {
             if (!args.InputValue.HasValue)
             {
@@ -1412,7 +1412,7 @@
 
             double a4 = Functions.GetValueFormulaA4(p, d5);
             double f = Functions.GetValueFormulaF(d2, pl, a4);
-            
+
             var inputParams = new Dictionary<string, double>();
             inputParams.Add("f", f);
 
@@ -1436,14 +1436,14 @@
             }
             if (!args.CalculationPercentage.HasValue)
             {
-                 throw new ArgumentNullException("The value of CalculationPercentage is not allowed to be null");   
+                 throw new ArgumentNullException("The value of CalculationPercentage is not allowed to be null");
             }
 
-            double pl = args.InputValue.Value; 
+            double pl = args.InputValue.Value;
             double d2 = args.MaximumFlow.Value;
             double c = args.CalculationPercentage.Value;
             double f = ((pl / 100.00) * d2) * c;
-            
+
             var inputParams = new Dictionary<string, double>();
             inputParams.Add("f", f);
             string expr = @"par.f";
@@ -1474,7 +1474,7 @@
             double d2 = args.MaximumFlow.Value;
 
             double q = Functions.GetValueFormulaA11(pl, pl1, d2);
-            
+
             var inputParams = new Dictionary<string, double>();
             inputParams.Add("q", q);
 
@@ -1602,7 +1602,7 @@
         /// <summary>
         /// 25) N14 ;ТЕЧНИ НЕФТОПРОДУКТИ И ВТЕЧНЕНИ ГАЗОВЕ :: X A10 Q
         /// </summary>
-        public double FormulaN14(FormulaArguments args)            
+        public double FormulaN14(FormulaArguments args)
         {
             if (!args.InputValue.HasValue)
             {
@@ -1628,7 +1628,7 @@
         /// <summary>
         /// // 34) N18 ;;БРОЯЧИ ЗА НЕФТОПРОДУКТИ И ВТЕЧНЕНИ ГАЗОВЕ :: X A11 Q
         /// </summary>
-        public double FormulaN18(FormulaArguments args)              
+        public double FormulaN18(FormulaArguments args)
         {
             if (!args.InputValue.HasValue)
             {
@@ -1753,7 +1753,7 @@
             }
 
             double pl = args.InputValue.Value;
-            double d = args.EstimatedDensity.Value;           
+            double d = args.EstimatedDensity.Value;
             double q = pl * d;
 
             var inputParams = new Dictionary<string, double>();
@@ -1779,7 +1779,7 @@
             }
 
             double pl = args.InputValue.Value;
-            double d = args.EstimatedDensity.Value;           
+            double d = args.EstimatedDensity.Value;
             double q = (pl * d)/1000;
 
             var inputParams = new Dictionary<string, double>();
@@ -1805,7 +1805,7 @@
             }
             if (!args.Density.HasValue)
             {
-                args.Density = args.EstimatedDensity;    
+                args.Density = args.EstimatedDensity;
             }
 
             double pl = args.InputValue.Value;
@@ -2033,7 +2033,7 @@
         /// <summary>
         /// UCF1 - зчисляване на колко е стойността на % от число
         /// </summary>
-        public double FormulaC1(FormulaArguments args)            
+        public double FormulaC1(FormulaArguments args)
         {
             if (!args.InputValue.HasValue)
             {
@@ -2063,7 +2063,7 @@
         /// <summary>
         /// UCF2 - визуализира входното показание като резултат от формулата
         /// </summary>
-        public double FormulaC2(FormulaArguments args)            
+        public double FormulaC2(FormulaArguments args)
         {
             if (!args.InputValue.HasValue)
             {
@@ -2084,7 +2084,7 @@
         /// <summary>
         /// UCF3 - калкулира  входното показание по броя на часовете в една смяна
         /// </summary>
-        public double FormulaC3(FormulaArguments args)            
+        public double FormulaC3(FormulaArguments args)
         {
             if (!args.InputValue.HasValue)
             {
@@ -2105,7 +2105,7 @@
         /// <summary>
         /// UCF4 - калкулира  входното показание по броя разделено на 1000
         /// </summary>
-        public double FormulaC4(FormulaArguments args)            
+        public double FormulaC4(FormulaArguments args)
         {
             if (!args.InputValue.HasValue)
             {
@@ -2126,7 +2126,7 @@
         /// <summary>
         /// UCF5 - изчислява въведената стойност умножена по стойност записана в колоната за процент
         /// </summary>
-        public double FormulaC5(FormulaArguments args)            
+        public double FormulaC5(FormulaArguments args)
         {
             if (!args.InputValue.HasValue)
             {
@@ -2152,7 +2152,7 @@
         /// <summary>
         /// UCF6 - коефициента от конфигурационната таблица като стойност на формулата.
         /// </summary>
-        public double FormulaC6(FormulaArguments args)            
+        public double FormulaC6(FormulaArguments args)
         {
             if (!args.CalculationPercentage.HasValue)
             {
@@ -2172,7 +2172,7 @@
         /// <summary>
         /// UCF7 - изчислява въведената стойност разделена по стойност записана в колоната за процент
         /// </summary>
-        public double FormulaC7(FormulaArguments args)            
+        public double FormulaC7(FormulaArguments args)
         {
             if (!args.InputValue.HasValue)
             {
@@ -2202,7 +2202,7 @@
         /// <summary>
         /// UCF7 - изчислява въведената стойност като аргумент на формула
         /// </summary>
-        public double FormulaC8(FormulaArguments args)            
+        public double FormulaC8(FormulaArguments args)
         {
             if (!args.InputValue.HasValue)
             {

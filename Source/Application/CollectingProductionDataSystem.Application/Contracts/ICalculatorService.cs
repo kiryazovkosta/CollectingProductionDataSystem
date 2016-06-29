@@ -6,6 +6,6 @@ namespace CollectingProductionDataSystem.Application.Contracts
 
     public interface ICalculatorService
     {
-        double Calculate(string expression, string expressionArgumentName, int argumentsCount, Dictionary<string, double> arguments);
+        double Calculate(string expression, string expressionArgumentName, int argumentsCount, Dictionary<string, double> arguments, string formulaCode);
     }
 }

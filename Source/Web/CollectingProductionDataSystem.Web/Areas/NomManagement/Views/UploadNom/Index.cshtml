@@ -8,9 +8,8 @@
     <h2 class="text-center">@ViewBag.Title</h2>
     <hr />
 
-    <form method="post" enctype="multipart/form-data" action="/NomManagement/UploadNom/Upload">
-        @Html.AntiForgeryToken()
-        @(Html.Kendo().Upload()
+    @Html.AntiForgeryToken()
+    @(Html.Kendo().Upload()
             .Name("upload")
             .Async(async =>
                 async.Save("Upload", "UploadNom")
@@ -18,19 +17,20 @@
             .Multiple(false)
                             .Events(ev =>
                             {
-                                ev.Success("uploadNom.onSuccess");
-                                ev.Error("uploadNom.onError");
+                                ev.Success("uploadNom.OnSuccess");
+                                ev.Error("uploadNom.OnError");
                             })
-        )
-    </form>
-    <div class="separator"></div>
-    <div id="alert" class="alert alert-success" style="display:none;">
-        <button id="close" class="close">×</button>
-        <p></p>.
-    </div>
+    )
+
+    @* //Error window for kendo grid error event handler *@
+    <div id="err-window" style="display:none">@Html.Partial("_KendoGridErrorWindow")</div>
+    @* //Error window for kendo grid error event handler *@
+    <div id="success-window" style="display:none">@Html.Partial("_SuccessWindow")</div>
 </div>
 
 @section scripts{
     @Scripts.Render("~/Scripts/custom/uploadNom.js")
+    @Scripts.Render("~/bundles/custom/kendoadditional")
 }
+
 

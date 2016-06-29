@@ -42,7 +42,7 @@ namespace CollectingProductionDataSystem.Web.Areas.NomManagement.Controllers
             }
             var fileNameSplit = inputFile.FileName.Split('.');
             var fileType = fileNameSplit[fileNameSplit.Length - 1];
-            if (fileType != "csv" && fileType!="txt")
+            if (fileType != "csv" && fileType != "txt")
             {
                 return Content("Error");
             }
@@ -57,7 +57,7 @@ namespace CollectingProductionDataSystem.Web.Areas.NomManagement.Controllers
                 //Response.StatusCode = (int) HttpStatusCode.BadRequest;
                 //var errors = result.EfErrors.Select(x => x.ErrorMessage);
                 //return Json(new { data = new { errors = errors } });
-                return Content(string.Join("\n", result.EfErrors.Select(x => x.ErrorMessage).ToList()));
+                return Content( string.Join("\n", result.EfErrors.Select(x => x.ErrorMessage).ToList()));
             }
         }
     }
