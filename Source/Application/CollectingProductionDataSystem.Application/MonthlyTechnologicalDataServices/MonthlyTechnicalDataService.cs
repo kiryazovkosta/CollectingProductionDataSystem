@@ -30,6 +30,7 @@
 
         public IEnumerable<MonthlyTechnicalReportDataDto> ReadMonthlyTechnologicalData(DateTime month, int[] processUnits)
         {
+
             var monthDate = new DateTime(month.Year, month.Month, DateTime.DaysInMonth(month.Year, month.Month), 0, 0, 0);
             var firstDayInMonth = new DateTime(month.Year, month.Month, 1, 0, 0, 0);
 
@@ -38,6 +39,7 @@
             Dictionary<string, MonthlyData> monthlyData = GetMonthlyData(monthDate);
 
             IEnumerable<MonthlyTechnicalReportDataDto> result = CalculateMonthlyTechnologicalData(monthlyProductionDataList, productionPlanData, firstDayInMonth, monthlyData);
+
             return result;
         }
 
