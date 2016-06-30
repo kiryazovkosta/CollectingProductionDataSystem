@@ -5,6 +5,9 @@
 
     public class FormulaArguments
     {
+        //public FormulaArguments(string code)
+        //{
+        //}
         /// <summary>
         /// PL-ПЛОЩ/ПОКАЗАНИЕ НА БРОЯЧА
         /// </summary>

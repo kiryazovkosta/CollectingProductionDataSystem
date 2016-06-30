@@ -269,6 +269,7 @@
             arguments.EstimatedCompressibilityFactor = (double?)unitConfig.EstimatedCompressibilityFactor;
             arguments.CalculationPercentage = (double?)unitConfig.CalculationPercentage;
             arguments.CustomFormulaExpression = unitConfig.CustomFormulaExpression;
+            arguments.Code = unitConfig.Code;
             if (arguments.EstimatedDensity.HasValue)
             {
                 var d = ((int)(arguments.EstimatedDensity.Value * 1000)) / 100;
@@ -336,6 +337,7 @@
             arguments.EstimatedCompressibilityFactor = (double?)unitConfig.EstimatedCompressibilityFactor;
             arguments.CalculationPercentage = (double?)unitConfig.CalculationPercentage;
             arguments.CustomFormulaExpression = unitConfig.CustomFormulaExpression;
+            arguments.Code = unitConfig.Code;
             return arguments;
         }
 
@@ -701,7 +703,7 @@
             inputParams.Add("ent", ent);
 
             string expr = @"(par.pl*par.ent)/0.860";
-            var result = calculator.Calculate(expr, "par", 2, inputParams);
+            var result = calculator.Calculate(expr, "par", 2, inputParams, args.Code);
             return result;
         }
 
@@ -746,7 +748,7 @@
             inputParams.Add("ent", ent);
 
             string expr = @"(par.pl*par.ent)/0.860";
-            double result = calculator.Calculate(expr, "par", 2, inputParams);
+            double result = calculator.Calculate(expr, "par", 2, inputParams, args.Code);
             return result;
         }
 
@@ -816,7 +818,7 @@
             inputParams.Add("f", f);
 
             string expr = @"par.f";
-            double result = calculator.Calculate(expr, "par", 1, inputParams);
+            double result = calculator.Calculate(expr, "par", 1, inputParams, args.Code);
             return result;
         }
 
@@ -874,7 +876,7 @@
             inputParams.Add("f", f);
 
             string expr = @"par.f";
-            double result = calculator.Calculate(expr, "par", 1, inputParams);
+            double result = calculator.Calculate(expr, "par", 1, inputParams, args.Code);
             return result;
         }
 
@@ -898,7 +900,7 @@
             inputParams.Add("f", f);
 
             string expr = @"par.f";
-            double result = calculator.Calculate(expr, "par", 1, inputParams);
+            double result = calculator.Calculate(expr, "par", 1, inputParams, args.Code);
             return result;
         }
 
@@ -929,7 +931,7 @@
             inputParams.Add("f", f);
 
             string expr = @"par.f";
-            double result = calculator.Calculate(expr, "par", 1, inputParams);
+            double result = calculator.Calculate(expr, "par", 1, inputParams, args.Code);
             return result;
         }
 
@@ -956,7 +958,7 @@
             inputParams.Add("f", f);
 
             string expr = @"par.f";
-            double result = calculator.Calculate(expr, "par", 1, inputParams);
+            double result = calculator.Calculate(expr, "par", 1, inputParams, args.Code);
             return result;
         }
 
@@ -985,7 +987,7 @@
             inputParams.Add("f", f);
 
             string expr = @"par.f";
-            double result = calculator.Calculate(expr, "par", 1, inputParams);
+            double result = calculator.Calculate(expr, "par", 1, inputParams, args.Code);
             return result;
         }
 
@@ -1014,7 +1016,7 @@
             inputParams.Add("f", f);
 
             string expr = @"par.f";
-            double result = calculator.Calculate(expr, "par", 1, inputParams);
+            double result = calculator.Calculate(expr, "par", 1, inputParams, args.Code);
             return result;
         }
 
@@ -1072,7 +1074,7 @@
             inputParams.Add("f", f);
 
             string expr = @"par.f";
-            double result = calculator.Calculate(expr, "par", 1, inputParams);
+            double result = calculator.Calculate(expr, "par", 1, inputParams, args.Code);
             return result;
         }
 
@@ -1102,7 +1104,7 @@
             inputParams.Add("f", f);
 
             string expr = @"par.f";
-            double result = calculator.Calculate(expr, "par", 1, inputParams);
+            double result = calculator.Calculate(expr, "par", 1, inputParams, args.Code);
             return result;
         }
 
@@ -1124,7 +1126,7 @@
             inputParams.Add("f", f);
 
             string expr = @"par.f";
-            double result = calculator.Calculate(expr, "par", 1, inputParams);
+            double result = calculator.Calculate(expr, "par", 1, inputParams, args.Code);
             return result;
         }
 
@@ -1187,7 +1189,7 @@
             inputParams.Add("f", f);
 
             string expr = @"par.f";
-            var result = calculator.Calculate(expr, "par", 1, inputParams);
+            var result = calculator.Calculate(expr, "par", 1, inputParams, args.Code);
             return result;
         }
 
@@ -1226,7 +1228,7 @@
             inputParams.Add("f", f);
 
             string expr = @"par.f";
-            var result = calculator.Calculate(expr, "par", 1, inputParams);
+            var result = calculator.Calculate(expr, "par", 1, inputParams, args.Code);
             return result;
         }
 
@@ -1252,7 +1254,7 @@
             inputParams.Add("f", f);
 
             string expr = @"par.f";
-            double result = calculator.Calculate(expr, "par", 1, inputParams);
+            double result = calculator.Calculate(expr, "par", 1, inputParams, args.Code);
             return result;
         }
 
@@ -1280,7 +1282,7 @@
             inputParams.Add("q", q);
 
             string expr = @"par.q";
-            double result = calculator.Calculate(expr, "par", 1, inputParams);
+            double result = calculator.Calculate(expr, "par", 1, inputParams, args.Code);
             return result;
         }
 
@@ -1312,7 +1314,7 @@
             inputParams.Add("q", q);
 
             string expr = @"par.q";
-            var result = calculator.Calculate(expr, "par", 1, inputParams);
+            var result = calculator.Calculate(expr, "par", 1, inputParams, args.Code);
             return result;
         }
 
@@ -1330,7 +1332,7 @@
             inputParams.Add("q", q);
 
             string expr = @"par.q";
-            double result = calculator.Calculate(expr, "par", 1, inputParams);
+            double result = calculator.Calculate(expr, "par", 1, inputParams, args.Code);
             return result;
         }
 
@@ -1379,7 +1381,7 @@
             inputParams.Add("f", f);
 
             string expr = @"par.f";
-            double result = calculator.Calculate(expr, "par", 1, inputParams);
+            double result = calculator.Calculate(expr, "par", 1, inputParams, args.Code);
             return result;
         }
 
@@ -1417,7 +1419,7 @@
             inputParams.Add("f", f);
 
             string expr = @"par.f";
-            double result = calculator.Calculate(expr, "par", 1, inputParams);
+            double result = calculator.Calculate(expr, "par", 1, inputParams, args.Code);
             return result;
         }
 
@@ -1447,7 +1449,7 @@
             var inputParams = new Dictionary<string, double>();
             inputParams.Add("f", f);
             string expr = @"par.f";
-            var result = calculator.Calculate(expr, "par", 1, inputParams);
+            var result = calculator.Calculate(expr, "par", 1, inputParams, args.Code);
             return result;
         }
 
@@ -1479,7 +1481,7 @@
             inputParams.Add("q", q);
 
             string expr = @"par.q";
-            double result = calculator.Calculate(expr, "par", 1, inputParams);
+            double result = calculator.Calculate(expr, "par", 1, inputParams, args.Code);
             return result;
         }
 
@@ -1511,7 +1513,7 @@
             inputParams.Add("q", q);
 
             string expr = @"par.q";
-            double result = calculator.Calculate(expr, "par", 1, inputParams);
+            double result = calculator.Calculate(expr, "par", 1, inputParams, args.Code);
             return result;
         }
 
@@ -1543,7 +1545,7 @@
             inputParams.Add("q", q);
 
             string expr = @"par.q";
-            double result = calculator.Calculate(expr, "par", 1, inputParams);
+            double result = calculator.Calculate(expr, "par", 1, inputParams, args.Code);
             return result;
         }
 
@@ -1595,7 +1597,7 @@
             inputParams.Add("q", q);
 
             string expr = @"(par.q)";
-            double result = calculator.Calculate(expr, "par", 1, inputParams);
+            double result = calculator.Calculate(expr, "par", 1, inputParams, args.Code);
             return result;
         }
 
@@ -1621,7 +1623,7 @@
             inputParams.Add("q", q);
 
             string expr = @"par.q";
-            var result = calculator.Calculate(expr, "par", 1, inputParams);
+            var result = calculator.Calculate(expr, "par", 1, inputParams, args.Code);
             return result;
         }
 
@@ -1652,7 +1654,7 @@
             var inputParams = new Dictionary<string, double>();
             inputParams.Add("q", q);
             string expr = @"par.q";
-            var result = calculator.Calculate(expr, "par", 1, inputParams);
+            var result = calculator.Calculate(expr, "par", 1, inputParams, args.Code);
             return result;
         }
 
@@ -1712,7 +1714,7 @@
             inputParams.Add("q", q);
 
             string expr = @"par.q";
-            double result = calculator.Calculate(expr, "par", 1, inputParams);
+            double result = calculator.Calculate(expr, "par", 1, inputParams, args.Code);
             return result;
         }
 
@@ -1734,7 +1736,7 @@
             inputParams.Add("q", q);
 
             string expr = @"par.q";
-            double result = calculator.Calculate(expr, "par", 1, inputParams);
+            double result = calculator.Calculate(expr, "par", 1, inputParams, args.Code);
             return result;
         }
 
@@ -1760,7 +1762,7 @@
             inputParams.Add("q", q);
 
             string expr = @"par.q";
-            double result = calculator.Calculate(expr, "par", 1, inputParams);
+            double result = calculator.Calculate(expr, "par", 1, inputParams, args.Code);
             return result;
         }
 
@@ -1786,7 +1788,7 @@
             inputParams.Add("q", q);
 
             string expr = @"par.q";
-            double result = calculator.Calculate(expr, "par", 1, inputParams);
+            double result = calculator.Calculate(expr, "par", 1, inputParams, args.Code);
             return result;
         }
 
@@ -1816,7 +1818,7 @@
             inputParams.Add("q", q);
 
             string expr = @"par.q";
-            double result = calculator.Calculate(expr, "par", 1, inputParams);
+            double result = calculator.Calculate(expr, "par", 1, inputParams, args.Code);
             return result;
         }
 
@@ -1851,7 +1853,7 @@
             inputParams.Add("q", q);
 
             string expr = @"par.q";
-            var result = calculator.Calculate(expr, "par", 1, inputParams);
+            var result = calculator.Calculate(expr, "par", 1, inputParams, args.Code);
             return result;
         }
 
@@ -1888,7 +1890,7 @@
 
             string expr = @"par.q";
 
-            var result = calculator.Calculate(expr, "par", 1, inputParams);
+            var result = calculator.Calculate(expr, "par", 1, inputParams, args.Code);
             return result;
         }
 
@@ -1909,7 +1911,7 @@
             inputParams.Add("q", q);
 
             string expr = @"par.q";
-            var result = calculator.Calculate(expr, "par", 1, inputParams);
+            var result = calculator.Calculate(expr, "par", 1, inputParams, args.Code);
             return result;
         }
 
@@ -1961,7 +1963,7 @@
             inputParams.Add("q", q);
 
             string expr = @"par.q";
-            var result = calculator.Calculate(expr, "par", 1, inputParams);
+            var result = calculator.Calculate(expr, "par", 1, inputParams, args.Code);
             return result;
         }
 
@@ -2002,7 +2004,7 @@
             inputParams.Add("q", q);
 
             string expr = @"par.q";
-            var result = calculator.Calculate(expr, "par", 1, inputParams);
+            var result = calculator.Calculate(expr, "par", 1, inputParams, args.Code);
             return result;
         }
 
@@ -2026,7 +2028,7 @@
             inputParams.Add("q", q);
 
             string expr = @"par.q";
-            double result = calculator.Calculate(expr, "par", 1, inputParams);
+            double result = calculator.Calculate(expr, "par", 1, inputParams, args.Code);
             return result;
         }
 
@@ -2056,7 +2058,7 @@
             inputParams.Add("q", r);
 
             string expr = @"par.q";
-            var result = calculator.Calculate(expr, "par", 1, inputParams);
+            var result = calculator.Calculate(expr, "par", 1, inputParams, args.Code);
             return result;
         }
 
@@ -2077,7 +2079,7 @@
             inputParams.Add("q", r);
 
             string expr = @"par.q";
-            var result = calculator.Calculate(expr, "par", 1, inputParams);
+            var result = calculator.Calculate(expr, "par", 1, inputParams, args.Code);
             return result;
         }
 
@@ -2098,7 +2100,7 @@
             inputParams.Add("q", r);
 
             string expr = @"par.q";
-            var result = calculator.Calculate(expr, "par", 1, inputParams);
+            var result = calculator.Calculate(expr, "par", 1, inputParams, args.Code);
             return result;
         }
 
@@ -2119,7 +2121,7 @@
             inputParams.Add("q", r);
 
             string expr = @"par.q";
-            var result = calculator.Calculate(expr, "par", 1, inputParams);
+            var result = calculator.Calculate(expr, "par", 1, inputParams, args.Code);
             return result;
         }
 
@@ -2145,7 +2147,7 @@
             inputParams.Add("q", r);
 
             string expr = @"par.q";
-            var result = calculator.Calculate(expr, "par", 1, inputParams);
+            var result = calculator.Calculate(expr, "par", 1, inputParams, args.Code);
             return result;
         }
 
@@ -2165,7 +2167,7 @@
             inputParams.Add("q", c);
 
             string expr = @"par.q";
-            var result = calculator.Calculate(expr, "par", 1, inputParams);
+            var result = calculator.Calculate(expr, "par", 1, inputParams, args.Code);
             return result;
         }
 
@@ -2191,7 +2193,7 @@
             inputParams.Add("q", d);
 
             string expr = @"par.q";
-            var result = calculator.Calculate(expr, "par", 1, inputParams);
+            var result = calculator.Calculate(expr, "par", 1, inputParams, args.Code);
             if (double.IsInfinity(result) || double.IsNaN(result))
             {
                 result = 0.0;
@@ -2216,7 +2218,7 @@
             var inputParams = new Dictionary<string, double>();
             inputParams.Add("p0", args.InputValue.Value);
             string expr = @args.CustomFormulaExpression;
-            var result = calculator.Calculate(expr, "p", 1, inputParams);
+            var result = calculator.Calculate(expr, "p", 1, inputParams, args.Code);
             if (double.IsInfinity(result) || double.IsNaN(result))
             {
                 result = 0.0;

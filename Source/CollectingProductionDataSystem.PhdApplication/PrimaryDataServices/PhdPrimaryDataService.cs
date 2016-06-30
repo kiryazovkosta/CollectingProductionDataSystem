@@ -481,6 +481,7 @@
                         arguments.EstimatedCompressibilityFactor = (double?)unitConfig.EstimatedCompressibilityFactor;
                         arguments.CalculationPercentage = (double?)unitConfig.CalculationPercentage;
                         arguments.CustomFormulaExpression = unitConfig.CustomFormulaExpression;
+                        arguments.Code = unitConfig.Code;
 
                         var relatedUnitConfigs = unitConfig.RelatedUnitConfigs.ToList();
                         var confidence = 100;

@@ -34,10 +34,10 @@
             var status = this.dailyData.CheckIfPreviousDaysAreReady(processUnitId.Value, date.Value, materialTypeId.Value);
             if (!status.IsValid)
             {
-                return result;    
+                return result;
             }
 
-            if (materialTypeId.HasValue && 
+            if (materialTypeId.HasValue &&
                 materialTypeId.Value == energyId &&
                 !this.dailyData.CheckIfDayIsApproved(date.Value, processUnitId.Value))
             {
@@ -46,7 +46,7 @@
 
             if (materialTypeId.HasValue && materialTypeId.Value == energyId)
             {
-                dailyData = unitData.GetUnitsDailyDataForDateTime(date, null, null).ToList();    
+                dailyData = unitData.GetUnitsDailyDataForDateTime(date, null, null).ToList();
             }
             else
             {
@@ -84,13 +84,13 @@
             {
                 if (materialTypeId.Value == CommonConstants.MaterialType)
                 {
-                    dbResult = dbResult.Where(x => x.MaterialTypeId == materialTypeId);    
+                    dbResult = dbResult.Where(x => x.MaterialTypeId == materialTypeId);
                 }
                 else
                 {
                     dbResult = dbResult.Where(x => x.MaterialTypeId >= materialTypeId);
                 }
-                
+
             }
 
             var productionPlans = dbResult
@@ -138,20 +138,20 @@
                 if (materialTypeId >= CommonConstants.EnergyType)
                 {
                     var percs = CalculateUsageRateToTheDayValue(productionPlan, dailyData, this.calculator, productionPlanData);
-                    productionPlanData.PercentagesFactCurrentMonth = GetValidValueOrZero(percs); 
+                    productionPlanData.PercentagesFactCurrentMonth = GetValidValueOrZero(percs);
                 }
 
                 if (productionPlan.Name == totallyQuantity.First().Key)
 	            {
                     if (totallyQuantity[productionPlan.Name] == 0)
                     {
-                        totallyQuantityAs = productionPlanData.QuantityFact;   
+                        totallyQuantityAs = productionPlanData.QuantityFact;
                     }
-                    else 
+                    else
                     {
                         if (totallyQuantity[productionPlan.Name] == productionPlanData.QuanityFactCurrentMonth + productionPlanData.QuantityFact)
                         {
-                            totallyQuantityAs = totallyQuantity[productionPlan.Name];   
+                            totallyQuantityAs = totallyQuantity[productionPlan.Name];
                         }
                         else
                         {
@@ -165,7 +165,7 @@
 
             if (materialTypeId >= CommonConstants.EnergyType && totallyQuantity.Count == 1)
             {
-                totallyQuantityAs = totallyQuantity.First().Value;  
+                totallyQuantityAs = totallyQuantity.First().Value;
             }
 
             foreach (var item in result)
@@ -173,7 +173,7 @@
                 if (materialTypeId == CommonConstants.MaterialType)
                 {
                     var percs = (((double)item.QuanityFactCurrentMonth + (double)item.QuantityFact) * 100.00) / (double)totallyQuantityAs;
-                    item.PercentagesFactCurrentMonth = GetValidValueOrZero(percs);  
+                    item.PercentagesFactCurrentMonth = GetValidValueOrZero(percs);
                 }
             }
 
@@ -201,10 +201,10 @@
             var planInputParams = new Dictionary<string, double>();
             for (int i = 0; i < planInputParamsValues.Count(); i++)
             {
-                planInputParams.Add(string.Format("p{0}", i), planInputParamsValues[i]);  
+                planInputParams.Add(string.Format("p{0}", i), planInputParamsValues[i]);
             }
 
-            var planValue = calculator.Calculate(productionPlan.UsageRateFormula, "p", planInputParams.Count, planInputParams);
+            var planValue = calculator.Calculate(productionPlan.UsageRateFormula, "p", planInputParams.Count, planInputParams, productionPlan.Code);
             if (double.IsNaN(planValue) || double.IsInfinity(planValue))
             {
                 planValue = 0.0;
@@ -212,7 +212,7 @@
             return planValue;
         }
 
-        private double CalculateUsageRateToTheDayValue(ProductionPlanConfig productionPlan, List<UnitsDailyData> dailyData, ICalculatorService calculatorService, 
+        private double CalculateUsageRateToTheDayValue(ProductionPlanConfig productionPlan, List<UnitsDailyData> dailyData, ICalculatorService calculatorService,
             ProductionPlanData productionPlanData)
         {
             var splitter = new char[] { '@' };
@@ -249,7 +249,7 @@
                 }
             }
 
-            var planValue = calculator.Calculate(formula.ToString(), "p", planInputParams.Count, planInputParams);
+            var planValue = calculator.Calculate(formula.ToString(), "p", planInputParams.Count, planInputParams, productionPlan.Code);
             if (double.IsNaN(planValue) || double.IsInfinity(planValue))
             {
                 planValue = 0.0;
@@ -278,13 +278,13 @@
             var factInputParams = new Dictionary<string, double>();
             for (int i = 0; i < factInputParamsValues.Count(); i++)
             {
-                factInputParams.Add(string.Format("p{0}", i), factInputParamsValues[i]);  
+                factInputParams.Add(string.Format("p{0}", i), factInputParamsValues[i]);
             }
-                
-            var factValue = calculator.Calculate(productionPlan.QuantityFactFormula, "p", factInputParams.Count, factInputParams);
+
+            var factValue = calculator.Calculate(productionPlan.QuantityFactFormula, "p", factInputParams.Count, factInputParams, productionPlan.Code);
             return factValue;
         }
- 
+
         private double CalculatePlanValue(ProductionPlanConfig productionPlan, List<UnitsDailyData> dailyData, ICalculatorService calculator, DateTime month)
         {
             var splitter = new char[] { '@' };
@@ -306,22 +306,22 @@
             var planInputParams = new Dictionary<string, double>();
             for (int i = 0; i < planInputParamsValues.Count(); i++)
             {
-                planInputParams.Add(string.Format("p{0}", i), planInputParamsValues[i]);  
+                planInputParams.Add(string.Format("p{0}", i), planInputParamsValues[i]);
             }
 
             if (productionPlan.QuantityPlanFormula.IndexOf("p.pn") != -1)
             {
                 var value = (double)productionPlan.PlanNorms.Where(x => x.Month == month).First().Value;
-                planInputParams.Add("pn", value);    
+                planInputParams.Add("pn", value);
             }
 
             if (productionPlan.QuantityPlanFormula.IndexOf("p.pv") != -1)
             {
                 var value = (double)productionPlan.ProcessUnit.PlanValues.Where(x => x.Month == month).First().Value;
-                planInputParams.Add("pv", value);    
+                planInputParams.Add("pv", value);
             }
 
-            var planValue = calculator.Calculate(productionPlan.QuantityPlanFormula, "p", planInputParams.Count, planInputParams);
+            var planValue = calculator.Calculate(productionPlan.QuantityPlanFormula, "p", planInputParams.Count, planInputParams, productionPlan.Code);
             return planValue;
         }
 
@@ -347,10 +347,10 @@
                     (beginningOfMonth <= x.RecordTimestamp && x.RecordTimestamp <= targetDay))
                 .GroupBy(x => x.ProductionPlanConfig.Name)
                 .ToList()
-                .Select(group => new 
-                { 
-                    Name = group.Key, 
-                    Value = group.Sum(x => x.QuantityFact) 
+                .Select(group => new
+                {
+                    Name = group.Key,
+                    Value = group.Sum(x => x.QuantityFact)
                 })
                 .ToDictionary(x => x.Name, x => x.Value);
 

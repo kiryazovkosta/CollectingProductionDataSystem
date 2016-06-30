@@ -1,15 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using CollectingProductionDataSystem.Models.Abstract;
-using CollectingProductionDataSystem.Models.Contracts;
-using CollectingProductionDataSystem.Models.Nomenclatures;
-using CollectingProductionDataSystem.Models.Productions;
-using System.ComponentModel;
-
 namespace CollectingProductionDataSystem.Models.Productions
 {
-    public partial class UnitConfig : DeletableEntity, IEntity, IAggregatable, IConvertable
+    using CollectingProductionDataSystem.Models.Abstract;
+    using CollectingProductionDataSystem.Models.Contracts;
+    using CollectingProductionDataSystem.Models.Nomenclatures;
+    using Productions;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+
+    public class UnitConfig : DeletableEntity, IEntity, IAggregatable, IConvertable
     {
         private ICollection<UnitsData> unitsDatas;
         private ICollection<RelatedUnitConfigs> relatedUnitConfigs;
@@ -82,7 +80,7 @@ namespace CollectingProductionDataSystem.Models.Productions
             set { this.unitConfigUnitDailyConfigs = value; }
         }
 
-        public virtual ICollection<UnitDatasTemp> UnitDatasTemps 
+        public virtual ICollection<UnitDatasTemp> UnitDatasTemps
         {
             get { return this.unitDatasTemps; }
             set { this.unitDatasTemps = value; }
@@ -106,7 +104,7 @@ namespace CollectingProductionDataSystem.Models.Productions
 
         public bool RemoveAndAddInsteadUpdate { get; set; }
         public bool HasRawDataReading { get; set; }
-        
+
          //<summary>
          //If this property is set to true and value is negative number need to set value to zero. :)
          //</summary>
