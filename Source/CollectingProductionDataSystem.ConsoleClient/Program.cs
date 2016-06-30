@@ -58,7 +58,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
 
             //Console.WriteLine(monthlyProductionData.Count());
 
-            //var lastRealDate = new DateTime(2016, 6, 26, 0, 0, 0);
+            //var lastRealDate = new DateTime(year: 2016, month: 6, day: 27, hour: 0, minute: 0, second: 0);
             //var dailyData = data.UnitsDailyDatas.All().Where(x => x.RecordTimestamp == lastRealDate).ToList();
             //var approvedDaysData = data.UnitsApprovedDailyDatas.All().Where(x => x.RecordDate == lastRealDate).ToList();
             //var nextDate = lastRealDate.AddDays(1);
@@ -82,16 +82,16 @@ namespace CollectingProductionDataSystem.ConsoleClient
             //    var result = data.SaveChanges("InitialLoading");
             //    if (result.IsValid)
             //    {
-            //        Console.WriteLine("Successfully added {0} records for {1}", result.ResultRecordsCount, nextDate); 
+            //        Console.WriteLine(format: "Successfully added {0} records for {1}", arg0: result.ResultRecordsCount, arg1: nextDate);
             //    }
 
             //    nextDate = nextDate.AddDays(1);
             //}
 
-            //var lastRealDate = new DateTime(2016, 6, 26, 0, 0, 0);
+            //var lastRealDate = new DateTime(year: 2016, month: 6, day: 27, hour: 0, minute: 0, second: 0);
             //var shiftsData = data.UnitsData.All().Where(x => x.RecordTimestamp == lastRealDate).ToList();
             //var approvedShiftsData = data.UnitsApprovedDatas.All().Where(x => x.RecordDate == lastRealDate).ToList();
-            //var nextDate = lastRealDate.AddDays(1);
+            //var nextDate = lastRealDate.AddDays(value: 1);
             //var daysInMonth = DateTime.DaysInMonth(lastRealDate.Year, lastRealDate.Month);
             //while (nextDate.Day <= daysInMonth)
             //{
@@ -100,12 +100,13 @@ namespace CollectingProductionDataSystem.ConsoleClient
 
             //    foreach (var item in shiftsData)
             //    {
+
             //        var record = new UnitsData
             //        {
             //            RecordTimestamp = nextDate,
             //            ShiftId = item.ShiftId,
             //            UnitConfigId = item.UnitConfigId,
-            //            Value = (decimal)item.RealValue,
+            //            Value = (decimal) item.RealValue,
             //            UnitsManualData = null,
             //            UnitConfig = item.UnitConfig,
             //            UnitEnteredForCalculationData = null
@@ -115,11 +116,12 @@ namespace CollectingProductionDataSystem.ConsoleClient
 
             //    foreach (var item in approvedShiftsData)
             //    {
+
             //        var record = new UnitsApprovedData
             //        {
-            //            ShiftId = item.ShiftId, 
-            //            RecordDate = nextDate, 
-            //            ProcessUnitId = item.ProcessUnitId, 
+            //            ShiftId = item.ShiftId,
+            //            RecordDate = nextDate,
+            //            ProcessUnitId = item.ProcessUnitId,
             //            Approved = true
             //        };
             //        unitsApprovedDataList.Add(record);
@@ -131,13 +133,13 @@ namespace CollectingProductionDataSystem.ConsoleClient
             //    var result = data.SaveChanges("InitialLoading");
             //    if (result.IsValid)
             //    {
-            //        Console.WriteLine("Successfully added records for {0}", nextDate); 
+            //        Console.WriteLine("Successfully added records for {0}", nextDate);
             //    }
 
             //    nextDate = nextDate.AddDays(1);
             //}
 
-            //var lastRealDate = new DateTime(2016, 6, 26, 0, 0, 0);
+            //var lastRealDate = new DateTime(2016, 6, 27, 0, 0, 0);
             //var dailyData = data.ProductionPlanDatas.All().Where(x => x.RecordTimestamp == lastRealDate).ToList();
             //var nextDate = lastRealDate.AddDays(1);
             //var daysInMonth = DateTime.DaysInMonth(lastRealDate.Year, lastRealDate.Month);
@@ -153,7 +155,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
             //    var result = data.SaveChanges("InitialLoading");
             //    if (result.IsValid)
             //    {
-            //        Console.WriteLine("Successfully added {0} records for {1}", result.ResultRecordsCount, nextDate); 
+            //        Console.WriteLine("Successfully added {0} records for {1}", result.ResultRecordsCount, nextDate);
             //    }
 
             //    nextDate = nextDate.AddDays(1);
