@@ -30,16 +30,21 @@
 
         public IEnumerable<MonthlyTechnicalReportDataDto> ReadMonthlyTechnologicalData(DateTime month, int[] processUnits)
         {
-
+            var timer1 = new Stopwatch();
+            var timer2 = new Stopwatch();
+            timer1.Start();
             var monthDate = new DateTime(month.Year, month.Month, DateTime.DaysInMonth(month.Year, month.Month), 0, 0, 0);
             var firstDayInMonth = new DateTime(month.Year, month.Month, 1, 0, 0, 0);
 
             Dictionary<int, ProductionPlanDataDto> productionPlanData = GetProductionPlanData(monthDate, firstDayInMonth);
             List<UnitMonthlyData> monthlyProductionDataList = GetMonthlyProductDataList(processUnits, monthDate);
             Dictionary<string, MonthlyData> monthlyData = GetMonthlyData(monthDate);
-
+            timer1.Stop();
+            timer2.Start();
             IEnumerable<MonthlyTechnicalReportDataDto> result = CalculateMonthlyTechnologicalData(monthlyProductionDataList, productionPlanData, firstDayInMonth, monthlyData);
-
+            timer2.Stop();
+            Debug.WriteLine($"Estimated time for Querying data is: {timer1.Elapsed}");
+            Debug.WriteLine($"Estimated time for Calculating data is: {timer2.Elapsed}");
             return result;
         }
 
@@ -47,11 +52,15 @@
         {
             // ToDo: Re-factor this query to simplify result set
             return data.UnitMonthlyDatas.All()
-                            .Include(x => x.UnitMonthlyConfig)
-                            .Include(x => x.UnitManualMonthlyData)
-                            .Where(x => x.RecordTimestamp == monthDate)
-                            .ToList()
-                            .ToDictionary(x => x.UnitMonthlyConfig.Code, y => new MonthlyData { MonthValue = (decimal) y.RealValue, YearValue = y.YearTotalValue });
+                                       .Include(x => x.UnitMonthlyConfig)
+                                       .Include(x => x.UnitManualMonthlyData)
+                                       .Where(x => x.RecordTimestamp == monthDate)
+                                       .ToDictionary(x => x.UnitMonthlyConfig.Code,
+                                       y => new MonthlyData
+                                       {
+                                           MonthValue = (decimal) y.RealValue,
+                                           YearValue = y.YearTotalValue
+                                       });
         }
 
         private List<UnitMonthlyData> GetMonthlyProductDataList(int[] processUnits, DateTime monthDate)
@@ -76,7 +85,7 @@
         {
             var productionPlanConfigs = this.data.ProductionPlanConfigs.AllAnual(monthDate.Year)
                                         .Include(x => x.ProductionPlanConfigUnitMonthlyConfigFactFractionMembers)
-                                        .Include(x => x.ProductionPlanConfigUnitMonthlyConfigPlanMembers).ToList();
+                                        .Include(x => x.ProductionPlanConfigUnitMonthlyConfigPlanMembers).ToArray();
 
             var productionPlanData = (from ppc in productionPlanConfigs
                                       join pd in data.ProductionPlanDatas.All()
@@ -96,6 +105,7 @@
                                           planNorm: pn.Value,
                                           planValue: pv.Value))
                                       .ToDictionary(x => x.ProductionPlanConfig.Id);
+
             return productionPlanData;
         }
 
@@ -112,24 +122,24 @@
 
                 //try
                 //{
-                    ProductionPlanDataDto productionPlanData = null;
-                    int productionPlanConfigId = item.UnitMonthlyConfig.ProductionPlanConfigId ?? 0;
-                    if (productionPlanConfigId != 0)
+                ProductionPlanDataDto productionPlanData = null;
+                int productionPlanConfigId = item.UnitMonthlyConfig.ProductionPlanConfigId ?? 0;
+                if (productionPlanConfigId != 0)
+                {
+                    productionPlanData = productionPlanDatas.FirstOrDefault(x => x.Key == productionPlanConfigId).Value;
+                }
+                var monthlyProductionDataRecord = CreateMonthlyTechnicalReportRecord(item, productionPlanData, firstDayInMonth, monthlyData);
+                if (monthlyProductionDataRecord != null)
+                {
+                    monthlyProductionData.Add(monthlyProductionDataRecord);
+                }
+                else
+                {
+                    if (!processUnitsWithErrorInCalculation.Contains(item.UnitMonthlyConfig.ProcessUnitId))
                     {
-                        productionPlanData = productionPlanDatas.FirstOrDefault(x => x.Key == productionPlanConfigId).Value;
+                        processUnitsWithErrorInCalculation.Add(item.UnitMonthlyConfig.ProcessUnitId);
                     }
-                    var monthlyProductionDataRecord = CreateMonthlyTechnicalReportRecord(item, productionPlanData, firstDayInMonth, monthlyData);
-                    if (monthlyProductionDataRecord != null)
-                    {
-                        monthlyProductionData.Add(monthlyProductionDataRecord);
-                    }
-                    else
-                    {
-                        if (!processUnitsWithErrorInCalculation.Contains(item.UnitMonthlyConfig.ProcessUnitId))
-                        {
-                            processUnitsWithErrorInCalculation.Add(item.UnitMonthlyConfig.ProcessUnitId);
-                        }
-                    }
+                }
                 //}
                 //catch (Exception ex)
                 //{

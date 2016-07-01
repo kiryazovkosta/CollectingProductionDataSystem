@@ -204,6 +204,11 @@
 
         public IDbSet<RelatedProductionPlanConfigs> RelatedProductionPlanConfigs { get; set; }
 
+        public IDbSet<ProductionPlanConfigUnitMonthlyConfigFactFractionMembers> ProductionPlanConfigUnitMonthlyConfigFactFractionMembers { get; set; }
+
+        public IDbSet<ProductionPlanConfigUnitMonthlyConfigPlanMembers> ProductionPlanConfigUnitMonthlyConfigPlanMembers { get; set; }
+
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             ModelBingConfig.RegisterMappings(modelBuilder);
@@ -275,7 +280,7 @@
             {
                 logger.Error(ex.Message, this, ex);
                 var sqlException = ex.InnerException.InnerException as System.Data.SqlClient.SqlException;
-                
+
                 if ( (sqlException != null) && (sqlException.Number == 2601 || sqlException.Number == 2627))
                 {
                     return result.SetErrors(new List<ValidationResult>{new ValidationResult( Errors.UnikConstraintViolation)});
@@ -344,7 +349,7 @@
 
             return base.ValidateEntity(entityEntry, items);
         }
- 
+
         /// <summary>
         /// Determines whether the specified type is proxy.
         /// </summary>

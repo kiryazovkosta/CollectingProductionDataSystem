@@ -30,6 +30,8 @@ namespace CollectingProductionDataSystem.Models.UtilityEntities
         public string NewValue { get; set; }
 
         public string UserName { get; set; }
+
+        public override string ToString() => $"{this.Id} | {this.TimeStamp} | {this.EntityName}| {this.EntityId} | {this.OperationType} | {this.FieldName} | {this.OldValue} | {this.NewValue} | {this.UserName}";
     }
- 
+
 }

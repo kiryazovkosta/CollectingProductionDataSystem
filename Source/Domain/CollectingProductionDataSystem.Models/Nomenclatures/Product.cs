@@ -43,12 +43,12 @@ namespace CollectingProductionDataSystem.Models.Nomenclatures
         public virtual TankMasterProduct TankMasterProduct { get; set; }
 
         public virtual ProductType ProductType { get; set; }
-        public virtual ICollection<TankData> TanksDatas 
+        public virtual ICollection<TankData> TanksDatas
         {
             get { return this.tanksDatas; }
             set { this.tanksDatas = value; }
         }
-        public virtual ICollection<UnitConfig> UnitConfigs 
+        public virtual ICollection<UnitConfig> UnitConfigs
         {
             get { return this.unitConfigs; }
             set { this.unitConfigs = value; }
@@ -58,27 +58,27 @@ namespace CollectingProductionDataSystem.Models.Nomenclatures
             get { return this.unitsDailyConfigs; }
             set { this.unitsDailyConfigs = value; }
         }
-        public virtual ICollection<MeasuringPointsConfigsData> MeasuringPointsConfigsDatas 
+        public virtual ICollection<MeasuringPointsConfigsData> MeasuringPointsConfigsDatas
         {
             get { return this.measuringPointsConfigsDatas; }
             set { this.measuringPointsConfigsDatas = value; }
         }
-        public virtual ICollection<MeasuringPointProductsConfig> MeasuringPointProductsConfigs 
+        public virtual ICollection<MeasuringPointProductsConfig> MeasuringPointProductsConfigs
         {
             get { return this.measuringPointProductsConfigs; }
             set { this.measuringPointProductsConfigs = value; }
         }
-        public virtual ICollection<HighwayPipelineConfig> HighwayPipelineConfigs 
+        public virtual ICollection<HighwayPipelineConfig> HighwayPipelineConfigs
         {
             get { return this.highwayPipelineConfigs; }
             set { this.highwayPipelineConfigs = value; }
         }
-        public virtual ICollection<InnerPipelineData> InnerPipelineDatas 
+        public virtual ICollection<InnerPipelineData> InnerPipelineDatas
         {
             get { return this.innerPipelineDatas; }
             set { this.innerPipelineDatas = value; }
         }
-        public virtual ICollection<InProcessUnitData> InProcessUnitDatas 
+        public virtual ICollection<InProcessUnitData> InProcessUnitDatas
         {
             get { return this.inProcessUnitDatas; }
             set { this.inProcessUnitDatas = value; }
