@@ -60,7 +60,7 @@
                                                             )
                                                             .Sortable()
                                                              .Excel(excel => excel
-                                                                .FileName(@Resources.Layout.UnitMonthlyHCData + "_" + DateTime.Now + ".xlsx")
+                                                                .FileName(@Model.ReportName + "_" + DateTime.Now + ".xlsx")
                                                                 .Filterable(true)
                                                                 .ProxyURL(Url.Action("Excel_Export_Save", "Ajax", new { area = "" }))
                                                                 .AllPages(true))
