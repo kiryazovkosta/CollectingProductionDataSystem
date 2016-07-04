@@ -26,7 +26,7 @@
     using System.Diagnostics;
     using CollectingProductionDataSystem.Web.Infrastructure.Filters;
     using CollectingProductionDataSystem.Web.ViewModels.Units;
-
+    using Application.MonthlyServices;
     public class SummaryReportsController : AreaBaseController
     {
         private const int HalfAnHour = 60 * 30;
@@ -113,7 +113,7 @@
                 //    .Include(t => t.TankConfig.Park)
                 //    .Include(t => t.Product)
                 //    .Where(t => t.RecordTimestamp == date
-                //        && (areaId == null || t.TankConfig.Park.AreaId == areaId) 
+                //        && (areaId == null || t.TankConfig.Park.AreaId == areaId)
                 //        && t.ProductId > 0)
                 //    .Select(t => new WeightInVacuumDto
                 //    {
@@ -130,7 +130,7 @@
                 //    int code = tankData.Product.Code;
                 //    if (weightInVacuumList.ContainsKey(code))
                 //    {
-                //        weightInVacuumList[code] += tankData.WeightInVaccum;      
+                //        weightInVacuumList[code] += tankData.WeightInVaccum;
                 //    }
                 //    else
                 //    {
@@ -145,7 +145,7 @@
                     .Include(t => t.TankConfig.Park)
                     .Include(t => t.Product)
                     .Where(t => t.RecordTimestamp == date
-                        && (areaId == null || t.TankConfig.Park.AreaId == areaId) 
+                        && (areaId == null || t.TankConfig.Park.AreaId == areaId)
                         && t.Product.Code > 0)
                     .GroupBy(x => x.Product.Code)
                     .ToDictionary(g => g.Key, g => g.Sum(v => v.WeightInVacuum));
@@ -159,7 +159,7 @@
                         RecordTimestamp = date.Value,
                         Product = products.Where(p => p.Code == weight.Key).FirstOrDefault(),
                         WeightInVaccum = weight.Value.Value
-                    });       
+                    });
                 }
 
                 var vmResult = Mapper.Map<IEnumerable<TankWeighInVacuumViewModel>>(weightInVacuumList);
@@ -201,7 +201,7 @@
                         && (factoryId == null || x.UnitConfig.ProcessUnit.FactoryId == factoryId))
                     .ToList();
 
-                //ToDo: On shifts changed to 2 must repair this code 
+                //ToDo: On shifts changed to 2 must repair this code
                 var result = dbResult.Select(x => new MultiShift
                 {
                     TimeStamp = x.RecordTimestamp,
@@ -477,7 +477,7 @@
                         x.UnitConfig.ShiftProductTypeId == CommonConstants.DailyInfoDailyInfoHydrocarbonsShiftTypeId
                         && (factoryId == null || x.UnitConfig.ProcessUnit.FactoryId == factoryId))
                     .ToList();
-                // ToDo: On shifts changed to 2 must repair this code 
+                // ToDo: On shifts changed to 2 must repair this code
                 var result = dbResult.Select(x => new MultiShift
                 {
                     TimeStamp = x.RecordTimestamp,
@@ -540,10 +540,16 @@
 
             if (this.ModelState.IsValid)
             {
-                var dbResult = this.pipes.ReadDataForMonth(date.Value).ToList();
+                List<InnerPipelineDto> dbResult = new List<InnerPipelineDto>();
+                if (date.Value <= DateTime.Now)
+                {
+                    dbResult = this.pipes.ReadDataForMonth(date.Value).ToList();
+                }
+
                 var vmResult = Mapper.Map<IEnumerable<InnerPipelinesDataViewModel>>(dbResult).Where(x => x.Volume != 0 || x.Mass != 0).OrderBy(x => x.Product.Code);
-                var kendoResult = vmResult.ToDataSourceResult(request, ModelState);
-                return Json(kendoResult, JsonRequestBehavior.AllowGet);
+                    var kendoResult = vmResult.ToDataSourceResult(request, ModelState);
+                    return Json(kendoResult, JsonRequestBehavior.AllowGet);
+
             }
             else
             {
