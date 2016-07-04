@@ -61,7 +61,7 @@
                 .Editable(editable => editable.Mode(GridEditMode.InLine))
         .Sortable()
             .Excel(excel => excel
-            .FileName(@Resources.Layout.UnitMonthlyPWData + "_" + DateTime.Now + ".xlsx")
+            .FileName(@Resources.Layout.UnitMonthlyCCWData + "_" + DateTime.Now + ".xlsx")
             .Filterable(true)
             .ProxyURL(Url.Action("Excel_Export_Save", "Ajax", new { area = "" }))
             .AllPages(true))
