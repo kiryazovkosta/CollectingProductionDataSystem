@@ -97,13 +97,14 @@
                                         on ppc.Id equals pn.ProductionPlanConfigId
                                       join pv in data.PlanValues.AllWithDeleted()
                                                      .Where(x => x.Month == firstDayInMonth)
-                                                     .Select(x => new { x.ProcessUnitId, x.Value })
+                                                     .Select(x => new { x.ProcessUnitId, x.Value, x.ValueLiquid })
                                       on ppc.ProcessUnitId equals pv.ProcessUnitId
                                       select new ProductionPlanDataDto(
                                           productionPlanConfig: ppc,
                                           productionPlanData: pd,
                                           planNorm: pn.Value,
-                                          planValue: pv.Value))
+                                          planValue: pv.Value,
+                                          planLiquid: pv.ValueLiquid))
                                       .ToDictionary(x => x.ProductionPlanConfig.Id);
 
             return productionPlanData;
@@ -285,6 +286,7 @@
                 var inputDictionary = new Dictionary<string, double>();
                 inputDictionary.Add("pn", (double) productionPlanData.PlanNorm);
                 inputDictionary.Add("pv", (double) productionPlanData.PlanValue);
+                inputDictionary.Add("pl", (double) ((productionPlanData.PlanLiquid == null) ? productionPlanData.PlanValue : productionPlanData.PlanLiquid.Value));
                 var formula = "(p.pn/100.00)*p.pv";
                 if (productionPlanData.ProductionPlanConfig.MonthlyValuePlanFormula != null)
                 {
@@ -397,17 +399,19 @@
         {
             public ProductionPlanDataDto(ProductionPlanConfig productionPlanConfig,
                 ProductionPlanData productionPlanData,
-                decimal planNorm, decimal planValue)
+                decimal planNorm, decimal planValue, decimal? planLiquid)
             {
                 this.ProductionPlanConfig = productionPlanConfig;
                 this.ProductionPlanData = productionPlanData;
                 this.PlanNorm = planNorm;
                 this.PlanValue = planValue;
+                this.PlanLiquid = planLiquid;
             }
             public ProductionPlanConfig ProductionPlanConfig { get; }
             public ProductionPlanData ProductionPlanData { get; }
             public decimal PlanNorm { get; }
             public decimal PlanValue { get; }
+            public decimal? PlanLiquid { get; }
         }
     }
 
