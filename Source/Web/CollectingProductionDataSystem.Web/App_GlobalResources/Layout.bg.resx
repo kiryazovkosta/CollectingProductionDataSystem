@@ -1748,4 +1748,7 @@
   <data name="MonthlyTechnologicalReport" xml:space="preserve">
     <value>Технологичен отчет</value>
   </data>
+  <data name="ProcessingPlanLiquid" xml:space="preserve">
+    <value>Месечен план преработка (течни)</value>
+  </data>
 </root>

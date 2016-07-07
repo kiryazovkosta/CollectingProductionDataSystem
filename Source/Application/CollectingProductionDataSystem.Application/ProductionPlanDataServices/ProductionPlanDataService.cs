@@ -321,6 +321,17 @@
                 planInputParams.Add("pv", value);
             }
 
+            if (productionPlan.QuantityPlanFormula.IndexOf("p.pl") != -1)
+            {
+                decimal? dbResult = productionPlan.ProcessUnit.PlanValues.Where(x => x.Month == month).First().ValueLiquid;
+                if (!dbResult.HasValue)
+                {
+                    throw new ArgumentNullException("p.pl", $"No ValueLiquid entered in ~/PlanConfiguration/PlanValues for  ProcessUnitId:\n {productionPlan.ProcessUnit.ShortName}\nMonth: {month}");
+                }
+                var value = (double) dbResult.Value;
+                planInputParams.Add("pl", value);
+            }
+
             var planValue = calculator.Calculate(productionPlan.QuantityPlanFormula, "p", planInputParams.Count, planInputParams, productionPlan.Code);
             return planValue;
         }

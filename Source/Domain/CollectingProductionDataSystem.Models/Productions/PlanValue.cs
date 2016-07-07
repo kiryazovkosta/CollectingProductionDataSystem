@@ -9,12 +9,12 @@
     using CollectingProductionDataSystem.Models.Contracts;
 
     public class PlanValue : DeletableEntity, IEntity
-    {   
+    {
         public int Id { get; set; }
         public int ProcessUnitId { get; set; }
         public virtual ProcessUnit ProcessUnit { get; set; }
         public DateTime Month { get; set; }
         public decimal Value { get; set; }
-
+        public decimal? ValueLiquid { get; set; }
     }
 }

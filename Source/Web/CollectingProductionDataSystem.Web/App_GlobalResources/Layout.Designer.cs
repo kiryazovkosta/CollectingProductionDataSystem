@@ -3058,6 +3058,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ProcessingPlanLiquid.
+        /// </summary>
+        public static string ProcessingPlanLiquid {
+            get {
+                return ResourceManager.GetString("ProcessingPlanLiquid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Process Unit.
         /// </summary>
         public static string ProcessUnit {
