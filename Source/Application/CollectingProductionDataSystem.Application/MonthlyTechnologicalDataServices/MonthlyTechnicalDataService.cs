@@ -121,34 +121,34 @@
                     continue;
                 }
 
-                //try
-                //{
-                ProductionPlanDataDto productionPlanData = null;
-                int productionPlanConfigId = item.UnitMonthlyConfig.ProductionPlanConfigId ?? 0;
-                if (productionPlanConfigId != 0)
+                try
                 {
-                    productionPlanData = productionPlanDatas.FirstOrDefault(x => x.Key == productionPlanConfigId).Value;
+                    ProductionPlanDataDto productionPlanData = null;
+                    int productionPlanConfigId = item.UnitMonthlyConfig.ProductionPlanConfigId ?? 0;
+                    if (productionPlanConfigId != 0)
+                    {
+                        productionPlanData = productionPlanDatas.FirstOrDefault(x => x.Key == productionPlanConfigId).Value;
+                    }
+                    var monthlyProductionDataRecord = CreateMonthlyTechnicalReportRecord(item, productionPlanData, firstDayInMonth, monthlyData);
+                    if (monthlyProductionDataRecord != null)
+                    {
+                        monthlyProductionData.Add(monthlyProductionDataRecord);
+                    }
+                    else
+                    {
+                        if (!processUnitsWithErrorInCalculation.Contains(item.UnitMonthlyConfig.ProcessUnitId))
+                        {
+                            processUnitsWithErrorInCalculation.Add(item.UnitMonthlyConfig.ProcessUnitId);
+                        }
+                    }
                 }
-                var monthlyProductionDataRecord = CreateMonthlyTechnicalReportRecord(item, productionPlanData, firstDayInMonth, monthlyData);
-                if (monthlyProductionDataRecord != null)
-                {
-                    monthlyProductionData.Add(monthlyProductionDataRecord);
-                }
-                else
+                catch (Exception ex)
                 {
                     if (!processUnitsWithErrorInCalculation.Contains(item.UnitMonthlyConfig.ProcessUnitId))
                     {
                         processUnitsWithErrorInCalculation.Add(item.UnitMonthlyConfig.ProcessUnitId);
                     }
                 }
-                //}
-                //catch (Exception ex)
-                //{
-                //    if (!processUnitsWithErrorInCalculation.Contains(item.UnitMonthlyConfig.ProcessUnitId))
-                //    {
-                //        processUnitsWithErrorInCalculation.Add(item.UnitMonthlyConfig.ProcessUnitId);
-                //    }
-                //}
             }
 
             var monthlyProductionDataResult = monthlyProductionData.Where(m => !processUnitsWithErrorInCalculation.Contains(m.ProcessUnitId));
