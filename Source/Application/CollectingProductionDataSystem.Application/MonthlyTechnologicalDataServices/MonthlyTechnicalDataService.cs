@@ -75,7 +75,8 @@
                             .Include(x => x.MonthlyReportType)
                             .Include(x => x.ProductType)
                             .Where(x => x.IsAvailableInTechnologicalReport)
-                            .Where(x => processUnits.Contains(x.ProcessUnitId))
+                            //.Where(x => processUnits.Contains(x.ProcessUnitId))
+                            .Where(x => x.ProcessUnitId == 5)
                             .ToList()
                             .SelectMany(y => y.UnitMonthlyDatas.Where(z => z.RecordTimestamp == monthDate))
                             .ToList();

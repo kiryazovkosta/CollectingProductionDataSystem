@@ -27,7 +27,7 @@
 
         public IEnumerable<ProductionPlanData> ReadProductionPlanData(DateTime? date, int? processUnitId, int? materialTypeId)
         {
-            var energyId = CommonConstants.EnergyType;
+            int energyId = CommonConstants.EnergyType;
             var result = new HashSet<ProductionPlanData>();
             var dailyData = new List<UnitsDailyData>();
 
@@ -100,7 +100,7 @@
 
             var currentMonthQuantity = AppendTotalMonthQuantityToDailyProductionPlanRecords(processUnitId.Value, date.Value);
             var totallyQuantity = GetSumOfTottallyProcessing(processUnitId.Value, date.Value);
-            var totallyQuantityAs = 0m;
+            //var totallyQuantityAs = 0m;
 
             var month = new DateTime(date.Value.Year, date.Value.Month, 1, 0, 0, 0);
 
@@ -144,32 +144,32 @@
                 //    productionPlanData.PercentagesFactCurrentMonth = GetValidValueOrZero(percs);
                 //}
 
-                if (productionPlan.Name == totallyQuantity.First().Key)
-	            {
-                    if (totallyQuantity[productionPlan.Name] == 0)
-                    {
-                        totallyQuantityAs = productionPlanData.QuantityFact;
-                    }
-                    else
-                    {
-                        if (totallyQuantity[productionPlan.Name] == productionPlanData.QuanityFactCurrentMonth + productionPlanData.QuantityFact)
-                        {
-                            totallyQuantityAs = totallyQuantity[productionPlan.Name];
-                        }
-                        else
-                        {
-                            totallyQuantityAs = productionPlanData.QuanityFactCurrentMonth + productionPlanData.QuantityFact;
-                        }
-                    }
-	            }
+             //   if (productionPlan.Name == totallyQuantity.First().Key)
+	            //{
+             //       if (totallyQuantity[productionPlan.Name] == 0)
+             //       {
+             //           totallyQuantityAs = productionPlanData.QuantityFact;
+             //       }
+             //       else
+             //       {
+             //           if (totallyQuantity[productionPlan.Name] == productionPlanData.QuanityFactCurrentMonth + productionPlanData.QuantityFact)
+             //           {
+             //               totallyQuantityAs = totallyQuantity[productionPlan.Name];
+             //           }
+             //           else
+             //           {
+             //               totallyQuantityAs = productionPlanData.QuanityFactCurrentMonth + productionPlanData.QuantityFact;
+             //           }
+             //       }
+	            //}
 
                 result.Add(productionPlanData);
             }
 
-            if (materialTypeId >= CommonConstants.EnergyType && totallyQuantity.Count == 1)
-            {
-                totallyQuantityAs = totallyQuantity.First().Value;
-            }
+            //if (materialTypeId >= CommonConstants.EnergyType && totallyQuantity.Count == 1)
+            //{
+            //    totallyQuantityAs = totallyQuantity.First().Value;
+            //}
 
             return result;
         }
