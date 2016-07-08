@@ -30,21 +30,21 @@
 
         public IEnumerable<MonthlyTechnicalReportDataDto> ReadMonthlyTechnologicalData(DateTime month, int[] processUnits)
         {
-            var timer1 = new Stopwatch();
-            var timer2 = new Stopwatch();
-            timer1.Start();
+            //var timer1 = new Stopwatch();
+            //var timer2 = new Stopwatch();
+            //timer1.Start();
             var monthDate = new DateTime(month.Year, month.Month, DateTime.DaysInMonth(month.Year, month.Month), 0, 0, 0);
             var firstDayInMonth = new DateTime(month.Year, month.Month, 1, 0, 0, 0);
 
             Dictionary<int, ProductionPlanDataDto> productionPlanData = GetProductionPlanData(monthDate, firstDayInMonth);
             List<UnitMonthlyData> monthlyProductionDataList = GetMonthlyProductDataList(processUnits, monthDate);
             Dictionary<string, MonthlyData> monthlyData = GetMonthlyData(monthDate);
-            timer1.Stop();
-            timer2.Start();
+            //timer1.Stop();
+            //timer2.Start();
             IEnumerable<MonthlyTechnicalReportDataDto> result = CalculateMonthlyTechnologicalData(monthlyProductionDataList, productionPlanData, firstDayInMonth, monthlyData);
-            timer2.Stop();
-            Debug.WriteLine($"Estimated time for Querying data is: {timer1.Elapsed}");
-            Debug.WriteLine($"Estimated time for Calculating data is: {timer2.Elapsed}");
+            //timer2.Stop();
+            //Debug.WriteLine($"Estimated time for Querying data is: {timer1.Elapsed}");
+            //Debug.WriteLine($"Estimated time for Calculating data is: {timer2.Elapsed}");
             return result;
         }
 
@@ -75,8 +75,7 @@
                             .Include(x => x.MonthlyReportType)
                             .Include(x => x.ProductType)
                             .Where(x => x.IsAvailableInTechnologicalReport)
-                            //.Where(x => processUnits.Contains(x.ProcessUnitId))
-                            .Where(x => x.ProcessUnitId == 5)
+                            .Where(x => processUnits.Contains(x.ProcessUnitId))
                             .ToList()
                             .SelectMany(y => y.UnitMonthlyDatas.Where(z => z.RecordTimestamp == monthDate))
                             .ToList();
