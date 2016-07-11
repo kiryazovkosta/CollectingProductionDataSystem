@@ -21,6 +21,7 @@
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
     <TargetFrameworkProfile />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -1755,6 +1756,7 @@
     <Content Include="Areas\NomManagement\Views\ProductionPlanConfig\EditorTemplates\PPCUMCFactFractionMembersViewModelEditor.cshtml" />
     <Content Include="Areas\MonthlyTechnicalReporting\Views\web.config" />
     <Content Include="Areas\MonthlyTechnicalReporting\Views\MonthlyTechnical\MonthlyTechnicalData.cshtml" />
+    <None Include="bundleconfig.json" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <Content Include="Scripts\custom\sendArea.js" />
     <Content Include="Scripts\custom\sendArea.min.js">

@@ -1,6 +1,6 @@
-﻿(function ($) {
+﻿var interval = 0;
+(function ($) {
     'use strict';
-    var interval = 0;
     var expirationInterval = parseInt($('#expiration-interval').val()) || 30;
     var myInterval;
     $(document).ready(function () {
