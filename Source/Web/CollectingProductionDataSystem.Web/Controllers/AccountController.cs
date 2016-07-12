@@ -179,7 +179,10 @@
         [ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
-            AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+            if (User.Identity.IsAuthenticated)
+            {
+                AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+            }
             DocumentUserLogIn(this.UserProfile.UserName, false);
             Session["user"] = null;
             InvalidateCookies(Request, Response);

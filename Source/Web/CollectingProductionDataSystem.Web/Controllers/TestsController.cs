@@ -55,6 +55,11 @@
             return View(this.UserProfile);
         }
 
+        public ActionResult Error() {
+            InvokeException();
+            return Content("");
+        }
+
         private void InvokeException()
         {
             throw new NotImplementedException("Test Global Error Handler!!!");

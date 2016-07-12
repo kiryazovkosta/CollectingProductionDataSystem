@@ -15,6 +15,7 @@
     using Resources = App_Resources;
     using CollectingProductionDataSystem.Data.Common;
     using System.Diagnostics;
+    using System.Threading.Tasks;
     public class MonthlyTechnicalDataService : IMonthlyTechnicalDataService
     {
         private readonly IProductionData data;
@@ -28,34 +29,28 @@
             this.calculator = calculatorParam;
         }
 
-        public IEnumerable<MonthlyTechnicalReportDataDto> ReadMonthlyTechnologicalData(DateTime month, int[] processUnits)
+        public async Task<IEnumerable<MonthlyTechnicalReportDataDto>> ReadMonthlyTechnologicalDataAsync(DateTime month, int[] processUnits)
         {
-            //var timer1 = new Stopwatch();
-            //var timer2 = new Stopwatch();
-            //timer1.Start();
+
             var monthDate = new DateTime(month.Year, month.Month, DateTime.DaysInMonth(month.Year, month.Month), 0, 0, 0);
             var firstDayInMonth = new DateTime(month.Year, month.Month, 1, 0, 0, 0);
 
-            Dictionary<int, ProductionPlanDataDto> productionPlanData = GetProductionPlanData(monthDate, firstDayInMonth);
-            List<UnitMonthlyData> monthlyProductionDataList = GetMonthlyProductDataList(processUnits, monthDate);
-            Dictionary<string, MonthlyData> monthlyData = GetMonthlyData(monthDate);
-            //timer1.Stop();
-            //timer2.Start();
-            IEnumerable<MonthlyTechnicalReportDataDto> result = CalculateMonthlyTechnologicalData(monthlyProductionDataList, productionPlanData, firstDayInMonth, monthlyData);
-            //timer2.Stop();
-            //Debug.WriteLine($"Estimated time for Querying data is: {timer1.Elapsed}");
-            //Debug.WriteLine($"Estimated time for Calculating data is: {timer2.Elapsed}");
+            Dictionary<int, ProductionPlanDataDto> productionPlanData = await GetProductionPlanDataAsync(monthDate, firstDayInMonth);
+            List<UnitMonthlyData> monthlyProductionDataList = await GetMonthlyProductDataListAsync(processUnits, monthDate);
+            Dictionary<string, MonthlyData> monthlyData = await GetMonthlyDataAsync(monthDate);
+
+            IEnumerable<MonthlyTechnicalReportDataDto> result = await CalculateMonthlyTechnologicalDataAsync(monthlyProductionDataList, productionPlanData, firstDayInMonth, monthlyData);
             return result;
         }
 
-        private Dictionary<string, MonthlyData> GetMonthlyData(DateTime monthDate)
+        private async Task<Dictionary<string, MonthlyData>> GetMonthlyDataAsync(DateTime monthDate)
         {
             // ToDo: Re-factor this query to simplify result set
-            return data.UnitMonthlyDatas.All()
+            return await data.UnitMonthlyDatas.All()
                                        .Include(x => x.UnitMonthlyConfig)
                                        .Include(x => x.UnitManualMonthlyData)
                                        .Where(x => x.RecordTimestamp == monthDate)
-                                       .ToDictionary(x => x.UnitMonthlyConfig.Code,
+                                       .ToDictionaryAsync(x => x.UnitMonthlyConfig.Code,
                                        y => new MonthlyData
                                        {
                                            MonthValue = (decimal) y.RealValue,
@@ -63,29 +58,28 @@
                                        });
         }
 
-        private List<UnitMonthlyData> GetMonthlyProductDataList(int[] processUnits, DateTime monthDate)
+        private async Task<List<UnitMonthlyData>> GetMonthlyProductDataListAsync(int[] processUnits, DateTime monthDate)
         {
-            return data.UnitMonthlyConfigs
-                            .AllAnual(monthDate.Year)
-                            .Include(x => x.UnitMonthlyDatas)
-                            .Include(x => x.ProcessUnit)
-                            .Include(x => x.ProcessUnit.Factory)
-                            .Include(x => x.MeasureUnit)
-                            .Include(x => x.ProductionPlanConfig)
-                            .Include(x => x.MonthlyReportType)
-                            .Include(x => x.ProductType)
-                            .Where(x => x.IsAvailableInTechnologicalReport)
-                            .Where(x => processUnits.Contains(x.ProcessUnitId))
-                            .ToList()
-                            .SelectMany(y => y.UnitMonthlyDatas.Where(z => z.RecordTimestamp == monthDate))
-                            .ToList();
+            var dbResult = await data.UnitMonthlyConfigs
+                       .AllAnual(monthDate.Year)
+                       .Include(x => x.UnitMonthlyDatas)
+                       .Include(x => x.ProcessUnit)
+                       .Include(x => x.ProcessUnit.Factory)
+                       .Include(x => x.MeasureUnit)
+                       .Include(x => x.ProductionPlanConfig)
+                       .Include(x => x.MonthlyReportType)
+                       .Include(x => x.ProductType)
+                       .Where(x => x.IsAvailableInTechnologicalReport)
+                       .Where(x => processUnits.Contains(x.ProcessUnitId))
+                       .ToListAsync()
+; return dbResult.SelectMany(y => y.UnitMonthlyDatas.Where(z => z.RecordTimestamp == monthDate)).ToList();
         }
 
-        private Dictionary<int, ProductionPlanDataDto> GetProductionPlanData(DateTime monthDate, DateTime firstDayInMonth)
+        private async Task<Dictionary<int, ProductionPlanDataDto>> GetProductionPlanDataAsync(DateTime monthDate, DateTime firstDayInMonth)
         {
-            var productionPlanConfigs = this.data.ProductionPlanConfigs.AllAnual(monthDate.Year)
+            var productionPlanConfigs = await this.data.ProductionPlanConfigs.AllAnual(monthDate.Year)
                                         .Include(x => x.ProductionPlanConfigUnitMonthlyConfigFactFractionMembers)
-                                        .Include(x => x.ProductionPlanConfigUnitMonthlyConfigPlanMembers).ToArray();
+                                        .Include(x => x.ProductionPlanConfigUnitMonthlyConfigPlanMembers).ToArrayAsync();
 
             var productionPlanData = (from ppc in productionPlanConfigs
                                       join pd in data.ProductionPlanDatas.All()
@@ -110,7 +104,7 @@
             return productionPlanData;
         }
 
-        private IEnumerable<MonthlyTechnicalReportDataDto> CalculateMonthlyTechnologicalData(List<UnitMonthlyData> monthlyProductionDataList, Dictionary<int, ProductionPlanDataDto> productionPlanDatas, DateTime firstDayInMonth, Dictionary<string, MonthlyData> monthlyData)
+        private async Task<IEnumerable<MonthlyTechnicalReportDataDto>> CalculateMonthlyTechnologicalDataAsync(List<UnitMonthlyData> monthlyProductionDataList, Dictionary<int, ProductionPlanDataDto> productionPlanDatas, DateTime firstDayInMonth, Dictionary<string, MonthlyData> monthlyData)
         {
             var processUnitsWithErrorInCalculation = new List<int>();
             var monthlyProductionData = new List<MonthlyTechnicalReportDataDto>();
@@ -129,7 +123,7 @@
                     {
                         productionPlanData = productionPlanDatas.FirstOrDefault(x => x.Key == productionPlanConfigId).Value;
                     }
-                    var monthlyProductionDataRecord = CreateMonthlyTechnicalReportRecord(item, productionPlanData, firstDayInMonth, monthlyData);
+                    var monthlyProductionDataRecord = await CreateMonthlyTechnicalReportRecord(item, productionPlanData, firstDayInMonth, monthlyData);
                     if (monthlyProductionDataRecord != null)
                     {
                         monthlyProductionData.Add(monthlyProductionDataRecord);
@@ -155,14 +149,14 @@
             return monthlyProductionDataResult;
         }
 
-        private MonthlyTechnicalReportDataDto CreateMonthlyTechnicalReportRecord(UnitMonthlyData item, ProductionPlanDataDto productionPlanData,
+        private async Task<MonthlyTechnicalReportDataDto> CreateMonthlyTechnicalReportRecord(UnitMonthlyData item, ProductionPlanDataDto productionPlanData,
             DateTime firstDayInMonth, Dictionary<string, MonthlyData> monthlyData)
         {
             var monthlyTechnicalReportDataDto = new MonthlyTechnicalReportDataDto();
 
-            var planValue = GetPlanValue(item, productionPlanData, firstDayInMonth);
-            var planPercentage = GetPlanPercentage(item, productionPlanData);
-            var factPercentage = CalculateFactPercentage(item, productionPlanData, monthlyData);
+            var planValue = await Task<double>.Run(() => GetPlanValue(item, productionPlanData, firstDayInMonth));
+            var planPercentage = await Task<double>.Run(() => GetPlanPercentage(item, productionPlanData));
+            var factPercentage = await Task<double>.Run(() => CalculateFactPercentage(item, productionPlanData, monthlyData));
             if (factPercentage == double.MinValue)
             {
                 monthlyTechnicalReportDataDto = null;
@@ -170,7 +164,7 @@
 
             if (monthlyTechnicalReportDataDto != null)
             {
-                var yearPercentage = CalculateYearPercentage(item, productionPlanData, monthlyData);
+                var yearPercentage = await Task<double>.Run(() => CalculateYearPercentage(item, productionPlanData, monthlyData));
                 if (yearPercentage == double.MinValue)
                 {
                     monthlyTechnicalReportDataDto = null;

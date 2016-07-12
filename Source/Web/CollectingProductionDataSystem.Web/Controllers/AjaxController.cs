@@ -166,8 +166,23 @@ namespace CollectingProductionDataSystem.Web.Controllers
                     Session["user"] = null;
                 }
             }
-
+            InvalidateCookies(Request, Response);
             return RedirectToAction("Index","Home");
+        }
+
+        /// <summary>
+        /// Invalidates the cookies.
+        /// </summary>
+        /// <param name="request">The request.</param>
+        private void InvalidateCookies(HttpRequestBase request, HttpResponseBase response)
+        {
+            var requestCookyKeys = request.Cookies.AllKeys;
+
+            response.Cookies.Clear();
+            foreach (var key in requestCookyKeys)
+            {
+                response.Cookies.Add(new HttpCookie(key) { Expires = DateTime.Now.AddDays(-1) });
+            }
         }
 
         [HttpPost]
