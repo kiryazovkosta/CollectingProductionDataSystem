@@ -186,7 +186,6 @@
                     break;
                 default:
                     throw new ArgumentException("The entered value of the formula code is invalid!");
-                    break;
             }
 
             return result;

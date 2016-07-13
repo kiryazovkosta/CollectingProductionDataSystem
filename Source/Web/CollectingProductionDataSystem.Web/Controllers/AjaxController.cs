@@ -170,6 +170,7 @@ namespace CollectingProductionDataSystem.Web.Controllers
             return RedirectToAction("Index","Home");
         }
 
+
         /// <summary>
         /// Invalidates the cookies.
         /// </summary>

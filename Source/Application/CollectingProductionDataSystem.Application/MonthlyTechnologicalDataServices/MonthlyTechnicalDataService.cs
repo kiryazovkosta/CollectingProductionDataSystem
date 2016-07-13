@@ -22,6 +22,13 @@
         private readonly IKernel kernel;
         private readonly ICalculatorService calculator;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MonthlyTechnicalDataService" /> class.
+        /// Dependency Injection Constructor
+        /// </summary>
+        /// <param name="dataParam">The data parameter.</param>
+        /// <param name="kernelParam">The kernel parameter.</param>
+        /// <param name="calculatorParam">The calculator parameter.</param>
         public MonthlyTechnicalDataService(IProductionData dataParam, IKernel kernelParam, ICalculatorService calculatorParam)
         {
             this.data = dataParam;
@@ -29,20 +36,31 @@
             this.calculator = calculatorParam;
         }
 
+        /// <summary>
+        /// Reads the monthly technological data asynchronous.
+        /// </summary>
+        /// <param name="month">The month.</param>
+        /// <param name="processUnits">The process units.</param>
+        /// <returns></returns>
         public async Task<IEnumerable<MonthlyTechnicalReportDataDto>> ReadMonthlyTechnologicalDataAsync(DateTime month, int[] processUnits)
         {
 
             var monthDate = new DateTime(month.Year, month.Month, DateTime.DaysInMonth(month.Year, month.Month), 0, 0, 0);
             var firstDayInMonth = new DateTime(month.Year, month.Month, 1, 0, 0, 0);
 
-            Dictionary<int, ProductionPlanDataDto> productionPlanData = await GetProductionPlanDataAsync(monthDate, firstDayInMonth);
-            List<UnitMonthlyData> monthlyProductionDataList = await GetMonthlyProductDataListAsync(processUnits, monthDate);
-            Dictionary<string, MonthlyData> monthlyData = await GetMonthlyDataAsync(monthDate);
+            Dictionary<int, ProductionPlanDataDto> productionPlanData =  await GetProductionPlanDataAsync(monthDate, firstDayInMonth);
+            List<UnitMonthlyData> monthlyProductionDataList =  await GetMonthlyProductDataListAsync(processUnits, monthDate);
+            Dictionary<string, MonthlyData> monthlyData =  await GetMonthlyDataAsync(monthDate);
 
-            IEnumerable<MonthlyTechnicalReportDataDto> result = await CalculateMonthlyTechnologicalDataAsync(monthlyProductionDataList, productionPlanData, firstDayInMonth, monthlyData);
+            IEnumerable<MonthlyTechnicalReportDataDto> result = await CalculateMonthlyTechnologicalDataAsync(monthlyProductionDataList,productionPlanData, firstDayInMonth, monthlyData);
             return result;
         }
 
+        /// <summary>
+        /// Gets the monthly data asynchronous.
+        /// </summary>
+        /// <param name="monthDate">The month date.</param>
+        /// <returns></returns>
         private async Task<Dictionary<string, MonthlyData>> GetMonthlyDataAsync(DateTime monthDate)
         {
             // ToDo: Re-factor this query to simplify result set
@@ -58,6 +76,12 @@
                                        });
         }
 
+        /// <summary>
+        /// Gets the monthly product data list asynchronous.
+        /// </summary>
+        /// <param name="processUnits">The process units.</param>
+        /// <param name="monthDate">The month date.</param>
+        /// <returns></returns>
         private async Task<List<UnitMonthlyData>> GetMonthlyProductDataListAsync(int[] processUnits, DateTime monthDate)
         {
             var dbResult = await data.UnitMonthlyConfigs
@@ -71,10 +95,17 @@
                        .Include(x => x.ProductType)
                        .Where(x => x.IsAvailableInTechnologicalReport)
                        .Where(x => processUnits.Contains(x.ProcessUnitId))
-                       .ToListAsync()
-; return dbResult.SelectMany(y => y.UnitMonthlyDatas.Where(z => z.RecordTimestamp == monthDate)).ToList();
+                       .ToListAsync();
+
+            return dbResult.SelectMany(y => y.UnitMonthlyDatas.Where(z => z.RecordTimestamp == monthDate)).ToList();
         }
 
+        /// <summary>
+        /// Gets the production plan data asynchronous.
+        /// </summary>
+        /// <param name="monthDate">The month date.</param>
+        /// <param name="firstDayInMonth">The first day in month.</param>
+        /// <returns></returns>
         private async Task<Dictionary<int, ProductionPlanDataDto>> GetProductionPlanDataAsync(DateTime monthDate, DateTime firstDayInMonth)
         {
             var productionPlanConfigs = await this.data.ProductionPlanConfigs.AllAnual(monthDate.Year)
@@ -104,6 +135,14 @@
             return productionPlanData;
         }
 
+        /// <summary>
+        /// Calculates the monthly technological data asynchronous.
+        /// </summary>
+        /// <param name="monthlyProductionDataList">The monthly production data list.</param>
+        /// <param name="productionPlanDatas">The production plan datas.</param>
+        /// <param name="firstDayInMonth">The first day in month.</param>
+        /// <param name="monthlyData">The monthly data.</param>
+        /// <returns></returns>
         private async Task<IEnumerable<MonthlyTechnicalReportDataDto>> CalculateMonthlyTechnologicalDataAsync(List<UnitMonthlyData> monthlyProductionDataList, Dictionary<int, ProductionPlanDataDto> productionPlanDatas, DateTime firstDayInMonth, Dictionary<string, MonthlyData> monthlyData)
         {
             var processUnitsWithErrorInCalculation = new List<int>();
@@ -123,7 +162,7 @@
                     {
                         productionPlanData = productionPlanDatas.FirstOrDefault(x => x.Key == productionPlanConfigId).Value;
                     }
-                    var monthlyProductionDataRecord = await CreateMonthlyTechnicalReportRecord(item, productionPlanData, firstDayInMonth, monthlyData);
+                    var monthlyProductionDataRecord = await CreateMonthlyTechnicalReportRecordAsync(item, productionPlanData, firstDayInMonth, monthlyData);
                     if (monthlyProductionDataRecord != null)
                     {
                         monthlyProductionData.Add(monthlyProductionDataRecord);
@@ -149,7 +188,15 @@
             return monthlyProductionDataResult;
         }
 
-        private async Task<MonthlyTechnicalReportDataDto> CreateMonthlyTechnicalReportRecord(UnitMonthlyData item, ProductionPlanDataDto productionPlanData,
+        /// <summary>
+        /// Creates the monthly technical report record asynchronous.
+        /// </summary>
+        /// <param name="item">The item.</param>
+        /// <param name="productionPlanData">The production plan data.</param>
+        /// <param name="firstDayInMonth">The first day in month.</param>
+        /// <param name="monthlyData">The monthly data.</param>
+        /// <returns></returns>
+        private async Task<MonthlyTechnicalReportDataDto> CreateMonthlyTechnicalReportRecordAsync(UnitMonthlyData item, ProductionPlanDataDto productionPlanData,
             DateTime firstDayInMonth, Dictionary<string, MonthlyData> monthlyData)
         {
             var monthlyTechnicalReportDataDto = new MonthlyTechnicalReportDataDto();
@@ -212,18 +259,28 @@
             return monthlyTechnicalReportDataDto;
         }
 
+        /// <summary>
+        /// Gets the type of the detailed material.
+        /// </summary>
+        /// <param name="item">The item.</param>
+        /// <returns></returns>
         private string GetDetailedMaterialType(UnitMonthlyData item)
         {
             if (item.UnitMonthlyConfig.MonthlyReportTypeId == CommonConstants.HydroCarbons)
             {
-                return string.Format("{0:00}.{1}", item.UnitMonthlyConfig.ProductTypeId, item.UnitMonthlyConfig.ProductType.Name);
+                return $"{item.UnitMonthlyConfig.ProductTypeId:00}.{item.UnitMonthlyConfig.ProductType.Name}";
             }
             else
             {
-                return string.Format("{0:00}.{1}", item.UnitMonthlyConfig.MonthlyReportTypeId, item.UnitMonthlyConfig.MonthlyReportType.Name);
+                return $"{item.UnitMonthlyConfig.MonthlyReportTypeId:00}.{item.UnitMonthlyConfig.MonthlyReportType.Name}";
             }
         }
 
+        /// <summary>
+        /// Gets the type of the material.
+        /// </summary>
+        /// <param name="materialTypeId">The material type id.</param>
+        /// <returns></returns>
         private string GetMaterialType(int materialTypeId)
         {
             if (materialTypeId == CommonConstants.HydroCarbons)
@@ -240,6 +297,11 @@
             }
         }
 
+        /// <summary>
+        /// Checks if all month report are approved.
+        /// </summary>
+        /// <param name="month">The month.</param>
+        /// <returns></returns>
         public IEfStatus CheckIfAllMonthReportAreApproved(DateTime month)
         {
             var status = kernel.Get<IEfStatus>();
@@ -265,6 +327,13 @@
             return status;
         }
 
+        /// <summary>
+        /// Gets the plan value.
+        /// </summary>
+        /// <param name="monthlyData">The monthly data.</param>
+        /// <param name="productionPlanData">The production plan data.</param>
+        /// <param name="targetMonth">The target month.</param>
+        /// <returns></returns>
         private double GetPlanValue(UnitMonthlyData monthlyData, ProductionPlanDataDto productionPlanData, DateTime targetMonth)
         {
             int materialType = productionPlanData?.ProductionPlanConfig?.MaterialTypeId ?? 0;
@@ -299,6 +368,12 @@
             return result;
         }
 
+        /// <summary>
+        /// Gets the plan percentage.
+        /// </summary>
+        /// <param name="monthlyData">The monthly data.</param>
+        /// <param name="productionPlanData">The production plan data.</param>
+        /// <returns></returns>
         private double GetPlanPercentage(UnitMonthlyData monthlyData, ProductionPlanDataDto productionPlanData)
         {
             if (monthlyData.UnitMonthlyConfig.ProductionPlanConfig == null)

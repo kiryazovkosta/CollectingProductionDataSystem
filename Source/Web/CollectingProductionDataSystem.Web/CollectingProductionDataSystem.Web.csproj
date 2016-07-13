@@ -2496,6 +2496,7 @@
     <Folder Include="Areas\ShiftReporting\Views\AreaBase\" />
     <Folder Include="Areas\SummaryReporting\Views\Ajax\" />
     <Folder Include="Areas\SummaryReporting\Views\Shared\DisplayTemplates\" />
+    <Folder Include="Views\Proba\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

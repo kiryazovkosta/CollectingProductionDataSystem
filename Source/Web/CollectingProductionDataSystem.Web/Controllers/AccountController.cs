@@ -174,6 +174,28 @@
             return View(model);
         }
 
+
+        // POST: /Account/LogOff
+        [HttpGet]
+        public ActionResult LogOff(int? id = null)
+        {
+            if (Request.IsAjaxRequest())
+            {
+                if (User.Identity.IsAuthenticated)
+                {
+                    AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+                }
+                DocumentUserLogIn(this.UserProfile.UserName, false);
+                Session["user"] = null;
+                InvalidateCookies(Request, Response);
+                return RedirectToAction("Index", "Home");
+            }
+
+            Response.StatusCode = 400;
+            Response.End();
+            return Content("");
+        }
+
         // POST: /Account/LogOff
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -188,6 +210,7 @@
             InvalidateCookies(Request, Response);
             return RedirectToAction("Index", "Home");
         }
+
 
         /// <summary>
         /// Invalidates the cookies.

@@ -11,7 +11,7 @@
                     $.connection.hub.stop();
                     $.ajax({
                         url: '/Account/LogOff',
-                        type: 'POST',
+                        type: 'GET',
                         data: addAntiForgeryToken({})
                     }).done(function () {
                         interval = 0;
