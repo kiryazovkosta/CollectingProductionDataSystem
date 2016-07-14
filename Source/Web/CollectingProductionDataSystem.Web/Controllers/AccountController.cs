@@ -134,8 +134,8 @@
         {
             var model = this.data.Users.All()
                 .Where(x => x.Id == this.UserProfile.Id)
-                .Select(x => new ChangePasswordViewModel() { 
-                    UserMustChangePassword = x.IsChangePasswordRequired 
+                .Select(x => new ChangePasswordViewModel() {
+                    UserMustChangePassword = x.IsChangePasswordRequired
                 }).FirstOrDefault();
 
             ViewBag.Title = Resources.Layout.ChangePassword;
@@ -174,15 +174,57 @@
             return View(model);
         }
 
+
+        // POST: /Account/LogOff
+        [HttpGet]
+        public ActionResult LogOff(int? id = null)
+        {
+            if (Request.IsAjaxRequest())
+            {
+                if (User.Identity.IsAuthenticated)
+                {
+                    AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+                }
+                DocumentUserLogIn(this.UserProfile.UserName, false);
+                Session["user"] = null;
+                InvalidateCookies(Request, Response);
+                return RedirectToAction("Index", "Home");
+            }
+
+            Response.StatusCode = 400;
+            Response.End();
+            return Content("");
+        }
+
         // POST: /Account/LogOff
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
-            AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+            if (User.Identity.IsAuthenticated)
+            {
+                AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+            }
             DocumentUserLogIn(this.UserProfile.UserName, false);
             Session["user"] = null;
+            InvalidateCookies(Request, Response);
             return RedirectToAction("Index", "Home");
+        }
+
+
+        /// <summary>
+        /// Invalidates the cookies.
+        /// </summary>
+        /// <param name="request">The request.</param>
+        private void InvalidateCookies(HttpRequestBase request, HttpResponseBase response)
+        {
+            var requestCookyKeys = request.Cookies.AllKeys;
+
+            response.Cookies.Clear();
+            foreach (var key in requestCookyKeys)
+            {
+                response.Cookies.Add(new HttpCookie(key) { Expires = DateTime.Now.AddDays(-1) });
+            }
         }
 
         [ChildActionOnly]

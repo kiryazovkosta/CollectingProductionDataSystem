@@ -145,7 +145,7 @@ namespace CollectingProductionDataSystem.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult UserCloseWindow()
         {
-            if (User.Identity.IsAuthenticated)
+             if (User.Identity.IsAuthenticated)
             {
                bool isLogOff = false;
                 var user = this.data.Users.All().FirstOrDefault(x => x.UserName == this.UserProfile.UserName);
@@ -166,8 +166,24 @@ namespace CollectingProductionDataSystem.Web.Controllers
                     Session["user"] = null;
                 }
             }
+            InvalidateCookies(Request, Response);
+            return RedirectToAction("Index","Home");
+        }
 
-            return Content(string.Empty);
+
+        /// <summary>
+        /// Invalidates the cookies.
+        /// </summary>
+        /// <param name="request">The request.</param>
+        private void InvalidateCookies(HttpRequestBase request, HttpResponseBase response)
+        {
+            var requestCookyKeys = request.Cookies.AllKeys;
+
+            response.Cookies.Clear();
+            foreach (var key in requestCookyKeys)
+            {
+                response.Cookies.Add(new HttpCookie(key) { Expires = DateTime.Now.AddDays(-1) });
+            }
         }
 
         [HttpPost]
@@ -190,7 +206,7 @@ namespace CollectingProductionDataSystem.Web.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public ActionResult GetMessagesCount() 
+        public ActionResult GetMessagesCount()
         {
             var result = data.Messages.All().Where(x => x.ValidUntill >= DateTime.Now).Select(x=>x.MessageText).Count();
             return Json(result, JsonRequestBehavior.AllowGet);
@@ -199,7 +215,7 @@ namespace CollectingProductionDataSystem.Web.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public ActionResult GetMessages([DataSourceRequest] DataSourceRequest request) 
+        public ActionResult GetMessages([DataSourceRequest] DataSourceRequest request)
         {
             var result = data.Messages.All().Where(x => x.ValidUntill >= DateTime.Now).OrderByDescending(x=>x.CreatedOn).ToList();
             return Json(result.ToDataSourceResult(request, ModelState,Mapper.Map<MessageViewModel>));
@@ -207,7 +223,7 @@ namespace CollectingProductionDataSystem.Web.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public ActionResult GetLastMessage() 
+        public ActionResult GetLastMessage()
         {
             var result = data.Messages.All().Where(x => x.ValidUntill >= DateTime.Now).OrderByDescending(x=>x.CreatedOn).FirstOrDefault();
             return Json(result,JsonRequestBehavior.AllowGet);
@@ -220,7 +236,7 @@ namespace CollectingProductionDataSystem.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public JsonResult GetAllProducts([DataSourceRequest] DataSourceRequest request) 
+        public JsonResult GetAllProducts([DataSourceRequest] DataSourceRequest request)
         {
             var products = data.Products.All().ToList();
             var productsView = Mapper.Map<IEnumerable<ProductViewModel>>(products);
@@ -251,7 +267,7 @@ namespace CollectingProductionDataSystem.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public JsonResult GetAllProcessUnits() 
+        public JsonResult GetAllProcessUnits()
         {
             var products = data.ProcessUnits.All().ToList();
             var productsView = Mapper.Map<IEnumerable<ProcessUnitViewModel>>(products);
@@ -279,10 +295,10 @@ namespace CollectingProductionDataSystem.Web.Controllers
 
             return Json(indices, JsonRequestBehavior.AllowGet);
         }
-        
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public JsonResult GetAllTankStatuses() 
+        public JsonResult GetAllTankStatuses()
         {
             var statuses = data.TankStatuses.All().ToList();
             var statusesView = Mapper.Map<IEnumerable<TankStatusViewModel>>(statuses);

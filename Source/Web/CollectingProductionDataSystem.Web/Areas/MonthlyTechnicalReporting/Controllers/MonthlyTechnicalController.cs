@@ -13,7 +13,7 @@
     using CollectingProductionDataSystem.Web.Infrastructure.Filters;
     using Kendo.Mvc.Extensions;
     using Kendo.Mvc.UI;
-
+    using System.Threading.Tasks;
     public class MonthlyTechnicalController : AreaBaseController
     {
         private readonly IMonthlyTechnicalDataService monthlyService;
@@ -32,7 +32,7 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public JsonResult ReadMonthlyTechnicalData([DataSourceRequest]DataSourceRequest request, DateTime? date)
+        public async Task<JsonResult> ReadMonthlyTechnicalData([DataSourceRequest]DataSourceRequest request, DateTime? date)
         {
             if (!this.ModelState.IsValid)
             {
@@ -61,7 +61,7 @@
                     }
 
                     var kendoResult = new DataSourceResult();
-                    var dbResult = this.monthlyService.ReadMonthlyTechnologicalData(date.Value, processUnits.ToArray());
+                    var dbResult = await this.monthlyService.ReadMonthlyTechnologicalDataAsync(date.Value, processUnits.ToArray());
                     var vmResult = Mapper.Map<IEnumerable<MonthlyTechnicalViewModel>>(dbResult);
                     kendoResult = vmResult.ToDataSourceResult(request, ModelState);
                     return Json(kendoResult);

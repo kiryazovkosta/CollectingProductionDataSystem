@@ -1,9 +1,12 @@
-﻿namespace CollectingProductionDataSystem.Application.FileServices
+﻿//-----------------------------------------------------------------------
+// <copyright file="FileUploadService.cs" company="Business Management Systems Ltd.">
+//     Copyright (c) Business Management Systems. All rights reserved.
+// </copyright>
+// <author>Nikolay Kostadinov</author>
+//-----------------------------------------------------------------------
+
+namespace CollectingProductionDataSystem.Application.FileServices
 {
-    using CollectingProductionDataSystem.Application.Contracts;
-    using CollectingProductionDataSystem.Constants;
-    using CollectingProductionDataSystem.Data.Contracts;
-    using Ninject;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
@@ -11,33 +14,58 @@
     using System.IO;
     using System.Linq;
     using System.Reflection;
-    using System.Text;
     using static System.String;
+    using System.Text;
+    using CollectingProductionDataSystem.Application.Contracts;
+    using CollectingProductionDataSystem.Constants;
+    using CollectingProductionDataSystem.Data.Contracts;
+    using Ninject;
     using Resources = App_Resources.ErrorMessages;
 
+    /// <summary>
+    /// File upload service
+    /// </summary>
     public class FileUploadService : IFileUploadService
     {
-        const int ASSEMBLY_NAME_POSITION = 0;
-        const int ENTITY_NAME_POSITION = 1;
-        const int DATETIME_FORMAT_POSITION = 2;
-        const int ENTITY_NAME_FILE_LINE = 0;
-        const int PROPERTIES_DESCRIPTION_FILE_LINE = 1;
-        const int FILE_CONTENT_STARTING_LINE = 2;
+        private const int ASSEMBLY_NAME_POSITION = 0;
+        private const int ENTITY_NAME_POSITION = 1;
+        private const int DATETIME_FORMAT_POSITION = 2;
+        private const int ENTITY_NAME_FILE_LINE = 0;
+        private const int PROPERTIES_DESCRIPTION_FILE_LINE = 1;
+        private const int FILE_CONTENT_STARTING_LINE = 2;
         private readonly IProductionData data;
         private readonly IKernel kernel;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FileUploadService" /> class.
+        /// </summary>
+        /// <param name="dataParam">The data parameter.</param>
+        /// <param name="kernelParam">The kernel parameter.</param>
         public FileUploadService(IProductionData dataParam, IKernel kernelParam)
         {
             this.kernel = kernelParam;
             this.data = dataParam;
         }
 
+        /// <summary>
+        /// Uploads the file to database.
+        /// </summary>
+        /// <param name="fileName">Name of the file.</param>
+        /// <param name="delimiter">The delimiter.</param>
+        /// <returns></returns>
         public IEfStatus UploadFileToDatabase(string fileName, string delimiter)
         {
             FileDescriptor fileResult = GetRecordsFromFile(fileName, delimiter);
             return ParseRecordsAndPersistToDatabase(fileResult, delimiter);
         }
 
+        /// <summary>
+        /// Uploads the file to database.
+        /// </summary>
+        /// <param name="fileStream">The file stream.</param>
+        /// <param name="delimiter">The delimiter.</param>
+        /// <param name="fileName">Name of the file.</param>
+        /// <returns></returns>
         public IEfStatus UploadFileToDatabase(Stream fileStream, string delimiter, string fileName)
         {
             FileDescriptor fileResult = GetRecordsFromFileAsStream(fileStream, delimiter, fileName);
@@ -98,6 +126,12 @@
             }
         }
 
+        /// <summary>
+        /// Gets the properties description.
+        /// </summary>
+        /// <param name="fileReader">The file reader.</param>
+        /// <param name="fileDescriptor">The file descriptor.</param>
+        /// <param name="charSeparator">The char separator.</param>
         private static void GetPropertiesDescription(StreamReader fileReader, FileDescriptor fileDescriptor, char[] charSeparator)
         {
             string line = fileReader.ReadLine();
@@ -191,7 +225,7 @@
                 {
                     propertiesValues = GetPropertiesValues(record, delimiter, fileResult.Properties.Count());
                 }
-                catch (ArgumentException argEx)
+                catch (ArgumentException)
                 {
                     errors.Add(new ValidationResult(string.Format(Resources.InvalidRecord, lineId)));
                 }
@@ -413,6 +447,12 @@
             return res;
         }
 
+        /// <summary>
+        /// Creates the new object.
+        /// </summary>
+        /// <typeparam name="T">The type of the T.</typeparam>
+        /// <param name="inputParams">The input params.</param>
+        /// <returns></returns>
         private T CreateNewObject<T>(Dictionary<string, object> inputParams)
             where T : new()
         {
@@ -428,12 +468,18 @@
         }
     }
 
+    /// <summary>
+    /// DTO class
+    /// </summary>
     internal class PropertyDescription
     {
         public int Position { get; set; }
         public string Name { get; set; }
     }
 
+    /// <summary>
+    /// DTO Class
+    /// </summary>
     internal class FileDescriptor
     {
         private string dateTimeFormat;
@@ -447,6 +493,10 @@
             this.recordOriginalType = null;
         }
 
+        /// <summary>
+        /// Gets or sets the type of the record original.
+        /// </summary>
+        /// <value>The type of the record original.</value>
         public Type RecordOriginalType
         {
             get { return this.recordOriginalType; }
@@ -463,6 +513,10 @@
             }
         }
 
+        /// <summary>
+        /// Gets or sets the date time format.
+        /// </summary>
+        /// <value>The date time format.</value>
         public string DateTimeFormat
         {
             get { return this.dateTimeFormat; }

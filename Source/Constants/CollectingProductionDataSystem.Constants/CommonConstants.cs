@@ -1,11 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿//-----------------------------------------------------------------------
+// <copyright file="CommonConstants.cs" company="Business Management Systems Ltd.">
+//     Copyright (c) Business Management Systems. All rights reserved.
+// </copyright>
+// <author>Nikolay Kostadinov</author>
+//-----------------------------------------------------------------------
 
 namespace CollectingProductionDataSystem.Constants
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+
     public static class CommonConstants
     {
         private static readonly string standartPassword = "12345678";
@@ -50,15 +57,15 @@ namespace CollectingProductionDataSystem.Constants
 
         private static readonly int halfAnHour = 60 * 30;
 
-        private static string phdDateTimeFormat = @"M/d/yyyy hh:mm:ss tt";
+        private static readonly string phdDateTimeFormat = @"M/d/yyyy hh:mm:ss tt";
 
-        private static int maxDateDifference = 31;
+        private static readonly int maxDateDifference = 31;
 
-        private static int inputDirection = 2;
+        private static readonly int inputDirection = 2;
 
-        private static int outputDirection = 1;
+        private static readonly int outputDirection = 1;
 
-        private static int inputOutputDirection = 3;
+        private static readonly int inputOutputDirection = 3;
 
         public static string StandartPassword
         {
