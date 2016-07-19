@@ -242,13 +242,16 @@
                         MaterialType = GetMaterialType(item.UnitMonthlyConfig.MonthlyReportTypeId),
                         DetailedMaterialType = GetDetailedMaterialType(item),
                         MeasurementUnit = item.UnitMonthlyConfig.MeasureUnit.Code,
+
                         PlanValue = (decimal) planValue,
                         PlanPercentage = (decimal) planPercentage,
+
                         FactValue = (decimal) item.RealValue,
                         FactPercentage = (decimal) factPercentage,
-                        FactValueDifference = Math.Round((decimal) (item.RealValue - planValue), 5),
-                        FactPercentageDifference = Math.Round((decimal) (factPercentage - planPercentage), 5),
-                        YearValue = item.YearTotalValue + (decimal) item.RealValue,
+                        FactValueDifference = item.UnitMonthlyConfig.IsOnlyMonthFactValuePosition ? 0 : Math.Round((decimal) (item.RealValue - planValue), 5),
+                        FactPercentageDifference = item.UnitMonthlyConfig.IsOnlyMonthFactValuePosition ? 0 : Math.Round((decimal) (factPercentage - planPercentage), 5),
+
+                        YearValue = item.UnitMonthlyConfig.IsOnlyMonthFactValuePosition ? 0 : item.YearTotalValue + (decimal) item.RealValue,
                         YearPercentage = (decimal) yearPercentage,
                         YearValueDifference = 0,
                         YearPercentageDifference = 0
@@ -337,7 +340,7 @@
         private double GetPlanValue(UnitMonthlyData monthlyData, ProductionPlanDataDto productionPlanData, DateTime targetMonth)
         {
             int materialType = productionPlanData?.ProductionPlanConfig?.MaterialTypeId ?? 0;
-            if (monthlyData.UnitMonthlyConfig.ProductionPlanConfig == null || materialType == 0)
+            if (monthlyData.UnitMonthlyConfig.ProductionPlanConfig == null || materialType == 0 || monthlyData.UnitMonthlyConfig.IsOnlyMonthFactValuePosition)
             {
                 return 0.0;
             }
@@ -376,7 +379,7 @@
         /// <returns></returns>
         private double GetPlanPercentage(UnitMonthlyData monthlyData, ProductionPlanDataDto productionPlanData)
         {
-            if (monthlyData.UnitMonthlyConfig.ProductionPlanConfig == null)
+            if (monthlyData.UnitMonthlyConfig.ProductionPlanConfig == null || monthlyData.UnitMonthlyConfig.IsOnlyMonthFactValuePosition)
             {
                 return 0;
             }
@@ -396,7 +399,7 @@
         {
             //var productionPlanData = productionPlanDatas.Where(x => x.ProductionPlanConfig.Id == monthlyData.UnitMonthlyConfig.ProductionPlanConfigId).FirstOrDefault();
 
-            if (productionPlanData == null)
+            if (productionPlanData == null || monthlyData.UnitMonthlyConfig.IsOnlyMonthFactValuePosition)
             {
                 return 0.0;
             }
@@ -435,7 +438,8 @@
             Dictionary<string, MonthlyData> monthlyApprovedDatas)
         {
             double result = 0;
-            if (productionPlanData != null)
+            if (productionPlanData != null && 
+                !monthlyData.UnitMonthlyConfig.IsOnlyMonthFactValuePosition)
             {
                 if (!string.IsNullOrEmpty(productionPlanData?.ProductionPlanConfig?.MonthlyFactFractionFormula))
                 {

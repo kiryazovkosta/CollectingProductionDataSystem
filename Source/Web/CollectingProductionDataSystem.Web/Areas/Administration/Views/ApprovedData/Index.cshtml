@@ -1,0 +1,215 @@
+﻿@using CollectingProductionDataSystem.Web.Areas.Administration.ViewModels;
+@using Resources = App_GlobalResources.Resources
+
+@model ForceLoadingViewModel
+
+@{
+    Layout = "~/Areas/Administration/Views/Shared/_KendoAdminLayout.cshtml";
+}
+
+<div class="col-lg-10">
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">@Resources.Layout.ShiftsData</div>
+        <div class="panel-body">
+            @Html.ValidationSummary()
+            @using (Html.BeginForm("Index", "ForceLoading", new { area = "Administration" }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {
+                <div class="row">
+                    @Html.AntiForgeryToken()
+                    <div class="form-group col-sm-4">
+                        @Html.LabelFor(m => m.BeginDate, new { @class = "col-sm-5 control-label" })
+                        <div class="col-sm-7">
+                            @Html.Kendo().DatePickerFor(m => m.BeginDate).Value(DateTime.Now)
+                        </div>
+                    </div>
+
+                    <div class="form-group col-sm-4">
+                        @Html.LabelFor(m => m.EndDate, new { @class = "col-sm-5 control-label" })
+                        <div class="col-sm-7">
+                            @Html.Kendo().DatePickerFor(m => m.EndDate).Value(DateTime.Now)
+                        </div>
+                    </div>
+
+                    <div class="form-group col-sm-4">
+                        @Html.LabelFor(m => m.ShiftId, new { @class = "col-sm-5 control-label" })
+                        <div class="col-sm-7">
+                            @(Html.Kendo()
+                        .DropDownList()
+                        .Name("ShiftId")
+                        .OptionLabel(Resources.Layout.AllShifts)
+                        .DataTextField("Name")
+                        .DataValueField("Id")
+                        .DataSource(source =>
+                        {
+                            source.Read(read =>
+                            {
+                                read.Action("GetShifts", "Ajax", new { area = "" });
+                            });
+                        })
+                            )
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                        @Html.LabelFor(m => m.FactoryId, new { @class = "col-sm-5 control-label" })
+                        <div class="col-sm-7">
+                            @(Html.Kendo()
+                        .DropDownList()
+                        .Name("FactoryId")
+                        .OptionLabel(Resources.Layout.AllFactories)
+                        .DataTextField("Name")
+                        .DataValueField("Id")
+                        .DataSource(source =>
+                        {
+                            source.Read(read =>
+                            {
+                                read.Action("GetFactories", "Ajax", new { area = "" });
+                            });
+                        })
+                            )
+                        </div>
+                    </div>
+
+                    <div class="form-group col-sm-6">
+                        @Html.LabelFor(m => m.ProcessUnitId, new { @class = "col-sm-5 control-label" })
+                        <div class="col-sm-7">
+                            @(Html.Kendo()
+                        .DropDownList()
+                        .Name("ProcessUnitId")
+                        .OptionLabel(Resources.Layout.AllProcessUnits)
+                        .DataTextField("Name")
+                        .DataValueField("Id")
+                        .DataSource(source =>
+                        {
+                            source.Read(read =>
+                            {
+                                read.Action("GetProcessUnits", "Ajax", new { area = "" }).Data("sendFactoryId");
+                            })
+                            .ServerFiltering(true);
+
+                        })
+                        .Enable(false)
+                        .AutoBind(false)
+                        .CascadeFrom("FactoryId")
+                            )
+                        </div>
+                    </div>
+                </div>
+                <hr />
+                <a href="#" id="submit" class="btn btn-primary pull-right">@Resources.Layout.Load</a>
+            }
+        </div>
+    </div>
+</div>
+
+<div id="progress-bar"></div>
+
+@* //Error window for kendo grid error event handler *@
+<div id="err-window" style="display:none">@Html.Partial("_KendoGridErrorWindow")</div>
+@* //Error window for kendo grid error event handler *@
+<div id="success-window" style="display:none">@Html.Partial("_SuccessWindow")</div>
+
+
+@section scripts{
+    @Scripts.Render("~/bundles/custom/kendoadditional")
+    <script>
+        (function () {
+            sendFactoryId = function () {
+                return {
+                    factoryId: $('#FactoryId').val()
+                };
+            }
+        }());
+
+        $(function () {
+            $("#submit").click(
+                function () {
+                    $.ajax({
+                        url: '/Administration/ForceLoading/GetProgressBar',
+                        type: 'GET',
+                        data: getData(false),
+                        success: function (response) {
+                            $('#progress-bar').html(response);
+                            $.ajax({
+                                url: '/Administration/ForceLoading/Index',
+                                type: 'POST',
+                                data: getData(),
+                                success: function () {
+                                    var data = $('form').serialize();
+                                    var element = $("#current-proccess-progress");
+                                    if (element !== null) {
+                                        var progressBar = element.data("kendoProgressBar");
+                                        if (progressBar !== undefined) {
+                                            progressBar.value(progressBar.options.max);
+                                            $('.k-state-selected').attr('style', "width:100%;");
+                                            $.wait(3000).done(function () {
+                                                element.html("Done!");
+                                            });
+                                        }
+                                    }
+                                },
+                                error: function (inData) {
+                                    var element = $("#current-proccess-progress");
+                                    element.html("Fail!!!");
+                                    processError(inData);
+                                }
+                            });
+                        },
+                        error: function (inData) {
+                            processError(inData);
+                        }
+                    });
+                }
+             );
+        });
+
+        $.wait = function (ms) {
+            var defer = $.Deferred();
+            setTimeout(function () { defer.resolve(); }, ms);
+            return defer;
+        };
+
+        function processError(inData) {
+            if (inData) {
+                if (inData.responseText) {
+                    var data = JSON.parse(inData.responseText);
+                    if (data.data) {
+                        if (data.data.errors) {
+
+                                var message = "";
+                                $.each(data.data.errors, function (key, value) {
+                                    message += (key+1) +". " + value + "\n";
+                                });
+                                $('pre#err-message').text(message);
+                                $('div#err-window').data("kendoWindow").open();
+                        }
+                    }
+                }
+            }
+        }
+
+        function getData(stringified) {
+            var data = {
+                "__RequestVerificationToken": $('input[name=__RequestVerificationToken]').val(),
+                BeginDate: $("#BeginDate").data("kendoDatePicker").value().toISOString(kendo.culture().name),
+                EndDate: $("#EndDate").data("kendoDatePicker").value().toISOString(kendo.culture().name),
+                ShiftId: $("#ShiftId").data("kendoDropDownList").value() || 0,
+                FactoryId: $("#FactoryId").data("kendoDropDownList").value() || 0,
+                ProcessUnitId: $("#ProcessUnitId").data("kendoDropDownList").value() || 0,
+            }
+            if (stringified) {
+                return JSON.stringify(data);
+            } else {
+                return data;
+            }
+        }
+    </script>
+}
+
+
+
+
+

@@ -1879,6 +1879,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to IsOnlyMonthFactValuePosition.
+        /// </summary>
+        public static string IsOnlyMonthFactValuePosition {
+            get {
+                return ResourceManager.GetString("IsOnlyMonthFactValuePosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Visible % fact.
         /// </summary>
         public static string IsPercentagesFactVisibleInChast {
