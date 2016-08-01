@@ -19,6 +19,7 @@ using CollectingProductionDataSystem.Web.ViewModels.Utility;
 using Kendo.Mvc.UI;
 using Kendo.Mvc.Extensions;
 using Microsoft.AspNet.Identity;
+using CollectingProductionDataSystem.Models.Productions.Mounthly;
 
 namespace CollectingProductionDataSystem.Web.Controllers
 {
@@ -325,6 +326,13 @@ namespace CollectingProductionDataSystem.Web.Controllers
             }
 
             return Json(indices, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult GetMonthlyReportTypes()
+        {
+            List<MonthlyReportType> monthlyReportTypes = this.data.MonthlyReportTypes.All().ToList();
+            IEnumerable<CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewModels.MonthlyReportTypeViewModel> monthlyReportTypesView = Mapper.Map<IEnumerable<CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewModels.MonthlyReportTypeViewModel>>(monthlyReportTypes);
+            return Json(monthlyReportTypesView, JsonRequestBehavior.AllowGet);
         }
     }
 }

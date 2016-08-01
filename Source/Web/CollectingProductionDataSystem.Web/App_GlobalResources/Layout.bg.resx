@@ -1754,4 +1754,7 @@
   <data name="IsOnlyMonthFactValuePosition" xml:space="preserve">
     <value>Позиция в ТО само с месечно фактическо количество</value>
   </data>
+  <data name="Unlock" xml:space="preserve">
+    <value>Отключи за редакция</value>
+  </data>
 </root>
