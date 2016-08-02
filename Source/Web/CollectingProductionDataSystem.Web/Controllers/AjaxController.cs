@@ -87,6 +87,13 @@ namespace CollectingProductionDataSystem.Web.Controllers
             return Json(shiftView, JsonRequestBehavior.AllowGet);
         }
 
+        public JsonResult GetMaterialTypes()
+        {
+            var materialTypes = this.data.MaterialTypes.All().ToList();
+            var materialTypeView = Mapper.Map<IEnumerable<Areas.NomManagement.Models.ViewModels.MaterialTypeViewModel>>(materialTypes);
+            return Json(materialTypeView, JsonRequestBehavior.AllowGet);
+        }
+
 
         public JsonResult GetFactories()
         {

@@ -43,6 +43,7 @@
                         .OptionLabel(Resources.Layout.AllFactories)
                         .DataTextField("Name")
                         .DataValueField("Id")
+                        .HtmlAttributes(new { style = "width:95%" })
                         .DataSource(source =>
                         {
                             source.Read(read =>
@@ -56,10 +57,11 @@
                     <div class="form-group col-sm-3">
                         @(Html.Kendo()
                         .DropDownList()
-                        .Name("ProcessUnitId")
+                        .Name("shift-process-unit-id")
                         .OptionLabel(Resources.Layout.AllProcessUnits)
                         .DataTextField("Name")
                         .DataValueField("Id")
+                        .HtmlAttributes(new { style = "width:95%" })
                         .DataSource(source =>
                         {
                             source.Read(read =>
@@ -76,16 +78,17 @@
                     </div>
 
                     <div class="form-group col-sm-3">
-                        @Html.Kendo().DatePickerFor(m => m.BeginDate).Value(DateTime.Now)
+                        @Html.Kendo().DatePicker().Name("shift-date").Value(DateTime.Now).HtmlAttributes(new { style = "width:95%" })
                     </div>
 
                     <div class="form-group col-sm-3">
                         @(Html.Kendo()
                                 .DropDownList()
-                                .Name("ShiftId")
+                                .Name("shift-id")
                                 .OptionLabel(Resources.Layout.AllShifts)
                                 .DataTextField("Name")
                                 .DataValueField("Id")
+                                .HtmlAttributes(new { style = "width:95%" })
                                 .DataSource(source =>
                                 {
                                     source.Read(read =>
@@ -98,7 +101,7 @@
 
                 </div>
                 <hr />
-                <a href="#" id="shift-unlock" class="btn btn-primary pull-right">@Resources.Layout.Load</a>
+                <a href="#" id="shift-unlock" class="btn btn-primary pull-right">@Resources.Layout.Unlock</a>
             }
         </div>
     </div>
@@ -126,7 +129,7 @@
                     </div>
 
                     <div class="form-group col-sm-3">
-                        @Html.Label("Смяна", new { @class = "col-sm-3 control-label" })
+                        @Html.Label("Тип", new { @class = "col-sm-3 control-label" })
                     </div>
                 </div>
 
@@ -138,6 +141,7 @@
                         .OptionLabel(Resources.Layout.AllFactories)
                         .DataTextField("Name")
                         .DataValueField("Id")
+                        .HtmlAttributes(new { style = "width:95%" })
                         .DataSource(source =>
                         {
                             source.Read(read =>
@@ -151,10 +155,11 @@
                     <div class="form-group col-sm-3">
                         @(Html.Kendo()
                         .DropDownList()
-                        .Name("Daily-ProcessUnitId")
+                        .Name("day-process-unit-id")
                         .OptionLabel(Resources.Layout.AllProcessUnits)
                         .DataTextField("Name")
                         .DataValueField("Id")
+                        .HtmlAttributes(new { style = "width:95%" })
                         .DataSource(source =>
                         {
                             source.Read(read =>
@@ -162,7 +167,6 @@
                                 read.Action("GetProcessUnits", "Ajax", new { area = "" }).Data("sendFactoryId");
                             })
                             .ServerFiltering(true);
-
                         })
                         .Enable(false)
                         .AutoBind(false)
@@ -171,29 +175,30 @@
                     </div>
 
                     <div class="form-group col-sm-3">
-                        @Html.Kendo().DatePicker().Name("Daily-Date").Value(DateTime.Now)
+                        @Html.Kendo().DatePicker().Name("day-date").Value(DateTime.Now).HtmlAttributes(new { style = "width:95%" })
                     </div>
 
                     <div class="form-group col-sm-3">
                         @(Html.Kendo()
-                                .DropDownList()
-                                .Name("Daily-ShiftId")
-                                .OptionLabel(Resources.Layout.AllShifts)
-                                .DataTextField("Name")
-                                .DataValueField("Id")
-                                .DataSource(source =>
+                            .DropDownList()
+                            .Name("day-material-type-id")
+                            .OptionLabel(Resources.Layout.MaterialType)
+                            .DataTextField("Name")
+                            .DataValueField("Id")
+                            .HtmlAttributes(new { style = "width:95%" })
+                            .DataSource(source =>
+                            {
+                                source.Read(read =>
                                 {
-                                    source.Read(read =>
-                                    {
-                                        read.Action("GetShifts", "Ajax", new { area = "" });
-                                    });
-                                })
+                                    read.Action("GetMaterialTypes", "Ajax", new { area = "" });
+                                });
+                            })
                         )
                     </div>
 
                 </div>
                 <hr />
-                <a href="#" id="day-unlock" class="btn btn-primary pull-right">@Resources.Layout.Load</a>
+                <a href="#" id="day-unlock" class="btn btn-primary pull-right">@Resources.Layout.Unlock</a>
             }
         </div>
     </div>
@@ -285,7 +290,7 @@
                     $.ajax({
                         url: '/Administration/ApprovedData/UnlockShiftReport',
                         type: 'GET',
-                        data: getMonthData(false),
+                        data: getShiftData(false),
                         success: function (data) {
                             var unlocked = data.IsUnlocked;
                             if (unlocked === true) {
@@ -328,7 +333,7 @@
                     $.ajax({
                         url: '/Administration/ApprovedData/UnlockDailyReport',
                         type: 'GET',
-                        data: getMonthData(false),
+                        data: getDayData(false),
                         success: function (data) {
                             var unlocked = data.IsUnlocked;
                             if (unlocked === true) {
@@ -424,6 +429,34 @@
             }
         }
 
+        function getShiftData(stringified) {
+            var data = {
+                "__RequestVerificationToken": $('input[name=__RequestVerificationToken]').val(),
+                day: $("#shift-date").data("kendoDatePicker").value().toISOString(kendo.culture().name),
+                processUnitId: $("#shift-process-unit-id").data("kendoDropDownList").value() || 0,
+                shiftId: $("#shift-id").data("kendoDropDownList").value() || 0,
+            }
+            if (stringified) {
+                return JSON.stringify(data);
+            } else {
+                return data;
+            }
+        }
+
+        function getDayData(stringified) {
+            var data = {
+                "__RequestVerificationToken": $('input[name=__RequestVerificationToken]').val(),
+                day: $("#day-date").data("kendoDatePicker").value().toISOString(kendo.culture().name),
+                processUnitId: $("#day-process-unit-id").data("kendoDropDownList").value() || 0,
+                materialTypeId: $("#day-material-type-id").data("kendoDropDownList").value() || 0,
+            }
+            if (stringified) {
+                return JSON.stringify(data);
+            } else {
+                return data;
+            }
+        }
+
         function getMonthData(stringified) {
             var data = {
                 "__RequestVerificationToken": $('input[name=__RequestVerificationToken]').val(),
@@ -436,6 +469,9 @@
                 return data;
             }
         }
+
+
+        
     </script>
 }
 

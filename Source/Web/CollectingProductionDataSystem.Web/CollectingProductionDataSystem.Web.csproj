@@ -1759,6 +1759,7 @@
     <Content Include="Areas\MonthlyTechnicalReporting\Views\MonthlyTechnical\MonthlyTechnicalData.cshtml" />
     <Content Include="Areas\Administration\Views\ApprovedData\Index.cshtml" />
     <None Include="bundleconfig.json" />
+    <None Include="Properties\PublishProfiles\DevKosta.pubxml" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <Content Include="Scripts\custom\sendArea.js" />
     <Content Include="Scripts\custom\sendArea.min.js">
