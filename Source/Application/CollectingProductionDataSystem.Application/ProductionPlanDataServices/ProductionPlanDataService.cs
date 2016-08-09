@@ -74,8 +74,8 @@
             var dbResult = this.data.ProductionPlanConfigs.All()
                 .Include(x => x.PlanNorms)
                 .Include(x => x.ProcessUnit)
-                .Include(x => x.ProcessUnit.PlanValues);
-                //.Where(x => x.IsPropductionPlan == true);
+                .Include(x => x.ProcessUnit.PlanValues)
+                .Where(x => x.IsPropductionPlan == true);
             if (processUnitId != null)
             {
                 dbResult = dbResult.Where(x => x.ProcessUnitId == processUnitId);

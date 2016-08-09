@@ -33,6 +33,9 @@
                     <li class='@(Request.RawUrl == @Url.Action("Index", "ForceLoading", new { area = "Administration" }) ? "active" : string.Empty)'>
                         <a href="@Url.Action("Index", "ForceLoading", new { area = "Administration" })">ForceExecutionOfInterface</a>
                     </li>
+                    <li class='@(Request.RawUrl == @Url.Action("Index", "ApprovedData", new { area = "Administration" }) ? "active" : string.Empty)'>
+                        <a href="@Url.Action("Index", "ApprovedData", new { area = "Administration" })">Approved Data</a>
+                    </li>
                     <li class="nav-header"><span class="glyphicon glyphicon-user"></span> Profile</li>
                     <li><a href="#">My profile</a></li>
                     <li><a href="#">Settings</a></li>

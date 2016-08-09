@@ -1756,4 +1756,10 @@
   <data name="ProcessingPlanLiquid" xml:space="preserve">
     <value>ProcessingPlanLiquid</value>
   </data>
+  <data name="IsOnlyMonthFactValuePosition" xml:space="preserve">
+    <value>IsOnlyMonthFactValuePosition</value>
+  </data>
+  <data name="Unlock" xml:space="preserve">
+    <value>Unlock</value>
+  </data>
 </root>

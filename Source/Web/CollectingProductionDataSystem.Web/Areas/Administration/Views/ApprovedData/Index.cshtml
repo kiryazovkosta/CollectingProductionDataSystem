@@ -1,0 +1,481 @@
+﻿@using CollectingProductionDataSystem.Web.Areas.Administration.ViewModels;
+@using Resources = App_GlobalResources.Resources
+
+@model ForceLoadingViewModel
+
+@{
+    Layout = "~/Areas/Administration/Views/Shared/_KendoAdminLayout.cshtml";
+}
+
+<div class="col-lg-10">
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">@Resources.Layout.ShiftsData</div>
+        <div class="panel-body">
+            @Html.ValidationSummary()
+            @using (Html.BeginForm("Index", "ApprovedData", new { area = "Administration" }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {
+                <div class="row">
+                    @Html.AntiForgeryToken()
+
+                    <div class="form-group col-sm-3">
+                        @Html.Label("Производство", new { @class = "col-sm-3 control-label" })
+                    </div>
+
+                    <div class="form-group col-sm-3">
+                        @Html.Label("Инсталация", new { @class = "col-sm-3 control-label" })
+                    </div>
+
+                    <div class="form-group col-sm-3">
+                        @Html.Label("Дата", new { @class = "col-sm-3 control-label" })
+                    </div>
+
+                    <div class="form-group col-sm-3">
+                        @Html.Label("Смяна", new { @class = "col-sm-3 control-label" })
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-sm-3">
+                        @(Html.Kendo()
+                        .DropDownList()
+                        .Name("FactoryId")
+                        .OptionLabel(Resources.Layout.AllFactories)
+                        .DataTextField("Name")
+                        .DataValueField("Id")
+                        .HtmlAttributes(new { style = "width:95%" })
+                        .DataSource(source =>
+                        {
+                            source.Read(read =>
+                            {
+                                read.Action("GetFactories", "Ajax", new { area = "" });
+                            });
+                        })
+                        )
+                    </div>
+
+                    <div class="form-group col-sm-3">
+                        @(Html.Kendo()
+                        .DropDownList()
+                        .Name("shift-process-unit-id")
+                        .OptionLabel(Resources.Layout.AllProcessUnits)
+                        .DataTextField("Name")
+                        .DataValueField("Id")
+                        .HtmlAttributes(new { style = "width:95%" })
+                        .DataSource(source =>
+                        {
+                            source.Read(read =>
+                            {
+                                read.Action("GetProcessUnits", "Ajax", new { area = "" }).Data("sendFactoryId");
+                            })
+                            .ServerFiltering(true);
+
+                        })
+                        .Enable(false)
+                        .AutoBind(false)
+                        .CascadeFrom("FactoryId")
+                        )
+                    </div>
+
+                    <div class="form-group col-sm-3">
+                        @Html.Kendo().DatePicker().Name("shift-date").Value(DateTime.Now).HtmlAttributes(new { style = "width:95%" })
+                    </div>
+
+                    <div class="form-group col-sm-3">
+                        @(Html.Kendo()
+                                .DropDownList()
+                                .Name("shift-id")
+                                .OptionLabel(Resources.Layout.AllShifts)
+                                .DataTextField("Name")
+                                .DataValueField("Id")
+                                .HtmlAttributes(new { style = "width:95%" })
+                                .DataSource(source =>
+                                {
+                                    source.Read(read =>
+                                    {
+                                        read.Action("GetShifts", "Ajax", new { area = "" });
+                                    });
+                                })
+                        )
+                    </div>
+
+                </div>
+                <hr />
+                <a href="#" id="shift-unlock" class="btn btn-primary pull-right">@Resources.Layout.Unlock</a>
+            }
+        </div>
+    </div>
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">@Resources.Layout.DailyData</div>
+        <div class="panel-body">
+            @Html.ValidationSummary()
+
+            @using (Html.BeginForm("DailyIndex", "ApprovedData", new { area = "Administration" }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {
+                <div class="row">
+                    @Html.AntiForgeryToken()
+
+                    <div class="form-group col-sm-3">
+                        @Html.Label("Производство", new { @class = "col-sm-3 control-label" })
+                    </div>
+
+                    <div class="form-group col-sm-3">
+                        @Html.Label("Инсталация", new { @class = "col-sm-3 control-label" })
+                    </div>
+
+                    <div class="form-group col-sm-3">
+                        @Html.Label("Дата", new { @class = "col-sm-3 control-label" })
+                    </div>
+
+                    <div class="form-group col-sm-3">
+                        @Html.Label("Тип", new { @class = "col-sm-3 control-label" })
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-sm-3">
+                        @(Html.Kendo()
+                        .DropDownList()
+                        .Name("Daily-FactoryId")
+                        .OptionLabel(Resources.Layout.AllFactories)
+                        .DataTextField("Name")
+                        .DataValueField("Id")
+                        .HtmlAttributes(new { style = "width:95%" })
+                        .DataSource(source =>
+                        {
+                            source.Read(read =>
+                            {
+                                read.Action("GetFactories", "Ajax", new { area = "" });
+                            });
+                        })
+                        )
+                    </div>
+
+                    <div class="form-group col-sm-3">
+                        @(Html.Kendo()
+                        .DropDownList()
+                        .Name("day-process-unit-id")
+                        .OptionLabel(Resources.Layout.AllProcessUnits)
+                        .DataTextField("Name")
+                        .DataValueField("Id")
+                        .HtmlAttributes(new { style = "width:95%" })
+                        .DataSource(source =>
+                        {
+                            source.Read(read =>
+                            {
+                                read.Action("GetProcessUnits", "Ajax", new { area = "" }).Data("sendFactoryId");
+                            })
+                            .ServerFiltering(true);
+                        })
+                        .Enable(false)
+                        .AutoBind(false)
+                        .CascadeFrom("Daily-FactoryId")
+                        )
+                    </div>
+
+                    <div class="form-group col-sm-3">
+                        @Html.Kendo().DatePicker().Name("day-date").Value(DateTime.Now).HtmlAttributes(new { style = "width:95%" })
+                    </div>
+
+                    <div class="form-group col-sm-3">
+                        @(Html.Kendo()
+                            .DropDownList()
+                            .Name("day-material-type-id")
+                            .OptionLabel(Resources.Layout.MaterialType)
+                            .DataTextField("Name")
+                            .DataValueField("Id")
+                            .HtmlAttributes(new { style = "width:95%" })
+                            .DataSource(source =>
+                            {
+                                source.Read(read =>
+                                {
+                                    read.Action("GetMaterialTypes", "Ajax", new { area = "" });
+                                });
+                            })
+                        )
+                    </div>
+
+                </div>
+                <hr />
+                <a href="#" id="day-unlock" class="btn btn-primary pull-right">@Resources.Layout.Unlock</a>
+            }
+        </div>
+    </div>
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">@Resources.Layout.MonthData</div>
+        <div class="panel-body">
+            @Html.ValidationSummary()
+
+            @using (Html.BeginForm("Index", "ApprovedData", new { area = "Administration" }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {
+                <div class="row">
+                    @Html.AntiForgeryToken()
+
+                    <div class="form-group col-sm-4">
+                        @Html.Label("Тип", new { @class = "col-sm-3 control-label" })
+                    </div>
+
+                    <div class="form-group col-sm-4">
+                        @Html.Label("Дата", new { @class = "col-sm-3 control-label" })
+                    </div>
+
+                    <div class="form-group col-sm-4">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-sm-4">
+                        @(Html.Kendo()
+                        .DropDownList()
+                        .Name("month-report-type-id")
+                        .DataTextField("Name")
+                        .DataValueField("Id")
+                        .HtmlAttributes(new { style = "width:95%" })
+                        .DataSource(source =>
+                        {
+                            source.Read(read =>
+                            {
+                                read.Action("GetMonthlyReportTypes", "Ajax", new { area = "" });
+                            });
+                        })
+                        )
+                    </div>
+
+                    <div class="form-group col-sm-4">
+                        @(Html.Kendo().DatePicker()
+                            .Name("month-date").Culture("bg-BG")
+                            .Start(CalendarView.Year)
+                            .Depth(CalendarView.Year)
+                            .Format("MMMM yyyy")
+                            .HtmlAttributes(new { style = "width:95%" })
+                            .Value(DateTime.Today.AddDays(-1))
+                        )
+                    </div>
+
+                    <div class="form-group col-sm-3">
+                        <a href="#" id="month-unlock" class="btn btn-primary pull-right">@Resources.Layout.Unlock</a>
+                    </div>
+
+                </div>
+            }
+        </div>
+    </div>
+
+</div>
+
+<div id="progress-bar"></div>
+
+@* //Error window for kendo grid error event handler *@
+<div id="err-window" style="display:none">@Html.Partial("_KendoGridErrorWindow")</div>
+@* //Error window for kendo grid error event handler *@
+<div id="success-window" style="display:none">@Html.Partial("_SuccessWindow")</div>
+
+
+@section scripts{
+    @Scripts.Render("~/bundles/custom/kendoadditional")
+    <script>
+        (function () {
+            sendFactoryId = function () {
+                return {
+                    factoryId: $('#FactoryId').val()
+                };
+            }
+        }());
+
+        $(function () {
+            $("#shift-unlock").click(
+                function () {
+                    $.ajax({
+                        url: '/Administration/ApprovedData/UnlockShiftReport',
+                        type: 'GET',
+                        data: getShiftData(false),
+                        success: function (data) {
+                            var unlocked = data.IsUnlocked;
+                            if (unlocked === true) {
+                                var message = "Вие отключихте смяната успешно."
+                                $('pre#succ-message').text(message);
+                                $('div#success-window').data("kendoWindow").open();
+
+                            } else {
+                                if (data.errors) {
+                                    var errorMessage = "";
+                                    $.each(data.errors, function (key, value) {
+                                        if ('errors' in value) {
+                                            $.each(value.errors, function () {
+                                                errorMessage += this + "\n";
+                                            });
+                                        }
+                                    });
+                                    $('pre#err-message').text(errorMessage);
+                                    $('div#err-window').data("kendoWindow").open();
+                                }
+                            }
+                        },
+                        error: function (data) {
+                            var errorMessage = "";
+                            var response = JSON.parse(data.responseText).data;
+                            $.each(response.errors, function (key, value) {
+                                errorMessage += this + "\n";
+                            });
+                            $('pre#err-message').text(errorMessage);
+                            $('div#err-window').data("kendoWindow").open();
+                        }
+                    });
+                }
+             );
+        });
+
+        $(function () {
+            $("#day-unlock").click(
+                function () {
+                    $.ajax({
+                        url: '/Administration/ApprovedData/UnlockDailyReport',
+                        type: 'GET',
+                        data: getDayData(false),
+                        success: function (data) {
+                            var unlocked = data.IsUnlocked;
+                            if (unlocked === true) {
+                                var message = "Вие отключихте дневните данни успешно."
+                                $('pre#succ-message').text(message);
+                                $('div#success-window').data("kendoWindow").open();
+
+                            } else {
+                                if (data.errors) {
+                                    var errorMessage = "";
+                                    $.each(data.errors, function (key, value) {
+                                        if ('errors' in value) {
+                                            $.each(value.errors, function () {
+                                                errorMessage += this + "\n";
+                                            });
+                                        }
+                                    });
+                                    $('pre#err-message').text(errorMessage);
+                                    $('div#err-window').data("kendoWindow").open();
+                                }
+                            }
+                        },
+                        error: function (data) {
+                            var errorMessage = "";
+                            var response = JSON.parse(data.responseText).data;
+                            $.each(response.errors, function (key, value) {
+                                errorMessage += this + "\n";
+                            });
+                            $('pre#err-message').text(errorMessage);
+                            $('div#err-window').data("kendoWindow").open();
+                        }
+                    });
+                }
+             );
+        });
+
+        $(function () {
+            $("#month-unlock").click(
+                function () {
+                    $.ajax({
+                        url: '/Administration/ApprovedData/UnlockMonthlyReport',
+                        type: 'GET',
+                        data: getMonthData(false),
+                        success: function (data) {
+                            var unlocked = data.IsUnlocked;
+                            if (unlocked === true) {
+                                var message = "Вие отключихте отчета успешно."
+                                $('pre#succ-message').text(message);
+                                $('div#success-window').data("kendoWindow").open();
+
+                            } else {
+                                if (data.errors) {
+                                    var errorMessage = "";
+                                    $.each(data.errors, function (key, value) {
+                                        if ('errors' in value) {
+                                            $.each(value.errors, function () {
+                                                errorMessage += this + "\n";
+                                            });
+                                        }
+                                    });
+                                    $('pre#err-message').text(errorMessage);
+                                    $('div#err-window').data("kendoWindow").open();
+                                }
+                            }
+                        },
+                        error: function (data) {
+                            var errorMessage = "";
+                            var response = JSON.parse(data.responseText).data;
+                            $.each(response.errors, function (key, value) {
+                                errorMessage += this + "\n";
+                            });
+                            $('pre#err-message').text(errorMessage);
+                            $('div#err-window').data("kendoWindow").open();
+                        }
+                    });
+                }
+             );
+        });
+
+        function getData(stringified) {
+            var data = {
+                "__RequestVerificationToken": $('input[name=__RequestVerificationToken]').val(),
+                BeginDate: $("#BeginDate").data("kendoDatePicker").value().toISOString(kendo.culture().name),
+                EndDate: $("#EndDate").data("kendoDatePicker").value().toISOString(kendo.culture().name),
+                ShiftId: $("#ShiftId").data("kendoDropDownList").value() || 0,
+                FactoryId: $("#FactoryId").data("kendoDropDownList").value() || 0,
+                ProcessUnitId: $("#ProcessUnitId").data("kendoDropDownList").value() || 0,
+            }
+            if (stringified) {
+                return JSON.stringify(data);
+            } else {
+                return data;
+            }
+        }
+
+        function getShiftData(stringified) {
+            var data = {
+                "__RequestVerificationToken": $('input[name=__RequestVerificationToken]').val(),
+                day: $("#shift-date").data("kendoDatePicker").value().toISOString(kendo.culture().name),
+                processUnitId: $("#shift-process-unit-id").data("kendoDropDownList").value() || 0,
+                shiftId: $("#shift-id").data("kendoDropDownList").value() || 0,
+            }
+            if (stringified) {
+                return JSON.stringify(data);
+            } else {
+                return data;
+            }
+        }
+
+        function getDayData(stringified) {
+            var data = {
+                "__RequestVerificationToken": $('input[name=__RequestVerificationToken]').val(),
+                day: $("#day-date").data("kendoDatePicker").value().toISOString(kendo.culture().name),
+                processUnitId: $("#day-process-unit-id").data("kendoDropDownList").value() || 0,
+                materialTypeId: $("#day-material-type-id").data("kendoDropDownList").value() || 0,
+            }
+            if (stringified) {
+                return JSON.stringify(data);
+            } else {
+                return data;
+            }
+        }
+
+        function getMonthData(stringified) {
+            var data = {
+                "__RequestVerificationToken": $('input[name=__RequestVerificationToken]').val(),
+                month: $("#month-date").data("kendoDatePicker").value().toISOString(kendo.culture().name),
+                monthlyReportTypeId: $("#month-report-type-id").data("kendoDropDownList").value() || 0,
+            }
+            if (stringified) {
+                return JSON.stringify(data);
+            } else {
+                return data;
+            }
+        }
+
+
+        
+    </script>
+}
+
+
+
+
+

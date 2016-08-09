@@ -111,7 +111,10 @@
 
         [Display(Name = "ProductionPlanConfig", ResourceType = typeof(Resources.Layout))]
         public int ProductionPlanConfigId { get; set; }
-        
+
+        [Display(Name = "IsOnlyMonthFactValuePosition", ResourceType = typeof(Resources.Layout))]
+        public bool IsOnlyMonthFactValuePosition { get; set; }
+
 
         /// <summary>
         /// Creates the mappings.
