@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
     public interface IMonthlyTechnicalDataService
     {
-        Task<IEnumerable<MonthlyTechnicalReportDataDto>> ReadMonthlyTechnologicalDataAsync(DateTime month, int[] processUnits);
+        IEnumerable<MonthlyTechnicalReportDataDto> ReadMonthlyTechnologicalDataAsync(DateTime month, int[] processUnits);
 
         IEfStatus CheckIfAllMonthReportAreApproved(DateTime month);
     }

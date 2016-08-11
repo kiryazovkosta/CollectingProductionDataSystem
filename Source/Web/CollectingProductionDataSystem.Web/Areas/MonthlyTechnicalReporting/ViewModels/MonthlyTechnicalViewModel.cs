@@ -41,8 +41,6 @@
         [Display(Name = "MessageType", ResourceType = typeof(Resources.Layout))]
         public string DetailedMaterialType { get; set; }
 
-
-
         [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
         [Display(Name = "MonthPlanValue", ResourceType = typeof(Resources.Layout))]
         public decimal MonthPlanValue { get; set; }
@@ -50,8 +48,6 @@
         [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
         [Display(Name = "MonthPlanPercentage", ResourceType = typeof(Resources.Layout))]
         public decimal MonthPlanPercentage { get; set; }
-
-
 
         [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
         [Display(Name = "MonthFactValue", ResourceType = typeof(Resources.Layout))]
@@ -69,8 +65,6 @@
         [Display(Name = "MonthFactPercentageDifference", ResourceType = typeof(Resources.Layout))]
         public decimal MonthFactPercentageDifference { get; set; }
 
-
-
         [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
         [Display(Name = "YearFactValue", ResourceType = typeof(Resources.Layout))]
         public decimal YearFactValue { get; set; }
@@ -86,8 +80,6 @@
         [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
         [Display(Name = "YearFactPercentageDifference", ResourceType = typeof(Resources.Layout))]
         public decimal YearFactPercentageDifference { get; set; }
-
-
 
         public void CreateMappings(IConfiguration configuration)
         {

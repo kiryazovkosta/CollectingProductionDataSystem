@@ -15,6 +15,7 @@
     using System.ServiceProcess;
     using System.Threading;
     using CollectingProductionDataSystem.Application.Contracts;
+    using Application.MonthlyTechnologicalDataServices;
 
     public partial class Phd2SqlProductionDataService : ServiceBase
     {

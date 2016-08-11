@@ -59,7 +59,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
             //Console.WriteLine(monthlyProductionData.Count());
 
 
-            //var lastRealDate = new DateTime(year: 2016, month: 7, day: 25, hour: 0, minute: 0, second: 0);
+            //var lastRealDate = new DateTime(year: 2016, month: 8, day: 9, hour: 0, minute: 0, second: 0);
             //var shiftsData = data.UnitsData.All().Where(x => x.RecordTimestamp == lastRealDate).ToList();
             //var approvedShiftsData = data.UnitsApprovedDatas.All().Where(x => x.RecordDate == lastRealDate).ToList();
             //var nextDate = lastRealDate.AddDays(value: 1);
@@ -80,7 +80,8 @@ namespace CollectingProductionDataSystem.ConsoleClient
             //            Value = (decimal) item.RealValue,
             //            UnitsManualData = null,
             //            UnitConfig = item.UnitConfig,
-            //            UnitEnteredForCalculationData = null
+            //            UnitEnteredForCalculationData = null,
+            //            Confidence = 100
             //        };
             //        unitsDataList.Add(record);
             //    }
@@ -115,7 +116,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
             //}
 
 
-            //var lastRealDate = new DateTime(year: 2016, month: 7, day: 25, hour: 0, minute: 0, second: 0);
+            //var lastRealDate = new DateTime(year: 2016, month: 8, day: 9, hour: 0, minute: 0, second: 0);
             //var dailyData = data.UnitsDailyDatas.All().Where(x => x.RecordTimestamp == lastRealDate).ToList();
             //var approvedDaysData = data.UnitsApprovedDailyDatas.All().Where(x => x.RecordDate == lastRealDate).ToList();
             //var nextDate = lastRealDate.AddDays(1);
@@ -170,7 +171,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
 
 
 
-            var lastRealDate = new DateTime(2016, 7, 25, 0, 0, 0);
+            var lastRealDate = new DateTime(year: 2016, month: 8, day: 9, hour: 0, minute: 0, second: 0);
             var dailyData = data.ProductionPlanDatas.All().Where(x => x.RecordTimestamp == lastRealDate).ToList();
             var nextDate = lastRealDate.AddDays(1);
             var daysInMonth = DateTime.DaysInMonth(lastRealDate.Year, lastRealDate.Month);

@@ -117,6 +117,7 @@
     <Compile Include="Productions\PlanNorm.cs" />
     <Compile Include="Productions\PlanValue.cs" />
     <Compile Include="Productions\RelatedProductionPlanConfig.cs" />
+    <Compile Include="Productions\Technological\UnitTechnologicalMonthlyData.cs" />
     <Compile Include="Productions\UnitDatasTemp.cs" />
     <Compile Include="Transactions\HighwayPipelines\HighwayPipelineApprovedData.cs" />
     <Compile Include="Transactions\HighwayPipelines\HighwayPipelineConfig.cs" />
