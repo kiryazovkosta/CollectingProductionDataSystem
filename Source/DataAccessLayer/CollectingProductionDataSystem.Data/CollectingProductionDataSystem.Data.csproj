@@ -172,6 +172,7 @@
     <Compile Include="Mappings\UnitsManualDailyDataMap.cs" />
     <Compile Include="Mappings\UnitsManualDataMap.cs" />
     <Compile Include="Mappings\UnitMonthlyDataMap.cs" />
+    <Compile Include="Mappings\UnitTechnologicalMonthlyDataMap.cs" />
     <Compile Include="Mappings\ZoneMap.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Concrete\ProductionData.cs" />

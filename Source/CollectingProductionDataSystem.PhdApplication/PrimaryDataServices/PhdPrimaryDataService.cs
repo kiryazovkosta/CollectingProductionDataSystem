@@ -29,7 +29,6 @@
     using CollectingProductionDataSystem.PhdApplication.Contracts;
     using System.Reflection;
     using log4net;
-    using System.Data.Entity;
     using log4net.Core;
 
     public class PhdPrimaryDataService : IPhdPrimaryDataService

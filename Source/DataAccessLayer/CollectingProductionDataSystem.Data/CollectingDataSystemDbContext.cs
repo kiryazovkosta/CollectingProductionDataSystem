@@ -33,6 +33,7 @@
     using CollectingProductionDataSystem.Models.UtilityEntities;
     using Microsoft.AspNet.Identity.EntityFramework;
     using EntityFramework.BulkInsert.Extensions;
+    using Models.Productions.Technological;
 
     public class CollectingDataSystemDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, int,
         UserLoginIntPk, UserRoleIntPk, UserClaimIntPk>, IAuditableDbContext
@@ -207,6 +208,8 @@
         public IDbSet<ProductionPlanConfigUnitMonthlyConfigFactFractionMembers> ProductionPlanConfigUnitMonthlyConfigFactFractionMembers { get; set; }
 
         public IDbSet<ProductionPlanConfigUnitMonthlyConfigPlanMembers> ProductionPlanConfigUnitMonthlyConfigPlanMembers { get; set; }
+
+        public IDbSet<UnitTechnologicalMonthlyData> UnitTechnologicalMonthlyDatas { get; set; }
 
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

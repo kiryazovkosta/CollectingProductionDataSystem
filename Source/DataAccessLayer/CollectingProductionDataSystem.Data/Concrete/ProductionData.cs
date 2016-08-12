@@ -14,6 +14,7 @@
     using CollectingProductionDataSystem.Models.Productions;
     using CollectingProductionDataSystem.Models.Productions.Mounthly;
     using CollectingProductionDataSystem.Models.Productions.Qpt;
+    using Models.Productions.Technological;
     using CollectingProductionDataSystem.Models.SystemLog;
     using CollectingProductionDataSystem.Models.Transactions;
     using CollectingProductionDataSystem.Models.Transactions.HighwayPipelines;
@@ -677,6 +678,14 @@
         //    }
         //}
 
+        public IDeletableEntityRepository<UnitTechnologicalMonthlyData> UnitTechnologicalMonthlyDatas
+        {
+            get
+            {
+                return this.GetDeletableEntityRepository<UnitTechnologicalMonthlyData>();
+            }
+        }
+
         public IRepository<Event> Events
         {
             get
@@ -766,6 +775,5 @@
                 return this.context;
             }
         }
-
     }
 }

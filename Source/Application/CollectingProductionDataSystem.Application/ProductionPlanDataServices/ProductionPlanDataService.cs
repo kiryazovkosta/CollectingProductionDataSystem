@@ -74,8 +74,8 @@
             var dbResult = this.data.ProductionPlanConfigs.All()
                 .Include(x => x.PlanNorms)
                 .Include(x => x.ProcessUnit)
-                .Include(x => x.ProcessUnit.PlanValues)
-                .Where(x => x.IsPropductionPlan == true);
+                .Include(x => x.ProcessUnit.PlanValues);
+                //.Where(x => x.IsPropductionPlan == true);
             if (processUnitId != null)
             {
                 dbResult = dbResult.Where(x => x.ProcessUnitId == processUnitId);
@@ -100,7 +100,6 @@
 
             var currentMonthQuantity = AppendTotalMonthQuantityToDailyProductionPlanRecords(processUnitId.Value, date.Value);
             var totallyQuantity = GetSumOfTottallyProcessing(processUnitId.Value, date.Value);
-            //var totallyQuantityAs = 0m;
 
             var month = new DateTime(date.Value.Year, date.Value.Month, 1, 0, 0, 0);
 

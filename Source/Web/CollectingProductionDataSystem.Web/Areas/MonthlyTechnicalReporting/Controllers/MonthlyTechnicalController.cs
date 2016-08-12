@@ -36,7 +36,8 @@
         [HttpPost]
         [ValidateAntiForgeryToken]
         //[OutputCache(Duration = HalfAnHour, Location = OutputCacheLocation.Server, VaryByParam = "*")]
-        public async Task<JsonResult> ReadMonthlyTechnicalData([DataSourceRequest]DataSourceRequest request, DateTime? date)
+        //public async Task<JsonResult> ReadMonthlyTechnicalData([DataSourceRequest]DataSourceRequest request, DateTime? date)
+        public JsonResult ReadMonthlyTechnicalData([DataSourceRequest]DataSourceRequest request, DateTime? date)
         {
             if (!this.ModelState.IsValid)
             {
@@ -65,7 +66,7 @@
                     }
 
                     var kendoResult = new DataSourceResult();
-                    var dbResult = await this.monthlyService.ReadMonthlyTechnologicalDataAsync(date.Value, processUnits.ToArray());
+                    var dbResult = this.monthlyService.ReadMonthlyTechnologicalDataAsync(date.Value, processUnits.ToArray());
                     var vmResult = Mapper.Map<IEnumerable<MonthlyTechnicalViewModel>>(dbResult);
                     kendoResult = vmResult.ToDataSourceResult(request, ModelState);
                     //return Json(kendoResult);
