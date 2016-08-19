@@ -137,7 +137,7 @@
                     <div class="form-group col-sm-3">
                         @(Html.Kendo()
                         .DropDownList()
-                        .Name("Daily-FactoryId")
+                        .Name("day-factory-id")
                         .OptionLabel(Resources.Layout.AllFactories)
                         .DataTextField("Name")
                         .DataValueField("Id")
@@ -164,13 +164,13 @@
                         {
                             source.Read(read =>
                             {
-                                read.Action("GetProcessUnits", "Ajax", new { area = "" }).Data("sendFactoryId");
+                                read.Action("GetProcessUnits", "Ajax", new { area = "" }).Data("sendDailyFactoryId");
                             })
                             .ServerFiltering(true);
                         })
                         .Enable(false)
                         .AutoBind(false)
-                        .CascadeFrom("Daily-FactoryId")
+                        .CascadeFrom("day-factory-id")
                         )
                     </div>
 
@@ -280,6 +280,14 @@
             sendFactoryId = function () {
                 return {
                     factoryId: $('#FactoryId').val()
+                };
+            }
+        }());
+
+        (function () {
+            sendDailyFactoryId = function () {
+                return {
+                    factoryId: $('#day-factory-id').val()
                 };
             }
         }());

@@ -4,9 +4,9 @@
     using System.Data.Entity.Core.Common.CommandTrees.ExpressionBuilder;
     using System.Data.Entity.ModelConfiguration;
     using System.Linq;
-    using CollectingProductionDataSystem.Models.Productions.Daily;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Infrastructure.Annotations;
+    using Models.PetroleumScheduler;
 
     public class RelatedUnitDailyConfigAspenCodeMap : EntityTypeConfiguration<RelatedUnitDailyConfigAspenCode>
     {

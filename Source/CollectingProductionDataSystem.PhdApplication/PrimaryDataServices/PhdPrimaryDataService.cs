@@ -1287,9 +1287,10 @@
 
                                     foreach (var t in tanks)
                                     {
+                                        var tankData = new TankData();
+
                                         try
                                         {
-                                            var tankData = new TankData();
                                             tankData.RecordTimestamp = targetRecordDateTime;
                                             tankData.TankConfigId = t.TankId;
                                             tankData.ParkId = t.ParkId;
@@ -1321,16 +1322,24 @@
                                                     }
                                                     else if (dc.ColumnName.Equals("Confidence") && !row[dc].ToString().Equals("100"))
                                                     {
-                                                        confedence = Convert.ToInt32(row[dc]);
+                                                        if (!row.IsNull("Confidence"))
+                                                        {
+                                                            confedence = Convert.ToInt32(row[dc]);
+                                                        }
+                                                        else
+                                                        {
+                                                            confedence = 0;
+                                                        }
+                                                        
                                                         break;
                                                     }
-                                                    else if (dc.ColumnName.Equals("TagName"))
+                                                    else if (dc.ColumnName.Equals(value: "TagName"))
                                                     {
                                                         tagName = row[dc].ToString();
                                                     }
-                                                    else if (dc.ColumnName.Equals("TimeStamp"))
+                                                    else if (dc.ColumnName.Equals(value: "TimeStamp"))
                                                     {
-                                                        var dt = Convert.ToDateTime(row[dc]);
+                                                        var dt = !row.IsNull(columnName: "TimeStamp")? Convert.ToDateTime(row[dc]) : DateTime.MinValue;
                                                         var difference = targetRecordDateTime - dt;
                                                         var currentTagName = !row.IsNull("TagName") ? row["TagName"].ToString() : string.Empty;
                                                         var currentTagValue = !row.IsNull("Value") ? row["Value"].ToString() : string.Empty;
@@ -1420,6 +1429,8 @@
                                         catch (Exception ex)
                                         {
                                             logger.ErrorFormat("Tank Id [{0}] Exception:\n\n\n{1}", t.TankId, ex.ToString());
+                                            this.mailer.SendMail($"There is a exception [{ex.Message}] with Tank {tankData.TankConfigId}", "Phd2Sql Inventory");
+                                            tanksDataList.Add(tankData);
                                         }
                                     }
 
