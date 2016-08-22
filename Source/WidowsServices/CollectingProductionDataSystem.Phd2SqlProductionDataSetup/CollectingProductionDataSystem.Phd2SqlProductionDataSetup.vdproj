@@ -1881,15 +1881,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:CollectingProductionDataSystem.Phd2SqlProductionDataSetup"
-        "ProductCode" = "8:{60AF5E0B-5988-445A-8ED1-AA9F3482C1BB}"
-        "PackageCode" = "8:{04AAD71E-DF7A-4FCB-8496-141069C9A55D}"
+        "ProductCode" = "8:{A585B105-7D9D-4D22-96A8-6118F3A8ECB6}"
+        "PackageCode" = "8:{B043F059-4C5D-4A86-A04F-50FD20EDA051}"
         "UpgradeCode" = "8:{65F7F665-CA14-4FD7-8AF7-7F225A676E13}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:FALSE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:1.6.5"
+        "ProductVersion" = "8:1.6.6"
         "Manufacturer" = "8:Business Management Systems"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
@@ -2403,7 +2403,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_823A5D324B244B10BA5A8E1E61870E4F"
             {
-            "SourcePath" = "8:..\\CollectingProductionDataSystem.Phd2SqlProductionData\\obj\\Debug\\CollectingProductionDataSystem.Phd2SqlProductionData.exe"
+            "SourcePath" = "8:..\\CollectingProductionDataSystem.Phd2SqlProductionData\\obj\\Release\\CollectingProductionDataSystem.Phd2SqlProductionData.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_5A5EDB7EC9634905988C582CFFD051EE"

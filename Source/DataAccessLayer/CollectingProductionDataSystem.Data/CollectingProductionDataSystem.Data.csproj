@@ -99,6 +99,7 @@
     <Compile Include="Mappings\PlanNormMap.cs" />
     <Compile Include="Mappings\ProductionPlanConfigUnitMonthlyConfigFactFractionMembersMap.cs" />
     <Compile Include="Mappings\ProductionPlanConfigUnitMonthlyConfigPlanMembersMap.cs" />
+    <Compile Include="Mappings\RelatedProductionCodeAspenProductCodeMap.cs" />
     <Compile Include="Mappings\RelatedProductionPlanConfigsMap.cs" />
     <Compile Include="Mappings\RelatedUnitDailyConfigAspenCodeMap.cs" />
     <Compile Include="Mappings\TankStatusDataMap.cs" />

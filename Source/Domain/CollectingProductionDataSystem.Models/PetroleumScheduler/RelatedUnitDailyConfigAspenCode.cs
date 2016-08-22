@@ -1,4 +1,4 @@
-﻿namespace CollectingProductionDataSystem.Models.Productions.Daily
+﻿namespace CollectingProductionDataSystem.Models.PetroleumScheduler
 {
     using System;
     using System.Linq;

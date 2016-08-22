@@ -93,7 +93,8 @@
     <Compile Include="Nomenclatures\MathExpression.cs" />
     <Compile Include="Nomenclatures\MeasureUnit.cs" />
     <Compile Include="Nomenclatures\PhdConfig.cs" />
-    <Compile Include="Productions\Daily\RelatedUnitDailyConfigAspenCode.cs" />
+    <Compile Include="PetroleumScheduler\RelatedProductionCodeAspenProductCode.cs" />
+    <Compile Include="PetroleumScheduler\RelatedUnitDailyConfigAspenCode.cs" />
     <Compile Include="Productions\Mounthly\MonthlyReportType.cs" />
     <Compile Include="Nomenclatures\Shift.cs" />
     <Compile Include="Nomenclatures\ShiftProductType.cs" />

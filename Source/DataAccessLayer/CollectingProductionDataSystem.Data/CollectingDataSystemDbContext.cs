@@ -34,6 +34,7 @@
     using Microsoft.AspNet.Identity.EntityFramework;
     using EntityFramework.BulkInsert.Extensions;
     using Models.Productions.Technological;
+    using Models.PetroleumScheduler;
 
     public class CollectingDataSystemDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, int,
         UserLoginIntPk, UserRoleIntPk, UserClaimIntPk>, IAuditableDbContext
