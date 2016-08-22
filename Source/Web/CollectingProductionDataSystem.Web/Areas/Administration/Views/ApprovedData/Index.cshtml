@@ -11,11 +11,12 @@
 
     <div class="panel panel-primary">
         <div class="panel-heading">@Resources.Layout.ShiftsData</div>
+
         <div class="panel-body">
             @Html.ValidationSummary()
             @using (Html.BeginForm("Index", "ApprovedData", new { area = "Administration" }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
             {
-                <div class="row">
+                <div class="row row-controlls">
                     @Html.AntiForgeryToken()
 
                     <div class="form-group col-sm-3">
@@ -35,7 +36,7 @@
                     </div>
                 </div>
 
-                <div class="row">
+                <div class="row row-controlls">
                     <div class="form-group col-sm-3">
                         @(Html.Kendo()
                         .DropDownList()
@@ -109,11 +110,12 @@
     <div class="panel panel-primary">
         <div class="panel-heading">@Resources.Layout.DailyData</div>
         <div class="panel-body">
+
             @Html.ValidationSummary()
 
             @using (Html.BeginForm("DailyIndex", "ApprovedData", new { area = "Administration" }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
             {
-                <div class="row">
+                <div class="row row-controlls">
                     @Html.AntiForgeryToken()
 
                     <div class="form-group col-sm-3">
@@ -133,7 +135,7 @@
                     </div>
                 </div>
 
-                <div class="row">
+                <div class="row row-controlls">
                     <div class="form-group col-sm-3">
                         @(Html.Kendo()
                         .DropDownList()
@@ -198,7 +200,7 @@
 
                 </div>
                 <hr />
-                <a href="#" id="day-unlock" class="btn btn-primary pull-right">@Resources.Layout.Unlock</a>
+                    <a href="#" id="day-unlock" class="btn btn-primary pull-right">@Resources.Layout.Unlock</a>
             }
         </div>
     </div>
@@ -210,7 +212,7 @@
 
             @using (Html.BeginForm("Index", "ApprovedData", new { area = "Administration" }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
             {
-                <div class="row">
+                <div class="row row-controlls">
                     @Html.AntiForgeryToken()
 
                     <div class="form-group col-sm-4">
@@ -225,9 +227,9 @@
                     </div>
                 </div>
 
-                <div class="row">
-                    <div class="form-group col-sm-4">
-                        @(Html.Kendo()
+                    <div class="row row-controlls">
+                        <div class="form-group col-sm-4">
+                            @(Html.Kendo()
                         .DropDownList()
                         .Name("month-report-type-id")
                         .DataTextField("Name")
@@ -240,29 +242,28 @@
                                 read.Action("GetMonthlyReportTypes", "Ajax", new { area = "" });
                             });
                         })
-                        )
-                    </div>
+                            )
+                        </div>
 
-                    <div class="form-group col-sm-4">
-                        @(Html.Kendo().DatePicker()
+                        <div class="form-group col-sm-4">
+                            @(Html.Kendo().DatePicker()
                             .Name("month-date").Culture("bg-BG")
                             .Start(CalendarView.Year)
                             .Depth(CalendarView.Year)
                             .Format("MMMM yyyy")
                             .HtmlAttributes(new { style = "width:95%" })
                             .Value(DateTime.Today.AddDays(-1))
-                        )
-                    </div>
+                            )
+                        </div>
 
-                    <div class="form-group col-sm-3">
-                        <a href="#" id="month-unlock" class="btn btn-primary pull-right">@Resources.Layout.Unlock</a>
-                    </div>
+                        <div class="form-group col-sm-3">
+                            <a href="#" id="month-unlock" class="btn btn-primary pull-right">@Resources.Layout.Unlock</a>
+                        </div>
 
-                </div>
+                    </div>
             }
         </div>
     </div>
-
 </div>
 
 <div id="progress-bar"></div>
@@ -479,7 +480,7 @@
         }
 
 
-        
+
     </script>
 }
 
