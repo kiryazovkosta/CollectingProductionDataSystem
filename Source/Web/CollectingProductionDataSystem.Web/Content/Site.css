@@ -14,8 +14,8 @@
     width: 100%;
     background-color: white;
 }
-/* Override the default bootstrap behavior where horizontal description lists 
-   will truncate terms that are too long to fit in the left column 
+/* Override the default bootstrap behavior where horizontal description lists
+   will truncate terms that are too long to fit in the left column
 */
 .dl-horizontal dt {
     white-space: normal;
@@ -757,13 +757,13 @@ div#modal-chart-plot-area {
 }
 
 div#chart-wrapper {
-    margin-top:2px;
+    margin-top: 2px;
 }
 
-div#chart-wrapper div.panel.panel-default div.panel-body,
-div#modal-chart-dialog-body div.modal-body {
-    overflow: auto;
-}
+    div#chart-wrapper div.panel.panel-default div.panel-body,
+    div#modal-chart-dialog-body div.modal-body {
+        overflow: auto;
+    }
 
 div#productionPlan {
     font-size: 11px;
@@ -1080,14 +1080,15 @@ hr.control-delimiter {
     .pu-chart-holder .panel {
         max-width: 98%;
     }
+
 .chart-tumb-row {
-    margin-left:0;
-    margin-right:0;
+    margin-left: 0;
+    margin-right: 0;
 }
 
 .controlls-wraper {
-    padding-left:30px;
-    padding-right:30px;
+    padding-left: 30px;
+    padding-right: 30px;
 }
 
 .total-input-position {
@@ -1097,3 +1098,12 @@ hr.control-delimiter {
 .external-output-position {
     background-color: lightblue;
 }
+
+.row-controlls {
+    margin-left: 0px;
+}
+
+    .row-controlls div label {
+        text-align: left !important;
+        margin-bottom:-5px;
+    }
