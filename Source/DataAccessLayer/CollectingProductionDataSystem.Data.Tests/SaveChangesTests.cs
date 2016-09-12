@@ -42,7 +42,7 @@ namespace CollectingProductionDataSystem.Data.Tests
             this.dbContext.ProductTypes.Add(testProductType);
             this.dbContext.SaveChanges("TestUser");
 
-            var auditRecordsCount = this.dbContext.Set<AuditLogRecord>().CountAsync().Result;
+            var auditRecordsCount = this.dbContext.Set<AuditLogRecord>().Count();
 
             //Act
             var newProduct = new Product { Name = "Test Product", ProductTypeId = testProductType.Id };
@@ -51,7 +51,7 @@ namespace CollectingProductionDataSystem.Data.Tests
             var auditRecord = this.dbContext.AuditLogRecords.FirstOrDefault(x => x.EntityName == "Product" && x.EntityId == newProduct.Id && x.OperationType == EntityState.Added);
 
             //Assert
-            var actualRecordCount = this.dbContext.Set<AuditLogRecord>().CountAsync().Result;
+            var actualRecordCount = this.dbContext.Set<AuditLogRecord>().Count();
             var expectedRecordsCount = auditRecordsCount + 1;
             Assert.AreEqual(expectedRecordsCount, actualRecordCount);
             Assert.AreEqual(EntityState.Added, auditRecord.OperationType, "Invalid Operation Type");
@@ -101,11 +101,12 @@ namespace CollectingProductionDataSystem.Data.Tests
             this.dbContext.Products.Add(modifiedRecord);
             this.dbContext.SaveChanges("AnotherTestUser");
             //remove Log record for create operation
+
             var auditLogRecord = this.dbContext.AuditLogRecords.FirstOrDefault(x => x.EntityName == "Product" && x.EntityId == modifiedRecord.Id && x.OperationType == EntityState.Added);
             this.dbContext.AuditLogRecords.Remove(auditLogRecord);
             this.dbContext.SaveChanges();
 
-            var auditRecordsCount = this.dbContext.Set<AuditLogRecord>().CountAsync().Result;
+            var auditRecordsCount = this.dbContext.Set<AuditLogRecord>().Count();
 
             //Act
             modifiedRecord.Name = "Modified";
@@ -172,7 +173,7 @@ namespace CollectingProductionDataSystem.Data.Tests
             this.dbContext.UnitsDailyDatas.Add(unitDailyDataRecord);
             this.dbContext.SaveChanges("TestUser");
             //read new record from database
-            var readedUnitDailyRecord = dbContext.UnitsDailyDatas.FirstOrDefault(x => x.Id == unitDailyDataRecord.Id); 
+            var readedUnitDailyRecord = dbContext.UnitsDailyDatas.FirstOrDefault(x => x.Id == unitDailyDataRecord.Id);
 
             //Act
             var actual = readedUnitDailyRecord.GotManualData;

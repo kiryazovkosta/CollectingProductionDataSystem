@@ -14,7 +14,6 @@ namespace CollectingProductionDataSystem.Web.AppStart
             foreach (var user in users)
             {
                 user.IsUserLoggedIn = 0;
-                productionData.Users.Update(user);
             }
 
             productionData.SaveChanges("Reset Sessions from system restart");

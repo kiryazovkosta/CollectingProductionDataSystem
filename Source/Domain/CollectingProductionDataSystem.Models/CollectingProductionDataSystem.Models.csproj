@@ -93,7 +93,8 @@
     <Compile Include="Nomenclatures\MathExpression.cs" />
     <Compile Include="Nomenclatures\MeasureUnit.cs" />
     <Compile Include="Nomenclatures\PhdConfig.cs" />
-    <Compile Include="Productions\Daily\RelatedUnitDailyConfigAspenCode.cs" />
+    <Compile Include="PetroleumScheduler\RelatedProductionCodeAspenProductCode.cs" />
+    <Compile Include="PetroleumScheduler\RelatedUnitDailyConfigAspenCode.cs" />
     <Compile Include="Productions\Mounthly\MonthlyReportType.cs" />
     <Compile Include="Nomenclatures\Shift.cs" />
     <Compile Include="Nomenclatures\ShiftProductType.cs" />
@@ -117,6 +118,7 @@
     <Compile Include="Productions\PlanNorm.cs" />
     <Compile Include="Productions\PlanValue.cs" />
     <Compile Include="Productions\RelatedProductionPlanConfig.cs" />
+    <Compile Include="Productions\Technological\UnitTechnologicalMonthlyData.cs" />
     <Compile Include="Productions\UnitDatasTemp.cs" />
     <Compile Include="Transactions\HighwayPipelines\HighwayPipelineApprovedData.cs" />
     <Compile Include="Transactions\HighwayPipelines\HighwayPipelineConfig.cs" />
@@ -126,7 +128,6 @@
     <Compile Include="Productions\Plant.cs" />
     <Compile Include="Nomenclatures\Product.cs" />
     <Compile Include="Nomenclatures\ProductType.cs" />
-    <Compile Include="Productions\PrimaryDataSourceType.cs" />
     <Compile Include="Productions\ProcessUnit.cs" />
     <Compile Include="Productions\ProductionPlanConfig.cs" />
     <Compile Include="Productions\ProductionPlanData.cs" />
@@ -192,6 +193,14 @@
     <ProjectReference Include="..\..\Application\CollectingProductionDataSystem.MathExpressions\CollectingProductionDataSystem.MathExpressions.csproj">
       <Project>{34672323-163b-48f2-9425-b4b55b33d144}</Project>
       <Name>CollectingProductionDataSystem.MathExpressions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\CollectingProductionDataSystem.Contracts\CollectingProductionDataSystem.Contracts.csproj">
+      <Project>{160DDAF7-A447-4A73-A7F5-789AC59212DD}</Project>
+      <Name>CollectingProductionDataSystem.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Common\CollectingProductionDataSystem.Enumerations\CollectingProductionDataSystem.Enumerations.csproj">
+      <Project>{D39275E1-1997-41C3-99CC-FF1B7502E93F}</Project>
+      <Name>CollectingProductionDataSystem.Enumerations</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Common\CollectingProductionDataSystem.Infrastructure\CollectingProductionDataSystem.Infrastructure.csproj">
       <Project>{69DEBDE6-B1BA-4A55-9570-AE7E6ABB5F98}</Project>

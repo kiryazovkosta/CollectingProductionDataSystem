@@ -87,6 +87,8 @@
             modelBuilder.Configurations.Add(new RelatedProductionPlanConfigsMap());
             modelBuilder.Configurations.Add(new RelatedUnitDailyConfigAspenCodeMap());
             modelBuilder.Configurations.Add(new MeasuringPointsConfigsReportDataMap());
+            modelBuilder.Configurations.Add(new UnitTechnologicalMonthlyDataMap());
+            modelBuilder.Configurations.Add(new RelatedProductionCodeAspenProductCodeMap());
         }
     }
 }

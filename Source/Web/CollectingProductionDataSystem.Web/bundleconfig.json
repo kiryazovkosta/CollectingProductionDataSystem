@@ -1,0 +1,8 @@
+[
+  {
+    "outputFileName": "Scripts/custom/windowExpirationTime.min.js",
+    "inputFiles": [
+      "Scripts/custom/windowExpirationTime.js"
+    ]
+  }
+]

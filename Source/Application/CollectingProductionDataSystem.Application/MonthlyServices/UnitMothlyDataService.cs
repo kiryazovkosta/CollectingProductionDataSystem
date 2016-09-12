@@ -463,7 +463,7 @@ namespace CollectingProductionDataSystem.Application.MonthlyServices
                 inputDictionary.Add(string.Format("p{0}", currentIndex - 1), unit.RealValue);
             }
 
-            return calculator.Calculate(unitMonthlyConfig.AggregationFormula, "p", inputDictionary.Count, inputDictionary);
+            return calculator.Calculate(unitMonthlyConfig.AggregationFormula, "p", inputDictionary.Count, inputDictionary, unitMonthlyConfig?.Code);
         }
 
         /// <summary>
@@ -475,7 +475,7 @@ namespace CollectingProductionDataSystem.Application.MonthlyServices
         /// <returns></returns>
         private double GetMonthlyValueFromRelatedDailyRecords(IEnumerable<UnitsDailyData> records, UnitMonthlyConfig unitMonthlyConfig, Dictionary<int, int> positionDictionary)
         {
-            // single record reference to single DailyRecord    
+            // single record reference to single DailyRecord
             if (records.Count() == 1 && string.IsNullOrEmpty(unitMonthlyConfig.AggregationFormula))
             {
                 var record = records.FirstOrDefault();
@@ -502,7 +502,7 @@ namespace CollectingProductionDataSystem.Application.MonthlyServices
                 inputDictionary.Add(string.Format("p0"), 0);
             }
 
-            return calculator.Calculate(unitMonthlyConfig.AggregationFormula, "p", inputDictionary.Count, inputDictionary);
+            return calculator.Calculate(unitMonthlyConfig.AggregationFormula, "p", inputDictionary.Count, inputDictionary, unitMonthlyConfig.Code);
         }
 
         public DateTime GetTargetMonth(DateTime inTargetMonth)

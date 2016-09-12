@@ -12,6 +12,7 @@
     using CollectingProductionDataSystem.Models.Transactions;
     using CollectingProductionDataSystem.Models.Transactions.HighwayPipelines;
     using CollectingProductionDataSystem.Models.UtilityEntities;
+    using Models.Productions.Technological;
 
     public interface IProductionData : IDisposable
     {
@@ -168,6 +169,8 @@
         IRepository<RelatedProductionPlanConfigs> RelatedProductionPlanConfigs { get; }
 
         IRepository<MeasuringPointsConfigsReportData> MeasuringPointsConfigsReportDatas { get; }
+
+        IDeletableEntityRepository<UnitTechnologicalMonthlyData> UnitTechnologicalMonthlyDatas { get; }
 
         IDbContext DbContext { get; }
 

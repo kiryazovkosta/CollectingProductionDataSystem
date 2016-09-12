@@ -27,5 +27,8 @@ namespace CollectingProductionDataSystem.Web.Areas.PlanConfiguration.Models
         [Required]
         [Display(Name = "ProcessingPlan", ResourceType = typeof(Resources.Layout))]
         public decimal Value { get; set; }
+
+        [Display(Name = "ProcessingPlanLiquid", ResourceType = typeof(Resources.Layout))]
+        public decimal? ValueLiquid { get; set; }
     }
 }

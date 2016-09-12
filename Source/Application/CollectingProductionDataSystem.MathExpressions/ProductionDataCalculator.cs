@@ -1,5 +1,6 @@
 ﻿namespace MathExpressions.Application
 {
+    using CollectingProductionDataSystem.Infrastructure.Contracts;
     using System;
     using System.Collections.Generic;
     using System.Linq;

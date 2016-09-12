@@ -65,6 +65,7 @@ namespace CollectingProductionDataSystem.Web.Areas.PlanConfiguration.Controllers
                     var dbEntry = this.data.PlanValues.GetById(inputViewModel.Id);
 
                     dbEntry.Value = inputViewModel.Value;
+                    dbEntry.ValueLiquid = inputViewModel.ValueLiquid;
 
                     try
                     {

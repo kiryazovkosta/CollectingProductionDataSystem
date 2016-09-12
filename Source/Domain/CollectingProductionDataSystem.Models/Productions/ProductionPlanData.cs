@@ -20,5 +20,7 @@
         public string Name { get; set; }
         public int FactoryId { get; set; }
         public int ProcessUnitId { get; set; }
+
+        public override string ToString() => $"{this.ProductionPlanConfig.Code} | {this.ProductionPlanConfig.Name} | {this.ProductionPlanConfig.ProductionPlanConfigUnitMonthlyConfigFactFractionMembers.Count} | {this.ProductionPlanConfig.ProductionPlanConfigUnitMonthlyConfigPlanMembers.Count}";
     }
 }

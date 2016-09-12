@@ -170,7 +170,7 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
             {
                 if (totalMonthQuantities.ContainsKey(item.Key))
                 {
-                    resultDaily[item.Key].TotalMonthQuantity = (decimal)totalMonthQuantities[item.Key];
+                    resultDaily[item.Key].TotalMonthQuantity = (decimal) totalMonthQuantities[item.Key];
                 }
                 else
                 {
@@ -217,7 +217,7 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
                     dailyValue += shiftValue;
                 }
 
-                dailyRecord.Value = (decimal)dailyValue;
+                dailyRecord.Value = (decimal) dailyValue;
                 dailyRecord.HasManualData = unitDatasByShift.SelectMany(x => x).Any(y => y.IsManual);
                 result.Add(targetUnitDailyRecordConfig.Code, dailyRecord);
             }
@@ -233,7 +233,7 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
         private IEnumerable<IGrouping<int, UnitsData>> GetUnitDatasForDailyData(UnitDailyConfig targetUnitDailyRecordConfig, IEnumerable<UnitsData> targetUnitData)
         {
             var targetUnitCongifs = targetUnitDailyRecordConfig.UnitConfigUnitDailyConfigs.Select(x => x.UnitConfigId).ToList();
-            return targetUnitData.Where(x => targetUnitCongifs.Any(y => y == x.UnitConfigId)).ToList().GroupBy(z => (int)z.ShiftId);
+            return targetUnitData.Where(x => targetUnitCongifs.Any(y => y == x.UnitConfigId)).ToList().GroupBy(z => (int) z.ShiftId);
         }
 
         /// <summary>
@@ -286,19 +286,19 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
                         dailyRecord.UnitsManualDailyData = new UnitsManualDailyData
                         {
                             Id = dailyRecord.Id,
-                            Value = (decimal)dailyValue,
+                            Value = (decimal) dailyValue,
                             EditReasonId = editReasonId
                         };
                     }
                     else
                     {
-                        dailyRecord.UnitsManualDailyData.Value = (decimal)dailyValue;
+                        dailyRecord.UnitsManualDailyData.Value = (decimal) dailyValue;
                         dailyRecord.UnitsManualDailyData.EditReasonId = editReasonId;
                     }
                 }
                 else
                 {
-                    dailyRecord.Value = (decimal)dailyValue;
+                    dailyRecord.Value = (decimal) dailyValue;
                 }
 
                 resultDaily.Add(targetUnitDailyRecordConfig.Code, dailyRecord);
@@ -349,7 +349,7 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
                 inputDictionary.Add(string.Format("p{0}", currentIndex - 1), unit.RealValue);
             }
 
-            return calculator.Calculate(unitDailyConfig.AggregationFormula, "p", inputDictionary.Count, inputDictionary);
+            return calculator.Calculate(unitDailyConfig.AggregationFormula, "p", inputDictionary.Count, inputDictionary, unitDailyConfig?.Code);
         }
 
         /// <summary>
@@ -366,7 +366,7 @@ namespace CollectingProductionDataSystem.Application.UnitDailyDataServices
                 inputDictionary.Add(string.Format("p{0}", currentIndex - 1), unit.RealValue);
             }
 
-            return calculator.Calculate(unitDailyConfig.AggregationFormula, "p", inputDictionary.Count, inputDictionary);
+            return calculator.Calculate(unitDailyConfig.AggregationFormula, "p", inputDictionary.Count, inputDictionary, unitDailyConfig.Code);
         }
 
         /// <summary>

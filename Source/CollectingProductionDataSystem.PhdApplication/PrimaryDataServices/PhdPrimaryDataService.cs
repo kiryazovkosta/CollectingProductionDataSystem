@@ -29,7 +29,6 @@
     using CollectingProductionDataSystem.PhdApplication.Contracts;
     using System.Reflection;
     using log4net;
-    using System.Data.Entity;
     using log4net.Core;
 
     public class PhdPrimaryDataService : IPhdPrimaryDataService
@@ -119,6 +118,11 @@
                         realNumberOfRecords = newRecords.Count();
                         unitDatasToAdd.AddRange(newRecords);
                         LogConsistencyMessage("Processing Automatic Delta Records", expectedNumberOfRecords, realNumberOfRecords);
+
+                        newRecords  = ProcessAutomaticDeltaTwoSourcesUnits(unitsConfigsList, unitsData, oPhd, targetRecordTimestampDate, targetShift, ref expectedNumberOfRecords);
+                        realNumberOfRecords = newRecords.Count();
+                        unitDatasToAdd.AddRange(newRecords);
+                        LogConsistencyMessage("Processing Automatic Delta Records From Two Sources", expectedNumberOfRecords, realNumberOfRecords);
 
                         newRecords = ProcessAutomaticCalulatedUnits(unitsConfigsList, unitsData, oPhd, targetRecordTimestampDate, targetShift, ref expectedNumberOfRecords);
                         realNumberOfRecords = newRecords.Count();
@@ -363,7 +367,7 @@
         /// <summary>
         /// Creates the missing records.
         /// </summary>
-        /// <param name="targetRecordTimestamp">The target record timestamp.</param>
+        /// <param name="targetRecordTimestamp">The target record time stamp.</param>
         /// <param name="shift">The shift.</param>
         /// <param name="expectedNumberOfRecords">The expected number of records.</param>
         /// <returns></returns>
@@ -393,7 +397,7 @@
         /// <summary>
         /// Flashes the data to original unit data.
         /// </summary>
-        /// <param name="expectedNumberOfRecords">The ecpected number of records.</param>
+        /// <param name="expectedNumberOfRecords">The expected number of records.</param>
         /// <returns></returns>
         private int FlashDataToOriginalUnitData()
         {
@@ -468,6 +472,7 @@
                 {
                     if (unitConfig.CalculatedFormula.Equals("C9"))
                     {
+                        this.logger.ErrorFormat("Id {0} calculate by math expression");
                         CalculateByMathExpression(unitConfig, recordDataTime, shift, unitsTempData, currentUnitDatas);
                     }
                     else
@@ -481,6 +486,7 @@
                         arguments.EstimatedCompressibilityFactor = (double?)unitConfig.EstimatedCompressibilityFactor;
                         arguments.CalculationPercentage = (double?)unitConfig.CalculationPercentage;
                         arguments.CustomFormulaExpression = unitConfig.CustomFormulaExpression;
+                        arguments.Code = unitConfig.Code;
 
                         var relatedUnitConfigs = unitConfig.RelatedUnitConfigs.ToList();
                         var confidence = 100;
@@ -603,8 +609,11 @@
             var relatedunitConfigs = unitConfig.RelatedUnitConfigs.ToList();
             var confidence = 100;
             bool allRelatedRecordsExists = true;
+
             foreach (var relatedunitConfig in relatedunitConfigs)
             {
+                
+
                 if (allRelatedRecordsExists == true)
                 {
                     var element = data.UnitsData
@@ -615,6 +624,7 @@
                                   .FirstOrDefault();
                     if (element != null)
                     {
+                        this.logger.ErrorFormat("Id {0} EXSIST RELATED CONFIG {1}", element.UnitConfigId, element.RealValue);
                         var inputValue = element.RealValue;
                         if (inputValue == 0.0)
                         {
@@ -640,6 +650,7 @@
                     }
                     else
                     {
+                        this.logger.ErrorFormat("Id {0} MISSING RELATED CONFIG {1}", relatedunitConfig.RelatedUnitConfigId, relatedunitConfig.RelatedUnitConfig.Code);
                         allRelatedRecordsExists = false;
                     }
                 }
@@ -648,7 +659,7 @@
 
             if (allRelatedRecordsExists == true)
             {
-                double result = new ProductionDataCalculatorService(this.data).Calculate(mathExpression, "p", inputParams);
+                double result = new ProductionDataCalculatorService(this.data).Calculate(mathExpression, "p", inputParams, unitConfig.Code);
                 if (!unitsData.Where(x => x.RecordTimestamp == recordDataTime && x.ShiftId == shift && x.UnitConfigId == unitConfig.Id).Any())
                 {
                     calculatedUnitsData.Add(
@@ -813,7 +824,7 @@
                         var beginValue = row.IsNull("Value") ? 0 : Convert.ToInt64(row["Value"]);
                         beginConfidence = row.IsNull("Confidence") ? 0 : Convert.ToInt32(row["Confidence"]);
                         if (!row.IsNull("Timestamp")) { recordTimestamp = Convert.ToDateTime(row["Timestamp"]); }
-                        logger.DebugFormat("{0} {1} : Tag:{2} Value:{3} Confidence:{4} Timestamp {5}", unitConfig.Code, unitConfig.Name, unitConfig.PreviousShiftTag, endValue, endConfidence, recordTimestamp);
+                        logger.DebugFormat("{0} {1} : Tag:{2} Value:{3} Confidence:{4} Timestamp {5}", unitConfig.Code, unitConfig.Name, unitConfig.PreviousShiftTag, beginValue, beginConfidence, recordTimestamp);
 
                         currentUnitDatas.Add(
                             new UnitDatasTemp
@@ -824,6 +835,169 @@
                                 RecordTimestamp = targetRecordTimestamp,
                                 Confidence = (beginConfidence + endConfidence) / 2
                             });
+                    }
+                }
+            }
+
+            return currentUnitDatas;
+        }
+
+        private IEnumerable<UnitDatasTemp> ProcessAutomaticDeltaTwoSourcesUnits(List<UnitConfig> unitsConfigsList, List<UnitDatasTemp> unitsData,
+                                                                    PHDHistorian oPhd, DateTime targetRecordTimestamp,
+                                                                    Shift shiftData, ref int expectedNumberOfRecords)
+        {
+            var currentUnitDatas = new List<UnitDatasTemp>();
+            var baseDate = targetRecordTimestamp.Date;
+
+            var observedUnitConfigs = unitsConfigsList.Where(x => x.CollectingDataMechanism == "AS");
+            expectedNumberOfRecords = observedUnitConfigs.Count();
+
+            foreach (var unitConfig in observedUnitConfigs)
+            {
+                if (!unitsData.Any(x => x.UnitConfigId == unitConfig.Id))
+                {
+                    if (shiftData != null)
+                    {
+                        DateTime endShiftDateTime = baseDate + shiftData.EndTime;
+                        DateTime beginShiftDateTime = endShiftDateTime - shiftData.ShiftDuration;
+
+                        var mathExpression = unitConfig.CustomFormulaExpression;
+                        var phdTags = new String[]
+                        {
+                            "TSN_BTG1_QN_T.PV",
+                            "610FQI547.TOTALIZER_S.OLDAV",
+                            "SU400FQI436.TOTALIZER_S.OLDAV"
+                        };
+                        var phdTagsConfidences = new int[phdTags.GetLength(dimension: 0)];
+                        var phdTagsValues = new decimal[phdTags.GetLength(dimension: 0)];
+                        for (int i = 0; i < phdTagsConfidences.GetLength(dimension: 0); i++)
+                        {
+                            phdTagsConfidences[i] = 100;
+                        }
+
+                        try
+                        {
+                            var beginConfidence = 100;
+                            var endConfidence = 100;
+                            var deltaValue = 0L;
+
+                            using (PHDHistorian oPhdOld = new PHDHistorian())
+                            {
+                                using (PHDServer defaultServer = new PHDServer("srv-vm-mes-phd"))
+                                {
+                                    SetPhdConnectionSettings(oPhdOld, defaultServer, targetRecordTimestamp, shiftData);
+                                    var recordTimestamp = new DateTime(2016, 1, 1, 1, 0, 0);
+
+                                    oPhdOld.StartTime = string.Format("{0}", endShiftDateTime.ToString(CommonConstants.PhdDateTimeFormat, CultureInfo.InvariantCulture));
+                                    oPhdOld.EndTime = oPhdOld.StartTime;
+
+                                    var result = oPhdOld.FetchRowData(phdTags[0]);
+                                    var row = result.Tables[0].Rows[0];
+                                    var endValue = row.IsNull("Value") ? 0 : Convert.ToInt64(row["Value"]);
+                                    endConfidence = row.IsNull("Confidence") ? 0 : Convert.ToInt32(row["Confidence"]);
+                                    if (!row.IsNull("Timestamp")) { recordTimestamp = Convert.ToDateTime(row["Timestamp"]); }
+                                    logger.DebugFormat("{0} {1} : Tag:{2} Value:{3} Confidence:{4} Timestamp {5}", unitConfig.Code, unitConfig.Name, unitConfig.PreviousShiftTag, endValue, endConfidence, recordTimestamp);
+
+                                    oPhdOld.StartTime = string.Format("{0}", beginShiftDateTime.ToString(CommonConstants.PhdDateTimeFormat, CultureInfo.InvariantCulture));
+                                    oPhdOld.EndTime = oPhdOld.StartTime;
+                                    result = oPhdOld.FetchRowData(phdTags[0]);
+                                    row = result.Tables[0].Rows[0];
+                                    var beginValue = row.IsNull("Value") ? 0 : Convert.ToInt64(row["Value"]);
+                                    beginConfidence = row.IsNull("Confidence") ? 0 : Convert.ToInt32(row["Confidence"]);
+                                    if (!row.IsNull("Timestamp")) { recordTimestamp = Convert.ToDateTime(row["Timestamp"]); }
+                                    logger.DebugFormat("{0} {1} : Tag:{2} Value:{3} Confidence:{4} Timestamp {5}", unitConfig.Code, unitConfig.Name, unitConfig.PreviousShiftTag, beginValue, beginConfidence, recordTimestamp);
+
+                                    phdTagsValues[0] = (decimal)(endValue - beginValue);
+                                    phdTagsConfidences[0] = (beginConfidence + endConfidence) / 2;
+                                }
+                            }
+
+                            using (PHDHistorian oPhdNew = new PHDHistorian())
+                            {
+                                using (PHDServer defaultServer = new PHDServer("phd-l35-1"))
+                                {
+                                    SetPhdConnectionSettings(oPhdNew, defaultServer, targetRecordTimestamp, shiftData);
+
+                                    for (int i = 1; i < phdTags.GetLength(dimension: 0); i++)
+                                    {
+                                        DataSet dsGrid = oPhdNew.FetchRowData(phdTags[i]);
+                                        foreach (DataRow row in dsGrid.Tables[0].Rows)
+                                        {
+                                            foreach (DataColumn dc in dsGrid.Tables[0].Columns)
+                                            {
+                                                if (dc.ColumnName.Equals("Tolerance") || dc.ColumnName.Equals("HostName"))
+                                                {
+                                                    continue;
+                                                }
+                                                else if (dc.ColumnName.Equals("Confidence"))
+                                                {
+                                                    if (!string.IsNullOrWhiteSpace(row[dc].ToString()))
+                                                    {
+                                                        phdTagsConfidences[i] = Convert.ToInt32(row[dc]);
+                                                    }
+                                                    else
+                                                    {
+                                                        phdTagsConfidences[i] = 0;
+                                                        break;
+                                                    }
+                                                }
+                                                else if (dc.ColumnName.Equals("Value"))
+                                                {
+                                                    if (!string.IsNullOrWhiteSpace(row[dc].ToString()))
+                                                    {
+                                                        phdTagsValues[i] = Convert.ToDecimal(row[dc]);
+                                                    }
+                                                }
+                                                else if (dc.ColumnName.Equals("TimeStamp"))
+                                                {
+                                                    //unitData.RecordTimestamp = targetRecordTimestamp;
+                                                }
+                                            }
+
+                                            var currentTimestamp = new DateTime(2016, 1, 1, 1, 0, 0);
+                                            var currentValue = row.IsNull("Value") ? 0 : Convert.ToInt64(row["Value"]);
+                                            var currentConfidence = row.IsNull("Confidence") ? 0 : Convert.ToInt32(row["Confidence"]);
+                                            if (!row.IsNull("Timestamp")) { currentTimestamp = Convert.ToDateTime(row["Timestamp"]); }
+                                            logger.DebugFormat("Automatic {0} {1} : Tag:{2} Value:{3} Confidence:{4} Timestamp:{5}",
+                                                                unitConfig.Code,
+                                                                unitConfig.Name,
+                                                                phdTags[i],
+                                                                currentValue,
+                                                                currentConfidence,
+                                                                currentTimestamp);
+                                        }
+                                    }
+                                }
+                            }
+
+                            var realValue = phdTagsValues[0];
+                            for (int i = 1; i < phdTagsValues.GetLength(dimension: 0); i++)
+                            {
+                                realValue -= phdTagsValues[i];
+                            }
+                            if (realValue < 0)
+                            {
+                                realValue = 0;
+                            }
+
+                            var confidence = phdTagsConfidences.Sum() / phdTagsConfidences.GetLength(dimension: 0);
+
+                            currentUnitDatas.Add(
+                                new UnitDatasTemp
+                                {
+                                    UnitConfigId = unitConfig.Id,
+                                    Value = realValue,
+                                    ShiftId = shiftData.Id,
+                                    RecordTimestamp = targetRecordTimestamp,
+                                    Confidence = confidence
+                                });
+                        }
+                        catch (Exception ex)
+                        {
+                            var errorMessage = string.Format("UnitConfigId: {0} \n [{1} \n {2}]", unitConfig.Id, ex.Message, ex.ToString());
+                            this.logger.ErrorFormat(errorMessage);
+                            this.mailer.SendMail(errorMessage, "Phd2Interface Error");
+                        }
                     }
                 }
             }
@@ -963,7 +1137,7 @@
                         inputParams.Add(string.Format("p{0}", argumentIndex), (double)unitConfig.CalculationPercentage.Value);
                     }
 
-                    var result = new ProductionDataCalculatorService(this.data).Calculate(formula, "p", inputParams);
+                    var result = new ProductionDataCalculatorService(this.data).Calculate(formula, "p", inputParams,unitConfig.Code);
                     if (!unitsData.Any(x => x.RecordTimestamp == targetRecordTimestamp && x.ShiftId == shift.Id && x.UnitConfigId == unitConfig.Id))
                     {
                         currentUnitDatas.Add(
@@ -1287,9 +1461,10 @@
 
                                     foreach (var t in tanks)
                                     {
+                                        var tankData = new TankData();
+
                                         try
                                         {
-                                            var tankData = new TankData();
                                             tankData.RecordTimestamp = targetRecordDateTime;
                                             tankData.TankConfigId = t.TankId;
                                             tankData.ParkId = t.ParkId;
@@ -1321,16 +1496,24 @@
                                                     }
                                                     else if (dc.ColumnName.Equals("Confidence") && !row[dc].ToString().Equals("100"))
                                                     {
-                                                        confedence = Convert.ToInt32(row[dc]);
+                                                        if (!row.IsNull("Confidence"))
+                                                        {
+                                                            confedence = Convert.ToInt32(row[dc]);
+                                                        }
+                                                        else
+                                                        {
+                                                            confedence = 0;
+                                                        }
+                                                        
                                                         break;
                                                     }
-                                                    else if (dc.ColumnName.Equals("TagName"))
+                                                    else if (dc.ColumnName.Equals(value: "TagName"))
                                                     {
                                                         tagName = row[dc].ToString();
                                                     }
-                                                    else if (dc.ColumnName.Equals("TimeStamp"))
+                                                    else if (dc.ColumnName.Equals(value: "TimeStamp"))
                                                     {
-                                                        var dt = Convert.ToDateTime(row[dc]);
+                                                        var dt = !row.IsNull(columnName: "TimeStamp")? Convert.ToDateTime(row[dc]) : DateTime.MinValue;
                                                         var difference = targetRecordDateTime - dt;
                                                         var currentTagName = !row.IsNull("TagName") ? row["TagName"].ToString() : string.Empty;
                                                         var currentTagValue = !row.IsNull("Value") ? row["Value"].ToString() : string.Empty;
@@ -1420,6 +1603,8 @@
                                         catch (Exception ex)
                                         {
                                             logger.ErrorFormat("Tank Id [{0}] Exception:\n\n\n{1}", t.TankId, ex.ToString());
+                                            this.mailer.SendMail($"There is a exception [{ex.Message}] with Tank {tankData.TankConfigId}", "Phd2Sql Inventory");
+                                            tanksDataList.Add(tankData);
                                         }
                                     }
 
@@ -1467,7 +1652,7 @@
             //            if (measuringPoints.Count() > 0)
             //            {
             //                using(PHDHistorian oPhd = new PHDHistorian())
-            //                { 
+            //                {
             //                    using(PHDServer defaultServer = new PHDServer("srv-vm-mes-phd"))
             //                    {
             //                        defaultServer.Port = 3150;

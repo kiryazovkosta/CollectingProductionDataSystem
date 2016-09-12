@@ -19,7 +19,7 @@
 @(Html.Kendo()
     .Grid<SummaryProductionPlanViewModel>()
     .Name("units")
-             .AutoBind(false)
+        .AutoBind(false)
         .Columns(
             columns =>
             {
@@ -43,7 +43,7 @@
     )
     .Sortable()
     .Excel(excel => excel
-        .FileName(@Resources.Layout.UnitsData + "_" + string.Format("{0:yyyy-mm-dd}", DateTime.Now) + ".xlsx")
+        .FileName(@Resources.Layout.ProductionPlanReport + "_" + string.Format("{0:yyyy-mm-dd}", DateTime.Now) + ".xlsx")
         .Filterable(true)
         .ProxyURL(Url.Action("Excel_Export_Save", "Ajax", new { area = "" }))
         .AllPages(true)
@@ -54,16 +54,17 @@
         .Ajax()
         .PageSize(300)
         .ServerOperation(false)
-                    .Read(read => read.Action("ReadProductionPlanData", "SummaryReports", new { area = "SummaryReporting" }).Type(HttpVerbs.Get).Data("unitGridsData.SendDateForSummaryReports"))
+        .Sort(sort => sort.Add(x => x.Code).Ascending())
+            .Read(read => read.Action("ReadProductionPlanData", "SummaryReports", new { area = "SummaryReporting" }).Type(HttpVerbs.Get).Data("unitGridsData.SendDateForSummaryReports"))
             .Events(events =>
             {
                 events.Error("kendoAdditional.ErrorHandler");
             })
-                    .Group(group =>
-                    {
-                        group.Add(c => c.FactoryName);
-                        group.Add(c => c.ProcessUnitName);
-                    })
+            .Group(group =>
+            {
+                group.Add(c => c.FactoryName);
+                group.Add(c => c.ProcessUnitName);
+            })
     )
         .Events(ev => ev.DataBound("unitGridsData.DataBound"))
 

@@ -1303,5 +1303,21 @@
             Assert.AreEqual(Convert.ToDecimal(expected), Convert.ToDecimal(actual));
         }
 
+        [TestMethod]
+        public void CheckIfCalculatorWorsCorrectWithDates()
+        {
+            //Arrange
+            double expectedDaysInMonth = DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month);
+
+            var inputParams = new Dictionary<string, double>();
+            int a = 1;
+            inputParams.Add("a", a);
+
+            string expr = @"DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month)*p.a";
+            //Act
+            double actualDaysInMonth = calculator.Calculate(expr, "p", 1, inputParams);
+            //Assert
+            Assert.AreEqual(expectedDaysInMonth, actualDaysInMonth);
+        }
     }
 }

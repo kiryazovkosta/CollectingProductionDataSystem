@@ -25,6 +25,7 @@ using CollectingProductionDataSystem.Data;
 using CollectingProductionDataSystem.Models.Productions.Mounthly;
 using CollectingProductionDataSystem.Extentions;
 using Ninject;
+using CollectingProductionDataSystem.Infrastructure.Contracts;
 
 namespace CollectingProductionDataSystem.ConsoleTester
 {
@@ -49,7 +50,7 @@ namespace CollectingProductionDataSystem.ConsoleTester
             //data = new ProductionData(new CollectingDataSystemDbContext());
             //testUnitDailyCalculationService = kernel.Get<ITestUnitDailyCalculationService>();
             //service = kernel.Get<UnitMothlyDataService>();
-            monthlyService = new UnitMothlyDataService(data, kernel, new CalculatorService(), TestUnitMonthlyCalculationService.GetInstance());
+            monthlyService = new UnitMothlyDataService(data, kernel, new CalculatorService(kernel.Get<ILogger>()), TestUnitMonthlyCalculationService.GetInstance());
         }
 
 
@@ -264,7 +265,7 @@ namespace CollectingProductionDataSystem.ConsoleTester
         {
             IEfStatus status = new EfStatus();
             testUnitDailyCalculationService = kernel.Get<ITestUnitDailyCalculationService>();
-            dailyService = new UnitDailyDataService(data, kernel, new CalculatorService());
+            dailyService = new UnitDailyDataService(data, kernel, new CalculatorService(kernel.Get<ILogger>()));
             if //(!dailyService.CheckIfDayIsApproved(date, processUnitId)
                 //    && !dailyService.CheckExistsUnitDailyDatas(date, processUnitId) 
                 //    && 

@@ -99,6 +99,7 @@
     <Compile Include="Mappings\PlanNormMap.cs" />
     <Compile Include="Mappings\ProductionPlanConfigUnitMonthlyConfigFactFractionMembersMap.cs" />
     <Compile Include="Mappings\ProductionPlanConfigUnitMonthlyConfigPlanMembersMap.cs" />
+    <Compile Include="Mappings\RelatedProductionCodeAspenProductCodeMap.cs" />
     <Compile Include="Mappings\RelatedProductionPlanConfigsMap.cs" />
     <Compile Include="Mappings\RelatedUnitDailyConfigAspenCodeMap.cs" />
     <Compile Include="Mappings\TankStatusDataMap.cs" />
@@ -172,6 +173,7 @@
     <Compile Include="Mappings\UnitsManualDailyDataMap.cs" />
     <Compile Include="Mappings\UnitsManualDataMap.cs" />
     <Compile Include="Mappings\UnitMonthlyDataMap.cs" />
+    <Compile Include="Mappings\UnitTechnologicalMonthlyDataMap.cs" />
     <Compile Include="Mappings\ZoneMap.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Concrete\ProductionData.cs" />

@@ -15,6 +15,7 @@
     using System.Data.Entity;
     using System.Linq;
     using log4net;
+    using Application.MonthlyTechnologicalDataServices;
 
     public class NinjectConfig : IDisposable
     {

@@ -30,7 +30,7 @@ namespace CollectingProductionDataSystem.Application.IdentityInfrastructure
 
             // Instantiate the regular expression object.
             Regex r = new Regex(pattern, RegexOptions.IgnoreCase);
-            if (r.IsMatch(email))
+            if (await Task<bool>.Run(()=>r.IsMatch(email)))
             {
                 return IdentityResult.Success;
             }

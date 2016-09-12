@@ -34,16 +34,6 @@
 
         public ActionResult Index()
         {
-            //var d = this.data.UnitsDailyConfigs.All().FirstOrDefault();
-            //if (d != null)
-            //{
-            //    var s = this.data.UnitConfigs.All().FirstOrDefault();
-            //    if (s != null)
-            //    {
-            //        s.UnitsDailyConfig.Add(d);
-            //        this.data.SaveChanges("test");
-            //    }
-            //}
             try
             {
                 InvokeException();
@@ -53,6 +43,11 @@
                 logger.Error(ex.Message, this, ex, new List<string>{ "******************************", "****   some custom info   ****", "******************************" });
             }
             return View(this.UserProfile);
+        }
+
+        public ActionResult Error() {
+            InvokeException();
+            return Content("");
         }
 
         private void InvokeException()
@@ -149,19 +144,19 @@
         }
 
 
-        public ActionResult MessageTest() 
+        public ActionResult MessageTest()
         {
             return View();
         }
 
-        public ActionResult GetMessages() 
+        public ActionResult GetMessages()
         {
             var result = data.Messages.All().Where(x => x.ValidUntill >= DateTime.Now).Select(x=>x.MessageText);
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]
-        public ActionResult PublishMessage() 
+        public ActionResult PublishMessage()
         {
             return View(new Message() { ValidUntill= DateTime.Now.AddHours(1) });
         }
@@ -178,7 +173,7 @@
                 MessagesHub.DisplayNewMessage(message);
                 return View(new Message() { ValidUntill = DateTime.Now.AddHours(1) });
             }
-            else 
+            else
             {
                 return View(message);
             }
