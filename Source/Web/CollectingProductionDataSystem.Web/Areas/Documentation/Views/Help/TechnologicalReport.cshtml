@@ -1,0 +1,69 @@
+﻿@using Resources = App_GlobalResources.Resources;
+<h1 class="h1ForTitle">@Resources.HelpResource.TechnologicalReport</h1>
+<br />
+<div class="row">
+    <article>
+        <section>
+            <hr class="hrUnderText" />
+            <p>Генерирането на  @Resources.HelpResource.TechnologicalReport се избира от меню, показано на Фиг.1. </p>
+            <div class="centeredDivForImages">
+                <p><img class="img-rounded imgboxshadow" src="~/Content/images/TechnologicalReport/Figura1.png" /></p>
+                <p>Фиг.1</p>
+            </div>
+            <p>Отваря се екран, съдържащ две таблици. В ляво на екрана се намира таблица „Параметри на отчета“, показана на Фиг.2. </p>
+            <div class="centeredDivForImages">
+                <p><img class="img-rounded imgboxshadow" src="~/Content/images/MonthlyData/MonthlyDataFresh/Figura151.png" /></p>
+                <p>Фиг.2</p>
+            </div>
+            <p>В дясно на екрана се намира таблица „TechnologicalReport“, показана на Фиг.3.</p>
+            <div class="centeredDivForImages">
+                <p><img class="img-rounded imgboxshadow" src="~/Content/images/TechnologicalReport/Figura2.png" /></p>
+                <p>Фиг.3</p>
+            </div>
+            <p>
+                В таблица „Параметри на отчета“ се задава месец, за който ще се генерира технологичният отчет.
+                Ако в посочения месец няма генерирани месечни данни за работни часове по технологични позиции, то се извежда следното съобщение за грешка:
+            </p>
+            <div class="centeredDivForImages">
+                <p><img class="img-rounded imgboxshadow" src="~/Content/images/TechnologicalReport/error.png" /></p>
+                <p>Фиг.4</p>
+            </div>
+            <p>
+                Обработването на  месечните данни за работни часове по технологични позиции за посочения месец става от меню
+                <span class="stronged">Месечни данни -> Месечни данни за работни часове.</span> Когато се генерират тези данни, то при избор на бутон
+                <span><img class="img-rounded btnApply" src="~/Content/images/Shiftdata/butonPrilogi.png" /></span>се отваря технологичният отчет, показан на Фиг.5.
+            </p>
+            <div class="centeredDivForImages">
+                <p><img class="img-rounded imgboxshadow MaxWidthForTable" src="~/Content/images/TechnologicalReport/figura3.png" /></p>
+                <p>Фиг.5</p>
+            </div>
+            <p>
+                Tаблицата @Resources.HelpResource.TechnologicalReport съдържа данни по направления и по основни групи - въглеводороди, енергоресурси и химикали за месеца,
+                посочен в таблица "Параметри на отчета".
+            </p>
+            <br />
+            <p>Всяка колона от таблицата може да бъде филтрирана по следния начин:</p>
+            <div class="centeredDivForImages">
+                <p><img class="img-rounded imgboxshadow" src="~/Content/images/TechnologicalReport/Filter.png" /></p>
+                <p>Фиг.6</p>
+            </div>
+            <p>
+                Данните от технологичният отчет могат да бъдат само експортирани в Excel чрез бутон  <span><img class="img-rounded btnApply" src="~/Content/images/Shiftdata/Export.png" /></span> .
+            </p>
+        </section>
+        <hr class="hrUnderText" />
+        <div class="container" style="margin-left:18em;">
+            <div class="col-md-1 divimage">
+                <img src="~/Content/Images/ShiftData/technical_stuff.gif" class="imgForStuff" />
+            </div>
+            <div class="col-md-11 ForStuff">
+                <h4 style="text-align:center">Кой има право да обработва @Resources.HelpResource.TechnologicalReport ?</h4>
+                <p>
+                    Право за генериране на @Resources.HelpResource.TechnologicalReport има потребител с присъединена роля <span class="stronged">"MonthlyTechnologicalReporter"</span>.
+                </p>
+            </div>
+        </div>
+        <br />
+        <hr class="hrUnderText" />
+    </article>
+</div>
