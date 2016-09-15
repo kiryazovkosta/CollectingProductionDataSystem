@@ -1,0 +1,79 @@
+﻿@using Resources = App_GlobalResources.Resources;
+<h1 class="h1ForTitle">@Resources.HelpResource.TechnologicalReport</h1>
+<br />
+<div class="row">
+    <article>
+        <section>
+            <hr class="hrUnderText" />
+            <p> Системата за автоматизирана производствена отчетност предлага възможност за генериране на Технологичен отчет - модул за месечни план-факт отчети на въглеводороди, енергоресурси
+             и химикали за всички производства в „ЛУКОЙЛ Нефтохим Бургас“ АД“. Създаването на  @Resources.HelpResource.TechnologicalReport се избира от меню, показано на Фиг.1. </p>
+            <div class="centeredDivForImages">
+                <p><img class="img-rounded imgboxshadow" src="~/Content/images/TechnologicalReport/Figura1.png" /></p>
+                <p>Фиг.1</p>
+            </div>
+            <p>Право за генериране на @Resources.HelpResource.TechnologicalReport има потребител с присъединена роля <span class="stronged">"MonthlyTechnologicalReporter"</span>.
+            В технологичният отчет се визуализират данни само за тези инсталации, за които даденият потребител има присъединено право да разглежда.
+            </p>
+            <p>Технологичен отчет, съдържащ всички активни производства с всички инсталации се генерира на потребител с присъединени роли <span class="stronged">"MonthlyTechnologicalReporter"</span> и 
+                <span class="stronged">"PowerUser"</span> или на потребител с присвоена роля <span class="stronged">"Administrator"</span>.</p>
+            <p>След избиране на Технологичен отчет от главното меню се отваря се екран, съдържащ две таблици. В ляво на екрана се намира таблица „Параметри на отчета“, показана на Фиг.2. </p>
+            <div class="centeredDivForImages">
+                <p><img class="img-rounded imgboxshadow" src="~/Content/images/MonthlyData/MonthlyDataFresh/Figura151.png" /></p>
+                <p>Фиг.2</p>
+            </div>
+            <p>В дясно на екрана се намира таблица „Технологичен отчет“, показана на Фиг.3.</p>
+            <div class="centeredDivForImages">
+                <p><img class="img-rounded imgboxshadow" src="~/Content/images/TechnologicalReport/Figura2.png" /></p>
+                <p>Фиг.3</p>
+            </div>
+            <p>
+                В таблица „Параметри на отчета“ се задава месец, за който ще се генерира технологичният отчет. Той се създава само ако преди това са били потвърдени всички типове месечни отчети,
+                което се изпълнява от главно меню <span class="stronged">"Месечни данни"</span>. Например, ако в посочения месец няма потвърдени месечни данни за работни часове,
+                 то тогава се извежда следното съобщение за грешка:
+            </p>
+            <div class="centeredDivForImages">
+                <p><img class="img-rounded imgboxshadow" src="~/Content/images/TechnologicalReport/error.png" /></p>
+                <p>Фиг.4</p>
+            </div>
+            <p>
+                За да се избегне тази грешка трябва да се потвърдят месечните данни за работни часове за посочения месец, което става от меню
+                <span class="stronged">Месечни данни -> Месечни данни за работни часове.</span> Когато се потвърдят тези месечни данни, то при избор на бутон
+                <span><img class="img-rounded btnApply" src="~/Content/images/Shiftdata/butonPrilogi.png" /></span> в таблица "Параметри на отчета" се отваря технологичният отчет, показан на Фиг.5.
+            </p>
+            <div class="centeredDivForImages">
+                <p><img class="img-rounded imgboxshadow MaxWidthForTable" src="~/Content/images/TechnologicalReport/figura3.png" /></p>
+                <p>Фиг.5</p>
+            </div>
+            <p>
+                Tаблицата @Resources.HelpResource.TechnologicalReport съдържа данни по производства и инсталации и по основни групи - въглеводороди, енергоресурси и химикали за месеца,
+                посочен в таблица "Параметри на отчета". Визуализират се тези инсталации, които даденият потребител има право да разглежда.
+            </p>
+            <p>Таблицата съдържа следните колони: наименование Производство, наименование Инсталация, Тип на група, за който се генерира технологичен отчет (Въглеводороди, Енергоресурси и Химикали), 
+            Koд, който е уникален за всеки запис,  наименование на Типа на група, Мерна единица,  Месечно количество по план, Месечен процент / РН по план, Месечно количество по факт,
+            Месечен процент / РН по факт,  +/- Месечно количество по факт, +/- Месечен процент / РН по факт, Годишно количество по факт и Годишен процент / РН по факт.</p>
+            <br />
+            <p>Всяка колона от таблицата може да бъде филтрирана по следния начин:</p>
+            <div class="centeredDivForImages">
+                <p><img class="img-rounded imgboxshadow" src="~/Content/images/TechnologicalReport/Filter.png" /></p>
+                <p>Фиг.6</p>
+            </div>
+            <p>
+                Данните от технологичният отчет могат да бъдат само експортирани в Excel чрез бутон  <span><img class="img-rounded btnApply" src="~/Content/images/Shiftdata/Export.png" /></span> .
+            </p>
+        </section>
+        <hr class="hrUnderText" />
+        <div class="container" style="margin-left:18em;">
+            <div class="col-md-1 divimage">
+                <img src="~/Content/Images/ShiftData/technical_stuff.gif" class="imgForStuff" />
+            </div>
+            <div class="col-md-11 ForStuff">
+                <h4 style="text-align:center">Кой има право да обработва @Resources.HelpResource.TechnologicalReport ?</h4>
+                <p>
+                    Право за генериране на @Resources.HelpResource.TechnologicalReport има потребител с присъединена роля <span class="stronged">"MonthlyTechnologicalReporter"</span>.
+                </p>
+            </div>
+        </div>
+        <br />
+        <hr class="hrUnderText" />
+    </article>
+</div>

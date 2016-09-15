@@ -286,6 +286,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to MonthlyDataWorkingHours.
+        /// </summary>
+        public static string MonthlyDataWorkingHours {
+            get {
+                return ResourceManager.GetString("MonthlyDataWorkingHours", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to MonthlyFuel.
         /// </summary>
         public static string MonthlyFuel {
@@ -543,6 +552,24 @@ namespace App_GlobalResources.Resources {
         public static string TeamDataFlows {
             get {
                 return ResourceManager.GetString("TeamDataFlows", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TechnologicalReport.
+        /// </summary>
+        public static string TechnologicalReport {
+            get {
+                return ResourceManager.GetString("TechnologicalReport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TechnologicalReportDescription.
+        /// </summary>
+        public static string TechnologicalReportDescription {
+            get {
+                return ResourceManager.GetString("TechnologicalReportDescription", resourceCulture);
             }
         }
         
