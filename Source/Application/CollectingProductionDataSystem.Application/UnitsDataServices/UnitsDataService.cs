@@ -107,6 +107,93 @@
             return dbResult;
         }
 
+        public IQueryable<UnitsDailyData> GetUnitsDailyApprovedDataForDateTime(DateTime? date, int? processUnitId, int? factoryId, int? materialType)
+        {
+            List<int> approvedDailyProcessUnitsIds = CheckStatusOfProcessUnitsDailyConfigs(date);
+
+            //var approvedDailyProcessUnitsIds = this.data.UnitsApprovedDailyDatas.All().Where(d => d.RecordDate == date && d.EnergyApproved == true).Select(x => x.ProcessUnitId);
+            //var approvedDailyProcessUnitsIds = this.data.UnitsApprovedDailyDatas.All().Where(d => d.RecordDate == date).Select(x => x.ProcessUnitId);
+
+            var dbResult = this.data.UnitsDailyDatas
+                .All()
+                .Include(u => u.UnitsDailyConfig)
+                .Include(u => u.UnitsDailyConfig.ProcessUnit)
+                .Include(u => u.UnitsDailyConfig.DailyProductType)
+                .Include(u => u.UnitsDailyConfig.MeasureUnit)
+                .Include(u => u.UnitsDailyConfig.Product)
+                .Include(u => u.UnitsManualDailyData);
+
+            if (date.HasValue)
+            {
+                dbResult = dbResult.Where(u => u.RecordTimestamp == date.Value);
+            }
+
+            if (processUnitId.HasValue && approvedDailyProcessUnitsIds.Contains(processUnitId.Value))
+            {
+                dbResult = dbResult.Where(u => u.UnitsDailyConfig.ProcessUnitId == processUnitId);
+            }
+            else
+            {
+                var listOfProcessUnits = new List<int>();
+
+                if (factoryId.HasValue)
+                {
+                    IQueryable<int> processUnits = data.ProcessUnits.All().Where(pu => pu.FactoryId == factoryId).Select(pu => pu.Id);
+                    foreach (var processUnit in processUnits)
+                    {
+                        if (approvedDailyProcessUnitsIds.Contains(processUnit))
+                        {
+                            listOfProcessUnits.Add(processUnit);
+                        }
+                    }
+
+                    dbResult = dbResult.Where(x => listOfProcessUnits.Contains(x.UnitsDailyConfig.ProcessUnitId));
+                }
+                else
+                {
+                    foreach (var processUnit in approvedDailyProcessUnitsIds)
+                    {
+                        listOfProcessUnits.Add(processUnit);
+                    }
+
+                    dbResult = dbResult.Where(x => listOfProcessUnits.Contains(x.UnitsDailyConfig.ProcessUnitId));
+                }
+            }
+
+            if (materialType.HasValue)
+            {
+                dbResult = dbResult.Where(u => u.UnitsDailyConfig.MaterialTypeId == materialType);
+            }
+
+            dbResult = dbResult.OrderBy(x => x.UnitsDailyConfig.Code);
+            return dbResult;
+        }
+
+        private List<int> CheckStatusOfProcessUnitsDailyConfigs(DateTime? date)
+        {
+            var approvedDailyProcessUnitsIds = new List<int>();
+            var approvedDailyProcessUnits = this.data.UnitsApprovedDailyDatas.All().Where(d => d.RecordDate == date).ToList();
+            foreach (var item in approvedDailyProcessUnits)
+            {
+                bool addToCollection = true;
+                bool exsistingMaterialRecords = this.data.UnitsDailyConfigs.All().Where(u => u.MaterialTypeId == CommonConstants.EnergyType && u.ProcessUnitId == item.ProcessUnitId).Any();
+                if (exsistingMaterialRecords)
+                {
+                    if (item.EnergyApproved != true)
+                    {
+                        addToCollection = false;
+                    }
+                }
+
+                if (addToCollection)
+                {
+                    approvedDailyProcessUnitsIds.Add(item.ProcessUnitId);
+                }
+            }
+
+            return approvedDailyProcessUnitsIds;
+        }
+
         public bool IsShitApproved(DateTime date, int processUnitId, int shiftId)
         {
             return this.data.UnitsApprovedDatas

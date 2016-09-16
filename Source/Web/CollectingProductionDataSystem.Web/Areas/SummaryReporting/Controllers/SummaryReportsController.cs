@@ -70,11 +70,7 @@
                         && (parkId == null || t.ParkId == parkId))
                     .ToList();
 
-                //var kendoResult = dbResult.ToDataSourceResult(request, ModelState);
-                //kendoResult.Data = Mapper.Map<IEnumerable<TankData>, IEnumerable<TankDataViewModel>>((IEnumerable<TankData>)kendoResult.Data);
                 var vmResult = Mapper.Map<IEnumerable<TankDataViewModel>>(dbResult);
-
-
                 foreach (var tank in vmResult)
                 {
                     var status = statuses.Where(x => x.Tank.Id == tank.TankId).FirstOrDefault();
@@ -108,38 +104,7 @@
 
             if (this.ModelState.IsValid)
             {
-                //var dbResult = this.data.TanksData.All()
-                //    .Include(t => t.TankConfig)
-                //    .Include(t => t.TankConfig.Park)
-                //    .Include(t => t.Product)
-                //    .Where(t => t.RecordTimestamp == date
-                //        && (areaId == null || t.TankConfig.Park.AreaId == areaId)
-                //        && t.ProductId > 0)
-                //    .Select(t => new WeightInVacuumDto
-                //    {
-                //        Id = t.Id,
-                //        RecordTimestamp = t.RecordTimestamp,
-                //        TankConfig = t.TankConfig,
-                //        Product = t.Product,
-                //        WeightInVaccum = t.WeightInVacuum ?? 0.0m
-                //    });
-
-                //var weightInVacuumList = new Dictionary<int, decimal>();
-                //foreach (var tankData in dbResult)
-                //{
-                //    int code = tankData.Product.Code;
-                //    if (weightInVacuumList.ContainsKey(code))
-                //    {
-                //        weightInVacuumList[code] += tankData.WeightInVaccum;
-                //    }
-                //    else
-                //    {
-                //        weightInVacuumList[code] = tankData.WeightInVaccum;
-                //    }
-                //}
-
                 var products = this.data.Products.All().ToList();
-
                 var dbResult = this.data.TanksData.All()
                     .Include(t => t.TankConfig)
                     .Include(t => t.TankConfig.Park)
@@ -271,11 +236,9 @@
                 var kendoResult = new DataSourceResult();
                 if (ModelState.IsValid)
                 {
-                    var dbResult = unitsData.GetUnitsDailyDataForDateTime(date, processUnitId, null).Include(x => x.UnitsDailyConfig.ProcessUnit.Factory);
-                    dbResult.Where(x => x.UnitsDailyConfig.ProcessUnit.FactoryId == (factoryId ?? x.UnitsDailyConfig.ProcessUnit.FactoryId));
+                    var dbResult = unitsData.GetUnitsDailyApprovedDataForDateTime(date, processUnitId, factoryId, null).Include(x => x.UnitsDailyConfig.ProcessUnit.Factory);
                     var kendoPreparedResult = Mapper.Map<IEnumerable<UnitsDailyData>, IEnumerable<UnitDailyDataViewModel>>(dbResult);
                     kendoResult = kendoPreparedResult.ToDataSourceResult(request, ModelState);
-
                 }
 
                 var result = Json(kendoResult, JsonRequestBehavior.AllowGet);

@@ -24,5 +24,7 @@ using CollectingProductionDataSystem.Models.Nomenclatures;
         bool IsShitApproved(DateTime date, int processUnitId, int shiftId);
 
         Dictionary<string, double> GetTotalMonthQuantityToDayFromShiftData(DateTime targetDay, int processUnitId = 0);
+
+        IQueryable<UnitsDailyData> GetUnitsDailyApprovedDataForDateTime(DateTime? date, int? processUnitId, int? factoryId, int? materialType);
     }
 }

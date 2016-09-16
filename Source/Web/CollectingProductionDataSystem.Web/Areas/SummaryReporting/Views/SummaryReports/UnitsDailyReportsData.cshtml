@@ -35,11 +35,11 @@
                                                 new { area = "RecordsHistory", id = "#=data.id#", entityName = "UnitsDailyData" },
                                                 new { data_ajax_mode = "replace", data_ajax_update = @"\#modal-dialog-body" })
                                                 .ToHtmlString())
-                .Width(77);
+                .Width(100);
             columns.Bound(c => c.UnitsDailyConfig.ProcessUnit.Factory.FactorySortableName).Hidden(true).ClientGroupHeaderTemplate("Производство #=value.substr(3,value.length-3)#").Width(10);
             columns.Bound(c => c.UnitsDailyConfig.ProcessUnit.SortableShortName).Hidden(true).ClientGroupHeaderTemplate("Инсталация #=value.substr(3,value.length-3)#").Width(10);
             columns.Bound(c => c.UnitsDailyConfig.DailyProductType.Sort).Hidden(true).ClientGroupHeaderTemplate("#=value#").Width(10);
-            columns.Bound(c => c.UnitsDailyConfig.ProcessUnit.ShortName).Width(100);
+            columns.Bound(c => c.UnitsDailyConfig.ProcessUnit.ShortName).Width(140);
             columns.Bound(c => c.UnitsDailyConfig.Name);
             columns.Bound(c => c.UnitsDailyConfig.MeasureUnit.Code).Width(80);
             columns.Bound(c => c.Value).Width(100).Format("{0:n2}");
@@ -58,7 +58,7 @@
         })
                                                             .Pageable(pageable => pageable
                                                                 .Refresh(true)
-                                                                .PageSizes(new[] { 100, 200, 300 })
+                                                                .PageSizes(new[] { 100, 200, 300, 1500 })
                                                                 .ButtonCount(5)
                                                             )
                                                                     .Editable(editable => editable.Mode(GridEditMode.InLine))
@@ -74,7 +74,7 @@
                                                                 .ClientDetailTemplateId("template")
                                                                 .DataSource(dataSource => dataSource
                                                                 .Ajax()
-                                                                .PageSize(300)
+                                                                .PageSize(1500)
                                                                 .ServerOperation(true)
                                                                         .Group(group =>
                                                                         {
