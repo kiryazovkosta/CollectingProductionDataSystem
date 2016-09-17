@@ -25,6 +25,6 @@ using CollectingProductionDataSystem.Models.Nomenclatures;
 
         Dictionary<string, double> GetTotalMonthQuantityToDayFromShiftData(DateTime targetDay, int processUnitId = 0);
 
-        IQueryable<UnitsDailyData> GetUnitsDailyApprovedDataForDateTime(DateTime? date, int? processUnitId, int? factoryId, int? materialType);
+        IEnumerable<UnitsDailyData> GetUnitsDailyApprovedDataForDateTime(DateTime? date, int? processUnitId, int? factoryId);
     }
 }
