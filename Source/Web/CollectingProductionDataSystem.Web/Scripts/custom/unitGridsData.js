@@ -230,7 +230,7 @@ var unitGridsData = (function () {
             else {
                 return {};
             }
-            
+
         } else {
             return {};
         }
@@ -345,7 +345,7 @@ var unitGridsData = (function () {
             });
 
             var grid = $("#monthly-pw-units").data('kendoGrid');
-            if (grid !== null) {
+            if (!(grid === null || grid === undefined)) {
                 var count = grid.dataSource.total();
                 var reportButton = $("#report");
                 if (count === 0) {
@@ -836,6 +836,7 @@ var unitGridsData = (function () {
             spacing: LINE_SPACING
         });
         page.append(header, content);
+        //page.options.set("pdf.paperSize", "A4");
         page.reflow();
         draw.align([header], PAGE_RECT, "start");
 
