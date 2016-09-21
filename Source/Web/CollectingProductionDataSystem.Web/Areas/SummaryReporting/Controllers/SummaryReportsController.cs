@@ -227,7 +227,7 @@
         //[HttpPost]
         //[ValidateAntiForgeryToken]
         [AuthorizeFactory]
-        [OutputCache(Duration = HalfAnHour, Location = OutputCacheLocation.Server, VaryByParam = "*")]
+        //[OutputCache(Duration = HalfAnHour, Location = OutputCacheLocation.Server, VaryByParam = "*")]
         public JsonResult ReadDailyUnitsData([DataSourceRequest]DataSourceRequest request, DateTime? date, int? processUnitId, int? factoryId)
         {
             ValidateDailyModelState(date);
@@ -236,7 +236,7 @@
                 var kendoResult = new DataSourceResult();
                 if (ModelState.IsValid)
                 {
-                    var dbResult = unitsData.GetUnitsDailyApprovedDataForDateTime(date, processUnitId, factoryId, null).Include(x => x.UnitsDailyConfig.ProcessUnit.Factory);
+                    var dbResult = unitsData.GetUnitsDailyApprovedDataForDateTime(date, processUnitId, factoryId);
                     var kendoPreparedResult = Mapper.Map<IEnumerable<UnitsDailyData>, IEnumerable<UnitDailyDataViewModel>>(dbResult);
                     kendoResult = kendoPreparedResult.ToDataSourceResult(request, ModelState);
                 }
