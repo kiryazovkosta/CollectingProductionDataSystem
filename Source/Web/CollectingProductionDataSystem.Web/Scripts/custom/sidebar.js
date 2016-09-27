@@ -69,8 +69,8 @@
     }
 
     function attachToPipelineDatePickerIfDefined() {
-        $grid = $('#inner-pipes').data('kendoGrid');
-        if ($grid !== null) {
+        var grid = $('#inner-pipes').data('kendoGrid');
+        if (grid !== null && grid !== undefined) {
             var dateElement = $('#date');
 
             if (dateElement.val() !== undefined) {

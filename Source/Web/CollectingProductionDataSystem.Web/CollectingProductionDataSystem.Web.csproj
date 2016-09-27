@@ -1665,6 +1665,7 @@
     <Content Include="Areas\SummaryReporting\Views\SummaryReports\ProductionPlanReport.cshtml" />
     <Content Include="Areas\SummaryReporting\Views\SummaryReports\ProductionPlanEnergyReport.cshtml" />
     <Content Include="Areas\SummaryReporting\Views\TransactionsDaily\TransactionsDailyData.cshtml" />
+    <Content Include="Scripts\custom\techReportToPdfPageSetup.js" />
     <Content Include="Scripts\kendo\kendo.angular2.min.js" />
     <Content Include="Scripts\kendo\kendo.spreadsheet.min.js" />
     <Content Include="Scripts\kendo\kendo.webcomponents.min.js" />

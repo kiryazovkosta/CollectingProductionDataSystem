@@ -14,7 +14,7 @@
       {
           columns.Bound(c => c.ProductionPlanConfig.ProcessUnit.Factory.FactorySortableName).Hidden(true).ClientGroupHeaderTemplate("Производство #=value.substr(3,value.length-3)#").Width(10);
           columns.Bound(c => c.ProductionPlanConfig.ProcessUnit.SortableName).Hidden(true).ClientGroupHeaderTemplate("Инсталация #=value.substr(3,value.length-3)#").Width(10);
-          columns.Bound(c => c.ProductionPlanConfig.MaterialType.SortableName).Hidden(true).ClientGroupHeaderTemplate("#=value.substr(3,value.length-3)#").Width(10);          
+          columns.Bound(c => c.ProductionPlanConfig.MaterialType.SortableName).Hidden(true).ClientGroupHeaderTemplate("#=value.substr(3,value.length-3)#").Width(10);
           columns.Bound(c => c.Month).Format("{0:MMMM yyyy}").Width(100);
           columns.Bound(c => c.ProductionPlanConfig.Code).Width(100);
           columns.Bound(c => c.ProductionPlanConfig.Name);
@@ -65,14 +65,14 @@
                 model.Field(p => p.Month).Editable(false);
                 model.Field(p => p.ProductionPlanConfig.ProcessUnit.Factory.FactorySortableName).Editable(false);
                 model.Field(p => p.ProductionPlanConfig.ProcessUnit.SortableName).Editable(false);
-                
+
             })
             .Read(read => read.Action("Read", "PlanNorm", new { area = "PlanConfiguration" }).Data("unitGridsData.SendDate"))
                 .Update(update => update.Action("Update", "PlanNorm", new { area = "PlanConfiguration" }).Data("sendAntiForgery"))
             .Events(events =>
             {
                 events.Error("kendoAdditional.ErrorHandler");
-                events.RequestEnd("kendoAdditional.AfterterNomGridValidation");
+                events.RequestEnd("kendoAdditional.AfterPlanNormGridValidation");
             })
             )
         .Events(ev => ev.DataBound("kendoAdditional.DeletableDataBound"))

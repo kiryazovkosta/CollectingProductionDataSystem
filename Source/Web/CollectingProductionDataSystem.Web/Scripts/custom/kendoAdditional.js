@@ -113,6 +113,10 @@
         }
     }
 
+    function AfterPlanNormGridValidation (){
+        RefreshGrid('#plan-grid');
+    }
+
     function ValueMapper(options) {
 
         var splitUrl = this.dataSource.options.transport.read.url.split('/');

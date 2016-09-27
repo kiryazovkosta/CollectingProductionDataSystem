@@ -15,7 +15,7 @@
             <h2>@Resources.Layout.MonthlyTechnologicalReport</h2>
         </div>
         <div class="col-md-3">
-            <button type="button" id="export-pdf" class="k-button k-button-icontext k-grid-pdf pull-right head-button" style="margin-left:5px;"><span class="k-icon k-i-pdf" ></span>Експорт в Pdf</button>
+            <button type="button" id="export-pdf" class="k-button k-button-icontext k-grid-pdf pull-right head-button" style="margin-left:5px;"><span class="k-icon k-i-pdf"></span>Експорт в Pdf</button>
             <button id="excel-export" class="k-button k-button-icontext k-grid-excel pull-right head-button"><span class="k-icon k-i-excel"></span>Експорт в Excel</button>
         </div>
     </div>
@@ -139,7 +139,7 @@
     @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.min.js")
     @Scripts.Render("~/Scripts/kendo/jszip.min.js")
     @Scripts.Render("~/Scripts/kendo/pako_deflate.min.js")
-
+    @Scripts.Render("~/Scripts/custom/techReportToPdfPageSetup.js")
     <script>
         $(function () {
             $("#export-pdf").click(function () {
@@ -160,6 +160,12 @@
                             editorsPages.children[i].options.set("pdf.paperSize", "A4");
                             root.children.unshift(editorsPages.children[i]);
                         }
+                        root.options.pdf.paperSize = "auto";
+                        var resultArr = [];
+                        root.children.forEach(function (element, index, array) {
+                            resultArr.push(pdfPageSetup.FormatPage(element, index + 1, array.length, 'Some title'));
+                        });
+                        root.children = resultArr;
                         return kendo.drawing.exportPDF(root, { multiPage: true });
                     })
                     .done(function (dataURI) {
@@ -174,18 +180,18 @@
         })
     </script>
 
-<script type="x/kendo-template" id="page-template">
-    <div class="page-template">
-        <div class="header">
-            <div style="float: right">Page #: pageNum # of #: totalPages #</div>
-            Multi-page grid with automatic page breaking
+    <script type="x/kendo-template" id="page-template">
+        <div class="page-template">
+            <div class="header">
+                <div style="float: right">Page #: pageNum # of #: totalPages #</div>
+                Multi-page grid with automatic page breaking
+            </div>
+            @*<div class="watermark">KENDO UI</div>*@
+            <div class="footer">
+                Page #: pageNum # of #: totalPages #
+            </div>
         </div>
-        @*<div class="watermark">KENDO UI</div>*@
-        <div class="footer">
-            Page #: pageNum # of #: totalPages #
-        </div>
-    </div>
-</script>
+    </script>
 }
 
 @section sidebar{
@@ -193,7 +199,7 @@
 }
 
 @*@section styles{
-    @Styles.Render("~/Content/custom/pdf-page-template.css");
-}*@
+        @Styles.Render("~/Content/custom/pdf-page-template.css");
+    }*@
 
 
