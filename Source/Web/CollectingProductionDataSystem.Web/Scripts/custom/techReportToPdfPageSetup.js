@@ -117,7 +117,6 @@ var pdfPageSetup = (function () {
             page.options.set("pdf.landscape", "true");
         }
 
-
         return page;
     }
 
