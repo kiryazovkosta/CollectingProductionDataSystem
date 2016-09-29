@@ -332,6 +332,7 @@
     <Compile Include="Areas\MonthlyDataReporting\MonthlyDataReportingAreaRegistration.cs" />
     <Compile Include="Areas\MonthlyTechnicalReporting\Controllers\AreaBaseController.cs" />
     <Compile Include="Areas\MonthlyTechnicalReporting\Controllers\MonthlyTechnicalController.cs" />
+    <Compile Include="Areas\MonthlyTechnicalReporting\ViewModels\ExportSettingsViewModel.cs" />
     <Compile Include="Areas\MonthlyTechnicalReporting\ViewModels\MonthlyTechnicalViewModel.cs" />
     <Compile Include="Areas\MonthlyTechnicalReporting\MonthlyTechnicalReportingAreaRegistration.cs" />
     <Compile Include="Areas\NomManagement\Controllers\PhdConfigController.cs" />
@@ -1785,6 +1786,9 @@
     <Content Include="Areas\MonthlyTechnicalReporting\Views\MonthlyTechnical\MonthlyTechnicalData.cshtml" />
     <Content Include="Areas\Administration\Views\ApprovedData\Index.cshtml" />
     <Content Include="Areas\Documentation\Views\Help\TechnologicalReport.cshtml" />
+    <Content Include="Areas\MonthlyTechnicalReporting\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\MonthlyTechnicalReporting\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\MonthlyTechnicalReporting\Views\Shared\_ExportSettings.cshtml" />
     <None Include="bundleconfig.json" />
     <Content Include="Content\kendo\kendo.black.min.css.map" />
     <Content Include="Content\kendo\kendo.black.mobile.min.css.map" />
@@ -2561,6 +2565,7 @@
     <Content Include="Views\Shared\_TanksSideBarByAreaAndDateTime.cshtml" />
     <Content Include="Views\Shared\_MonthSelectorEditAndReportSideBar.cshtml" />
     <Content Include="Views\Shared\_MonthSelectorAproveableRecalcSideBar.cshtml" />
+    <Content Include="Views\Shared\_TechnicalReportsSelectorSideBar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -2587,7 +2592,6 @@
     <Folder Include="Areas\MonthlyReporting\Views\Shared\" />
     <Folder Include="Areas\MonthlyTechnicalReporting\Models\" />
     <Folder Include="Areas\MonthlyTechnicalReporting\Views\AreaBase\" />
-    <Folder Include="Areas\MonthlyTechnicalReporting\Views\Shared\" />
     <Folder Include="Areas\NomManagement\Models\InputModels\" />
     <Folder Include="Areas\NomManagement\Views\Ajax\" />
     <Folder Include="Areas\NomManagement\Views\RelatedUnitConfigs\" />

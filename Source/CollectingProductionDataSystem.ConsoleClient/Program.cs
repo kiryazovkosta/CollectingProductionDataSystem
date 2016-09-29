@@ -59,145 +59,11 @@ namespace CollectingProductionDataSystem.ConsoleClient
             //Console.WriteLine(monthlyProductionData.Count());
 
 
-            var lastRealDate = new DateTime(year: 2016, month: 8, day: 30, hour: 0, minute: 0, second: 0);
-            var shiftsData = data.UnitsData.All().Where(x => x.RecordTimestamp == lastRealDate).ToList();
-            var approvedShiftsData = data.UnitsApprovedDatas.All().Where(x => x.RecordDate == lastRealDate).ToList();
-            var nextDate = lastRealDate.AddDays(value: 1);
-            var daysInMonth = DateTime.DaysInMonth(lastRealDate.Year, lastRealDate.Month);
-            while (nextDate.Day <= daysInMonth)
-            {
-                var unitsDataList = new List<UnitsData>();
-                var unitsApprovedDataList = new List<UnitsApprovedData>();
 
-                foreach (var item in shiftsData)
-                {
-
-                    var record = new UnitsData
-                    {
-                        RecordTimestamp = nextDate,
-                        ShiftId = item.ShiftId,
-                        UnitConfigId = item.UnitConfigId,
-                        Value = (decimal)item.RealValue,
-                        UnitsManualData = null,
-                        UnitConfig = item.UnitConfig,
-                        UnitEnteredForCalculationData = null,
-                        Confidence = 100
-                    };
-                    unitsDataList.Add(record);
-                }
-
-                foreach (var item in approvedShiftsData)
-                {
-
-                    var record = new UnitsApprovedData
-                    {
-                        ShiftId = item.ShiftId,
-                        RecordDate = nextDate,
-                        ProcessUnitId = item.ProcessUnitId,
-                        Approved = true
-                    };
-                    unitsApprovedDataList.Add(record);
-                }
-
-                data.UnitsData.BulkInsert(unitsDataList, userName: "InitialLoading");
-                data.UnitsApprovedDatas.BulkInsert(unitsApprovedDataList, userName: "InitialLoading");
-
-                IEfStatus result = data.SaveChanges(userName: "InitialLoading");
-                if (result.IsValid)
-                {
-                    Console.WriteLine(format: "Successfully added records for {0}", arg0: nextDate);
-                }
-
-                nextDate = nextDate.AddDays(value: 1);
-                if (nextDate.Month != lastRealDate.Month)
-                {
-                    break;
-                }
-            }
-
-
-            //var lastRealDate = new DateTime(year: 2016, month: 8, day: 10, hour: 0, minute: 0, second: 0);
-            //var dailyData = data.UnitsDailyDatas.All().Where(x => x.RecordTimestamp == lastRealDate).ToList();
-            //var approvedDaysData = data.UnitsApprovedDailyDatas.All().Where(x => x.RecordDate == lastRealDate).ToList();
-            //var nextDate = lastRealDate.AddDays(1);
-            //var daysInMonth = DateTime.DaysInMonth(lastRealDate.Year, lastRealDate.Month);
-            //while (nextDate.Day < daysInMonth)
-            //{
-            //    var unitsDailyDataList = new List<UnitsDailyData>();
-            //    var unitsApprovedDailyDataList = new List<UnitsApprovedDailyData>();
-
-
-            //    foreach (var item in dailyData)
-            //    {
-            //        var record = new UnitsDailyData
-            //        {
-            //            RecordTimestamp = nextDate,
-            //            UnitsDailyConfigId = item.UnitsDailyConfigId,
-            //            Value = (decimal) item.RealValue,
-            //            UnitsManualDailyData = null,
-            //            UnitsDailyConfig = item.UnitsDailyConfig
-            //        };
-            //        unitsDailyDataList.Add(record);
-            //    }
-
-            //    foreach (var item in approvedDaysData)
-            //    {
-            //        var record = new UnitsApprovedDailyData
-            //        {
-            //            RecordDate = nextDate,
-            //            ProcessUnitId = item.ProcessUnitId,
-            //            Approved = true,
-            //            EnergyApproved = true
-            //        };
-            //        unitsApprovedDailyDataList.Add(record);
-            //    }
-
-            //    data.UnitsDailyDatas.BulkInsert(unitsDailyDataList, "InitialLoading");
-            //    data.UnitsApprovedDailyDatas.BulkInsert(unitsApprovedDailyDataList, "InitialLoading");
-            //    Console.WriteLine("Successfully added daily records for {0}", nextDate);
-
-            //    nextDate = nextDate.AddDays(1);
-            //    if (nextDate.Month != lastRealDate.Month)
-            //    {
-            //        break;
-            //    }
-            //}
-
-
-
-
-
-
-
-
-
-            //var lastRealDate = new DateTime(year: 2016, month: 8, day: 10, hour: 0, minute: 0, second: 0);
-            //var dailyData = data.ProductionPlanDatas.All().Where(x => x.RecordTimestamp == lastRealDate).ToList();
-            //var nextDate = lastRealDate.AddDays(1);
-            //var daysInMonth = DateTime.DaysInMonth(lastRealDate.Year, lastRealDate.Month);
-            //while (nextDate.Day < daysInMonth)
-            //{
-            //    foreach (var item in dailyData)
-            //    {
-            //        var record = item;
-            //        record.RecordTimestamp = nextDate;
-            //        data.ProductionPlanDatas.Add(record);
-            //    }
-
-            //    var result = data.SaveChanges(userName: "InitialLoading");
-            //    if (result.IsValid)
-            //    {
-            //        Console.WriteLine("Successfully added {0} records for {1}", result.ResultRecordsCount, nextDate);
-            //    }
-            //    else
-            //    {
-            //        Console.WriteLine("error");
-            //    }
-
-            //    nextDate = nextDate.AddDays(1);
-            //}
-
-
+            var lastRealDate = new DateTime(year: 2016, month: 9, day: 26, hour: 0, minute: 0, second: 0);
+            //CreateShiftData(data, lastRealDate);
+            //CreateDailyData(data, lastRealDate);
+            CreateProductionPlanData(data, lastRealDate);
 
 
 
@@ -259,6 +125,141 @@ namespace CollectingProductionDataSystem.ConsoleClient
             //TreeShiftsReports(DateTime.Today.AddDays(-2), 1);
             //SeedShiftsToDatabase(uow);
             Console.WriteLine("finished");
+        }
+
+        private static void CreateShiftData(ProductionData data, DateTime lastRealDate)
+        {
+            var shiftsData = data.UnitsData.All().Where(x => x.RecordTimestamp == lastRealDate).ToList();
+            var approvedShiftsData = data.UnitsApprovedDatas.All().Where(x => x.RecordDate == lastRealDate).ToList();
+            var nextDate = lastRealDate.AddDays(value: 1);
+            var daysInMonth = DateTime.DaysInMonth(lastRealDate.Year, lastRealDate.Month);
+            while (nextDate.Day <= daysInMonth)
+            {
+                var unitsDataList = new List<UnitsData>();
+                var unitsApprovedDataList = new List<UnitsApprovedData>();
+
+                foreach (var item in shiftsData)
+                {
+
+                    var record = new UnitsData
+                    {
+                        RecordTimestamp = nextDate,
+                        ShiftId = item.ShiftId,
+                        UnitConfigId = item.UnitConfigId,
+                        Value = (decimal) item.RealValue,
+                        UnitsManualData = null,
+                        UnitConfig = item.UnitConfig,
+                        UnitEnteredForCalculationData = null,
+                        Confidence = 100
+                    };
+                    unitsDataList.Add(record);
+                }
+
+                foreach (var item in approvedShiftsData)
+                {
+
+                    var record = new UnitsApprovedData
+                    {
+                        ShiftId = item.ShiftId,
+                        RecordDate = nextDate,
+                        ProcessUnitId = item.ProcessUnitId,
+                        Approved = true
+                    };
+                    unitsApprovedDataList.Add(record);
+                }
+
+                data.UnitsData.BulkInsert(unitsDataList, userName: "InitialLoading");
+                data.UnitsApprovedDatas.BulkInsert(unitsApprovedDataList, userName: "InitialLoading");
+
+                IEfStatus result = data.SaveChanges(userName: "InitialLoading");
+                if (result.IsValid)
+                {
+                    Console.WriteLine(format: "Successfully added records for {0}", arg0: nextDate);
+                }
+
+                nextDate = nextDate.AddDays(value: 1);
+                if (nextDate.Month != lastRealDate.Month)
+                {
+                    break;
+                }
+            }
+        }
+
+        private static void CreateDailyData(ProductionData data, DateTime lastRealDate)
+        {
+            var dailyData = data.UnitsDailyDatas.All().Where(x => x.RecordTimestamp == lastRealDate).ToList();
+            var approvedDaysData = data.UnitsApprovedDailyDatas.All().Where(x => x.RecordDate == lastRealDate).ToList();
+            var nextDate = lastRealDate.AddDays(1);
+            var daysInMonth = DateTime.DaysInMonth(lastRealDate.Year, lastRealDate.Month);
+            while (nextDate.Day < daysInMonth)
+            {
+                var unitsDailyDataList = new List<UnitsDailyData>();
+                var unitsApprovedDailyDataList = new List<UnitsApprovedDailyData>();
+
+
+                foreach (var item in dailyData)
+                {
+                    var record = new UnitsDailyData
+                    {
+                        RecordTimestamp = nextDate,
+                        UnitsDailyConfigId = item.UnitsDailyConfigId,
+                        Value = (decimal) item.RealValue,
+                        UnitsManualDailyData = null,
+                        UnitsDailyConfig = item.UnitsDailyConfig
+                    };
+                    unitsDailyDataList.Add(record);
+                }
+
+                foreach (var item in approvedDaysData)
+                {
+                    var record = new UnitsApprovedDailyData
+                    {
+                        RecordDate = nextDate,
+                        ProcessUnitId = item.ProcessUnitId,
+                        Approved = true,
+                        EnergyApproved = true
+                    };
+                    unitsApprovedDailyDataList.Add(record);
+                }
+
+                data.UnitsDailyDatas.BulkInsert(unitsDailyDataList, "InitialLoading");
+                data.UnitsApprovedDailyDatas.BulkInsert(unitsApprovedDailyDataList, "InitialLoading");
+                Console.WriteLine("Successfully added daily records for {0}", nextDate);
+
+                nextDate = nextDate.AddDays(1);
+                if (nextDate.Month != lastRealDate.Month)
+                {
+                    break;
+                }
+            }
+        }
+
+        private static void CreateProductionPlanData(ProductionData data, DateTime lastRealDate)
+        {
+            var dailyData = data.ProductionPlanDatas.All().Where(x => x.RecordTimestamp == lastRealDate).ToList();
+            var nextDate = lastRealDate.AddDays(1);
+            var daysInMonth = DateTime.DaysInMonth(lastRealDate.Year, lastRealDate.Month);
+            while (nextDate.Day < daysInMonth)
+            {
+                foreach (var item in dailyData)
+                {
+                    var record = item;
+                    record.RecordTimestamp = nextDate;
+                    data.ProductionPlanDatas.Add(record);
+                }
+
+                var result = data.SaveChanges(userName: "InitialLoading");
+                if (result.IsValid)
+                {
+                    Console.WriteLine("Successfully added {0} records for {1}", result.ResultRecordsCount, nextDate);
+                }
+                else
+                {
+                    Console.WriteLine("error");
+                }
+
+                nextDate = nextDate.AddDays(1);
+            }
         }
 
         private static void AddOrUpdateProductionPlanConfigs(ProductionData data)

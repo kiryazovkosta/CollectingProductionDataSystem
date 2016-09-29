@@ -69,7 +69,7 @@
             .Events(events =>
             {
                 events.Error("kendoAdditional.ErrorHandler");
-                events.RequestEnd("kendoAdditional.OnRequestEnd");
+                events.RequestEnd("kendoAdditional.AfterTankStatusesGridValidation");
             })
         )
         .Events(ev=>{

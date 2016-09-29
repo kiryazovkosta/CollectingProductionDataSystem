@@ -48,6 +48,10 @@
         public string MeasureUnit { get; set; }
 
         [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
+        [Display(Name = "ShiftProductType", ResourceType = typeof(Resources.Layout))]
+        public string ShiftProductType { get; set; }
+
+        [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
         [Display(Name = "Shift1QuantityValue", ResourceType = typeof(Resources.Layout))]
         public decimal Shift1QuantityValue { get; set; }
 

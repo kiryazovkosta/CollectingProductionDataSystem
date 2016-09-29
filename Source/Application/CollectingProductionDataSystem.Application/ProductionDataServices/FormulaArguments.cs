@@ -78,5 +78,14 @@
         /// </summary>
         /// <value>The code.</value>
         public string Code { get; set; }
+
+        ///// <summary>
+        ///// Уникален номер на позицията в сменен аспект
+        ///// </summary>
+        //public int UnitConfigId { get; set; }
+
+        //public int ShiftId { get; set; }
+
+        //public DateTime RecordTimestamp { get; set; }
     }
 }

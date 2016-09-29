@@ -15,6 +15,7 @@
     using Kendo.Mvc.UI;
     using System.Threading.Tasks;
     using System.Web.UI;
+    using Resources = App_GlobalResources.Resources;
 
     public class MonthlyTechnicalController : AreaBaseController
     {
@@ -37,15 +38,17 @@
         [ValidateAntiForgeryToken]
         //[OutputCache(Duration = HalfAnHour, Location = OutputCacheLocation.Server, VaryByParam = "*")]
         //public async Task<JsonResult> ReadMonthlyTechnicalData([DataSourceRequest]DataSourceRequest request, DateTime? date)
-        public JsonResult ReadMonthlyTechnicalData([DataSourceRequest]DataSourceRequest request, DateTime? date)
+        public JsonResult ReadMonthlyTechnicalData([DataSourceRequest]DataSourceRequest request, int? factoryId, DateTime? date)
         {
+            ValidateModelState(factoryId, date);
+
             if (!this.ModelState.IsValid)
             {
-                var kendoResult = new List<MonthlyTechnicalViewModel>().ToDataSourceResult(request, ModelState);
+                DataSourceResult kendoResult = new List<MonthlyTechnicalViewModel>().ToDataSourceResult(request, ModelState);
                 return Json(kendoResult);
             }
 
-            var status = this.monthlyService.CheckIfAllMonthReportAreApproved(date.Value);
+            IEfStatus status = this.monthlyService.CheckIfAllMonthReportAreApproved(date.Value);
             if (!status.IsValid)
             {
                 status.ToModelStateErrors(this.ModelState);
@@ -53,40 +56,50 @@
 
             if (this.ModelState.IsValid)
             {
-                try
+                //try
                 {
                     IEnumerable<int> processUnits = new HashSet<int>();
                     if (IsPowerUser())
                     {
-                        processUnits = this.data.ProcessUnits.All().Where(x => x.FactoryId <= 5).Select(x => x.Id);
+                        processUnits = this.data.ProcessUnits.All().Where(x => x.FactoryId == factoryId).Select(x => x.Id);
                     }
                     else
                     {
                         processUnits = this.UserProfile.ProcessUnits.ToList().Select(x => x.Id);
                     }
-
-                    var kendoResult = new DataSourceResult();
-                    var dbResult = this.monthlyService.ReadMonthlyTechnologicalDataAsync(date.Value, processUnits.ToArray());
-                    var vmResult = Mapper.Map<IEnumerable<MonthlyTechnicalViewModel>>(dbResult);
-                    kendoResult = vmResult.ToDataSourceResult(request, ModelState);
-                    //return Json(kendoResult);
-
-                    var output = Json(kendoResult, JsonRequestBehavior.AllowGet);
-                    output.MaxJsonLength = int.MaxValue;
-                    return output;
-                }
-                catch (Exception ex)
-                {
-                    this.ModelState.AddModelError("", ex.Message);
-                    status.ToModelStateErrors(this.ModelState);
-                    var kendoResult = new List<MonthlyTechnicalViewModel>().ToDataSourceResult(request, ModelState);
+                    IEnumerable<MonthlyTechnicalReportDataDto> dbResult = this.monthlyService.ReadMonthlyTechnologicalDataAsync(date.Value, processUnits.ToArray());
+                    IEnumerable<MonthlyTechnicalViewModel> vmResult = Mapper.Map<IEnumerable<MonthlyTechnicalViewModel>>(dbResult);
+                    DataSourceResult kendoResult = vmResult.ToDataSourceResult(request, ModelState);
                     return Json(kendoResult);
+                    //JsonResult output = Json(kendoResult, JsonRequestBehavior.AllowGet);
+                    //output.MaxJsonLength = int.MaxValue;
+                    //return output;
                 }
+                //catch (Exception ex)
+                //{
+                //    this.ModelState.AddModelError("", ex.Message);
+                //    status.ToModelStateErrors(this.ModelState);
+                //    DataSourceResult kendoResult = new List<MonthlyTechnicalViewModel>().ToDataSourceResult(request, ModelState);
+                //    return Json(kendoResult);
+                //}
             }
             else
             {
-                var kendoResult = new List<MonthlyTechnicalViewModel>().ToDataSourceResult(request, ModelState);
+                DataSourceResult kendoResult = new List<MonthlyTechnicalViewModel>().ToDataSourceResult(request, ModelState);
                 return Json(kendoResult);
+            }
+        }
+
+        private void ValidateModelState(int? factoryId, DateTime? date)
+        {
+            if (factoryId == null)
+            {
+                this.ModelState.AddModelError("factoryId", string.Format(Resources.ErrorMessages.Required, Resources.Layout.ChooseFactory));
+            }
+
+            if (date == null)
+            {
+                this.ModelState.AddModelError("date", string.Format(Resources.ErrorMessages.Required, Resources.Layout.UnitsDateSelector));
             }
         }
 

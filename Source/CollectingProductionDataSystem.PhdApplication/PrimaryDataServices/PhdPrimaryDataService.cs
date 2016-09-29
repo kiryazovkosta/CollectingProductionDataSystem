@@ -487,6 +487,7 @@
                         arguments.CalculationPercentage = (double?)unitConfig.CalculationPercentage;
                         arguments.CustomFormulaExpression = unitConfig.CustomFormulaExpression;
                         arguments.Code = unitConfig.Code;
+                        //arguments.UnitConfigId = unitConfig.Id;
 
                         var relatedUnitConfigs = unitConfig.RelatedUnitConfigs.ToList();
                         var confidence = 100;

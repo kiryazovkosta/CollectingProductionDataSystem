@@ -68,6 +68,7 @@
                     Code = x.UnitConfig.Code,
                     Position = x.UnitConfig.Position,
                     MeasureUnit = x.UnitConfig.MeasureUnit.Code,
+                    ShiftProductType = string.Format("{0:d2} {1}", x.UnitConfig.ShiftProductType.Id, x.UnitConfig.ShiftProductType.Name),
                     UnitConfigId = x.UnitConfigId,
                     UnitName = x.UnitConfig.Name,
                     Shift1 = dbResult.Where(y => y.RecordTimestamp == date && y.ShiftId == (int)ShiftType.First).Where(u => u.UnitConfigId == x.UnitConfigId).FirstOrDefault(),
