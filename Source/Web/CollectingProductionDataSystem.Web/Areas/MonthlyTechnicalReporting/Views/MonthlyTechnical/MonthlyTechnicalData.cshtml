@@ -30,11 +30,10 @@
                 {
                     pdf.AllPages();
                     pdf.PaperSize("A4");
-                    pdf.Margin("1cm", "1cm", "1cm", "2cm");
+                    pdf.Margin("1cm", "1cm", "2cm", "2cm");
                     //pdf.TemplateId("page-template");
                 })
                 .Value(@"<text class='description-content'>
-                            <p><img src='../../Content/Images/LukBlack.png' alt='Editor for ASP.NET MVC logo' style='display:block;margin-left:auto;margin-right:auto'/></p>
                             <h2>Какво е Lorem Ipsum?</h2>
                              <p>Lorem Ipsum е елементарен примерен текст, използван в печатарската и типографската индустрия. Lorem Ipsum е индустриален стандарт от около 1500 година, когато неизвестен печатар взема няколко печатарски букви и ги разбърква, за да напечата с тях книга с примерни шрифтове. Този начин не само е оцелял повече от 5 века, но е навлязъл и в публикуването на електронни издания като е запазен почти без промяна. Популяризиран е през 60те години на 20ти век със издаването на Letraset листи, съдържащи Lorem Ipsum пасажи, популярен е и в наши дни във софтуер за печатни издания като Aldus PageMaker, който включва различни версии на Lorem Ipsum.</p>
                              <h2>Защо го използваме?</h2>
@@ -90,7 +89,7 @@
                 .AvoidLinks()
                 .PaperSize("A4")
                 .Scale(0.3)
-                .Margin("2cm", "1cm", "1cm", "1cm")
+                .Margin("4.5cm", "1cm", "2.5cm", "1cm")
                 .Landscape()
                 .RepeatHeaders()
                 .FileName("TestDocument.pdf")
@@ -163,7 +162,8 @@
                         root.options.pdf.paperSize = "auto";
                         var resultArr = [];
                         root.children.forEach(function (element, index, array) {
-                            resultArr.push(pdfPageSetup.FormatPage(element, index + 1, array.length, 'Some title'));
+                            var pageClone = $.extend({}, element);
+                            resultArr.push(pdfPageSetup.FormatPage(pageClone, index + 1, array.length, 'Some title'));
                         });
                         root.children = resultArr;
                         return kendo.drawing.exportPDF(root, { multiPage: true });
@@ -201,5 +201,3 @@
 @*@section styles{
         @Styles.Render("~/Content/custom/pdf-page-template.css");
     }*@
-
-

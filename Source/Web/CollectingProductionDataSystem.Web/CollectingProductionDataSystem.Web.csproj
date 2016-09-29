@@ -694,6 +694,7 @@
     <Content Include="Content\Images\Excel-icon.png" />
     <Content Include="Content\Images\factory.png" />
     <Content Include="Content\Images\loading.gif" />
+    <Content Include="Content\Images\LUK.png" />
     <Content Include="Content\Images\LukBlack.png" />
     <Content Include="Content\Images\LukTransparent.png" />
     <Content Include="Content\Images\MonthlyData\ConsumptionRates\Edit.png" />
@@ -2561,6 +2562,7 @@
     <Content Include="Views\Shared\_TanksSideBarByAreaAndDateTime.cshtml" />
     <Content Include="Views\Shared\_MonthSelectorEditAndReportSideBar.cshtml" />
     <Content Include="Views\Shared\_MonthSelectorAproveableRecalcSideBar.cshtml" />
+    <Content Include="Views\Shared\PageHeader.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
