@@ -89,9 +89,9 @@ var unitGridsData = (function () {
             }
 
             if ($("#technological-data").val() !== undefined) {
+                setExportSettings();
                 kendoAdditional.RefreshGrid("#technological-data");
             }
-
 
             if ($("#tanks-statuses").val() !== undefined) {
 
@@ -221,6 +221,28 @@ var unitGridsData = (function () {
 
     //------------------ private functions ------------------------------------
 
+    function setExportSettings() {
+        // set factory
+        var factoryCombobox = $("#factories").data("kendoDropDownList");
+        var factoryHidden = $("#exportSettings-Factory");
+        if (factoryCombobox !== undefined && factoryHidden !== undefined) {
+            factoryHidden.val(factoryCombobox.text());
+        }
+
+        // set date
+        var timestampDatePicker = $("#date").data("kendoDatePicker");
+        var timestampHidden = $("#exportSettings-RecordTimestamp");
+        if (timestampDatePicker !== undefined && timestampHidden !== undefined) {
+            timestampHidden.val($("#date").val());
+        }
+
+        // set report text
+        var factory = factoryHidden.val();
+        var date = timestampHidden.val()
+        var title = "Технологичен отчет Производство: " + factory + " за " + date.charAt(0).toUpperCase() + date.slice(1);
+        $("#monthly-technical-title").text(title);
+    }
+
     function getControlData() {
         var controlParams = $('#control-params');
         if (controlParams.val() !== undefined) {
@@ -267,7 +289,17 @@ var unitGridsData = (function () {
             attachEventToExportBtn("#excel-export", "#monthly-recalc-data-report");
         }
 
+        var highWaypiPelines = $('#highwaypipelines').data('kendoGrid');
+        if (highWaypiPelines) {
+            attachEventToExportBtn("#excel-export", "#highwaypipelines");
+        }
 
+        var measuringPoints = $('#measuringpoints').data('kendoGrid');
+        if (measuringPoints) {
+            attachEventToExportBtn("#excel-export", "#measuringpoints");
+        }
+
+        
     }
 
     function checkEquals(dataParam, controlData) {

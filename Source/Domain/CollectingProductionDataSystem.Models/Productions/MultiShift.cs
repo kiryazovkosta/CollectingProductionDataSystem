@@ -14,6 +14,7 @@
         public string Code { get; set; }
         public string Position { get; set; }
         public string MeasureUnit { get; set; }
+        public string ShiftProductType { get; set; }
         public int UnitConfigId { get; set; }
         public bool NotATotalizedPosition { get; set; }
         public string UnitName { get; set; }

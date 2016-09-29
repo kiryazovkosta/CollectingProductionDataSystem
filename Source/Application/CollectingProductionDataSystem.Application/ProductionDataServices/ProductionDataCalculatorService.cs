@@ -269,6 +269,7 @@
             arguments.CalculationPercentage = (double?)unitConfig.CalculationPercentage;
             arguments.CustomFormulaExpression = unitConfig.CustomFormulaExpression;
             arguments.Code = unitConfig.Code;
+            //arguments.UnitConfigId = unitConfig.Id;
             if (arguments.EstimatedDensity.HasValue)
             {
                 var d = ((int)(arguments.EstimatedDensity.Value * 1000)) / 100;
@@ -337,6 +338,7 @@
             arguments.CalculationPercentage = (double?)unitConfig.CalculationPercentage;
             arguments.CustomFormulaExpression = unitConfig.CustomFormulaExpression;
             arguments.Code = unitConfig.Code;
+            //arguments.UnitConfigId = unitConfig.Id;
             return arguments;
         }
 

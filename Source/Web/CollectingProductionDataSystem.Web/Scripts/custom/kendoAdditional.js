@@ -117,6 +117,10 @@
         RefreshGrid('#plan-grid');
     }
 
+    function AfterTankStatusesGridValidation() {
+        RefreshGrid('#tanks-statuses');
+    }
+
     function ValueMapper(options) {
 
         var splitUrl = this.dataSource.options.transport.read.url.split('/');

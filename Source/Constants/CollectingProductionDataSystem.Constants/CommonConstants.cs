@@ -67,6 +67,8 @@ namespace CollectingProductionDataSystem.Constants
 
         private static readonly int inputOutputDirection = 3;
 
+        private static readonly int?[] materialTypechemicalType = new int?[] { MaterialType, ChemicalType };
+
         public static string StandartPassword
         {
             get
@@ -125,5 +127,6 @@ namespace CollectingProductionDataSystem.Constants
 
         public static int InputOutputDirection { get { return inputOutputDirection; } }
 
+        public static int?[] MaterialTypeChemicalType { get { return materialTypechemicalType; } }
     }
 }

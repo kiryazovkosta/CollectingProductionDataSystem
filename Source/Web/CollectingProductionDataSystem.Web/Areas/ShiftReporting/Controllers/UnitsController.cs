@@ -559,6 +559,7 @@
             arguments.CalculationPercentage = (double?) unitConfig.CalculationPercentage;
             arguments.CustomFormulaExpression = unitConfig.CustomFormulaExpression;
             arguments.Code = unitConfig.Code;
+            //arguments.UnitConfigId = unitConfig.Id;
             return arguments;
         }
 
