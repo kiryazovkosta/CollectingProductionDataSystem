@@ -472,7 +472,7 @@
                 double newValue = 0;
                 if (formulaCode.Equals("C9"))
                 {
-                    newValue = this.CalculateByMathExpression(unitConfig, model.RecordTimestamp, model.Shift);
+                    newValue = this.CalculateByMathExpression(unitConfig, model);
                 }
                 else
                 {
@@ -622,22 +622,26 @@
             }
         }
 
-        private double CalculateByMathExpression(UnitConfig unitConfig, DateTime targetDay, int shiftId)
+        private double CalculateByMathExpression(UnitConfig unitConfig, UnitDataViewModel model)
         {
             var inputParams = new Dictionary<string, double>();
             int indexCounter = 0;
             var mathExpression = unitConfig.CustomFormulaExpression;
-            var relatedunitConfigs = unitConfig.RelatedUnitConfigs.ToList();
+            var relatedunitConfigs = unitConfig.RelatedUnitConfigs.OrderBy(x => x.Position).ToList();
             var confidence = 100;
             foreach (var relatedunitConfig in relatedunitConfigs)
             {
                 var element = data.UnitsData
                                   .All()
-                                  .Where(x => x.RecordTimestamp == targetDay)
-                                  .Where(x => x.ShiftId == shiftId)
+                                  .Where(x => x.RecordTimestamp == model.RecordTimestamp)
+                                  .Where(x => x.ShiftId == model.Shift)
                                   .Where(x => x.UnitConfigId == relatedunitConfig.RelatedUnitConfigId)
                                   .FirstOrDefault();
                 var inputValue = (element != null) ? element.RealValue : 0.0;
+                if (model.UnitConfigId == relatedunitConfig.RelatedUnitConfigId)
+                {
+                    inputValue = (double)model.UnitsManualData.Value;
+                }
                 if (inputValue == 0.0)
                 {
                     if (element != null && element.Confidence != 100)
@@ -651,6 +655,10 @@
             }
 
             double calculatedValue = new ProductionDataCalculatorService(this.data).Calculate(mathExpression, "p", inputParams, unitConfig.Code);
+            if (double.IsInfinity(calculatedValue) || double.IsNaN(calculatedValue))
+            {
+                calculatedValue = 0;
+            }
             return calculatedValue;
         }
 

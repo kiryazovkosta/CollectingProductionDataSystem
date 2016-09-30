@@ -216,31 +216,36 @@ var unitGridsData = (function () {
                 }
             });
         }
-
     });
 
     //------------------ private functions ------------------------------------
 
     function setExportSettings() {
-        // set factory
-        var factoryCombobox = $("#factories").data("kendoDropDownList");
-        var factoryHidden = $("#exportSettings-Factory");
-        if (factoryCombobox !== undefined && factoryHidden !== undefined) {
-            factoryHidden.val(factoryCombobox.text());
-        }
+        if ($('input[name=factories]') || $('input[name=factoriesD]')) {
+            var q = sendFactoryId();
+            $.extend(q, sendAntiForgery());
+            $.ajax({
+                url: 'GetFactoryName',
+                type: 'POST',
+                dataType: "json",
+                data: q,
+                success: function (result) {
+                    var factoryName = result.factoryName;
+                    var result = { "FactoryId": $('input[name=factories]').val() || $('input[name=factoriesD]').val() }
+                    $.extend(result, setFactoryName(factoryName));
+                    $.extend(result, setMonthValue());
+                    $.extend(result, setMonthValueAsString());
 
-        // set date
-        var timestampDatePicker = $("#date").data("kendoDatePicker");
-        var timestampHidden = $("#exportSettings-RecordTimestamp");
-        if (timestampDatePicker !== undefined && timestampHidden !== undefined) {
-            timestampHidden.val($("#date").val());
+                    var hiddenExportSettings = $('#export-data-settings');
+                    if (hiddenExportSettings !== undefined) {
+                        hiddenExportSettings.val(JSON.stringify(result))
+                    }
+                },
+                error: function (result) {
+                    return {};
+                }
+            });
         }
-
-        // set report text
-        var factory = factoryHidden.val();
-        var date = timestampHidden.val()
-        var title = "Технологичен отчет Производство: " + factory + " за " + date.charAt(0).toUpperCase() + date.slice(1);
-        $("#monthly-technical-title").text(title);
     }
 
     function getControlData() {
@@ -351,6 +356,33 @@ var unitGridsData = (function () {
 
     function sendMonthlyReportTypeId() {
         return { "monthlyReportTypeId": $('input#monthlyReportTypeId').val() }
+    }
+
+    function setFactoryName(factoryName) {
+        return { "FactoryName": factoryName };
+    }
+
+    function setMonthValue() {
+        var datePicker = $('input[name=date]').data('kendoDatePicker');
+        if (datePicker !== undefined) {
+            var date = datePicker.value();
+        } else {
+            return;
+        }
+
+        //return { "Month": date.toISOString(kendo.culture().name) };
+        return { "Month": date };
+    }
+
+    function setMonthValueAsString() {
+        var datePicker = $("#date");
+        if (datePicker !== undefined) {
+            var date = datePicker.val();
+        } else {
+            return;
+        }
+
+        return { "MonthAsString": date };
     }
 
     function hideCommandButtons() {

@@ -16,6 +16,7 @@
     using System.Threading.Tasks;
     using System.Web.UI;
     using Resources = App_GlobalResources.Resources;
+    using Models.Productions;
 
     public class MonthlyTechnicalController : AreaBaseController
     {
@@ -65,15 +66,16 @@
                     }
                     else
                     {
-                        processUnits = this.UserProfile.ProcessUnits.ToList().Select(x => x.Id);
+                        List<int> processUnitsForFactory = this.data.ProcessUnits.All().Where(x => x.FactoryId == factoryId).Select(x => x.Id).ToList();
+                        processUnits = this.UserProfile.ProcessUnits.ToList().Where(p => processUnitsForFactory.Contains(p.Id)).Select(x => x.Id);
                     }
                     IEnumerable<MonthlyTechnicalReportDataDto> dbResult = this.monthlyService.ReadMonthlyTechnologicalDataAsync(date.Value, processUnits.ToArray());
                     IEnumerable<MonthlyTechnicalViewModel> vmResult = Mapper.Map<IEnumerable<MonthlyTechnicalViewModel>>(dbResult);
                     DataSourceResult kendoResult = vmResult.ToDataSourceResult(request, ModelState);
-                    return Json(kendoResult);
-                    //JsonResult output = Json(kendoResult, JsonRequestBehavior.AllowGet);
-                    //output.MaxJsonLength = int.MaxValue;
-                    //return output;
+                    //return Json(kendoResult);
+                    JsonResult output = Json(kendoResult, JsonRequestBehavior.AllowGet);
+                    output.MaxJsonLength = int.MaxValue;
+                    return output;
                 }
                 //catch (Exception ex)
                 //{
@@ -113,6 +115,31 @@
         private bool IsPowerUser()
         {
             return UserProfile.UserRoles.Where(x => CommonConstants.PowerUsers.Any(y => y == x.Name)).Any();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult GetFactoryName([DataSourceRequest]DataSourceRequest request, int? factoryId)
+        {
+            if (!factoryId.HasValue)
+            {
+                this.ModelState.AddModelError("", "factory id");
+            }
+
+            if (this.ModelState.IsValid)
+            {
+                Factory factory = this.data.Factories.All().Where(x => x.Id == factoryId).FirstOrDefault();
+                if (factory != null)
+                {
+                    return Json(new { factoryName = factory.FullName });
+                }
+
+                return Json(new { factoryName = string.Empty });
+            }
+            else
+            {
+                return Json(new { factoryName = string.Empty });
+            }
         }
     }
 }

@@ -472,7 +472,7 @@
                 {
                     if (unitConfig.CalculatedFormula.Equals("C9"))
                     {
-                        this.logger.ErrorFormat("Id {0} calculate by math expression");
+                        this.logger.ErrorFormat("Id {0} calculate by math expression", unitConfig.Id);
                         CalculateByMathExpression(unitConfig, recordDataTime, shift, unitsTempData, currentUnitDatas);
                     }
                     else
@@ -617,8 +617,7 @@
 
                 if (allRelatedRecordsExists == true)
                 {
-                    var element = data.UnitsData
-                                  .All()
+                    var element = unitsData
                                   .Where(x => x.RecordTimestamp == recordDataTime)
                                   .Where(x => x.ShiftId == shift)
                                   .Where(x => x.UnitConfigId == relatedunitConfig.RelatedUnitConfigId)
