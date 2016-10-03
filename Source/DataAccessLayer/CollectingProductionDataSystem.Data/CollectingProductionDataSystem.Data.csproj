@@ -122,6 +122,7 @@
     <Compile Include="Mappings\ApplicationUserParkMap.cs" />
     <Compile Include="Mappings\ApplicationUserProcessUnitMap.cs" />
     <Compile Include="Mappings\MeasuringPointsConfigsReportDataMap.cs" />
+    <Compile Include="Mappings\MonthlyTechnologicalReportsDataMap.cs" />
     <Compile Include="Mappings\PhdConfgMap.cs" />
     <Compile Include="Mappings\PlanValueMap.cs" />
     <Compile Include="Mappings\PlanNormMap.cs" />

@@ -13,17 +13,20 @@
     @Html.Partial("_ExportDataSettings")
 
     <div class="row">
-        <div class="col-md-9">
+        <div class="col-md-7">
             <h2 id="monthly-technical-title">@Resources.Layout.MonthlyTechnologicalReport</h2>
         </div>
+        <div class="col-md-2">
+            <button type="button" id="tech-report-save" class="k-button k-button-icontext k-grid-pdf pull-right head-button" style="margin-left:5px;"><span class="k-icon k-i-pdf"></span>Запазване</button>
+        </div>
         <div class="col-md-3">
-            @*<button type="button" id="export-pdf" class="k-button k-button-icontext k-grid-pdf pull-right head-button" style="margin-left:5px;"><span class="k-icon k-i-pdf"></span>Експорт в Pdf</button>*@
+            <button type="button" id="export-pdf" class="k-button k-button-icontext k-grid-pdf pull-right head-button" style="margin-left:5px;"><span class="k-icon k-i-pdf"></span>Експорт в Pdf</button>
             <button id="excel-export" class="k-button k-button-icontext k-grid-excel pull-right head-button"><span class="k-icon k-i-excel"></span>Експорт в Excel</button>
         </div>
     </div>
     @Html.ValidationSummary()
     @Html.AntiForgeryToken()
-    @*@(Html.Kendo()
+    @(Html.Kendo()
                 .Editor()
                 .Name("report-details")
                 .HtmlAttributes(new { style = "width: 100%;height:310px;" })
@@ -46,7 +49,7 @@
                              <h2>Откъде мога да го взема ?</h2>
                              <p>Съществуват много вариации на пасажа Lorem Ipsum, но повечето от тях са променени по един или друг начин чрез добавяне на смешни думи или разбъркване на думите, което не изглежда много достоверно.Ако искате да използвате пасаж от Lorem Ipsum, трябва да сте сигурни, че в него няма смущаващи или нецензурни думи.Всички Lorem Ipsum генератори в Интернет използват предефинирани пасажи, който се повтарят, което прави този този генератор първия истински такъв.Той използва речник от над 200 латински думи, комбинирани по подходящ начин като изречения, за да генерират истински Lorem Ipsum пасажи.Оттук следва, че генерираният Lorem Ipsum пасаж не съдържа повторения, смущаващи, нецензурни и всякакви неподходящи думи.</p>
                         </ text > ")
-    )*@
+    )
 
     @(Html.Kendo()
         .Grid<MonthlyTechnicalViewModel>()

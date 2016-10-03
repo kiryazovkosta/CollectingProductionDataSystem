@@ -69,8 +69,7 @@
         {
             get
             {
-                var totalQuantity = 0m;
-
+                decimal totalQuantity = 0m;
                 if (this.NotATotalizedPosition == true)
                 {
                     totalQuantity = this.Shift3QuantityValue;

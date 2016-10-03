@@ -457,6 +457,7 @@
                     Shift1 = dbResult.Where(y => y.RecordTimestamp == date && y.ShiftId == (int)ShiftType.First).Where(u => u.UnitConfigId == x.UnitConfigId).FirstOrDefault(),
                     Shift2 = dbResult.Where(y => y.RecordTimestamp == date && y.ShiftId == (int)ShiftType.Second).Where(u => u.UnitConfigId == x.UnitConfigId).FirstOrDefault(),
                     Shift3 = dbResult.Where(y => y.RecordTimestamp == date && y.ShiftId == (int)ShiftType.Third).Where(u => u.UnitConfigId == x.UnitConfigId).FirstOrDefault(),
+                    NotATotalizedPosition = x.UnitConfig.NotATotalizedPosition,
                 }).Distinct(new MultiShiftComparer()).ToList();
 
                 var kendoPreparedResult = Mapper.Map<IEnumerable<MultiShift>, IEnumerable<UnitsReportsDataViewModel>>(result);
@@ -467,7 +468,19 @@
                 {
                     if (totalMonthQuantities.ContainsKey(position.Code))
                     {
-                        position.TotalMonthQuantity = totalMonthQuantities[position.Code];
+                        if (position.NotATotalizedPosition)
+                        {
+                            var val = (double) position.Shift3QuantityValue;
+                            if (double.IsInfinity(val) || double.IsNaN(val))
+                            {
+                                val = 0;
+                            }
+                            position.TotalMonthQuantity = val;
+                        }
+                        else
+                        {
+                            position.TotalMonthQuantity = totalMonthQuantities[position.Code];
+                        }
                     }
                 }
 
