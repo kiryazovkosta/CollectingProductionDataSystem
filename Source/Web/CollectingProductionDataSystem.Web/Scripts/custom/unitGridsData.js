@@ -304,7 +304,10 @@ var unitGridsData = (function () {
             attachEventToExportBtn("#excel-export", "#measuringpoints");
         }
 
-        
+        var technologicalReport = $('#technological-data').data('kendoGrid');
+		if (technologicalReport) {
+            attachEventToExportBtn("#excel-export", "#technological-data");
+        }
     }
 
     function checkEquals(dataParam, controlData) {
