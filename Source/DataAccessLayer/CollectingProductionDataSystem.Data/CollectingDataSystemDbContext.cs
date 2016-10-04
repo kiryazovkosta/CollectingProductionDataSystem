@@ -212,6 +212,8 @@
 
         public IDbSet<UnitTechnologicalMonthlyData> UnitTechnologicalMonthlyDatas { get; set; }
 
+        public IDbSet<MonthlyTechnologicalReportsData> MonthlyTechnologicalReportsDatas { get; set; }
+
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

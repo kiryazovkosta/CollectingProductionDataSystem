@@ -216,6 +216,39 @@ var unitGridsData = (function () {
                 }
             });
         }
+
+
+        // technological reports 
+        // tech-report-save 
+        // export-pdf 
+        // report-details 
+        // tech-report-approve
+        var techReportSaveButton = $('#tech-report-save');
+        if (techReportSaveButton) {
+            techReportSaveButton.hide();
+            techReportSaveButton.css('visibility', 'hidden');
+        }
+
+        var exportPdfButton = $('#export-pdf');
+        if (exportPdfButton) {
+            exportPdfButton.hide();
+            exportPdfButton.css('visibility', 'hidden');
+            //var techReportGrid = $('#technological-data').data('kendoGrid');
+            //if (techReportGrid) {
+            //    techReportGrid.height = 610;
+            //}
+        }
+
+        if ($('#report-details')) {
+            $('#report-details').hide();
+            $('#report-details').css('visibility', 'hidden');
+            $($('#report-details').data().kendoEditor.body).attr('contenteditable', false);
+        }
+
+        if ($('#tech-report-approve')) {
+            $('#tech-report-approve').hide();
+        }
+
     });
 
     //------------------ private functions ------------------------------------
