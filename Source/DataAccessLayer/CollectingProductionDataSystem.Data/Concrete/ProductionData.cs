@@ -686,6 +686,14 @@
             }
         }
 
+        public IDeletableEntityRepository<MonthlyTechnologicalReportsData> MonthlyTechnologicalReportsDatas
+        {
+            get
+            {
+                return this.GetDeletableEntityRepository<MonthlyTechnologicalReportsData>();
+            }
+        }
+
         public IRepository<Event> Events
         {
             get

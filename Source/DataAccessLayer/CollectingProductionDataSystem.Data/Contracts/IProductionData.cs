@@ -172,6 +172,8 @@
 
         IDeletableEntityRepository<UnitTechnologicalMonthlyData> UnitTechnologicalMonthlyDatas { get; }
 
+        IDeletableEntityRepository<MonthlyTechnologicalReportsData> MonthlyTechnologicalReportsDatas { get; }
+
         IDbContext DbContext { get; }
 
         IEfStatus SaveChanges(string userName);
