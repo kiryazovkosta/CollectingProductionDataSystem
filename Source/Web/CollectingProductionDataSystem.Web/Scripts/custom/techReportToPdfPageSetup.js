@@ -57,24 +57,20 @@ var pdfPageSetup = (function () {
             contentRect: contentRect.clone(),
             footerRect: new geom.Rect(
                 [margins.Left, margins.Top + headerHeight + contentRect.getSize().getHeight() + 2 * LINE_SPACING],
-                [printableRect.width(), footerHeight]),
-
+                [printableRect.width(), footerHeight])
         }
     };
 
-    var formatPage = function (content, pageNumber, totalPages, title) {
+    var formatPage = function (content, pageNumber, totalPages, exportData) {
         // calculate page geometry
+
         if (content.options.landscape !== "false") {
             content.options.landscape = "true";
         }
         var pg = new pageGeometry("A4", content.options.landscape, mm(20), mm(10));
 
-        var header = createHeader(pg, title, pageNumber, totalPages)
-        var footer = createFooter(pageNumber, totalPages);
-        var footerSeparator = createSeparator(pg.footerRect.getSize().getWidth());
-
-        // Fit the content in the available space
-        draw.fit(content, pg.contentRect);
+        var header = createHeader(pg, exportData, pageNumber, totalPages);
+        var footer = createFooter(pg);
 
         // Do a final layout with content
         var page = new draw.Layout(pg.pageRect, {
@@ -91,12 +87,22 @@ var pdfPageSetup = (function () {
             spacing: LINE_SPACING
         });
 
-        //var clipPath = new draw.Path();
-        //clipPath.moveTo(0, 30);
+        if (pageNumber === totalPages) {
+            var spacing = mm(2);
+            pg.contentRect = new geom.Rect([pg.contentRect.getOrigin().x, pg.contentRect.getOrigin().y], [pg.contentRect.getSize().width, pg.contentRect.getSize().height - mm(17) - spacing]);
+            var signRect = new geom.Rect([pg.footerRect.getOrigin().x, pg.footerRect.getOrigin().y - mm(17) - spacing], [pg.printableRect.size.width, mm(17)]);
+            var signContent = createSignSegment(pg,exportData);
 
-        //content.clip(clipPath);
-        //draw.fit(header, pg.headerRect)
-        page.append(header, content, footerSeparator, footer);
+            draw.align([signContent], signRect, "end");
+            draw.vAlign([signContent], signRect, "start");
+            page.append(signContent);
+
+        }
+
+        // Fit the content in the available space
+        draw.fit(content, pg.contentRect);
+
+        page.append(header, content, footer);
 
         //place elements of page to the corresponding rectangles
         draw.align([header], pg.headerRect, "start");
@@ -106,11 +112,11 @@ var pdfPageSetup = (function () {
         draw.vAlign([content], pg.contentRect, "start");
 
         // Move the footer to the bottom-right corner
-        draw.align([footerSeparator], pg.footerRect, "start");
-        draw.vAlign([footerSeparator], pg.footerRect, "start");
+        //draw.align([footerSeparator], pg.footerRect, "start");
+        //draw.vAlign([footerSeparator], pg.footerRect, "start");
 
-        draw.align([footer], pg.footerRect, "end");
-        draw.vAlign([footer], pg.footerRect, "end");
+        draw.align([footer], pg.footerRect, "center");
+        draw.vAlign([footer], pg.footerRect, "center");
 
         page.options.set("pdf.paperSize", "A4");
         if (content.options.landscape !== 'false') {
@@ -120,11 +126,11 @@ var pdfPageSetup = (function () {
         return page;
     }
 
-    function drawRectangle(p, originX, originY, height, width) {
+    function drawRectangle(originX, originY, height, width) {
         var p = new draw.Path({
             stroke: {
                 color: "#999999",
-                width: 0.5
+                width: 0.75
             }
         });
         p.moveTo(originX, originY)
@@ -136,7 +142,7 @@ var pdfPageSetup = (function () {
         return p;
     }
 
-    function createHeader(pageRect, title, pageNum, total) {
+    function createHeader(pageRect, exportData, pageNum, total) {
         //width = width * 1.1;
 
         var heagerRect = pageRect.headerRect;
@@ -164,20 +170,21 @@ var pdfPageSetup = (function () {
         var p4OriginX = pOriginX;
         var p4OriginY = pOriginY + pHeight;
         var p4Height = mm(7);
-        var p4Width = heagerRect.size.width / 2;
+        var p5Width = mm(40);
+        var p4Width = heagerRect.size.width - p5Width;
 
         var p5OriginX = pOriginX + p4Width;
         var p5OriginY = p4OriginY;
         var p5Height = mm(7);
-        var p5Width = heagerRect.size.width / 2;
+
 
         // The path is constructed using a chain of commands
-        var path = drawRectangle(path, pOriginX, pOriginY, pHeight, pWidth);
-        var path1 = drawRectangle(path1, p1OriginX, p1OriginY, p1Height, p1Width);
-        var path2 = drawRectangle(path2, p2OriginX, p2OriginY, p2Height, p2Width);
-        var path3 = drawRectangle(path3, p3OriginX, p3OriginY, p3Height, p3Width);
-        var path4 = drawRectangle(path4, p4OriginX, p4OriginY, p4Height, p4Width);
-        var path5 = drawRectangle(path5, p5OriginX, p5OriginY, p5Height, p5Width);
+        var path = drawRectangle(pOriginX, pOriginY, pHeight, pWidth);
+        var path1 = drawRectangle(p1OriginX, p1OriginY, p1Height, p1Width);
+        var path2 = drawRectangle(p2OriginX, p2OriginY, p2Height, p2Width);
+        var path3 = drawRectangle(p3OriginX, p3OriginY, p3Height, p3Width);
+        var path4 = drawRectangle(p4OriginX, p4OriginY, p4Height, p4Width);
+        var path5 = drawRectangle(p5OriginX, p5OriginY, p5Height, p5Width);
 
 
         // This rectangle defines the image position and size
@@ -192,9 +199,9 @@ var pdfPageSetup = (function () {
 
         // Create the text
         var text = new draw.Text(
-             '"ЛУКОЙЛ НЕФТОХИМ БУРГАС" АД',
-            new geom.Point(mm(5), mm(11)),
-            { font: mm(2.1) + "px 'DejaVu Sans'" }
+             '"ЛУКОЙЛ Нефтохим Бургас" АД',
+            new geom.Point(mm(2), mm(11)),
+            { font: mm(2.3) + "px 'DejaVu Sans'" }
         );
 
         var textTechnological = new draw.Text(
@@ -205,8 +212,12 @@ var pdfPageSetup = (function () {
         draw.align([textTechnological], path1.bbox(), "center");
         draw.vAlign([textTechnological], path1.bbox(), "center");
 
+        var dateString = exportData.Month.toLocaleDateString('bg-BG');
+        if (dateString.split('.')[0].length === 1) {
+            dateString = '0' + dateString;
+        }
         var textDate = new draw.Text(
-             'Дата: 01.06.2016 г.',
+             'Дата: ' + dateString,
             new geom.Point(mm(5), mm(11)),
             { font: mm(3) + "px 'DejaVu Sans'" }
         );
@@ -222,20 +233,19 @@ var pdfPageSetup = (function () {
         draw.vAlign([textPage], path3.bbox(), "center");
 
 
-        var textFactory = new draw.Text(" Производство: Каталитична обработка на горивата",
+        var textFactory = new draw.Text(" Производство: " + exportData.FactoryName,
             new geom.Point(mm(0), mm(0)),
             { font: mm(3) + "px 'DejaVu Sans'" }
         );
         draw.align([textFactory], path4.bbox(), "start");
         draw.vAlign([textFactory], path4.bbox(), "center");
 
-        var textPeriod = new draw.Text(" Период: Септември и от началото на годината",
+        var textPeriod = new draw.Text(" Период: " + exportData.MonthAsString,
             new geom.Point(mm(10), mm(0)),
             { font: mm(3) + "px 'DejaVu Sans'" }
         );
         draw.align([textPeriod], path5.bbox(), "start");
         draw.vAlign([textPeriod], path5.bbox(), "center");
-
 
         // Place all the shapes in a group
         var group = new draw.Group();
@@ -262,21 +272,216 @@ var pdfPageSetup = (function () {
         var path = draw.Path.fromRect(borderRect, {
             stroke: {
                 color: "#999999",
-                width: 0.2
+                width: 0.75
             }
         });
         return path;
     }
 
-    function createFooter(page, total) {
-        return new kendo.drawing.Text(
-          kendo.format("{0} от {1}", page, total),
-          new geom.Point(0, 0),
-            {
-                font: mm(3) + "px 'DejaVu Sans'"
-            }
-        );
+    function createFooter(pg) {
+
+        var fr = pg.footerRect.clone();
+        fr.setOrigin(0, 0);
+        var path = draw.Path.fromRect(fr, {
+        });
+
+        var footerSeparator = createSeparator(pg.footerRect.getSize().getWidth());
+        draw.align([footerSeparator], path.bbox(), "start");
+        draw.vAlign([footerSeparator], path.bbox(), "start");
+
+        var footerFirstLine = new draw.Text('Този документ е издаден от "Система за автоматизирана производствена отчетност". ',
+                                            new geom.Point(mm(5), mm(1)),
+                                            {
+                                                font: 'italic ' + mm(2.4) + "px 'DejaVu Sans'",
+                                                fill: { color: '#999999' }
+                                            }
+                                      );
+        draw.align([footerFirstLine], footerSeparator.bbox(), "center");
+        //draw.vAlign([footerFirstLine], path.bbox(), "start");
+
+        var footerSecondLine = new draw.Text('Документът е предназначен за служебно ползване. Забранява се копиране или предоставяне на външни лица без разрешение.',
+                                  new geom.Point(mm(5), mm(4)),
+                                  {
+                                      font: 'italic ' + mm(2.4) + "px 'DejaVu Sans'",
+                                      fill: { color: '#999999' }
+                                  }
+                                );
+        draw.align([footerSecondLine], footerSeparator.bbox(), "center");
+        //draw.vAlign([footerSecondLine], path.bbox(), "end");
+
+        var group = new draw.Group();
+        group.append(footerSeparator, $.extend({}, footerFirstLine), $.extend({}, footerSecondLine));
+
+        return group;
     }
 
-    return { FormatPage: formatPage }
+    function createSignSegment(pageRect, exportData) {
+        //width = width * 1.1;
+
+        var heagerRect = pageRect.headerRect;
+
+        var p1OriginX = heagerRect.origin.x - pageRect.margins.Left;
+        var p1OriginY = heagerRect.origin.y - pageRect.margins.Top;
+        var p1Height = mm(7);
+        var p1Width = mm(20);
+
+        var p2OriginX = p1OriginX + p1Width;
+        var p2OriginY = p1OriginY;
+        var p2Height = p1Height;
+        var p2Width = mm(65);
+
+        var p3OriginX = p2OriginX + p2Width;
+        var p3OriginY = p1OriginY;
+        var p3Height = p1Height;
+        var p3Width = mm(75);
+
+        var p4OriginX = p3OriginX + p3Width;
+        var p4OriginY = p1OriginY;
+        var p4Height = p1Height;
+        var p4Width = mm(30);
+
+        //var p5OriginX = p4OriginX + p4Width;
+        //var p5OriginY = p1OriginY;
+        //var p5Height = p1Height;
+        //var p5Width = mm(30);
+
+        var p6OriginX = p1OriginX;
+        var p6OriginY = p1OriginY + p1Height;
+        var p6Height = mm(10);
+        var p6Width = p1Width;
+
+        var p7OriginX = p2OriginX;
+        var p7OriginY = p6OriginY;
+        var p7Height = p6Height;
+        var p7Width = p2Width;
+
+        var p8OriginX = p3OriginX;
+        var p8OriginY = p6OriginY;
+        var p8Height = p6Height;
+        var p8Width = p3Width;
+
+        var p9OriginX = p4OriginX;
+        var p9OriginY = p6OriginY;
+        var p9Height = p6Height;
+        var p9Width = p4Width;
+
+        //var p10OriginX = p5OriginX;
+        //var p10OriginY = p6OriginY;
+        //var p10Height = p6Height;
+        //var p10Width = p5Width;
+
+        // The path is constructed using a chain of commands
+
+        var path1 = drawRectangle(p1OriginX, p1OriginY, p1Height, p1Width);
+        var path2 = drawRectangle(p2OriginX, p2OriginY, p2Height, p2Width);
+        var path3 = drawRectangle(p3OriginX, p3OriginY, p3Height, p3Width);
+        var path4 = drawRectangle(p4OriginX, p4OriginY, p4Height, p4Width);
+        //var path5 = drawRectangle(p5OriginX, p5OriginY, p5Height, p5Width);
+        var path6 = drawRectangle(p6OriginX, p6OriginY, p6Height, p6Width);
+        var path7 = drawRectangle(p7OriginX, p7OriginY, p7Height, p7Width);
+        var path8 = drawRectangle(p8OriginX, p8OriginY, p8Height, p8Width);
+        var path9 = drawRectangle(p9OriginX, p9OriginY, p9Height, p9Width);
+        //var path10 = drawRectangle(p10OriginX, p10OriginY, p10Height, p10Width);
+
+        var textPath2 = new draw.Text("Име, Фамилия",
+            new geom.Point(mm(0), mm(0)),
+            { font: mm(3) + "px 'DejaVu Sans'" }
+        );
+        draw.align([textPath2], path2.bbox(), "center");
+        draw.vAlign([textPath2], path2.bbox(), "center");
+
+        var textPath3 = new draw.Text("Длъжност",
+            new geom.Point(mm(0), mm(0)),
+            { font: mm(3) + "px 'DejaVu Sans'" }
+        );
+        draw.align([textPath3], path3.bbox(), "center");
+        draw.vAlign([textPath3], path3.bbox(), "center");
+
+        var textPath4 = new draw.Text("Дата",
+            new geom.Point(mm(0), mm(0)),
+            { font: mm(3) + "px 'DejaVu Sans'" }
+        );
+        draw.align([textPath4], path4.bbox(), "center");
+        draw.vAlign([textPath4], path4.bbox(), "center");
+
+        //var textPath5 = new draw.Text("Подпис",
+        //    new geom.Point(mm(0), mm(0)),
+        //    { font: mm(3) + "px 'DejaVu Sans'" }
+        //);
+        //draw.align([textPath5], path5.bbox(), "center");
+        //draw.vAlign([textPath5], path5.bbox(), "center");
+
+        var textPath6 = new draw.Text("Съставил",
+            new geom.Point(mm(0), mm(0)),
+            { font: mm(3) + "px 'DejaVu Sans'" }
+        );
+        draw.align([textPath6], path6.bbox(), "center");
+        draw.vAlign([textPath6], path6.bbox(), "center");
+
+        // Todo: add text to path from 7 to 9 from json data in form
+
+        var textPath7 = new draw.Text(exportData.CreatorName||"",
+           new geom.Point(mm(0), mm(0)),
+           { font: mm(3) + "px 'DejaVu Sans'" }
+       );
+        draw.align([textPath7], path7.bbox(), "center");
+        draw.vAlign([textPath7], path7.bbox(), "center");
+
+        var textPath8 = new draw.Text(exportData.Occupation || "",
+           new geom.Point(mm(0), mm(0)),
+           { font: mm(3) + "px 'DejaVu Sans'" }
+       );
+        draw.align([textPath8], path8.bbox(), "center");
+        draw.vAlign([textPath8], path8.bbox(), "center");
+
+        var date = "";
+        if (exportData.DateOfCreation !==undefined) {
+            date = exportData.DateOfCreation.toLocaleDateString('bg-BG');
+        }
+
+        var textPath9 = new draw.Text(date,
+           new geom.Point(mm(0), mm(0)),
+           { font: mm(3) + "px 'DejaVu Sans'" }
+       );
+        draw.align([textPath9], path9.bbox(), "center");
+        draw.vAlign([textPath9], path9.bbox(), "center");
+
+        // Place all the shapes in a group
+        var group = new draw.Group();
+        group.append(path1, path2, textPath2, path3, textPath3, path4, textPath4, /*path5, textPath5,*/ path6, textPath6, path7, textPath7, path8, textPath8, path9, textPath9 /*, path10*/);
+
+        // Translate the group
+        //group.transform(
+        //    geom.transform().translate(20, 10)
+        //);
+
+        return group;
+
+
+        //return new kendo.drawing.Text(title, new geom.Point(0, 0), {
+        //    font: mm(5) + "px 'DejaVu Sans'"
+        //});
+    }
+
+    function getPdfExportData(selector) {
+        var text = $(selector).val();
+        var result = JSON.parse(text, function (key, value) {
+            var a;
+            if (typeof value === 'string') {
+                a =
+/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}(?:\.\d*)?)Z$/.exec(value);
+                if (a) {
+                    return new Date(Date.UTC(+a[1], +a[2] - 1, +a[3], +a[4],
+                        +a[5], +a[6]));
+                }
+            }
+            return value;
+        });
+        return result;
+    }
+
+    return {
+        FormatPage: formatPage,
+        GetPdfExportData: getPdfExportData
+    }
 }());

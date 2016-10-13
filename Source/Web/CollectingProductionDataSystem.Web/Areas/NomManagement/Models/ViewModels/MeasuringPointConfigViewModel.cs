@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Web;
 using AutoMapper;
 using CollectingProductionDataSystem.Infrastructure.Mapping;
 using CollectingProductionDataSystem.Models.Contracts;
@@ -354,6 +352,9 @@ namespace CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewMode
         [Display(Name = "Direction", ResourceType = typeof(Resources.Layout))]
         public int DirectionId { get; set; }
 
+        [Display(Name = "FlowDirection", ResourceType = typeof(Resources.Layout))]
+        public int FlowDirection { get; set; }
+
         [Display(Name = "WeightScaleNumber", ResourceType = typeof(Resources.Layout))]
         public string WeightScaleNumber { get; set; }
 
@@ -365,30 +366,30 @@ namespace CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewMode
         [Display(Name = "TransportTypeId", ResourceType = typeof(Resources.Layout))]
         public int TransportTypeId { get; set; }
 
-        [Required]
+        //[Required]
         [Display(Name = "ActiveTransactionStatusTag", ResourceType = typeof(Resources.Layout))]
         public string ActiveTransactionStatusTag { get; set; }
 
-        [Required]
+        //[Required]
         [Display(Name = "ActiveTransactionProductTag", ResourceType = typeof(Resources.Layout))]
         public string ActiveTransactionProductTag { get; set; }
 
-        [Required]
+        //[Required]
         [Display(Name = "ActiveTransactionMassTag", ResourceType = typeof(Resources.Layout))]
         public string ActiveTransactionMassTag { get; set; }
 
-        [Required]
+        //[Required]
         [Display(Name = "TotalizerCurrentValueTag", ResourceType = typeof(Resources.Layout))]
         public string TotalizerCurrentValueTag { get; set; }
 
-        [Required]
+        //[Required]
         [Display(Name = "ActiveTransactionMassReverseTag", ResourceType = typeof(Resources.Layout))]
         public string ActiveTransactionMassReverseTag { get; set; }
 
         [Display(Name = "MassCorrectionFactor", ResourceType = typeof(Resources.Layout))]
         public string MassCorrectionFactor { get; set; }
 
-        [UIHint("Hidden")]
+        //[UIHint("Hidden")]
         [Editable(false)]
         public bool IsDeleted { get; set; }
 
@@ -400,21 +401,22 @@ namespace CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewMode
         /// Creates the mappings.
         /// </summary>
         /// <param name="configuration">The configuration.</param>
-        ///<param name="configuration">The configuration.</param>
         public void CreateMappings(IConfiguration configuration)
-            {
-                //configuration.CreateMap<MeasuringPointConfig, MeasuringPointConfigViewModel>()
-                        //.ForMember(p => p.DailyProductTypeId, opt => opt.MapFrom(p => p.DailyProductTypeId == null ? 0 : (int)p.DailyProductTypeId))
-                        //.ForMember(p => p.UnitConfigUnitDailyConfigs, opt => opt.MapFrom(p => p.UnitConfigUnitDailyConfigs.OrderBy(x => x.Position)))
-                        //.ForMember(p => p.RelatedMeasuringPointConfigs, opt => opt.MapFrom(p => p.RelatedMeasuringPointConfigs.OrderBy(x => x.Position)));
+        {
+            configuration.CreateMap<MeasuringPointConfig, MeasuringPointConfigViewModel>()
+                .ForMember(p => p.FlowDirection, opt => opt.NullSubstitute(0));
+            //.ForMember(p => p.DailyProductTypeId, opt => opt.MapFrom(p => p.DailyProductTypeId == null ? 0 : (int)p.DailyProductTypeId))
+            //.ForMember(p => p.UnitConfigUnitDailyConfigs, opt => opt.MapFrom(p => p.UnitConfigUnitDailyConfigs.OrderBy(x => x.Position)))
+            //.ForMember(p => p.RelatedMeasuringPointConfigs, opt => opt.MapFrom(p => p.RelatedMeasuringPointConfigs.OrderBy(x => x.Position)));
 
 
-                configuration.CreateMap<MeasuringPointConfigViewModel, MeasuringPointConfig>()
-                     .ForMember(p => p.RelatedMeasuringPointConfigs, opt => opt.MapFrom(p => p.RelatedMeasuringPointConfigs != null ?
-                        p.RelatedMeasuringPointConfigs.Select((x, ixc) => new RelatedMeasuringPointConfigs() 
-                        { MeasuringPointConfigId = p.Id, RelatedMeasuringPointConfigId = x.Id, Position = ixc + 1 }) :
-                        new List<RelatedMeasuringPointConfigs>()));
-            }
+            configuration.CreateMap<MeasuringPointConfigViewModel, MeasuringPointConfig>()
+                 .ForMember(p => p.RelatedMeasuringPointConfigs, opt => opt.MapFrom(p => p.RelatedMeasuringPointConfigs != null ?
+                    p.RelatedMeasuringPointConfigs.Select((x, ixc) => new RelatedMeasuringPointConfigs()
+                    { MeasuringPointConfigId = p.Id, RelatedMeasuringPointConfigId = x.Id, Position = ixc + 1 }) :
+                    new List<RelatedMeasuringPointConfigs>()))
+                    .ForMember(p => p.FlowDirection, opt => opt.MapFrom(p => p.FlowDirection == 0 ? null : (int?) p.FlowDirection));
+        }
 
     }
 }

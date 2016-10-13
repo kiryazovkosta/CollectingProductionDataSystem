@@ -695,6 +695,7 @@
     <Content Include="Content\Images\Excel-icon.png" />
     <Content Include="Content\Images\factory.png" />
     <Content Include="Content\Images\loading.gif" />
+    <Content Include="Content\Images\LUK.png" />
     <Content Include="Content\Images\LukBlack.png" />
     <Content Include="Content\Images\LukTransparent.png" />
     <Content Include="Content\Images\MonthlyData\ConsumptionRates\Edit.png" />

@@ -5,7 +5,7 @@
       .Name("grid")
       .Columns(columns =>
       {
-          columns.Bound(p => p.Id).Width(80);          
+          columns.Bound(p => p.Id).Width(80);
           columns.Bound(p => p.ControlPoint)
           .ClientTemplate(
           Ajax.AuthorizedAjaxActionLinkOrText("#=data.ControlPoint#", "Index", "History",
@@ -97,6 +97,7 @@
           columns.Bound(p => p.TotalizerEndCommonMassReverseLowExtreme).Width(100).Format("{0:n2}");
           columns.Bound(p => p.TotalizerEndCommonMassReverseHighExtreme).Width(100).Format("{0:n2}");
           columns.ForeignKey(p => p.DirectionId, (System.Collections.IEnumerable)ViewData["directions"], "Id", "Name").EditorTemplateName("DirectionViewModel").Width(280);
+          columns.ForeignKey(p => p.FlowDirection, (System.Collections.IEnumerable) ViewData["directions"], "Id", "Name").EditorTemplateName("DirectionViewModel").Width(280);
           columns.Bound(p => p.WeightScaleNumber).Width(100);
           columns.Bound(p => p.IsInternalPoint).Width(100);
           columns.ForeignKey(p => p.TransportTypeId, (System.Collections.IEnumerable)ViewData["transportTypes"], "Id", "Name").EditorTemplateName("TransportTypeViewModel").Width(280);
@@ -111,10 +112,10 @@
       })
       .Resizable(res => res.Columns(true))
       .ToolBar(toolbar =>
-                {
-                    toolbar.Create();
-                    toolbar.Excel();
-                })
+      {
+          toolbar.Create();
+          toolbar.Excel();
+      })
                       .Editable(editable => editable.Mode(GridEditMode.InLine))
       .Pageable(pageable => pageable
                 .Refresh(true)
@@ -122,9 +123,9 @@
                 .ButtonCount(5)
                 )
       .Sortable(sortable =>
-                {
-                    sortable.SortMode(GridSortMode.SingleColumn);
-                })
+      {
+          sortable.SortMode(GridSortMode.SingleColumn);
+      })
       .Filterable()
       .Scrollable(scrol => scrol.Height(500))
       .Scrollable()
@@ -141,10 +142,10 @@
                     .Update(update => update.Action("Update", "MeasuringPointConfig", new { area = "NomManagement" }).Data("sendAntiForgery"))
                     .Destroy(destroy => destroy.Action("Destroy", "MeasuringPointConfig", new { area = "NomManagement" }).Data("sendAntiForgery"))
                     .Events(events =>
-                                        {
-                                            events.Error("kendoAdditional.ErrorHandler");
-                                            events.RequestEnd("kendoAdditional.AfterterNomGridValidation");
-                                        })
+                    {
+                        events.Error("kendoAdditional.ErrorHandler");
+                        events.RequestEnd("kendoAdditional.AfterterNomGridValidation");
+                    })
                 )
       .Events(ev => ev.DataBound("kendoAdditional.DeletableDataBound"))
 )

@@ -16,13 +16,11 @@
         <div class="col-md-9">
             <h2 id="monthly-technical-title">@Resources.Layout.MonthlyTechnologicalReport</h2>
         </div>
-        <div class="col-md-1">
+        @*<div class="col-md-1">
             <button type="button" id="tech-report-save" class="k-button k-button-icontext k-grid-edit pull-right head-button" style="margin-left:5px;"><span class="k-icon k-i-pdf"></span>Запазване</button>
-        </div>
-        <div class="col-md-1">
+        </div>*@
+        <div class="col-md-3">
             <button type="button" id="export-pdf" class="k-button k-button-icontext k-grid-pdf pull-right head-button" style="margin-left:5px;"><span class="k-icon k-i-pdf"></span>Експорт в Pdf</button>
-        </div>
-        <div class="col-md-1">
             <button id="excel-export" class="k-button k-button-icontext k-grid-excel pull-right head-button"><span class="k-icon k-i-excel"></span>Експорт в Excel</button>
         </div>
     </div>
@@ -32,15 +30,14 @@
                 .Editor()
                 .Name("report-details")
                 .HtmlAttributes(new { style = "width: 100%;height:310px;" })
-
+                .Resizable(resizable => resizable.Content(true).Toolbar(true))
                 .Pdf(pdf =>
                 {
                     pdf.AllPages();
                     pdf.PaperSize("A4");
                     pdf.Margin("1cm", "1cm", "2cm", "2cm");
-                    //pdf.TemplateId("page-template");
                 })
-                .Value(@"<text class='description-content'>
+                .Value(@"<text  class='description-content'>
                             <h2>Какво е Lorem Ipsum?</h2>
                              <p>Lorem Ipsum е елементарен примерен текст, използван в печатарската и типографската индустрия. Lorem Ipsum е индустриален стандарт от около 1500 година, когато неизвестен печатар взема няколко печатарски букви и ги разбърква, за да напечата с тях книга с примерни шрифтове. Този начин не само е оцелял повече от 5 века, но е навлязъл и в публикуването на електронни издания като е запазен почти без промяна. Популяризиран е през 60те години на 20ти век със издаването на Letraset листи, съдържащи Lorem Ipsum пасажи, популярен е и в наши дни във софтуер за печатни издания като Aldus PageMaker, който включва различни версии на Lorem Ipsum.</p>
                              <h2>Защо го използваме?</h2>
@@ -50,12 +47,11 @@
                              <p> Стандартният отрязък от Lorem Ipsum, използван от 1500 г.насам, е поместен по - долу за тези, които се интересуват.Секции 1.10.32 и 1.10.33 от ""de Finibus Bonorum et Malorum"" на Цицерон също са поместени в оригиналния им формат, заедно с превода им на английски език, направен от H.Rackham през 1914г.)</p>
                              <h2>Откъде мога да го взема ?</h2>
                              <p>Съществуват много вариации на пасажа Lorem Ipsum, но повечето от тях са променени по един или друг начин чрез добавяне на смешни думи или разбъркване на думите, което не изглежда много достоверно.Ако искате да използвате пасаж от Lorem Ipsum, трябва да сте сигурни, че в него няма смущаващи или нецензурни думи.Всички Lorem Ipsum генератори в Интернет използват предефинирани пасажи, който се повтарят, което прави този този генератор първия истински такъв.Той използва речник от над 200 латински думи, комбинирани по подходящ начин като изречения, за да генерират истински Lorem Ipsum пасажи.Оттук следва, че генерираният Lorem Ipsum пасаж не съдържа повторения, смущаващи, нецензурни и всякакви неподходящи думи.</p>
-                        </ text > ")
+                        </text>")
     )
 
     @(Html.Kendo()
         .Grid<MonthlyTechnicalViewModel>()
-        //.Name("units")
         .Name("technological-data")
         .AutoBind(false)
         .Columns(
@@ -150,6 +146,7 @@
     <script>
         $(function () {
             $("#export-pdf").click(function () {
+                var exportData = pdfPageSetup.GetPdfExportData("#export-data-settings");
                 var grid = $("#technological-data").data("kendoGrid");
                 var editor = $("#report-details").data("kendoEditor");
                 var progress = $.Deferred();
@@ -171,7 +168,7 @@
                         var resultArr = [];
                         root.children.forEach(function (element, index, array) {
                             var pageClone = $.extend({}, element);
-                            resultArr.push(pdfPageSetup.FormatPage(pageClone, index + 1, array.length, 'Some title'));
+                            resultArr.push(pdfPageSetup.FormatPage(pageClone, index + 1, array.length, exportData));
                         });
                         root.children = resultArr;
                         return kendo.drawing.exportPDF(root, { multiPage: true });

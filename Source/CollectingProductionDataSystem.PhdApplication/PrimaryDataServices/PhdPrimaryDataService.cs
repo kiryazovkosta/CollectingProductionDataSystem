@@ -613,8 +613,6 @@
 
             foreach (var relatedunitConfig in relatedunitConfigs)
             {
-                
-
                 if (allRelatedRecordsExists == true)
                 {
                     var element = unitsData
@@ -682,7 +680,7 @@
         /// </summary>
         /// <param name="unitsConfigsList">The units configs list.</param>
         /// <param name="targetRecordTimestamp">The record data time.</param>
-        /// <param name="shift">The shift.</param>
+        /// <param name="shiftId">The Id of the shift.</param>
         /// <param name="unitsData">The units data.</param>
         /// <returns></returns>
         private IEnumerable<UnitDatasTemp> ProcessManualUnits(List<UnitConfig> unitsConfigsList,
@@ -1504,7 +1502,7 @@
                                                         {
                                                             confedence = 0;
                                                         }
-                                                        
+
                                                         break;
                                                     }
                                                     else if (dc.ColumnName.Equals(value: "TagName"))

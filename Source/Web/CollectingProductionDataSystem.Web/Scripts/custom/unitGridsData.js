@@ -218,10 +218,10 @@ var unitGridsData = (function () {
         }
 
 
-        // technological reports 
-        // tech-report-save 
-        // export-pdf 
-        // report-details 
+        // technological reports
+        // tech-report-save
+        // export-pdf
+        // report-details
         // tech-report-approve
         var techReportSaveButton = $('#tech-report-save');
         if (techReportSaveButton) {
@@ -231,8 +231,8 @@ var unitGridsData = (function () {
 
         var exportPdfButton = $('#export-pdf');
         if (exportPdfButton) {
-            exportPdfButton.hide();
-            exportPdfButton.css('visibility', 'hidden');
+            //exportPdfButton.hide();
+            //exportPdfButton.css('visibility', 'hidden');
             //var techReportGrid = $('#technological-data').data('kendoGrid');
             //if (techReportGrid) {
             //    techReportGrid.height = 610;
