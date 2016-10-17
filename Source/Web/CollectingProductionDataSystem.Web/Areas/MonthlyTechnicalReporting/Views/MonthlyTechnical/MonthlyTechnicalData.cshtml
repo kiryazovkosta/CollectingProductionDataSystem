@@ -16,9 +16,6 @@
         <div class="col-md-9">
             <h2 id="monthly-technical-title">@Resources.Layout.MonthlyTechnologicalReport</h2>
         </div>
-        @*<div class="col-md-1">
-            <button type="button" id="tech-report-save" class="k-button k-button-icontext k-grid-edit pull-right head-button" style="margin-left:5px;"><span class="k-icon k-i-pdf"></span>Запазване</button>
-        </div>*@
         <div class="col-md-3">
             <button type="button" id="export-pdf" class="k-button k-button-icontext k-grid-pdf pull-right head-button" style="margin-left:5px;"><span class="k-icon k-i-pdf"></span>Експорт в Pdf</button>
             <button id="excel-export" class="k-button k-button-icontext k-grid-excel pull-right head-button"><span class="k-icon k-i-excel"></span>Експорт в Excel</button>
@@ -27,109 +24,113 @@
     @Html.ValidationSummary()
     @Html.AntiForgeryToken()
     @(Html.Kendo()
-                .Editor()
-                .Name("report-details")
-                .HtmlAttributes(new { style = "width: 100%;height:310px;" })
-                .Resizable(resizable => resizable.Content(true).Toolbar(true))
-                .Pdf(pdf =>
-                {
-                    pdf.AllPages();
-                    pdf.PaperSize("A4");
-                    pdf.Margin("1cm", "1cm", "2cm", "2cm");
-                })
-                .Value(@"<text  class='description-content'>
-                            <h2>Какво е Lorem Ipsum?</h2>
-                             <p>Lorem Ipsum е елементарен примерен текст, използван в печатарската и типографската индустрия. Lorem Ipsum е индустриален стандарт от около 1500 година, когато неизвестен печатар взема няколко печатарски букви и ги разбърква, за да напечата с тях книга с примерни шрифтове. Този начин не само е оцелял повече от 5 века, но е навлязъл и в публикуването на електронни издания като е запазен почти без промяна. Популяризиран е през 60те години на 20ти век със издаването на Letraset листи, съдържащи Lorem Ipsum пасажи, популярен е и в наши дни във софтуер за печатни издания като Aldus PageMaker, който включва различни версии на Lorem Ipsum.</p>
-                             <h2>Защо го използваме?</h2>
-                             <p> Известен факт е, че читателя обръща внимание на съдържанието, което чете, а не на оформлението му. Свойството на Lorem Ipsum е, че до голяма степен има нормално разпределение на буквите и се чете по-лесно, за разлика от нормален текст на английски език като ""Това е съдържание, това е съдържание"". Много системи за публикуване и редактори на Уеб страници използват Lorem Ipsum като примерен текстов модел ""по подразбиране"", поради което при търсене на фразата ""lorem ipsum"" в Интернет ще бъдат открити много сайтове в процес на разработка.Някой от тези сайтове биват променяни с времето, а други по случайност или нарочно(за забавление и пр.) биват оставяни в този си незавършен вид </ p >;
-                             <h2> Откъде произлиза ?</h2>
-                             <p> Противно на всеобщото вярване, Lorem Ipsum не е просто случаен текст.Неговите корени са в класическата Латинска литература от 45г.пр.Хр., което прави преди повече от 2000 години.Richard McClintock, професор по Латински от колежа Hampden - Sydney College във Вирджиния, изучавайки една от най -неясните латински думи ""consectetur"" в един от пасажите на Lorem Ipsum, и търсейки цитати на думата в класическата литература, открива точния източник.Lorem Ipsum е намерен в секции 1.10.32 и 1.10.33 от ""de Finibus Bonorum et Malorum""(Крайностите на Доброто и Злото) от Цицерон, написан през 45г.пр.Хр.Тази книга е трактат по теория на етиката, много популярна през Ренесанса.Първият ред на Lorem Ipsum идва от ред, намерен в секция 1.10.32.</p>
-                             <p> Стандартният отрязък от Lorem Ipsum, използван от 1500 г.насам, е поместен по - долу за тези, които се интересуват.Секции 1.10.32 и 1.10.33 от ""de Finibus Bonorum et Malorum"" на Цицерон също са поместени в оригиналния им формат, заедно с превода им на английски език, направен от H.Rackham през 1914г.)</p>
-                             <h2>Откъде мога да го взема ?</h2>
-                             <p>Съществуват много вариации на пасажа Lorem Ipsum, но повечето от тях са променени по един или друг начин чрез добавяне на смешни думи или разбъркване на думите, което не изглежда много достоверно.Ако искате да използвате пасаж от Lorem Ipsum, трябва да сте сигурни, че в него няма смущаващи или нецензурни думи.Всички Lorem Ipsum генератори в Интернет използват предефинирани пасажи, който се повтарят, което прави този този генератор първия истински такъв.Той използва речник от над 200 латински думи, комбинирани по подходящ начин като изречения, за да генерират истински Lorem Ipsum пасажи.Оттук следва, че генерираният Lorem Ipsum пасаж не съдържа повторения, смущаващи, нецензурни и всякакви неподходящи думи.</p>
-                        </text>")
-    )
+          .Editor()
+          .Name("report-details")
+          .HtmlAttributes(new { style = "width: 100%;height:310px;" })
+          .Resizable(resizable => resizable.Content(false).Toolbar(true))
+          .Tools(tools => tools
+              .CustomTemplate(ct => ct.Template("<button id='editor-save-changes' class='btn btn-default'><span class='glyphicon glyphicon-floppy-disk'></span>Запази</button>"))
+          )
+          .Pdf(pdf =>
+          {
+              pdf.AllPages();
+              pdf.PaperSize("A4");
+              pdf.Margin("1cm", "1cm", "2cm", "2cm");
+          })
+          .Value(@"<text class='description-content'>
+        <h2>Какво е Lorem Ipsum?</h2>
+        <p>Lorem Ipsum е елементарен примерен текст, използван в печатарската и типографската индустрия. Lorem Ipsum е индустриален стандарт от около 1500 година, когато неизвестен печатар взема няколко печатарски букви и ги разбърква, за да напечата с тях книга с примерни шрифтове. Този начин не само е оцелял повече от 5 века, но е навлязъл и в публикуването на електронни издания като е запазен почти без промяна. Популяризиран е през 60те години на 20ти век със издаването на Letraset листи, съдържащи Lorem Ipsum пасажи, популярен е и в наши дни във софтуер за печатни издания като Aldus PageMaker, който включва различни версии на Lorem Ipsum.</p>
+        <h2>Защо го използваме?</h2>
+        <p>
+            Известен факт е, че читателя обръща внимание на съдържанието, което чете, а не на оформлението му. Свойството на Lorem Ipsum е, че до голяма степен има нормално разпределение на буквите и се чете по-лесно, за разлика от нормален текст на английски език като ""Това е съдържание, това е съдържание"". Много системи за публикуване и редактори на Уеб страници използват Lorem Ipsum като примерен текстов модел ""по подразбиране"", поради което при търсене на фразата ""lorem ipsum"" в Интернет ще бъдат открити много сайтове в процес на разработка.Някой от тези сайтове биват променяни с времето, а други по случайност или нарочно(за забавление и пр.) биват оставяни в този си незавършен вид </ p >;
+            <h2> Откъде произлиза ?</h2>
+        <p> Противно на всеобщото вярване, Lorem Ipsum не е просто случаен текст.Неговите корени са в класическата Латинска литература от 45г.пр.Хр., което прави преди повече от 2000 години.Richard McClintock, професор по Латински от колежа Hampden - Sydney College във Вирджиния, изучавайки една от най -неясните латински думи ""consectetur"" в един от пасажите на Lorem Ipsum, и търсейки цитати на думата в класическата литература, открива точния източник.Lorem Ipsum е намерен в секции 1.10.32 и 1.10.33 от ""de Finibus Bonorum et Malorum""(Крайностите на Доброто и Злото) от Цицерон, написан през 45г.пр.Хр.Тази книга е трактат по теория на етиката, много популярна през Ренесанса.Първият ред на Lorem Ipsum идва от ред, намерен в секция 1.10.32.</p>
+        <p> Стандартният отрязък от Lorem Ipsum, използван от 1500 г.насам, е поместен по - долу за тези, които се интересуват.Секции 1.10.32 и 1.10.33 от ""de Finibus Bonorum et Malorum"" на Цицерон също са поместени в оригиналния им формат, заедно с превода им на английски език, направен от H.Rackham през 1914г.)</p>
+        <h2>Откъде мога да го взема ?</h2>
+        <p>Съществуват много вариации на пасажа Lorem Ipsum, но повечето от тях са променени по един или друг начин чрез добавяне на смешни думи или разбъркване на думите, което не изглежда много достоверно.Ако искате да използвате пасаж от Lorem Ipsum, трябва да сте сигурни, че в него няма смущаващи или нецензурни думи.Всички Lorem Ipsum генератори в Интернет използват предефинирани пасажи, който се повтарят, което прави този този генератор първия истински такъв.Той използва речник от над 200 латински думи, комбинирани по подходящ начин като изречения, за да генерират истински Lorem Ipsum пасажи.Оттук следва, че генерираният Lorem Ipsum пасаж не съдържа повторения, смущаващи, нецензурни и всякакви неподходящи думи.</p>
+    </text>")
+          )
 
     @(Html.Kendo()
-        .Grid<MonthlyTechnicalViewModel>()
-        .Name("technological-data")
-        .AutoBind(false)
-        .Columns(
-            columns =>
-            {
-                columns.Bound(c => c.Id).Hidden(true).Width(75);
-                columns.Bound(c => c.Factory).Hidden(true).ClientGroupHeaderTemplate("Производство #=value.substr(3,value.length-3)#").Width(8);
-                columns.Bound(c => c.ProcessUnit).Hidden(true).ClientGroupHeaderTemplate("Инсталация #=value.substr(3,value.length-3)#").Width(8);
-                columns.Bound(c => c.MaterialType).Hidden(true).ClientGroupHeaderTemplate("#=value.substr(3,value.length-3)#").Width(8);
-                columns.Bound(c => c.DetailedMaterialType).Hidden(true).ClientGroupHeaderTemplate("#=value.substr(3,value.length-3)#").Width(8);
-                columns.Bound(c => c.Code).Width(80);
-                columns.Bound(c => c.Name).Width(260);
-                columns.Bound(c => c.MeasurementUnit).Width(60);
-                columns.Bound(c => c.MonthPlanValue).ClientTemplate("<div style='text-align:right;'>#=data.MonthPlanValue#</div>");
-                columns.Bound(c => c.MonthPlanPercentage).ClientTemplate("<div style='text-align:right;'>#=data.MonthPlanPercentage#</div>");
-                columns.Bound(c => c.MonthFactValue).ClientTemplate("<div style='text-align:right;'>#=data.MonthFactValue#</div>");
-                columns.Bound(c => c.MonthFactPercentage).ClientTemplate("<div style='text-align:right;'>#=data.MonthFactPercentage#</div>");
-                columns.Bound(c => c.MonthFactValueDifference).ClientTemplate("<div style='text-align:right;'>#=data.MonthFactValueDifference#</div>");
-                columns.Bound(c => c.MonthFactPercentageDifference).ClientTemplate("<div style='text-align:right;'>#=data.MonthFactPercentageDifference#</div>");
-                columns.Bound(c => c.YearFactValue).ClientTemplate("<div style='text-align:right;'>#=data.YearFactValue#</div>");
-                columns.Bound(c => c.YearFactPercentage).ClientTemplate("<div style='text-align:right;'>#=data.YearFactPercentage#</div>");
-                //columns.Bound(c => c.YearFactValueDifference).ClientTemplate("<div style='text-align:right;'>#=data.YearFactValueDifference#</div>");
-                //columns.Bound(c => c.YearFactPercentageDifference).ClientTemplate("<div style='text-align:right;'>#=data.YearFactPercentageDifference#</div>");
-            })
-            .Pageable(pageable => pageable
-                .Refresh(true)
-                .PageSizes(false)
-                .Numeric(false)
-                .PreviousNext(false)
-            )
-            .Sortable()
-                .Excel(excel => excel
-                .FileName(@Resources.Layout.MonthlyTechnologicalReport + "_" + DateTime.Now + ".xlsx")
-                .Filterable(true)
-                .ProxyURL(Url.Action("Excel_Export_Save", "Ajax", new { area = "" }))
-                .AllPages(true))
-            .Pdf(pdf => pdf
-                .AllPages()
-                .AvoidLinks()
-                .PaperSize("A4")
-                .Scale(0.3)
-                .Margin("4.5cm", "1cm", "2.5cm", "1cm")
-                .Landscape()
-                .RepeatHeaders()
-                .FileName("TestDocument.pdf")
-                .ProxyURL(Url.Action("Pdf_Export_Save", "Ajax"))
-            )
-            .Events(ev =>
-            {
-                ev.DataBound("unitGridsData.DataBound");
-            })
-            .Scrollable(scr => scr.Height(310))
-            .Filterable()
-            .DataSource(dataSource => dataSource
-            .Ajax()
-            .PageSize(int.MaxValue)
-            .ServerOperation(true)
-            .Group(group =>
-            {
-                group.Add(c => c.Factory);
-                group.Add(c => c.ProcessUnit);
-                group.Add(c => c.MaterialType);
-                group.Add(c => c.DetailedMaterialType);
-            })
-            .Sort(sort => sort.Add(x => x.Code).Ascending())
-            .Read(read => read.Action("ReadMonthlyTechnicalData", "MonthlyTechnical", new { area = "MonthlyTechnicalReporting" }).Data("unitGridsData.SendDate"))
-            .Model(model =>
-            {
-                model.Id(p => p.Id);
-                model.Field(p => p.Code).Editable(false);
-                model.Field(p => p.Name).Editable(false);
-            })
-            .Events(events =>
-            {
-                events.Error("kendoAdditional.ErrorHandler");
-            })
-        )
-    )
+          .Grid<MonthlyTechnicalViewModel>()
+          .Name("technological-data")
+          .AutoBind(false)
+          .Columns(
+              columns =>
+              {
+                  columns.Bound(c => c.Id).Hidden(true).Width(75);
+                  columns.Bound(c => c.Factory).Hidden(true).ClientGroupHeaderTemplate("Производство #=value.substr(3,value.length-3)#").Width(8);
+                  columns.Bound(c => c.ProcessUnit).Hidden(true).ClientGroupHeaderTemplate("Инсталация #=value.substr(3,value.length-3)#").Width(8);
+                  columns.Bound(c => c.MaterialType).Hidden(true).ClientGroupHeaderTemplate("#=value.substr(3,value.length-3)#").Width(8);
+                  columns.Bound(c => c.DetailedMaterialType).Hidden(true).ClientGroupHeaderTemplate("#=value.substr(3,value.length-3)#").Width(8);
+                  columns.Bound(c => c.Code).Width(80);
+                  columns.Bound(c => c.Name).Width(260);
+                  columns.Bound(c => c.MeasurementUnit).Width(60);
+                  columns.Bound(c => c.MonthPlanValue).ClientTemplate("<div style='text-align:right;'>#=data.MonthPlanValue#</div>");
+                  columns.Bound(c => c.MonthPlanPercentage).ClientTemplate("<div style='text-align:right;'>#=data.MonthPlanPercentage#</div>");
+                  columns.Bound(c => c.MonthFactValue).ClientTemplate("<div style='text-align:right;'>#=data.MonthFactValue#</div>");
+                  columns.Bound(c => c.MonthFactPercentage).ClientTemplate("<div style='text-align:right;'>#=data.MonthFactPercentage#</div>");
+                  columns.Bound(c => c.MonthFactValueDifference).ClientTemplate("<div style='text-align:right;'>#=data.MonthFactValueDifference#</div>");
+                  columns.Bound(c => c.MonthFactPercentageDifference).ClientTemplate("<div style='text-align:right;'>#=data.MonthFactPercentageDifference#</div>");
+                  columns.Bound(c => c.YearFactValue).ClientTemplate("<div style='text-align:right;'>#=data.YearFactValue#</div>");
+                  columns.Bound(c => c.YearFactPercentage).ClientTemplate("<div style='text-align:right;'>#=data.YearFactPercentage#</div>");
+                  //columns.Bound(c => c.YearFactValueDifference).ClientTemplate("<div style='text-align:right;'>#=data.YearFactValueDifference#</div>");
+                  //columns.Bound(c => c.YearFactPercentageDifference).ClientTemplate("<div style='text-align:right;'>#=data.YearFactPercentageDifference#</div>");
+              })
+          .Pageable(pageable => pageable
+              .Refresh(true)
+              .PageSizes(false)
+              .Numeric(false)
+              .PreviousNext(false)
+          )
+          .Sortable()
+          .Excel(excel => excel
+              .FileName(@Resources.Layout.MonthlyTechnologicalReport + "_" + DateTime.Now + ".xlsx")
+              .Filterable(true)
+              .ProxyURL(Url.Action("Excel_Export_Save", "Ajax", new { area = "" }))
+              .AllPages(true))
+          .Pdf(pdf => pdf
+              .AllPages()
+              .AvoidLinks()
+              .PaperSize("A4")
+              .Scale(0.3)
+              .Margin("4.5cm", "1cm", "2.5cm", "1cm")
+              .Landscape()
+              .RepeatHeaders()
+              .FileName("TestDocument.pdf")
+              .ProxyURL(Url.Action("Pdf_Export_Save", "Ajax"))
+          )
+          .Events(ev =>
+          {
+              ev.DataBound("unitGridsData.DataBound");
+          })
+          .Scrollable(scr => scr.Height(310))
+          .Filterable()
+          .DataSource(dataSource => dataSource
+              .Ajax()
+              .PageSize(int.MaxValue)
+              .ServerOperation(true)
+              .Group(group =>
+              {
+                  group.Add(c => c.Factory);
+                  group.Add(c => c.ProcessUnit);
+                  group.Add(c => c.MaterialType);
+                  group.Add(c => c.DetailedMaterialType);
+              })
+              .Sort(sort => sort.Add(x => x.Code).Ascending())
+              .Read(read => read.Action("ReadMonthlyTechnicalData", "MonthlyTechnical", new { area = "MonthlyTechnicalReporting" }).Data("unitGridsData.SendDate"))
+              .Model(model =>
+              {
+                  model.Id(p => p.Id);
+                  model.Field(p => p.Code).Editable(false);
+                  model.Field(p => p.Name).Editable(false);
+              })
+              .Events(events =>
+              {
+                  events.Error("kendoAdditional.ErrorHandler");
+              })
+          )
+          )
 </div>
 @* //Error window for kendo grid error event handler *@
 <div id="err-window" style="display:none"> @Html.Partial("_KendoGridErrorWindow") </div>

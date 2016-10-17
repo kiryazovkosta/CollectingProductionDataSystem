@@ -1,11 +1,20 @@
 ﻿var kendoAdditional = (function () {
     // ----------------- autorun function on document ready -------------------
     'use strict';
+    function onSaveEditorChanges() {
+        alert("Save was click!");
+    }
+
     $(function () {
         var culture = $('#culture').val();
         kendo.culture(culture);
         prepareWindow('div#err-window', 'Възникна грешка в приложението');
         prepareWindow('div#success-window', 'Успешна операция');
+        var editorSaveButton = $('#editor-save-changes');
+        if (editorSaveButton !== undefined && editorSaveButton !== null) {
+            editorSaveButton.on("click", onSaveEditorChanges);
+            editorSaveButton.parent().css('float','right');
+        }
     });
 
     //------------------ private functions ------------------------------------
