@@ -18,7 +18,8 @@
     using Kendo.Mvc.UI;
     using CollectingProductionDataSystem.Web.Infrastructure.Filters;
     using Resources = App_GlobalResources.Resources;
-using CollectingProductionDataSystem.Application.ProductionPlanDataServices;
+    using CollectingProductionDataSystem.Application.ProductionPlanDataServices;
+    using Constants;
 
     public class AjaxController : AreaBaseController
     {
@@ -65,11 +66,19 @@ using CollectingProductionDataSystem.Application.ProductionPlanDataServices;
 		         return Json(string.Empty);
 	        }
 
-            var visibleData = dbResult.Where(x => x.ProductionPlanConfig.IsPropductionPlan == true && x.ProductionPlanConfig.MaterialTypeId == materialTypeId.Value).ToList();
-
+            IEnumerable<ProductionPlanData> visibleDbData = dbResult.Where(x => x.ProductionPlanConfig.IsPropductionPlan == true);
+            if (materialTypeId == CommonConstants.MaterialType)
+            {
+                visibleDbData = visibleDbData.Where(x => CommonConstants.MaterialTypeChemicalType.Contains(x.ProductionPlanConfig.MaterialTypeId));
+            }
+            else
+            {
+                visibleDbData = visibleDbData.Where(x => x.ProductionPlanConfig.MaterialTypeId == materialTypeId.Value);
+            }
+                
+            List<ProductionPlanData> visibleData = visibleDbData.ToList();
             var kendoResult = new DataSourceResult();
-            //var kendoPreparedResult = Mapper.Map<IEnumerable<ProductionPlanData>, IEnumerable<ProductionPlanViewModel>>(dbResult);
-            var kendoPreparedResult = Mapper.Map<IEnumerable<ProductionPlanData>, IEnumerable<ProductionPlanViewModel>>(visibleData);
+            IEnumerable<ProductionPlanViewModel> kendoPreparedResult = Mapper.Map<IEnumerable<ProductionPlanData>, IEnumerable<ProductionPlanViewModel>>(visibleData);
             try
             {
                 kendoResult = kendoPreparedResult.ToDataSourceResult(request, ModelState);

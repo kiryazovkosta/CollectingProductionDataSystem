@@ -31,7 +31,7 @@
             var result = new HashSet<ProductionPlanData>();
             var dailyData = new List<UnitsDailyData>();
 
-            var status = this.dailyData.CheckIfPreviousDaysAreReady(processUnitId.Value, date.Value, materialTypeId.Value);
+            IEfStatus status = this.dailyData.CheckIfPreviousDaysAreReady(processUnitId.Value, date.Value, materialTypeId.Value);
             if (!status.IsValid)
             {
                 return result;
@@ -46,11 +46,11 @@
 
             if (materialTypeId.HasValue && materialTypeId.Value == energyId)
             {
-                dailyData = unitData.GetUnitsDailyDataForDateTime(date, null, null).ToList();
+                dailyData = unitData.GetUnitsDailyDataForDateTime(date, processUnitId: null, materialType: null).ToList();
             }
             else
             {
-                dailyData = unitData.GetUnitsDailyDataForDateTime(date, processUnitId, null).ToList();
+                dailyData = unitData.GetUnitsDailyDataForDateTime(date, processUnitId, materialType: null).ToList();
             }
 
             if (dailyData.Count == 0)
@@ -58,20 +58,30 @@
                 return result;
             }
 
-            var existingProductionPlanData = this.data.ProductionPlanDatas.All()
+            IQueryable<ProductionPlanData> existingProductionPlanDbData = this.data.ProductionPlanDatas.All()
                 .Include(p => p.ProductionPlanConfig)
                 .Include(p => p.ProductionPlanConfig.MaterialType)
-                .Where(p => p.RecordTimestamp == date &&
-                        p.ProcessUnitId == processUnitId &&
-                        p.ProductionPlanConfig.MaterialTypeId == materialTypeId &&
-                        p.ProductionPlanConfig.IsPropductionPlan == true)
-                .ToList();
+                .Where( p => p.RecordTimestamp == date 
+                        && p.ProcessUnitId == processUnitId 
+                        && p.ProductionPlanConfig.IsPropductionPlan == true
+                );
+            if (materialTypeId == CommonConstants.EnergyType)
+            {
+                existingProductionPlanDbData = existingProductionPlanDbData.Where(p => p.ProductionPlanConfig.MaterialTypeId == materialTypeId);
+            }
+            else
+            {
+                existingProductionPlanDbData = existingProductionPlanDbData.Where(p => CommonConstants.MaterialTypeChemicalType.Contains(p.ProductionPlanConfig.MaterialTypeId));
+            }
+
+
+            List<ProductionPlanData> existingProductionPlanData = existingProductionPlanDbData.ToList();
             if (existingProductionPlanData.Count > 0)
 	        {
                 return existingProductionPlanData;
 	        }
 
-            var dbResult = this.data.ProductionPlanConfigs.All()
+            IQueryable<ProductionPlanConfig> dbResult = this.data.ProductionPlanConfigs.All()
                 .Include(x => x.PlanNorms)
                 .Include(x => x.ProcessUnit)
                 .Include(x => x.ProcessUnit.PlanValues);
@@ -84,43 +94,37 @@
             {
                 if (materialTypeId.Value == CommonConstants.MaterialType)
                 {
-                    dbResult = dbResult.Where(x => x.MaterialTypeId == materialTypeId);
+                    dbResult = dbResult.Where(x => CommonConstants.MaterialTypeChemicalType.Contains(x.MaterialTypeId));
                 }
                 else
                 {
-                    dbResult = dbResult.Where(x => x.MaterialTypeId >= materialTypeId);
+                    dbResult = dbResult.Where(x => x.MaterialTypeId == materialTypeId);
                 }
-
             }
 
-            var productionPlans = dbResult
-                .OrderBy(x => x.ProcessUnitId)
-                .ThenBy(x=>x.Position)
-                .ToList();
+            List<ProductionPlanConfig> productionPlans = dbResult.OrderBy(x => x.ProcessUnitId).ThenBy(x=>x.Position).ToList();
+            Dictionary<string, decimal> currentMonthQuantity = AppendTotalMonthQuantityToDailyProductionPlanRecords(processUnitId.Value, date.Value);
+            Dictionary<string, decimal> totallyQuantity = GetSumOfTottallyProcessing(processUnitId.Value, date.Value);
 
-            var currentMonthQuantity = AppendTotalMonthQuantityToDailyProductionPlanRecords(processUnitId.Value, date.Value);
-            var totallyQuantity = GetSumOfTottallyProcessing(processUnitId.Value, date.Value);
-
-            var month = new DateTime(date.Value.Year, date.Value.Month, 1, 0, 0, 0);
+            var month = new DateTime(date.Value.Year, date.Value.Month, day: 1, hour: 0, minute: 0, second: 0);
 
             foreach (ProductionPlanConfig productionPlan in productionPlans)
             {
-                var planValue = CalculatePlanValue(productionPlan, dailyData, this.calculator, month);
-                var factValue = CalculateFactValue(productionPlan, dailyData, this.calculator);
+                double planValue = CalculatePlanValue(productionPlan, dailyData, this.calculator, month);
+                double factValue = CalculateFactValue(productionPlan, dailyData, this.calculator);
                 if (factValue < 0 && materialTypeId >= CommonConstants.EnergyType)
                 {
                     factValue = 0;
                 }
-                var factPercents = CalculateUsageRateValue(productionPlan, dailyData, this.calculator);
+                double factPercents = CalculateUsageRateValue(productionPlan, dailyData, this.calculator);
                 if (factPercents < 0 && materialTypeId >= CommonConstants.EnergyType)
                 {
                     factPercents = 0;
                 }
 
-                var percentagesPlan = productionPlan.PlanNorms.Where(x => x.Month == month).First().Value;
-
-                var percentagesFactCurrentMonth = GetValidValueOrZero(CalculatePercentagesFactCurrentMonth(productionPlan, dailyData, this.calculator));
-
+                PlanNorm percentagesPlanEntry = productionPlan.PlanNorms.Where(x => x.Month == month).FirstOrDefault();
+                decimal percentagesPlan = percentagesPlanEntry != null ? percentagesPlanEntry.Value : 0;
+                decimal percentagesFactCurrentMonth = GetValidValueOrZero(CalculatePercentagesFactCurrentMonth(productionPlan, dailyData, this.calculator));
                 var productionPlanData = new ProductionPlanData
                 {
                     ProductionPlanConfigId = productionPlan.Id,
@@ -137,44 +141,19 @@
                     PercentagesFactCurrentMonth = percentagesFactCurrentMonth
                 };
 
-                //if (materialTypeId >= CommonConstants.EnergyType)
-                //{
-                //    var percs = CalculateUsageRateToTheDayValue(productionPlan, dailyData, this.calculator, productionPlanData);
-                //    productionPlanData.PercentagesFactCurrentMonth = GetValidValueOrZero(percs);
-                //}
-
-             //   if (productionPlan.Name == totallyQuantity.First().Key)
-	            //{
-             //       if (totallyQuantity[productionPlan.Name] == 0)
-             //       {
-             //           totallyQuantityAs = productionPlanData.QuantityFact;
-             //       }
-             //       else
-             //       {
-             //           if (totallyQuantity[productionPlan.Name] == productionPlanData.QuanityFactCurrentMonth + productionPlanData.QuantityFact)
-             //           {
-             //               totallyQuantityAs = totallyQuantity[productionPlan.Name];
-             //           }
-             //           else
-             //           {
-             //               totallyQuantityAs = productionPlanData.QuanityFactCurrentMonth + productionPlanData.QuantityFact;
-             //           }
-             //       }
-	            //}
-
                 result.Add(productionPlanData);
             }
-
-            //if (materialTypeId >= CommonConstants.EnergyType && totallyQuantity.Count == 1)
-            //{
-            //    totallyQuantityAs = totallyQuantity.First().Value;
-            //}
 
             return result;
         }
 
         private double CalculatePercentagesFactCurrentMonth(ProductionPlanConfig productionPlan, List<UnitsDailyData> dailyData, ICalculatorService calculator)
         {
+            if (productionPlan.IsPropductionPlan == false)
+            {
+                return 0;
+            }
+
             var splitter = new char[] { '@' };
 
             string[] planTokens = productionPlan.UsageRateMembers.Split(splitter, StringSplitOptions.RemoveEmptyEntries);
@@ -207,6 +186,11 @@
 
         private double CalculateUsageRateValue(ProductionPlanConfig productionPlan, List<UnitsDailyData> dailyData, ICalculatorService calculatorService)
         {
+            if (productionPlan.IsPropductionPlan == false)
+            {
+                return 0;
+            }
+
             var splitter = new char[] { '@' };
 
             var planTokens = productionPlan.UsageRateMembers.Split(splitter, StringSplitOptions.RemoveEmptyEntries);
@@ -284,6 +268,11 @@
 
         private double CalculateFactValue(ProductionPlanConfig productionPlan, List<UnitsDailyData> dailyData, ICalculatorService calculator)
         {
+            if (productionPlan.IsPropductionPlan == false)
+            {
+                return 0;
+            }
+
             var splitter = new char[] { '@' };
 
             var factTokens = productionPlan.QuantityFactMembers.Split(splitter, StringSplitOptions.RemoveEmptyEntries);
@@ -312,6 +301,11 @@
 
         private double CalculatePlanValue(ProductionPlanConfig productionPlan, List<UnitsDailyData> dailyData, ICalculatorService calculator, DateTime month)
         {
+            if (productionPlan.IsPropductionPlan == false)
+            {
+                return 0;
+            }
+
             var splitter = new char[] { '@' };
 
             var planTokens = productionPlan.QuantityPlanMembers.Split(splitter, StringSplitOptions.RemoveEmptyEntries);

@@ -89,9 +89,9 @@ var unitGridsData = (function () {
             }
 
             if ($("#technological-data").val() !== undefined) {
+                setExportSettings();
                 kendoAdditional.RefreshGrid("#technological-data");
             }
-
 
             if ($("#tanks-statuses").val() !== undefined) {
 
@@ -217,9 +217,210 @@ var unitGridsData = (function () {
             });
         }
 
+        if ($("#tech-report-approve")) {
+            $("#tech-report-approve").click(function () {
+                var dataParam = sendDate();
+                $.ajax({
+                    url: 'ConfirmReport',
+                    type: 'POST',
+                    data: dataParam,
+                    success: function (data) {
+                        var confirmed = data.IsConfirmed;
+                        if (confirmed === true) {
+
+                            var message = "Вие потвърдихте описанието на технологичният отчет успешно."
+                            $('pre#succ-message').text(message);
+                            $('div#success-window').data("kendoWindow").open();
+
+                            var techReportSaveButton = $('#editor-save-changes');
+                            if (techReportSaveButton) {
+                                techReportSaveButton.hide();
+                                techReportSaveButton.css('visibility', 'hidden');
+                            }
+
+                            if ($('#report-details')) {
+                                $($('#report-details').data().kendoEditor.body).attr('contenteditable', false);
+                            }
+
+                            if ($('#tech-report-approve')) {
+                                $('#tech-report-approve').hide();
+                            }
+
+                            var exportPdfButton = $('#export-pdf');
+                            if (exportPdfButton) {
+                                exportPdfButton.show();
+                                exportPdfButton.css('visibility', 'visible');
+                            }
+                        } else {
+                            if (data.errors) {
+                                var errorMessage = "";
+                                $.each(data.errors, function (key, value) {
+                                    if ('errors' in value) {
+                                        $.each(value.errors, function () {
+                                            errorMessage += this + "\n";
+                                        });
+                                    }
+                                });
+                                $('pre#err-message').text(errorMessage);
+                                $('div#err-window').data("kendoWindow").open();
+                            }
+                            //showCommandButtons();
+                        }
+                    },
+                    error: function (data) {
+                        var errorMessage = "";
+                        var response = JSON.parse(data.responseText).data;
+                        $.each(response.errors, function (key, value) {
+                            errorMessage += this + "\n";
+                        });
+                        $('pre#err-message').text(errorMessage);
+                        $('div#err-window').data("kendoWindow").open();
+                    }
+                });
+            });
+        }
+
+        hideExportToPdfButtons();
     });
 
     //------------------ private functions ------------------------------------
+
+    function hideExportToPdfButtons() {
+        var techReportSaveButton = $('#editor-save-changes');
+        if (techReportSaveButton) {
+            techReportSaveButton.hide();
+            techReportSaveButton.css('visibility', 'hidden');
+        }
+
+        var exportPdfButton = $('#export-pdf');
+        if (exportPdfButton) {
+            exportPdfButton.hide();
+            exportPdfButton.css('visibility', 'hidden');
+        }
+
+        if ($('#report-details')) {
+            $($('#report-details').data().kendoEditor.body).attr('contenteditable', false);
+            var editor = $("#report-details").data("kendoEditor");
+            editor.value("");
+        }
+
+        if ($('#tech-report-approve')) {
+            $('#tech-report-approve').hide();
+        }
+    }
+
+    function setExportToPdfButtonsValidButNotApproved() {
+        if ($('#tech-report-approve')) {
+            $('#tech-report-approve').show();
+        }
+
+        if ($('#report-details')) {
+            $($('#report-details').data().kendoEditor.body).attr('contenteditable', true);
+        }
+
+        var techReportSaveButton = $('#editor-save-changes');
+        if (techReportSaveButton) {
+            techReportSaveButton.show();
+            techReportSaveButton.css('visibility', 'visible');
+        }
+
+        var exportPdfButton = $('#export-pdf');
+        if (exportPdfButton) {
+            exportPdfButton.hide();
+            exportPdfButton.css('visibility', 'hidden');
+        }
+    }
+
+    function setExportToPdfButtonsApproved() {
+        var techReportSaveButton = $('#editor-save-changes');
+        if (techReportSaveButton) {
+            techReportSaveButton.hide();
+            techReportSaveButton.css('visibility', 'hidden');
+        }
+
+        if ($('#report-details')) {
+            $($('#report-details').data().kendoEditor.body).attr('contenteditable', false);
+        }
+
+        if ($('#tech-report-approve')) {
+            $('#tech-report-approve').hide();
+        }
+
+        var exportPdfButton = $('#export-pdf');
+        if (exportPdfButton) {
+            exportPdfButton.show();
+            exportPdfButton.css('visibility', 'visible');
+        }
+    }
+
+    function setApproveSaveAndExportButtonsVisibilitty(isMonthlyTechnologicalReportWriter, isMonthlyTechnologicalApprover, isPowerUser) {
+        var techReportSaveButton = $('#editor-save-changes');
+        if (isMonthlyTechnologicalReportWriter === false && isPowerUser === false) {
+            if (techReportSaveButton) {
+                techReportSaveButton.hide();
+                techReportSaveButton.css('visibility', 'hidden');
+            }
+        }
+
+        if (isMonthlyTechnologicalApprover === false && isPowerUser === false) {
+            if ($('#tech-report-approve')) {
+                $('#tech-report-approve').hide();
+            }
+
+            var exportPdfButton = $('#export-pdf');
+            if (exportPdfButton) {
+                exportPdfButton.hide();
+                exportPdfButton.css('visibility', 'hidden');
+            }
+        }
+    }
+
+    function setExportSettings() {
+        if ($('input[name=factories]') || $('input[name=factoriesD]')) {
+            var q = sendDate();
+            $.ajax({
+                url: 'GetExportData',
+                type: 'POST',
+                dataType: "json",
+                data: q,
+                success: function (response) {
+                    var factoryName = response.factoryName;
+                    var result = { "FactoryId": $('input[name=factories]').val() || $('input[name=factoriesD]').val() }
+                    $.extend(result, setFactoryName(factoryName));
+                    $.extend(result, setMonthValue());
+                    $.extend(result, setMonthValueAsString());
+                    $.extend(result, setCreatorName(response.creatorName));
+                    $.extend(result, setOccupation(response.occupation));
+                    //$.extend(result, setDateOfCreation(response.dateOfCreation));
+
+                    var editor = $("#report-details").data("kendoEditor");
+                    editor.value(decodeURI(response.reportText));
+
+                    if (response.isApproved) {
+                        setExportToPdfButtonsApproved();
+                    } else {
+                        if (response.isValid === false) {
+                            hideExportToPdfButtons()
+                        } else {
+                            setExportToPdfButtonsValidButNotApproved();
+                        }
+                    }
+
+                    setApproveSaveAndExportButtonsVisibilitty(response.isMonthlyTechnologicalReportWriter,
+                                                              response.isMonthlyTechnologicalApprover,
+                                                              response.isPowerUser);
+                    var hiddenExportSettings = $('#export-data-settings');
+                    if (hiddenExportSettings !== undefined) {
+                        hiddenExportSettings.val(JSON.stringify(result))
+                    }
+                },
+                error: function (result) {
+                    hideExportToPdfButtons();
+                    return {};
+                }
+            });
+        }
+    }
 
     function getControlData() {
         var controlParams = $('#control-params');
@@ -267,7 +468,20 @@ var unitGridsData = (function () {
             attachEventToExportBtn("#excel-export", "#monthly-recalc-data-report");
         }
 
+        var highWaypiPelines = $('#highwaypipelines').data('kendoGrid');
+        if (highWaypiPelines) {
+            attachEventToExportBtn("#excel-export", "#highwaypipelines");
+        }
 
+        var measuringPoints = $('#measuringpoints').data('kendoGrid');
+        if (measuringPoints) {
+            attachEventToExportBtn("#excel-export", "#measuringpoints");
+        }
+
+        var technologicalReport = $('#technological-data').data('kendoGrid');
+		if (technologicalReport) {
+            attachEventToExportBtn("#excel-export", "#technological-data");
+        }
     }
 
     function checkEquals(dataParam, controlData) {
@@ -319,6 +533,55 @@ var unitGridsData = (function () {
 
     function sendMonthlyReportTypeId() {
         return { "monthlyReportTypeId": $('input#monthlyReportTypeId').val() }
+    }
+
+    function setFactoryName(factoryName) {
+        return { "FactoryName": factoryName };
+    }
+
+    function setMonthValue() {
+        var datePicker = $('input[name=date]').data('kendoDatePicker');
+        if (datePicker !== undefined) {
+            var date = datePicker.value();
+        } else {
+            return;
+        }
+
+        return { "Month": date };
+    }
+
+    function setMonthValueAsString() {
+        var datePicker = $("#date");
+        if (datePicker !== undefined) {
+            var date = datePicker.val();
+        } else {
+            return;
+        }
+
+        return { "MonthAsString": date };
+    }
+
+    function setCreatorName(name) {
+        return { "CreatorName": name };
+    }
+
+    function setOccupation(occupation) {
+        return { "Occupation": occupation };
+    }
+
+    function setDateOfCreation(creationDate) {
+        return { "DateOfCreation": creationDate };
+    }
+
+    function setEditorText() {
+        var message = '';
+
+        if ($('#report-details')) {
+            var editor = $("#report-details").data("kendoEditor");
+            message = encodeURI(editor.value());
+        }
+
+        return { "reportText": message }
     }
 
     function hideCommandButtons() {
@@ -553,6 +816,10 @@ var unitGridsData = (function () {
         if ($('input#monthlyReportTypeId')) {
             $.extend(result, sendMonthlyReportTypeId());
         }
+        if ($("#report-details")) {
+            $.extend(result, setEditorText());
+        }
+
         $.extend(result, sendFactoryId());
         $.extend(result, sendAntiForgery());
         return result;

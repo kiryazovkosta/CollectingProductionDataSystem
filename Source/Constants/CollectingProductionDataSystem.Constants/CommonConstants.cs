@@ -19,6 +19,10 @@ namespace CollectingProductionDataSystem.Constants
 
         private static readonly string[] powerUsers = new string[] { "Administrator", "PowerUser" };
 
+        private static readonly string[] monthlyTechnologicalApproverUsers = new string[] { "MonthlyTechnologicalApprover" };
+
+        private static readonly string[] monthlyTechnologicalReportWriterUsers = new string[] { "MonthlyTechnologicalReportWriter" };
+
         private static readonly string loadingUser = "Initial Loading";
 
         private static readonly int materialType = 1;
@@ -67,6 +71,8 @@ namespace CollectingProductionDataSystem.Constants
 
         private static readonly int inputOutputDirection = 3;
 
+        private static readonly int?[] materialTypechemicalType = new int?[] { MaterialType, ChemicalType };
+
         public static string StandartPassword
         {
             get
@@ -76,6 +82,10 @@ namespace CollectingProductionDataSystem.Constants
         }
 
         public static string[] PowerUsers { get { return powerUsers; } }
+
+        public static string[] MonthlyTechnologicalApproverUsers { get { return monthlyTechnologicalApproverUsers; } }
+
+        public static string[] MonthlyTechnologicalReportWriterUsers { get { return monthlyTechnologicalReportWriterUsers; } }
 
         public static string LoadingUser { get { return loadingUser; } }
 
@@ -125,5 +135,6 @@ namespace CollectingProductionDataSystem.Constants
 
         public static int InputOutputDirection { get { return inputOutputDirection; } }
 
+        public static int?[] MaterialTypeChemicalType { get { return materialTypechemicalType; } }
     }
 }

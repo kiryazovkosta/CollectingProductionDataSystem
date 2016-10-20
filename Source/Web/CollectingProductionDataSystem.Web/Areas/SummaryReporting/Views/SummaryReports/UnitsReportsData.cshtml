@@ -26,6 +26,7 @@
             columns.Bound(c => c.TimeStamp).Format("{0:yyyy-MM-dd}").Width(100);
             columns.Bound(c => c.Factory).Width(80).Hidden(true).ClientGroupHeaderTemplate("Производство #=value.substr(3,value.length-3)#");
             columns.Bound(c => c.ProcessUnit).Width(80).Hidden(true).ClientGroupHeaderTemplate("Инсталация #=value.substr(3,value.length-3)#");
+            columns.Bound(c => c.ShiftProductType).Width(80).Hidden(true).ClientGroupHeaderTemplate("#=value.substr(3,value.length-3)#");
             columns.Bound(c => c.Code).Width(80);
             columns.Bound(c => c.Position).Width(140);
             columns.Bound(c => c.UnitName);
@@ -63,6 +64,7 @@
             {
                 group.Add(c => c.Factory);
                 group.Add(c => c.ProcessUnit);
+                group.Add(c => c.ShiftProductType);
             })
     )
         .Events(ev => ev.DataBound("unitGridsData.DataBound"))

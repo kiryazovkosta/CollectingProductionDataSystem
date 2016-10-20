@@ -1,11 +1,89 @@
 ﻿var kendoAdditional = (function () {
     // ----------------- autorun function on document ready -------------------
     'use strict';
+    function sendFactoryId() {
+        return { "factoryId": $('input[name=factories]').val() || $('input[name=factoriesD]').val() }
+    }
+
+    function sendEditorText() {
+        var message = '';
+
+        if ($('#report-details')) {
+            var editor = $("#report-details").data("kendoEditor");
+            message = encodeURI(editor.value());
+        }
+
+        return { "reportText": message }
+    }
+
+    function addAntiForgeryToken(data) {
+        data.__RequestVerificationToken = $('input[name=__RequestVerificationToken]').val();
+        return data;
+    };
+
+    function onSaveEditorChanges() {
+        var datePicker = $('input[name=date]').data('kendoDatePicker');
+        if (datePicker !== undefined) {
+            var date = datePicker.value();
+        } else {
+            return;
+            }
+
+        var result = { "date": date.toISOString(kendo.culture().name) };
+        $.extend(result, sendFactoryId());
+        $.extend(result, sendEditorText());
+        $.extend(result, sendAntiForgery());
+        
+        $.ajax({
+            url: 'SaveReport',
+            type: 'POST',
+            data: result,
+            success: function (data) {
+                var confirmed = data.IsConfirmed;
+                if (confirmed === true) {
+                    var message = "Вие променихте описанието на технологичният отчет успешно."
+                    $('pre#succ-message').text(message);
+                    $('div#success-window').data("kendoWindow").open();
+
+                } else {
+                    if (data.errors) {
+                        var errorMessage = "";
+                        $.each(data.errors, function (key, value) {
+                            if ('errors' in value) {
+                                $.each(value.errors, function () {
+                                    errorMessage += this + "\n";
+                                });
+                            }
+                        });
+                        
+                        $('pre#err-message').text(errorMessage);
+                        $('div#err-window').data("kendoWindow").open();
+                    }
+                }
+            },
+            error: function (data) {
+                var errorMessage = "";
+                var response = JSON.parse(data.responseText).data;
+                $.each(response.errors, function (key, value) {
+                    errorMessage += this + "\n";
+                });
+                
+                $('pre#err-message').text(errorMessage);
+                $('div#err-window').data("kendoWindow").open();
+            }
+        });
+    }
+
     $(function () {
         var culture = $('#culture').val();
         kendo.culture(culture);
         prepareWindow('div#err-window', 'Възникна грешка в приложението');
         prepareWindow('div#success-window', 'Успешна операция');
+        var editorSaveButton = $('#editor-save-changes');
+        if (editorSaveButton !== undefined && editorSaveButton !== null) {
+            editorSaveButton.on("click", onSaveEditorChanges);
+            editorSaveButton.parent().css('float','right');
+        }
     });
 
     //------------------ private functions ------------------------------------
@@ -115,6 +193,10 @@
 
     function AfterPlanNormGridValidation (){
         RefreshGrid('#plan-grid');
+    }
+
+    function AfterTankStatusesGridValidation() {
+        RefreshGrid('#tanks-statuses');
     }
 
     function ValueMapper(options) {

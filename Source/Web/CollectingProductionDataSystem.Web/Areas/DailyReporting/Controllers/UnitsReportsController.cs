@@ -53,6 +53,7 @@
                         Code = x.UnitConfig.Code,
                         Position = x.UnitConfig.Position,
                         MeasureUnit = x.UnitConfig.MeasureUnit.Code,
+                        ShiftProductType = string.Format("{0:d2} {1}", x.UnitConfig.ShiftProductType.Id, x.UnitConfig.ShiftProductType.Name),
                         UnitConfigId = x.UnitConfigId,
                         UnitName = x.UnitConfig.Name,
                         NotATotalizedPosition = x.UnitConfig.NotATotalizedPosition,

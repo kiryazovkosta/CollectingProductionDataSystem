@@ -1,0 +1,42 @@
+﻿@using Resources = App_GlobalResources.Resources;
+@Html.Hidden("user", User.Identity.Name)
+@Html.Partial("_ControlParams")
+@model DateTime?
+    @{
+        DateTime value = (Model == null) ? DateTime.Today.AddDays(-1) : Model.Value.Date;
+    }
+<div class="form-group">
+    <label for="factories">@Resources.Layout.Factory</label>
+    @(Html.Kendo().DropDownList()
+        .Name("factories")
+        .OptionLabel(Resources.Layout.ChooseFactory)
+        .HtmlAttributes(new { style = "width:95%" })
+        .DataTextField("Name")
+        .DataValueField("Id")
+        .DataSource(source =>
+        {
+            source.Read(read =>
+            {
+                read.Action("GetFactories", "Ajax", new { area = "" });
+            });
+        })
+    )
+</div>
+<div class="form-group">
+    <label for="date">@Resources.Layout.Month</label>
+    @(Html.Kendo().DatePicker()
+        .Name("date").Culture("bg-BG")
+        .Start(CalendarView.Year)
+        .Depth(CalendarView.Year)
+        .Format("MMMM yyyy")
+        .HtmlAttributes(new { style = "width:95%" })
+        .Value(value)
+    )
+</div>
+<hr />
+<div class="form-group">
+    <button id="apply" type="button" class="btn btn-primary" style="width:95%">@Resources.Layout.Apply</button>
+</div>
+<div class="form-group">
+    <button id="tech-report-approve" type="button" class="btn btn-danger" style="width:95%">@Resources.Layout.Confirm</button>
+</div>

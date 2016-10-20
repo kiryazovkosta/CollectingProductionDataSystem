@@ -472,7 +472,7 @@
                 {
                     if (unitConfig.CalculatedFormula.Equals("C9"))
                     {
-                        this.logger.ErrorFormat("Id {0} calculate by math expression");
+                        this.logger.ErrorFormat("Id {0} calculate by math expression", unitConfig.Id);
                         CalculateByMathExpression(unitConfig, recordDataTime, shift, unitsTempData, currentUnitDatas);
                     }
                     else
@@ -487,6 +487,7 @@
                         arguments.CalculationPercentage = (double?)unitConfig.CalculationPercentage;
                         arguments.CustomFormulaExpression = unitConfig.CustomFormulaExpression;
                         arguments.Code = unitConfig.Code;
+                        //arguments.UnitConfigId = unitConfig.Id;
 
                         var relatedUnitConfigs = unitConfig.RelatedUnitConfigs.ToList();
                         var confidence = 100;
@@ -612,12 +613,9 @@
 
             foreach (var relatedunitConfig in relatedunitConfigs)
             {
-                
-
                 if (allRelatedRecordsExists == true)
                 {
-                    var element = data.UnitsData
-                                  .All()
+                    var element = unitsData
                                   .Where(x => x.RecordTimestamp == recordDataTime)
                                   .Where(x => x.ShiftId == shift)
                                   .Where(x => x.UnitConfigId == relatedunitConfig.RelatedUnitConfigId)
@@ -682,7 +680,7 @@
         /// </summary>
         /// <param name="unitsConfigsList">The units configs list.</param>
         /// <param name="targetRecordTimestamp">The record data time.</param>
-        /// <param name="shift">The shift.</param>
+        /// <param name="shiftId">The Id of the shift.</param>
         /// <param name="unitsData">The units data.</param>
         /// <returns></returns>
         private IEnumerable<UnitDatasTemp> ProcessManualUnits(List<UnitConfig> unitsConfigsList,
@@ -1504,7 +1502,7 @@
                                                         {
                                                             confedence = 0;
                                                         }
-                                                        
+
                                                         break;
                                                     }
                                                     else if (dc.ColumnName.Equals(value: "TagName"))

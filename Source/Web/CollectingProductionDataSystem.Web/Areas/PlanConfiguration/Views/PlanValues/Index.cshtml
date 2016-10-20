@@ -64,7 +64,7 @@
             .Events(events =>
             {
                 events.Error("kendoAdditional.ErrorHandler");
-                events.RequestEnd("kendoAdditional.AfterterNomGridValidation");
+                events.RequestEnd("kendoAdditional.AfterPlanNormGridValidation");
             })
             )
         .Events(ev => ev.DataBound("kendoAdditional.DeletableDataBound"))
