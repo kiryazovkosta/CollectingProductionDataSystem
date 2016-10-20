@@ -12,5 +12,8 @@ namespace CollectingProductionDataSystem.Web.Areas.MonthlyTechnicalReporting.Vie
         public string FactoryName { get; set; }
         public DateTime Month { get; set; }
         public string MonthAsString { get; set; }
+        public string CreatorName { get; set; }
+        public string Ocupation { get; set; }
+        public DateTime DateOfCreation { get; set; }
     }
 }

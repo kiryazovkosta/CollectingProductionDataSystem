@@ -17,6 +17,8 @@
     using System.Web.UI;
     using Resources = App_GlobalResources.Resources;
     using Models.Productions;
+    using Models.Productions.Technological;
+    using System.Net;
 
     public class MonthlyTechnicalController : AreaBaseController
     {
@@ -37,8 +39,6 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        //[OutputCache(Duration = HalfAnHour, Location = OutputCacheLocation.Server, VaryByParam = "*")]
-        //public async Task<JsonResult> ReadMonthlyTechnicalData([DataSourceRequest]DataSourceRequest request, DateTime? date)
         public JsonResult ReadMonthlyTechnicalData([DataSourceRequest]DataSourceRequest request, int? factoryId, DateTime? date)
         {
             ValidateModelState(factoryId, date);
@@ -77,13 +77,6 @@
                     output.MaxJsonLength = int.MaxValue;
                     return output;
                 }
-                //catch (Exception ex)
-                //{
-                //    this.ModelState.AddModelError("", ex.Message);
-                //    status.ToModelStateErrors(this.ModelState);
-                //    DataSourceResult kendoResult = new List<MonthlyTechnicalViewModel>().ToDataSourceResult(request, ModelState);
-                //    return Json(kendoResult);
-                //}
             }
             else
             {
@@ -117,6 +110,16 @@
             return UserProfile.UserRoles.Where(x => CommonConstants.PowerUsers.Any(y => y == x.Name)).Any();
         }
 
+        private bool IsMonthlyTechnologicalReportWriter()
+        {
+            return UserProfile.UserRoles.Where(x => CommonConstants.MonthlyTechnologicalReportWriterUsers.Any(y => y == x.Name)).Any();
+        }
+
+        private bool IsMonthlyTechnologicalApprover()
+        {
+            return UserProfile.UserRoles.Where(x => CommonConstants.MonthlyTechnologicalApproverUsers.Any(y => y == x.Name)).Any();
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult GetFactoryName([DataSourceRequest]DataSourceRequest request, int? factoryId)
@@ -140,6 +143,190 @@
             {
                 return Json(new { factoryName = string.Empty });
             }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult GetExportData([DataSourceRequest]DataSourceRequest request, int? factoryId, DateTime? date)
+        {
+            if (!factoryId.HasValue)
+            {
+                this.ModelState.AddModelError("", "factory id");
+            }
+
+            if (!date.HasValue)
+            {
+                this.ModelState.AddModelError("", "month");
+            }
+
+            IEfStatus status = this.monthlyService.CheckIfAllMonthReportAreApproved(date.Value);
+            if (!status.IsValid)
+            {
+                status.ToModelStateErrors(this.ModelState);
+            }
+
+            if (this.ModelState.IsValid)
+            {
+                Factory factory = this.data.Factories.All().Where(x => x.Id == factoryId).FirstOrDefault();
+                if (factory != null)
+                {
+                    MonthlyTechnologicalReportsData reportData = this.data.MonthlyTechnologicalReportsDatas.All().Where(x => x.FactoryId == factoryId && x.Month == date).FirstOrDefault();
+                    var creatorName = reportData == null ? string.Empty : this.UserProfile.FullName;
+                    var occupation = reportData == null ? string.Empty : this.UserProfile.Occupation;
+                    var dateOfCreation = reportData?.ModifiedOn;
+                    var isExsisting = reportData != null;
+                    var isApproved = reportData?.Approved;
+                    var reportText = reportData == null ? string.Empty : reportData.Message;
+                    var isMonthlyTechnologicalReportWriter = IsMonthlyTechnologicalReportWriter();
+                    var isMonthlyTechnologicalApprover = IsMonthlyTechnologicalApprover();
+                    var isPowerUser = IsPowerUser();
+
+                    return Json(new {
+                        factoryName = factory.FullName,
+                        creatorName = creatorName,
+                        occupation = occupation,
+                        dateOfCreation = dateOfCreation,
+                        isExsisting = isExsisting,
+                        isApproved = isApproved,
+                        reportText = reportText,
+                        isValid = true,
+                        isMonthlyTechnologicalReportWriter = isMonthlyTechnologicalReportWriter,
+                        isMonthlyTechnologicalApprover = isMonthlyTechnologicalApprover,
+                        isPowerUser = isPowerUser,
+                    });
+                }
+
+                return Json(new { factoryName = string.Empty });
+            }
+            else
+            {
+                return Json(new {
+                    factoryName = string.Empty,
+                    creatorName = string.Empty,
+                    occupation = string.Empty,
+                    dateOfCreation = DateTime.Today,
+                    isExsisting = false,
+                    isApproved = false,
+                    reportText = string.Empty,
+                    isValid = false,
+                    isMonthlyTechnologicalReportWriter = false,
+                    isMonthlyTechnologicalApprover = false,
+                    isPowerUser = false,
+                });
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult SaveReport([DataSourceRequest]DataSourceRequest request, int? factoryId, DateTime? date, string reportText)
+        {
+            if (ModelState.IsValid)
+            {
+                MonthlyTechnologicalReportsData reportData = this.data.MonthlyTechnologicalReportsDatas.All().Where(x => x.FactoryId == factoryId && x.Month == date).FirstOrDefault();
+                if (reportData != null && reportData.Approved)
+                {
+                    ModelState.AddModelError("", "Описанието на технологичният отчет е вече потвърден. Корекции не са разрешени.");
+                }
+
+                if (ModelState.IsValid)
+                {
+                    if (reportData == null)
+                    {
+                        var record = new MonthlyTechnologicalReportsData
+                        {
+                            FactoryId = factoryId.Value,
+                            Month = date.Value,
+                            Message = reportText
+                        };
+                        this.data.MonthlyTechnologicalReportsDatas.Add(record);
+                    }
+                    else
+                    {
+                        reportData.Message = reportText;
+                        this.data.MonthlyTechnologicalReportsDatas.Update(reportData);
+                    }
+
+                    IEfStatus result = this.data.SaveChanges(this.UserProfile.UserName);
+                    return Json(new { IsConfirmed = result.IsValid }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    Response.StatusCode = (int) HttpStatusCode.BadRequest;
+                    var errors = GetErrorListFromModelState(ModelState);
+                    return Json(new { data = new { errors = errors } });
+                }
+            }
+            else
+            {
+                Response.StatusCode = (int) HttpStatusCode.BadRequest;
+                var errors = GetErrorListFromModelState(ModelState);
+                return Json(new { data = new { errors = errors } });
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ConfirmReport([DataSourceRequest]DataSourceRequest request, int? factoryId, DateTime? date, string reportText)
+        {
+            if (string.IsNullOrWhiteSpace(reportText))
+            {
+                ModelState.AddModelError("reportText", "не е въведено описание на технологичният отчет.");
+            }
+
+            if (ModelState.IsValid)
+            {
+                MonthlyTechnologicalReportsData reportData = this.data.MonthlyTechnologicalReportsDatas.All().Where(x => x.FactoryId == factoryId && x.Month == date).FirstOrDefault();
+                if (reportData != null && reportData.Approved)
+                {
+                    ModelState.AddModelError("", "Описанието на технологичният отчет е вече потвърден. Корекции не са разрешени.");
+                }
+
+                if (ModelState.IsValid)
+                {
+                    if (reportData == null)
+                    {
+                        var record = new MonthlyTechnologicalReportsData
+                        {
+                            FactoryId = factoryId.Value,
+                            Month = date.Value,
+                            Approved = true,
+                            ApprovedBy = this.UserProfile.UserName,
+                        };
+                        this.data.MonthlyTechnologicalReportsDatas.Add(record);
+                    }
+                    else
+                    {
+                        reportData.Approved = true;
+                        reportData.ApprovedBy = this.UserProfile.UserName;
+                        this.data.MonthlyTechnologicalReportsDatas.Update(reportData);
+                    }
+
+                    IEfStatus result = this.data.SaveChanges(this.UserProfile.UserName);
+                    return Json(new { IsConfirmed = result.IsValid }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    Response.StatusCode = (int) HttpStatusCode.BadRequest;
+                    List<string> errors = GetErrorListFromModelState(ModelState);
+                    return Json(new { data = new { errors = errors } });
+                }
+            }
+            else
+            {
+                Response.StatusCode = (int) HttpStatusCode.BadRequest;
+                List<string> errors = GetErrorListFromModelState(ModelState);
+                return Json(new { data = new { errors = errors } });
+            }
+        }
+
+        private List<string> GetErrorListFromModelState(ModelStateDictionary modelState)
+        {
+            var query = from state in modelState.Values
+                        from error in state.Errors
+                        select error.ErrorMessage;
+
+            var errorList = query.ToList();
+            return errorList;
         }
     }
 }

@@ -12,7 +12,7 @@
         public string Message { get; set; }
         public bool Approved { get; set; }
         public string ApprovedBy { get; set; }
-
+        public DateTime? ApprovedOn { get; set; }
         public virtual Factory Factory { get; set; }
     }
 }

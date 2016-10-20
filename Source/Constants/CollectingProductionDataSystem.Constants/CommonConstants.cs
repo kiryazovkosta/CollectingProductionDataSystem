@@ -19,6 +19,10 @@ namespace CollectingProductionDataSystem.Constants
 
         private static readonly string[] powerUsers = new string[] { "Administrator", "PowerUser" };
 
+        private static readonly string[] monthlyTechnologicalApproverUsers = new string[] { "MonthlyTechnologicalApprover" };
+
+        private static readonly string[] monthlyTechnologicalReportWriterUsers = new string[] { "MonthlyTechnologicalReportWriter" };
+
         private static readonly string loadingUser = "Initial Loading";
 
         private static readonly int materialType = 1;
@@ -78,6 +82,10 @@ namespace CollectingProductionDataSystem.Constants
         }
 
         public static string[] PowerUsers { get { return powerUsers; } }
+
+        public static string[] MonthlyTechnologicalApproverUsers { get { return monthlyTechnologicalApproverUsers; } }
+
+        public static string[] MonthlyTechnologicalReportWriterUsers { get { return monthlyTechnologicalReportWriterUsers; } }
 
         public static string LoadingUser { get { return loadingUser; } }
 
