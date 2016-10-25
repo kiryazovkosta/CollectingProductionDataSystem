@@ -217,64 +217,208 @@ var unitGridsData = (function () {
             });
         }
 
+        if ($("#tech-report-approve")) {
+            $("#tech-report-approve").click(function () {
+                var dataParam = sendDate();
+                $.ajax({
+                    url: 'ConfirmReport',
+                    type: 'POST',
+                    data: dataParam,
+                    success: function (data) {
+                        var confirmed = data.IsConfirmed;
+                        if (confirmed === true) {
 
-        // technological reports
-        // tech-report-save
-        // export-pdf
-        // report-details
-        // tech-report-approve
-        var techReportSaveButton = $('#tech-report-save');
-        if (techReportSaveButton) {
+                            var message = "Вие потвърдихте описанието на технологичният отчет успешно."
+                            $('pre#succ-message').text(message);
+                            $('div#success-window').data("kendoWindow").open();
+
+                            var techReportSaveButton = $('#editor-save-changes');
+                            if (techReportSaveButton) {
+                                techReportSaveButton.hide();
+                                techReportSaveButton.css('visibility', 'hidden');
+                            }
+
+                            if ($('#report-details')) {
+                                $($('#report-details').data().kendoEditor.body).attr('contenteditable', false);
+                            }
+
+                            if ($('#tech-report-approve')) {
+                                $('#tech-report-approve').hide();
+                            }
+
+                            var exportPdfButton = $('#export-pdf');
+                            if (exportPdfButton) {
+                                exportPdfButton.show();
+                                exportPdfButton.css('visibility', 'visible');
+                            }
+
+                            setExportSettings();
+
+                        } else {
+                            if (data.errors) {
+                                var errorMessage = "";
+                                $.each(data.errors, function (key, value) {
+                                    if ('errors' in value) {
+                                        $.each(value.errors, function () {
+                                            errorMessage += this + "\n";
+                                        });
+                                    }
+                                });
+                                $('pre#err-message').text(errorMessage);
+                                $('div#err-window').data("kendoWindow").open();
+                            }
+                            //showCommandButtons();
+                        }
+                    },
+                    error: function (data) {
+                        var errorMessage = "";
+                        var response = JSON.parse(data.responseText).data;
+                        $.each(response.errors, function (key, value) {
+                            errorMessage += this + "\n";
+                        });
+                        $('pre#err-message').text(errorMessage);
+                        $('div#err-window').data("kendoWindow").open();
+                    }
+                });
+            });
+        }
+
+        hideExportToPdfButtons();
+    });
+
+    //------------------ private functions ------------------------------------
+
+    function hideExportToPdfButtons() {
+        var techReportSaveButton = $('#editor-save-changes');
+        if (techReportSaveButton.length) {
             techReportSaveButton.hide();
             techReportSaveButton.css('visibility', 'hidden');
         }
 
         var exportPdfButton = $('#export-pdf');
-        if (exportPdfButton) {
-            //exportPdfButton.hide();
-            //exportPdfButton.css('visibility', 'hidden');
-            //var techReportGrid = $('#technological-data').data('kendoGrid');
-            //if (techReportGrid) {
-            //    techReportGrid.height = 610;
-            //}
+        if (exportPdfButton.length) {
+            exportPdfButton.hide();
+            exportPdfButton.css('visibility', 'hidden');
         }
 
-        if ($('#report-details')) {
-            $('#report-details').hide();
-            $('#report-details').css('visibility', 'hidden');
+        if ($('#report-details').length) {
+            $($('#report-details').data().kendoEditor.body).attr('contenteditable', false);
+            var editor = $("#report-details").data("kendoEditor");
+            editor.value("");
+        }
+
+        if ($('#tech-report-approve').length) {
+            $('#tech-report-approve').hide();
+        }
+    }
+
+    function setExportToPdfButtonsValidButNotApproved() {
+        if ($('#tech-report-approve').length) {
+            $('#tech-report-approve').show();
+        }
+
+        if ($('#report-details').length) {
+            $($('#report-details').data().kendoEditor.body).attr('contenteditable', true);
+        }
+
+        var techReportSaveButton = $('#editor-save-changes');
+        if (techReportSaveButton.length) {
+            techReportSaveButton.show();
+            techReportSaveButton.css('visibility', 'visible');
+        }
+
+        var exportPdfButton = $('#export-pdf');
+        if (exportPdfButton.length) {
+            exportPdfButton.hide();
+            exportPdfButton.css('visibility', 'hidden');
+        }
+    }
+
+    function setExportToPdfButtonsApproved() {
+        var techReportSaveButton = $('#editor-save-changes');
+        if (techReportSaveButton.length) {
+            techReportSaveButton.hide();
+            techReportSaveButton.css('visibility', 'hidden');
+        }
+
+        if ($('#report-details').length) {
             $($('#report-details').data().kendoEditor.body).attr('contenteditable', false);
         }
 
-        if ($('#tech-report-approve')) {
+        if ($('#tech-report-approve').length) {
             $('#tech-report-approve').hide();
         }
 
-    });
+        var exportPdfButton = $('#export-pdf');
+        if (exportPdfButton.length) {
+            exportPdfButton.show();
+            exportPdfButton.css('visibility', 'visible');
+        }
+    }
 
-    //------------------ private functions ------------------------------------
+    function setApproveSaveAndExportButtonsVisibilitty(isMonthlyTechnologicalReportWriter, isMonthlyTechnologicalApprover, isPowerUser) {
+        var techReportSaveButton = $('#editor-save-changes');
+        if (isMonthlyTechnologicalReportWriter === false && isPowerUser === false) {
+            if (techReportSaveButton.length) {
+                techReportSaveButton.hide();
+                techReportSaveButton.css('visibility', 'hidden');
+            }
+        }
+
+        if (isMonthlyTechnologicalApprover === false && isPowerUser === false) {
+            if ($('#tech-report-approve').length) {
+                $('#tech-report-approve').hide();
+            }
+
+            var exportPdfButton = $('#export-pdf');
+            if (exportPdfButton.length) {
+                exportPdfButton.hide();
+                exportPdfButton.css('visibility', 'hidden');
+            }
+        }
+    }
 
     function setExportSettings() {
         if ($('input[name=factories]') || $('input[name=factoriesD]')) {
-            var q = sendFactoryId();
-            $.extend(q, sendAntiForgery());
+            var q = sendDate();
             $.ajax({
-                url: 'GetFactoryName',
+                url: 'GetExportData',
                 type: 'POST',
                 dataType: "json",
                 data: q,
-                success: function (result) {
-                    var factoryName = result.factoryName;
+                success: function (response) {
+                    var factoryName = response.factoryName;
                     var result = { "FactoryId": $('input[name=factories]').val() || $('input[name=factoriesD]').val() }
                     $.extend(result, setFactoryName(factoryName));
                     $.extend(result, setMonthValue());
                     $.extend(result, setMonthValueAsString());
+                    $.extend(result, setCreatorName(response.creatorName));
+                    $.extend(result, setOccupation(response.occupation));
+                    $.extend(result, setDateOfCreation(response.dateOfCreation));
 
+                    var editor = $("#report-details").data("kendoEditor");
+                    editor.value(decodeURI(response.reportText));
+
+                    if (response.isApproved) {
+                        setExportToPdfButtonsApproved();
+                    } else {
+                        if (response.isValid === false) {
+                            hideExportToPdfButtons()
+                        } else {
+                            setExportToPdfButtonsValidButNotApproved();
+                        }
+                    }
+
+                    setApproveSaveAndExportButtonsVisibilitty(response.isMonthlyTechnologicalReportWriter,
+                                                              response.isMonthlyTechnologicalApprover,
+                                                              response.isPowerUser);
                     var hiddenExportSettings = $('#export-data-settings');
                     if (hiddenExportSettings !== undefined) {
                         hiddenExportSettings.val(JSON.stringify(result))
                     }
                 },
                 error: function (result) {
+                    hideExportToPdfButtons();
                     return {};
                 }
             });
@@ -406,7 +550,6 @@ var unitGridsData = (function () {
             return;
         }
 
-        //return { "Month": date.toISOString(kendo.culture().name) };
         return { "Month": date };
     }
 
@@ -414,11 +557,41 @@ var unitGridsData = (function () {
         var datePicker = $("#date");
         if (datePicker !== undefined) {
             var date = datePicker.val();
+            date = date.charAt(0).toUpperCase() + date.slice(1);
         } else {
             return;
         }
 
         return { "MonthAsString": date };
+    }
+
+    function setCreatorName(name) {
+        return { "CreatorName": name };
+    }
+
+    function setOccupation(occupation) {
+        return { "Occupation": occupation };
+    }
+
+    function setDateOfCreation(creationDate) {
+        if (creationDate !== null) {
+            var milliseconds = creationDate.replace("/Date(", "");
+            milliseconds = milliseconds.replace(")/", "");
+            creationDate = new Date(parseInt(milliseconds));
+        }
+
+        return { "DateOfCreation": creationDate };
+    }
+
+    function setEditorText() {
+        var message = '';
+
+        if ($('#report-details').length) {
+            var editor = $("#report-details").data("kendoEditor");
+            message = encodeURI(editor.value());
+        }
+
+        return { "reportText": message }
     }
 
     function hideCommandButtons() {
@@ -653,6 +826,10 @@ var unitGridsData = (function () {
         if ($('input#monthlyReportTypeId')) {
             $.extend(result, sendMonthlyReportTypeId());
         }
+        if ($("#report-details")) {
+            $.extend(result, setEditorText());
+        }
+
         $.extend(result, sendFactoryId());
         $.extend(result, sendAntiForgery());
         return result;

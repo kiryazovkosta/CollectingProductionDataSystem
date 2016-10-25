@@ -332,6 +332,7 @@
     <Compile Include="Areas\MonthlyDataReporting\MonthlyDataReportingAreaRegistration.cs" />
     <Compile Include="Areas\MonthlyTechnicalReporting\Controllers\AreaBaseController.cs" />
     <Compile Include="Areas\MonthlyTechnicalReporting\Controllers\MonthlyTechnicalController.cs" />
+    <Compile Include="Areas\MonthlyTechnicalReporting\Models\Approver.cs" />
     <Compile Include="Areas\MonthlyTechnicalReporting\ViewModels\ExportDataSettingsViewModel.cs" />
     <Compile Include="Areas\MonthlyTechnicalReporting\ViewModels\MonthlyTechnicalViewModel.cs" />
     <Compile Include="Areas\MonthlyTechnicalReporting\MonthlyTechnicalReportingAreaRegistration.cs" />
@@ -1167,11 +1168,20 @@
     <Content Include="Content\Images\SummaryReport\Фигура82.png" />
     <Content Include="Content\Images\SummaryReport\Фигура91.jpg" />
     <Content Include="Content\Images\tanks.png" />
+    <Content Include="Content\Images\TechnologicalReport\butonPotvyrgavam.png" />
+    <Content Include="Content\Images\TechnologicalReport\ButonZapazi.png" />
     <Content Include="Content\Images\TechnologicalReport\error.png" />
+    <Content Include="Content\Images\TechnologicalReport\Error_Zapiski.png" />
     <Content Include="Content\Images\TechnologicalReport\Figura1.png" />
     <Content Include="Content\Images\TechnologicalReport\Figura2.png" />
+    <Content Include="Content\Images\TechnologicalReport\Figura2_New.png" />
     <Content Include="Content\Images\TechnologicalReport\figura3.png" />
+    <Content Include="Content\Images\TechnologicalReport\Figura3_New.png" />
+    <Content Include="Content\Images\TechnologicalReport\FiguraDate.png" />
     <Content Include="Content\Images\TechnologicalReport\Filter.png" />
+    <Content Include="Content\Images\TechnologicalReport\SuccessSave.png" />
+    <Content Include="Content\Images\TechnologicalReport\Success_Danni.png" />
+    <Content Include="Content\Images\TechnologicalReport\TabExport.png" />
     <Content Include="Content\Images\TrafficLights\green_light.png" />
     <Content Include="Content\Images\TrafficLights\green_light_big.png" />
     <Content Include="Content\Images\TrafficLights\red_light.png" />
@@ -2591,7 +2601,6 @@
     <Folder Include="Areas\MonthlyReporting\Models\" />
     <Folder Include="Areas\MonthlyReporting\Views\AreaBase\" />
     <Folder Include="Areas\MonthlyReporting\Views\Shared\" />
-    <Folder Include="Areas\MonthlyTechnicalReporting\Models\" />
     <Folder Include="Areas\MonthlyTechnicalReporting\Views\Ajax\" />
     <Folder Include="Areas\MonthlyTechnicalReporting\Views\AreaBase\" />
     <Folder Include="Areas\NomManagement\Models\InputModels\" />
