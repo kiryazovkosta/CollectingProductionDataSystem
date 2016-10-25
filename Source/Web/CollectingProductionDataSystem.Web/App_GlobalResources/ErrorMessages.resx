@@ -198,4 +198,7 @@
   <data name="MonthIsConfirmed" xml:space="preserve">
     <value>You cannot modify plan records after confirmation of the month</value>
   </data>
+  <data name="NoFactoryError" xml:space="preserve">
+    <value>Invalid factoryId {0}</value>
+  </data>
 </root>

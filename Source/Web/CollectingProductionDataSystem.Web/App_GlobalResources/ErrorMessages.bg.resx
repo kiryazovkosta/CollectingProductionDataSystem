@@ -198,4 +198,7 @@
   <data name="MonthIsConfirmed" xml:space="preserve">
     <value>Не можете да променяте плановите записи.\r\nМесецът е потвърден.</value>
   </data>
+  <data name="NoFactoryError" xml:space="preserve">
+    <value>Невалиден номер на производство {0}</value>
+  </data>
 </root>

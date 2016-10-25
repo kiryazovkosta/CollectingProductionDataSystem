@@ -232,6 +232,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid factoryId {0}.
+        /// </summary>
+        public static string NoFactoryError {
+            get {
+                return ResourceManager.GetString("NoFactoryError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to There is difference between parameters: \n.
         /// </summary>
         public static string ParameterDifferencesHead {

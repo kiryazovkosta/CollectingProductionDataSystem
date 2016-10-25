@@ -486,7 +486,7 @@ var pdfPageSetup = (function() {
         draw.vAlign([textPath8], path8.bbox(), "center");
 
         var date = "";
-        if (exportData.DateOfCreation !== undefined) {
+        if (exportData.DateOfCreation !== undefined && exportData.DateOfCreation !== null) {
             date = exportData.DateOfCreation.toLocaleDateString('bg-BG');
         }
 
@@ -520,7 +520,7 @@ var pdfPageSetup = (function() {
         draw.vAlign([textPath12], path12.bbox(), "center");
 
         var approvementDate = "";
-        if (exportData.DateOfApprovement !== undefined) {
+        if (exportData.DateOfApprovement !== undefined && exportData.DateOfApprovement !== null) {
             approvementDate = exportData.DateOfApprovement.toLocaleDateString('bg-BG');
         }
 

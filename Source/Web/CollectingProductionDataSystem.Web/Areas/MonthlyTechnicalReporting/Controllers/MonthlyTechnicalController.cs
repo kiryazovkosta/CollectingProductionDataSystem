@@ -41,13 +41,15 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public JsonResult ReadMonthlyTechnicalData([DataSourceRequest]DataSourceRequest request, int? factoryId, DateTime? date)
+        public JsonResult ReadMonthlyTechnicalData([DataSourceRequest] DataSourceRequest request, int? factoryId,
+            DateTime? date)
         {
             ValidateModelState(factoryId, date);
 
             if (!this.ModelState.IsValid)
             {
-                DataSourceResult kendoResult = new List<MonthlyTechnicalViewModel>().ToDataSourceResult(request, ModelState);
+                DataSourceResult kendoResult = new List<MonthlyTechnicalViewModel>().ToDataSourceResult(request,
+                    ModelState);
                 return Json(kendoResult);
             }
 
@@ -64,15 +66,22 @@
                     IEnumerable<int> processUnits = new HashSet<int>();
                     if (IsPowerUser())
                     {
-                        processUnits = this.data.ProcessUnits.All().Where(x => x.FactoryId == factoryId).Select(x => x.Id);
+                        processUnits =
+                            this.data.ProcessUnits.All().Where(x => x.FactoryId == factoryId).Select(x => x.Id);
                     }
                     else
                     {
-                        List<int> processUnitsForFactory = this.data.ProcessUnits.All().Where(x => x.FactoryId == factoryId).Select(x => x.Id).ToList();
-                        processUnits = this.UserProfile.ProcessUnits.ToList().Where(p => processUnitsForFactory.Contains(p.Id)).Select(x => x.Id);
+                        List<int> processUnitsForFactory =
+                            this.data.ProcessUnits.All().Where(x => x.FactoryId == factoryId).Select(x => x.Id).ToList();
+                        processUnits =
+                            this.UserProfile.ProcessUnits.ToList()
+                                .Where(p => processUnitsForFactory.Contains(p.Id))
+                                .Select(x => x.Id);
                     }
-                    IEnumerable<MonthlyTechnicalReportDataDto> dbResult = this.monthlyService.ReadMonthlyTechnologicalDataAsync(date.Value, processUnits.ToArray());
-                    IEnumerable<MonthlyTechnicalViewModel> vmResult = Mapper.Map<IEnumerable<MonthlyTechnicalViewModel>>(dbResult);
+                    IEnumerable<MonthlyTechnicalReportDataDto> dbResult =
+                        this.monthlyService.ReadMonthlyTechnologicalDataAsync(date.Value, processUnits.ToArray());
+                    IEnumerable<MonthlyTechnicalViewModel> vmResult =
+                        Mapper.Map<IEnumerable<MonthlyTechnicalViewModel>>(dbResult);
                     DataSourceResult kendoResult = vmResult.ToDataSourceResult(request, ModelState);
                     //return Json(kendoResult);
                     JsonResult output = Json(kendoResult, JsonRequestBehavior.AllowGet);
@@ -82,7 +91,8 @@
             }
             else
             {
-                DataSourceResult kendoResult = new List<MonthlyTechnicalViewModel>().ToDataSourceResult(request, ModelState);
+                DataSourceResult kendoResult = new List<MonthlyTechnicalViewModel>().ToDataSourceResult(request,
+                    ModelState);
                 return Json(kendoResult);
             }
         }
@@ -91,12 +101,14 @@
         {
             if (factoryId == null)
             {
-                this.ModelState.AddModelError("factoryId", string.Format(Resources.ErrorMessages.Required, Resources.Layout.ChooseFactory));
+                this.ModelState.AddModelError("factoryId",
+                    string.Format(Resources.ErrorMessages.Required, Resources.Layout.ChooseFactory));
             }
 
             if (date == null)
             {
-                this.ModelState.AddModelError("date", string.Format(Resources.ErrorMessages.Required, Resources.Layout.UnitsDateSelector));
+                this.ModelState.AddModelError("date",
+                    string.Format(Resources.ErrorMessages.Required, Resources.Layout.UnitsDateSelector));
             }
         }
 
@@ -104,27 +116,29 @@
         [ValidateAntiForgeryToken]
         public ActionResult IsConfirmed(DateTime date)
         {
-            return Json(new { IsConfirmed = true });
+            return this.Json(new { IsConfirmed = true });
         }
 
         private bool IsPowerUser()
         {
-            return UserProfile.UserRoles.Where(x => CommonConstants.PowerUsers.Any(y => y == x.Name)).Any();
+            return this.UserProfile.UserRoles.Any(x => CommonConstants.PowerUsers.Any(y => y == x.Name));
         }
 
         private bool IsMonthlyTechnologicalReportWriter()
         {
-            return UserProfile.UserRoles.Where(x => CommonConstants.MonthlyTechnologicalReportWriterUsers.Any(y => y == x.Name)).Any();
+            return
+                this.UserProfile.UserRoles.Any(x => CommonConstants.MonthlyTechnologicalReportWriterUsers.Any(y => y == x.Name));
         }
 
         private bool IsMonthlyTechnologicalApprover()
         {
-            return UserProfile.UserRoles.Where(x => CommonConstants.MonthlyTechnologicalApproverUsers.Any(y => y == x.Name)).Any();
+            return
+                this.UserProfile.UserRoles.Any(x => CommonConstants.MonthlyTechnologicalApproverUsers.Any(y => y == x.Name));
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult GetFactoryName([DataSourceRequest]DataSourceRequest request, int? factoryId)
+        public ActionResult GetFactoryName([DataSourceRequest] DataSourceRequest request, int? factoryId)
         {
             if (!factoryId.HasValue)
             {
@@ -133,7 +147,7 @@
 
             if (this.ModelState.IsValid)
             {
-                Factory factory = this.data.Factories.All().Where(x => x.Id == factoryId).FirstOrDefault();
+                Factory factory = this.data.Factories.All().FirstOrDefault(x => x.Id == factoryId);
                 if (factory != null)
                 {
                     return Json(new { factoryName = factory.FullName });
@@ -149,19 +163,9 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult GetExportData([DataSourceRequest]DataSourceRequest request, int? factoryId, DateTime? date)
+        public ActionResult GetExportData(int factoryId, DateTime date)
         {
-            if (!factoryId.HasValue)
-            {
-                this.ModelState.AddModelError("", "factory id");
-            }
-
-            if (!date.HasValue)
-            {
-                this.ModelState.AddModelError("", "month");
-            }
-
-            IEfStatus status = this.monthlyService.CheckIfAllMonthReportAreApproved(date.Value);
+            IEfStatus status = this.monthlyService.CheckIfAllMonthReportAreApproved(date);
             if (!status.IsValid)
             {
                 status.ToModelStateErrors(this.ModelState);
@@ -169,51 +173,63 @@
 
             if (this.ModelState.IsValid)
             {
-                Factory factory = this.data.Factories.All().Where(x => x.Id == factoryId).FirstOrDefault();
+                Factory factory = this.data.Factories.All().FirstOrDefault(x => x.Id == factoryId);
+
                 if (factory != null)
                 {
-                    MonthlyTechnologicalReportsData reportData = this.data.MonthlyTechnologicalReportsDatas.All().Where(x => x.FactoryId == factoryId && x.Month == date).FirstOrDefault();
-                    Approver approver = GetApprover(reportData);
-                    var isExsisting = reportData != null;
-                    var isApproved = reportData?.Approved;
-                    var reportText = reportData == null ? string.Empty : reportData.Message;
-                    var isMonthlyTechnologicalReportWriter = IsMonthlyTechnologicalReportWriter();
-                    var isMonthlyTechnologicalApprover = IsMonthlyTechnologicalApprover();
-                    var isPowerUser = IsPowerUser();
+                    MonthlyTechnologicalReportsData reportData =
+                        this.data.MonthlyTechnologicalReportsDatas.All()
+                        .FirstOrDefault(x => x.FactoryId == factoryId && x.Month == date);
 
-                    return Json(new {
-                        factoryName = factory.FullName,
-                        creatorName = approver.CreatorName,
-                        occupation = approver.Occupation,
-                        dateOfCreation = approver.DateOfCreation,
-                        isExsisting = isExsisting,
-                        isApproved = isApproved,
-                        reportText = reportText,
-                        isValid = true,
-                        isMonthlyTechnologicalReportWriter = isMonthlyTechnologicalReportWriter,
-                        isMonthlyTechnologicalApprover = isMonthlyTechnologicalApprover,
-                        isPowerUser = isPowerUser,
+                    Approver approver = this.GetApprover(reportData);
+                    var isExsisting = reportData != null;
+                    var isApproved = reportData?.Approved ?? false;
+                    var reportText = reportData?.Message ?? string.Empty;
+                    var isMonthlyTechnologicalReportWriter = this.IsMonthlyTechnologicalReportWriter();
+                    var isMonthlyTechnologicalApprover = this.IsMonthlyTechnologicalApprover();
+                    var isPowerUser = this.IsPowerUser();
+
+                    return this.Json(new
+                    {
+                        PdfExportDetails = new
+                        {
+                            //header info
+                            FactoryName = factory.FullName,
+                            Month = DateTime.Now,
+                            MonthAsString = $"{date.ToString("MMMM yyyy г.")}",
+
+                            //footer table info
+                            //first row
+                            //Todo: fill this with appropriated values
+                            CreatorName = approver?.CreatorName ?? "",
+                            Occupation = approver?.Occupation ?? "",
+                            DateOfCreation = approver?.DateOfCreation,
+
+                            //second row
+                            ApproverName = "Николай Костадинов",
+                            ApproverOccupation = "Директор на водопад",
+                            DateOfApprovement = DateTime.Now.AddDays(-1)
+                        },
+                        EditorContent = reportText,
+                        IsExsisting = isExsisting,
+                        IsApproved = isApproved,
+                        IsValid = true,
+                        IsMonthlyTechnologicalReportWriter = isMonthlyTechnologicalReportWriter,
+                        IsMonthlyTechnologicalApprover = isMonthlyTechnologicalApprover,
+                        IsPowerUser = isPowerUser
+
                     });
                 }
+                else
+                {
+                    this.ModelState.AddModelError(string.Empty, string.Format(Resources.ErrorMessages.NoFactoryError, factoryId));
+                }
+            }
 
-                return Json(new { factoryName = string.Empty });
-            }
-            else
-            {
-                return Json(new {
-                    factoryName = string.Empty,
-                    creatorName = string.Empty,
-                    occupation = string.Empty,
-                    dateOfCreation = DateTime.Today,
-                    isExsisting = false,
-                    isApproved = false,
-                    reportText = string.Empty,
-                    isValid = false,
-                    isMonthlyTechnologicalReportWriter = false,
-                    isMonthlyTechnologicalApprover = false,
-                    isPowerUser = false,
-                });
-            }
+            var allErrors = this.ModelState.Values.SelectMany(v => v.Errors).Select(x=>x.ErrorMessage);
+
+            return this.Json(new {errors = allErrors});
+
         }
 
         private Approver GetApprover(MonthlyTechnologicalReportsData reportData)
@@ -221,9 +237,9 @@
             var approver = new Approver();
             if (reportData?.Approved == true)
             {
-                ApplicationUser user = this.data.Users.All().Where(x => x.UserName == reportData.ApprovedBy).FirstOrDefault();
-                approver.CreatorName = user.FullName;
-                approver.Occupation = user.Occupation;
+                ApplicationUser user = this.data.Users.All().FirstOrDefault(x => x.UserName == reportData.ApprovedBy);
+                approver.CreatorName = user?.FullName ?? string.Empty;
+                approver.Occupation = user?.Occupation ?? string.Empty;
                 approver.DateOfCreation = reportData.ApprovedOn;
             }
             return approver;
@@ -231,14 +247,19 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult SaveReport([DataSourceRequest]DataSourceRequest request, int? factoryId, DateTime? date, string reportText)
+        public ActionResult SaveReport([DataSourceRequest] DataSourceRequest request, int? factoryId, DateTime? date,
+            string reportText)
         {
-            if (ModelState.IsValid)
+            if (this.ModelState.IsValid)
             {
-                MonthlyTechnologicalReportsData reportData = this.data.MonthlyTechnologicalReportsDatas.All().Where(x => x.FactoryId == factoryId && x.Month == date).FirstOrDefault();
+                MonthlyTechnologicalReportsData reportData =
+                    this.data.MonthlyTechnologicalReportsDatas.All()
+                        .Where(x => x.FactoryId == factoryId && x.Month == date)
+                        .FirstOrDefault();
                 if (reportData != null && reportData.Approved)
                 {
-                    ModelState.AddModelError("", "Описанието на технологичният отчет е вече потвърден. Корекции не са разрешени.");
+                    ModelState.AddModelError("",
+                        "Описанието на технологичният отчет е вече потвърден. Корекции не са разрешени.");
                 }
 
                 if (ModelState.IsValid)
@@ -279,7 +300,8 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult ConfirmReport([DataSourceRequest]DataSourceRequest request, int? factoryId, DateTime? date, string reportText)
+        public ActionResult ConfirmReport([DataSourceRequest] DataSourceRequest request, int? factoryId, DateTime? date,
+            string reportText)
         {
             if (string.IsNullOrWhiteSpace(reportText))
             {
@@ -288,10 +310,14 @@
 
             if (ModelState.IsValid)
             {
-                MonthlyTechnologicalReportsData reportData = this.data.MonthlyTechnologicalReportsDatas.All().Where(x => x.FactoryId == factoryId && x.Month == date).FirstOrDefault();
+                MonthlyTechnologicalReportsData reportData =
+                    this.data.MonthlyTechnologicalReportsDatas.All()
+                        .Where(x => x.FactoryId == factoryId && x.Month == date)
+                        .FirstOrDefault();
                 if (reportData != null && reportData.Approved)
                 {
-                    ModelState.AddModelError("", "Описанието на технологичният отчет е вече потвърден. Корекции не са разрешени.");
+                    ModelState.AddModelError("",
+                        "Описанието на технологичният отчет е вече потвърден. Корекции не са разрешени.");
                 }
 
                 if (ModelState.IsValid)

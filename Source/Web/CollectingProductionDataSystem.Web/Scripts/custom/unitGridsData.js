@@ -1,85 +1,21 @@
 var endDate;
 var beginDate;
-var unitGridsData = (function () {
+var unitGridsData = (function() {
     //Exclusion list of grids without command button hiding
-    var exclusionList = ["#measuringpoints",
-                         "#highwaypipelines",
-                         "#inner-pipes",
-                         "#tanks-statuses",
-                         "#messages-grid",
-                         "#plan-grid"
+    var exclusionList = [
+        "#measuringpoints",
+        "#highwaypipelines",
+        "#inner-pipes",
+        "#tanks-statuses",
+        "#messages-grid",
+        "#plan-grid"
     ];
 
     // ----------------- autorun function on document ready -------------------
     'use strict';
-    $(document).ready(function () {
-        var ctrlParamsElement = $('#control-params');
-        if ($("#monthly-recalc-data-report").val() !== undefined) {
-            if (ctrlParamsElement.val() !== undefined) {
-                ctrlParamsElement.attr('data-params', JSON.stringify(sendDate()));
-            }
-
-            kendoAdditional.RefreshGrid("#monthly-recalc-data-report");
-        }
-
-        if ($("#plan-grid").val() !== undefined) {
-            $('#confirm').remove();
-        }
-        $("#apply").click(function () {
-            if ($("#units").val() !== undefined) {
-
-                if (ctrlParamsElement.val() !== undefined) {
-                    ctrlParamsElement.attr('data-params', JSON.stringify(sendDate()));
-                }
-
-                kendoAdditional.RefreshGrid("#units");
-            }
-
-            if ($("#tanks").val() !== undefined) {
-
-                if (ctrlParamsElement.val() !== undefined) {
-                    ctrlParamsElement.attr('data-params', JSON.stringify(SendTanksData()));
-                }
-
-                kendoAdditional.RefreshGrid("#tanks");
-            }
-
-            if ($("#measuringpoints").val() !== undefined) {
-
-                if (ctrlParamsElement.val() !== undefined) {
-                    ctrlParamsElement.attr('data-params', JSON.stringify(sendOnlyDate()));
-                }
-
-                kendoAdditional.RefreshGrid("#measuringpoints");
-            }
-
-            if ($("#inner-pipes").val() !== undefined) {
-
-                if (ctrlParamsElement.val() !== undefined) {
-                    ctrlParamsElement.attr('data-params', JSON.stringify(sendOnlyDate()));
-                }
-
-                kendoAdditional.RefreshGrid("#inner-pipes");
-            }
-
-            if ($("#monthly-hc-units").val() !== undefined) {
-
-                if (ctrlParamsElement.val() !== undefined) {
-                    ctrlParamsElement.attr('data-params', JSON.stringify(sendDate()));
-                }
-
-                kendoAdditional.RefreshGrid("#monthly-hc-units");
-            }
-
-            if ($("#monthly-pw-units").val() !== undefined) {
-
-                if (ctrlParamsElement.val() !== undefined) {
-                    ctrlParamsElement.attr('data-params', JSON.stringify(sendDate()));
-                }
-
-                kendoAdditional.RefreshGrid("#monthly-pw-units");
-            }
-
+    $(document)
+        .ready(function() {
+            var ctrlParamsElement = $('#control-params');
             if ($("#monthly-recalc-data-report").val() !== undefined) {
                 if (ctrlParamsElement.val() !== undefined) {
                     ctrlParamsElement.attr('data-params', JSON.stringify(sendDate()));
@@ -88,203 +24,284 @@ var unitGridsData = (function () {
                 kendoAdditional.RefreshGrid("#monthly-recalc-data-report");
             }
 
-            if ($("#technological-data").val() !== undefined) {
-                setExportSettings();
-                kendoAdditional.RefreshGrid("#technological-data");
-            }
-
-            if ($("#tanks-statuses").val() !== undefined) {
-
-                if (ctrlParamsElement.val() !== undefined) {
-                    ctrlParamsElement.attr('data-params', JSON.stringify(SendTanksData()));
-                }
-
-                kendoAdditional.RefreshGrid("#tanks-statuses");
-            }
-
-            if ($("#confirmation").val() !== undefined) {
-                kendoAdditional.RefreshGrid("#confirmation");
-            }
-
-            if ($("#highwaypipelines").val() !== undefined) {
-
-                kendoAdditional.RefreshGrid("#highwaypipelines");
-            }
-
             if ($("#plan-grid").val() !== undefined) {
-                kendoAdditional.RefreshGrid("#plan-grid");
+                $('#confirm').remove();
+            }
+            $("#apply")
+                .click(function() {
+                    if ($("#units").val() !== undefined) {
+
+                        if (ctrlParamsElement.val() !== undefined) {
+                            ctrlParamsElement.attr('data-params', JSON.stringify(sendDate()));
+                        }
+
+                        kendoAdditional.RefreshGrid("#units");
+                    }
+
+                    if ($("#tanks").val() !== undefined) {
+
+                        if (ctrlParamsElement.val() !== undefined) {
+                            ctrlParamsElement.attr('data-params', JSON.stringify(SendTanksData()));
+                        }
+
+                        kendoAdditional.RefreshGrid("#tanks");
+                    }
+
+                    if ($("#measuringpoints").val() !== undefined) {
+
+                        if (ctrlParamsElement.val() !== undefined) {
+                            ctrlParamsElement.attr('data-params', JSON.stringify(sendOnlyDate()));
+                        }
+
+                        kendoAdditional.RefreshGrid("#measuringpoints");
+                    }
+
+                    if ($("#inner-pipes").val() !== undefined) {
+
+                        if (ctrlParamsElement.val() !== undefined) {
+                            ctrlParamsElement.attr('data-params', JSON.stringify(sendOnlyDate()));
+                        }
+
+                        kendoAdditional.RefreshGrid("#inner-pipes");
+                    }
+
+                    if ($("#monthly-hc-units").val() !== undefined) {
+
+                        if (ctrlParamsElement.val() !== undefined) {
+                            ctrlParamsElement.attr('data-params', JSON.stringify(sendDate()));
+                        }
+
+                        kendoAdditional.RefreshGrid("#monthly-hc-units");
+                    }
+
+                    if ($("#monthly-pw-units").val() !== undefined) {
+
+                        if (ctrlParamsElement.val() !== undefined) {
+                            ctrlParamsElement.attr('data-params', JSON.stringify(sendDate()));
+                        }
+
+                        kendoAdditional.RefreshGrid("#monthly-pw-units");
+                    }
+
+                    if ($("#monthly-recalc-data-report").val() !== undefined) {
+                        if (ctrlParamsElement.val() !== undefined) {
+                            ctrlParamsElement.attr('data-params', JSON.stringify(sendDate()));
+                        }
+
+                        kendoAdditional.RefreshGrid("#monthly-recalc-data-report");
+                    }
+
+                    if ($("#technological-data").val() !== undefined) {
+                        setExportSettings();
+                        kendoAdditional.RefreshGrid("#technological-data");
+                    }
+
+                    if ($("#tanks-statuses").val() !== undefined) {
+
+                        if (ctrlParamsElement.val() !== undefined) {
+                            ctrlParamsElement.attr('data-params', JSON.stringify(SendTanksData()));
+                        }
+
+                        kendoAdditional.RefreshGrid("#tanks-statuses");
+                    }
+
+                    if ($("#confirmation").val() !== undefined) {
+                        kendoAdditional.RefreshGrid("#confirmation");
+                    }
+
+                    if ($("#highwaypipelines").val() !== undefined) {
+
+                        kendoAdditional.RefreshGrid("#highwaypipelines");
+                    }
+
+                    if ($("#plan-grid").val() !== undefined) {
+                        kendoAdditional.RefreshGrid("#plan-grid");
+                    }
+
+                });
+
+            nameGridCommancolumn();
+            hideCommandButtons();
+            attachCallendatEvents();
+            attachExcellExportToGrid();
+
+            var summaryGrid = $('#confirmation').data('kendoGrid');
+            if (summaryGrid) {
+                $('#pdf-export')
+                    .click(function(ev) {
+                        var pageSize = summaryGrid.dataSource.pageSize();
+                        summaryGrid.dataSource.pageSize(9);
+                        var timeout = setTimeout(function() {
+                                clearInterval(refreshInterval);
+                                clearTimeout(timeout);
+                                summaryGrid.saveAsPDF()
+                                    .done(function(e) {
+                                        summaryGrid.dataSource.pageSize(pageSize);
+                                        refreshInterval = setInterval(function() {
+                                                $("#confirmation").data("kendoGrid").dataSource.read();
+                                            },
+                                            20000);
+                                    });
+                            },
+                            1000);
+                    });
             }
 
-        });
+            if ($("#confirm")) {
+                $("#confirm")
+                    .click(function() {
+                        var dataParam = sendDate();
+                        var controlData = getControlData();
+                        var differences = checkEquals(dataParam, controlData)
+                        if (differences.length === 0) {
+                            $.ajax({
+                                url: 'Confirm',
+                                type: 'POST',
+                                data: dataParam,
+                                success: function(data) {
+                                    var confirmed = data.IsConfirmed;
+                                    if (confirmed === true) {
+                                        hideCommandButtons();
+                                        var message = "Вие потвърдихте отчета успешно."
+                                        $('pre#succ-message').text(message);
+                                        $('div#success-window').data("kendoWindow").open();
 
-        nameGridCommancolumn();
-        hideCommandButtons();
-        attachCallendatEvents();
-        attachExcellExportToGrid();
-
-        var summaryGrid = $('#confirmation').data('kendoGrid');
-        if (summaryGrid) {
-            $('#pdf-export').click(function (ev) {
-                var pageSize = summaryGrid.dataSource.pageSize();
-                summaryGrid.dataSource.pageSize(9);
-                var timeout = setTimeout(function () {
-                    clearInterval(refreshInterval);
-                    clearTimeout(timeout);
-                    summaryGrid.saveAsPDF().done(function (e) {
-                        summaryGrid.dataSource.pageSize(pageSize);
-                        refreshInterval = setInterval(function () {
-                            $("#confirmation").data("kendoGrid").dataSource.read();
-                        }, 20000);
-                    });
-                }, 1000);
-            });
-        }
-
-        if ($("#confirm")) {
-            $("#confirm").click(function () {
-                var dataParam = sendDate();
-                var controlData = getControlData();
-                var differences = checkEquals(dataParam, controlData)
-                if (differences.length === 0) {
-                    $.ajax({
-                        url: 'Confirm',
-                        type: 'POST',
-                        data: dataParam,
-                        success: function (data) {
-                            var confirmed = data.IsConfirmed;
-                            if (confirmed === true) {
-                                hideCommandButtons();
-                                var message = "Вие потвърдихте отчета успешно."
-                                $('pre#succ-message').text(message);
-                                $('div#success-window').data("kendoWindow").open();
-
-                                var reportButton = $("#report");
-                                if (reportButton) {
-                                    reportButton.show();
-                                }
-
-                            } else {
-                                if (data.errors) {
-                                    var errorMessage = "";
-                                    $.each(data.errors, function (key, value) {
-                                        if ('errors' in value) {
-                                            $.each(value.errors, function () {
-                                                errorMessage += this + "\n";
-                                            });
+                                        var reportButton = $("#report");
+                                        if (reportButton) {
+                                            reportButton.show();
                                         }
-                                    });
+
+                                    } else {
+                                        if (data.errors) {
+                                            var errorMessage = "";
+                                            $.each(data.errors,
+                                                function(key, value) {
+                                                    if ('errors' in value) {
+                                                        $.each(value.errors,
+                                                            function() {
+                                                                errorMessage += this + "\n";
+                                                            });
+                                                    }
+                                                });
+                                            $('pre#err-message').text(errorMessage);
+                                            $('div#err-window').data("kendoWindow").open();
+                                        }
+                                        showCommandButtons();
+                                    }
+                                },
+                                error: function(data) {
+                                    var errorMessage = "";
+                                    var response = JSON.parse(data.responseText).data;
+                                    $.each(response.errors,
+                                        function(key, value) {
+                                            errorMessage += this + "\n";
+                                        });
                                     $('pre#err-message').text(errorMessage);
                                     $('div#err-window').data("kendoWindow").open();
                                 }
-                                showCommandButtons();
-                            }
-                        },
-                        error: function (data) {
-                            var errorMessage = "";
-                            var response = JSON.parse(data.responseText).data;
-                            $.each(response.errors, function (key, value) {
-                                errorMessage += this + "\n";
                             });
+                        } else {
+                            var errorMessage = "Има разлика между параметрите:\n";
+                            $.each(differences,
+                                function(key, value) {
+                                    errorMessage += "\t\t -" + value + "\n";
+                                });
+                            errorMessage += "за които е генериран отчета и тези, които се опитвате да потвърдите!"
                             $('pre#err-message').text(errorMessage);
                             $('div#err-window').data("kendoWindow").open();
                         }
                     });
-                } else {
-                    var errorMessage = "Има разлика между параметрите:\n";
-                    $.each(differences, function (key, value) {
-                        errorMessage += "\t\t -" + value + "\n";
+            }
+
+            if ($("#report")) {
+                $("#report")
+                    .click(function() {
+                        if ($("#monthly-pw-units").val() !== undefined) {
+                            if (ctrlParamsElement.val() !== undefined) {
+                                ctrlParamsElement.attr('data-params', JSON.stringify(sendDate()));
+                            }
+                        }
+
+                        if ($("#monthly-recalc-data-report").val() !== undefined) {
+                            if (ctrlParamsElement.val() !== undefined) {
+                                ctrlParamsElement.attr('data-params', JSON.stringify(sendDate()));
+                            }
+                        }
                     });
-                    errorMessage += "за които е генериран отчета и тези, които се опитвате да потвърдите!"
-                    $('pre#err-message').text(errorMessage);
-                    $('div#err-window').data("kendoWindow").open();
-                }
-            });
-        }
+            }
 
-        if ($("#report")) {
-            $("#report").click(function () {
-                if ($("#monthly-pw-units").val() !== undefined) {
-                    if (ctrlParamsElement.val() !== undefined) {
-                        ctrlParamsElement.attr('data-params', JSON.stringify(sendDate()));
-                    }
-                }
+            if ($("#tech-report-approve")) {
+                $("#tech-report-approve")
+                    .click(function() {
+                        var dataParam = sendDate();
+                        $.ajax({
+                            url: 'ConfirmReport',
+                            type: 'POST',
+                            data: dataParam,
+                            success: function(data) {
+                                var confirmed = data.IsConfirmed;
+                                if (confirmed === true) {
 
-                if ($("#monthly-recalc-data-report").val() !== undefined) {
-                    if (ctrlParamsElement.val() !== undefined) {
-                        ctrlParamsElement.attr('data-params', JSON.stringify(sendDate()));
-                    }
-                }
-            });
-        }
+                                    var message = "Вие потвърдихте описанието на технологичният отчет успешно."
+                                    $('pre#succ-message').text(message);
+                                    $('div#success-window').data("kendoWindow").open();
 
-        if ($("#tech-report-approve")) {
-            $("#tech-report-approve").click(function () {
-                var dataParam = sendDate();
-                $.ajax({
-                    url: 'ConfirmReport',
-                    type: 'POST',
-                    data: dataParam,
-                    success: function (data) {
-                        var confirmed = data.IsConfirmed;
-                        if (confirmed === true) {
-
-                            var message = "Вие потвърдихте описанието на технологичният отчет успешно."
-                            $('pre#succ-message').text(message);
-                            $('div#success-window').data("kendoWindow").open();
-
-                            var techReportSaveButton = $('#editor-save-changes');
-                            if (techReportSaveButton) {
-                                techReportSaveButton.hide();
-                                techReportSaveButton.css('visibility', 'hidden');
-                            }
-
-                            if ($('#report-details')) {
-                                $($('#report-details').data().kendoEditor.body).attr('contenteditable', false);
-                            }
-
-                            if ($('#tech-report-approve')) {
-                                $('#tech-report-approve').hide();
-                            }
-
-                            var exportPdfButton = $('#export-pdf');
-                            if (exportPdfButton) {
-                                exportPdfButton.show();
-                                exportPdfButton.css('visibility', 'visible');
-                            }
-
-                            setExportSettings();
-
-                        } else {
-                            if (data.errors) {
-                                var errorMessage = "";
-                                $.each(data.errors, function (key, value) {
-                                    if ('errors' in value) {
-                                        $.each(value.errors, function () {
-                                            errorMessage += this + "\n";
-                                        });
+                                    var techReportSaveButton = $('#editor-save-changes');
+                                    if (techReportSaveButton) {
+                                        techReportSaveButton.hide();
+                                        techReportSaveButton.css('visibility', 'hidden');
                                     }
-                                });
+
+                                    if ($('#report-details')) {
+                                        $($('#report-details').data().kendoEditor.body).attr('contenteditable', false);
+                                    }
+
+                                    if ($('#tech-report-approve')) {
+                                        $('#tech-report-approve').hide();
+                                    }
+
+                                    var exportPdfButton = $('#export-pdf');
+                                    if (exportPdfButton) {
+                                        exportPdfButton.show();
+                                        exportPdfButton.css('visibility', 'visible');
+                                    }
+
+                                    setExportSettings();
+
+                                } else {
+                                    if (data.errors) {
+                                        var errorMessage = "";
+                                        $.each(data.errors,
+                                            function(key, value) {
+                                                if ('errors' in value) {
+                                                    $.each(value.errors,
+                                                        function() {
+                                                            errorMessage += this + "\n";
+                                                        });
+                                                }
+                                            });
+                                        $('pre#err-message').text(errorMessage);
+                                        $('div#err-window').data("kendoWindow").open();
+                                    }
+                                    //showCommandButtons();
+                                }
+                            },
+                            error: function(data) {
+                                var errorMessage = "";
+                                var response = JSON.parse(data.responseText).data;
+                                $.each(response.errors,
+                                    function(key, value) {
+                                        errorMessage += this + "\n";
+                                    });
                                 $('pre#err-message').text(errorMessage);
                                 $('div#err-window').data("kendoWindow").open();
                             }
-                            //showCommandButtons();
-                        }
-                    },
-                    error: function (data) {
-                        var errorMessage = "";
-                        var response = JSON.parse(data.responseText).data;
-                        $.each(response.errors, function (key, value) {
-                            errorMessage += this + "\n";
                         });
-                        $('pre#err-message').text(errorMessage);
-                        $('div#err-window').data("kendoWindow").open();
-                    }
-                });
-            });
-        }
+                    });
+            }
 
-        hideExportToPdfButtons();
-    });
+            hideExportToPdfButtons();
+        });
 
     //------------------ private functions ------------------------------------
 
@@ -356,7 +373,9 @@ var unitGridsData = (function () {
         }
     }
 
-    function setApproveSaveAndExportButtonsVisibilitty(isMonthlyTechnologicalReportWriter, isMonthlyTechnologicalApprover, isPowerUser) {
+    function setApproveSaveAndExportButtonsVisibilitty(isMonthlyTechnologicalReportWriter,
+        isMonthlyTechnologicalApprover,
+        isPowerUser) {
         var techReportSaveButton = $('#editor-save-changes');
         if (isMonthlyTechnologicalReportWriter === false && isPowerUser === false) {
             if (techReportSaveButton.length) {
@@ -378,6 +397,8 @@ var unitGridsData = (function () {
         }
     }
 
+    var pdfExportDetails = null;
+
     function setExportSettings() {
         if ($('input[name=factories]') || $('input[name=factoriesD]')) {
             var q = sendDate();
@@ -386,38 +407,60 @@ var unitGridsData = (function () {
                 type: 'POST',
                 dataType: "json",
                 data: q,
-                success: function (response) {
-                    var factoryName = response.factoryName;
-                    var result = { "FactoryId": $('input[name=factories]').val() || $('input[name=factoriesD]').val() }
-                    $.extend(result, setFactoryName(factoryName));
-                    $.extend(result, setMonthValue());
-                    $.extend(result, setMonthValueAsString());
-                    $.extend(result, setCreatorName(response.creatorName));
-                    $.extend(result, setOccupation(response.occupation));
-                    $.extend(result, setDateOfCreation(response.dateOfCreation));
+                success: function(response) {
+                    if (!response.errors) {
+                        var pdfExportDetailsJson = response.PdfExportDetails;
+                        pdfExportDetails = JSON.stringify(pdfExportDetailsJson,
+                            function(key, value) {
+                                var a;
+                                if (typeof value === 'string') {
+                                    a = /\/Date\((\d*)\)\//.exec(value);
+                                    if (a) {
+                                        return new Date(+a[1]).toISOString();
+                                    }
+                                }
+                                return value;
+                            });
+                        //var factoryName = response.factoryName;
+                        //    { "FactoryId": $('input[name=factories]').val() || $('input[name=factoriesD]').val() }
+                        //$.extend(result, setFactoryName(factoryName));
+                        //$.extend(result, setMonthValue());
+                        //$.extend(result, setMonthValueAsString());
+                        //$.extend(result, setCreatorName(response.creatorName));
+                        //$.extend(result, setOccupation(response.occupation));
+                        //$.extend(result, setDateOfCreation(response.dateOfCreation));
 
-                    var editor = $("#report-details").data("kendoEditor");
-                    editor.value(decodeURI(response.reportText));
+                        var editor = $("#report-details").data("kendoEditor");
+                        editor.value(decodeURI(response.EditorContent));
 
-                    if (response.isApproved) {
-                        setExportToPdfButtonsApproved();
-                    } else {
-                        if (response.isValid === false) {
-                            hideExportToPdfButtons()
+                        if (response.IsApproved) {
+                            setExportToPdfButtonsApproved();
                         } else {
-                            setExportToPdfButtonsValidButNotApproved();
+                            if (response.IsValid === false) {
+                                hideExportToPdfButtons();
+                            } else {
+                                setExportToPdfButtonsValidButNotApproved();
+                            }
                         }
-                    }
 
-                    setApproveSaveAndExportButtonsVisibilitty(response.isMonthlyTechnologicalReportWriter,
-                                                              response.isMonthlyTechnologicalApprover,
-                                                              response.isPowerUser);
-                    var hiddenExportSettings = $('#export-data-settings');
-                    if (hiddenExportSettings !== undefined) {
-                        hiddenExportSettings.val(JSON.stringify(result))
+                        setApproveSaveAndExportButtonsVisibilitty(response.isMonthlyTechnologicalReportWriter,
+                            response.isMonthlyTechnologicalApprover,
+                            response.isPowerUser);
+                        var hiddenExportSettings = $('#export-data-settings');
+                        if (hiddenExportSettings.length && pdfExportDetails) {
+                            hiddenExportSettings.val(pdfExportDetails);
+                        }
+                    } else {
+                        var errorMessage = "";
+                        $.each(response.errors,
+                            function(index, error) {
+                                errorMessage += error + "\n";
+                            });
+                        $('pre#err-message').text(errorMessage);
+                        $('div#err-window').data("kendoWindow").open();
                     }
                 },
-                error: function (result) {
+                error: function(result) {
                     hideExportToPdfButtons();
                     return {};
                 }
@@ -430,8 +473,7 @@ var unitGridsData = (function () {
         if (controlParams.val() !== undefined) {
             if (controlParams.attr('data-params') !== '') {
                 return JSON.parse(controlParams.attr('data-params'));
-            }
-            else {
+            } else {
                 return {};
             }
 
@@ -482,7 +524,7 @@ var unitGridsData = (function () {
         }
 
         var technologicalReport = $('#technological-data').data('kendoGrid');
-		if (technologicalReport) {
+        if (technologicalReport) {
             attachEventToExportBtn("#excel-export", "#technological-data");
         }
     }
@@ -597,7 +639,7 @@ var unitGridsData = (function () {
     function hideCommandButtons() {
         // skip if grid is excluded
         var IsExcluded = false
-        exclusionList.forEach(function (value, index) {
+        exclusionList.forEach(function(value, index) {
             if ($(value).val() !== undefined) {
                 IsExcluded = true;
             }
@@ -610,12 +652,13 @@ var unitGridsData = (function () {
             }
 
             var unitsGrids = $(".k-widget.k-grid");
-            Array.prototype.forEach.call(unitsGrids, function (unitsGrid) {
-                unitsGrid = $(unitsGrid).data("kendoGrid");
-                if (unitsGrid) {
-                    unitsGrid.hideColumn('commands');
-                }
-            });
+            Array.prototype.forEach.call(unitsGrids,
+                function(unitsGrid) {
+                    unitsGrid = $(unitsGrid).data("kendoGrid");
+                    if (unitsGrid) {
+                        unitsGrid.hideColumn('commands');
+                    }
+                });
 
             var grid = $("#monthly-pw-units").data('kendoGrid');
             if (!(grid === null || grid === undefined)) {
@@ -625,8 +668,7 @@ var unitGridsData = (function () {
                     if (reportButton) {
                         reportButton.hide();
                     }
-                }
-                else {
+                } else {
                     if (reportButton) {
                         reportButton.show();
                     }
@@ -647,12 +689,13 @@ var unitGridsData = (function () {
         }
 
         var unitsGrids = $(".k-widget.k-grid");
-        Array.prototype.forEach.call(unitsGrids, function (unitsGrid) {
-            unitsGrid = $(unitsGrid).data("kendoGrid");
-            if (unitsGrid) {
-                unitsGrid.showColumn('commands');
-            }
-        });
+        Array.prototype.forEach.call(unitsGrids,
+            function(unitsGrid) {
+                unitsGrid = $(unitsGrid).data("kendoGrid");
+                if (unitsGrid) {
+                    unitsGrid.showColumn('commands');
+                }
+            });
     }
 
     function checkConfirmedStatus() {
@@ -663,7 +706,7 @@ var unitGridsData = (function () {
                 url: 'IsConfirmed',
                 type: 'POST',
                 data: date,
-                success: function (result) {
+                success: function(result) {
                     var confirmed = result.IsConfirmed;
                     if (confirmed === false) {
                         showCommandButtons();
@@ -671,7 +714,7 @@ var unitGridsData = (function () {
                         hideCommandButtons();
                     }
                 },
-                error: function (result) {
+                error: function(result) {
                     hideCommandButtons();
                 }
             });
@@ -679,27 +722,33 @@ var unitGridsData = (function () {
     }
 
     function attachEventToExportBtn(buttonSelector, targetSelector) {
-        $(buttonSelector).click(function () {
-            $(targetSelector).data("kendoGrid").saveAsExcel();
-        });
+        $(buttonSelector)
+            .click(function() {
+                $(targetSelector).data("kendoGrid").saveAsExcel();
+            });
 
-        $(targetSelector).data("kendoGrid").bind("excelExport", function (e) {
-            // e.workbook.fileName = "Grid.xlsx";
-        });
+        $(targetSelector)
+            .data("kendoGrid")
+            .bind("excelExport",
+                function(e) {
+                    // e.workbook.fileName = "Grid.xlsx";
+                });
     }
 
     function nameGridCommancolumn() {
         var grids = $(".k-widget.k-grid");
-        Array.prototype.forEach.call(grids, function (grid) {
-            grid = $(grid).data("kendoGrid");
-            if (grid) {
-                $.each(grid.columns, function (index, value) {
-                    if (!this.field) {
-                        this.field = "commands";
-                    }
-                });
-            }
-        });
+        Array.prototype.forEach.call(grids,
+            function(grid) {
+                grid = $(grid).data("kendoGrid");
+                if (grid) {
+                    $.each(grid.columns,
+                        function(index, value) {
+                            if (!this.field) {
+                                this.field = "commands";
+                            }
+                        });
+                }
+            });
     }
 
     function addAntiForgeryToken(data) {
@@ -712,33 +761,35 @@ var unitGridsData = (function () {
         ev.stopPropagation();
         var culture = $('#culture').val();
         $.ajax({
-            url: ev.data.url,
-            type: "POST",
-            content: document.body,
-            data: JSON.parse(JSON.stringify(addAntiForgeryToken(ev.data.data), replacer))
-        }).done(function (data) {
-            if (data.success === undefined) {
-                $("#modal-dialog-body").html(data);
-                showRecordHistoriModal();
-                prepareValidationScripts();
-            } else {
-                if (data.success === false) {
-                    manualEntryDoneErrorHandler(data.errors);
+                url: ev.data.url,
+                type: "POST",
+                content: document.body,
+                data: JSON.parse(JSON.stringify(addAntiForgeryToken(ev.data.data), replacer))
+            })
+            .done(function(data) {
+                if (data.success === undefined) {
+                    $("#modal-dialog-body").html(data);
+                    showRecordHistoriModal();
+                    prepareValidationScripts();
+                } else {
+                    if (data.success === false) {
+                        manualEntryDoneErrorHandler(data.errors);
+                    }
                 }
-            }
-        }).fail(function (data) {
-            var message = "Възникна грешка";
-            if (data) {
-                var status = data.status + 0;
-                if (400 <= status && status < 500) {
-                    message = "Не e намерена заявената страница";
+            })
+            .fail(function(data) {
+                var message = "Възникна грешка";
+                if (data) {
+                    var status = data.status + 0;
+                    if (400 <= status && status < 500) {
+                        message = "Не e намерена заявената страница";
+                    }
+                    if (status >= 500) {
+                        message = "Възникна грешка при обработка на вашата заявка";
+                    }
                 }
-                if (status >= 500) {
-                    message = "Възникна грешка при обработка на вашата заявка";
-                }
-            }
-            showKendoError(message);
-        });
+                showKendoError(message);
+            });
     }
 
     function replacer(key, value) {
@@ -766,15 +817,16 @@ var unitGridsData = (function () {
     function manualEntryDoneErrorHandler(errors) {
         if (errors) {
             var message = "";
-            $.each(errors, function (key, value) {
-                message += value.ErrorMessage + "\n";
-            });
+            $.each(errors,
+                function(key, value) {
+                    message += value.ErrorMessage + "\n";
+                });
             $('pre#err-message').text(message);
             $('div#err-window').data("kendoWindow").open();
         }
     }
 
-    var prepareValidationScripts = function () {
+    var prepareValidationScripts = function() {
         var form = $('#modal-dialog-body');
         if (form.executed)
             return;
@@ -790,16 +842,17 @@ var unitGridsData = (function () {
         if (dateElement.val() !== undefined) {
             var datePicker = dateElement.data('kendoDatePicker');
             if (datePicker !== undefined) {
-                datePicker.bind("change", function () {
-                    if ($("#inner-pipes").val() !== undefined) {
+                datePicker.bind("change",
+                    function() {
+                        if ($("#inner-pipes").val() !== undefined) {
 
-                        if (ctrlParamsElement.val() !== undefined) {
-                            ctrlParamsElement.attr('data-params', JSON.stringify(sendOnlyDate()));
+                            if (ctrlParamsElement.val() !== undefined) {
+                                ctrlParamsElement.attr('data-params', JSON.stringify(sendOnlyDate()));
+                            }
+
+                            kendoAdditional.RefreshGrid("#inner-pipes");
                         }
-
-                        kendoAdditional.RefreshGrid("#inner-pipes");
-                    }
-                });
+                    });
             }
         }
     }
@@ -862,40 +915,44 @@ var unitGridsData = (function () {
         endDate = kendo.parseDate($('input[name=date]').val());
         beginDate = kendo.parseDate($('input[name=date]').val());
         beginDate.setDate(1);
-        $.each($(".calendar"), function (index, element) {
+        $.each($(".calendar"),
+            function(index, element) {
 
-            var dates = JSON.parse($(element).attr('data-json'), function (key, val) {
-                if (key === 'Day') {
-                    return kendo.parseDate(val);
-                } else {
-                    return val;
-                }
-            });
+                var dates = JSON.parse($(element).attr('data-json'),
+                    function(key, val) {
+                        if (key === 'Day') {
+                            return kendo.parseDate(val);
+                        } else {
+                            return val;
+                        }
+                    });
 
-            //construct calendar
-            $(element).kendoCalendar({
-                value: endDate,
-                dates: dates,
-                month: {
-                    content:
-                    ' <div class="' + '# if (beginDate <= data.date && data.date <= endDate) { #'
-                                            + '#   var daily = $.grep(dates, function(e){ return e.Day.getDate() === data.date.getDate(); });#'
-                                            + '#if(daily[0] != undefined){#'
-                                            + '#if( daily[0].IsConfirmed){#'
-                                                + "small-green-light"
-                                                + '#}else{#'
-                                                + "small-red-light"
-                                                + '#}#'
-                                            + '#}else{#'
-                                            + "small-red-light"
-                                            + "# }#"
-                                            + "#}#"
-                                            + '">#= data.value #</div>'
-                },
-                footer: false,
-                header: false,
+                //construct calendar
+                $(element)
+                    .kendoCalendar({
+                        value: endDate,
+                        dates: dates,
+                        month: {
+                            content:
+                                ' <div class="' +
+                                    '# if (beginDate <= data.date && data.date <= endDate) { #' +
+                                    '#   var daily = $.grep(dates, function(e){ return e.Day.getDate() === data.date.getDate(); });#' +
+                                    '#if(daily[0] != undefined){#' +
+                                    '#if( daily[0].IsConfirmed){#' +
+                                    "small-green-light" +
+                                    '#}else{#' +
+                                    "small-red-light" +
+                                    '#}#' +
+                                    '#}else{#' +
+                                    "small-red-light" +
+                                    "# }#" +
+                                    "#}#" +
+                                    '">#= data.value #</div>'
+                        },
+                        footer: false,
+                        header: false,
+                    });
             });
-        });
 
         $('div.k-calendar table.k-content tbody tr td a.k-link').attr("style", "text-align:center;");
         $('div.k-calendar div.k-header').attr("style", "display:none;")
@@ -912,9 +969,10 @@ var unitGridsData = (function () {
         //added
         var grid = this;
         var data = [].splice.call(dataView, [-1, 1]);
-        [].forEach.call(data, function (value) {
-            ConvertGridRows(value, grid);
-        });
+        [].forEach.call(data,
+            function(value) {
+                ConvertGridRows(value, grid);
+            });
 
         if ($('#confirm').val() === "") {
             checkConfirmedStatus();
@@ -931,11 +989,12 @@ var unitGridsData = (function () {
             return true;
         } else {
             //go dipper
-            $.each(dataCollection.items, function (key, value) {
-                if (ConvertGridRows(value, grid) === true) {
-                    modifyGridRow(value, grid);
-                }
-            })
+            $.each(dataCollection.items,
+                function(key, value) {
+                    if (ConvertGridRows(value, grid) === true) {
+                        modifyGridRow(value, grid);
+                    }
+                })
 
             return false;
         }
@@ -964,12 +1023,16 @@ var unitGridsData = (function () {
             if (row.Status !== undefined) {
                 if (row.Status === 1) {
                     var uid = row.uid;
-                    $("#" + $(grid.element).attr('id') + " tbody").find("tr[data-uid=" + uid + "]").addClass("warning-animation");
+                    $("#" + $(grid.element).attr('id') + " tbody")
+                        .find("tr[data-uid=" + uid + "]")
+                        .addClass("warning-animation");
                 }
 
                 if (row.Status === 2) {
                     var uid = row.uid;
-                    $("#" + $(grid.element).attr('id') + " tbody").find("tr[data-uid=" + uid + "]").addClass("error-animation");
+                    $("#" + $(grid.element).attr('id') + " tbody")
+                        .find("tr[data-uid=" + uid + "]")
+                        .addClass("error-animation");
                 }
             }
 
@@ -986,14 +1049,16 @@ var unitGridsData = (function () {
                     currentUid = row.uid;
                     currenRow = grid.table.find("tr[data-uid='" + currentUid + "']");
                     editButton = $(currenRow).find(".k-grid-edit");
-                    editButton.click({ data: row, url: "/ShiftReporting/Units/ShowManualCalculatedDataModal" }, manualEntry);
+                    editButton.click({ data: row, url: "/ShiftReporting/Units/ShowManualCalculatedDataModal" },
+                        manualEntry);
                 }
 
                 if (row.UnitConfig.CollectingDataMechanism === manualSelfCalculated) {
                     currentUid = row.uid;
                     currenRow = grid.table.find("tr[data-uid='" + currentUid + "']");
                     editButton = $(currenRow).find(".k-grid-edit");
-                    editButton.click({ data: row, url: "/ShiftReporting/Units/ShowManualSelfCalculatedDataModal" }, manualEntry);
+                    editButton.click({ data: row, url: "/ShiftReporting/Units/ShowManualSelfCalculatedDataModal" },
+                        manualEntry);
                 }
             }
 
@@ -1009,12 +1074,13 @@ var unitGridsData = (function () {
                 $(currenRow).addClass("total");
                 var groupCells = $(currenRow).find("td");
                 $(groupCells[6]).attr("colspan", 5);
-                $.each(groupCells, function (ix, cell) {
-                    $(cell).removeClass("k-group-cell");
-                    if (ix < 6) {
-                        $(cell).attr("style", "display:none !important");
-                    }
-                });
+                $.each(groupCells,
+                    function(ix, cell) {
+                        $(cell).removeClass("k-group-cell");
+                        if (ix < 6) {
+                            $(cell).attr("style", "display:none !important");
+                        }
+                    });
             }
 
             //// monthly data total input and external rows
@@ -1061,7 +1127,7 @@ var unitGridsData = (function () {
     }
 
     function FormatGridToPdfExport(e) {
-        e.promise.progress(function (e) {
+        e.promise.progress(function(e) {
             e.page = formatPage(e);
         });
     }
@@ -1080,7 +1146,8 @@ var unitGridsData = (function () {
 
     // A4 Sheet with 1 cm borders
     var PAGE_RECT = new geom.Rect(
-      [mm(0), 0], [mm(210 - 20), mm(297 - 20)]
+        [mm(0), 0],
+        [mm(210 - 20), mm(297 - 20)]
     );
 
     // Spacing between header, content and footer
@@ -1099,7 +1166,8 @@ var unitGridsData = (function () {
         draw.fit(content, contentRect)
 
         // Do a final layout with content
-        var page = new draw.Layout(PAGE_RECT, {
+        var page = new draw.Layout(PAGE_RECT,
+        {
             // "Rows" go below each other
             orientation: "vertical",
 
@@ -1126,17 +1194,20 @@ var unitGridsData = (function () {
     }
 
     function createHeader() {
-        return new kendo.drawing.Text("        " + $('#confirmation').data('kendoGrid').options.pdf.title, [0, 0], {
-            font: mm(5) + "px 'DejaVu Sans'"
-        });
+        return new kendo.drawing.Text("        " + $('#confirmation').data('kendoGrid').options.pdf.title,
+            [0, 0],
+            {
+                font: mm(5) + "px 'DejaVu Sans'"
+            });
     }
 
     function createFooter(page, total) {
         return new kendo.drawing.Text(
-          kendo.format("{0} от {1}", page, total),
-          [0, 0], {
-              font: mm(3) + "px 'DejaVu Sans'"
-          }
+            kendo.format("{0} от {1}", page, total),
+            [0, 0],
+            {
+                font: mm(3) + "px 'DejaVu Sans'"
+            }
         );
     }
 
@@ -1157,13 +1228,13 @@ var unitGridsData = (function () {
     function OnMonthlyExcelExport(ev) {
         var dataRows = ev.sender._data;
         var totalRowCodes = [];
-        dataRows.forEach(function (value) {
+        dataRows.forEach(function(value) {
             if (value.IsTotalPosition === true) {
                 totalRowCodes.push(value.UnitMonthlyConfig.Code);
             }
         });
         var excelRows = ev.workbook.sheets[0].rows;
-        excelRows.forEach(function (row, index, excelRows) {
+        excelRows.forEach(function(row, index, excelRows) {
             if (row.cells[2]) {
                 if (isInArray(row.cells[2].value, totalRowCodes)) {
                     row.cells[0].value = row.cells[4].value;
@@ -1174,7 +1245,7 @@ var unitGridsData = (function () {
                             excelRows[index - 1].markForDelete = true;
                         }
                     }
-                    row.cells.forEach(function (cell) {
+                    row.cells.forEach(function(cell) {
                         cell.background = "#7a7a7a";
                         cell.color = "#fff";
                     });
