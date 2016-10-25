@@ -1,0 +1,5 @@
+ApproverName
+ApproverOccupation
+DateOfApprovement
+
+"{'FactoryId':'5','FactoryName':'Комплекс за преработка на тежки остатъци','Month':'2016-07-31T21:00:00.000Z','MonthAsString':'август 2016','CreatorName':'Бай Хой', 'Occupation':'Черна нинджа в КПТО', 'DateOfCreation':'2016-08-03T10:00:00.000Z', 'ApproverName':'Баджаци Козунаци', 'ApproverOccupation':'Директор на водопад КПТО', 'DateOfApprovement':'2016-08-04T10:00:00.000Z'}"
