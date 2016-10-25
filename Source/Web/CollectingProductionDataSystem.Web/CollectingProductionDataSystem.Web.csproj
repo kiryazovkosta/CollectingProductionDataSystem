@@ -332,6 +332,7 @@
     <Compile Include="Areas\MonthlyDataReporting\MonthlyDataReportingAreaRegistration.cs" />
     <Compile Include="Areas\MonthlyTechnicalReporting\Controllers\AreaBaseController.cs" />
     <Compile Include="Areas\MonthlyTechnicalReporting\Controllers\MonthlyTechnicalController.cs" />
+    <Compile Include="Areas\MonthlyTechnicalReporting\Models\Approver.cs" />
     <Compile Include="Areas\MonthlyTechnicalReporting\ViewModels\ExportDataSettingsViewModel.cs" />
     <Compile Include="Areas\MonthlyTechnicalReporting\ViewModels\MonthlyTechnicalViewModel.cs" />
     <Compile Include="Areas\MonthlyTechnicalReporting\MonthlyTechnicalReportingAreaRegistration.cs" />
@@ -2600,7 +2601,6 @@
     <Folder Include="Areas\MonthlyReporting\Models\" />
     <Folder Include="Areas\MonthlyReporting\Views\AreaBase\" />
     <Folder Include="Areas\MonthlyReporting\Views\Shared\" />
-    <Folder Include="Areas\MonthlyTechnicalReporting\Models\" />
     <Folder Include="Areas\MonthlyTechnicalReporting\Views\Ajax\" />
     <Folder Include="Areas\MonthlyTechnicalReporting\Views\AreaBase\" />
     <Folder Include="Areas\NomManagement\Models\InputModels\" />

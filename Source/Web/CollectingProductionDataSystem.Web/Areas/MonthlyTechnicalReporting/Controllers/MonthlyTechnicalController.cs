@@ -16,9 +16,11 @@
     using System.Threading.Tasks;
     using System.Web.UI;
     using Resources = App_GlobalResources.Resources;
-    using Models.Productions;
-    using Models.Productions.Technological;
     using System.Net;
+    using CollectingProductionDataSystem.Models.Productions;
+    using CollectingProductionDataSystem.Models.Productions.Technological;
+    using Models;
+    using CollectingProductionDataSystem.Models.Identity;
 
     public class MonthlyTechnicalController : AreaBaseController
     {
@@ -171,9 +173,7 @@
                 if (factory != null)
                 {
                     MonthlyTechnologicalReportsData reportData = this.data.MonthlyTechnologicalReportsDatas.All().Where(x => x.FactoryId == factoryId && x.Month == date).FirstOrDefault();
-                    var creatorName = reportData == null ? string.Empty : this.UserProfile.FullName;
-                    var occupation = reportData == null ? string.Empty : this.UserProfile.Occupation;
-                    var dateOfCreation = reportData?.ModifiedOn;
+                    Approver approver = GetApprover(reportData);
                     var isExsisting = reportData != null;
                     var isApproved = reportData?.Approved;
                     var reportText = reportData == null ? string.Empty : reportData.Message;
@@ -183,9 +183,9 @@
 
                     return Json(new {
                         factoryName = factory.FullName,
-                        creatorName = creatorName,
-                        occupation = occupation,
-                        dateOfCreation = dateOfCreation,
+                        creatorName = approver.CreatorName,
+                        occupation = approver.Occupation,
+                        dateOfCreation = approver.DateOfCreation,
                         isExsisting = isExsisting,
                         isApproved = isApproved,
                         reportText = reportText,
@@ -214,6 +214,19 @@
                     isPowerUser = false,
                 });
             }
+        }
+
+        private Approver GetApprover(MonthlyTechnologicalReportsData reportData)
+        {
+            var approver = new Approver();
+            if (reportData?.Approved == true)
+            {
+                ApplicationUser user = this.data.Users.All().Where(x => x.UserName == reportData.ApprovedBy).FirstOrDefault();
+                approver.CreatorName = user.FullName;
+                approver.Occupation = user.Occupation;
+                approver.DateOfCreation = reportData.ApprovedOn;
+            }
+            return approver;
         }
 
         [HttpPost]
@@ -289,15 +302,19 @@
                         {
                             FactoryId = factoryId.Value,
                             Month = date.Value,
+                            Message = reportText,
                             Approved = true,
                             ApprovedBy = this.UserProfile.UserName,
+                            ApprovedOn = DateTime.Now,
                         };
                         this.data.MonthlyTechnologicalReportsDatas.Add(record);
                     }
                     else
                     {
+                        reportData.Message = reportText;
                         reportData.Approved = true;
                         reportData.ApprovedBy = this.UserProfile.UserName;
+                        reportData.ApprovedOn = DateTime.Now;
                         this.data.MonthlyTechnologicalReportsDatas.Update(reportData);
                     }
 

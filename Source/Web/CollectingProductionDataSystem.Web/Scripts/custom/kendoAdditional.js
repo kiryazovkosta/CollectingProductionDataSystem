@@ -8,7 +8,7 @@
     function sendEditorText() {
         var message = '';
 
-        if ($('#report-details')) {
+        if ($('#report-details').length) {
             var editor = $("#report-details").data("kendoEditor");
             message = encodeURI(editor.value());
         }
