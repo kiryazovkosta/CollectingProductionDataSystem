@@ -16,10 +16,8 @@
         <div class="col-md-8">
             <h2 id="monthly-technical-title">@Resources.Layout.MonthlyTechnologicalReport</h2>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-4" style="float: right">
             <button type="button" id="export-pdf" class="k-button k-button-icontext k-grid-pdf pull-right head-button" style="margin-left:5px;"><span class="k-icon k-i-pdf"></span>Експорт в Pdf</button>
-        </div>
-        <div class="col-md-2">
             <button id="excel-export" class="k-button k-button-icontext k-grid-excel pull-right head-button"><span class="k-icon k-i-excel"></span>Експорт в Excel</button>
         </div>
     </div>
@@ -106,7 +104,7 @@
           {
               ev.DataBound("unitGridsData.DataBound");
           })
-          .Scrollable(scr => scr.Height(310))
+          .Scrollable(scr => scr.Height(320))
           .Filterable()
           .DataSource(dataSource => dataSource
               .Ajax()
@@ -114,7 +112,7 @@
               .ServerOperation(true)
               .Group(group =>
               {
-                  group.Add(c => c.Factory);
+                  //group.Add(c => c.Factory);
                   group.Add(c => c.ProcessUnit);
                   group.Add(c => c.MaterialType);
                   group.Add(c => c.DetailedMaterialType);

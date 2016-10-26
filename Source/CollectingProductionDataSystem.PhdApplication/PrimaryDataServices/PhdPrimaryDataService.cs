@@ -859,9 +859,10 @@
                         DateTime endShiftDateTime = baseDate + shiftData.EndTime;
                         DateTime beginShiftDateTime = endShiftDateTime - shiftData.ShiftDuration;
 
-                        var mathExpression = unitConfig.CustomFormulaExpression;
+                        string mathExpression = unitConfig.CustomFormulaExpression;
                         var phdTags = new String[]
                         {
+                            "TSN_BTG_QN_T.PV",
                             "TSN_BTG1_QN_T.PV",
                             "610FQI547.TOTALIZER_S.OLDAV",
                             "SU400FQI436.TOTALIZER_S.OLDAV"
@@ -889,24 +890,27 @@
                                     oPhdOld.StartTime = string.Format("{0}", endShiftDateTime.ToString(CommonConstants.PhdDateTimeFormat, CultureInfo.InvariantCulture));
                                     oPhdOld.EndTime = oPhdOld.StartTime;
 
-                                    var result = oPhdOld.FetchRowData(phdTags[0]);
-                                    var row = result.Tables[0].Rows[0];
-                                    var endValue = row.IsNull("Value") ? 0 : Convert.ToInt64(row["Value"]);
-                                    endConfidence = row.IsNull("Confidence") ? 0 : Convert.ToInt32(row["Confidence"]);
-                                    if (!row.IsNull("Timestamp")) { recordTimestamp = Convert.ToDateTime(row["Timestamp"]); }
-                                    logger.DebugFormat("{0} {1} : Tag:{2} Value:{3} Confidence:{4} Timestamp {5}", unitConfig.Code, unitConfig.Name, unitConfig.PreviousShiftTag, endValue, endConfidence, recordTimestamp);
+                                    for (int phdTagIndex = 0; phdTagIndex < 2; phdTagIndex++)
+                                    {
+                                        var result = oPhdOld.FetchRowData(phdTags[phdTagIndex]);
+                                        var row = result.Tables[0].Rows[0];
+                                        var endValue = row.IsNull("Value") ? 0 : Convert.ToInt64(row["Value"]);
+                                        endConfidence = row.IsNull("Confidence") ? 0 : Convert.ToInt32(row["Confidence"]);
+                                        if (!row.IsNull("Timestamp")) { recordTimestamp = Convert.ToDateTime(row["Timestamp"]); }
+                                        logger.DebugFormat("{0} {1} : Tag:{2} Value:{3} Confidence:{4} Timestamp {5}", unitConfig.Code, unitConfig.Name, unitConfig.PreviousShiftTag, endValue, endConfidence, recordTimestamp);
 
-                                    oPhdOld.StartTime = string.Format("{0}", beginShiftDateTime.ToString(CommonConstants.PhdDateTimeFormat, CultureInfo.InvariantCulture));
-                                    oPhdOld.EndTime = oPhdOld.StartTime;
-                                    result = oPhdOld.FetchRowData(phdTags[0]);
-                                    row = result.Tables[0].Rows[0];
-                                    var beginValue = row.IsNull("Value") ? 0 : Convert.ToInt64(row["Value"]);
-                                    beginConfidence = row.IsNull("Confidence") ? 0 : Convert.ToInt32(row["Confidence"]);
-                                    if (!row.IsNull("Timestamp")) { recordTimestamp = Convert.ToDateTime(row["Timestamp"]); }
-                                    logger.DebugFormat("{0} {1} : Tag:{2} Value:{3} Confidence:{4} Timestamp {5}", unitConfig.Code, unitConfig.Name, unitConfig.PreviousShiftTag, beginValue, beginConfidence, recordTimestamp);
+                                        oPhdOld.StartTime = string.Format("{0}", beginShiftDateTime.ToString(CommonConstants.PhdDateTimeFormat, CultureInfo.InvariantCulture));
+                                        oPhdOld.EndTime = oPhdOld.StartTime;
+                                        result = oPhdOld.FetchRowData(phdTags[phdTagIndex]);
+                                        row = result.Tables[0].Rows[0];
+                                        var beginValue = row.IsNull("Value") ? 0 : Convert.ToInt64(row["Value"]);
+                                        beginConfidence = row.IsNull("Confidence") ? 0 : Convert.ToInt32(row["Confidence"]);
+                                        if (!row.IsNull("Timestamp")) { recordTimestamp = Convert.ToDateTime(row["Timestamp"]); }
+                                        logger.DebugFormat("{0} {1} : Tag:{2} Value:{3} Confidence:{4} Timestamp {5}", unitConfig.Code, unitConfig.Name, unitConfig.PreviousShiftTag, beginValue, beginConfidence, recordTimestamp);
 
-                                    phdTagsValues[0] = (decimal)(endValue - beginValue);
-                                    phdTagsConfidences[0] = (beginConfidence + endConfidence) / 2;
+                                        phdTagsValues[phdTagIndex] = (decimal) (endValue - beginValue);
+                                        phdTagsConfidences[phdTagIndex] = (beginConfidence + endConfidence) / 2;
+                                    }
                                 }
                             }
 
@@ -916,7 +920,7 @@
                                 {
                                     SetPhdConnectionSettings(oPhdNew, defaultServer, targetRecordTimestamp, shiftData);
 
-                                    for (int i = 1; i < phdTags.GetLength(dimension: 0); i++)
+                                    for (int i = 2; i < phdTags.GetLength(dimension: 0); i++)
                                     {
                                         DataSet dsGrid = oPhdNew.FetchRowData(phdTags[i]);
                                         foreach (DataRow row in dsGrid.Tables[0].Rows)
