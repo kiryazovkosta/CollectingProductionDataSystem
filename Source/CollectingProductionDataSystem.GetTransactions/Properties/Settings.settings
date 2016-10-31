@@ -81,5 +81,8 @@
     <Setting Name="IDLE_TIMER_REPORT_TRANSACTIONS_DATA" Type="System.TimeSpan" Scope="Application">
       <Value Profile="(Default)">00:10:00</Value>
     </Setting>
+    <Setting Name="PHD_CHECK_CONNECTION_TAG" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">TSN_KT0107_MT_GSV_P00.VT</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

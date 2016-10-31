@@ -24,6 +24,7 @@
     using Ninject;
     using log4net;
     using CollectingProductionDataSystem.PhdApplication.PrimaryDataServices;
+    using Application.TransactionsDailyDataServices;
 
     public class NinjectConfig : IDisposable
     {
@@ -77,6 +78,7 @@
             kernel.Bind<IMailerService>().ToMethod(context =>MailerMoq.Object);
             kernel.Bind<IPhdPrimaryDataService>().To<PhdPrimaryDataService>();
             kernel.Bind<ICalculatorService>().To<CalculatorService>();
+            kernel.Bind<ITransactionsDailyDataService>().To<TransactionsDailyDataService>();
         }
 
         /// <summary>

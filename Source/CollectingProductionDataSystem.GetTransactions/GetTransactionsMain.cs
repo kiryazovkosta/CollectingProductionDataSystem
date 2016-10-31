@@ -25,9 +25,6 @@
             logger = LogManager.GetLogger("CollectingProductionDataSystem.GetTransactions");
         }
 
-        /// <summary>
-        /// The main entry point for the application.
-        /// </summary>
         internal static void Main()
         {
             ServiceBase[] servicesToRun;
@@ -74,7 +71,7 @@
             catch (Exception ex)
             {
                 logger.Error(ex.Message, ex);
-                SendEmail("ASO 2 SAPO Inerface", ex.ToString());
+                SendEmail(titleParam: "ASO 2 SAPO Inerface", bodyParam: ex.ToString());
             }
         }
 
@@ -82,8 +79,8 @@
             ProductionData context, ref long maxSequenceNumber)
         {
             var transactions = new List<MeasuringPointsConfigsData>();
-            logger.InfoFormat("Last processing SequenceNumber was {0}", max.MaxSequenceNumber);
-            var maximumLastFetchSequenceNumber = max.MaxSequenceNumber;
+            logger.InfoFormat($"Last processing SequenceNumber was {max.MaxSequenceNumber}");
+            long maximumLastFetchSequenceNumber = max.MaxSequenceNumber;
             var adapter = new AsoDataSetTableAdapters.flow_MeasuringPointsDataTableAdapter();
             var table = new AsoDataSet.flow_MeasuringPointsDataDataTable();
             adapter.Fill(table, maximumLastFetchSequenceNumber);
@@ -332,18 +329,18 @@
         {
             try
             {
-                logger.Info("Begin active transactions data synchronization!");
-                var now = DateTime.Now.AddDays(offsetInDays);
-                var today = DateTime.Today.AddDays(offsetInDays * -1);
-                var fiveOClock = new DateTime(today.Year, today.Month, today.Day, 5, 0, 0);
+                logger.Info(message: "Begin active transactions data synchronization!");
+                DateTime now = DateTime.Now.AddDays(offsetInDays);
+                DateTime today = DateTime.Today.AddDays(offsetInDays * -1);
+                var fiveOClock = new DateTime(today.Year, today.Month, today.Day, hour: 5, minute: 0, second: 0);
 
-                var ts = now - fiveOClock;
-                if (ts.TotalMinutes > 4 && ts.Hours <= Properties.Settings.Default.SYNC_ACTIVE_TRANSACTIONS_OFFSET_IN_HOURS)
+                TimeSpan ts = now - fiveOClock;
+                if (ts.TotalMinutes > 4 && ts.Hours <= 3)
                 {
                     using (var context = new ProductionData(new CollectingDataSystemDbContext(new AuditablePersister(), new Logger())))
                     {
-                        var currentDate = today.AddDays(-1);
-                        var existsActiveTransactionData = context.ActiveTransactionsDatas.All().Where(x => x.RecordTimestamp == currentDate).Any();
+                        DateTime currentDate = today.AddDays(-1);
+                        bool existsActiveTransactionData = context.ActiveTransactionsDatas.All().Where(x => x.RecordTimestamp == currentDate).Any();
                         if (!existsActiveTransactionData)
                         {
                             var activeTransactionsTags = context.MeasuringPointConfigs.All().Where(x => !String.IsNullOrEmpty(x.ActiveTransactionStatusTag)).ToList();
@@ -494,12 +491,12 @@
             {
                 logger.Info("Begin trade report data synchronization!");
                 {
-                    var now = DateTime.Now;
-                    var today = DateTime.Today;
-                    var fiveOClock = new DateTime(today.Year, today.Month, today.Day, 5, 0, 0);
+                    DateTime now = DateTime.Now;
+                    DateTime today = DateTime.Today;
+                    var fiveOClock = new DateTime(today.Year, today.Month, today.Day, hour: 5, minute: 0, second: 0);
 
-                    var ts = now - fiveOClock;
-                    if (ts.TotalMinutes > 4 && ts.Hours == 0)
+                    TimeSpan ts = now - fiveOClock;
+                    if (ts.TotalMinutes > 4 && ts.Hours <= 3)
                     {
                         var phdValues = new Dictionary<int, long>();
 
@@ -508,10 +505,10 @@
                             if (!context.MeasuringPointsConfigsDatas.All().Where(x => x.TransactionNumber >= today.Ticks).Any())
                             {
 
-                                var currentPhdTimestamp = string.Format("NOW-{0}H{1}M", Math.Truncate(ts.TotalHours), ts.Minutes);
-                                var previousPhdTimestamp = string.Format("NOW-{0}H{1}M", Math.Truncate(ts.TotalHours) + 24, ts.Minutes);
+                                string currentPhdTimestamp = string.Format("NOW-{0}H{1}M", Math.Truncate(ts.TotalHours), ts.Minutes);
+                                string previousPhdTimestamp = string.Format("NOW-{0}H{1}M", Math.Truncate(ts.TotalHours) + 24, ts.Minutes);
 
-                                var scaleMeasuringPointProducts = context.MeasuringPointProductsConfigs
+                                List<MeasuringPointProductsConfig> scaleMeasuringPointProducts = context.MeasuringPointProductsConfigs
                                     .All()
                                     .Include(x => x.MeasuringPointConfig)
                                     .Include(x => x.MeasuringPointConfig.Zone)
@@ -528,9 +525,9 @@
                                         {
 
                                             SetPhdConnectionSettings(defaultServer, oPhd, currentPhdTimestamp);
-                                            var result = oPhd.FetchRowData(scaleMeasuringPointProduct.PhdProductTotalizerTag);
-                                            var row = result.Tables[0].Rows[0];
-                                            var value = Convert.ToInt64(row["Value"]);
+                                            DataSet result = oPhd.FetchRowData(scaleMeasuringPointProduct.PhdProductTotalizerTag);
+                                            DataRow row = result.Tables[0].Rows[0];
+                                            long value = Convert.ToInt64(row["Value"]);
                                             phdValues.Add(scaleMeasuringPointProduct.Id, value);
                                         }
                                     }
@@ -543,9 +540,9 @@
                                         using (PHDServer defaultServer = new PHDServer(Properties.Settings.Default.PHD_HOST))
                                         {
                                             SetPhdConnectionSettings(defaultServer, oPhd, previousPhdTimestamp);
-                                            var result = oPhd.FetchRowData(scaleMeasuringPointProduct.PhdProductTotalizerTag);
-                                            var row = result.Tables[0].Rows[0];
-                                            var value = Convert.ToInt64(row["Value"]);
+                                            DataSet result = oPhd.FetchRowData(scaleMeasuringPointProduct.PhdProductTotalizerTag);
+                                            DataRow row = result.Tables[0].Rows[0];
+                                            long value = Convert.ToInt64(row["Value"]);
                                             phdValues[scaleMeasuringPointProduct.Id] = phdValues[scaleMeasuringPointProduct.Id] - value;
                                         }
                                     }
@@ -624,14 +621,14 @@
         {
             try
             {
-                logger.Info("Begin production report data synchronization!");
+                logger.Info(message: "Begin production report data synchronization!");
                 {
-                    var now = DateTime.Now;
-                    var today = DateTime.Today;
+                    DateTime now = DateTime.Now;
+                    DateTime today = DateTime.Today;
                     var fiveOClock = new DateTime(today.Year, today.Month, today.Day, 4, 30, 0);
 
-                    var ts = now - fiveOClock;
-                    if (ts.TotalMinutes > 4 && ts.Hours == 0)
+                    TimeSpan ts = now - fiveOClock;
+                    if (ts.TotalMinutes > 4 && ts.Hours <= 3)
                     {
                         var phdValues = new Dictionary<int, long>();
 
@@ -686,7 +683,7 @@
                                 {
                                     if (entry.Value > 0)
                                     {
-                                        var scaleProduct = scaleMeasuringPointProducts.FirstOrDefault(x => x.Id == entry.Key);
+                                        MeasuringPointProductsConfig scaleProduct = scaleMeasuringPointProducts.FirstOrDefault(x => x.Id == entry.Key);
                                         var measuringPointProductData = new MeasuringPointProductsData
                                         {
                                             MeasuringPointConfigId = scaleProduct.MeasuringPointConfigId,
@@ -720,10 +717,10 @@
         {
             string to = Properties.Settings.Default.SMTP_TO;
             string from = Properties.Settings.Default.SMTP_FROM;
-            MailMessage message = new MailMessage(from, to);
+            var message = new MailMessage(from, to);
             message.Subject = @titleParam;
             message.Body = @bodyParam;
-            SmtpClient client = new SmtpClient(Properties.Settings.Default.SMTP_SERVER);
+            var client = new SmtpClient(Properties.Settings.Default.SMTP_SERVER);
             client.UseDefaultCredentials = true;
 
             try
@@ -744,17 +741,17 @@
                 {
                     using (var context = new ProductionData(new CollectingDataSystemDbContext(new AuditablePersister(), new Logger())))
                     {
-                        var existingReport = context.MeasuringPointsConfigsReportDatas.All().Where(x => x.RecordTimestamp == dateTime).Any();
+                        bool existingReport = context.MeasuringPointsConfigsReportDatas.All().Where(x => x.RecordTimestamp == dateTime).Any();
                         if (!existingReport)
                         {
-                            logger.Info(string.Format("Begin generation of transaction data by products report for {0:yyyy-MM-dd}!", dateTime));
+                            logger.Info($"Begin generation of transaction data by products report for {dateTime:yyyy-MM-dd}!");
                             var transactionsDailyDataService = new TransactionsDailyDataService(context);
-                            var input = transactionsDailyDataService.ReadTransactionsDailyData(dateTime, CommonConstants.InputDirection);
-                            var output = transactionsDailyDataService.ReadTransactionsDailyData(dateTime, CommonConstants.OutputDirection);
+                            HashSet<MeasuringPointsConfigsReportData> input = transactionsDailyDataService.ReadTransactionsDailyData(dateTime, CommonConstants.InputDirection);
+                            HashSet<MeasuringPointsConfigsReportData> output = transactionsDailyDataService.ReadTransactionsDailyData(dateTime, CommonConstants.OutputDirection);
                             var result = new List<MeasuringPointsConfigsReportData>();
                             foreach (var item in input)
                             {
-                                var record = item;
+                                MeasuringPointsConfigsReportData record = item;
                                 record.RecordTimestamp = dateTime;
                                 record.Direction = CommonConstants.InputDirection;
                                 result.Add(record);
@@ -762,30 +759,54 @@
 
                             foreach (var item in output)
                             {
-                                var record = item;
+                                MeasuringPointsConfigsReportData record = item;
                                 record.RecordTimestamp = dateTime;
                                 record.Direction = CommonConstants.OutputDirection;
                                 result.Add(record);
                             }
 
-                            logger.Debug(string.Format("Processing {0} input records", input.Count()));
-                            logger.Debug(string.Format("Processing {0} output records", output.Count()));
-                            context.MeasuringPointsConfigsReportDatas.BulkInsert(result, "Initial Loading");
-                            context.SaveChanges("Initial Loading");
+                            logger.Debug($"Processing {input.Count()} input records");
+                            logger.Debug($"Processing {output.Count()} output records");
+                            context.MeasuringPointsConfigsReportDatas.BulkInsert(result, userName: "Initial Loading");
+                            context.SaveChanges(userName: "Initial Loading");
 
                             input = null;
                             output = null;
-                            logger.Info("End generation of transaction data by products report!");
+                            logger.Info(message: "End generation of transaction data by products report!");
                         }
                     }
                 }
-
-
             }
             catch (Exception ex)
             {
                 logger.Error(ex.Message, ex);
                 SendEmail("ASO 2 SAPO Inerface", ex.ToString());
+            }
+        }
+
+        internal static void CheckPhdConnection()
+        {
+            logger.Info(message: "Begin checking for connectivity to PHD server!");
+            try
+            {
+                using (PHDHistorian oPhd = new PHDHistorian())
+                {
+                    using (PHDServer defaultServer = new PHDServer(Properties.Settings.Default.PHD_HOST))
+                    {
+                        SetPhdConnectionSettings(defaultServer, oPhd, recordTimestamp: "NOW - 20M");
+                        DataSet result = oPhd.FetchRowData(Properties.Settings.Default.PHD_CHECK_CONNECTION_TAG);
+                        DataRow row = result.Tables[0].Rows[0];
+                        long value = Convert.ToInt64(row["Value"]);
+                        logger.Info(message: "End checking for connectivity to PHD server! [Value: " + value + "]");
+                        row = null;
+                        result = null;
+                    }
+                }
+            }
+            catch (Exception exeption)
+            {
+                logger.Error(message: "Checking for connectivity to PHD server FAILED!");
+                logger.Error(exeption.Message, exeption);
             }
         }
     }

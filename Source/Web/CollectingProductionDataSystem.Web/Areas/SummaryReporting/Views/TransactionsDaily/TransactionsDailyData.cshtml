@@ -25,13 +25,15 @@
                 columns.Bound(c => c.Id).Hidden();
                 columns.Bound(c => c.ProductId).Width(60).Format("{0:000}");
                 columns.Bound(c => c.ProductName);
-                columns.Bound(c => c.AvtoQuantity).ClientTemplate("<div style='text-align:right;'>#=kendo.toString(data.AvtoQuantity, 'n3') #</div>").Width(140);
-                columns.Bound(c => c.JpQuantity).ClientTemplate("<div style='text-align:right;'>#=kendo.toString(data.JpQuantity, 'n3') #</div>").Width(140);
-                columns.Bound(c => c.SeaQuantity).ClientTemplate("<div style='text-align:right;'>#=kendo.toString(data.SeaQuantity, 'n3') #</div>").Width(140);
-                columns.Bound(c => c.PipeQuantity).ClientTemplate("<div style='text-align:right;'>#=kendo.toString(data.PipeQuantity, 'n3') #</div>").Width(140);
-                columns.Bound(c => c.TotalQuantity).ClientTemplate("<div style='text-align:right;'>#=kendo.toString(data.TotalQuantity, 'n3') #</div>").Width(140);
-                columns.Bound(c => c.TotalMonthQuantity).ClientTemplate("<div style='text-align:right;'>#=kendo.toString(data.TotalMonthQuantity, 'n3') #</div>").Width(140);
-                columns.Bound(c => c.ActiveQuantity).ClientTemplate("<div style='text-align:right;'>#=kendo.toString(data.ActiveQuantity, 'n3') #</div>").Width(140);
+                columns.Bound(c => c.AvtoQuantity).ClientTemplate("<div style='text-align:right;'>#=kendo.toString(data.AvtoQuantity, 'n3') #</div>").Width(130);
+                columns.Bound(c => c.JpQuantity).ClientTemplate("<div style='text-align:right;'>#=kendo.toString(data.JpQuantity, 'n3') #</div>").Width(130);
+                columns.Bound(c => c.SeaQuantity).ClientTemplate("<div style='text-align:right;'>#=kendo.toString(data.SeaQuantity, 'n3') #</div>").Width(130);
+                columns.Bound(c => c.PipeQuantity).ClientTemplate("<div style='text-align:right;'>#=kendo.toString(data.PipeQuantity, 'n3') #</div>").Width(130);
+                columns.Bound(c => c.TotalQuantity).ClientTemplate("<div style='text-align:right;'>#=kendo.toString(data.TotalQuantity, 'n3') #</div>").Width(130);
+                columns.Bound(c => c.TotalMonthQuantity).ClientTemplate("<div style='text-align:right;'>#=kendo.toString(data.TotalMonthQuantity, 'n3') #</div>").Width(130);
+                //columns.Bound(c => c.SeaActiveQuantity).ClientTemplate("<div style='text-align:right;'>#=kendo.toString(data.SeaActiveQuantity, 'n3') #</div>").Width(130);
+                //columns.Bound(c => c.PipeActiveQuantity).ClientTemplate("<div style='text-align:right;'>#=kendo.toString(data.PipeActiveQuantity, 'n3') #</div>").Width(130);
+                columns.Bound(c => c.TotalActiveQuantity).ClientTemplate("<div style='text-align:right;'>#=kendo.toString(data.TotalActiveQuantity, 'n3') #</div>").Width(130);
             })
                 //.Pageable(pageable => pageable
                 //        //.Refresh(true)
@@ -131,13 +133,13 @@
                 $("#measuringpoints thead [data-field=JpQuantity] .k-link").html("Експедиция Ж.П.<br/>[тон]")
                 $("#measuringpoints thead [data-field=SeaQuantity] .k-link").html("Експедиция Танкер<br/>[тон]")
                 $("#measuringpoints thead [data-field=PipeQuantity] .k-link").html("Експедиция Продуктопровод<br/>[тон]")
-                $("#measuringpoints thead [data-field=ActiveQuantity] .k-link").html("Незавършена Експедиция<br/>[тон]")
+                $("#measuringpoints thead [data-field=TotalActiveQuantity] .k-link").html("Незавършена Експедиция - Общо<br/>[тон]")
             } else if (direction === "2") {
                 $("#measuringpoints thead [data-field=AvtoQuantity] .k-link").html("Доставено Авто<br/>[тон]")
                 $("#measuringpoints thead [data-field=JpQuantity] .k-link").html("Доставено Ж.П.<br/>[тон]")
                 $("#measuringpoints thead [data-field=SeaQuantity] .k-link").html("Доставено Танкер<br/>[тон]")
                 $("#measuringpoints thead [data-field=PipeQuantity] .k-link").html("Доставено Продуктопровод<br/>[тон]")
-                $("#measuringpoints thead [data-field=ActiveQuantity] .k-link").html("Незавършени Доставки<br/>[тон]")
+                $("#measuringpoints thead [data-field=TotalActiveQuantity] .k-link").html("Незавършени Доставки - Общо<br/>[тон]")
             }
         }
 

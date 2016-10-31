@@ -26,6 +26,8 @@ using CollectingProductionDataSystem.Data.Common;
 using CollectingProductionDataSystem.Extentions;
 using CollectingProductionDataSystem.Application.MonthlyTechnologicalDataServices;
 using CollectingProductionDataSystem.Application.CalculatorService;
+using CollectingProductionDataSystem.Application.TransactionsDailyDataServices;
+using CollectingProductionDataSystem.Constants;
 
 namespace CollectingProductionDataSystem.ConsoleClient
 {
@@ -40,6 +42,23 @@ namespace CollectingProductionDataSystem.ConsoleClient
 
             var data = kernel.Get<ProductionData>();
             var calculator = kernel.Get<CalculatorService>();
+            var transactions = kernel.Get<TransactionsDailyDataService>();
+            var date = new DateTime(year: 2016, month: 10, day: 30, hour: 0, minute: 0, second: 0);
+            HashSet<MeasuringPointsConfigsReportData> output = transactions.ReadTransactionsDailyData(date, CommonConstants.OutputDirection);
+            var result = new List<MeasuringPointsConfigsReportData>();
+            foreach (var item in output)
+            {
+                MeasuringPointsConfigsReportData record = item;
+                record.RecordTimestamp = date;
+                record.Direction = CommonConstants.OutputDirection;
+                result.Add(record);
+            }
+
+            data.MeasuringPointsConfigsReportDatas.BulkInsert(result, userName: "Initial Loading");
+            data.SaveChanges(userName: "Initial Loading");
+
+            Console.WriteLine(result.Count());
+
             //WritePositionsConfidence(data);
             //UpdateShiftUnitData(kernel, data);
 
@@ -60,10 +79,10 @@ namespace CollectingProductionDataSystem.ConsoleClient
 
 
 
-            var lastRealDate = new DateTime(year: 2016, month: 9, day: 26, hour: 0, minute: 0, second: 0);
-            //CreateShiftData(data, lastRealDate);
-            //CreateDailyData(data, lastRealDate);
-            CreateProductionPlanData(data, lastRealDate);
+            //var lastRealDate = new DateTime(year: 2016, month: 9, day: 26, hour: 0, minute: 0, second: 0);
+            ////CreateShiftData(data, lastRealDate);
+            ////CreateDailyData(data, lastRealDate);
+            //CreateProductionPlanData(data, lastRealDate);
 
 
 

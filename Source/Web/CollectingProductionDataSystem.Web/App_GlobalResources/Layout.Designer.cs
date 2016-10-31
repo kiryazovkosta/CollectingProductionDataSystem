@@ -2995,6 +2995,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to PipeActiveQuantity.
+        /// </summary>
+        public static string PipeActiveQuantity {
+            get {
+                return ResourceManager.GetString("PipeActiveQuantity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Pipe Expedition&lt;br/&gt;[ton].
         /// </summary>
         public static string PipeQuantity {
@@ -3571,6 +3580,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to SeaActiveQuantity.
+        /// </summary>
+        public static string SeaActiveQuantity {
+            get {
+                return ResourceManager.GetString("SeaActiveQuantity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sea Expedition&lt;br/&gt;[ton].
         /// </summary>
         public static string SeaQuantity {
@@ -3828,6 +3846,15 @@ namespace App_GlobalResources.Resources {
         public static string TimeStamp {
             get {
                 return ResourceManager.GetString("TimeStamp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TotalActiveQuantity.
+        /// </summary>
+        public static string TotalActiveQuantity {
+            get {
+                return ResourceManager.GetString("TotalActiveQuantity", resourceCulture);
             }
         }
         
