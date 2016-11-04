@@ -23,54 +23,59 @@ namespace CollectingProductionDataSystem.Application.TransactionsDailyDataServic
 
         public HashSet<MeasuringPointsConfigsReportData> ReadTransactionsDailyData(DateTime date, int flowDirection)
         {
-            var transactionsData = GetMeasurementPointsDataByDateAndDirection(date, flowDirection)
+            IQueryable<TransactionDataDto> transactionsData = GetMeasurementPointsDataByDateAndDirection(date, flowDirection)
                 .Select(t => new TransactionDataDto
-            {
-                MeasuringPointId = t.MeasuringPointId,
-                DirectionId = t.MeasuringPointConfig.FlowDirection.Value,
-                TransportId = t.MeasuringPointConfig.TransportTypeId,
-                ProductId = t.ProductNumber.Value,
-                Mass = t.Mass,
-                MassReverse = t.MassReverse,
-                FlowDirection = t.MeasuringPointConfig.FlowDirection.Value,
-            });
+                {
+                    MeasuringPointId = t.MeasuringPointId,
+                    DirectionId = t.MeasuringPointConfig.FlowDirection.Value,
+                    TransportId = t.MeasuringPointConfig.TransportTypeId,
+                    ProductId = t.ProductNumber.Value,
+                    Mass = t.Mass,
+                    MassReverse = t.MassReverse,
+                    FlowDirection = t.MeasuringPointConfig.FlowDirection.Value,
+                });
 
             var dict = new SortedDictionary<int, MeasuringPointsConfigsReportData>();
-                
             foreach (var transactionData in transactionsData)
             {
-                var measuringPointData = FillModelObject(transactionData, dict, flowDirection);
+                MeasuringPointsConfigsReportData measuringPointData = FillModelObject(transactionData, dict, flowDirection);
                 if (measuringPointData != null)
                 {
-                    dict[transactionData.ProductId] = measuringPointData;   
+                    dict[transactionData.ProductId] = measuringPointData;
                 }
             }
 
-            var actDict = GetActiveTransactionsData(date, flowDirection);
-
-            var monthTransactions = GetMeasurementPointsDataByDateAndDirection(date, flowDirection, true)
+            Dictionary<int, ActiveTransactionsDataDto> actDict = GetActiveTransactionsData(date, flowDirection);
+            IQueryable<TransactionDataDto> monthTransactions = GetMeasurementPointsDataByDateAndDirection(date, flowDirection, checkMonthData: true)
                 .Select(t => new TransactionDataDto
-            {
-                MeasuringPointId = t.MeasuringPointId,
-                DirectionId = t.MeasuringPointConfig.FlowDirection.Value,
-                TransportId = t.MeasuringPointConfig.TransportTypeId,
-                ProductId = t.ProductNumber.Value,
-                Mass = t.Mass,
-                MassReverse = t.MassReverse,
-                FlowDirection = t.MeasuringPointConfig.FlowDirection.Value,
-            });
+                {
+                    MeasuringPointId = t.MeasuringPointId,
+                    DirectionId = t.MeasuringPointConfig.FlowDirection.Value,
+                    TransportId = t.MeasuringPointConfig.TransportTypeId,
+                    ProductId = t.ProductNumber.Value,
+                    Mass = t.Mass,
+                    MassReverse = t.MassReverse,
+                    FlowDirection = t.MeasuringPointConfig.FlowDirection.Value,
+                });
 
+            Dictionary<int, decimal> totallyQuantityByProducts = SetTottalyQuantityByProducts(flowDirection, monthTransactions);
+            HashSet<MeasuringPointsConfigsReportData> hs = PopulateAllMeaurementPointDatas(dict, actDict, totallyQuantityByProducts);
+            return hs;
+        }
+
+        private static Dictionary<int, decimal> SetTottalyQuantityByProducts(int flowDirection, IQueryable<TransactionDataDto> monthTransactions)
+        {
             var totallyQuantityByProducts = new Dictionary<int, decimal>();
             foreach (var item in monthTransactions)
             {
                 if (item.DirectionId == CommonConstants.InputOutputDirection)
                 {
-                    if (flowDirection == CommonConstants.InputDirection 
+                    if (flowDirection == CommonConstants.InputDirection
                         && (item.MassReverse.HasValue == false || item.MassReverse.Value == 0))
                     {
                         continue;
                     }
-                    if (flowDirection == CommonConstants.OutputDirection 
+                    if (flowDirection == CommonConstants.OutputDirection
                         && (item.Mass.HasValue == false || item.Mass.Value == 0))
                     {
                         continue;
@@ -87,13 +92,12 @@ namespace CollectingProductionDataSystem.Application.TransactionsDailyDataServic
                 }
             }
 
-            var hs = PopulateAllMeaurementPointDatas(dict, actDict, totallyQuantityByProducts);
-            return hs;
+            return totallyQuantityByProducts;
         }
 
         private IQueryable<MeasuringPointsConfigsData> GetMeasurementPointsDataByDateAndDirection(DateTime? date, int? flowDirection, bool checkMonthData = false)
         {
-            var transactions = this.data.MeasuringPointsConfigsDatas
+            IQueryable<MeasuringPointsConfigsData> transactions = this.data.MeasuringPointsConfigsDatas
                                    .All()
                                    .Include(x => x.MeasuringPointConfig)
                                    .Where(x => x.MeasuringPointConfig.IsInternalPoint == false)
@@ -105,13 +109,13 @@ namespace CollectingProductionDataSystem.Application.TransactionsDailyDataServic
                 var endTimestamp = new DateTime();
                 if (!checkMonthData)
                 {
-                    beginTimestamp = date.Value.AddMinutes(300);
-                    endTimestamp = beginTimestamp.AddMinutes(1440);  
+                    beginTimestamp = date.Value.AddMinutes(value: 300);
+                    endTimestamp = beginTimestamp.AddMinutes(value: 1440);  
                 }
                 else
                 {
-                    beginTimestamp = new DateTime(date.Value.Year, date.Value.Month, 1, 5, 0, 0);
-                    endTimestamp = date.Value.AddMinutes(1740);
+                    beginTimestamp = new DateTime(date.Value.Year, date.Value.Month, 1, hour: 5, minute: 0, second: 0);
+                    endTimestamp = date.Value.AddMinutes(value: 1740);
                 }
 
                 transactions = transactions.Where(x => x.TransactionEndTime >= beginTimestamp & x.TransactionEndTime < endTimestamp); 
@@ -124,13 +128,14 @@ namespace CollectingProductionDataSystem.Application.TransactionsDailyDataServic
             return transactions;
         }
 
-        private Dictionary<int, decimal> GetActiveTransactionsData(DateTime? date, int? flowDirection)
+        private Dictionary<int, ActiveTransactionsDataDto> GetActiveTransactionsData(DateTime? date, int? flowDirection)
         {
-            var actDict = new Dictionary<int, decimal>();
+            var actDict = new Dictionary<int, ActiveTransactionsDataDto>();
             var activeTransactionsDatas = this.data.ActiveTransactionsDatas
                                               .All()
                                               .Include(x => x.Product)
                                               .Include(x => x.MeasuringPointConfig)
+                                              .Include(x => x.MeasuringPointConfig.TransportType)
                                               .Where(x => x.MeasuringPointConfig.IsInternalPoint == false)
                                               .Where(x => !string.IsNullOrEmpty(x.MeasuringPointConfig.ActiveTransactionStatusTag))
                                               .Where(x => x.RecordTimestamp == date.Value)
@@ -139,8 +144,7 @@ namespace CollectingProductionDataSystem.Application.TransactionsDailyDataServic
 
             foreach (var activeTransaction in activeTransactionsDatas)
             {
-                var direction = activeTransaction.MeasuringPointConfig.FlowDirection.Value;
-
+                int direction = activeTransaction.MeasuringPointConfig.FlowDirection.Value;
                 if (direction == 3)
                 {
                     // data from Pt Rosenec
@@ -154,54 +158,89 @@ namespace CollectingProductionDataSystem.Application.TransactionsDailyDataServic
                     }
                 }
 
-                var prodId = data.Products.All().Where(p => p.Id == activeTransaction.ProductId).FirstOrDefault().Code;
+                int prodId = data.Products.All().Where(p => p.Id == activeTransaction.ProductId).FirstOrDefault().Code;
+                int transportTypeId = activeTransaction.MeasuringPointConfig.TransportTypeId;
                 if (actDict.ContainsKey(prodId))
                 {
+                    ActiveTransactionsDataDto activeTransactionData = actDict[prodId];
                     if (direction == CommonConstants.OutputDirection)
                     {
-                        actDict[prodId] = actDict[prodId] + activeTransaction.Mass; 
+                        activeTransactionData.TotalActiveQuantity = activeTransactionData.TotalActiveQuantity + activeTransaction.Mass;
+                        SetActiveTransactionDataByTransportType(activeTransactionData, transportTypeId, activeTransaction.Mass);
                     }
                     else if (direction == CommonConstants.InputDirection)
                     {
-                        actDict[prodId] = actDict[prodId] + activeTransaction.MassReverse;  
+                        activeTransactionData.TotalActiveQuantity = activeTransactionData.TotalActiveQuantity + activeTransaction.MassReverse;
+                        SetActiveTransactionDataByTransportType(activeTransactionData, transportTypeId, activeTransaction.MassReverse);
                     }
                     else 
                     {
                         if (flowDirection == CommonConstants.OutputDirection)
                         {
-                            actDict[prodId] = actDict[prodId] + activeTransaction.Mass;    
+                            activeTransactionData.TotalActiveQuantity = activeTransactionData.TotalActiveQuantity + activeTransaction.Mass;
+                            SetActiveTransactionDataByTransportType(activeTransactionData, transportTypeId, activeTransaction.Mass);
                         }
                         else
                         {
-                            actDict[prodId] = actDict[prodId] + activeTransaction.MassReverse;  
+                            activeTransactionData.TotalActiveQuantity = activeTransactionData.TotalActiveQuantity + activeTransaction.MassReverse;
+                            SetActiveTransactionDataByTransportType(activeTransactionData, transportTypeId, activeTransaction.MassReverse);
                         }
                     }
+
+                    actDict[prodId] = activeTransactionData;
                 }
                 else
                 {
+                    var activeTransactionData = new ActiveTransactionsDataDto();
                     if (direction == CommonConstants.OutputDirection)
                     {
-                        actDict[prodId] = activeTransaction.Mass; 
+                        activeTransactionData.TotalActiveQuantity = activeTransaction.Mass;
+                        SetActiveTransactionDataByTransportType(activeTransactionData, transportTypeId, activeTransaction.Mass);
                     }
                     else if (direction == CommonConstants.InputDirection)
                     {
-                        actDict[prodId] = activeTransaction.MassReverse;  
+                        activeTransactionData.TotalActiveQuantity = activeTransaction.MassReverse;
+                        SetActiveTransactionDataByTransportType(activeTransactionData, transportTypeId, activeTransaction.MassReverse);
                     }
                     else 
                     {
                         if (flowDirection == CommonConstants.OutputDirection)
                         {
-                            actDict[prodId] = activeTransaction.Mass;    
+                            activeTransactionData.TotalActiveQuantity = activeTransaction.Mass;
+                            SetActiveTransactionDataByTransportType(activeTransactionData, transportTypeId, activeTransaction.Mass);
                         }
                         else
                         {
-                            actDict[prodId] = activeTransaction.MassReverse;  
+                            activeTransactionData.TotalActiveQuantity = activeTransaction.MassReverse;
+                            SetActiveTransactionDataByTransportType(activeTransactionData, transportTypeId, activeTransaction.MassReverse);
                         }
                     }
+
+                    actDict[prodId] = activeTransactionData;
                 }
             }
 
             return actDict;
+        }
+
+        private void SetActiveTransactionDataByTransportType(ActiveTransactionsDataDto activeTransactionData, int transportTypeId, decimal value)
+        {
+            if (transportTypeId == 1)
+            {
+                activeTransactionData.AvtoActiveQuantity += value;
+            }
+            else if (transportTypeId == 2)
+            {
+                activeTransactionData.JpActiveQuantity += value;
+            }
+            else if (transportTypeId == 3)
+            {
+                activeTransactionData.SeaActiveQuantity += value;
+            }
+            else if (transportTypeId == 4)
+            {
+                activeTransactionData.PipeActiveQuantity += value;
+            }
         }
 
         private MeasuringPointsConfigsReportData FillModelObject(TransactionDataDto transactionData, SortedDictionary<int, MeasuringPointsConfigsReportData> dict,  int? flowDirection)
@@ -251,13 +290,13 @@ namespace CollectingProductionDataSystem.Application.TransactionsDailyDataServic
         }
 
         private HashSet<MeasuringPointsConfigsReportData> PopulateAllMeaurementPointDatas(SortedDictionary<int, MeasuringPointsConfigsReportData> dict, 
-            Dictionary<int, decimal> actDict, Dictionary<int, decimal> totallyQuantityByProducts)
+            Dictionary<int, ActiveTransactionsDataDto> actDict, Dictionary<int, decimal> totallyQuantityByProducts)
         {
             var hs = new HashSet<MeasuringPointsConfigsReportData>();
             foreach (var item in dict)
             {
-                var p = SetMeasuringPointsDataViewModel(item, actDict, totallyQuantityByProducts);
-                if (p.TotalQuantity > 0)
+                MeasuringPointsConfigsReportData p = SetMeasuringPointsDataViewModel(item, actDict, totallyQuantityByProducts);
+                if (p.TotalQuantity > 0 || p.TotalMonthQuantity > 0)
                 {
                     hs.Add(p);   
                 }
@@ -273,7 +312,10 @@ namespace CollectingProductionDataSystem.Application.TransactionsDailyDataServic
                     m.TotalMonthQuantity = item.Value / 1000;
                     if (actDict != null && actDict.ContainsKey(item.Key))
                     {
-                        m.ActiveQuantity = actDict[item.Key] / 1000;
+                        ActiveTransactionsDataDto atd = actDict[item.Key];
+                        m.SeaActiveQuantity = atd.SeaActiveQuantity / 1000;
+                        m.PipeActiveQuantity = atd.PipeActiveQuantity / 1000;
+                        m.TotalActiveQuantity = atd.TotalActiveQuantity / 1000;
                         actDict.Remove(item.Key);
                     }
                     hs.Add(m);
@@ -287,7 +329,9 @@ namespace CollectingProductionDataSystem.Application.TransactionsDailyDataServic
                     var m = new MeasuringPointsConfigsReportData();
                     m.ProductId = item.Key;
                     m.ProductName = this.data.Products.All().Where(x => x.Code == item.Key).FirstOrDefault().Name;
-                    m.ActiveQuantity = item.Value / 1000;
+                    m.SeaActiveQuantity = item.Value.SeaActiveQuantity / 1000;
+                    m.PipeActiveQuantity = item.Value.PipeActiveQuantity / 1000;
+                    m.TotalActiveQuantity = item.Value.TotalActiveQuantity / 1000;
                     hs.Add(m);
                 }
             }
@@ -296,13 +340,16 @@ namespace CollectingProductionDataSystem.Application.TransactionsDailyDataServic
         }
 
         private MeasuringPointsConfigsReportData SetMeasuringPointsDataViewModel(KeyValuePair<int, MeasuringPointsConfigsReportData> item, 
-            Dictionary<int, decimal> actDict, Dictionary<int, decimal> totallyQuantityByProducts)
+            Dictionary<int, ActiveTransactionsDataDto> actDict, Dictionary<int, decimal> totallyQuantityByProducts)
         {
-            var p = item.Value;
+            MeasuringPointsConfigsReportData p = item.Value;
             p.ProductName = this.data.Products.All().Where(x => x.Code == p.ProductId).FirstOrDefault().Name;
             if (actDict != null && actDict.ContainsKey(p.ProductId))
             {
-                p.ActiveQuantity = actDict[p.ProductId] / 1000;
+                ActiveTransactionsDataDto atd = actDict[p.ProductId];
+                p.SeaActiveQuantity = atd.SeaActiveQuantity / 1000;
+                p.PipeActiveQuantity = atd.PipeActiveQuantity / 1000;
+                p.TotalActiveQuantity = atd.TotalActiveQuantity / 1000;
                 actDict.Remove(p.ProductId);
             }
 

@@ -47,8 +47,16 @@
         public decimal TotalMonthQuantity { get; set; }
 
         [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
-        [Display(Name = "ActiveQuantity", ResourceType = typeof(Resources.Layout))]
-        public decimal ActiveQuantity { get; set; }
+        [Display(Name = "SeaActiveQuantity", ResourceType = typeof(Resources.Layout))]
+        public decimal SeaActiveQuantity { get; set; }
+
+        [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
+        [Display(Name = "PipeActiveQuantity", ResourceType = typeof(Resources.Layout))]
+        public decimal PipeActiveQuantity { get; set; }
+
+        [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
+        [Display(Name = "TotalActiveQuantity", ResourceType = typeof(Resources.Layout))]
+        public decimal TotalActiveQuantity { get; set; }
 
         public void CreateMappings(IConfiguration configuration)
         {

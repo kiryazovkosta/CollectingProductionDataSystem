@@ -31,9 +31,11 @@
 
         protected override void OnStart(string[] args)
         {
-            logger.Info("Service is started!");
+            logger.Info(message: "Service is started!");
             try
             {
+                GetTransactionsMain.CheckPhdConnection();
+
                 if (Properties.Settings.Default.SYNC_TRANSACTIONS)
                 {
                     this.transactionsDataTimer = new Timer(TimerHandlerTransactionsData, null, 0, Timeout.Infinite);

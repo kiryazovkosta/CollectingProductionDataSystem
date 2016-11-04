@@ -40,7 +40,7 @@ namespace CollectingProductionDataSystem.Web.Areas.DailyReporting.Controllers
             var kendoResult = new DataSourceResult();
             try
             {
-                var dbResult = this.transactionsDailyData.ReadTransactionsDailyData(date.Value, flowDirection.Value);
+                HashSet<MeasuringPointsConfigsReportData> dbResult = this.transactionsDailyData.ReadTransactionsDailyData(date.Value, flowDirection.Value);
                 kendoResult = dbResult.ToDataSourceResult(request, ModelState);
             }
             catch (Exception ex1)

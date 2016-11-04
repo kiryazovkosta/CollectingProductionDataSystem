@@ -12,7 +12,7 @@ namespace CollectingProductionDataSystem.GetTransactions.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "12.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "14.0.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -230,6 +230,15 @@ namespace CollectingProductionDataSystem.GetTransactions.Properties {
         public global::System.TimeSpan IDLE_TIMER_REPORT_TRANSACTIONS_DATA {
             get {
                 return ((global::System.TimeSpan)(this["IDLE_TIMER_REPORT_TRANSACTIONS_DATA"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("TSN_KT0107_MT_GSV_P00.VT")]
+        public string PHD_CHECK_CONNECTION_TAG {
+            get {
+                return ((string)(this["PHD_CHECK_CONNECTION_TAG"]));
             }
         }
     }

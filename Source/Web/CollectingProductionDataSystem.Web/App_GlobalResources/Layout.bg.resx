@@ -1757,4 +1757,13 @@
   <data name="Unlock" xml:space="preserve">
     <value>Отключи за редакция</value>
   </data>
+  <data name="PipeActiveQuantity" xml:space="preserve">
+    <value>Незавършена експедиция - Продуктопровод &lt;br/&gt;[Тон]</value>
+  </data>
+  <data name="SeaActiveQuantity" xml:space="preserve">
+    <value>Незавършена експедиция - Танкер &lt;br/&gt;[Тон]</value>
+  </data>
+  <data name="TotalActiveQuantity" xml:space="preserve">
+    <value>Незавършена експедиция - Общо &lt;br/&gt;[Тон]</value>
+  </data>
 </root>

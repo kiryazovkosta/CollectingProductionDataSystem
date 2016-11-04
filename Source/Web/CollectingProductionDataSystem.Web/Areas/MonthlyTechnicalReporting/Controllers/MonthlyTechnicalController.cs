@@ -83,7 +83,6 @@
                     IEnumerable<MonthlyTechnicalViewModel> vmResult =
                         Mapper.Map<IEnumerable<MonthlyTechnicalViewModel>>(dbResult);
                     DataSourceResult kendoResult = vmResult.ToDataSourceResult(request, ModelState);
-                    //return Json(kendoResult);
                     JsonResult output = Json(kendoResult, JsonRequestBehavior.AllowGet);
                     output.MaxJsonLength = int.MaxValue;
                     return output;
@@ -182,12 +181,12 @@
                         .FirstOrDefault(x => x.FactoryId == factoryId && x.Month == date);
 
                     Approver approver = this.GetApprover(reportData);
-                    var isExsisting = reportData != null;
-                    var isApproved = reportData?.Approved ?? false;
-                    var reportText = reportData?.Message ?? string.Empty;
-                    var isMonthlyTechnologicalReportWriter = this.IsMonthlyTechnologicalReportWriter();
-                    var isMonthlyTechnologicalApprover = this.IsMonthlyTechnologicalApprover();
-                    var isPowerUser = this.IsPowerUser();
+                    bool isExsisting = reportData != null;
+                    bool isApproved = reportData?.IsApproved ?? false;
+                    string reportText = reportData?.Message ?? string.Empty;
+                    bool isMonthlyTechnologicalReportWriter = this.IsMonthlyTechnologicalReportWriter();
+                    bool isMonthlyTechnologicalApprover = this.IsMonthlyTechnologicalApprover();
+                    bool isPowerUser = this.IsPowerUser();
 
                     return this.Json(new
                     {
@@ -235,7 +234,7 @@
         private Approver GetApprover(MonthlyTechnologicalReportsData reportData)
         {
             var approver = new Approver();
-            if (reportData?.Approved == true)
+            if (reportData?.IsApproved == true)
             {
                 ApplicationUser user = this.data.Users.All().FirstOrDefault(x => x.UserName == reportData.ApprovedBy);
                 approver.CreatorName = user?.FullName ?? string.Empty;
@@ -256,7 +255,7 @@
                     this.data.MonthlyTechnologicalReportsDatas.All()
                         .Where(x => x.FactoryId == factoryId && x.Month == date)
                         .FirstOrDefault();
-                if (reportData != null && reportData.Approved)
+                if (reportData != null && reportData.IsApproved)
                 {
                     ModelState.AddModelError("",
                         "Описанието на технологичният отчет е вече потвърден. Корекции не са разрешени.");
@@ -314,7 +313,7 @@
                     this.data.MonthlyTechnologicalReportsDatas.All()
                         .Where(x => x.FactoryId == factoryId && x.Month == date)
                         .FirstOrDefault();
-                if (reportData != null && reportData.Approved)
+                if (reportData != null && reportData.IsApproved)
                 {
                     ModelState.AddModelError("",
                         "Описанието на технологичният отчет е вече потвърден. Корекции не са разрешени.");
@@ -329,7 +328,7 @@
                             FactoryId = factoryId.Value,
                             Month = date.Value,
                             Message = reportText,
-                            Approved = true,
+                            IsApproved = true,
                             ApprovedBy = this.UserProfile.UserName,
                             ApprovedOn = DateTime.Now,
                         };
@@ -338,7 +337,7 @@
                     else
                     {
                         reportData.Message = reportText;
-                        reportData.Approved = true;
+                        reportData.IsApproved = true;
                         reportData.ApprovedBy = this.UserProfile.UserName;
                         reportData.ApprovedOn = DateTime.Now;
                         this.data.MonthlyTechnologicalReportsDatas.Update(reportData);

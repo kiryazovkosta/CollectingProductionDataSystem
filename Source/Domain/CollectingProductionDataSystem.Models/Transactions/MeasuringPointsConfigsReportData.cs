@@ -15,7 +15,11 @@
         public decimal PipeQuantity { get; set; }
         public decimal TotalQuantity { get; set; }
         public decimal TotalMonthQuantity { get; set; }
-        public decimal ActiveQuantity { get; set; }
+        public decimal AvtoActiveQuantity { get; set; }
+        public decimal JpActiveQuantity { get; set; }
+        public decimal SeaActiveQuantity { get; set; }
+        public decimal PipeActiveQuantity { get; set; }
+        public decimal TotalActiveQuantity { get; set; }
         public DateTime RecordTimestamp { get; set; }
         public int Direction { get; set; }
     }

@@ -1762,4 +1762,13 @@
   <data name="Unlock" xml:space="preserve">
     <value>Unlock</value>
   </data>
+  <data name="PipeActiveQuantity" xml:space="preserve">
+    <value>PipeActiveQuantity</value>
+  </data>
+  <data name="SeaActiveQuantity" xml:space="preserve">
+    <value>SeaActiveQuantity</value>
+  </data>
+  <data name="TotalActiveQuantity" xml:space="preserve">
+    <value>TotalActiveQuantity</value>
+  </data>
 </root>
