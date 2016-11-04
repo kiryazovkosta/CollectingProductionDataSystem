@@ -196,7 +196,7 @@
                             //header info
                             FactoryName = factory.FullName,
                             Month = DateTime.Now,
-                            MonthAsString = $"{date.ToString("MMMM yyyy г.")}",
+                            MonthAsString = date.ToString("MMMM yyyy г."),
 
                             //footer table info
                             //first row
