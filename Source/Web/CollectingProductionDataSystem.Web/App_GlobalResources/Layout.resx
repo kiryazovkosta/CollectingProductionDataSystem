@@ -1771,4 +1771,10 @@
   <data name="TotalActiveQuantity" xml:space="preserve">
     <value>TotalActiveQuantity</value>
   </data>
+  <data name="Approve" xml:space="preserve">
+    <value>Approve</value>
+  </data>
+  <data name="Compose" xml:space="preserve">
+    <value>Compose</value>
+  </data>
 </root>

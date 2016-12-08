@@ -66,22 +66,21 @@
                     IEnumerable<int> processUnits = new HashSet<int>();
                     if (IsPowerUser())
                     {
-                        processUnits =
-                            this.data.ProcessUnits.All().Where(x => x.FactoryId == factoryId).Select(x => x.Id);
+                        processUnits = this.data.ProcessUnits.All()
+                            .Where(x => x.FactoryId == factoryId)
+                            .Select(x => x.Id);
                     }
                     else
                     {
-                        List<int> processUnitsForFactory =
-                            this.data.ProcessUnits.All().Where(x => x.FactoryId == factoryId).Select(x => x.Id).ToList();
-                        processUnits =
-                            this.UserProfile.ProcessUnits.ToList()
-                                .Where(p => processUnitsForFactory.Contains(p.Id))
-                                .Select(x => x.Id);
+                        List<int> processUnitsForFactory = this.data.ProcessUnits.All()
+                            .Where(x => x.FactoryId == factoryId)
+                            .Select(x => x.Id).ToList();
+                        processUnits = this.UserProfile.ProcessUnits.ToList()
+                            .Where(p => processUnitsForFactory.Contains(p.Id))
+                            .Select(x => x.Id);
                     }
-                    IEnumerable<MonthlyTechnicalReportDataDto> dbResult =
-                        this.monthlyService.ReadMonthlyTechnologicalDataAsync(date.Value, processUnits.ToArray());
-                    IEnumerable<MonthlyTechnicalViewModel> vmResult =
-                        Mapper.Map<IEnumerable<MonthlyTechnicalViewModel>>(dbResult);
+                    IEnumerable<MonthlyTechnicalReportDataDto> dbResult = this.monthlyService.ReadMonthlyTechnologicalDataAsync(date.Value, processUnits.ToArray());
+                    IEnumerable<MonthlyTechnicalViewModel> vmResult = Mapper.Map<IEnumerable<MonthlyTechnicalViewModel>>(dbResult);
                     DataSourceResult kendoResult = vmResult.ToDataSourceResult(request, ModelState);
                     JsonResult output = Json(kendoResult, JsonRequestBehavior.AllowGet);
                     output.MaxJsonLength = int.MaxValue;
@@ -180,8 +179,12 @@
                         this.data.MonthlyTechnologicalReportsDatas.All()
                         .FirstOrDefault(x => x.FactoryId == factoryId && x.Month == date);
 
+                    //var exsistingTechData = this.data.Mon
+
+                    Composer composer = this.GetComposer(reportData);
                     Approver approver = this.GetApprover(reportData);
                     bool isExsisting = reportData != null;
+                    bool isComposed = reportData?.IsComposed ?? false;
                     bool isApproved = reportData?.IsApproved ?? false;
                     string reportText = reportData?.Message ?? string.Empty;
                     bool isMonthlyTechnologicalReportWriter = this.IsMonthlyTechnologicalReportWriter();
@@ -199,18 +202,18 @@
 
                             //footer table info
                             //first row
-                            //Todo: fill this with appropriated values
-                            CreatorName = approver?.CreatorName ?? "",
-                            Occupation = approver?.Occupation ?? "",
-                            DateOfCreation = approver?.DateOfCreation,
+                            CreatorName = composer?.Name ?? "",
+                            Occupation = composer?.Occupation ?? "",
+                            DateOfCreation = composer?.Date,
 
                             //second row
-                            ApproverName = "Николай Костадинов",
-                            ApproverOccupation = "Директор на водопад",
-                            DateOfApprovement = DateTime.Now.AddDays(-1)
+                            ApproverName = approver?.Name,
+                            ApproverOccupation = approver?.Occupation,
+                            DateOfApprovement = approver?.Date
                         },
                         EditorContent = reportText,
                         IsExsisting = isExsisting,
+                        IsComposed = isComposed,
                         IsApproved = isApproved,
                         IsValid = true,
                         IsMonthlyTechnologicalReportWriter = isMonthlyTechnologicalReportWriter,
@@ -225,10 +228,33 @@
                 }
             }
 
-            var allErrors = this.ModelState.Values.SelectMany(v => v.Errors).Select(x=>x.ErrorMessage);
-
+            IEnumerable<string> allErrors = this.ModelState.Values.SelectMany(v => v.Errors).Select(x=>x.ErrorMessage);
             return this.Json(new {errors = allErrors});
+        }
 
+        private string GetUserName(ApplicationUser user)
+        {
+            string name = string.Empty;
+            if (user != null)
+            {
+                name = $"{user.FirstName} {user.LastName}";
+            }
+
+            return name;
+        }
+
+        private Composer GetComposer(MonthlyTechnologicalReportsData reportData)
+        {
+            var composer = new Composer();
+            if (reportData?.IsComposed == true)
+            {
+                ApplicationUser user = this.data.Users.All().FirstOrDefault(x => x.UserName == reportData.ComposedBy);
+                composer.Name = this.GetUserName(user);
+                composer.Occupation = user?.Occupation ?? string.Empty;
+                composer.Date = reportData.ComposedOn;
+            }
+
+            return composer;
         }
 
         private Approver GetApprover(MonthlyTechnologicalReportsData reportData)
@@ -237,9 +263,9 @@
             if (reportData?.IsApproved == true)
             {
                 ApplicationUser user = this.data.Users.All().FirstOrDefault(x => x.UserName == reportData.ApprovedBy);
-                approver.CreatorName = user?.FullName ?? string.Empty;
+                approver.Name = this.GetUserName(user);
                 approver.Occupation = user?.Occupation ?? string.Empty;
-                approver.DateOfCreation = reportData.ApprovedOn;
+                approver.Date = reportData.ApprovedOn;
             }
             return approver;
         }
@@ -255,10 +281,10 @@
                     this.data.MonthlyTechnologicalReportsDatas.All()
                         .Where(x => x.FactoryId == factoryId && x.Month == date)
                         .FirstOrDefault();
-                if (reportData != null && reportData.IsApproved)
+
+                if (reportData?.IsComposed == true)
                 {
-                    ModelState.AddModelError("",
-                        "Описанието на технологичният отчет е вече потвърден. Корекции не са разрешени.");
+                    ModelState.AddModelError("", "Описанието на технологичният отчет е вече съставено. Корекции не са разрешени.");
                 }
 
                 if (ModelState.IsValid)
@@ -299,12 +325,12 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult ConfirmReport([DataSourceRequest] DataSourceRequest request, int? factoryId, DateTime? date,
+        public ActionResult ComposeReport([DataSourceRequest] DataSourceRequest request, int? factoryId, DateTime? date,
             string reportText)
         {
             if (string.IsNullOrWhiteSpace(reportText))
             {
-                ModelState.AddModelError("reportText", "не е въведено описание на технологичният отчет.");
+                ModelState.AddModelError("reportText", "Не е въведено описание на технологичният отчет.");
             }
 
             if (ModelState.IsValid)
@@ -313,10 +339,9 @@
                     this.data.MonthlyTechnologicalReportsDatas.All()
                         .Where(x => x.FactoryId == factoryId && x.Month == date)
                         .FirstOrDefault();
-                if (reportData != null && reportData.IsApproved)
+                if (reportData != null && reportData.IsComposed)
                 {
-                    ModelState.AddModelError("",
-                        "Описанието на технологичният отчет е вече потвърден. Корекции не са разрешени.");
+                    ModelState.AddModelError("", "Описанието на технологичният отчет е вече съставено. Корекции не са разрешени.");
                 }
 
                 if (ModelState.IsValid)
@@ -328,21 +353,72 @@
                             FactoryId = factoryId.Value,
                             Month = date.Value,
                             Message = reportText,
-                            IsApproved = true,
-                            ApprovedBy = this.UserProfile.UserName,
-                            ApprovedOn = DateTime.Now,
+                            IsComposed = true,
+                            ComposedBy = this.UserProfile.UserName,
+                            ComposedOn = DateTime.Now,
                         };
                         this.data.MonthlyTechnologicalReportsDatas.Add(record);
                     }
                     else
                     {
                         reportData.Message = reportText;
-                        reportData.IsApproved = true;
-                        reportData.ApprovedBy = this.UserProfile.UserName;
-                        reportData.ApprovedOn = DateTime.Now;
+                        reportData.IsComposed = true;
+                        reportData.ComposedBy = this.UserProfile.UserName;
+                        reportData.ComposedOn = DateTime.Now;
                         this.data.MonthlyTechnologicalReportsDatas.Update(reportData);
                     }
 
+                    IEfStatus result = this.data.SaveChanges(this.UserProfile.UserName);
+                    return Json(new { IsConfirmed = result.IsValid }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    Response.StatusCode = (int) HttpStatusCode.BadRequest;
+                    List<string> errors = GetErrorListFromModelState(ModelState);
+                    return Json(new { data = new { errors = errors } });
+                }
+            }
+            else
+            {
+                Response.StatusCode = (int) HttpStatusCode.BadRequest;
+                List<string> errors = GetErrorListFromModelState(ModelState);
+                return Json(new { data = new { errors = errors } });
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ApproveReport([DataSourceRequest] DataSourceRequest request, int? factoryId, DateTime? date,
+            string reportText)
+        {
+            if (string.IsNullOrWhiteSpace(reportText))
+            {
+                ModelState.AddModelError("reportText", "Не е въведено описание на технологичният отчет.");
+            }
+
+            if (ModelState.IsValid)
+            {
+                MonthlyTechnologicalReportsData reportData =
+                    this.data.MonthlyTechnologicalReportsDatas.All()
+                        .Where(x => x.FactoryId == factoryId && x.Month == date)
+                        .FirstOrDefault();
+                if (reportData == null)
+                {
+                    ModelState.AddModelError("", "Описанието на технологичният отчет не е съставено.");
+                }
+
+                if (reportData?.IsApproved == true)
+                {
+                    ModelState.AddModelError("", "Описанието на технологичният отчет е вече утвърдено. Корекции не са разрешени.");
+                }
+
+                if (ModelState.IsValid)
+                {
+                    reportData.Message = reportText;
+                    reportData.IsApproved = true;
+                    reportData.ApprovedBy = this.UserProfile.UserName;
+                    reportData.ApprovedOn = DateTime.Now;
+                    this.data.MonthlyTechnologicalReportsDatas.Update(reportData);
                     IEfStatus result = this.data.SaveChanges(this.UserProfile.UserName);
                     return Json(new { IsConfirmed = result.IsValid }, JsonRequestBehavior.AllowGet);
                 }

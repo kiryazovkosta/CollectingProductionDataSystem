@@ -1766,4 +1766,10 @@
   <data name="TotalActiveQuantity" xml:space="preserve">
     <value>Незавършена експедиция - Общо &lt;br/&gt;[Тон]</value>
   </data>
+  <data name="Approve" xml:space="preserve">
+    <value>Утвърди</value>
+  </data>
+  <data name="Compose" xml:space="preserve">
+    <value>Състави</value>
+  </data>
 </root>

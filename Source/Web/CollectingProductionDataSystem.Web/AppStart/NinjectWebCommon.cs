@@ -117,6 +117,7 @@ namespace CollectingProductionDataSystem.Web.AppStart
             kernel.Bind<IProgressRegistrator>().To<ProgressRegistrator>();
             kernel.Bind<ITransactionsDailyDataService>().To<TransactionsDailyDataService>();
             kernel.Bind<IMonthlyTechnicalDataService>().To<MonthlyTechnicalDataService>();
+            kernel.Bind<ITestMonthlyTechnologicalReportCalculationService>().ToMethod(context => TestMonthlyTechnologicalReportCalculationService.GetInstance()).InSingletonScope();
         }        
     }
 }

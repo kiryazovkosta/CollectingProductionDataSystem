@@ -22,6 +22,7 @@
                    columns.Bound(c => c.UserName);
                    columns.Bound(c => c.Email);
                    columns.Bound(c => c.FullName);
+                   columns.Bound(c => c.Occupation);
                    columns.Bound(c => c.UserRoles).ClientTemplate("#=customeTemplate(UserRoles)#");
                    columns.Bound(c => c.ProcessUnits).ClientTemplate("#=customeTemplate(ProcessUnits)#");
                    columns.Bound(c => c.Parks).ClientTemplate("#=customeTemplate(Parks)#");

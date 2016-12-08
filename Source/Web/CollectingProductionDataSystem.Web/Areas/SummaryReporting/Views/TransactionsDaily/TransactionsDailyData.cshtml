@@ -31,8 +31,8 @@
                 columns.Bound(c => c.PipeQuantity).ClientTemplate("<div style='text-align:right;'>#=kendo.toString(data.PipeQuantity, 'n3') #</div>").Width(130);
                 columns.Bound(c => c.TotalQuantity).ClientTemplate("<div style='text-align:right;'>#=kendo.toString(data.TotalQuantity, 'n3') #</div>").Width(130);
                 columns.Bound(c => c.TotalMonthQuantity).ClientTemplate("<div style='text-align:right;'>#=kendo.toString(data.TotalMonthQuantity, 'n3') #</div>").Width(130);
-                //columns.Bound(c => c.SeaActiveQuantity).ClientTemplate("<div style='text-align:right;'>#=kendo.toString(data.SeaActiveQuantity, 'n3') #</div>").Width(130);
-                //columns.Bound(c => c.PipeActiveQuantity).ClientTemplate("<div style='text-align:right;'>#=kendo.toString(data.PipeActiveQuantity, 'n3') #</div>").Width(130);
+                columns.Bound(c => c.SeaActiveQuantity).ClientTemplate("<div style='text-align:right;'>#=kendo.toString(data.SeaActiveQuantity, 'n3') #</div>").Width(130);
+                columns.Bound(c => c.PipeActiveQuantity).ClientTemplate("<div style='text-align:right;'>#=kendo.toString(data.PipeActiveQuantity, 'n3') #</div>").Width(130);
                 columns.Bound(c => c.TotalActiveQuantity).ClientTemplate("<div style='text-align:right;'>#=kendo.toString(data.TotalActiveQuantity, 'n3') #</div>").Width(130);
             })
                 //.Pageable(pageable => pageable

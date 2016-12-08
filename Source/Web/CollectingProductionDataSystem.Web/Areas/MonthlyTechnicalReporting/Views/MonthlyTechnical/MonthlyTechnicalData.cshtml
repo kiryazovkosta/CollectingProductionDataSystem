@@ -18,7 +18,7 @@
         </div>
         <div class="col-md-4" style="float: right">
             <button type="button" id="export-pdf" class="k-button k-button-icontext k-grid-pdf pull-right head-button" style="margin-left:5px;"><span class="k-icon k-i-pdf"></span>Експорт в Pdf</button>
-            <button id="excel-export" class="k-button k-button-icontext k-grid-excel pull-right head-button"><span class="k-icon k-i-excel"></span>Експорт в Excel</button>
+            <button id="excel-tech-report-export" class="k-button k-button-icontext k-grid-excel pull-right head-button"><span class="k-icon k-i-excel"></span>Експорт в Excel</button>
         </div>
     </div>
     @Html.ValidationSummary()
@@ -26,7 +26,7 @@
     @(Html.Kendo()
           .Editor()
           .Name("report-details")
-          .HtmlAttributes(new { style = "width: 100%;height:310px;" })
+          .HtmlAttributes(new { style = "width: 100%;height:340px;" })
           .Resizable(resizable => resizable.Content(false).Toolbar(true))
           .Tools(tools => tools
               .CustomTemplate(ct => ct.Template("<button id='editor-save-changes' class='btn btn-info'><span class='glyphicon glyphicon-floppy-disk'></span>Запази</button>"))
@@ -37,7 +37,7 @@
               pdf.PaperSize("A4");
               pdf.Margin("1cm", "1cm", "2cm", "2cm");
           })
-          .Value(@"<text class='description-content'><h2>Какво е Lorem Ipsum?</h2></text>")
+          .Value("")
           )
 
     @(Html.Kendo()
@@ -93,7 +93,7 @@
           {
               ev.DataBound("unitGridsData.DataBound");
           })
-          .Scrollable(scr => scr.Height(320))
+          .Scrollable(scr => scr.Height(340))
           .Filterable()
           .DataSource(dataSource => dataSource
               .Ajax()

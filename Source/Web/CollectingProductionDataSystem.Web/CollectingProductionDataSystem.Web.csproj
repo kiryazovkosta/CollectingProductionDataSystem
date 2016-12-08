@@ -333,6 +333,7 @@
     <Compile Include="Areas\MonthlyTechnicalReporting\Controllers\AreaBaseController.cs" />
     <Compile Include="Areas\MonthlyTechnicalReporting\Controllers\MonthlyTechnicalController.cs" />
     <Compile Include="Areas\MonthlyTechnicalReporting\Models\Approver.cs" />
+    <Compile Include="Areas\MonthlyTechnicalReporting\Models\Composer.cs" />
     <Compile Include="Areas\MonthlyTechnicalReporting\ViewModels\ExportDataSettingsViewModel.cs" />
     <Compile Include="Areas\MonthlyTechnicalReporting\ViewModels\MonthlyTechnicalViewModel.cs" />
     <Compile Include="Areas\MonthlyTechnicalReporting\MonthlyTechnicalReportingAreaRegistration.cs" />

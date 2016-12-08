@@ -19,7 +19,8 @@
         IEnumerable<UnitDatasTemp> ProcessCalculatedUnits(List<UnitConfig> unitsConfigsList,
                                                                     DateTime recordDataTime,
                                                                     int shift, List<UnitDatasTemp> unitsTempData,
-                                                                    ref int expectedNumberOfRecords);
+                                                                    ref int expectedNumberOfRecords,
+                                                                    bool calculateDailyInfoRecord);
 
         IEnumerable<UnitDatasTemp> GetPrimaryProductionData(PrimaryDataSourceType dataSource,
                                                  string hostName,

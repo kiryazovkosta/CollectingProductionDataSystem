@@ -230,74 +230,100 @@ var unitGridsData = (function() {
                     });
             }
 
-            if ($("#tech-report-approve")) {
-                $("#tech-report-approve")
-                    .click(function() {
-                        var dataParam = sendDate();
-                        $.ajax({
-                            url: 'ConfirmReport',
-                            type: 'POST',
-                            data: dataParam,
-                            success: function(data) {
-                                var confirmed = data.IsConfirmed;
-                                if (confirmed === true) {
+            if ($("#tech-report-compose")) {
+                $("#tech-report-compose").click(function() {
+                    var dataParam = sendDate();
+                    $.ajax({
+                        url: 'ComposeReport',
+                        type: 'POST',
+                        data: dataParam,
+                        success: function(data) {
+                            var confirmed = data.IsConfirmed;
+                            if (confirmed === true) {
 
-                                    var message = "Вие потвърдихте описанието на технологичният отчет успешно."
-                                    $('pre#succ-message').text(message);
-                                    $('div#success-window').data("kendoWindow").open();
+                                var message = "Вие съставихте описанието на технологичният отчет успешно."
+                                $('pre#succ-message').text(message);
+                                $('div#success-window').data("kendoWindow").open();
 
-                                    var techReportSaveButton = $('#editor-save-changes');
-                                    if (techReportSaveButton) {
-                                        techReportSaveButton.hide();
-                                        techReportSaveButton.css('visibility', 'hidden');
-                                    }
+                                setExportSettings();
 
-                                    if ($('#report-details')) {
-                                        $($('#report-details').data().kendoEditor.body).attr('contenteditable', false);
-                                    }
-
-                                    if ($('#tech-report-approve')) {
-                                        $('#tech-report-approve').hide();
-                                    }
-
-                                    var exportPdfButton = $('#export-pdf');
-                                    if (exportPdfButton) {
-                                        exportPdfButton.show();
-                                        exportPdfButton.css('visibility', 'visible');
-                                    }
-
-                                    setExportSettings();
-
-                                } else {
-                                    if (data.errors) {
-                                        var errorMessage = "";
-                                        $.each(data.errors,
-                                            function(key, value) {
-                                                if ('errors' in value) {
-                                                    $.each(value.errors,
-                                                        function() {
-                                                            errorMessage += this + "\n";
-                                                        });
-                                                }
-                                            });
-                                        $('pre#err-message').text(errorMessage);
-                                        $('div#err-window').data("kendoWindow").open();
-                                    }
-                                    //showCommandButtons();
+                            } else {
+                                if (data.errors) {
+                                    var errorMessage = "";
+                                    $.each(data.errors,
+                                        function(key, value) {
+                                            if ('errors' in value) {
+                                                $.each(value.errors,
+                                                    function() {
+                                                        errorMessage += this + "\n";
+                                                    });
+                                            }
+                                        });
+                                    $('pre#err-message').text(errorMessage);
+                                    $('div#err-window').data("kendoWindow").open();
                                 }
-                            },
-                            error: function(data) {
-                                var errorMessage = "";
-                                var response = JSON.parse(data.responseText).data;
-                                $.each(response.errors,
-                                    function(key, value) {
-                                        errorMessage += this + "\n";
-                                    });
-                                $('pre#err-message').text(errorMessage);
-                                $('div#err-window').data("kendoWindow").open();
                             }
-                        });
+                        },
+                        error: function(data) {
+                            var errorMessage = "";
+                            var response = JSON.parse(data.responseText).data;
+                            $.each(response.errors,
+                                function(key, value) {
+                                    errorMessage += this + "\n";
+                                });
+                            $('pre#err-message').text(errorMessage);
+                            $('div#err-window').data("kendoWindow").open();
+                        }
                     });
+                });
+            }
+
+            if ($("#tech-report-approve")) {
+                $("#tech-report-approve").click(function () {
+                    var dataParam = sendDate();
+                    $.ajax({
+                        url: 'ApproveReport',
+                        type: 'POST',
+                        data: dataParam,
+                        success: function(data) {
+                            var confirmed = data.IsConfirmed;
+                            if (confirmed === true) {
+
+                                var message = "Вие утвърдихте описанието на технологичният отчет успешно."
+                                $('pre#succ-message').text(message);
+                                $('div#success-window').data("kendoWindow").open();
+
+                                setExportSettings();
+
+                            } else {
+                                if (data.errors) {
+                                    var errorMessage = "";
+                                    $.each(data.errors,
+                                        function(key, value) {
+                                            if ('errors' in value) {
+                                                $.each(value.errors,
+                                                    function() {
+                                                        errorMessage += this + "\n";
+                                                    });
+                                            }
+                                        });
+                                    $('pre#err-message').text(errorMessage);
+                                    $('div#err-window').data("kendoWindow").open();
+                                }
+                            }
+                        },
+                        error: function(data) {
+                            var errorMessage = "";
+                            var response = JSON.parse(data.responseText).data;
+                            $.each(response.errors,
+                                function(key, value) {
+                                    errorMessage += this + "\n";
+                                });
+                            $('pre#err-message').text(errorMessage);
+                            $('div#err-window').data("kendoWindow").open();
+                        }
+                    });
+                });
             }
 
             hideExportToPdfButtons();
@@ -318,10 +344,20 @@ var unitGridsData = (function() {
             exportPdfButton.css('visibility', 'hidden');
         }
 
+        var exportExcelButton = $('#excel-tech-report-export');
+        if (exportExcelButton.length) {
+            exportExcelButton.hide();
+            exportExcelButton.css('visibility', 'hidden');
+        }
+
         if ($('#report-details').length) {
             $($('#report-details').data().kendoEditor.body).attr('contenteditable', false);
             var editor = $("#report-details").data("kendoEditor");
             editor.value("");
+        }
+
+        if ($('#tech-report-compose').length) {
+            $('#tech-report-compose').hide();
         }
 
         if ($('#tech-report-approve').length) {
@@ -329,9 +365,13 @@ var unitGridsData = (function() {
         }
     }
 
-    function setExportToPdfButtonsValidButNotApproved() {
+    function setExportToPdfButtonsNotComposedNotApproved() {
+        if ($('#tech-report-compose').length) {
+            $('#tech-report-compose').show();
+        }
+
         if ($('#tech-report-approve').length) {
-            $('#tech-report-approve').show();
+            $('#tech-report-approve').hide();
         }
 
         if ($('#report-details').length) {
@@ -349,21 +389,63 @@ var unitGridsData = (function() {
             exportPdfButton.hide();
             exportPdfButton.css('visibility', 'hidden');
         }
+
+        var exportExcelButton = $('#excel-tech-report-export');
+        if (exportExcelButton.length) {
+            exportExcelButton.show();
+            exportExcelButton.css('visibility', 'visible');
+        }
     }
 
-    function setExportToPdfButtonsApproved() {
-        var techReportSaveButton = $('#editor-save-changes');
-        if (techReportSaveButton.length) {
-            techReportSaveButton.hide();
-            techReportSaveButton.css('visibility', 'hidden');
+    function setExportToPdfButtonsIsComposed() {
+        if ($('#tech-report-compose').length) {
+            $('#tech-report-compose').hide();
+        }
+
+        if ($('#tech-report-approve').length) {
+            $('#tech-report-approve').show();
         }
 
         if ($('#report-details').length) {
             $($('#report-details').data().kendoEditor.body).attr('contenteditable', false);
         }
 
+        var techReportSaveButton = $('#editor-save-changes');
+        if (techReportSaveButton.length) {
+            techReportSaveButton.hide();
+            techReportSaveButton.css('visibility', 'hidden');
+        }
+
+        var exportPdfButton = $('#export-pdf');
+        if (exportPdfButton.length) {
+            exportPdfButton.hide();
+            exportPdfButton.css('visibility', 'hidden');
+        }
+
+        var exportExcelButton = $('#excel-tech-report-export');
+        if (exportExcelButton.length) {
+            exportExcelButton.show();
+            exportExcelButton.css('visibility', 'visible');
+        }
+    }
+
+    function setExportToPdfButtonsIsApproved() {
+        if ($('#tech-report-compose').length) {
+            $('#tech-report-compose').hide();
+        }
+
         if ($('#tech-report-approve').length) {
             $('#tech-report-approve').hide();
+        }
+
+        if ($('#report-details').length) {
+            $($('#report-details').data().kendoEditor.body).attr('contenteditable', false);
+        }
+
+        var techReportSaveButton = $('#editor-save-changes');
+        if (techReportSaveButton.length) {
+            techReportSaveButton.show();
+            techReportSaveButton.css('visibility', 'hidden');
         }
 
         var exportPdfButton = $('#export-pdf');
@@ -371,20 +453,30 @@ var unitGridsData = (function() {
             exportPdfButton.show();
             exportPdfButton.css('visibility', 'visible');
         }
+
+        var exportExcelButton = $('#excel-tech-report-export');
+        if (exportExcelButton.length) {
+            exportExcelButton.show();
+            exportExcelButton.css('visibility', 'visible');
+        }
     }
 
     function setApproveSaveAndExportButtonsVisibilitty(isMonthlyTechnologicalReportWriter,
         isMonthlyTechnologicalApprover,
         isPowerUser) {
         var techReportSaveButton = $('#editor-save-changes');
-        if (isMonthlyTechnologicalReportWriter === false && isPowerUser === false) {
+        if (isMonthlyTechnologicalReportWriter === false /* && isPowerUser === false */) {
             if (techReportSaveButton.length) {
                 techReportSaveButton.hide();
                 techReportSaveButton.css('visibility', 'hidden');
             }
         }
 
-        if (isMonthlyTechnologicalApprover === false && isPowerUser === false) {
+        if (isMonthlyTechnologicalApprover === false /* && isPowerUser === false */) {
+            if ($('#tech-report-compose').length) {
+                $('#tech-report-compose').hide();
+            }
+
             if ($('#tech-report-approve').length) {
                 $('#tech-report-approve').hide();
             }
@@ -421,36 +513,32 @@ var unitGridsData = (function() {
                                 }
                                 return value;
                             });
-                        //var factoryName = response.factoryName;
-                        //    { "FactoryId": $('input[name=factories]').val() || $('input[name=factoriesD]').val() }
-                        //$.extend(result, setFactoryName(factoryName));
-                        //$.extend(result, setMonthValue());
-                        //$.extend(result, setMonthValueAsString());
-                        //$.extend(result, setCreatorName(response.creatorName));
-                        //$.extend(result, setOccupation(response.occupation));
-                        //$.extend(result, setDateOfCreation(response.dateOfCreation));
 
                         var editor = $("#report-details").data("kendoEditor");
                         editor.value(decodeURI(response.EditorContent));
 
-                        if (response.IsApproved) {
-                            setExportToPdfButtonsApproved();
+                        if (response.IsComposed === false && response.IsApproved === false) {
+                            setExportToPdfButtonsNotComposedNotApproved();
                         } else {
-                            if (response.IsValid === false) {
-                                hideExportToPdfButtons();
-                            } else {
-                                setExportToPdfButtonsValidButNotApproved();
+                            if (response.IsComposed === true) {
+                                setExportToPdfButtonsIsComposed();
+                            }
+                            if (response.IsApproved) {
+                                setExportToPdfButtonsIsApproved();
                             }
                         }
 
-                        setApproveSaveAndExportButtonsVisibilitty(response.isMonthlyTechnologicalReportWriter,
-                            response.isMonthlyTechnologicalApprover,
-                            response.isPowerUser);
+                        setApproveSaveAndExportButtonsVisibilitty(response.IsMonthlyTechnologicalReportWriter,
+                            response.IsMonthlyTechnologicalApprover,
+                            response.IsPowerUser);
+
                         var hiddenExportSettings = $('#export-data-settings');
                         if (hiddenExportSettings.length && pdfExportDetails) {
                             hiddenExportSettings.val(pdfExportDetails);
                         }
                     } else {
+                        hideExportToPdfButtons();
+
                         var errorMessage = "";
                         $.each(response.errors,
                             function(index, error) {
@@ -493,6 +581,11 @@ var unitGridsData = (function() {
             attachEventToExportBtn("#excel-export", "#tanks");
         }
 
+        var tanksStatusesGrid = $('#tanks-statuses').data('kendoGrid');
+        if (tanksStatusesGrid) {
+            attachEventToExportBtn("#excel-export", "#tanks-statuses");
+        }
+
         var monthlyHCGrid = $('#monthly-hc-units').data('kendoGrid');
         if (monthlyHCGrid) {
             attachEventToExportBtn("#excel-export", "#monthly-hc-units");
@@ -525,7 +618,7 @@ var unitGridsData = (function() {
 
         var technologicalReport = $('#technological-data').data('kendoGrid');
         if (technologicalReport) {
-            attachEventToExportBtn("#excel-export", "#technological-data");
+            attachEventToExportBtn("#excel-tech-report-export", "#technological-data");
         }
     }
 

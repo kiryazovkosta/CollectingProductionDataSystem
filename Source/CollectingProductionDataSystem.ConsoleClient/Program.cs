@@ -503,7 +503,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
 
             int test = 0;
 
-            var result = service.ProcessCalculatedUnits(unitConfigs, targerDay, 1, unitsTemp, ref test)
+            var result = service.ProcessCalculatedUnits(unitConfigs, targerDay, 1, unitsTemp, ref test, true)
                                 .Select(unitDataTemp => new UnitsData()
                                 {
                                     RecordTimestamp = unitDataTemp.RecordTimestamp,
