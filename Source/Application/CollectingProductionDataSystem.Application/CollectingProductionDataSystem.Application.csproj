@@ -170,8 +170,12 @@
     <Compile Include="MonthlyServices\UnitMonthlyCalculationIndicator.cs" />
     <Compile Include="MonthlyServices\UnitMothlyDataService.cs" />
     <Compile Include="MonthlyTechnologicalDataServices\IMonthlyTechnicalDataService.cs" />
+    <Compile Include="MonthlyTechnologicalDataServices\ITestMonthlyTechnologicalReportCalculationService.cs" />
     <Compile Include="MonthlyTechnologicalDataServices\MonthlyTechnicalReportDataDto.cs" />
     <Compile Include="MonthlyTechnologicalDataServices\MonthlyTechnicalDataService.cs" />
+    <Compile Include="MonthlyTechnologicalDataServices\MonthlyTechnologicalReportCalculationIndicator.cs" />
+    <Compile Include="MonthlyTechnologicalDataServices\MonthlyTechnologicalReportCalculationIndicatorComparer.cs" />
+    <Compile Include="MonthlyTechnologicalDataServices\TestMonthlyTechnologicalReportCalculationService.cs" />
     <Compile Include="PhdLogProxy\LoggerToLogAdapter.cs" />
     <Compile Include="ProductionDataServices\FormulaArguments.cs" />
     <Compile Include="ProductionDataServices\Functions.cs" />

@@ -30,6 +30,7 @@
     using System.Reflection;
     using log4net;
     using log4net.Core;
+    using System.Text;
 
     public class PhdPrimaryDataService : IPhdPrimaryDataService
     {
@@ -161,7 +162,7 @@
                     totalInsertedRecords += unitDatasToAdd.Count;
                 }
 
-                totalInsertedRecords += GetCalculatedUnits(targetShift, unitsConfigsList, targetRecordTimestampDate);
+                totalInsertedRecords += GetCalculatedUnits(targetShift, unitsConfigsList, targetRecordTimestampDate, false);
 
             }
             catch (Exception ex)
@@ -191,7 +192,7 @@
         /// <param name="unitsConfigsList">The units configs list.</param>
         /// <param name="targetRecordTimestampDate">The target record timestamp date.</param>
         /// <returns></returns>
-        private int GetCalculatedUnits(Shift targetShift, List<UnitConfig> unitsConfigsList, DateTime targetRecordTimestampDate)
+        private int GetCalculatedUnits(Shift targetShift, List<UnitConfig> unitsConfigsList, DateTime targetRecordTimestampDate, bool calculateDailyInfoRecord)
         {
             int totalInsertedRecords = 0;
             int expectedNumberOfRecords = 0;
@@ -202,7 +203,8 @@
                                                              targetRecordTimestampDate,
                                                              targetShift.Id,
                                                              unitsTempData,
-                                                             ref expectedNumberOfRecords);
+                                                             ref expectedNumberOfRecords,
+                                                             calculateDailyInfoRecord);
 
             realNumberOfRecords = calculatedUnitDatas.Count();
             LogConsistencyMessage("Processing Calculated Records", expectedNumberOfRecords, realNumberOfRecords);
@@ -235,7 +237,7 @@
             unitDatasToAdd = unitDatasToAdd ?? new List<UnitDatasTemp>();
             List<UnitDatasTemp> unitDatasToAddList = unitDatasToAdd.ToList();
 
-            var unitsConfigsList = this.data.UnitConfigs.All()
+            List<UnitConfig> unitsConfigsList = this.data.UnitConfigs.All()
                 .Include(x => x.RelatedUnitConfigs)
                 .Include(x => x.RelatedUnitConfigs.Select(y => y.UnitConfig))
                 .Include(x => x.RelatedUnitConfigs.Select(z => z.RelatedUnitConfig).Select(w => w.UnitDatasTemps))
@@ -276,7 +278,7 @@
                         unitDatasToAddList.AddRange(newRecords);
                         LogConsistencyMessage(new ProgressMessage("Processing Calculated By Automatic Records", realNumberOfRecords), expectedNumberOfRecords, realNumberOfRecords);
 
-                        newRecords = ProcessCalculatedUnits(unitsConfigsList, targetRecordTimestampDate, targetShift.Id, unitDatasToAddList, ref realNumberOfRecords);
+                        newRecords = ProcessCalculatedUnits(unitsConfigsList, targetRecordTimestampDate, targetShift.Id, unitDatasToAddList, ref realNumberOfRecords, false);
                         realNumberOfRecords = newRecords.Count();
                         unitDatasToAddList.AddRange(newRecords);
                         LogConsistencyMessage(new ProgressMessage("Processing Calculated By Automatic Records", realNumberOfRecords), expectedNumberOfRecords, realNumberOfRecords);
@@ -349,19 +351,36 @@
         public void FinalizeShiftObservation(DateTime targetRecordTimestamp, Shift targetShift)
         {
             int expectedNumberOfRecords = 0;
+            var message = new StringBuilder();
 
-            var additionalRecords = CreateMissingRecords(targetRecordTimestamp, targetShift, ref expectedNumberOfRecords);
+            var additionalRecords = CreateMissingRecords(targetRecordTimestamp, targetShift, ref expectedNumberOfRecords, false);
             if (additionalRecords.Count() > 0)
             {
                 this.data.UnitDatasTemps.BulkInsert(additionalRecords, "Phd2SqlLoader");
                 LogConsistencyMessage("Added Missing Records", additionalRecords.Count(), additionalRecords.Count());
-                this.mailer.SendMail(string.Format("Successfully Added Missing {0} records to database", additionalRecords.Count()), "SAPO - Shift data");
+                message.AppendLine(string.Format("Successfully Added Missing {0} records to database.<br/>", additionalRecords.Count()));
+            }
+
+            bool calculateDailyInfoRecords = true;
+            List<UnitConfig> unitsConfigsList = this.data.UnitConfigs.All().ToList();
+            int dailyInfoRecords = GetCalculatedUnits(targetShift, unitsConfigsList, targetRecordTimestamp, calculateDailyInfoRecords);
+            if (dailyInfoRecords > 0)
+            {
+                message.AppendLine(string.Format("Successfully Added DailyInfo {0} records to database.<br/>", dailyInfoRecords));
+            }
+
+            var extraAdditionalRecords = CreateMissingRecords(targetRecordTimestamp, targetShift, ref expectedNumberOfRecords, true);
+            if (extraAdditionalRecords.Count() > 0)
+            {
+                this.data.UnitDatasTemps.BulkInsert(extraAdditionalRecords, "Phd2SqlLoader");
+                LogConsistencyMessage("Added Missing Records", extraAdditionalRecords.Count(), extraAdditionalRecords.Count());
+                message.AppendLine(string.Format("Successfully Added Missing {0} records to database.<br/>", extraAdditionalRecords.Count()));
             }
 
             var addedRecords = this.FlashDataToOriginalUnitData();
             LogConsistencyMessage("Finally Flashed Records To Units Data", expectedNumberOfRecords, addedRecords);
-            this.mailer.SendMail(string.Format("Successfully Finally Flashed {0} records to UnitsData", addedRecords), "SAPO - Shift data");
-
+            message.AppendLine(string.Format("Successfully Finally Flashed {0} records to UnitsData.<br/>", addedRecords));
+            this.mailer.SendMail(message.ToString(), "SAPO - Shift data");
         }
 
         /// <summary>
@@ -374,19 +393,27 @@
         private IEnumerable<UnitDatasTemp> CreateMissingRecords(
             DateTime targetRecordTimestamp,
             Shift shift,
-            ref int expectedNumberOfRecords)
+            ref int expectedNumberOfRecords,
+            bool generateDailyInfoRecords)
         {
-            var unitsConfigsList = this.data.UnitConfigs.All().ToList();
-            var unitDatas = this.data.UnitDatasTemps.All().ToDictionary(x => x.UnitConfigId);
-            var targetDate = targetRecordTimestamp.Date;
-            var confidense = 0;
+            List<UnitConfig> unitsConfigsList = this.data.UnitConfigs.All().ToList();
+            Dictionary<int, UnitDatasTemp> unitDatas = this.data.UnitDatasTemps.All().ToDictionary(x => x.UnitConfigId);
+            DateTime targetDate = targetRecordTimestamp.Date;
+            int confidense = 0;
             var result = new List<UnitDatasTemp>();
 
             foreach (var position in unitsConfigsList)
             {
                 if (!unitDatas.ContainsKey(position.Id))
                 {
+                    if (generateDailyInfoRecords == false && position.ShiftProductTypeId == CommonConstants.DailyInfoDailyInfoHydrocarbonsShiftTypeId)
+                    {
+                        logger.Info($"SKIP DAILY MISSING POSITION {position.Code} {position.Name}");
+                        continue;    
+                    }
+
                     result.Add(this.SetDefaultUnitsDataValue(targetDate, shift.Id, position, confidense));
+                    logger.Info($"CREATE MISSING POSITION {position.Code} {position.Name}");
                 }
             }
 
@@ -450,7 +477,6 @@
             else
             {
                 logger.InfoFormat("\tOn step {0}: \n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tExpected number of records: {1} \n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tThe number of the generated records:{2}", stepName, expectedRecordsCount, generatedRecordsCount);
-
             }
         }
 
@@ -458,11 +484,22 @@
         public IEnumerable<UnitDatasTemp> ProcessCalculatedUnits(List<UnitConfig> unitsConfigsList,
                                                                     DateTime recordDataTime,
                                                                     int shift, List<UnitDatasTemp> unitsTempData,
-                                                                    ref int expectedNumberOfRecords)
+                                                                    ref int expectedNumberOfRecords,
+                                                                    bool calculateDailyInfoRecord)
         {
             var currentUnitDatas = new Dictionary<int, UnitDatasTemp>();
+            logger.Info($"CALCULATE DAILY INFO RECORD: {calculateDailyInfoRecord}");
 
             var observedUnitConfigs = unitsConfigsList.Where(x => x.CollectingDataMechanism == "C");
+            if (calculateDailyInfoRecord == true)
+            {
+                observedUnitConfigs = observedUnitConfigs.Where(x => x.ShiftProductTypeId == CommonConstants.DailyInfoDailyInfoHydrocarbonsShiftTypeId).ToList();
+                logger.Info($"OBSERED UNIT CONFIG: {observedUnitConfigs.Count()}");
+            }
+            else
+            {
+                observedUnitConfigs = observedUnitConfigs.Where(x => x.ShiftProductTypeId != CommonConstants.DailyInfoDailyInfoHydrocarbonsShiftTypeId).ToList();
+            }
 
             expectedNumberOfRecords = observedUnitConfigs.Count();
 
@@ -472,7 +509,7 @@
                 {
                     if (unitConfig.CalculatedFormula.Equals("C9"))
                     {
-                        this.logger.ErrorFormat("Id {0} calculate by math expression", unitConfig.Id);
+                        //this.logger.ErrorFormat("Id {0} calculate by math expression", unitConfig.Id);
                         CalculateByMathExpression(unitConfig, recordDataTime, shift, unitsTempData, currentUnitDatas);
                     }
                     else
@@ -489,16 +526,16 @@
                         arguments.Code = unitConfig.Code;
                         //arguments.UnitConfigId = unitConfig.Id;
 
-                        var relatedUnitConfigs = unitConfig.RelatedUnitConfigs.ToList();
-                        var confidence = 100;
-                        var allRelatedUnitDataExsists = true;
+                        List<RelatedUnitConfigs> relatedUnitConfigs = unitConfig.RelatedUnitConfigs.ToList();
+                        int confidence = 100;
+                        bool allRelatedUnitDataExsists = true;
 
                         foreach (var relatedUnitConfig in relatedUnitConfigs)
                         {
                             if (allRelatedUnitDataExsists == true)
                             {
-                                var parameterType = relatedUnitConfig.RelatedUnitConfig.AggregateGroup;
-                                var element = unitsTempData
+                                string parameterType = relatedUnitConfig.RelatedUnitConfig.AggregateGroup;
+                                UnitDatasTemp element = unitsTempData
                                     .Where(x => x.RecordTimestamp == recordDataTime)
                                     .Where(x => x.ShiftId == shift)
                                     .Where(x => x.UnitConfigId == relatedUnitConfig.RelatedUnitConfigId)
@@ -510,26 +547,21 @@
                                     {
                                         element = currentUnitDatas[relatedUnitConfig.RelatedUnitConfigId];
                                     }
-
                                 }
 
-                                if (element != null)
+                                if (element != null || unitConfig.ShiftProductTypeId == CommonConstants.DailyInfoDailyInfoHydrocarbonsShiftTypeId)
                                 {
-                                    var inputValue = element.RealValue;
-
-                                    if (element.Confidence != 100)
-                                    {
-                                        confidence = element.Confidence;
-                                    }
+                                    double inputValue = element?.RealValue ?? 0;
+                                    confidence = element?.Confidence ?? 0;
 
                                     if (parameterType == "I+")
                                     {
-                                        var exsistingValue = arguments.InputValue.HasValue ? arguments.InputValue.Value : 0.0;
+                                        double exsistingValue = arguments.InputValue.HasValue ? arguments.InputValue.Value : 0.0;
                                         arguments.InputValue = exsistingValue + inputValue;
                                     }
                                     if (parameterType == "I-")
                                     {
-                                        var exsistingValue = arguments.InputValue.HasValue ? arguments.InputValue.Value : 0.0;
+                                        double exsistingValue = arguments.InputValue.HasValue ? arguments.InputValue.Value : 0.0;
                                         arguments.InputValue = exsistingValue - inputValue;
                                     }
                                     else if (parameterType == "T")
@@ -563,7 +595,7 @@
                         if (allRelatedUnitDataExsists == true)
                         {
                             var calculator = new ProductionDataCalculatorService(this.data);
-                            var result = calculator.Calculate(formulaCode, arguments);
+                            double result = calculator.Calculate(formulaCode, arguments);
 
                             if (!unitsTempData.Where(x => x.RecordTimestamp == recordDataTime && x.ShiftId == shift && x.UnitConfigId == unitConfig.Id).Any())
                             {
@@ -581,10 +613,19 @@
                                                             Value = (double.IsNaN(result) || double.IsInfinity(result)) ? 0.0m : (decimal)result,
                                                             Confidence = confidence
                                                         });
+                                if (unitConfig.ShiftProductTypeId == CommonConstants.DailyInfoDailyInfoHydrocarbonsShiftTypeId)
+                                {
+                                    logger.Info($"DAILY SUCCESS CALCULATION: {unitConfig.Code} {unitConfig.Name}");
+                                }
                             }
                         }
-
-
+                        else
+                        {
+                            if (unitConfig.ShiftProductTypeId == CommonConstants.DailyInfoDailyInfoHydrocarbonsShiftTypeId)
+                            {
+                                logger.Error($"DAILY ERROR CALCULATION: {unitConfig.Code} {unitConfig.Name}");
+                            }
+                        }
                     }
                 }
                 catch (Exception ex)
@@ -622,8 +663,8 @@
                                   .FirstOrDefault();
                     if (element != null)
                     {
-                        this.logger.ErrorFormat("Id {0} EXSIST RELATED CONFIG {1}", element.UnitConfigId, element.RealValue);
-                        var inputValue = element.RealValue;
+                        //this.logger.ErrorFormat("Id {0} EXSIST RELATED CONFIG {1}", element.UnitConfigId, element.RealValue);
+                        double inputValue = element.RealValue;
                         if (inputValue == 0.0)
                         {
                             if (calculatedUnitsData.ContainsKey(relatedunitConfig.RelatedUnitConfigId))
@@ -648,7 +689,7 @@
                     }
                     else
                     {
-                        this.logger.ErrorFormat("Id {0} MISSING RELATED CONFIG {1}", relatedunitConfig.RelatedUnitConfigId, relatedunitConfig.RelatedUnitConfig.Code);
+                        //this.logger.ErrorFormat("Id {0} MISSING RELATED CONFIG {1}", relatedunitConfig.RelatedUnitConfigId, relatedunitConfig.RelatedUnitConfig.Code);
                         allRelatedRecordsExists = false;
                     }
                 }
@@ -882,7 +923,8 @@
 
                             using (PHDHistorian oPhdOld = new PHDHistorian())
                             {
-                                using (PHDServer defaultServer = new PHDServer("srv-vm-mes-phd"))
+                                //using (PHDServer defaultServer = new PHDServer("srv-vm-mes-phd"))
+                                using (PHDServer defaultServer = new PHDServer("10.94.0.213"))
                                 {
                                     SetPhdConnectionSettings(oPhdOld, defaultServer, targetRecordTimestamp, shiftData);
                                     var recordTimestamp = new DateTime(2016, 1, 1, 1, 0, 0);
@@ -916,7 +958,8 @@
 
                             using (PHDHistorian oPhdNew = new PHDHistorian())
                             {
-                                using (PHDServer defaultServer = new PHDServer("phd-l35-1"))
+                                //using (PHDServer defaultServer = new PHDServer("phd-l35-1"))
+                                using (PHDServer defaultServer = new PHDServer("10.94.0.195"))
                                 {
                                     SetPhdConnectionSettings(oPhdNew, defaultServer, targetRecordTimestamp, shiftData);
 
@@ -1262,7 +1305,7 @@
                     }
                 }
 
-                var currentTimestamp = new DateTime(2016, 1, 1, 1, 0, 0);
+                var currentTimestamp = new DateTime(year: 2016, month: 1, day: 1, hour: 1, minute: 0, second: 0);
                 var currentValue = row.IsNull("Value") ? 0 : Convert.ToInt64(row["Value"]);
                 var currentConfidence = row.IsNull("Confidence") ? 0 : Convert.ToInt32(row["Confidence"]);
                 if (!row.IsNull("Timestamp")) { currentTimestamp = Convert.ToDateTime(row["Timestamp"]); }
@@ -1360,6 +1403,7 @@
                 if (!unitDatas.ContainsKey(position.Id))
                 {
                     result.Add(this.SetDefaultUnitsDataValue(targetDate, shift.Id, position, confidense));
+                    logger.Info($"CREATE MISSING POSITION WITHOUT CHECK {position.Code} {position.Name}");
                 }
             }
 

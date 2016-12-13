@@ -16,6 +16,7 @@
     using Constants;
     using System.Data.SqlClient;
     using Models.Productions.Mounthly;
+    using Models.Productions.Technological;
 
     public class ApprovedDataController : AreaBaseController
     {
@@ -43,6 +44,13 @@
         [HttpPost]
         [ValidateAntiForgeryToken]
         public JsonResult MonthlyIndex()
+        {
+            return Json(DateTime.Now);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public JsonResult TechMonthIndex()
         {
             return Json(DateTime.Now);
         }
@@ -292,14 +300,64 @@
             }
         }
 
+        public ActionResult UnlockMonthlyTechnologicalReport(int? factoryId, DateTime? month)
+        {
+            if (!factoryId.HasValue)
+            {
+                this.ModelState.AddModelError(key: "", errorMessage: "Не е избрано производство");
+            }
+
+            if (!month.HasValue)
+            {
+                this.ModelState.AddModelError(key: "", errorMessage: "Не е избран месец");
+            }
+
+            if (this.ModelState.IsValid)
+            {
+                //var lastDayInMonth = new DateTime(month.Value.Year, month.Value.Month, DateTime.DaysInMonth(month.Value.Year, month.Value.Month));
+
+                MonthlyTechnologicalReportsData approvedMonthlyTechReport = this.data.MonthlyTechnologicalReportsDatas
+                    .All()
+                    .FirstOrDefault(x => x.FactoryId == factoryId
+                    && x.Month == month
+                    && x.IsComposed == true
+                    );
+
+                if (approvedMonthlyTechReport != null)
+                {
+                    approvedMonthlyTechReport.IsComposed = false;
+                    approvedMonthlyTechReport.ComposedBy = null;
+                    approvedMonthlyTechReport.ComposedOn = null;
+                    approvedMonthlyTechReport.IsApproved = false;
+                    approvedMonthlyTechReport.ApprovedBy = null;
+                    approvedMonthlyTechReport.ApprovedOn = null;
+
+                    this.data.MonthlyTechnologicalReportsDatas.Update(approvedMonthlyTechReport);
+                    IEfStatus status = data.SaveChanges(this.UserProfile.UserName);
+                    return Json(new { IsUnlocked = status.IsValid }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    this.ModelState.AddModelError(key: "", errorMessage: "Технологичният отчет по избраните параметри не е съставен или утвърден!");
+                    Response.StatusCode = (int) HttpStatusCode.BadRequest;
+                    List<string> errors = GetErrorListFromModelState(ModelState);
+                    return Json(new { data = new { errors = errors } }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            else
+            {
+                Response.StatusCode = (int) HttpStatusCode.BadRequest;
+                List<string> errors = GetErrorListFromModelState(ModelState);
+                return Json(new { data = new { errors = errors } }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
         private List<string> GetErrorListFromModelState(ModelStateDictionary modelState)
         {
-            var query = from state in modelState.Values
+            IEnumerable<string> query = from state in modelState.Values
                         from error in state.Errors
                         select error.ErrorMessage;
-
-            var errorList = query.ToList();
-            return errorList;
+            return query.ToList();
         }
     }
 }

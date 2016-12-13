@@ -25,6 +25,7 @@
         private readonly IProductionData data;
         private readonly IKernel kernel;
         private readonly ICalculatorService calculator;
+        private readonly ITestMonthlyTechnologicalReportCalculationService testCalulation;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MonthlyTechnicalDataService" /> class.
@@ -33,11 +34,16 @@
         /// <param name="dataParam">The data parameter.</param>
         /// <param name="kernelParam">The kernel parameter.</param>
         /// <param name="calculatorParam">The calculator parameter.</param>
-        public MonthlyTechnicalDataService(IProductionData dataParam, IKernel kernelParam, ICalculatorService calculatorParam)
+        public MonthlyTechnicalDataService(
+            IProductionData dataParam, 
+            IKernel kernelParam, 
+            ICalculatorService calculatorParam,
+            ITestMonthlyTechnologicalReportCalculationService testCalculatorParam)
         {
             this.data = dataParam;
             this.kernel = kernelParam;
             this.calculator = calculatorParam;
+            this.testCalulation = testCalculatorParam;
         }
 
         /// <summary>
@@ -48,13 +54,41 @@
         /// <returns></returns>
         public IEnumerable<MonthlyTechnicalReportDataDto> ReadMonthlyTechnologicalDataAsync(DateTime month, int[] processUnits)
         {
-            var monthDate = new DateTime(month.Year, month.Month, DateTime.DaysInMonth(month.Year, month.Month), 0, 0, 0);
-            var firstDayInMonth = new DateTime(month.Year, month.Month, 1, 0, 0, 0);
+            var monthDate = new DateTime(month.Year, month.Month, DateTime.DaysInMonth(month.Year, month.Month), hour: 0, minute: 0, second: 0);
+            var firstDayInMonth = new DateTime(month.Year, month.Month, day: 1, hour: 0, minute: 0, second: 0);
 
             bool exsistingDataForTheMonth = this.data.UnitTechnologicalMonthlyDatas.All().Where(x => x.RecordTimestamp == monthDate).Any();
-            if (!exsistingDataForTheMonth)
+            if (!exsistingDataForTheMonth
+                && this.testCalulation.TryBeginCalculation(new MonthlyTechnologicalReportCalculationIndicator(monthDate)))
             {
-                GenerateTechnologicalData(monthDate, firstDayInMonth);
+                Exception exc = null;
+                try
+                {
+                    GenerateTechnologicalData(monthDate, firstDayInMonth);
+                }
+                catch (Exception ex)
+                {
+                    exc = ex;
+                }
+                finally
+                {
+                    int ix = 0;
+                    while (!(this.testCalulation.EndCalculation(new MonthlyTechnologicalReportCalculationIndicator(monthDate)) || ix == 10))
+                    {
+                        ix++;
+                    }
+
+                    if (ix >= 10)
+                    {
+                        string message = $"Cannot clear record for begun Monthly Technological Report Calculation For {monthDate}";
+                        exc = new InvalidOperationException();
+                    }
+
+                    if (exc != null)
+                    {
+                        throw exc;
+                    }
+                }
             }
 
             IEnumerable<MonthlyTechnicalReportDataDto> result = ReadMonthlyTechnologicalData(monthDate, processUnits);

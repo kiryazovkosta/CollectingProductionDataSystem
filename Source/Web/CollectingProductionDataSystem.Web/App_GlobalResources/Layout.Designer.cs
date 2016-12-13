@@ -250,6 +250,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Approve.
+        /// </summary>
+        public static string Approve {
+            get {
+                return ResourceManager.GetString("Approve", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Area.
         /// </summary>
         public static string Area {
@@ -723,6 +732,15 @@ namespace App_GlobalResources.Resources {
         public static string CollectingDataMechanism {
             get {
                 return ResourceManager.GetString("CollectingDataMechanism", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Compose.
+        /// </summary>
+        public static string Compose {
+            get {
+                return ResourceManager.GetString("Compose", resourceCulture);
             }
         }
         

@@ -65,7 +65,7 @@
         })
     .Pageable(pageable => pageable
         .Refresh(true)
-        .PageSizes(new[] { 10, 20, 50, 100 })
+        .PageSizes(new[] { 10, 20, 50, 100, 200 })
         .ButtonCount(5)
     )
     .Sortable()
@@ -80,7 +80,7 @@
     .Filterable()
     .DataSource(dataSource => dataSource
         .Ajax()
-        .PageSize(100)
+        .PageSize(200)
         .ServerOperation(true)
         .Group(group => group.Add(c => c.UnitConfig.ShiftProductType.Sort))
         .Read(read => read.Action("ReadUnitsData", "Units", new { area = "ShiftReporting" }).Data("unitGridsData.SendDate"))

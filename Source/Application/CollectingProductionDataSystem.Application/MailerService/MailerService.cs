@@ -78,6 +78,7 @@
             MailMessage mailMessage = new MailMessage(this.From, this.To, title, message);
             SmtpClient client = new SmtpClient(this.smtpServer);
             client.UseDefaultCredentials = true;
+            mailMessage.IsBodyHtml = true;
             try
             {
                 client.Send(mailMessage);
