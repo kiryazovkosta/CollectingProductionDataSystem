@@ -115,8 +115,10 @@ var pdfPageSetup = (function() {
 
         }
 
+        var testRect = new geom.Rect([0, 0], [200, 100]);
         // Fit the content in the available space
-        draw.fit(content, pg.contentRect);
+        draw.fit(content, testRect);
+        //draw.fit(content, pg.contentRect);
 
         page.append(header, content, footer);
 
