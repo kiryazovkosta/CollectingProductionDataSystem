@@ -9,6 +9,8 @@
 @{
     Layout = "~/Views/Shared/_KendoLayoutWithSideBar.cshtml";
 }
+
+
 <div class="content-wrapper">
     @Html.Partial("_ExportDataSettings")
 
@@ -31,14 +33,16 @@
           .Tools(tools => tools
               .CustomTemplate(ct => ct.Template("<button id='editor-save-changes' class='btn btn-info'><span class='glyphicon glyphicon-floppy-disk'></span>Запази</button>"))
           )
+          //.StyleSheets(st=>st.Add("../../Content/custom/export-style.css"))
           .Pdf(pdf =>
           {
               pdf.AllPages();
               pdf.PaperSize("A4");
               pdf.Margin("1cm", "1cm", "2cm", "2cm");
+              pdf.RepeatHeaders();
           })
           .Value("")
-          )
+    )
 
     @(Html.Kendo()
           .Grid<MonthlyTechnicalViewModel>()
@@ -119,7 +123,7 @@
                   events.Error("kendoAdditional.ErrorHandler");
               })
           )
-          )
+    )
 </div>
 @* //Error window for kendo grid error event handler *@
 <div id="err-window" style="display:none"> @Html.Partial("_KendoGridErrorWindow") </div>
@@ -134,6 +138,8 @@
     <script>
         $(function () {
             $("#export-pdf").click(function () {
+                var gridsInEditor = $('td.k-editable-area').find("iframe").contents().find("table");
+                pdfPageSetup.resizeGrids(gridsInEditor);
                 var exportData = pdfPageSetup.GetPdfExportData("#export-data-settings");
                 var grid = $("#technological-data").data("kendoGrid");
                 var editor = $("#report-details").data("kendoEditor");
