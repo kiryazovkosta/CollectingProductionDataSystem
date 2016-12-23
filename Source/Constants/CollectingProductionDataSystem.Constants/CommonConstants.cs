@@ -46,7 +46,7 @@ namespace CollectingProductionDataSystem.Constants
         private static readonly int electricalEnergy = 6;
 
         private static readonly int chemicalClearedWater = 7;
-        
+
         private static readonly int air = 8;
 
         private static readonly int nitrogen = 9;

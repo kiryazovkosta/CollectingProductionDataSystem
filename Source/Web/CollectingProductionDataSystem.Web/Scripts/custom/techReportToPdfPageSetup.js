@@ -31,14 +31,14 @@ var pdfPageSetup = (function() {
 
         var pageRect;
         switch (pageSize) {
-        case 'A4':
-            pageRect = A4pageRectangle;
-            break;
-        case 'A3':
-            pageRect = A3pageRectangle;
-            break;
-        default:
-            pageRect = A4pageRectangle;
+            case 'A4':
+                pageRect = A4pageRectangle;
+                break;
+            case 'A3':
+                pageRect = A3pageRectangle;
+                break;
+            default:
+                pageRect = A4pageRectangle;
         }
         var contentRect = new geom.Rect(
             [margins.Left, margins.Top + headerHeight + LINE_SPACING],
@@ -592,8 +592,24 @@ var pdfPageSetup = (function() {
         return result;
     }
 
+    function resizeGrids(grids) {
+        $(grids).each(function (index, element) {
+            var table  = $(element);
+            var fontSize = parseInt(table.css("font-size"));
+            while (table.width() > mm(180) && (fontSize > 6)) {
+                fontSize -= 1;
+                var strFontSize = fontSize + "px";
+                table.css("font-size", strFontSize);
+                console.log(table.width());
+            }
+
+            table.width(508);
+        })
+    }
+
     return {
         FormatPage: formatPage,
-        GetPdfExportData: getPdfExportData
+        GetPdfExportData: getPdfExportData,
+        resizeGrids: resizeGrids
     }
 }());
