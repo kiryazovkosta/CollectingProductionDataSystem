@@ -90,7 +90,7 @@
             Configuration configuration = ConfigurationManager.OpenExeConfiguration(exeFileName);
             ConfigurationSectionGroup appSettingsGroup = configuration.GetSectionGroup("applicationSettings");
             ConfigurationSection appSettingsSection = appSettingsGroup.Sections[0];
-            ClientSettingsSection settings = appSettingsSection as ClientSettingsSection;
+            var settings = appSettingsSection as ClientSettingsSection;
             int expectedNumberOfRecords = 0;
             int realNumberOfRecords = 0;
             var unitDatasToAdd = new List<UnitDatasTemp>();
@@ -133,22 +133,22 @@
                         newRecords = ProcessManualUnits(unitsConfigsList, targetRecordTimestampDate, targetShift.Id, unitsData, ref expectedNumberOfRecords);
                         realNumberOfRecords = newRecords.Count();
                         unitDatasToAdd.AddRange(newRecords);
-                        LogConsistencyMessage("Processing Manual Units Records", expectedNumberOfRecords, realNumberOfRecords);
+                        LogConsistencyMessage(stepName: "Processing Manual Units Records", expectedRecordsCount: expectedNumberOfRecords, generatedRecordsCount: realNumberOfRecords);
 
                         newRecords = ProcessCalculatedByAutomaticUnits(unitsConfigsList, oPhd, targetRecordTimestampDate, targetShift, unitsData, ref expectedNumberOfRecords);
                         realNumberOfRecords = newRecords.Count();
                         unitDatasToAdd.AddRange(newRecords);
-                        LogConsistencyMessage("Processing Calculated By Automatic Records", expectedNumberOfRecords, realNumberOfRecords);
+                        LogConsistencyMessage(stepName: "Processing Calculated By Automatic Records", expectedRecordsCount: expectedNumberOfRecords, generatedRecordsCount: realNumberOfRecords);
                     }
                 }
             }
             catch (Exception ex)
             {
                 logger.Error(ex.Message + ex.StackTrace);
-                mailer.SendMail(ex.Message + ex.StackTrace, "Phd2Interface Error");
+                mailer.SendMail(ex.Message + ex.StackTrace, title: "Phd2Interface Error");
             }
 
-            var totalInsertedRecords = 0;
+            int totalInsertedRecords = 0;
             saveChangesTimer.Start();
             // persisting received data and incorporate the data with records get from second PHD
 
@@ -156,13 +156,13 @@
             {
                 if (unitDatasToAdd.Count > 0)
                 {
-                    this.data.UnitDatasTemps.BulkInsert(unitDatasToAdd, "Phd2SqlLoader");
-                    this.data.SaveChanges("Phd2SqlLoader");
+                    this.data.UnitDatasTemps.BulkInsert(unitDatasToAdd, CommonConstants.Phd2SqlDefaultUserName);
+                    this.data.SaveChanges(CommonConstants.Phd2SqlDefaultUserName);
 
                     totalInsertedRecords += unitDatasToAdd.Count;
                 }
 
-                totalInsertedRecords += GetCalculatedUnits(targetShift, unitsConfigsList, targetRecordTimestampDate, false);
+                totalInsertedRecords += GetCalculatedUnits(targetShift, unitsConfigsList, targetRecordTimestampDate, calculateDailyInfoRecord: false);
 
             }
             catch (Exception ex)
@@ -176,11 +176,11 @@
 
             saveChangesTimer.Stop();
             timer.Stop();
-            logger.InfoFormat("\tEstimated time for data fetching: {0} s", timer.Elapsed - saveChangesTimer.Elapsed);
-            logger.InfoFormat("\tEstimated time for Iteration result saving: {0} s", saveChangesTimer.Elapsed);
-            logger.InfoFormat("\tTotal Estimated time for Iteration: {0} s", timer.Elapsed);
-            logger.InfoFormat("\tTotal number of persisted records: {0}", totalInsertedRecords);
-            logger.InfoFormat("-------------------------------------------------------  End Interface Iteration For {0} Shift {1} -------------------------------------------------------- ", dataSource.ToString(), targetShift.Id);
+            logger.InfoFormat(format: "\tEstimated time for data fetching: {0} s", arg0: timer.Elapsed - saveChangesTimer.Elapsed);
+            logger.InfoFormat(format: "\tEstimated time for Iteration result saving: {0} s", arg0: saveChangesTimer.Elapsed);
+            logger.InfoFormat(format: "\tTotal Estimated time for Iteration: {0} s", arg0: timer.Elapsed);
+            logger.InfoFormat(format: "\tTotal number of persisted records: {0}", arg0: totalInsertedRecords);
+            logger.InfoFormat(format: "-------------------------------------------------------  End Interface Iteration For {0} Shift {1} -------------------------------------------------------- ", arg0: dataSource.ToString(), arg1: targetShift.Id);
 
             return totalInsertedRecords;
         }
@@ -197,22 +197,24 @@
             int totalInsertedRecords = 0;
             int expectedNumberOfRecords = 0;
             int realNumberOfRecords = 0;
-            var unitsTempData = this.data.UnitDatasTemps.All().Where(x => x.RecordTimestamp == targetRecordTimestampDate && x.ShiftId == targetShift.Id).ToList();
-
-            var calculatedUnitDatas = ProcessCalculatedUnits(unitsConfigsList,
-                                                             targetRecordTimestampDate,
-                                                             targetShift.Id,
-                                                             unitsTempData,
-                                                             ref expectedNumberOfRecords,
-                                                             calculateDailyInfoRecord);
+            List<UnitDatasTemp> unitsTempData = this.data.UnitDatasTemps.All()
+                .Where(x => x.RecordTimestamp == targetRecordTimestampDate 
+                && x.ShiftId == targetShift.Id
+                ).ToList();
+            IEnumerable<UnitDatasTemp> calculatedUnitDatas = ProcessCalculatedUnits(unitsConfigsList,
+                targetRecordTimestampDate,
+                targetShift.Id,
+                unitsTempData,
+                ref expectedNumberOfRecords,
+                calculateDailyInfoRecord);
 
             realNumberOfRecords = calculatedUnitDatas.Count();
-            LogConsistencyMessage("Processing Calculated Records", expectedNumberOfRecords, realNumberOfRecords);
+            LogConsistencyMessage(stepName: "Processing Calculated Records", expectedRecordsCount: expectedNumberOfRecords, generatedRecordsCount: realNumberOfRecords);
 
             if (calculatedUnitDatas.Count() > 0)
             {
-                this.data.UnitDatasTemps.BulkInsert(calculatedUnitDatas, "Phd2SqlLoader");
-                this.data.SaveChanges("Phd2SqlLoader");
+                this.data.UnitDatasTemps.BulkInsert(calculatedUnitDatas, CommonConstants.Phd2SqlDefaultUserName);
+                this.data.SaveChanges(CommonConstants.Phd2SqlDefaultUserName);
 
                 totalInsertedRecords += calculatedUnitDatas.Count();
             }
@@ -242,7 +244,7 @@
                 .Include(x => x.RelatedUnitConfigs.Select(y => y.UnitConfig))
                 .Include(x => x.RelatedUnitConfigs.Select(z => z.RelatedUnitConfig).Select(w => w.UnitDatasTemps))
                 .Where(x => x.DataSource == dataSource).ToList();
-            var targetRecordTimestampDate = targetRecordTimestamp.Date;
+            DateTime targetRecordTimestampDate = targetRecordTimestamp.Date;
 
             try
             {
@@ -356,7 +358,7 @@
             var additionalRecords = CreateMissingRecords(targetRecordTimestamp, targetShift, ref expectedNumberOfRecords, false);
             if (additionalRecords.Count() > 0)
             {
-                this.data.UnitDatasTemps.BulkInsert(additionalRecords, "Phd2SqlLoader");
+                this.data.UnitDatasTemps.BulkInsert(additionalRecords, CommonConstants.Phd2SqlDefaultUserName);
                 LogConsistencyMessage("Added Missing Records", additionalRecords.Count(), additionalRecords.Count());
                 message.AppendLine(string.Format("Successfully Added Missing {0} records to database.<br/>", additionalRecords.Count()));
             }
@@ -372,7 +374,7 @@
             var extraAdditionalRecords = CreateMissingRecords(targetRecordTimestamp, targetShift, ref expectedNumberOfRecords, true);
             if (extraAdditionalRecords.Count() > 0)
             {
-                this.data.UnitDatasTemps.BulkInsert(extraAdditionalRecords, "Phd2SqlLoader");
+                this.data.UnitDatasTemps.BulkInsert(extraAdditionalRecords, CommonConstants.Phd2SqlDefaultUserName);
                 LogConsistencyMessage("Added Missing Records", extraAdditionalRecords.Count(), extraAdditionalRecords.Count());
                 message.AppendLine(string.Format("Successfully Added Missing {0} records to database.<br/>", extraAdditionalRecords.Count()));
             }
@@ -449,7 +451,7 @@
                     }
 
                     resultNumberOfRecords = preparedUnitsData.Count();
-                    this.data.UnitsData.BulkInsert(preparedUnitsData, "Phd2SqlLoader");
+                    this.data.UnitsData.BulkInsert(preparedUnitsData, CommonConstants.Phd2SqlDefaultUserName);
                     this.data.DbContext.DbContext.Database.ExecuteSqlCommand("TRUNCATE TABLE [UnitDataTemporaryRecords]");
                     transaction.Complete();
                 }
@@ -507,7 +509,7 @@
             {
                 try
                 {
-                    if (unitConfig.CalculatedFormula.Equals("C9"))
+                    if (unitConfig.CalculatedFormula.Equals(value: "C9"))
                     {
                         //this.logger.ErrorFormat("Id {0} calculate by math expression", unitConfig.Id);
                         CalculateByMathExpression(unitConfig, recordDataTime, shift, unitsTempData, currentUnitDatas);
@@ -632,7 +634,7 @@
                 {
                     var errorMessage = string.Format("UnitConfigId: {0} \n [{1} \n {2}]", unitConfig.Id, ex.Message, ex.ToString());
                     this.logger.ErrorFormat(errorMessage);
-                    this.mailer.SendMail(errorMessage, "Phd2Interface Error");
+                    this.mailer.SendMail(errorMessage, title: "Phd2Interface Error");
                 }
             }
 
@@ -923,8 +925,7 @@
 
                             using (PHDHistorian oPhdOld = new PHDHistorian())
                             {
-                                //using (PHDServer defaultServer = new PHDServer("srv-vm-mes-phd"))
-                                using (PHDServer defaultServer = new PHDServer("10.94.0.213"))
+                                using (PHDServer defaultServer = new PHDServer("srv-vm-mes-phd"))
                                 {
                                     SetPhdConnectionSettings(oPhdOld, defaultServer, targetRecordTimestamp, shiftData);
                                     var recordTimestamp = new DateTime(2016, 1, 1, 1, 0, 0);
@@ -958,8 +959,7 @@
 
                             using (PHDHistorian oPhdNew = new PHDHistorian())
                             {
-                                //using (PHDServer defaultServer = new PHDServer("phd-l35-1"))
-                                using (PHDServer defaultServer = new PHDServer("10.94.0.195"))
+                                using (PHDServer defaultServer = new PHDServer("phd-l35-1"))
                                 {
                                     SetPhdConnectionSettings(oPhdNew, defaultServer, targetRecordTimestamp, shiftData);
 
@@ -1502,6 +1502,8 @@
                                     oPhd.Sampletype = SAMPLETYPE.Raw;
                                     oPhd.MinimumConfidence = 100;
                                     oPhd.MaximumRows = 1;
+
+
 
                                     var tanksDataList = new List<TankData>();
 

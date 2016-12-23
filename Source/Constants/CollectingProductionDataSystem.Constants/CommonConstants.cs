@@ -73,6 +73,8 @@ namespace CollectingProductionDataSystem.Constants
 
         private static readonly int?[] materialTypechemicalType = new int?[] { MaterialType, ChemicalType };
 
+        private static readonly string phd2SqlDefaultUserName = "Phd2SqlLoader";
+
         public static string StandartPassword
         {
             get
@@ -136,5 +138,7 @@ namespace CollectingProductionDataSystem.Constants
         public static int InputOutputDirection { get { return inputOutputDirection; } }
 
         public static int?[] MaterialTypeChemicalType { get { return materialTypechemicalType; } }
+
+        public static string Phd2SqlDefaultUserName {  get { return phd2SqlDefaultUserName; } }
     }
 }

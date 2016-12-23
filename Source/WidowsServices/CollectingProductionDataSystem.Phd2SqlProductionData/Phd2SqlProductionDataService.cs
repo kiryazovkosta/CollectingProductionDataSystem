@@ -277,7 +277,7 @@
                     }
                     finally
                     {
-                        TimeSpan nextStartDuration = GetNextTimeDuration(true, false);
+                        TimeSpan nextStartDuration = GetNextTimeDuration(lastOperationSucceeded: true, inTimeSlot: false);
                         this.inventoryDataTimer.Change(Convert.ToInt64(nextStartDuration.TotalMilliseconds),//Properties.Settings.Default.IDLE_TIMER_INVENTORY.TotalMilliseconds),
                             System.Threading.Timeout.Infinite);
                     }

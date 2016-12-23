@@ -341,7 +341,7 @@
                         .FirstOrDefault();
                 if (reportData != null && reportData.IsComposed)
                 {
-                    ModelState.AddModelError("", "Описанието на технологичният отчет е вече съставено. Корекции не са разрешени.");
+                    ModelState.AddModelError("", errorMessage: "Описанието на технологичният отчет е вече съставено. Корекции не са разрешени.");
                 }
 
                 if (ModelState.IsValid)
