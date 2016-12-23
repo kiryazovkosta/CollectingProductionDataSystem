@@ -56,19 +56,21 @@ namespace CollectingProductionDataSystem.Web.AppStart
 
             bundles.Add(new ScriptBundle("~/bundles/kendo").Include(
             "~/Scripts/kendo/kendo.all.min.js",
-                // "~/Scripts/kendo/kendo.timezones.min.js", // uncomment if using the Scheduler
+            // "~/Scripts/kendo/kendo.timezones.min.js", // uncomment if using the Scheduler
             "~/Scripts/kendo/kendo.aspnetmvc.min.js",
             "~/Scripts/kendo/cultures/kendo.culture." + System.Threading.Thread.CurrentThread.CurrentCulture.Name + ".min.js",
             "~/Scripts/kendo/jszip.min.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/custom/sidebar").Include(
-                "~/Scripts/custom/sidebar.js", 
+                "~/Scripts/custom/sidebar.js",
                 "~/Scripts/custom/saveSiteBarStatus.js"));
 
-            bundles.Add(new ScriptBundle("~/bundles/custom/unitGrids").Include(          
+            bundles.Add(new ScriptBundle("~/bundles/custom/unitGrids").Include(
                 "~/Scripts/custom/unitGridsData.js"
                 ));
-
+            bundles.Add(new ScriptBundle("~/bundles/custom/techReportToPdf").Include(
+                            "~/Scripts/custom/techReportToPdfPageSetup.js"
+                            ));
             bundles.Add(new ScriptBundle("~/bundles/custom/kendoadditional").Include(
                 "~/Scripts/custom/kendoAdditional.js",
                 "~/Scripts/custom/sendAntiForgery.js"));

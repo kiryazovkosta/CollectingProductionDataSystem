@@ -30,10 +30,20 @@
           .Name("report-details")
           .HtmlAttributes(new { style = "width: 100%;height:340px;" })
           .Resizable(resizable => resizable.Content(false).Toolbar(true))
+
           .Tools(tools => tools
+               .Clear()
+               .Formatting()
               .CustomTemplate(ct => ct.Template("<button id='editor-save-changes' class='btn btn-info'><span class='glyphicon glyphicon-floppy-disk'></span>Запази</button>"))
+              .Bold().Italic().Underline()
+              .JustifyLeft().JustifyCenter().JustifyRight().JustifyFull()
+              .InsertUnorderedList().InsertOrderedList()
+              .Outdent().Indent()
+              .TableEditing()
+              .FontName()
+              .FontSize()
           )
-          //.StyleSheets(st=>st.Add("../../Content/custom/export-style.css"))
+          .StyleSheets(st => st.Add("../../Content/custom/export-style.css"))
           .Pdf(pdf =>
           {
               pdf.AllPages();
@@ -131,10 +141,11 @@
 <div id="success-window" style="display:none">@Html.Partial("_SuccessWindow")</div>
 @section scripts{
     @Scripts.Render("~/bundles/custom/kendoadditional")
+    @Scripts.Render("~/bundles/custom/techReportToPdf")
     @Scripts.Render("~/bundles/custom/unitGrids")
     @Scripts.Render("~/Scripts/kendo/jszip.min.js")
     @Scripts.Render("~/Scripts/kendo/pako_deflate.min.js")
-    @Scripts.Render("~/Scripts/custom/techReportToPdfPageSetup.js")
+
     <script>
         $(function () {
             $("#export-pdf").click(function () {
