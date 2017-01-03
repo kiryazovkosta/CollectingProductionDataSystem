@@ -53,13 +53,12 @@ namespace CollectingProductionDataSystem.ConsoleClient
             foreach (var tank in tanks)
             {
                 var tankData = new TankData();
-
-                tankData.RecordTimestamp = targetRecordDateTime;
+                tankData.RecordTimestamp = new DateTime(year: 2016, month: 12, day: 23, hour: 15, minute: 0, second: 0);
                 tankData.TankConfigId = tank.Id;
                 tankData.ParkId = tank.ParkId;
                 tankData.NetStandardVolume = tank.UnusableResidueLevel;
+                tankData.Confidence = 100;
 
-                
                 SetTankPhdConfigValue(tank.PhdTagProductId, tank.Id, tanksPhdConfigs);
                 SetTankPhdConfigValue(tank.PhdTagLiquidLevel, tank.Id, tanksPhdConfigs);
                 SetTankPhdConfigValue(tank.PhdTagProductLevel, tank.Id, tanksPhdConfigs);
@@ -82,8 +81,8 @@ namespace CollectingProductionDataSystem.ConsoleClient
                         defaultServer.Port = 3150;
                         defaultServer.APIVersion = Uniformance.PHD.SERVERVERSION.RAPI200;
                         oPhd.DefaultServer = defaultServer;
-                        oPhd.StartTime = "NOW - 1H";
-                        oPhd.EndTime = "NOW - 1H";
+                        oPhd.StartTime = "12/23/2016 3:0:0 PM";
+                        oPhd.EndTime = "12/23/2016 3:0:0 PM";
                         oPhd.Sampletype = SAMPLETYPE.Raw;
                         oPhd.MinimumConfidence = 100;
                         oPhd.MaximumRows = 1;
@@ -101,6 +100,12 @@ namespace CollectingProductionDataSystem.ConsoleClient
                             Console.WriteLine($"{tankData.Value.TankConfigId} {tankData.Value.ParkId} {tankData.Value.ProductName} {tankData.Value.WeightInVacuum} {tankData.Value.LiquidLevel} {tankData.Value.NetStandardVolume}");
                         }
 
+                        if (tanksData.Count() > 0)
+                        {
+                            data.TanksData.BulkInsert(tanksData.Values.ToList(), userName: "Phd2SqlLoading");
+                            data.SaveChanges(userName: "Phd2SqlLoading");
+                            Console.WriteLine($"Successfully added {tanksData.Count()} TanksData records for: {targetRecordDateTime:yyyy-MM-dd HH:ss:mm}!");
+                        }
                         result = null;
                     }
                 }
@@ -231,7 +236,8 @@ namespace CollectingProductionDataSystem.ConsoleClient
             for (int i = 0; i < oPhdData.Rows.Count; i++)
             {
                 row = oPhdData.Rows[i];
-                //Console.WriteLine($"{row["HostName"]} {row["TagName"]} {row["TimeStamp"]} {row["Value"]} {row["Confidence"]} {row["Tolerance"]} {row["Units"]}");
+                int tankId = tanksPhdConfigs[row["TagName"].ToString().Trim()];
+                TankData tankData = tanksData[tankId];
 
                 foreach (DataColumn dc in oPhdData.Columns)
                 {
@@ -239,7 +245,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
                     {
                         continue;
                     }
-                    else if (dc.ColumnName.Equals(value: "Confidence")&& !row[dc].ToString().Equals(value: "100"))
+                    else if (dc.ColumnName.Equals(value: "Confidence") /*&& !row[dc].ToString().Equals(value: "100")*/)
                     {
                         if (!row.IsNull(columnName: "Confidence"))
                         {
@@ -250,7 +256,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
                             confedence = 0;
                         }
 
-                        break;
+                        //break;
                     }
                     else if (dc.ColumnName.Equals(value: "TagName"))
                     {
@@ -278,14 +284,9 @@ namespace CollectingProductionDataSystem.ConsoleClient
 
                 if (confedence != 100)
                 {
-                    continue;
+                    Console.WriteLine(row["TagName"]);
+                //    continue;
                 }
-
-                Console.WriteLine(tagName);
-                int tankId = tanksPhdConfigs[tagName];
-                TankData tankData = tanksData[tankId];
-
-                Console.WriteLine("First");
 
                 if (tagName.Contains(value: ".PROD_ID"))
                 {
@@ -339,11 +340,8 @@ namespace CollectingProductionDataSystem.ConsoleClient
                     tankData.WeightInVacuum = tagValue;
                 }
 
-                Console.WriteLine("Second");
-
+                tankData.Confidence = tankData.Confidence == 100 ? confedence : tankData.Confidence;
                 tanksData[tankId] = tankData;
-
-                Console.WriteLine("Last");
             }
         }
 
