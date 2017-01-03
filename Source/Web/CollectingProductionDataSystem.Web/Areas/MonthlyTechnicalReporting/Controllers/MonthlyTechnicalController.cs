@@ -21,9 +21,17 @@
     using CollectingProductionDataSystem.Models.Productions.Technological;
     using Models;
     using CollectingProductionDataSystem.Models.Identity;
+    using System.Text;
 
     public class MonthlyTechnicalController : AreaBaseController
     {
+        protected override JsonResult Json(object data, string contentType, Encoding contentEncoding)
+        {
+            var result = base.Json(data, contentType, contentEncoding);
+            result.MaxJsonLength = int.MaxValue;
+            return result;
+        }
+
         private const int HalfAnHour = 60 * 30;
         private readonly IMonthlyTechnicalDataService monthlyService;
 
@@ -82,9 +90,9 @@
                     IEnumerable<MonthlyTechnicalReportDataDto> dbResult = this.monthlyService.ReadMonthlyTechnologicalDataAsync(date.Value, processUnits.ToArray());
                     IEnumerable<MonthlyTechnicalViewModel> vmResult = Mapper.Map<IEnumerable<MonthlyTechnicalViewModel>>(dbResult);
                     DataSourceResult kendoResult = vmResult.ToDataSourceResult(request, ModelState);
-                    JsonResult output = Json(kendoResult, JsonRequestBehavior.AllowGet);
-                    output.MaxJsonLength = int.MaxValue;
-                    return output;
+                    return Json(kendoResult, JsonRequestBehavior.AllowGet);
+                    //output.MaxJsonLength = int.MaxValue;
+                    //return output;
                 }
             }
             else
