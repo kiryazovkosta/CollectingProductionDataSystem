@@ -12,6 +12,7 @@
     using CollectingProductionDataSystem.Models.Identity;
     using CollectingProductionDataSystem.Models.UtilityEntities;
     using CollectingProductionDataSystem.Web.Infrastructure.Filters;
+    using System.Text;
 
     public abstract class BaseController : Controller
     {
@@ -29,6 +30,20 @@
         {
             InitializeUserProfileAsync(requestContext);
             return base.BeginExecute(requestContext, callback, state);
+        }
+
+        protected override JsonResult Json(object data, string contentType, Encoding contentEncoding)
+        {
+            JsonResult result = base.Json(data, contentType, contentEncoding);
+            result.MaxJsonLength = int.MaxValue;
+            return result;
+        }
+
+        protected override JsonResult Json(object data, string contentType, Encoding contentEncoding, JsonRequestBehavior behavior)
+        {
+            JsonResult result = base.Json(data, contentType, contentEncoding, behavior);
+            result.MaxJsonLength = int.MaxValue;
+            return result;
         }
 
         private void InitializeUserProfileAsync(System.Web.Routing.RequestContext requestContext)

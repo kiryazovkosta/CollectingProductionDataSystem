@@ -27,6 +27,8 @@
     using CollectingProductionDataSystem.Web.Infrastructure.Filters;
     using CollectingProductionDataSystem.Web.ViewModels.Units;
     using Application.MonthlyServices;
+    using System.Text;
+
     public class SummaryReportsController : AreaBaseController
     {
         private const int HalfAnHour = 60 * 30;
@@ -195,9 +197,7 @@
                     Debug.WriteLine(ex1.Message + "\n" + ex1.InnerException);
                 }
 
-                var output = Json(kendoResult, JsonRequestBehavior.AllowGet);
-                output.MaxJsonLength = int.MaxValue;
-                return output;
+                return Json(kendoResult, JsonRequestBehavior.AllowGet);
             }
             else
             {
@@ -242,9 +242,7 @@
                     kendoResult = kendoPreparedResult.ToDataSourceResult(request, ModelState);
                 }
 
-                var result = Json(kendoResult, JsonRequestBehavior.AllowGet);
-                result.MaxJsonLength = int.MaxValue;
-                return result;
+                return Json(kendoResult, JsonRequestBehavior.AllowGet);
             }
             else
             {
@@ -369,9 +367,7 @@
                     kendoResult = dbResult.ToDataSourceResult(request, ModelState, Mapper.Map<SummaryProductionPlanViewModel>);
                 }
 
-                var result = Json(kendoResult, JsonRequestBehavior.AllowGet);
-                result.MaxJsonLength = int.MaxValue;
-                return result;
+                return Json(kendoResult, JsonRequestBehavior.AllowGet);
             }
             else
             {
@@ -413,9 +409,7 @@
                     kendoResult = dbResult.ToDataSourceResult(request, ModelState, Mapper.Map<EnergyProductionPlanDataViewModel>);
                 }
 
-                var result = Json(kendoResult, JsonRequestBehavior.AllowGet);
-                result.MaxJsonLength = int.MaxValue;
-                return result;
+                return Json(kendoResult, JsonRequestBehavior.AllowGet);
             }
             else
             {
@@ -494,9 +488,7 @@
                     Debug.WriteLine(ex1.Message + "\n" + ex1.InnerException);
                 }
 
-                var output = Json(kendoResult, JsonRequestBehavior.AllowGet);
-                output.MaxJsonLength = int.MaxValue;
-                return output;
+                return Json(kendoResult, JsonRequestBehavior.AllowGet);
             }
             else
             {
