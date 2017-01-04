@@ -11,7 +11,7 @@
         void FinalizeShiftObservation(DateTime targetRecordTimestamp, Shift targetShift);
         Shift GetObservedShiftByDateTime(DateTime targetDateTime);
         Shift GetShiftById(int shiftId);
-        void ProcessInventoryTanksData();
+        void ProcessInventoryTanksData(PrimaryDataSourceType dataSource);
         bool ProcessPrimaryProductionData(CollectingProductionDataSystem.Models.Productions.PrimaryDataSourceType dataSource, DateTime targetRecordTimestamp, CollectingProductionDataSystem.Models.Nomenclatures.Shift shift, bool isForcedResultCalculation, CollectingProductionDataSystem.Enumerations.TreeState isFirstPhdInteraceCompleted);
 
         IEnumerable<Shift> GetShifts();

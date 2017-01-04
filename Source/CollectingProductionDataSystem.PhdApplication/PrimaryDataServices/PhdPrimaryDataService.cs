@@ -23,21 +23,17 @@
     using CollectingProductionDataSystem.Models.Inventories;
     using CollectingProductionDataSystem.Models.Nomenclatures;
     using CollectingProductionDataSystem.Models.Productions;
-    using CollectingProductionDataSystem.PhdApplication.Models;
-    using Ninject;
     using Uniformance.PHD;
     using CollectingProductionDataSystem.PhdApplication.Contracts;
     using System.Reflection;
-    using log4net;
-    using log4net.Core;
     using System.Text;
 
     public class PhdPrimaryDataService : IPhdPrimaryDataService
     {
         private readonly log4net.ILog logger;
         private readonly IMailerService mailer;
-        private TransactionOptions transantionOption;
-        private IProductionData data;
+        private readonly TransactionOptions transantionOption;
+        private readonly IProductionData data;
 
         public PhdPrimaryDataService(IProductionData dataParam, log4net.ILog loggerParam, IMailerService mailerServiceParam)
         {
@@ -71,7 +67,7 @@
         /// </summary>
         public void ClearTemporaryData()
         {
-            this.data.DbContext.DbContext.Database.ExecuteSqlCommand("TRUNCATE TABLE [UnitDataTemporaryRecords]");
+            this.data.DbContext.DbContext.Database.ExecuteSqlCommand(sql: "TRUNCATE TABLE [UnitDataTemporaryRecords]");
         }
 
         private int ReadAndSaveUnitsDataForShift(DateTime targetRecordTimestamp,
@@ -84,22 +80,22 @@
             var timer = new Stopwatch();
             var saveChangesTimer = new Stopwatch();
             timer.Start();
-            logger.InfoFormat("-------------------------------------------------------- Begin Interface Iteration For {0} Shift {1} -------------------------------------------------------- ", dataSource.ToString(), targetShift.Id);
+            logger.Info($"-------------------------------------------------------- Begin Interface Iteration For {dataSource.ToString()} Shift {targetShift.Id} -------------------------------------------------------- ");
 
-            var exeFileName = Assembly.GetEntryAssembly().Location;
+            string exeFileName = Assembly.GetEntryAssembly().Location;
             Configuration configuration = ConfigurationManager.OpenExeConfiguration(exeFileName);
-            ConfigurationSectionGroup appSettingsGroup = configuration.GetSectionGroup("applicationSettings");
+            ConfigurationSectionGroup appSettingsGroup = configuration.GetSectionGroup(sectionGroupName: "applicationSettings");
             ConfigurationSection appSettingsSection = appSettingsGroup.Sections[0];
             var settings = appSettingsSection as ClientSettingsSection;
             int expectedNumberOfRecords = 0;
             int realNumberOfRecords = 0;
             var unitDatasToAdd = new List<UnitDatasTemp>();
-            var unitsConfigsList = this.data.UnitConfigs.All()
+            List<UnitConfig> unitsConfigsList = this.data.UnitConfigs.All()
                 .Include(x => x.RelatedUnitConfigs)
                 .Include(x => x.RelatedUnitConfigs.Select(y => y.UnitConfig))
                 .Include(x => x.RelatedUnitConfigs.Select(z => z.RelatedUnitConfig).Select(w => w.UnitDatasTemps))
                 .Where(x => x.DataSource == dataSource).ToList();
-            var targetRecordTimestampDate = targetRecordTimestamp.Date;
+            DateTime targetRecordTimestampDate = targetRecordTimestamp.Date;
 
             try
             {
@@ -108,27 +104,27 @@
                     using (PHDServer defaultServer = new PHDServer(settings.Settings.Get("PHD_HOST" + (int) dataSource).Value.ValueXml.InnerText))
                     {
                         SetPhdConnectionSettings(oPhd, defaultServer, targetRecordTimestamp, targetShift);
-                        var unitsData = this.data.UnitDatasTemps.All().Where(x => x.RecordTimestamp == targetRecordTimestampDate && x.ShiftId == targetShift.Id).ToList();
+                        List<UnitDatasTemp> unitsData = this.data.UnitDatasTemps.All().Where(x => x.RecordTimestamp == targetRecordTimestampDate && x.ShiftId == targetShift.Id).ToList();
 
                         var newRecords = ProcessAutomaticUnits(unitsConfigsList, unitsData, oPhd, targetRecordTimestampDate, targetShift.Id, ref expectedNumberOfRecords);
                         realNumberOfRecords = newRecords.Count();
                         unitDatasToAdd.AddRange(newRecords);
-                        LogConsistencyMessage("Processing Automatic Units Records", expectedNumberOfRecords, realNumberOfRecords);
+                        LogConsistencyMessage(stepName: "Processing Automatic Units Records", expectedRecordsCount: expectedNumberOfRecords, generatedRecordsCount: realNumberOfRecords);
 
                         newRecords = ProcessAutomaticDeltaUnits(unitsConfigsList, unitsData, oPhd, targetRecordTimestampDate, targetShift, ref expectedNumberOfRecords);
                         realNumberOfRecords = newRecords.Count();
                         unitDatasToAdd.AddRange(newRecords);
-                        LogConsistencyMessage("Processing Automatic Delta Records", expectedNumberOfRecords, realNumberOfRecords);
+                        LogConsistencyMessage(stepName: "Processing Automatic Delta Records", expectedRecordsCount: expectedNumberOfRecords, generatedRecordsCount: realNumberOfRecords);
 
                         newRecords = ProcessAutomaticDeltaTwoSourcesUnits(unitsConfigsList, unitsData, oPhd, targetRecordTimestampDate, targetShift, ref expectedNumberOfRecords);
                         realNumberOfRecords = newRecords.Count();
                         unitDatasToAdd.AddRange(newRecords);
-                        LogConsistencyMessage("Processing Automatic Delta Records From Two Sources", expectedNumberOfRecords, realNumberOfRecords);
+                        LogConsistencyMessage(stepName: "Processing Automatic Delta Records From Two Sources", expectedRecordsCount: expectedNumberOfRecords, generatedRecordsCount: realNumberOfRecords);
 
                         newRecords = ProcessAutomaticCalulatedUnits(unitsConfigsList, unitsData, oPhd, targetRecordTimestampDate, targetShift, ref expectedNumberOfRecords);
                         realNumberOfRecords = newRecords.Count();
                         unitDatasToAdd.AddRange(newRecords);
-                        LogConsistencyMessage("Processing Automatic Calculated Units Records", expectedNumberOfRecords, realNumberOfRecords);
+                        LogConsistencyMessage(stepName: "Processing Automatic Calculated Units Records", expectedRecordsCount: expectedNumberOfRecords, generatedRecordsCount: realNumberOfRecords);
 
                         newRecords = ProcessManualUnits(unitsConfigsList, targetRecordTimestampDate, targetShift.Id, unitsData, ref expectedNumberOfRecords);
                         realNumberOfRecords = newRecords.Count();
@@ -232,7 +228,7 @@
             var timer = new Stopwatch();
             var saveChangesTimer = new Stopwatch();
             timer.Start();
-            logger.InfoFormat("-------------------------------------------------------- Begin Interface Iteration For {0} Shift {1} -------------------------------------------------------- ", dataSource.ToString(), targetShift.Id);
+            logger.Info($"-------------------------------------------------------- Begin Interface Iteration For {dataSource.ToString()} Shift {targetShift.Id} -------------------------------------------------------- ");
 
             int expectedNumberOfRecords = 0;
             int realNumberOfRecords = 0;
@@ -253,44 +249,44 @@
                     using (PHDServer defaultServer = new PHDServer(hostName))
                     {
                         SetPhdConnectionSettings(oPhd, defaultServer, targetRecordTimestamp, targetShift);
-                        var unitsData = this.data.UnitDatasTemps.All().Where(x => x.RecordTimestamp == targetRecordTimestampDate && x.ShiftId == targetShift.Id).ToList();
+                        List<UnitDatasTemp> unitsData = this.data.UnitDatasTemps.All().Where(x => x.RecordTimestamp == targetRecordTimestampDate && x.ShiftId == targetShift.Id).ToList();
 
-                        var newRecords = ProcessAutomaticUnits(unitsConfigsList, unitsData, oPhd, targetRecordTimestampDate, targetShift.Id, ref expectedNumberOfRecords);
+                        IEnumerable<UnitDatasTemp> newRecords = ProcessAutomaticUnits(unitsConfigsList, unitsData, oPhd, targetRecordTimestampDate, targetShift.Id, ref expectedNumberOfRecords);
                         realNumberOfRecords = newRecords.Count();
                         unitDatasToAddList.AddRange(newRecords);
-                        LogConsistencyMessage(new ProgressMessage("Processing Automatic Units Records", realNumberOfRecords), expectedNumberOfRecords, realNumberOfRecords);
+                        LogConsistencyMessage(new ProgressMessage(message: "Processing Automatic Units Records", progressValue: realNumberOfRecords), expectedNumberOfRecords, realNumberOfRecords);
 
                         newRecords = ProcessAutomaticDeltaUnits(unitsConfigsList, unitsData, oPhd, targetRecordTimestampDate, targetShift, ref expectedNumberOfRecords);
                         realNumberOfRecords = newRecords.Count();
                         unitDatasToAddList.AddRange(newRecords);
-                        LogConsistencyMessage(new ProgressMessage("Processing Automatic Delta Records", realNumberOfRecords), expectedNumberOfRecords, realNumberOfRecords);
+                        LogConsistencyMessage(new ProgressMessage(message: "Processing Automatic Delta Records", progressValue: realNumberOfRecords), expectedNumberOfRecords, realNumberOfRecords);
 
                         newRecords = ProcessAutomaticCalulatedUnits(unitsConfigsList, unitsData, oPhd, targetRecordTimestampDate, targetShift, ref expectedNumberOfRecords);
                         realNumberOfRecords = newRecords.Count();
                         unitDatasToAddList.AddRange(newRecords);
-                        LogConsistencyMessage(new ProgressMessage("Processing Automatic Calculated Units Records", realNumberOfRecords), expectedNumberOfRecords, realNumberOfRecords);
+                        LogConsistencyMessage(new ProgressMessage(message: "Processing Automatic Calculated Units Records", progressValue: realNumberOfRecords), expectedNumberOfRecords, realNumberOfRecords);
 
                         newRecords = ProcessManualUnits(unitsConfigsList, targetRecordTimestampDate, targetShift.Id, unitsData, ref expectedNumberOfRecords);
                         realNumberOfRecords = newRecords.Count();
                         unitDatasToAddList.AddRange(newRecords);
-                        LogConsistencyMessage(new ProgressMessage("Processing Manual Units Records", realNumberOfRecords), expectedNumberOfRecords, realNumberOfRecords);
+                        LogConsistencyMessage(new ProgressMessage(message: "Processing Manual Units Records", progressValue: realNumberOfRecords), expectedNumberOfRecords, realNumberOfRecords);
 
                         newRecords = ProcessCalculatedByAutomaticUnits(unitsConfigsList, oPhd, targetRecordTimestampDate, targetShift, unitsData, ref expectedNumberOfRecords);
                         realNumberOfRecords = newRecords.Count();
                         unitDatasToAddList.AddRange(newRecords);
-                        LogConsistencyMessage(new ProgressMessage("Processing Calculated By Automatic Records", realNumberOfRecords), expectedNumberOfRecords, realNumberOfRecords);
+                        LogConsistencyMessage(new ProgressMessage(message: "Processing Calculated By Automatic Records", progressValue: realNumberOfRecords), expectedNumberOfRecords, realNumberOfRecords);
 
                         newRecords = ProcessCalculatedUnits(unitsConfigsList, targetRecordTimestampDate, targetShift.Id, unitDatasToAddList, ref realNumberOfRecords, false);
                         realNumberOfRecords = newRecords.Count();
                         unitDatasToAddList.AddRange(newRecords);
-                        LogConsistencyMessage(new ProgressMessage("Processing Calculated By Automatic Records", realNumberOfRecords), expectedNumberOfRecords, realNumberOfRecords);
+                        LogConsistencyMessage(new ProgressMessage(message: "Processing Calculated By Automatic Records", progressValue: realNumberOfRecords), expectedNumberOfRecords, realNumberOfRecords);
                     }
                 }
             }
             catch (Exception ex)
             {
                 logger.Error(ex.Message + ex.StackTrace);
-                mailer.SendMail(ex.Message + ex.StackTrace, "Phd2Interface Error");
+                mailer.SendMail(ex.Message + ex.StackTrace, title: "Phd2Interface Error");
             }
 
             return unitDatasToAddList;
@@ -322,8 +318,8 @@
         /// <returns></returns>
         public Shift GetObservedShiftByDateTime(DateTime targetDateTime)
         {
-            var baseDate = targetDateTime.Date;
-            var resultShift = this.data.Shifts.All().ToList().FirstOrDefault(x =>
+            DateTime baseDate = targetDateTime.Date;
+            Shift resultShift = this.data.Shifts.All().ToList().FirstOrDefault(x =>
                                             (baseDate + x.ReadOffset) <= targetDateTime
                                             && targetDateTime <= (baseDate + x.ReadOffset + x.ReadPollTimeSlot));
 
@@ -355,12 +351,12 @@
             int expectedNumberOfRecords = 0;
             var message = new StringBuilder();
 
-            var additionalRecords = CreateMissingRecords(targetRecordTimestamp, targetShift, ref expectedNumberOfRecords, false);
+            IEnumerable<UnitDatasTemp> additionalRecords = CreateMissingRecords(targetRecordTimestamp, targetShift, ref expectedNumberOfRecords, generateDailyInfoRecords: false);
             if (additionalRecords.Count() > 0)
             {
                 this.data.UnitDatasTemps.BulkInsert(additionalRecords, CommonConstants.Phd2SqlDefaultUserName);
-                LogConsistencyMessage("Added Missing Records", additionalRecords.Count(), additionalRecords.Count());
-                message.AppendLine(string.Format("Successfully Added Missing {0} records to database.<br/>", additionalRecords.Count()));
+                LogConsistencyMessage(stepName: "Added Missing Records", expectedRecordsCount: additionalRecords.Count(), generatedRecordsCount: additionalRecords.Count());
+                message.AppendLine($"Successfully Added Missing {additionalRecords.Count()} records to database.<br/>");
             }
 
             bool calculateDailyInfoRecords = true;
@@ -368,21 +364,21 @@
             int dailyInfoRecords = GetCalculatedUnits(targetShift, unitsConfigsList, targetRecordTimestamp, calculateDailyInfoRecords);
             if (dailyInfoRecords > 0)
             {
-                message.AppendLine(string.Format("Successfully Added DailyInfo {0} records to database.<br/>", dailyInfoRecords));
+                message.AppendLine($"Successfully Added DailyInfo {dailyInfoRecords} records to database.<br/>");
             }
 
-            var extraAdditionalRecords = CreateMissingRecords(targetRecordTimestamp, targetShift, ref expectedNumberOfRecords, true);
+            IEnumerable<UnitDatasTemp> extraAdditionalRecords = CreateMissingRecords(targetRecordTimestamp, targetShift, ref expectedNumberOfRecords, true);
             if (extraAdditionalRecords.Count() > 0)
             {
                 this.data.UnitDatasTemps.BulkInsert(extraAdditionalRecords, CommonConstants.Phd2SqlDefaultUserName);
-                LogConsistencyMessage("Added Missing Records", extraAdditionalRecords.Count(), extraAdditionalRecords.Count());
-                message.AppendLine(string.Format("Successfully Added Missing {0} records to database.<br/>", extraAdditionalRecords.Count()));
+                LogConsistencyMessage(stepName: "Added Missing Records", expectedRecordsCount: extraAdditionalRecords.Count(), generatedRecordsCount: extraAdditionalRecords.Count());
+                message.AppendLine($"Successfully Added Missing {extraAdditionalRecords.Count()} records to database.<br/>");
             }
 
-            var addedRecords = this.FlashDataToOriginalUnitData();
-            LogConsistencyMessage("Finally Flashed Records To Units Data", expectedNumberOfRecords, addedRecords);
-            message.AppendLine(string.Format("Successfully Finally Flashed {0} records to UnitsData.<br/>", addedRecords));
-            this.mailer.SendMail(message.ToString(), "SAPO - Shift data");
+            int addedRecords = this.FlashDataToOriginalUnitData();
+            LogConsistencyMessage(stepName: "Finally Flashed Records To Units Data", expectedRecordsCount: expectedNumberOfRecords, generatedRecordsCount: addedRecords);
+            message.AppendLine($"Successfully Finally Flashed {addedRecords} records to UnitsData.<br/>");
+            this.mailer.SendMail(message.ToString(), title: "SAPO - Shift data");
         }
 
         /// <summary>
@@ -436,7 +432,7 @@
             {
                 try
                 {
-                    var preparedUnitDatasTemps = this.data.UnitDatasTemps.All().ToList();
+                    List<UnitDatasTemp> preparedUnitDatasTemps = this.data.UnitDatasTemps.All().ToList();
                     var preparedUnitsData = new List<UnitsData>();
                     foreach (var unitDataTemp in preparedUnitDatasTemps)
                     {
@@ -452,7 +448,7 @@
 
                     resultNumberOfRecords = preparedUnitsData.Count();
                     this.data.UnitsData.BulkInsert(preparedUnitsData, CommonConstants.Phd2SqlDefaultUserName);
-                    this.data.DbContext.DbContext.Database.ExecuteSqlCommand("TRUNCATE TABLE [UnitDataTemporaryRecords]");
+                    this.data.DbContext.DbContext.Database.ExecuteSqlCommand(sql: "TRUNCATE TABLE [UnitDataTemporaryRecords]");
                     transaction.Complete();
                 }
                 catch (Exception ex)
@@ -474,11 +470,11 @@
         {
             if (stepName is IProgressMessage)
             {
-                logger.InfoFormat("\tOn step {0}: \n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tExpected number of records: {1} \n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tThe number of the generated records:{2}", stepName.ToString(), expectedRecordsCount, generatedRecordsCount, stepName);
+                logger.Info($"\tOn step {generatedRecordsCount}: \n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tExpected number of records: {expectedRecordsCount} \n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tThe number of the generated records:{generatedRecordsCount}");
             }
             else
             {
-                logger.InfoFormat("\tOn step {0}: \n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tExpected number of records: {1} \n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tThe number of the generated records:{2}", stepName, expectedRecordsCount, generatedRecordsCount);
+                logger.Info($"\tOn step {stepName}: \n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tExpected number of records: {expectedRecordsCount} \n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tThe number of the generated records:{generatedRecordsCount}");
             }
         }
 
@@ -926,6 +922,7 @@
                             using (PHDHistorian oPhdOld = new PHDHistorian())
                             {
                                 using (PHDServer defaultServer = new PHDServer("srv-vm-mes-phd"))
+                                //using (PHDServer defaultServer = new PHDServer("10.94.0.213"))
                                 {
                                     SetPhdConnectionSettings(oPhdOld, defaultServer, targetRecordTimestamp, shiftData);
                                     var recordTimestamp = new DateTime(2016, 1, 1, 1, 0, 0);
@@ -960,6 +957,7 @@
                             using (PHDHistorian oPhdNew = new PHDHistorian())
                             {
                                 using (PHDServer defaultServer = new PHDServer("phd-l35-1"))
+                                //using (PHDServer defaultServer = new PHDServer("10.94.0.195"))
                                 {
                                     SetPhdConnectionSettings(oPhdNew, defaultServer, targetRecordTimestamp, shiftData);
 
@@ -1438,10 +1436,10 @@
             }
         }
 
-        public void ProcessInventoryTanksData()
+        public void ProcessInventoryTanksData(PrimaryDataSourceType dataSource)
         {
             DateTime now = DateTime.Now;
-            if (5 <= now.Minute && now.Minute <= 10)
+            if (2 <= now.Minute && now.Minute <= 10)
             {
                 string exeFileName = Assembly.GetEntryAssembly().Location;
                 Configuration configuration = ConfigurationManager.OpenExeConfiguration(exeFileName);
@@ -1456,19 +1454,19 @@
                     var recordTime = new DateTime(now.Year, now.Month, now.Day, now.Hour, minute: 0, second: 0);
                     DateTime checkedDateTime = recordTime.AddHours(-hours);
                     var targetRecordDateTime = new DateTime(checkedDateTime.Year, checkedDateTime.Month, checkedDateTime.Day, checkedDateTime.Hour, 0, second: 0);
-                    if (this.data.TanksData.All().Where(t => t.RecordTimestamp == checkedDateTime).Any())
+                    if (this.data.TanksData.All().Include(t => t.TankConfig).Where(t => t.RecordTimestamp == checkedDateTime && t.TankConfig.DataSource == dataSource).Any())
                     {
-                        logger.Debug($"There are already a records for that time of the day: {checkedDateTime:yyyy-MM-dd HH:ss:mm}!");
+                        logger.Debug($"There are already a records from {dataSource.ToString()} for: {checkedDateTime:yyyy-MM-dd HH:ss:mm}!");
                         continue;
                     }
 
                     try
                     {
-                        logger.Info($"-------------------------------------------------------  Begin processing inventory tanks data for {checkedDateTime:yyyy-MM-dd HH:ss:mm}!");
+                        logger.Info($"--------------------------------  Begin processing inventory tanks data from {dataSource.ToString()} for {checkedDateTime:yyyy-MM-dd HH:ss:mm}!");
                         var tanksPhdConfigs = new Dictionary<string, int>();
                         var tanksData = new Dictionary<int, TankData>();
 
-                        List<TankConfig> tanks = data.Tanks.All().Include(x => x.Park).ToList();
+                        List<TankConfig> tanks = data.Tanks.All().Include(x => x.Park).Where(x => x.DataSource == dataSource).ToList();
                         foreach (var tank in tanks)
                         {
                             var tankData = new TankData();
@@ -1494,7 +1492,7 @@
                         {
                             using (PHDHistorian oPhd = new PHDHistorian())
                             {
-                                string phdServer = settings.Settings.Get(elementKey: "PHD_HOST").Value.ValueXml.InnerText;
+                                string phdServer = settings.Settings.Get("PHD_HOST" + (int) dataSource).Value.ValueXml.InnerText;
                                 using (PHDServer defaultServer = new PHDServer(phdServer))
                                 {
                                     string getRecordTimestamp = string.Format(format: "{0}", arg0: targetRecordDateTime.ToString(CommonConstants.PhdDateTimeFormat, CultureInfo.InvariantCulture));
@@ -1519,7 +1517,7 @@
                                     {
                                         this.data.TanksData.BulkInsert(tanksData.Values.ToList(), userName: "Phd2SqlLoading");
                                         this.data.SaveChanges(userName: "Phd2SqlLoading");
-                                        logger.Info($"Successfully added {tanksData.Count()} TanksData records for: {checkedDateTime:yyyy-MM-dd HH:ss:mm}!");
+                                        logger.Info($"Successfully added {tanksData.Count()} TanksData records from {dataSource.ToString()} for: {checkedDateTime:yyyy-MM-dd HH:ss:mm}!");
                                     }
 
                                     result = null;
@@ -1527,7 +1525,7 @@
                             }
                         }
 
-                        logger.Info($"Finish processing inventory tanks data for {checkedDateTime:yyyy-MM-dd HH:ss:mm}!");
+                        logger.Info($"Finish processing inventory tanks data from {dataSource.ToString()} for {checkedDateTime:yyyy-MM-dd HH:ss:mm}!");
 
                     }
                     catch (DataException validationException)
@@ -1540,142 +1538,6 @@
                     }
                 }
             }
-        }
-
-        internal static void ProcessMeasuringPointsData()
-        {
-            //try
-            //{
-            //    logger.Info("Sync measurements points data started!");
-            //    //var now = DateTime.Now;
-            //    //var today = DateTime.Today;
-            //    //var fiveOClock = today.AddHours(5);
-
-            //    //var ts = now - fiveOClock;
-            //    //if (ts.TotalMinutes > 2 && ts.Hours == 0)
-            //    {
-            //        using (var context = new ProductionData(new CollectingDataSystemDbContext(new AuditablePersister(),new Logger())))
-            //        {
-            //            var measuringPoints = context.MeasuringPointConfigs.All().Where(x => !string.IsNullOrEmpty(x.TotalizerCurrentValueTag));
-
-            //            if (measuringPoints.Count() > 0)
-            //            {
-            //                using(PHDHistorian oPhd = new PHDHistorian())
-            //                {
-            //                    using(PHDServer defaultServer = new PHDServer("srv-vm-mes-phd"))
-            //                    {
-            //                        defaultServer.Port = 3150;
-            //                        defaultServer.APIVersion = Uniformance.PHD.SERVERVERSION.RAPI200;
-            //                        oPhd.DefaultServer = defaultServer;
-            //                        oPhd.StartTime = "NOW - 2M";
-            //                        oPhd.EndTime = "NOW - 2M";
-            //                        oPhd.Sampletype = SAMPLETYPE.Snapshot;
-            //                        oPhd.MinimumConfidence = 49;
-            //                        oPhd.ReductionType = REDUCTIONTYPE.Average;
-            //                        oPhd.MaximumRows = 1;
-
-            //                        foreach (var item in measuringPoints)
-            //                        {
-            //                            var measurementPointData = new MeasuringPointProductsData();
-            //                            measurementPointData.MeasuringPointConfigId = item.Id;
-            //                            DataSet dsGrid = oPhd.FetchRowData(item.TotalizerCurrentValueTag);
-            //                            foreach (DataRow row in dsGrid.Tables[0].Rows)
-            //                            {
-            //                                foreach (DataColumn dc in dsGrid.Tables[0].Columns)
-            //                                {
-            //                                    if (dc.ColumnName.Equals("Tolerance") || dc.ColumnName.Equals("HostName"))
-            //                                    {
-            //                                        continue;
-            //                                    }
-            //                                    else if (dc.ColumnName.Equals("Value"))
-            //                                    {
-            //                                        if (!string.IsNullOrWhiteSpace(row[dc].ToString()))
-            //                                        {
-            //                                            measurementPointData.Value = Convert.ToDecimal(row[dc]);
-            //                                            logger.InfoFormat("Value: {0}", measurementPointData.Value ?? 0);
-            //                                        }
-            //                                    }
-            //                                }
-            //                            }
-            //                        }
-            //                    }
-            //                }
-
-
-            //                //using (PHDHistorian oPhd = new PHDHistorian())
-            //                //{
-            //                //    using (PHDServer oPhd = new PHDServer("srv-vm-mes-phd""))
-            //                //    {
-            //                //        oPhd.Port = 3150;
-            //                //        defaultServer.APIVersion = Uniformance.PHD.SERVERVERSION.RAPI200;
-            //                //        oPhd.DefaultServer = defaultServer;
-            //                //        oPhd.StartTime = "NOW - 2M";
-            //                //        oPhd.EndTime = "NOW - 2M";
-            //                //        oPhd.Sampletype = SAMPLETYPE.Snapshot;
-            //                //        oPhd.MinimumConfidence = 49;
-            //                //        oPhd.ReductionType = REDUCTIONTYPE.Average;
-            //                //        oPhd.MaximumRows = 1;
-
-            //                //        foreach (var item in measuringPoints)
-            //                //        {
-            //                //            var measurementPointData = new MeasuringPointProductsData();
-            //                //            measurementPointData.MeasuringPointConfigId = item.Id;
-            //                //            DataSet dsGrid = oPhd.FetchRowData(item.TotalizerCurrentValueTag);
-            //                //            var confidence = 100;
-            //                //            foreach (DataRow row in dsGrid.Tables[0].Rows)
-            //                //            {
-            //                //                foreach (DataColumn dc in dsGrid.Tables[0].Columns)
-            //                //                {
-            //                //                    if (dc.ColumnName.Equals("Tolerance") || dc.ColumnName.Equals("HostName"))
-            //                //                    {
-            //                //                        continue;
-            //                //                    }
-            //                //                    else if (dc.ColumnName.Equals("Confidence"))
-            //                //                    {
-            //                //                        if (!string.IsNullOrWhiteSpace(row[dc].ToString()))
-            //                //                        {
-            //                //                            confidence = Convert.ToInt32(row[dc]);
-            //                //                        }
-            //                //                        else
-            //                //                        {
-            //                //                            confidence = 0;
-            //                //                            break;
-            //                //                        }
-            //                //                    }
-            //                //                    else if (dc.ColumnName.Equals("Value"))
-            //                //                    {
-            //                //                        if (!string.IsNullOrWhiteSpace(row[dc].ToString()))
-            //                //                        {
-            //                //                            measurementPointData.Value = Convert.ToDecimal(row[dc]);
-            //                //                        }
-            //                //                    }
-            //                //                }
-            //                //            }
-            //                //            if (confidence > Properties.Settings.Default.INSPECTION_DATA_MINIMUM_CONFIDENCE &&
-            //                //                measurementPointData.RecordTimestamp != null)
-            //                //            {
-            //                //                measurementPointData.RecordTimestamp = currentDate;
-            //                //                context.MeasurementPointsProductsDatas.Add(measurementPointData);
-            //                //            }
-            //                //        }
-
-            //                //        //context.SaveChanges("Phd2Sql");
-            //                //    }
-            //                //}
-            //            }
-            //        }
-            //    }
-
-            //    logger.Info("Sync measurements points data finished!");
-            //}
-            //catch (DataException validationException)
-            //{
-            //    LogValidationDataException(validationException);
-            //}
-            //catch (Exception ex)
-            //{
-            //    logger.Error(ex);
-            //}
         }
 
         private IProductionData CreateProductionData()

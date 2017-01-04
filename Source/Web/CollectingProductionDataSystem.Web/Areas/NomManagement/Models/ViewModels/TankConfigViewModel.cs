@@ -9,6 +9,7 @@
     using CollectingProductionDataSystem.Models.Contracts;
     using CollectingProductionDataSystem.Models.Inventories;
     using Resources = App_GlobalResources.Resources;
+    using CollectingProductionDataSystem.Models.Productions;
 
     public class TankConfigViewModel : IMapFrom<TankConfig>, IEntity
     {
@@ -27,6 +28,10 @@
         [Required]
         [Display(Name = "TankName", ResourceType = typeof(Resources.Layout))]
         public string TankName { get; set; }
+
+        [Required]
+        [Display(Name = "DataSource", ResourceType = typeof(Resources.Layout))]
+        public PrimaryDataSourceType DataSource { get; set; }
 
         [Required]
         [Display(Name = "PhdTagProductId", ResourceType = typeof(Resources.Layout))]

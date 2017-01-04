@@ -1,11 +1,9 @@
 ﻿namespace CollectingProductionDataSystem.Phd2SqlProductionData
 {
     using System.Collections.Generic;
-    using System.Linq;
     using System.Transactions;
     using CollectingProductionDataSystem.Data.Common;
-    using CollectingProductionDataSystem.Data.Contracts;
-    using CollectingProductionDataSystem.Enumerations;
+    using Enumerations;
     using CollectingProductionDataSystem.Models.Nomenclatures;
     using CollectingProductionDataSystem.Models.Productions;
     using CollectingProductionDataSystem.PhdApplication.Contracts;
@@ -15,7 +13,6 @@
     using System.ServiceProcess;
     using System.Threading;
     using CollectingProductionDataSystem.Application.Contracts;
-    using Application.MonthlyTechnologicalDataServices;
 
     public partial class Phd2SqlProductionDataService : ServiceBase
     {
@@ -54,12 +51,12 @@
             {
                 if (Properties.Settings.Default.SYNC_PRIMARY)
                 {
-                    this.primaryDataTimer = new Timer(TimerHandlerPrimary, null, 0, Timeout.Infinite);
+                    this.primaryDataTimer = new Timer(TimerHandlerPrimary, state: null, dueTime: 0, period: Timeout.Infinite);
                 }
 
                 if (Properties.Settings.Default.SYNC_INVENTORY)
                 {
-                    this.inventoryDataTimer = new Timer(TimerHandlerInventory, null, 0, Timeout.Infinite);
+                    this.inventoryDataTimer = new Timer(TimerHandlerInventory, state: null, dueTime: 0, period: Timeout.Infinite);
                 }
 
             }
@@ -269,7 +266,10 @@
                     {
                         Utility.SetRegionalSettings();
                         this.inventoryDataTimer.Change(Timeout.Infinite, Timeout.Infinite);
-                        service.ProcessInventoryTanksData();
+                        var dataSource = (PrimaryDataSourceType) Enum.ToObject(typeof(PrimaryDataSourceType), Properties.Settings.Default.PHD_DATA_SOURCE);
+                        service.ProcessInventoryTanksData(dataSource);
+                        dataSource = (PrimaryDataSourceType) Enum.ToObject(typeof(PrimaryDataSourceType), Properties.Settings.Default.PHD_DATA_SOURCE_SECOND);
+                        service.ProcessInventoryTanksData(dataSource);
                     }
                     catch (Exception ex)
                     {
@@ -278,8 +278,7 @@
                     finally
                     {
                         TimeSpan nextStartDuration = GetNextTimeDuration(lastOperationSucceeded: true, inTimeSlot: false);
-                        this.inventoryDataTimer.Change(Convert.ToInt64(nextStartDuration.TotalMilliseconds),//Properties.Settings.Default.IDLE_TIMER_INVENTORY.TotalMilliseconds),
-                            System.Threading.Timeout.Infinite);
+                        this.inventoryDataTimer.Change(Convert.ToInt64(nextStartDuration.TotalMilliseconds), Timeout.Infinite);
                     }
                 }
             }

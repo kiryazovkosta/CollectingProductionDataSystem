@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using CollectingProductionDataSystem.Models.Abstract;
 using CollectingProductionDataSystem.Models.Contracts;
 using CollectingProductionDataSystem.Models.Inventories;
+using CollectingProductionDataSystem.Models.Productions;
+using System.ComponentModel;
 
 namespace CollectingProductionDataSystem.Models.Inventories
 {
@@ -17,6 +19,7 @@ namespace CollectingProductionDataSystem.Models.Inventories
             this.tankDatas = new HashSet<TankData>();
             this.relatedTankConfigs = new HashSet<RelatedTankConfigs>();
             this.tankStatusDatas = new HashSet<TankStatusData>();
+            this.DataSource = PrimaryDataSourceType.SrvVmMesPhdA;
         }
 
         public int Id { get; set; }
@@ -72,6 +75,8 @@ namespace CollectingProductionDataSystem.Models.Inventories
         public decimal AvailableRoomHighExtreme { get; set; }
         public decimal UnusableResidueLevel { get; set; }
         public string CorrectionFactor { get; set; }
+        [DefaultValue(PrimaryDataSourceType.SrvVmMesPhdA)]
+        public PrimaryDataSourceType DataSource { get; set; }
         public virtual Park Park { get; set; }
         public virtual ICollection<TankData> TankDatas 
         {
