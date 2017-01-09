@@ -58,10 +58,13 @@
         [Authorize]
         public ActionResult Test()
         {
+            
 
             // add product
             var pr1 = new Product() { Name = "Added Product", ProductTypeId = 1 };
             this.data.Products.Add(pr1);
+
+            var test = $"{pr1.Name} -> {pr1.Id}";
 
             //modify product
             var pr = this.data.Products.GetById(5);

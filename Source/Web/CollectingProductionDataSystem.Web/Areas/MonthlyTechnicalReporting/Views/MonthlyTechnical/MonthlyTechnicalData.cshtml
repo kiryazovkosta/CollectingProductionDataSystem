@@ -30,7 +30,16 @@
           .Name("report-details")
           .HtmlAttributes(new { style = "width: 100%;height:340px;" })
           .Resizable(resizable => resizable.Content(false).Toolbar(true))
-
+          .PasteCleanup(p => p
+               .All(false)
+               .Css(false)
+               .KeepNewLines(false)
+               .MsAllFormatting(false)
+               .MsConvertLists(false)
+               .MsTags(true)
+               .None(false)
+               .Span(true)
+            )
           .Tools(tools => tools
                .Clear()
                .Formatting()

@@ -386,8 +386,8 @@ var unitGridsData = (function() {
 
         var exportPdfButton = $('#export-pdf');
         if (exportPdfButton.length) {
-            exportPdfButton.hide();
-            exportPdfButton.css('visibility', 'hidden');
+            exportPdfButton.show();
+            exportPdfButton.css('visibility', 'visible');
         }
 
         var exportExcelButton = $('#excel-tech-report-export');
@@ -418,8 +418,8 @@ var unitGridsData = (function() {
 
         var exportPdfButton = $('#export-pdf');
         if (exportPdfButton.length) {
-            exportPdfButton.hide();
-            exportPdfButton.css('visibility', 'hidden');
+            exportPdfButton.show();
+            exportPdfButton.css('visibility', 'visible');
         }
 
         var exportExcelButton = $('#excel-tech-report-export');
@@ -489,6 +489,10 @@ var unitGridsData = (function() {
         }
     }
 
+    String.prototype.replaceAll = function (target, replacement) {
+        return this.split(target).join(replacement);
+    };
+
     var pdfExportDetails = null;
 
     function setExportSettings() {
@@ -515,7 +519,14 @@ var unitGridsData = (function() {
                             });
 
                         var editor = $("#report-details").data("kendoEditor");
-                        editor.value(decodeURI(response.EditorContent));
+                        var editorContent = response.EditorContent;
+                        editorContent = decodeURI(editorContent);
+                        editorContent = editorContent.replaceAll('&nbsp;&nbsp;&nbsp;&nbsp;', '');
+                        editorContent = editorContent.replaceAll('&nbsp;&nbsp;&nbsp;', '');
+                        editorContent = editorContent.replaceAll('&nbsp;&nbsp;', '');
+                        editorContent = editorContent.replaceAll('&nbsp; &nbsp;', '');
+                        //editorContent = editorContent.split('&nbsp;').join('');
+                        editor.value(editorContent);
 
                         if (response.IsComposed === false && response.IsApproved === false) {
                             setExportToPdfButtonsNotComposedNotApproved();

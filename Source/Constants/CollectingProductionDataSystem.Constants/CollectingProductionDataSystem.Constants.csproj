@@ -70,6 +70,7 @@
   <ItemGroup>
     <Compile Include="CommonConstants.cs" />
     <Compile Include="DbConnection.cs" />
+    <Compile Include="FieldLength.cs" />
     <Compile Include="Namespace.cs" />
     <Compile Include="PhdConnection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

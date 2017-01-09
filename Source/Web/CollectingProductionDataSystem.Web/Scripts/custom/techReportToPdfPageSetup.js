@@ -124,7 +124,7 @@ var pdfPageSetup = (function() {
         draw.align([header], pg.headerRect, "start");
         draw.vAlign([header], pg.headerRect, "start");
 
-        draw.align([content], pg.contentRect, "center");
+        draw.align([content], pg.contentRect, "start");
         draw.vAlign([content], pg.contentRect, "start");
 
         // Move the footer to the bottom-right corner
@@ -603,7 +603,9 @@ var pdfPageSetup = (function() {
                 console.log(table.width());
             }
 
-            table.width(508);
+            $(table).find('td').css('font-size', '');
+            $(table).find('span').css('font-size', '');
+            table.width(508)
         })
     }
 

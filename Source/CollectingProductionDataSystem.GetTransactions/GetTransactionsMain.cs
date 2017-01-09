@@ -39,33 +39,33 @@
         {
             try
             {
-                logger.Info("Begin aso2sapo data synchronization!");
+                logger.Info(message: "Begin aso2sapo data synchronization!");
 
                 using (var context = new ProductionData(new CollectingDataSystemDbContext(new AuditablePersister(), new Logger())))
                 {
-                    var max = context.MaxAsoMeasuringPointDataSequenceNumberMap.All().FirstOrDefault();
+                    MaxAsoMeasuringPointDataSequenceNumber max = context.MaxAsoMeasuringPointDataSequenceNumberMap.All().FirstOrDefault();
                     if (max != null)
                     {
                         long maxSequenceNumber = -1;
 
-                        var transactions = GetTransactionsFromAso(max, context, ref maxSequenceNumber);
+                        List<MeasuringPointsConfigsData> transactions = GetTransactionsFromAso(max, context, ref maxSequenceNumber);
                         if (transactions.Count > 0)
                         {
-                            context.MeasuringPointsConfigsDatas.BulkInsert(transactions, "Aso2Sql");
-                            context.SaveChanges("Aso2Sql");
-                            logger.InfoFormat("Successfully synchronization {0} records from Aso to Cpds", transactions.Count);
+                            context.MeasuringPointsConfigsDatas.BulkInsert(transactions, userName: "Aso2Sql");
+                            context.SaveChanges(userName: "Aso2Sql");
+                            logger.Info($"Successfully synchronization {transactions.Count} records from Aso to Cpds");
 
                             if (maxSequenceNumber > 0)
                             {
                                 max.MaxSequenceNumber = maxSequenceNumber;
                                 context.MaxAsoMeasuringPointDataSequenceNumberMap.Update(max);
-                                context.SaveChanges("Aso2Sql");
-                                logger.InfoFormat("Last SequenceNumber was updated to {0}.", maxSequenceNumber);
+                                context.SaveChanges(userName: "Aso2Sql");
+                                logger.Info($"Last SequenceNumber was updated to {maxSequenceNumber}.");
                             }
                         }
                     }
 
-                    logger.Info("End aso2sapo data synchronization");
+                    logger.Info(message: "End aso2sapo data synchronization");
                 }
             }
             catch (Exception ex)
@@ -86,7 +86,7 @@
             adapter.Fill(table, maximumLastFetchSequenceNumber);
             if (table.Rows.Count > 0)
             {
-                var mesurinpPointsByTransactions = context.MeasuringPointConfigs.All().Where(x => x.IsUsedPhdTotalizers == true).Select(x => x.Id).ToList();
+                List<int> mesurinpPointsByTransactions = context.MeasuringPointConfigs.All().Where(x => x.IsUsedPhdTotalizers == true).Select(x => x.Id).ToList();
 
                 foreach (AsoDataSet.flow_MeasuringPointsDataRow row in table.Rows)
                 {
@@ -315,7 +315,7 @@
                         tr.BatchId = row.BatchId;
                     }
 
-                    logger.InfoFormat("Processing sequence number {0}", row.SequenceNumber);
+                    logger.Info($"Processing sequence number {row.SequenceNumber}");
                     transactions.Add(tr);
                 }
 

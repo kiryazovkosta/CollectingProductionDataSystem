@@ -5,12 +5,17 @@
         return { "factoryId": $('input[name=factories]').val() || $('input[name=factoriesD]').val() }
     }
 
+    //String.prototype.replaceAll = function (target, replacement) {
+    //    return this.split(target).join(replacement);
+    //};
+
     function sendEditorText() {
         var message = '';
 
         if ($('#report-details').length) {
             var editor = $("#report-details").data("kendoEditor");
-            message = encodeURI(editor.value());
+            var val = editor.value();
+            message = encodeURI(val);
         }
 
         return { "reportText": message }
