@@ -60,6 +60,9 @@
               pdf.Margin("1cm", "1cm", "2cm", "2cm");
               pdf.RepeatHeaders();
           })
+          .Events(events => events
+              .Paste("kendoAdditional.ReportDetailsPaste")
+           )
           .Value("")
     )
 
@@ -157,6 +160,10 @@
 
     <script>
         $(function () {
+            String.prototype.replaceAll = function (target, replacement) {
+                return this.split(target).join(replacement);
+            };
+
             $("#export-pdf").click(function () {
                 var gridsInEditor = $('td.k-editable-area').find("iframe").contents().find("table");
                 pdfPageSetup.resizeGrids(gridsInEditor);
@@ -197,6 +204,7 @@
 
             });
         })
+
     </script>
 }
 
