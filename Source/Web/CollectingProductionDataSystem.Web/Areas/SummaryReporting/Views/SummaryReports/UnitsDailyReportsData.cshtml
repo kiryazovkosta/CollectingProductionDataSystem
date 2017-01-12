@@ -1,4 +1,5 @@
 ﻿@using System.Web.Optimization;
+@using CollectingProductionDataSystem.Constants;
 @using CollectingProductionDataSystem.Web.Areas.ShiftReporting.ViewModels;
 @using CollectingProductionDataSystem.Web.Infrastructure.Helpers;
 @using CollectingProductionDataSystem.Web.ViewModels.Units;
@@ -38,7 +39,7 @@
                 .Width(100);
             columns.Bound(c => c.UnitsDailyConfig.ProcessUnit.Factory.FactorySortableName).Hidden(true).ClientGroupHeaderTemplate("Производство #=value.substr(3,value.length-3)#").Width(10);
             columns.Bound(c => c.UnitsDailyConfig.ProcessUnit.SortableShortName).Hidden(true).ClientGroupHeaderTemplate("Инсталация #=value.substr(3,value.length-3)#").Width(10);
-            columns.Bound(c => c.UnitsDailyConfig.DailyProductType.Sort).Hidden(true).ClientGroupHeaderTemplate("#=value#").Width(10);
+            columns.Bound(c => c.UnitsDailyConfig.DailyProductType.Sort).Hidden(true).ClientGroupHeaderTemplate("#=value.substr(" + (FieldLength.DptSortableNameLength + 1) + ",value.length-" + (FieldLength.DptSortableNameLength + 1) + ")#").Width(10);
             columns.Bound(c => c.UnitsDailyConfig.ProcessUnit.ShortName).Width(140);
             columns.Bound(c => c.UnitsDailyConfig.Name);
             columns.Bound(c => c.UnitsDailyConfig.MeasureUnit.Code).Width(80);

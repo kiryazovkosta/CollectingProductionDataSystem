@@ -10,6 +10,7 @@
     using CollectingProductionDataSystem.Models.Productions;
     using CollectingProductionDataSystem.Web.InputModels;
     using Resources = App_GlobalResources.Resources;
+    using Constants;
 
     public class UnitDailyDataViewModel : IMapFrom<UnitsDailyData>, IHaveCustomMappings
     {
@@ -120,7 +121,7 @@
         {
             get
             {
-                return this.Id.ToString().PadLeft(2,'0')+ " " + this.Name;
+                return this.Id.ToString().PadLeft(FieldLength.DptSortableNameLength,'0')+ " " + this.Name;
             }
         }
 

@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.ModelConfiguration;
 using CollectingProductionDataSystem.Models.Inventories;
+using CollectingProductionDataSystem.Models.Productions;
 
 namespace CollectingProductionDataSystem.Data.Mappings
 {
@@ -10,6 +11,9 @@ namespace CollectingProductionDataSystem.Data.Mappings
         {
             // Primary Key
             this.HasKey(t => t.Id);
+
+            //this.Property(t => t.DataSource)
+            //    .HasColumnAnnotation(name: "DefaultValue", value: PrimaryDataSourceType.SrvVmMesPhdA);
 
             // Properties
             // Table & Column Mappings

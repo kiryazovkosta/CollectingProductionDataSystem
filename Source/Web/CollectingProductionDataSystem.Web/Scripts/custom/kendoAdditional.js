@@ -5,12 +5,24 @@
         return { "factoryId": $('input[name=factories]').val() || $('input[name=factoriesD]').val() }
     }
 
+    String.prototype.replaceAll = function (target, replacement) {
+        return this.split(target).join(replacement);
+    };
+
+    function reportDetailsPaste(e) {
+        e.html = e.html.replaceAll('&nbsp;&nbsp;&nbsp;&nbsp;', '');
+        e.html = e.html.replaceAll('&nbsp;&nbsp;&nbsp;', '');
+        e.html = e.html.replaceAll('&nbsp;&nbsp;', '');
+        e.html = e.html.replaceAll('&nbsp; &nbsp;', '');
+    }
+
     function sendEditorText() {
         var message = '';
 
         if ($('#report-details').length) {
             var editor = $("#report-details").data("kendoEditor");
-            message = encodeURI(editor.value());
+            var val = editor.value();
+            message = encodeURI(val);
         }
 
         return { "reportText": message }
@@ -328,6 +340,7 @@
         MessagesDataBound: MessagesDataBound,
         OnChange: onChange,
         OnPipeChange: onPipeChange,
-        OnRequestEnd: оnRequestEnd
+        OnRequestEnd: оnRequestEnd,
+        ReportDetailsPaste: reportDetailsPaste
     }
 })();

@@ -8,6 +8,7 @@
     using CollectingProductionDataSystem.Models.Contracts;
     using CollectingProductionDataSystem.Models.Productions;
     using CollectingProductionDataSystem.Models.Productions.Mounthly;
+    using Constants;
 
     public partial class DailyProductType : DeletableEntity, IEntity
     {
@@ -27,11 +28,7 @@
         {
             get
             {
-                StringBuilder sb = new StringBuilder();
-                sb.Append(this.Id.ToString("d2"));
-                sb.Append(" ");
-                sb.Append(this.Name);
-                return sb.ToString();
+                return $"{this.Id.ToString($"d{FieldLength.DptSortableNameLength}")} {this.Name}";                
             }
         }
     }
