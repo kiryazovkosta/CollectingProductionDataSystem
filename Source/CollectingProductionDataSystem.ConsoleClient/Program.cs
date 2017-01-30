@@ -45,177 +45,177 @@ namespace CollectingProductionDataSystem.ConsoleClient
             IProductionData data = kernel.Get<ProductionData>();
             ICalculatorService calculator = kernel.Get<CalculatorService>();
 
-            DateTime targetRecordDateTime = DateTime.Now;
-            var tanksPhdConfigs = new Dictionary<string, int>();
-            var tanksData = new Dictionary<int, TankData>();
+            //DateTime targetRecordDateTime = DateTime.Now;
+            //var tanksPhdConfigs = new Dictionary<string, int>();
+            //var tanksData = new Dictionary<int, TankData>();
 
-            List<TankConfig> tanks = data.Tanks.All().Include(x => x.Park).ToList();
-            foreach (var tank in tanks)
-            {
-                var tankData = new TankData();
-                tankData.RecordTimestamp = new DateTime(year: 2016, month: 12, day: 23, hour: 15, minute: 0, second: 0);
-                tankData.TankConfigId = tank.Id;
-                tankData.ParkId = tank.ParkId;
-                tankData.NetStandardVolume = tank.UnusableResidueLevel;
-                tankData.Confidence = 100;
+            //List<TankConfig> tanks = data.Tanks.All().Include(x => x.Park).ToList();
+            //foreach (var tank in tanks)
+            //{
+            //    var tankData = new TankData();
+            //    tankData.RecordTimestamp = new DateTime(year: 2016, month: 12, day: 23, hour: 15, minute: 0, second: 0);
+            //    tankData.TankConfigId = tank.Id;
+            //    tankData.ParkId = tank.ParkId;
+            //    tankData.NetStandardVolume = tank.UnusableResidueLevel;
+            //    tankData.Confidence = 100;
 
-                SetTankPhdConfigValue(tank.PhdTagProductId, tank.Id, tanksPhdConfigs);
-                SetTankPhdConfigValue(tank.PhdTagLiquidLevel, tank.Id, tanksPhdConfigs);
-                SetTankPhdConfigValue(tank.PhdTagProductLevel, tank.Id, tanksPhdConfigs);
-                SetTankPhdConfigValue(tank.PhdTagFreeWaterLevel, tank.Id, tanksPhdConfigs);
-                SetTankPhdConfigValue(tank.PhdTagReferenceDensity, tank.Id, tanksPhdConfigs);
-                SetTankPhdConfigValue(tank.PhdTagNetStandardVolume, tank.Id, tanksPhdConfigs);
-                SetTankPhdConfigValue(tank.PhdTagWeightInAir, tank.Id, tanksPhdConfigs);
-                SetTankPhdConfigValue(tank.PhdTagWeightInVacuum, tank.Id, tanksPhdConfigs);
-                tanksData.Add(tank.Id, tankData);
-            }
+            //    SetTankPhdConfigValue(tank.PhdTagProductId, tank.Id, tanksPhdConfigs);
+            //    SetTankPhdConfigValue(tank.PhdTagLiquidLevel, tank.Id, tanksPhdConfigs);
+            //    SetTankPhdConfigValue(tank.PhdTagProductLevel, tank.Id, tanksPhdConfigs);
+            //    SetTankPhdConfigValue(tank.PhdTagFreeWaterLevel, tank.Id, tanksPhdConfigs);
+            //    SetTankPhdConfigValue(tank.PhdTagReferenceDensity, tank.Id, tanksPhdConfigs);
+            //    SetTankPhdConfigValue(tank.PhdTagNetStandardVolume, tank.Id, tanksPhdConfigs);
+            //    SetTankPhdConfigValue(tank.PhdTagWeightInAir, tank.Id, tanksPhdConfigs);
+            //    SetTankPhdConfigValue(tank.PhdTagWeightInVacuum, tank.Id, tanksPhdConfigs);
+            //    tanksData.Add(tank.Id, tankData);
+            //}
 
-            List<string> tags = tanksPhdConfigs.Keys.ToList();
-            if (tags.Count() > 0)
-            {
-                using (PHDHistorian oPhd = new PHDHistorian())
-                {
-                    string phdServer = "10.94.0.213";
-                    using (PHDServer defaultServer = new PHDServer(phdServer))
-                    {
-                        defaultServer.Port = 3150;
-                        defaultServer.APIVersion = Uniformance.PHD.SERVERVERSION.RAPI200;
-                        oPhd.DefaultServer = defaultServer;
-                        oPhd.StartTime = "12/23/2016 3:0:0 PM";
-                        oPhd.EndTime = "12/23/2016 3:0:0 PM";
-                        oPhd.Sampletype = SAMPLETYPE.Raw;
-                        oPhd.MinimumConfidence = 100;
-                        oPhd.MaximumRows = 1;
+            //List<string> tags = tanksPhdConfigs.Keys.ToList();
+            //if (tags.Count() > 0)
+            //{
+            //    using (PHDHistorian oPhd = new PHDHistorian())
+            //    {
+            //        string phdServer = "10.94.0.213";
+            //        using (PHDServer defaultServer = new PHDServer(phdServer))
+            //        {
+            //            defaultServer.Port = 3150;
+            //            defaultServer.APIVersion = Uniformance.PHD.SERVERVERSION.RAPI200;
+            //            oPhd.DefaultServer = defaultServer;
+            //            oPhd.StartTime = "12/23/2016 3:0:0 PM";
+            //            oPhd.EndTime = "12/23/2016 3:0:0 PM";
+            //            oPhd.Sampletype = SAMPLETYPE.Raw;
+            //            oPhd.MinimumConfidence = 100;
+            //            oPhd.MaximumRows = 1;
 
-                        var oTags = new Tags();
-                        foreach (var tag in tags)
-                        {
-                            oTags.Add(new Tag(tag));
-                        }
+            //            var oTags = new Tags();
+            //            foreach (var tag in tags)
+            //            {
+            //                oTags.Add(new Tag(tag));
+            //            }
 
-                        DataSet result = oPhd.FetchRowData(oTags);
-                        ProcessingPhdTankData(result.Tables[0], tanksData, tanksPhdConfigs, targetRecordDateTime, data);
-                        foreach (var tankData in tanksData)
-                        {
-                            Console.WriteLine($"{tankData.Value.TankConfigId} {tankData.Value.ParkId} {tankData.Value.ProductName} {tankData.Value.WeightInVacuum} {tankData.Value.LiquidLevel} {tankData.Value.NetStandardVolume}");
-                        }
+            //            DataSet result = oPhd.FetchRowData(oTags);
+            //            ProcessingPhdTankData(result.Tables[0], tanksData, tanksPhdConfigs, targetRecordDateTime, data);
+            //            foreach (var tankData in tanksData)
+            //            {
+            //                Console.WriteLine($"{tankData.Value.TankConfigId} {tankData.Value.ParkId} {tankData.Value.ProductName} {tankData.Value.WeightInVacuum} {tankData.Value.LiquidLevel} {tankData.Value.NetStandardVolume}");
+            //            }
 
-                        if (tanksData.Count() > 0)
-                        {
-                            data.TanksData.BulkInsert(tanksData.Values.ToList(), userName: "Phd2SqlLoading");
-                            data.SaveChanges(userName: "Phd2SqlLoading");
-                            Console.WriteLine($"Successfully added {tanksData.Count()} TanksData records for: {targetRecordDateTime:yyyy-MM-dd HH:ss:mm}!");
-                        }
-                        result = null;
-                    }
-                }
-            }
-
-
-
-
-                    //var transactions = kernel.Get<TransactionsDailyDataService>();
-                    //var date = new DateTime(year: 2016, month: 10, day: 30, hour: 0, minute: 0, second: 0);
-                    //HashSet<MeasuringPointsConfigsReportData> output = transactions.ReadTransactionsDailyData(date, CommonConstants.OutputDirection);
-                    //var result = new List<MeasuringPointsConfigsReportData>();
-                    //foreach (var item in output)
-                    //{
-                    //    MeasuringPointsConfigsReportData record = item;
-                    //    record.RecordTimestamp = date;
-                    //    record.Direction = CommonConstants.OutputDirection;
-                    //    result.Add(record);
-                    //}
-
-                    //data.MeasuringPointsConfigsReportDatas.BulkInsert(result, userName: "Initial Loading");
-                    //data.SaveChanges(userName: "Initial Loading");
-
-                    //Console.WriteLine(result.Count());
-
-                    //WritePositionsConfidence(data);
-                    //UpdateShiftUnitData(kernel, data);
-
-                    //AddOrUpdateProductionPlanConfigs(data);
-                    //var targetMonth = DateTime.Today;
-                    //var service = new MonthlyTechnicalDataService(data, kernel, calculator);
-                    //var monthlyProductionData = service.ReadMonthlyTechnologicalData(targetMonth);
-                    //using (var sw = new StreamWriter(@"c:\temp\MonthlyTechReport.txt", false))
-                    //{
-                    //    sw.WriteLine("Id;Code;Name;Factory;ProcessUnit;MaterialType;MeasurementUnit;;PlanValue;PlanPercentage;;FactValue;FactPercentage;FactValueDifference;FactPercentageDifference;;YearValue;YearPercentage;YearValueDifference;YearPercentageDifference");
-                    //    foreach (var item in monthlyProductionData)
-                    //    {
-                    //        sw.WriteLine(item.ToString());
-                    //    }
-                    //}
-
-                    //Console.WriteLine(monthlyProductionData.Count());
+            //            if (tanksData.Count() > 0)
+            //            {
+            //                data.TanksData.BulkInsert(tanksData.Values.ToList(), userName: "Phd2SqlLoading");
+            //                data.SaveChanges(userName: "Phd2SqlLoading");
+            //                Console.WriteLine($"Successfully added {tanksData.Count()} TanksData records for: {targetRecordDateTime:yyyy-MM-dd HH:ss:mm}!");
+            //            }
+            //            result = null;
+            //        }
+            //    }
+            //}
 
 
 
-                    //var lastRealDate = new DateTime(year: 2016, month: 9, day: 26, hour: 0, minute: 0, second: 0);
-                    ////CreateShiftData(data, lastRealDate);
-                    ////CreateDailyData(data, lastRealDate);
-                    //CreateProductionPlanData(data, lastRealDate);
+
+            //var transactions = kernel.Get<TransactionsDailyDataService>();
+            //var date = new DateTime(year: 2016, month: 10, day: 30, hour: 0, minute: 0, second: 0);
+            //HashSet<MeasuringPointsConfigsReportData> output = transactions.ReadTransactionsDailyData(date, CommonConstants.OutputDirection);
+            //var result = new List<MeasuringPointsConfigsReportData>();
+            //foreach (var item in output)
+            //{
+            //    MeasuringPointsConfigsReportData record = item;
+            //    record.RecordTimestamp = date;
+            //    record.Direction = CommonConstants.OutputDirection;
+            //    result.Add(record);
+            //}
+
+            //data.MeasuringPointsConfigsReportDatas.BulkInsert(result, userName: "Initial Loading");
+            //data.SaveChanges(userName: "Initial Loading");
+
+            //Console.WriteLine(result.Count());
+
+            //WritePositionsConfidence(data);
+            //UpdateShiftUnitData(kernel, data);
+
+            //AddOrUpdateProductionPlanConfigs(data);
+            //var targetMonth = DateTime.Today;
+            //var service = new MonthlyTechnicalDataService(data, kernel, calculator);
+            //var monthlyProductionData = service.ReadMonthlyTechnologicalData(targetMonth);
+            //using (var sw = new StreamWriter(@"c:\temp\MonthlyTechReport.txt", false))
+            //{
+            //    sw.WriteLine("Id;Code;Name;Factory;ProcessUnit;MaterialType;MeasurementUnit;;PlanValue;PlanPercentage;;FactValue;FactPercentage;FactValueDifference;FactPercentageDifference;;YearValue;YearPercentage;YearValueDifference;YearPercentageDifference");
+            //    foreach (var item in monthlyProductionData)
+            //    {
+            //        sw.WriteLine(item.ToString());
+            //    }
+            //}
+
+            //Console.WriteLine(monthlyProductionData.Count());
 
 
 
-                    //UpdateShiftUnitData(kernel, data);
-                    //var shiftData = data.UnitsData.All().Where(x => x.ShiftId == ShiftType.Second 
-                    //    && x.RecordTimestamp == new DateTime(2016, 2, 1, 0, 0, 0) 
-                    //    && x.UnitConfig.ProcessUnitId == 50).ToList();
-                    //int monthIndex = DateTime.Now.Month - 1;
-                    //var lastDate = new DateTime(2016, 2, 19, 0, 0, 0);
-                    //var shiftData = data.UnitsData.All().Where(x => x.ShiftId == ShiftType.Second
-                    //    && x.RecordTimestamp == lastDate
-                    //    && x.UnitConfig.ProcessUnitId == 37).ToList();
-                    //var prevDay = lastDate.AddDays(-1);
-                    //while (prevDay.Month == monthIndex)
-                    //{
-                    //    foreach (var item in shiftData)
-                    //    {
-                    //        item.RecordTimestamp = prevDay;
-                    //        item.ShiftId = ShiftType.First;
-                    //        data.UnitsData.Add(item);
-                    //    }
-                    //    data.SaveChanges("Loader");
-                    //    prevDay = prevDay.AddDays(-1);
-                    //}
-                    //for (int i = 0; i < 19; i++)
-                    //{
-                    //    ProcessActiveTransactionsData(i);   
-                    //}
-                    //for (int i = 18; i >= 0; i--)
-                    //{
-                    //    ProcessScaleTransactionsData(i);   
-                    //}
-                    //ProcessTransactionsData();
-                    //DoCalculation();
-                    //ProcessProductionReportTransactionsData();
-                    //System.Console.WriteLine("finished");
-                    //ConvertProductsForInternalPipes(data);
-                    //TransformUnitDailyConfigTable(data);
-                    //TransformUnitConfigTable(data);
-                    //var fileName = @"d:\Proba\ХО-2-Конфигурация инсталации.csv";
-                    //var fileUploader = kernel.GetService(typeof(IFileUploadService)) as IFileUploadService;
-                    //timer.Stop();
-                    //Console.WriteLine("Time for ninject init {0}.", timer.Elapsed);
-                    //timer.Reset();
-                    //timer.Start();
-                    //var result = fileUploader.UploadFileToDatabase(fileName, ";");
-                    //timer.Stop();
-                    //if (result.IsValid)
-                    //{
-                    //    Console.WriteLine("File was uploaded successfully!!!");
-                    //    Console.WriteLine("Estimated time for action {0}", timer.Elapsed);
-                    //}
-                    //else
-                    //{
-                    //    result.EfErrors.ForEach(x =>
-                    //        Console.WriteLine("{0} => {1}", x.MemberNames.FirstOrDefault(), x.ErrorMessage)
-                    //        );
-                    //}
-                    //TreeShiftsReports(DateTime.Today.AddDays(-2), 1);
-                    //SeedShiftsToDatabase(uow);
-                    Console.WriteLine("finished");
+            var lastRealDate = new DateTime(year: 2017, month: 1, day: 18, hour: 0, minute: 0, second: 0);
+            //CreateShiftData(data, lastRealDate);
+            //CreateDailyData(data, lastRealDate);
+            CreateProductionPlanData(data, lastRealDate);
+
+
+
+            //UpdateShiftUnitData(kernel, data);
+            //var shiftData = data.UnitsData.All().Where(x => x.ShiftId == ShiftType.Second 
+            //    && x.RecordTimestamp == new DateTime(2016, 2, 1, 0, 0, 0) 
+            //    && x.UnitConfig.ProcessUnitId == 50).ToList();
+            //int monthIndex = DateTime.Now.Month - 1;
+            //var lastDate = new DateTime(2016, 2, 19, 0, 0, 0);
+            //var shiftData = data.UnitsData.All().Where(x => x.ShiftId == ShiftType.Second
+            //    && x.RecordTimestamp == lastDate
+            //    && x.UnitConfig.ProcessUnitId == 37).ToList();
+            //var prevDay = lastDate.AddDays(-1);
+            //while (prevDay.Month == monthIndex)
+            //{
+            //    foreach (var item in shiftData)
+            //    {
+            //        item.RecordTimestamp = prevDay;
+            //        item.ShiftId = ShiftType.First;
+            //        data.UnitsData.Add(item);
+            //    }
+            //    data.SaveChanges("Loader");
+            //    prevDay = prevDay.AddDays(-1);
+            //}
+            //for (int i = 0; i < 19; i++)
+            //{
+            //    ProcessActiveTransactionsData(i);   
+            //}
+            //for (int i = 18; i >= 0; i--)
+            //{
+            //    ProcessScaleTransactionsData(i);   
+            //}
+            //ProcessTransactionsData();
+            //DoCalculation();
+            //ProcessProductionReportTransactionsData();
+            //System.Console.WriteLine("finished");
+            //ConvertProductsForInternalPipes(data);
+            //TransformUnitDailyConfigTable(data);
+            //TransformUnitConfigTable(data);
+            //var fileName = @"d:\Proba\ХО-2-Конфигурация инсталации.csv";
+            //var fileUploader = kernel.GetService(typeof(IFileUploadService)) as IFileUploadService;
+            //timer.Stop();
+            //Console.WriteLine("Time for ninject init {0}.", timer.Elapsed);
+            //timer.Reset();
+            //timer.Start();
+            //var result = fileUploader.UploadFileToDatabase(fileName, ";");
+            //timer.Stop();
+            //if (result.IsValid)
+            //{
+            //    Console.WriteLine("File was uploaded successfully!!!");
+            //    Console.WriteLine("Estimated time for action {0}", timer.Elapsed);
+            //}
+            //else
+            //{
+            //    result.EfErrors.ForEach(x =>
+            //        Console.WriteLine("{0} => {1}", x.MemberNames.FirstOrDefault(), x.ErrorMessage)
+            //        );
+            //}
+            //TreeShiftsReports(DateTime.Today.AddDays(-2), 1);
+            //SeedShiftsToDatabase(uow);
+            Console.WriteLine("finished");
         }
 
         private static void ProcessingPhdTankData(DataTable oPhdData, Dictionary<int, TankData> tanksData, Dictionary<string, int> tanksPhdConfigs, DateTime targetRecordDateTime, IProductionData data)
@@ -353,7 +353,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
             }
         }
 
-        private static void CreateShiftData(ProductionData data, DateTime lastRealDate)
+        private static void CreateShiftData(IProductionData data, DateTime lastRealDate)
         {
             var shiftsData = data.UnitsData.All().Where(x => x.RecordTimestamp == lastRealDate).ToList();
             var approvedShiftsData = data.UnitsApprovedDatas.All().Where(x => x.RecordDate == lastRealDate).ToList();
@@ -411,7 +411,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
             }
         }
 
-        private static void CreateDailyData(ProductionData data, DateTime lastRealDate)
+        private static void CreateDailyData(IProductionData data, DateTime lastRealDate)
         {
             var dailyData = data.UnitsDailyDatas.All().Where(x => x.RecordTimestamp == lastRealDate).ToList();
             var approvedDaysData = data.UnitsApprovedDailyDatas.All().Where(x => x.RecordDate == lastRealDate).ToList();
@@ -460,7 +460,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
             }
         }
 
-        private static void CreateProductionPlanData(ProductionData data, DateTime lastRealDate)
+        private static void CreateProductionPlanData(IProductionData data, DateTime lastRealDate)
         {
             var dailyData = data.ProductionPlanDatas.All().Where(x => x.RecordTimestamp == lastRealDate).ToList();
             var nextDate = lastRealDate.AddDays(1);

@@ -23,6 +23,13 @@ namespace CollectingProductionDataSystem.Application.TransactionsDailyDataServic
 
         public HashSet<MeasuringPointsConfigsReportData> ReadTransactionsDailyData(DateTime date, int flowDirection)
         {
+            var existingDailyTransactionData =
+                this.data.MeasuringPointsConfigsReportDatas.All().Where(x => x.RecordTimestamp == date && x.Direction == flowDirection).ToList();
+            if (existingDailyTransactionData.Count > 0)
+            {
+                return new HashSet<MeasuringPointsConfigsReportData>(existingDailyTransactionData);
+            }
+
             IQueryable<TransactionDataDto> transactionsData = GetMeasurementPointsDataByDateAndDirection(date, flowDirection)
                 .Select(t => new TransactionDataDto
                 {

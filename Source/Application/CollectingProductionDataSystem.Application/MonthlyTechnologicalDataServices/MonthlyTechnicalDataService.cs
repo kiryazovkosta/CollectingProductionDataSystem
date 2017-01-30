@@ -52,7 +52,7 @@
         /// <param name="month">The month.</param>
         /// <param name="processUnits">The process units.</param>
         /// <returns></returns>
-        public IEnumerable<MonthlyTechnicalReportDataDto> ReadMonthlyTechnologicalDataAsync(DateTime month, int[] processUnits)
+        public IEnumerable<MonthlyTechnicalReportDataDto> ReadMonthlyTechnologicalDataAsync(DateTime month, int factoryId)
         {
             var monthDate = new DateTime(month.Year, month.Month, DateTime.DaysInMonth(month.Year, month.Month), hour: 0, minute: 0, second: 0);
             var firstDayInMonth = new DateTime(month.Year, month.Month, day: 1, hour: 0, minute: 0, second: 0);
@@ -91,7 +91,7 @@
                 }
             }
 
-            IEnumerable<MonthlyTechnicalReportDataDto> result = ReadMonthlyTechnologicalData(monthDate, processUnits);
+            IEnumerable<MonthlyTechnicalReportDataDto> result = ReadMonthlyTechnologicalData(monthDate, factoryId);
             return result;
         }
 
@@ -101,9 +101,9 @@
         /// <param name="month"></param>
         /// <param name="processUnits"></param>
         /// <returns></returns>
-        private IEnumerable<MonthlyTechnicalReportDataDto> ReadMonthlyTechnologicalData(DateTime month, int[] processUnits)
+        private IEnumerable<MonthlyTechnicalReportDataDto> ReadMonthlyTechnologicalData(DateTime month, int factoryId)
         {
-            List<UnitTechnologicalMonthlyData> dbResult = this.data.UnitTechnologicalMonthlyDatas.All().Where(x => x.RecordTimestamp == month).Where(x => processUnits.Contains(x.ProcessUnitId)).ToList();
+            List<UnitTechnologicalMonthlyData> dbResult = this.data.UnitTechnologicalMonthlyDatas.All().Where(x => x.RecordTimestamp == month).Where(x => x.FactoryId == factoryId).ToList();
             var result = new List<MonthlyTechnicalReportDataDto>();
             foreach (UnitTechnologicalMonthlyData record in dbResult)
             {
@@ -279,6 +279,10 @@
                 try
                 {
                     ProductionPlanDataDto productionPlanData = null;
+                    if (item.UnitMonthlyConfigId == 499)
+                    {
+                        var temp = 0;
+                    }
                     int productionPlanConfigId = item.UnitMonthlyConfig.ProductionPlanConfigId ?? 0;
                     if (productionPlanConfigId != 0)
                     {
@@ -289,20 +293,20 @@
                     {
                         monthlyProductionData.Add(monthlyProductionDataRecord);
                     }
-                    else
-                    {
-                        if (!processUnitsWithErrorInCalculation.Contains(item.UnitMonthlyConfig.ProcessUnitId))
-                        {
-                            processUnitsWithErrorInCalculation.Add(item.UnitMonthlyConfig.ProcessUnitId);
-                        }
-                    }
+                    //else
+                    //{
+                    //    if (!processUnitsWithErrorInCalculation.Contains(item.UnitMonthlyConfig.ProcessUnitId))
+                    //    {
+                    //        processUnitsWithErrorInCalculation.Add(item.UnitMonthlyConfig.ProcessUnitId);
+                    //    }
+                    //}
                 }
                 catch (Exception ex)
                 {
-                    if (!processUnitsWithErrorInCalculation.Contains(item.UnitMonthlyConfig.ProcessUnitId))
-                    {
-                        processUnitsWithErrorInCalculation.Add(item.UnitMonthlyConfig.ProcessUnitId);
-                    }
+                    //if (!processUnitsWithErrorInCalculation.Contains(item.UnitMonthlyConfig.ProcessUnitId))
+                    //{
+                    //    processUnitsWithErrorInCalculation.Add(item.UnitMonthlyConfig.ProcessUnitId);
+                    //}
                 }
             }
 

@@ -71,23 +71,23 @@
             {
                 //try
                 {
-                    IEnumerable<int> processUnits = new HashSet<int>();
-                    if (IsPowerUser())
-                    {
-                        processUnits = this.data.ProcessUnits.All()
-                            .Where(x => x.FactoryId == factoryId)
-                            .Select(x => x.Id);
-                    }
-                    else
-                    {
-                        List<int> processUnitsForFactory = this.data.ProcessUnits.All()
-                            .Where(x => x.FactoryId == factoryId)
-                            .Select(x => x.Id).ToList();
-                        processUnits = this.UserProfile.ProcessUnits.ToList()
-                            .Where(p => processUnitsForFactory.Contains(p.Id))
-                            .Select(x => x.Id);
-                    }
-                    IEnumerable<MonthlyTechnicalReportDataDto> dbResult = this.monthlyService.ReadMonthlyTechnologicalDataAsync(date.Value, processUnits.ToArray());
+                    //IEnumerable<int> processUnits = new HashSet<int>();
+                    //if (IsPowerUser())
+                    //{
+                    //    processUnits = this.data.ProcessUnits.All()
+                    //        .Where(x => x.FactoryId == factoryId)
+                    //        .Select(x => x.Id);
+                    //}
+                    //else
+                    //{
+                    //    List<int> processUnitsForFactory = this.data.ProcessUnits.All()
+                    //        .Where(x => x.FactoryId == factoryId)
+                    //        .Select(x => x.Id).ToList();
+                    //    processUnits = this.UserProfile.ProcessUnits.ToList()
+                    //        .Where(p => processUnitsForFactory.Contains(p.Id))
+                    //        .Select(x => x.Id);
+                    //}
+                    IEnumerable<MonthlyTechnicalReportDataDto> dbResult = this.monthlyService.ReadMonthlyTechnologicalDataAsync(date.Value, factoryId.Value);
                     IEnumerable<MonthlyTechnicalViewModel> vmResult = Mapper.Map<IEnumerable<MonthlyTechnicalViewModel>>(dbResult);
                     DataSourceResult kendoResult = vmResult.ToDataSourceResult(request, ModelState);
                     return Json(kendoResult, JsonRequestBehavior.AllowGet);
