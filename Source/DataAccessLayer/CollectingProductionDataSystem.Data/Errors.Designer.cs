@@ -61,6 +61,15 @@ namespace CollectingProductionDataSystem.Data {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to An instance of DbContext is required to use this repository..
+        /// </summary>
+        public static string DbContextError {
+            get {
+                return ResourceManager.GetString("DbContextError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error while saving data..
         /// </summary>
         public static string SavingDataError {

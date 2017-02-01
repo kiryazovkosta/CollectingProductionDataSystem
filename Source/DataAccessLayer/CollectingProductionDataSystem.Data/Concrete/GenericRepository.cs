@@ -5,23 +5,28 @@
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
-    using System.Diagnostics;
     using System.Linq;
     using System.Linq.Expressions;
     using System.ComponentModel.DataAnnotations;
-    using CollectingProductionDataSystem.Contracts;
-    using CollectingProductionDataSystem.Infrastructure.Extentions;
-    using CollectingProductionDataSystem.Data.Contracts;
-    using CollectingProductionDataSystem.Models.Contracts;
-    using EntityFramework.BulkInsert.Extensions;
+    using Infrastructure.Extentions;
+    using Contracts;
+    using Models.Contracts;
 
+    /// <summary>
+    /// Generic repository
+    /// </summary>
+    /// <typeparam name="T"> Generic type</typeparam>
     public class GenericRepository<T> : IRepository<T> where T : class, IEntity
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="context"></param>
         public GenericRepository(IDbContext context)
         {
             if (context == null)
             {
-                throw new ArgumentException("An instance of DbContext is required to use this repository.", "context");
+                throw new ArgumentException(Errors.DbContextError, nameof(context));
             }
 
             this.Context = context;
@@ -140,11 +145,11 @@
             IEnumerable<string> members;
             if (compiledExpression is T)
             {
-                members = ((MemberInitExpression)entity.Body).Bindings.Select(b => b.Member.Name);
+                members = ((MemberInitExpression) entity.Body).Bindings.Select(b => b.Member.Name);
             }
             else
             {
-                members = ((NewExpression)entity.Body).Members.Select(m => m.Name);
+                members = ((NewExpression) entity.Body).Members.Select(m => m.Name);
             }
 
             // select all not mapped properties and set value
@@ -171,6 +176,7 @@
         /// Bulks the insert.
         /// </summary>
         /// <param name="entities">The entities.</param>
+        /// <param name="userName">The user name</param>
         public void BulkInsert(IEnumerable<T> entities, string userName)
         {
             this.Context.BulkInsert(entities, userName);
@@ -184,6 +190,11 @@
                 .GetType()
                 .GetProperties()
                 .FirstOrDefault(prop => Attribute.IsDefined(prop, typeof(KeyAttribute)));
+
+            if (property == null)
+            {
+                throw new NullReferenceException($"The key of the entry not found: {myObject.GetType()}.");
+            }
 
             return (int)property.GetValue(myObject, null);
         }

@@ -201,4 +201,7 @@
   <data name="NoFactoryError" xml:space="preserve">
     <value>Невалиден номер на производство {0}</value>
   </data>
+  <data name="NoDataForEnergyDailyReport" xml:space="preserve">
+    <value>Не са налични дневни данни за: {0} {1} {2}</value>
+  </data>
 </root>

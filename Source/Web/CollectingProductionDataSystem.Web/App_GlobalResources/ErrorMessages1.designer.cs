@@ -223,6 +223,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No data was found for: {0} {1} {2}.
+        /// </summary>
+        public static string NoDataForEnergyDailyReport {
+            get {
+                return ResourceManager.GetString("NoDataForEnergyDailyReport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No data was found for the specified criterias.
         /// </summary>
         public static string NoDataWasFound {

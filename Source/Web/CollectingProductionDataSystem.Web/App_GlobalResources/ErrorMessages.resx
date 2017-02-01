@@ -201,4 +201,7 @@
   <data name="NoFactoryError" xml:space="preserve">
     <value>Invalid factoryId {0}</value>
   </data>
+  <data name="NoDataForEnergyDailyReport" xml:space="preserve">
+    <value>No data was found for: {0} {1} {2}</value>
+  </data>
 </root>

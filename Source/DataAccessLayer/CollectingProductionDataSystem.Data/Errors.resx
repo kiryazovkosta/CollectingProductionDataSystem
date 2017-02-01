@@ -123,4 +123,7 @@
   <data name="UnikConstraintViolation" xml:space="preserve">
     <value>Cannot insert duplicate values.</value>
   </data>
+  <data name="DbContextError" xml:space="preserve">
+    <value>An instance of DbContext is required to use this repository.</value>
+  </data>
 </root>

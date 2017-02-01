@@ -5,30 +5,30 @@
     using System.ComponentModel.DataAnnotations;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
-    using System.Diagnostics;
     using System.Linq;
     using System.Net;
     using System.Text;
     using System.Transactions;
     using System.Web.Mvc;
     using AutoMapper;
-    using CollectingProductionDataSystem.Application.CalculatorService;
-    using CollectingProductionDataSystem.Application.Contracts;
-    using CollectingProductionDataSystem.Application.ProductionPlanDataServices;
-    using CollectingProductionDataSystem.Application.UnitDailyDataServices;
-    using CollectingProductionDataSystem.Constants;
-    using CollectingProductionDataSystem.Data.Common;
-    using CollectingProductionDataSystem.Data.Contracts;
+    using Application.Contracts;
+    using Application.ProductionPlanDataServices;
+    using Application.UnitDailyDataServices;
+    using App_Resources;
+    using Constants;
+    using Data.Common;
+    using Data.Contracts;
     using CollectingProductionDataSystem.Infrastructure.Contracts;
-    using CollectingProductionDataSystem.Models.Productions;
-    using CollectingProductionDataSystem.Web.Infrastructure.Extentions;
-    using CollectingProductionDataSystem.Web.Infrastructure.Filters;
-    using CollectingProductionDataSystem.Web.InputModels;
-    using CollectingProductionDataSystem.Web.ViewModels.Units;
+    using Models.Productions;
+    using Infrastructure.Extentions;
+    using Infrastructure.Filters;
+    using InputModels;
+    using Web.ViewModels.Units;
     using Kendo.Mvc.Extensions;
     using Kendo.Mvc.UI;
     using Newtonsoft.Json;
     using Resources = App_GlobalResources.Resources;
+    using ErrorMessages = App_GlobalResources.Resources.ErrorMessages;
 
     public class EnergyDailyController : AreaBaseController
     {
@@ -56,7 +56,7 @@
         [HttpGet]
         public ActionResult EnergyDailyData()
         {
-            return View();
+            return this.View();
         }
 
         [HttpPost]
@@ -64,36 +64,36 @@
         [AuthorizeFactory]
         public JsonResult ReadEnergyDailyData([DataSourceRequest]DataSourceRequest request, DateTime? date, int? processUnitId, int? materialTypeId)
         {
-            ValidateModelState(date, processUnitId);
+            this.ValidateModelState(date, processUnitId);
             if (!this.ModelState.IsValid)
             {
-                var kendoResult = new List<UnitDailyDataViewModel>().ToDataSourceResult(request, ModelState);
-                return Json(kendoResult);
+                var kendoResult = new List<UnitDailyDataViewModel>().ToDataSourceResult(request, this.ModelState);
+                return this.Json(kendoResult);
             }
 
-            var status = CalculateDailyDataIfNotAvailable(date.Value, processUnitId.Value);
+            var status = this.CalculateDailyDataIfNotAvailable(date.Value, processUnitId.Value);
 
             if (!status.IsValid)
             {
                 status.ToModelStateErrors(this.ModelState);
             }
 
-            if (ModelState.IsValid)
+            if (this.ModelState.IsValid)
             {
-                ValidateProductionPlanRelatedData(processUnitId, materialTypeId, date);
+                this.ValidateProductionPlanRelatedData(processUnitId, materialTypeId, date);
             }
 
-            if (ModelState.IsValid)
+            if (this.ModelState.IsValid)
             {
                 var kendoResult = new DataSourceResult();
-                if (ModelState.IsValid)
+                if (this.ModelState.IsValid)
                 {
-                    var dbResult = unitsData.GetUnitsDailyDataForDateTime(date, processUnitId, CommonConstants.EnergyType);
+                    var dbResult = this.unitsData.GetUnitsDailyDataForDateTime(date, processUnitId, CommonConstants.EnergyType);
                     var kendoPreparedResult = Mapper.Map<IEnumerable<UnitsDailyData>, IEnumerable<UnitDailyDataViewModel>>(dbResult);
-                    kendoResult = kendoPreparedResult.ToDataSourceResult(request, ModelState);
+                    kendoResult = kendoPreparedResult.ToDataSourceResult(request, this.ModelState);
                 }
 
-                Session["reportParams"] = Convert.ToBase64String(Encoding.UTF8.GetBytes(
+                this.Session["reportParams"] = Convert.ToBase64String(Encoding.UTF8.GetBytes(
                                                                    JsonConvert.SerializeObject(
                                                                        new ProcessUnitConfirmDailyInputModel()
                                                                        {
@@ -104,12 +104,12 @@
                                                                )
                                                            );
 
-                return Json(kendoResult);
+                return this.Json(kendoResult);
             }
             else
             {
-                var kendoResult = new List<UnitDailyDataViewModel>().ToDataSourceResult(request, ModelState);
-                return Json(kendoResult);
+                var kendoResult = new List<UnitDailyDataViewModel>().ToDataSourceResult(request, this.ModelState);
+                return this.Json(kendoResult);
             }
         }
  
@@ -153,13 +153,12 @@
             {
                 var unitDailyDataExists = this.data.UnitsDailyDatas.All()
                                               .Include(x => x.UnitsDailyConfig)
-                                              .Where(x => x.RecordTimestamp == date && x.UnitsDailyConfig.Code == item)
-                                              .FirstOrDefault();
+                                              .FirstOrDefault(x => x.RecordTimestamp == date && x.UnitsDailyConfig.Code == item);
                 if (unitDailyDataExists == null)
                 {
-                    var unitConfig = this.data.UnitsDailyConfigs.All().Include(y => y.ProcessUnit).Where(y => y.Code == item).First();
-                    this.ModelState.AddModelError("", 
-                        string.Format("Не са налични дневни данни за: {0} {1} {2}", unitConfig.ProcessUnit.ShortName, unitConfig.Code, unitConfig.Name));  
+                    var unitConfig = this.data.UnitsDailyConfigs.All().Include(y => y.ProcessUnit).First(y => y.Code == item);
+                    this.ModelState.AddModelError("",
+                        string.Format(ErrorMessages.NoDataForEnergyDailyReport, unitConfig.ProcessUnit.ShortName, unitConfig.Code, unitConfig.Name));  
                 }
             }
         }
@@ -168,7 +167,7 @@
         [ValidateAntiForgeryToken]
         public ActionResult Edit([DataSourceRequest]DataSourceRequest request, UnitDailyDataViewModel model)
         {
-            if (ModelState.IsValid)
+            if (this.ModelState.IsValid)
             {
                 var newManualRecord = new UnitsManualDailyData
                 {
@@ -184,13 +183,13 @@
                 }
                 else
                 {
-                    UpdateRecord(existManualRecord, model);
+                    this.UpdateRecord(existManualRecord, model);
                 }
                 try
                 {
                     using (var transaction = new TransactionScope(TransactionScopeOption.Required, this.transantionOption))
                     {
-                        var result = this.data.SaveChanges(UserProfile.UserName);
+                        var result = this.data.SaveChanges(this.UserProfile.UserName);
                         if (!result.IsValid)
                         {
                             foreach (ValidationResult error in result.EfErrors)
@@ -200,7 +199,7 @@
                         }
 
                         var updatedRecords = this.dailyService.CalculateDailyDataForProcessUnit(model.UnitsDailyConfig.ProcessUnitId, model.RecordTimestamp, isRecalculate: true, editReasonId: model.UnitsManualDailyData.EditReason.Id, materialTypeId:CommonConstants.EnergyType);
-                        var status = UpdateResultRecords(updatedRecords, model.UnitsManualDailyData.EditReason.Id);
+                        var status = this.UpdateResultRecords(updatedRecords, model.UnitsManualDailyData.EditReason.Id);
 
                         if (!status.IsValid)
                         {
@@ -214,17 +213,18 @@
                 }
                 catch (DbUpdateException)
                 {
-                    this.ModelState.AddModelError("ManualValue", "Записът не можа да бъде осъществен. Моля опитайте на ново!");
+                    this.ModelState.AddModelError("ManualValue", Resources.Layout.CannotMakeRecord);
                 }
             }
 
-            return Json(new[] { model }.ToDataSourceResult(request, ModelState));
+            return this.Json(new[] { model }.ToDataSourceResult(request, this.ModelState));
         }
 
         /// <summary>
         /// Updates the result records.
         /// </summary>
         /// <param name="updatedRecords">The updated records.</param>
+        /// <param name="editReasonId">The edit reason Id</param>
         private IEfStatus UpdateResultRecords(IEnumerable<UnitsDailyData> updatedRecords, int editReasonId)
         {
             foreach (var record in updatedRecords)
@@ -244,6 +244,11 @@
             return this.data.SaveChanges(this.UserProfile.UserName);
         }
 
+        /// <summary>
+        /// Update a single record
+        /// </summary>
+        /// <param name="existManualRecord">UnitsManualDailyData record</param>
+        /// <param name="model">input data</param>
         private void UpdateRecord(UnitsManualDailyData existManualRecord, UnitDailyDataViewModel model)
         {
             existManualRecord.Value = model.UnitsManualDailyData.Value;
@@ -255,33 +260,38 @@
         [ValidateAntiForgeryToken]
         public ActionResult IsConfirmed([DataSourceRequest]DataSourceRequest request, DateTime? date, int? processUnitId)
         {
-            ValidateModelState(date, processUnitId);
+            this.ValidateModelState(date, processUnitId);
 
             if (this.ModelState.IsValid)
             {
                 var approvedShift = this.data.UnitsApprovedDailyDatas
                     .All()
-                    .Where(u => u.RecordDate == date && u.ProcessUnitId == processUnitId && u.EnergyApproved == true)
-                    .FirstOrDefault();
+                    .FirstOrDefault(u => u.RecordDate == date 
+                                        && u.ProcessUnitId == processUnitId 
+                                        && u.EnergyApproved == true);
                 if (approvedShift == null)
                 {
-                    if (this.data.UnitsDailyDatas.All().Where(x => x.RecordTimestamp == date && x.UnitsDailyConfig.ProcessUnitId == processUnitId && x.UnitsDailyConfig.MaterialTypeId == 2).Any())
+                    if (this.data.UnitsDailyDatas.All().Any(x => x.RecordTimestamp == date 
+                                                              && x.UnitsDailyConfig.ProcessUnitId == processUnitId 
+                                                              && x.UnitsDailyConfig.MaterialTypeId == 2))
                     {
                         var approvedShiftMaterial = this.data.UnitsApprovedDailyDatas
                             .All()
-                            .Where(u => u.RecordDate == date && u.ProcessUnitId == processUnitId && u.EnergyApproved == false)
-                            .FirstOrDefault();
+                            .FirstOrDefault(u => u.RecordDate == date 
+                                              && u.ProcessUnitId == processUnitId 
+                                              && u.EnergyApproved == false);
                         if (approvedShiftMaterial != null)
                         {
-                            return Json(new { IsConfirmed = false });
+                            return this.Json(new { IsConfirmed = false });
                         }
                     }
                 }
-                return Json(new { IsConfirmed = true });
+
+                return this.Json(new { IsConfirmed = true });
             }
             else
             {
-                return Json(new { IsConfirmed = true });
+                return this.Json(new { IsConfirmed = true });
             }
         }
 
@@ -289,46 +299,43 @@
         [ValidateAntiForgeryToken]
         public ActionResult Confirm(ProcessUnitConfirmDailyInputModel model)
         {
-            ValidateModelAgainstReportPatameters(this.ModelState, model, Session["reportParams"]);
+            this.ValidateModelAgainstReportPatameters(this.ModelState, model, this.Session["reportParams"]);
 
-            if (ModelState.IsValid)
+            if (this.ModelState.IsValid)
             {
                 var approvedDay = this.data.UnitsApprovedDailyDatas
                    .All()
-                   .Where(u => u.RecordDate == model.date && u.ProcessUnitId == model.processUnitId && u.EnergyApproved == false)
-                   .FirstOrDefault();
+                   .FirstOrDefault(u => u.RecordDate == model.date 
+                                     && u.ProcessUnitId == model.processUnitId 
+                                     && u.EnergyApproved == false);
                 if (approvedDay != null)
                 {
                     approvedDay.EnergyApproved = true;
                     this.data.UnitsApprovedDailyDatas.Update(approvedDay);
 
                     // Get all process plan data and save it
-                    IEnumerable<ProductionPlanData> dbResult = this.productionPlanData.ReadProductionPlanData(model.date, model.processUnitId, CommonConstants.EnergyType);
-                    if (dbResult.Count() > 0)
+                    var dbResult = this.productionPlanData.ReadProductionPlanData(model.date, model.processUnitId, CommonConstants.EnergyType);
+                    if (dbResult.Any())
                     {
-                        //foreach (var item in dbResult)
-                        //{
-                        //    this.data.ProductionPlanDatas.Add(item);
-                        //}
                         this.data.ProductionPlanDatas.BulkInsert(dbResult, this.UserProfile.UserName);
                     }
 
                     var result = this.data.SaveChanges(this.UserProfile.UserName);
-                    return Json(new { IsConfirmed = result.IsValid }, JsonRequestBehavior.AllowGet);
+                    return this.Json(new { IsConfirmed = result.IsValid }, JsonRequestBehavior.AllowGet);
                 }
                 else
                 {
-                    ModelState.AddModelError("unitsapproveddata", "Дневните данни вече са потвърдени");
-                    Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                    var errors = GetErrorListFromModelState(ModelState);
-                    return Json(new { data = new { errors = errors } });
+                    this.ModelState.AddModelError("unitsapproveddata", "Дневните данни вече са потвърдени");
+                    this.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                    var errors = this.GetErrorListFromModelState(this.ModelState);
+                    return this.Json(new { data = new { errors = errors } });
                 }
             }
             else
             {
-                Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                var errors = GetErrorListFromModelState(ModelState);
-                return Json(new { data = new { errors = errors } });
+                this.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                var errors = this.GetErrorListFromModelState(this.ModelState);
+                return this.Json(new { data = new { errors = errors } });
             }
         }
 
@@ -339,7 +346,7 @@
             date = date ?? DateTime.Now.Date.AddDays(-2);
             var result = this.dailyService.GetStatisticForProcessUnit(processUnitId, date.Value, energy);
             result.Title = string.Format(Resources.Layout.DailyGraphicTitle, this.data.ProcessUnits.GetById(processUnitId).ShortName);
-            return PartialView("DailyChart", result);
+            return this.PartialView("DailyChart", result);
         }
 
         /// <summary>
@@ -347,20 +354,20 @@
         /// </summary>
         /// <param name="modelState">State of the model.</param>
         /// <param name="model">The model.</param>
-        /// <param name="session">The session.</param>
+        /// <param name="inReportParams">The session.</param>
         private void ValidateModelAgainstReportPatameters(ModelStateDictionary modelState, ProcessUnitConfirmDailyInputModel model, object inReportParams)
         {
             var inParamsString = (inReportParams ?? string.Empty).ToString();
 
             if (string.IsNullOrEmpty(inParamsString))
             {
-                Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                var errors = GetErrorListFromModelState(ModelState);
+                this.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                var errors = this.GetErrorListFromModelState(this.ModelState);
                 modelState.AddModelError("", @Resources.ErrorMessages.InvalidReportParams);
                 return;
             }
 
-            var decodedParamsString = System.Text.Encoding.UTF8.GetString(Convert.FromBase64String(inParamsString));
+            var decodedParamsString = Encoding.UTF8.GetString(Convert.FromBase64String(inParamsString));
             var reportParams = JsonConvert.DeserializeObject<ProcessUnitConfirmDailyInputModel>(decodedParamsString);
 
             if (!model.Equals(reportParams))
@@ -372,8 +379,8 @@
                 if (model.IsConfirmed != reportParams.IsConfirmed) { resultMessage.AppendLine(string.Format("\t\t -{0}", @Resources.Layout.IsConfirmed)); }
                 resultMessage.AppendLine(@Resources.ErrorMessages.ParametersDifferencesTrail);
 
-                Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                var errors = GetErrorListFromModelState(ModelState);
+                this.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                var errors = this.GetErrorListFromModelState(this.ModelState);
                 modelState.AddModelError("", resultMessage.ToString());
                 return;
             }
@@ -416,21 +423,21 @@
 
             foreach (var item in relatedDailyDatasFromOtherProcessUnits)
             {
-                var relatedData = this.data.UnitsDailyDatas.All()
-                                            .Where(u => u.RecordTimestamp == date
-                                                    && u.UnitsDailyConfigId == item.RelatedUnitsDailyConfigId)
-                                            .Any();
+                var relatedData = this.data.UnitsDailyDatas
+                                            .All()
+                                            .Any(u => u.RecordTimestamp == date
+                                                    && u.UnitsDailyConfigId == item.RelatedUnitsDailyConfigId);
 
                 if (!relatedData)
                 {
                     validationResult.Add(new ValidationResult(
-                        string.Format("Не са налични дневни данни за позиция: {0}", item.UnitsDailyConfig.Name)));
+                        $"Не са налични дневни данни за позиция: {item.UnitsDailyConfig.Name}"));
                 }
             }
 
             var status = DependencyResolver.Current.GetService<IEfStatus>();
 
-            if (validationResult.Count() > 0)
+            if (validationResult.Any())
             {
                 status.SetErrors(validationResult);
             }
@@ -441,7 +448,7 @@
         /// <summary>
         /// Calculates the daily data if not available.
         /// </summary>
-        /// <param name="value">The value.</param>
+        /// <param name="date">The date.</param>
         /// <param name="processUnitId">The process unit id.</param>
         private IEfStatus CalculateDailyDataIfNotAvailable(DateTime date, int processUnitId)
         {
@@ -468,7 +475,7 @@
 
                         if (status.IsValid)
                         {
-                            status = IsRelatedDataExists(date, processUnitId);
+                            status = this.IsRelatedDataExists(date, processUnitId);
 
                             if (status.IsValid)
                             {
@@ -497,7 +504,8 @@
 
                     if (ix >= 10)
                     {
-                        string message = string.Format("Cannot clear record for begun Process Unit Calculation For ProcessUnitId {0} and Date {1}", processUnitId, date);
+                        string message =
+                            $"Cannot clear record for begun Process Unit Calculation For ProcessUnitId {processUnitId} and Date {date}";
                         exc = new InvalidOperationException();
                     }
 

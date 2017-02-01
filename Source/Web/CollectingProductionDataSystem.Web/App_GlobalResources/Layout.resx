@@ -1777,4 +1777,7 @@
   <data name="Compose" xml:space="preserve">
     <value>Compose</value>
   </data>
+  <data name="CannotMakeRecord" xml:space="preserve">
+    <value>The record wasn't saved pleace try again</value>
+  </data>
 </root>

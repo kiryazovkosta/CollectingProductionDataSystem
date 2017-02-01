@@ -4,13 +4,7 @@ namespace CollectingProductionDataSystem.Web.Areas.DailyReporting
 {
     public class DailyReportingAreaRegistration : AreaRegistration 
     {
-        public override string AreaName 
-        {
-            get 
-            {
-                return "DailyReporting";
-            }
-        }
+        public override string AreaName => "DailyReporting";
 
         public override void RegisterArea(AreaRegistrationContext context) 
         {

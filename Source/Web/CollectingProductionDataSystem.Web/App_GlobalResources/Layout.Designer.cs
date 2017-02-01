@@ -502,6 +502,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The record wasn&apos;t saved pleace try again.
+        /// </summary>
+        public static string CannotMakeRecord {
+            get {
+                return ResourceManager.GetString("CannotMakeRecord", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Change Password.
         /// </summary>
         public static string ChangePassword {

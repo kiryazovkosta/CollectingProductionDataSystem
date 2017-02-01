@@ -223,10 +223,6 @@
       <Project>{34672323-163b-48f2-9425-b4b55b33d144}</Project>
       <Name>CollectingProductionDataSystem.MathExpressions</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\CollectingProductionDataSystem.Contracts\CollectingProductionDataSystem.Contracts.csproj">
-      <Project>{160DDAF7-A447-4A73-A7F5-789AC59212DD}</Project>
-      <Name>CollectingProductionDataSystem.Contracts</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Common\CollectingProductionDataSystem.Enumerations\CollectingProductionDataSystem.Enumerations.csproj">
       <Project>{D39275E1-1997-41C3-99CC-FF1B7502E93F}</Project>
       <Name>CollectingProductionDataSystem.Enumerations</Name>
