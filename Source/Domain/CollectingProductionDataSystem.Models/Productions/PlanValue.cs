@@ -8,7 +8,7 @@
     using CollectingProductionDataSystem.Models.Abstract;
     using CollectingProductionDataSystem.Models.Contracts;
 
-    public class PlanValue : DeletableEntity, IEntity
+    public class PlanValue : DeletableEntity, IEntity, ICloneable<PlanValue>
     {
         public int Id { get; set; }
         public int ProcessUnitId { get; set; }
@@ -16,5 +16,15 @@
         public DateTime Month { get; set; }
         public decimal Value { get; set; }
         public decimal? ValueLiquid { get; set; }
+        public PlanValue Clone()
+        {
+            return new PlanValue()
+            {
+                ProcessUnitId = this.ProcessUnitId,
+                Month = this.Month,
+                Value = this.Value,
+                ValueLiquid = this.ValueLiquid
+            };
+        }
     }
 }

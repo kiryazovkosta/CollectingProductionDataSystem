@@ -22,6 +22,7 @@ using Uniformance.PHD;
 using CollectingProductionDataSystem.Models.Transactions;
 using System.Data;
 using System.Globalization;
+using System.Runtime.CompilerServices;
 using CollectingProductionDataSystem.Data.Common;
 using CollectingProductionDataSystem.Extentions;
 using CollectingProductionDataSystem.Application.MonthlyTechnologicalDataServices;
@@ -30,6 +31,11 @@ using CollectingProductionDataSystem.Application.TransactionsDailyDataServices;
 using CollectingProductionDataSystem.Constants;
 using CollectingProductionDataSystem.Models.Inventories;
 using CollectingProductionDataSystem.Application.Contracts;
+using System.Transactions;
+using System.Runtime.Serialization.Formatters.Binary;
+using AutoMapper;
+using CollectingProductionDataSystem.ConsoleClient.Models;
+using CollectingProductionDataSystem.Infrastructure.Mapping;
 
 namespace CollectingProductionDataSystem.ConsoleClient
 {
@@ -44,6 +50,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
 
             IProductionData data = kernel.Get<ProductionData>();
             ICalculatorService calculator = kernel.Get<CalculatorService>();
+            ConfigAutoMapper();
 
             //DateTime targetRecordDateTime = DateTime.Now;
             //var tanksPhdConfigs = new Dictionary<string, int>();
@@ -151,10 +158,41 @@ namespace CollectingProductionDataSystem.ConsoleClient
 
 
 
-            var lastRealDate = new DateTime(year: 2017, month: 1, day: 18, hour: 0, minute: 0, second: 0);
+            //var lastRealDate = new DateTime(year: 2017, month: 1, day: 18, hour: 0, minute: 0, second: 0);
             //CreateShiftData(data, lastRealDate);
             //CreateDailyData(data, lastRealDate);
-            CreateProductionPlanData(data, lastRealDate);
+            //CreateProductionPlanData(data, lastRealDate);
+
+            TransactionOptions transantionOption = DefaultTransactionOptions.Instance.TransactionOptions;
+            using (var transaction = new TransactionScope(TransactionScopeOption.Required, transantionOption))
+            {
+                try
+                {
+                    //CopyRelatedUnitConfigs(data);
+                    //CopyRelatedUnitDailyConfigs(data);
+                    //CopyUnitConfigUnitDailyConfigs(data);
+
+                    
+                    //UpdatePlanNorms(data, 16, 52);
+                    //UpdatePlanNorms(data, 17, 53);
+                    //UpdateProductionPlanDatas(data);
+                    UpdateUnitsApprovedDailyDatas(data);
+
+                    //UpdateApplicationUserProcessUnits(data);
+
+                    //transaction.Dispose();
+                    //transaction.Complete();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    transaction.Dispose();
+                }
+                finally
+                {
+                    //transaction.Dispose();
+                }
+            }
 
 
 
@@ -216,6 +254,435 @@ namespace CollectingProductionDataSystem.ConsoleClient
             //TreeShiftsReports(DateTime.Today.AddDays(-2), 1);
             //SeedShiftsToDatabase(uow);
             Console.WriteLine("finished");
+        }
+
+        private static void UpdateApplicationUserProcessUnits(IProductionData data)
+        {
+        }
+
+        private static void UpdatePlanNorms(IProductionData data, int oldIndex, int newIndex)
+        {
+           var oldProductionPlanConfigs =
+           data.ProductionPlanConfigs.All()
+               .Where(x => x.ProcessUnitId == oldIndex && x.IsDeleted == false)
+               .ToDictionary(x => x.Code, x => x.Id);
+            var newUProductionPlanConfigs = data.ProductionPlanConfigs.AllWithDeleted()
+                .Where(x => x.ProcessUnitId == newIndex)
+                .ToDictionary(x => x.Code, x => x.Id);
+
+            var productionPlanConfigsIndexes = new Dictionary<int, int>();
+            foreach (var config in oldProductionPlanConfigs)
+            {
+                var newId = newUProductionPlanConfigs[config.Key];
+                productionPlanConfigsIndexes.Add(config.Value, newId);
+            }
+            Console.WriteLine($"UpdatePlanNorms->{oldProductionPlanConfigs.Count}");
+            Console.WriteLine($"UpdatePlanNorms->{newUProductionPlanConfigs.Count}");
+            Console.WriteLine($"UpdatePlanNorms->{productionPlanConfigsIndexes.Count}");
+
+            var firstDayInMonth = new DateTime(2017, 2, 1, 0, 0, 0);
+            var planNormsDatas = data.PlanNorms.All()
+                .Where( x =>x.Month == firstDayInMonth)
+                .Where(x => x.ProductionPlanConfig.ProcessUnitId == oldIndex)
+                .ToList();
+            foreach (var planNormsData in planNormsDatas)
+            {
+                Console.WriteLine(planNormsData.ProductionPlanConfig.ProcessUnitId);
+                if (planNormsData.ProductionPlanConfig.ProcessUnitId == oldIndex)
+                {
+                    var key = productionPlanConfigsIndexes[planNormsData.ProductionPlanConfigId];
+                    Console.WriteLine($"{planNormsData.ProductionPlanConfigId};{key}");
+                    planNormsData.ProductionPlanConfigId = key;
+                    data.PlanNorms.Update(planNormsData);
+                }
+
+            }
+
+            var status = data.SaveChanges("Updater");
+        }
+
+        private static void UpdateUnitsApprovedDailyDatas(IProductionData data)
+        {
+            var firstDayInMonth = new DateTime(2017, 2, 1, 0, 0, 0);
+            var oldProcessUnitsIndexes = new int[] { 16, 17 };
+            var approvedDatas = data.UnitsApprovedDailyDatas.All()
+                .Where(
+                    x =>
+                        x.RecordDate.CompareTo(firstDayInMonth) >= 0 &&
+                        oldProcessUnitsIndexes.Contains(x.ProcessUnitId))
+                .ToList();
+            Console.WriteLine($"UpdateUnitsApprovedDailyDatas->{approvedDatas.Count}");
+
+            foreach (var approvedData in approvedDatas)
+            {
+                if (approvedData.ProcessUnitId == 16)
+                {
+                    approvedData.ProcessUnitId = 52;
+                }
+
+                if (approvedData.ProcessUnitId == 17)
+                {
+                    approvedData.ProcessUnitId = 53;
+                }
+
+                data.UnitsApprovedDailyDatas.Update(approvedData);
+            }
+
+            data.SaveChanges("Updater");
+        }
+
+        private static void UpdateUnitsApprovedDatas(IProductionData data)
+        {
+            var firstDayInMonth = new DateTime(2017, 2, 1, 0, 0, 0);
+            var oldProcessUnitsIndexes = new int[] { 16, 17 };
+            var approvedDatas = data.UnitsApprovedDatas.All()
+                .Where(
+                    x =>
+                        x.RecordDate.CompareTo(firstDayInMonth) >= 0 &&
+                        oldProcessUnitsIndexes.Contains(x.ProcessUnitId))
+                .ToList();
+            Console.WriteLine(approvedDatas.Count);
+            foreach (var approvedData in approvedDatas)
+            {
+                if (approvedData.ProcessUnitId == 16)
+                {
+                    approvedData.ProcessUnitId = 52;
+                }
+
+                if (approvedData.ProcessUnitId == 17)
+                {
+                    approvedData.ProcessUnitId = 53;
+                }
+
+                data.UnitsApprovedDatas.Update(approvedData);
+            }
+
+            data.SaveChanges("Updater");
+        }
+
+        private static void UpdateProductionPlanDatas(IProductionData data)
+        {
+            var oldProductionPlanConfigs =
+                       data.ProductionPlanConfigs.All()
+                           .Where(x => x.ProcessUnitId == 16 || x.ProcessUnitId == 17 && x.IsDeleted == false)
+                           .ToDictionary(x => x.Code, x => x.Id);
+            var newUProductionPlanConfigs = data.ProductionPlanConfigs.AllWithDeleted()
+                .Where(x => x.ProcessUnitId == 52 || x.ProcessUnitId == 53)
+                .ToDictionary(x => x.Code, x => x.Id);
+
+            var productionPlanConfigsIndexes = new Dictionary<int, int>();
+            foreach (var config in oldProductionPlanConfigs)
+            {
+                var newId = newUProductionPlanConfigs[config.Key];
+                productionPlanConfigsIndexes.Add(config.Value, newId);
+            }
+            Console.WriteLine($"UpdateProductionPlanDatas->{oldProductionPlanConfigs.Count}");
+            Console.WriteLine($"UpdateProductionPlanDatas->{newUProductionPlanConfigs.Count}");
+            Console.WriteLine($"UpdateProductionPlanDatas->{productionPlanConfigsIndexes.Count}");
+
+            var firstDayInMonth = new DateTime(2017, 2, 1, 0, 0, 0);
+            var oldProcessUnitsIndexes = new int[] {16, 17};
+            var productionPlanDatas = data.ProductionPlanDatas.All()
+                .Where(
+                    x =>
+                        x.RecordTimestamp.CompareTo(firstDayInMonth) >= 0 &&
+                        oldProcessUnitsIndexes.Contains(x.ProcessUnitId))
+                .ToList();
+            foreach (var productionPlanData in productionPlanDatas)
+            {
+                if (productionPlanData.ProcessUnitId == 16)
+                {
+                    productionPlanData.ProcessUnitId = 52;
+                }
+
+                if (productionPlanData.ProcessUnitId == 17)
+                {
+                    productionPlanData.ProcessUnitId = 53;
+                }
+
+                productionPlanData.FactoryId = 4;
+                var key = productionPlanConfigsIndexes[productionPlanData.ProductionPlanConfigId];
+                Console.WriteLine($"{productionPlanData.ProductionPlanConfigId};{key}");
+                productionPlanData.ProductionPlanConfigId = key;
+                data.ProductionPlanDatas.Update(productionPlanData);
+            }
+
+            data.SaveChanges("Updater");
+        }
+
+        private static void CopyUnitConfigUnitDailyConfigs(IProductionData data)
+        {
+            var oldUnitConfigs =
+                        data.UnitConfigs.All()
+                            .Where(x => x.ProcessUnitId == 16 || x.ProcessUnitId == 17 && x.IsDeleted == false)
+                            .ToDictionary(x => x.Code, x => x.Id);
+            var newUnitConfigs = data.UnitConfigs.AllWithDeleted()
+                .Where(x => x.ProcessUnitId == 52 || x.ProcessUnitId == 53)
+                .ToDictionary(x => x.Code, x => x.Id);
+
+            var unitCongigsIndexes = new Dictionary<int, int>();
+            foreach (var config in oldUnitConfigs)
+            {
+                var newId = newUnitConfigs[config.Key];
+                unitCongigsIndexes.Add(config.Value, newId);
+            }
+            Console.WriteLine($"CopyUnitConfigUnitDailyConfigs->{oldUnitConfigs.Count}");
+            Console.WriteLine($"CopyUnitConfigUnitDailyConfigs->{newUnitConfigs.Count}");
+            Console.WriteLine($"CopyUnitConfigUnitDailyConfigs->{unitCongigsIndexes.Count}");
+
+            var oldUnitDailyConfigs =
+                       data.UnitsDailyConfigs.All()
+                           .Where(x => x.ProcessUnitId == 16 || x.ProcessUnitId == 17 && x.IsDeleted == false)
+                           .ToDictionary(x => x.Code, x => x.Id);
+            var newUnitDailyConfigs = data.UnitsDailyConfigs.AllWithDeleted()
+                .Where(x => x.ProcessUnitId == 52 || x.ProcessUnitId == 53)
+                .ToDictionary(x => x.Code, x => x.Id);
+
+            var unitDailyConfigsIndexes = new Dictionary<int, int>();
+            foreach (var config in oldUnitDailyConfigs)
+            {
+                var newId = newUnitDailyConfigs[config.Key];
+                unitDailyConfigsIndexes.Add(config.Value, newId);
+            }
+
+            var relatedRecords = new Dictionary<string, int>();
+            foreach (var item in oldUnitConfigs)
+            {
+                var relatedUnitConfigs =
+                    data.UnitConfigUnitDailyConfigs.All().Where(x => x.UnitConfigId == item.Value).ToList();
+                foreach (var record in relatedUnitConfigs)
+                {
+                    var key = record.UnitConfigId + "+" + record.UnitDailyConfigId;
+                    if (!relatedRecords.ContainsKey(key))
+                    {
+                        relatedRecords.Add(key, record.Position);
+                    }
+                }
+            }
+
+            foreach (var item in oldUnitDailyConfigs)
+            {
+                var relatedDailyUnitConfigs =
+                    data.UnitConfigUnitDailyConfigs.All().Where(x => x.UnitDailyConfigId == item.Value).ToList();
+                foreach (var record in relatedDailyUnitConfigs)
+                {
+                    var key = record.UnitConfigId + "+" + record.UnitDailyConfigId;
+                    if (!relatedRecords.ContainsKey(key))
+                    {
+                        relatedRecords.Add(key, record.Position);
+                    }
+                }
+            }
+
+            var keys = relatedRecords.Keys;
+
+            foreach (var key in keys)
+            {
+                var relatedData = key.Split(new char[] { '+' }, StringSplitOptions.RemoveEmptyEntries);
+                var ucId = Convert.ToInt32(relatedData[0]);
+                var ucdId = Convert.ToInt32(relatedData[1]);
+                if (unitCongigsIndexes.ContainsKey(ucId))
+                {
+                    ucId = unitCongigsIndexes[ucId];
+                }
+
+                if (unitDailyConfigsIndexes.ContainsKey(ucdId))
+                {
+                    ucdId = unitDailyConfigsIndexes[ucdId];
+                }
+
+                var unitConfigUnitDailyConfigRecord = new UnitConfigUnitDailyConfig()
+                {
+                    UnitConfigId = ucId,
+                    UnitDailyConfigId = ucdId,
+                    Position = relatedRecords[key]
+                };
+
+                Console.WriteLine($"{unitConfigUnitDailyConfigRecord.UnitConfigId};{unitConfigUnitDailyConfigRecord.UnitDailyConfigId};{unitConfigUnitDailyConfigRecord.Position}");
+                data.UnitConfigUnitDailyConfigs.Add(unitConfigUnitDailyConfigRecord);
+            }
+
+            var status = data.SaveChanges("Coping");
+        }
+
+        private static void CopyRelatedUnitDailyConfigs(IProductionData data)
+        {
+            var oldUnitDailyConfigs =
+                       data.UnitsDailyConfigs.All()
+                           .Where(x => x.ProcessUnitId == 16 || x.ProcessUnitId == 17 && x.IsDeleted == false)
+                           .ToDictionary(x => x.Code, x => x.Id);
+            var newUnitDailyConfigs = data.UnitsDailyConfigs.AllWithDeleted()
+                .Where(x => x.ProcessUnitId == 52 || x.ProcessUnitId == 53)
+                .ToDictionary(x => x.Code, x => x.Id);
+
+            var unitDailyConfigsIndexes = new Dictionary<int, int>();
+            foreach (var config in oldUnitDailyConfigs)
+            {
+                var newId = newUnitDailyConfigs[config.Key];
+                unitDailyConfigsIndexes.Add(config.Value, newId);
+            }
+            Console.WriteLine($"CopyRelatedUnitDailyConfigs->{oldUnitDailyConfigs.Count}");
+            Console.WriteLine($"CopyRelatedUnitDailyConfigs->{newUnitDailyConfigs.Count}");
+            Console.WriteLine($"CopyRelatedUnitDailyConfigs->{unitDailyConfigsIndexes.Count}");
+
+            var relatedDailyRecords = new Dictionary<string, int>();
+
+            foreach (var config in oldUnitDailyConfigs)
+            {
+                var relatedUnitDailyConfigs =
+                    data.RelatedUnitDailyConfigs.All()
+                        .Where(x => x.UnitsDailyConfigId == config.Value).ToList();
+
+                var relatedRelatedUnitDailyConfigs =
+                    data.RelatedUnitDailyConfigs.All()
+                        .Where(x => x.RelatedUnitsDailyConfigId == config.Value).ToList();
+                if (relatedUnitDailyConfigs.Count == relatedRelatedUnitDailyConfigs.Count
+                    && relatedRelatedUnitDailyConfigs.Count == 0)
+                {
+                    continue;
+                }
+
+                foreach (var item in relatedUnitDailyConfigs)
+                {
+                    var key = item.UnitsDailyConfigId + "+" + item.RelatedUnitsDailyConfigId;
+                    if (!relatedDailyRecords.ContainsKey(key))
+                    {
+                        relatedDailyRecords.Add(key, item.Position);
+                    }
+                }
+
+                foreach (var item in relatedRelatedUnitDailyConfigs)
+                {
+                    var key = item.UnitsDailyConfigId + "+" + item.RelatedUnitsDailyConfigId;
+                    if (!relatedDailyRecords.ContainsKey(key))
+                    {
+                        relatedDailyRecords.Add(key, item.Position);
+                    }
+                }
+            }
+
+            var dailyKeys = relatedDailyRecords.Keys;
+
+            foreach (var key in dailyKeys)
+            {
+                var unitConfigs = key.Split(new char[] { '+' }, StringSplitOptions.RemoveEmptyEntries);
+                var ucId = Convert.ToInt32(unitConfigs[0]);
+                var rucId = Convert.ToInt32(unitConfigs[1]);
+                if (unitDailyConfigsIndexes.ContainsKey(ucId))
+                {
+                    ucId = unitDailyConfigsIndexes[ucId];
+                }
+
+                if (unitDailyConfigsIndexes.ContainsKey(rucId))
+                {
+                    rucId = unitDailyConfigsIndexes[rucId];
+                }
+
+                var relatedUnitsDailyConfigRecord = new RelatedUnitDailyConfigs()
+                {
+                    UnitsDailyConfigId = ucId,
+                    RelatedUnitsDailyConfigId = rucId,
+                    Position = relatedDailyRecords[key]
+                };
+
+                Console.WriteLine($"{relatedUnitsDailyConfigRecord.UnitsDailyConfigId};{relatedUnitsDailyConfigRecord.RelatedUnitsDailyConfigId};{relatedDailyRecords[key]}");
+                data.RelatedUnitDailyConfigs.Add(relatedUnitsDailyConfigRecord);
+            }
+
+            var status = data.SaveChanges("Coping");
+        }
+
+        private static void CopyRelatedUnitConfigs(IProductionData data)
+        {
+            var oldUnitConfigs =
+                        data.UnitConfigs.All()
+                            .Where(x => x.ProcessUnitId == 16 || x.ProcessUnitId == 17 && x.IsDeleted == false)
+                            .ToDictionary(x => x.Code, x => x.Id);
+            var newUnitConfigs = data.UnitConfigs.AllWithDeleted()
+                .Where(x => x.ProcessUnitId == 52 || x.ProcessUnitId == 53)
+                .ToDictionary(x => x.Code, x => x.Id);
+
+            var unitCongigsIndexes = new Dictionary<int, int>();
+            foreach (var config in oldUnitConfigs)
+            {
+                var newId = newUnitConfigs[config.Key];
+                unitCongigsIndexes.Add(config.Value, newId);
+            }
+            Console.WriteLine($"CopyRelatedUnitConfigs->{oldUnitConfigs.Count}");
+            Console.WriteLine($"CopyRelatedUnitConfigs->{newUnitConfigs.Count}");
+            Console.WriteLine($"CopyRelatedUnitConfigs->{unitCongigsIndexes.Count}");
+
+            var relatedRecords = new Dictionary<string, int>();
+
+            foreach (var config in oldUnitConfigs)
+            {
+                var relatedUnitConfigs =
+                    data.RelatedUnitConfigs.All()
+                        .Where(x => x.UnitConfigId == config.Value).ToList();
+
+                var relatedRelatedUnitConfigs =
+                    data.RelatedUnitConfigs.All()
+                        .Where(x => x.RelatedUnitConfigId == config.Value).ToList();
+                if (relatedUnitConfigs.Count == relatedRelatedUnitConfigs.Count
+                    && relatedRelatedUnitConfigs.Count == 0)
+                {
+                    continue;
+                }
+
+                foreach (var item in relatedUnitConfigs)
+                {
+                    var key = item.UnitConfigId + "+" + item.RelatedUnitConfigId;
+                    if (!relatedRecords.ContainsKey(key))
+                    {
+                        relatedRecords.Add(key, item.Position);
+                    }
+                }
+
+                foreach (var item in relatedRelatedUnitConfigs)
+                {
+                    var key = item.UnitConfigId + "+" + item.RelatedUnitConfigId;
+                    if (!relatedRecords.ContainsKey(key))
+                    {
+                        relatedRecords.Add(key, item.Position);
+                    }
+                }
+            }
+
+            var keys = relatedRecords.Keys;
+
+            foreach (var key in keys)
+            {
+                var unitConfigs = key.Split(new char[] { '+' }, StringSplitOptions.RemoveEmptyEntries);
+                var ucId = Convert.ToInt32(unitConfigs[0]);
+                var rucId = Convert.ToInt32(unitConfigs[1]);
+                if (unitCongigsIndexes.ContainsKey(ucId))
+                {
+                    ucId = unitCongigsIndexes[ucId];
+                }
+
+                if (unitCongigsIndexes.ContainsKey(rucId))
+                {
+                    rucId = unitCongigsIndexes[rucId];
+                }
+
+                var relatedUnitConfigRecord = new RelatedUnitConfigs()
+                {
+                    UnitConfigId = ucId,
+                    RelatedUnitConfigId = rucId,
+                    Position = relatedRecords[key]
+                };
+
+                Console.WriteLine($"{relatedUnitConfigRecord.UnitConfigId};{relatedUnitConfigRecord.RelatedUnitConfigId};{relatedRecords[key]}");
+                data.RelatedUnitConfigs.Add(relatedUnitConfigRecord);
+            }
+
+            var status = data.SaveChanges("Coping");
+        }
+
+        private static void ConfigAutoMapper()
+        {
+            //Mapper.CreateMap<Plant, PlantEx>()
+            //.ForMember(p => p.NewId, opt => opt.Ignore());
         }
 
         private static void ProcessingPhdTankData(DataTable oPhdData, Dictionary<int, TankData> tanksData, Dictionary<string, int> tanksPhdConfigs, DateTime targetRecordDateTime, IProductionData data)
@@ -1866,6 +2333,21 @@ namespace CollectingProductionDataSystem.ConsoleClient
                     YearValueDifference,
                     YearPercentageDifference
                 );
+        }
+    }
+
+    public static class ExtensionMethods
+    {
+        // Deep clone
+        public static T DeepClone<T>(this T a)
+        {
+            using (var stream = new MemoryStream())
+            {
+                BinaryFormatter formatter = new BinaryFormatter();
+                formatter.Serialize(stream, a);
+                stream.Position = 0;
+                return (T) formatter.Deserialize(stream);
+            }
         }
     }
 

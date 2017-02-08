@@ -123,6 +123,7 @@
     <Compile Include="Nomenclatures\PhdConfig.cs" />
     <Compile Include="PetroleumScheduler\RelatedProductionCodeAspenProductCode.cs" />
     <Compile Include="PetroleumScheduler\RelatedUnitDailyConfigAspenCode.cs" />
+    <Compile Include="Contracts\ICloneable.cs" />
     <Compile Include="Productions\Mounthly\MonthlyReportType.cs" />
     <Compile Include="Nomenclatures\Shift.cs" />
     <Compile Include="Nomenclatures\ShiftProductType.cs" />

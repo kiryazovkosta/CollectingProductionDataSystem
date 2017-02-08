@@ -7,7 +7,7 @@ namespace CollectingProductionDataSystem.Models.Productions
     using System.Collections.Generic;
     using System.ComponentModel;
 
-    public class UnitConfig : DeletableEntity, IEntity, IAggregatable, IConvertable
+    public class UnitConfig : DeletableEntity, IEntity, IAggregatable, IConvertable, ICloneable<UnitConfig>
     {
         private ICollection<UnitsData> unitsDatas;
         private ICollection<RelatedUnitConfigs> relatedUnitConfigs;
@@ -48,14 +48,17 @@ namespace CollectingProductionDataSystem.Models.Productions
         public decimal? EstimatedPressure { get; set; }
         public decimal? EstimatedTemperature { get; set; }
         public decimal? EstimatedCompressibilityFactor { get; set; }
+
         [DefaultValue(true)]
         public bool IsEditable { get; set; }
+
         public virtual Direction Direction { get; set; }
         public virtual MaterialType MaterialType { get; set; }
         public virtual MeasureUnit MeasureUnit { get; set; }
         public virtual ProcessUnit ProcessUnit { get; set; }
         public virtual Product Product { get; set; }
         public virtual ShiftProductType ShiftProductType { get; set; }
+
         /// <summary>
         /// Gets or sets the is converted.
         /// </summary>
@@ -105,9 +108,74 @@ namespace CollectingProductionDataSystem.Models.Productions
         public bool RemoveAndAddInsteadUpdate { get; set; }
         public bool HasRawDataReading { get; set; }
 
-         //<summary>
-         //If this property is set to true and value is negative number need to set value to zero. :)
-         //</summary>
+        //<summary>
+        //If this property is set to true and value is negative number need to set value to zero. :)
+        //</summary>
         public bool NeedToSetValueToZero { get; set; }
+
+        public UnitConfig Clone()
+        {
+            var result = new UnitConfig()
+            {
+
+                Code = this.Code,
+                Position = this.Position,
+                Name = this.Name,
+                ShiftProductTypeId = this.ShiftProductTypeId,
+                ProductId = this.ProductId,
+                ProcessUnitId = this.ProcessUnitId,
+                DirectionId = this.DirectionId,
+                MeasureUnitId = this.MeasureUnitId,
+                MaterialTypeId = this.MaterialTypeId,
+                CollectingDataMechanism = this.CollectingDataMechanism,
+                CalculatedFormula = this.CalculatedFormula,
+                AggregateGroup = this.AggregateGroup,
+                AggregationMembers = this.AggregationMembers,
+                CustomFormulaExpression = this.CustomFormulaExpression,
+                IsCalculated = this.IsCalculated,
+                PreviousShiftTag = this.PreviousShiftTag,
+                Notes = this.Notes,
+                MaximumFlow = this.MaximumFlow,
+                EstimatedDensity = this.EstimatedDensity,
+                EstimatedPressure = this.EstimatedPressure,
+                EstimatedTemperature = this.EstimatedTemperature,
+                EstimatedCompressibilityFactor = this.EstimatedCompressibilityFactor,
+                IsEditable = this.IsEditable,
+                ShiftProductType = this.ShiftProductType,
+                NeedToSetValueToZero = this.NeedToSetValueToZero,
+                StartupValue = this.StartupValue,
+                IsMemberOfShiftsReport = this.IsMemberOfShiftsReport,
+                EnteredMeasureUnitId = this.EnteredMeasureUnitId,
+                EnteredMeasureUnit = this.EnteredMeasureUnit,
+                CalculationPercentage = this.CalculationPercentage,
+                DataSource = this.DataSource,
+                ProcessUnitAlias = this.ProcessUnitAlias,
+                NotATotalizedPosition = this.NotATotalizedPosition,
+                NeedToGetOnlyLastShiftValue = this.NeedToGetOnlyLastShiftValue,
+                RemoveAndAddInsteadUpdate = this.RemoveAndAddInsteadUpdate,
+                HasRawDataReading = this.HasRawDataReading
+            };
+
+            result.RelatedUnitConfigs = new HashSet<RelatedUnitConfigs>();
+            result.UnitConfigUnitDailyConfigs = new HashSet<UnitConfigUnitDailyConfig>();
+
+            return result;
+
+            //TODO: Make RelatedUnitConfigs 
+            //public virtual ICollection<RelatedUnitConfigs> RelatedUnitConfigs
+            //{
+            //    get { return this.relatedUnitConfigs; }
+            //    set { this.relatedUnitConfigs = value; }
+            //}
+
+            //TODO: Make UnitConfigUnitDailyConfig in next level 
+            //public virtual ICollection<UnitConfigUnitDailyConfig> UnitConfigUnitDailyConfigs
+            //{
+            //    get { return this.unitConfigUnitDailyConfigs; }
+            //    set { this.unitConfigUnitDailyConfigs = value; }
+            //}
+
+
+        }
     }
 }
