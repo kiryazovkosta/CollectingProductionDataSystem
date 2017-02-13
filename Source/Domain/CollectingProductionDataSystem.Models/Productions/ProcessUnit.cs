@@ -43,6 +43,7 @@ namespace CollectingProductionDataSystem.Models.Productions
         public DateTime ActiveFrom { get; set; }
         public DateTime ActiveTo { get; set; }
         public bool HasApprovedStatistics { get; set; }
+        public int Position { get; set; }
 
         public string SortableName
         {

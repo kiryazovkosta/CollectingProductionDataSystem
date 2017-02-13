@@ -61,11 +61,29 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ActiveFrom.
+        /// </summary>
+        public static string ActiveFrom {
+            get {
+                return ResourceManager.GetString("ActiveFrom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Active Excepition &lt;br/&gt;[ton].
         /// </summary>
         public static string ActiveQuantity {
             get {
                 return ResourceManager.GetString("ActiveQuantity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ActiveTo.
+        /// </summary>
+        public static string ActiveTo {
+            get {
+                return ResourceManager.GetString("ActiveTo", resourceCulture);
             }
         }
         
@@ -1641,6 +1659,15 @@ namespace App_GlobalResources.Resources {
         public static string GrossStandardVolumeReverseLowExtreme {
             get {
                 return ResourceManager.GetString("GrossStandardVolumeReverseLowExtreme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to HasApprovedStatistics.
+        /// </summary>
+        public static string HasApprovedStatistics {
+            get {
+                return ResourceManager.GetString("HasApprovedStatistics", resourceCulture);
             }
         }
         
