@@ -628,7 +628,8 @@ namespace CollectingProductionDataSystem.Application.MonthlyServices
 
             var currentApprovedDailyDatas = this.data.UnitsApprovedDailyDatas.All()
                 .Where(x => x.RecordDate == targetMonth && (!IsEnergy || x.EnergyApproved || energyCompletionCheckExclusionList.Contains(x.ProcessUnitId))).ToDictionary(x => x.ProcessUnitId, x => x);
-            var processUnits = this.data.ProcessUnits.All();
+
+            var processUnits = this.data.ProcessUnits.All().Where(x => x.ActiveFrom <= targetDate && targetDate <= x.ActiveTo);
 
             var validationResults = new List<ValidationResult>();
             foreach (var processUnit in processUnits)

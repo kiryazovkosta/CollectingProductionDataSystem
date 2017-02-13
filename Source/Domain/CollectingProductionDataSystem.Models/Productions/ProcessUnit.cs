@@ -40,6 +40,10 @@ namespace CollectingProductionDataSystem.Models.Productions
         public virtual ICollection<UnitConfig> UnitsConfigs { get; set; }
         public virtual ICollection<UnitDailyConfig> UnitsDailyConfigs { get; set; }
 
+        public DateTime ActiveFrom { get; set; }
+        public DateTime ActiveTo { get; set; }
+        public bool HasApprovedStatistics { get; set; }
+
         public string SortableName
         {
             get

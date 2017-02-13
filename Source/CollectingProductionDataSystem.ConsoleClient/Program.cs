@@ -158,41 +158,41 @@ namespace CollectingProductionDataSystem.ConsoleClient
 
 
 
-            //var lastRealDate = new DateTime(year: 2017, month: 1, day: 18, hour: 0, minute: 0, second: 0);
+            var lastRealDate = new DateTime(year: 2017, month: 2, day: 9, hour: 0, minute: 0, second: 0);
             //CreateShiftData(data, lastRealDate);
             //CreateDailyData(data, lastRealDate);
-            //CreateProductionPlanData(data, lastRealDate);
+            CreateProductionPlanData(data, lastRealDate);
 
-            TransactionOptions transantionOption = DefaultTransactionOptions.Instance.TransactionOptions;
-            using (var transaction = new TransactionScope(TransactionScopeOption.Required, transantionOption))
-            {
-                try
-                {
-                    //CopyRelatedUnitConfigs(data);
-                    //CopyRelatedUnitDailyConfigs(data);
-                    //CopyUnitConfigUnitDailyConfigs(data);
+            //TransactionOptions transantionOption = DefaultTransactionOptions.Instance.TransactionOptions;
+            //using (var transaction = new TransactionScope(TransactionScopeOption.Required, transantionOption))
+            //{
+            //    try
+            //    {
+            //        //CopyRelatedUnitConfigs(data);
+            //        //CopyRelatedUnitDailyConfigs(data);
+            //        //CopyUnitConfigUnitDailyConfigs(data);
 
                     
-                    //UpdatePlanNorms(data, 16, 52);
-                    //UpdatePlanNorms(data, 17, 53);
-                    //UpdateProductionPlanDatas(data);
-                    UpdateUnitsApprovedDailyDatas(data);
+            //        //UpdatePlanNorms(data, 16, 52);
+            //        //UpdatePlanNorms(data, 17, 53);
+            //        //UpdateProductionPlanDatas(data);
+            //        UpdateUnitsApprovedDailyDatas(data);
 
-                    //UpdateApplicationUserProcessUnits(data);
+            //        //UpdateApplicationUserProcessUnits(data);
 
-                    //transaction.Dispose();
-                    //transaction.Complete();
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e);
-                    transaction.Dispose();
-                }
-                finally
-                {
-                    //transaction.Dispose();
-                }
-            }
+            //        //transaction.Dispose();
+            //        //transaction.Complete();
+            //    }
+            //    catch (Exception e)
+            //    {
+            //        Console.WriteLine(e);
+            //        transaction.Dispose();
+            //    }
+            //    finally
+            //    {
+            //        //transaction.Dispose();
+            //    }
+            //}
 
 
 
