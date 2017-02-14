@@ -146,6 +146,7 @@
     <Compile Include="Productions\Mounthly\RelatedUnitMonthlyConfigs.cs" />
     <Compile Include="Productions\PlanNorm.cs" />
     <Compile Include="Productions\PlanValue.cs" />
+    <Compile Include="Productions\ProcessUnitToFactoryHistory.cs" />
     <Compile Include="Productions\RelatedProductionPlanConfig.cs" />
     <Compile Include="Productions\Technological\MonthlyTechnologicalReportsData.cs" />
     <Compile Include="Productions\Technological\UnitTechnologicalMonthlyData.cs" />
