@@ -17,6 +17,8 @@ namespace CollectingProductionDataSystem.Models.Productions
         private ICollection<InProcessUnitData> inProcessUnitDatas;
         private ICollection<UnitMonthlyConfig> unitMonthlyConfigs;
         private ICollection<PlanValue> planValues;
+        private ICollection<ProcessUnitToFactoryHistory> factoryHistory;
+
 
         public ProcessUnit()
         {
@@ -27,6 +29,7 @@ namespace CollectingProductionDataSystem.Models.Productions
             this.inProcessUnitDatas = new HashSet<InProcessUnitData>();
             this.unitMonthlyConfigs = new HashSet<UnitMonthlyConfig>();
             this.planValues = new HashSet<PlanValue>();
+            this.factoryHistory = new HashSet<ProcessUnitToFactoryHistory>();
         }
 
         public int Id { get; set; }
@@ -39,7 +42,6 @@ namespace CollectingProductionDataSystem.Models.Productions
         public virtual Factory Factory { get; set; }
         public virtual ICollection<UnitConfig> UnitsConfigs { get; set; }
         public virtual ICollection<UnitDailyConfig> UnitsDailyConfigs { get; set; }
-
         public DateTime ActiveFrom { get; set; }
         public DateTime ActiveTo { get; set; }
         public bool HasApprovedStatistics { get; set; }
@@ -59,7 +61,7 @@ namespace CollectingProductionDataSystem.Models.Productions
 
         public virtual ICollection<ApplicationUserProcessUnit> ApplicationUserProcessUnits
         {
-            get { return applicationUserProcessUnits; }
+            get { return this.applicationUserProcessUnits; }
             set { this.applicationUserProcessUnits = value; }
         }
         public virtual ICollection<ProductionPlanConfig> ProductionPlanConfigs
@@ -82,6 +84,12 @@ namespace CollectingProductionDataSystem.Models.Productions
         {
             get { return this.planValues; }
             set { this.planValues = value; }
+        }
+
+        public virtual ICollection<ProcessUnitToFactoryHistory> FactoryHistories
+        {
+            get { return this.factoryHistory; }
+            set { this.factoryHistory = value; }
         }
     }
 }

@@ -21,7 +21,7 @@ namespace CollectingProductionDataSystem.Models.Productions
     /// <summary>
     /// Summary description for ProcessUnitToFactoryHistory
     /// </summary>
-    class ProcessUnitToFactoryHistory:DeletableEntity, IEntity
+    public class ProcessUnitToFactoryHistory:DeletableEntity, IEntity
     {
         public int Id { get; set; }
         public int ProcessUnitId { get; set; }

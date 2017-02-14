@@ -12,9 +12,11 @@ namespace CollectingProductionDataSystem.Models.Productions
     public partial class Factory: DeletableEntity, IEntity
     {
         private ICollection<MonthlyTechnologicalReportsData> monthlyTechnologicalReportsDatas;
+        private ICollection<ProcessUnitToFactoryHistory> processUnitsHistory;
         public Factory()
         {
             this.ProcessUnits = new HashSet<ProcessUnit>();
+            this.processUnitsHistory = new HashSet<ProcessUnitToFactoryHistory>();
         }
 
         public int Id { get; set; }
@@ -25,9 +27,15 @@ namespace CollectingProductionDataSystem.Models.Productions
         public virtual ICollection<ProcessUnit> ProcessUnits { get; set; }
         public virtual ICollection<MonthlyTechnologicalReportsData> MonthlyTechnologicalReportsDatas
         {
-            get { return monthlyTechnologicalReportsDatas; }
+            get { return this.monthlyTechnologicalReportsDatas; }
             set { this.monthlyTechnologicalReportsDatas = value; }
         }
+        public virtual ICollection<ProcessUnitToFactoryHistory> ProcessUnitsHistory
+        {
+            get { return this.processUnitsHistory; }
+            set { this.processUnitsHistory = value; }
+        }
+
 
         public string FactorySortableName
         {

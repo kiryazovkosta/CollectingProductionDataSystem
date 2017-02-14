@@ -126,6 +126,7 @@
     <Compile Include="Mappings\PhdConfgMap.cs" />
     <Compile Include="Mappings\PlanValueMap.cs" />
     <Compile Include="Mappings\PlanNormMap.cs" />
+    <Compile Include="Mappings\ProcessUnitToFactoryHistoryMap.cs" />
     <Compile Include="Mappings\ProductionPlanConfigUnitMonthlyConfigFactFractionMembersMap.cs" />
     <Compile Include="Mappings\ProductionPlanConfigUnitMonthlyConfigPlanMembersMap.cs" />
     <Compile Include="Mappings\RelatedProductionCodeAspenProductCodeMap.cs" />

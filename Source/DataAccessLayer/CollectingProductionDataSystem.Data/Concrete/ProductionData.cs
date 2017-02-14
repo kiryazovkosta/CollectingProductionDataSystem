@@ -425,6 +425,14 @@
             }
         }
 
+        public IDeletableEntityRepository<ProcessUnitToFactoryHistory> ProcessUnitToFactoryHistory
+        {
+            get
+            {
+                return this.GetDeletableEntityRepository<ProcessUnitToFactoryHistory>();
+            }
+        }
+
         /// <summary>
         /// Gets or sets the unit daily config unit monthly configs.
         /// </summary>

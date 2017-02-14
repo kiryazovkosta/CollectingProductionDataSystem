@@ -90,6 +90,7 @@
             modelBuilder.Configurations.Add(new UnitTechnologicalMonthlyDataMap());
             modelBuilder.Configurations.Add(new RelatedProductionCodeAspenProductCodeMap());
             modelBuilder.Configurations.Add(new MonthlyTechnologicalReportsDataMap());
+            modelBuilder.Configurations.Add(new ProcessUnitToFactoryHistoryMap());
         }
     }
 }

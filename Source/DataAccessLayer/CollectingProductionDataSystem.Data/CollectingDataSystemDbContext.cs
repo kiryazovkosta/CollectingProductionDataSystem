@@ -214,6 +214,8 @@
 
         public IDbSet<MonthlyTechnologicalReportsData> MonthlyTechnologicalReportsDatas { get; set; }
 
+        public IDbSet<ProcessUnitToFactoryHistory> ProcessUnitToFactoryHistory { get; set; }
+
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -231,7 +233,7 @@
 
         public override int SaveChanges()
         {
-            return SaveChanges(null);
+            return this.SaveChanges(null);
         }
 
         /// <summary>
