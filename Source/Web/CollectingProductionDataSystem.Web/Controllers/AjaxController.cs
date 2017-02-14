@@ -35,13 +35,13 @@ namespace CollectingProductionDataSystem.Web.Controllers
         {
             var reasons = this.data.EditReasons.All().ToList();
             var reasonView = Mapper.Map<IEnumerable<EditReasonInputModel>>(reasons);
-            return Json(reasonView, JsonRequestBehavior.AllowGet);
+            return this.Json(reasonView, JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult GetAreas()
         {
             IEnumerable<Area> areas = new HashSet<Area>();
-            if (IsPowerUser())
+            if (this.IsPowerUser())
             {
                 areas = this.data.Areas.All().ToList();
             }
@@ -50,14 +50,14 @@ namespace CollectingProductionDataSystem.Web.Controllers
                 areas = Mapper.Map<IEnumerable<Area>>(this.UserProfile.Parks.Select(x => x.Area).Distinct());
             }
             var areaView = Mapper.Map<IEnumerable<AreaViewModel>>(areas);
-            return Json(areaView, JsonRequestBehavior.AllowGet);
+            return this.Json(areaView, JsonRequestBehavior.AllowGet);
         }
 
 
         public JsonResult GetParks(int? areaId, string parksFilter)
         {
             IEnumerable<Park> parks = new HashSet<Park>();
-            if (IsPowerUser())
+            if (this.IsPowerUser())
             {
                 parks = this.data.Parks.All();
             }
@@ -77,21 +77,21 @@ namespace CollectingProductionDataSystem.Web.Controllers
             }
 
             var parkView = Mapper.Map<IEnumerable<ParkViewModel>>(parks);
-            return Json(parkView, JsonRequestBehavior.AllowGet);
+            return this.Json(parkView, JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult GetShifts()
         {
             var shifts = this.data.Shifts.All().ToList();
             var shiftView = Mapper.Map<IEnumerable<ShiftViewModel>>(shifts);
-            return Json(shiftView, JsonRequestBehavior.AllowGet);
+            return this.Json(shiftView, JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult GetMaterialTypes()
         {
             var materialTypes = this.data.MaterialTypes.All().ToList();
             var materialTypeView = Mapper.Map<IEnumerable<Areas.NomManagement.Models.ViewModels.MaterialTypeViewModel>>(materialTypes);
-            return Json(materialTypeView, JsonRequestBehavior.AllowGet);
+            return this.Json(materialTypeView, JsonRequestBehavior.AllowGet);
         }
 
 
@@ -99,7 +99,7 @@ namespace CollectingProductionDataSystem.Web.Controllers
         {
             IEnumerable<Factory> factories = new HashSet<Factory>();
 
-            if (IsPowerUser())
+            if (this.IsPowerUser())
             {
                 factories = this.data.Factories.All().ToList();
             }
@@ -108,13 +108,13 @@ namespace CollectingProductionDataSystem.Web.Controllers
                 factories = Mapper.Map<IEnumerable<Factory>>(this.UserProfile.ProcessUnits.Select(x => x.Factory).Distinct().ToList());
             }
             var factoryView = Mapper.Map<IEnumerable<FactoryViewModel>>(factories);
-            return Json(factoryView, JsonRequestBehavior.AllowGet);
+            return this.Json(factoryView, JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult GetProcessUnits(int? factoryId)
         {
             IEnumerable<ProcessUnit> processUnits = new HashSet<ProcessUnit>();
-            if (IsPowerUser())
+            if (this.IsPowerUser())
             {
                 processUnits = this.data.ProcessUnits.All();
             }
@@ -127,33 +127,35 @@ namespace CollectingProductionDataSystem.Web.Controllers
             {
                 processUnits = processUnits.Where(p => p.FactoryId == factoryId);
             }
+
+            processUnits = processUnits.OrderBy(pu => pu.Position);
             var processUnitView = Mapper.Map<IEnumerable<ProcessUnitViewModel>>(processUnits.ToList());
-            return Json(processUnitView, JsonRequestBehavior.AllowGet);
+            return this.Json(processUnitView, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult SaveGridState(string data)
         {
-            Session["data"] = data;
+            this.Session["data"] = data;
             return new EmptyResult();
         }
 
         public ActionResult LoadGridState()
         {
-            return Json(Session["data"], JsonRequestBehavior.AllowGet);
+            return this.Json(this.Session["data"], JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult GetDirections()
         {
             var directions = this.data.Directions.All().Where(x => x.Id <= 2).ToList();
             var directionsView = Mapper.Map<IEnumerable<DirectionsViewModel>>(directions);
-            return Json(directionsView, JsonRequestBehavior.AllowGet);
+            return this.Json(directionsView, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult UserCloseWindow()
         {
-             if (User.Identity.IsAuthenticated)
+             if (this.User.Identity.IsAuthenticated)
             {
                bool isLogOff = false;
                 var user = this.data.Users.All().FirstOrDefault(x => x.UserName == this.UserProfile.UserName);
@@ -170,12 +172,12 @@ namespace CollectingProductionDataSystem.Web.Controllers
                 this.data.SaveChanges(this.UserProfile.UserName);
                 if (isLogOff)
                 {
-                    HttpContext.GetOwinContext().Authentication.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-                    Session["user"] = null;
+                    this.HttpContext.GetOwinContext().Authentication.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+                    this.Session["user"] = null;
                 }
             }
-            InvalidateCookies(Request, Response);
-            return RedirectToAction("Index","Home");
+            this.InvalidateCookies(this.Request, this.Response);
+            return this.RedirectToAction("Index","Home");
         }
 
 
@@ -200,7 +202,7 @@ namespace CollectingProductionDataSystem.Web.Controllers
             var fileContents = Convert.FromBase64String(base64);
 
             //return File(fileContents, contentType, fileName);
-            var result = File(fileContents, contentType, fileName);
+            var result = this.File(fileContents, contentType, fileName);
             return result;
         }
 
@@ -209,15 +211,15 @@ namespace CollectingProductionDataSystem.Web.Controllers
         {
             var fileContents = Convert.FromBase64String(base64);
 
-            return File(fileContents, contentType, fileName);
+            return this.File(fileContents, contentType, fileName);
         }
 
         [HttpGet]
         [AllowAnonymous]
         public ActionResult GetMessagesCount()
         {
-            var result = data.Messages.All().Where(x => x.ValidUntill >= DateTime.Now).Select(x=>x.MessageText).Count();
-            return Json(result, JsonRequestBehavior.AllowGet);
+            var result = this.data.Messages.All().Where(x => x.ValidUntill >= DateTime.Now).Select(x=>x.MessageText).Count();
+            return this.Json(result, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
@@ -225,30 +227,30 @@ namespace CollectingProductionDataSystem.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult GetMessages([DataSourceRequest] DataSourceRequest request)
         {
-            var result = data.Messages.All().Where(x => x.ValidUntill >= DateTime.Now).OrderByDescending(x=>x.CreatedOn).ToList();
-            return Json(result.ToDataSourceResult(request, ModelState,Mapper.Map<MessageViewModel>));
+            var result = this.data.Messages.All().Where(x => x.ValidUntill >= DateTime.Now).OrderByDescending(x=>x.CreatedOn).ToList();
+            return this.Json(result.ToDataSourceResult(request, this.ModelState,Mapper.Map<MessageViewModel>));
         }
 
         [HttpGet]
         [AllowAnonymous]
         public ActionResult GetLastMessage()
         {
-            var result = data.Messages.All().Where(x => x.ValidUntill >= DateTime.Now).OrderByDescending(x=>x.CreatedOn).FirstOrDefault();
-            return Json(result,JsonRequestBehavior.AllowGet);
+            var result = this.data.Messages.All().Where(x => x.ValidUntill >= DateTime.Now).OrderByDescending(x=>x.CreatedOn).FirstOrDefault();
+            return this.Json(result,JsonRequestBehavior.AllowGet);
         }
 
         private bool IsPowerUser()
         {
-            return UserProfile.UserRoles.Where(x => CommonConstants.PowerUsers.Any(y => y == x.Name)).Any();
+            return this.UserProfile.UserRoles.Where(x => CommonConstants.PowerUsers.Any(y => y == x.Name)).Any();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public JsonResult GetAllProducts([DataSourceRequest] DataSourceRequest request)
         {
-            var products = data.Products.All().ToList();
+            var products = this.data.Products.All().ToList();
             var productsView = Mapper.Map<IEnumerable<ProductViewModel>>(products);
-            return Json(productsView.ToDataSourceResult(request, this.ModelState));
+            return this.Json(productsView.ToDataSourceResult(request, this.ModelState));
         }
 
         public ActionResult ValueMapper(int[] values)
@@ -270,16 +272,16 @@ namespace CollectingProductionDataSystem.Web.Controllers
                 }
             }
 
-            return Json(indices, JsonRequestBehavior.AllowGet);
+            return this.Json(indices, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public JsonResult GetAllProcessUnits()
         {
-            var products = data.ProcessUnits.All().ToList();
+            var products = this.data.ProcessUnits.All().ToList();
             var productsView = Mapper.Map<IEnumerable<ProcessUnitViewModel>>(products);
-            return Json(productsView);
+            return this.Json(productsView);
         }
 
         public ActionResult ProcessUnitValueMapper(int[] values)
@@ -301,16 +303,16 @@ namespace CollectingProductionDataSystem.Web.Controllers
                 }
             }
 
-            return Json(indices, JsonRequestBehavior.AllowGet);
+            return this.Json(indices, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public JsonResult GetAllTankStatuses()
         {
-            var statuses = data.TankStatuses.All().ToList();
+            var statuses = this.data.TankStatuses.All().ToList();
             var statusesView = Mapper.Map<IEnumerable<TankStatusViewModel>>(statuses);
-            return Json(statusesView);
+            return this.Json(statusesView);
         }
 
         public ActionResult TankStatusesValueMapper(int[] values)
@@ -332,14 +334,14 @@ namespace CollectingProductionDataSystem.Web.Controllers
                 }
             }
 
-            return Json(indices, JsonRequestBehavior.AllowGet);
+            return this.Json(indices, JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult GetMonthlyReportTypes()
         {
             List<MonthlyReportType> monthlyReportTypes = this.data.MonthlyReportTypes.All().ToList();
-            IEnumerable<CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewModels.MonthlyReportTypeViewModel> monthlyReportTypesView = Mapper.Map<IEnumerable<CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewModels.MonthlyReportTypeViewModel>>(monthlyReportTypes);
-            return Json(monthlyReportTypesView, JsonRequestBehavior.AllowGet);
+            IEnumerable<Areas.NomManagement.Models.ViewModels.MonthlyReportTypeViewModel> monthlyReportTypesView = Mapper.Map<IEnumerable<Areas.NomManagement.Models.ViewModels.MonthlyReportTypeViewModel>>(monthlyReportTypes);
+            return this.Json(monthlyReportTypesView, JsonRequestBehavior.AllowGet);
         }
     }
 }

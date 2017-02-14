@@ -1775,4 +1775,13 @@
   <data name="CannotMakeRecord" xml:space="preserve">
     <value>Записът не можа да бъде осъществен. Моля опитайте на ново!</value>
   </data>
+  <data name="ActiveFrom" xml:space="preserve">
+    <value>Активна от</value>
+  </data>
+  <data name="ActiveTo" xml:space="preserve">
+    <value>Активна до</value>
+  </data>
+  <data name="HasApprovedStatistics" xml:space="preserve">
+    <value>Участва в статистика за потвърдени данни</value>
+  </data>
 </root>

@@ -30,6 +30,10 @@ namespace CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewMode
         public int FactoryId { get; set; }
 
         [Required]
+        [Display(Name = "Position", ResourceType = typeof(Resources.Layout))]
+        public int Position { get; set; }
+
+        [Required]
         [Display(Name = "HasDailyStatistics", ResourceType = typeof(Resources.Layout))]
         public bool HasDailyStatistics { get; set; }
 
@@ -40,5 +44,17 @@ namespace CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewMode
         [UIHint("Hidden")]
         [Editable(false)]
         public bool IsDeleted { get; set; }
+
+        [Required]
+        [Display(Name = "HasApprovedStatistics", ResourceType = typeof(Resources.Layout))]
+        public bool HasApprovedStatistics { get; set; }
+
+        [Required]
+        [Display(Name = "ActiveFrom", ResourceType = typeof(Resources.Layout))]
+        public DateTime ActiveFrom { get; set; }
+
+        [Required]
+        [Display(Name = "ActiveTo", ResourceType = typeof(Resources.Layout))]
+        public DateTime ActiveTo { get; set; }
     }
 }

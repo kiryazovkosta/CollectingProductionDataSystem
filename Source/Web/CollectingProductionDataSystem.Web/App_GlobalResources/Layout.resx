@@ -1780,4 +1780,13 @@
   <data name="CannotMakeRecord" xml:space="preserve">
     <value>The record wasn't saved pleace try again</value>
   </data>
+  <data name="ActiveFrom" xml:space="preserve">
+    <value>ActiveFrom</value>
+  </data>
+  <data name="ActiveTo" xml:space="preserve">
+    <value>ActiveTo</value>
+  </data>
+  <data name="HasApprovedStatistics" xml:space="preserve">
+    <value>HasApprovedStatistics</value>
+  </data>
 </root>

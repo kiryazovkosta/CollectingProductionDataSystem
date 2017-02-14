@@ -268,7 +268,9 @@
                 return Json(kendoResult);
             }
 
+            //TODO: Need to refactory to also and by aprocess unit active period
             var SelectedFactories = data.ProcessUnits.All().Include(x => x.Factory)
+                .Where(x => x.HasApprovedStatistics == true)
                 .Where(x => x.Id == (processUnitId ?? x.Id)
                 && x.Factory.Id == (factoryId ?? x.Factory.Id)).Select(x => new DataConfirmationViewModel()
                 {
