@@ -29,6 +29,7 @@ namespace CollectingProductionDataSystem.Web.AppStart
     using Ninject;
     using Ninject.Web.Common;
     using System.Data.Entity;
+    using Application.HistoricalNameService;
     using CollectingProductionDataSystem.Data;
     using CollectingProductionDataSystem.Data.Concrete;
     using CollectingProductionDataSystem.Application.UnitsDataServices;
@@ -112,6 +113,7 @@ namespace CollectingProductionDataSystem.Web.AppStart
             kernel.Bind<IShiftService>().To<ShiftService>();
             //kernel.Bind<ILog>().ToMethod(context => LogManager.GetLogger("CollectingProductionDataSystem.Phd2SqlProductionData")).InSingletonScope();
             kernel.Bind<IMailerService>().To<MailerService>();
+            kernel.Bind<IHistoricalService>().To<HistoricalService>();
             //kernel.Bind<IPhdPrimaryDataService>().To<PhdPrimaryDataService>();
             kernel.Bind<log4net.ILog>().To<LoggerToLogAdapter>();
             kernel.Bind<IProgressRegistrator>().To<ProgressRegistrator>();

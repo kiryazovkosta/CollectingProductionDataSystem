@@ -7,7 +7,7 @@
     using CollectingProductionDataSystem.Models.Contracts;
     using System;
 
-    public partial class UnitsDailyData : AuditInfo, IApprovableEntity, IEntity
+    public partial class UnitsDailyData : AuditInfo, IApprovableEntity, IEntity,IConfigable
     {
         public int Id { get; set; }
         public DateTime RecordTimestamp { get; set; }
@@ -61,6 +61,9 @@
                 return (double)this.TotalMonthQuantity + this.RealValue;
             }
         }
+
+        [NotMapped]
+        public IProcessUnitCangeable Config => this.UnitsDailyConfig;
 
         public override string ToString()
         {

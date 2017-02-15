@@ -7,7 +7,7 @@ namespace CollectingProductionDataSystem.Models.Productions
     using System.Collections.Generic;
     using System.ComponentModel;
 
-    public class UnitConfig : DeletableEntity, IEntity, IAggregatable, IConvertable, ICloneable<UnitConfig>
+    public class UnitConfig : DeletableEntity, IEntity, IAggregatable, IConvertable, ICloneable<UnitConfig>, IProcessUnitCangeable
     {
         private ICollection<UnitsData> unitsDatas;
         private ICollection<RelatedUnitConfigs> relatedUnitConfigs;
@@ -177,5 +177,7 @@ namespace CollectingProductionDataSystem.Models.Productions
 
 
         }
+
+        public ProcessUnit HistorycalProcessUnit { get; set; }
     }
 }

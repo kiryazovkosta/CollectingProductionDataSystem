@@ -14,13 +14,13 @@ namespace CollectingProductionDataSystem.Application.MonthlyServices
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
-    using CollectingProductionDataSystem.Application.Contracts;
-    using CollectingProductionDataSystem.Data.Common;
-    using CollectingProductionDataSystem.Extentions;
-    using CollectingProductionDataSystem.Constants;
-    using CollectingProductionDataSystem.Data.Contracts;
-    using CollectingProductionDataSystem.Models.Productions;
-    using CollectingProductionDataSystem.Models.Productions.Mounthly;
+    using Contracts;
+    using Data.Common;
+    using Extentions;
+    using Constants;
+    using Data.Contracts;
+    using Models.Productions;
+    using Models.Productions.Mounthly;
     using Ninject;
     using Resources = App_Resources;
 
@@ -33,6 +33,7 @@ namespace CollectingProductionDataSystem.Application.MonthlyServices
         private readonly IKernel kernel;
         private readonly ICalculatorService calculator;
         private readonly ITestUnitMonthlyCalculationService testUnitMonthlyCalculationService;
+        private readonly IHistoricalService historicalService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UnitMothlyDataService" /> class.
@@ -40,19 +41,23 @@ namespace CollectingProductionDataSystem.Application.MonthlyServices
         /// <param name="dataParam">The data param.</param>
         /// <param name="kernelParam">The kernel param.</param>
         /// <param name="calculatorParam">The calculator param.</param>
-        public UnitMothlyDataService(IProductionData dataParam, IKernel kernelParam, ICalculatorService calculatorParam, ITestUnitMonthlyCalculationService testUnitMonthlyCalculationServiceParam)
+        /// <param name="testUnitMonthlyCalculationServiceParam"></param>
+        /// <param name="historicalServiceParam"></param>
+        public UnitMothlyDataService(IProductionData dataParam, IKernel kernelParam, ICalculatorService calculatorParam, ITestUnitMonthlyCalculationService testUnitMonthlyCalculationServiceParam, IHistoricalService historicalServiceParam)
         {
             this.data = dataParam;
             this.kernel = kernelParam;
             this.calculator = calculatorParam;
             this.testUnitMonthlyCalculationService = testUnitMonthlyCalculationServiceParam;
+            this.historicalService = historicalServiceParam;
         }
 
         /// <summary>
         /// Calculates the monthly data if not available.
         /// </summary>
         /// <param name="date">The date.</param>
-        /// <param name="ReportTypeId"></param>
+        /// <param name="reportTypeId"></param>
+        /// <param name="userName"></param>
         /// <returns></returns>
         public IEfStatus CalculateMonthlyDataIfNotAvailable(DateTime date, int reportTypeId, string userName)
         {
@@ -74,10 +79,10 @@ namespace CollectingProductionDataSystem.Application.MonthlyServices
 
                     var monthlyResult = this.CalculateMonthlyDataForReportType(targetMonth, false, reportTypeId);
 
-                    if (monthlyResult.Count() > 0)
+                    if (monthlyResult.Any())
                     {
-                        data.UnitMonthlyDatas.BulkInsert(monthlyResult, userName);
-                        data.SaveChanges(userName);
+                        this.data.UnitMonthlyDatas.BulkInsert(monthlyResult, userName);
+                        this.data.SaveChanges(userName);
                     }
                 }
                 catch (Exception ex)
@@ -113,12 +118,12 @@ namespace CollectingProductionDataSystem.Application.MonthlyServices
         /// </summary>
         /// <param name="inTargetMonth">The in target month.</param>
         /// <param name="isRecalculate">The is recalculate.</param>
-        /// <param name="ReportTypeId">The report type id.</param>
+        /// <param name="reportTypeId"></param>
         /// <returns></returns>
         public IEnumerable<UnitMonthlyData> CalculateMonthlyDataForReportType(DateTime inTargetMonth, bool isRecalculate, int reportTypeId, int changedMonthlyConfigId = 0)
         {
-            DateTime targetMonth = GetTargetMonth(inTargetMonth);
-            var targetUnitMonthlyRecordConfigs = data.UnitMonthlyConfigs.All()
+            DateTime targetMonth = this.GetTargetMonth(inTargetMonth);
+            var targetUnitMonthlyRecordConfigs = this.data.UnitMonthlyConfigs.All()
                 .Include(x => x.UnitDailyConfigUnitMonthlyConfigs)
                 .Include(x => x.RelatedUnitMonthlyConfigs)
                 .Where(x => x.MonthlyReportTypeId == reportTypeId).ToList();
@@ -129,26 +134,26 @@ namespace CollectingProductionDataSystem.Application.MonthlyServices
 
             if (!isRecalculate)
             {
-                resultMonthly = CalculateMonthlyDataFromDailyData(targetUnitMonthlyRecordConfigs, targetMonth);
+                resultMonthly = this.CalculateMonthlyDataFromDailyData(targetUnitMonthlyRecordConfigs, targetMonth);
                 changedRecords = null;
             }
             else
             {
-                wholeMonthResult = GetMonthlyDataForMonth(targetMonth);
+                wholeMonthResult = this.GetMonthlyDataForMonth(targetMonth);
 
-                GetDependingRecords(targetUnitMonthlyRecordConfigs, changedMonthlyConfigId, ref changedRecords);
+                this.GetDependingRecords(targetUnitMonthlyRecordConfigs, changedMonthlyConfigId, ref changedRecords);
                 changedRecords = changedRecords.Select(x => x).Distinct().OrderBy(x => x).ToList();
 
                 resultMonthly = wholeMonthResult.Where(x =>
                     (x.Value.UnitMonthlyConfig.AggregationCurrentLevel == false) || (x.Value.UnitMonthlyConfig.IsManualEntry == true)).ToDictionary(x => x.Key, x => x.Value);
             }
 
-            CalculateMonthlyDataFromRelatedMonthlyData(ref resultMonthly, targetMonth, isRecalculate, reportTypeId, changedRecords, wholeMonthResult);
+            this.CalculateMonthlyDataFromRelatedMonthlyData(ref resultMonthly, targetMonth, isRecalculate, reportTypeId, changedRecords, wholeMonthResult);
 
             //Add anual data of first calculation
             if (!isRecalculate)
             {
-                CalculateAnualAccumulation(ref resultMonthly, targetMonth, reportTypeId);
+                this.CalculateAnualAccumulation(ref resultMonthly, targetMonth, reportTypeId);
             }
             var result = resultMonthly.Select(x => x.Value);
             return result;
@@ -168,17 +173,17 @@ namespace CollectingProductionDataSystem.Application.MonthlyServices
                                                           referentMonth.Month,
                                                           DateTime.DaysInMonth(referentMonth.Year, referentMonth.Month));
 
-                var records = from p in data.UnitMonthlyConfigs.AllAnual(targetMonth.Year).Where(x => reportTypeId == 0 || x.MonthlyReportTypeId == reportTypeId)
-                              join m in data.UnitMonthlyDatas.All().Where(x => x.RecordTimestamp == monthBeforeTargetMonth) on p.Id equals m.UnitMonthlyConfigId into Result
+                var records = from p in this.data.UnitMonthlyConfigs.AllAnual(targetMonth.Year).Where(x => reportTypeId == 0 || x.MonthlyReportTypeId == reportTypeId)
+                              join m in this.data.UnitMonthlyDatas.All().Where(x => x.RecordTimestamp == monthBeforeTargetMonth) on p.Id equals m.UnitMonthlyConfigId into Result
                               from q in Result.DefaultIfEmpty()
-                              join o in data.UnitManualMonthlyDatas.All() on q.Id equals o.Id into ManualResult
+                              join o in this.data.UnitManualMonthlyDatas.All() on q.Id equals o.Id into ManualResult
                               from l in ManualResult.DefaultIfEmpty()
                               select new AnnualAccumulation
                               {
                                   UnitMonthlyConfigId = p.Id,
                                   Code = p.Code,
                                   MonthlyValue = (q == null) ? 0M : q.Value,
-                                  MonthlyManualValue = (l == null) ? null : (decimal?)l.Value,
+                                  MonthlyManualValue = (l == null) ? null : (decimal?) l.Value,
                                   YearTotalValue = (q == null) ? 0M : q.YearTotalValue,
                               };
 
@@ -211,14 +216,14 @@ namespace CollectingProductionDataSystem.Application.MonthlyServices
         private void GetDependingRecords(List<UnitMonthlyConfig> targetUnitDailyRecordConfigs, int changedMonthlyConfigId, ref List<string> codes)
         {
             var dependingRecords = targetUnitDailyRecordConfigs.Where(x => x.RelatedUnitMonthlyConfigs.Any(y => y.RelatedUnitMonthlyConfigId == changedMonthlyConfigId)).ToList();
-            if (dependingRecords.Count() == 0)
+            if (!dependingRecords.Any())
             {
                 return;
             }
 
             foreach (var record in dependingRecords)
             {
-                GetDependingRecords(targetUnitDailyRecordConfigs, record.Id, ref codes);
+                this.GetDependingRecords(targetUnitDailyRecordConfigs, record.Id, ref codes);
                 codes.Add(record.Code);
             }
 
@@ -271,7 +276,7 @@ namespace CollectingProductionDataSystem.Application.MonthlyServices
         /// <returns></returns>
         private Dictionary<string, UnitMonthlyData> CalculateMonthlyDataFromDailyData(IEnumerable<UnitMonthlyConfig> targetUnitMonthlyRecordConfigs, DateTime targetMonth)
         {
-            var targetUnitDailyDatas = data.UnitsDailyDatas.All()
+            var targetUnitDailyDatas = this.data.UnitsDailyDatas.All()
                   .Include(x => x.UnitsDailyConfig)
                   .Include(x => x.UnitsManualDailyData)
                   .Where(x => x.RecordTimestamp == targetMonth).ToList();
@@ -292,12 +297,12 @@ namespace CollectingProductionDataSystem.Application.MonthlyServices
                                             .Select(x => new { Id = x.UnitDailyConfigId, Position = x.Position }).Distinct()
                                             .ToDictionary(x => x.Id, x => x.Position);
 
-                    var unitDailyDatasByMontlyData = GetUnitDailyDatasForMonthlyData(targetUnitMonthlyRecordConfig, targetUnitDailyDatas);
+                    var unitDailyDatasByMontlyData = this.GetUnitDailyDatasForMonthlyData(targetUnitMonthlyRecordConfig, targetUnitDailyDatas);
 
-                    var monthlyValue = GetMonthlyValueFromRelatedDailyRecords(unitDailyDatasByMontlyData, targetUnitMonthlyRecordConfig, positionDictionary);
+                    var monthlyValue = this.GetMonthlyValueFromRelatedDailyRecords(unitDailyDatasByMontlyData, targetUnitMonthlyRecordConfig, positionDictionary);
 
 
-                    monthlyRecord.Value = (decimal)monthlyValue;
+                    monthlyRecord.Value = (decimal) monthlyValue;
                     monthlyRecord.HasManualData = unitDailyDatasByMontlyData.Any(y => y.IsManual == true);
                     result.Add(targetUnitMonthlyRecordConfig.Code, monthlyRecord);
                 }
@@ -311,10 +316,10 @@ namespace CollectingProductionDataSystem.Application.MonthlyServices
             foreach (var targetUnitMonthlyRecordConfig in targetUnitMonthlyRecordConfigs.Where(x => x.IsManualEntry == true))
             {
                 var monthlyRecord = new UnitMonthlyData()
-                                           {
-                                               RecordTimestamp = targetMonth,
-                                               UnitMonthlyConfigId = targetUnitMonthlyRecordConfig.Id
-                                           };
+                {
+                    RecordTimestamp = targetMonth,
+                    UnitMonthlyConfigId = targetUnitMonthlyRecordConfig.Id
+                };
 
                 result.Add(targetUnitMonthlyRecordConfig.Code, monthlyRecord);
             }
@@ -344,7 +349,7 @@ namespace CollectingProductionDataSystem.Application.MonthlyServices
         {
             Dictionary<string, UnitMonthlyData> calculationResult = new Dictionary<string, UnitMonthlyData>();
 
-            var targetRecords = data.UnitMonthlyConfigs.All()
+            var targetRecords = this.data.UnitMonthlyConfigs.All()
                 .Include(x => x.RelatedUnitMonthlyConfigs)
                 .Where(x => x.AggregationCurrentLevel == true
                         && x.IsManualEntry == false
@@ -355,7 +360,7 @@ namespace CollectingProductionDataSystem.Application.MonthlyServices
 
             if (isRecalculate)
             {
-                targetUnitMonthlyRecords = data.UnitMonthlyDatas.All()
+                targetUnitMonthlyRecords = this.data.UnitMonthlyDatas.All()
                   .Include(x => x.UnitMonthlyConfig)
                   .Include(x => x.UnitMonthlyConfig.RelatedUnitMonthlyConfigs)
                   .Include(x => x.UnitManualMonthlyData)
@@ -368,8 +373,8 @@ namespace CollectingProductionDataSystem.Application.MonthlyServices
                                        .Select(x => new { Id = x.RelatedUnitMonthlyConfigId, Position = x.Position }).Distinct()
                                        .ToDictionary(x => x.Id, x => x.Position);
 
-                var unitDailyDatasForPosition = GetUnitDatasForRelatedDailyData(targetUnitMonthlyRecordConfig, resultMonthly, wholeMonthResult);
-                double monthlyValue = GetMonthlyValueFromRelatedMounthlyRecords(unitDailyDatasForPosition, targetUnitMonthlyRecordConfig, positionDictionary);
+                var unitDailyDatasForPosition = this.GetUnitDatasForRelatedDailyData(targetUnitMonthlyRecordConfig, resultMonthly, wholeMonthResult);
+                double monthlyValue = this.GetMonthlyValueFromRelatedMounthlyRecords(unitDailyDatasForPosition, targetUnitMonthlyRecordConfig, positionDictionary);
 
                 var monthlyRecord = new UnitMonthlyData()
                 {
@@ -386,17 +391,17 @@ namespace CollectingProductionDataSystem.Application.MonthlyServices
                         monthlyRecord.UnitManualMonthlyData = new UnitManualMonthlyData
                         {
                             Id = monthlyRecord.Id,
-                            Value = (decimal)monthlyValue,
+                            Value = (decimal) monthlyValue,
                         };
                     }
                     else
                     {
-                        monthlyRecord.UnitManualMonthlyData.Value = (decimal)monthlyValue;
+                        monthlyRecord.UnitManualMonthlyData.Value = (decimal) monthlyValue;
                     }
                 }
                 else
                 {
-                    monthlyRecord.Value = (decimal)monthlyValue;
+                    monthlyRecord.Value = (decimal) monthlyValue;
                 }
 
                 resultMonthly.Add(targetUnitMonthlyRecordConfig.Code, monthlyRecord);
@@ -463,7 +468,7 @@ namespace CollectingProductionDataSystem.Application.MonthlyServices
                 inputDictionary.Add(string.Format("p{0}", currentIndex - 1), unit.RealValue);
             }
 
-            return calculator.Calculate(unitMonthlyConfig.AggregationFormula, "p", inputDictionary.Count, inputDictionary, unitMonthlyConfig?.Code);
+            return this.calculator.Calculate(unitMonthlyConfig.AggregationFormula, "p", inputDictionary.Count, inputDictionary, unitMonthlyConfig?.Code);
         }
 
         /// <summary>
@@ -502,7 +507,7 @@ namespace CollectingProductionDataSystem.Application.MonthlyServices
                 inputDictionary.Add(string.Format("p0"), 0);
             }
 
-            return calculator.Calculate(unitMonthlyConfig.AggregationFormula, "p", inputDictionary.Count, inputDictionary, unitMonthlyConfig.Code);
+            return this.calculator.Calculate(unitMonthlyConfig.AggregationFormula, "p", inputDictionary.Count, inputDictionary, unitMonthlyConfig.Code);
         }
 
         public DateTime GetTargetMonth(DateTime inTargetMonth)
@@ -551,13 +556,13 @@ namespace CollectingProductionDataSystem.Application.MonthlyServices
         /// <returns></returns>
         public IEfStatus CheckIfPreviousDaysAreReady(int processUnitId, DateTime targetDate, int materialTypeId)
         {
-            var status = kernel.Get<IEfStatus>();
+            var status = this.kernel.Get<IEfStatus>();
             if (targetDate.Day > 1)
             {
                 var beginingOfTheMonth = new DateTime(targetDate.Year, targetDate.Month, 1);
                 var endOfObservedPeriod = targetDate.Date.AddDays(-1);
 
-                var approvedDays = data.UnitsApprovedDailyDatas.All()
+                var approvedDays = this.data.UnitsApprovedDailyDatas.All()
                                         .Where(x => x.ProcessUnitId == processUnitId
                                                 && beginingOfTheMonth <= x.RecordDate
                                                 && x.RecordDate <= endOfObservedPeriod
@@ -640,7 +645,7 @@ namespace CollectingProductionDataSystem.Application.MonthlyServices
                 }
             }
 
-            var status = kernel.Get<IEfStatus>();
+            var status = this.kernel.Get<IEfStatus>();
 
             if (validationResults.Count > 0)
             {
@@ -683,7 +688,7 @@ namespace CollectingProductionDataSystem.Application.MonthlyServices
 
         public IEfStatus CheckIfDayIsApprovedButEnergyNot(DateTime date, int processUnitId, out bool readyForCalculation)
         {
-            var status = kernel.Get<IEfStatus>();
+            var status = this.kernel.Get<IEfStatus>();
             readyForCalculation = false;
             var approvedRecord = this.data.UnitsApprovedDailyDatas.All().Where(x => x.RecordDate == date && x.ProcessUnitId == processUnitId).FirstOrDefault();
 
@@ -704,7 +709,7 @@ namespace CollectingProductionDataSystem.Application.MonthlyServices
         public IEnumerable<UnitMonthlyData> GetDataForMonth(DateTime inTargetDate, int monthlyReportTypeId)
         {
             var targetMonth = this.GetTargetMonth(inTargetDate);
-            return data.UnitMonthlyDatas.All()
+            var result = this.data.UnitMonthlyDatas.All()
                                 .Include(x => x.UnitMonthlyConfig)
                                 .Include(x => x.UnitMonthlyConfig.MeasureUnit)
                                 .Include(x => x.UnitMonthlyConfig.ProcessUnit)
@@ -716,12 +721,14 @@ namespace CollectingProductionDataSystem.Application.MonthlyServices
                                         && x.UnitMonthlyConfig.MonthlyReportTypeId == monthlyReportTypeId
                                         && (x.UnitMonthlyConfig.IsDeleted != true || x.UnitMonthlyConfig.DeletedOn > targetMonth))
                                         .ToList();
+            this.historicalService.SetHistoricalProcessUnitParams(result, targetMonth);
+            return result;
         }
 
         public bool IsMonthlyReportConfirmed(DateTime inTargetDate, int monthlyReportTypeId)
         {
             var targetMonth = this.GetTargetMonth(inTargetDate);
-            return this.data.UnitApprovedMonthlyDatas.All().Where(u => u.RecordDate == targetMonth && u.MonthlyReportTypeId == monthlyReportTypeId).Any();
+            return this.data.UnitApprovedMonthlyDatas.All().Any(u => u.RecordDate == targetMonth && u.MonthlyReportTypeId == monthlyReportTypeId);
         }
     }
 

@@ -9,7 +9,7 @@ namespace CollectingProductionDataSystem.Models.Productions.Mounthly
     using CollectingProductionDataSystem.Models.Nomenclatures;
     using CollectingProductionDataSystem.Models.Productions;
 
-    public class UnitMonthlyConfig : DeletableEntity, IEntity, IValidatableObject
+    public class UnitMonthlyConfig : DeletableEntity, IEntity, IValidatableObject, IProcessUnitCangeable
     {
         private ICollection<UnitMonthlyData> unitMonthlyDatas;
         private ICollection<RelatedUnitMonthlyConfigs> relatedUnitMonthlyConfigs;
@@ -117,5 +117,6 @@ namespace CollectingProductionDataSystem.Models.Productions.Mounthly
             }
         }
 
+        public ProcessUnit HistorycalProcessUnit { get; set; }
     }
 }

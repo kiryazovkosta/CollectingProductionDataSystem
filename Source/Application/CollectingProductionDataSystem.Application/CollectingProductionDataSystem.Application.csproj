@@ -154,6 +154,8 @@
     <Compile Include="HighwayPipelinesDataServices\HighwayPipelineDto.cs" />
     <Compile Include="HighwayPipelinesDataServices\HighwayPipelinesDataService.cs" />
     <Compile Include="HighwayPipelinesDataServices\IHighwayPipelinesDataService.cs" />
+    <Compile Include="HistoricalNameService\HistoricalService.cs" />
+    <Compile Include="Contracts\IHistoricalService.cs" />
     <Compile Include="IdentityInfrastructure\ApplicationRoleManager.cs" />
     <Compile Include="IdentityInfrastructure\ApplicationSignInManager.cs" />
     <Compile Include="IdentityInfrastructure\ApplicationUserManager.cs" />

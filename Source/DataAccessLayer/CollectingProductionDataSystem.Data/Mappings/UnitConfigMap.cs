@@ -20,6 +20,8 @@ namespace CollectingProductionDataSystem.Data.Mappings
             this.Property(t => t.Notes)
                 .HasMaxLength(200);
 
+            this.Ignore(t => t.HistorycalProcessUnit);
+
             // Table & Column Mappings
             this.ToTable("UnitConfigs");
 

@@ -37,15 +37,8 @@ namespace CollectingProductionDataSystem.Data.Mappings
                 //.IsRequired()
                 .HasMaxLength(2048);
 
-            //this.Property(t => t.AggregationMembers)
-            //    .IsRequired()
-            //    .HasMaxLength(2048);
+            this.Ignore(t => t.HistorycalProcessUnit);
 
-            //this.Property(t => t.MaterialTypeId)
-            //    .IsOptional();
-
-            //this.Property(t => t.MaterialDetailTypeId)
-            //    .IsOptional();
 
             // Table & Column Mappings
             this.ToTable("UnitMonthlyConfigs");

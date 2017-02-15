@@ -33,6 +33,8 @@
             this.Property(t => t.MaterialDetailTypeId)
                 .IsOptional();
 
+            this.Ignore(t => t.HistorycalProcessUnit);
+
             // Table & Column Mappings
             this.ToTable("UnitDailyConfigs");
 

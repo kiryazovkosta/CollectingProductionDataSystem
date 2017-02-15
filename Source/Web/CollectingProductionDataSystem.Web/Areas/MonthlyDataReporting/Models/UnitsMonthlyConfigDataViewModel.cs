@@ -1,11 +1,13 @@
 namespace CollectingProductionDataSystem.Web.Areas.MonthlyDataReporting.Models
 {
     using System.ComponentModel.DataAnnotations;
+    using AutoMapper;
     using CollectingProductionDataSystem.Infrastructure.Mapping;
+    using CollectingProductionDataSystem.Models.Productions;
     using CollectingProductionDataSystem.Models.Productions.Mounthly;
     using Resources = App_GlobalResources.Resources;
 
-    public class UnitsMonthlyConfigDataViewModel : IMapFrom<UnitMonthlyConfig>
+    public class UnitsMonthlyConfigDataViewModel : IMapFrom<UnitMonthlyConfig>, IHaveCustomMappings
     {
         [Required]
         public int Id { get; set; }
@@ -30,5 +32,10 @@ namespace CollectingProductionDataSystem.Web.Areas.MonthlyDataReporting.Models
         public int ProductTypeId { get; set; }
 
         public MonthlyProductTypeViewModel ProductType { get; set; }
+        public void CreateMappings(IConfiguration configuration)
+        {
+            configuration.CreateMap<UnitMonthlyConfig, UnitsMonthlyConfigDataViewModel>()
+                .ForMember(p => p.ProcessUnit,opt => opt.MapFrom(p => p.HistorycalProcessUnit?? new ProcessUnit()));
+        }
     }
 }

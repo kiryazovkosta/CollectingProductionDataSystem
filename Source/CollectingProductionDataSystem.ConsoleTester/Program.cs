@@ -50,25 +50,60 @@ namespace CollectingProductionDataSystem.ConsoleTester
             //data = new ProductionData(new CollectingDataSystemDbContext());
             //testUnitDailyCalculationService = kernel.Get<ITestUnitDailyCalculationService>();
             //service = kernel.Get<UnitMothlyDataService>();
-            monthlyService = new UnitMothlyDataService(data, kernel, new CalculatorService(kernel.Get<ILogger>()), TestUnitMonthlyCalculationService.GetInstance());
+            //monthlyService = new UnitMothlyDataService(data, kernel, new CalculatorService(kernel.Get<ILogger>()), TestUnitMonthlyCalculationService.GetInstance());
+            
+        }
+
+        private static void InitializeProcessUnitsHistory()
+        {
+            var processUnits = data.ProcessUnits.AllWithDeleted().Include(x => x.Factory.Plant).ToList();
+            
+            if (processUnits.Any())
+            {
+                var activationData = new DateTime(2015, 1, 1);
+                foreach (var processUnit in processUnits)
+                {
+                    using (
+                        var transaction = new TransactionScope(TransactionScopeOption.Required,
+                            DefaultTransactionOptions.Instance.TransactionOptions))
+                    {
+                        data.ProcessUnitToFactoryHistory.Add(new ProcessUnitToFactoryHistory()
+                        {
+                            ProcessUnitId = processUnit.Id,
+                            ProcessUnitShortName = processUnit.ShortName,
+                            ProcessUnitFullName = processUnit.FullName,
+                            FactoryId = processUnit.Factory.Id,
+                            FactoryShortName = processUnit.Factory.ShortName,
+                            FactoryFullName = processUnit.Factory.FullName,
+                            PlantId = processUnit.Factory.Plant.Id,
+                            PlantShortName = processUnit.Factory.Plant.ShortName,
+                            PlantFullName = processUnit.Factory.Plant.FullName,
+                            ActivationDate = activationData
+                        });
+                        data.SaveChanges("Initial Loading");
+                        transaction.Complete();
+                    }
+                }
+            }
         }
 
 
         static void Main(string[] args)
         {
 
-            var records = data.UnitMonthlyDatas.All().Include(x => x.UnitMonthlyConfig)
-                .Where(x => x.RecordTimestamp == new DateTime(2016, 5, 31))
-                .ToDictionary(x => x.UnitMonthlyConfig.Code);
 
-            monthlyService.CalculateAnualAccumulation(ref records, new DateTime(2016, 5, 31));
-            List<UnitMonthlyData> newRecords = new List<UnitMonthlyData>();
-            foreach (var item in records.Values.Where(x => x.Id == 0))
-            {
-                newRecords.Add(item);
-            }
-            data.UnitMonthlyDatas.BulkInsert(newRecords, "Test");
-            data.SaveChanges("Test");
+            //var records = data.UnitMonthlyDatas.All().Include(x => x.UnitMonthlyConfig)
+            //    .Where(x => x.RecordTimestamp == new DateTime(2016, 5, 31))
+            //    .ToDictionary(x => x.UnitMonthlyConfig.Code);
+
+            //monthlyService.CalculateAnualAccumulation(ref records, new DateTime(2016, 5, 31));
+            //List<UnitMonthlyData> newRecords = new List<UnitMonthlyData>();
+            //foreach (var item in records.Values.Where(x => x.Id == 0))
+            //{
+            //    newRecords.Add(item);
+            //}
+            //data.UnitMonthlyDatas.BulkInsert(newRecords, "Test");
+            //data.SaveChanges("Test");
 
 
 
@@ -101,6 +136,9 @@ namespace CollectingProductionDataSystem.ConsoleTester
             //Console.WriteLine("Ready!\n Estimated time per operation {0}", timer.Elapsed);
             try
             {
+
+                InitializeProcessUnitsHistory();
+
                 //var unitMothlyConfigs = data.UnitMonthlyConfigs.All()
                 //                               .Include(x => x.UnitDailyConfigUnitMonthlyConfigs)
                 //                               .Where(x => x.UnitDailyConfigUnitMonthlyConfigs.Count != 0)

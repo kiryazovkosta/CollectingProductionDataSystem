@@ -5,7 +5,7 @@ namespace CollectingProductionDataSystem.Models.Productions.Mounthly
     using CollectingProductionDataSystem.Models.Abstract;
     using CollectingProductionDataSystem.Models.Contracts;
 
-    public class UnitMonthlyData : AuditInfo, IApprovableEntity, IEntity, IDateable
+    public class UnitMonthlyData : AuditInfo, IApprovableEntity, IEntity, IDateable, IConfigable
     {
         public int Id { get; set; }
 
@@ -53,5 +53,8 @@ namespace CollectingProductionDataSystem.Models.Productions.Mounthly
                 return this.UnitManualMonthlyData != null;
             }
         }
+
+        [NotMapped]
+        public IProcessUnitCangeable Config => this.UnitMonthlyConfig;
     }
 }

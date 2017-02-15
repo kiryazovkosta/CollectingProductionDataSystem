@@ -8,7 +8,7 @@ namespace CollectingProductionDataSystem.Models.Productions
     using CollectingProductionDataSystem.Models.Nomenclatures;
     using System.ComponentModel.DataAnnotations.Schema;
 
-    public partial class UnitsData : AuditInfo, IApprovableEntity, IEntity
+    public partial class UnitsData : AuditInfo, IApprovableEntity, IEntity,IConfigable
     {
         private ICollection<UnitEnteredForCalculationData> unitEnteredForCalculationData;
 
@@ -62,6 +62,9 @@ namespace CollectingProductionDataSystem.Models.Productions
                 }
             }
         }
+
+        public IProcessUnitCangeable Config => this.UnitConfig;
+
 
         public override string ToString()
         {

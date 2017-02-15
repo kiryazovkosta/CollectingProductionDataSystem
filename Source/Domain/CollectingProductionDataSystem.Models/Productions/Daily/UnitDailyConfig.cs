@@ -9,7 +9,7 @@
     using System.Collections.Generic;
     using System.ComponentModel;
 
-    public partial class UnitDailyConfig : DeletableEntity, IEntity, IAggregatable, IConvertable, IValidatableObject
+    public partial class UnitDailyConfig : DeletableEntity, IEntity, IAggregatable, IConvertable, IValidatableObject, IProcessUnitCangeable
     {
         private ICollection<UnitsDailyData> unitsDailyDatas;
         private ICollection<RelatedUnitDailyConfigs> relatedUnitDailyConfigs;
@@ -99,5 +99,7 @@
                 yield return new ValidationResult(string.Format(Resources.ModelErrors.Required, Resources.ModelErrors.MaterialType), new string[]{ "MaterialTypeId" });
             }
         }
+
+        public ProcessUnit HistorycalProcessUnit { get; set; }
     }
 }

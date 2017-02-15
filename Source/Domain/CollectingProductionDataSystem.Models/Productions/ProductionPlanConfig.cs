@@ -8,7 +8,7 @@
     using CollectingProductionDataSystem.Models.Nomenclatures;
     using CollectingProductionDataSystem.Models.Productions.Mounthly;
 
-    public class ProductionPlanConfig : DeletableEntity, IEntity, IValidatableObject
+    public class ProductionPlanConfig : DeletableEntity, IEntity, IValidatableObject,IProcessUnitCangeable
     {
         private ICollection<UnitDailyConfig> unitsDailyConfigs;
         private ICollection<ProductionPlanData> productionPlanDatas;
@@ -149,5 +149,7 @@
                 yield return new ValidationResult(string.Format(Resources.ModelErrors.Required, Resources.ModelErrors.MaterialType), new string[] { "MaterialTypeId" });
             }
         }
+
+        public ProcessUnit HistorycalProcessUnit { get; set; }
     }
 }

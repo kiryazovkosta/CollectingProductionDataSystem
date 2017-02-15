@@ -28,48 +28,64 @@ namespace HistoricalProductionStructure
             {
                 var timer = new Stopwatch();
                 var times = new TimeSpan[4];
-               // TransferHo1AndHo3(data);
+                TransferHo1AndHo3(data);
 
                 timer.Start();
-                var factories = GetActualFactories(data, new DateTime(2017, 1, 12)).ToList();
-                PrintFactories(factories, new DateTime(2017, 1, 12));
+                var processUnits = GetActualProcessUnits(data, new DateTime(2017, 1, 12)).ToList();
+                PrintProcessUnits(processUnits.Select(x=>x.Value).OrderBy(x=>x.Id), new DateTime(2017, 1, 12));
                 timer.Stop();
                 times[0] = timer.Elapsed;
                 timer.Reset();
                 Console.WriteLine();
 
                 timer.Start();
-                factories = GetActualFactories(data, new DateTime(2017, 3, 2)).ToList();
-                PrintFactories(factories, new DateTime(2017, 3, 2));
+                processUnits = GetActualProcessUnits(data, new DateTime(2017, 2, 1)).ToList();
+                PrintProcessUnits(processUnits.Select(x => x.Value).OrderBy(x => x.Id), new DateTime(2017, 2, 1));
                 timer.Stop();
-                times[1] = timer.Elapsed;
+                times[0] = timer.Elapsed;
                 timer.Reset();
                 Console.WriteLine();
 
-           //     CreateProcessUnitHistoryLoad(data);
+                //timer.Start();
+                //var factories = GetActualFactories(data, new DateTime(2017, 1, 12)).ToList();
+                //PrintFactories(factories, new DateTime(2017, 1, 12));
+                //timer.Stop();
+                //times[0] = timer.Elapsed;
+                //timer.Reset();
+                //Console.WriteLine();
 
-                timer.Start();
-                factories = GetActualFactories(data, new DateTime(2017, 1, 12)).ToList();
-                PrintFactories(factories, new DateTime(2017, 1, 12));
-                timer.Stop();
-                times[2] = timer.Elapsed;
-                timer.Reset();
+                //     timer.Start();
+                //     factories = GetActualFactories(data, new DateTime(2017, 3, 2)).ToList();
+                //     PrintFactories(factories, new DateTime(2017, 3, 2));
+                //     timer.Stop();
+                //     times[1] = timer.Elapsed;
+                //     timer.Reset();
+                //     Console.WriteLine();
 
-                Console.WriteLine();
-                timer.Start();
-                factories = GetActualFactories(data, new DateTime(2017, 3, 2)).ToList();
-                PrintFactories(factories, new DateTime(2017, 3, 2));
-                timer.Start();
-                times[3] = timer.Elapsed;
+                ////     CreateProcessUnitHistoryLoad(data);
 
-                Console.WriteLine();
+                //     timer.Start();
+                //     factories = GetActualFactories(data, new DateTime(2017, 1, 12)).ToList();
+                //     PrintFactories(factories, new DateTime(2017, 1, 12));
+                //     timer.Stop();
+                //     times[2] = timer.Elapsed;
+                //     timer.Reset();
 
-                Console.WriteLine($"Test summary:\n{"".PadLeft(20,'-')}");
+                //     Console.WriteLine();
+                //     timer.Start();
+                //     factories = GetActualFactories(data, new DateTime(2017, 3, 2)).ToList();
+                //     PrintFactories(factories, new DateTime(2017, 3, 2));
+                //     timer.Start();
+                //     times[3] = timer.Elapsed;
 
-                for (int i = 0; i < times.Length; i++)
-                {
-                    Console.WriteLine($"Estimated time for test #{i + 1}:{times[i]}"); 
-                }
+                //     Console.WriteLine();
+
+                //     Console.WriteLine($"Test summary:\n{"".PadLeft(20,'-')}");
+
+                //     for (int i = 0; i < times.Length; i++)
+                //     {
+                //         Console.WriteLine($"Estimated time for test #{i + 1}:{times[i]}"); 
+                //     }
 
 
                 Console.WriteLine("Press any key to continue...");
@@ -116,15 +132,7 @@ namespace HistoricalProductionStructure
 
         private static IEnumerable<Factory> GetActualFactories(ProductionData data, DateTime targetDate)
         {
-            var records = data.ProcessUnitToFactoryHistory.All().Include(x=>x.Factory).Include(x=>x.ProcessUnit)
-                .Where(x => x.ActivationDate <= targetDate)
-                .GroupBy(x => x.ProcessUnitId)
-                .SelectMany(x => x.Where(y => y.ActivationDate == x.Max(z => z.ActivationDate))).OrderBy(x=>x.ProcessUnitId);
-
-            var jRecords = records.Join(data.ProcessUnits.All().Include(self=>self.FactoryHistories),
-                recs => recs.ProcessUnitId,
-                pu => pu.Id,
-                (recs, pu) => new { recs, pu});
+            var jRecords = GetActualStateOfProcessUnitsAndFactories(data, targetDate);
 
 
             var factories = new Dictionary<int, Factory>();
@@ -132,17 +140,17 @@ namespace HistoricalProductionStructure
 
             foreach (var historyRecord in jRecords)
             {
-                var newHistoryProcessUnit = historyRecord.pu;
-                newHistoryProcessUnit.ShortName = historyRecord.recs.ProcessUnitShortName;
-                newHistoryProcessUnit.FullName = historyRecord.recs.ProcessUnitFullName;
+                var newHistoryProcessUnit = historyRecord.ProcessUnit;
+                newHistoryProcessUnit.ShortName = historyRecord.ProcessUnitToFactoryHistory.ProcessUnitShortName;
+                newHistoryProcessUnit.FullName = historyRecord.ProcessUnitToFactoryHistory.ProcessUnitFullName;
 
-                if (!factories.ContainsKey(historyRecord.recs.FactoryId))
+                if (!factories.ContainsKey(historyRecord.ProcessUnitToFactoryHistory.FactoryId))
                 {
                     var newFactory = new Factory()
                     {
-                        Id = historyRecord.recs.FactoryId,
-                        ShortName = historyRecord.recs.FactoryShortName,
-                        FullName = historyRecord.recs.FactoryFullName
+                        Id = historyRecord.ProcessUnitToFactoryHistory.FactoryId,
+                        ShortName = historyRecord.ProcessUnitToFactoryHistory.FactoryShortName,
+                        FullName = historyRecord.ProcessUnitToFactoryHistory.FactoryFullName
                     };
                     newFactory.ProcessUnits.Add(newHistoryProcessUnit);
 
@@ -150,27 +158,61 @@ namespace HistoricalProductionStructure
                 }
                 else
                 {
-                    factories[historyRecord.recs.FactoryId].ProcessUnits.Add(newHistoryProcessUnit);
+                    factories[historyRecord.ProcessUnitToFactoryHistory.FactoryId].ProcessUnits.Add(newHistoryProcessUnit);
                 }
             }
 
             return factories.Select(x => x.Value).OrderBy(x=>x.Id);
-            //new ProcessUnit()
-            //{
-            //    Id = x.Id,
-            //    ShortName = x.FactoryHistories. ShortName,
-            //    FullName = x.FullName,
-            //    FactoryHistories = new List<ProcessUnitToFactoryHistory>(),
-            //    Factory = x.FactoryHistories
-            //        .Where(z => z.ActivationDate <= targetDate && z.IsDeleted == false)
-            //        .OrderByDescending(y => y.ActivationDate)
-            //        .FirstOrDefault()?.Factory ?? new Factory()
-            //}
-            //);
-
-
-
         }
+
+
+        private static Dictionary<int,ProcessUnit> GetActualProcessUnits(ProductionData data, DateTime targetDate)
+        {
+            var jRecords = GetActualStateOfProcessUnitsAndFactories(data, targetDate);
+
+            var processUnits = new Dictionary<int, ProcessUnit>();
+            
+            foreach (var historyRecord in jRecords)
+            {
+                if (!processUnits.ContainsKey(historyRecord.ProcessUnitToFactoryHistory.ProcessUnitId))
+                {
+                    var newProcessUnit = new ProcessUnit()
+                    {
+                        Id = historyRecord.ProcessUnitToFactoryHistory.ProcessUnitId,
+                        ShortName = historyRecord.ProcessUnitToFactoryHistory.ProcessUnitShortName,
+                        FullName = historyRecord.ProcessUnitToFactoryHistory.ProcessUnitFullName,
+                        Factory = new Factory()
+                        {
+                            Id = historyRecord.ProcessUnitToFactoryHistory.FactoryId,
+                            ShortName = historyRecord.ProcessUnitToFactoryHistory.FactoryShortName,
+                            FullName = historyRecord.ProcessUnitToFactoryHistory.FactoryFullName
+                        } 
+                    };
+
+                    processUnits.Add(newProcessUnit.Id, newProcessUnit);
+                }
+            }
+
+            return processUnits;
+        }
+
+        private static IQueryable<ProcessUnitHistoryDto> GetActualStateOfProcessUnitsAndFactories(ProductionData data, DateTime targetDate)
+        {
+            var records = data.ProcessUnitToFactoryHistory.All().Include(x => x.Factory).Include(x => x.ProcessUnit)
+                .Where(x => x.ActivationDate <= targetDate)
+                .GroupBy(x => x.ProcessUnitId)
+                .SelectMany(x => x.Where(y => y.ActivationDate == x.Max(z => z.ActivationDate))).OrderBy(x => x.ProcessUnitId);
+
+            var jRecords = records.Join(data.ProcessUnits.All().Include(self => self.FactoryHistories),
+                recs => recs.ProcessUnitId,
+                pu => pu.Id,
+                (recs, pu) => new ProcessUnitHistoryDto(){ ProcessUnitToFactoryHistory = recs, ProcessUnit = pu});
+            return jRecords;
+        }
+
+
+
+
 
         private static void PrintProcessUnits(IEnumerable<ProcessUnit> processUnits, DateTime date)
         {
@@ -212,58 +254,7 @@ namespace HistoricalProductionStructure
                 }
             }
         }
-
-        private static IEnumerable<ProcessUnit> GetActualProcessUnits(ProductionData data, DateTime targetDate)
-        {
-            return data.ProcessUnits.All().Include(x => x.FactoryHistories).ToList()
-            .Select(x => FromProcessUnitHistory(x.FactoryHistories.AsQueryable(), targetDate));
-            //new ProcessUnit()
-            //{
-            //    Id = x.Id,
-            //    ShortName = x.FactoryHistories. ShortName,
-            //    FullName = x.FullName,
-            //    FactoryHistories = new List<ProcessUnitToFactoryHistory>(),
-            //    Factory = x.FactoryHistories
-            //        .Where(z => z.ActivationDate <= targetDate && z.IsDeleted == false)
-            //        .OrderByDescending(y => y.ActivationDate)
-            //        .FirstOrDefault()?.Factory ?? new Factory()
-            //}
-            //);
-        }
-
-        public static ProcessUnit FromProcessUnitHistory(IQueryable<ProcessUnitToFactoryHistory> history, DateTime targetDate)
-        {
-            var historicalRecord = history.Where(z => z.ActivationDate <= targetDate && z.IsDeleted == false)
-                .OrderByDescending(y => y.ActivationDate)
-                .FirstOrDefault();
-            if (historicalRecord != null)
-            {
-                return new ProcessUnit()
-                {
-                    Id = historicalRecord.ProcessUnit.Id,
-                    ShortName = historicalRecord.ProcessUnit.ShortName,
-                    FullName = historicalRecord.ProcessUnit.FullName,
-                    Factory = new Factory()
-                    {
-                        Id = historicalRecord.FactoryId,
-                        ShortName = historicalRecord.FactoryShortName,
-                        FullName = historicalRecord.FactoryFullName,
-                        Plant = new Plant()
-                        {
-                            Id = historicalRecord.PlantId,
-                            ShortName = historicalRecord.PlantShortName,
-                            FullName = historicalRecord.FactoryFullName
-                        }
-                    },
-                    FactoryHistories = new List<ProcessUnitToFactoryHistory>(),
-                };
-            }
-            else
-            {
-                return new ProcessUnit();
-            }
-        }
-
+        
         private static void TransferHo1AndHo3(ProductionData data)
         {
             var processUnits = data.ProcessUnits.All().Where(x => x.ShortName == "ХО-1" || x.ShortName == "ХО-3").ToList();
@@ -298,7 +289,6 @@ namespace HistoricalProductionStructure
             }
         }
 
-
         private static void Print(IEfStatus result)
         {
             foreach (var error in result.EfErrors)
@@ -306,5 +296,11 @@ namespace HistoricalProductionStructure
                 Console.WriteLine($"Error: {error.MemberNames.FirstOrDefault()} - {error.ErrorMessage}");
             }
         }
+    }
+
+    internal class ProcessUnitHistoryDto
+    {
+        public ProcessUnitToFactoryHistory ProcessUnitToFactoryHistory { get; set; }
+        public ProcessUnit ProcessUnit { get; set; }
     }
 }

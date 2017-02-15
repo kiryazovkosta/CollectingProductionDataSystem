@@ -30,6 +30,7 @@
 
             // Not Mapped Properties
             this.Ignore(t => t.DisplayText);
+            this.Ignore(t => t.HistorycalProcessUnit);
 
             // Table & Column Mappings
             this.ToTable("ProductionPlanConfigs");     
