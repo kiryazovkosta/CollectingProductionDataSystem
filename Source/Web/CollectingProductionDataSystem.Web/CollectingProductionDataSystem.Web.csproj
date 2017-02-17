@@ -1692,6 +1692,7 @@
     <Content Include="Scripts\kendo\kendo.angular2.min.js" />
     <Content Include="Scripts\kendo\kendo.spreadsheet.min.js" />
     <Content Include="Scripts\kendo\kendo.webcomponents.min.js" />
+    <Content Include="Scripts\test.js" />
     <Content Include="Views\Shared\EditorTemplates\ProductViewModel.cshtml" />
     <Content Include="Areas\NomManagement\Views\MonthlyReportType\Index.cshtml" />
     <Content Include="Areas\SummaryReporting\Views\HighwayPipelinesReport\HighwayPipelinesData.cshtml" />

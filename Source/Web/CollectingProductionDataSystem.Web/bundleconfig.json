@@ -4,5 +4,11 @@
     "inputFiles": [
       "Scripts/custom/windowExpirationTime.js"
     ]
+  },
+  {
+    "outputFileName": "Scripts/custom/sendFactory.min.js",
+    "inputFiles": [
+      "Scripts/custom/sendFactory.js"
+    ]
   }
 ]

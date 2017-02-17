@@ -23,12 +23,16 @@ using CollectingProductionDataSystem.Models.Productions.Mounthly;
 
 namespace CollectingProductionDataSystem.Web.Controllers
 {
+    using Application.Contracts;
+
     [Authorize]
     public class AjaxController : BaseController
     {
-        public AjaxController(IProductionData dataParam)
+        private readonly IHistoricalService historicalService;
+        public AjaxController(IProductionData dataParam, IHistoricalService historicalServiceParam)
             : base(dataParam)
         {
+            this.historicalService = historicalServiceParam;
         }
 
         public JsonResult GetReasons()
@@ -95,37 +99,42 @@ namespace CollectingProductionDataSystem.Web.Controllers
         }
 
 
-        public JsonResult GetFactories()
+        public JsonResult GetFactories(DateTime date)
         {
+            var actualFactories = this.historicalService.GetActualFactories(date);
+
             IEnumerable<Factory> factories = new HashSet<Factory>();
 
             if (this.IsPowerUser())
             {
-                factories = this.data.Factories.All().ToList();
+                factories = actualFactories;
             }
             else
             {
-                factories = Mapper.Map<IEnumerable<Factory>>(this.UserProfile.ProcessUnits.Select(x => x.Factory).Distinct().ToList());
+                var usersFactoryIds = this.UserProfile.ProcessUnits.Select(x => x.Factory.Id).Distinct().ToList();
+                factories = Mapper.Map<IEnumerable<Factory>>(actualFactories.Where(x=>usersFactoryIds.Contains(x.Id)));
             }
             var factoryView = Mapper.Map<IEnumerable<FactoryViewModel>>(factories);
             return this.Json(factoryView, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult GetProcessUnits(int? factoryId)
+        public JsonResult GetProcessUnits(int? factoryId, DateTime date)
         {
+            var actualProcessUnits = this.historicalService.GetActualProcessUnits(date);
             IEnumerable<ProcessUnit> processUnits = new HashSet<ProcessUnit>();
             if (this.IsPowerUser())
             {
-                processUnits = this.data.ProcessUnits.All();
+                processUnits = actualProcessUnits;
             }
             else
             {
-                processUnits = Mapper.Map<IEnumerable<ProcessUnit>>(this.UserProfile.ProcessUnits);
+                var processUnitIds = this.UserProfile.ProcessUnits.Select(x => x.Id);
+                processUnits = Mapper.Map<IEnumerable<ProcessUnit>>(actualProcessUnits.Where(x => processUnitIds.Contains(x.Id)));
             }
 
             if (factoryId.HasValue)
             {
-                processUnits = processUnits.Where(p => p.FactoryId == factoryId);
+                processUnits = processUnits.Where(p => p.Factory.Id == factoryId);
             }
 
             processUnits = processUnits.OrderBy(pu => pu.Position);

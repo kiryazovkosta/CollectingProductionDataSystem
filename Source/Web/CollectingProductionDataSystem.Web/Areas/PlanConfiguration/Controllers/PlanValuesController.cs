@@ -15,13 +15,16 @@ using Resources = App_GlobalResources.Resources;
 
 namespace CollectingProductionDataSystem.Web.Areas.PlanConfiguration.Controllers
 {
+    using Application.Contracts;
+
     public class PlanValuesController : AreaBaseController
     {
-        public PlanValuesController(IProductionData dataParam)
-            :base(dataParam)
-            {
-                
-            }
+        private readonly IHistoricalService historicalService;
+        public PlanValuesController(IProductionData dataParam, IHistoricalService historicalServiceParam)
+            : base(dataParam)
+        {
+            this.historicalService = historicalServiceParam;
+        }
 
         // GET: PlanConfiguration/PlanValue
         public ActionResult Index()
@@ -33,13 +36,15 @@ namespace CollectingProductionDataSystem.Web.Areas.PlanConfiguration.Controllers
         [ValidateAntiForgeryToken]
         public JsonResult Read([DataSourceRequest]DataSourceRequest request, DateTime date)
         {
+            var kendoResult = new DataSourceResult();
             if (this.ModelState.IsValid)
             {
                 try
                 {
                     IEnumerable<PlanValue> records = GetPlanValue(date);
-                    DataSourceResult result = records.ToDataSourceResult(request, ModelState, Mapper.Map<PlanValueViewModel>);
-                    return Json(result);
+                    var kendoPreparedResult = Mapper.Map<IEnumerable<PlanValue>, IEnumerable<PlanValueViewModel>>(records);
+                    kendoResult = kendoPreparedResult.ToDataSourceResult(request, ModelState);
+                    return Json(kendoResult);
                 }
                 catch (Exception ex)
                 {
@@ -147,7 +152,10 @@ namespace CollectingProductionDataSystem.Web.Areas.PlanConfiguration.Controllers
                 this.data.SaveChanges(this.UserProfile.UserName);
             }
 
-            return this.data.PlanValues.All().Include(x=>x.ProcessUnit).Include(x=>x.ProcessUnit.Factory).Where(x => x.Month == date).ToList();
+            var records = this.data.PlanValues.All().Include(x => x.ProcessUnit).Include(x => x.ProcessUnit.Factory).Where(x => x.Month == date).ToList();
+            this.historicalService.SetHistoricalProcessUnitParams(records, date);
+
+            return records;
         }
     }
 }

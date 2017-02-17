@@ -32,16 +32,16 @@
     public class SummaryReportsController : AreaBaseController
     {
         private const int HalfAnHour = 60 * 30;
-        private readonly IUnitsDataService unitsData;
+        private readonly IUnitsDataService unitsDataService;
         private readonly IUnitDailyDataService dailyService;
         private readonly IInventoryTanksService tanksService;
         private readonly IPipelineServices pipes;
 
-        public SummaryReportsController(IProductionData dataParam, IUnitsDataService unitsDataParam, IUnitDailyDataService dailyServiceParam,
+        public SummaryReportsController(IProductionData dataParam, IUnitsDataService unitsDataServiceParam, IUnitDailyDataService dailyServiceParam,
             IInventoryTanksService tanksParam, IPipelineServices pipesParam)
             : base(dataParam)
         {
-            this.unitsData = unitsDataParam;
+            this.unitsDataService = unitsDataServiceParam;
             this.dailyService = dailyServiceParam;
             this.tanksService = tanksParam;
             this.pipes = pipesParam;
@@ -162,29 +162,7 @@
             ValidateUnitsReportModelState(date);
             if (ModelState.IsValid)
             {
-                IEnumerable<UnitsData> dbResult = this.unitsData.GetUnitsDataForDateTime(date, processUnitId, null)
-                    .Where(x =>
-                        x.UnitConfig.IsMemberOfShiftsReport
-                        && (factoryId == null || x.UnitConfig.ProcessUnit.FactoryId == factoryId))
-                    .ToList();
-
-                //ToDo: On shifts changed to 2 must repair this code
-                var result = dbResult.Select(x => new MultiShift
-                {
-                    TimeStamp = x.RecordTimestamp,
-                    Factory = string.Format("{0:d2} {1}", x.UnitConfig.ProcessUnit.Factory.Id, x.UnitConfig.ProcessUnit.Factory.ShortName),
-                    ProcessUnit = string.Format("{0:d2} {1}", x.UnitConfig.ProcessUnit.Id, x.UnitConfig.ProcessUnit.ShortName),
-                    Code = x.UnitConfig.Code,
-                    Position = x.UnitConfig.Position,
-                    MeasureUnit = x.UnitConfig.MeasureUnit.Code,
-                    ShiftProductType = string.Format("{0:d2} {1}", x.UnitConfig.ShiftProductType.Id, x.UnitConfig.ShiftProductType.Name),
-                    UnitConfigId = x.UnitConfigId,
-                    UnitName = x.UnitConfig.Name,
-                    NotATotalizedPosition = x.UnitConfig.NotATotalizedPosition,
-                    Shift1 = dbResult.Where(y => y.RecordTimestamp == date && y.ShiftId == (int)ShiftType.First).Where(u => u.UnitConfigId == x.UnitConfigId).FirstOrDefault(),
-                    Shift2 = dbResult.Where(y => y.RecordTimestamp == date && y.ShiftId == (int)ShiftType.Second).Where(u => u.UnitConfigId == x.UnitConfigId).FirstOrDefault(),
-                    Shift3 = dbResult.Where(y => y.RecordTimestamp == date && y.ShiftId == (int)ShiftType.Third).Where(u => u.UnitConfigId == x.UnitConfigId).FirstOrDefault(),
-                }).Distinct(new MultiShiftComparer()).ToList();
+                var result = this.unitsDataService.GetConsolidatedShiftData(date.Value, processUnitId, factoryId);
 
                 var kendoPreparedResult = Mapper.Map<IEnumerable<MultiShift>, IEnumerable<UnitsReportsDataViewModel>>(result);
                 var kendoResult = new DataSourceResult();
@@ -237,7 +215,8 @@
                 var kendoResult = new DataSourceResult();
                 if (ModelState.IsValid)
                 {
-                    var dbResult = unitsData.GetUnitsDailyApprovedDataForDateTime(date, processUnitId, factoryId);
+                    var dbResult = this.unitsDataService.GetUnitsDailyApprovedDataForDateTime(date, processUnitId, factoryId);
+
                     var kendoPreparedResult = Mapper.Map<IEnumerable<UnitsDailyData>, IEnumerable<UnitDailyDataViewModel>>(dbResult);
                     kendoResult = kendoPreparedResult.ToDataSourceResult(request, ModelState);
                 }
@@ -433,7 +412,7 @@
             ValidateUnitsReportModelState(date);
             if (ModelState.IsValid)
             {
-                IEnumerable<UnitsData> dbResult = this.unitsData.GetUnitsDataForDateTime(date, processUnitId, null)
+                IEnumerable<UnitsData> dbResult = this.unitsDataService.GetUnitsDataForDateTime(date, processUnitId, null)
                     .Where(x =>
                         x.UnitConfig.ShiftProductTypeId == CommonConstants.DailyInfoDailyInfoHydrocarbonsShiftTypeId
                         && (factoryId == null || x.UnitConfig.ProcessUnit.FactoryId == factoryId))
@@ -458,7 +437,7 @@
 
                 var kendoPreparedResult = Mapper.Map<IEnumerable<MultiShift>, IEnumerable<UnitsReportsDataViewModel>>(result);
 
-                var totalMonthQuantities = unitsData.GetTotalMonthQuantityToDayFromShiftData(date.Value, processUnitId ?? 0);
+                var totalMonthQuantities = this.unitsDataService.GetTotalMonthQuantityToDayFromShiftData(date.Value, processUnitId ?? 0);
 
                 foreach (var position in kendoPreparedResult)
                 {

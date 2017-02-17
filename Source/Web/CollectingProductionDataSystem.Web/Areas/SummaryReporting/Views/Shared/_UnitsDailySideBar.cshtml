@@ -14,7 +14,7 @@
         {
             source.Read(read =>
             {
-                read.Action("GetFactories", "Ajax", new { area = "" });
+                read.Action("GetFactories", "Ajax", new { area = "" }).Data("sendDate");
             });
         })
     )

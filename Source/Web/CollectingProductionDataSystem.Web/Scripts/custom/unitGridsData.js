@@ -1,6 +1,6 @@
 var endDate;
 var beginDate;
-var unitGridsData = (function() {
+var unitGridsData = (function () {
     //Exclusion list of grids without command button hiding
     var exclusionList = [
         "#measuringpoints",
@@ -14,7 +14,7 @@ var unitGridsData = (function() {
     // ----------------- autorun function on document ready -------------------
     'use strict';
     $(document)
-        .ready(function() {
+        .ready(function () {
             var ctrlParamsElement = $('#control-params');
             if ($("#monthly-recalc-data-report").val() !== undefined) {
                 if (ctrlParamsElement.val() !== undefined) {
@@ -28,7 +28,7 @@ var unitGridsData = (function() {
                 $('#confirm').remove();
             }
             $("#apply")
-                .click(function() {
+                .click(function () {
                     if ($("#units").val() !== undefined) {
 
                         if (ctrlParamsElement.val() !== undefined) {
@@ -128,28 +128,28 @@ var unitGridsData = (function() {
             var summaryGrid = $('#confirmation').data('kendoGrid');
             if (summaryGrid) {
                 $('#pdf-export')
-                    .click(function(ev) {
+                    .click(function (ev) {
                         var pageSize = summaryGrid.dataSource.pageSize();
                         summaryGrid.dataSource.pageSize(9);
-                        var timeout = setTimeout(function() {
-                                clearInterval(refreshInterval);
-                                clearTimeout(timeout);
-                                summaryGrid.saveAsPDF()
-                                    .done(function(e) {
-                                        summaryGrid.dataSource.pageSize(pageSize);
-                                        refreshInterval = setInterval(function() {
-                                                $("#confirmation").data("kendoGrid").dataSource.read();
-                                            },
-                                            20000);
-                                    });
-                            },
+                        var timeout = setTimeout(function () {
+                            clearInterval(refreshInterval);
+                            clearTimeout(timeout);
+                            summaryGrid.saveAsPDF()
+                                .done(function (e) {
+                                    summaryGrid.dataSource.pageSize(pageSize);
+                                    refreshInterval = setInterval(function () {
+                                        $("#confirmation").data("kendoGrid").dataSource.read();
+                                    },
+                                        20000);
+                                });
+                        },
                             1000);
                     });
             }
 
             if ($("#confirm")) {
                 $("#confirm")
-                    .click(function() {
+                    .click(function () {
                         var dataParam = sendDate();
                         var controlData = getControlData();
                         var differences = checkEquals(dataParam, controlData)
@@ -158,7 +158,7 @@ var unitGridsData = (function() {
                                 url: 'Confirm',
                                 type: 'POST',
                                 data: dataParam,
-                                success: function(data) {
+                                success: function (data) {
                                     var confirmed = data.IsConfirmed;
                                     if (confirmed === true) {
                                         hideCommandButtons();
@@ -175,10 +175,10 @@ var unitGridsData = (function() {
                                         if (data.errors) {
                                             var errorMessage = "";
                                             $.each(data.errors,
-                                                function(key, value) {
+                                                function (key, value) {
                                                     if ('errors' in value) {
                                                         $.each(value.errors,
-                                                            function() {
+                                                            function () {
                                                                 errorMessage += this + "\n";
                                                             });
                                                     }
@@ -189,11 +189,11 @@ var unitGridsData = (function() {
                                         showCommandButtons();
                                     }
                                 },
-                                error: function(data) {
+                                error: function (data) {
                                     var errorMessage = "";
                                     var response = JSON.parse(data.responseText).data;
                                     $.each(response.errors,
-                                        function(key, value) {
+                                        function (key, value) {
                                             errorMessage += this + "\n";
                                         });
                                     $('pre#err-message').text(errorMessage);
@@ -203,7 +203,7 @@ var unitGridsData = (function() {
                         } else {
                             var errorMessage = "Има разлика между параметрите:\n";
                             $.each(differences,
-                                function(key, value) {
+                                function (key, value) {
                                     errorMessage += "\t\t -" + value + "\n";
                                 });
                             errorMessage += "за които е генериран отчета и тези, които се опитвате да потвърдите!"
@@ -215,7 +215,7 @@ var unitGridsData = (function() {
 
             if ($("#report")) {
                 $("#report")
-                    .click(function() {
+                    .click(function () {
                         if ($("#monthly-pw-units").val() !== undefined) {
                             if (ctrlParamsElement.val() !== undefined) {
                                 ctrlParamsElement.attr('data-params', JSON.stringify(sendDate()));
@@ -231,13 +231,13 @@ var unitGridsData = (function() {
             }
 
             if ($("#tech-report-compose")) {
-                $("#tech-report-compose").click(function() {
+                $("#tech-report-compose").click(function () {
                     var dataParam = sendDate();
                     $.ajax({
                         url: 'ComposeReport',
                         type: 'POST',
                         data: dataParam,
-                        success: function(data) {
+                        success: function (data) {
                             var confirmed = data.IsConfirmed;
                             if (confirmed === true) {
 
@@ -251,10 +251,10 @@ var unitGridsData = (function() {
                                 if (data.errors) {
                                     var errorMessage = "";
                                     $.each(data.errors,
-                                        function(key, value) {
+                                        function (key, value) {
                                             if ('errors' in value) {
                                                 $.each(value.errors,
-                                                    function() {
+                                                    function () {
                                                         errorMessage += this + "\n";
                                                     });
                                             }
@@ -264,11 +264,11 @@ var unitGridsData = (function() {
                                 }
                             }
                         },
-                        error: function(data) {
+                        error: function (data) {
                             var errorMessage = "";
                             var response = JSON.parse(data.responseText).data;
                             $.each(response.errors,
-                                function(key, value) {
+                                function (key, value) {
                                     errorMessage += this + "\n";
                                 });
                             $('pre#err-message').text(errorMessage);
@@ -285,7 +285,7 @@ var unitGridsData = (function() {
                         url: 'ApproveReport',
                         type: 'POST',
                         data: dataParam,
-                        success: function(data) {
+                        success: function (data) {
                             var confirmed = data.IsConfirmed;
                             if (confirmed === true) {
 
@@ -299,10 +299,10 @@ var unitGridsData = (function() {
                                 if (data.errors) {
                                     var errorMessage = "";
                                     $.each(data.errors,
-                                        function(key, value) {
+                                        function (key, value) {
                                             if ('errors' in value) {
                                                 $.each(value.errors,
-                                                    function() {
+                                                    function () {
                                                         errorMessage += this + "\n";
                                                     });
                                             }
@@ -312,11 +312,11 @@ var unitGridsData = (function() {
                                 }
                             }
                         },
-                        error: function(data) {
+                        error: function (data) {
                             var errorMessage = "";
                             var response = JSON.parse(data.responseText).data;
                             $.each(response.errors,
-                                function(key, value) {
+                                function (key, value) {
                                     errorMessage += this + "\n";
                                 });
                             $('pre#err-message').text(errorMessage);
@@ -503,11 +503,11 @@ var unitGridsData = (function() {
                 type: 'POST',
                 dataType: "json",
                 data: q,
-                success: function(response) {
+                success: function (response) {
                     if (!response.errors) {
                         var pdfExportDetailsJson = response.PdfExportDetails;
                         pdfExportDetails = JSON.stringify(pdfExportDetailsJson,
-                            function(key, value) {
+                            function (key, value) {
                                 var a;
                                 if (typeof value === 'string') {
                                     a = /\/Date\((\d*)\)\//.exec(value);
@@ -552,14 +552,14 @@ var unitGridsData = (function() {
 
                         var errorMessage = "";
                         $.each(response.errors,
-                            function(index, error) {
+                            function (index, error) {
                                 errorMessage += error + "\n";
                             });
                         $('pre#err-message').text(errorMessage);
                         $('div#err-window').data("kendoWindow").open();
                     }
                 },
-                error: function(result) {
+                error: function (result) {
                     hideExportToPdfButtons();
                     return {};
                 }
@@ -630,6 +630,21 @@ var unitGridsData = (function() {
         var technologicalReport = $('#technological-data').data('kendoGrid');
         if (technologicalReport) {
             attachEventToExportBtn("#excel-tech-report-export", "#technological-data");
+        }
+
+        var date = $('#date').data('kendoDatePicker');
+        var factorySelector = $('#factories') || $('#factoriesD');
+
+        if (date && factorySelector) {
+            date.bind("change", function () {
+                var factory = $('#factories').data("kendoDropDownList") || $('#factoriesD').data("kendoDropDownList");
+                var factoryId = $('#factories').val() || $('#factoriesD').val();
+                factory.dataSource.read();
+                if (($('#processunits') || $('#processunitsD')) && factoryId !== "") {
+                    ($('#processunits').data("kendoDropDownList") || $('#processunitsD').data("kendoDropDownList")).dataSource.read();
+                }
+
+            });
         }
     }
 
@@ -743,7 +758,7 @@ var unitGridsData = (function() {
     function hideCommandButtons() {
         // skip if grid is excluded
         var IsExcluded = false
-        exclusionList.forEach(function(value, index) {
+        exclusionList.forEach(function (value, index) {
             if ($(value).val() !== undefined) {
                 IsExcluded = true;
             }
@@ -757,7 +772,7 @@ var unitGridsData = (function() {
 
             var unitsGrids = $(".k-widget.k-grid");
             Array.prototype.forEach.call(unitsGrids,
-                function(unitsGrid) {
+                function (unitsGrid) {
                     unitsGrid = $(unitsGrid).data("kendoGrid");
                     if (unitsGrid) {
                         unitsGrid.hideColumn('commands');
@@ -794,7 +809,7 @@ var unitGridsData = (function() {
 
         var unitsGrids = $(".k-widget.k-grid");
         Array.prototype.forEach.call(unitsGrids,
-            function(unitsGrid) {
+            function (unitsGrid) {
                 unitsGrid = $(unitsGrid).data("kendoGrid");
                 if (unitsGrid) {
                     unitsGrid.showColumn('commands');
@@ -810,7 +825,7 @@ var unitGridsData = (function() {
                 url: 'IsConfirmed',
                 type: 'POST',
                 data: date,
-                success: function(result) {
+                success: function (result) {
                     var confirmed = result.IsConfirmed;
                     if (confirmed === false) {
                         showCommandButtons();
@@ -818,7 +833,7 @@ var unitGridsData = (function() {
                         hideCommandButtons();
                     }
                 },
-                error: function(result) {
+                error: function (result) {
                     hideCommandButtons();
                 }
             });
@@ -827,14 +842,14 @@ var unitGridsData = (function() {
 
     function attachEventToExportBtn(buttonSelector, targetSelector) {
         $(buttonSelector)
-            .click(function() {
+            .click(function () {
                 $(targetSelector).data("kendoGrid").saveAsExcel();
             });
 
         $(targetSelector)
             .data("kendoGrid")
             .bind("excelExport",
-                function(e) {
+                function (e) {
                     // e.workbook.fileName = "Grid.xlsx";
                 });
     }
@@ -842,11 +857,11 @@ var unitGridsData = (function() {
     function nameGridCommancolumn() {
         var grids = $(".k-widget.k-grid");
         Array.prototype.forEach.call(grids,
-            function(grid) {
+            function (grid) {
                 grid = $(grid).data("kendoGrid");
                 if (grid) {
                     $.each(grid.columns,
-                        function(index, value) {
+                        function (index, value) {
                             if (!this.field) {
                                 this.field = "commands";
                             }
@@ -865,12 +880,12 @@ var unitGridsData = (function() {
         ev.stopPropagation();
         var culture = $('#culture').val();
         $.ajax({
-                url: ev.data.url,
-                type: "POST",
-                content: document.body,
-                data: JSON.parse(JSON.stringify(addAntiForgeryToken(ev.data.data), replacer))
-            })
-            .done(function(data) {
+            url: ev.data.url,
+            type: "POST",
+            content: document.body,
+            data: JSON.parse(JSON.stringify(addAntiForgeryToken(ev.data.data), replacer))
+        })
+            .done(function (data) {
                 if (data.success === undefined) {
                     $("#modal-dialog-body").html(data);
                     showRecordHistoriModal();
@@ -881,7 +896,7 @@ var unitGridsData = (function() {
                     }
                 }
             })
-            .fail(function(data) {
+            .fail(function (data) {
                 var message = "Възникна грешка";
                 if (data) {
                     var status = data.status + 0;
@@ -922,7 +937,7 @@ var unitGridsData = (function() {
         if (errors) {
             var message = "";
             $.each(errors,
-                function(key, value) {
+                function (key, value) {
                     message += value.ErrorMessage + "\n";
                 });
             $('pre#err-message').text(message);
@@ -930,7 +945,7 @@ var unitGridsData = (function() {
         }
     }
 
-    var prepareValidationScripts = function() {
+    var prepareValidationScripts = function () {
         var form = $('#modal-dialog-body');
         if (form.executed)
             return;
@@ -947,7 +962,7 @@ var unitGridsData = (function() {
             var datePicker = dateElement.data('kendoDatePicker');
             if (datePicker !== undefined) {
                 datePicker.bind("change",
-                    function() {
+                    function () {
                         if ($("#inner-pipes").val() !== undefined) {
 
                             if (ctrlParamsElement.val() !== undefined) {
@@ -1020,10 +1035,10 @@ var unitGridsData = (function() {
         beginDate = kendo.parseDate($('input[name=date]').val());
         beginDate.setDate(1);
         $.each($(".calendar"),
-            function(index, element) {
+            function (index, element) {
 
                 var dates = JSON.parse($(element).attr('data-json'),
-                    function(key, val) {
+                    function (key, val) {
                         if (key === 'Day') {
                             return kendo.parseDate(val);
                         } else {
@@ -1074,7 +1089,7 @@ var unitGridsData = (function() {
         var grid = this;
         var data = [].splice.call(dataView, [-1, 1]);
         [].forEach.call(data,
-            function(value) {
+            function (value) {
                 ConvertGridRows(value, grid);
             });
 
@@ -1094,7 +1109,7 @@ var unitGridsData = (function() {
         } else {
             //go dipper
             $.each(dataCollection.items,
-                function(key, value) {
+                function (key, value) {
                     if (ConvertGridRows(value, grid) === true) {
                         modifyGridRow(value, grid);
                     }
@@ -1179,7 +1194,7 @@ var unitGridsData = (function() {
                 var groupCells = $(currenRow).find("td");
                 $(groupCells[6]).attr("colspan", 5);
                 $.each(groupCells,
-                    function(ix, cell) {
+                    function (ix, cell) {
                         $(cell).removeClass("k-group-cell");
                         if (ix < 6) {
                             $(cell).attr("style", "display:none !important");
@@ -1231,7 +1246,7 @@ var unitGridsData = (function() {
     }
 
     function FormatGridToPdfExport(e) {
-        e.promise.progress(function(e) {
+        e.promise.progress(function (e) {
             e.page = formatPage(e);
         });
     }
@@ -1332,13 +1347,13 @@ var unitGridsData = (function() {
     function OnMonthlyExcelExport(ev) {
         var dataRows = ev.sender._data;
         var totalRowCodes = [];
-        dataRows.forEach(function(value) {
+        dataRows.forEach(function (value) {
             if (value.IsTotalPosition === true) {
                 totalRowCodes.push(value.UnitMonthlyConfig.Code);
             }
         });
         var excelRows = ev.workbook.sheets[0].rows;
-        excelRows.forEach(function(row, index, excelRows) {
+        excelRows.forEach(function (row, index, excelRows) {
             if (row.cells[2]) {
                 if (isInArray(row.cells[2].value, totalRowCodes)) {
                     row.cells[0].value = row.cells[4].value;
@@ -1349,7 +1364,7 @@ var unitGridsData = (function() {
                             excelRows[index - 1].markForDelete = true;
                         }
                     }
-                    row.cells.forEach(function(cell) {
+                    row.cells.forEach(function (cell) {
                         cell.background = "#7a7a7a";
                         cell.color = "#fff";
                     });

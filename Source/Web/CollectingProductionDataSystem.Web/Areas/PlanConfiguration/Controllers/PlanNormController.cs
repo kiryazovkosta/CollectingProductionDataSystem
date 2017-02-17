@@ -6,6 +6,7 @@
     using System.Data.Entity;
     using System.Web;
     using System.Web.Mvc;
+    using Application.HistoricalNameService;
     using AutoMapper;
     using CollectingProductionDataSystem.Application.Contracts;
     using CollectingProductionDataSystem.Constants;
@@ -18,10 +19,11 @@
 
     public class PlanNormController : AreaBaseController
     {
-        public PlanNormController(IProductionData dataParam)
+        private readonly IHistoricalService historyService;
+        public PlanNormController(IProductionData dataParam, IHistoricalService historicalServiceParam)
             : base(dataParam)
         {
-
+            this.historyService = historicalServiceParam;
         }
 
         // GET: PlanConfiguration/PlanNorm
@@ -35,13 +37,15 @@
         [ValidateAntiForgeryToken]
         public JsonResult Read([DataSourceRequest]DataSourceRequest request, DateTime date)
         {
+            var kendoResult = new DataSourceResult();
             if (this.ModelState.IsValid)
             {
                 try
                 {
                     IEnumerable<PlanNorm> records = GetPlanNorm(date);
-                    DataSourceResult result = records.ToDataSourceResult(request, ModelState, Mapper.Map<PlanNormViewModel>);
-                    return Json(result);
+                    var kendoPreparedResult = Mapper.Map<IEnumerable<PlanNorm>, IEnumerable<PlanNormViewModel>>(records);
+                    kendoResult = kendoPreparedResult.ToDataSourceResult(request, ModelState);
+                    return Json(kendoResult);
                 }
                 catch (Exception ex)
                 {
@@ -154,12 +158,16 @@
                 this.data.SaveChanges(this.UserProfile.UserName);
             }
 
-            return this.data.PlanNorms.All()
+            var plans = this.data.PlanNorms.All()
                 .Include(x => x.ProductionPlanConfig)
                 .Include(x => x.ProductionPlanConfig.MaterialType)
                 .Include(x => x.ProductionPlanConfig.ProcessUnit)
                 .Include(x => x.ProductionPlanConfig.ProcessUnit.Factory)
                 .Where(x => x.Month == date).ToList();
+            
+            this.historyService.SetHistoricalProcessUnitParams(plans,date);
+
+            return plans;
         }
     }
 }

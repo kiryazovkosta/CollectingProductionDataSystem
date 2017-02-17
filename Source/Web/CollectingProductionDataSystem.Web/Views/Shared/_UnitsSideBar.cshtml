@@ -14,7 +14,7 @@
         {
             source.Read(read =>
             {
-                read.Action("GetFactories", "Ajax", new { area = "" });
+                read.Action("GetFactories", "Ajax", new { area = "" }).Data("sendDate");
             });
         })
     )
@@ -72,5 +72,5 @@
 
 @using (Html.BeginScripts())
 {
-    <script src="~/Scripts/custom/sendFactory.min.js"></script>
+    <script src="~/Scripts/custom/sendFactory.js"></script>
 }

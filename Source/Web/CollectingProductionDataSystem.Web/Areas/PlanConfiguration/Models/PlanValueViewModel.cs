@@ -5,12 +5,13 @@ using System.Linq;
 using System.Web;
 namespace CollectingProductionDataSystem.Web.Areas.PlanConfiguration.Models
 {
+    using AutoMapper;
     using CollectingProductionDataSystem.Infrastructure.Mapping;
     using CollectingProductionDataSystem.Models.Productions;
     using CollectingProductionDataSystem.Web.Areas.MonthlyDataReporting.Models;
     using Resources = App_GlobalResources.Resources;
 
-    public class PlanValueViewModel : IMapFrom<PlanValue>
+    public class PlanValueViewModel : IMapFrom<PlanValue>,IHaveCustomMappings
     {
         [Required]
         [UIHint("Hidden")]
@@ -30,5 +31,11 @@ namespace CollectingProductionDataSystem.Web.Areas.PlanConfiguration.Models
 
         [Display(Name = "ProcessingPlanLiquid", ResourceType = typeof(Resources.Layout))]
         public decimal? ValueLiquid { get; set; }
+
+        public void CreateMappings(IConfiguration configuration)
+        {
+            configuration.CreateMap<PlanValue, PlanValueViewModel>()
+            .ForMember(p => p.ProcessUnit, opt => opt.MapFrom(p => p.HistorycalProcessUnit ?? new ProcessUnit()));
+        }
     }
 }

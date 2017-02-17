@@ -53,7 +53,7 @@
         public bool HasManualData { get; set; }
     }
 
-    public class UnitsDailyConfigDataViewModel : IMapFrom<UnitDailyConfig>
+    public class UnitsDailyConfigDataViewModel : IMapFrom<UnitDailyConfig>,IHaveCustomMappings
     {
         [Required]
         public int Id { get; set; }
@@ -84,11 +84,11 @@
         public int  DailyProductTypeId { get; set; }
         public DailyProductTypeViewModel DailyProductType { get; set; }
 
-        //public void CreateMappings(IConfiguration configuration)
-        //{
-        //    configuration.CreateMap<UnitsDailyConfig, UnitsDailyConfigDataViewModel>()
-        //        .ForMember(p => p.Product, opt => opt.MapFrom(p => p.Product ?? new Product() { Id = 0 }));
-        //}
+        public void CreateMappings(IConfiguration configuration)
+        {
+            configuration.CreateMap<UnitDailyConfig, UnitsDailyConfigDataViewModel>()
+                .ForMember(p => p.ProcessUnit, opt => opt.MapFrom(p => p.HistorycalProcessUnit));
+        }
     }
  
     //public class DailyProductViewModel:IMapFrom<Product>,IHaveCustomMappings

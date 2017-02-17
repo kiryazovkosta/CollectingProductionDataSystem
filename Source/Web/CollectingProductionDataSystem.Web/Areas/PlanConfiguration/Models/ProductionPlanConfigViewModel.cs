@@ -12,7 +12,7 @@ using Resources = App_GlobalResources.Resources;
 
 namespace CollectingProductionDataSystem.Web.Areas.PlanConfiguration.Models
 {
-    public class ProductionPlanConfigViewModel : IMapFrom<ProductionPlanConfig>
+    public class ProductionPlanConfigViewModel : IMapFrom<ProductionPlanConfig>, IHaveCustomMappings
     {
         [Required]
         [UIHint("Hidden")]
@@ -31,6 +31,10 @@ namespace CollectingProductionDataSystem.Web.Areas.PlanConfiguration.Models
         public ProcessUnitUnitsMonthlyDataViewModel ProcessUnit { get; set; }
 
         public MaterialTypeViewModel MaterialType { get; set; }
-        
+        public void CreateMappings(IConfiguration configuration)
+        {
+            configuration.CreateMap<ProductionPlanConfig, ProductionPlanConfigViewModel>()
+            .ForMember(p => p.ProcessUnit, opt => opt.MapFrom(p => p.HistorycalProcessUnit ?? new ProcessUnit()));
+        }
     }
 }

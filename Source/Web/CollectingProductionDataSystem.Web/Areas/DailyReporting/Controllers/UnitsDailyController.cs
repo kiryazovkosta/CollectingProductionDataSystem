@@ -38,9 +38,11 @@
         private readonly TransactionOptions transantionOption;
         private readonly ILogger logger;
         private readonly ITestUnitDailyCalculationService testUnitDailyCalculationService;
+        private readonly IHistoricalService historicalService;
 
         public UnitsDailyController(IProductionData dataParam, IUnitsDataService unitsDataParam, IUnitDailyDataService dailyServiceParam,
-            IProductionPlanDataService productionPlanDataParam, ILogger loggerParam, ITestUnitDailyCalculationService testUnitDailyCalculationServiceParam)
+            IProductionPlanDataService productionPlanDataParam, ILogger loggerParam, ITestUnitDailyCalculationService testUnitDailyCalculationServiceParam,
+            IHistoricalService historicalServiceParam)
             : base(dataParam)
         {
             this.unitsData = unitsDataParam;
@@ -49,6 +51,7 @@
             this.transantionOption = DefaultTransactionOptions.Instance.TransactionOptions;
             this.logger = loggerParam;
             this.testUnitDailyCalculationService = testUnitDailyCalculationServiceParam;
+            this.historicalService = historicalServiceParam;
         }
 
         [HttpGet]
@@ -82,7 +85,8 @@
                 var kendoResult = new DataSourceResult();
                 if (ModelState.IsValid)
                 {
-                    var dbResult = unitsData.GetUnitsDailyDataForDateTime(date, processUnitId, CommonConstants.MaterialType);
+                    var dbResult = unitsData.GetUnitsDailyDataForDateTime(date, processUnitId, CommonConstants.MaterialType).ToList();
+                    this.historicalService.SetHistoricalProcessUnitParams(dbResult, date.Value);
                     var kendoPreparedResult = Mapper.Map<IEnumerable<UnitsDailyData>, IEnumerable<UnitDailyDataViewModel>>(dbResult);
                     kendoResult = kendoPreparedResult.ToDataSourceResult(request, ModelState);
                 }
