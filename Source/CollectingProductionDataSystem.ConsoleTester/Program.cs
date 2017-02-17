@@ -51,13 +51,13 @@ namespace CollectingProductionDataSystem.ConsoleTester
             //testUnitDailyCalculationService = kernel.Get<ITestUnitDailyCalculationService>();
             //service = kernel.Get<UnitMothlyDataService>();
             //monthlyService = new UnitMothlyDataService(data, kernel, new CalculatorService(kernel.Get<ILogger>()), TestUnitMonthlyCalculationService.GetInstance());
-            
+
         }
 
         private static void InitializeProcessUnitsHistory()
         {
             var processUnits = data.ProcessUnits.AllWithDeleted().Include(x => x.Factory.Plant).ToList();
-            
+
             if (processUnits.Any())
             {
                 var activationData = new DateTime(2015, 1, 1);
@@ -81,6 +81,68 @@ namespace CollectingProductionDataSystem.ConsoleTester
                             ActivationDate = activationData
                         });
                         data.SaveChanges("Initial Loading");
+                        transaction.Complete();
+                    }
+                }
+            }
+        }
+
+        private static void ChangePu()
+        {
+            var processUnits = data.ProcessUnits.All().Where(x => x.ShortName == "ХО-1" || x.ShortName == "ХО-3").ToList();
+            var historyRecords = data.ProcessUnitToFactoryHistory.All().Where(x => x.ProcessUnitShortName == "ХО-1" || x.ProcessUnitShortName == "ХО-3");
+            foreach (var record in historyRecords)
+            {
+                data.ProcessUnitToFactoryHistory.Delete(record.Id);
+            }
+            data.SaveChanges("Initial Loading");
+
+
+            var newFactory = data.Factories.All().Include(x => x.Plant).FirstOrDefault(x => x.Id == 3);
+            var newFactory1 = data.Factories.All().Include(x => x.Plant).FirstOrDefault(x => x.Id == 4);
+
+            if (processUnits.Any() && newFactory != null)
+            {
+                var activationData = new DateTime(2015, 1, 1);
+                var activationData1 = new DateTime(2017, 2, 1);
+
+                foreach (var processUnit in processUnits)
+                {
+                    using (
+                        var transaction = new TransactionScope(TransactionScopeOption.Required,
+                            DefaultTransactionOptions.Instance.TransactionOptions))
+                    {
+                        processUnit.FactoryId = 3;
+                        data.ProcessUnitToFactoryHistory.Add(new ProcessUnitToFactoryHistory()
+                        {
+                            ProcessUnitId = processUnit.Id,
+                            ProcessUnitShortName = processUnit.ShortName,
+                            ProcessUnitFullName = processUnit.FullName,
+                            FactoryId = newFactory.Id,
+                            FactoryShortName = newFactory.ShortName,
+                            FactoryFullName = newFactory.FullName,
+                            PlantId = newFactory.Plant.Id,
+                            PlantShortName = newFactory.Plant.ShortName,
+                            PlantFullName = newFactory.Plant.FullName,
+                            ActivationDate = activationData
+                        });
+
+                        processUnit.FactoryId = 4;
+                        data.ProcessUnitToFactoryHistory.Add(new ProcessUnitToFactoryHistory()
+                        {
+                            ProcessUnitId = processUnit.Id,
+                            ProcessUnitShortName = processUnit.ShortName,
+                            ProcessUnitFullName = processUnit.FullName,
+                            FactoryId = newFactory1.Id,
+                            FactoryShortName = newFactory1.ShortName,
+                            FactoryFullName = newFactory1.FullName,
+                            PlantId = newFactory1.Plant.Id,
+                            PlantShortName = newFactory1.Plant.ShortName,
+                            PlantFullName = newFactory1.Plant.FullName,
+                            ActivationDate = activationData1
+                        });
+                        var res = data.SaveChanges("ProcessUnit Transfer");
+                        Console.WriteLine($"Errors: {string.Join("\n", res.EfErrors.Select(x => x.ErrorMessage).ToList())}");
                         transaction.Complete();
                     }
                 }
@@ -136,8 +198,9 @@ namespace CollectingProductionDataSystem.ConsoleTester
             //Console.WriteLine("Ready!\n Estimated time per operation {0}", timer.Elapsed);
             try
             {
-
                 InitializeProcessUnitsHistory();
+                ChangePu();
+
 
                 //var unitMothlyConfigs = data.UnitMonthlyConfigs.All()
                 //                               .Include(x => x.UnitDailyConfigUnitMonthlyConfigs)
@@ -272,12 +335,12 @@ namespace CollectingProductionDataSystem.ConsoleTester
                 var manualRecord = data.UnitManualMonthlyDatas.GetById(record.Id);
                 if (manualRecord != null)
                 {
-                    manualRecord.Value = (decimal)record.RealValue;
+                    manualRecord.Value = (decimal) record.RealValue;
                     data.UnitManualMonthlyDatas.Update(manualRecord);
                 }
                 else
                 {
-                    data.UnitManualMonthlyDatas.Add(new UnitManualMonthlyData { Id = record.Id, Value = (decimal)record.RealValue });
+                    data.UnitManualMonthlyDatas.Add(new UnitManualMonthlyData { Id = record.Id, Value = (decimal) record.RealValue });
                 }
             }
             var changesCount = data.DbContext.DbContext.ChangeTracker.Entries().Where(
@@ -305,8 +368,8 @@ namespace CollectingProductionDataSystem.ConsoleTester
             testUnitDailyCalculationService = kernel.Get<ITestUnitDailyCalculationService>();
             dailyService = new UnitDailyDataService(data, kernel, new CalculatorService(kernel.Get<ILogger>()));
             if //(!dailyService.CheckIfDayIsApproved(date, processUnitId)
-                //    && !dailyService.CheckExistsUnitDailyDatas(date, processUnitId) 
-                //    && 
+               //    && !dailyService.CheckExistsUnitDailyDatas(date, processUnitId) 
+               //    && 
                 (testUnitDailyCalculationService.TryBeginCalculation(new UnitDailyCalculationIndicator(date, processUnitId)))
             {
                 Exception exc = null;

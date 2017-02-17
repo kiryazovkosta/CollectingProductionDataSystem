@@ -33,9 +33,14 @@ namespace CollectingProductionDataSystem.Application.HistoricalNameService
             this.data = dataParam;
         }
 
-        private IEnumerable<Factory> GetActualFactories(DateTime targetDate)
+        public IEnumerable<Factory> GetActualFactories(DateTime targetDate, int? factoryId = null)
         {
             var jRecords = this.GetActualStateOfProcessUnitsAndFactories(targetDate);
+
+            if (factoryId != null)
+            {
+                jRecords = jRecords.Where(x => x.ProcessUnitToFactoryHistory.FactoryId == factoryId.Value);
+            }
 
 
             var factories = new Dictionary<int, Factory>();
@@ -99,25 +104,22 @@ namespace CollectingProductionDataSystem.Application.HistoricalNameService
             return processUnits;
         }
 
-        public void SetHistoricalProcessUnitParams(IEnumerable<IConfigable> enumerableEntity, DateTime targetDate)
+        public void SetHistoricalProcessUnitParams(IEnumerable<IConfigable> entity, DateTime targetDate)
         {
-            var entity = enumerableEntity.ToList();
             var historyProcessUnit = this.ProcessUnitToFactoryHistories(targetDate).ToDictionary(x => x.ProcessUnitId);
-            for (int i = 0; i < entity.Count; i++)
+            foreach (var record in entity)
             {
-                entity[i].Config.HistorycalProcessUnit = this.CreateHistoryRecord(historyProcessUnit, entity[i].Config.ProcessUnitId);
+                record.Config.HistorycalProcessUnit = this.CreateHistoryRecord(historyProcessUnit, record.Config.ProcessUnitId);
             }
         }
 
         public void SetHistoricalProcessUnitParams(IEnumerable<IProcessUnitCangeable> enumerableEntity, DateTime targetDate)
         {
-            var entity = enumerableEntity.ToList();
             var historyProcessUnit = this.ProcessUnitToFactoryHistories(targetDate).ToDictionary(x => x.ProcessUnitId);
-            for (int i = 0; i < entity.Count; i++)
+            foreach (var record in enumerableEntity)
             {
-                if (historyProcessUnit.ContainsKey(entity[i].ProcessUnitId))
                 {
-                    entity[i].HistorycalProcessUnit = this.CreateHistoryRecord(historyProcessUnit, entity[i].ProcessUnitId);
+                    record.HistorycalProcessUnit = this.CreateHistoryRecord(historyProcessUnit, record.ProcessUnitId);
                 }
             }
         }
@@ -151,7 +153,10 @@ namespace CollectingProductionDataSystem.Application.HistoricalNameService
             }
         }
 
-
+        IEnumerable<ProcessUnit> IHistoricalService.GetActualProcessUnits(DateTime targetDate)
+        {
+            return this.GetActualProcessUnits(targetDate).Values.OrderBy(x=>x.Id).ToList();
+        }
 
         private IQueryable<ProcessUnitHistoryDto> GetActualStateOfProcessUnitsAndFactories(DateTime targetDate)
         {

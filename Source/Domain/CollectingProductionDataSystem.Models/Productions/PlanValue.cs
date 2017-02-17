@@ -8,7 +8,7 @@
     using CollectingProductionDataSystem.Models.Abstract;
     using CollectingProductionDataSystem.Models.Contracts;
 
-    public class PlanValue : DeletableEntity, IEntity, ICloneable<PlanValue>
+    public class PlanValue : DeletableEntity, IEntity, ICloneable<PlanValue>, IProcessUnitCangeable
     {
         public int Id { get; set; }
         public int ProcessUnitId { get; set; }
@@ -26,5 +26,7 @@
                 ValueLiquid = this.ValueLiquid
             };
         }
+
+        public ProcessUnit HistorycalProcessUnit { get; set; }
     }
 }

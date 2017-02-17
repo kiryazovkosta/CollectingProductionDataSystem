@@ -93,6 +93,7 @@
     <Compile Include="Common\DefaultTransactionOptions.cs" />
     <Compile Include="Common\EfStatus.cs" />
     <Compile Include="Concrete\MessageRepository.cs" />
+    <Compile Include="Concrete\ProcessUnitRepository.cs" />
     <Compile Include="Contracts\IEfStatus.cs" />
     <Compile Include="Concrete\ApprovableEntityRepository.cs" />
     <Compile Include="Concrete\AuditablePersister.cs" />

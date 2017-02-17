@@ -28,7 +28,7 @@ namespace HistoricalProductionStructure
             {
                 var timer = new Stopwatch();
                 var times = new TimeSpan[4];
-                TransferHo1AndHo3(data);
+                TransferHoHo5(data);
 
                 timer.Start();
                 var processUnits = GetActualProcessUnits(data, new DateTime(2017, 1, 12)).ToList();
@@ -287,6 +287,41 @@ namespace HistoricalProductionStructure
                     }
                 }
             }
+        }
+
+            private static void TransferHoHo5(ProductionData data)
+            {
+                var processUnits = data.ProcessUnits.All().Where(x => x.ShortName == "ХО-5" ).ToList();
+                var newFactory = data.Factories.All().Include(x => x.Plant).FirstOrDefault(x => x.Id == 1);
+                if (processUnits.Any() && newFactory != null)
+                {
+                    var activationData = new DateTime(2017, 2, 1);
+                    foreach (var processUnit in processUnits)
+                    {
+                        using (
+                            var transaction = new TransactionScope(TransactionScopeOption.Required,
+                                DefaultTransactionOptions.Instance.TransactionOptions))
+                        {
+                            processUnit.FactoryId = 1;
+                            data.ProcessUnitToFactoryHistory.Add(new ProcessUnitToFactoryHistory()
+                            {
+                                ProcessUnitId = processUnit.Id,
+                                ProcessUnitShortName = processUnit.ShortName,
+                                ProcessUnitFullName = processUnit.FullName,
+                                FactoryId = newFactory.Id,
+                                FactoryShortName = newFactory.ShortName,
+                                FactoryFullName = newFactory.FullName,
+                                PlantId = newFactory.Plant.Id,
+                                PlantShortName = newFactory.Plant.ShortName,
+                                PlantFullName = newFactory.Plant.FullName,
+                                ActivationDate = activationData
+                            });
+                            var res = data.SaveChanges("ProcessUnit Transfer");
+                            Console.WriteLine($"Errors: {string.Join("\n",res.EfErrors.Select(x=>x.ErrorMessage).ToList())}");
+                            transaction.Complete();
+                        }
+                    }
+                }
         }
 
         private static void Print(IEfStatus result)
