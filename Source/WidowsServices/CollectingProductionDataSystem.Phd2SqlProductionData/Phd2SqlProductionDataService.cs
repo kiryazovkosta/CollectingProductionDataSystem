@@ -2,17 +2,17 @@
 {
     using System.Collections.Generic;
     using System.Transactions;
-    using CollectingProductionDataSystem.Data.Common;
+    using Data.Common;
     using Enumerations;
-    using CollectingProductionDataSystem.Models.Nomenclatures;
-    using CollectingProductionDataSystem.Models.Productions;
-    using CollectingProductionDataSystem.PhdApplication.Contracts;
+    using Models.Nomenclatures;
+    using Models.Productions;
+    using PhdApplication.Contracts;
     using Ninject;
     using log4net;
     using System;
     using System.ServiceProcess;
     using System.Threading;
-    using CollectingProductionDataSystem.Application.Contracts;
+    using Application.Contracts;
 
     public partial class Phd2SqlProductionDataService : ServiceBase
     {
@@ -38,7 +38,7 @@
 
         public Phd2SqlProductionDataService(ILog loggerParam)
         {
-            InitializeComponent();
+            this.InitializeComponent();
             this.kernel = NinjectConfig.GetInjector;
             this.logger = loggerParam;
             this.transantionOption = DefaultTransactionOptions.Instance.TransactionOptions;
@@ -46,38 +46,38 @@
 
         protected override void OnStart(string[] args)
         {
-            logger.Info("Service is started!");
+            this.logger.Info("Service is started!");
             try
             {
                 if (Properties.Settings.Default.SYNC_PRIMARY)
                 {
-                    this.primaryDataTimer = new Timer(TimerHandlerPrimary, state: null, dueTime: 0, period: Timeout.Infinite);
+                    this.primaryDataTimer = new Timer(this.TimerHandlerPrimary, state: null, dueTime: 0, period: Timeout.Infinite);
                 }
 
                 if (Properties.Settings.Default.SYNC_INVENTORY)
                 {
-                    this.inventoryDataTimer = new Timer(TimerHandlerInventory, state: null, dueTime: 0, period: Timeout.Infinite);
+                    this.inventoryDataTimer = new Timer(this.TimerHandlerInventory, state: null, dueTime: 0, period: Timeout.Infinite);
                 }
 
             }
             catch (Exception ex)
             {
-                logger.Info(ex);
-                var mailer = kernel.Get<IMailerService>();
+                this.logger.Info(ex);
+                var mailer = this.kernel.Get<IMailerService>();
                 mailer.SendMail(ex.Message + ex.StackTrace, "OnStart");
             }
         }
 
         protected override void OnStop()
         {
-            logger.Info("Service is stopped!");
+            this.logger.Info("Service is stopped!");
             try
             {
 
             }
             catch (Exception ex)
             {
-                logger.Info(ex);
+                this.logger.Info(ex);
             }
         }
 
@@ -85,13 +85,13 @@
         {
             lock (lockObjectPrimaryData)
             {
-                using (var service = kernel.Get<IPhdPrimaryDataService>())
+                using (var service = this.kernel.Get<IPhdPrimaryDataService>())
                 {
                     isFirstPhdInterfaceCompleted = TreeState.Null;
                     PrimaryDataSourceType dataSource = (PrimaryDataSourceType)Enum.ToObject(typeof(PrimaryDataSourceType), Properties.Settings.Default.PHD_DATA_SOURCE);
-                    isFirstPhdInterfaceCompleted = GetDataFromPhd(service, dataSource, isFirstPhdInterfaceCompleted, this.primaryDataTimer);
+                    isFirstPhdInterfaceCompleted = this.GetDataFromPhd(service, dataSource, isFirstPhdInterfaceCompleted, this.primaryDataTimer);
                     dataSource = (PrimaryDataSourceType)Enum.ToObject(typeof(PrimaryDataSourceType), Properties.Settings.Default.PHD_DATA_SOURCE_SECOND);
-                    GetDataFromPhd(service, dataSource, isFirstPhdInterfaceCompleted, this.primaryDataTimer, true);
+                    this.GetDataFromPhd(service, dataSource, isFirstPhdInterfaceCompleted, this.primaryDataTimer, true);
                 }
             }
         }
@@ -118,7 +118,7 @@
                 if (lastTargetShiftId != targetShiftId && lastTargetShiftId != 0)
                 {
                     var shift = service.GetShiftById(lastTargetShiftId);
-                    var targetLastShiftTime = GetTargetRecordTimestamp(DateTime.Now, shift);
+                    var targetLastShiftTime = this.GetTargetRecordTimestamp(DateTime.Now, shift);
                     service.FinalizeShiftObservation(targetLastShiftTime, shift);
                 }
 
@@ -127,14 +127,14 @@
                 if (targetShift != null)
                 {
                     inTimeSlot = true;
-                    bool isForcedResultCalculation = CheckIfForcedCalculationNeeded(DateTime.Now + lastTimeDuration, targetShift);
-                    DateTime recordTimeStamp = GetTargetRecordTimestamp(targetTime, targetShift);
+                    bool isForcedResultCalculation = this.CheckIfForcedCalculationNeeded(DateTime.Now + lastTimeDuration, targetShift);
+                    DateTime recordTimeStamp = this.GetTargetRecordTimestamp(targetTime, targetShift);
                     lastOperationSucceeded = service.ProcessPrimaryProductionData(dataSourceParam, recordTimeStamp, targetShift, isForcedResultCalculation, isFirstPhdInteraceCompleted);
                 }
             }
             catch (Exception ex)
             {
-                logger.Error(ex.Message + ex.StackTrace, ex);
+                this.logger.Error(ex.Message + ex.StackTrace, ex);
             }
             finally
             {
@@ -142,7 +142,7 @@
                 {
                     DateTime endDateTime = DateTime.Now;
                     lastTimeDuration = endDateTime - beginDateTime;
-                    TimeSpan nextStartDuration = GetNextTimeDuration(lastOperationSucceeded, inTimeSlot);
+                    TimeSpan nextStartDuration = this.GetNextTimeDuration(lastOperationSucceeded, inTimeSlot);
                     //logger.InfoFormat("Timer {0} for {1} is set to: {2}", timer.ToString(), "next GetDataFromPhd iteration", DateTime.Now + nextStartDuration);
                     timer.Change(Convert.ToInt64(nextStartDuration.TotalMilliseconds), Timeout.Infinite);
                 }
@@ -260,7 +260,7 @@
         {
             lock (lockObjectInventoryData)
             {
-                using (var service = kernel.Get<IPhdPrimaryDataService>())
+                using (var service = this.kernel.Get<IPhdPrimaryDataService>())
                 {
                     try
                     {
@@ -273,11 +273,11 @@
                     }
                     catch (Exception ex)
                     {
-                        logger.Error(ex.Message, ex);
+                        this.logger.Error(ex.Message, ex);
                     }
                     finally
                     {
-                        TimeSpan nextStartDuration = GetNextTimeDuration(lastOperationSucceeded: true, inTimeSlot: false);
+                        TimeSpan nextStartDuration = this.GetNextTimeDuration(lastOperationSucceeded: true, inTimeSlot: false);
                         this.inventoryDataTimer.Change(Convert.ToInt64(nextStartDuration.TotalMilliseconds), Timeout.Infinite);
                     }
                 }
