@@ -36,15 +36,17 @@
         private readonly IUnitDailyDataService dailyService;
         private readonly IInventoryTanksService tanksService;
         private readonly IPipelineServices pipes;
+        private readonly IHistoricalService historicalService;
 
         public SummaryReportsController(IProductionData dataParam, IUnitsDataService unitsDataServiceParam, IUnitDailyDataService dailyServiceParam,
-            IInventoryTanksService tanksParam, IPipelineServices pipesParam)
+            IInventoryTanksService tanksParam, IPipelineServices pipesParam, IHistoricalService historicalServiceParam)
             : base(dataParam)
         {
             this.unitsDataService = unitsDataServiceParam;
             this.dailyService = dailyServiceParam;
             this.tanksService = tanksParam;
             this.pipes = pipesParam;
+            this.historicalService = historicalServiceParam;
         }
 
         [HttpGet]
@@ -412,26 +414,36 @@
             ValidateUnitsReportModelState(date);
             if (ModelState.IsValid)
             {
-                IEnumerable<UnitsData> dbResult = this.unitsDataService.GetUnitsDataForDateTime(date, processUnitId, null)
+                IEnumerable<UnitsData> dbResult = this.unitsDataService.GetUnitsDataForDateTime(date, processUnitId,
+                        null)
                     .Where(x =>
-                        x.UnitConfig.ShiftProductTypeId == CommonConstants.DailyInfoDailyInfoHydrocarbonsShiftTypeId
-                        && (factoryId == null || x.UnitConfig.ProcessUnit.FactoryId == factoryId))
-                    .ToList();
+                        x.UnitConfig.ShiftProductTypeId == CommonConstants.DailyInfoDailyInfoHydrocarbonsShiftTypeId);
+
+                if (processUnitId == null)
+                {
+                    var processUnitIds = this.historicalService.GetActualFactories(date.Value, factoryId).SelectMany(x => x.ProcessUnits.Select(y => y.Id));
+                    dbResult = dbResult.Where(x => processUnitIds.Contains(x.UnitConfig.ProcessUnit.Id));
+
+                }
+
+                var inMemResult = dbResult.ToList();
+                this.historicalService.SetHistoricalProcessUnitParams(inMemResult, date.Value);
+
                 // ToDo: On shifts changed to 2 must repair this code
-                var result = dbResult.Select(x => new MultiShift
+                var result = inMemResult.Select(x => new MultiShift
                 {
                     TimeStamp = x.RecordTimestamp,
-                    Factory = string.Format("{0:d2} {1}", x.UnitConfig.ProcessUnit.Factory.Id, x.UnitConfig.ProcessUnit.Factory.ShortName),
-                    ProcessUnit = string.Format("{0:d2} {1}", x.UnitConfig.ProcessUnit.Id, x.UnitConfig.ProcessUnit.ShortName),
+                    Factory = string.Format("{0:d2} {1}", x.UnitConfig.HistorycalProcessUnit.Factory.Id, x.UnitConfig.HistorycalProcessUnit.Factory.ShortName),
+                    ProcessUnit = string.Format("{0:d2} {1}", x.UnitConfig.HistorycalProcessUnit.Id, x.UnitConfig.HistorycalProcessUnit.ShortName),
                     Code = x.UnitConfig.Code,
                     Position = x.UnitConfig.Position,
                     MeasureUnit = x.UnitConfig.MeasureUnit.Code,
                     ShiftProductType = string.Format("{0:d2} {1}", x.UnitConfig.ShiftProductType.Id, x.UnitConfig.ShiftProductType.Name),
                     UnitConfigId = x.UnitConfigId,
                     UnitName = x.UnitConfig.Name,
-                    Shift1 = dbResult.Where(y => y.RecordTimestamp == date && y.ShiftId == (int)ShiftType.First).Where(u => u.UnitConfigId == x.UnitConfigId).FirstOrDefault(),
-                    Shift2 = dbResult.Where(y => y.RecordTimestamp == date && y.ShiftId == (int)ShiftType.Second).Where(u => u.UnitConfigId == x.UnitConfigId).FirstOrDefault(),
-                    Shift3 = dbResult.Where(y => y.RecordTimestamp == date && y.ShiftId == (int)ShiftType.Third).Where(u => u.UnitConfigId == x.UnitConfigId).FirstOrDefault(),
+                    Shift1 = inMemResult.Where(y => y.RecordTimestamp == date && y.ShiftId == (int)ShiftType.First).FirstOrDefault(u => u.UnitConfigId == x.UnitConfigId),
+                    Shift2 = inMemResult.Where(y => y.RecordTimestamp == date && y.ShiftId == (int)ShiftType.Second).FirstOrDefault(u => u.UnitConfigId == x.UnitConfigId),
+                    Shift3 = inMemResult.Where(y => y.RecordTimestamp == date && y.ShiftId == (int)ShiftType.Third).FirstOrDefault(u => u.UnitConfigId == x.UnitConfigId),
                     NotATotalizedPosition = x.UnitConfig.NotATotalizedPosition,
                 }).Distinct(new MultiShiftComparer()).ToList();
 
