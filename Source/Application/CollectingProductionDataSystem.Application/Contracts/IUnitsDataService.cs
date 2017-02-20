@@ -27,5 +27,7 @@ using CollectingProductionDataSystem.Models.Nomenclatures;
 
         IEnumerable<UnitsDailyData> GetUnitsDailyApprovedDataForDateTime(DateTime? date, int? processUnitId, int? factoryId);
         IEnumerable<MultiShift> GetConsolidatedShiftData(DateTime date, int? processUnitId, int? factoryId);
+
+        IEnumerable<UnitsDailyData> GetUnitsDailyDataForDateTimeWithHistory(DateTime? date, int? processUnitId, int? materialType);
     }
 }

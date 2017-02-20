@@ -88,7 +88,7 @@
                 var kendoResult = new DataSourceResult();
                 if (this.ModelState.IsValid)
                 {
-                    var dbResult = this.unitsData.GetUnitsDailyDataForDateTime(date, processUnitId, CommonConstants.EnergyType);
+                    var dbResult = this.unitsData.GetUnitsDailyDataForDateTimeWithHistory(date, processUnitId, CommonConstants.EnergyType);
                     var kendoPreparedResult = Mapper.Map<IEnumerable<UnitsDailyData>, IEnumerable<UnitDailyDataViewModel>>(dbResult);
                     kendoResult = kendoPreparedResult.ToDataSourceResult(request, this.ModelState);
                 }

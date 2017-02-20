@@ -109,6 +109,15 @@
             return dbResult;
         }
 
+        public IEnumerable<UnitsDailyData> GetUnitsDailyDataForDateTimeWithHistory(DateTime? date, int? processUnitId,
+            int? materialType)
+        {
+            var dbResult = this.GetUnitsDailyDataForDateTime(date, processUnitId,materialType);
+            var materializedResult = dbResult.ToList();
+            this.historicalService.SetHistoricalProcessUnitParams(materializedResult, date.Value);
+            return materializedResult;
+        }
+
         public IEnumerable<UnitsDailyData> GetUnitsDailyApprovedDataForDateTime(DateTime? date, int? processUnitId, int? factoryId)
         {
             var result = new List<UnitsDailyData>();
