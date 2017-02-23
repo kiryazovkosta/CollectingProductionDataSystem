@@ -10,6 +10,7 @@ namespace CollectingProductionDataSystem.Data.Concrete
     #region Usings
     using System;
     using System.Collections.Generic;
+    using System.Data.Entity;
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
@@ -21,7 +22,7 @@ namespace CollectingProductionDataSystem.Data.Concrete
     /// <summary>
     /// Summary description for ProcessUnitRepository
     /// </summary>
-    class ProcessUnitRepository : DeletableEntityRepository<ProcessUnit>
+    public class ProcessUnitRepository : DeletableEntityRepository<ProcessUnit>
     {
         public ProcessUnitRepository(IDbContext context)
             : base(context)
@@ -31,18 +32,15 @@ namespace CollectingProductionDataSystem.Data.Concrete
         public override void Add(ProcessUnit entity)
         {
             base.Add(entity);
-            var factory = this.Context.Set<Factory>().FirstOrDefault(x => x.Id == entity.FactoryId);
-            entity.FactoryHistories.Add(new ProcessUnitToFactoryHistory());
+            var factory = this.Context.Set<Factory>().Include(x=>x.Plant).FirstOrDefault(x => x.Id == entity.FactoryId);
+            this.Context.Set<ProcessUnitToFactoryHistory>().Add(new ProcessUnitToFactoryHistory(entity, factory));
         }
 
         public override void Update(ProcessUnit entity)
         {
             base.Update(entity);
-        }
-
-        public override void Delete(ProcessUnit entity)
-        {
-            base.Delete(entity);
+            var factory = this.Context.Set<Factory>().Include(x => x.Plant).FirstOrDefault(x => x.Id == entity.FactoryId);
+            this.Context.Set<ProcessUnitToFactoryHistory>().Add(new ProcessUnitToFactoryHistory(entity, factory));
         }
     }
 }

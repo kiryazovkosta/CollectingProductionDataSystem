@@ -65,11 +65,18 @@
             }
         }
 
-        public IDeletableEntityRepository<ProcessUnit> ProcessUnits
+        //public IDeletableEntityRepository<ProcessUnit> ProcessUnits
+        //{
+        //    get
+        //    {
+        //        return this.GetDeletableEntityRepository<ProcessUnit>();
+        //    }
+        //}
+        public ProcessUnitRepository ProcessUnits
         {
             get
             {
-                return this.GetDeletableEntityRepository<ProcessUnit>();
+                return this.GetProcessUnitRepository();
             }
         }
 
@@ -748,6 +755,17 @@
             return (MessageRepository)this.repositories[typeof(MessageRepository)];
         }
 
+        private ProcessUnitRepository GetProcessUnitRepository()
+        {
+            if (!this.repositories.ContainsKey(typeof(ProcessUnitRepository)))
+            {
+                var type = typeof(ProcessUnitRepository);
+                this.repositories.Add(typeof(ProcessUnitRepository), Activator.CreateInstance(type, this.context));
+            }
+
+            return (ProcessUnitRepository) this.repositories[typeof(ProcessUnitRepository)];
+        }
+
         private IDeletableEntityRepository<T> GetDeletableEntityRepository<T>() where T : class, IEntity, IDeletableEntity
         {
             if (!this.repositories.ContainsKey(typeof(T)))
@@ -791,5 +809,7 @@
                 return this.context;
             }
         }
+
+        
     }
 }

@@ -22,7 +22,8 @@
 
         IDeletableEntityRepository<Factory> Factories { get; }
 
-        IDeletableEntityRepository<ProcessUnit> ProcessUnits { get; }
+        //IDeletableEntityRepository<ProcessUnit> ProcessUnits { get; }
+        ProcessUnitRepository ProcessUnits { get; }
 
         IDeletableEntityRepository<UnitConfig> UnitConfigs { get; }
 

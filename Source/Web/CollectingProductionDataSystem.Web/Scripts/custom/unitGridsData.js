@@ -633,7 +633,7 @@ var unitGridsData = (function () {
         }
 
         var date = $('#date').data('kendoDatePicker');
-        var factorySelector = $('#factories') || $('#factoriesD');
+        var factorySelector = $('#factories').data("kendoDropDownList") || $('#factoriesD').data("kendoDropDownList");
 
         if (date && factorySelector) {
             date.bind("change", function () {

@@ -17,7 +17,7 @@
         {
             source.Read(read =>
             {
-                read.Action("GetFactories", "Ajax", new { area = "" });
+                read.Action("GetFactories", "Ajax", new { area = "" }).Data("sendFactory");
             });
         })
     )
@@ -43,3 +43,8 @@
 <div class="form-group">
     <button id="tech-report-approve" type="button" class="btn btn-success" style="width:95%">@Resources.Layout.Approve</button>
 </div>
+
+@using (Html.BeginScripts())
+{
+    <script src="~/Scripts/custom/sendFactory.min.js"></script>
+}

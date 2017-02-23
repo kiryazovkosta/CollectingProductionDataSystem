@@ -49,7 +49,7 @@
                         {
                             source.Read(read =>
                             {
-                                read.Action("GetFactories", "Ajax", new { area = "" });
+                                read.Action("GetFactories", "Ajax", new { area = "" }).Data("sendDate($('input[name=shift-date]'))");
                             });
                         })
                         )
@@ -148,7 +148,7 @@
                         {
                             source.Read(read =>
                             {
-                                read.Action("GetFactories", "Ajax", new { area = "" });
+                                read.Action("GetFactories", "Ajax", new { area = "" }).Data("sendDate($('input[name=day-date]'))");
                             });
                         })
                         )
@@ -200,7 +200,7 @@
 
                 </div>
                 <hr />
-                    <a href="#" id="day-unlock" class="btn btn-primary pull-right">@Resources.Layout.Unlock</a>
+                <a href="#" id="day-unlock" class="btn btn-primary pull-right">@Resources.Layout.Unlock</a>
             }
         </div>
     </div>
@@ -227,9 +227,9 @@
                     </div>
                 </div>
 
-                    <div class="row row-controlls">
-                        <div class="form-group col-sm-4">
-                            @(Html.Kendo()
+                <div class="row row-controlls">
+                    <div class="form-group col-sm-4">
+                        @(Html.Kendo()
                         .DropDownList()
                         .Name("month-report-type-id")
                         .DataTextField("Name")
@@ -242,25 +242,25 @@
                                 read.Action("GetMonthlyReportTypes", "Ajax", new { area = "" });
                             });
                         })
-                            )
-                        </div>
+                        )
+                    </div>
 
-                        <div class="form-group col-sm-4">
-                            @(Html.Kendo().DatePicker()
+                    <div class="form-group col-sm-4">
+                        @(Html.Kendo().DatePicker()
                             .Name("month-date").Culture("bg-BG")
                             .Start(CalendarView.Year)
                             .Depth(CalendarView.Year)
                             .Format("MMMM yyyy")
                             .HtmlAttributes(new { style = "width:95%" })
                             .Value(DateTime.Today.AddDays(-1))
-                            )
-                        </div>
-
-                        <div class="form-group col-sm-3">
-                            <a href="#" id="month-unlock" class="btn btn-primary pull-right">@Resources.Layout.Unlock</a>
-                        </div>
-
+                        )
                     </div>
+
+                    <div class="form-group col-sm-3">
+                        <a href="#" id="month-unlock" class="btn btn-primary pull-right">@Resources.Layout.Unlock</a>
+                    </div>
+
+                </div>
             }
         </div>
     </div>
@@ -298,7 +298,7 @@
                         {
                             source.Read(read =>
                             {
-                                read.Action("GetFactories", "Ajax", new { area = "" });
+                                read.Action("GetFactories", "Ajax", new { area = "" }).Data("sendDate($('input[name=tech-monthly-date]'))");
                             });
                         })
                         )
@@ -334,19 +334,59 @@
 
 @section scripts{
     @Scripts.Render("~/bundles/custom/kendoadditional")
+    @Scripts.Render("~/Scripts/custom/sendFactory.js")
+
     <script>
+        $(function AttachDatePickersEvent() {
+            
+            var pickers = [
+                {
+                    date: $('input[name=shift-date]').data('kendoDatePicker'),
+                    factory: $('#FactoryId').data("kendoDropDownList"),
+                    processUnit: $("#shift-process-unit-id").data("kendoDropDownList")
+                },
+                {
+                    date: $('input[name=day-date]').data('kendoDatePicker'),
+                    factory: $('#day-factory-id').data("kendoDropDownList"),
+                    processUnit: $("#day-process-unit-id").data("kendoDropDownList")
+                },
+                {
+                    date: $('input[name=tech-monthly-date]').data('kendoDatePicker'),
+                    factory: $('#tech-monthly-factory-id').data("kendoDropDownList")
+                }
+            ];
+
+            pickers.forEach(function(element) {
+                bindToFactory(element.date, element.factory, element.processUnit);
+            });
+
+            function bindToFactory(date, factory, processUnit) {
+                date.bind("change",
+                    function () {
+                        factory.dataSource.read();
+                        if (processUnit) {
+                            processUnit.dataSource.read();
+                        }
+
+                    });
+            }
+        });
         (function () {
             sendFactoryId = function () {
+                var result = sendDate($('input[name=shift-date]'));
                 return {
-                    factoryId: $('#FactoryId').val()
+                    factoryId: $('#FactoryId').val(),
+                    date: result.date
                 };
             }
         }());
 
         (function () {
             sendDailyFactoryId = function () {
+                var result = sendDate($('input[name=day-date]'));
                 return {
-                    factoryId: $('#day-factory-id').val()
+                    factoryId: $('#day-factory-id').val(),
+                    date: result.date
                 };
             }
         }());
@@ -368,13 +408,15 @@
                             } else {
                                 if (data.errors) {
                                     var errorMessage = "";
-                                    $.each(data.errors, function (key, value) {
-                                        if ('errors' in value) {
-                                            $.each(value.errors, function () {
-                                                errorMessage += this + "\n";
-                                            });
-                                        }
-                                    });
+                                    $.each(data.errors,
+                                        function (key, value) {
+                                            if ('errors' in value) {
+                                                $.each(value.errors,
+                                                    function () {
+                                                        errorMessage += this + "\n";
+                                                    });
+                                            }
+                                        });
                                     $('pre#err-message').text(errorMessage);
                                     $('div#err-window').data("kendoWindow").open();
                                 }
@@ -383,15 +425,16 @@
                         error: function (data) {
                             var errorMessage = "";
                             var response = JSON.parse(data.responseText).data;
-                            $.each(response.errors, function (key, value) {
-                                errorMessage += this + "\n";
-                            });
+                            $.each(response.errors,
+                                function (key, value) {
+                                    errorMessage += this + "\n";
+                                });
                             $('pre#err-message').text(errorMessage);
                             $('div#err-window').data("kendoWindow").open();
                         }
                     });
                 }
-             );
+            );
         });
 
         $(function () {
@@ -411,13 +454,15 @@
                             } else {
                                 if (data.errors) {
                                     var errorMessage = "";
-                                    $.each(data.errors, function (key, value) {
-                                        if ('errors' in value) {
-                                            $.each(value.errors, function () {
-                                                errorMessage += this + "\n";
-                                            });
-                                        }
-                                    });
+                                    $.each(data.errors,
+                                        function (key, value) {
+                                            if ('errors' in value) {
+                                                $.each(value.errors,
+                                                    function () {
+                                                        errorMessage += this + "\n";
+                                                    });
+                                            }
+                                        });
                                     $('pre#err-message').text(errorMessage);
                                     $('div#err-window').data("kendoWindow").open();
                                 }
@@ -426,15 +471,16 @@
                         error: function (data) {
                             var errorMessage = "";
                             var response = JSON.parse(data.responseText).data;
-                            $.each(response.errors, function (key, value) {
-                                errorMessage += this + "\n";
-                            });
+                            $.each(response.errors,
+                                function (key, value) {
+                                    errorMessage += this + "\n";
+                                });
                             $('pre#err-message').text(errorMessage);
                             $('div#err-window').data("kendoWindow").open();
                         }
                     });
                 }
-             );
+            );
         });
 
         $(function () {
@@ -454,13 +500,15 @@
                             } else {
                                 if (data.errors) {
                                     var errorMessage = "";
-                                    $.each(data.errors, function (key, value) {
-                                        if ('errors' in value) {
-                                            $.each(value.errors, function () {
-                                                errorMessage += this + "\n";
-                                            });
-                                        }
-                                    });
+                                    $.each(data.errors,
+                                        function (key, value) {
+                                            if ('errors' in value) {
+                                                $.each(value.errors,
+                                                    function () {
+                                                        errorMessage += this + "\n";
+                                                    });
+                                            }
+                                        });
                                     $('pre#err-message').text(errorMessage);
                                     $('div#err-window').data("kendoWindow").open();
                                 }
@@ -469,15 +517,16 @@
                         error: function (data) {
                             var errorMessage = "";
                             var response = JSON.parse(data.responseText).data;
-                            $.each(response.errors, function (key, value) {
-                                errorMessage += this + "\n";
-                            });
+                            $.each(response.errors,
+                                function (key, value) {
+                                    errorMessage += this + "\n";
+                                });
                             $('pre#err-message').text(errorMessage);
                             $('div#err-window').data("kendoWindow").open();
                         }
                     });
                 }
-             );
+            );
         });
 
         $(function () {
@@ -497,13 +546,15 @@
                             } else {
                                 if (data.errors) {
                                     var errorMessage = "";
-                                    $.each(data.errors, function (key, value) {
-                                        if ('errors' in value) {
-                                            $.each(value.errors, function () {
-                                                errorMessage += this + "\n";
-                                            });
-                                        }
-                                    });
+                                    $.each(data.errors,
+                                        function (key, value) {
+                                            if ('errors' in value) {
+                                                $.each(value.errors,
+                                                    function () {
+                                                        errorMessage += this + "\n";
+                                                    });
+                                            }
+                                        });
                                     $('pre#err-message').text(errorMessage);
                                     $('div#err-window').data("kendoWindow").open();
                                 }
@@ -512,15 +563,16 @@
                         error: function (data) {
                             var errorMessage = "";
                             var response = JSON.parse(data.responseText).data;
-                            $.each(response.errors, function (key, value) {
-                                errorMessage += this + "\n";
-                            });
+                            $.each(response.errors,
+                                function (key, value) {
+                                    errorMessage += this + "\n";
+                                });
                             $('pre#err-message').text(errorMessage);
                             $('div#err-window').data("kendoWindow").open();
                         }
                     });
                 }
-             );
+            );
         });
 
         function getData(stringified) {
@@ -592,7 +644,6 @@
                 return data;
             }
         }
-
 
 
     </script>

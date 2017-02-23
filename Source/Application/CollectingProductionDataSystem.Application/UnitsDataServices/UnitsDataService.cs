@@ -331,7 +331,7 @@
         public IEnumerable<MultiShift> GetConsolidatedShiftData(DateTime date, int? processUnitId, int? factoryId)
         {
             IEnumerable<UnitsData> dbResult = this.GetUnitsDataForDateTime(date, processUnitId, null)
-                                                  .Where(x => x.UnitConfig.IsMemberOfShiftsReport).Include(x=>x.UnitConfig.ShiftProductType);
+                .Where(x => x.UnitConfig.IsMemberOfShiftsReport).Include(x => x.UnitConfig.ShiftProductType).ToList();
             if (processUnitId == null)
             {
                 var processUnitIds = this.historicalService.GetActualFactories(date, factoryId).SelectMany(x => x.ProcessUnits.Select(y => y.Id));

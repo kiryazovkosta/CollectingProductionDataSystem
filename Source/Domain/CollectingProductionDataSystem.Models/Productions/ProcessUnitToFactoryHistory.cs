@@ -23,6 +23,24 @@ namespace CollectingProductionDataSystem.Models.Productions
     /// </summary>
     public class ProcessUnitToFactoryHistory:DeletableEntity, IEntity
     {
+        public ProcessUnitToFactoryHistory()
+        {
+        }
+
+        public ProcessUnitToFactoryHistory(ProcessUnit processUnit, Factory factory)
+        {
+            this.ProcessUnitId = processUnit.Id;
+            this.ProcessUnitShortName = processUnit.ShortName;
+            this.ProcessUnitFullName = processUnit.FullName;
+            this.FactoryId = factory.Id;
+            this.FactoryShortName = factory.ShortName;
+            this.FactoryFullName = factory.FullName;
+            this.PlantId = factory.Plant.Id;
+            this.PlantShortName = factory.Plant.ShortName;
+            this.PlantFullName = factory.Plant.FullName;
+            this.ActivationDate = processUnit.ActiveFrom;
+        }
+
         public int Id { get; set; }
         public int ProcessUnitId { get; set; }
         public virtual ProcessUnit ProcessUnit { get; set; }
