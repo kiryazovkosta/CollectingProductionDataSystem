@@ -5,11 +5,11 @@
     using System.Data.Entity;
     using System.Linq;
     using System.Threading.Tasks;
-    using CollectingProductionDataSystem.Application.Contracts;
-    using CollectingProductionDataSystem.Constants;
-    using CollectingProductionDataSystem.Data.Contracts;
-    using CollectingProductionDataSystem.Models.Productions;
-    using CollectingProductionDataSystem.Data.Common;
+    using Contracts;
+    using Constants;
+    using Data.Contracts;
+    using Models.Productions;
+    using Data.Common;
 
     public class UnitsDataService : IUnitsDataService
     {
@@ -55,7 +55,7 @@
         /// <returns></returns>
         public IQueryable<UnitsData> GetUnitsDataForDateTime(DateTime? dateParam, int? processUnitIdParam, int? shiftIdParam)
         {
-            var dbResult = GetAllUnitDataIncludeRelations()
+            var dbResult = this.GetAllUnitDataIncludeRelations()
                 .Where(x =>
                 (dateParam == null || x.RecordTimestamp == dateParam.Value)
                 && (processUnitIdParam == null || x.UnitConfig.ProcessUnitId == processUnitIdParam.Value)
@@ -112,7 +112,7 @@
         public IEnumerable<UnitsDailyData> GetUnitsDailyDataForDateTimeWithHistory(DateTime? date, int? processUnitId,
             int? materialType)
         {
-            var dbResult = this.GetUnitsDailyDataForDateTime(date, processUnitId,materialType);
+            var dbResult = this.GetUnitsDailyDataForDateTime(date, processUnitId, materialType);
             var materializedResult = dbResult.ToList();
             this.historicalService.SetHistoricalProcessUnitParams(materializedResult, date.Value);
             return materializedResult;
@@ -121,7 +121,7 @@
         public IEnumerable<UnitsDailyData> GetUnitsDailyApprovedDataForDateTime(DateTime? date, int? processUnitId, int? factoryId)
         {
             var result = new List<UnitsDailyData>();
-            List<UnitsDailyData> unitsDailyDatas = this.data.UnitsDailyDatas.All()
+            var unitsDailyDatas = this.data.UnitsDailyDatas.All()
                 .Include(u => u.UnitsDailyConfig)
                 .Include(u => u.UnitsDailyConfig.ProcessUnit)
                 .Include(u => u.UnitsDailyConfig.DailyProductType)
@@ -132,17 +132,17 @@
                 .Where(x => x.RecordTimestamp == date)
                 .ToList();
 
-            List<UnitsApprovedDailyData> approvedDailyProcessUnits = this.data.UnitsApprovedDailyDatas.All().Where(d => d.RecordDate == date).ToList();
+            var approvedDailyProcessUnits = this.data.UnitsApprovedDailyDatas.All().Where(d => d.RecordDate == date).ToList();
 
-            IEnumerable<int> approvedDailyProcessUnitsIds = approvedDailyProcessUnits.Where(d => d.RecordDate == date).Select(x => x.ProcessUnitId);
+            var approvedDailyProcessUnitsIds = approvedDailyProcessUnits.Where(d => d.RecordDate == date).Select(x => x.ProcessUnitId);
 
             if (processUnitId.HasValue)
             {
                 if (approvedDailyProcessUnitsIds.Contains(processUnitId.Value))
                 {
-                    IEnumerable<UnitsDailyData> subDbResult = unitsDailyDatas.Where(u => u.UnitsDailyConfig.ProcessUnitId == processUnitId);
+                    var subDbResult = unitsDailyDatas.Where(u => u.UnitsDailyConfig.ProcessUnitId == processUnitId);
 
-                    UnitsApprovedDailyData dailyApprovedDataForProcessUnit = approvedDailyProcessUnits.Where(x => x.ProcessUnitId == processUnitId.Value).FirstOrDefault();
+                    var dailyApprovedDataForProcessUnit = approvedDailyProcessUnits.Where(x => x.ProcessUnitId == processUnitId.Value).FirstOrDefault();
                     if (!dailyApprovedDataForProcessUnit.EnergyApproved)
                     {
                         subDbResult = subDbResult.Where(u => u.UnitsDailyConfig.MaterialTypeId != CommonConstants.EnergyType);
@@ -159,19 +159,17 @@
                 if (factoryId.HasValue)
                 {
 
-                   var processUnitIds = this.historicalService.GetActualFactories(date.Value, factoryId).SelectMany(x => x.ProcessUnits.Select(y => y.Id));
-                   foreach (var selectedProcessUnitId in processUnitIds)
-                    {
+                    var processUnitIds = this.historicalService.GetActualFactories(date.Value, factoryId).SelectMany(x => x.ProcessUnits.Select(y => y.Id));
+                    foreach (var selectedProcessUnitId in processUnitIds)
                         if (approvedDailyProcessUnitsIds.Contains(selectedProcessUnitId))
                         {
                             listOfProcessUnits.Add(selectedProcessUnitId);
                         }
-                    }
 
                     foreach (var item in listOfProcessUnits)
                     {
-                        IEnumerable<UnitsDailyData> subDbResult = unitsDailyDatas.Where(x => x.UnitsDailyConfig.ProcessUnitId == item);
-                        UnitsApprovedDailyData dailyApprovedDataForProcessUnit = approvedDailyProcessUnits.Where(x => x.ProcessUnitId == item).FirstOrDefault();
+                        var subDbResult = unitsDailyDatas.Where(x => x.UnitsDailyConfig.ProcessUnitId == item);
+                        var dailyApprovedDataForProcessUnit = approvedDailyProcessUnits.Where(x => x.ProcessUnitId == item).FirstOrDefault();
                         if (!dailyApprovedDataForProcessUnit.EnergyApproved)
                         {
                             subDbResult = subDbResult.Where(u => u.UnitsDailyConfig.MaterialTypeId != CommonConstants.EnergyType);
@@ -183,14 +181,12 @@
                 else
                 {
                     foreach (var processUnit in approvedDailyProcessUnitsIds)
-                    {
                         listOfProcessUnits.Add(processUnit);
-                    }
 
                     foreach (var item in listOfProcessUnits)
                     {
-                        IEnumerable<UnitsDailyData> subDbResult = unitsDailyDatas.Where(x => x.UnitsDailyConfig.ProcessUnitId == item);
-                        UnitsApprovedDailyData dailyApprovedDataForProcessUnit = approvedDailyProcessUnits.Where(x => x.ProcessUnitId == item).FirstOrDefault();
+                        var subDbResult = unitsDailyDatas.Where(x => x.UnitsDailyConfig.ProcessUnitId == item);
+                        var dailyApprovedDataForProcessUnit = approvedDailyProcessUnits.Where(x => x.ProcessUnitId == item).FirstOrDefault();
                         if (!dailyApprovedDataForProcessUnit.EnergyApproved)
                         {
                             subDbResult = subDbResult.Where(u => u.UnitsDailyConfig.MaterialTypeId != CommonConstants.EnergyType);
@@ -278,8 +274,8 @@
             var approvedDailyProcessUnits = this.data.UnitsApprovedDailyDatas.All().Where(d => d.RecordDate == date).ToList();
             foreach (var item in approvedDailyProcessUnits)
             {
-                bool addToCollection = true;
-                bool exsistingMaterialRecords = this.data.UnitsDailyConfigs.All().Where(u => u.MaterialTypeId == CommonConstants.EnergyType && u.ProcessUnitId == item.ProcessUnitId).Any();
+                var addToCollection = true;
+                var exsistingMaterialRecords = this.data.UnitsDailyConfigs.All().Where(u => u.MaterialTypeId == CommonConstants.EnergyType && u.ProcessUnitId == item.ProcessUnitId).Any();
                 if (exsistingMaterialRecords)
                 {
                     if (item.EnergyApproved != true)
@@ -309,7 +305,6 @@
         /// <summary>
         /// Appends the total month quantity to daily records.
         /// </summary>
-        /// <param name="resultDaily">The result daily.</param>
         /// <param name="processUnitId">The process unit id.</param>
         /// <param name="targetDay">The target day.</param>
         public Dictionary<string, double> GetTotalMonthQuantityToDayFromShiftData(DateTime targetDay, int processUnitId = 0)
@@ -317,7 +312,7 @@
             var beginningOfMonth = new DateTime(targetDay.Year, targetDay.Month, 1);
             var endOfObservedPeriod = new DateTime(targetDay.Year, targetDay.Month, targetDay.Day);
 
-            var totalMonthQuantities = data.UnitsData.All().Include(x => x.UnitConfig).Include(x => x.UnitsManualData)
+            var totalMonthQuantities = this.data.UnitsData.All().Include(x => x.UnitConfig).Include(x => x.UnitsManualData)
                .Where(x => (processUnitId == 0 || x.UnitConfig.ProcessUnitId == processUnitId)
                         && x.UnitConfig.ShiftProductTypeId == CommonConstants.DailyInfoDailyInfoHydrocarbonsShiftTypeId // Тип на позициите за ежедневно сведение
                         && beginningOfMonth <= x.RecordTimestamp
@@ -328,10 +323,20 @@
             return totalMonthQuantities;
         }
 
-        public IEnumerable<MultiShift> GetConsolidatedShiftData(DateTime date, int? processUnitId, int? factoryId)
+        public IEnumerable<MultiShift> GetConsolidatedShiftData(DateTime date, int? processUnitId, int? factoryId, int? shiftProductTypeId = null, bool isUnitsReportsData = true)
         {
-            IEnumerable<UnitsData> dbResult = this.GetUnitsDataForDateTime(date, processUnitId, null)
-                .Where(x => x.UnitConfig.IsMemberOfShiftsReport).Include(x => x.UnitConfig.ShiftProductType).ToList();
+            IEnumerable<UnitsData> dbResult = this.GetUnitsDataForDateTime(date, processUnitId, null).Include(x => x.UnitConfig.ShiftProductType);
+            if (isUnitsReportsData)
+            {
+                dbResult = dbResult.Where(x => x.UnitConfig.IsMemberOfShiftsReport);
+            }
+
+            if (shiftProductTypeId != null)
+            {
+                dbResult = dbResult.Where(x =>
+                    x.UnitConfig.ShiftProductTypeId == shiftProductTypeId.Value);
+            }
+
             if (processUnitId == null)
             {
                 var processUnitIds = this.historicalService.GetActualFactories(date, factoryId).SelectMany(x => x.ProcessUnits.Select(y => y.Id));
@@ -339,7 +344,8 @@
                     .ToList();
             }
 
-            this.historicalService.SetHistoricalProcessUnitParams(dbResult, date);
+            var inMemResult = dbResult.ToList();
+            this.historicalService.SetHistoricalProcessUnitParams(inMemResult, date);
             //ToDo: On shifts changed to 2 must repair this code
             var result = dbResult.Select(x => new MultiShift
             {
@@ -353,9 +359,9 @@
                 UnitConfigId = x.UnitConfigId,
                 UnitName = x.UnitConfig.Name,
                 NotATotalizedPosition = x.UnitConfig.NotATotalizedPosition,
-                Shift1 = dbResult.Where(y => y.RecordTimestamp == date && y.ShiftId == (int) ShiftType.First).FirstOrDefault(u => u.UnitConfigId == x.UnitConfigId),
-                Shift2 = dbResult.Where(y => y.RecordTimestamp == date && y.ShiftId == (int) ShiftType.Second).FirstOrDefault(u => u.UnitConfigId == x.UnitConfigId),
-                Shift3 = dbResult.Where(y => y.RecordTimestamp == date && y.ShiftId == (int) ShiftType.Third).FirstOrDefault(u => u.UnitConfigId == x.UnitConfigId),
+                Shift1 = inMemResult.Where(y => y.RecordTimestamp == date && y.ShiftId == (int) ShiftType.First).FirstOrDefault(u => u.UnitConfigId == x.UnitConfigId),
+                Shift2 = inMemResult.Where(y => y.RecordTimestamp == date && y.ShiftId == (int) ShiftType.Second).FirstOrDefault(u => u.UnitConfigId == x.UnitConfigId),
+                Shift3 = inMemResult.Where(y => y.RecordTimestamp == date && y.ShiftId == (int) ShiftType.Third).FirstOrDefault(u => u.UnitConfigId == x.UnitConfigId),
             }).Distinct(new MultiShiftComparer()).ToList();
 
             return result;
