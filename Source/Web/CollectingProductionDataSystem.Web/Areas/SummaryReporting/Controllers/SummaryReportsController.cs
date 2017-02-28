@@ -7,25 +7,25 @@
     using System.Web.Mvc;
     using System.Data.Entity;
     using System.Web.UI;
-    using CollectingProductionDataSystem.Constants;
-    using CollectingProductionDataSystem.Data.Contracts;
-    using CollectingProductionDataSystem.Web.Areas.MonthlyReporting.ViewModels;
-    using CollectingProductionDataSystem.Web.Areas.NomManagement.Models.ViewModels;
-    using CollectingProductionDataSystem.Web.Areas.SummaryReporting.ViewModels;
-    using CollectingProductionDataSystem.Web.Infrastructure.Extentions;
+    using Constants;
+    using Data.Contracts;
+    using MonthlyReporting.ViewModels;
+    using NomManagement.Models.ViewModels;
+    using ViewModels;
+    using Infrastructure.Extentions;
     using Kendo.Mvc.UI;
     using Kendo.Mvc.Extensions;
     using AutoMapper;
-    using CollectingProductionDataSystem.Models.Inventories;
-    using CollectingProductionDataSystem.Web.ViewModels.Tank;
+    using Models.Inventories;
+    using Web.ViewModels.Tank;
     using Newtonsoft.Json;
     using Resources = App_GlobalResources.Resources;
-    using CollectingProductionDataSystem.Application.Contracts;
-    using CollectingProductionDataSystem.Models.Productions;
-    using CollectingProductionDataSystem.Web.Areas.DailyReporting.ViewModels;
+    using Application.Contracts;
+    using Models.Productions;
+    using DailyReporting.ViewModels;
     using System.Diagnostics;
-    using CollectingProductionDataSystem.Web.Infrastructure.Filters;
-    using CollectingProductionDataSystem.Web.ViewModels.Units;
+    using Infrastructure.Filters;
+    using Web.ViewModels.Units;
     using Application.MonthlyServices;
     using System.Text;
 
@@ -52,7 +52,7 @@
         [HttpGet]
         public ActionResult TanksData()
         {
-            return View();
+            return this.View();
         }
 
         [HttpPost]
@@ -60,7 +60,7 @@
         [OutputCache(Duration = HalfAnHour, Location = OutputCacheLocation.Server, VaryByParam = "*")]
         public ActionResult ReadTanksData([DataSourceRequest]DataSourceRequest request, DateTime? date, int? parkId, int? areaId)
         {
-            ValidateInputModel(date, parkId);
+            this.ValidateInputModel(date, parkId);
 
             if (this.ModelState.IsValid)
             {
@@ -74,29 +74,29 @@
                         && (parkId == null || t.ParkId == parkId))
                     .ToList();
 
-                var vmResult = Mapper.Map<IEnumerable<TankDataViewModel>>(dbResult);
+                var vmResult = Mapper.Map<IEnumerable<TankDataViewModel>>(dbResult).ToList();
                 foreach (var tank in vmResult)
                 {
-                    var status = statuses.Where(x => x.Tank.Id == tank.TankId).FirstOrDefault();
-                    if (status != null && status.Quantity.TankStatus != null)
+                    var status = statuses.FirstOrDefault(x => x.Tank.Id == tank.TankId);
+                    if (status?.Quantity.TankStatus != null)
                     {
                         tank.StatusOfTank = status.Quantity.TankStatus.Id.ToString();
                     }
                 }
 
-                return Json(vmResult.OrderByDescending(x => x.TankName[0]).ThenBy(x => x.TankNumber).ToDataSourceResult(request, this.ModelState));
+                return this.Json(vmResult.OrderByDescending(x => x.TankName[0]).ThenBy(x => x.TankNumber).ToDataSourceResult(request, this.ModelState));
             }
             else
             {
-                var kendoResult = new List<TankDataViewModel>().ToDataSourceResult(request, ModelState);
-                return Json(kendoResult);
+                var kendoResult = new List<TankDataViewModel>().ToDataSourceResult(request, this.ModelState);
+                return this.Json(kendoResult);
             }
         }
 
         [HttpGet]
         public ActionResult TanksWeightInVacuumData()
         {
-            return View();
+            return this.View();
         }
 
         [HttpPost]
@@ -104,7 +104,7 @@
         [OutputCache(Duration = HalfAnHour, Location = OutputCacheLocation.Server, VaryByParam = "*")]
         public ActionResult ReadTanksWeightInVacuumData([DataSourceRequest]DataSourceRequest request, DateTime? date, int? parkId, int? areaId)
         {
-            ValidateUnitsReportModelState(date);
+            this.ValidateUnitsReportModelState(date);
 
             if (this.ModelState.IsValid)
             {
@@ -126,18 +126,18 @@
                     {
                         Id = weight.Key,
                         RecordTimestamp = date.Value,
-                        Product = products.Where(p => p.Code == weight.Key).FirstOrDefault(),
+                        Product = products.FirstOrDefault(p => p.Code == weight.Key),
                         WeightInVaccum = weight.Value.Value
                     });
                 }
 
                 var vmResult = Mapper.Map<IEnumerable<TankWeighInVacuumViewModel>>(weightInVacuumList);
-                return Json(vmResult.OrderBy(x => x.ProductId).ToDataSourceResult(request, this.ModelState));
+                return this.Json(vmResult.OrderBy(x => x.ProductId).ToDataSourceResult(request, this.ModelState));
             }
             else
             {
-                var kendoResult = new List<TankDataViewModel>().ToDataSourceResult(request, ModelState);
-                return Json(kendoResult);
+                var kendoResult = new List<TankDataViewModel>().ToDataSourceResult(request, this.ModelState);
+                return this.Json(kendoResult);
             }
         }
 
@@ -152,43 +152,13 @@
         [HttpGet]
         public ActionResult UnitsReportsData()
         {
-            return View();
-        }
-
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        [OutputCache(Duration = HalfAnHour, Location = OutputCacheLocation.ServerAndClient, VaryByParam = "*")]
-        public JsonResult ReadUnitsReportsData([DataSourceRequest]
-                                        DataSourceRequest request, DateTime? date, int? processUnitId, int? factoryId)
-        {
-            ValidateUnitsReportModelState(date);
-            if (ModelState.IsValid)
-            {
-                var result = this.unitsDataService.GetConsolidatedShiftData(date.Value, processUnitId, factoryId);
-
-                var kendoPreparedResult = Mapper.Map<IEnumerable<MultiShift>, IEnumerable<UnitsReportsDataViewModel>>(result);
-                var kendoResult = new DataSourceResult();
-                try
-                {
-                    kendoResult = kendoPreparedResult.ToDataSourceResult(request, ModelState);
-                }
-                catch (Exception ex1)
-                {
-                    Debug.WriteLine(ex1.Message + "\n" + ex1.InnerException);
-                }
-
-                return Json(kendoResult, JsonRequestBehavior.AllowGet);
-            }
-            else
-            {
-                return Json(new[] { new object() }.ToDataSourceResult(request, ModelState), JsonRequestBehavior.AllowGet);
-            }
+            return this.View();
         }
 
         [HttpGet]
         public ActionResult UnitsDailyReportsData()
         {
-            return View();
+            return this.View();
         }
 
         /// <summary>
@@ -211,46 +181,46 @@
         //[OutputCache(Duration = HalfAnHour, Location = OutputCacheLocation.Server, VaryByParam = "*")]
         public JsonResult ReadDailyUnitsData([DataSourceRequest]DataSourceRequest request, DateTime? date, int? processUnitId, int? factoryId)
         {
-            ValidateDailyModelState(date);
-            if (ModelState.IsValid)
+            this.ValidateDailyModelState(date);
+            if (this.ModelState.IsValid)
             {
                 var kendoResult = new DataSourceResult();
-                if (ModelState.IsValid)
+                if (this.ModelState.IsValid)
                 {
                     var dbResult = this.unitsDataService.GetUnitsDailyApprovedDataForDateTime(date, processUnitId, factoryId);
 
                     var kendoPreparedResult = Mapper.Map<IEnumerable<UnitsDailyData>, IEnumerable<UnitDailyDataViewModel>>(dbResult);
-                    kendoResult = kendoPreparedResult.ToDataSourceResult(request, ModelState);
+                    kendoResult = kendoPreparedResult.ToDataSourceResult(request, this.ModelState);
                 }
 
-                return Json(kendoResult, JsonRequestBehavior.AllowGet);
+                return this.Json(kendoResult, JsonRequestBehavior.AllowGet);
             }
             else
             {
-                var kendoResult = new List<UnitDailyDataViewModel>().ToDataSourceResult(request, ModelState);
-                return Json(kendoResult, JsonRequestBehavior.AllowGet);
+                var kendoResult = new List<UnitDailyDataViewModel>().ToDataSourceResult(request, this.ModelState);
+                return this.Json(kendoResult, JsonRequestBehavior.AllowGet);
             }
         }
 
         [HttpGet]
         public ActionResult DataConfirmation()
         {
-            return View();
+            return this.View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult ReadConfirmationData([DataSourceRequest]DataSourceRequest request, DateTime? date, int? processUnitId, int? factoryId)
         {
-            ValidateDailyModelState(date);
-            if (!ModelState.IsValid)
+            this.ValidateDailyModelState(date);
+            if (!this.ModelState.IsValid)
             {
-                var kendoResult = new List<UnitDailyDataViewModel>().ToDataSourceResult(request, ModelState);
-                return Json(kendoResult);
+                var kendoResult = new List<UnitDailyDataViewModel>().ToDataSourceResult(request, this.ModelState);
+                return this.Json(kendoResult);
             }
 
             //TODO: Need to refactory to also and by aprocess unit active period
-            var SelectedFactories = data.ProcessUnits.All().Include(x => x.Factory)
+            var selectedFactories = this.data.ProcessUnits.All().Include(x => x.Factory)
                 .Where(x => x.HasApprovedStatistics == true)
                 .Where(x => x.Id == (processUnitId ?? x.Id)
                 && x.Factory.Id == (factoryId ?? x.Factory.Id)).Select(x => new DataConfirmationViewModel()
@@ -260,44 +230,44 @@
                     ProcessUnitId = x.Id,
                     ProcessUnitName = x.ShortName
                 }).OrderBy(x => x.FactoryId).ToList();
-            var targetProcessUnitIds = SelectedFactories.Select(x => x.ProcessUnitId);
+            var targetProcessUnitIds = selectedFactories.Select(x => x.ProcessUnitId);
             var beginOfMonth = new DateTime(date.Value.Year, date.Value.Month, 1);
             var targetDate = date.Value.Date;
-            var ConfirmedRecords = data.UnitsApprovedDatas.All().Where(x => x.RecordDate == targetDate && targetProcessUnitIds.Any(y => x.ProcessUnitId == y)).ToList();
-            var ConfirmedDailyRecord = data.UnitsApprovedDailyDatas.All()
+            var ConfirmedRecords = this.data.UnitsApprovedDatas.All().Where(x => x.RecordDate == targetDate && targetProcessUnitIds.Any(y => x.ProcessUnitId == y)).ToList();
+            var ConfirmedDailyRecord = this.data.UnitsApprovedDailyDatas.All()
                 .Where(x => beginOfMonth <= x.RecordDate
                     && x.RecordDate <= targetDate
                     && targetProcessUnitIds.Any(y => x.ProcessUnitId == y)).ToList();
 
-            var isProcessUnitEnergyPreApproved = GetIsProcessUnitEnergyPreApproved();
+            var isProcessUnitEnergyPreApproved = this.GetIsProcessUnitEnergyPreApproved();
 
-            var IsEnergyCheckOff = Convert.ToBoolean(System.Configuration.ConfigurationManager.AppSettings["ComplitionEnergyCheckDeactivared"]);
+            var isEnergyCheckOff = Convert.ToBoolean(System.Configuration.ConfigurationManager.AppSettings["ComplitionEnergyCheckDeactivared"]);
 
-            for (int i = 0; i < SelectedFactories.Count; i++)
+            for (int i = 0; i < selectedFactories.Count; i++)
             {
-                var confirmationFirstShift = ConfirmedRecords.FirstOrDefault(x => x.ProcessUnitId == SelectedFactories[i].ProcessUnitId && x.ShiftId == (int)ShiftType.First);
-                var confirmationSecondShift = ConfirmedRecords.FirstOrDefault(x => x.ProcessUnitId == SelectedFactories[i].ProcessUnitId && x.ShiftId == (int)ShiftType.Second);
-                var confirmationThirdShift = ConfirmedRecords.FirstOrDefault(x => x.ProcessUnitId == SelectedFactories[i].ProcessUnitId && x.ShiftId == (int)ShiftType.Third);
-                var confirmationOfDay = ConfirmedDailyRecord.FirstOrDefault(x => x.RecordDate == targetDate && x.ProcessUnitId == SelectedFactories[i].ProcessUnitId);
-                var confirmationUntilTheDay = ConfirmedDailyRecord.Where(x => x.ProcessUnitId == SelectedFactories[i].ProcessUnitId
-                                                                          && (x.EnergyApproved || IsEnergyCheckOff || isProcessUnitEnergyPreApproved[SelectedFactories[i].ProcessUnitId]))
+                var confirmationFirstShift = ConfirmedRecords.FirstOrDefault(x => x.ProcessUnitId == selectedFactories[i].ProcessUnitId && x.ShiftId == (int)ShiftType.First);
+                var confirmationSecondShift = ConfirmedRecords.FirstOrDefault(x => x.ProcessUnitId == selectedFactories[i].ProcessUnitId && x.ShiftId == (int)ShiftType.Second);
+                var confirmationThirdShift = ConfirmedRecords.FirstOrDefault(x => x.ProcessUnitId == selectedFactories[i].ProcessUnitId && x.ShiftId == (int)ShiftType.Third);
+                var confirmationOfDay = ConfirmedDailyRecord.FirstOrDefault(x => x.RecordDate == targetDate && x.ProcessUnitId == selectedFactories[i].ProcessUnitId);
+                var confirmationUntilTheDay = ConfirmedDailyRecord.Where(x => x.ProcessUnitId == selectedFactories[i].ProcessUnitId
+                                                                          && (x.EnergyApproved || isEnergyCheckOff || isProcessUnitEnergyPreApproved[selectedFactories[i].ProcessUnitId]))
                                                                           .Select(x => new DailyConfirmationViewModel()
                                                                             {
                                                                                 Day = x.RecordDate,
                                                                                 IsConfirmed = x.Approved,
                                                                             }).ToList();
 
-                SelectedFactories[i].Shift1Confirmed = (confirmationFirstShift == null) ? false : confirmationFirstShift.Approved;
-                SelectedFactories[i].Shift2Confirmed = (confirmationSecondShift == null) ? false : confirmationSecondShift.Approved;
-                SelectedFactories[i].Shift3Confirmed = (confirmationThirdShift == null) ? false : confirmationThirdShift.Approved;
-                SelectedFactories[i].DayMaterialConfirmed = (confirmationOfDay == null) ? false : confirmationOfDay.Approved;
-                SelectedFactories[i].DayEnergyConfirmed = ((confirmationOfDay == null) ? false : confirmationOfDay.EnergyApproved)
-                    || (isProcessUnitEnergyPreApproved.ContainsKey(SelectedFactories[i].ProcessUnitId) ? isProcessUnitEnergyPreApproved[SelectedFactories[i].ProcessUnitId] : false);
-                SelectedFactories[i].DayConfirmed = (confirmationOfDay == null) ? false : confirmationOfDay.Approved && (confirmationOfDay.EnergyApproved || isProcessUnitEnergyPreApproved[SelectedFactories[i].ProcessUnitId]);
-                SelectedFactories[i].ConfirmedDaysUntilTheDay = JsonConvert.SerializeObject(confirmationUntilTheDay ?? new List<DailyConfirmationViewModel>());
+                selectedFactories[i].Shift1Confirmed = confirmationFirstShift?.Approved ?? false;
+                selectedFactories[i].Shift2Confirmed = confirmationSecondShift?.Approved ?? false;
+                selectedFactories[i].Shift3Confirmed = confirmationThirdShift?.Approved ?? false;
+                selectedFactories[i].DayMaterialConfirmed = confirmationOfDay?.Approved ?? false;
+                selectedFactories[i].DayEnergyConfirmed = (confirmationOfDay?.EnergyApproved ?? false)
+                    || (isProcessUnitEnergyPreApproved.ContainsKey(selectedFactories[i].ProcessUnitId) && isProcessUnitEnergyPreApproved[selectedFactories[i].ProcessUnitId]);
+                selectedFactories[i].DayConfirmed = (confirmationOfDay != null) && (confirmationOfDay.Approved && (confirmationOfDay.EnergyApproved || isProcessUnitEnergyPreApproved[selectedFactories[i].ProcessUnitId]));
+                selectedFactories[i].ConfirmedDaysUntilTheDay = JsonConvert.SerializeObject(confirmationUntilTheDay ?? new List<DailyConfirmationViewModel>());
             }
 
-            return Json(SelectedFactories.ToDataSourceResult(request, ModelState));
+            return this.Json(selectedFactories.ToDataSourceResult(request, this.ModelState));
         }
 
         /// <summary>
@@ -321,20 +291,20 @@
         [HttpGet]
         public ActionResult ProductionPlanReport()
         {
-            return View();
+            return this.View();
         }
 
         [AuthorizeFactory]
         [OutputCache(Duration = HalfAnHour, Location = OutputCacheLocation.Server, VaryByParam = "*")]
         public JsonResult ReadProductionPlanData([DataSourceRequest]DataSourceRequest request, DateTime? date, int? processUnitId, int? factoryId)
         {
-            ValidateDailyModelState(date);
-            if (ModelState.IsValid)
+            this.ValidateDailyModelState(date);
+            if (this.ModelState.IsValid)
             {
                 var kendoResult = new DataSourceResult();
-                if (ModelState.IsValid)
+                if (this.ModelState.IsValid)
                 {
-                    var dbResult = data.ProductionPlanDatas.All()
+                    var dbResult = this.data.ProductionPlanDatas.All()
                         .Include(x => x.ProductionPlanConfig)
                         .Include(x => x.ProductionPlanConfig.ProcessUnit)
                         .Include(x => x.ProductionPlanConfig.ProcessUnit.Factory)
@@ -347,35 +317,35 @@
                         )
                         .OrderBy(x => x.ProductionPlanConfig.Code);
 
-                    kendoResult = dbResult.ToDataSourceResult(request, ModelState, Mapper.Map<SummaryProductionPlanViewModel>);
+                    kendoResult = dbResult.ToDataSourceResult(request, this.ModelState, Mapper.Map<SummaryProductionPlanViewModel>);
                 }
 
-                return Json(kendoResult, JsonRequestBehavior.AllowGet);
+                return this.Json(kendoResult, JsonRequestBehavior.AllowGet);
             }
             else
             {
-                var kendoResult = new List<UnitDailyDataViewModel>().ToDataSourceResult(request, ModelState);
-                return Json(kendoResult, JsonRequestBehavior.AllowGet);
+                var kendoResult = new List<UnitDailyDataViewModel>().ToDataSourceResult(request, this.ModelState);
+                return this.Json(kendoResult, JsonRequestBehavior.AllowGet);
             }
         }
 
         [HttpGet]
         public ActionResult ProductionPlanEnergyReport()
         {
-            return View();
+            return this.View();
         }
 
         [AuthorizeFactory]
         [OutputCache(Duration = HalfAnHour, Location = OutputCacheLocation.Server, VaryByParam = "*")]
         public JsonResult ReadProductionPlanEnergyData([DataSourceRequest]DataSourceRequest request, DateTime? date, int? processUnitId, int? factoryId)
         {
-            ValidateDailyModelState(date);
-            if (ModelState.IsValid)
+            this.ValidateDailyModelState(date);
+            if (this.ModelState.IsValid)
             {
                 var kendoResult = new DataSourceResult();
-                if (ModelState.IsValid)
+                if (this.ModelState.IsValid)
                 {
-                    var dbResult = data.ProductionPlanDatas.All()
+                    var dbResult = this.data.ProductionPlanDatas.All()
                         .Include(x => x.ProductionPlanConfig)
                         .Include(x => x.ProductionPlanConfig.ProcessUnit)
                         .Include(x => x.ProductionPlanConfig.MeasureUnit)
@@ -389,65 +359,65 @@
                         )
                         .OrderBy(x => x.ProductionPlanConfig.Code);
 
-                    kendoResult = dbResult.ToDataSourceResult(request, ModelState, Mapper.Map<EnergyProductionPlanDataViewModel>);
+                    kendoResult = dbResult.ToDataSourceResult(request, this.ModelState, Mapper.Map<EnergyProductionPlanDataViewModel>);
                 }
 
-                return Json(kendoResult, JsonRequestBehavior.AllowGet);
+                return this.Json(kendoResult, JsonRequestBehavior.AllowGet);
             }
             else
             {
-                var kendoResult = new List<UnitDailyDataViewModel>().ToDataSourceResult(request, ModelState);
-                return Json(kendoResult, JsonRequestBehavior.AllowGet);
+                var kendoResult = new List<UnitDailyDataViewModel>().ToDataSourceResult(request, this.ModelState);
+                return this.Json(kendoResult, JsonRequestBehavior.AllowGet);
             }
         }
 
         [HttpGet]
         public ActionResult DailyInfoHydrocarbonsData()
         {
-            return View();
+            return this.View();
+        }
+
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        [OutputCache(Duration = HalfAnHour, Location = OutputCacheLocation.ServerAndClient, VaryByParam = "*")]
+        public JsonResult ReadUnitsReportsData([DataSourceRequest]
+                                        DataSourceRequest request, DateTime? date, int? processUnitId, int? factoryId)
+        {
+            this.ValidateUnitsReportModelState(date);
+            if (this.ModelState.IsValid)
+            {
+                var result = this.unitsDataService.GetConsolidatedShiftData(date.Value, processUnitId, factoryId);
+
+                var kendoPreparedResult = Mapper.Map<IEnumerable<MultiShift>, IEnumerable<UnitsReportsDataViewModel>>(result);
+                var kendoResult = new DataSourceResult();
+                try
+                {
+                    kendoResult = kendoPreparedResult.ToDataSourceResult(request, this.ModelState);
+                }
+                catch (Exception ex1)
+                {
+                    Debug.WriteLine(ex1.Message + "\n" + ex1.InnerException);
+                }
+
+                return this.Json(kendoResult, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return this.Json(new[] { new object() }.ToDataSourceResult(request, this.ModelState), JsonRequestBehavior.AllowGet);
+            }
         }
 
         [OutputCache(Duration = HalfAnHour, Location = OutputCacheLocation.ServerAndClient, VaryByParam = "*")]
         public JsonResult ReadDailyInfoHydrocarbonsData([DataSourceRequest]
                                         DataSourceRequest request, DateTime? date, int? processUnitId, int? factoryId)
         {
-            ValidateUnitsReportModelState(date);
-            if (ModelState.IsValid)
+            this.ValidateUnitsReportModelState(date);
+            if (this.ModelState.IsValid)
             {
-                IEnumerable<UnitsData> dbResult = this.unitsDataService.GetUnitsDataForDateTime(date, processUnitId,
-                        null)
-                    .Where(x =>
-                        x.UnitConfig.ShiftProductTypeId == CommonConstants.DailyInfoDailyInfoHydrocarbonsShiftTypeId);
+                var result = this.unitsDataService.GetConsolidatedShiftData(date.Value, processUnitId,
+                    factoryId, CommonConstants.DailyInfoDailyInfoHydrocarbonsShiftTypeId, false);
 
-                if (processUnitId == null)
-                {
-                    var processUnitIds = this.historicalService.GetActualFactories(date.Value, factoryId).SelectMany(x => x.ProcessUnits.Select(y => y.Id));
-                    dbResult = dbResult.Where(x => processUnitIds.Contains(x.UnitConfig.ProcessUnit.Id));
-
-                }
-
-                var inMemResult = dbResult.ToList();
-                this.historicalService.SetHistoricalProcessUnitParams(inMemResult, date.Value);
-
-                // ToDo: On shifts changed to 2 must repair this code
-                var result = inMemResult.Select(x => new MultiShift
-                {
-                    TimeStamp = x.RecordTimestamp,
-                    Factory = string.Format("{0:d2} {1}", x.UnitConfig.HistorycalProcessUnit.Factory.Id, x.UnitConfig.HistorycalProcessUnit.Factory.ShortName),
-                    ProcessUnit = string.Format("{0:d2} {1}", x.UnitConfig.HistorycalProcessUnit.Id, x.UnitConfig.HistorycalProcessUnit.ShortName),
-                    Code = x.UnitConfig.Code,
-                    Position = x.UnitConfig.Position,
-                    MeasureUnit = x.UnitConfig.MeasureUnit.Code,
-                    ShiftProductType = string.Format("{0:d2} {1}", x.UnitConfig.ShiftProductType.Id, x.UnitConfig.ShiftProductType.Name),
-                    UnitConfigId = x.UnitConfigId,
-                    UnitName = x.UnitConfig.Name,
-                    Shift1 = inMemResult.Where(y => y.RecordTimestamp == date && y.ShiftId == (int)ShiftType.First).FirstOrDefault(u => u.UnitConfigId == x.UnitConfigId),
-                    Shift2 = inMemResult.Where(y => y.RecordTimestamp == date && y.ShiftId == (int)ShiftType.Second).FirstOrDefault(u => u.UnitConfigId == x.UnitConfigId),
-                    Shift3 = inMemResult.Where(y => y.RecordTimestamp == date && y.ShiftId == (int)ShiftType.Third).FirstOrDefault(u => u.UnitConfigId == x.UnitConfigId),
-                    NotATotalizedPosition = x.UnitConfig.NotATotalizedPosition,
-                }).Distinct(new MultiShiftComparer()).ToList();
-
-                var kendoPreparedResult = Mapper.Map<IEnumerable<MultiShift>, IEnumerable<UnitsReportsDataViewModel>>(result);
+                var kendoPreparedResult = Mapper.Map<IEnumerable<MultiShift>, IEnumerable<UnitsReportsDataViewModel>>(result).ToList();
 
                 var totalMonthQuantities = this.unitsDataService.GetTotalMonthQuantityToDayFromShiftData(date.Value, processUnitId ?? 0);
 
@@ -474,33 +444,31 @@
                 var kendoResult = new DataSourceResult();
                 try
                 {
-                    kendoResult = kendoPreparedResult.ToDataSourceResult(request, ModelState);
+                    kendoResult = kendoPreparedResult.ToDataSourceResult(request, this.ModelState);
                 }
                 catch (Exception ex1)
                 {
                     Debug.WriteLine(ex1.Message + "\n" + ex1.InnerException);
                 }
 
-                return Json(kendoResult, JsonRequestBehavior.AllowGet);
+                return this.Json(kendoResult, JsonRequestBehavior.AllowGet);
             }
-            else
-            {
-                return Json(new[] { new object() }.ToDataSourceResult(request, ModelState), JsonRequestBehavior.AllowGet);
-            }
+
+            return this.Json(new[] { new object() }.ToDataSourceResult(request, this.ModelState), JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]
         public ActionResult InnerPipelinesData()
         {
             this.ViewData["products"] = Mapper.Map<IEnumerable<ProductViewModel>>(this.data.Products.All()).ToList();
-            return View();
+            return this.View();
         }
 
         [HttpGet]
         [OutputCache(Duration = HalfAnHour, Location = OutputCacheLocation.ServerAndClient, VaryByParam = "*")]
         public ActionResult ReadInnerPipelinesData([DataSourceRequest]DataSourceRequest request, DateTime? date)
         {
-            ValidateDailyModelState(date);
+            this.ValidateDailyModelState(date);
 
             if (this.ModelState.IsValid)
             {
@@ -511,14 +479,14 @@
                 }
 
                 var vmResult = Mapper.Map<IEnumerable<InnerPipelinesDataViewModel>>(dbResult).Where(x => x.Volume != 0 || x.Mass != 0).OrderBy(x => x.Product.Code);
-                    var kendoResult = vmResult.ToDataSourceResult(request, ModelState);
-                    return Json(kendoResult, JsonRequestBehavior.AllowGet);
+                    var kendoResult = vmResult.ToDataSourceResult(request, this.ModelState);
+                    return this.Json(kendoResult, JsonRequestBehavior.AllowGet);
 
             }
             else
             {
-                var kendoResult = new List<InnerPipelinesDataViewModel>().ToDataSourceResult(request, ModelState);
-                return Json(kendoResult, JsonRequestBehavior.AllowGet);
+                var kendoResult = new List<InnerPipelinesDataViewModel>().ToDataSourceResult(request, this.ModelState);
+                return this.Json(kendoResult, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -526,26 +494,26 @@
         public ActionResult InProcessUnitsData()
         {
             this.ViewData["products"] = Mapper.Map<IEnumerable<ProductViewModel>>(this.data.Products.All().ToList());
-            this.ViewData["processunits"] = Mapper.Map<IEnumerable<CollectingProductionDataSystem.Web.ViewModels.Units.ProcessUnitViewModel>>(this.data.ProcessUnits.All().ToList());
-            return View();
+            this.ViewData["processunits"] = Mapper.Map<IEnumerable<Web.ViewModels.Units.ProcessUnitViewModel>>(this.data.ProcessUnits.All().ToList());
+            return this.View();
         }
 
         [HttpGet]
         [OutputCache(Duration = HalfAnHour, Location = OutputCacheLocation.ServerAndClient, VaryByParam = "*")]
         public ActionResult ReadInProcessUnitsData([DataSourceRequest]DataSourceRequest request, DateTime? date)
         {
-            ValidateDailyModelState(date);
+            this.ValidateDailyModelState(date);
 
             if (this.ModelState.IsValid)
             {
                 var dbResult = this.data.InProcessUnitDatas.All().Where(x => x.RecordTimestamp == date);
                 var kendoResult = dbResult.ToDataSourceResult(request, this.ModelState, Mapper.Map<InProcessUnitsViewModel>);
-                return Json(kendoResult, JsonRequestBehavior.AllowGet);
+                return this.Json(kendoResult, JsonRequestBehavior.AllowGet);
             }
             else
             {
-                var kendoResult = new List<InProcessUnitsViewModel>().ToDataSourceResult(request, ModelState);
-                return Json(kendoResult, JsonRequestBehavior.AllowGet);
+                var kendoResult = new List<InProcessUnitsViewModel>().ToDataSourceResult(request, this.ModelState);
+                return this.Json(kendoResult, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -563,7 +531,7 @@
             {
                 this.ModelState.AddModelError("date", string.Format(Resources.ErrorMessages.Required, Resources.Layout.TanksDateSelector));
             }
-            if (!User.IsInRole("Administrator") && !User.IsInRole("AllParksReporter"))
+            if (!this.User.IsInRole("Administrator") && !this.User.IsInRole("AllParksReporter"))
             {
                 if (parkId == null)
                 {
