@@ -36,6 +36,8 @@ using System.Runtime.Serialization.Formatters.Binary;
 using AutoMapper;
 using CollectingProductionDataSystem.ConsoleClient.Models;
 using CollectingProductionDataSystem.Infrastructure.Mapping;
+using static System.Console;
+// ReSharper disable LocalizableElement
 
 namespace CollectingProductionDataSystem.ConsoleClient
 {
@@ -51,6 +53,9 @@ namespace CollectingProductionDataSystem.ConsoleClient
             IProductionData data = kernel.Get<ProductionData>();
             ICalculatorService calculator = kernel.Get<CalculatorService>();
             ConfigAutoMapper();
+
+            DateTime reportDateTime = new DateTime(2017, 2, 24, 0, 0, 0);
+            ProcesReportTransactionsData(reportDateTime);
 
             //DateTime targetRecordDateTime = DateTime.Now;
             //var tanksPhdConfigs = new Dictionary<string, int>();
@@ -158,10 +163,10 @@ namespace CollectingProductionDataSystem.ConsoleClient
 
 
 
-            var lastRealDate = new DateTime(year: 2017, month: 2, day: 9, hour: 0, minute: 0, second: 0);
+            //var lastRealDate = new DateTime(year: 2017, month: 2, day: 9, hour: 0, minute: 0, second: 0);
             //CreateShiftData(data, lastRealDate);
             //CreateDailyData(data, lastRealDate);
-            CreateProductionPlanData(data, lastRealDate);
+            //CreateProductionPlanData(data, lastRealDate);
 
             //TransactionOptions transantionOption = DefaultTransactionOptions.Instance.TransactionOptions;
             //using (var transaction = new TransactionScope(TransactionScopeOption.Required, transantionOption))
@@ -172,7 +177,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
             //        //CopyRelatedUnitDailyConfigs(data);
             //        //CopyUnitConfigUnitDailyConfigs(data);
 
-                    
+
             //        //UpdatePlanNorms(data, 16, 52);
             //        //UpdatePlanNorms(data, 17, 53);
             //        //UpdateProductionPlanDatas(data);
@@ -253,7 +258,57 @@ namespace CollectingProductionDataSystem.ConsoleClient
             //}
             //TreeShiftsReports(DateTime.Today.AddDays(-2), 1);
             //SeedShiftsToDatabase(uow);
-            Console.WriteLine("finished");
+            WriteLine("finished");
+        }
+
+        internal static void ProcesReportTransactionsData(DateTime dateTime)
+        {
+            try
+            {
+                if (DateTime.Now.Hour >= 7 /*&& DateTime.Now.Hour <= 10*/)
+                {
+                    using (var context = new ProductionData(new CollectingDataSystemDbContext(new AuditablePersister(), new Logger())))
+                    {
+                        bool existingReport = context.MeasuringPointsConfigsReportDatas.All().Any(x => x.RecordTimestamp == dateTime);
+                        if (!existingReport)
+                        {
+                            WriteLine($"Begin generation of transaction data by products report for {dateTime:yyyy-MM-dd}!");
+                            var transactionsDailyDataService = new TransactionsDailyDataService(context);
+                            var input = transactionsDailyDataService.ReadTransactionsDailyData(dateTime, CommonConstants.InputDirection);
+                            var output = transactionsDailyDataService.ReadTransactionsDailyData(dateTime, CommonConstants.OutputDirection);
+                            var result = new List<MeasuringPointsConfigsReportData>();
+                            foreach (var item in input)
+                            {
+                                MeasuringPointsConfigsReportData record = item;
+                                record.RecordTimestamp = dateTime;
+                                record.Direction = CommonConstants.InputDirection;
+                                result.Add(record);
+                            }
+
+                            foreach (var item in output)
+                            {
+                                MeasuringPointsConfigsReportData record = item;
+                                record.RecordTimestamp = dateTime;
+                                record.Direction = CommonConstants.OutputDirection;
+                                result.Add(record);
+                            }
+
+                            WriteLine($"Processing {input.Count()} input records");
+                            WriteLine($"Processing {output.Count()} output records");
+                            context.MeasuringPointsConfigsReportDatas.BulkInsert(result, userName: "Initial Loading");
+                            context.SaveChanges(userName: "Initial Loading");
+
+                            input = null;
+                            output = null;
+                            WriteLine("End generation of transaction data by products report!");
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                WriteLine(ex.Message, ex);
+            }
         }
 
         private static void UpdateApplicationUserProcessUnits(IProductionData data)
@@ -276,9 +331,9 @@ namespace CollectingProductionDataSystem.ConsoleClient
                 var newId = newUProductionPlanConfigs[config.Key];
                 productionPlanConfigsIndexes.Add(config.Value, newId);
             }
-            Console.WriteLine($"UpdatePlanNorms->{oldProductionPlanConfigs.Count}");
-            Console.WriteLine($"UpdatePlanNorms->{newUProductionPlanConfigs.Count}");
-            Console.WriteLine($"UpdatePlanNorms->{productionPlanConfigsIndexes.Count}");
+            WriteLine($"UpdatePlanNorms->{oldProductionPlanConfigs.Count}");
+            WriteLine($"UpdatePlanNorms->{newUProductionPlanConfigs.Count}");
+            WriteLine($"UpdatePlanNorms->{productionPlanConfigsIndexes.Count}");
 
             var firstDayInMonth = new DateTime(2017, 2, 1, 0, 0, 0);
             var planNormsDatas = data.PlanNorms.All()
@@ -287,11 +342,11 @@ namespace CollectingProductionDataSystem.ConsoleClient
                 .ToList();
             foreach (var planNormsData in planNormsDatas)
             {
-                Console.WriteLine(planNormsData.ProductionPlanConfig.ProcessUnitId);
+                WriteLine(planNormsData.ProductionPlanConfig.ProcessUnitId);
                 if (planNormsData.ProductionPlanConfig.ProcessUnitId == oldIndex)
                 {
                     var key = productionPlanConfigsIndexes[planNormsData.ProductionPlanConfigId];
-                    Console.WriteLine($"{planNormsData.ProductionPlanConfigId};{key}");
+                    WriteLine($"{planNormsData.ProductionPlanConfigId};{key}");
                     planNormsData.ProductionPlanConfigId = key;
                     data.PlanNorms.Update(planNormsData);
                 }
@@ -311,7 +366,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
                         x.RecordDate.CompareTo(firstDayInMonth) >= 0 &&
                         oldProcessUnitsIndexes.Contains(x.ProcessUnitId))
                 .ToList();
-            Console.WriteLine($"UpdateUnitsApprovedDailyDatas->{approvedDatas.Count}");
+            WriteLine($"UpdateUnitsApprovedDailyDatas->{approvedDatas.Count}");
 
             foreach (var approvedData in approvedDatas)
             {
@@ -341,7 +396,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
                         x.RecordDate.CompareTo(firstDayInMonth) >= 0 &&
                         oldProcessUnitsIndexes.Contains(x.ProcessUnitId))
                 .ToList();
-            Console.WriteLine(approvedDatas.Count);
+            WriteLine(approvedDatas.Count);
             foreach (var approvedData in approvedDatas)
             {
                 if (approvedData.ProcessUnitId == 16)
@@ -376,9 +431,9 @@ namespace CollectingProductionDataSystem.ConsoleClient
                 var newId = newUProductionPlanConfigs[config.Key];
                 productionPlanConfigsIndexes.Add(config.Value, newId);
             }
-            Console.WriteLine($"UpdateProductionPlanDatas->{oldProductionPlanConfigs.Count}");
-            Console.WriteLine($"UpdateProductionPlanDatas->{newUProductionPlanConfigs.Count}");
-            Console.WriteLine($"UpdateProductionPlanDatas->{productionPlanConfigsIndexes.Count}");
+            WriteLine($"UpdateProductionPlanDatas->{oldProductionPlanConfigs.Count}");
+            WriteLine($"UpdateProductionPlanDatas->{newUProductionPlanConfigs.Count}");
+            WriteLine($"UpdateProductionPlanDatas->{productionPlanConfigsIndexes.Count}");
 
             var firstDayInMonth = new DateTime(2017, 2, 1, 0, 0, 0);
             var oldProcessUnitsIndexes = new int[] {16, 17};
@@ -402,7 +457,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
 
                 productionPlanData.FactoryId = 4;
                 var key = productionPlanConfigsIndexes[productionPlanData.ProductionPlanConfigId];
-                Console.WriteLine($"{productionPlanData.ProductionPlanConfigId};{key}");
+                WriteLine($"{productionPlanData.ProductionPlanConfigId};{key}");
                 productionPlanData.ProductionPlanConfigId = key;
                 data.ProductionPlanDatas.Update(productionPlanData);
             }
@@ -426,9 +481,9 @@ namespace CollectingProductionDataSystem.ConsoleClient
                 var newId = newUnitConfigs[config.Key];
                 unitCongigsIndexes.Add(config.Value, newId);
             }
-            Console.WriteLine($"CopyUnitConfigUnitDailyConfigs->{oldUnitConfigs.Count}");
-            Console.WriteLine($"CopyUnitConfigUnitDailyConfigs->{newUnitConfigs.Count}");
-            Console.WriteLine($"CopyUnitConfigUnitDailyConfigs->{unitCongigsIndexes.Count}");
+            WriteLine($"CopyUnitConfigUnitDailyConfigs->{oldUnitConfigs.Count}");
+            WriteLine($"CopyUnitConfigUnitDailyConfigs->{newUnitConfigs.Count}");
+            WriteLine($"CopyUnitConfigUnitDailyConfigs->{unitCongigsIndexes.Count}");
 
             var oldUnitDailyConfigs =
                        data.UnitsDailyConfigs.All()
@@ -498,7 +553,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
                     Position = relatedRecords[key]
                 };
 
-                Console.WriteLine($"{unitConfigUnitDailyConfigRecord.UnitConfigId};{unitConfigUnitDailyConfigRecord.UnitDailyConfigId};{unitConfigUnitDailyConfigRecord.Position}");
+                WriteLine($"{unitConfigUnitDailyConfigRecord.UnitConfigId};{unitConfigUnitDailyConfigRecord.UnitDailyConfigId};{unitConfigUnitDailyConfigRecord.Position}");
                 data.UnitConfigUnitDailyConfigs.Add(unitConfigUnitDailyConfigRecord);
             }
 
@@ -521,9 +576,9 @@ namespace CollectingProductionDataSystem.ConsoleClient
                 var newId = newUnitDailyConfigs[config.Key];
                 unitDailyConfigsIndexes.Add(config.Value, newId);
             }
-            Console.WriteLine($"CopyRelatedUnitDailyConfigs->{oldUnitDailyConfigs.Count}");
-            Console.WriteLine($"CopyRelatedUnitDailyConfigs->{newUnitDailyConfigs.Count}");
-            Console.WriteLine($"CopyRelatedUnitDailyConfigs->{unitDailyConfigsIndexes.Count}");
+            WriteLine($"CopyRelatedUnitDailyConfigs->{oldUnitDailyConfigs.Count}");
+            WriteLine($"CopyRelatedUnitDailyConfigs->{newUnitDailyConfigs.Count}");
+            WriteLine($"CopyRelatedUnitDailyConfigs->{unitDailyConfigsIndexes.Count}");
 
             var relatedDailyRecords = new Dictionary<string, int>();
 
@@ -585,7 +640,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
                     Position = relatedDailyRecords[key]
                 };
 
-                Console.WriteLine($"{relatedUnitsDailyConfigRecord.UnitsDailyConfigId};{relatedUnitsDailyConfigRecord.RelatedUnitsDailyConfigId};{relatedDailyRecords[key]}");
+                WriteLine($"{relatedUnitsDailyConfigRecord.UnitsDailyConfigId};{relatedUnitsDailyConfigRecord.RelatedUnitsDailyConfigId};{relatedDailyRecords[key]}");
                 data.RelatedUnitDailyConfigs.Add(relatedUnitsDailyConfigRecord);
             }
 
@@ -608,9 +663,9 @@ namespace CollectingProductionDataSystem.ConsoleClient
                 var newId = newUnitConfigs[config.Key];
                 unitCongigsIndexes.Add(config.Value, newId);
             }
-            Console.WriteLine($"CopyRelatedUnitConfigs->{oldUnitConfigs.Count}");
-            Console.WriteLine($"CopyRelatedUnitConfigs->{newUnitConfigs.Count}");
-            Console.WriteLine($"CopyRelatedUnitConfigs->{unitCongigsIndexes.Count}");
+            WriteLine($"CopyRelatedUnitConfigs->{oldUnitConfigs.Count}");
+            WriteLine($"CopyRelatedUnitConfigs->{newUnitConfigs.Count}");
+            WriteLine($"CopyRelatedUnitConfigs->{unitCongigsIndexes.Count}");
 
             var relatedRecords = new Dictionary<string, int>();
 
@@ -672,7 +727,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
                     Position = relatedRecords[key]
                 };
 
-                Console.WriteLine($"{relatedUnitConfigRecord.UnitConfigId};{relatedUnitConfigRecord.RelatedUnitConfigId};{relatedRecords[key]}");
+                WriteLine($"{relatedUnitConfigRecord.UnitConfigId};{relatedUnitConfigRecord.RelatedUnitConfigId};{relatedRecords[key]}");
                 data.RelatedUnitConfigs.Add(relatedUnitConfigRecord);
             }
 
@@ -751,7 +806,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
 
                 if (confedence != 100)
                 {
-                    Console.WriteLine(row["TagName"]);
+                    WriteLine(row["TagName"]);
                 //    continue;
                 }
 
@@ -867,7 +922,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
                 IEfStatus result = data.SaveChanges(userName: "InitialLoading");
                 if (result.IsValid)
                 {
-                    Console.WriteLine(format: "Successfully added records for {0}", arg0: nextDate);
+                    WriteLine(format: "Successfully added records for {0}", arg0: nextDate);
                 }
 
                 nextDate = nextDate.AddDays(value: 1);
@@ -917,7 +972,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
 
                 data.UnitsDailyDatas.BulkInsert(unitsDailyDataList, "InitialLoading");
                 data.UnitsApprovedDailyDatas.BulkInsert(unitsApprovedDailyDataList, "InitialLoading");
-                Console.WriteLine("Successfully added daily records for {0}", nextDate);
+                WriteLine("Successfully added daily records for {0}", nextDate);
 
                 nextDate = nextDate.AddDays(1);
                 if (nextDate.Month != lastRealDate.Month)
@@ -944,11 +999,11 @@ namespace CollectingProductionDataSystem.ConsoleClient
                 var result = data.SaveChanges(userName: "InitialLoading");
                 if (result.IsValid)
                 {
-                    Console.WriteLine("Successfully added {0} records for {1}", result.ResultRecordsCount, nextDate);
+                    WriteLine("Successfully added {0} records for {1}", result.ResultRecordsCount, nextDate);
                 }
                 else
                 {
-                    Console.WriteLine("error");
+                    WriteLine("error");
                 }
 
                 nextDate = nextDate.AddDays(1);
@@ -1005,7 +1060,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
                 }
                 var beginIndex = productionPlanConfig.QuantityPlanFormula.StartsWith("(") == false ? 0 : 1;
                 var value = productionPlanConfig.QuantityPlanFormula.Substring(beginIndex, endIndex - beginIndex);
-                Console.WriteLine("{0}:{1} - > {2} -> {3}",
+                WriteLine("{0}:{1} - > {2} -> {3}",
                     productionPlanConfig.Code,
                     productionPlanConfig.Name,
                     productionPlanConfig.QuantityPlanFormula,
@@ -1014,7 +1069,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
             }
 
             var status = data.SaveChanges("Initial Loading");
-            Console.WriteLine(status.ResultRecordsCount);
+            WriteLine(status.ResultRecordsCount);
         }
 
         private static void LoadingUsageRateForEnergyProducts(ProductionData data)
@@ -1022,7 +1077,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
             var p = data.ProductionPlanConfigs.All().Where(x => x.MaterialTypeId != 1).ToList();
             foreach (var productionPlanConfig in p)
             {
-                Console.WriteLine("{0}:{1} - > {2}", productionPlanConfig.Code, productionPlanConfig.Name, productionPlanConfig.Percentages);
+                WriteLine("{0}:{1} - > {2}", productionPlanConfig.Code, productionPlanConfig.Name, productionPlanConfig.Percentages);
                 data.PlanNorms.Add(new PlanNorm
                 {
                     ProductionPlanConfigId = productionPlanConfig.Id,
@@ -1032,7 +1087,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
             }
 
             var status = data.SaveChanges("Initial Loading");
-            Console.WriteLine(status.ResultRecordsCount);
+            WriteLine(status.ResultRecordsCount);
         }
 
         private static void UpdatingQuantityPlanFormula(ProductionData data)
@@ -1053,7 +1108,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
                 }
 
                 var value = productionPlanConfig.QuantityPlanFormula.Substring(beginIndex + 2, endIndex - beginIndex - 2);
-                Console.WriteLine("{0} -> {1}", productionPlanConfig.QuantityPlanFormula, value);
+                WriteLine("{0} -> {1}", productionPlanConfig.QuantityPlanFormula, value);
                 productionPlanConfig.QuantityPlanFormula = productionPlanConfig.QuantityPlanFormula.Replace(value, "p.pn");
                 productionPlanConfig.QuantityPlanFormula = productionPlanConfig.QuantityPlanFormula.Replace("100", "100.00");
             }
@@ -1100,7 +1155,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
             var date = new DateTime(2016, 5, 1, 0, 0, 0);
             foreach (var planValue in planValues)
             {
-                Console.WriteLine("{0} -> {1}", planValue.Key, planValue.Value);
+                WriteLine("{0} -> {1}", planValue.Key, planValue.Value);
                 var planValueV = data.PlanValues.All().Where(x => x.ProcessUnitId == planValue.Key && x.Month == date).FirstOrDefault();
                 if (planValueV != null)
                 {
@@ -1130,7 +1185,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
                 }
 
                 var value = productionPlanConfig.QuantityPlanFormula.Substring(beginIndex + 1, endIndex - beginIndex - 1);
-                Console.WriteLine("{0} -> {1}", productionPlanConfig.QuantityPlanFormula, value);
+                WriteLine("{0} -> {1}", productionPlanConfig.QuantityPlanFormula, value);
                 productionPlanConfig.QuantityPlan = decimal.Parse(value);
                 productionPlanConfig.QuantityPlanFormula = productionPlanConfig.QuantityPlanFormula.Replace(value, "p.pv");
             }
@@ -1148,7 +1203,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
                 data.SaveChanges("Initial Loading");
             }
 
-            Console.WriteLine("Successfully UpdateInProductionPlanForExsisting");
+            WriteLine("Successfully UpdateInProductionPlanForExsisting");
         }
 
         private static void UpdateShiftUnitData(IKernel kernel, ProductionData data)
@@ -1207,7 +1262,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                WriteLine(ex.Message);
             }
 
             //foreach (var item in neededUnitData)
@@ -1256,18 +1311,18 @@ namespace CollectingProductionDataSystem.ConsoleClient
                                 writer.WriteLine();
                             }
                         }
-                        Console.WriteLine(unitConfig.PreviousShiftTag);
+                        WriteLine(unitConfig.PreviousShiftTag);
                     }
                 }
 
             }
             catch (PHDErrorException phdException)
             {
-                Console.WriteLine("PHD ERROR: " + phdException.ToString());
+                WriteLine("PHD ERROR: " + phdException.ToString());
             }
             catch (Exception exception)
             {
-                Console.WriteLine("EXCEPTION: " + exception.ToString());
+                WriteLine("EXCEPTION: " + exception.ToString());
             }
             finally
             {
@@ -1505,14 +1560,14 @@ namespace CollectingProductionDataSystem.ConsoleClient
                     Shift3 = data.Where(y => y.RecordTimestamp == dateParam && y.ShiftId == (int)ShiftType.Third).Where(u => u.UnitConfigId == x.UnitConfigId).FirstOrDefault(),
                 }).Distinct(new MultiShiftComparer()).ToList();
 
-                Console.WriteLine($"Estimated Time For Action: {timer.Elapsed}");
+                WriteLine($"Estimated Time For Action: {timer.Elapsed}");
 
                 foreach (var item in result)
                 {
-                    Console.WriteLine($"{item.TimeStamp} {item.UnitName} {item.Shift1.RealValue} {item.Shift2.RealValue} {item.Shift3.RealValue} {item.Shift1.RealValue + item.Shift2.RealValue + item.Shift3.RealValue}");
+                    WriteLine($"{item.TimeStamp} {item.UnitName} {item.Shift1.RealValue} {item.Shift2.RealValue} {item.Shift3.RealValue} {item.Shift1.RealValue + item.Shift2.RealValue + item.Shift3.RealValue}");
                 }
 
-                Console.WriteLine($"Estimated Time For Action: {timer.Elapsed}");
+                WriteLine($"Estimated Time For Action: {timer.Elapsed}");
                 timer.Stop();
             }
         }
@@ -1521,7 +1576,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
         {
             try
             {
-                Console.WriteLine("Begin active transactions synchronization!");
+                WriteLine("Begin active transactions synchronization!");
                 var now = DateTime.Now;
                 var today = DateTime.Today.AddDays(offsetInDays * -1);
                 var fiveOClock = new DateTime(today.Year, today.Month, today.Day, 4, 30, 0);
@@ -1559,7 +1614,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
                                             if (activeTransactionData != null)
                                             {
                                                 context.ActiveTransactionsDatas.Add(activeTransactionData);
-                                                Console.WriteLine(
+                                                WriteLine(
                                                     string.Format("Active transaction processing TK [{3}] ProductId[{0}] Mass[{1}] MassReverse[{2}]",
                                                         activeTransactionData.ProductId,
                                                         activeTransactionData.Mass,
@@ -1576,11 +1631,11 @@ namespace CollectingProductionDataSystem.ConsoleClient
                     }
                 }
 
-                Console.WriteLine("End active transactions synchronization!");
+                WriteLine("End active transactions synchronization!");
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message, ex);
+                WriteLine(ex.Message, ex);
             }
         }
 
@@ -1628,12 +1683,12 @@ namespace CollectingProductionDataSystem.ConsoleClient
                         var value = 0m;
                         if (valueRow[0].ToString().Equals(item.ActiveTransactionMassTag))
                         {
-                            Console.WriteLine(item.ActiveTransactionMassTag);
+                            WriteLine(item.ActiveTransactionMassTag);
                             if (decimal.TryParse(valueRow["Value"].ToString(), out value))
                             {
                                 if (!string.IsNullOrEmpty(item.MassCorrectionFactor))
                                 {
-                                    Console.WriteLine(item.MassCorrectionFactor);
+                                    WriteLine(item.MassCorrectionFactor);
                                     value = value * Convert.ToDecimal(item.MassCorrectionFactor);
                                 }
                                 activeTransactionData.Mass = value;
@@ -1641,12 +1696,12 @@ namespace CollectingProductionDataSystem.ConsoleClient
                         }
                         else if (valueRow[0].ToString().Equals(item.ActiveTransactionMassReverseTag))
                         {
-                            Console.WriteLine(item.ActiveTransactionMassTag);
+                            WriteLine(item.ActiveTransactionMassTag);
                             if (decimal.TryParse(valueRow["Value"].ToString(), out value))
                             {
                                 if (!string.IsNullOrEmpty(item.MassCorrectionFactor))
                                 {
-                                    Console.WriteLine(item.MassCorrectionFactor);
+                                    WriteLine(item.MassCorrectionFactor);
                                     value = value * Convert.ToDecimal(item.MassCorrectionFactor);
                                 }
                                 activeTransactionData.MassReverse = value;
@@ -1665,13 +1720,13 @@ namespace CollectingProductionDataSystem.ConsoleClient
         {
             try
             {
-                Console.WriteLine("Begin scale transactions synchronization!");
+                WriteLine("Begin scale transactions synchronization!");
                 {
                     var now = DateTime.Now;
                     var today = DateTime.Today.AddDays(offsetInDays * -1);
                     var fiveOClock = new DateTime(today.Year, today.Month, today.Day, 4, 30, 0);
 
-                    Console.WriteLine(string.Format("Today.Ticks: {0}", today.Ticks));
+                    WriteLine(string.Format("Today.Ticks: {0}", today.Ticks));
 
                     var ts = now - fiveOClock;
                     if (ts.TotalMinutes > 2 /*&& ts.Hours == 0*/)
@@ -1790,7 +1845,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
                                             BaseProductType = scaleProduct.Product.ProductType.Id,
                                             FlowDirection = scaleProduct.DirectionId
                                         };
-                                        Console.WriteLine(string.Format("Processing virtual transaction for {0} {1} {2} {3}", entry.Key, scaleProduct.PhdProductTotalizerTag, entry.Value, scaleProduct.Direction.Name));
+                                        WriteLine(string.Format("Processing virtual transaction for {0} {1} {2} {3}", entry.Key, scaleProduct.PhdProductTotalizerTag, entry.Value, scaleProduct.Direction.Name));
                                         context.MeasuringPointsConfigsDatas.Add(measuringPointConfigData);
                                     }
                                 }
@@ -1801,11 +1856,11 @@ namespace CollectingProductionDataSystem.ConsoleClient
                     }
                 }
 
-                Console.WriteLine("End scale transactions synchronization!");
+                WriteLine("End scale transactions synchronization!");
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message, ex);
+                WriteLine(ex.Message, ex);
             }
         }
 
@@ -1813,7 +1868,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
         {
             try
             {
-                Console.WriteLine("Begin synchronization!");
+                WriteLine("Begin synchronization!");
 
                 using (var context = new ProductionData(new CollectingDataSystemDbContext(new AuditablePersister(), new Logger())))
                 {
@@ -1822,19 +1877,19 @@ namespace CollectingProductionDataSystem.ConsoleClient
                         GetTransactionsFromAso(max, context);
                     }
 
-                    Console.WriteLine("End synchronization");
+                    WriteLine("End synchronization");
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message, ex);
+                WriteLine(ex.Message, ex);
             }
         }
 
         private static List<MeasuringPointsConfigsData> GetTransactionsFromAso(long minSequenceNumber, ProductionData context)
         {
             var transactions = new List<MeasuringPointsConfigsData>();
-            Console.WriteLine(string.Format("Last processing SequenceNumber was {0}", minSequenceNumber));
+            WriteLine(string.Format("Last processing SequenceNumber was {0}", minSequenceNumber));
             var maximumLastFetchSequenceNumber = minSequenceNumber;
             var adapter = new AsoDataSetTableAdapters.flow_MeasuringPointsDataTableAdapter();
             var table = new AsoDataSet.flow_MeasuringPointsDataDataTable();
@@ -2084,11 +2139,11 @@ namespace CollectingProductionDataSystem.ConsoleClient
                             var status = context.SaveChanges("Aso2SapoLoader");
                             if (status.IsValid)
                             {
-                                Console.WriteLine(string.Format("Processing sequence number {0}", row.SequenceNumber));
+                                WriteLine(string.Format("Processing sequence number {0}", row.SequenceNumber));
                             }
                             else
                             {
-                                Console.WriteLine(string.Format("Processing sequence number {0} failed {1}",
+                                WriteLine(string.Format("Processing sequence number {0} failed {1}",
                                     row.SequenceNumber, status.EfErrors[0].ErrorMessage));
                             }
                         }
@@ -2096,7 +2151,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
                     }
                     catch (Exception dbException)
                     {
-                        Console.WriteLine(dbException.Message);
+                        WriteLine(dbException.Message);
                     }
 
                 }
@@ -2145,7 +2200,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
                     var result = oPhd.FetchRowData(tags[0]);
                     var row = result.Tables[0].Rows[0];
                     var endValue = Convert.ToInt64(row["Value"]);
-                    Console.WriteLine(row["Timestamp"]);
+                    WriteLine(row["Timestamp"]);
 
                     result = oPhd.FetchRowData(tags[1]);
                     row = result.Tables[0].Rows[0];
@@ -2158,7 +2213,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
                     var beginValue = Convert.ToInt64(row["Value"]);
 
                     var value = ((endValue - beginValue) * pressure) / Convert.ToDecimal(tags[2]);
-                    Console.WriteLine(value);
+                    WriteLine(value);
                 }
             }
 
@@ -2168,7 +2223,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
         {
             try
             {
-                Console.WriteLine("Begin production report data synchronization!");
+                WriteLine("Begin production report data synchronization!");
                 {
                     var now = DateTime.Now;
                     var today = DateTime.Today.AddDays(-3);
@@ -2254,7 +2309,7 @@ namespace CollectingProductionDataSystem.ConsoleClient
                                             DirectionId = scaleProduct.DirectionId
                                         };
 
-                                        Console.WriteLine(string.Format("Processing virtual transaction for {0} {1} {2} {3}", entry.Key, scaleProduct.PhdProductTotalizerTag, entry.Value, scaleProduct.Direction.Name));
+                                        WriteLine(string.Format("Processing virtual transaction for {0} {1} {2} {3}", entry.Key, scaleProduct.PhdProductTotalizerTag, entry.Value, scaleProduct.Direction.Name));
                                         context.MeasurementPointsProductsDatas.Add(measuringPointProductData);
                                     }
                                 }
@@ -2265,11 +2320,11 @@ namespace CollectingProductionDataSystem.ConsoleClient
                     }
                 }
 
-                Console.WriteLine("End roduction report data synchronization!");
+                WriteLine("End roduction report data synchronization!");
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                WriteLine(ex.Message);
             }
         }
     }
