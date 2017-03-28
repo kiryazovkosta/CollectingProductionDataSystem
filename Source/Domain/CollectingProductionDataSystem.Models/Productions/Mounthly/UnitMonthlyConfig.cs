@@ -101,7 +101,15 @@ namespace CollectingProductionDataSystem.Models.Productions.Mounthly
 
         public bool IsAvailableInTechnologicalReport { get; set; }
 
+        /// <summary>
+        /// Use this flag only for the technological position with monthly fact value and year fact value
+        /// </summary>
         public bool IsOnlyMonthFactValuePosition { get; set; }
+
+        /// <summary>
+        /// Use this flag only for the technological position with fact value
+        /// </summary>
+        public bool IsOnlyFactValuePosition { get; set; }
 
         /// <summary>
         /// Determines whether the specified object is valid.
@@ -111,7 +119,7 @@ namespace CollectingProductionDataSystem.Models.Productions.Mounthly
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             var currentObject = validationContext.ObjectInstance as UnitMonthlyConfig;
-            if (currentObject.IsManualEntry == false && string.IsNullOrEmpty(currentObject.AggregationFormula))
+            if (currentObject != null && (currentObject.IsManualEntry == false && string.IsNullOrEmpty(currentObject.AggregationFormula)))
             {
                 yield return new ValidationResult(string.Format(Resources.ModelErrors.Required, "AggregationFormula"));
             }

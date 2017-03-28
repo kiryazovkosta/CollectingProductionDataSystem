@@ -1789,4 +1789,7 @@
   <data name="HasApprovedStatistics" xml:space="preserve">
     <value>HasApprovedStatistics</value>
   </data>
+  <data name="IsOnlyFactValuePosition" xml:space="preserve">
+    <value>IsOnlyFactValuePosition</value>
+  </data>
 </root>

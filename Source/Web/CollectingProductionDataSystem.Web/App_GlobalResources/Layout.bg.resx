@@ -1784,4 +1784,7 @@
   <data name="HasApprovedStatistics" xml:space="preserve">
     <value>Участва в статистика за потвърдени данни</value>
   </data>
+  <data name="IsOnlyFactValuePosition" xml:space="preserve">
+    <value>Позиция с наличност в TO</value>
+  </data>
 </root>

@@ -115,6 +115,9 @@
         [Display(Name = "IsOnlyMonthFactValuePosition", ResourceType = typeof(Resources.Layout))]
         public bool IsOnlyMonthFactValuePosition { get; set; }
 
+        [Display(Name = "IsOnlyFactValuePosition", ResourceType = typeof(Resources.Layout))]
+        public bool IsOnlyFactValuePosition { get; set; }
+
 
         /// <summary>
         /// Creates the mappings.

@@ -1933,6 +1933,15 @@ namespace App_GlobalResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to IsOnlyFactValuePosition.
+        /// </summary>
+        public static string IsOnlyFactValuePosition {
+            get {
+                return ResourceManager.GetString("IsOnlyFactValuePosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to IsOnlyMonthFactValuePosition.
         /// </summary>
         public static string IsOnlyMonthFactValuePosition {

@@ -36,6 +36,7 @@
           columns.Bound(c => c.IsAvailableInMothyReport).Width(135).ClientTemplate("<img src='../Content/Images/#=data.IsAvailableInMothyReport ? 'ok.png': 'error.png'#' alt='#=data.IsAvailableInMothyReport#' height='20px' width='20px'/>");
           columns.Bound(c => c.IsAvailableInTechnologicalReport).Width(135).ClientTemplate("<img src='../Content/Images/#=data.IsAvailableInTechnologicalReport ? 'ok.png': 'error.png'#' alt='#=data.IsAvailableInTechnologicalReport#' height='20px' width='20px'/>");
           columns.Bound(c => c.IsOnlyMonthFactValuePosition).Width(100).ClientTemplate("<img src='../Content/Images/#=data.IsOnlyMonthFactValuePosition ? 'ok.png': 'error.png'#' alt='#=data.IsOnlyMonthFactValuePosition#' height='20px' width='20px'/>");
+          columns.Bound(c => c.IsOnlyFactValuePosition).Width(100).ClientTemplate("<img src='../Content/Images/#=data.IsOnlyFactValuePosition ? 'ok.png': 'error.png'#' alt='#=data.IsOnlyFactValuePosition#' height='20px' width='20px'/>");
           columns.Command(command => { command.Edit(); command.Destroy(); }).Width(230);
       })
       .Resizable(res => res.Columns(true))
