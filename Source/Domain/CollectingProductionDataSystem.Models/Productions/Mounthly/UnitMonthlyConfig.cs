@@ -107,7 +107,7 @@ namespace CollectingProductionDataSystem.Models.Productions.Mounthly
         public bool IsOnlyMonthFactValuePosition { get; set; }
 
         /// <summary>
-        /// Use this flag only for the technological position with fact value
+        /// Use this flag only for the technological position with actual fact quantity
         /// </summary>
         public bool IsOnlyFactValuePosition { get; set; }
 
