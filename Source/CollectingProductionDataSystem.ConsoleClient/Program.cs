@@ -54,8 +54,21 @@ namespace CollectingProductionDataSystem.ConsoleClient
             ICalculatorService calculator = kernel.Get<CalculatorService>();
             ConfigAutoMapper();
 
-            DateTime reportDateTime = new DateTime(2017, 2, 24, 0, 0, 0);
-            ProcesReportTransactionsData(reportDateTime);
+            var techData =
+                data.UnitTechnologicalMonthlyDatas.All().ToList();
+            foreach (var techRecord in techData)
+            {
+                var index = techRecord.DetailedMaterialType.IndexOf(".", StringComparison.InvariantCulture);
+                if (index == 2)
+                {
+                    techRecord.DetailedMaterialType = $"0{techRecord.DetailedMaterialType}";
+                }
+            }
+
+            data.SaveChanges("Init");
+
+            //DateTime reportDateTime = new DateTime(2017, 2, 24, 0, 0, 0);
+            //ProcesReportTransactionsData(reportDateTime);
 
             //DateTime targetRecordDateTime = DateTime.Now;
             //var tanksPhdConfigs = new Dictionary<string, int>();

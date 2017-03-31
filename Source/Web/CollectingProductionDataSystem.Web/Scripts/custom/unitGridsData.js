@@ -289,7 +289,7 @@ var unitGridsData = (function () {
                             var confirmed = data.IsConfirmed;
                             if (confirmed === true) {
 
-                                var message = "Вие утвърдихте описанието на технологичният отчет успешно."
+                                var message = "Вие утвърдихте описанието на технологичният отчет успешно.";
                                 $('pre#succ-message').text(message);
                                 $('div#success-window').data("kendoWindow").open();
 
@@ -481,11 +481,11 @@ var unitGridsData = (function () {
                 $('#tech-report-approve').hide();
             }
 
-            var exportPdfButton = $('#export-pdf');
-            if (exportPdfButton.length) {
-                exportPdfButton.hide();
-                exportPdfButton.css('visibility', 'hidden');
-            }
+            //var exportPdfButton = $('#export-pdf');
+            //if (exportPdfButton.length) {
+            //    exportPdfButton.hide();
+            //    exportPdfButton.css('visibility', 'hidden');
+            //}
         }
     }
 

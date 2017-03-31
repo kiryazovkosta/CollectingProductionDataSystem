@@ -233,8 +233,8 @@ var pdfPageSetup = (function() {
             dateString = '0' + dateString;
         }
         var textDate = new draw.Text(
-            'Дата: ' + dateString,
-            new geom.Point(mm(5), mm(11)),
+            'Генериран: ' + dateString,
+            new geom.Point(mm(5), mm(2)),
             { font: mm(3) + "px 'DejaVu Sans'" }
         );
         draw.align([textDate], path2.bbox(), "center");
