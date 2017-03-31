@@ -233,11 +233,11 @@ var pdfPageSetup = (function() {
             dateString = '0' + dateString;
         }
         var textDate = new draw.Text(
-            'Генериран: ' + dateString,
+            ' Генериран: ' + dateString,
             new geom.Point(mm(5), mm(2)),
             { font: mm(3) + "px 'DejaVu Sans'" }
         );
-        draw.align([textDate], path2.bbox(), "center");
+        draw.align([textDate], path2.bbox(), "start");
         draw.vAlign([textDate], path2.bbox(), "center");
 
         var textPage = new draw.Text(
@@ -593,8 +593,8 @@ var pdfPageSetup = (function() {
     }
 
     function resizeGrids(grids) {
-        $(grids).each(function (index, element) {
-            var table  = $(element);
+        $(grids).each(function(index, element) {
+            var table = $(element);
             var fontSize = parseInt(table.css("font-size"));
             while (table.width() > mm(180) && (fontSize > 6)) {
                 fontSize -= 1;
@@ -605,8 +605,8 @@ var pdfPageSetup = (function() {
 
             $(table).find('td').css('font-size', '');
             $(table).find('span').css('font-size', '');
-            table.width(508)
-        })
+            table.width(508);
+        });
     }
 
     return {

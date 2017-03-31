@@ -777,7 +777,8 @@
             return (IDeletableEntityRepository<T>)this.repositories[typeof(T)];
         }
 
-        private IImmutableEntityRepository<T> GetImmutableEntityRepository<T>() where T : class, IEntity, IAuditInfo
+        private IImmutableEntityRepository<T> GetImmutableEntityRepository<T>() 
+            where T : class, IEntity, IAuditInfo
         {
             if (!this.repositories.ContainsKey(typeof(T)))
             {

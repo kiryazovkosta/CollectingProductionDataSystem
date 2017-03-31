@@ -480,7 +480,7 @@ var unitGridsData = (function () {
             if ($('#tech-report-approve').length) {
                 $('#tech-report-approve').hide();
             }
-
+            // todo: correct export to pdf visibility
             //var exportPdfButton = $('#export-pdf');
             //if (exportPdfButton.length) {
             //    exportPdfButton.hide();
@@ -635,6 +635,8 @@ var unitGridsData = (function () {
         var date = $('#date').data('kendoDatePicker');
         var factorySelector = $('#factories').data("kendoDropDownList") || $('#factoriesD').data("kendoDropDownList");
 
+
+        //todo: see this
         if (date && factorySelector) {
             date.bind("change", function () {
                 var factory = $('#factories').data("kendoDropDownList") || $('#factoriesD').data("kendoDropDownList");
